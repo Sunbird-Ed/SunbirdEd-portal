@@ -1,7 +1,6 @@
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { IConceptData } from './../../interfaces';
 import { ConceptPickerService } from './../../services';
-import { ServerResponse, ResourceService, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, Output, Input, EventEmitter, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 @Component({
@@ -79,7 +78,7 @@ export class ConceptPickerComponent implements OnInit, OnDestroy {
         minSearchQueryLength: 1
       });
       setTimeout(() => {
-         document.getElementById('conceptSelector_treePicker').classList.add (this.conceptPickerClass);
+        document.getElementById('conceptSelector_treePicker').classList.add(this.conceptPickerClass);
       }, 500);
     }, 500);
   }

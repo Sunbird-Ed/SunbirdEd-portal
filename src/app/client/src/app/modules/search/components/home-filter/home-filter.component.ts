@@ -36,6 +36,7 @@ export class HomeFilterComponent implements OnInit {
   queryParams: IHomeQueryParams;
   showFilter = false;
   isAccordianOpen = false;
+  showConcepts = false;
 
   /**
     * Constructor to create injected service(s) object
@@ -126,19 +127,20 @@ export class HomeFilterComponent implements OnInit {
     this.queryParams = { ...this.config.dropDownConfig.FILTER.SEARCH.All.DROPDOWN, ...this.queryParams };
   }
   ngOnInit() {
-    this.conceptPickerService.conceptData$.subscribe(conceptData => {
-      if (conceptData && !conceptData.err) {
-        this.selectedConcepts = conceptData.data;
-        this.activatedRoute.queryParams.subscribe((params) => {
-          this.queryParams = { ...params };
-          _.forIn(params, (value, key) => {
-            if (typeof value === 'string' && key !== 'key') {
-              this.queryParams[key] = [value];
-            }
-          });
-          this.setFilters();
-        });
-      }
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.conceptPickerService.conceptData$.subscribe(conceptData => {
+        if (conceptData && !conceptData.err) {
+          this.selectedConcepts = conceptData.data;
+          this.showConcepts = true;
+        }
+      });
+      this.queryParams = { ...params };
+      _.forIn(params, (value, key) => {
+        if (typeof value === 'string' && key !== 'key') {
+          this.queryParams[key] = [value];
+        }
+      });
+      this.setFilters();
     });
   }
 }

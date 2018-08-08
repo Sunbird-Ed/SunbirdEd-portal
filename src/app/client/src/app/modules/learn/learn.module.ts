@@ -13,7 +13,6 @@ import {
   UpdateCourseBatchComponent, CarriculumCardComponent } from './components';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService } from './services';
 import { CoreModule } from '@sunbird/core';
-import { DiscussionModule } from '@sunbird/discussion';
 import { NotesModule } from '@sunbird/notes';
 import { DashboardModule } from '@sunbird/dashboard';
 
@@ -27,7 +26,6 @@ import { DashboardModule } from '@sunbird/dashboard';
     FormsModule,
     LearnRoutingModule,
     CoreModule,
-    // DiscussionModule,
     ReactiveFormsModule,
     NotesModule,
     TelemetryModule,

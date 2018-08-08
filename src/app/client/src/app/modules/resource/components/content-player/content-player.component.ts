@@ -1,12 +1,12 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ContentService, UserService, PlayerService, CopyContentService, PermissionService, BreadcrumbsService } from '@sunbird/core';
+import { UserService, PlayerService, CopyContentService, PermissionService, BreadcrumbsService } from '@sunbird/core';
 import * as _ from 'lodash';
-import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
+import { INoteData } from '@sunbird/notes';
 import {
-  ConfigService, IUserData, ResourceService, ToasterService,
-  WindowScrollService, NavigationHelperService, PlayerConfig, ContentData, ContentUtilsServiceService, ITelemetryShare
+  ConfigService, IUserData, ResourceService, ToasterService, WindowScrollService, NavigationHelperService,
+  PlayerConfig, ContentData, ContentUtilsServiceService, ITelemetryShare
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
@@ -23,9 +23,14 @@ export class ContentPlayerComponent implements OnInit {
 	 * telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
+
   closeIntractEdata: IInteractEventEdata;
+
   objectInteract: IInteractEventObject;
+
   sharelinkModal: boolean;
+
+  public badgeData: Array<object>;
   /**
    * contains link that can be shared
    */
@@ -72,12 +77,16 @@ export class ContentPlayerComponent implements OnInit {
    * This variable holds the details of the note created
    */
   createNoteData: INoteData;
+
+  showExtContentMsg = false;
+
   closeUrl: any;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
     public copyContentService: CopyContentService, public permissionService: PermissionService,
-    public contentUtilsServiceService: ContentUtilsServiceService, public breadcrumbsService: BreadcrumbsService) {
+    public contentUtilsServiceService: ContentUtilsServiceService, public breadcrumbsService: BreadcrumbsService,
+    private configService: ConfigService) {
   }
   /**
    *
@@ -129,7 +138,7 @@ export class ContentPlayerComponent implements OnInit {
   getContent() {
     const option: any = {};
     if (this.contentStatus && this.contentStatus === 'Unlisted') {
-      option.params = {mode: 'edit'};
+      option.params = { mode: 'edit' };
     }
     this.playerService.getContent(this.contentId, option).subscribe(
       (response) => {
@@ -140,10 +149,16 @@ export class ContentPlayerComponent implements OnInit {
           };
           this.playerConfig = this.playerService.getConfig(contentDetails);
           this.contentData = response.result.content;
+          if (this.contentData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
+            setTimeout(() => {
+              this.showExtContentMsg = true;
+            }, 5000);
+          }
           this.setTelemetryData();
           this.showPlayer = true;
           this.windowScrollService.smoothScroll('content-player');
           this.breadcrumbsService.setBreadcrumbs([{ label: this.contentData.name, url: '' }]);
+          this.badgeData = _.get(response, 'result.content.badgeAssertions');
         } else {
           this.toasterService.warning(this.resourceService.messages.imsg.m0027);
           this.close();
@@ -191,9 +206,9 @@ export class ContentPlayerComponent implements OnInit {
   }
   onShareLink() {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.contentId, this.contentData.mimeType);
-     this.setTelemetryShareData(this.contentData);
+    this.setTelemetryShareData(this.contentData);
   }
-    setTelemetryShareData(param) {
+  setTelemetryShareData(param) {
     this.telemetryShareData = [{
       id: param.identifier,
       type: param.contentType,

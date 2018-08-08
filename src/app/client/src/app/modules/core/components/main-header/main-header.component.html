@@ -1,16 +1,16 @@
 <div class="ui grid" *ngIf="!showExploreHeader">
-    <div class="center aligned twelve column row">
+    <div class="center aligned twelve column row" [class.header-height-before-login]="!userService.userid">
         <div class="one wide tablet computer only column"></div>
-        <div class="two wide tablet computer only column padding-top-15">
+        <div class="two wide tablet computer only column" [class.padding-top-15]="userService.userid">
             <a (click)="navigateToHome()">
                 <img [class.header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
-                    alt={{tenantName}} src="{{logo}} ">
+                    alt={{tenantName}} src="{{logo}}">
             </a>
         </div>
-        <div class="two wide mobile only column padding-left-25">
+        <div class="two wide mobile only column padding-left-25 padding-top-5">
             <a (click)="navigateToHome()">
                 <img [class.header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
-                    alt={{tenantName}} src="{{logo}} ">
+                    alt={{tenantName}} src="{{logo}}">
             </a>
         </div>
         <div class="six wide column padding-top-1rem" *ngIf="userService.userid">
@@ -21,8 +21,9 @@
         <div class="one wide column" *ngIf="userService.userid; else showLoginBtn">
             <i class="float-ContentLeft alarm-icon-header alarm icon large alaramIconColor"></i>
             <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing
-             header-user-container padding-top-circular-human-icon" id="dropdown-menu-list-header">
-                <img src="{{ userProfile?.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" class="ui circular image logged-in-user" />
+                header-user-container padding-top-circular-human-icon" id="dropdown-menu-list-header">
+                <img src="{{ userProfile?.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" class="ui circular image logged-in-user"
+                />
                 <div class="menu" suiDropdownMenu>
                     <div *ngIf='userProfile' class="item headerDropdownProfile">{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}</div>
                     <div *ngIf='userProfile' class="ui divider"></div>
@@ -41,28 +42,27 @@
         <ng-template #showLoginBtn>
             <div class="right floated two wide tablet computer only column">
                 <div class="beforelogin ui secondary pointing menu padding-top-10">
-                    <button *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" class="ui item text-upper-case padding-bottom-20" routerLink="/explore/1">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</button>
-                    <button  appTelemetryInteract 
-                    [telemetryInteractObject]="telemetryInteractObject" 
-                    [telemetryInteractEdata]="signUpInteractEdata" *ngIf="enableSignup && router.isActive('', true)" 
-                    class="ui item padding-bottom-20" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
-                    <a  href="/home" class="sunblogin">
+                    <button *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" class="ui item text-upper-case padding-bottom-20"
+                        routerLink="/explore">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</button>
+                    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="signUpInteractEdata"
+                        *ngIf="enableSignup && router.isActive('', true)" class="ui item padding-bottom-20" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
+                    <a href="/home" class="sunblogin">
                         <button class="ui item">{{resourceService.frmelmnts?.btn?.login}}</button>
                     </a>
                 </div>
             </div>
-            <div class="right floated two wide column mobile only padding-top-15">                
+            <div class="right floated two wide column mobile only padding-top-15">
                 <div class="ui secondary right pointing dropdown" suiDropdown>
                     <i class="large bars icon"></i>
                     <div class="menu" suiDropdownMenu>
-                        <div class="item text-upper-case" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" routerLink="/explore/1">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</div>
-                        <div class="item" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" 
-                        [telemetryInteractEdata]="signUpInteractEdata" *ngIf="router.isActive('', true) && enableSignup" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</div>
+                        <div class="item text-upper-case" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" routerLink="/explore">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</div>
+                        <div class="item" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="signUpInteractEdata"
+                            *ngIf="router.isActive('', true) && enableSignup" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</div>
                         <div class="item">
-                            <a  href="/home" class="sunblogin">
+                            <a href="/home" class="sunblogin">
                                 <div class="item">{{resourceService.frmelmnts?.btn?.login}}</div>
                             </a>
-                        </div>        
+                        </div>
                     </div>
                 </div>
             </div>
@@ -70,7 +70,9 @@
         <div class="one wide tablet computer only column"></div>
     </div>
 </div>
-<span *ngIf="!showExploreHeader"><app-main-menu></app-main-menu></span>
+<span *ngIf="!showExploreHeader">
+    <app-main-menu></app-main-menu>
+</span>
 
 <div *ngIf="showExploreHeader" class="ui fluid container">
     <div class="ui grid margin-none">
@@ -80,8 +82,7 @@
                 <div class="one wide column"></div>
                 <div class="two wide column padding-left-none">
                     <a (click)="navigateToHome()">
-                        <img class="image centered header-logo-before-login padding-top-5"
-                            alt={{tenantName}} src="{{logo}}">
+                        <img class="image centered header-logo-before-login padding-top-5" alt={{tenantName}} src="{{logo}}">
                     </a>
                 </div>
                 <div class="two wide column"></div>
@@ -109,16 +110,15 @@
         <!--mobile header view code starts-->
         <div class="center aligned twelve wide mobile only column padding-none">
             <div class="ui grid margin-none">
-                <div class="three wide column padding-10">
+                <div class="three wide column padding-left-10 padding-top-5">
                     <a (click)="navigateToHome()">
-                        <img class="image centered header-logo-before-login"
-                            alt={{tenantName}} src="{{logo}}">
+                        <img class="image centered header-logo-before-login" alt={{tenantName}} src="{{logo}}">
                     </a>
                 </div>
                 <div class="three wide column"></div>
                 <div class="six wide column">
                     <a href="/home" class="sunblogin">
-                        <p class="ui item right-float padding-top-10">{{resourceService.frmelmnts?.btn?.login}}</p>
+                        <p class="ui item right-float">{{resourceService.frmelmnts?.btn?.login}}</p>
                     </a>
                 </div>
             </div>
@@ -147,7 +147,7 @@
                 </div>
                 <div class="six wide column"></div>
                 <div class="two wide right floated right aligned column">
-                    <app-language-dropdown [redirectUrl]="'explore/1'"></app-language-dropdown>
+                    <app-language-dropdown></app-language-dropdown>
                 </div>
                 <div class="one wide column"></div>
             </div>
@@ -165,7 +165,7 @@
             </div>
             <div class="ui grid margin-none">
                 <div class="twelve wide column padding-10">
-                    <app-language-dropdown [redirectUrl]="'explore/1'"></app-language-dropdown>
+                    <app-language-dropdown></app-language-dropdown>
                 </div>
             </div>
         </div>

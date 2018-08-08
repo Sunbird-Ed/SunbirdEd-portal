@@ -1,4 +1,5 @@
-import { SearchService } from './../../services';
+
+import { filter } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { ResourceService, ConfigService } from '@sunbird/shared';
@@ -33,9 +34,9 @@ export class SearchComponent implements OnInit {
    * option selected on dropdown
    */
   selectedOption: string;
-/**
- * show input field
- */
+  /**
+   * show input field
+   */
   showInput: boolean;
   /**
    * input keyword depending on url
@@ -99,11 +100,11 @@ export class SearchComponent implements OnInit {
       this.queryParam = { ...queryParams };
       this.key = this.queryParam['key'];
     });
-    this.route.events
-      .filter(e => e instanceof NavigationEnd).subscribe((params: any) => {
+    this.route.events.pipe(
+      filter(e => e instanceof NavigationEnd)).subscribe((params: any) => {
         const currUrl = this.route.url.split('?');
         this.value = currUrl[0].split('/', 3);
-        const  searchEnabledStates = this.config.dropDownConfig.FILTER.SEARCH.searchEnabled;
+        const searchEnabledStates = this.config.dropDownConfig.FILTER.SEARCH.searchEnabled;
         if (this.searchUrl[this.value[1]] && searchEnabledStates.includes(this.value[1])) {
           this.selectedOption = this.searchUrl[this.value[1]];
           this.showInput = true;

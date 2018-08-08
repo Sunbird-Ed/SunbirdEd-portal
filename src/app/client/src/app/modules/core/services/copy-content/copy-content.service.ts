@@ -1,8 +1,6 @@
+import { map } from 'rxjs/operators';
 import { ConfigService, ServerResponse, ContentData } from '@sunbird/shared';
-import { DataService } from './../data/data.service';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { CollectionHierarchyAPI } from '../../interfaces';
 import * as _ from 'lodash';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user/user.service';
@@ -58,12 +56,12 @@ export class CopyContentService {
       url: this.config.urlConFig.URLS.CONTENT.COPY + '/' + contentData.identifier,
       data: param
     };
-    return this.contentService.post(option).map((response: ServerResponse) => {
+    return this.contentService.post(option).pipe(map((response: ServerResponse) => {
       _.forEach(response.result.node_id, (value) => {
         this.redirectToEditor(contentData, value);
       });
       return response;
-    });
+    }));
   }
 
   /**

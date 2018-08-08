@@ -51,10 +51,22 @@
       "action": {
           "onImage": {"eventName": "onImage" }
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+        "ribbon": {"right":{"class": "ui black right ribbon label"},
+        "left": {"class":  "ui circular label  card-badges-image"} }
        },
        "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-     "dynamicFields": {"ribbon.right.name": "contentType"}
+       "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
+  },
+  "ExplorePage": {
+    "constantData":{
+      "action": {
+          "onImage": {"eventName": "onImage" }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"},
+        "left": {"class":  "ui circular label  card-badges-image"} }
+       },
+       "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+       "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
   },
   "GetPage":{
     "constantData":{
@@ -62,12 +74,12 @@
           "onImage": {"eventName": "onImage" }
         },
         "ribbon": {"right":{"class": "ui black right ribbon label"},
-        "left": {"class":  "ui blue left ribbon label"} },
+        "left": {"class":  "ui circular label  card-badges-image"} },
         "telemetryInteractEdata": {"id":"dial-code-view-card","type":"click","pageid":"dial-code"},
         "telemetryObjectType":"public"
        },
      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.name": "badgeAssertions[0].badgeClassName"}
+     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
   },
   "HomeSearch": {
     "constantData":{
@@ -107,10 +119,10 @@
           "onImage": {"eventName": "onImage" }
         },
         "ribbon": {"right":{"class": "ui black right ribbon label"},
-        "left": {"class":  "ui blue left ribbon label"} }
+        "left": {"class":  "ui circular label  card-badges-image"} }
        },
      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.name": "badgeAssertions[0].badgeClassName"}
+     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
   },
   "TELEMETRY": {
     "MAX_BATCH_SIZE": 10,
@@ -174,7 +186,7 @@
           },
           {
             "id": "org.sunbird.player.endpage",
-            "ver": 1.0,
+            "ver": 1.1,
             "type": "plugin"
           }
         ]
@@ -194,7 +206,8 @@
         "application/vnd.ekstep.html-archive",
         "application/epub",
         "application/vnd.ekstep.h5p-archive",
-        "video/webm"
+        "video/webm",
+        "text/x-url"
       ],
       "pdf": "application/pdf",
       "mp4": "video/mp4",
@@ -203,7 +216,8 @@
       "html": "application/vnd.ekstep.html-archive",
       "ePub": "application/epub",
       "h5p": "application/vnd.ekstep.h5p-archive",
-      "webm": "video/webm"
+      "webm": "video/webm",
+      "xUrl": "text/x-url"
     },
     "baseURL": "/content/preview/preview.html?webview=true"
   },
@@ -233,7 +247,8 @@
       "application/vnd.ekstep.html-archive",
       "application/epub",
       "application/vnd.ekstep.h5p-archive",
-      "video/webm"
+      "video/webm",
+      "text/x-url"
     ],
     "states": [
       "draft",
@@ -351,7 +366,6 @@
   "CONTENT_CONST": {
     "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"
   },
-  "APPID_EKSTEPENV": "get/envData",
   "SEARCH": {
     "PAGE_LIMIT": 20,
     "USER": {

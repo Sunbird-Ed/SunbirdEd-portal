@@ -1,9 +1,12 @@
-import {Inject, Injectable, Input } from '@angular/core';
+import { Inject, Injectable, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
-import { ConfigService, ServerResponse, ICard, IUserData, NavigationHelperService } from '@sunbird/shared';
+import { Observable, BehaviorSubject } from 'rxjs';
+
+
+import {
+  ConfigService, ServerResponse, ICard, IUserData, NavigationHelperService,
+  ResourceService
+} from '@sunbird/shared';
 import { ContentService } from '@sunbird/core';
 import { IDeleteParam } from '../../interfaces/delteparam';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -28,6 +31,8 @@ export class WorkSpaceService {
     * service for redirection to draft  component
   */
   private activatedRoute: ActivatedRoute;
+  public listener;
+  public showWarning;
 
   /**
     * Constructor - default method of WorkSpaceService class
@@ -38,7 +43,7 @@ export class WorkSpaceService {
   */
   constructor(config: ConfigService, content: ContentService,
     activatedRoute: ActivatedRoute,
-    route: Router, public navigationHelperService: NavigationHelperService) {
+    route: Router, public navigationHelperService: NavigationHelperService, private resourceService: ResourceService) {
     this.content = content;
     this.config = config;
     this.route = route;
@@ -60,6 +65,7 @@ export class WorkSpaceService {
     };
     return this.content.delete(option);
   }
+
 
   /**
  * openContentEditor
@@ -100,10 +106,10 @@ export class WorkSpaceService {
         this.route.navigate(['workspace/content/upForReview/content', content.identifier]);
       } else if (state === 'flagged') {
         this.route.navigate(['workspace/content/flag/content', content.identifier]);
-      } else if (state === 'review' ) {
+      } else if (state === 'review') {
         this.route.navigate(['workspace/content/review/content', content.identifier]);
       } else if (state === 'flagreviewer') {
-         this.route.navigate(['workspace/content/flagreviewer/content', content.identifier]);
+        this.route.navigate(['workspace/content/flagreviewer/content', content.identifier]);
       }
     }
   }
@@ -114,7 +120,7 @@ export class WorkSpaceService {
    * @param {string}  state - Present state
   */
   openGenericEditor(content, state) {
-   if (this.config.appConfig.WORKSPACE.states.includes(state)) {
+    if (this.config.appConfig.WORKSPACE.states.includes(state)) {
       this.route.navigate(['/workspace/content/edit/generic/', content.identifier, state, content.framework]);
     } else {
       if (state === 'review') {
@@ -124,7 +130,7 @@ export class WorkSpaceService {
       } else if (state === 'flagged') {
         this.route.navigate(['workspace/content/flag/content', content.identifier]);
       } else if (state === 'flagreviewer') {
-         this.route.navigate(['workspace/content/flagreviewer/content', content.identifier]);
+        this.route.navigate(['workspace/content/flagreviewer/content', content.identifier]);
       }
     }
   }
@@ -143,17 +149,35 @@ export class WorkSpaceService {
       _.forIn(metaData, (value, key1) => {
         card[key1] = _.pick(item, value);
       });
-        _.forIn(dynamicFields, (fieldData, fieldName) => {
-          const value = _.pick(item, fieldData);
-          _.forIn(value, (val1, key1) => {
-            const name = _.zipObjectDeep([fieldName], [val1]);
-            _.forIn(name, (values, index) => {
-              card[index] =  _.merge(name[index], card[index]);
-            });
+      _.forIn(dynamicFields, (fieldData, fieldName) => {
+        const value = _.pick(item, fieldData);
+        _.forIn(value, (val1, key1) => {
+          const name = _.zipObjectDeep([fieldName], [val1]);
+          _.forIn(name, (values, index) => {
+            card[index] = _.merge(name[index], card[index]);
           });
         });
+      });
       list.push(card);
     });
     return <ICard[]>list;
+  }
+  toggleWarning(type?: string) {
+    this.showWarning = sessionStorage.getItem('inEditor');
+    if (this.showWarning === 'true') {
+      this.listener = (event) => {
+        window.location.hash = 'no';
+        if (event.state) {
+          const alertMsg = type ? this.resourceService.messages.imsg.m0038 + ' ' + type + ', ' + this.resourceService.messages.imsg.m0039
+            : this.resourceService.messages.imsg.m0037;
+          alert(alertMsg);
+          window.location.hash = 'no';
+        }
+      };
+      window.addEventListener('popstate', this.listener, false);
+    } else {
+      window.location.hash = '';
+      window.removeEventListener('popstate', this.listener);
+    }
   }
 }

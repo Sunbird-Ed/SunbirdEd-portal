@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 // Import NG testing module(s)
 import { HttpClientModule } from '@angular/common/http';
@@ -9,7 +11,6 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { WorkSpaceService } from './workspace.service';
 import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 import * as mockData from './workspace.service.spec.data';
 const testData = mockData.mockRes;
 
@@ -18,7 +19,7 @@ describe('WorkSpaceService', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': Observable.from([{ pageNumber: '1' }]),
+    'params': observableOf({ pageNumber: '1' }),
   };
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -48,7 +49,7 @@ describe('WorkSpaceService', () => {
   }));
   it('should call delete api and get success response', inject([WorkSpaceService],
     (workSpaceService) => {
-      spyOn(workSpaceService, 'deleteContent').and.callFake(() => Observable.of(testData.deleteSuccess));
+      spyOn(workSpaceService, 'deleteContent').and.callFake(() => observableOf(testData.deleteSuccess));
       const params = { type: 'delete', contentId: 'do_2124645735080755201259' };
       const DeleteParam = {
         contentIds: ['do_2124645735080755201259']
@@ -59,7 +60,7 @@ describe('WorkSpaceService', () => {
 
   it('should call delete api and  get error response', inject([WorkSpaceService],
     (workSpaceService) => {
-      spyOn(workSpaceService, 'deleteContent').and.callFake(() => Observable.throw(testData.deleteError));
+      spyOn(workSpaceService, 'deleteContent').and.callFake(() => observableThrowError(testData.deleteError));
       const params = { type: 'delete', contentId: '' };
       const DeleteParam = {
         contentIds: ['do_2124645735080755201259']
@@ -77,4 +78,16 @@ describe('WorkSpaceService', () => {
       workSpaceService.navigateToContent(testData.upforReviewContentData, 'upForReview');
       expect(route.navigate).toHaveBeenCalledWith(['workspace/content/upForReview/content', 'do_1125083103747932161150']);
   }));
+  it('should get session item and show respective alert message based on content type', () => {
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(window, 'addEventListener').and.callThrough();
+    workSpaceService.toggleWarning('TextBook');
+    expect(window.location.hash).toEqual('');
+  });
+  it('should get session item and show alert message if content type is not present', () => {
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(window, 'addEventListener').and.callThrough();
+    workSpaceService.toggleWarning();
+    expect(window.location.hash).toEqual('');
+  });
 });

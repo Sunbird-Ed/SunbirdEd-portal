@@ -30,9 +30,8 @@ const authServerUrl = envHelper.PORTAL_AUTH_SERVER_URL
 const keycloakResource = envHelper.PORTAL_AUTH_SERVER_CLIENT
 const reqDataLimitOfContentEditor = '50mb'
 const reqDataLimitOfContentUpload = '50mb'
-const ekstepEnv = envHelper.EKSTEP_ENV
 const appId = envHelper.APPID
-const defaultTenant = envHelper.DEFAULT_TENANT
+const defaultTenant = envHelper.DEFAULT_CHANNEL
 const portal = this
 const Telemetry = require('sb_telemetry_util')
 const telemetry = new Telemetry()
@@ -46,6 +45,7 @@ const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const MobileDetect = require('mobile-detect');
 let memoryStore = null
 let defaultTenantIndexStatus = 'false';
+const tenantCdnUrl = envHelper.TENANT_CDN_URL;
 
 if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
   memoryStore = new session.MemoryStore()
@@ -99,14 +99,9 @@ app.all(['/server.js', '/helpers/*.js', '/helpers/**/*.js'], function (req, res)
   res.sendStatus(404);
 })
 
-app.use(express.static(path.join(__dirname, '/')))
-app.use(express.static(path.join(__dirname, 'tenant', tenantId)))
+
 // this line should be above middleware please don't change
 app.get('/public/service/orgs', publicServicehelper.getOrgs)
-
-if (defaultTenant) {
-  app.use(express.static(path.join(__dirname, 'tenant', defaultTenant)))
-}
 
 app.get('/assets/images/*', function (req, res, next) {
   res.setHeader("Cache-Control", "public, max-age=" + oneDayMS);
@@ -135,18 +130,27 @@ function getLocals(req) {
   locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   locals.instance = process.env.sunbird_instance
   locals.appId = envHelper.APPID
-  locals.ekstepEnv = envHelper.EKSTEP_ENV
-  locals.defaultTenant = envHelper.DEFAULT_TENANT
-  locals.contentChannelFilter = envHelper.CONTENT_CHANNEL_FILTER_TYPE;
+  locals.defaultTenant = envHelper.DEFAULT_CHANNEL
   locals.exploreButtonVisibility = envHelper.EXPLORE_BUTTON_VISIBILITY;
   locals.defaultTenantIndexStatus = defaultTenantIndexStatus;
   locals.enableSignup = envHelper.ENABLE_SIGNUP;
+  locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTCONT_WHITELISTED_DOMAINS;
   locals.buildNumber = envHelper.BUILD_NUMBER
   locals.apiCacheTtl = envHelper.PORTAL_API_CACHE_TTL
+  locals.cloudStorageUrls = envHelper.CLOUD_STORAGE_URLS
   return locals;
 }
 
 function indexPage(req, res) {
+  if(defaultTenant && req.path === '/'){
+    tenantId = defaultTenant
+    renderTenantPage(req,res)
+  }else{
+    renderDefaultIndexPage(req,res)
+  }
+}
+
+function renderDefaultIndexPage(req,res){
   const mobileDetect = new MobileDetect(req.headers['user-agent']);
   if ((req.path === '/get' || req.path === '/' + req.params.slug + '/get')
     && mobileDetect.os() === 'AndroidOS') {
@@ -156,25 +160,9 @@ function indexPage(req, res) {
     _.forIn(getLocals(req), function (value, key) {
       res.locals[key] = value
     })
-    // if (envHelper.PORTAL_CDN_URL) {
-    //   request(envHelper.PORTAL_CDN_URL + 'index.ejs?version=' + packageObj.version+'.'+packageObj.buildNumber, function (error, response, body) {
-    //     if (error || response.statusCode !== 200) {
-    //       console.log('error while fetching index.ejs from CDN', error)
-    //       res.render(path.join(__dirname, 'dist', 'index.ejs'))
-    //     } else {
-    //       res.send(ejs.render(body, getLocals(req)))
-    //     }
-    //   });
-    // } else {
-      res.render(path.join(__dirname, 'dist', 'index.ejs'))
-    //}
+    res.render(path.join(__dirname, 'dist', 'index.ejs'))
   }
 }
-app.get('/get/envData', function (req, res) {
-  res.status(200)
-  res.send({ appId: appId, ekstep_env: ekstepEnv })
-  res.end()
-})
 
 app.all('/', indexPage)
 app.all('/home', keycloak.protect(), indexPage)
@@ -205,6 +193,7 @@ app.all('/:slug/get/dial/:dialCode', function (req, res) { res.redirect('/get/di
 app.all('/get', indexPage)
 app.all('/:slug/get', function (req, res) { res.redirect('/get') })
 app.all('/:slug/explore/*', indexPage)
+app.all('/:slug/explore', indexPage)
 app.all('/explore', indexPage)
 app.all('/explore/*', indexPage)
 app.all(['/groups', '/groups/*'], keycloak.protect(), indexPage)
@@ -378,19 +367,65 @@ app.get('/v1/user/session/start/:deviceId', function (req, res) {
 // healthcheck
 app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth)
 
+app.use(express.static(path.join(__dirname, '/')))
+
 app.all('/:tenantName', function (req, res) {
   tenantId = req.params.tenantName
   if (_.isString(tenantId)) {
     tenantId = _.lowerCase(tenantId)
   }
-  if (tenantId && fs.existsSync(path.join(__dirname, 'tenant', tenantId, 'index.html'))) {
-    res.sendFile(path.join(__dirname, 'tenant', tenantId, 'index.html'))
-  } else if (defaultTenant && fs.existsSync(path.join(__dirname, 'tenant', defaultTenant, 'index.html'))) {
-    res.sendFile(path.join(__dirname, 'tenant', defaultTenant, 'index.html'))
+  if (tenantId) {
+    renderTenantPage(req,res)
+  } else if (defaultTenant) {
+    renderTenantPage(req,res)
   } else {
     res.redirect('/')
   }
 })
+
+// renders tenant page from cdn or from local files based on tenantCdnUrl exists
+function renderTenantPage (req,res) {
+  try{
+    if(tenantCdnUrl){
+      request(tenantCdnUrl + '/' + tenantId + '/' +  'index.html' , function (error, response, body) {
+        if(error || !body || response.statusCode !== 200){
+            loadTenantFromLocal(req,res)
+        }else{
+          res.send(body)
+        }
+      });
+    }else {
+      loadTenantFromLocal(req,res)
+    }
+  }catch(e){
+    loadTenantFromLocal(req,res)
+  }
+}
+
+app.use(express.static(path.join(__dirname, 'tenant', tenantId)))
+
+if (defaultTenant) {
+  app.use(express.static(path.join(__dirname, 'tenant', defaultTenant)))
+}
+
+//in fallback option check always for localtenant folder and redirect to / if not exists
+function loadTenantFromLocal (req,res) {
+ if(tenantId){
+   if (fs.existsSync(path.join(__dirname, 'tenant', tenantId, 'index.html'))){
+     res.sendFile(path.join(__dirname, 'tenant', tenantId, 'index.html'))
+   }else{
+     // renderDefaultIndexPage only if there is no local default tenant else redirect
+     if(defaultTenant && req.path === '/'){
+       renderDefaultIndexPage(req,res)
+     }else{
+     //this will be executed only if user is typed invalid tenant in url
+       res.redirect('/')
+     }
+   }
+ }else{
+   renderDefaultIndexPage(req,res)
+ }
+}
 
 // Handle content share request
 require('./helpers/shareUrlHelper.js')(app)
@@ -477,7 +512,7 @@ exports.close = function () {
 
 // Telemetry initialization
 const telemetryConfig = {
-  pdata: { id: appId, ver: telemtryEventConfig.pdata.ver },
+  pdata: { id: appId, ver: packageObj.version },
   method: 'POST',
   batchsize: process.env.sunbird_telemetry_sync_batch_size || 200,
   endpoint: telemtryEventConfig.endpoint,

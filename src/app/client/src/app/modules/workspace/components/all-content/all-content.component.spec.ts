@@ -1,17 +1,18 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { AllContentComponent } from './all-content.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
+import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService , DateFilterXtimeAgoPipe} from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Response } from './all-content.component.spec.data';
-
+import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 describe('AllContentComponent', () => {
   let component: AllContentComponent;
   let fixture: ComponentFixture<AllContentComponent>;
@@ -35,8 +36,8 @@ describe('AllContentComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': Observable.from([{ pageNumber: '1' }]),
-    'queryParams': Observable.from([{ subject: ['english', 'odia'] }]),
+    'params': observableOf({ pageNumber: '1' }),
+    'queryParams': observableOf({ subject: ['english', 'odia'] }),
     snapshot: {
       params: [
         {
@@ -73,21 +74,21 @@ describe('AllContentComponent', () => {
     component = fixture.componentInstance;
   });
   it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(Response.searchSuccessWithCountTwo));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountTwo));
     component.fecthAllContent(9, 1, bothParams);
     fixture.detectChanges();
     expect(component.allContent).toBeDefined();
   }));
 
   it('should throw error', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.throw({}));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError({}));
     fixture.detectChanges();
     component.fecthAllContent(9, 1, bothParams);
     expect(component.allContent.length).toBeLessThanOrEqual(0);
     expect(component.allContent.length).toEqual(0);
   }));
   it('should show no results for result count 0', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(Response.searchSuccessWithCountZero));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountZero));
     component.fecthAllContent(9, 1, bothParams);
     fixture.detectChanges();
     expect(component.allContent).toBeDefined();
@@ -138,9 +139,32 @@ describe('AllContentComponent', () => {
       spyOn(component, 'contentClick').and.callThrough();
       component.contentClick(Response.searchSuccessWithCountTwo.result.content[1]);
       expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/collection',
-      'do_2124341006465925121871', 'TextBook', 'allcontent', 'NCF']);
+        'do_2124341006465925121871', 'TextBook', 'allcontent', 'NCF']);
       fixture.detectChanges();
+  }));
+  it('should call delete api and get success response', inject([SuiModalService, WorkSpaceService, ActivatedRoute],
+    (modalService, workSpaceService, activatedRoute, http) => {
+      spyOn(workSpaceService, 'deleteContent').and.callFake(() => observableOf(Response.deleteSuccess));
+      spyOn(component, 'deleteConfirmModal').and.callThrough();
+      spyOn(modalService, 'open').and.callThrough();
+      spyOn(component, 'delete').and.callThrough();
+      const DeleteParam = {
+        contentIds: ['do_2124645735080755201259']
+      };
+      component.deleteConfirmModal('do_2124645735080755201259');
+      expect(component.deleteConfirmModal).toHaveBeenCalledWith('do_2124645735080755201259');
+      workSpaceService.deleteContent(DeleteParam).subscribe(
+        apiResponse => {
+          expect(apiResponse.responseCode).toBe('OK');
+          expect(apiResponse.params.status).toBe('successful');
+        }
+      );
     }));
+  it('should set lastUpdated Date by calling the filter', inject([SearchService], (searchService) => {
+    spyOn(searchService , 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountTwo));
+    fixture.detectChanges();
+    component.fecthAllContent(9, 1, bothParams);
+    const  fromnow = new DateFilterXtimeAgoPipe();
+    expect(fromnow.transform(Response.searchSuccessWithCountTwo.result.content[0].lastSubmittedOn, null)).toEqual('4 months ago');
+  }));
 });
-
-

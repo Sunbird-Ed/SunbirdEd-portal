@@ -2,17 +2,17 @@ import { SharedModule } from '@sunbird/shared';
 import { TestBed, inject } from '@angular/core/testing';
 import { NavigationHelperService } from './navigation-helper.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as observableOf } from 'rxjs';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
-  events: Observable<NavigationEnd>  = Observable.from([
-    {id: 2, url: '/home', urlAfterRedirects: '/home', toString: () =>  'home' }
-  ]);
+  // events: Observable<NavigationEnd>  = observableOf([
+  //   {id: 2, url: '/home', urlAfterRedirects: '/home', toString: () =>  'home' }
+  // ]);
 }
 const fakeActivatedRoute = {
-  'params': Observable.from([{ contentId: 'd0_33567325' }]),
+  'params': observableOf({ contentId: 'd0_33567325' }),
   'root': {
     children: [{snapshot: {
       queryParams: {}

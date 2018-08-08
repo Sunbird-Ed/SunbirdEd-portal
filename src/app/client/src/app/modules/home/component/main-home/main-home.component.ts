@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ISubscription } from 'rxjs/Subscription';
+import { SubscriptionLike as ISubscription } from 'rxjs';
 import { CoursesService, UserService, PlayerService } from '@sunbird/core';
 import { ResourceService, ToasterService, ServerResponse, ConfigService, UtilService} from '@sunbird/shared';
 import {  IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
@@ -167,7 +167,7 @@ public configService: ConfigService;
   }
 
   playContent(event) {
-     if (event.data.metaData.batchId) {
+    if (event.data.metaData.batchId) {
       event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
       event.data.metaData.contentType = 'Course';
     }
@@ -207,9 +207,9 @@ public configService: ConfigService;
     _.forEach(event.inview, (inview, key) => {
       const obj = _.find(this.inviewLogs, (o) => {
         if (inview.data.type !== 'profile') {
-           return o.objid === inview.data.courseId  ;
+          return o.objid === inview.data.courseId  ;
         } else {
-           return o.objid === this.userService.userid  ;
+          return o.objid === this.userService.userid  ;
         }
       });
       if (obj === undefined) {
@@ -266,16 +266,16 @@ public configService: ConfigService;
       this.telemetryImpression.edata.subtype = 'pageexit';
     }
   }
-   setInteractEventData() {
+  setInteractEventData() {
     this.profileUpdateIntractEdata = {
-       id: 'home',
-       type: 'click',
-       pageid: 'home'
+      id: 'home',
+      type: 'click',
+      pageid: 'home'
     };
     this.telemetryInteractObject =  {
       id: this.userService.userid,
       type: 'user',
       ver: '1.0'
     };
-   }
+  }
 }

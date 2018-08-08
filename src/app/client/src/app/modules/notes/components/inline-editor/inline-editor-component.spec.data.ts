@@ -151,6 +151,10 @@ export const response = {
           'm0030': 'Creating note is failed, please try again later...',
           'm0034': 'Updating note is failed, please try again later...',
           'm0033': 'Fetching note is failed, please try again later...'
+      },
+      'smsg': {
+        'm0009': 'Note created successfully...',
+        'm0013': 'Note updated successfully...'
       }
   }
   }

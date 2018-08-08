@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 import {
   ConfigService, ToasterService, ResourceService, ServerResponse,
@@ -8,7 +10,6 @@ import { ContentService, CoreModule } from '@sunbird/core';
 import { CourseProgressService } from './course-progress.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {Response} from './course-progress.service.spec.data';
-import { Observable } from 'rxjs/Observable';
 
 describe('CourseProgressService', () => {
   beforeEach(() => {
@@ -25,7 +26,7 @@ describe('CourseProgressService', () => {
   it('should update content state in server ', () => {
     const service = TestBed.get(CourseProgressService);
     const contentService = TestBed.get(ContentService);
-    spyOn(contentService, 'post').and.returnValue(Observable.of(Response.updateData));
+    spyOn(contentService, 'post').and.returnValue(observableOf(Response.updateData));
     const req1 = {  'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
     'courseId': 'do_1124785353783377921154',
     'contentId': 'do_112474267785674752118',
@@ -47,7 +48,7 @@ describe('CourseProgressService', () => {
   it('should not update content state in server ', () => {
     const service = TestBed.get(CourseProgressService);
     const contentService = TestBed.get(ContentService);
-    spyOn(contentService, 'post').and.returnValue(Observable.of(Response.UpdateDataError));
+    spyOn(contentService, 'post').and.returnValue(observableOf(Response.UpdateDataError));
     const reqData = {
       'userId': '0f451be5-2c83-4688-9089-fc329ce3bc',
     'contents': [

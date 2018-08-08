@@ -5,7 +5,7 @@
             <div class='content-player-body'>
                 <div *ngIf="showPlayer && contentData" class="videosegment  ui clearing segment">
                     <div [appTelemetryImpression]="telemetryImpression" class="ui grid">
-                        <div class="row margin-auto padding-bottom-none">
+                        <div class="row margin-auto">
                             <div class="twelve wide column">
                                 <div class="ten wide column" id="player-auto-scroll">
                                     <span class="ui HomeAccordianHeading left floated header" *ngIf="contentData.name">
@@ -13,28 +13,36 @@
                                     </span>
                                 </div>
                                 <div class="two wide column">
-                                    <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="close()">
+                                    <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" class="ui right floated basic icon circular button margin-auto mouse-pointer"
+                                        (click)="close()">
                                         <i class="ui remove icon"></i>
                                     </h5>
                                 </div>
                             </div>
                         </div>
-
                         <div *ngIf="contentStatus !== 'Unlisted'" class="row margin-auto padding-top-none">
                             <div class="twelve wide column">
-                                <sui-rating class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true" [ngModel]="contentData.me_averageRating || 0"
-                                    [maximum]="5"></sui-rating>&nbsp;&nbsp;
-                                <a (click)="onShareLink();sharelinkModal=true;">
-                                    <i class="cursor-pointer large blue share alternate icon"></i>
-                                </a>
-                                <a routerLink="flag">
-                                    <i class="ui large blue flag outline icon"></i>
-                                </a>
-                                <span *ngIf='permissionService.permissionAvailable' appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
-                                    (click)="copyContent(contentData)" class="ui mouse-pointer content-font margin-left-10 ng-isolate-scope"
-                                    title="Copy content">
-                                    <i class="ui large blue clone outline icon"></i>
-                                </span>
+                                <div class="player-badge-alignment">
+                                    <sui-rating [ngClass]="{'course-header-divider': badgeData}" class="courseHeader-rating ui star rating padding-top-5" [isReadonly]="true"
+                                        [ngModel]="contentData.me_averageRating || 0" [maximum]="5"></sui-rating>&nbsp;&nbsp;
+                                    <app-content-badge [data]="badgeData" class="margin-left-20"></app-content-badge>
+                                    <span class="margin-left-auto">
+                                        <!-- Temporarily disable flagging-->
+                                        <!-- <a routerLink="flag" class="padding-right-10 blue-text-color-sunbird">
+                                            <i class="ui large blue flag outline icon"></i>
+                                            {{resourceService?.frmelmnts?.lbl?.report}}
+                                        </a> -->
+                                        <a href="javascript:void(0)" (click)="onShareLink();sharelinkModal=true;" class="padding-right-10 blue-text-color-sunbird">
+                                            <i class="cursor-pointer large blue share alternate icon"></i>
+                                            {{resourceService?.frmelmnts?.lbl?.share}}
+                                        </a>
+                                        <span *ngIf='permissionService.permissionAvailable' appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
+                                            (click)="copyContent(contentData)" class="ui mouse-pointer content-font margin-left-10 blue-text-color-sunbird">
+                                            <i class="ui large blue clone outline icon"></i>
+                                            {{resourceService?.frmelmnts?.lbl?.copy}}
+                                        </span>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -43,8 +51,12 @@
                     <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
                         <div class="ui text centered inline loader margin-top-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
                     </div>
+                    <div class="ui warning message click-notify-xurl" *ngIf="showExtContentMsg">
+                        <div class="column twelve wide">
+                            <p>{{resourceService.messages.imsg.m0036}}</p>
+                        </div>
+                    </div>
                     <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
-
                     <div class="twelve wide column contentMetaSection">
                         <div class="ui stackable grid margin-top-10">
                             <div class="row">

@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { ContentService, PlayerService, UserService, LearnerService, CoreModule } from '@sunbird/core';
 import { SharedModule , ResourceService, ToasterService} from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -5,7 +7,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FlagContentComponent } from './flag-content.component';
 import { ActivatedRoute, Router, Params, UrlSegment, NavigationEnd} from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 import { Response } from './flag-content.component.spec.data';
 describe('FlagContentComponent', () => {
   let component: FlagContentComponent;
@@ -14,7 +15,7 @@ describe('FlagContentComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
 
-const fakeActivatedRoute = { parent: { params: Observable.of({contentId: 'testId', contentName: 'hello'}) },
+const fakeActivatedRoute = { parent: { params: observableOf({contentId: 'testId', contentName: 'hello'}) },
 snapshot: {
   parent: {
     url: [
@@ -56,7 +57,7 @@ snapshot: {
   it('should call getContent api when data is not present ', () => {
     const playerService = TestBed.get(PlayerService);
     playerService.contentData = {};
-    spyOn(playerService, 'getContent').and.callFake(() => Observable.of(Response.successContentData));
+    spyOn(playerService, 'getContent').and.callFake(() => observableOf(Response.successContentData));
     component.getContentData();
     component.contentData.name = Response.contentData.name;
     component.contentData.versionKey = Response.contentData.versionKey;
@@ -75,7 +76,7 @@ snapshot: {
       versionKey: '1496989757647',
      flagReasons: 'others'
     };
-    spyOn(contentService, 'post').and.callFake(() => Observable.of(Response.successFlag));
+    spyOn(contentService, 'post').and.callFake(() => observableOf(Response.successFlag));
    component.populateFlagContent(requestData);
    expect(component.showLoader).toBeFalsy();
   });
@@ -89,7 +90,7 @@ snapshot: {
       flaggedBy: 'Cretation User',
       versionKey: '1496989757647'
     };
-    spyOn(contentService, 'post').and.callFake(() => Observable.throw({}));
+    spyOn(contentService, 'post').and.callFake(() => observableThrowError({}));
     spyOn(toasterService, 'error').and.callThrough();
    component.populateFlagContent(requestData);
    fixture.detectChanges();
@@ -99,7 +100,7 @@ snapshot: {
   it('should call getCollectionHierarchy ', () => {
     const playerService = TestBed.get(PlayerService);
     playerService.contentData = {};
-    spyOn(playerService, 'getCollectionHierarchy').and.callFake(() => Observable.of(Response.collectionData));
+    spyOn(playerService, 'getCollectionHierarchy').and.callFake(() => observableOf(Response.collectionData));
    component.getCollectionHierarchy();
    expect(component.contentData).toBeDefined();
   });

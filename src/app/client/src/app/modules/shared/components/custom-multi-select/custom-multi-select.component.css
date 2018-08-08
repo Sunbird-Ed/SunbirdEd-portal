@@ -1,0 +1,26 @@
+.selection.multiselect-square-border {
+    border-radius: 5px;
+    border: 1px solid rgba(34,36,38,.15);
+}
+.ui.selection.multiselect-square-border .multi-select-dropdown.multi-select-padding {
+    padding: 1em 0.5em!important;
+}
+
+.template-checkbox{
+    display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+align-items: center;
+}
+.margin-left-auto {
+    margin-left: auto;
+}
+.ui.selection.multiselect-square-border {
+    min-width: 8em;
+}
+
+@media screen and (min-width:1200px) {
+    .ui.selection.multiselect-square-border {
+        min-width: 12em;
+    }
+}

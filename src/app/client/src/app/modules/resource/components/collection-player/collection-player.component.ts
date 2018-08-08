@@ -1,14 +1,14 @@
+
+import { mergeMap, first, map, catchError } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, ContentService, PermissionService, CopyContentService } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
+import { PlayerService, CollectionHierarchyAPI, PermissionService, CopyContentService } from '@sunbird/core';
+import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import {
-  WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService, ContentData,
-  ContentUtilsServiceService, ITelemetryShare
+  WindowScrollService, ILoaderMessage, PlayerConfig, ICollectionTreeOptions, NavigationHelperService,
+  ToasterService, ResourceService, ContentData, ContentUtilsServiceService, ITelemetryShare
 } from '@sunbird/shared';
-import { Subscription } from 'rxjs/Subscription';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
@@ -21,7 +21,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
 	 * telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
+
   telemetryContentImpression: IImpressionEventInput;
+
   private route: ActivatedRoute;
 
   public showPlayer: Boolean = false;
@@ -31,8 +33,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   public collectionStatus: string;
 
   private contentId: string;
-
-  private contentService: ContentService;
 
   public collectionTreeNodes: any;
 
@@ -49,29 +49,40 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   private router: Router;
 
   public loader: Boolean = true;
+
   public triggerContentImpression = false;
+
   public showCopyLoader: Boolean = false;
   /**
 	 * telemetryShareData
 	*/
   telemetryShareData: Array<ITelemetryShare>;
+
   objectInteract: IInteractEventObject;
+
   objectContentInteract: IInteractEventObject;
+
   collectionInteractObject: IInteractEventObject;
+
   closeIntractEdata: IInteractEventEdata;
+
   closeContentIntractEdata: IInteractEventEdata;
+
   private subscription: Subscription;
 
-  private subsrciption: Subscription;
   public contentType: string;
+
   public mimeType: string;
+
   public sharelinkModal: boolean;
+
   public badgeData: Array<object>;
-  private closeUrl: any;
+
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
   };
+
   public collectionData: any;
 
   public collectionTreeOptions: ICollectionTreeOptions = {
@@ -94,12 +105,11 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
    */
   shareLink: string;
 
-  constructor(contentService: ContentService, route: ActivatedRoute, playerService: PlayerService,
+  constructor(route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     private toasterService: ToasterService, private resourceService: ResourceService,
     public permissionService: PermissionService, public copyContentService: CopyContentService,
     public contentUtilsServiceService: ContentUtilsServiceService) {
-    this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
@@ -117,7 +127,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   }
 
   private initPlayer(id: string): void {
-    this.playerConfig = this.getPlayerConfig(id).map((content) => {
+    this.playerConfig = this.getPlayerConfig(id).pipe(map((content) => {
       this.telemetryContentImpression = {
         context: {
           env: this.route.snapshot.data.telemetry.env
@@ -142,15 +152,15 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
         id: content.metadata.identifier,
         type: content.metadata.contentType || content.metadata.resourceType || 'content',
         ver: content.metadata.pkgVersion ? content.metadata.pkgVersion.toString() : '1.0',
-        rollup: {l1: this.collectionId}
+        rollup: { l1: this.collectionId }
         // rollup: this.collectionInteractObject
       };
       this.triggerContentImpression = true;
       return content;
-    }).catch((error) => {
+    }), catchError((error) => {
       console.log(`unable to get player config for content ${id}`, error);
       return error;
-    });
+    }), );
   }
 
   public playContent(data: any): void {
@@ -189,13 +199,13 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   }
 
   private getContent(): void {
-    this.subscription = this.route.params
-      .first()
-      .flatMap((params) => {
+    this.subscription = this.route.params.pipe(
+      first(),
+      mergeMap((params) => {
         this.collectionId = params.collectionId;
         this.collectionStatus = params.collectionStatus;
         return this.getCollectionHierarchy(params.collectionId);
-      })
+      }), )
       .subscribe((data) => {
         this.collectionTreeNodes = data;
         this.setTelemetryData();
@@ -251,15 +261,15 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     if (this.collectionStatus && this.collectionStatus === 'Unlisted') {
       option.params = { mode: 'edit' };
     }
-    return this.playerService.getCollectionHierarchy(collectionId, option)
-      .map((response) => {
+    return this.playerService.getCollectionHierarchy(collectionId, option).pipe(
+      map((response) => {
         this.collectionData = response.result.content;
         this.contentType = _.get(response, 'result.content.contentType');
         this.mimeType = _.get(response, 'result.content.mimeType');
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
         this.badgeData = _.get(response, 'result.content.badgeAssertions');
         return { data: response.result.content };
-      });
+      }));
   }
   closeCollectionPlayer() {
     this.navigationHelperService.navigateToResource('/resources');

@@ -1,11 +1,13 @@
-import { Subscription } from 'rxjs/Subscription';
-import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse, BrowserCacheTtlService } from '@sunbird/shared';
+import { Subscription, Observable } from 'rxjs';
+import {
+  ConfigService, ResourceService, Framework, ToasterService, ServerResponse,
+  BrowserCacheTtlService, IUserData
+} from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnDestroy, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FrameworkService, FormService, ConceptPickerService, PermissionService } from './../../services';
+import { FrameworkService, FormService, ConceptPickerService, PermissionService, UserService } from './../../services';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
-import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-data-driven-filter',
@@ -66,6 +68,8 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   userRoles = [];
 
   public permissionService: PermissionService;
+  public userService: UserService;
+  public loggedInUserRoles = [];
 
   selectedConcepts: Array<object>;
   showConcepts = false;
@@ -89,11 +93,13 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
     frameworkService: FrameworkService,
     formService: FormService,
     toasterService: ToasterService,
+    userService: UserService,
     public conceptPickerService: ConceptPickerService,
     permissionService: PermissionService,
     private browserCacheTtlService: BrowserCacheTtlService
 
   ) {
+    this.userService = userService;
     this.configService = configService;
     this.resourceService = resourceService;
     this.router = router;
@@ -111,6 +117,12 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.getQueryParams();
     this.fetchFilterMetaData();
     this.contentTypes = this.configService.dropDownConfig.FILTER.RESOURCES.contentTypes;
+    this.userService.userData$.subscribe(
+      (user: IUserData) => {
+        if (user && !user.err) {
+          this.loggedInUserRoles = user.userProfile.userRoles;
+        }
+      });
   }
 
   getQueryParams() {
@@ -144,7 +156,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
     if (this.isCachedDataExists) {
       const data: any | null = this._cacheService.get(this.filterEnv + this.formAction);
       this.formFieldProperties = data;
-      this.filtersDetails = _.cloneDeep(this.formFieldProperties);
+      this.createFacets();
     } else {
       this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
         if (frameworkData && !frameworkData.err) {
@@ -165,6 +177,9 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
                   if (!this.showField(formFieldCategory.allowedRoles)) {
                     this.formFieldProperties.splice(this.formFieldProperties.indexOf(formFieldCategory), 1);
                   }
+                  if (formServiceInputParams.contentType === 'upforreview') {
+                    this.updateFormFields(formFieldCategory);
+                  }
                 }
               });
               this.getFormConfig();
@@ -177,6 +192,19 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
           // this.toasterService.error(this.resourceService.messages.emsg.m0005);
         }
       });
+    }
+  }
+
+  updateFormFields(formFieldCategory) {
+    if (formFieldCategory && formFieldCategory.code === 'contentType') {
+      if (_.indexOf(this.loggedInUserRoles, 'CONTENT_REVIEWER') !== -1 &&
+        _.indexOf(this.loggedInUserRoles, 'BOOK_REVIEWER') !== -1) {
+        const contentTypeIndex = _.findIndex(this.formFieldProperties, { code: 'contentType' });
+        const rangeTextBookIndex = _.findIndex(this.formFieldProperties[contentTypeIndex].range, { name: 'TextBook' });
+        if (rangeTextBookIndex === -1) {
+          this.formFieldProperties[contentTypeIndex].range.push({ name: 'TextBook' });
+        }
+      }
     }
   }
 

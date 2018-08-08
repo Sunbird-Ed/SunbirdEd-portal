@@ -89,7 +89,8 @@ export const mockData = {
                             'required': false, 'displayProperty': 'Editable',
                             'visible': true, 'renderingHints': { 'semanticColumnWidth': 'six' },
                             'index': 5
-                        }]
+                        }
+                    ]
                 }
             }
         }

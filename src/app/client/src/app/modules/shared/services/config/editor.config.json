@@ -20,7 +20,7 @@
                 "plugins": [
                     {
                         "id": "org.sunbird.player.endpage",
-                        "ver": 1.0,
+                        "ver": 1.1,
                         "type": "plugin"
                     }
                 ],
@@ -29,6 +29,9 @@
                     "icon": "",
                     "bgImage": "assets/icons/splacebackground_1.png",
                     "webLink": ""
+                },
+                "overlay": {
+                    "showUser": false
                 },
                 "showEndPage": false
             }
@@ -57,7 +60,7 @@
                 "plugins": [
                     {
                         "id": "org.sunbird.player.endpage",
-                        "ver": 1.0,
+                        "ver": 1.1,
                         "type": "plugin"
                     }
                 ],
@@ -66,6 +69,9 @@
                     "icon": "",
                     "bgImage": "assets/icons/splacebackground_1.png",
                     "webLink": ""
+                },
+                "overlay": {
+                    "showUser" : false
                 },
                 "showEndPage": false
             }
@@ -115,7 +121,8 @@
                 "plugins": [
                     {
                         "id": "org.sunbird.player.endpage",
-                        "ver": 1.0,
+                        "ver": 1.1
+                        ,
                         "type": "plugin"
                     }
                 ],
@@ -124,6 +131,9 @@
                     "icon": "",
                     "bgImage": "assets/icons/splacebackground_1.png",
                     "webLink": ""
+                },
+                "overlay": {
+                    "showUser": false
                 },
                 "showEndPage": false
             },

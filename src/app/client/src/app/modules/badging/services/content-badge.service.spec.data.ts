@@ -35,5 +35,23 @@ export const mockResponse = {
             'recipientEmail': 'support-dev@open-sunbird.org',
             'badgeIdUrl': 'https://dev.open-sunbird.org/badging/public/badges/something'
         }
-    }
+    },
+    emitData: {
+        'image': 'https://sunbirddev.blob.core.windows.net/badgr/uploads/badges/issuer_badgeclass_ba684c5c-5490-4c16-a091-759f1e689723',
+        'badgeId': 'official',
+        'criteria': 'http://localhost:8000/public/badges/official/criteria',
+        'roles': [
+          'COURSE_MENTOR'
+        ],
+        'description': 'something',
+        'type': 'content',
+        'rootOrgId': 'ORG_001',
+        'issuerId': 'swarn-2',
+        'createdDate': '2018-03-21T10:16:33.631893Z',
+        'recipientCount': 124,
+        'subtype': 'award',
+        'issuerIdUrl': 'http://localhost:8000/public/issuers/swarn-2',
+        'name': 'OFFICIAL',
+        'badgeIdUrl': 'http://localhost:8000/public/badges/official'
+      }
 };

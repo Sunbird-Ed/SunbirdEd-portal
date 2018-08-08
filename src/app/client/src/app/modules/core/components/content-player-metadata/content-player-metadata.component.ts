@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ConceptPickerService } from './../../services';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
@@ -22,14 +22,14 @@ export class ContentPlayerMetadataComponent implements OnInit, OnDestroy {
   constructor(public resourceService: ResourceService, public conceptPickerService: ConceptPickerService) { }
 
   ngOnInit() {
-    this.metadata = {...this.contentData};
+    this.metadata = { ...this.contentData };
     this.validateContent();
     this.getConceptsNames();
   }
 
   validateContent() {
     this.fieldData = ['language', 'gradeLevel', 'subject', 'flagReasons', 'flaggedBy', 'flags', 'keywords',
-    'resourceTypes', 'attributions'];
+      'resourceTypes', 'attributions'];
     _.forEach(this.metadata, (value, key) => {
       if (_.compact(key) && _.includes(this.fieldData, key)) {
         if (_.isString(value)) {
@@ -48,8 +48,8 @@ export class ContentPlayerMetadataComponent implements OnInit, OnDestroy {
    * @returns {string}
    */
   getConceptsNames() {
-  this.conceptDataSubscription = this.conceptPickerService.conceptData$.subscribe(data => {
-      if ( data  && !data.err ) {
+    this.conceptDataSubscription = this.conceptPickerService.conceptData$.subscribe(data => {
+      if (data && !data.err) {
         const conceptsData = this.conceptPickerService.concepts;
         this.conceptNames = _.map(this.metadata.concepts, 'name');
         if (this.conceptNames && this.metadata.concepts && this.conceptNames.length < this.metadata.concepts.length) {
@@ -58,10 +58,10 @@ export class ContentPlayerMetadataComponent implements OnInit, OnDestroy {
           });
           this.conceptNames = _.map(this.filteredConcepts, 'name');
         }
-        this.metadata.concepts =  this.conceptNames.join(', ');
-      } else if (data  && data.err) {
+        this.metadata.concepts = this.conceptNames.join(', ');
+      } else if (data && data.err) {
         this.conceptNames = _.map(this.metadata.concepts, 'name');
-        this.metadata.concepts =  this.conceptNames.join(', ');
+        this.metadata.concepts = this.conceptNames.join(', ');
       }
     });
   }

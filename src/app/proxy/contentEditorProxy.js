@@ -14,6 +14,16 @@ module.exports = function (app) {
     return require('url').parse(contentProxyUrl + req.originalUrl).path
   }
 
+  app.use('/plugins/v1/search', proxy(contentServiceBaseUrl, {
+    preserveHostHdr: true,
+    proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
+    proxyReqPathResolver: function (req) {
+      var originalUrl = req.originalUrl
+      originalUrl = originalUrl.replace('/', '')
+      return require('url').parse(contentServiceBaseUrl + originalUrl).path
+    }
+  }))
+
   app.use('/api/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
     preserveHostHdr: true,
     proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
@@ -65,7 +75,7 @@ module.exports = function (app) {
     proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
     proxyReqPathResolver: function (req) {
       var originalUrl = req.originalUrl
-      originalUrl = originalUrl.replace('action/', '/')
+      originalUrl = originalUrl.replace('/action/', '')
       return require('url').parse(learnerServiceBaseUrl + originalUrl).path
     }
   }))
@@ -75,7 +85,7 @@ module.exports = function (app) {
     proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
     proxyReqPathResolver: function (req) {
       var originalUrl = req.originalUrl
-      originalUrl = originalUrl.replace('/action', '')
+      originalUrl = originalUrl.replace('/action/', '')
       return require('url').parse(contentServiceBaseUrl + originalUrl).path
     }
   }))
@@ -84,6 +94,10 @@ module.exports = function (app) {
     preserveHostHdr: true,
     limit: reqDataLimitOfContentUpload,
     proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
+    proxyReqPathResolver: proxyReqPathResolverMethod
+  }))
+  
+  app.use('/v1/url/fetchmeta', proxy(contentProxyUrl, {
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
 }

@@ -17,8 +17,8 @@
   <% if (appId) { %>
   <input type="hidden" id="appId" value="<%=appId%>" />
   <% } %>
-  <% if (ekstepEnv) { %>
-  <input type="hidden" id="ekstepEnv" value="<%=ekstepEnv%>" />
+  <% if (cloudStorageUrls) { %>
+  <input type="hidden" id="cloudStorageUrls" value="<%=cloudStorageUrls%>" />
   <% } %>
   <% if (defaultTenant) { %>
     <input type="hidden" id="defaultTenant" value="<%=defaultTenant%>" />
@@ -30,14 +30,13 @@
     <input type="hidden" id="defaultTenantIndexStatus" value="<%=defaultTenantIndexStatus%>" />
     <input type="hidden" id="enableSignup" value="<%=enableSignup%>" />
     <input type="hidden" id="buildNumber" value="<%=buildNumber%>" />
-    
+    <input type="hidden" id="extContWhitelistedDomains" value="<%=extContWhitelistedDomains%>"/>
   
   
   <input type="hidden" id="cdnUrl" value="<%=cdnUrl%>" />
   <input type="hidden" id="theme" value="<%=theme%>" />
   <input type="hidden" id="defaultPortalLanguage" value="<%=defaultPortalLanguage%>" />
   <input type="hidden" id="instance" value="<%=instance%>" />
-  <input type="hidden" id="contentChannelFilter" value="<%=contentChannelFilter%>" /> 
   <input type="hidden" id="deviceId"/>
   <app-root></app-root>
 </body>

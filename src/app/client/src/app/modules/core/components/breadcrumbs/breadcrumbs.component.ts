@@ -1,11 +1,11 @@
-import { Subscription } from 'rxjs/Subscription';
+
+import {takeUntil, filter} from 'rxjs/operators';
+import { Subscription ,  Subject } from 'rxjs';
 import { BreadcrumbsService } from '../../services';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Component, OnInit, Input, AfterViewInit, OnDestroy, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { IBreadcrumb } from '../../interfaces';
 import * as _ from 'lodash';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
 
 /**
  * This component returns breadcrumbs in each relevant pages when provided
@@ -67,7 +67,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
          * The breadcrumb data is gathered from router and by looping through each
          * child component.
          */
-        this.router.events.filter(event => event instanceof NavigationEnd)
+        this.router.events.pipe(filter(event => event instanceof NavigationEnd))
             .subscribe(event => {
                 this.breadCrumbsData = [];
                 let currentRoute = this.activatedRoute.root;
@@ -89,8 +89,8 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
          * The breadcrumb service helps in passing dynamic breadcrumbs from
          * a selected component.
          */
-        this.breadcrumbsService.dynamicBreadcrumbs
-        .takeUntil(this.unsubscribe)
+        this.breadcrumbsService.dynamicBreadcrumbs.pipe(
+        takeUntil(this.unsubscribe))
         .subscribe(data => {
             if (data.length > 0) {
             data.forEach(breadcrumb => {

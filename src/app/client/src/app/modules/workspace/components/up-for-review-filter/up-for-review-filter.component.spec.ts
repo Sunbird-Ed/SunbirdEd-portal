@@ -1,24 +1,25 @@
 import { UpforReviewFilterComponent } from './up-for-review-filter.component';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Observable, of as observableOf } from 'rxjs';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-
+import { By } from '@angular/platform-browser';
 describe('UpforReviewFilterComponent', () => {
   let component: UpforReviewFilterComponent;
   let fixture: ComponentFixture<UpforReviewFilterComponent>;
+  let inputEl: DebugElement;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': Observable.from([{ pageNumber: '1' }]),
-    'queryParams': Observable.from([{ subject: ['english', 'odia'] }])
+    'params': observableOf({ pageNumber: '1' }),
+    'queryParams': observableOf({ subject: ['english', 'odia'] })
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -38,6 +39,7 @@ describe('UpforReviewFilterComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UpforReviewFilterComponent);
     component = fixture.componentInstance;
+    inputEl = fixture.debugElement.query(By.css('input[class="upForReviewSearchBox"]'));
     fixture.detectChanges();
   });
   it('should call removeFilterSelection method ', inject([ConfigService, Router],
@@ -56,5 +58,30 @@ describe('UpforReviewFilterComponent', () => {
      fixture.detectChanges();
      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/upForReview', 1], {queryParams: queryParams});
   }));
+  it('should call handleSearch method and naviagate with search query after 1s', fakeAsync(() => {
+      const route = TestBed.get(Router);
+      component.query = 'text';
+      spyOn(component, 'handleSearch').and.callThrough();
+      component.handleSearch();
+      const queryParams = {subject: [ 'english', 'odia' ], query: 'text'};
+      tick(1000);
+      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/upForReview', 1], {queryParams: queryParams});
+      fixture.detectChanges();
+  }));
+  it('should call handleSearch method when key is empty and remove key from queryparam', fakeAsync(() => {
+      const route = TestBed.get(Router);
+      spyOn(component, 'handleSearch').and.callThrough();
+      component.query = '';
+      component.handleSearch();
+      const queryParams = {subject: [ 'english', 'odia' ]};
+      tick(1000);
+      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/upForReview', 1], {queryParams: queryParams});
+  }));
+  it('should call keyup method sets the modelChanged value', () => {
+    const route = TestBed.get(Router);
+    inputEl.triggerEventHandler('keydown', {});
+    spyOn(component, 'keyup').and.callThrough();
+    component.keyup('text');
+    expect(component.query).toBe('text');
+  });
 });
-

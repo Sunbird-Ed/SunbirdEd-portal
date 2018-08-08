@@ -11,8 +11,9 @@ import { NavigationHelperService, ResourceService, ConfigService, ToasterService
 import { ContentService, UserService, LearnerService, TenantService, CoreModule } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as observableOf } from 'rxjs';
 import { mockRes } from './generic-editor.component.spec.data';
+import { WorkSpaceService } from '../../../services';
 
 describe('GenericEditorComponent', () => {
   let component: GenericEditorComponent;
@@ -31,13 +32,13 @@ describe('GenericEditorComponent', () => {
       providers: [
         UserService, LearnerService, ContentService,
         ResourceService, ToasterService, ConfigService,
-        NavigationHelperService, BrowserCacheTtlService,
+        NavigationHelperService, BrowserCacheTtlService, WorkSpaceService,
         { provide: Router, useClass: RouterStub },
         {
           provide: ActivatedRoute, useValue: {
-            'params': Observable.from([{
+            'params': observableOf({
               'contentId': 'do_21247940906829414411032'
-            }])
+            })
           }
         }
       ],
@@ -72,4 +73,19 @@ describe('GenericEditorComponent', () => {
     expect(component.navigateToWorkSpace).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['workspace/content']);
   }));
+
+  it('should set the extContWhitelistedDomains variable', async(() => {
+    spyOn(document, 'getElementById').and.callFake(() => {
+      return {
+        value: 'youtube.com'
+      };
+    });
+    component.ngOnInit();
+    expect(component.extContWhitelistedDomains).toEqual('youtube.com');
+  }));
+  it('should listen to the browser back button event', () => {
+    spyOn(sessionStorage, 'setItem').and.callThrough();
+    component.ngOnInit();
+    expect(window.location.hash).toEqual('#no');
+  });
 });

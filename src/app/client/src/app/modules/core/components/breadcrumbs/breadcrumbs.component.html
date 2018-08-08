@@ -1,15 +1,15 @@
-<div class="ui margin-bottom-10 margin-top-15 breadcrumb-bg-color" *ngIf="breadCrumbsData" >
-  <div class="ui grid">
-      <div class="one wide column"></div>
-      <div class="ten wide column">
-          <div class="ui padded breadcrumb breadcrumb-align">
-              <span *ngFor="let item of breadCrumbsData; last as isLast">
-                  <a *ngIf="!isLast" (click)="openLink(item.url)"  class="breadcrumb-font section">{{item.label}}</a>
-                  <i *ngIf="!isLast" class="right chevron icon divider"></i>
-                  <span *ngIf="isLast" class="breadcrumb-font active section">{{item.label}}</span>
-              </span>
-          </div>
-      </div>
-      <div class="one wide column"></div>
-  </div>
+<div class="ui margin-bottom-10 margin-top-15 breadcrumb-bg-color" *ngIf="breadCrumbsData && breadCrumbsData.length">
+    <div class="ui grid">
+        <div class="one wide column"></div>
+        <div class="ten wide column">
+            <div class="ui padded breadcrumb breadcrumb-align">
+                <span *ngFor="let item of breadCrumbsData; last as isLast">
+                    <a *ngIf="!isLast" (click)="openLink(item.url)" class="breadcrumb-font section">{{item.label}}</a>
+                    <i *ngIf="!isLast" class="right chevron icon divider"></i>
+                    <span *ngIf="isLast" class="breadcrumb-font active section">{{item.label}}</span>
+                </span>
+            </div>
+        </div>
+        <div class="one wide column"></div>
+    </div>
 </div>

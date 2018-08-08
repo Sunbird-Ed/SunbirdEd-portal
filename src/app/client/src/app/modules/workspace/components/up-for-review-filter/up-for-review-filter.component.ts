@@ -1,8 +1,10 @@
+import { Subject , Observable, of} from 'rxjs';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { ISelectFilter } from '../../interfaces/selectfilter';
 import * as _ from 'lodash';
+import { debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operators';
 @Component({
   selector: 'app-up-for-review-filter',
   templateUrl: './up-for-review-filter.component.html',
@@ -11,7 +13,7 @@ import * as _ from 'lodash';
       display: none;
        }
       .ui.inline.dropdown.search-dropdown {
-       margin-left: -5px;
+       margin-left: 5px;
        box-sizing: border-box;
        }
       .popup-content{
@@ -20,6 +22,7 @@ import * as _ from 'lodash';
    `]
 })
 export class UpforReviewFilterComponent implements OnInit {
+  modelChanged: Subject<string> = new Subject<string>();
   /**
    * To navigate to other pages
    */
@@ -105,17 +108,26 @@ export class UpforReviewFilterComponent implements OnInit {
           }
         });
       });
+    this.modelChanged.pipe(debounceTime(1000),
+      distinctUntilChanged(),
+      flatMap(search => of(search).pipe(delay(500)))
+      ).
+      subscribe(query => {
+        this.query = query;
+        this.handleSearch();
+      });
   }
-  keyup(event) {
-    this.query = event;
+  public handleSearch() {
     if (this.query.length > 0) {
       this.queryParams['query'] = this.query;
     } else {
       delete this.queryParams['query'];
     }
-    setTimeout(() => {
-      this.route.navigate(['workspace/content/upForReview', 1], { queryParams: this.queryParams });
-    }, 1000);
+    this.route.navigate(['workspace/content/upForReview', 1], { queryParams: this.queryParams });
+  }
+  keyup(event) {
+    this.query = event;
+    this.modelChanged.next(this.query);
   }
 
   applySorting(sortByOption) {

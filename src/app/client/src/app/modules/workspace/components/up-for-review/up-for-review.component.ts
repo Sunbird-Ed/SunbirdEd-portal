@@ -1,3 +1,5 @@
+
+import { combineLatest,  Observable } from 'rxjs';
 import { WorkSpace } from './../../classes/workspace';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,7 +11,6 @@ import {
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 /**
@@ -164,7 +165,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
   }
 
   ngOnInit() {
-    Observable.combineLatest(
+    combineLatest(
       this.activatedRoute.params,
       this.activatedRoute.queryParams,
       (params: any, queryParams: any) => {
@@ -204,7 +205,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
       const sort_by = bothParams.queryParams.sort_by;
       const sortType = bothParams.queryParams.sortType;
       this.sort = {
-        [sort_by]: sortType
+        [sort_by]: _.toString(sortType)
       };
     } else {
       this.sort = { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn };
@@ -226,7 +227,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),
-      query: bothParams.queryParams.query,
+      query: _.toString(bothParams.queryParams.query),
       sort_by: this.sort
     };
     const contentType = this.getContentType && this.getContentType().contentType;
