@@ -81,9 +81,10 @@ describe('OrganizationUploadComponent', () => {
     component.redirectUrl = '/profile';
     expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });
-  it('should call downloadSample method and download a sample csv file', () => {
+  fit('should call downloadSample method and download a sample csv file', () => {
+    spyOn(component, 'downloadSample').and.callThrough();
     component.downloadSample();
-    fixture.detectChanges();
+    expect(component.downloadSample).toHaveBeenCalled();
   });
   xit('should call openImageBrowser method', () => {
     let inputEl: DebugElement;
