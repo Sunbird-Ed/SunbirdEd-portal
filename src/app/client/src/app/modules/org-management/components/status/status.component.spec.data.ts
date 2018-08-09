@@ -12,7 +12,6 @@ export const mockRes = {
         },
         'responseCode': 'OK',
         'result': {
-            'status': 1,
             'response': [
                 {
                     'status': 'COMPLETED',
