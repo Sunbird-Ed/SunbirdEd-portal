@@ -28,7 +28,7 @@ node('build-slave') {
             returnStdout: true
             ).trim()
             echo "Git Hash: ${GIT_COMMIT_HASH}"
-            sh('sudo ./build.sh')
+            sh("sudo ./build.sh ${GIT_COMMIT_HASH}")
        }
 
        stage('Publish'){
