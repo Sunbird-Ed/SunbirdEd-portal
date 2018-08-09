@@ -1,5 +1,5 @@
 import { Directive, Input, OnInit, OnChanges, HostListener } from '@angular/core';
-import { IInteractEventInput, IInteractEventObject , IInteractEventEdata } from '../../interfaces';
+import { IInteractEventInput, IInteractEventObject, IInteractEventEdata } from '../../interfaces';
 import { TelemetryService } from '../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -18,6 +18,7 @@ export class TelemetryInteractDirective {
   public telemetryService: TelemetryService;
 
   @Input() telemetryInteractObject: IInteractEventObject;
+
   @Input() telemetryInteractEdata: IInteractEventEdata;
 
   @HostListener('click', ['$event'])
@@ -25,7 +26,7 @@ export class TelemetryInteractDirective {
     if (this.telemetryInteractEdata) {
       this.appTelemetryInteractData = {
         context: {
-          env: _.get(this.activatedRoute , 'snapshot.root.firstChild.data.telemetry.env') || this.activatedRoute.snapshot.data.telemetry.env
+          env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') || this.activatedRoute.snapshot.data.telemetry.env
         },
         edata: this.telemetryInteractEdata
       };
@@ -39,7 +40,7 @@ export class TelemetryInteractDirective {
   * Constructor to create injected service(s) object Default method of Draft Component class
   * @param {TelemetryService} telemetryService Reference of TelemetryService
   */
-  constructor( telemetryService: TelemetryService, public activatedRoute: ActivatedRoute, public router: Router) {
+  constructor(telemetryService: TelemetryService, public activatedRoute: ActivatedRoute, public router: Router) {
     this.telemetryService = telemetryService;
   }
 }

@@ -13,7 +13,8 @@ export class TelemetryShareDirective implements OnInit {
    * Interact event input
   */
   appTelemetryShare: IShareEventInput;
-   @Input() TelemetryShareEdata: IShareEventData;
+
+  @Input() TelemetryShareEdata: IShareEventData;
   /**
    * reference of permissionService service.
   */
@@ -23,7 +24,7 @@ export class TelemetryShareDirective implements OnInit {
   Default method of Draft Component class
   * @param {TelemetryService} telemetryService Reference of TelemetryService
   */
-  constructor( telemetryService: TelemetryService, private activatedRoute: ActivatedRoute) {
+  constructor(telemetryService: TelemetryService, private activatedRoute: ActivatedRoute) {
     this.telemetryService = telemetryService;
   }
   ngOnInit() {
