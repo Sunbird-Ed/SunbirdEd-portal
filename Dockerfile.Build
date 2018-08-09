@@ -24,4 +24,4 @@ RUN npm run deploy
 WORKDIR /opt/player/app/app_dist
 RUN npm install --production  --unsafe-perm  
 WORKDIR /opt/player/app
-CMD ["zip", "-r", "player-dist.zip",  "app_dist"]   
+CMD ["tar", "-xf", "player-dist.tar.gz",  "app_dist"]   
