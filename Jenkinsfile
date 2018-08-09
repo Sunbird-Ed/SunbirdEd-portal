@@ -33,7 +33,7 @@ node('build-slave') {
           sh 'ARTIFACT_LABEL=bronze ./dockerPushToRepo.sh'
           sh './src/app/metadata.sh > metadata.json'
           sh 'cat metadata.json'
-          archive includes: "metadata.json"
+          archive includes: "metadata.json, player-dist_$(git rev-parse --short HEAD).tar.gz "
          }
 
        }
