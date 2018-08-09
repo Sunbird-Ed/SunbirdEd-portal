@@ -181,7 +181,7 @@ export class AppComponent implements OnInit {
       userOrgDetails: {
         userId: 'anonymous',
         rootOrgId: this.orgDetails.rootOrgId,
-        organisationIds: [this.orgDetails.rootOrgId]
+        organisationIds: this.orgDetails.isRootOrg ? [this.orgDetails.identifier] : [this.orgDetails.rootOrgId]
       },
       config: {
         pdata: {
