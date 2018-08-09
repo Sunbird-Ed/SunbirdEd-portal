@@ -10,7 +10,9 @@ import { RolesAndPermissions, Roles } from './../../interfaces';
  * Service to fetch permission and validate user permission
  *
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class PermissionService {
   /**
    * all roles with actions, including sub roles.

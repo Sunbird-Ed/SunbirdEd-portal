@@ -46,9 +46,6 @@
       "@sunbird/badge": [
         "app/modules/badging"
       ],
-      "@sunbird/telemetry": [
-        "app/modules/telemetry"
-      ],
       "@sunbird/public": [
         "app/modules/public"
       ],
