@@ -45,8 +45,7 @@ export class ShareLinkComponent implements OnInit {
   /**
   *Output for Sharelink;
   */
-  @Output('close')
-  close = new EventEmitter<any>();
+  @Output() close = new EventEmitter<any>();
   /**
   *Element Ref  for copyLinkButton;
   */

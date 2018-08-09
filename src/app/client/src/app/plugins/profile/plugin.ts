@@ -1,4 +1,4 @@
-import { PluginConfig, PluginPlacement } from 'sunbird-web-extension';
+import { PluginConfig, PluginPlacement } from '@project-sunbird/web-extensions';
 import { MenuItemComponent } from './components/menu-item/menu-item.component';
 import { ProfileBadgeComponent } from './components/profile-badge/profile-badge.component';
 

@@ -8,11 +8,11 @@ import { TelemetryService } from '../../services';
 @Directive({
   selector: '[appTelemetryError]'
 })
-export class TelemetryErrorDirective implements  OnChanges {
+export class TelemetryErrorDirective implements OnChanges {
   /**
    * Interact event input
   */
-  @Input('appTelemetryError') appTelemetryError: IErrorEventInput;
+  @Input() appTelemetryError: IErrorEventInput;
   /**
    * reference of permissionService service.
   */
@@ -27,11 +27,7 @@ export class TelemetryErrorDirective implements  OnChanges {
   }
   ngOnChanges() {
     if (this.appTelemetryError) {
-       this.telemetryService.error(this.appTelemetryError);
+      this.telemetryService.error(this.appTelemetryError);
     }
   }
 }
-
-
-
-
