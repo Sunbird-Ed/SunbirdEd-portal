@@ -13,7 +13,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OrgManagementModule } from '@sunbird/org-management';
-import { WebExtensionModule } from 'sunbird-web-extension';
+import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { ProfileBadgeComponent } from './components/profile-badge/profile-badge.component';
 import { MenuItemComponent } from './components/menu-item/menu-item.component';
 import { NgInviewModule } from 'angular-inport';

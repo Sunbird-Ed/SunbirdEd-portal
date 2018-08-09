@@ -18,7 +18,7 @@ import {
 } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
-import { WebExtensionModule } from 'sunbird-web-extension';
+import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { TelemetryModule } from '@sunbird/telemetry';
 @NgModule({
   imports: [

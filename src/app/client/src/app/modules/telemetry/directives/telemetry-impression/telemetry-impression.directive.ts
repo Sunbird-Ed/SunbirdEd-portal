@@ -12,7 +12,7 @@ export class TelemetryImpressionDirective implements OnInit, OnDestroy {
   /**
    * Interact event input
   */
-  @Input('appTelemetryImpression') appTelemetryImpression: IImpressionEventInput;
+  @Input() appTelemetryImpression: IImpressionEventInput;
   /**
    * reference of permissionService service.
   */
@@ -22,7 +22,7 @@ export class TelemetryImpressionDirective implements OnInit, OnDestroy {
   Default method of Draft Component class
   * @param {TelemetryService} telemetryService Reference of TelemetryService
   */
-  constructor( telemetryService: TelemetryService) {
+  constructor(telemetryService: TelemetryService) {
     this.telemetryService = telemetryService;
   }
   ngOnInit() {
