@@ -81,7 +81,7 @@ describe('OrganizationUploadComponent', () => {
     component.redirectUrl = '/profile';
     expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });
-  fit('should call downloadSample method and download a sample csv file', () => {
+  it('should call downloadSample method and download a sample csv file', () => {
     spyOn(component, 'downloadSample').and.callThrough();
     component.downloadSample();
     expect(component.downloadSample).toHaveBeenCalled();
