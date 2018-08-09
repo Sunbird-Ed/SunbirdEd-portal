@@ -172,7 +172,10 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
         },
         err => {
           this.showLoader = false;
-          this.toasterService.error(err.error.params.errmsg);
+          const i = err.error.params.errmsg.indexOf('.');
+          let  errorMsg = err.error.params.errmsg.substring(0, i);
+          errorMsg = errorMsg + '.<br/>' + err.error.params.errmsg.substring(i + 1);
+          this.toasterService.error(errorMsg);
         });
     } else if (file[0] && !(file[0].name.match(/.(csv)$/i))) {
       this.showLoader = false;

@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf,  Observable, throwError as observableThrowError } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -152,5 +152,16 @@ describe('UserUploadComponent', () => {
     spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
+  it('should call uploadUsersCSV method with error response', () => {
+    const resourceService = TestBed.get(ResourceService);
+    const orgManagementService = TestBed.get(OrgManagementService);
+    const toasterService = TestBed.get(ToasterService);
+    resourceService.messages = mockRes.resourceBundle.messages;
+    spyOn(orgManagementService, 'bulkUserUpload').and.callFake(() => observableThrowError(mockRes.errorUpload));
+    spyOn(toasterService, 'error').and.callThrough();
+    component.uploadUsersCSV(mockRes.errorfile);
+    expect(component.showLoader).toBe(false);
+    expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage);
   });
 });

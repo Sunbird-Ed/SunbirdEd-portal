@@ -47,18 +47,20 @@ export const mockRes = {
         }
     },
     errorResponse: {
-        'id': 'api.org.upload',
-        'ver': 'v1',
-        'ts': '2018-03-23 10:05:16:003+0000',
-        'params': {
-            'resmsgid': null,
-            'msgid': '340c2ea1-76e5-d639-0383-81688227f64c',
-            'err': 'INVALID_COLUMN_NAME',
-            'status': 'INVALID_COLUMN_NAME',
-            'errmsg': 'Invalid column name.'
-        },
-        'responseCode': 'CLIENT_ERROR',
-        'result': {
+        error: {
+            'id': 'api.org.upload',
+            'ver': 'v1',
+            'ts': '2018-03-23 10:05:16:003+0000',
+            'params': {
+                'resmsgid': null,
+                'msgid': '340c2ea1-76e5-d639-0383-81688227f64c',
+                'err': 'INVALID_COLUMN_NAME',
+                'status': 'INVALID_COLUMN_NAME',
+                'errmsg': 'Invalid column: "orgName". Valid columns are: orgName, channel, isRootOrg, provider, externalId, Code.'
+            },
+            'responseCode': 'CLIENT_ERROR',
+            'result': {
+            }
         }
     },
     resourceBundle: {
@@ -70,5 +72,6 @@ export const mockRes = {
                 'm0031': 'Organizations uploaded successfully'
             }
         }
-    }
+    },
+    toasterMessage: 'Invalid column: "orgName".<br/> Valid columns are: orgName, channel, isRootOrg, provider, externalId, Code.'
 };
