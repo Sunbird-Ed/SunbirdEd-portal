@@ -14,8 +14,6 @@ RUN apt update --no-install-recommends -y \
 WORKDIR /opt/player
 COPY * /opt/player/
 RUN apt-get update
-RUN apt-get install -y zip 
-RUN apt-get install -y bzip2 
 RUN rm -rf /var/lib/apt/lists/* 
 WORKDIR /opt/player/app
 RUN npm set progress=false
