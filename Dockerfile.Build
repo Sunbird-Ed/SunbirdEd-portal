@@ -22,5 +22,4 @@ RUN npm run deploy
 WORKDIR /opt/player/app/app_dist
 RUN npm install --production  --unsafe-perm  
 WORKDIR /opt/player/app
-# Creating a tar file player-dist_<commit short hash>.tar.gz
-CMD ["tar", "-xf", "player-dist_$(git rev-parse --short HEAD).tar.gz",  "app_dist"]   
+CMD ["tar", "-xf", "player-dist.tar.gz",  "app_dist"]   
