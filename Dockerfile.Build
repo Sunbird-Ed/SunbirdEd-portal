@@ -17,7 +17,7 @@ RUN apt-get update
 RUN rm -rf /var/lib/apt/lists/* 
 WORKDIR /opt/player/app
 RUN npm set progress=false
-RUN npm install  --unsafe-perm 
+RUN npm install --only=dev  --unsafe-perm 
 RUN npm run deploy
 WORKDIR /opt/player/app/app_dist
 RUN npm install --production  --unsafe-perm  
