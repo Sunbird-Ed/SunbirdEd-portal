@@ -14,8 +14,6 @@ RUN apt update --no-install-recommends -y \
 WORKDIR /opt/player
 COPY * /opt/player/
 RUN apt-get update
-RUN apt-get install -y zip 
-RUN apt-get install -y bzip2 
 RUN rm -rf /var/lib/apt/lists/* 
 WORKDIR /opt/player/app
 RUN npm set progress=false
@@ -24,4 +22,5 @@ RUN npm run deploy
 WORKDIR /opt/player/app/app_dist
 RUN npm install --production  --unsafe-perm  
 WORKDIR /opt/player/app
-CMD ["zip", "-r", "player-dist.zip",  "app_dist"]   
+# Creating a tar file player-dist_<commit short hash>.tar.gz
+CMD ["tar", "-xf", "player-dist_$(git rev-parse --short HEAD).tar.gz",  "app_dist"]   
