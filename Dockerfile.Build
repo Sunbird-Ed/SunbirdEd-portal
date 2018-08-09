@@ -10,7 +10,7 @@ RUN apt update --no-install-recommends -y \
     && apt-get install autoconf \
     && apt-get install g++ \
     && apt-get install make \
-    && apt-get install nasm 
+    && apt-get install -y nasm bzip2
 WORKDIR /opt/player
 COPY * /opt/player/
 RUN apt-get update
