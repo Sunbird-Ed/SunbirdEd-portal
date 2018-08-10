@@ -135,7 +135,7 @@ describe('OrganizationUploadComponent', () => {
     resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => observableThrowError(mockRes.errorForEmpty));
     spyOn(toasterService, 'error').and.callThrough();
-    component.uploadOrg(mockRes.invalidfile);
+    component.uploadOrg(mockRes.emptyFile);
     expect(component.showLoader).toBe(false);
     expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.emptyFiles);
   });
@@ -149,5 +149,16 @@ describe('OrganizationUploadComponent', () => {
     component.uploadOrg(mockRes.invalidfile);
     expect(component.showLoader).toBe(false);
     expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.invalidColumnMultipleLines);
+  });
+  it('should call uploadOrg method and return 502 error then show default error ', () => {
+    const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
+    const orgManagementService = TestBed.get(OrgManagementService);
+    resourceService.messages = mockRes.resourceBundle.messages;
+    spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => observableThrowError(mockRes.noErrorMessage));
+    spyOn(toasterService, 'error').and.callThrough();
+    component.uploadOrg(mockRes.invalidfile);
+    expect(component.showLoader).toBe(false);
+    expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0051);
   });
 });

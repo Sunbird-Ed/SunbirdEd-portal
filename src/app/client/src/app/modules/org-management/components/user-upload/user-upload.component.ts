@@ -8,7 +8,7 @@ import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInter
 import { UserService } from '@sunbird/core';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-
+import * as _ from 'lodash';
 /**
  * This component helps to upload bulk users data (csv file)
  *
@@ -225,7 +225,8 @@ export class UserUploadComponent implements OnInit, OnDestroy {
         },
         err => {
           this.showLoader = false;
-          const errorMsg = err.error.params.errmsg.split(/\../).join('.<br/>');
+          const errorMsg =  _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
+           this.resourceService.messages.fmsg.m0051;
           this.toasterService.error(errorMsg);
         });
     } else if (file[0] && !(file[0].name.match(/.(csv)$/i))) {

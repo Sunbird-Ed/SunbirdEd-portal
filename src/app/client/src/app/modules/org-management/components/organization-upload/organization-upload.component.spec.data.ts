@@ -70,6 +70,9 @@ export const mockRes = {
             },
             'smsg': {
                 'm0031': 'Organizations uploaded successfully'
+            },
+            'fmsg': {
+                'm0051': 'Something went wrong, please try again later...'
             }
         }
     },
@@ -90,7 +93,9 @@ export const mockRes = {
             }
         }
     },
-    emptyFile: [{}],
+    emptyFile: [{
+        name: 'users.csv',
+    }],
     errorFormultipleLines: {
         error: {
             'id': 'api.user.upload',
@@ -108,6 +113,7 @@ export const mockRes = {
         }
         }
     },
+    noErrorMessage: {message: 'An invalid response was received from the upstream server'},
     toasterMessage: {
     invalidColumnSingelLine: 'Invalid column: "orgName".<br/>Valid columns are: orgName, channel, isRootOrg, provider, externalId, Code.',
     emptyFiles: 'Please provide valid csv file.',

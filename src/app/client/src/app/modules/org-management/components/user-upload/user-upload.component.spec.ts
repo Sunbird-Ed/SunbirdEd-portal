@@ -171,7 +171,7 @@ describe('UserUploadComponent', () => {
     resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(orgManagementService, 'bulkUserUpload').and.callFake(() => observableThrowError(mockRes.errorForEmpty));
     spyOn(toasterService, 'error').and.callThrough();
-    component.uploadUsersCSV(mockRes.errorfile);
+    component.uploadUsersCSV(mockRes.emptyFile);
     expect(component.showLoader).toBe(false);
     expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.emptyFiles);
   });
@@ -185,5 +185,16 @@ describe('UserUploadComponent', () => {
     component.uploadUsersCSV(mockRes.errorfile);
     expect(component.showLoader).toBe(false);
     expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.invalidColumnMultipleLines);
+  });
+  it('should call uploadUsersCSV method and return 502 error then show default error', () => {
+    const resourceService = TestBed.get(ResourceService);
+    const orgManagementService = TestBed.get(OrgManagementService);
+    const toasterService = TestBed.get(ToasterService);
+    resourceService.messages = mockRes.resourceBundle.messages;
+    spyOn(orgManagementService, 'bulkUserUpload').and.callFake(() => observableThrowError({}));
+    spyOn(toasterService, 'error').and.callThrough();
+    component.uploadUsersCSV(mockRes.errorfile);
+    expect(component.showLoader).toBe(false);
+    expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0051);
   });
 });

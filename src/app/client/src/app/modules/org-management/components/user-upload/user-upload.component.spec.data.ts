@@ -75,6 +75,9 @@ export const mockRes = {
             },
             'emsg': {
                 'm0003': 'You should enter Provider and External Id Or Organization Id'
+            },
+            'fmsg': {
+                'm0051': 'Something went wrong, please try again later...'
             }
         }
     },
@@ -112,7 +115,9 @@ export const mockRes = {
         }
         }
     },
-    emptyFile: [{}],
+    emptyFile: [{
+        name: 'user.csv'
+    }],
     errorFormultipleLines: {
         error: {
             'id': 'api.user.upload',
@@ -130,6 +135,7 @@ export const mockRes = {
         }
         }
     },
+    noErrorMessage: {message: 'An invalid response was received from the upstream server'},
     toasterMessage: {
      invalidColumnSingelLine: 'Invalid column: ﻿"firstName".<br/>Valid columns are: firstName, lastName, phone, location,  externalIds.',
      emptyFiles: 'Please provide valid csv file.',
