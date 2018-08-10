@@ -1,16 +1,16 @@
-import { Directive, ElementRef, Input,  OnDestroy, DoCheck  } from '@angular/core';
+import { Directive, ElementRef, Input, OnDestroy, DoCheck } from '@angular/core';
 import { IEndEventInput } from '../../interfaces';
 import { TelemetryService } from '../../services';
 
 @Directive({
   selector: '[appTelemetryEnd]'
 })
-export class TelemetryEndDirective implements  OnDestroy {
+export class TelemetryEndDirective implements OnDestroy {
 
   /**
    * Interact event input
   */
-  @Input('appTelemetryEnd') appTelemetryEnd: IEndEventInput;
+  @Input() appTelemetryEnd: IEndEventInput;
   /**
    * reference of permissionService service.
   */
@@ -25,7 +25,7 @@ export class TelemetryEndDirective implements  OnDestroy {
   }
   ngOnDestroy() {
     if (this.appTelemetryEnd) {
-       this.telemetryService.end(this.appTelemetryEnd);
+      this.telemetryService.end(this.appTelemetryEnd);
     }
   }
 }

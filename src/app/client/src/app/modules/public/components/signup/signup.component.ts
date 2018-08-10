@@ -5,7 +5,7 @@ import { SignupService } from '../../services/signup.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',

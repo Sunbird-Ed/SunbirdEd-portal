@@ -1,4 +1,4 @@
-import { combineLatest as observableCombineLatest } from 'rxjs';
+import { combineLatest as observableCombineLatest ,  Subject } from 'rxjs';
 import { PageApiService, PlayerService, ISort, OrgDetailsService } from '@sunbird/core';
 import { PublicPlayerService } from './../../../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -11,7 +11,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'app-explore',
   templateUrl: './explore.component.html',

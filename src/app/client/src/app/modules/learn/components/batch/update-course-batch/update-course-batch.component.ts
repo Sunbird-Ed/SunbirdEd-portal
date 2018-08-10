@@ -2,7 +2,7 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {combineLatest, Subject } from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {takeUntil,  mergeMap } from 'rxjs/operators';
 import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
@@ -10,7 +10,6 @@ import { CourseConsumptionService, CourseBatchService } from './../../../service
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { mergeMap } from 'rxjs/operators';
 @Component({
   selector: 'app-update-course-batch',
   templateUrl: './update-course-batch.component.html',
