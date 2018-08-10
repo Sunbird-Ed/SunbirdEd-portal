@@ -204,7 +204,7 @@
         ver: '1.0',
         rollup: {}
       } : {},
-      tags: orgInfo.isRootOrg ? [orgInfo.id] : [orgInfo.rootOrgId, orgInfo.id]
+      tags: [orgInfo.hashTagId]
     };
     var edata = {
       type: 'view',
