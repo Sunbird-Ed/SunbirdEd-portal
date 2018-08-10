@@ -18,4 +18,4 @@ docker cp $containerid:/opt/player/app/player-dist.tar.gz player-dist_$(git rev-
 # creating backup of current build, as Dockerfile can't incldue dynamic files
 cp player-dist_$(git rev-parse --short HEAD).tar.gz player-dist.tar.gz
 docker rm ${containerid}
-docker build -f ./Dockerfile --label vcs-ref=$(git rev-parse --short HEAD) ${org}/${name}:${version}-bronze .
+docker build -f ./Dockerfile --label vcs-ref=$(git rev-parse --short HEAD) -t ${org}/${name}:${version}-bronze .

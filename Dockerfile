@@ -1,7 +1,7 @@
 FROM node:8.11.3-alpine
 MAINTAINER "Rajesh R <rajesh.r@optit.co>"
 
-RUN adduser --uid 1001 --home /home/sunbird/ sunbird
+RUN adduser -D -u 1001 -h /home/sunbird/ sunbird
 WORKDIR /home/sunbird
 ADD player-dist.tar.gz /home/sunbird/
 USER sunbird
