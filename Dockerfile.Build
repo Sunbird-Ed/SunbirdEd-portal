@@ -16,4 +16,4 @@ WORKDIR /opt/player/app
 # passing commit hash as build arg
 ARG commit_hash=0
 ENV commit_hash ${commit_hash}
-CMD ["/bin/bash","../vcs-config.sh"]   
+CMD ["/bin/bash","-x","../vcs-config.sh"]   
