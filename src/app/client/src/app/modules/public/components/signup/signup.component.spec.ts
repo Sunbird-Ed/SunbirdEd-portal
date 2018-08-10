@@ -153,4 +153,32 @@ describe('SignupComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
+  it('should show pattern match error message for password', () => {
+    component.ngOnInit();
+    let errors = {};
+    const password = component.signUpForm.controls['password'];
+    password.setValue('    test@12_  ');
+    errors = password.errors || {};
+    expect(errors['pattern']).toBeTruthy();
+    expect(component.signUpForm.valid).toBeFalsy();
+    expect(password.valid).toBeFalsy();
+  });
+  it('should show required validation error message for password', () => {
+    component.ngOnInit();
+    let errors = {};
+    const password = component.signUpForm.controls['password'];
+    password.setValue('');
+    errors = password.errors || {};
+    expect(errors['required']).toBeTruthy();
+    expect(password.valid).toBeFalsy();
+    expect(password.touched).toBeFalsy();
+  });
+  it('form should be valid after matching password pattern', () => {
+    component.ngOnInit();
+    let errors = {};
+    const password = component.signUpForm.controls['password'];
+    password.setValue('test@12');
+    errors = password.errors || {};
+    expect(password.valid).toBeTruthy();
+  });
 });
