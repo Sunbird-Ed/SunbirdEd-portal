@@ -28,6 +28,7 @@ node('build-slave') {
             returnStdout: true
             ).trim()
             echo "Git Hash: ${GIT_COMMIT_HASH}"
+            // Building image
             sh("sudo ./build.sh ${GIT_COMMIT_HASH}")
        }
 
@@ -38,7 +39,9 @@ node('build-slave') {
           sh 'ARTIFACT_LABEL=bronze ./dockerPushToRepo.sh'
           sh './src/app/metadata.sh > metadata.json'
           sh 'cat metadata.json'
-          archive includes: "metadata.json", "player-dist_${GIT_COMMIT_HASH}.tar.gz"
+          echo "archiving artifacts metadata.json player-dist_${GIT_COMMIT_HASH}.tar.gz"
+          archive includes: "metadata.json"
+          archive includes: "player-dist_${GIT_COMMIT_HASH}.tar.gz"
          }
 
        }
