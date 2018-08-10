@@ -41,7 +41,7 @@ node('build-slave') {
           sh 'cat metadata.json'
           echo "archiving artifacts metadata.json player-dist_${GIT_COMMIT_HASH}.tar.gz"
           archive includes: "metadata.json"
-          archive includes: "player-dist_${GIT_COMMIT_HASH}.tar.gz"
+          archive includes: "player-dist.tar.gz"
          }
 
        }
