@@ -131,7 +131,7 @@ export const mockRes = {
         }
     },
     toasterMessage: {
-     invalidColumn: 'Invalid column: ﻿"firstName".<br/>Valid columns are: firstName, lastName, phone, location,  externalIds.',
+     invalidColumnSingelLine: 'Invalid column: ﻿"firstName".<br/>Valid columns are: firstName, lastName, phone, location,  externalIds.',
      emptyFiles: 'Please provide valid csv file.',
-    multipleLines: 'Invalid column: ﻿"firstName".<br/>Valid columns are: firstName, lastName, externalIds.<br/>Please check.'}
+     invalidColumnMultipleLines: 'Invalid column: ﻿"firstName".<br/>Valid columns are: firstName, lastName, externalIds.<br/>Please check.'}
 };

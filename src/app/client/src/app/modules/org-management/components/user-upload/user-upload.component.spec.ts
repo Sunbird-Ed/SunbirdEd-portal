@@ -162,7 +162,7 @@ describe('UserUploadComponent', () => {
     spyOn(toasterService, 'error').and.callThrough();
     component.uploadUsersCSV(mockRes.errorfile);
     expect(component.showLoader).toBe(false);
-    expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.invalidColumn);
+    expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.invalidColumnSingelLine);
   });
   it('should call uploadUsersCSV method with error response not giving empty files', () => {
     const resourceService = TestBed.get(ResourceService);
@@ -184,6 +184,6 @@ describe('UserUploadComponent', () => {
     spyOn(toasterService, 'error').and.callThrough();
     component.uploadUsersCSV(mockRes.errorfile);
     expect(component.showLoader).toBe(false);
-    expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.multipleLines);
+    expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.invalidColumnMultipleLines);
   });
 });

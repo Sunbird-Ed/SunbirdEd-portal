@@ -109,7 +109,7 @@ describe('OrganizationUploadComponent', () => {
     spyOn(toasterService, 'error').and.callThrough();
     component.uploadOrg(mockRes.invalidfile);
     expect(component.showLoader).toBe(false);
-    expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.invalidColumn);
+    expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.invalidColumnSingelLine);
   });
   it('should not call uploadOrg method', () => {
     const resourceService = TestBed.get(ResourceService);
@@ -148,6 +148,6 @@ describe('OrganizationUploadComponent', () => {
     spyOn(toasterService, 'error').and.callThrough();
     component.uploadOrg(mockRes.invalidfile);
     expect(component.showLoader).toBe(false);
-    expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.multipleLines);
+    expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.invalidColumnMultipleLines);
   });
 });

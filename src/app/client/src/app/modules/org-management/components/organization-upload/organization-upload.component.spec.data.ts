@@ -109,7 +109,7 @@ export const mockRes = {
         }
     },
     toasterMessage: {
-        invalidColumn: 'Invalid column: "orgName".<br/>Valid columns are: orgName, channel, isRootOrg, provider, externalId, Code.',
-        emptyFiles: 'Please provide valid csv file.',
-        multipleLines: 'Invalid column: ﻿"firstName".<br/>Valid columns are: firstName, lastName, externalIds.<br/>Please check.'}
+    invalidColumnSingelLine: 'Invalid column: "orgName".<br/>Valid columns are: orgName, channel, isRootOrg, provider, externalId, Code.',
+    emptyFiles: 'Please provide valid csv file.',
+    invalidColumnMultipleLines: 'Invalid column: ﻿"firstName".<br/>Valid columns are: firstName, lastName, externalIds.<br/>Please check.'}
 };
