@@ -157,7 +157,7 @@ export class AppComponent implements OnInit {
         userId: this.userProfile.userId,
         rootOrgId: this.userProfile.rootOrgId,
         rootOrg: this.userProfile.rootOrg,
-        organisationIds: _.map(this.userProfile.organisations, (org) => org.hashTagId)
+        organisationIds: this.userProfile.hashTagIds
       },
       config: {
         pdata: {
