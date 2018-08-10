@@ -95,5 +95,43 @@ export const mockRes = {
         }
         }
     },
-    toasterMessage: 'Invalid column: ﻿"firstName".<br/> Valid columns are: firstName, lastName, phone, location,  externalIds.'
+    errorForEmpty: {
+        error: {
+            'id': 'api.user.upload',
+        'ver': 'v1',
+        'ts': '2018-03-23 08:16:59:649+0000',
+        'params': {
+            'resmsgid': null,
+            'msgid': '55402d80-917f-4f72-9f5b-2e4e7a68ce86',
+            'err': 'INVALID_ORGANIZATION_DATA',
+            'status': 'INVALID_ORGANIZATION_DATA',
+            'errmsg': 'Please provide valid csv file.'
+        },
+        'responseCode': 'CLIENT_ERROR',
+        'result': {
+        }
+        }
+    },
+    emptyFile: [{}],
+    errorFormultipleLines: {
+        error: {
+            'id': 'api.user.upload',
+        'ver': 'v1',
+        'ts': '2018-03-23 08:16:59:649+0000',
+        'params': {
+            'resmsgid': null,
+            'msgid': '55402d80-917f-4f72-9f5b-2e4e7a68ce86',
+            'err': 'INVALID_ORGANIZATION_DATA',
+            'status': 'INVALID_ORGANIZATION_DATA',
+            'errmsg': 'Invalid column: ﻿"firstName". Valid columns are: firstName, lastName, externalIds. Please check.'
+        },
+        'responseCode': 'CLIENT_ERROR',
+        'result': {
+        }
+        }
+    },
+    toasterMessage: {
+     invalidColumn: 'Invalid column: ﻿"firstName".<br/>Valid columns are: firstName, lastName, phone, location,  externalIds.',
+     emptyFiles: 'Please provide valid csv file.',
+    multipleLines: 'Invalid column: ﻿"firstName".<br/>Valid columns are: firstName, lastName, externalIds.<br/>Please check.'}
 };

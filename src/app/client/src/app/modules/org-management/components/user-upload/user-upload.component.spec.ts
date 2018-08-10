@@ -153,7 +153,7 @@ describe('UserUploadComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
-  it('should call uploadUsersCSV method with error response', () => {
+  it('should call uploadUsersCSV method with error response giving invalid coloumn', () => {
     const resourceService = TestBed.get(ResourceService);
     const orgManagementService = TestBed.get(OrgManagementService);
     const toasterService = TestBed.get(ToasterService);
@@ -162,6 +162,28 @@ describe('UserUploadComponent', () => {
     spyOn(toasterService, 'error').and.callThrough();
     component.uploadUsersCSV(mockRes.errorfile);
     expect(component.showLoader).toBe(false);
-    expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage);
+    expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.invalidColumn);
+  });
+  it('should call uploadUsersCSV method with error response not giving empty files', () => {
+    const resourceService = TestBed.get(ResourceService);
+    const orgManagementService = TestBed.get(OrgManagementService);
+    const toasterService = TestBed.get(ToasterService);
+    resourceService.messages = mockRes.resourceBundle.messages;
+    spyOn(orgManagementService, 'bulkUserUpload').and.callFake(() => observableThrowError(mockRes.errorForEmpty));
+    spyOn(toasterService, 'error').and.callThrough();
+    component.uploadUsersCSV(mockRes.errorfile);
+    expect(component.showLoader).toBe(false);
+    expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.emptyFiles);
+  });
+  it('should call uploadUsersCSV method with error response of multiple error lines', () => {
+    const resourceService = TestBed.get(ResourceService);
+    const orgManagementService = TestBed.get(OrgManagementService);
+    const toasterService = TestBed.get(ToasterService);
+    resourceService.messages = mockRes.resourceBundle.messages;
+    spyOn(orgManagementService, 'bulkUserUpload').and.callFake(() => observableThrowError(mockRes.errorFormultipleLines));
+    spyOn(toasterService, 'error').and.callThrough();
+    component.uploadUsersCSV(mockRes.errorfile);
+    expect(component.showLoader).toBe(false);
+    expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.multipleLines);
   });
 });

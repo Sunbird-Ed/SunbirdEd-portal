@@ -109,7 +109,7 @@ describe('OrganizationUploadComponent', () => {
     spyOn(toasterService, 'error').and.callThrough();
     component.uploadOrg(mockRes.invalidfile);
     expect(component.showLoader).toBe(false);
-    expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage);
+    expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.invalidColumn);
   });
   it('should not call uploadOrg method', () => {
     const resourceService = TestBed.get(ResourceService);
@@ -127,5 +127,27 @@ describe('OrganizationUploadComponent', () => {
     spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
+  it('should call uploadOrg method and return error response with message for empty file', () => {
+    const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
+    const orgManagementService = TestBed.get(OrgManagementService);
+    resourceService.messages = mockRes.resourceBundle.messages;
+    spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => observableThrowError(mockRes.errorForEmpty));
+    spyOn(toasterService, 'error').and.callThrough();
+    component.uploadOrg(mockRes.invalidfile);
+    expect(component.showLoader).toBe(false);
+    expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.emptyFiles);
+  });
+  it('should call uploadOrg method and return error response with message of multiple lines', () => {
+    const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
+    const orgManagementService = TestBed.get(OrgManagementService);
+    resourceService.messages = mockRes.resourceBundle.messages;
+    spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => observableThrowError(mockRes.errorFormultipleLines));
+    spyOn(toasterService, 'error').and.callThrough();
+    component.uploadOrg(mockRes.invalidfile);
+    expect(component.showLoader).toBe(false);
+    expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.multipleLines);
   });
 });

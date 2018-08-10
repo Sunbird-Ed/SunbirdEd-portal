@@ -225,8 +225,7 @@ export class UserUploadComponent implements OnInit, OnDestroy {
         },
         err => {
           this.showLoader = false;
-          const index = err.error.params.errmsg.indexOf('.');
-          const errorMsg = err.error.params.errmsg.substring(0, index) + '.<br/>' + err.error.params.errmsg.substring(index + 1);
+          const errorMsg = err.error.params.errmsg.split(/\../).join('.<br/>');
           this.toasterService.error(errorMsg);
         });
     } else if (file[0] && !(file[0].name.match(/.(csv)$/i))) {
