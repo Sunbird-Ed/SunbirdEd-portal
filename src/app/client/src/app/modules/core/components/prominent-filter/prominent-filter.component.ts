@@ -236,7 +236,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
         queryParams[key] = value;
       }
     });
-    queryParams = _.pickBy(queryParams, value => value.length > 0);
+    queryParams = _.pickBy(queryParams, value => _.isArray(value) && value.length > 0);
     this.router.navigate([this.redirectUrl], { queryParams: queryParams });
   }
   showField(allowedRoles) {
