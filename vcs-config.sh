@@ -2,7 +2,7 @@
 
 # Appending commit hash in package.json
 echo 'adding commit hash to package.json'
-sed -i "/version/a\  \"commitHash\": \"${commit_hash}\"," app_dist/package.json
+sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," app_dist/package.json
 
 # Creating assets tar
 echo 'Compressing assets directory'
