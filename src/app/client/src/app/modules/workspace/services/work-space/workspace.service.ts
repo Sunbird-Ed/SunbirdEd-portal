@@ -1,16 +1,16 @@
 import { Inject, Injectable, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
-
-
+import { Observable, BehaviorSubject, of as observableOf } from 'rxjs';
+import {map} from 'rxjs/operators';
 import {
   ConfigService, ServerResponse, ICard, IUserData, NavigationHelperService,
-  ResourceService
+  ResourceService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { ContentService } from '@sunbird/core';
+import { ContentService, PublicDataService, UserService } from '@sunbird/core';
 import { IDeleteParam } from '../../interfaces/delteparam';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
+import { CacheService } from 'ng2-cache-service';
 @Injectable()
 export class WorkSpaceService {
   /**
@@ -43,7 +43,10 @@ export class WorkSpaceService {
   */
   constructor(config: ConfigService, content: ContentService,
     activatedRoute: ActivatedRoute,
-    route: Router, public navigationHelperService: NavigationHelperService, private resourceService: ResourceService) {
+    route: Router, public navigationHelperService: NavigationHelperService,
+    private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
+    private resourceService: ResourceService, public publicDataService: PublicDataService,
+    public userService: UserService) {
     this.content = content;
     this.config = config;
     this.route = route;
@@ -179,5 +182,38 @@ export class WorkSpaceService {
       window.location.hash = '';
       window.removeEventListener('popstate', this.listener);
     }
+  }
+
+  /**
+    * @param {formType} content form type
+    * @param {formAction} content form action type
+    * @param {selectedContent} content selected content type
+    */
+  getCheckListData(formInputParams): Observable<ServerResponse> {
+    const pageData: any = this.cacheService.get(formInputParams.formAction + formInputParams.subType);
+    if (pageData) {
+      return observableOf(pageData);
+    } else {
+      const channelOptions = {
+        url: this.config.urlConFig.URLS.dataDrivenForms.READ,
+        data: {
+          request: {
+            type: formInputParams.formType,
+            action: formInputParams.formAction,
+            subType: formInputParams.subType,
+            rootOrgId: this.userService.hashTagId
+          }
+        }
+      };
+      return this.publicDataService.post(channelOptions).pipe(map((data) => {
+        this.setData(data, formInputParams.formAction + formInputParams.subType);
+        return data;
+      }));
+    }
+  }
+  setData(data, name) {
+      this.cacheService.set(name, data, {
+        maxAge: this.browserCacheTtlService.browserCacheTtl
+      });
   }
 }
