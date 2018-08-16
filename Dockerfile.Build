@@ -16,4 +16,6 @@ WORKDIR /opt/player/app
 # passing commit hash as build arg
 ARG commit_hash=0
 ENV commit_hash ${commit_hash}
+RUN useradd sunbird
+USER sunbird
 CMD ["/bin/bash","-x","../vcs-config.sh"]   
