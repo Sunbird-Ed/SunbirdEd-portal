@@ -202,7 +202,7 @@ portal.server = app.listen(envHelper.PORTAL_PORT, () => {
         if (res.statusCode === 200) {
           req.pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')))
         } else {
-          console.log('Error while fetching 'envHelper.PORTAL_CDN_URL + 'index_' + packageObj.version + '.' + packageObj.buildHash + '.ejs file when CDN enabled');
+          console.log('Error while fetching '+envHelper.PORTAL_CDN_URL + 'index_' + packageObj.version + '.' + packageObj.buildHash + '.ejs file when CDN enabled');
         }
       })
   }

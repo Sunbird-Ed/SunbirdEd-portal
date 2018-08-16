@@ -5,6 +5,7 @@ e () {
     echo $( echo ${1} | jq ".${2}" | sed 's/\"//g')
 }
 m=$(./src/app/metadata.sh)
+commit_hash=$1
 
 org=$(e "${m}" "org")
 name=$(e "${m}" "name")

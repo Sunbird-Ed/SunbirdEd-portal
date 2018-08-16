@@ -1,26 +1,19 @@
 #Dockerfile for the player setup
 FROM node:8.11.0
-MAINTAINER "Manojvv" "manojv@ilimi.in"
-RUN apt update --no-install-recommends -y \
-    && apt-get install -y python \
-    && apt-get install -y python-dev \
-    && apt-get update \
-    && apt-get install git \
-    && mkdir -p /opt/player \
-    && apt-get install autoconf \
-    && apt-get install g++ \
-    && apt-get install make \
-    && apt-get install nasm 
+MAINTAINER "Rajesh Rajendran <rajesh.r@optit.co>"
+RUN apt-get update && apt-get install -y --force-yes \
+ python python-dev autoconf g++ make nasm bzip2
+RUN mkdir -p /opt/player \
 WORKDIR /opt/player
 COPY * /opt/player/
-RUN apt-get update
-RUN apt-get install -y zip 
-RUN apt-get install -y bzip2 
-RUN rm -rf /var/lib/apt/lists/* 
 WORKDIR /opt/player/app
+RUN npm set progress=false
 RUN npm install  --unsafe-perm 
 RUN npm run deploy
 WORKDIR /opt/player/app/app_dist
 RUN npm install --production  --unsafe-perm  
 WORKDIR /opt/player/app
-CMD ["zip", "-r", "player-dist.zip",  "app_dist"] 
+# passing commit hash as build arg
+ARG commit_hash=0
+ENV commit_hash ${commit_hash}
+CMD ["/bin/bash","-x","../vcs-config.sh"]   
