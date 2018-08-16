@@ -33,7 +33,7 @@ export class StatusComponent implements OnInit, OnDestroy {
 */
   processId: string;
 
-  uploadStatusCompleted: boolean;
+  isProcessCompleted: boolean;
   /**
 * To show toaster(error, success etc) after any API calls
 */
@@ -133,11 +133,11 @@ export class StatusComponent implements OnInit, OnDestroy {
             this.showLoader = false;
             this.statusResponse = apiResponse.result.response[0];
             if (this.statusResponse.status && (this.statusResponse.status === 'COMPLETED')) {
-              this.uploadStatusCompleted = true;
+              this.isProcessCompleted = true;
               this.processId = this.statusResponse.processId;
               this.toasterService.success(this.resourceService.messages.smsg.m0032);
             } else {
-              this.uploadStatusCompleted = false;
+              this.isProcessCompleted = false;
               this.toasterService.error(this.resourceService.messages.imsg.m0040);
             }
           }, err => {

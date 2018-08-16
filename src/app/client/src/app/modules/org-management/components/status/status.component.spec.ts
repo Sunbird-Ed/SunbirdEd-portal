@@ -66,7 +66,7 @@ describe('StatusComponent', () => {
     const processId = '012465880638177280660';
     component.getBulkUploadStatus(processId);
     expect(toasterService.success).toHaveBeenCalledWith(mockRes.resourceBundle.messages.smsg.m0032);
-    expect(component.uploadStatusCompleted).toBe(true);
+    expect(component.isProcessCompleted).toBe(true);
     expect(component.statusResponse).toEqual(mockRes.successResponse.result.response[0]);
   });
   it('should call organization management service and get success status and show error if status is not COMPLETED', () => {
@@ -78,7 +78,7 @@ describe('StatusComponent', () => {
     spyOn(toasterService, 'error').and.callThrough();
     const processId = '012465880638177280660';
     component.getBulkUploadStatus(processId);
-    expect(component.uploadStatusCompleted).toBe(false);
+    expect(component.isProcessCompleted).toBe(false);
     expect(toasterService.error).toHaveBeenCalledWith(mockRes.resourceBundle.messages.imsg.m0040);
   });
   it('should call organization management service and get failure status based on given processId', () => {
