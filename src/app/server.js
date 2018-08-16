@@ -43,7 +43,7 @@ if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
         'prepare': true
       }
     }
-  }, () => {})
+  }, () => { })
 }
 
 let keycloak = new Keycloak({ store: memoryStore }, {
@@ -196,7 +196,15 @@ if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
 
 portal.server = app.listen(envHelper.PORTAL_PORT, () => {
   if (envHelper.PORTAL_CDN_URL) {
-    request(envHelper.PORTAL_CDN_URL + 'index_' + packageObj.version + '.' + packageObj.buildNumber + '.ejs').pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')));
+    const req = request
+      .get(envHelper.PORTAL_CDN_URL + 'index_' + packageObj.version + '.' + packageObj.buildHash + '.ejs')
+      .on('response', function (res) {
+        if (res.statusCode === 200) {
+          req.pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')))
+        } else {
+          console.log('Error while fetching 'envHelper.PORTAL_CDN_URL + 'index_' + packageObj.version + '.' + packageObj.buildHash + '.ejs file when CDN enabled');
+        }
+      })
   }
   console.log('app running on port ' + envHelper.PORTAL_PORT)
 })
