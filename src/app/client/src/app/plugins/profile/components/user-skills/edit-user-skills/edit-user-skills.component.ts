@@ -37,7 +37,7 @@ export class EditUserSkillsComponent implements OnInit, OnDestroy {
    * Also invokes user service to fetch user profile data
    */
   ngOnInit() {
-    this.windowScrollService.smoothScroll('skills');
+    // this.windowScrollService.smoothScroll('skills');
     this.profileService.getSkills().subscribe((data) => {
       if (data) {
         this.profileData = data.result;
@@ -97,6 +97,6 @@ export class EditUserSkillsComponent implements OnInit, OnDestroy {
       ver: '1.0'
     };
   } ngOnDestroy() {
-    this.modal.deny();
+    // this.modal.deny();
   }
 }

@@ -6,8 +6,9 @@
                 <app-profile-visibility appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="lockSkillsInteractEdata" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="addSkillsInteractEdata" field="skills"></app-profile-visibility>
             </a>
             <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="addSkillsInteractEdata" class="add-edit-btn-profile" *ngIf="action === 'view'" routerLink='/profile/skills/add'>{{resourceService.frmelmnts.btn.add}}</a>
+            <a class="add-edit-btn-profile" *ngIf="action !== 'view'" routerLink='/profile'>{{resourceService.frmelmnts.btn.close}}</a>
         </div>
-        <div class="profileitems profile-des ui relaxed aligned list">
+        <div *ngIf="action === 'view'" class="profileitems profile-des ui relaxed aligned list">
             <div class="item " *ngFor="let skill of userProfile.skills | slice:0:limit">
                 <!-- | orderBy : '-addedAt' | limitTo:profileCtrl.limit -->
                 <div class="ui label">
@@ -19,8 +20,11 @@
                 </div>
             </div>
         </div>
+        <div *ngIf="action !== 'view'" class="twelve wide column">
+            <app-edit-user-skills></app-edit-user-skills>
+        </div>
     </div>
-    <div class="ui bottom attached tabular menu expand-or-minimize-btn" *ngIf="userProfile.skills.length > defaultLimit">
+    <div class="ui bottom attached tabular menu expand-or-minimize-btn" *ngIf="userProfile.skills.length > defaultLimit && action === 'view'">
         <div class="active item expand-or-minimize-btn-pad">
             <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="viewMoreSkillsInteractEdata" (click)="toggle(true)" *ngIf="viewMore">
                 <span class="cursor-pointer">
@@ -37,7 +41,5 @@
         </div>
     </div>
     <!-- edit popup-->
-    <div *ngIf="action !== 'view'" class="twelve wide column">
-        <app-edit-user-skills></app-edit-user-skills>
-    </div>
+    
 </div>
