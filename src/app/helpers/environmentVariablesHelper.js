@@ -23,7 +23,7 @@ let envVariables = {
   ENABLE_PERMISSION_CHECK: env.sunbird_enabless_permission_check || 0,
   PORTAL_SESSION_STORE_TYPE: env.sunbird_session_store_type || 'in-memory',
   PORTAL_TITLE_NAME: env.sunbird_instance || 'Sunbird',
-  PORTAL_CDN_URL:  '',
+  PORTAL_CDN_URL: env.sunbird_portal_cdn_url || '',
   PORTAL_THEME: env.sunbird_theme || 'default',
   PORTAL_DEFAULT_LANGUAGE: env.sunbird_portal_default_language || 'en',
   PORTAL_PRIMARY_BUNDLE_LANGUAGE: env.sunbird_portal_primary_bundle_language || 'en',
