@@ -226,7 +226,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
         });
     }
     getFilters(filters) {
-        this.dataDrivenFilter = {};
         _.forEach(filters, (value) => {
             if (value.code === 'board') {
                 this.dataDrivenFilter['board']  = _.get(value, 'range[0].name') ? _.get(value, 'range[0].name') : [];
@@ -298,6 +297,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.filters = {};
+        this.dataDrivenFilter = {};
         this.filterType = this.config.appConfig.explore.filterType;
         this.redirectUrl = this.config.appConfig.explore.searchPageredirectUrl;
         this.slug = this.activatedRoute.snapshot.params.slug;

@@ -72,6 +72,7 @@ describe('ExploreComponent', () => {
     const pageSectionService = TestBed.get(PageApiService);
     const orgManagementService = TestBed.get(OrgDetailsService);
     const learnerService = TestBed.get(LearnerService);
+    component.prominentFilters['board'] = ['CBSE'];
     spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.successData.result.response));
     component.populatePageData();
     expect(component).toBeTruthy();

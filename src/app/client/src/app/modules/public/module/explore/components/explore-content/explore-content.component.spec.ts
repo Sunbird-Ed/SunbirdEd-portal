@@ -70,6 +70,7 @@ describe('ExploreContentComponent', () => {
     component.queryParams = mockQueryParma;
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgDetailsService);
+    component.dataDrivenFilter = {};
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
     component.searchList = Response.successData.result.content;
     component.populateContentSearch();
@@ -89,7 +90,8 @@ describe('ExploreContentComponent', () => {
     component.filters = {
       contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
     };
-    component.dataDrivenFilter = ['CBSE'];
+    component.dataDrivenFilter = {};
+    component.dataDrivenFilter['board'] = ['CBSE'];
     const requestParams = Response.requestParam;
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgDetailsService);
@@ -107,6 +109,7 @@ describe('ExploreContentComponent', () => {
     component.slug = '123456567';
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgDetailsService);
+    component.dataDrivenFilter = {};
     spyOn(searchService, 'contentSearch').and.callFake(() => observableThrowError({}));
     component.queryParams = mockQueryParma;
     component.populateContentSearch();
@@ -118,6 +121,7 @@ describe('ExploreContentComponent', () => {
     component.slug = '123456567';
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgDetailsService);
+    component.dataDrivenFilter = {};
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.noResult));
     component.searchList = Response.noResult.result.content;
     component.totalCount = Response.noResult.result.count;
@@ -222,12 +226,6 @@ describe('ExploreContentComponent', () => {
     component.getChannelId();
     expect(router.navigate).toHaveBeenCalledWith(['']);
   });
-  it('should call setFilters method', () => {
-    component.setFilters();
-    fixture.detectChanges();
-    expect(component.filterType).toEqual('explore');
-    expect(component.redirectUrl).toEqual('/explore/1');
-  });
   it('should call playContent method in Public player service when triggered with appropriate arguments', () => {
     const router = TestBed.get(Router);
     const publicPlayerService = TestBed.get(PublicPlayerService);
@@ -238,7 +236,7 @@ describe('ExploreContentComponent', () => {
           { mimeType: 'application/vnd.ekstep.content-collection', identifier: '1234' }
       }
     };
-    spyOn(publicPlayerService, 'playContent').and.callThrough();
+    spyOn(publicPlayerService, 'playContent');
     component.playContent(event);
     expect(publicPlayerService.playContent).toHaveBeenCalledWith(event);
   });

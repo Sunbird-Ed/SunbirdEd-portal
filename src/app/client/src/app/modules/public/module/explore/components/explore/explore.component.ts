@@ -149,6 +149,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.prominentFilters = {};
     this.slug = this.activatedRoute.snapshot.params.slug;
     this.filterType = this.config.appConfig.explore.filterType;
     this.redirectUrl = this.config.appConfig.explore.inPageredirectUrl;
@@ -236,7 +237,6 @@ export class ExploreComponent implements OnInit, OnDestroy {
       });
   }
   getFilters(filters) {
-    this.prominentFilters = {};
         _.forEach(filters, (value) => {
             if (value.code === 'board') {
                this.prominentFilters['board'] = _.get(value, 'range[0].name') ? _.get(value, 'range[0].name') : [];
