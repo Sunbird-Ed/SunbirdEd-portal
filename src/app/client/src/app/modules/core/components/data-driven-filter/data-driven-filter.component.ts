@@ -24,7 +24,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   @Input() showSearchedParam = true;
   @Input() enrichFilters: object;
   @Output() filters = new EventEmitter();
-
+  @Output() dataDrivenFilter = new EventEmitter();
   /**
  * To get url, app configs
  */
@@ -156,6 +156,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
     if (this.isCachedDataExists) {
       const data: any | null = this._cacheService.get(this.filterEnv + this.formAction);
       this.formFieldProperties = data;
+      this.dataDrivenFilter.emit(this.formFieldProperties);
       this.createFacets();
     } else {
       this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
@@ -183,12 +184,15 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
                 }
               });
               this.getFormConfig();
+              this.dataDrivenFilter.emit(this.formFieldProperties);
             },
             (err: ServerResponse) => {
+              this.dataDrivenFilter.emit([]);
               // this.toasterService.error(this.resourceService.messages.emsg.m0005);
             }
           );
         } else if (frameworkData && frameworkData.err) {
+          this.dataDrivenFilter.emit([]);
           // this.toasterService.error(this.resourceService.messages.emsg.m0005);
         }
       });

@@ -18,4 +18,13 @@ export interface IPageSection {
     * page sort by
     */
     sort_by?: object;
+    /**
+    * filters badgeAssertions, channel
+    */
+    softConstraints?: object;
+    /**
+     * mode : soft
+     */
+    mode?: string;
+    exists?: Array<string>;
 }

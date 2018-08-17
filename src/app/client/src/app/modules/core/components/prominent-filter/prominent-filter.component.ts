@@ -20,7 +20,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   @Input() ignoreQuery = [];
   @Input() showSearchedParam = true;
   @Output() filters = new EventEmitter();
-
+  @Output() prominentFilter = new EventEmitter();
   /**
  * To get url, app configs
  */
@@ -142,6 +142,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     if (this.isCachedDataExists) {
       const data: any | null = this._cacheService.get(this.filterEnv + this.formAction);
       this.formFieldProperties = data;
+      this.prominentFilter.emit(this.formFieldProperties);
     } else {
       this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
         if (frameworkData && !frameworkData.err) {
@@ -165,12 +166,15 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
                 }
               });
               this.getFormConfig();
+              this.prominentFilter.emit(this.formFieldProperties);
             },
             (err: ServerResponse) => {
+              this.prominentFilter.emit([]);
               // this.toasterService.error(this.resourceService.messages.emsg.m0005);
             }
           );
         } else if (frameworkData && frameworkData.err) {
+          this.prominentFilter.emit([]);
           // this.toasterService.error(this.resourceService.messages.emsg.m0005);
         }
       });

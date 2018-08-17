@@ -89,6 +89,7 @@ describe('ExploreContentComponent', () => {
     component.filters = {
       contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
     };
+    component.dataDrivenFilter = ['CBSE'];
     const requestParams = Response.requestParam;
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgDetailsService);
@@ -209,10 +210,8 @@ describe('ExploreContentComponent', () => {
   it('should call getChannelId method', () => {
     const orgService = TestBed.get(OrgDetailsService);
     spyOn(orgService, 'getOrgDetails').and.callFake(() => observableOf(Response.orgDetailsSuccessData));
-    spyOn(component, 'setFilters').and.callThrough();
     component.getChannelId();
     expect(component.hashTagId).toEqual(Response.orgDetailsSuccessData.hashTagId);
-    expect(component.setFilters).toHaveBeenCalled();
   });
   it('should call getChannelId method and return error', () => {
     const router = TestBed.get(Router);
@@ -225,6 +224,7 @@ describe('ExploreContentComponent', () => {
   });
   it('should call setFilters method', () => {
     component.setFilters();
+    fixture.detectChanges();
     expect(component.filterType).toEqual('explore');
     expect(component.redirectUrl).toEqual('/explore/1');
   });
@@ -263,5 +263,18 @@ describe('ExploreContentComponent', () => {
     spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
+  it('should call getFilters with data', () => {
+    const filters = Response.filters;
+    spyOn(component, 'setFilters').and.callThrough();
+    component.getFilters(filters);
+    expect(component.setFilters).toHaveBeenCalled();
+    expect(component.dataDrivenFilter).toBe('CBSE');
+  });
+  it('should call getFilters with no data', () => {
+    const filters = [];
+    spyOn(component, 'setFilters').and.callThrough();
+    component.getFilters(filters);
+    expect(component.setFilters).toHaveBeenCalled();
   });
 });

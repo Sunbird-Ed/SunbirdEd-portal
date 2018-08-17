@@ -36,7 +36,7 @@ describe('ExploreComponent', () => {
   }
   const fakeActivatedRoute = {
     'params': observableOf({ pageNumber: '1' }),
-    'queryParams': observableOf({ subject: ['English'], sortType: 'desc', sort_by: 'lastUpdatedOn' }),
+    'queryParams': observableOf({ subject: ['English']}),
     snapshot: {
       params: {
         slug: 'ap'
@@ -74,8 +74,6 @@ describe('ExploreComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.successData.result.response));
     component.populatePageData();
-    expect(component.queryParams.sortType).toString();
-    expect(component.queryParams.sortType).toBe('desc');
     expect(component).toBeTruthy();
     expect(component.showLoader).toBeFalsy();
     expect(component.caraouselData).toBeDefined();
@@ -87,8 +85,6 @@ describe('ExploreComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.secondData.result.response));
     component.populatePageData();
-    expect(component.queryParams.sortType).toString();
-    expect(component.queryParams.sortType).toBe('desc');
     expect(component).toBeTruthy();
     expect(component.showLoader).toBeFalsy();
     expect(component.caraouselData).toBeDefined();
@@ -100,8 +96,6 @@ describe('ExploreComponent', () => {
     const orgManagementService = TestBed.get(OrgDetailsService);
     spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.thirdData.result.response));
     component.populatePageData();
-    expect(component.queryParams.sortType).toString();
-    expect(component.queryParams.sortType).toBe('desc');
     expect(component).toBeTruthy();
     expect(component.showLoader).toBeFalsy();
     expect(component.caraouselData).toBeDefined();
@@ -117,8 +111,6 @@ describe('ExploreComponent', () => {
     spyOn(pageSectionService, 'getPageData').and.callFake(() => observableThrowError(Response.error));
     spyOn(toasterService, 'error').and.callThrough();
     component.populatePageData();
-    expect(component.queryParams.sortType).toString();
-    expect(component.queryParams.sortType).toBe('desc');
     expect(component.showLoader).toBeFalsy();
     expect(component.noResult).toBeTruthy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0004);
@@ -129,5 +121,18 @@ describe('ExploreComponent', () => {
     spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
+  it('should call getFilters with data ', () => {
+    const filters = Response.filters;
+    spyOn(component, 'getQueryParams').and.callThrough();
+    component.getFilters(filters);
+    expect(component.getQueryParams).toHaveBeenCalled();
+    expect(component.prominentFilters).toBe('CBSE');
+  });
+  it('should call getFilters with no data', () => {
+    const filters = [];
+    spyOn(component, 'getQueryParams').and.callThrough();
+    component.getFilters(filters);
+    expect(component.getQueryParams).toHaveBeenCalled();
   });
 });
