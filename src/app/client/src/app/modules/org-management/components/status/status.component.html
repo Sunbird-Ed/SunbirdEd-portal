@@ -10,7 +10,7 @@
     <div *ngIf="showLoader">
       <app-loader></app-loader>
     </div>
-    <form *ngIf="!isProcessCompleted && !showLoader" class="ui form" id="statusForm" [formGroup]="statusForm">
+    <form  *ngIf="!isProcessCompleted && !showLoader" class="ui form" id="statusForm" [formGroup]="statusForm">
       <h4>{{resourceService?.frmelmnts?.instn?.t0011}}</h4>
       <div class="ui grid">
         <div class="six wide column">
