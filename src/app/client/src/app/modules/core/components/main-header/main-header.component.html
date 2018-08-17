@@ -3,13 +3,13 @@
         <div class="one wide tablet computer only column"></div>
         <div class="two wide tablet computer only column" [class.padding-top-15]="userService.userid">
             <a (click)="navigateToHome()">
-                <img [class.header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
+                <img [class.tenant-header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
                     alt={{tenantName}} src="{{logo}}">
             </a>
         </div>
         <div class="two wide mobile only column padding-left-25 padding-top-5">
             <a (click)="navigateToHome()">
-                <img [class.header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
+                <img [class.tenant-header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
                     alt={{tenantName}} src="{{logo}}">
             </a>
         </div>
@@ -82,7 +82,7 @@
                 <div class="one wide column"></div>
                 <div class="two wide column padding-left-none">
                     <a (click)="navigateToHome()">
-                        <img class="image centered header-logo-before-login padding-top-5" alt={{tenantName}} src="{{logo}}">
+                        <img class="image centered header-logo padding-top-5" alt={{tenantName}} src="{{logo}}">
                     </a>
                 </div>
                 <div class="two wide column"></div>

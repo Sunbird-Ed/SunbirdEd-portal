@@ -1145,7 +1145,12 @@ i.large.icon.limitedPublishingLinkIcon {
   width: auto;
   height: auto;
 }
-
+.tenant-header-logo-before-login {
+  display: block;
+  max-height: 45px;
+  width: auto;
+  height: auto;
+}
 .blue-text-color-sunbird {
   color: #007AFF;
 }

@@ -132,7 +132,7 @@ export class AppComponent implements OnInit {
       first()).subscribe((data) => {
         this.orgDetails = data;
         this.initTelemetryService();
-        this.initTenantService();
+        this.initTenantService(slug);
         this.userService.initialize(false);
         this.initApp = true;
       }, (err) => {
