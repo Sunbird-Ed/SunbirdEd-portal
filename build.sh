@@ -15,8 +15,6 @@ docker build -f ./Dockerfile.Build --build-arg commit_hash=${commit_hash} -t ${o
 docker run --name=${name}-${version}-build ${org}/${name}:${version}-build
 containerid=$(docker ps -aqf "name=${name}-${version}-build")
 rm -rf ./dist
-docker cp $containerid:/opt/player/app/player-dist_${commit_hash}.tar.gz .
-# Copying artifact to player-dist as Docker file is not supporting dynamic values
-cp player-dist_${commit_hash}.tar.gz player-dist.tar.gz
+docker cp $containerid:/opt/player/app/player-dist.tar.gz .
 docker rm ${containerid}
 docker build -f ./Dockerfile --label vcs-ref=$(git rev-parse --short HEAD) -t ${org}/${name}:${version}-bronze .
