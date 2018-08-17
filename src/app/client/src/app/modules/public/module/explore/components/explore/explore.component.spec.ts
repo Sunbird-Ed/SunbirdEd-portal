@@ -124,10 +124,11 @@ describe('ExploreComponent', () => {
   });
   it('should call getFilters with data ', () => {
     const filters = Response.filters;
+    component.prominentFilters = {};
     spyOn(component, 'getQueryParams').and.callThrough();
     component.getFilters(filters);
     expect(component.getQueryParams).toHaveBeenCalled();
-    expect(component.prominentFilters).toBe('CBSE');
+    expect(component.prominentFilters['board']).toBe('CBSE');
   });
   it('should call getFilters with no data', () => {
     const filters = [];

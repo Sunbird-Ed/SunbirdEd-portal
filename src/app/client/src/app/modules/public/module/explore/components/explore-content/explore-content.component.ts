@@ -127,7 +127,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     public unsubscribe$ = new Subject<void>();
     cardIntractEdata: IInteractEventEdata;
     filterIntractEdata: IInteractEventEdata;
-    dataDrivenFilter: Array<string>;
+    dataDrivenFilter: object;
     /**
        * Constructor to create injected service(s) object
        * Default method of Draft Component class
@@ -162,7 +162,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
         this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
         const filters = _.pickBy(this.filters, value => value.length > 0);
         filters.channel = this.hashTagId;
-        filters.board = _.get(this.filters, 'board') ? this.filters.board : this.dataDrivenFilter;
+        filters.board = _.get(this.filters, 'board') ? this.filters.board : this.dataDrivenFilter['board'];
         const requestParams = {
             filters: filters,
             limit: this.pageLimit,
@@ -226,9 +226,10 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
         });
     }
     getFilters(filters) {
+        this.dataDrivenFilter = {};
         _.forEach(filters, (value) => {
             if (value.code === 'board') {
-               this.dataDrivenFilter = _.get(value, 'range[0].name') ? _.get(value, 'range[0].name') : [];
+                this.dataDrivenFilter['board']  = _.get(value, 'range[0].name') ? _.get(value, 'range[0].name') : [];
             }
           });
         this.setFilters();

@@ -66,7 +66,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
   inviewLogs = [];
   filterIntractEdata: IInteractEventEdata;
   sortIntractEdata: IInteractEventEdata;
-  prominentFilters: Array<string>;
+  prominentFilters: object;
   /**
    * The "constructor"
    *
@@ -92,7 +92,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
     this.noResult = false;
     const filters = _.pickBy(this.filters, value => value.length > 0);
         filters.channel = this.hashTagId;
-        filters.board = _.get(this.filters, 'board') ? this.filters.board : this.prominentFilters;
+        filters.board = _.get(this.filters, 'board') ? this.filters.board : this.prominentFilters['board'];
     const option = {
       source: 'web',
       name: 'Explore',
@@ -236,9 +236,10 @@ export class ExploreComponent implements OnInit, OnDestroy {
       });
   }
   getFilters(filters) {
+    this.prominentFilters = {};
         _.forEach(filters, (value) => {
             if (value.code === 'board') {
-               this.prominentFilters = _.get(value, 'range[0].name') ? _.get(value, 'range[0].name') : [];
+               this.prominentFilters['board'] = _.get(value, 'range[0].name') ? _.get(value, 'range[0].name') : [];
             }
           });
     this.getQueryParams();
