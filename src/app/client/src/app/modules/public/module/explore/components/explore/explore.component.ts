@@ -66,6 +66,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
   inviewLogs = [];
   filterIntractEdata: IInteractEventEdata;
   sortIntractEdata: IInteractEventEdata;
+  prominentFilters: object;
   /**
    * The "constructor"
    *
@@ -89,11 +90,16 @@ export class ExploreComponent implements OnInit, OnDestroy {
   populatePageData() {
     this.showLoader = true;
     this.noResult = false;
+    const filters = _.pickBy(this.filters, value => value.length > 0);
+        filters.channel = this.hashTagId;
+        filters.board = _.get(this.filters, 'board') ? this.filters.board : this.prominentFilters['board'];
     const option = {
       source: 'web',
       name: 'Explore',
-      filters: _.pickBy(this.filters, value => value.length > 0),
-      sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType }
+      filters: filters,
+      softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
+      mode: 'soft',
+      exists: []
     };
     this.pageSectionService.getPageData(option).pipe(
       takeUntil(this.unsubscribe$))
@@ -143,10 +149,10 @@ export class ExploreComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.prominentFilters = {};
     this.slug = this.activatedRoute.snapshot.params.slug;
     this.filterType = this.config.appConfig.explore.filterType;
     this.redirectUrl = this.config.appConfig.explore.inPageredirectUrl;
-    this.getQueryParams();
     this.getChannelId();
     this.telemetryImpression = {
       context: {
@@ -230,6 +236,14 @@ export class ExploreComponent implements OnInit, OnDestroy {
         }
       });
   }
+  getFilters(filters) {
+        _.forEach(filters, (value) => {
+            if (value.code === 'board') {
+               this.prominentFilters['board'] = _.get(value, 'range[0].name') ? _.get(value, 'range[0].name') : [];
+            }
+          });
+    this.getQueryParams();
+    }
 
   getChannelId() {
     this.orgDetailsService.getOrgDetails(this.slug).pipe(

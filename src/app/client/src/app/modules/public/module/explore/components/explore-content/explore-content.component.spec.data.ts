@@ -118,14 +118,58 @@ export const Response = {
         'Worksheet',
         'Game'
       ],
+      'board': ['CBSE'],
       'channel': '0123166367624478721'
     },
     'limit': 20,
     'pageNumber': 1,
     'query': 'hello',
     'softConstraints': {
-      'badgeAssertions': 2,
-      'channel': 1
+      'badgeAssertions': 98, 'board': 99, 'channel': 100
+    },
+    'facets': undefined
+  },
+  requestParam2: {
+    'filters': {
+      'contentType': [
+        'Collection',
+        'TextBook',
+        'LessonPlan',
+        'Resource',
+        'Story',
+        'Worksheet',
+        'Game'
+      ],
+      'board': 'CBSE',
+      'channel': '0123166367624478721'
+    },
+    'limit': 20,
+    'pageNumber': 3,
+    'query': 'hello',
+    'softConstraints': {
+      'badgeAssertions': 98, 'board': 99, 'channel': 100
+    },
+    'facets': undefined
+  },
+  requestParam3: {
+    'filters': {
+      'contentType': [
+        'Collection',
+        'TextBook',
+        'LessonPlan',
+        'Resource',
+        'Story',
+        'Worksheet',
+        'Game'
+      ],
+      'board': undefined ,
+      'channel': '0123166367624478721'
+    },
+    'limit': 20,
+    'pageNumber': 3,
+    'query': 'hello',
+    'softConstraints': {
+      'badgeAssertions': 98, 'board': 99, 'channel': 100
     },
     'facets': undefined
   },
@@ -273,6 +317,152 @@ export const Response = {
           }
         ],
         'name': 'board'
+      }
+    ],
+    filters: [
+      {
+        'code': 'board',
+        'dataType': 'text',
+        'name': 'Board',
+        'label': 'Board',
+        'description': 'Education Board (Like MP Board, NCERT, etc)',
+        'editable': true,
+        'inputType': 'select',
+        'required': false,
+        'displayProperty': 'Editable',
+        'visible': true,
+        'renderingHints': {
+          'semanticColumnWidth': 'three'
+        },
+        'index': 1,
+        'range': [
+          {
+            'identifier': 'ncf_board_cbse',
+            'code': 'cbse',
+            'name': 'CBSE',
+            'description': '',
+            'index': 2,
+            'category': 'board',
+            'status': 'Live'
+          },
+          {
+            'identifier': 'ncf_board_icse',
+            'code': 'icse',
+            'name': 'ICSE',
+            'description': '',
+            'index': 3,
+            'category': 'board',
+            'status': 'Live'
+          }
+        ]
+      },
+      {
+        'code': 'medium',
+        'dataType': 'text',
+        'name': 'Medium',
+        'label': 'Medium',
+        'description': 'Medium of instruction',
+        'editable': true,
+        'inputType': 'select',
+        'required': false,
+        'displayProperty': 'Editable',
+        'visible': true,
+        'renderingHints': {
+          'semanticColumnWidth': 'three'
+        },
+        'index': 2,
+        'range': [
+          {
+            'identifier': 'ncf_medium_english',
+            'code': 'english',
+            'name': 'English',
+            'description': '',
+            'index': 1,
+            'category': 'medium',
+            'status': 'Live'
+          },
+          {
+            'identifier': 'ncf_medium_hindi',
+            'code': 'hindi',
+            'name': 'Hindi',
+            'description': '',
+            'index': 2,
+            'category': 'medium',
+            'status': 'Live'
+          }
+        ]
+      },
+      {
+        'code': 'subject',
+        'dataType': 'text',
+        'name': 'Subject',
+        'label': 'Subject',
+        'description': 'Subject of the Content to use to teach',
+        'editable': true,
+        'inputType': 'select',
+        'required': false,
+        'displayProperty': 'Editable',
+        'visible': true,
+        'renderingHints': {
+          'semanticColumnWidth': 'three'
+        },
+        'index': 3,
+        'range': [
+          {
+            'identifier': 'ncf_subject_mathematics',
+            'code': 'mathematics',
+            'name': 'Mathematics',
+            'description': '',
+            'index': 1,
+            'category': 'subject',
+            'status': 'Live'
+          },
+          {
+            'identifier': 'ncf_subject_english',
+            'code': 'english',
+            'name': 'English',
+            'description': '',
+            'index': 2,
+            'category': 'subject',
+            'status': 'Live'
+          }
+        ]
+      },
+      {
+        'code': 'gradeLevel',
+        'dataType': 'text',
+        'name': 'Grade',
+        'label': 'Grade',
+        'description': 'Grade',
+        'editable': true,
+        'inputType': 'select',
+        'required': false,
+        'displayProperty': 'Editable',
+        'visible': true,
+        'renderingHints': {
+          'semanticColumnWidth': 'three'
+        },
+        'index': 4,
+        'range': [
+          {
+            'identifier': 'ncf_gradelevel_kindergarten',
+            'code': 'kindergarten',
+            'name': 'KG',
+            'description': 'KG',
+            'index': 1,
+            'category': 'gradelevel',
+            'status': 'Live'
+          },
+          {
+            'identifier': 'ncf_gradelevel_grade1',
+            'code': 'grade1',
+            'name': 'Class 1',
+            'description': 'Class 1',
+            'index': 2,
+            'category': 'gradelevel',
+            'status': 'Live'
+          }
+        ]
       }
     ]
 };
