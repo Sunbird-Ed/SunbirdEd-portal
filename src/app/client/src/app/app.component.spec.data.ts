@@ -1135,6 +1135,18 @@ export const mockData = {
                 'status': 1
             }
         }
+    },
+    tenantResponse: {
+        'id': 'api.tenant.info',
+        'params': {resmsgid: 'c33a73c0-a0b6-11e8-8b56-a93ad7c7024d', msgid: null, status: 'successful'},
+        'responseCode': 'OK',
+        'result': {
+            'titleName': 'rj',
+            'logo': 'https://staging.open-sunbird.org/assets/images/sunbird_logo.png',
+            'appLogo': 'https://staging.open-sunbird.org/assets/images/sunbird_logo.png',
+            'favicon': 'https://staging.open-sunbird.org/assets/images/favicon.ico',
+            'poster': 'https://staging.open-sunbird.org/assets/images/sunbird_logo.png'
     }
+}
 };
 
