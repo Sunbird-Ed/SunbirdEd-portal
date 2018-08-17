@@ -129,6 +129,50 @@ export const Response = {
     },
     'facets': undefined
   },
+  requestParam2: {
+    'filters': {
+      'contentType': [
+        'Collection',
+        'TextBook',
+        'LessonPlan',
+        'Resource',
+        'Story',
+        'Worksheet',
+        'Game'
+      ],
+      'board': 'CBSE',
+      'channel': '0123166367624478721'
+    },
+    'limit': 20,
+    'pageNumber': 3,
+    'query': 'hello',
+    'softConstraints': {
+      'badgeAssertions': 98, 'board': 99, 'channel': 100
+    },
+    'facets': undefined
+  },
+  requestParam3: {
+    'filters': {
+      'contentType': [
+        'Collection',
+        'TextBook',
+        'LessonPlan',
+        'Resource',
+        'Story',
+        'Worksheet',
+        'Game'
+      ],
+      'board': undefined ,
+      'channel': '0123166367624478721'
+    },
+    'limit': 20,
+    'pageNumber': 3,
+    'query': 'hello',
+    'softConstraints': {
+      'badgeAssertions': 98, 'board': 99, 'channel': 100
+    },
+    'facets': undefined
+  },
   orgDetailsSuccessData: {
     'dateTime': null,
     'preferredLanguage': 'English',

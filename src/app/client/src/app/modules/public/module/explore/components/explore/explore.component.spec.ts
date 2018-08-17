@@ -125,17 +125,44 @@ describe('ExploreComponent', () => {
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
   it('should call getFilters with data ', () => {
+    const service = TestBed.get(PageApiService);
     const filters = Response.filters;
     component.prominentFilters = {};
+    component.hashTagId = '0123166367624478721';
+    const requestParams = Response.requestParam2;
     spyOn(component, 'getQueryParams').and.callThrough();
+    spyOn(component, 'populatePageData').and.callThrough();
+    spyOn(service, 'getPageData').and.callThrough();
     component.getFilters(filters);
     expect(component.getQueryParams).toHaveBeenCalled();
     expect(component.prominentFilters['board']).toBe('CBSE');
+    expect(component.populatePageData).toHaveBeenCalled();
+    expect(service.getPageData).toHaveBeenCalledWith(requestParams);
   });
   it('should call getFilters with no data', () => {
     const filters = [];
+    component.queryParams = {};
+    const service = TestBed.get(PageApiService);
+    component.hashTagId = '0123166367624478721';
+    const requestParams = Response.requestParam;
     spyOn(component, 'getQueryParams').and.callThrough();
+    spyOn(component, 'populatePageData').and.callThrough();
+    spyOn(service, 'getPageData').and.callThrough();
     component.getFilters(filters);
     expect(component.getQueryParams).toHaveBeenCalled();
+    expect(component.populatePageData).toHaveBeenCalled();
+    expect(service.getPageData).toHaveBeenCalledWith(requestParams);
+  });
+  it('should call populatePageData with datwhen filter applied', () => {
+    component.filters = {subject: ['English'], board: ['NCERT', 'ICSE']};
+    component.prominentFilters['board'] = 'CBSE';
+    const service = TestBed.get(PageApiService);
+    component.hashTagId = '0123166367624478721';
+    const requestParams = Response.requestParam3;
+    spyOn(component, 'populatePageData').and.callThrough();
+    spyOn(service, 'getPageData').and.callThrough();
+    component.populatePageData();
+    expect(component.populatePageData).toHaveBeenCalled();
+    expect(service.getPageData).toHaveBeenCalledWith(requestParams);
   });
 });

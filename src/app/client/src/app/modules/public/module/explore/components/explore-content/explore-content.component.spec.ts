@@ -263,9 +263,28 @@ describe('ExploreContentComponent', () => {
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
   it('should call getFilters with data', () => {
+    const searchService = TestBed.get(SearchService);
     const filters = Response.filters;
+    const requestParams = Response.requestParam2;
     component.dataDrivenFilter = {};
+    component.hashTagId =   '0123166367624478721';
+    spyOn(component, 'populateContentSearch').and.callThrough();
+    spyOn(searchService, 'contentSearch').and.callThrough();
     component.getFilters(filters);
     expect(component.dataDrivenFilter['board']).toBe('CBSE');
+    expect(component.populateContentSearch).toHaveBeenCalled();
+    expect(searchService.contentSearch).toHaveBeenCalledWith(requestParams);
+  });
+  it('should call getFilters with no data', () => {
+    const searchService = TestBed.get(SearchService);
+    const filters = [];
+    const requestParams = Response.requestParam3;
+    component.dataDrivenFilter = {};
+    component.hashTagId =   '0123166367624478721';
+    spyOn(component, 'populateContentSearch').and.callThrough();
+    spyOn(searchService, 'contentSearch').and.callThrough();
+    component.getFilters(filters);
+    expect(component.populateContentSearch).toHaveBeenCalled();
+    expect(searchService.contentSearch).toHaveBeenCalledWith(requestParams);
   });
 });

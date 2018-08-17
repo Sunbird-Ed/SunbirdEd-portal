@@ -73,6 +73,7 @@ describe('ProminentFilterComponent', () => {
     const formService = TestBed.get(FormService);
     const cacheService = TestBed.get(CacheService);
     component.formFieldProperties = Response.formConfigData;
+    spyOn(component.prominentFilter, 'emit').and.returnValue(Response.formConfigData);
     spyOn(cacheService, 'exists').and.returnValue(false);
     spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
     spyOn(formService, 'getFormConfig').and.returnValue(observableOf(Response.formConfigData));
@@ -80,6 +81,7 @@ describe('ProminentFilterComponent', () => {
     component.fetchFilterMetaData();
     fixture.detectChanges();
     expect(component.formService.getFormConfig).toHaveBeenCalled();
+    expect(component.prominentFilter.emit).toHaveBeenCalledWith(Response.formConfigData);
   });
   it('should call isObject ', () => {
     const value = { id: 'AI113', name: 'artificial inteligence' };

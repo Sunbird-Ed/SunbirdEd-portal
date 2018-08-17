@@ -309,5 +309,29 @@ export const Response = {
           }
         ]
       }
-    ]
+    ],
+    requestParam: {
+      source: 'web',
+      name: 'Explore',
+      filters: {subject: ['English'], board: undefined, 'channel': '0123166367624478721'},
+      softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
+      mode: 'soft',
+      exists: []
+    },
+    requestParam2: {
+      source: 'web',
+      name: 'Explore',
+      filters: {subject: ['English'], board: 'CBSE', 'channel': '0123166367624478721'},
+      softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
+      mode: 'soft',
+      exists: []
+    },
+    requestParam3: {
+      source: 'web',
+      name: 'Explore',
+      filters: {subject: ['English'], board: ['NCERT', 'ICSE'], 'channel': '0123166367624478721'},
+      softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
+      mode: 'soft',
+      exists: []
+    },
 };
