@@ -218,7 +218,6 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
     component.courseProgressData = CourseHierarchyGetMockResponse.courseProgressData;
     component.ngOnInit();
-    component.ngAfterViewInit();
     component.playerOnDestroy({contentId: contentId});
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
     component.ngOnDestroy();

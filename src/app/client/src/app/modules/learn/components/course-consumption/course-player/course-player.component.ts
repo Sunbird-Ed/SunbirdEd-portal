@@ -1,6 +1,6 @@
 import { combineLatest, Subscription, Subject } from 'rxjs';
 import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, AfterViewInit} from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import {
   ContentService, UserService, BreadcrumbsService, PermissionService, CoursesService
 } from '@sunbird/core';
@@ -21,7 +21,7 @@ import {
   templateUrl: './course-player.component.html',
   styleUrls: ['./course-player.component.css']
 })
-export class CoursePlayerComponent implements OnInit, OnDestroy, AfterViewInit {
+export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   public courseInteractObject: IInteractEventObject;
 
@@ -193,13 +193,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, AfterViewInit {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
       });
-  }
-  ngAfterViewInit() {
-    this.courseProgressService.courseProgressData.pipe(
-    takeUntil(this.unsubscribe))
-    .subscribe((courseProgressData) => {
-      this.courseProgressData = courseProgressData;
-    });
+
+      this.courseProgressService.courseProgressData.pipe(
+      takeUntil(this.unsubscribe))
+      .subscribe((courseProgressData) => {
+        this.courseProgressData = courseProgressData;
+      });
   }
   private parseChildContent() {
     const model = new TreeModel();
@@ -356,14 +355,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public playerOnDestroy (data) {
-    if (this.contentId) {
-      const playContentDetail = this.findContentById(this.contentId);
-      const index = _.findIndex(this.courseProgressData.content, { 'contentId': this.contentId });
+    if (data.contentId) {
+      const playContentDetail = this.findContentById(data.contentId);
+      const index = _.findIndex(this.courseProgressData.content, { 'contentId': data.contentId });
       if (index !== -1 && this.courseProgressData.content[index].status === 1 &&
         playContentDetail.model.mimeType === 'application/vnd.ekstep.h5p-archive') {
         const request: any = {
           userId: this.userService.userid,
-          contentId: this.contentId,
+          contentId: data.contentId,
           courseId: this.courseId,
           batchId: this.batchId,
           status: 2
