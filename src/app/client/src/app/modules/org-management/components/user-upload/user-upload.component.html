@@ -80,7 +80,7 @@
             {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
           </button>
         </div>
-        <input #inputbtn type="file" style='display:none' accept=".csv" class="content-input ui small" id="uploadUsrsCSV" (change)="uploadUsersCSV($event.target.files)"
+        <input #inputbtn type="file" style='display:none' accept=".csv" class="content-input ui small" id="uploadUsrsCSV" onclick="this.value = null" (change)="uploadUsersCSV($event.target.files)"
           required="" />
       </div>
     </div>
