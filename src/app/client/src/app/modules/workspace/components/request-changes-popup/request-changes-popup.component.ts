@@ -1,9 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
-import { ContentService } from '@sunbird/core';
-import { ResourceService, ConfigService, ToasterService, ServerResponse, RouterNavigationService,
-NavigationHelperService } from '@sunbird/shared';
+import { ContentService, FormService } from '@sunbird/core';
+import {
+  ResourceService, ConfigService, ToasterService, ServerResponse, RouterNavigationService,
+  NavigationHelperService
+} from '@sunbird/shared';
+import { WorkSpaceService } from './../../services';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 /**
  * This component displays the checklist for request changes for reviewer and
  * calls the reject API to reject the content
@@ -13,7 +18,7 @@ NavigationHelperService } from '@sunbird/shared';
   templateUrl: './request-changes-popup.component.html',
   styleUrls: ['./request-changes-popup.component.css']
 })
-export class RequestChangesPopupComponent implements OnInit {
+export class RequestChangesPopupComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
   /**
    * To navigate to other pages
@@ -68,6 +73,12 @@ export class RequestChangesPopupComponent implements OnInit {
    * To close url
   */
   closeUrl: any;
+
+  showDefaultConfig = false;
+  showloader = true;
+  rejectCheckListData: any;
+  showModal = false;
+  public unsubscribe = new Subject<void>();
   /**
 	 * Constructor to create injected service(s) object
 	 *
@@ -79,6 +90,7 @@ export class RequestChangesPopupComponent implements OnInit {
    * @param {ToasterService} toasterService Reference of ToasterService
    * @param {ConfigService} config Reference of ConfigService
    * @param {ContentService} contentService Reference of contentService
+   * @param {FormService} formService Reference of FormService
 	 */
   constructor(route: Router,
     activatedRoute: ActivatedRoute,
@@ -86,7 +98,10 @@ export class RequestChangesPopupComponent implements OnInit {
     toasterService: ToasterService,
     configService: ConfigService,
     routerNavigationService: RouterNavigationService,
-    contentService: ContentService, public navigationHelperService: NavigationHelperService) {
+    contentService: ContentService,
+    public formService: FormService,
+    public navigationHelperService: NavigationHelperService,
+    public workSpaceService: WorkSpaceService) {
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
@@ -115,7 +130,8 @@ export class RequestChangesPopupComponent implements OnInit {
    * If both the validation is passed it enables the request changes button
    */
   validateModal() {
-    if (this.reasons && this.reasons.length > 0 && this.comment && _.trim(this.comment).length > 0) {
+    if (this.reasons && this.reasons.length > 0 && this.comment && _.trim(this.comment).length > 0 ||
+    this.comment && _.trim(this.comment).length > 0 && this.showDefaultConfig) {
       this.isDisabled = false;
     } else {
       this.isDisabled = true;
@@ -139,17 +155,19 @@ export class RequestChangesPopupComponent implements OnInit {
       url: `${this.configService.urlConFig.URLS.CONTENT.REJECT}/${this.contentId}`,
       data: requestBody
     };
-    this.contentService.post(option).subscribe(response => {
-      this.modal.deny();
+    this.contentService.post(option).pipe(
+      takeUntil(this.unsubscribe)).
+      subscribe(response => {
       this.toasterService.success(this.resourceService.messages.smsg.m0005);
+      this.modal.deny();
       if (this.closeUrl.url.includes('flagreviewer')) {
         this.route.navigate(['workspace/content/flagreviewer/1']);
       } else {
         this.route.navigate(['workspace/content/upForReview/1']);
       }
     }, (err) => {
-      this.modal.deny();
       this.toasterService.error(this.resourceService.messages.fmsg.m0020);
+      this.modal.deny();
       this.redirect();
     });
   }
@@ -158,8 +176,32 @@ export class RequestChangesPopupComponent implements OnInit {
    * Method to redirect to parent url
    */
   redirect() {
-    this.modal.deny();
-    this.route.navigate(['../'], {relativeTo: this.activatedRoute});
+    this.route.navigate(['../'], { relativeTo: this.activatedRoute });
+  }
+
+  getCheckListConfig() {
+    this.showDefaultConfig = false;
+    const formServiceInputParams = {
+      formType: 'content',
+      formAction: 'requestForChangesChecklist',
+      subType: 'resource'
+    };
+    this.workSpaceService.getCheckListData(formServiceInputParams).subscribe(
+      (data: ServerResponse) => {
+        if (data.result.form) {
+          this.showModal = true;
+          this.showloader = false;
+          this.rejectCheckListData = data.result.form.data.fields[0];
+        } else {
+          this.showModal = true;
+          this.showloader = false;
+          this.showDefaultConfig = true;
+        }
+      },
+      (err: ServerResponse) => {
+        this.closeModalAfterError();
+      }
+    );
   }
 
   /**
@@ -168,7 +210,19 @@ export class RequestChangesPopupComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.parent.params.subscribe((params) => {
       this.contentId = params.contentId;
+      this.getCheckListConfig();
     });
     this.closeUrl = this.navigationHelperService.getPreviousUrl();
+  }
+
+  closeModalAfterError() {
+    this.showModal = false;
+    this.showloader = false;
+    this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    this.redirect();
+  }
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }
