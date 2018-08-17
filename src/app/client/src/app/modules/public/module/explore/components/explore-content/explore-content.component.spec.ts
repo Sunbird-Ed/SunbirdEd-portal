@@ -265,15 +265,7 @@ describe('ExploreContentComponent', () => {
   it('should call getFilters with data', () => {
     const filters = Response.filters;
     component.dataDrivenFilter = {};
-    spyOn(component, 'setFilters').and.callThrough();
     component.getFilters(filters);
-    expect(component.setFilters).toHaveBeenCalled();
     expect(component.dataDrivenFilter['board']).toBe('CBSE');
-  });
-  it('should call getFilters with no data', () => {
-    const filters = [];
-    spyOn(component, 'setFilters').and.callThrough();
-    component.getFilters(filters);
-    expect(component.setFilters).toHaveBeenCalled();
   });
 });
