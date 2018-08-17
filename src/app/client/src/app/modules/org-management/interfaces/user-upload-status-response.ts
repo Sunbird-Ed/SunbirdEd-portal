@@ -2,6 +2,7 @@ import { ServerResponse } from '@sunbird/shared';
 export interface IUserUploadStatusResponse {
     objectType: string;
     processId: string;
+    status: string;
     successResult: Array<IUserUploadStatusResult>;
     failureResult: Array<IUserUploadStatusResult>;
 }

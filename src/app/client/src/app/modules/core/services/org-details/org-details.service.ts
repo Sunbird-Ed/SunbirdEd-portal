@@ -26,7 +26,10 @@ export class OrgDetailsService {
       url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH,
       data: {
         request: {
-          filters: { slug: slug || (<HTMLInputElement>document.getElementById('defaultTenant')).value }
+          filters: {
+            slug: slug || (<HTMLInputElement>document.getElementById('defaultTenant')).value,
+            isRootOrg: true
+          }
         }
       }
     };
