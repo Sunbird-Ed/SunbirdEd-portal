@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
-import { ContentService, UserService, PlayerService } from '@sunbird/core';
+import { ContentService, UserService } from '@sunbird/core';
 import { ResourceService, ConfigService, ToasterService, ServerResponse,
   RouterNavigationService, NavigationHelperService } from '@sunbird/shared';
 import { WorkSpaceService } from './../../services';
@@ -110,7 +110,6 @@ export class PublishedPopupComponent implements OnInit {
     contentService: ContentService,
     userService: UserService,
     public navigationHelperService: NavigationHelperService,
-    public playerService: PlayerService,
     public workSpaceService: WorkSpaceService) {
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -191,8 +190,8 @@ export class PublishedPopupComponent implements OnInit {
     this.showDefaultConfig = false;
     const formServiceInputParams = {
       formType: 'content',
-      formAction: 'publishChecklist',
-      subType: 'resource'
+      formAction: 'publishChecklist1',
+      subType: 'resource1'
     };
     this.workSpaceService.getCheckListData(formServiceInputParams).subscribe(
       (data: ServerResponse) => {
