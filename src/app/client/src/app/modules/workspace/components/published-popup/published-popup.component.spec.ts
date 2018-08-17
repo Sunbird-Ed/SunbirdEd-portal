@@ -11,8 +11,9 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { ContentService, CoreModule } from '@sunbird/core';
 import { SharedModule, ResourceService, ConfigService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { PublishedPopupComponent } from './published-popup.component';
-
-describe('RequestChangesPopupComponent', () => {
+import { WorkSpaceService } from './../../services';
+import {mockRes} from './published-popup.component.spec.data';
+describe('PublishedPopupComponent', () => {
   let component: PublishedPopupComponent;
   let fixture: ComponentFixture<PublishedPopupComponent>;
 
@@ -27,6 +28,15 @@ describe('RequestChangesPopupComponent', () => {
       },
       'fmsg': {
         'm0019': 'Publishing content failed, please try again later...'
+      },
+      'emsg': {
+        'm0005': 'Something went wrong please try again later'
+      }
+    },
+    'frmelmnts': {
+      'btn': {
+        'checkListPublish': 'Publish',
+        'checklistCancel': 'Cancel'
       }
     }
   };
@@ -61,7 +71,7 @@ describe('RequestChangesPopupComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot()],
       declarations: [PublishedPopupComponent],
-      providers: [ToasterService, NavigationHelperService,
+      providers: [ToasterService, NavigationHelperService, WorkSpaceService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
@@ -76,6 +86,23 @@ describe('RequestChangesPopupComponent', () => {
     fixture.detectChanges();
   });
 
+  it('should initialize the component expected calls for getCheckListConfig  ', () => {
+    const workspaceservice = TestBed.get(WorkSpaceService);
+    component.contentId = fakeActivatedRoute.parent.params['contentId'];
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = resourceBundle.messages;
+    const navigationHelperService: NavigationHelperService = fixture.debugElement.injector.get(NavigationHelperService);
+    spyOn(workspaceservice, 'getCheckListData').and.callFake(() => observableOf(mockRes.publishedChecklist));
+    spyOn(component, 'getCheckListConfig').and.callThrough();
+    component.getCheckListConfig();
+    component.ngOnInit();
+    expect(component.getCheckListConfig).toHaveBeenCalledWith();
+    expect(component.showModal).toBeTruthy();
+    expect(component.showloader).toBeFalsy();
+    expect(component.publishCheckListData).toBeDefined();
+    expect(component.publishCheckListData).toBe(mockRes.publishedChecklist.result.form.data.fields[0]);
+  });
+
   it('should validate modal when it validation passes', () => {
     component.reasons = ['Others'];
     component.inputFields = ['Others'];
@@ -85,10 +112,12 @@ describe('RequestChangesPopupComponent', () => {
 
   it('should validate modal when it validation fails', () => {
     component.validateModal();
-    expect(component.isDisabled).toBe(true);
+    expect(component.isDisabled).toBe(false);
+    expect(component.showDefaultConfig).toBe(false);
   });
 
   it('should call reject api and get success', () => {
+    component.showModal = true;
     const contentService = TestBed.get(ContentService);
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
@@ -101,15 +130,39 @@ describe('RequestChangesPopupComponent', () => {
   });
 
   it('should call reject api and get error', () => {
+    component.showModal = true;
     const contentService = TestBed.get(ContentService);
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
     resourceService.messages = resourceBundle.messages;
     spyOn(contentService, 'post').and.callFake(() => observableThrowError(errorResponse));
     spyOn(toasterService, 'error').and.callThrough();
+    spyOn(component, 'redirect').and.callThrough();
     fixture.detectChanges();
     component.submitPublishChanges();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0019);
+    expect(component.redirect).toHaveBeenCalled();
+  });
+  it('should  call createCheckedArray and add new item to reason array ', () => {
+    component.createCheckedArray('Has Sexual content, Nudity or Vulgarity');
+    expect(component.reasons.length).toEqual(1);
+    expect(component.isDisabled).toBe(true);
+  });
+  it('should call createCheckedArray and remove item which exits in reason array ', () => {
+    component.reasons = ['Has Sexual content, Nudity or Vulgarity'];
+    component.createCheckedArray('Has Sexual content, Nudity or Vulgarity');
+    expect(component.reasons.length).toEqual(0);
+    expect(component.isDisabled).toBe(false);
+  });
+  it('should call closeModalAfterError and makes expected calls', () => {
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    toasterService.error(resourceBundle.messages.emsg.m0005);
+    fixture.detectChanges();
+    component.closeModalAfterError();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
+    expect(component.showloader).toBeFalsy();
+    expect(component.showModal).toBeFalsy();
   });
 });
 
