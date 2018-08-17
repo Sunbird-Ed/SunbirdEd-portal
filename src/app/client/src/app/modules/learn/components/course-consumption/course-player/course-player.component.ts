@@ -1,6 +1,6 @@
 import { combineLatest, Subscription, Subject } from 'rxjs';
 import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, AfterViewInit} from '@angular/core';
 import {
   ContentService, UserService, BreadcrumbsService, PermissionService, CoursesService
 } from '@sunbird/core';
@@ -10,7 +10,7 @@ import {
   WindowScrollService, ILoaderMessage, ConfigService, ICollectionTreeOptions, NavigationHelperService,
   ToasterService, ResourceService, ExternalUrlPreviewService
 } from '@sunbird/shared';
-import { CourseConsumptionService, CourseBatchService } from './../../../services';
+import { CourseConsumptionService, CourseBatchService, CourseProgressService } from './../../../services';
 import { INoteData } from '@sunbird/notes';
 import {
   IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata
@@ -21,7 +21,7 @@ import {
   templateUrl: './course-player.component.html',
   styleUrls: ['./course-player.component.css']
 })
-export class CoursePlayerComponent implements OnInit, OnDestroy {
+export class CoursePlayerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public courseInteractObject: IInteractEventObject;
 
@@ -102,6 +102,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   contentIds = [];
 
+  courseProgressData: any;
+
   contentStatus: any;
 
   contentDetails = [];
@@ -134,7 +136,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
     private toasterService: ToasterService, private resourceService: ResourceService, public breadcrumbsService: BreadcrumbsService,
     private cdr: ChangeDetectorRef, public courseBatchService: CourseBatchService, public permissionService: PermissionService,
-    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService) {
+    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService,
+    private courseProgressService: CourseProgressService) {
     this.contentService = contentService;
     this.activatedRoute = activatedRoute;
     this.windowScrollService = windowScrollService;
@@ -190,6 +193,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
       });
+  }
+  ngAfterViewInit() {
+    this.courseProgressService.courseProgressData.pipe(
+    takeUntil(this.unsubscribe))
+    .subscribe((courseProgressData) => {
+      this.courseProgressData = courseProgressData;
+    });
   }
   private parseChildContent() {
     const model = new TreeModel();
@@ -344,6 +354,30 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public createEventEmitter(data) {
     this.createNoteData = data;
   }
+
+  public playerOnDestroy (data) {
+    if (this.contentId) {
+      const playContentDetail = this.findContentById(this.contentId);
+      const index = _.findIndex(this.courseProgressData.content, { 'contentId': this.contentId });
+      if (index !== -1 && this.courseProgressData.content[index].status === 1 &&
+        playContentDetail.model.mimeType === 'application/vnd.ekstep.h5p-archive') {
+        const request: any = {
+          userId: this.userService.userid,
+          contentId: this.contentId,
+          courseId: this.courseId,
+          batchId: this.batchId,
+          status: 2
+        };
+        this.updateContentsStateSubscription = this.courseConsumptionService.updateContentsState(request)
+          .subscribe((updatedRes) => {
+            console.log('updated h5p content status to 2');
+          }, (err) => {
+            console.log('updating content status failed', err);
+          });
+      }
+    }
+  }
+
   ngOnDestroy() {
     if (this.activatedRouteSubscription) {
       this.activatedRouteSubscription.unsubscribe();
