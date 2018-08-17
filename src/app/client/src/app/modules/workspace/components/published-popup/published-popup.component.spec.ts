@@ -12,7 +12,7 @@ import { ContentService, CoreModule } from '@sunbird/core';
 import { SharedModule, ResourceService, ConfigService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { PublishedPopupComponent } from './published-popup.component';
 import { WorkSpaceService } from './../../services';
-import {mockRes} from './published-popup.component.spec.data'
+import {mockRes} from './published-popup.component.spec.data';
 describe('PublishedPopupComponent', () => {
   let component: PublishedPopupComponent;
   let fixture: ComponentFixture<PublishedPopupComponent>;
