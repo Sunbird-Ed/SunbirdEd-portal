@@ -187,12 +187,12 @@ export class PublishedPopupComponent implements OnInit {
    this.route.navigate(['../'], {relativeTo: this.activatedRoute});
   }
 
-  getCheckListConfig(contentType: string) {
+  getCheckListConfig() {
     this.showDefaultConfig = false;
     const formServiceInputParams = {
       formType: 'content',
       formAction: 'publishChecklist',
-      subType: contentType
+      subType: 'resource'
     };
     this.workSpaceService.getCheckListData(formServiceInputParams).subscribe(
       (data: ServerResponse) => {
@@ -222,24 +222,7 @@ export class PublishedPopupComponent implements OnInit {
         this.userId = userdata.userProfile.userId;
         this.activatedRoute.parent.params.subscribe((params) => {
           this.contentId = params.contentId;
-          if (this.playerService.contentData) {
-            this.getCheckListConfig(this.playerService.contentData.contentType);
-          } else {
-            const option = {
-              params: { mode: 'edit' }
-            };
-            this.playerService.getContent(this.contentId, option).subscribe(
-              (response) => {
-                if (response.result.content) {
-                  this.getCheckListConfig(response.result.content.contentType);
-                } else {
-                  this.closeModalAfterError();
-                }
-              },
-              (err) => {
-                this.closeModalAfterError();
-              });
-          }
+          this.getCheckListConfig();
         });
       }
     });

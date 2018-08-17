@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
-import { ContentService, PlayerService, FormService } from '@sunbird/core';
+import { ContentService, FormService } from '@sunbird/core';
 import {
   ResourceService, ConfigService, ToasterService, ServerResponse, RouterNavigationService,
   NavigationHelperService
@@ -90,7 +90,6 @@ export class RequestChangesPopupComponent implements OnInit, OnDestroy {
    * @param {ToasterService} toasterService Reference of ToasterService
    * @param {ConfigService} config Reference of ConfigService
    * @param {ContentService} contentService Reference of contentService
-   * @param {PlayerService} playerService Reference of PlayerService
    * @param {FormService} formService Reference of FormService
 	 */
   constructor(route: Router,
@@ -100,7 +99,6 @@ export class RequestChangesPopupComponent implements OnInit, OnDestroy {
     configService: ConfigService,
     routerNavigationService: RouterNavigationService,
     contentService: ContentService,
-    public playerService: PlayerService,
     public formService: FormService,
     public navigationHelperService: NavigationHelperService,
     public workSpaceService: WorkSpaceService) {
@@ -181,12 +179,12 @@ export class RequestChangesPopupComponent implements OnInit, OnDestroy {
     this.route.navigate(['../'], { relativeTo: this.activatedRoute });
   }
 
-  getCheckListConfig(contentType: string) {
+  getCheckListConfig() {
     this.showDefaultConfig = false;
     const formServiceInputParams = {
       formType: 'content',
       formAction: 'requestChangesChecklist',
-      subType: contentType
+      subType: 'resource'
     };
     this.workSpaceService.getCheckListData(formServiceInputParams).subscribe(
       (data: ServerResponse) => {
@@ -212,24 +210,7 @@ export class RequestChangesPopupComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.activatedRoute.parent.params.subscribe((params) => {
       this.contentId = params.contentId;
-      if (this.playerService.contentData) {
-        this.getCheckListConfig(this.playerService.contentData.contentType);
-      } else {
-        const option = {
-          params: { mode: 'edit' }
-        };
-        this.playerService.getContent(this.contentId, option).subscribe(
-          (response) => {
-            if (response.result.content) {
-              this.getCheckListConfig(response.result.content.contentType);
-            } else {
-              this.closeModalAfterError();
-            }
-          },
-          (err) => {
-            this.closeModalAfterError();
-          });
-      }
+      this.getCheckListConfig();
     });
     this.closeUrl = this.navigationHelperService.getPreviousUrl();
   }

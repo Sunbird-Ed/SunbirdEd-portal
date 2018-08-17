@@ -12,6 +12,7 @@ import { ContentService, CoreModule } from '@sunbird/core';
 import { SharedModule, ResourceService, ConfigService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { PublishedPopupComponent } from './published-popup.component';
 import { WorkSpaceService } from './../../services';
+import {mockRes} from './published-popup.component.spec.data'
 describe('PublishedPopupComponent', () => {
   let component: PublishedPopupComponent;
   let fixture: ComponentFixture<PublishedPopupComponent>;
@@ -83,6 +84,23 @@ describe('PublishedPopupComponent', () => {
     fixture = TestBed.createComponent(PublishedPopupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  it('should initialize the component expected calls for getCheckListConfig  ', () => {
+    const workspaceservice = TestBed.get(WorkSpaceService);
+    component.contentId = fakeActivatedRoute.parent.params['contentId'];
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = resourceBundle.messages;
+    const navigationHelperService: NavigationHelperService = fixture.debugElement.injector.get(NavigationHelperService);
+    spyOn(workspaceservice, 'getCheckListData').and.callFake(() => observableOf(mockRes.publishedChecklist));
+    spyOn(component, 'getCheckListConfig').and.callThrough();
+    component.getCheckListConfig();
+    component.ngOnInit();
+    expect(component.getCheckListConfig).toHaveBeenCalledWith();
+    expect(component.showModal).toBeTruthy();
+    expect(component.showloader).toBeFalsy();
+    expect(component.publishCheckListData).toBeDefined();
+    expect(component.publishCheckListData).toBe(mockRes.publishedChecklist.result.form.data.fields[0]);
   });
 
   it('should validate modal when it validation passes', () => {

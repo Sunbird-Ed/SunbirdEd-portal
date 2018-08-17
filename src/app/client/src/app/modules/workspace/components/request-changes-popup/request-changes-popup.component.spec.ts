@@ -7,7 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
-import { ContentService, CoreModule, PlayerService } from '@sunbird/core';
+import { ContentService, CoreModule } from '@sunbird/core';
 import { SharedModule, ResourceService, ConfigService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { RequestChangesPopupComponent } from './request-changes-popup.component';
 import { WorkSpaceService } from './../../services';
@@ -85,7 +85,7 @@ describe('RequestChangesPopupComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot()],
       declarations: [RequestChangesPopupComponent],
-      providers: [ToasterService, NavigationHelperService, WorkSpaceService, PlayerService, SuiModalService,
+      providers: [ToasterService, NavigationHelperService, WorkSpaceService, SuiModalService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle },
@@ -101,17 +101,16 @@ describe('RequestChangesPopupComponent', () => {
     fixture.detectChanges();
   });
   it('should initialize the component expected calls for getCheckListConfig  ', () => {
-     const playerservice = TestBed.get(PlayerService);
     const workspaceservice = TestBed.get(WorkSpaceService);
     component.contentId = fakeActivatedRoute.parent.params['contentId'];
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceBundle.messages;
     const navigationHelperService: NavigationHelperService = fixture.debugElement.injector.get(NavigationHelperService);
-    spyOn(playerservice, 'getContent').and.callFake(() => observableOf(mockRes.successResponse));
     spyOn(workspaceservice, 'getCheckListData').and.callFake(() => observableOf(mockRes.requestChangesChecklist));
     spyOn(component, 'getCheckListConfig').and.callThrough();
+    component.getCheckListConfig();
     component.ngOnInit();
-    expect(component.getCheckListConfig).toHaveBeenCalledWith(mockRes.successResponse.result.content.contentType);
+    expect(component.getCheckListConfig).toHaveBeenCalledWith();
     expect(component.showModal).toBeTruthy();
     expect(component.showloader).toBeFalsy();
     expect(component.rejectCheckListData).toBeDefined();
