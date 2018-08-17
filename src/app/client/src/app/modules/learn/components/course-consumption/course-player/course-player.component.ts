@@ -193,7 +193,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
       });
-
       this.courseProgressService.courseProgressData.pipe(
       takeUntil(this.unsubscribe))
       .subscribe((courseProgressData) => {
@@ -354,6 +353,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.createNoteData = data;
   }
 
+  // on destroy of player if content played was H5P make content as read (status=2)
   public playerOnDestroy (data) {
     if (data.contentId) {
       const playContentDetail = this.findContentById(data.contentId);
