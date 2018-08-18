@@ -15,7 +15,7 @@
                                             <span class="ui cardsKnowMore mouse-pointer" *ngIf="courseHierarchy.description && courseHierarchy.description.length > 200 && readMore === false"
                                                 (click)="readMore = !readMore;">{{resourceService.frmelmnts.lbl.readmore}}</span>
                                         </p>
-                                        <p *ngIf="readMore" class="courseStructureDesc"> {{courseHierarchy.description}}&nbsp;
+                                        <p *ngIf="readMore" class="courseStructureDesc"> {{ courseHierarchy.description}}&nbsp;
                                             <span class="ui cardsKnowMore mouse-pointer" (click)="readMore = false;">{{resourceService.frmelmnts.lbl.readless}}</span>
                                         </p>
                                     </div>
