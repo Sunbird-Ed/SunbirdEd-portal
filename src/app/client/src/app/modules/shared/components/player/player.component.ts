@@ -10,10 +10,11 @@ import {PlayerConfig} from './../../interfaces';
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.css']
 })
-export class PlayerComponent implements OnInit, OnChanges {
+export class PlayerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() playerConfig: PlayerConfig;
   @Output() contentProgressEvent = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
+  @Output() playerOnDestroyEvent = new EventEmitter<any>();
   buildNumber: string;
   constructor(public configService: ConfigService) {
     try {
@@ -68,5 +69,8 @@ export class PlayerComponent implements OnInit, OnChanges {
         this.contentProgressEvent.emit(event);
       }
     }
+  }
+  ngOnDestroy() {
+    this.playerOnDestroyEvent.emit( {contentId: this.playerConfig.context.contentId} );
   }
 }
