@@ -71,6 +71,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   isShowFilterPlaceholder = true;
   contentTypes: any;
   frameworkDataSubscription: Subscription;
+  isFiltered = false;
   /**
    *
     * Constructor to create injected service(s) object
@@ -228,6 +229,13 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   isObject(val) { return typeof val === 'object'; }
 
   applyFilters() {
+    const compareFormInputQueryparams = _.isEqual(this.formInputData,  this.queryParams);
+    if (compareFormInputQueryparams) {
+      this.isFiltered = true;
+    }  else {
+      this.isFiltered = false;
+    }
+    if (this.isFiltered === false) {
     this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
     let queryParams = {};
     _.forIn(this.queryParams, (value, key) => {
@@ -243,6 +251,8 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     queryParams = _.pickBy(queryParams, value => _.isArray(value) && value.length > 0);
     this.router.navigate([this.redirectUrl], { queryParams: queryParams });
   }
+  }
+  
   showField(allowedRoles) {
     if (allowedRoles) {
       return this.permissionService.checkRolesPermissions(allowedRoles);
