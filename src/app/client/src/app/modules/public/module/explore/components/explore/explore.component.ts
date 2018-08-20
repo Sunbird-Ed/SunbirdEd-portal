@@ -239,6 +239,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
   getFilters(filters) {
         _.forEach(filters, (value) => {
             if (value.code === 'board') {
+              value.range = _.orderBy(value.range, ['index'], ['asc']);
                this.prominentFilters['board'] = _.get(value, 'range[0].name') ? _.get(value, 'range[0].name') : [];
             }
           });
