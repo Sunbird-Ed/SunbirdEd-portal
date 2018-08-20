@@ -177,7 +177,7 @@ gulp.task('pushTenantsToCDN', () =>{
       async.eachSeries(files, function (foldername, next) {
         if(fs.existsSync(sourceFolderPath + '/' + foldername) && fs.lstatSync(sourceFolderPath + '/' + foldername).isDirectory()){
           recomputeStaticVariables(foldername)
-          runSequence('clean','copyFolder','prefixCdnUrlForHtmlFiles','prefixCdnUrlForCssFiles','updateAssetsReferences','renameIndexFile','replaceindexPageText','deletIndexFile','deleteManifest','uploadAppToCdn', function(){
+          runSequence('clean','copyFolder','prefixCdnUrlForHtmlFiles','prefixCdnUrlForCssFiles','uploadAppToCdn', function(){
             next()
           }) 
         }else{
