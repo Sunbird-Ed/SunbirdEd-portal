@@ -252,7 +252,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     this.router.navigate([this.redirectUrl], { queryParams: queryParams });
   }
   }
-  
+
   showField(allowedRoles) {
     if (allowedRoles) {
       return this.permissionService.checkRolesPermissions(allowedRoles);
