@@ -75,7 +75,6 @@ describe('ProminentFilterComponent', () => {
       'gradeLevel': ['Grade 1', 'Grade 2'], 'medium': ['English'],
     };
     const queryParams = { 'gradeLevel': ['Grade 1', 'Grade 2'], 'medium': ['English'] };
-    const compareFormInputQueryparams = _.isEqual(component.formInputData,  queryParams);
     component.applyFilters();
     expect(component.isFiltered).toBeFalsy();
     expect(router.navigate).toHaveBeenCalledWith([undefined], { queryParams: queryParams });

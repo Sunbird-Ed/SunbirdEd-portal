@@ -229,29 +229,30 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   isObject(val) { return typeof val === 'object'; }
 
   applyFilters() {
-    const compareFormInputQueryparams = _.isEqual(this.formInputData,  this.queryParams);
-    if (compareFormInputQueryparams) {
-      this.isFiltered = true;
-    }  else {
-      this.isFiltered = false;
+    if (_.isEqual(this.formInputData, this.queryParams)) {
+        this.isFiltered = true;
+    } else {
+        this.isFiltered = false;
     }
-    if (this.isFiltered === false) {
-    this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
-    let queryParams = {};
-    _.forIn(this.queryParams, (value, key) => {
-      if (key === 'concepts') {
-        queryParams[key] = [];
-        value.forEach((conceptDetails) => {
-          queryParams[key].push(conceptDetails.identifier);
+    if (!this.isFiltered) {
+        this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
+        let queryParams = {};
+        _.forIn(this.queryParams, (value, key) => {
+            if (key === 'concepts') {
+                queryParams[key] = [];
+                value.forEach((conceptDetails) => {
+                    queryParams[key].push(conceptDetails.identifier);
+                });
+            } else {
+                queryParams[key] = value;
+            }
         });
-      } else {
-        queryParams[key] = value;
-      }
-    });
-    queryParams = _.pickBy(queryParams, value => _.isArray(value) && value.length > 0);
-    this.router.navigate([this.redirectUrl], { queryParams: queryParams });
-  }
-  }
+        queryParams = _.pickBy(queryParams, value => _.isArray(value) && value.length > 0);
+        this.router.navigate([this.redirectUrl], {
+            queryParams: queryParams
+        });
+    }
+}
 
   showField(allowedRoles) {
     if (allowedRoles) {
