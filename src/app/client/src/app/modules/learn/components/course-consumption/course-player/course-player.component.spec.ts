@@ -202,6 +202,27 @@ describe('CoursePlayerComponent', () => {
     component.ngOnDestroy();
   });
 
+  it('should set status of the content to 2 on component destroy if content type is H5P and previous status is 1', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    const contentId = 'do_11247355685983027213';
+    activatedRouteStub.changeParams({ courseId: 'do_112568388630880256155', batchId: '0125700335291842568' });
+    activatedRouteStub.queryParams = of({contentId: contentId});
+    const courseProgressService = TestBed.get(CourseProgressService);
+    const windowScrollService = TestBed.get(WindowScrollService);
+    const courseBatchService = TestBed.get(CourseBatchService);
+    spyOn(courseBatchService, 'getEnrolledBatchDetails')
+    .and.returnValue(of(CourseHierarchyGetMockResponse.h5pContentTestData.enrolledBatchDetails));
+    spyOn(courseConsumptionService, 'getCourseHierarchy')
+    .and.returnValue(of(CourseHierarchyGetMockResponse.h5pContentTestData.courseHierarchy));
+    spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
+    component.courseProgressData = CourseHierarchyGetMockResponse.courseProgressData;
+    component.ngOnInit();
+    component.playerOnDestroy({contentId: contentId});
+    expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
+    component.ngOnDestroy();
+  });
+
   it('should not play content if course is not enrolled', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
