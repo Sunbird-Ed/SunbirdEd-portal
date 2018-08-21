@@ -179,7 +179,7 @@
       host: hostURL,
       uid: 'anonymous',
       sid: window.uuidv1(),
-      channel: orgInfo.rootOrgId,
+      channel: orgInfo.hashTagId,
       env: 'public'
     }
   }
@@ -193,10 +193,10 @@
     var options = {
       context: {
         env: 'public',
-        channel: orgInfo.rootOrgId,
+        channel: orgInfo.hashTagId,
         uid: 'anonymous',
         cdata: [],
-        rollup: getRollupData([orgInfo.rootOrgId])
+        rollup: getRollupData([orgInfo.hashTagId])
       },
       object: dialcode ? {
         id: dialcode,
@@ -204,7 +204,7 @@
         ver: '1.0',
         rollup: {}
       } : {},
-      tags: [orgInfo.rootOrgId]
+      tags: [orgInfo.hashTagId]
     };
     var edata = {
       type: 'view',
