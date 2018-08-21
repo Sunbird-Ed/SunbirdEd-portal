@@ -71,6 +71,7 @@ describe('DataDrivenFilterComponent', () => {
     const formService = TestBed.get(FormService);
     const cacheService = TestBed.get(CacheService);
     component.formFieldProperties = mockData.mockRes.formConfigData;
+    spyOn(component.dataDrivenFilter, 'emit').and.returnValue(mockData.mockRes.formConfigData);
     spyOn(cacheService, 'exists').and.returnValue(false);
     spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
     spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.mockRes.formConfigData));
@@ -78,6 +79,7 @@ describe('DataDrivenFilterComponent', () => {
     component.fetchFilterMetaData();
     fixture.detectChanges();
     expect(component.formService.getFormConfig).toHaveBeenCalled();
+    expect(component.dataDrivenFilter.emit).toHaveBeenCalledWith(mockData.mockRes.formConfigData);
   });
   it('should get meta data from framework service and handle error from formconfig service', () => {
     const frameworkService = TestBed.get(FrameworkService);
@@ -101,6 +103,7 @@ describe('DataDrivenFilterComponent', () => {
     const formService = TestBed.get(FormService);
     component.formFieldProperties = mockData.mockRes.formConfigData;
     cacheService.set(component.filterType + component.formAction, mockData.mockRes.formConfigData);
+    spyOn(component.dataDrivenFilter, 'emit').and.returnValue(mockData.mockRes.formConfigData);
     spyOn(cacheService, 'get').and.returnValue(mockData.mockRes.formConfigData);
     spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
     frameworkService._frameworkData$.next({ frameworkdata: mockData.mockRes.frameworkData });
@@ -109,6 +112,7 @@ describe('DataDrivenFilterComponent', () => {
     expect(component.formFieldProperties).toEqual(mockData.mockRes.formConfigData);
     expect(component.filtersDetails).toBeDefined();
     expect(component.filtersDetails).toEqual(component.formFieldProperties);
+    expect(component.dataDrivenFilter.emit).toHaveBeenCalledWith(mockData.mockRes.formConfigData);
   });
   it('should return proper error object if framework service returns error', () => {
     const frameworkService = TestBed.get(FrameworkService);

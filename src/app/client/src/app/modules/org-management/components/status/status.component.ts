@@ -32,6 +32,8 @@ export class StatusComponent implements OnInit, OnDestroy {
 * Contains process id
 */
   processId: string;
+
+  isProcessCompleted: boolean;
   /**
 * To show toaster(error, success etc) after any API calls
 */
@@ -130,8 +132,14 @@ export class StatusComponent implements OnInit, OnDestroy {
           (apiResponse: ServerResponse) => {
             this.showLoader = false;
             this.statusResponse = apiResponse.result.response[0];
-            this.processId = this.statusResponse.processId;
-            this.toasterService.success(this.resourceService.messages.smsg.m0032);
+            if (this.statusResponse.status && (this.statusResponse.status === 'COMPLETED')) {
+              this.isProcessCompleted = true;
+              this.processId = this.statusResponse.processId;
+              this.toasterService.success(this.resourceService.messages.smsg.m0032);
+            } else {
+              this.isProcessCompleted = false;
+              this.toasterService.error(this.resourceService.messages.imsg.m0040);
+            }
           }, err => {
             this.showLoader = false;
             const errMsg = err.error.params.errmsg ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0051;
