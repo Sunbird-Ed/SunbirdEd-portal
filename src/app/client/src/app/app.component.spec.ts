@@ -131,7 +131,7 @@ describe('AppComponent', () => {
     component.ngOnInit();
     expect(component.version).toEqual('1.9.0');
   }));
-  xit('Should display the tenant logo if user is not logged in', () => {
+  it('Should display the tenant logo if user is not logged in', () => {
     const userService = TestBed.get(UserService);
     const orgService = TestBed.get(OrgDetailsService);
     spyOn(orgService, 'getOrgDetails').and.callFake(() => observableOf(mockData.tenantResponse));
