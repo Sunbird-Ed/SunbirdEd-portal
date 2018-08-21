@@ -4,7 +4,7 @@
     <div class="ui grid margin-bottom-0">
       <div class="twelve wide column">
         <app-prominent-filter appTelemetryInteract [telemetryInteractEdata]="filterIntractEdata" *ngIf="filterType" [filterEnv]="filterType"  [ignoreQuery]="['key', 'language']" [redirectUrl]="redirectUrl"
-       [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId"></app-prominent-filter>
+       [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter>
       </div>
     </div>
     <div *ngFor="let section of caraouselData">

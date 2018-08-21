@@ -36,7 +36,7 @@ describe('ExploreComponent', () => {
   }
   const fakeActivatedRoute = {
     'params': observableOf({ pageNumber: '1' }),
-    'queryParams': observableOf({ subject: ['English'], sortType: 'desc', sort_by: 'lastUpdatedOn' }),
+    'queryParams': observableOf({ subject: ['English']}),
     snapshot: {
       params: {
         slug: 'ap'
@@ -72,10 +72,10 @@ describe('ExploreComponent', () => {
     const pageSectionService = TestBed.get(PageApiService);
     const orgManagementService = TestBed.get(OrgDetailsService);
     const learnerService = TestBed.get(LearnerService);
+    component.prominentFilters['board'] = ['CBSE'];
+    spyOn(component, 'populatePageData').and.callThrough();
     spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.successData.result.response));
     component.populatePageData();
-    expect(component.queryParams.sortType).toString();
-    expect(component.queryParams.sortType).toBe('desc');
     expect(component).toBeTruthy();
     expect(component.showLoader).toBeFalsy();
     expect(component.caraouselData).toBeDefined();
@@ -87,8 +87,6 @@ describe('ExploreComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.secondData.result.response));
     component.populatePageData();
-    expect(component.queryParams.sortType).toString();
-    expect(component.queryParams.sortType).toBe('desc');
     expect(component).toBeTruthy();
     expect(component.showLoader).toBeFalsy();
     expect(component.caraouselData).toBeDefined();
@@ -100,8 +98,6 @@ describe('ExploreComponent', () => {
     const orgManagementService = TestBed.get(OrgDetailsService);
     spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.thirdData.result.response));
     component.populatePageData();
-    expect(component.queryParams.sortType).toString();
-    expect(component.queryParams.sortType).toBe('desc');
     expect(component).toBeTruthy();
     expect(component.showLoader).toBeFalsy();
     expect(component.caraouselData).toBeDefined();
@@ -117,8 +113,6 @@ describe('ExploreComponent', () => {
     spyOn(pageSectionService, 'getPageData').and.callFake(() => observableThrowError(Response.error));
     spyOn(toasterService, 'error').and.callThrough();
     component.populatePageData();
-    expect(component.queryParams.sortType).toString();
-    expect(component.queryParams.sortType).toBe('desc');
     expect(component.showLoader).toBeFalsy();
     expect(component.noResult).toBeTruthy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0004);
@@ -129,5 +123,46 @@ describe('ExploreComponent', () => {
     spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
+  it('should call getFilters with data ', () => {
+    const service = TestBed.get(PageApiService);
+    const filters = Response.filters;
+    component.prominentFilters = {};
+    component.hashTagId = '0123166367624478721';
+    const requestParams = Response.requestParam2;
+    spyOn(component, 'getQueryParams').and.callThrough();
+    spyOn(component, 'populatePageData').and.callThrough();
+    spyOn(service, 'getPageData').and.callThrough();
+    component.getFilters(filters);
+    expect(component.getQueryParams).toHaveBeenCalled();
+    expect(component.prominentFilters['board']).toBe('CBSE');
+    expect(component.populatePageData).toHaveBeenCalled();
+    expect(service.getPageData).toHaveBeenCalledWith(requestParams);
+  });
+  it('should call getFilters with no data', () => {
+    const filters = [];
+    component.queryParams = {};
+    const service = TestBed.get(PageApiService);
+    component.hashTagId = '0123166367624478721';
+    const requestParams = Response.requestParam;
+    spyOn(component, 'getQueryParams').and.callThrough();
+    spyOn(component, 'populatePageData').and.callThrough();
+    spyOn(service, 'getPageData').and.callThrough();
+    component.getFilters(filters);
+    expect(component.getQueryParams).toHaveBeenCalled();
+    expect(component.populatePageData).toHaveBeenCalled();
+    expect(service.getPageData).toHaveBeenCalledWith(requestParams);
+  });
+  it('should call populatePageData with datwhen filter applied', () => {
+    component.filters = {subject: ['English'], board: ['NCERT', 'ICSE']};
+    component.prominentFilters['board'] = 'CBSE';
+    const service = TestBed.get(PageApiService);
+    component.hashTagId = '0123166367624478721';
+    const requestParams = Response.requestParam3;
+    spyOn(component, 'populatePageData').and.callThrough();
+    spyOn(service, 'getPageData').and.callThrough();
+    component.populatePageData();
+    expect(component.populatePageData).toHaveBeenCalled();
+    expect(service.getPageData).toHaveBeenCalledWith(requestParams);
   });
 });
