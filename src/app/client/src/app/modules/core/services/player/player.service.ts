@@ -82,6 +82,9 @@ export class PlayerService {
     configuration.context.sid = this.userService.sessionId;
     configuration.context.uid = this.userService.userid;
     configuration.context.channel = this.userService.channel;
+    configuration.context.pdata.ver = (<HTMLInputElement>document.getElementById('buildNumber')) &&
+    (<HTMLInputElement>document.getElementById('buildNumber')).value ?
+    (<HTMLInputElement>document.getElementById('buildNumber')).value.slice(0, 5) : '1.0';
     if (_.isUndefined(contentDetails.courseId)) {
       configuration.context.dims = this.userService.dims;
     } else {

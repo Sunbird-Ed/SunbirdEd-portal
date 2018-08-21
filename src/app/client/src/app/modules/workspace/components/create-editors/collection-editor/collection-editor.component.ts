@@ -196,7 +196,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       contentId: this.contentId,
       pdata: {
         id: this.userService.appId,
-        ver: '1.0',
+        ver: this.buildNumber.slice(0, 5),
         pid: 'sunbird-portal'
       },
       tags: this.userService.dims,
