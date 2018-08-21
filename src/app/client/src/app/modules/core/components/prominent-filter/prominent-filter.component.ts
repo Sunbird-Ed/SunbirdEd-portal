@@ -229,7 +229,9 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   isObject(val) { return typeof val === 'object'; }
 
   applyFilters() {
-    if (!(_.isEqual(this.formInputData, this.queryParams))) {
+    if (_.isEqual(this.formInputData, this.queryParams)) {
+      this.isFiltered = true;
+    } else {
         this.isFiltered = false;
         this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
         let queryParams = {};
@@ -247,8 +249,6 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
         this.router.navigate([this.redirectUrl], {
             queryParams: queryParams
         });
-    } else {
-        this.isFiltered = true;
     }
 }
 
