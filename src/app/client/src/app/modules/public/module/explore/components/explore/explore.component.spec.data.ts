@@ -182,11 +182,20 @@ export const Response = {
         'index': 1,
         'range': [
           {
+            'identifier': 'ncf_board_ncert',
+            'code': 'ncert',
+            'name': 'NCERT',
+            'description': '',
+            'index': 2,
+            'category': 'board',
+            'status': 'Live'
+          },
+          {
             'identifier': 'ncf_board_cbse',
             'code': 'cbse',
             'name': 'CBSE',
             'description': '',
-            'index': 2,
+            'index': 1,
             'category': 'board',
             'status': 'Live'
           },
