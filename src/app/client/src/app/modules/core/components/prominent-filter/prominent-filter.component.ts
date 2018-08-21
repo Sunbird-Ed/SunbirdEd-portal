@@ -71,7 +71,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   isShowFilterPlaceholder = true;
   contentTypes: any;
   frameworkDataSubscription: Subscription;
-  isFiltered = false;
+  isFiltered = true;
   /**
    *
     * Constructor to create injected service(s) object
@@ -229,12 +229,8 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   isObject(val) { return typeof val === 'object'; }
 
   applyFilters() {
-    if (_.isEqual(this.formInputData, this.queryParams)) {
-        this.isFiltered = true;
-    } else {
+    if (!(_.isEqual(this.formInputData, this.queryParams))) {
         this.isFiltered = false;
-    }
-    if (!this.isFiltered) {
         this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
         let queryParams = {};
         _.forIn(this.queryParams, (value, key) => {
@@ -251,6 +247,8 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
         this.router.navigate([this.redirectUrl], {
             queryParams: queryParams
         });
+    } else {
+        this.isFiltered = true;
     }
 }
 

@@ -71,10 +71,7 @@ describe('ProminentFilterComponent', () => {
 
   it('Filter results should not change on call of  apply filters for same params', () => {
     const router = TestBed.get(Router);
-    component.formInputData = {
-      'gradeLevel': ['Grade 1', 'Grade 2'], 'medium': ['English'],
-    };
-    const queryParams = { 'gradeLevel': ['Grade 1', 'Grade 2'], 'medium': ['English'] };
+    const queryParams = component.formInputData = { 'gradeLevel': ['Grade 1', 'Grade 2'], 'medium': ['English'] };
     component.applyFilters();
     expect(component.isFiltered).toBeFalsy();
     expect(router.navigate).toHaveBeenCalledWith([undefined], { queryParams: queryParams });
