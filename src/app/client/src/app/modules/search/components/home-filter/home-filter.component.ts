@@ -11,7 +11,7 @@ import * as _ from 'lodash';
   styleUrls: ['./home-filter.component.css']
 })
 
-export class HomeFilterComponent implements OnInit, OnDestroy {
+export class HomeFilterComponent implements OnInit {
   /**
    * To get url, app configs
    */
@@ -37,7 +37,7 @@ export class HomeFilterComponent implements OnInit, OnDestroy {
   queryParams: IHomeQueryParams;
   showFilter = false;
   isAccordianOpen = false;
-  conceptDataSubscription: Subscription;
+  showConcepts = false;
 
   /**
     * Constructor to create injected service(s) object
@@ -128,24 +128,20 @@ export class HomeFilterComponent implements OnInit, OnDestroy {
     this.queryParams = { ...this.config.dropDownConfig.FILTER.SEARCH.All.DROPDOWN, ...this.queryParams };
   }
   ngOnInit() {
-    this.conceptDataSubscription = this.conceptPickerService.conceptData$.subscribe(conceptData => {
-      if (conceptData && !conceptData.err) {
-        this.selectedConcepts = conceptData.data;
-        this.activatedRoute.queryParams.subscribe((params) => {
-          this.queryParams = { ...params };
-          _.forIn(params, (value, key) => {
-            if (typeof value === 'string' && key !== 'key') {
-              this.queryParams[key] = [value];
-            }
-          });
-          this.setFilters();
-        });
-      }
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.conceptPickerService.conceptData$.subscribe(conceptData => {
+        if (conceptData && !conceptData.err) {
+          this.selectedConcepts = conceptData.data;
+          this.showConcepts = true;
+        }
+      });
+      this.queryParams = { ...params };
+      _.forIn(params, (value, key) => {
+        if (typeof value === 'string' && key !== 'key') {
+          this.queryParams[key] = [value];
+        }
+      });
+      this.setFilters();
     });
-  }
-  ngOnDestroy() {
-    if (this.conceptDataSubscription) {
-      this.conceptDataSubscription.unsubscribe();
-    }
   }
 }

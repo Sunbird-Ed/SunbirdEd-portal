@@ -49,7 +49,7 @@
                   <sui-select-option *ngFor="let subject of searchSubjects" [value]="subject"> </sui-select-option>
                 </sui-multi-select>
               </div>
-              <div class="two wide column" *ngIf='queryParams != undefined'>
+              <div class="two wide column" *ngIf='queryParams != undefined && showConcepts'>
                 <div class="field">
                   <form class="conceptSelector ui form">
                     <app-concept-picker [selectedConcepts]="queryParams.Concepts" (Concepts)="concepts($event)"></app-concept-picker>

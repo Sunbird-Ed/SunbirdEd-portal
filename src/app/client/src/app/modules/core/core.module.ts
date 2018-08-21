@@ -6,7 +6,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
 import {
-  UserService, LearnerService, PermissionService, AnnouncementService, ConceptPickerService,
+  LearnerService, AnnouncementService, ConceptPickerService,
   BadgesService, ContentService, CoursesService, PageApiService,
   TenantService, FrameworkService, FormService, PlayerService, SearchService,
   CopyContentService, BreadcrumbsService, OrgDetailsService
@@ -18,7 +18,7 @@ import {
 } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
-import { WebExtensionModule } from 'sunbird-web-extension';
+import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { TelemetryModule } from '@sunbird/telemetry';
 @NgModule({
   imports: [
@@ -42,8 +42,8 @@ export class CoreModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: CoreModule,
-      providers: [LearnerService, UserService, TenantService, SearchService, CopyContentService,
-        PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
+      providers: [LearnerService, TenantService, SearchService, CopyContentService,
+        AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
         AuthGuard, FrameworkService, FormService, CacheService,
         ConceptPickerService, BreadcrumbsService, PlayerService, OrgDetailsService]
     };

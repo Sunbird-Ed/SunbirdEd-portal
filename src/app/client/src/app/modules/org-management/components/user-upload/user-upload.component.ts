@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { UserService } from '@sunbird/core';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 /**
  * This component helps to upload bulk users data (csv file)
@@ -183,7 +183,8 @@ export class UserUploadComponent implements OnInit, OnDestroy {
       fieldSeparator: ',',
       quoteStrings: '"',
       decimalseparator: '.',
-      showLabels: true
+      showLabels: true,
+      useBom: false
     };
     const csv = new Angular2Csv(this.config.appConfig.ADMIN_UPLOAD.SAMPLE_USER_CSV, 'Sample_Users', options);
   }

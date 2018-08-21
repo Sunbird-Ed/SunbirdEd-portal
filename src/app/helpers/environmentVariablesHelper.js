@@ -43,7 +43,8 @@ let envVariables = {
   TELEMETRY_SERVICE_LOCAL_URL: env.sunbird_telemetry_service_local_url || 'http://telemetry-service:9001/',
   PORTAL_API_CACHE_TTL: env.sunbird_api_response_cache_ttl || '600',
   SUNBIRD_EXTCONT_WHITELISTED_DOMAINS: env.sunbird_extcont_whitelisted_domains || 'youtube.com,youtu.be',
-  TENANT_CDN_URL: env.sunbird_tenant_cdn_url || ''
+  TENANT_CDN_URL: env.sunbird_tenant_cdn_url || '',
+  CLOUD_STORAGE_URLS: env.sunbird_cloud_storage_urls
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')

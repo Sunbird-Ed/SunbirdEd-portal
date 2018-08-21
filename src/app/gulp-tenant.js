@@ -78,9 +78,9 @@ gulp.task('prefixCdnUrlForHtmlFiles', function () {
     .pipe(gulp.dest(paths.dist));
 });
 
-// //css reference changes
+// //css reference changes in html and styles
 gulp.task('prefixCdnUrlForCssFiles', function() {
-  return gulp.src(paths.distCSS)
+  return gulp.src([paths.distCSS,paths.distHtml])
   .pipe(urlPrefixer.css({
     prefix: cdnTargetFolder
   }))
@@ -137,7 +137,7 @@ gulp.task('replaceindexPageText', function() {
 //upload to cdn store
 gulp.task('uploadAppToCdn', function () {
   if(cdnServiceCredentials.cdnServiceProvider == 'azure'){
-    if(!cdnServiceCredentials.accountName || cdnServiceCredentials.accessKey){
+    if(!cdnServiceCredentials.accountName || !cdnServiceCredentials.accessKey){
       return;
     }
     return gulp.src([distFolderName + '/' + tenantName + '/**/*'], {

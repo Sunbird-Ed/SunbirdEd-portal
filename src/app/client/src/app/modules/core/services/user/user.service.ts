@@ -11,7 +11,9 @@ import { PublicDataService } from './../public-data/public-data.service';
  * Service to fetch user details from server
  *
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UserService {
   /**
    * Contains user id
@@ -62,9 +64,9 @@ export class UserService {
    */
   private _dims: Array<string> = [];
   /**
-   * Reference of Ekstep_env
+   * Reference of cloud Storage Urls
    */
-  private _env: string;
+  private _cloudStorageUrls: string[];
   private _authenticated: boolean;
   public anonymousSid: string;
   /**
@@ -104,7 +106,7 @@ export class UserService {
     }
     try {
       this._appId = (<HTMLInputElement>document.getElementById('appId')).value;
-      this._env = (<HTMLInputElement>document.getElementById('ekstepEnv')).value;
+      this._cloudStorageUrls = (<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(',');
     } catch (error) {
     }
 
@@ -152,10 +154,10 @@ export class UserService {
     return this._appId;
   }
   /**
-   * get method to fetch Ekstep_env.
+   * get method to fetch cloudStorageUrls.
    */
-  get env(): string {
-    return this._env;
+  get cloudStorageUrls(): string[] {
+    return this._cloudStorageUrls;
   }
 
   public initialize(loggedIn) {

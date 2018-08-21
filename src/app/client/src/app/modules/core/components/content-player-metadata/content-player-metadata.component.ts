@@ -59,7 +59,7 @@ export class ContentPlayerMetadataComponent implements OnInit, OnDestroy {
           this.conceptNames = _.map(this.filteredConcepts, 'name');
         }
         this.metadata.concepts = this.conceptNames.join(', ');
-      } else if (data && data.err) {
+      } else {
         this.conceptNames = _.map(this.metadata.concepts, 'name');
         this.metadata.concepts = this.conceptNames.join(', ');
       }
