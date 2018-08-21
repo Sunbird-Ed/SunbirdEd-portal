@@ -1,4 +1,4 @@
-<div class="ui grid padded">
+<div class="ui grid">
     <div class="seven wide column padding-top-none">
       <div class="ui fluid icon input left action" id="search-input-container">
         <div class="searchfilterinput ui search">
@@ -12,13 +12,14 @@
         </div>
       </div>
     </div>
+    <div class="one wide column"></div>
     <div class="two wide column padding-top-10" id="showFilterButton">
       <span class="browse item cursor-pointer" suiPopup [popupPlacement]="position" [popupTemplate]="popupTemplate" popupTrigger="outsideClick">
         {{resourceService?.frmelmnts?.lbl?.showFilters}}
         <i class="dropdown icon"></i>
       </span>
     </div>
-    <div class="three wide column padding-top-5">
+    <div class="two wide column padding-top-5">
       <div class="twelve wide column">
         <div class="field">
           <div class="content dropdown-content">
