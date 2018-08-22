@@ -226,7 +226,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     if (this.type.toLowerCase() === 'textbook') {
       window.config.plugins.push({
         id: 'org.ekstep.suggestcontent',
-        ver: '1.0',
+        ver: '1.1',
         type: 'plugin'
       });
       window.config.nodeDisplayCriteria = {
