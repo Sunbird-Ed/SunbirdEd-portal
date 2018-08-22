@@ -122,6 +122,20 @@ describe('AppComponent', () => {
     expect(document.title).toBe(mockData.tenantSuccess.result.titleName);
     expect(document.querySelector).toHaveBeenCalled();
   });
+  it('Should display the tenant logo if user is not logged in', () => {
+    const userService = TestBed.get(UserService);
+    const orgService = TestBed.get(OrgDetailsService);
+    const slug = 'rj';
+    component.initializeAnonymousSession(slug);
+    spyOn(document, 'getElementById').and.callFake(() => {
+      return {
+          value: 'deviceId'
+      };
+    });
+    const service = TestBed.get(TenantService);
+    service.getTenantInfo('rj');
+    expect(document.getElementById).toHaveBeenCalledWith('deviceId');
+  });
   it('should set the version number', async(() => {
     spyOn(document, 'getElementById').and.callFake(() => {
       return {
@@ -131,16 +145,5 @@ describe('AppComponent', () => {
     component.ngOnInit();
     expect(component.version).toEqual('1.9.0');
   }));
-  it('Should display the tenant logo if user is not logged in', () => {
-    const userService = TestBed.get(UserService);
-    const orgService = TestBed.get(OrgDetailsService);
-    spyOn(orgService, 'getOrgDetails').and.callFake(() => observableOf(mockData.tenantResponse));
-    const slug = 'rj';
-    component.initializeAnonymousSession(slug);
-    spyOn(document, 'title').and.returnValue('true');
-    const service = TestBed.get(TenantService);
-    spyOn(service, 'get').and.returnValue(observableOf(mockData.tenantResponse));
-    service.getTenantInfo('rj');
-    expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
-  });
+
 });
