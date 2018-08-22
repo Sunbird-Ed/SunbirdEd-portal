@@ -68,6 +68,15 @@ describe('ProminentFilterComponent', () => {
     component.applyFilters();
     expect(router.navigate).toHaveBeenCalledWith([undefined], { queryParams: queryParams });
   });
+
+  it('Filter results should not change on call of  apply filters for same params', () => {
+    const router = TestBed.get(Router);
+    const queryParams = component.formInputData = { 'gradeLevel': ['Grade 1', 'Grade 2'], 'medium': ['English'] };
+    component.applyFilters();
+    expect(component.isFiltered).toBeFalsy();
+    expect(router.navigate).toHaveBeenCalledWith([undefined], { queryParams: queryParams });
+  });
+
   it('should get meta data from framework service and call formconfig service if cache not exists', () => {
     const frameworkService = TestBed.get(FrameworkService);
     const formService = TestBed.get(FormService);
