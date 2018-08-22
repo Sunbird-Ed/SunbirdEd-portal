@@ -10,7 +10,7 @@
     <div *ngIf="showLoader">
       <app-loader></app-loader>
     </div>
-    <form *ngIf="!processId && !showLoader" class="ui form" id="statusForm" [formGroup]="statusForm">
+    <form  *ngIf="!isProcessCompleted && !showLoader" class="ui form" id="statusForm" [formGroup]="statusForm">
       <h4>{{resourceService?.frmelmnts?.instn?.t0011}}</h4>
       <div class="ui grid">
         <div class="six wide column">
@@ -23,7 +23,7 @@
         </div>
       </div>
     </form>
-    <div *ngIf="processId">
+    <div *ngIf="isProcessCompleted">
       <div class="ui label">
         <h5>{{resourceService?.frmelmnts?.lbl?.processid}}: {{processId}}</h5>
       </div>
@@ -119,7 +119,7 @@
   </div>
   <div class="actions">
     <div class="ui grid">
-      <div *ngIf="!processId" class="twelve wide column">
+      <div *ngIf="!isProcessCompleted" class="twelve wide column">
         <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="checkStatusInteractEdata" [disabled]="!statusForm.value.processId"  class="ui primary left floated button"
           (click)="getBulkUploadStatus(statusForm.value)">
           {{resourceService?.frmelmnts?.btn?.chksts}}</button>

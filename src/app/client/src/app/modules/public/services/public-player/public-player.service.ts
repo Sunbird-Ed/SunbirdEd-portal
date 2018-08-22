@@ -65,6 +65,9 @@ export class PublicPlayerService {
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = this.userService.anonymousSid;
     configuration.context.uid = 'anonymous';
+    configuration.context.pdata.ver = (<HTMLInputElement>document.getElementById('buildNumber')) &&
+    (<HTMLInputElement>document.getElementById('buildNumber')).value ?
+    (<HTMLInputElement>document.getElementById('buildNumber')).value.slice(0, 5) : '1.0';
     configuration.context.channel = _.get(this.orgDetailsService.orgDetails, 'hashTagId');
     configuration.context.pdata.id = this.userService.appId;
     configuration.metadata = contentDetails.contentData;

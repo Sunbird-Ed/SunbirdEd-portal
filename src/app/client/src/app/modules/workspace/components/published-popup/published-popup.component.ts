@@ -4,6 +4,8 @@ import * as _ from 'lodash';
 import { ContentService, UserService } from '@sunbird/core';
 import { ResourceService, ConfigService, ToasterService, ServerResponse,
   RouterNavigationService, NavigationHelperService } from '@sunbird/shared';
+import { WorkSpaceService } from './../../services';
+
 /**
  * This component displays the checklist for publish content for reviewer and
  * calls the Publish API to publish the content
@@ -77,6 +79,10 @@ export class PublishedPopupComponent implements OnInit {
    * To close url
   */
   closeUrl: any;
+  showDefaultConfig = false;
+  showloader = true;
+  publishCheckListData: any;
+  showModal = false;
   /**
   * To get user profile of logged-in user
   */
@@ -102,7 +108,9 @@ export class PublishedPopupComponent implements OnInit {
     configService: ConfigService,
     routerNavigationService: RouterNavigationService,
     contentService: ContentService,
-    userService: UserService, public navigationHelperService: NavigationHelperService) {
+    userService: UserService,
+    public navigationHelperService: NavigationHelperService,
+    public workSpaceService: WorkSpaceService) {
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
@@ -132,7 +140,7 @@ export class PublishedPopupComponent implements OnInit {
    * If both the validation is passed it enables the request changes button
    */
   validateModal() {
-    if (this.inputFields && this.inputFields.length === this.reasons.length) {
+    if ((this.inputFields && this.inputFields.length === this.reasons.length) || this.showDefaultConfig) {
       this.isDisabled = false;
     } else {
       this.isDisabled = true;
@@ -157,16 +165,16 @@ export class PublishedPopupComponent implements OnInit {
       data: requestBody
     };
     this.contentService.post(option).subscribe(response => {
-      this.modal.deny();
       this.toasterService.success(this.resourceService.messages.smsg.m0004);
+      this.modal.deny();
       if (this.closeUrl.url.includes('flagreviewer')) {
         this.route.navigate(['workspace/content/flagreviewer/1']);
       } else {
         this.route.navigate(['workspace/content/upForReview/1']);
       }
     }, (err) => {
-      this.modal.deny();
       this.toasterService.error(this.resourceService.messages.fmsg.m0019);
+      this.modal.deny();
       this.redirect();
     });
   }
@@ -175,8 +183,33 @@ export class PublishedPopupComponent implements OnInit {
    * Method to redirect to parent url
    */
   redirect() {
-   this.modal.deny();
    this.route.navigate(['../'], {relativeTo: this.activatedRoute});
+  }
+
+  getCheckListConfig() {
+    this.showDefaultConfig = false;
+    const formServiceInputParams = {
+      formType: 'content',
+      formAction: 'publishChecklist',
+      subType: 'resource'
+    };
+    this.workSpaceService.getCheckListData(formServiceInputParams).subscribe(
+      (data: ServerResponse) => {
+        if (data.result.form) {
+          this.showModal = true;
+          this.showloader = false;
+          this.publishCheckListData = data.result.form.data.fields[0];
+        } else {
+          this.showModal = true;
+          this.showloader = false;
+          this.showDefaultConfig = true;
+          this.validateModal();
+        }
+      },
+      (err: ServerResponse) => {
+        this.closeModalAfterError();
+      }
+    );
   }
 
   /**
@@ -188,9 +221,17 @@ export class PublishedPopupComponent implements OnInit {
         this.userId = userdata.userProfile.userId;
         this.activatedRoute.parent.params.subscribe((params) => {
           this.contentId = params.contentId;
+          this.getCheckListConfig();
         });
       }
     });
     this.closeUrl = this.navigationHelperService.getPreviousUrl();
+  }
+
+  closeModalAfterError() {
+    this.showModal = false;
+    this.showloader = false;
+    this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    this.redirect();
   }
 }

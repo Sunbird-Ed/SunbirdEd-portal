@@ -60,6 +60,9 @@ export class PageApiService {
             name: requestParam.name,
             filters: requestParam.filters,
             sort_by: requestParam.sort_by,
+            softConstraints: requestParam.softConstraints || { badgeAssertions: 1 },
+            mode: requestParam.mode,
+            exists: requestParam.exists
           }
         }
       };
