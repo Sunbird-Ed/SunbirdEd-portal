@@ -71,6 +71,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   isShowFilterPlaceholder = true;
   contentTypes: any;
   frameworkDataSubscription: Subscription;
+  isFiltered = true;
   /**
    *
     * Constructor to create injected service(s) object
@@ -228,21 +229,29 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   isObject(val) { return typeof val === 'object'; }
 
   applyFilters() {
-    this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
-    let queryParams = {};
-    _.forIn(this.queryParams, (value, key) => {
-      if (key === 'concepts') {
-        queryParams[key] = [];
-        value.forEach((conceptDetails) => {
-          queryParams[key].push(conceptDetails.identifier);
+    if (_.isEqual(this.formInputData, this.queryParams)) {
+      this.isFiltered = true;
+    } else {
+        this.isFiltered = false;
+        this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
+        let queryParams = {};
+        _.forIn(this.queryParams, (value, key) => {
+            if (key === 'concepts') {
+                queryParams[key] = [];
+                value.forEach((conceptDetails) => {
+                    queryParams[key].push(conceptDetails.identifier);
+                });
+            } else {
+                queryParams[key] = value;
+            }
         });
-      } else {
-        queryParams[key] = value;
-      }
-    });
-    queryParams = _.pickBy(queryParams, value => _.isArray(value) && value.length > 0);
-    this.router.navigate([this.redirectUrl], { queryParams: queryParams });
-  }
+        queryParams = _.pickBy(queryParams, value => _.isArray(value) && value.length > 0);
+        this.router.navigate([this.redirectUrl], {
+            queryParams: queryParams
+        });
+    }
+}
+
   showField(allowedRoles) {
     if (allowedRoles) {
       return this.permissionService.checkRolesPermissions(allowedRoles);

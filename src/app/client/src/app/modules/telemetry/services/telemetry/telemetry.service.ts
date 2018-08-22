@@ -177,7 +177,7 @@ export class TelemetryService {
       options: {
         context: this.getEventContext(eventInput),
         object: this.getEventObject(eventInput),
-        tags: this.context.userOrgDetails.organisationIds || []
+        tags: _.compact(this.context.userOrgDetails.organisationIds)
       }
     };
     return event;

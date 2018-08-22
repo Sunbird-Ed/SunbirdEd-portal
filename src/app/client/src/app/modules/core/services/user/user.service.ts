@@ -172,6 +172,9 @@ export class UserService {
   private setUserProfile(res: ServerResponse) {
     const profileData = res.result.response;
     const orgRoleMap = {};
+    const hashTagIds = [];
+    this._channel = _.get(profileData, 'rootOrg.hashTagId');
+    hashTagIds.push(this._channel);
     let organisationIds = [];
     profileData.rootOrgAdmin = false;
     let userRoles = profileData.roles;
@@ -189,18 +192,23 @@ export class UserService {
         if (org.organisationId) {
           organisationIds.push(org.organisationId);
         }
+        if (org.hashTagId) {
+          hashTagIds.push(org.hashTagId);
+        } else if (org.organisationId) {
+          hashTagIds.push(org.organisationId);
+        }
       });
     }
     if (profileData.rootOrgId) {
       organisationIds.push(profileData.rootOrgId);
     }
-    this._channel = _.get(profileData, 'rootOrg.hashTagId');
     this._dims = _.concat(organisationIds, this.channel);
     organisationIds = _.uniq(organisationIds);
     this._userProfile = profileData;
     this._userProfile.userRoles = userRoles;
     this._userProfile.orgRoleMap = orgRoleMap;
     this._userProfile.organisationIds = organisationIds;
+    this._userProfile.hashTagIds = _.uniq(hashTagIds);
     this._userid = this._userProfile.userId;
     this._rootOrgId = this._userProfile.rootOrgId;
     this._hashTagId = this._userProfile.rootOrg.hashTagId;
