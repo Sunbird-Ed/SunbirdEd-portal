@@ -12,10 +12,10 @@
             <div class="item " *ngFor="let skill of userProfile.skills | slice:0:limit">
                 <!-- | orderBy : '-addedAt' | limitTo:profileCtrl.limit -->
                 <div class="ui label">
-                    {{skill?.skillName}}
+                    {{skill?.skillName}} 
                     <div class="detail">
-                        <span *ngIf="skill.endorsementcount !== 0">|&nbsp;</span>
-                        <span *ngIf="skill.endorsementcount !== 0">{{skill?.endorsementcount}}</span>
+                        <span *ngIf="skill.endorsementCount !== 0">|&nbsp;</span>
+                        <span *ngIf="skill.endorsementCount !== 0">{{skill?.endorsementcount}}</span>
                     </div>
                 </div>
             </div>

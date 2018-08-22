@@ -190,19 +190,20 @@ export class UserProfileComponent implements OnInit {
     this.disableEndorsementButton = true;
     const requestBody = {
       request: {
-        skillName: [skillName],
-        endorsedUserId: this.userId
+        skillName: skillName,
+        endorsedUserId: this.userId,
+        userId: this.loggedInUserId
       }
     };
     const option = {
-      url: this.configService.urlConFig.URLS.USER.ADD_SKILLS,
+      url: this.configService.urlConFig.URLS.USER.ENDORSE_SKILLS,
       data: requestBody
     };
     this.learnerService.post(option).subscribe(response => {
       _.each(this.userDetails.skills, (skill) => {
         if (skill.skillName === skillName) {
           skill.isEndorsable = true;
-          skill.endorsementcount = skill.endorsementcount + 1;
+          skill.endorsementCount = skill.endorsementCount + 1;
         }
       });
       this.disableEndorsementButton = false;

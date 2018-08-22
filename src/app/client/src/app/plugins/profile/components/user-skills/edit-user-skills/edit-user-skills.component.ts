@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { ResourceService, IUserProfile, IUserData, ToasterService, WindowScrollService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
@@ -12,7 +12,7 @@ declare var jQuery: any;
   templateUrl: './edit-user-skills.component.html',
   styleUrls: ['./edit-user-skills.component.css']
 })
-export class EditUserSkillsComponent implements OnInit, OnDestroy {
+export class EditUserSkillsComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('modal') modal;
   /**
    * Reference of User Profile interface
@@ -22,10 +22,12 @@ export class EditUserSkillsComponent implements OnInit, OnDestroy {
    * Used for binding
    */
   skill: any;
+
+  skillsPrefillValues: string;
   /**
    * Contains skills data of the user
    */
-  profileData: any;
+  skillsMasterData: any;
   cancelAddSKillsInteractEdata: IInteractEventEdata;
   finishAddSkillsInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
@@ -37,21 +39,27 @@ export class EditUserSkillsComponent implements OnInit, OnDestroy {
    * Also invokes user service to fetch user profile data
    */
   ngOnInit() {
-    // this.windowScrollService.smoothScroll('skills');
     this.profileService.getSkills().subscribe((data) => {
       if (data) {
-        this.profileData = data.result;
+        this.skillsMasterData = data.result.skills;
       }
     });
     this.userProfile = this.userService.userProfile;
+    if ( this.userService.userProfile.skills && this.userService.userProfile.skills.length ) {
+      this.skillsPrefillValues = _.map(this.userService.userProfile.skills, 'skillName').toString();
+    }
+     // prefill existing values in input form
+    $('#skillinput').val(this.skillsPrefillValues);
     this.setInteractEventData();
-    setTimeout(() => {
-      $('#addSkill').dropdown({
-        allowAdditions: true,
-        hideAdditions: false
-      });
-    }, 1000);
   }
+  ngAfterViewInit() {
+    $('#addSkill').dropdown({
+      allowAdditions: true,
+      hideAdditions: false,
+      forceSelection: false
+    });
+  }
+
   /**
    * This method is used to add new skills
    */
@@ -59,8 +67,8 @@ export class EditUserSkillsComponent implements OnInit, OnDestroy {
     let skills = [];
     skills = $('#addSkill').dropdown('get value').split(',');
     const req = {
-      skillName: skills,
-      endorsedUserId: this.userService.userid
+      skills: skills,
+      userId: this.userService.userid
     };
     if (skills !== undefined) {
       this.profileService.add(req).subscribe(res => {

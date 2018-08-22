@@ -46,9 +46,7 @@ describe('EditUserSkillsComponent', () => {
 
   it('should create', () => {
     const userService = TestBed.get(UserService);
-    const windowScrollService = TestBed.get(WindowScrollService);
     const offsetTop = 'skills';
-    spyOn(windowScrollService, 'smoothScroll').and.returnValue(null);
     userService._userData$.next({ err: null, userProfile: mockRes.data.userProfile });
     component.ngOnInit();
     expect(component).toBeTruthy();

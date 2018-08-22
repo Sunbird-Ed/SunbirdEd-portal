@@ -22,7 +22,8 @@
       "GET_PROFILE": "user/v1/read/",
       "TENANT_LOGO": "get/tenant/logo",
       "SKILLS": "data/v1/skills",
-      "ADD_SKILLS": "user/v1/skill/add",
+      "ENDORSE_SKILLS": "user/v1/skill/endorse/add",
+      "ADD_SKILLS": "user/v1/skill/update",
       "USER_SKILLS": "user/v1/skill/read",
       "UPDATE_PROF_VIS_FIELDS": "user/v1/profile/visibility"
     },
