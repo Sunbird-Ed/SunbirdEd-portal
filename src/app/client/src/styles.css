@@ -470,11 +470,11 @@ a:hover {
   font-family: 'sunbirdregularfont';
   color: #333333;
 }
-.padding-top-circular-human-icon {
+.primary-header-avatar {
   padding-top: 0.9rem;
   z-index: 88;
 }
-.alarm-icon-header {
+.primary-header-alarm-icon {
   padding-top: 1.5rem;
 }
 .ui.divider.header-search-filters-divider {
@@ -1825,6 +1825,7 @@ ul.fancytree-container li {
 .searchinput {
   width: 600px;
 }
+
 @media only screen and (max-width: 1400px) {
   .searchinput {
     width: 500px;
@@ -2770,3 +2771,59 @@ iframe.iziModal-iframe {
   font-size: 1.4em;
   line-height: 1.35;
 }
+
+
+/*mobile responsive code  which we need to remove once we start writing mobile first css*/
+
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .header-logo {
+    display: block;
+    max-width: 100px;
+    max-height: 40px;
+    width: auto;
+    height: auto;
+    position: absolute;
+  }
+  .primary-header-avatar {
+    padding-top: 0.5rem;
+    z-index: 88;
+  }
+  .primary-header-alarm-icon {
+    padding-top: 1.2rem;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .header-logo {
+    max-height: 45px;   
+  }
+}
+
+
+/*writing media query for device specific sduw to responsive issue with semantic ui*/
+
+@media only screen and (min-width: 320px) and (max-width: 330px) {
+  .searchinput {
+    width: 208px;
+  }
+}
+@media only screen and (min-width: 360px) and (max-width: 377px) {
+  .searchinput {
+    width: 245px;
+  }
+}
+@media only screen and (min-width: 410px) and (max-width: 425px) {
+  .searchinput {
+    width: 285px;
+  }
+}
+@media only screen and (min-width: 480px) and (max-width: 500px) {
+  .searchinput {
+    width: 345px;
+  }
+}
+
+
+
+
+
