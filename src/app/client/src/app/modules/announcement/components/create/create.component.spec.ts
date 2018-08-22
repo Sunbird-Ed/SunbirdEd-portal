@@ -186,25 +186,24 @@ describe('CreateComponent', () => {
       expect(component.navigateToWizardNumber).toHaveBeenCalledWith(1);
       expect(route.navigate).toHaveBeenCalledWith(['announcement/create', 1]);
     }));
-    it('should call ngOninit', inject([UserService],
-      (userService) => {
-        userService._userData$.next({ err: null, userProfile: mockRes.userdata });
-        spyOn(component, 'initializeFormFields').and.callThrough();
-        spyOn(component, 'setAnnouncementTypes').and.callThrough();
-        component.ngOnInit();
-        expect(component.showAnnouncementForm).toBeFalsy();
-        expect(component.initializeFormFields).toHaveBeenCalled();
-        expect(component.setAnnouncementTypes).toHaveBeenCalled();
-      }));
-      it('should call ngOninit throw error', inject([UserService, ResourceService, ToasterService],
-        (userService, resourceService, toasterService) => {
-          userService._userData$.next({ err: {msg: 'internal error'}, userProfile: null });
-          spyOn(toasterService, 'error').and.callThrough();
-          component.ngOnInit();
-          expect(component.showAnnouncementForm).toBeFalsy();
-          expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
-        }));
-
+  it('should call ngOninit', inject([UserService],
+    (userService) => {
+      userService._userData$.next({ err: null, userProfile: mockRes.userdata });
+      spyOn(component, 'initializeFormFields').and.callThrough();
+      spyOn(component, 'setAnnouncementTypes').and.callThrough();
+      component.ngOnInit();
+      expect(component.showAnnouncementForm).toBeFalsy();
+      expect(component.initializeFormFields).toHaveBeenCalled();
+      expect(component.setAnnouncementTypes).toHaveBeenCalled();
+    }));
+  it('should call ngOninit throw error', inject([UserService, ResourceService, ToasterService],
+    (userService, resourceService, toasterService) => {
+      userService._userData$.next({ err: { msg: 'internal error' }, userProfile: null });
+      spyOn(toasterService, 'error').and.callThrough();
+      component.ngOnInit();
+      expect(component.showAnnouncementForm).toBeFalsy();
+      expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
+    }));
   it('should unsubscribe to userData observable', () => {
     component.ngOnInit();
     spyOn(component.userDataSubscription, 'unsubscribe');
@@ -228,14 +227,5 @@ describe('CreateComponent', () => {
       expect(component.setAnnouncementTypes).toHaveBeenCalled();
       expect(component.showResendLoader).toBeFalsy();
       expect(component.announcementTypes.length).toBeGreaterThan(0);
-    }));
-  it('should call setAnnouncementTypes and throw error', inject([CreateService],
-    (createService) => {
-      component.announcementTypes = [];
-      spyOn(createService, 'getAnnouncementTypes').and.callFake(() => observableThrowError({}));
-      spyOn(component, 'setAnnouncementTypes').and.callThrough();
-      component.setAnnouncementTypes();
-      expect(component.setAnnouncementTypes).toHaveBeenCalled();
-      expect(component.showResendLoader).toBeFalsy();
     }));
 });
