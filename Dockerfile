@@ -1,7 +1,7 @@
-FROM node:8.11-stretch
+FROM node:8.11-slim
 MAINTAINER "Rajesh R <rajesh.r@optit.co>"
 
-RUN adduser --uid 1001 --home /home/sunbird/ sunbird
+RUN useradd -u 1001 -md /home/sunbird sunbird
 WORKDIR /home/sunbird
 ADD player-dist.tar.gz /home/sunbird/
 RUN chown -R sunbird:sunbird /home/sunbird
