@@ -34,16 +34,15 @@ node('build-slave') {
 
        stage('Publish'){
 
-         echo 'Push to Repo'
-         dir('.') {
-          sh 'ARTIFACT_LABEL=bronze ./dockerPushToRepo.sh'
-          sh './src/app/metadata.sh > metadata.json'
-          sh 'cat metadata.json'
-          echo "archiving artifacts metadata.json player-dist_${GIT_COMMIT_HASH}.tar.gz"
-          archive includes: "metadata.json"
-          archive includes: "player-dist.tar.gz"
-         }
-
+           echo 'Push to Repo'
+           dir('.') {
+               sh 'ARTIFACT_LABEL=bronze ./dockerPushToRepo.sh'
+               sh './src/app/metadata.sh > metadata.json'
+               // Updating buld hash to metadata file
+               sh 'sed -i "s/}/,\"vcs-ref\":\"${GIT_COMMIT_HASH}\"}/" metadata.json'
+               sh 'cat metadata.json'
+               archive includes: "metadata.json"
+           }
        }
     }
     catch (err) {
