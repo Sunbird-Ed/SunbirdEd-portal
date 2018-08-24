@@ -201,7 +201,7 @@ describe('CreateComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
-  it('should call ngOnint', inject([DeviceDetectorService], (deviceDetectorService) => {
+  it('should call ngOnint to get telemtry Interact data', inject([DeviceDetectorService], (deviceDetectorService) => {
     const deviceInfo = deviceDetectorService.getDeviceInfo();
     expect(component.telemetryStart).toBeDefined();
     expect(component.telemetryStart.edata.uaspec['agent']).toBe(deviceInfo.browser);
