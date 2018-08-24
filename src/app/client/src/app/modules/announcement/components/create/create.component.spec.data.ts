@@ -122,7 +122,7 @@ export const mockRes = {
           'lastLoginTime': 1534920693649,
           'createdDate': '2017-11-03 05:28:41:536+0000',
           'createdBy': '',
-          'location': 'Bangalore',
+          'location': 'Bangaloree',
           'rootOrgAdmin': false
         }
       }
