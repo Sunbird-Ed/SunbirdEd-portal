@@ -203,7 +203,7 @@ export class UserProfileComponent implements OnInit {
       _.each(this.userDetails.skills, (skill) => {
         if (skill.skillName === skillName) {
           skill.isEndorsable = true;
-          skill.endorsementCount = skill.endorsementCount + 1;
+          skill.endorsementCount = skill.endorsementCount ? skill.endorsementCount + 1 : 1;
         }
       });
       this.disableEndorsementButton = false;

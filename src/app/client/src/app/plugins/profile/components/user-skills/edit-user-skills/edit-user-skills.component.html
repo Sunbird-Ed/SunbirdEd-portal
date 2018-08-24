@@ -15,7 +15,7 @@
   </div>
   <div class="actions margin-top-40">
     <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="finishAddSkillsInteractEdata"
-      class="ui approve primary button" (click)="addSkill()">
+      class="ui approve primary button" (click)="addSkill()" [disabled]="disableAddSkillButton">
       {{resourceService?.frmelmnts?.btn?.save}}
     </button>
   </div>

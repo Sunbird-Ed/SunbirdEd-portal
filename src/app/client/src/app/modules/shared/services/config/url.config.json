@@ -23,7 +23,7 @@
       "TENANT_LOGO": "get/tenant/logo",
       "SKILLS": "data/v1/skills",
       "ENDORSE_SKILLS": "user/v1/skill/endorse/add",
-      "ADD_SKILLS": "user/v1/skill/update",
+      "UPDATE_SKILLS": "user/v1/skill/update",
       "USER_SKILLS": "user/v1/skill/read",
       "UPDATE_PROF_VIS_FIELDS": "user/v1/profile/visibility"
     },

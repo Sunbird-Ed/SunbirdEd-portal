@@ -37,6 +37,20 @@ export const mockRes = {
             'response': 'SUCCESS'
         }
     },
+    errorResponse: {
+      'id': 'api.user.skill.update',
+      'ver': 'v1',
+      'ts': '2018-08-24 11:21:20:307+0000',
+      'params': {
+        'resmsgid': null,
+        'msgid': '1ac88e3d-1992-963d-5c20-f84c98a28834',
+        'err': 'MANDATORY_PARAMETER_MISSING',
+        'status': 'MANDATORY_PARAMETER_MISSING',
+        'errmsg': 'Mandatory parameter skills is missing.'
+      },
+      'responseCode': 'CLIENT_ERROR',
+      'result': {}
+    },
     getSkillsData : {
       'id': 'api.skills',
       'ver': 'v1',
@@ -71,6 +85,9 @@ export const mockRes = {
             }
         },
         'messages': {
+            'emsg': {
+              'm0005': 'Some Unexpected Error Occured'
+            },
             'smsg': {
                 'm0038': 'New skill added successfully'
             }

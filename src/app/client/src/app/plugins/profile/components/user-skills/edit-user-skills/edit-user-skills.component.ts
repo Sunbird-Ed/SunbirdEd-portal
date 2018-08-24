@@ -24,6 +24,8 @@ export class EditUserSkillsComponent implements OnInit, OnDestroy, AfterViewInit
   skill: any;
 
   skillsPrefillValues: string;
+  disableAddSkillButton = false;
+
   /**
    * Contains skills data of the user
    */
@@ -67,16 +69,19 @@ export class EditUserSkillsComponent implements OnInit, OnDestroy, AfterViewInit
     let skills = [];
     skills = $('#addSkill').dropdown('get value').split(',');
     const req = {
-      skills: skills,
-      userId: this.userService.userid
+      skills1: skills,
+      userId1: this.userService.userid
     };
     if (skills !== undefined) {
+      this.disableAddSkillButton = true;
       this.profileService.add(req).subscribe(res => {
+        this.disableAddSkillButton = false;
         this.router.navigate(['/profile']);
         this.toasterService.success(this.resourceService.messages.smsg.m0038);
       },
         err => {
-          // toaster err
+          this.disableAddSkillButton = false;
+          this.toasterService.error(this.resourceService.messages.emsg.m0005);
         });
     } else {
       this.router.navigate(['/profile']);
@@ -104,7 +109,7 @@ export class EditUserSkillsComponent implements OnInit, OnDestroy, AfterViewInit
       type: 'user',
       ver: '1.0'
     };
-  } ngOnDestroy() {
-    // this.modal.deny();
+  }
+  ngOnDestroy() {
   }
 }
