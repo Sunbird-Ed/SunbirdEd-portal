@@ -111,11 +111,4 @@ describe('MainHeaderComponent', () => {
     component.closeQrModalEvent('success');
     expect(component.showQrmodal).toBeFalsy();
   });
-  it('should call logout method and remove cache ', () => {
-    const cacheService = TestBed.get(CacheService);
-    spyOn(component, 'logout').and.callThrough();
-    spyOn(cacheService, 'removeAll').and.callThrough();
-    component.logout();
-    expect(cacheService.removeAll).toHaveBeenCalled();
-  });
 });
