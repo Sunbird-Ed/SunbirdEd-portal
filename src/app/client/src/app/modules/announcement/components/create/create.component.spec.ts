@@ -15,7 +15,7 @@ import {
   CreateService, IGeoLocationDetails, FileUploaderComponent
 } from '@sunbird/announcement';
 import { mockRes } from './create.component.spec.data';
-
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 describe('CreateComponent', () => {
   let component: CreateComponent;
@@ -69,7 +69,6 @@ describe('CreateComponent', () => {
     geoFixture.detectChanges();
     router = TestBed.get(Router);
   });
-
   it('should get already searched announcement types', inject([CreateService],
     (createService) => {
       component.announcementTypes = [];
@@ -202,4 +201,13 @@ describe('CreateComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
+  it('should call ngOnint', inject([DeviceDetectorService], (deviceDetectorService) => {
+    const deviceInfo = deviceDetectorService.getDeviceInfo();
+    expect(component.telemetryStart).toBeDefined();
+    expect(component.telemetryStart.edata.uaspec['agent']).toBe(deviceInfo.browser);
+    expect(component.telemetryStart.edata.uaspec['ver']).toBe(deviceInfo.browser_version);
+    expect(component.telemetryStart.edata.uaspec['system']).toBe(deviceInfo.os_version);
+    expect(component.telemetryStart.edata.uaspec['platform']).toBe(deviceInfo.os);
+    expect(component.telemetryStart.edata.uaspec['raw']).toBe(deviceInfo.userAgent);
+  }));
 });
