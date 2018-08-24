@@ -68,11 +68,21 @@ describe('ProminentFilterComponent', () => {
     component.applyFilters();
     expect(router.navigate).toHaveBeenCalledWith([undefined], { queryParams: queryParams });
   });
+
+  it('Filter results should not change on call of  apply filters for same params', () => {
+    const router = TestBed.get(Router);
+    const queryParams = component.formInputData = { 'gradeLevel': ['Grade 1', 'Grade 2'], 'medium': ['English'] };
+    component.applyFilters();
+    expect(component.isFiltered).toBeFalsy();
+    expect(router.navigate).toHaveBeenCalledWith([undefined], { queryParams: queryParams });
+  });
+
   it('should get meta data from framework service and call formconfig service if cache not exists', () => {
     const frameworkService = TestBed.get(FrameworkService);
     const formService = TestBed.get(FormService);
     const cacheService = TestBed.get(CacheService);
     component.formFieldProperties = Response.formConfigData;
+    spyOn(component.prominentFilter, 'emit').and.returnValue(Response.formConfigData);
     spyOn(cacheService, 'exists').and.returnValue(false);
     spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
     spyOn(formService, 'getFormConfig').and.returnValue(observableOf(Response.formConfigData));
@@ -80,6 +90,7 @@ describe('ProminentFilterComponent', () => {
     component.fetchFilterMetaData();
     fixture.detectChanges();
     expect(component.formService.getFormConfig).toHaveBeenCalled();
+    expect(component.prominentFilter.emit).toHaveBeenCalledWith(Response.formConfigData);
   });
   it('should call isObject ', () => {
     const value = { id: 'AI113', name: 'artificial inteligence' };

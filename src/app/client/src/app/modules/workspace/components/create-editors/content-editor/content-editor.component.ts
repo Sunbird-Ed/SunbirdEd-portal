@@ -202,11 +202,11 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       contentId: this.contentId,
       pdata: {
         id: this.userService.appId,
-        ver: '1.0',
+        ver: this.buildNumber.slice(0, 5),
         pid: 'sunbird-portal'
       },
       tags: this.userService.dims,
-      channel: this.userProfile.rootOrgId,
+      channel: this.userService.channel,
       framework: this.framework,
     };
 
