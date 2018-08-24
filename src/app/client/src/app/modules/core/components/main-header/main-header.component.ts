@@ -79,6 +79,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
    */
   public permissionService: PermissionService;
   public signUpInteractEdata: IInteractEventEdata;
+  public enterDialCodeInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
   tenantDataSubscription: Subscription;
   userDataSubscription: Subscription;
@@ -201,6 +202,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       id: '',
       type: 'signup',
       ver: '1.0'
+    };
+    this.enterDialCodeInteractEdata = {
+      id: 'click-dial-code',
+      type: 'click',
+      pageid: 'explore'
     };
   }
 
