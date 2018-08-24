@@ -206,7 +206,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         pid: 'sunbird-portal'
       },
       tags: this.userService.dims,
-      channel: this.userProfile.rootOrgId,
+      channel: this.userService.channel,
       framework: this.framework,
     };
 
