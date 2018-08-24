@@ -1529,6 +1529,8 @@ span.fancytree-title {
   font-size: 1.2em;
   color: #333;
   font-family: 'sunbirdregularfont';
+  display: flex;
+  flex-direction: row;
 }
 .toc-left-nav-btn-content {
   text-align: left;
@@ -2791,13 +2793,43 @@ iframe.iziModal-iframe {
   .primary-header-alarm-icon {
     padding-top: 1.2rem;
   }
-}
 
-@media only screen and (min-width: 768px) and (max-width: 1024px) {
-  .header-logo {
-    max-height: 45px;   
+  /*collection player responsive code*/
+
+  .accordion-content {
+    width: 250px;
+  }  
+
+  .fancytree-plain span.fancytree-node span.fancytree-title {
+    overflow: hidden;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width:210px;
   }
 }
+
+@media only screen and (min-width: 320px) and (max-width: 400px) {
+  .ui.HomeAccordianHeading.m-responsive-cp {
+    margin-top: 10px;
+    font-size: 1.15em;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width:210px;
+  }
+}
+
+.accordion-content {
+  align-self: center;
+} 
+
+i.icon.accordion-content-right {
+  align-self: center;
+  margin-left: auto;
+}
+
 
 
 /*writing media query for device specific sduw to responsive issue with semantic ui*/
@@ -2807,21 +2839,27 @@ iframe.iziModal-iframe {
     width: 208px;
   }
 }
-@media only screen and (min-width: 360px) and (max-width: 377px) {
+@media only screen and (min-width: 340px) and (max-width: 377px) {
   .searchinput {
     width: 245px;
   }
 }
-@media only screen and (min-width: 410px) and (max-width: 425px) {
+@media only screen and (min-width: 380px) and (max-width: 440px) {
   .searchinput {
     width: 285px;
   }
 }
-@media only screen and (min-width: 480px) and (max-width: 500px) {
+@media only screen and (min-width: 480px) and (max-width: 900px) {
   .searchinput {
     width: 345px;
   }
 }
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .header-logo {
+    max-height: 45px;   
+  }
+}
+
 
 
 
