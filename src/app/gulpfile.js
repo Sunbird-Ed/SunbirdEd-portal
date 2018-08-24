@@ -9,8 +9,8 @@ const exec = require('child_process').exec
 
 // To download editors
 const contentEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/content-editor-iframe-3.6.0.zip'
-const collectionEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-qa/artefacts/editor/collection-editor-iframe-3.6.0.zip'
-const genericEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-qa/artefacts/editor/generic-editor-iframe-3.6.0.zip'
+const collectionEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/collection-editor-iframe-3.6.0.zip'
+const genericEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/generic-editor-iframe-3.6.0.zip'
 const editorsDestPath = 'client/src/thirdparty/editors/'
 const telemetryLibrary = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/telemetry-1.0.min.js'
 const telemetryLibraryPath = 'client/src/assets/libs'
