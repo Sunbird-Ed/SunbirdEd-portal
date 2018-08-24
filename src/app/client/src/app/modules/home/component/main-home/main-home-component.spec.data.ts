@@ -573,5 +573,248 @@ export const mockRes = {
             'status': 'error', 'err': 'UNAUTHORIZED', 'errmsg': 'UNAUTHORIZED'
         }, 'responseCode': 'error',
         'result': { 'courses': {} }
-    }
+    },
+    metaData: {
+        'action': {
+          'eventName': 'onImage'
+        },
+        'data': {
+          'name': 'flag test',
+          'image': 'https://ekstep-public-dev.s3-ap-f288f1afe24117ad59083b2a_1475430290462.thumb.jpeg',
+          'description': '',
+          'rating': '0',
+          'action': {
+            'right': {
+              'class': 'ui blue basic button',
+              'eventName': 'Resume',
+              'displayType': 'button',
+              'text': 'Resume'
+            },
+            'onImage': {
+              'eventName': 'onImage'
+            }
+          },
+          'telemetryInteractEdata': {
+            'id': 'courseId',
+            'type': 'click',
+            'pageid': 'home'
+          },
+          'telemetryObjectType': 'home',
+          'metaData': {
+            'batchId': '01250987188871168027',
+            'courseId': 'do_112499049696583680148'
+          },
+          'maxCount': 0,
+          'progress': 0
+        }
+      },
+      inviewData: {
+        'inview': [
+          {
+            'id': 0,
+            'data': {
+              'name': 'flag test',
+              'image': 'https://ekstep-public-dev.s3-ap-south-151afe24117ad59083b2a_1475430290462.thumb.jpeg',
+              'description': '',
+              'rating': '0',
+              'action': {
+                'right': {
+                  'class': 'ui blue basic button',
+                  'eventName': 'Resume',
+                  'displayType': 'button',
+                  'text': 'Resume'
+                },
+                'onImage': {
+                  'eventName': 'onImage'
+                }
+              },
+              'telemetryInteractEdata': {
+                'id': 'courseId',
+                'type': 'click',
+                'pageid': 'home'
+              },
+              'telemetryObjectType': 'home',
+              'metaData': {
+                'batchId': '01250987188871168027',
+                'courseId': 'do_112499049696583680148'
+              },
+              'maxCount': 0,
+              'progress': 0
+            }
+          },
+          {
+            'id': 1,
+            'data': {
+              'name': '29 course',
+              'image': 'https://ekstep-public-dev.s3-ap-soutact/1ef4769e36c4d18cfd9832cd7cb5d03e_1475774424986.thumb.jpeg',
+              'description': '',
+              'rating': '0',
+              'action': {
+                'right': {
+                  'class': 'ui blue basic button',
+                  'eventName': 'Resume',
+                  'displayType': 'button',
+                  'text': 'Resume'
+                },
+                'onImage': {
+                  'eventName': 'onImage'
+                }
+              },
+              'telemetryInteractEdata': {
+                'id': 'courseId',
+                'type': 'click',
+                'pageid': 'home'
+              },
+              'telemetryObjectType': 'home',
+              'metaData': {
+                'batchId': '01255564059367833674',
+                'courseId': 'do_112470675618004992181'
+              },
+              'maxCount': 1,
+              'progress': 1
+            }
+          }
+        ],
+        'direction': 'up'
+      },
+      eventData2: {event: 'w.Event', slick: 'Slick', currentSlide: 4},
+      toDoList:  [
+        {
+          'name': 'Raj 100',
+          'image': 'https://ekstep-public-dev.s3-ap-41118/artifact/1455034327853apple.thumb.jpg',
+          'description': 'Raj 100',
+          'rating': '0',
+          'action': {
+            'right': {
+              'class': 'ui blue basic button',
+              'eventName': 'Resume',
+              'displayType': 'button',
+              'text': 'Resume'
+            },
+            'onImage': {
+              'eventName': 'onImage'
+            }
+          },
+          'telemetryInteractEdata': {
+            'id': 'courseId',
+            'type': 'click',
+            'pageid': 'home'
+          },
+          'telemetryObjectType': 'home',
+          'metaData': {
+            'batchId': '01248350101153382453',
+            'courseId': 'do_1124834956377456641118'
+          },
+          'maxCount': 4,
+          'progress': 0
+        },
+        {
+          'name': 'new dev course final test',
+          'image': 'https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/content/5439f7eaed9a129c264489f7ec0dbd6f_1473399347878.png',
+          'description': 'dsdsdsdsd',
+          'rating': '0',
+          'action': {
+            'right': {
+              'class': 'ui blue basic button',
+              'eventName': 'Resume',
+              'displayType': 'button',
+              'text': 'Resume'
+            },
+            'onImage': {
+              'eventName': 'onImage'
+            }
+          },
+          'telemetryInteractEdata': {
+            'id': 'courseId',
+            'type': 'click',
+            'pageid': 'home'
+          },
+          'telemetryObjectType': 'home',
+          'metaData': {
+            'batchId': '0124543621061672965',
+            'courseId': 'do_2123251055368765441634'
+          },
+          'maxCount': 3,
+          'progress': 0
+        },
+        {
+          'name': 'Rajeev',
+          'image': 'https://ekstep-public-dev.s3-a\rtifact/20c70af6d98b7cfa7b29ab1d31d1cedd_1470223964342.thumb.png',
+          'description': 'Rajeev',
+          'rating': '0',
+          'action': {
+            'right': {
+              'class': 'ui blue basic button',
+              'eventName': 'Resume',
+              'displayType': 'button',
+              'text': 'Resume'
+            },
+            'onImage': {
+              'eventName': 'onImage'
+            }
+          },
+          'telemetryInteractEdata': {
+            'id': 'courseId',
+            'type': 'click',
+            'pageid': 'home'
+          },
+          'telemetryObjectType': 'home',
+          'metaData': {
+            'batchId': '01247853957897420815',
+            'courseId': 'do_1124785353783377921154'
+          },
+          'maxCount': 4,
+          'progress': 2
+        },
+        {
+          'name': 'Testing',
+          'image': 'https://ekstep-public148/artifact/jhk_1465380259344.thumb.jpg',
+          'description': 'Testing',
+          'rating': '0',
+          'action': {
+            'right': {
+              'class': 'ui blue basic button',
+              'eventName': 'Resume',
+              'displayType': 'button',
+              'text': 'Resume'
+            },
+            'onImage': {
+              'eventName': 'onImage'
+            }
+          },
+          'telemetryInteractEdata': {
+            'id': 'courseId',
+            'type': 'click',
+            'pageid': 'home'
+          },
+          'telemetryObjectType': 'home',
+          'metaData': {
+            'batchId': '01248152624895590442',
+            'courseId': 'do_112481468925796352148'
+          },
+          'maxCount': 2,
+          'progress': 0
+        }
+      ],
+      announcementInview: {
+        'inview': [
+          {
+            'id': 0,
+            'data': {
+              'id': 'b9119c20-5ff7-11e8-a84b-979cfc2ceb20',
+              'from': 'ddd',
+              'type': 'Circular',
+              'title': 'ddd',
+              'description': 'ddd',
+              'links': [],
+              'attachments': [],
+              'createdDate': '2018-05-25 08:43:40:130+0000',
+              'status': 'active',
+              'read': true,
+              'received': true
+            }
+          }
+        ],
+        'direction': 'down'
+      }
 };

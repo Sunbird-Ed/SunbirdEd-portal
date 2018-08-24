@@ -1,4 +1,4 @@
-import { Subscription ,  Observable } from 'rxjs';
+import { Subscription, Observable, of as observableOf, throwError as observableThrowError } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule, NgForm, FormBuilder, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -75,7 +75,6 @@ describe('CreateComponent', () => {
       createService._announcementTypes = [{ id: '123', name: 'Order' }];
       spyOn(component, 'setAnnouncementTypes').and.callThrough();
       component.setAnnouncementTypes();
-      fixture.detectChanges();
       expect(component.setAnnouncementTypes).toHaveBeenCalled();
       expect(component.announcementTypes.length).not.toEqual(0);
     }));
@@ -186,7 +185,24 @@ describe('CreateComponent', () => {
       expect(component.navigateToWizardNumber).toHaveBeenCalledWith(1);
       expect(route.navigate).toHaveBeenCalledWith(['announcement/create', 1]);
     }));
-
+  it('should call ngOninit', inject([UserService],
+    (userService) => {
+      userService._userData$.next({ err: null, userProfile: mockRes.userdata });
+      spyOn(component, 'initializeFormFields').and.callThrough();
+      spyOn(component, 'setAnnouncementTypes').and.callThrough();
+      component.ngOnInit();
+      expect(component.showAnnouncementForm).toBeFalsy();
+      expect(component.initializeFormFields).toHaveBeenCalled();
+      expect(component.setAnnouncementTypes).toHaveBeenCalled();
+    }));
+  it('should call ngOninit throw error', inject([UserService, ResourceService, ToasterService],
+    (userService, resourceService, toasterService) => {
+      userService._userData$.next({ err: { msg: 'internal error' }, userProfile: null });
+      spyOn(toasterService, 'error').and.callThrough();
+      component.ngOnInit();
+      expect(component.showAnnouncementForm).toBeFalsy();
+      expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
+    }));
   it('should unsubscribe to userData observable', () => {
     component.ngOnInit();
     spyOn(component.userDataSubscription, 'unsubscribe');
@@ -210,4 +226,15 @@ describe('CreateComponent', () => {
     expect(component.telemetryStart.edata.uaspec['platform']).toBe(deviceInfo.os);
     expect(component.telemetryStart.edata.uaspec['raw']).toBe(deviceInfo.userAgent);
   }));
+
+  it('should get searched announcement types when data is not present and make api call', inject([CreateService],
+    (createService) => {
+      component.announcementTypes = [];
+      spyOn(createService, 'getAnnouncementTypes').and.returnValue(observableOf(mockRes.createSucess));
+      spyOn(component, 'setAnnouncementTypes').and.callThrough();
+      component.setAnnouncementTypes();
+      expect(component.setAnnouncementTypes).toHaveBeenCalled();
+      expect(component.showResendLoader).toBeFalsy();
+      expect(component.announcementTypes.length).toBeGreaterThan(0);
+    }));
 });
