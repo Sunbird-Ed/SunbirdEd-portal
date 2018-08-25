@@ -1,5 +1,4 @@
-
-import { of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from './../../../services';
@@ -69,6 +68,22 @@ describe('EditUserSkillsComponent', () => {
     fixture.detectChanges();
     expect(toasterService.success).toHaveBeenCalledWith(mockRes.resourceBundle.messages.smsg.m0038);
     expect(router.navigate).toHaveBeenCalledWith(['/profile']);
+  }));
+  it('should call addSkill method and retun error response', fakeAsync(() => {
+    const userService = TestBed.get(UserService);
+    const toasterService = TestBed.get(ToasterService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = mockRes.resourceBundle.messages;
+    const profileService = TestBed.get(ProfileService);
+    const router = TestBed.get(Router);
+    userService._userProfile = mockRes.data.userProfile;
+    resourceService.frmelmnts = mockRes.resourceBundle.frmelmnts;
+    resourceService.messages = mockRes.resourceBundle.messages;
+    spyOn(profileService, 'add').and.callFake(() => observableThrowError({}));
+    spyOn(toasterService, 'error');
+    component.addSkill();
+    fixture.detectChanges();
+    expect(toasterService.error).toHaveBeenCalledWith(mockRes.resourceBundle.messages.emsg.m0005);
   }));
   it('should call redirect method', () => {
     const router = TestBed.get(Router);

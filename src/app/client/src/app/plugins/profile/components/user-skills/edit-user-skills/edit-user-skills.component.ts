@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, ViewChild, AfterViewInit } from '@angular/core';
 import { ResourceService, IUserProfile, IUserData, ToasterService, WindowScrollService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
@@ -12,7 +12,7 @@ declare var jQuery: any;
   templateUrl: './edit-user-skills.component.html',
   styleUrls: ['./edit-user-skills.component.css']
 })
-export class EditUserSkillsComponent implements OnInit, OnDestroy, AfterViewInit {
+export class EditUserSkillsComponent implements OnInit, AfterViewInit {
   @ViewChild('modal') modal;
   /**
    * Reference of User Profile interface
@@ -29,7 +29,7 @@ export class EditUserSkillsComponent implements OnInit, OnDestroy, AfterViewInit
   /**
    * Contains skills data of the user
    */
-  skillsMasterData: any;
+  skillsMasterData: Array<string>;
   cancelAddSKillsInteractEdata: IInteractEventEdata;
   finishAddSkillsInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
@@ -66,26 +66,21 @@ export class EditUserSkillsComponent implements OnInit, OnDestroy, AfterViewInit
    * This method is used to add new skills
    */
   addSkill() {
-    let skills = [];
-    skills = $('#addSkill').dropdown('get value').split(',');
+    const skills = $('#addSkill').dropdown('get value') ? $('#addSkill').dropdown('get value').split(',') : [];
     const req = {
-      skills1: skills,
-      userId1: this.userService.userid
+      skills: skills,
+      userId: this.userService.userid
     };
-    if (skills !== undefined) {
-      this.disableAddSkillButton = true;
-      this.profileService.add(req).subscribe(res => {
-        this.disableAddSkillButton = false;
-        this.router.navigate(['/profile']);
-        this.toasterService.success(this.resourceService.messages.smsg.m0038);
-      },
-        err => {
-          this.disableAddSkillButton = false;
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
-        });
-    } else {
+    this.disableAddSkillButton = true;
+    this.profileService.add(req).subscribe(res => {
+      this.disableAddSkillButton = false;
       this.router.navigate(['/profile']);
-    }
+      this.toasterService.success(this.resourceService.messages.smsg.m0038);
+    },
+    err => {
+      this.disableAddSkillButton = false;
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    });
   }
   /**
    * This method is used to navigate back to profile
@@ -109,7 +104,5 @@ export class EditUserSkillsComponent implements OnInit, OnDestroy, AfterViewInit
       type: 'user',
       ver: '1.0'
     };
-  }
-  ngOnDestroy() {
   }
 }
