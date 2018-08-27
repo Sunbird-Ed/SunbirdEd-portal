@@ -106,6 +106,7 @@ describe('MainHeaderComponent', () => {
     expect(component.userDataSubscription.unsubscribe).toHaveBeenCalled();
     expect(component.tenantDataSubscription.unsubscribe).toHaveBeenCalled();
   });
+
   it('should call closeQrModalEvent method and close the QrModal ', () => {
     spyOn(component, 'closeQrModalEvent').and.callThrough();
     component.closeQrModalEvent('success');
