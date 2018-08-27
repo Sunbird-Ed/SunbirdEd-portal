@@ -37,10 +37,8 @@ node('build-slave') {
            echo 'Push to Repo'
            dir('.') {
                sh 'ARTIFACT_LABEL=bronze ./dockerPushToRepo.sh'
-               sh './src/app/metadata.sh > metadata.json'
-               // Updating buld hash to metadata file
-               sh 'sed -i "s/}/,\"vcs-ref\":\"${GIT_COMMIT_HASH}\"}/" metadata.json'
-               sh 'cat metadata.json'
+               sh "./src/app/metadata.sh ${GIT_COMMIT_HASH} > metadata.json"
+               sh "cat metadata.json"
                archive includes: "metadata.json"
            }
        }
