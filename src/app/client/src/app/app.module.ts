@@ -15,6 +15,7 @@ import { WebExtensionsConfig, PluginModules } from './framework.config';
 import { CacheService } from 'ng2-cache-service';
 import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storage/cache-storage-abstract.service';
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
+import { DeviceDetectorModule } from 'ngx-device-detector';
 @NgModule({
   declarations: [
     AppComponent
@@ -29,6 +30,7 @@ import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage
     Ng2IziToastModule,
     WebExtensionModule.forRoot(),
     TelemetryModule.forRoot(),
+    DeviceDetectorModule.forRoot(),
     PublicModule,
     ...PluginModules,
     AppRoutingModule // don't add any module below this because it contains wildcard route
