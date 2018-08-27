@@ -15,7 +15,7 @@ import {
   CreateService, IGeoLocationDetails, FileUploaderComponent
 } from '@sunbird/announcement';
 import { mockRes } from './create.component.spec.data';
-
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 describe('CreateComponent', () => {
   let component: CreateComponent;
