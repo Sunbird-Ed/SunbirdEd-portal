@@ -15,6 +15,8 @@ import {
   IEndEventInput, IStartEventInput, IInteractEventInput,
   IImpressionEventInput, IInteractEventObject, IInteractEventEdata
 } from '@sunbird/telemetry';
+import { DeviceDetectorService } from 'ngx-device-detector';
+
 /**
  * This component helps to create and resend announcement
  */
@@ -175,7 +177,8 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   constructor(resource: ResourceService, fileUpload: FileUploadService, activatedRoute: ActivatedRoute, route: Router,
     toasterService: ToasterService, formBuilder: FormBuilder, createService: CreateService, user: UserService,
-    private elRef: ElementRef, config: ConfigService, private cdr: ChangeDetectorRef, private userService: UserService) {
+    private elRef: ElementRef, config: ConfigService, private cdr: ChangeDetectorRef, private userService: UserService,
+    private deviceDetectorService: DeviceDetectorService) {
     this.resource = resource;
     this.fileUpload = fileUpload;
     this.route = route;
@@ -470,6 +473,7 @@ export class CreateComponent implements OnInit, OnDestroy {
         this.toasterService.error(this.resource.messages.emsg.m0005);
       }
     });
+    const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     this.telemetryStart = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
@@ -482,7 +486,14 @@ export class CreateComponent implements OnInit, OnDestroy {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        mode: this.activatedRoute.snapshot.data.telemetry.mode
+        mode: this.activatedRoute.snapshot.data.telemetry.mode,
+        uaspec: {
+          agent: deviceInfo.browser,
+          ver: deviceInfo.browser_version,
+          system: deviceInfo.os_version ,
+          platform: deviceInfo.os,
+          raw: deviceInfo.userAgent
+        }
       }
     };
 
