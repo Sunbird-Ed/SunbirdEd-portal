@@ -74,6 +74,8 @@
     "tenants-push-cdn": "gulp pushTenantsToCDN --gulpfile gulp-tenant.js"
   },
   "dependencies": {
+    "@project-sunbird/ext-framework-server": "^0.1.7",
+    "@project-sunbird/form-service": "0.0.2",
     "async": "^2.5.0",
     "asyncawait": "^1.0.7",
     "body-parser": "^1.17.2",
