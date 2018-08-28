@@ -69,8 +69,11 @@ export class DialCodeComponent implements OnInit, OnDestroy {
 
   /**
    * to store search results
-   */
+  */
   searchResults: Array<any>;
+  /**
+   * to unsubscribe
+  */
   public unsubscribe$ = new Subject<void>();
 
 
