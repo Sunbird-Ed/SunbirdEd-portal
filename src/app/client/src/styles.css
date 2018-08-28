@@ -2807,6 +2807,31 @@ iframe.iziModal-iframe {
     white-space: nowrap;
     width:210px;
   }
+ /* content player y0ur progress section margin here !important is added to address specificity issue*/
+  p.m-responsive-cp-header {
+    margin-top:20px !important; 
+    float: left;
+  }
+  .ui.grid.m-responsive-cp-nmt-50 {
+    margin-top: -50px;
+  }
+
+  /* buttons below the content player */
+  .ui.button .header {
+    font-size: 1em;
+  }
+  .take-note-card {
+    width: 30px;
+  }
+
+  /*content player and collection player responsive share icons*/
+  .m-responsive-cp-badge-ml {
+    margin-left: 0 !important;
+  }
+
+  .m-responsive-sort-al{
+    float:left;
+  }
 }
 
 @media only screen and (min-width: 320px) and (max-width: 400px) {
