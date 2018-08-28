@@ -123,18 +123,15 @@ describe('AppComponent', () => {
     expect(document.querySelector).toHaveBeenCalled();
   });
   it('Should display the tenant logo if user is not logged in', () => {
-    const userService = TestBed.get(UserService);
-    const orgService = TestBed.get(OrgDetailsService);
     const slug = 'rj';
     component.initializeAnonymousSession(slug);
-    spyOn(document, 'getElementById').and.callFake(() => {
-      return {
-          value: 'deviceId'
-      };
-    });
-    const service = TestBed.get(TenantService);
+     const service = TestBed.get(TenantService);
+    spyOn(service, 'get').and.returnValue(observableOf(mockData.tenantResponse));
     service.getTenantInfo('rj');
-    expect(document.getElementById).toHaveBeenCalledWith('deviceId');
+    service.tenantData$.subscribe(
+      data => {
+        expect(data.tenantData.titleName).toEqual(mockData.tenantResponse.result.titleName);
+      });
   });
   it('should set the version number', async(() => {
     spyOn(document, 'getElementById').and.callFake(() => {
@@ -147,3 +144,4 @@ describe('AppComponent', () => {
   }));
 
 });
+

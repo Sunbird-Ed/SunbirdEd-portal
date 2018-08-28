@@ -1142,8 +1142,8 @@ export const mockData = {
         'responseCode': 'OK',
         'result': {
             'titleName': 'rj',
-            'logo': 'https://staging.open-sunbird.org/assets/images/sunbird_logo.png',
-            'appLogo': 'https://staging.open-sunbird.org/assets/images/sunbird_logo.png',
+            'logo': 'https://staging.open-sunbird.org/assets/images/logo.png',
+            'appLogo': 'https://staging.open-sunbird.org/assets/images/appLogo.png',
             'favicon': 'https://staging.open-sunbird.org/assets/images/favicon.ico',
             'poster': 'https://staging.open-sunbird.org/assets/images/sunbird_logo.png'
     }
