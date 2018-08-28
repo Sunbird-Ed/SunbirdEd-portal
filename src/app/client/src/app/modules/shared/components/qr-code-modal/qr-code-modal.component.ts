@@ -34,6 +34,7 @@ export class QrCodeModalComponent implements OnInit {
       this.router.navigate(['/get/dial/', dialCode]);
     }
   }
+
   setsubmitDialCodeInteractEdata(dialCode) {
     this.submitDialCodeInteractEdata = {
       id: 'submit-dial-code',
