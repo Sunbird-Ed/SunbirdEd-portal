@@ -8,7 +8,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService, CoreModule } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TelemetryService } from '@sunbird/telemetry';
-
 import {
   ResourceService, ConfigService, IUserProfile, IUserData, ToasterService, SharedModule,
   WindowScrollService
@@ -42,30 +41,26 @@ describe('EditUserSkillsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EditUserSkillsComponent);
     component = fixture.componentInstance;
-    // fixture.detectChanges();
   });
 
-  it('should create', () => {
-    const userService = TestBed.get(UserService);
-    const offsetTop = 'skills';
-    userService._userProfile = mockRes.data.userProfile;
-    component.ngOnInit();
-    expect(component).toBeTruthy();
-  });
   it('should call addSkill method and retun success response', fakeAsync(() => {
     const userService = TestBed.get(UserService);
     const toasterService = TestBed.get(ToasterService);
     const resourceService = TestBed.get(ResourceService);
+    const windowScrollService = TestBed.get(WindowScrollService);
     resourceService.messages = mockRes.resourceBundle.messages;
+    resourceService.frmelmnts = mockRes.resourceBundle.frmelmnts;
     const profileService = TestBed.get(ProfileService);
     const router = TestBed.get(Router);
     userService._userProfile = mockRes.data.userProfile;
-    resourceService.frmelmnts = mockRes.resourceBundle.frmelmnts;
+    spyOn(windowScrollService, 'smoothScroll');
     spyOn(profileService, 'getSkills').and.callFake(() => observableOf(mockRes.getSkillsData));
     spyOn(profileService, 'add').and.callFake(() => observableOf(mockRes.response));
     spyOn(toasterService, 'success');
     component.addSkill();
-    fixture.detectChanges();
+    component.ngOnInit();
+    expect(component).toBeTruthy();
+    expect(profileService.getSkills).toHaveBeenCalled();
     expect(toasterService.success).toHaveBeenCalledWith(mockRes.resourceBundle.messages.smsg.m0038);
     expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   }));
@@ -74,15 +69,17 @@ describe('EditUserSkillsComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = mockRes.resourceBundle.messages;
+    const windowScrollService = TestBed.get(WindowScrollService);
     const profileService = TestBed.get(ProfileService);
     const router = TestBed.get(Router);
     userService._userProfile = mockRes.data.userProfile;
     resourceService.frmelmnts = mockRes.resourceBundle.frmelmnts;
     resourceService.messages = mockRes.resourceBundle.messages;
+    spyOn(windowScrollService, 'smoothScroll');
     spyOn(profileService, 'add').and.callFake(() => observableThrowError({}));
     spyOn(toasterService, 'error');
     component.addSkill();
-    fixture.detectChanges();
+    component.ngOnInit();
     expect(toasterService.error).toHaveBeenCalledWith(mockRes.resourceBundle.messages.emsg.m0005);
   }));
   it('should call redirect method', () => {
