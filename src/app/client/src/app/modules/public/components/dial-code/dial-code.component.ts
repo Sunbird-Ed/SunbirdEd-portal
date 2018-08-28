@@ -99,7 +99,11 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   setTelemetryData() {
     this.telemetryImpression = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: [{
+          type: 'dialCode',
+          id: this.dialCode
+        }]
       },
       object: {
         id: this.dialCode,
