@@ -8,7 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, ConceptPickerService, PermissionService, UserService } from './../../services';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
-
+import { IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-data-driven-filter',
   templateUrl: './data-driven-filter.component.html',
@@ -23,6 +23,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   @Input() ignoreQuery = [];
   @Input() showSearchedParam = true;
   @Input() enrichFilters: object;
+  @Input() pageId: string;
   @Output() filters = new EventEmitter();
   @Output() dataDrivenFilter = new EventEmitter();
   /**
@@ -77,6 +78,8 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   isShowFilterPlaceholder = true;
   contentTypes: any;
   frameworkDataSubscription: Subscription;
+  filterIntractEdata: IInteractEventEdata;
+  submitIntractEdata: IInteractEventEdata;
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -123,6 +126,17 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
           this.loggedInUserRoles = user.userProfile.userRoles;
         }
       });
+      this.filterIntractEdata = {
+        id: 'filter',
+        type: 'click',
+        pageid: this.pageId
+      };
+      this.submitIntractEdata = {
+        id: 'submit',
+        type: 'click',
+        pageid: this.pageId,
+        extra: {filter: this.formInputData}
+    };
   }
 
   getQueryParams() {

@@ -5,6 +5,7 @@ import { ISelectFilter } from '../../interfaces/selectfilter';
 import * as _ from 'lodash';
 import { Subject , Observable, of} from 'rxjs';
 import { debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operators';
+import { IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-all-my-content-filter',
   templateUrl: './all-my-content-filter.component.html',
@@ -71,6 +72,8 @@ export class AllMyContentFilterComponent implements OnInit {
   */
   public redirectUrl: string;
   queryParams: any;
+  filterIntractEdata: IInteractEventEdata;
+
   /**
    * Constructor to create injected service(s) object
    Default method of Draft Component class
@@ -116,6 +119,11 @@ export class AllMyContentFilterComponent implements OnInit {
         this.query = query;
         this.handleSearch();
       });
+      this.filterIntractEdata = {
+        id: 'filter',
+        type: 'click',
+        pageid: 'all-my-content-page'
+      };
   }
   public handleSearch() {
     if (this.query.length > 0) {

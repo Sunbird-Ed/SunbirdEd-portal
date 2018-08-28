@@ -27,7 +27,6 @@ export class ResourceComponent implements OnInit {
    * telemetryImpression
   */
   telemetryImpression: IImpressionEventInput;
-  filterIntractEdata: IInteractEventEdata;
   sortIntractEdata: IInteractEventEdata;
   /**
  * To show toaster(error, success etc) after any API calls
@@ -158,11 +157,6 @@ export class ResourceComponent implements OnInit {
         uri: this.router.url,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype
       }
-    };
-    this.filterIntractEdata = {
-      id: 'filter',
-      type: 'click',
-      pageid: 'resource-page'
     };
     this.sortIntractEdata = {
       id: 'sort',

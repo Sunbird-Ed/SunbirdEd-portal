@@ -61,7 +61,6 @@ describe('DataDrivenFilterComponent', () => {
     fixture = TestBed.createComponent(DataDrivenFilterComponent);
     component = fixture.componentInstance;
   });
-
   it('should create', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
@@ -128,13 +127,13 @@ describe('DataDrivenFilterComponent', () => {
   it('should frame form config data', () => {
     component.categoryMasterList = _.cloneDeep(mockData.mockRes.frameworkData);
     component.getFormConfig();
-    fixture.detectChanges();
+   fixture.detectChanges();
     expect(component.formFieldProperties).toBeDefined();
   });
   it('should apply filters', () => {
     spyOn(component, 'applyFilters').and.returnValue(null);
     component.applyFilters();
-    fixture.detectChanges();
+     fixture.detectChanges();
     expect(component.applyFilters).toHaveBeenCalled();
   });
   it('should reset filters', () => {
@@ -159,7 +158,7 @@ describe('DataDrivenFilterComponent', () => {
     userService._userData$.next({ err: null, userProfile: mockData.mockRes.userProfile });
     component.formInputData = { 'subject': ['English'] };
     component.removeFilterSelection('subject', 'English');
-    fixture.detectChanges();
+     fixture.detectChanges();
   });
   it('should unsubscribe from all observable subscriptions', () => {
     const frameworkService = TestBed.get(FrameworkService);
@@ -219,4 +218,29 @@ describe('DataDrivenFilterComponent', () => {
     component.applyFilters();
     expect(router.navigate).toHaveBeenCalledWith([undefined], { queryParams: component.queryParams });
   });
+  it('should call ngOninit to get telemetry Interact Data', () => {
+     const frameworkService = TestBed.get(FrameworkService);
+     component.pageId = 'course-page';
+     component.hashTagId = '0123166367624478721';
+     const filterInteractEdata = {
+       id: 'filter',
+       type: 'click',
+       pageid: component.pageId
+     };
+     const submitIntractEdata = {
+       id: 'submit',
+       type: 'click',
+       pageid: 'course-page',
+       extra: { filter: { 'subject': ['English'] } }
+     };
+      spyOn(frameworkService, 'initialize').and.callThrough();
+     spyOn(component, 'getQueryParams').and.callThrough();
+     spyOn(component, 'fetchFilterMetaData').and.callThrough();
+     component.ngOnInit();
+     expect(frameworkService.initialize).toHaveBeenCalled();
+     expect(component.getQueryParams).toHaveBeenCalled();
+     expect(component.fetchFilterMetaData).toHaveBeenCalled();
+     expect(component.filterIntractEdata).toEqual(filterInteractEdata);
+     expect(component.submitIntractEdata).toEqual(submitIntractEdata);
+   });
 });

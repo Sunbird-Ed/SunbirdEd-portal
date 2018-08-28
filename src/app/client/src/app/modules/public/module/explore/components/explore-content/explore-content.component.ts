@@ -126,7 +126,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     sortingOptions: Array<ISort>;
     public unsubscribe$ = new Subject<void>();
     cardIntractEdata: IInteractEventEdata;
-    filterIntractEdata: IInteractEventEdata;
     dataDrivenFilter: object;
     /**
        * Constructor to create injected service(s) object
@@ -321,11 +320,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
         };
         this.cardIntractEdata = {
             id: 'content-card',
-            type: 'click',
-            pageid: this.activatedRoute.snapshot.data.telemetry.pageid
-        };
-        this.filterIntractEdata = {
-            id: 'filter',
             type: 'click',
             pageid: this.activatedRoute.snapshot.data.telemetry.pageid
         };

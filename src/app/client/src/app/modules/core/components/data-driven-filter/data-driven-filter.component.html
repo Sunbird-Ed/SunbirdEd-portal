@@ -7,7 +7,7 @@
             <span (click)="accordionDefaultOpen = !accordionDefaultOpen" class="cursor-pointer">
               <i alt="Filter" class="icon filter"></i>
               {{resourceService.frmelmnts?.lbl?.filters}}
-              <i class="dropdown icon vertical-align-middle "></i>
+              <i class="dropdown icon vertical-align-middle " appTelemetryInteract [telemetryInteractEdata]="filterIntractEdata"></i>
             </span>
           </div>
           <div content>
@@ -52,7 +52,7 @@
                   </div>
                 </div>
                 <div class="three wide column filter-button margin-top-10">
-                  <a class="searchfilterbutton ui blue tiny  button" (click)="applyFilters()">{{resourceService.frmelmnts?.btn?.apply}}</a>
+                  <a class="searchfilterbutton ui blue tiny  button" (click)="applyFilters()" appTelemetryInteract [telemetryInteractEdata]="submitIntractEdata">{{resourceService.frmelmnts?.btn?.apply}}</a>
                   <a class="searchfilterbutton ui primary tiny basic button" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</a>
                 </div>
               </form>
