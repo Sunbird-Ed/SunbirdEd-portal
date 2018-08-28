@@ -336,7 +336,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
           this.updateParticipantsToBatch(this.batchId, participants);
         } else {
           this.disableSubmitBtn = false;
-          this.toasterService.success(this.resourceService.messages.smsg.m0033);
+          this.toasterService.success(this.resourceService.messages.smsg.m0034);
           this.reload();
         }
       },
@@ -356,7 +356,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     this.courseBatchService.addUsersToBatch(userRequest, batchId).pipe(takeUntil(this.unsubscribe))
       .subscribe((res) => {
         this.disableSubmitBtn = false;
-        this.toasterService.success(this.resourceService.messages.smsg.m0033);
+        this.toasterService.success(this.resourceService.messages.smsg.m0034);
         this.reload();
       },
       (err) => {
