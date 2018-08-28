@@ -228,13 +228,14 @@ describe('CreateComponent', () => {
       expect(component.showResendLoader).toBeFalsy();
       expect(component.announcementTypes.length).toBeGreaterThan(0);
     }));
-    it('should call ngOnint to set telemetry Start data with device info', inject([DeviceDetectorService], (deviceDetectorService) => {
-      const deviceInfo = deviceDetectorService.getDeviceInfo();
-      expect(component.telemetryStart).toBeDefined();
-      expect(component.telemetryStart.edata.uaspec['agent']).toBe(deviceInfo.browser);
-      expect(component.telemetryStart.edata.uaspec['ver']).toBe(deviceInfo.browser_version);
-      expect(component.telemetryStart.edata.uaspec['system']).toBe(deviceInfo.os_version);
-      expect(component.telemetryStart.edata.uaspec['platform']).toBe(deviceInfo.os);
-      expect(component.telemetryStart.edata.uaspec['raw']).toBe(deviceInfo.userAgent);
+    it('should call ngOnint to set telemetry Start data with device info', inject([DeviceDetectorService],
+      (deviceDetectorService) => {
+        const deviceInfo = deviceDetectorService.getDeviceInfo();
+        expect(component.telemetryStart).toBeDefined();
+        expect(component.telemetryStart.edata.uaspec['agent']).toBe(deviceInfo.browser);
+        expect(component.telemetryStart.edata.uaspec['ver']).toBe(deviceInfo.browser_version);
+        expect(component.telemetryStart.edata.uaspec['system']).toBe(deviceInfo.os_version);
+        expect(component.telemetryStart.edata.uaspec['platform']).toBe(deviceInfo.os);
+        expect(component.telemetryStart.edata.uaspec['raw']).toBe(deviceInfo.userAgent);
     }));
 });
