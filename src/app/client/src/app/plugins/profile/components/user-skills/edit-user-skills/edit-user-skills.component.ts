@@ -41,6 +41,7 @@ export class EditUserSkillsComponent implements OnInit, AfterViewInit {
    * Also invokes user service to fetch user profile data
    */
   ngOnInit() {
+    this.windowScrollService.smoothScroll('skillswrapper');
     this.profileService.getSkills().subscribe((data) => {
       if (data) {
         this.skillsMasterData = data.result.skills;

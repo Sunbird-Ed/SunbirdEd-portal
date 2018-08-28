@@ -89,7 +89,7 @@ export const mockRes = {
               'm0005': 'Some Unexpected Error Occured'
             },
             'smsg': {
-                'm0038': 'New skill added successfully'
+                'm0038': 'Skills updated successfully'
             }
         }
     }
