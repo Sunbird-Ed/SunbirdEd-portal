@@ -75,11 +75,11 @@ describe('StatusComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => observableOf(mockRes.successResponseWithStatusInprogress));
-    spyOn(toasterService, 'error').and.callThrough();
+    spyOn(toasterService, 'info').and.callThrough();
     const processId = '012465880638177280660';
     component.getBulkUploadStatus(processId);
     expect(component.isProcessCompleted).toBe(false);
-    expect(toasterService.error).toHaveBeenCalledWith(mockRes.resourceBundle.messages.imsg.m0040);
+    expect(toasterService.info).toHaveBeenCalledWith(mockRes.resourceBundle.messages.imsg.m0040);
   });
   it('should call organization management service and get failure status based on given processId', () => {
     const resourceService = TestBed.get(ResourceService);
@@ -87,11 +87,11 @@ describe('StatusComponent', () => {
     resourceService.messages = mockRes.resourceBundle.messages;
     const toasterService = TestBed.get(ToasterService);
     spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => observableOf(mockRes.failureResponse));
-    spyOn(toasterService, 'error').and.callThrough();
+    spyOn(toasterService, 'info').and.callThrough();
     const processId = '012465880638177280660';
     component.getBulkUploadStatus(processId);
     component.statusResponse = mockRes.successResponse.result.response[0];
-    expect(toasterService.error).toHaveBeenCalled();
+    expect(toasterService.info).toHaveBeenCalled();
   });
   it('should call getStatusResult to get the status result', () => {
     component.getStatusResult('success');
