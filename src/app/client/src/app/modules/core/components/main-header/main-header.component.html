@@ -3,7 +3,7 @@
         <div class="one wide tablet computer only column"></div>
         <div class="two wide tablet computer only column" [class.padding-top-15]="userService.userid">
             <a (click)="navigateToHome()">
-                <img [class.tenant-header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
+                <img [class.public-header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
                     alt={{tenantName}} src="{{logo}}">
             </a>
         </div>
@@ -91,7 +91,7 @@
                 <div class="one wide column"></div>
                 <div class="two wide column padding-left-none">
                     <a (click)="navigateToHome()">
-                        <img class="image centered tenant-header-logo-before-login" alt={{tenantName}} src="{{logo}}">
+                        <img class="image centered public-header-logo-before-login" alt={{tenantName}} src="{{logo}}">
                     </a>
                 </div>
                 <div class="two wide column"></div>
