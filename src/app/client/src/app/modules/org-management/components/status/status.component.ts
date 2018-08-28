@@ -138,7 +138,7 @@ export class StatusComponent implements OnInit, OnDestroy {
               this.toasterService.success(this.resourceService.messages.smsg.m0032);
             } else {
               this.isProcessCompleted = false;
-              this.toasterService.warning(this.resourceService.messages.imsg.m0040);
+              this.toasterService.info(this.resourceService.messages.imsg.m0040);
             }
           }, err => {
             this.showLoader = false;
