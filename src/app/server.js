@@ -27,7 +27,8 @@ const telemetry = new Telemetry()
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 let memoryStore = null
-
+const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
+const frameworkConfig = require('./framework.config.js');
 const app = express()
 
 if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
@@ -137,9 +138,17 @@ app.get('/v1/user/session/start/:deviceId', (req, res) => {
 app.use('/resourcebundles/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '50mb' }), require('./helpers/resourceBundles')(express))
 
-// redirect to home if nothing found
-app.all('*', (req, res) => res.redirect('/'))
-
+console.log('[Extensible framework]: Bootstraping...')
+const subApp = express()
+subApp.use(bodyParser.json({ limit: '50mb' }))
+app.use('/plugin', subApp)
+frameworkAPI.bootstrap(frameworkConfig, subApp).then(() => {
+  runApp(envHelper.PORTAL_PORT)
+}).catch((error) => {
+  console.log('[Extensible framework]: Bootstrap failed!', error)
+  // if framework fails, do not stop the portal
+  runApp(envHelper.PORTAL_PORT)
+})
 
 // Method called after successful authentication and it will log the telemetry for CP_SESSION_START and updates the login time
 keycloak.authenticated = function (request) {
@@ -193,21 +202,26 @@ if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
     'sunbird_instance  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird')
   process.exit(1)
 }
+function runApp (port) {
 
-portal.server = app.listen(envHelper.PORTAL_PORT, () => {
-  if (envHelper.PORTAL_CDN_URL) {
-    const req = request
-      .get(envHelper.PORTAL_CDN_URL + 'index.' + packageObj.version + '.' + packageObj.buildHash + '.ejs')
-      .on('response', function (res) {
-        if (res.statusCode === 200) {
-          req.pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')))
-        } else {
-          console.log('Error while fetching '+envHelper.PORTAL_CDN_URL + 'index.' + packageObj.version + '.' + packageObj.buildHash + '.ejs file when CDN enabled');
-        }
-      })
-  }
-  console.log('app running on port ' + envHelper.PORTAL_PORT)
-})
+  // redirect to home if nothing found
+  app.all('*', (req, res) => res.redirect('/'))
+
+  portal.server = app.listen(envHelper.PORTAL_PORT, () => {
+    if (envHelper.PORTAL_CDN_URL) {
+      const req = request
+        .get(envHelper.PORTAL_CDN_URL + 'index.' + packageObj.version + '.' + packageObj.buildHash + '.ejs')
+        .on('response', function (res) {
+          if (res.statusCode === 200) {
+            req.pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')))
+          } else {
+            console.log('Error while fetching '+envHelper.PORTAL_CDN_URL + 'index.' + packageObj.version + '.' + packageObj.buildHash + '.ejs file when CDN enabled');
+          }
+        })
+    }
+    console.log('app running on port ' + envHelper.PORTAL_PORT)
+  })
+}
 
 exports.close = () => portal.server.close()
 
@@ -220,5 +234,10 @@ const telemetryConfig = {
   host: envHelper.TELEMETRY_SERVICE_LOCAL_URL,
   authtoken: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
 }
+
+process.on('unhandledRejection', function(reason, p){
+  console.log("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
+  // application specific logging here
+});
 
 telemetry.init(telemetryConfig)
