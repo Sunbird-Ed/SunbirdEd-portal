@@ -27,7 +27,7 @@ describe('AppComponent', () => {
       ],
       providers: [ToasterService, TenantService,
         UserService, ConfigService, LearnerService,
-        PermissionService, ResourceService, CoursesService,
+        PermissionService, ResourceService, CoursesService, OrgDetailsService,
         TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, ConceptPickerService, SearchService, ContentService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
@@ -122,6 +122,17 @@ describe('AppComponent', () => {
     expect(document.title).toBe(mockData.tenantSuccess.result.titleName);
     expect(document.querySelector).toHaveBeenCalled();
   });
+  it('Should display the tenant logo if user is not logged in', () => {
+    const slug = 'rj';
+    component.initializeAnonymousSession(slug);
+     const service = TestBed.get(TenantService);
+    spyOn(service, 'get').and.returnValue(observableOf(mockData.tenantResponse));
+    service.getTenantInfo('rj');
+    service.tenantData$.subscribe(
+      data => {
+        expect(data.tenantData.titleName).toEqual(mockData.tenantResponse.result.titleName);
+      });
+  });
   it('should set the version number', async(() => {
     spyOn(document, 'getElementById').and.callFake(() => {
       return {
@@ -131,4 +142,6 @@ describe('AppComponent', () => {
     component.ngOnInit();
     expect(component.version).toEqual('1.9.0');
   }));
+
 });
+
