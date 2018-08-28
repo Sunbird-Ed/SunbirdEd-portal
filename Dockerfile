@@ -9,6 +9,6 @@ USER sunbird
 WORKDIR /home/sunbird/app_dist
 # This is the short commit hash from which this image is built from
 # This label is assigned at time of image creation
-# LABEL vcs-ref
+# LABEL commitHash
 EXPOSE 3000
 CMD ["node", "server.js", "&"]

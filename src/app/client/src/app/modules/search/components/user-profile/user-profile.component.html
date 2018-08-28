@@ -149,10 +149,10 @@
           <div class="profileitems profile-des ui relaxed aligned list">
             <div class="item " *ngFor="let skill of userDetails.skills | slice:0:skillLimit | orderBy:'addedAt':true">
               <div class="ui label">
-                {{skill.skillName}}
+                {{skill.skillName}} {{skill.endorsementCount}}
                 <div class="detail">
-                  <span *ngIf="skill.endorsementcount !== 0">|&nbsp;</span>
-                  <span>{{skill.endorsementcount}}</span>
+                  <span *ngIf="skill.endorsementCount !== 0">|&nbsp;</span>
+                  <span *ngIf="skill.endorsementCount !== 0">{{skill.endorsementCount}}</span>
                 </div>
               </div>
               <div *ngIf="!skill.isEndorsable" class="ui circular labels float-ContentRight ">

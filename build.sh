@@ -17,4 +17,4 @@ containerid=$(docker ps -aqf "name=${name}-${version}-build")
 rm -rf ./dist
 docker cp $containerid:/opt/player/app/player-dist.tar.gz .
 docker rm ${containerid}
-docker build -f ./Dockerfile --label vcs-ref=$(git rev-parse --short HEAD) -t ${org}/${name}:${version}-bronze .
+docker build -f ./Dockerfile --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${version}-bronze .

@@ -94,9 +94,8 @@ export class AppComponent implements OnInit {
     const fingerPrint2 = new Fingerprint2();
     this.resourceService.initialize();
     this.navigationHelperService.initialize();
-    this.version = (<HTMLInputElement>document.getElementById('buildNumber')) &&
-      (<HTMLInputElement>document.getElementById('buildNumber')).value ?
-      (<HTMLInputElement>document.getElementById('buildNumber')).value.slice(0, 5) : '1.0';
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    this.version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     if (this.userService.loggedIn) {
       fingerPrint2.get((deviceId) => {
         (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
@@ -142,7 +141,7 @@ export class AppComponent implements OnInit {
       first()).subscribe((data) => {
         this.orgDetails = data;
         this.initTelemetryService(false);
-        this.initTenantService();
+        this.initTenantService(slug);
         this.userService.initialize(false);
         this.initApp = true;
       }, (err) => {
