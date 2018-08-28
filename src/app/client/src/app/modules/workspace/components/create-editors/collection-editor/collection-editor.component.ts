@@ -196,7 +196,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       contentId: this.contentId,
       pdata: {
         id: this.userService.appId,
-        ver: '1.0',
+        ver: this.buildNumber.slice(0, 5),
         pid: 'sunbird-portal'
       },
       tags: this.userService.dims,
@@ -226,7 +226,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     if (this.type.toLowerCase() === 'textbook') {
       window.config.plugins.push({
         id: 'org.ekstep.suggestcontent',
-        ver: '1.0',
+        ver: '1.1',
         type: 'plugin'
       });
       window.config.nodeDisplayCriteria = {

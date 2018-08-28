@@ -5,7 +5,7 @@ import { SearchService, SearchParam } from '@sunbird/core';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-dial-code',
   templateUrl: './dial-code.component.html',

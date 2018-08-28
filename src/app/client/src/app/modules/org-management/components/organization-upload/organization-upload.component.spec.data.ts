@@ -47,18 +47,20 @@ export const mockRes = {
         }
     },
     errorResponse: {
-        'id': 'api.org.upload',
-        'ver': 'v1',
-        'ts': '2018-03-23 10:05:16:003+0000',
-        'params': {
-            'resmsgid': null,
-            'msgid': '340c2ea1-76e5-d639-0383-81688227f64c',
-            'err': 'INVALID_COLUMN_NAME',
-            'status': 'INVALID_COLUMN_NAME',
-            'errmsg': 'Invalid column name.'
-        },
-        'responseCode': 'CLIENT_ERROR',
-        'result': {
+        error: {
+            'id': 'api.org.upload',
+            'ver': 'v1',
+            'ts': '2018-03-23 10:05:16:003+0000',
+            'params': {
+                'resmsgid': null,
+                'msgid': '340c2ea1-76e5-d639-0383-81688227f64c',
+                'err': 'INVALID_COLUMN_NAME',
+                'status': 'INVALID_COLUMN_NAME',
+                'errmsg': 'Invalid column: "orgName". Valid columns are: orgName, channel, isRootOrg, provider, externalId, Code.'
+            },
+            'responseCode': 'CLIENT_ERROR',
+            'result': {
+            }
         }
     },
     resourceBundle: {
@@ -68,7 +70,52 @@ export const mockRes = {
             },
             'smsg': {
                 'm0031': 'Organizations uploaded successfully'
+            },
+            'fmsg': {
+                'm0051': 'Something went wrong, please try again later...'
             }
         }
-    }
+    },
+    errorForEmpty: {
+        error: {
+            'id': 'api.org.upload',
+            'ver': 'v1',
+            'ts': '2018-03-23 10:05:16:003+0000',
+            'params': {
+                'resmsgid': null,
+                'msgid': '340c2ea1-76e5-d639-0383-81688227f64c',
+                'err': 'INVALID_COLUMN_NAME',
+                'status': 'INVALID_COLUMN_NAME',
+                'errmsg': 'Please provide valid csv file.'
+            },
+            'responseCode': 'CLIENT_ERROR',
+            'result': {
+            }
+        }
+    },
+    emptyFile: [{
+        name: 'users.csv',
+    }],
+    errorFormultipleLines: {
+        error: {
+            'id': 'api.user.upload',
+        'ver': 'v1',
+        'ts': '2018-03-23 08:16:59:649+0000',
+        'params': {
+            'resmsgid': null,
+            'msgid': '55402d80-917f-4f72-9f5b-2e4e7a68ce86',
+            'err': 'INVALID_ORGANIZATION_DATA',
+            'status': 'INVALID_ORGANIZATION_DATA',
+            'errmsg': 'Invalid column: ﻿"firstName". Valid columns are: firstName, lastName, externalIds. Please check.'
+        },
+        'responseCode': 'CLIENT_ERROR',
+        'result': {
+        }
+        }
+    },
+    noErrorMessage: {message: 'An invalid response was received from the upstream server'},
+    toasterMessage: {
+    invalidColumnSingelLine: 'Invalid column: "orgName".<br/>Valid columns are: orgName, channel, isRootOrg, provider, externalId, Code.',
+    emptyFiles: 'Please provide valid csv file.',
+    invalidColumnMultipleLines: 'Invalid column: ﻿"firstName".<br/>Valid columns are: firstName, lastName, externalIds.<br/>Please check.'}
 };

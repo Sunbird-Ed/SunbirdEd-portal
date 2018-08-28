@@ -41,8 +41,7 @@
     </div>
     <div class="ui bottom attached batchCard button" appTelemetryInteract [telemetryInteractEdata]="createBatchIntractEdata"
         [telemetryInteractObject]="courseInteractObject" (click)="createBatch()" *ngIf="courseMentor">
-        <a>
-            <i class="add icon"></i>{{resourceService.frmelmnts.lbl.createbatch}}</a>
+        <a><i class="add icon"></i>{{resourceService.frmelmnts.lbl.createbatch}}</a>
     </div>
 </div>
 <div *ngIf="enrolledCourse && enrolledBatchInfo" class="rightSideSectionCards ui card">
@@ -52,8 +51,8 @@
     <div class="content">
         <div class="header">{{enrolledBatchInfo.name}}</div>
         <div class="selectedBatchMeta meta">
-            <span class="date">{{enrolledBatchInfo.startDate | dateFormat}} - </span>
-            <span *ngIf="enrolledBatchInfo.endDate" class="date"> {{enrolledBatchInfo.endDate | dateFormat}}</span>
+            <span class="date">{{enrolledBatchInfo.startDate | dateFormat}} </span>
+            <span *ngIf="enrolledBatchInfo.endDate" class="date"> - {{enrolledBatchInfo.endDate | dateFormat}}</span>
         </div>
     </div>
     <div class="selectedBatchContent extra content">

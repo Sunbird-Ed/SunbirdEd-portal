@@ -39,7 +39,7 @@ let envVariables = {
   ANDROID_APP_URL: env.sunbird_android_app_url || 'http://www.sunbird.org',
   EXPLORE_BUTTON_VISIBILITY: env.sunbird_explore_button_visibility || 'true',
   ENABLE_SIGNUP: env.sunbird_enable_signup || 'true',
-  BUILD_NUMBER: env.build_number || packageObj.version+'.'+packageObj.buildNumber,
+  BUILD_NUMBER: env.sunbird_build_number || packageObj.version+'.'+packageObj.buildHash,
   TELEMETRY_SERVICE_LOCAL_URL: env.sunbird_telemetry_service_local_url || 'http://telemetry-service:9001/',
   PORTAL_API_CACHE_TTL: env.sunbird_api_response_cache_ttl || '600',
   SUNBIRD_EXTCONT_WHITELISTED_DOMAINS: env.sunbird_extcont_whitelisted_domains || 'youtube.com,youtu.be',

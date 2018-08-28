@@ -20,7 +20,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   @Input() ignoreQuery = [];
   @Input() showSearchedParam = true;
   @Output() filters = new EventEmitter();
-
+  @Output() prominentFilter = new EventEmitter();
   /**
  * To get url, app configs
  */
@@ -71,6 +71,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   isShowFilterPlaceholder = true;
   contentTypes: any;
   frameworkDataSubscription: Subscription;
+  isFiltered = true;
   /**
    *
     * Constructor to create injected service(s) object
@@ -142,6 +143,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     if (this.isCachedDataExists) {
       const data: any | null = this._cacheService.get(this.filterEnv + this.formAction);
       this.formFieldProperties = data;
+      this.prominentFilter.emit(this.formFieldProperties);
     } else {
       this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
         if (frameworkData && !frameworkData.err) {
@@ -165,12 +167,15 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
                 }
               });
               this.getFormConfig();
+              this.prominentFilter.emit(this.formFieldProperties);
             },
             (err: ServerResponse) => {
+              this.prominentFilter.emit([]);
               // this.toasterService.error(this.resourceService.messages.emsg.m0005);
             }
           );
         } else if (frameworkData && frameworkData.err) {
+          this.prominentFilter.emit([]);
           // this.toasterService.error(this.resourceService.messages.emsg.m0005);
         }
       });
@@ -224,21 +229,29 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   isObject(val) { return typeof val === 'object'; }
 
   applyFilters() {
-    this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
-    let queryParams = {};
-    _.forIn(this.queryParams, (value, key) => {
-      if (key === 'concepts') {
-        queryParams[key] = [];
-        value.forEach((conceptDetails) => {
-          queryParams[key].push(conceptDetails.identifier);
+    if (_.isEqual(this.formInputData, this.queryParams)) {
+      this.isFiltered = true;
+    } else {
+        this.isFiltered = false;
+        this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
+        let queryParams = {};
+        _.forIn(this.queryParams, (value, key) => {
+            if (key === 'concepts') {
+                queryParams[key] = [];
+                value.forEach((conceptDetails) => {
+                    queryParams[key].push(conceptDetails.identifier);
+                });
+            } else {
+                queryParams[key] = value;
+            }
         });
-      } else {
-        queryParams[key] = value;
-      }
-    });
-    queryParams = _.pickBy(queryParams, value => value.length > 0);
-    this.router.navigate([this.redirectUrl], { queryParams: queryParams });
-  }
+        queryParams = _.pickBy(queryParams, value => _.isArray(value) && value.length > 0);
+        this.router.navigate([this.redirectUrl], {
+            queryParams: queryParams
+        });
+    }
+}
+
   showField(allowedRoles) {
     if (allowedRoles) {
       return this.permissionService.checkRolesPermissions(allowedRoles);

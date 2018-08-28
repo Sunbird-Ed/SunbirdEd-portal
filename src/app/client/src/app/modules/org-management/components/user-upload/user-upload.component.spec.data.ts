@@ -75,7 +75,69 @@ export const mockRes = {
             },
             'emsg': {
                 'm0003': 'You should enter Provider and External Id Or Organization Id'
+            },
+            'fmsg': {
+                'm0051': 'Something went wrong, please try again later...'
             }
         }
-    }
+    },
+    errorUpload: {
+        error: {
+            'id': 'api.user.upload',
+        'ver': 'v1',
+        'ts': '2018-03-23 08:16:59:649+0000',
+        'params': {
+            'resmsgid': null,
+            'msgid': '55402d80-917f-4f72-9f5b-2e4e7a68ce86',
+            'err': 'INVALID_ORGANIZATION_DATA',
+            'status': 'INVALID_ORGANIZATION_DATA',
+            'errmsg': 'Invalid column: ﻿"firstName". Valid columns are: firstName, lastName, phone, location,  externalIds.'
+        },
+        'responseCode': 'CLIENT_ERROR',
+        'result': {
+        }
+        }
+    },
+    errorForEmpty: {
+        error: {
+            'id': 'api.user.upload',
+        'ver': 'v1',
+        'ts': '2018-03-23 08:16:59:649+0000',
+        'params': {
+            'resmsgid': null,
+            'msgid': '55402d80-917f-4f72-9f5b-2e4e7a68ce86',
+            'err': 'INVALID_ORGANIZATION_DATA',
+            'status': 'INVALID_ORGANIZATION_DATA',
+            'errmsg': 'Please provide valid csv file.'
+        },
+        'responseCode': 'CLIENT_ERROR',
+        'result': {
+        }
+        }
+    },
+    emptyFile: [{
+        name: 'user.csv'
+    }],
+    errorFormultipleLines: {
+        error: {
+            'id': 'api.user.upload',
+        'ver': 'v1',
+        'ts': '2018-03-23 08:16:59:649+0000',
+        'params': {
+            'resmsgid': null,
+            'msgid': '55402d80-917f-4f72-9f5b-2e4e7a68ce86',
+            'err': 'INVALID_ORGANIZATION_DATA',
+            'status': 'INVALID_ORGANIZATION_DATA',
+            'errmsg': 'Invalid column: ﻿"firstName". Valid columns are: firstName, lastName, externalIds. Please check.'
+        },
+        'responseCode': 'CLIENT_ERROR',
+        'result': {
+        }
+        }
+    },
+    noErrorMessage: {message: 'An invalid response was received from the upstream server'},
+    toasterMessage: {
+     invalidColumnSingelLine: 'Invalid column: ﻿"firstName".<br/>Valid columns are: firstName, lastName, phone, location,  externalIds.',
+     emptyFiles: 'Please provide valid csv file.',
+     invalidColumnMultipleLines: 'Invalid column: ﻿"firstName".<br/>Valid columns are: firstName, lastName, externalIds.<br/>Please check.'}
 };

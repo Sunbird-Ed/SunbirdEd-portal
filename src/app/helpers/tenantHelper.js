@@ -59,7 +59,7 @@ module.exports = {
           module.exports.getImagePath(baseUrl, tenantId, 'appLogo.png', callback)
         }
       }, function (err, results) {
-        if (err) {}
+        if (err) { }
         responseObj.logo = results.logo
           ? results.logo : baseUrl + '/assets/images/sunbird_logo.png'
         responseObj.poster = results.poster
@@ -78,7 +78,8 @@ module.exports = {
     const userId = req.headers['x-consumer-id'] || telemtryEventConfig.default_userid
     const type = req.headers['x-consumer-username'] || telemtryEventConfig.default_username
 
-    const telemetryData = {reqObj: req,
+    const telemetryData = {
+      reqObj: req,
       statusCode: successResponseStatusCode,
       resp: result,
       uri: 'tenant/info',
@@ -104,21 +105,18 @@ module.exports = {
     })
     res.end()
   },
-  getDefaultTenantIndexState:  function() {
-    
-    if(!defaultTenant){
+  getDefaultTenantIndexState: function () {
+    if (!defaultTenant) {
       console.log('DEFAULT_CHANNEL env not set');
       return false;
     }
-
     try {
       var stats = fs.statSync(path.join(__dirname, '../tenant', defaultTenant, 'index.html'))
       return stats.isFile()
-    } catch(e) {
+    } catch (e) {
       console.log('DEFAULT_CHANNEL_index_file_stats_error ', e)
       return false;
     }
-    
   }
 
 }

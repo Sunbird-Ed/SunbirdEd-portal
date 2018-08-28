@@ -6,8 +6,8 @@ import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { UserService } from '@sunbird/core';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
-
+import { Subject } from 'rxjs';
+import * as _ from 'lodash';
 /**
  * This component helps to upload bulk organizations data (csv file)
  *
@@ -59,7 +59,7 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
   redirectUrl: string;
   /**
    * To show toaster(error, success etc) after any API calls
-   */
+  */
   private toasterService: ToasterService;
   /**
 	 * telemetryImpression
@@ -141,7 +141,8 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
       fieldSeparator: ',',
       quoteStrings: '"',
       decimalseparator: '.',
-      showLabels: true
+      showLabels: true,
+      useBom: false
     };
     const csv = new Angular2Csv(this.config.appConfig.ADMIN_UPLOAD.SAMPLE_ORGANIZATION_CSV, 'Sample_Organizations', options);
   }
@@ -171,7 +172,9 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
         },
         err => {
           this.showLoader = false;
-          this.toasterService.error(err.error.params.errmsg);
+          const errorMsg =  _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
+           this.resourceService.messages.fmsg.m0051;
+          this.toasterService.error(errorMsg);
         });
     } else if (file[0] && !(file[0].name.match(/.(csv)$/i))) {
       this.showLoader = false;

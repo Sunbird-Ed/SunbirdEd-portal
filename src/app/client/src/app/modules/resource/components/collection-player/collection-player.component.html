@@ -7,7 +7,7 @@
       <div class="ui grid" id="app-player-collection-renderer">
         <div class="one wide column"></div>
         <div class="ten wide column">
-          <span class="ui HomeAccordianHeading left floated header">{{contentTitle}}</span>
+          <span class="ui HomeAccordianHeading m-responsive-cp left floated header">{{contentTitle}}</span>
           <h5 appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="objectContentInteract"
             class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="closeContentPlayer()">
             <i class="ui remove icon"></i>
@@ -33,7 +33,7 @@
   <div class="row" *ngIf="!loader">
     <div [appTelemetryImpression]="telemetryImpression" class="one wide column"></div>
     <div class="ten wide column">
-      <span class="ui HomeAccordianHeading left floated header">{{collectionTitle}}</span>
+      <span class="ui HomeAccordianHeading m-responsive-cp left floated header">{{collectionTitle}}</span>
       <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" class="ui right floated basic icon circular button margin-auto mouse-pointer"
         (click)="closeCollectionPlayer()">
         <i class="ui remove icon"></i>

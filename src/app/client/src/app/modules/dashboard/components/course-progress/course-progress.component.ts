@@ -150,7 +150,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     this.showLoader = true;
     const option = {
       courseId: this.courseId,
-      status: ['1', '2', '3'],
+      status: ['0', '1', '2'],
       createdBy: this.userId
     };
     this.courseProgressService.getBatches(option).pipe(

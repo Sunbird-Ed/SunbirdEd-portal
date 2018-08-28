@@ -11,9 +11,6 @@
       "@sunbird/core": [
         "src/app/modules/core"
       ],
-      "@sunbird/community": [
-        "src/app/modules/community"
-      ],
       "@sunbird/shared": [
         "app/modules/shared"
       ],
@@ -43,9 +40,6 @@
       ],
       "@sunbird/profile": [
         "app/plugins/profile"
-      ],
-      "@sunbird/discussion": [
-        "app/modules/discussion"
       ],
       "@sunbird/telemetry": [
         "app/modules/telemetry"
