@@ -126,16 +126,16 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
           this.loggedInUserRoles = user.userProfile.userRoles;
         }
       });
-      this.filterIntractEdata = {
-        id: 'filter',
-        type: 'click',
-        pageid: this.pageId
-      };
-      this.submitIntractEdata = {
-        id: 'submit',
-        type: 'click',
-        pageid: this.pageId,
-        extra: {filter: this.formInputData}
+    this.filterIntractEdata = {
+      id: 'filter',
+      type: 'click',
+      pageid: this.pageId
+    };
+    this.submitIntractEdata = {
+      id: 'submit',
+      type: 'click',
+      pageid: this.pageId,
+      extra: { filter: this.formInputData }
     };
   }
 
