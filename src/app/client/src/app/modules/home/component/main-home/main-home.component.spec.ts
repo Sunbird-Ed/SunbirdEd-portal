@@ -108,4 +108,37 @@ class ActivatedRouteStub {
     component.populateEnrolledCourse();
     expect(component.showLoader).toBeFalsy();
   });
+  it('should call playcontent', () => {
+    const playerService = TestBed.get(PlayerService);
+    spyOn(playerService, 'playContent').and.callThrough();
+    component.playContent(testData.metaData);
+    expect(playerService.playContent).toHaveBeenCalled();
+  });
+  it('should call playcontent', () => {
+    const playerService = TestBed.get(PlayerService);
+    spyOn(playerService, 'playContent').and.callThrough();
+    component.playContent(testData.metaData);
+    expect(playerService.playContent).toHaveBeenCalled();
+  });
+  it('should call inview method for visits data', () => {
+    spyOn(component, 'inview').and.callThrough();
+    fixture.detectChanges();
+    component.inview(testData.inviewData);
+    expect(component.inview).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
+  });
+  it('should call inviewChange method for visits data', () => {
+    spyOn(component, 'inviewChange').and.callThrough();
+    fixture.detectChanges();
+    component.inviewChange(testData.toDoList, testData.eventData2);
+    expect(component.inviewChange).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
+  });
+  it('should call announcemnetInview method for visits data', () => {
+    spyOn(component, 'anouncementInview').and.callThrough();
+    fixture.detectChanges();
+    component.anouncementInview(testData.announcementInview);
+    expect(component.anouncementInview).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
+  });
 });
