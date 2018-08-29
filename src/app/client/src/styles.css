@@ -2783,35 +2783,77 @@ iframe.iziModal-iframe {
 /*mobile responsive code  which we need to remove once we start writing mobile first css*/
 
 @media only screen and (min-width: 320px) and (max-width: 767px) {
-  .header-logo {
-    display: block;
-    max-width: 100px;
-    max-height: 40px;
-    width: auto;
-    height: auto;
-    position: absolute;
-  }
-  .primary-header-avatar {
-    padding-top: 0.5rem;
-    z-index: 88;
-  }
-  .primary-header-alarm-icon {
-    padding-top: 1.2rem;
-  }
+    .header-logo {
+      display: block;
+      max-width: 100px;
+      max-height: 40px;
+      width: auto;
+      height: auto;
+      position: absolute;
+    }
+    .primary-header-avatar {
+      padding-top: 0.5rem;
+      z-index: 88;
+    }
+    .primary-header-alarm-icon {
+      padding-top: 1.2rem;
+    }
 
-  /*collection player responsive code*/
+    /*collection player responsive code*/
 
-  .accordion-content {
-    width: 250px;
-  }  
+    .accordion-content {
+      width: 250px;
+    }  
 
-  .fancytree-plain span.fancytree-node span.fancytree-title {
-    overflow: hidden;
-    overflow-wrap: break-word;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width:210px;
-  }
+    .fancytree-plain span.fancytree-node span.fancytree-title {
+      overflow: hidden;
+      overflow-wrap: break-word;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width:210px;
+    }
+  /* content player y0ur progress section margin here !important is added to address specificity issue*/
+    p.m-responsive-cp-header {
+      margin-top:20px !important; 
+      float: left;
+    }
+    .ui.grid.m-responsive-cp-nmt-50 {
+      margin-top: -50px;
+    }
+
+    /* buttons below the content player */
+    .ui.button .header {
+      font-size: 1em;
+    }
+    .take-note-card {
+      width: 30px;
+    }
+
+    /*content player and collection player responsive share icons*/
+    .m-responsive-cp-badge-ml {
+      margin-left: 0 !important;
+    }
+
+    .m-responsive-sort-al {
+      float:left;
+    }
+
+    /*profile page alignment fixes*/
+    i.icon.m-responsive-p-icon-ml {
+      margin-left: 10px;
+    }
+    .ui.items:not(.unstackable)>.item>.image.m-responsive-p-avatar-ml {
+      margin-left: 10px;
+    }
+
+    /*profile header bulk upload alignment fixes*/
+    .m-responsive-p-header-fl {
+      float: left;
+      clear: both;
+      padding-bottom: 10px;
+    }
+
+
 }
 
 @media only screen and (min-width: 320px) and (max-width: 400px) {
