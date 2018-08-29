@@ -51,6 +51,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
   contentData: ContentData;
   public unsubscribe$ = new Subject<void>();
   public badgeData: Array<object>;
+  public dialCode: string;
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
@@ -92,6 +93,10 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
    * used to fetch content details and player config. On success launches player.
    */
   getContent() {
+    this.activatedRoute.queryParams.subscribe((queryParams) => {
+      this.dialCode = queryParams.dialCode;
+    });
+    const options: any = { dialCode: this.dialCode };
     this.playerService.getContent(this.contentId).pipe(
       takeUntil(this.unsubscribe$))
       .subscribe(
@@ -100,7 +105,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
             contentId: this.contentId,
             contentData: response.result.content
           };
-          this.playerConfig = this.playerService.getConfig(contentDetails);
+          this.playerConfig = this.playerService.getConfig(contentDetails, options);
           this.contentData = response.result.content;
           if (this.contentData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
             setTimeout(() => {

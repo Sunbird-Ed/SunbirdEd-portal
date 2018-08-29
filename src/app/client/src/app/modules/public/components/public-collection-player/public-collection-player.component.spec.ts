@@ -21,7 +21,7 @@ describe('PublicCollectionPlayerComponent', () => {
   const fakeActivatedRoute = {
     params: observableOf({ collectionId: collectionId }),
     // queryParams: Observable.of({ contentId: contentId }),
-    'queryParams': observableOf({ language: ['en'] }),
+    'queryParams': observableOf({ language: ['en'] }, {dialCode: '61U24C'}),
     snapshot: {
       params: {
         collectionId: collectionId
@@ -97,7 +97,9 @@ describe('PublicCollectionPlayerComponent', () => {
     const router = TestBed.get(Router);
     const route = TestBed.get(ActivatedRoute);
     const navigation = {
-      relativeTo: route
+      queryParams: {
+        dialCode: '61U24C'
+      }
     };
     component.closeContentPlayer();
     expect(component.showPlayer).toBeFalsy();

@@ -30,13 +30,13 @@ export class PublicPlayerService {
    * @param {string} id
    * @returns {Observable<{contentId: string, contentData: ContentData }>}
    */
-  getConfigByContent(id: string): Observable<PlayerConfig> {
+  getConfigByContent(id: string,  option: any = { }): Observable<PlayerConfig> {
     return this.getContent(id).pipe(
       mergeMap((contentDetails) => {
         return observableOf(this.getConfig({
           contentId: contentDetails.result.content.identifier,
           contentData: contentDetails.result.content
-        }));
+        }, option ));
       }));
   }
 
@@ -60,7 +60,7 @@ export class PublicPlayerService {
    * @param {ContentDetails} contentDetails
    * @memberof PlayerService
    */
-  getConfig(contentDetails: ContentDetails): PlayerConfig {
+  getConfig(contentDetails: ContentDetails,  option: any = { }): PlayerConfig {
     const configuration: any = this.configService.appConfig.PLAYER_CONFIG.playerConfig;
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = this.userService.anonymousSid;
@@ -73,6 +73,12 @@ export class PublicPlayerService {
     configuration.metadata = contentDetails.contentData;
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
       {} : contentDetails.contentData.body;
+    if (option.dialCode) {
+      configuration.context.cdata = [{
+        id: option.dialCode,
+        type: 'dialCode'
+      }];
+    }
     return configuration;
   }
   public getCollectionHierarchy(identifier: string): Observable<CollectionHierarchyAPI.Get> {

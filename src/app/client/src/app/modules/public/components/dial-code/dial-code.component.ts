@@ -154,9 +154,9 @@ export class DialCodeComponent implements OnInit, OnDestroy {
 
   public getEvent(event) {
     if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-      this.router.navigate(['play/collection', event.data.metaData.identifier]);
+      this.router.navigate(['play/collection', event.data.metaData.identifier], { queryParams: { dialCode: this.searchKeyword} });
     } else {
-      this.router.navigate(['play/content', event.data.metaData.identifier]);
+      this.router.navigate(['play/content', event.data.metaData.identifier], { queryParams:  { dialCode: this.searchKeyword} });
     }
   }
   inview(event) {
