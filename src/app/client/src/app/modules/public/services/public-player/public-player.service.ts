@@ -17,7 +17,7 @@ export class PublicPlayerService {
   contentData: ContentData;
   /**
    * stores collection/course details
-   */
+  */
   collectionData: ContentData;
   constructor(public userService: UserService, private orgDetailsService: OrgDetailsService,
     public configService: ConfigService, public router: Router,
