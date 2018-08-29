@@ -11,7 +11,7 @@
         </div>
         <div *ngIf="action === 'view'" class="profileitems ui relaxed divided items">
             <div class="item" *ngFor="let education of userProfile.education">
-                <img class="ui avatar image" src="{{'assets/images/businessman.png' | cdnprefixurl}}">
+                <img class="ui avatar image m-responsive-p-avatar-ml" src="{{'assets/images/businessman.png' | cdnprefixurl}}">
                 <div class="content">
                     <a class=" header">{{education?.degree}}</a>
                     <div class="description">
@@ -27,7 +27,7 @@
                 <div class="right-floated ">
                     <div class="metadata">
                         <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="deleteEducationInteractEdata" (click)="education.isDeleted=true;deleteEducation(education)">
-                            <i class="trash outline icon trashIcon-fontSize"></i>
+                            <i class="trash outline icon trashIcon-fontSize m-responsive-p-icon-ml"></i>
                         </a>
                     </div>
                 </div>
