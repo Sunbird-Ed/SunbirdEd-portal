@@ -2864,9 +2864,8 @@ i.icon.accordion-content-right {
     max-height: 45px;   
   }
 }
-
-
-
-
+.ui.calendar .table td {
+  padding:0.5em;
+}
 
 
