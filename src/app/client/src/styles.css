@@ -2799,6 +2799,12 @@ iframe.iziModal-iframe {
       padding-top: 1.2rem;
     }
 
+    .ui.button.m-responsive-search-dropdown {
+        min-width:100px;
+        max-width:100px;
+        padding-right: 0;
+    }
+
     /*collection player responsive code*/
 
     .accordion-content {
@@ -2853,7 +2859,6 @@ iframe.iziModal-iframe {
       padding-bottom: 10px;
     }
 
-
 }
 
 @media only screen and (min-width: 320px) and (max-width: 400px) {
@@ -2883,22 +2888,22 @@ i.icon.accordion-content-right {
 
 @media only screen and (min-width: 320px) and (max-width: 330px) {
   .searchinput {
-    width: 208px;
+    width: 195px;
   }
 }
-@media only screen and (min-width: 340px) and (max-width: 377px) {
+@media only screen and (min-width: 331px) and (max-width: 377px) {
   .searchinput {
-    width: 245px;
+    width: 225px;
   }
 }
-@media only screen and (min-width: 380px) and (max-width: 440px) {
+@media only screen and (min-width: 378px) and (max-width: 479px) {
   .searchinput {
-    width: 285px;
+    width: 275px;
   }
 }
 @media only screen and (min-width: 480px) and (max-width: 900px) {
   .searchinput {
-    width: 345px;
+    width: 335px;
   }
 }
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
@@ -2906,6 +2911,14 @@ i.icon.accordion-content-right {
     max-height: 45px;   
   }
 }
+
+/* Removing body scroll when modal opens */
+.no-scroll { 
+  overflow-y: hidden;
+  margin-right: 16px; 
+}
+
+
 
 
 
