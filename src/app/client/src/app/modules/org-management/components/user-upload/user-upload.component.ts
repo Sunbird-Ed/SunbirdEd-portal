@@ -228,7 +228,7 @@ export class UserUploadComponent implements OnInit, OnDestroy {
     this.bulkUploadErrorMessage = '';
   }
   ngOnDestroy() {
-    document.body.classList.remove('no-scroll');// This is a workaround  we need to remove it when library add support to remove body scroll
+    document.body.classList.remove('no-scroll'); // This is a workaround we need to remove it when library add support to remove body scroll
     this.modal.deny();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
