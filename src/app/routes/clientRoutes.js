@@ -91,6 +91,7 @@ function getLocals(req) {
     locals.buildNumber = envHelper.BUILD_NUMBER
     locals.apiCacheTtl = envHelper.PORTAL_API_CACHE_TTL
     locals.cloudStorageUrls = envHelper.CLOUD_STORAGE_URLS
+    locals.userUploadRefLink = envHelper.PORTAL_USER_UPLOAD_REF_LINK
     return locals;
 }
 
