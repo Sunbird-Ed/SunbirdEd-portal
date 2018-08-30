@@ -106,7 +106,7 @@ export class UserUploadComponent implements OnInit, OnDestroy {
     try {
       this.uploadUserRefLink = (<HTMLInputElement>document.getElementById('userUploadRefLink')).value;
     } catch (error) {
-      console.log('Error in reading environment variable PORTAL_USER_UPLOAD_REF_LINK');
+      console.log('Error in reading environment variable for user upload reference link');
     }
   }
   /**
