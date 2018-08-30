@@ -12,7 +12,6 @@ module.exports = function (app) {
     }
 
     app.use('/api/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
-        preserveHostHdr: true,
         proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
         proxyReqPathResolver: proxyReqPathResolverMethod
     }))
