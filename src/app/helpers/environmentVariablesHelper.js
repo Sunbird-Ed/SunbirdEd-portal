@@ -45,7 +45,7 @@ let envVariables = {
   SUNBIRD_EXTCONT_WHITELISTED_DOMAINS: env.sunbird_extcont_whitelisted_domains || 'youtube.com,youtu.be',
   TENANT_CDN_URL: env.sunbird_tenant_cdn_url || '',
   CLOUD_STORAGE_URLS: env.sunbird_cloud_storage_urls,
-  PORTAL_USER_UPLOAD_REF_LINK: env.sunbird_user_upload_ref_link || 'http://www.sunbird.org/features-documentation/register_user'
+  PORTAL_USER_UPLOAD_REF_LINK: env.sunbird_portal_user_upload_ref_link || 'http://www.sunbird.org/features-documentation/register_user'
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')

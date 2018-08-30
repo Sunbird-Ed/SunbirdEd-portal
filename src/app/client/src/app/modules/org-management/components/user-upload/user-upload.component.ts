@@ -86,7 +86,7 @@ export class UserUploadComponent implements OnInit, OnDestroy {
   downloadCSVInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   public unsubscribe$ = new Subject<void>();
-  private uploadUserRef: string;
+  private uploadUserRefLink: string;
   /**
 * Constructor to create injected service(s) object
 *
@@ -104,8 +104,9 @@ export class UserUploadComponent implements OnInit, OnDestroy {
     this.config = config;
     this.activatedRoute = activatedRoute;
     try {
-      this.uploadUserRef = (<HTMLInputElement>document.getElementById('userUploadRefLink')).value;
+      this.uploadUserRefLink = (<HTMLInputElement>document.getElementById('userUploadRefLink')).value;
     } catch (error) {
+      console.log('Error in reading environment variable PORTAL_USER_UPLOAD_REF_LINK');
     }
   }
   /**
