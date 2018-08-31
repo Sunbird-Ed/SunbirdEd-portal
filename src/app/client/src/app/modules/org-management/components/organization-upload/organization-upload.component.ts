@@ -76,11 +76,13 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
     this.resourceService = resourceService;
     this.config = config;
     this.toasterService = toasterService;
+    document.body.classList.add('no-scroll'); // This is a workaround  we need to remove it when library add support to remove body scroll
   }
   /**
 * This method defines array of instructions to be displayed
 */
   ngOnInit() {
+    document.body.classList.add('no-scroll'); // This is a workaround  we need to remove it when library add support to remove body scroll
     this.activatedRoute.data.subscribe(data => {
       if (data.redirectUrl) {
         this.redirectUrl = data.redirectUrl;
@@ -182,6 +184,7 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
     }
   }
   ngOnDestroy() {
+    document.body.classList.remove('no-scroll'); // This is a workaround we need to remove it when library add support to remove body scroll
     this.modal.deny();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
