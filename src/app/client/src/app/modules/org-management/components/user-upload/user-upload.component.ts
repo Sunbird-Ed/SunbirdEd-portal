@@ -103,7 +103,6 @@ export class UserUploadComponent implements OnInit, OnDestroy {
     this.toasterService = toasterService;
     this.config = config;
     this.activatedRoute = activatedRoute;
-    document.body.classList.add('no-scroll'); // This is a workaround  we need to remove it when library add support to remove body scroll
     try {
       this.uploadUserRefLink = (<HTMLInputElement>document.getElementById('userUploadRefLink')).value;
     } catch (error) {
@@ -115,6 +114,7 @@ export class UserUploadComponent implements OnInit, OnDestroy {
  * also defines array of instructions to be displayed
  */
   ngOnInit() {
+    document.body.classList.add('no-scroll'); // This is a workaround  we need to remove it when library add support to remove body scroll
     this.activatedRoute.data.subscribe(data => {
       if (data.redirectUrl) {
         this.redirectUrl = data.redirectUrl;

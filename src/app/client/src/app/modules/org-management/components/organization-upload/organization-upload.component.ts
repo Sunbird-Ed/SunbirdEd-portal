@@ -82,6 +82,7 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
 * This method defines array of instructions to be displayed
 */
   ngOnInit() {
+    document.body.classList.add('no-scroll'); // This is a workaround  we need to remove it when library add support to remove body scroll
     this.activatedRoute.data.subscribe(data => {
       if (data.redirectUrl) {
         this.redirectUrl = data.redirectUrl;
