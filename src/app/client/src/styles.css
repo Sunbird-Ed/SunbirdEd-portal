@@ -2911,17 +2911,13 @@ i.icon.accordion-content-right {
     max-height: 45px;   
   }
 }
+.ui.calendar .table td {
+  padding:0.5em;
+}
 
 /* Removing body scroll when modal opens */
 .no-scroll { 
   overflow-y: hidden;
   margin-right: 16px; 
 }
-
-
-
-
-
-
-
 
