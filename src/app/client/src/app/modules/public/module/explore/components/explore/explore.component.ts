@@ -64,7 +64,6 @@ export class ExploreComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   telemetryImpression: IImpressionEventInput;
   inviewLogs = [];
-  filterIntractEdata: IInteractEventEdata;
   sortIntractEdata: IInteractEventEdata;
   prominentFilters: object;
   /**
@@ -164,11 +163,6 @@ export class ExploreComponent implements OnInit, OnDestroy {
         uri: this.router.url,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype
       }
-    };
-    this.filterIntractEdata = {
-      id: 'filter',
-      type: 'click',
-      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
     this.sortIntractEdata = {
       id: 'sort',

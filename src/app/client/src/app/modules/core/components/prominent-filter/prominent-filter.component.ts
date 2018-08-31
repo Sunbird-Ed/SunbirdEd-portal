@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, ConceptPickerService, PermissionService } from './../../services';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
-
+import { IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-prominent-filter',
   templateUrl: './prominent-filter.component.html',
@@ -19,6 +19,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   @Input() hashTagId = '';
   @Input() ignoreQuery = [];
   @Input() showSearchedParam = true;
+  @Input() pageId: string;
   @Output() filters = new EventEmitter();
   @Output() prominentFilter = new EventEmitter();
   /**
@@ -72,6 +73,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   contentTypes: any;
   frameworkDataSubscription: Subscription;
   isFiltered = true;
+  submitIntractEdata: IInteractEventEdata;
   /**
    *
     * Constructor to create injected service(s) object
@@ -111,6 +113,12 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     this.getQueryParams();
     this.fetchFilterMetaData();
     this.contentTypes = this.configService.dropDownConfig.FILTER.RESOURCES.contentTypes;
+    this.submitIntractEdata = {
+      id: 'submit',
+      type: 'click',
+      pageid: this.pageId,
+      extra: {filter: this.formInputData}
+  };
   }
   getQueryParams() {
     this.activatedRoute.queryParams.subscribe((params) => {

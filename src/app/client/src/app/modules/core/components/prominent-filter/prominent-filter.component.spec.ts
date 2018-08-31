@@ -144,4 +144,23 @@ describe('ProminentFilterComponent', () => {
     component.showField(allowedRoles);
     expect(permissionService.checkRolesPermissions).not.toHaveBeenCalled();
   });
+  it('should call ngOninit to get telemetry Interact Data', () => {
+    const frameworkService = TestBed.get(FrameworkService);
+    component.pageId = 'explore-page';
+    component.hashTagId = '0123166367624478721';
+    const submitIntractEdata = {
+      id: 'submit',
+      type: 'click',
+      pageid: 'explore-page',
+      extra: { filter: { 'subject': ['English'] } }
+    };
+     spyOn(frameworkService, 'initialize').and.callThrough();
+    spyOn(component, 'getQueryParams').and.callThrough();
+    spyOn(component, 'fetchFilterMetaData').and.callThrough();
+    component.ngOnInit();
+    expect(frameworkService.initialize).toHaveBeenCalled();
+    expect(component.getQueryParams).toHaveBeenCalled();
+    expect(component.fetchFilterMetaData).toHaveBeenCalled();
+    expect(component.submitIntractEdata).toEqual(submitIntractEdata);
+  });
 });
