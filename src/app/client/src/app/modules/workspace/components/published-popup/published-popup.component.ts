@@ -190,7 +190,7 @@ export class PublishedPopupComponent implements OnInit {
     this.showDefaultConfig = false;
     const formServiceInputParams = {
       formType: 'content',
-      formAction: 'publishChecklist',
+      formAction: 'publish',
       subType: 'resource'
     };
     this.workSpaceService.getCheckListData(formServiceInputParams).subscribe(
