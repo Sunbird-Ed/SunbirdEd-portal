@@ -15,7 +15,7 @@ import { INoteData } from '@sunbird/notes';
 import {
   IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata
 } from '@sunbird/telemetry';
-
+import { DeviceDetectorService } from 'ngx-device-detector';
 @Component({
   selector: 'app-course-player',
   templateUrl: './course-player.component.html',
@@ -137,7 +137,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     private toasterService: ToasterService, private resourceService: ResourceService, public breadcrumbsService: BreadcrumbsService,
     private cdr: ChangeDetectorRef, public courseBatchService: CourseBatchService, public permissionService: PermissionService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService,
-    private courseProgressService: CourseProgressService) {
+    private courseProgressService: CourseProgressService, private deviceDetectorService: DeviceDetectorService) {
     this.contentService = contentService;
     this.activatedRoute = activatedRoute;
     this.windowScrollService = windowScrollService;
@@ -394,6 +394,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
   private setTelemetryStartEndData() {
+    const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     this.telemetryCourseStart = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
@@ -406,7 +407,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        mode: 'play'
+        mode: 'play',
+        uaspec: {
+          agent: deviceInfo.browser,
+          ver: deviceInfo.browser_version,
+          system: deviceInfo.os_version ,
+          platform: deviceInfo.os,
+          raw: deviceInfo.userAgent
+        }
       }
     };
     this.telemetryCourseEndEvent = {
