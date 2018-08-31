@@ -153,4 +153,12 @@ describe('CourseSearchComponent', () => {
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
   });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.populateEnrolledCourse();
+    component.populateCourseSearch();
+    component.ngOnInit();
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
 });

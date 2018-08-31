@@ -1,21 +1,23 @@
-
+import { Subscription } from 'rxjs/Subscription';
 import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage } from '@sunbird/shared';
 import { SearchService, UserService } from '@sunbird/core';
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { UserSearchService } from './../../services';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-user-search',
   templateUrl: './user-search.component.html',
   styleUrls: ['./user-search.component.css']
 })
-export class UserSearchComponent implements OnInit {
+export class UserSearchComponent implements OnInit, OnDestroy {
   private searchService: SearchService;
   private resourceService: ResourceService;
   /**
@@ -102,6 +104,8 @@ export class UserSearchComponent implements OnInit {
   rootOrgId: string;
   userProfile: any;
   inviewLogs: any = [];
+  userDataSubscription: Subscription;
+  public unsubscribe$ = new Subject<void>();
   /**
      * Constructor to create injected service(s) object
      * Default method of Draft Component class
@@ -145,7 +149,9 @@ export class UserSearchComponent implements OnInit {
       pageNumber: this.pageNumber,
       query: this.queryParams.key
     };
-    this.searchService.userSearch(searchParams).subscribe(
+    this.searchService.userSearch(searchParams)
+    .takeUntil(this.unsubscribe$)
+    .subscribe(
       (apiResponse: ServerResponse) => {
         if (apiResponse.result.response.count && apiResponse.result.response.content.length > 0) {
           this.showLoader = false;
@@ -185,7 +191,9 @@ export class UserSearchComponent implements OnInit {
 
     // Calling Org search API
     orgArray = _.uniq(orgArray);
-    this.searchService.getOrganisationDetails({ orgid: orgArray }).subscribe(
+    this.searchService.getOrganisationDetails({ orgid: orgArray })
+    .takeUntil(this.unsubscribe$)
+    .subscribe(
       (orgApiResponse: any) => {
         // Setting Org Name
         _.each(this.searchList, (user) => {
@@ -273,7 +281,7 @@ export class UserSearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user.userData$.subscribe(userdata => {
+    this.userDataSubscription = this.user.userData$.subscribe(userdata => {
       if (userdata && !userdata.err) {
         this.userProfile = userdata.userProfile;
         this.rootOrgId = this.userProfile.rootOrgId;
@@ -306,7 +314,9 @@ export class UserSearchComponent implements OnInit {
       }
     };
 
-    this.userSearchService.userDeleteEvent.subscribe(data => {
+    this.userSearchService.userDeleteEvent
+    .takeUntil(this.unsubscribe$)
+    .subscribe(data => {
       _.each(this.searchList, (key, index) => {
         if (data && data === key.id) {
           this.searchList[index].status = 0;
@@ -357,5 +367,12 @@ export class UserSearchComponent implements OnInit {
     this.telemetryImpression.edata.visits = this.inviewLogs;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+  ngOnDestroy() {
+    if (this.userDataSubscription) {
+      this.userDataSubscription.unsubscribe();
+    }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

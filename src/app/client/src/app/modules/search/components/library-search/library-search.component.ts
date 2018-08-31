@@ -5,18 +5,19 @@ import {
   ILoaderMessage, UtilService, ICard
 } from '@sunbird/shared';
 import { SearchService, CoursesService, PlayerService, ICourses, SearchParam, ISort } from '@sunbird/core';
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'app-library-search',
   templateUrl: './library-search.component.html',
   styleUrls: ['./library-search.component.css']
 })
-export class LibrarySearchComponent implements OnInit {
+export class LibrarySearchComponent implements OnInit, OnDestroy {
   inviewLogs: any = [];
   /**
 	 * telemetryImpression
@@ -108,6 +109,7 @@ export class LibrarySearchComponent implements OnInit {
 
   public redirectUrl: string;
   sortingOptions: Array<ISort>;
+  public unsubscribe$ = new Subject<void>();
   /**
      * Constructor to create injected service(s) object
      * Default method of Draft Component class
@@ -147,7 +149,9 @@ export class LibrarySearchComponent implements OnInit {
       softConstraints: { badgeAssertions: 1 },
       sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType}
     };
-    this.searchService.contentSearch(requestParams).subscribe(
+    this.searchService.contentSearch(requestParams)
+    .takeUntil(this.unsubscribe$)
+    .subscribe(
       (apiResponse: ServerResponse) => {
         if (apiResponse.result.count && apiResponse.result.content) {
           this.showLoader = false;
@@ -208,6 +212,7 @@ export class LibrarySearchComponent implements OnInit {
           queryParams: queryParams
         };
       })
+      .takeUntil(this.unsubscribe$)
       .subscribe(bothParams => {
         if (bothParams.params.pageNumber) {
           this.pageNumber = Number(bothParams.params.pageNumber);
@@ -279,5 +284,9 @@ export class LibrarySearchComponent implements OnInit {
     this.telemetryImpression.edata.visits = this.inviewLogs;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

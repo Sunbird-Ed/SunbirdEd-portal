@@ -1,6 +1,7 @@
+import { Subscription } from 'rxjs/Subscription';
 import { IHomeQueryParams } from './../../interfaces';
 import { ConfigService, ResourceService } from '@sunbird/shared';
-import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SearchService, ConceptPickerService } from '@sunbird/core';
 import * as _ from 'lodash';

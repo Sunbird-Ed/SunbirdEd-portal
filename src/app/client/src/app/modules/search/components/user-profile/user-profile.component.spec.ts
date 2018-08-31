@@ -168,7 +168,12 @@ describe('UserProfileComponent', () => {
         expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
     });
 
-
+    it('should unsubscribe from all observable subscriptions', () => {
+        component.ngOnInit();
+        spyOn(component.unsubscribe$, 'complete');
+        component.ngOnDestroy();
+        expect(component.unsubscribe$.complete).toHaveBeenCalled();
+      });
 
 
 

@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 import { UserFilterComponent } from './../user-filter/user-filter.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -102,7 +102,7 @@ describe('UserSearchComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     component.queryParams = mockQueryParma;
     component.searchList = Response.successData.result.response.content;
-    component.userProfile = {orgRoleMap: [], rootOrgAdmin: true};
+    component.userProfile = { orgRoleMap: [], rootOrgAdmin: true };
     spyOn(searchService, 'getOrganisationDetails').and.callFake(() => observableOf(Response.orgDetailsSearch));
     component.queryParams = mockQueryParma;
     spyOn(searchService, 'userSearch').and.callFake(() => observableThrowError({}));
@@ -159,6 +159,13 @@ describe('UserSearchComponent', () => {
     fixture.detectChanges();
     expect(component.populateUserSearch).toHaveBeenCalled();
     expect(component.pageNumber).toEqual(1);
+  });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 });
 

@@ -70,4 +70,11 @@ describe('OrgFilterComponent', () => {
       component.removeFilterSelection('OrgType', '01243890163646464054');
       fixture.detectChanges();
   }));
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.orgTypeSubscription, 'unsubscribe');
+    component.ngOnDestroy();
+    expect(component.orgTypeSubscription.unsubscribe).toHaveBeenCalled();
+  });
 });

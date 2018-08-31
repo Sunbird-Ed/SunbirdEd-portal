@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, RouterModule , Router } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import { UserSearchService } from './../../services';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * The delete component deletes the announcement
@@ -57,6 +59,8 @@ export class UserDeleteComponent implements OnInit, OnDestroy {
    */
   public routerNavigationService: RouterNavigationService;
 
+  public unsubscribe$ = new Subject<void>();
+
   /**
 	 * Constructor to create injected service(s) object
 	 *
@@ -87,7 +91,9 @@ export class UserDeleteComponent implements OnInit, OnDestroy {
 	 */
   deleteUser(): void {
     const option = { userId: this.userId };
-    this.userSearchService.deleteUser(option).subscribe(
+    this.userSearchService.deleteUser(option)
+    .takeUntil(this.unsubscribe$)
+    .subscribe(
       (apiResponse: ServerResponse) => {
         this.toasterService.success(this.resourceService.messages.smsg.m0029);
         this.redirect();
@@ -112,7 +118,9 @@ export class UserDeleteComponent implements OnInit, OnDestroy {
     if (this.userSearchService.userDetailsObject === undefined ||
       this.userSearchService.userDetailsObject.id !== this.userId) {
       const option = { userId: this.userId };
-      this.userSearchService.getUserById(option).subscribe(
+      this.userSearchService.getUserById(option)
+      .takeUntil(this.unsubscribe$)
+      .subscribe(
         (apiResponse: ServerResponse) => {
           this.userDetails = apiResponse.result.response;
         },
@@ -138,6 +146,8 @@ export class UserDeleteComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.modal.deny();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
 
