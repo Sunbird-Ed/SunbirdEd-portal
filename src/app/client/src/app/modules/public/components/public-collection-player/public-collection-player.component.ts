@@ -81,7 +81,10 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       'doc': 'fa fa-text-o fa-lg'
     }
   };
-
+  /**
+	 * dialCode
+	*/
+  public dialCode: string;
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
@@ -144,7 +147,11 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   }
 
   private getPlayerConfig(contentId: string): Observable<PlayerConfig> {
-    return this.playerService.getConfigByContent(contentId);
+    this.route.queryParams.subscribe((queryParams) => {
+      this.dialCode = queryParams.dialCode;
+    });
+    const options: any = { dialCode: this.dialCode };
+    return this.playerService.getConfigByContent(contentId, options);
   }
 
   private findContentById(collection: any, id: string) {
@@ -213,10 +220,19 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   }
   closeContentPlayer() {
     this.showPlayer = false;
-    const navigationExtras: NavigationExtras = {
-      relativeTo: this.route
-    };
-    this.router.navigate([], navigationExtras);
+    this.route.queryParams.subscribe((queryParams) => {
+      const navigationExtras: NavigationExtras = {
+        queryParams: {
+          dialCode: queryParams.dialCode
+        }
+      };
+      this.router.navigate([], navigationExtras );
+     });
+    // const navigationExtras: NavigationExtras = {
+    //   relativeTo: this.route
+    // };
+    // console.log(navigationExtras);
+    // this.router.navigate({ queryParams: { dialCode: this.searchKeyword} }, navigationExtras);
   }
   setInteractEventData() {
     this.closeCollectionPlayerInteractEdata = {
