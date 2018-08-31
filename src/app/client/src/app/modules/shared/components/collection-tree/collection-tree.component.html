@@ -2,7 +2,7 @@
   <sui-accordion-panel (click)="!child.folder && onNodeClick(child)" [(isOpen)]="child.togglePanelIcon" [isDisabled]="!child.folder">
     <div title class="accordian-left-text">
       <i *ngIf="child.folder" class="fa fa-2x vertical-align-middle" [class.fa-folder-open-o]="child.togglePanelIcon" [class.fa-folder-o]="!child.togglePanelIcon"></i>
-      <i *ngIf="!child.folder" [ngClass]="child.icon"></i>&nbsp;&nbsp;&nbsp;<span class="accordion-content text-ellipsis">{{child.title}}</span>
+      <i *ngIf="!child.folder" [ngClass]="child.icon"></i>&nbsp;&nbsp;&nbsp;<span>{{child.title}}</span>
       <i *ngIf="child.folder" class="icon right-float accordion-content-right" [class.plus]="!child.togglePanelIcon" [class.minus]="child.togglePanelIcon"></i>
     </div>
     <div *ngIf="child.folder" content>

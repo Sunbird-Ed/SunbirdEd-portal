@@ -86,6 +86,7 @@ export class UserUploadComponent implements OnInit, OnDestroy {
   downloadCSVInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   public unsubscribe$ = new Subject<void>();
+  private uploadUserRefLink: string;
   /**
 * Constructor to create injected service(s) object
 *
@@ -102,12 +103,18 @@ export class UserUploadComponent implements OnInit, OnDestroy {
     this.toasterService = toasterService;
     this.config = config;
     this.activatedRoute = activatedRoute;
+    try {
+      this.uploadUserRefLink = (<HTMLInputElement>document.getElementById('userUploadRefLink')).value;
+    } catch (error) {
+      console.log('Error in reading environment variable for user upload reference link');
+    }
   }
   /**
  * This method initializes the user form and validates it,
  * also defines array of instructions to be displayed
  */
   ngOnInit() {
+    document.body.classList.add('no-scroll'); // This is a workaround  we need to remove it when library add support to remove body scroll
     this.activatedRoute.data.subscribe(data => {
       if (data.redirectUrl) {
         this.redirectUrl = data.redirectUrl;
@@ -121,37 +128,16 @@ export class UserUploadComponent implements OnInit, OnDestroy {
       organisationId: ['', null]
     });
     this.userUploadInstructions = [
-      { instructions: this.resourceService.frmelmnts.instn.t0013 },
-      { instructions: this.resourceService.frmelmnts.instn.t0001 },
+      { instructions: this.resourceService.frmelmnts.instn.t0070},
       {
-        instructions: this.resourceService.frmelmnts.instn.t0033,
+        instructions: this.resourceService.frmelmnts.instn.t0071,
         subinstructions: [
-          { instructions: this.resourceService.frmelmnts.instn.t0034 },
-          { instructions: this.resourceService.frmelmnts.instn.t0035 },
-          { instructions: this.resourceService.frmelmnts.instn.t0036 },
-          { instructions: this.resourceService.frmelmnts.instn.t0037 }
+          { instructions: this.resourceService.frmelmnts.instn.t0072 },
+          { instructions: this.resourceService.frmelmnts.instn.t0073 },
+          { instructions: this.resourceService.frmelmnts.instn.t0074 },
+          { instructions: this.resourceService.frmelmnts.instn.t0075 }
         ]
-      },
-      {
-        instructions: this.resourceService.frmelmnts.instn.t0038,
-        subinstructions: [
-          { instructions: this.resourceService.frmelmnts.instn.t0039 },
-          { instructions: this.resourceService.frmelmnts.instn.t0040 },
-          { instructions: this.resourceService.frmelmnts.instn.t0041 },
-          { instructions: this.resourceService.frmelmnts.instn.t0042 },
-          { instructions: this.resourceService.frmelmnts.instn.t0043 },
-          { instructions: this.resourceService.frmelmnts.instn.t0044 },
-          { instructions: this.resourceService.frmelmnts.instn.t0045 },
-          { instructions: this.resourceService.frmelmnts.instn.t0046 },
-          { instructions: this.resourceService.frmelmnts.instn.t0047 },
-          { instructions: this.resourceService.frmelmnts.instn.t0048 },
-          { instructions: this.resourceService.frmelmnts.instn.t0066 },
-          { instructions: this.resourceService.frmelmnts.instn.t0067 },
-          { instructions: this.resourceService.frmelmnts.instn.t0068 },
-          { instructions: this.resourceService.frmelmnts.instn.t0069 }
-        ]
-      },
-      { instructions: this.resourceService.frmelmnts.instn.t0065 }];
+      }];
     this.showLoader = false;
     this.telemetryImpression = {
       context: {
@@ -242,6 +228,7 @@ export class UserUploadComponent implements OnInit, OnDestroy {
     this.bulkUploadErrorMessage = '';
   }
   ngOnDestroy() {
+    document.body.classList.remove('no-scroll'); // This is a workaround we need to remove it when library add support to remove body scroll
     this.modal.deny();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

@@ -1,8 +1,11 @@
-<sui-modal class="custom-sui-modal" [isClosable]="true" [mustScroll]="true" [size]="'large'" (dismissed)="redirect()" #modal>
+<sui-modal class="custom-sui-modal" [isClosable]="false" [mustScroll]="true" [size]="'large'" (dismissed)="redirect()" #modal>
   <div class="header" [appTelemetryImpression]="telemetryImpression">
     <div class="ui grid">
       <div class="eleven wide column">
         <span class="ui header">{{resourceService?.frmelmnts?.instn?.t0015}}</span>
+      </div>
+      <div class="one wide column">
+          <i class="close icon" (click)="modal.deny()" tabindex="0"></i>
       </div>
     </div>
   </div>
