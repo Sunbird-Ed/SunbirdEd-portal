@@ -161,9 +161,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     combineLatest(
       this.courseProgressService.getBatches(searchParamsCreator),
       this.courseProgressService.getBatches(searchParamsMentor),
-    ).pipe(map(results => ({ batchesOwned: results[0].result.response.content, batchesMentored: results[1].result.response.content })))
-     .subscribe((apiResponse) => {
-        this.batchlist = _.union(apiResponse.batchesOwned, apiResponse.batchesMentored);
+    ).pipe(takeUntil(this.unsubscribe))
+     .subscribe((results) => {
+        this.batchlist = _.union(results[0].result.response.content, results[1].result.response.content);
         this.showLoader = false;
         const isBatchExist = _.find(this.batchlist, (batch) => batch.id === this.queryParams.batchIdentifier);
         if (this.batchlist.length === 0) {

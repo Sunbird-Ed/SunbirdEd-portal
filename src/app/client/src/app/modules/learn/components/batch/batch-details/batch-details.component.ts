@@ -100,7 +100,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       combineLatest(
         this.courseBatchService.getAllBatchDetails(searchParamsCreator),
         this.courseBatchService.getAllBatchDetails(searchParamsMentor),
-      ).pipe(map(results => ({ batchesOwned: results[0].result.response.content, batchesMentored: results[1].result.response.content })))
+      ).pipe(map(results => ({ batchesOwned: results[0].result.response.content, batchesMentored: results[1].result.response.content })),
+        takeUntil(this.unsubscribe))
        .subscribe((data) => {
            this.batchList = _.union(data.batchesOwned, data.batchesMentored);
            if (this.batchList.length > 0) {
