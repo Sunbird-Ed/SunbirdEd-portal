@@ -1,5 +1,6 @@
 
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 import { CourseBatchService } from './../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
@@ -90,25 +91,44 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       offset: 0,
       sort_by: { createdDate: 'desc' }
     };
+    const searchParamsCreator =  _.cloneDeep(searchParams);
+    const searchParamsMentor =  _.cloneDeep(searchParams);
+
     if (this.courseMentor) {
-      searchParams.filters.createdBy = this.userService.userid;
-    } else {
-      searchParams.filters.enrollmentType = 'open';
-    }
-    this.courseBatchService.getAllBatchDetails(searchParams).pipe(
-      takeUntil(this.unsubscribe))
-      .subscribe((data: ServerResponse) => {
-        if (data.result.response.content && data.result.response.content.length > 0) {
-          this.batchList = data.result.response.content;
-          this.fetchUserDetails();
-        } else {
-          this.showBatchList = true;
-        }
-      },
+      searchParamsCreator.filters.createdBy = this.userService.userid;
+      searchParamsMentor.filters.mentors = [this.userService.userid];
+      combineLatest(
+        this.courseBatchService.getAllBatchDetails(searchParamsCreator),
+        this.courseBatchService.getAllBatchDetails(searchParamsMentor),
+      ).pipe(map(results => ({ batchesOwned: results[0].result.response.content, batchesMentored: results[1].result.response.content })))
+       .subscribe((data) => {
+           this.batchList = _.union(data.batchesOwned, data.batchesMentored);
+           if (this.batchList.length > 0) {
+             this.fetchUserDetails();
+           } else {
+             this.showBatchList = true;
+           }
+        }, (err) => {
+          this.showError = true;
+          this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+        });
+     } else {
+       searchParamsCreator.filters.enrollmentType = 'open';
+       this.courseBatchService.getAllBatchDetails(searchParams).pipe(
+        takeUntil(this.unsubscribe))
+        .subscribe((data: ServerResponse) => {
+          if (data.result.response.content && data.result.response.content.length > 0) {
+            this.batchList = data.result.response.content;
+            this.fetchUserDetails();
+          } else {
+            this.showBatchList = true;
+          }
+        },
         (err: ServerResponse) => {
           this.showError = true;
           this.toasterService.error(this.resourceService.messages.fmsg.m0004);
         });
+     }
   }
   getEnrolledCourseBatchDetails() {
     this.courseBatchService.getEnrolledBatchDetails(this.batchId).pipe(
