@@ -113,7 +113,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
           this.toasterService.error(this.resourceService.messages.fmsg.m0004);
         });
      } else {
-       searchParamsCreator.filters.enrollmentType = 'open';
+       searchParams.filters.enrollmentType = 'open';
        this.courseBatchService.getAllBatchDetails(searchParams).pipe(
         takeUntil(this.unsubscribe))
         .subscribe((data: ServerResponse) => {
