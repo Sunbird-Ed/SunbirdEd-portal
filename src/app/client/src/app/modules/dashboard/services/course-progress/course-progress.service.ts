@@ -40,7 +40,8 @@ export class CourseProgressService {
           'filters': {
             'courseId': requestParam.courseId,
             'status': requestParam.status,
-            'createdBy': requestParam.createdBy
+            'createdBy': requestParam.createdBy,
+            'mentors': requestParam.mentors
           },
           'sort_by': { 'createdDate': 'desc' }
         }

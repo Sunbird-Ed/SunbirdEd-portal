@@ -183,7 +183,7 @@ export class RequestChangesPopupComponent implements OnInit, OnDestroy {
     this.showDefaultConfig = false;
     const formServiceInputParams = {
       formType: 'content',
-      formAction: 'requestForChangesChecklist',
+      formAction: 'requestforchanges',
       subType: 'resource'
     };
     this.workSpaceService.getCheckListData(formServiceInputParams).subscribe(

@@ -8,4 +8,6 @@ mochawesome-report
 /.sass-cache
 /npm-debug.log
 .coverrun
+/src/app/log
+
 

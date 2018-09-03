@@ -137,7 +137,7 @@
     </form>
   </div>
   <div class="actions">
-    <button class="ui secondary button" (click)="batchUpdateForm.reset()">Clear</button>
-    <button class="ui primary button" [disabled]="disableSubmitBtn" (click)="updateBatch()">Update</button>
+    <button class="ui secondary button" (click)="batchUpdateForm.reset()" [disabled]="showFormInViewMode">Clear</button>
+    <button class="ui primary button" [disabled]="disableSubmitBtn || showFormInViewMode" (click)="updateBatch()">Update</button>
   </div>
 </sui-modal>

@@ -1,8 +1,8 @@
-<sui-modal [isClosable]="false" (dismissed)="modal.deny(); closeModal();" [isInverted]="true" #modal>
+<sui-modal [isClosable]="false"  (dismissed)="modal.deny();closeModal();" [isInverted]="true" #modal>
 <div class="content qr-code-modal-content">
   <div class="twelve wide column ">
     <div class="ui grid">
-      <div class="twelve wide column"><i class="close large icon right-float" (click)="modal.deny();"></i></div>
+      <div class="twelve wide column" appTelemetryInteract [telemetryInteractEdata]="closeDialCodeInteractEdata" ><i class="close large icon right-float" (click)="modal.deny();"></i></div>
     </div>
     <div class="ui container stackable two column grid">
       <div class="column center aligned text-container">
@@ -15,7 +15,8 @@
           <input name="search" #dialCodeVal placeholder="{{resourceService.frmelmnts?.lbl?.enterDialCode}}" title="Search" type="text" ng-reflect-name="search" class="ng-untouched ng-pristine ng-valid">
           <i class="search icon"></i>
         </div>
-        <div class="ui primary button qr-code-modal-btn" (click)="onSubmit(dialCodeVal.value)">{{resourceService.frmelmnts?.btn?.submit}}</div>
+        <div appTelemetryInteract [telemetryInteractEdata]="setsubmitDialCodeInteractEdata(dialCodeVal.value)" class="ui primary button qr-code-modal-btn" (click)="onSubmit(dialCodeVal.value)">{{resourceService.frmelmnts?.btn?.submit}}
+        </div>
       </div>
       <div class="column right floated right aligned">
         <div class="ui basic segment">

@@ -2783,35 +2783,82 @@ iframe.iziModal-iframe {
 /*mobile responsive code  which we need to remove once we start writing mobile first css*/
 
 @media only screen and (min-width: 320px) and (max-width: 767px) {
-  .header-logo {
-    display: block;
-    max-width: 100px;
-    max-height: 40px;
-    width: auto;
-    height: auto;
-    position: absolute;
-  }
-  .primary-header-avatar {
-    padding-top: 0.5rem;
-    z-index: 88;
-  }
-  .primary-header-alarm-icon {
-    padding-top: 1.2rem;
-  }
+    .header-logo {
+      display: block;
+      max-width: 100px;
+      max-height: 40px;
+      width: auto;
+      height: auto;
+      position: absolute;
+    }
+    .primary-header-avatar {
+      padding-top: 0.5rem;
+      z-index: 88;
+    }
+    .primary-header-alarm-icon {
+      padding-top: 1.2rem;
+    }
 
-  /*collection player responsive code*/
+    .ui.button.m-responsive-search-dropdown {
+        min-width:100px;
+        max-width:100px;
+        padding-right: 0;
+    }
 
-  .accordion-content {
-    width: 250px;
-  }  
+    /*collection player responsive code*/
 
-  .fancytree-plain span.fancytree-node span.fancytree-title {
-    overflow: hidden;
-    overflow-wrap: break-word;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width:210px;
-  }
+    .accordion-content {
+      width: 250px;
+    }  
+
+    .fancytree-plain span.fancytree-node span.fancytree-title {
+      overflow: hidden;
+      overflow-wrap: break-word;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width:210px;
+    }
+  /* content player y0ur progress section margin here !important is added to address specificity issue*/
+    p.m-responsive-cp-header {
+      margin-top:20px !important; 
+      float: left;
+    }
+    .ui.grid.m-responsive-cp-nmt-50 {
+      margin-top: -50px;
+    }
+
+    /* buttons below the content player */
+    .ui.button .header {
+      font-size: 1em;
+    }
+    .take-note-card {
+      width: 30px;
+    }
+
+    /*content player and collection player responsive share icons*/
+    .m-responsive-cp-badge-ml {
+      margin-left: 0 !important;
+    }
+
+    .m-responsive-sort-al {
+      float:left;
+    }
+
+    /*profile page alignment fixes*/
+    i.icon.m-responsive-p-icon-ml {
+      margin-left: 10px;
+    }
+    .ui.items:not(.unstackable)>.item>.image.m-responsive-p-avatar-ml {
+      margin-left: 10px;
+    }
+
+    /*profile header bulk upload alignment fixes*/
+    .m-responsive-p-header-fl {
+      float: left;
+      clear: both;
+      padding-bottom: 10px;
+    }
+
 }
 
 @media only screen and (min-width: 320px) and (max-width: 400px) {
@@ -2841,22 +2888,22 @@ i.icon.accordion-content-right {
 
 @media only screen and (min-width: 320px) and (max-width: 330px) {
   .searchinput {
-    width: 208px;
+    width: 195px;
   }
 }
-@media only screen and (min-width: 340px) and (max-width: 377px) {
+@media only screen and (min-width: 331px) and (max-width: 377px) {
   .searchinput {
-    width: 245px;
+    width: 225px;
   }
 }
-@media only screen and (min-width: 380px) and (max-width: 440px) {
+@media only screen and (min-width: 378px) and (max-width: 479px) {
   .searchinput {
-    width: 285px;
+    width: 275px;
   }
 }
 @media only screen and (min-width: 480px) and (max-width: 900px) {
   .searchinput {
-    width: 345px;
+    width: 335px;
   }
 }
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
@@ -2864,9 +2911,13 @@ i.icon.accordion-content-right {
     max-height: 45px;   
   }
 }
+.ui.calendar .table td {
+  padding:0.5em;
+}
 
-
-
-
-
+/* Removing body scroll when modal opens */
+.no-scroll { 
+  overflow-y: hidden;
+  margin-right: 16px; 
+}
 

@@ -69,8 +69,11 @@ export class DialCodeComponent implements OnInit, OnDestroy {
 
   /**
    * to store search results
-   */
+  */
   searchResults: Array<any>;
+  /**
+   * to unsubscribe
+  */
   public unsubscribe$ = new Subject<void>();
 
 
@@ -96,7 +99,11 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   setTelemetryData() {
     this.telemetryImpression = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: [{
+          type: 'dialCode',
+          id: this.dialCode
+        }]
       },
       object: {
         id: this.dialCode,
@@ -147,9 +154,9 @@ export class DialCodeComponent implements OnInit, OnDestroy {
 
   public getEvent(event) {
     if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-      this.router.navigate(['play/collection', event.data.metaData.identifier]);
+      this.router.navigate(['play/collection', event.data.metaData.identifier], { queryParams: { dialCode: this.searchKeyword} });
     } else {
-      this.router.navigate(['play/content', event.data.metaData.identifier]);
+      this.router.navigate(['play/content', event.data.metaData.identifier], { queryParams:  { dialCode: this.searchKeyword} });
     }
   }
   inview(event) {

@@ -1,8 +1,11 @@
-<sui-modal [isClosable]="true" [mustScroll]="true" [size]="'large'" (dismissed)="redirect()" #modal>
+<sui-modal [isClosable]="false" [mustScroll]="true" [size]="'large'" (dismissed)="redirect()" #modal>
   <div class="header" [appTelemetryImpression]="telemetryImpression">
     <div class="ui grid">
       <div class="eleven wide column">
         <span class="ui header">{{resourceService?.frmelmnts?.lbl?.chkuploadsts}}</span>
+      </div>
+      <div class="one wide column">
+          <i class="close icon" (click)="modal.deny()" tabindex="0"></i>
       </div>
     </div>
   </div>
@@ -38,7 +41,6 @@
                 <th>{{resourceService?.frmelmnts?.lbl?.lastName}}</th>
                 <th>{{resourceService?.frmelmnts?.lbl?.userID}}</th>
                 <th>{{resourceService?.frmelmnts?.lbl?.rootOrg}}</th>
-                <th>{{resourceService?.frmelmnts?.lbl?.regOrg}}</th>
                 <th>{{resourceService?.frmelmnts?.lbl?.countryCode}}</th>
                 <th>{{resourceService?.frmelmnts?.lbl?.phone}}</th>
                 <th>{{resourceService?.frmelmnts?.lbl?.email}}</th>
@@ -79,7 +81,6 @@
                 <td>{{ row.lastName || "empty"}}</td>
                 <td>{{ row.userId || ""}}</td>
                 <td>{{ row.rootOrgId || ""}}</td>
-                <td>{{ row.regOrgId || ""}}</td>
                 <td>{{ row.countryCode || ""}}</td>
                 <td>{{ row.phone || "empty"}}</td>
                 <td>{{ row.email || "empty"}}</td>
