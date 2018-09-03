@@ -29,10 +29,10 @@ module.exports = {
           callback(null, null)
         }
       } else {
-        if(envHelper.TENANT_CDN_URL) { 
-          callback(null, baseUrl + '/' + tenantId + '/' + image)
-        } else {
-          callback(null, baseUrl + '/tenant/' + tenantId + '/' + image)       
+        if(envHelper.TENANT_CDN_URL === '' || envHelper.TENANT_CDN_URL === null) { 
+          callback(null, baseUrl + '/tenant/' + tenantId + '/' + image)  
+        } else {       
+          callback(null, baseUrl + '/' + tenantId + '/' + image)     
         }
       }
     })
@@ -43,7 +43,7 @@ module.exports = {
     let headerHost = req.headers.host.split(':')
     let port = headerHost[1] || ''
     let protocol = req.headers['x-forwarded-proto'] || req.protocol
-    let baseUrl = envHelper.TENANT_CDN_URL || protocol + '://' + host + (port === '' ? '' : ':' + port)
+    let baseUrl = envHelper.TENANT_CDN_URL.trim() || protocol + '://' + host + (port === '' ? '' : ':' + port)
     let responseObj = {
       titleName: envHelper.PORTAL_TITLE_NAME
     }
