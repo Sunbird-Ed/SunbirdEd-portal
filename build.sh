@@ -1,6 +1,6 @@
 #!/bin/sh
 # Build script
-# set -o errexit
+set -o errexit
 e () {
     echo $( echo ${1} | jq ".${2}" | sed 's/\"//g')
 }
