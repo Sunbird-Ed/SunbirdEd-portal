@@ -143,11 +143,11 @@ const subApp = express()
 subApp.use(bodyParser.json({ limit: '50mb' }))
 app.use('/plugin', subApp)
 frameworkAPI.bootstrap(frameworkConfig, subApp).then(() => {
-  runApp(envHelper.PORTAL_PORT)
+  runApp()
 }).catch((error) => {
   console.log('[Extensible framework]: Bootstrap failed!', error)
   // if framework fails, do not stop the portal
-  runApp(envHelper.PORTAL_PORT)
+  runApp()
 })
 
 // Method called after successful authentication and it will log the telemetry for CP_SESSION_START and updates the login time
@@ -202,7 +202,7 @@ if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
     'sunbird_instance  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird')
   process.exit(1)
 }
-function runApp (port) {
+function runApp () {
 
   // redirect to home if nothing found
   app.all('*', (req, res) => res.redirect('/'))
