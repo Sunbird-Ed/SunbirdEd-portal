@@ -1,6 +1,17 @@
+// Form service migration script
+// Accepted arguments
+// 1. contactPoints: IP with port of DB
+// 2. username: username for DB // optional
+// 3. password: password for DB // optional
+// example: node migration.js 11.7.1.7:9200 username password
+
 const cassandra = require('cassandra-driver');
-const envHelper = require('../app/helpers/environmentVariablesHelper.js')
-const client = new cassandra.Client({ contactPoints: envHelper.PORTAL_CASSANDRA_URLS });
+let cassandraClientOptions = { contactPoints: [process.argv[2]] };
+if(process.argv[3] && process.argv[4]){
+  cassandraClientOptions.authProvider = new cassandra.auth.PlainTextAuthProvider(process.argv[3], process.argv[4]);
+}
+console.log('connecting to DB with', process.argv[2], process.argv[3], process.argv[4]);
+const client = new cassandra.Client(cassandraClientOptions);
 
 let transformed_data = [];
 let dest_obj = {
