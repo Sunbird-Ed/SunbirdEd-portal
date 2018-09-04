@@ -20,13 +20,22 @@ module.exports = {
         if (envHelper.DEFAULT_CHANNEL && _.isString(envHelper.DEFAULT_CHANNEL)) {
           fs.stat(path.join(__dirname, '../tenant', envHelper.DEFAULT_CHANNEL, image), function (error, stat) {
             if (error) {
-              callback(null, null)
+              if(envHelper.TENANT_CDN_URL === '' || envHelper.TENANT_CDN_URL === null) { 
+                callback(null, null)
+              } else{
+                callback(null, baseUrl + '/' + tenantId + '/' + image)  
+              }
             } else {
               callback(null, baseUrl + '/tenant/' + envHelper.DEFAULT_CHANNEL + '/' + image)
             }
           })
         } else {
-          callback(null, null)
+          if(envHelper.TENANT_CDN_URL === '' || envHelper.TENANT_CDN_URL === null) { 
+            callback(null, null)
+          }
+          else{
+            callback(null, baseUrl + '/' + tenantId + '/' + image)  
+          }
         }
       } else {
         if(envHelper.TENANT_CDN_URL === '' || envHelper.TENANT_CDN_URL === null) { 
