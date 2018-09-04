@@ -21,28 +21,28 @@ module.exports = {
         if (envHelper.DEFAULT_CHANNEL && _.isString(envHelper.DEFAULT_CHANNEL)) {
           fs.stat(path.join(__dirname, '../tenant', envHelper.DEFAULT_CHANNEL, image), function (error, stat) {
             if (error) {
-              module.exports.checkTenantCdnUrl(baseUrl, tenantId, image, false ,callback)
+              module.exports.checkTenantCdnUrl(baseUrl, tenantId, image, false, callback)
             } else {
               callback(null, baseUrl + '/tenant/' + envHelper.DEFAULT_CHANNEL + '/' + image)
             }
           })
         } else {
-          module.exports.checkTenantCdnUrl(baseUrl, tenantId, image, false ,callback)
+          module.exports.checkTenantCdnUrl(baseUrl, tenantId, image, false, callback)
         }
-      } else {       
+      } else {
         module.exports.checkTenantCdnUrl(baseUrl, tenantId, image, cbLocalTenant, callback)
       }
     })
   },
   checkTenantCdnUrl: function (baseUrl, tenantId, image, cbLocalTenant, callback) {
-    if(envHelper.TENANT_CDN_URL === '' || envHelper.TENANT_CDN_URL === null) { 
-      if(cbLocalTenant) {       
-        callback(null, baseUrl + '/tenant/' + tenantId + '/' + image)  
+    if (envHelper.TENANT_CDN_URL === '' || envHelper.TENANT_CDN_URL === null) {
+      if (cbLocalTenant) {
+        callback(null, baseUrl + '/tenant/' + tenantId + '/' + image)
       } else {
-       callback(null, null)
+        callback(null, null)
       }
-    } else{
-      callback(null, baseUrl + '/' + tenantId + '/' + image)  
+    } else {
+      callback(null, baseUrl + '/' + tenantId + '/' + image)
     }
   },
   getInfo: function (req, res) {
