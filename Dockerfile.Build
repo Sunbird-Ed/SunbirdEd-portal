@@ -11,6 +11,7 @@ RUN npm set progress=false
 RUN npm install  --unsafe-perm 
 RUN npm run deploy
 WORKDIR /opt/player/app/app_dist
+RUN npm i -g npm@3.10.10
 RUN npm install --production  --unsafe-perm  
 WORKDIR /opt/player/app
 # passing commit hash as build arg
