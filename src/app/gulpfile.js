@@ -104,7 +104,6 @@ gulp.task('prepare:app:dist', () => {
     'resourcebundles/**/*',
     'themes/**/*',
     'package.json',
-    'framework.config.js',
     'package-lock.json',
     'sunbird-plugins/**/*',
     'routes/**/*',
