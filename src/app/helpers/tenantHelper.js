@@ -36,7 +36,7 @@ module.exports = {
   },
   checkTenantCdnUrl: function (baseUrl, tenantId, image, cbLocalTenant, callback) {
     if(envHelper.TENANT_CDN_URL === '' || envHelper.TENANT_CDN_URL === null) { 
-      var callTenantPath = cbLocalTenant !== '' ? cbLocalTenant : true;
+      var callTenantPath = cbLocalTenant !== '' ? cbLocalTenant : false;
       if(callTenantPath) {       
         callback(null, baseUrl + '/tenant/' + tenantId + '/' + image)  
       } else {
