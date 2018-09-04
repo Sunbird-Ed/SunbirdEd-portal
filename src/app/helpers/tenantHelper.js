@@ -15,36 +15,36 @@ const successResponseStatusCode = 200
 module.exports = {
 
   getImagePath: function (baseUrl, tenantId, image, callback) {
+    let cbLocalTenant = true;
     fs.stat(path.join(__dirname, '../tenant', tenantId, image), function (err, stat) {
       if (err) {
         if (envHelper.DEFAULT_CHANNEL && _.isString(envHelper.DEFAULT_CHANNEL)) {
           fs.stat(path.join(__dirname, '../tenant', envHelper.DEFAULT_CHANNEL, image), function (error, stat) {
             if (error) {
-              if(envHelper.TENANT_CDN_URL === '' || envHelper.TENANT_CDN_URL === null) { 
-                callback(null, null)
-              } else{
-                callback(null, baseUrl + '/' + tenantId + '/' + image)  
-              }
+              module.exports.checkTenantCdnUrl(baseUrl, tenantId, image, '' ,callback)
             } else {
               callback(null, baseUrl + '/tenant/' + envHelper.DEFAULT_CHANNEL + '/' + image)
             }
           })
         } else {
-          if(envHelper.TENANT_CDN_URL === '' || envHelper.TENANT_CDN_URL === null) { 
-            callback(null, null)
-          }
-          else{
-            callback(null, baseUrl + '/' + tenantId + '/' + image)  
-          }
+          module.exports.checkTenantCdnUrl(baseUrl, tenantId, image, '' ,callback)
         }
-      } else {
-        if(envHelper.TENANT_CDN_URL === '' || envHelper.TENANT_CDN_URL === null) { 
-          callback(null, baseUrl + '/tenant/' + tenantId + '/' + image)  
-        } else {       
-          callback(null, baseUrl + '/' + tenantId + '/' + image)     
-        }
+      } else {       
+        module.exports.checkTenantCdnUrl(baseUrl, tenantId, image, cbLocalTenant, callback)
       }
     })
+  },
+  checkTenantCdnUrl: function (baseUrl, tenantId, image, cbLocalTenant, callback) {
+    if(envHelper.TENANT_CDN_URL === '' || envHelper.TENANT_CDN_URL === null) { 
+      var callTenantPath = cbLocalTenant !== '' ? cbLocalTenant : true;
+      if(callTenantPath) {       
+        callback(null, baseUrl + '/tenant/' + tenantId + '/' + image)  
+      } else {
+       callback(null, null)
+      }
+    } else{
+      callback(null, baseUrl + '/' + tenantId + '/' + image)  
+    }
   },
   getInfo: function (req, res) {
     let tenantId = req.params.tenantId || envHelper.DEFAULT_CHANNEL
@@ -130,5 +130,4 @@ module.exports = {
       return false;
     }
   }
-
 }
