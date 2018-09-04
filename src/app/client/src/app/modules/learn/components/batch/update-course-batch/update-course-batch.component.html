@@ -2,7 +2,8 @@
   <div class="header">
     <div class="ui grid">
       <div class="eleven wide column">
-        <span class="ui header">{{resourceService?.frmelmnts?.intxt?.t0007}}</span>
+        <span *ngIf="!showFormInViewMode" class="ui header">{{resourceService?.frmelmnts?.intxt?.t0007}}</span>
+        <span *ngIf="showFormInViewMode" class="ui header">{{resourceService?.frmelmnts?.intxt?.t0015}}</span>
       </div>
       <!-- <div class="one wide column actions">
           <h5 class="ui basic icon circular button deny" (click)="redirect();">
@@ -51,7 +52,7 @@
           <div class="ui read-only calendar rangestartAdd margin-bottom-10" id="rangestartAdd">
             <div class="ui input left icon">
               <i class="calendar icon date-calendar"></i>
-              <input [attr.disabled]="batchDetails.status !== 0 ? true : null" [pickerMinDate]='batchDetails.status !== 0 ? batchUpdateForm.controls["startDate"].value : pickerMinDate'
+              <input [attr.disabled]="(batchDetails.status !== 0 || showFormInViewMode ) ? true : null" [pickerMinDate]='batchDetails.status !== 0 ? batchUpdateForm.controls["startDate"].value : pickerMinDate'
                 suiDatepicker formControlName="startDate" [pickerMode]="'date'">
             </div>
           </div>
@@ -64,7 +65,7 @@
           <div class="ui calendar rangeendAdd" id="rangeendAdd">
             <div class="ui input left icon">
               <i class="calendar icon date-calendar"></i>
-              <input [attr.disabled]="batchDetails.status === 2 ? true : null" [pickerMinDate]='pickerMinDateForEndDate' suiDatepicker
+              <input [attr.disabled]="(batchDetails.status === 2 || showFormInViewMode) ? true : null" [pickerMinDate]='pickerMinDateForEndDate' suiDatepicker
                 formControlName="endDate" [pickerMode]="'date'">
             </div>
           </div>
@@ -84,7 +85,8 @@
         </div> -->
       <div class="one field " *ngIf="batchUpdateForm.value.enrollmentType !== 'open'">
         <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
-        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors" ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
+        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors" 
+        [ngClass]="{ 'disabled' : showFormInViewMode }">
           <input id="mentorSelList">
           <i class="dropdown icon"></i>
           <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
@@ -115,7 +117,8 @@
         </div> -->
       <div class="one field " *ngIf="batchUpdateForm.value.enrollmentType !== 'open'">
         <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
-        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="participant" ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
+        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="participant" 
+        [ngClass]="{'disabled' : showFormInViewMode }">
           <input id="userSelList">
           <i class="dropdown icon"></i>
           <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
