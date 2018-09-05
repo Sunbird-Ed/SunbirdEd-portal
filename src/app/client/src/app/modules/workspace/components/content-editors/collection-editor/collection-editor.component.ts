@@ -82,6 +82,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
    */
   public showModal: boolean;
   public editorInteractObject: IInteractEventObject;
+  public browserBackEventSub;
   /**
   * Default method of classs CollectionEditorComponent
   *
@@ -144,7 +145,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   ngAfterViewInit() {
-    this.workspaceService.browserBackEvent.subscribe(() => {
+    this.browserBackEventSub = this.workspaceService.browserBackEvent.subscribe(() => {
       const closeEditorIntractEdata: IInteractEventEdata = {
         id: 'browser-back-button',
         type: 'click',
@@ -334,6 +335,9 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
   }
   ngOnDestroy() {
     window.location.hash = '';
+    if (this.browserBackEventSub) {
+      this.browserBackEventSub.unsubscribe();
+    }
     if (document.getElementById('collectionEditor')) {
       document.getElementById('collectionEditor').remove();
     }

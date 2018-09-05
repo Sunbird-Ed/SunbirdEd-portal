@@ -11,15 +11,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@sunbird/environment';
 import { WorkSpaceService } from '../../../services';
 
+/**
+ * Component Launches the Generic Editor in a IFrame Modal
+ */
 @Component({
   selector: 'app-generic-editor',
   templateUrl: './generic-editor.component.html',
   styleUrls: ['./generic-editor.component.css']
 })
-
-/**
- * Component Launches the Generic Editor in a IFrame Modal
- */
 export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
@@ -76,7 +75,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   private activatedRoute: ActivatedRoute;
   public listener;
   public editorInteractObject: IInteractEventObject;
-
+  public browserBackEventSub;
   constructor(userService: UserService, router: Router, public _zone: NgZone,
     activatedRoute: ActivatedRoute, tenantService: TenantService, public telemetryService: TelemetryService,
     public navigationHelperService: NavigationHelperService, toasterService: ToasterService,
@@ -120,7 +119,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngAfterViewInit() {
-    this.workspaceService.browserBackEvent.subscribe(() => {
+    this.browserBackEventSub =  this.workspaceService.browserBackEvent.subscribe(() => {
       const closeEditorIntractEdata: IInteractEventEdata = {
         id: 'browser-back-button',
         type: 'click',
@@ -283,6 +282,9 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    * On componenet destroy remove the genericEditor id from DOM
    */
   ngOnDestroy() {
+    if (this.browserBackEventSub) {
+      this.browserBackEventSub.unsubscribe();
+    }
     if (document.getElementById('genericEditor')) {
       document.getElementById('genericEditor').remove();
     }

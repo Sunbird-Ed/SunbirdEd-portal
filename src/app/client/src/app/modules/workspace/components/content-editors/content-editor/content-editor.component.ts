@@ -76,7 +76,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   public logo: string;
   public listener;
   public editorInteractObject: IInteractEventObject;
-
+  public browserBackEventSub;
   /**
   * Default method of classs ContentEditorComponent
   *
@@ -151,7 +151,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
 
 
   ngAfterViewInit() {
-    this.workspaceService.browserBackEvent.subscribe(() => {
+    this.browserBackEventSub = this.workspaceService.browserBackEvent.subscribe(() => {
       const closeEditorIntractEdata: IInteractEventEdata = {
         id: 'browser-back-button',
         type: 'click',
@@ -193,6 +193,9 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngOnDestroy() {
     this.setRenderer();
+    if (this.browserBackEventSub) {
+      this.browserBackEventSub.unsubscribe();
+    }
     if (document.getElementById('contentEditor')) {
       document.getElementById('contentEditor').remove();
     }

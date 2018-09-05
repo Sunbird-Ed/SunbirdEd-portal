@@ -1,32 +1,28 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject, tick } from '@angular/core/testing';
 import { ContentEditorComponent } from './content-editor.component';
-import { Component, OnInit, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { Injectable } from '@angular/core';
-import * as  iziModal from 'izimodal/js/iziModal';
-import {NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
-   IUserData, IUserProfile, BrowserCacheTtlService } from '@sunbird/shared';
+import { NavigationHelperService, ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
 import { EditorService } from '@sunbird/workspace';
 import { ContentService, UserService, LearnerService, TenantService, CoreModule } from '@sunbird/core';
 import { mockRes } from './content-editor.component.spec.data';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WorkSpaceService } from '../../../services';
+import { TelemetryModule } from '@sunbird/telemetry';
 
 describe('ContentEditorComponent', () => {
   let component: ContentEditorComponent;
   let fixture: ComponentFixture<ContentEditorComponent>;
-
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentEditorComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule.forRoot()],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule.forRoot(), TelemetryModule.forRoot()],
       providers: [
         EditorService, UserService, ContentService, BrowserCacheTtlService,
         ResourceService, ToasterService, ConfigService, LearnerService,
@@ -90,6 +86,7 @@ describe('ContentEditorComponent', () => {
     expect(component.navigateToWorkSpace).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['workspace/content/draft/1']);
   }));
+
   it('should listen to the browser back button event', () => {
     spyOn(sessionStorage, 'setItem').and.callThrough();
     component.ngOnInit();

@@ -1,14 +1,13 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject, tick } from '@angular/core/testing';
+import { of as observableOf } from 'rxjs';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { CollectionEditorComponent } from './collection-editor.component';
-import { Component, OnInit, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { Injectable } from '@angular/core';
-
-import {NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
-   IUserData, IUserProfile , BrowserCacheTtlService} from '@sunbird/shared';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NavigationHelperService, ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
 import { EditorService } from '@sunbird/workspace';
 import { ContentService, UserService, LearnerService, CoreModule, TenantService } from '@sunbird/core';
 import { mockRes } from './collection-editor.component.spec.data';
@@ -26,7 +25,7 @@ describe('CollectionEditorComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionEditorComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule.forRoot()],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule.forRoot(), TelemetryModule.forRoot()],
       providers: [
         EditorService, UserService, ContentService,
         ResourceService, ToasterService, ConfigService, LearnerService,
@@ -69,6 +68,7 @@ describe('CollectionEditorComponent', () => {
       component.getTreeNodes('Course');
       expect(component.getTreeNodes).not.toBeUndefined();
     }));
+
   it('should call collectioneditor with error data', inject([EditorService, UserService, Router, ToasterService, ResourceService,
     TenantService],
     (editorService, userService, router, toasterService, resourceService, tenantService) => {
@@ -97,6 +97,7 @@ describe('CollectionEditorComponent', () => {
     expect(component.navigateToWorkSpace).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['workspace/content/draft/1']);
   }));
+
   it('should listen to the browser back button event', () => {
     spyOn(sessionStorage, 'setItem').and.callThrough();
     component.ngOnInit();
