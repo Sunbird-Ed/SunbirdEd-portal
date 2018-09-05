@@ -63,7 +63,7 @@ let PERMISSIONS_HELPER = {
     // telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
-      telemetryData.statusCode = response.statusCode
+      telemetryData.statusCode = _.get(response, 'statusCode')
       if (!error && body && body.responseCode === 'OK') {
         // module.exports.setRoleUrls(body.result)
       } else {
@@ -140,7 +140,7 @@ let PERMISSIONS_HELPER = {
     // telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
-      telemetryData.statusCode = response.statusCode
+      telemetryData.statusCode = _.get(response, 'statusCode');
       reqObj.session.roles = []
       reqObj.session.orgs = []
 

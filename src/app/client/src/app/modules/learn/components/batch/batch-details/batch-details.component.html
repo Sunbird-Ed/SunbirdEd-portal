@@ -23,8 +23,7 @@
                     <div class="content padding-bottom-15">
                         <span class="header padding-bottom-5"> {{batch.startDate | dateFormat}} - </span>
                         <span *ngIf="batch.endDate" class="header padding-bottom-5"> {{batch.endDate | dateFormat}} </span>
-                        <div class="description">Created by {{userNames[batch.createdBy].firstName}} {{userNames[batch.createdBy].lastName}}</div>
-                        <div class="description"><span *ngIf="batch.createdBy === userService.userid">Created Batch</span><span *ngIf="batch.createdBy !== userService.userid">Mentored Batch</span></div>
+                        <div class="description" *ngIf="userNames[batch.createdBy]">Created by {{userNames[batch.createdBy].firstName}} {{userNames[batch.createdBy].lastName}}</div>
                     </div>
                 </div>
                 <div *ngIf="batchList.length <= 0">
