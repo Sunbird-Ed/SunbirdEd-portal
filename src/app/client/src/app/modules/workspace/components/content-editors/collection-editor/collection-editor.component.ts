@@ -1,25 +1,23 @@
 
-import { Component, OnInit, AfterViewInit, NgZone, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { Injectable } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 import * as  iziModal from 'izimodal/js/iziModal';
 import {
-  NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
-  IUserData, IUserProfile
+  NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserData, IUserProfile
 } from '@sunbird/shared';
 import { UserService, TenantService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditorService, WorkSpaceService } from './../../../services';
 import { state } from './../../../classes/state';
 import { environment } from '@sunbird/environment';
-
+import {
+  TelemetryService, IInteractEventObject, IInteractEventEdata
+} from '@sunbird/telemetry';
 @Component({
   selector: 'app-collection-editor',
   templateUrl: './collection-editor.component.html',
   styleUrls: ['./collection-editor.component.css']
 })
-
-
 /**
  * Component Launches the collection Editor in a IFrame Modal
  */
@@ -28,15 +26,14 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
  * To navigate to other pages
  */
   route: Router;
-
   /**
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to create component
   */
   private activatedRoute: ActivatedRoute;
   /**
-* To show toaster(error, success etc) after any API calls
-*/
+  * To show toaster(error, success etc) after any API calls
+  */
   private toasterService: ToasterService;
   /**
     * To call resource service which helps to use language constant
@@ -74,18 +71,18 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
    * reference of UserService service.
   */
   userService: UserService;
-
   /**
    * user tenant details.
    */
   public tenantService: TenantService;
-
   private buildNumber: string;
   public logo: string;
   /**
    * Show Modal for loader
    */
   public showModal: boolean;
+  public editorInteractObject: IInteractEventObject;
+  public browserBackEventSub;
   /**
   * Default method of classs CollectionEditorComponent
   *
@@ -105,6 +102,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     public _zone: NgZone,
     config: ConfigService,
     tenantService: TenantService,
+    public telemetryService: TelemetryService,
     public navigationHelperService: NavigationHelperService, public workspaceService: WorkSpaceService) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
@@ -147,6 +145,14 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   ngAfterViewInit() {
+    this.browserBackEventSub = this.workspaceService.browserBackEvent.subscribe(() => {
+      const closeEditorIntractEdata: IInteractEventEdata = {
+        id: 'browser-back-button',
+        type: 'click',
+        pageid: 'collection-editor'
+      };
+      this.generateInteractEvent(closeEditorIntractEdata);
+    });
     /**
      * Create the collection editor
      */
@@ -217,12 +223,10 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
         }
       }
     };
-
     window.config = { ...editorWindowConfig, ...dynamicConfig };
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
     window.config.headerLogo = this.logo;
     window.config.build_number = this.buildNumber;
-
     if (this.type.toLowerCase() === 'textbook') {
       window.config.plugins.push({
         id: 'org.ekstep.suggestcontent',
@@ -245,10 +249,8 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
         contentType: ['Collection']
       };
     }
-
     window.config.editorConfig.publishMode = false;
     window.config.editorConfig.isFlagReviewer = false;
-
     if (this.state === state.UP_FOR_REVIEW &&
       _.intersection(this.userProfile.userRoles,
         ['CONTENT_REVIEWER', 'CONTENT_REVIEW', 'BOOK_REVIEWER']).length > 0) {
@@ -265,13 +267,11 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     setTimeout(() => {
       jQuery('#collectionEditor').iziModal('open');
     }, 100);
-
     const validateModal = {
       state: this.config.editorConfig.EDITOR_CONFIG.collectionState,
       status: this.config.editorConfig.EDITOR_CONFIG.collectionStatus,
       mimeType: this.config.editorConfig.EDITOR_CONFIG.mimeCollection
     };
-
     const req = { contentId: this.contentId };
     const qs = { fields: this.config.editorConfig.EDITOR_CONFIG.editorQS, mode: this.config.editorConfig.EDITOR_CONFIG.MODE };
     if (this.state === state.FLAGGED) {
@@ -284,6 +284,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       const rspData = response.result.content;
       rspData.state = this.state;
       rspData.userId = this.userProfile.userId;
+      this.setContentInteractData(rspData);
       if (this.validateRequest(rspData, validateModal)) {
         this.updateModeAndStatus(response.result.content.status);
       } else {
@@ -295,8 +296,27 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       }
     );
   }
-
-
+  private setContentInteractData(rspData) {
+    this.editorInteractObject = {
+      id: rspData.identifier,
+      type: rspData.contentType || rspData.resourceType || 'collection',
+      ver: rspData.pkgVersion ? rspData.pkgVersion.toString() : '1.0',
+    };
+  }
+  generateInteractEvent(intractEdata) {
+    if (intractEdata) {
+      const appTelemetryInteractData: any = {
+        context: {
+          env: 'collection-editor'
+        },
+        edata: intractEdata
+      };
+      if (this.editorInteractObject) {
+        appTelemetryInteractData.object = this.editorInteractObject;
+      }
+      this.telemetryService.interact(appTelemetryInteractData);
+    }
+  }
   /**
    * Re directed to the draft on close of modal
    */
@@ -313,9 +333,11 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
     this.showModal = false;
   }
-
   ngOnDestroy() {
     window.location.hash = '';
+    if (this.browserBackEventSub) {
+      this.browserBackEventSub.unsubscribe();
+    }
     if (document.getElementById('collectionEditor')) {
       document.getElementById('collectionEditor').remove();
     }
@@ -357,7 +379,6 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       window.config.editorConfig.mode = 'Edit';
       window.config.editorConfig.contentStatus = 'draft';
     }
-
     if (status.toLowerCase() === 'flagdraft') {
       window.config.editorConfig.mode = 'Edit';
       window.config.editorConfig.contentStatus = 'draft';
@@ -382,8 +403,6 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       window.config.editorConfig.contentStatus = 'flagged';
     }
   }
-
-
   /**
    * to assign the value to Editor Config
    * @param type of the content created
