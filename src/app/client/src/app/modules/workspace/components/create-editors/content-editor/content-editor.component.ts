@@ -242,6 +242,11 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
           id: 'org.ekstep.questionset',
           ver: '1.0',
           type: 'plugin'
+        },
+        {
+          id: 'org.ekstep.video',
+          ver: '1.1',
+          type: 'plugin'
         }
       ],
       dispatcher: 'local',
