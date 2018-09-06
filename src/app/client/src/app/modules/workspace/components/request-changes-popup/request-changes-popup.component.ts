@@ -73,7 +73,9 @@ export class RequestChangesPopupComponent implements OnInit, OnDestroy {
    * To close url
   */
   closeUrl: any;
-
+  /**
+   * showDefaultConfig
+  */
   showDefaultConfig = false;
   showloader = true;
   rejectCheckListData: any;
@@ -192,6 +194,9 @@ export class RequestChangesPopupComponent implements OnInit, OnDestroy {
           this.showModal = true;
           this.showloader = false;
           this.rejectCheckListData = data.result.form.data.fields[0];
+          if (!_.get(data.result.form, 'data.fields[0].checklist') || !_.get(data.result.form, 'data.fields[0].otherReason') ) {
+            this.showDefaultConfig = true;
+          }
         } else {
           this.showModal = true;
           this.showloader = false;
