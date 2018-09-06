@@ -305,7 +305,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
                 this.exploreRoutingUrl = url[1];
               }
             }
-            console.log(this.exploreRoutingUrl);
         this.filters = {};
         this.dataDrivenFilter = {};
         this.filterType = this.config.appConfig.explore.filterType;
