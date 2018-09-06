@@ -11,6 +11,7 @@ const defaultTenant = envHelper.DEFAULT_CHANNEL
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
 telemtryEventConfig['pdata']['id'] = appId
 const successResponseStatusCode = 200
+const request = require('request');
 
 module.exports = {
 
@@ -42,9 +43,17 @@ module.exports = {
         callback(null, null)
       }
     } else {
-      callback(null, baseUrl + '/' + tenantId + '/' + image)
+      const req = request
+        .get(envHelper.TENANT_CDN_URL + '/' + tenantId + '/' + image)
+        .on('response', function (res) {
+          if (res.statusCode === 200) {
+            callback(null, baseUrl + '/' + tenantId + '/' + image)
+          } else {
+            callback(null, null)
+          }
+        })
     }
-  },
+  },      
   getInfo: function (req, res) {
     let tenantId = req.params.tenantId || envHelper.DEFAULT_CHANNEL
     let host = req.hostname
