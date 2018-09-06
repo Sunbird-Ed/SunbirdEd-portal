@@ -354,7 +354,7 @@
             "FlagReview"
         ],
         "mimeCollection": "application/vnd.ekstep.content-collection",
-        "editorQS": "createdBy,status,mimeType",
+        "editorQS": "createdBy,status,mimeType,contentType,resourceType",
         "MODE": "edit",
         "contentState": [
             "upForReview",

@@ -1,16 +1,17 @@
-import { Component, OnInit, AfterViewInit, NgZone, Renderer2, OnDestroy, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone, Renderer2, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 import * as iziModal from 'izimodal/js/iziModal';
 import {
-  NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
-  IUserData, IUserProfile
+  NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserData, IUserProfile
 } from '@sunbird/shared';
-import { UserService, PermissionService, TenantService } from '@sunbird/core';
+import { UserService, TenantService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditorService } from './../../../services/editors/editor.service';
 import { environment } from '@sunbird/environment';
 import { WorkSpaceService } from '../../../services';
-
+import {
+  TelemetryService, IInteractEventObject, IInteractEventEdata
+} from '@sunbird/telemetry';
 @Component({
   selector: 'app-content-editor',
   templateUrl: './content-editor.component.html',
@@ -74,7 +75,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
 
   public logo: string;
   public listener;
-
+  public editorInteractObject: IInteractEventObject;
+  public browserBackEventSub;
   /**
   * Default method of classs ContentEditorComponent
   *
@@ -96,6 +98,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     userService: UserService, public _zone: NgZone,
     private renderer: Renderer2,
     tenantService: TenantService,
+    public telemetryService: TelemetryService,
     public navigationHelperService: NavigationHelperService, public workspaceService: WorkSpaceService
   ) {
     this.resourceService = resourceService;
@@ -148,6 +151,14 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
 
 
   ngAfterViewInit() {
+    this.browserBackEventSub = this.workspaceService.browserBackEvent.subscribe(() => {
+      const closeEditorIntractEdata: IInteractEventEdata = {
+        id: 'browser-back-button',
+        type: 'click',
+        pageid: 'content-editor'
+      };
+      this.generateInteractEvent(closeEditorIntractEdata);
+    });
     /**
     * Fetch header logo and launch the content editor after window load
     */
@@ -182,6 +193,9 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngOnDestroy() {
     this.setRenderer();
+    if (this.browserBackEventSub) {
+      this.browserBackEventSub.unsubscribe();
+    }
     if (document.getElementById('contentEditor')) {
       document.getElementById('contentEditor').remove();
     }
@@ -209,8 +223,6 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       channel: this.userService.channel,
       framework: this.framework,
     };
-
-
     /**
      * Window config
      */
@@ -241,6 +253,11 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         {
           id: 'org.ekstep.questionset',
           ver: '1.0',
+          type: 'plugin'
+        },
+        {
+          id: 'org.ekstep.video',
+          ver: '1.1',
           type: 'plugin'
         }
       ],
@@ -302,7 +319,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   getContentData() {
     const state = this.state;
     const req = { contentId: this.contentId };
-    const qs = { fields: 'createdBy,status,mimeType', mode: 'edit' };
+    const qs = { fields: 'createdBy,status,mimeType,contentType,resourceType', mode: 'edit' };
     const validateModal = {
       'state': this.config.editorConfig.EDITOR_CONFIG.contentState,
       'status': this.config.editorConfig.EDITOR_CONFIG.contentStatus,
@@ -312,7 +329,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       const rspData = response.result.content;
       rspData.state = state;
       rspData.userId = this.userProfile.userId;
-
+      this.setContentInteractData(rspData);
       if (this.checkContentAccess(rspData, validateModal)) {
         this.openContentEditor();
       } else {
@@ -320,6 +337,27 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       }
     }
     );
+  }
+  private setContentInteractData(rspData) {
+    this.editorInteractObject = {
+      id: rspData.identifier,
+      type: rspData.contentType || rspData.resourceType || 'content',
+      ver: rspData.pkgVersion ? rspData.pkgVersion.toString() : '1.0',
+    };
+  }
+  generateInteractEvent(intractEdata) {
+    if (intractEdata) {
+      const appTelemetryInteractData: any = {
+        context: {
+          env: 'content-editor'
+        },
+        edata: intractEdata
+      };
+      if (this.editorInteractObject) {
+        appTelemetryInteractData.object = this.editorInteractObject;
+      }
+      this.telemetryService.interact(appTelemetryInteractData);
+    }
   }
   /**
    * Re directed to the draft on close of modal

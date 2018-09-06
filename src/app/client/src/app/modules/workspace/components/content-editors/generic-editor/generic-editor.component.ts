@@ -1,24 +1,24 @@
 import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
-import { Injectable } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
 import {
-  NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
-  IUserData, IUserProfile
+  NavigationHelperService, ResourceService, ToasterService, IUserData, IUserProfile
 } from '@sunbird/shared';
+import {
+  TelemetryService, IInteractEventObject, IInteractEventEdata
+} from '@sunbird/telemetry';
 import { UserService, TenantService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@sunbird/environment';
 import { WorkSpaceService } from '../../../services';
 
+/**
+ * Component Launches the Generic Editor in a IFrame Modal
+ */
 @Component({
   selector: 'app-generic-editor',
   templateUrl: './generic-editor.component.html',
   styleUrls: ['./generic-editor.component.css']
 })
-
-/**
- * Component Launches the Generic Editor in a IFrame Modal
- */
 export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
@@ -74,9 +74,10 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   */
   private activatedRoute: ActivatedRoute;
   public listener;
-
+  public editorInteractObject: IInteractEventObject;
+  public browserBackEventSub;
   constructor(userService: UserService, router: Router, public _zone: NgZone,
-    activatedRoute: ActivatedRoute, tenantService: TenantService,
+    activatedRoute: ActivatedRoute, tenantService: TenantService, public telemetryService: TelemetryService,
     public navigationHelperService: NavigationHelperService, toasterService: ToasterService,
     resourceService: ResourceService, public workspaceService: WorkSpaceService) {
     this.userService = userService;
@@ -107,6 +108,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       this.framework = params['framework'];
       sessionStorage.setItem('inEditor', 'true');
       window.location.hash = 'no';
+      this.setContentInteractData({ identifier: this.contentId });
       this.workspaceService.toggleWarning();
     });
     try {
@@ -117,6 +119,14 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngAfterViewInit() {
+    this.browserBackEventSub =  this.workspaceService.browserBackEvent.subscribe(() => {
+      const closeEditorIntractEdata: IInteractEventEdata = {
+        id: 'browser-back-button',
+        type: 'click',
+        pageid: 'generic-editor'
+      };
+      this.generateInteractEvent(closeEditorIntractEdata);
+    });
     /**
      * Fetch header logo and launch the generic editor after window load
      */
@@ -129,8 +139,31 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       }
     });
   }
+  private setContentInteractData(rspData) {
+    if (rspData.identifier) {
+      this.editorInteractObject = {
+        id: rspData.identifier,
+        type: rspData.contentType || rspData.resourceType || 'content',
+        ver: rspData.pkgVersion ? rspData.pkgVersion.toString() : '1.0',
+      };
+    }
+  }
+  generateInteractEvent(intractEdata) {
+    if (intractEdata) {
+      const appTelemetryInteractData: any = {
+        context: {
+          env: 'generic-editor'
+        },
+        edata: intractEdata
+      };
+      if (this.editorInteractObject) {
+        appTelemetryInteractData.object = this.editorInteractObject;
+      }
+      this.telemetryService.interact(appTelemetryInteractData);
+    }
+  }
   /**
-   *Launch Genreic Editor in the modal
+   *Launch Generic Editor in the modal
    */
   openGenericEditor() {
     jQuery.fn.iziModal = iziModal;
@@ -238,15 +271,6 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     }, 1000);
   }
 
-  // navigateToUploads() {
-  //   if (this.state) {
-  //     this.router.navigate(['workspace/content/', this.state, '1']);
-  //   } else {
-  //     this.router.navigate(['workspace/content/uploaded/1']);
-  //   }
-  //   this.showModal = false;
-  // }
-
   navigateToWorkSpace() {
     if (document.getElementById('collectionEditor')) {
       document.getElementById('collectionEditor').remove();
@@ -258,6 +282,9 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    * On componenet destroy remove the genericEditor id from DOM
    */
   ngOnDestroy() {
+    if (this.browserBackEventSub) {
+      this.browserBackEventSub.unsubscribe();
+    }
     if (document.getElementById('genericEditor')) {
       document.getElementById('genericEditor').remove();
     }
