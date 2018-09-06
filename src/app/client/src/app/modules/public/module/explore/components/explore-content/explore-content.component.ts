@@ -297,16 +297,15 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.route.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
-            if (_.includes(urlAfterRedirects.url, '/explore')) {
-              const url  = urlAfterRedirects.url.split('/');
+            if (_.includes(this.route.url, '/explore')) {
+              const url  = this.route.url.split('/');
               if (url.indexOf('explore') === 2) {
                 this.exploreRoutingUrl = url[1] + '/' + url[2];
               } else {
                 this.exploreRoutingUrl = url[1];
               }
             }
-        });
+            console.log(this.exploreRoutingUrl);
         this.filters = {};
         this.dataDrivenFilter = {};
         this.filterType = this.config.appConfig.explore.filterType;
