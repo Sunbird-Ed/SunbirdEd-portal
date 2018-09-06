@@ -207,6 +207,8 @@ describe('DataDrivenFilterComponent', () => {
   it('should apply filters and key should have concepts', () => {
     const router = TestBed.get(Router);
     component.formInputData = { 'subject': ['English'], 'medium': ['English'] };
+    const activatedRoute = TestBed.get(ActivatedRoute);
+    activatedRoute.parent = 'ap/explore';
     component.queryParams = {
       'concepts': [
         {
@@ -216,7 +218,7 @@ describe('DataDrivenFilterComponent', () => {
       ]
     };
     component.applyFilters();
-    expect(router.navigate).toHaveBeenCalledWith([undefined], { queryParams: component.queryParams });
+    expect(router.navigate).toHaveBeenCalledWith([], { relativeTo: 'ap/explore', queryParams: component.queryParams });
   });
   it('should call ngOninit to get telemetry Interact Data', () => {
      const frameworkService = TestBed.get(FrameworkService);

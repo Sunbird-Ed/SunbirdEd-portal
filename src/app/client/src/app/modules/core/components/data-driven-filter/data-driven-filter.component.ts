@@ -261,7 +261,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       this.formInputData = {};
     }
-    this.router.navigate([this.redirectUrl], { queryParams: this.formInputData });
+    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
     this.refresh = false;
     this.cdr.detectChanges();
     this.refresh = true;
@@ -292,7 +292,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
     queryParams = _.pickBy(queryParams, value => _.isArray(value) && value.length > 0);
-    this.router.navigate([this.redirectUrl], { queryParams: queryParams });
+    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
   }
 
   removeFilterSelection(field, item) {

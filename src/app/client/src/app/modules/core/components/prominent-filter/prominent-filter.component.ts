@@ -216,7 +216,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     } else {
       this.formInputData = {};
     }
-    this.router.navigate([this.redirectUrl], { queryParams: this.formInputData });
+    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
     this.refresh = false;
     this.cdr.detectChanges();
     this.refresh = true;
@@ -254,7 +254,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
             }
         });
         queryParams = _.pickBy(queryParams, value => _.isArray(value) && value.length > 0);
-        this.router.navigate([this.redirectUrl], {
+        this.router.navigate([], { relativeTo: this.activatedRoute.parent,
             queryParams: queryParams
         });
     }
