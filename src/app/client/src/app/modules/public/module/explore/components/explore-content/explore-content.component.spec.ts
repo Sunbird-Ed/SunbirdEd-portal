@@ -68,13 +68,13 @@ describe('ExploreContentComponent', () => {
   it('should subscribe to searchService', () => {
     component.slug = '123456567';
     component.queryParams = mockQueryParma;
+    component.exploreRoutingUrl = 'explore';
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgDetailsService);
     component.dataDrivenFilter = {};
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
     component.searchList = Response.successData.result.content;
     component.populateContentSearch();
-    fixture.detectChanges();
     expect(component.queryParams.sortType).toString();
     expect(component.showLoader).toBeFalsy();
     expect(component.searchList).toBeDefined();
@@ -98,7 +98,6 @@ describe('ExploreContentComponent', () => {
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
     component.searchList = Response.successData.result.content;
     component.populateContentSearch();
-    fixture.detectChanges();
     expect(searchService.contentSearch).toHaveBeenCalledWith(requestParams);
     expect(component.queryParams.sortType).toString();
     expect(component.showLoader).toBeFalsy();
@@ -113,7 +112,6 @@ describe('ExploreContentComponent', () => {
     spyOn(searchService, 'contentSearch').and.callFake(() => observableThrowError({}));
     component.queryParams = mockQueryParma;
     component.populateContentSearch();
-    fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
     expect(component.noResult).toBeTruthy();
   });
@@ -127,7 +125,6 @@ describe('ExploreContentComponent', () => {
     component.totalCount = Response.noResult.result.count;
     component.queryParams = mockQueryParma;
     component.populateContentSearch();
-    fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
   });
   it('should call filterData method', () => {
@@ -206,6 +203,7 @@ describe('ExploreContentComponent', () => {
       totalItems: 45,
       totalPages: 66
     };
+    component.exploreRoutingUrl = 'explore';
     component.queryParams = { key: 'abc' };
     component.navigateToPage(page);
     expect(component.pageNumber).toEqual(page);
@@ -257,7 +255,6 @@ describe('ExploreContentComponent', () => {
     expect(component.telemetryImpression.edata.subtype).toEqual('pageexit');
   });
   it('should unsubscribe from all observable subscriptions', () => {
-    component.ngOnInit();
     spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
