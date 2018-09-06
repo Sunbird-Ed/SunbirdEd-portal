@@ -125,5 +125,35 @@ export const mockRes = {
                 }
             }
         }
-    }
+    },
+    requestChangesChecklistWrongConfig : {
+        'id': 'api.form.read',
+        'ver': '1.0',
+        'ts': '2018-09-06T08:58:02.746Z',
+        'params': {
+         'resmsgid': 'f6305da0-b1b2-11e8-b9af-892175229f78',
+         'msgid': 'f62d0240-b1b2-11e8-9c79-1d0b266b0c77',
+         'status': 'successful',
+         'err': null,
+         'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+         'form': {
+          'type': 'content',
+          'action': 'requestforchanges',
+          'subType': 'resource',
+          'rootOrgId': '012315809814749184151',
+          'data': {
+           'action': 'requestforchanges',
+           'templateName': 'defaultTemplate',
+           'fields': [
+            {
+             'title': 'Please detail the required changes in the comments.'
+            }
+           ]
+          }
+         }
+        }
+       },
 };

@@ -1,17 +1,18 @@
 
-import {of as observableOf, throwError as observableThrowError,  Observable } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 import { ConfigService } from '@sunbird/shared';
 import { BatchService } from './batch.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { UserService, LearnerService, ContentService } from '@sunbird/core';
+import { CoreModule } from '@sunbird/core';
 import { Response } from './batch.service.spec.data';
+import { RouterTestingModule } from '@angular/router/testing';
+import { SharedModule } from '@sunbird/shared';
+
 describe('BatchService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [BatchService, UserService, ConfigService,
-        ContentService, LearnerService]
+      imports: [HttpClientTestingModule, RouterTestingModule, CoreModule.forRoot(), SharedModule.forRoot()],
+      providers: [BatchService, ConfigService]
     });
   });
 
@@ -19,11 +20,11 @@ describe('BatchService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should call setBatchData method to set the batch data  ', inject([BatchService, LearnerService],
-    (batchService: BatchService, learnerService: LearnerService) => {
+  it('should call setBatchData method to set the batch data  ', inject([BatchService],
+    (batchService: BatchService) => {
       batchService.setBatchData(Response.batchlistSucessData);
       expect(batchService.batchDetails).toBeDefined();
       expect(batchService).toBeTruthy();
-  }));
+    }));
 
 });
