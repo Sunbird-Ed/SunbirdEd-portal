@@ -76,6 +76,7 @@ describe('MainHeaderComponent', () => {
 
   it('All query param should be removed except key and language', () => {
     component.queryParam = { 'board': 'NCERT', 'medium': 'English' };
+    component.routingUrl = 'explore';
     component.onEnter('test');
     expect(component.queryParam).toEqual({ 'key': 'test' });
   });

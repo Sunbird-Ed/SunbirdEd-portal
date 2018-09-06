@@ -88,7 +88,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   * value to enable and disable signUp button
   */
   enableSignup = true;
-
+  routingUrl: string;
   /*
   * constructor
   */
@@ -174,13 +174,14 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     } else {
       delete this.queryParam['key'];
     }
-    this.router.navigate(['explore', 1], {
+    this.router.navigate([this.routingUrl, 1], {
       queryParams: this.queryParam
     });
   }
 
   getUrl() {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
+      this.routingUrl = urlAfterRedirects.url;
       if (_.includes(urlAfterRedirects.url, '/explore')) {
         this.showExploreHeader = true;
       } else {
