@@ -129,7 +129,7 @@ describe('RequestChangesPopupComponent', () => {
     expect(component.getCheckListConfig).toHaveBeenCalledWith();
     expect(component.showModal).toBeTruthy();
     expect(component.showloader).toBeFalsy();
-    expect(component.showWrongCheckList).toBeTruthy();
+    expect(component.showDefaultConfig).toBeTruthy();
     expect(component.rejectCheckListData).toBeDefined();
   });
   it('should call closeModalAfterError and makes expected calls', () => {
