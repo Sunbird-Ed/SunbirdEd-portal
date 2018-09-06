@@ -3,7 +3,7 @@
   <div class="ten wide column">
     <div class="ui grid margin-bottom-0">
       <div class="twelve wide column">
-        <app-prominent-filter [pageId]="'explore-page'" *ngIf="filterType" [filterEnv]="filterType"  [ignoreQuery]="['key', 'language']" [redirectUrl]="redirectUrl"
+        <app-prominent-filter [pageId]="'explore-page'" *ngIf="filterType" [filterEnv]="filterType"  [ignoreQuery]="['key', 'language']" 
        [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter>
       </div>
     </div>

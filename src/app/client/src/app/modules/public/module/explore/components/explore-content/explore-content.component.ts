@@ -9,12 +9,12 @@ import {
     OrgDetailsService
 } from '@sunbird/core';
 import { Component, OnInit, NgZone, OnDestroy} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
-
+import { filter } from 'rxjs/operators';
 @Component({
     selector: 'app-explore-content',
     templateUrl: './explore-content.component.html',
@@ -111,6 +111,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
      * which is needed to show the pagination on inbox view
      */
     pager: IPagination;
+    exploreRoutingUrl: string;
     /**
      *url value
      */
@@ -220,7 +221,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
             return;
         }
         this.pageNumber = page;
-        this.route.navigate(['explore', this.pageNumber], {
+        this.route.navigate([this.exploreRoutingUrl, this.pageNumber], {
             queryParams: this.queryParams
         });
     }
@@ -296,6 +297,14 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+            if (_.includes(this.route.url, '/explore')) {
+              const url  = this.route.url.split('/');
+              if (url.indexOf('explore') === 2) {
+                this.exploreRoutingUrl = url[1] + '/' + url[2];
+              } else {
+                this.exploreRoutingUrl = url[1];
+              }
+            }
         this.filters = {};
         this.dataDrivenFilter = {};
         this.filterType = this.config.appConfig.explore.filterType;
