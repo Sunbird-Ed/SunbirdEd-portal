@@ -75,6 +75,10 @@ export class RequestChangesPopupComponent implements OnInit, OnDestroy {
   closeUrl: any;
 
   showDefaultConfig = false;
+  /**
+   * showWrongCheckList when config is wrong
+  */
+  showWrongCheckList = false;
   showloader = true;
   rejectCheckListData: any;
   showModal = false;
@@ -131,7 +135,8 @@ export class RequestChangesPopupComponent implements OnInit, OnDestroy {
    */
   validateModal() {
     if (this.reasons && this.reasons.length > 0 && this.comment && _.trim(this.comment).length > 0 ||
-    this.comment && _.trim(this.comment).length > 0 && this.showDefaultConfig) {
+    this.comment && _.trim(this.comment).length > 0 && this.showDefaultConfig ||
+    this.comment && _.trim(this.comment).length > 0 && this.showWrongCheckList) {
       this.isDisabled = false;
     } else {
       this.isDisabled = true;
@@ -192,6 +197,9 @@ export class RequestChangesPopupComponent implements OnInit, OnDestroy {
           this.showModal = true;
           this.showloader = false;
           this.rejectCheckListData = data.result.form.data.fields[0];
+          if (!_.get(data.result.form, 'data.fields[0].checklist') || !_.get(data.result.form, 'data.fields[0].otherReason') ) {
+            this.showWrongCheckList = true;
+          }
         } else {
           this.showModal = true;
           this.showloader = false;

@@ -114,7 +114,23 @@ describe('RequestChangesPopupComponent', () => {
     expect(component.showModal).toBeTruthy();
     expect(component.showloader).toBeFalsy();
     expect(component.rejectCheckListData).toBeDefined();
-    expect(component.rejectCheckListData).toBe(mockRes.requestChangesChecklist.result.form.data.fields[0]);
+  });
+
+  it('should enable the showWrongCheckList expected calls for getCheckListConfig  ', () => {
+    const workspaceservice = TestBed.get(WorkSpaceService);
+    component.contentId = fakeActivatedRoute.parent.params['contentId'];
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = resourceBundle.messages;
+    const navigationHelperService: NavigationHelperService = fixture.debugElement.injector.get(NavigationHelperService);
+    spyOn(workspaceservice, 'getCheckListData').and.callFake(() => observableOf(mockRes.requestChangesChecklistWrongConfig));
+    spyOn(component, 'getCheckListConfig').and.callThrough();
+    component.getCheckListConfig();
+    component.ngOnInit();
+    expect(component.getCheckListConfig).toHaveBeenCalledWith();
+    expect(component.showModal).toBeTruthy();
+    expect(component.showloader).toBeFalsy();
+    expect(component.showWrongCheckList).toBeTruthy();
+    expect(component.rejectCheckListData).toBeDefined();
   });
   it('should call closeModalAfterError and makes expected calls', () => {
     const toasterService = TestBed.get(ToasterService);

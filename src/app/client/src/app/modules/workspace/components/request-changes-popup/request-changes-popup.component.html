@@ -27,7 +27,7 @@
                 </div>
             </div>
             <h5>
-                <div class="ui checkbox checklist">
+                <div class="ui checkbox checklist" *ngIf="rejectCheckListData.otherReason">
                     <input type="checkbox" class="listItem" (click)="createCheckedArray('Others')">
                     <label>{{rejectCheckListData.otherReason}}</label>
                 </div>
