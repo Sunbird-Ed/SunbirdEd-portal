@@ -1,19 +1,16 @@
-import { Observable, BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule, UserService, PermissionService } from '@sunbird/core';
 import { INoteData } from '@sunbird/notes';
-import { async, ComponentFixture, TestBed, fakeAsync, tick, flush } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoursePlayerComponent } from './course-player.component';
 import { SharedModule, ResourceService, WindowScrollService, ToasterService } from '@sunbird/shared';
-import { } from 'jasmine';
 import { CourseConsumptionService, CourseProgressService, CourseBatchService } from '@sunbird/learn';
 import { CourseHierarchyGetMockResponse, CourseHierarchyGetMockResponseFlagged } from './course-player.component.mock.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { enrolledBatch } from './../../batch/batch-details/batch-details.component.data';
-import { mockUserData } from './../../../../core/services/user/user.mock.spec.data';
-import { mockPermissionRes } from './../../../../core/services/permission/permission.mock.spec.data';
 import { CoursesService } from './../../../../core/services/course/course.service';
 
 describe('CoursePlayerComponent', () => {
@@ -68,9 +65,7 @@ describe('CoursePlayerComponent', () => {
     createdDate: '2018-03-12 08:19:53:937+0000',
     updatedDate: '2018-03-12 08:25:53:937+0000'
   };
-  const mockCourseHierarchy = {
-    status: 'Live'
-  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CoursePlayerComponent],
