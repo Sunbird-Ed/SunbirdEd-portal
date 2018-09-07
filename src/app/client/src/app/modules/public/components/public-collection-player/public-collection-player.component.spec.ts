@@ -91,7 +91,7 @@ describe('PublicCollectionPlayerComponent', () => {
     component.setInteractEventData();
     expect(component.closeCollectionPlayerInteractEdata).toBeDefined();
   });
-  xit('should call closeContentPlayer method', () => {
+  it('should call closeContentPlayer method', () => {
     const windowScrollService = TestBed.get(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
     const router = TestBed.get(Router);
@@ -99,9 +99,10 @@ describe('PublicCollectionPlayerComponent', () => {
     const navigation = {
       queryParams: {
         dialCode: '61U24C'
-      }
+      },
+      relativeTo: route
     };
-    component.queryParams = { dialCode: '61U24C', relativeTo: component.route };
+    component.queryParams = { dialCode: '61U24C'};
     component.closeContentPlayer();
     expect(component.showPlayer).toBeFalsy();
     expect(router.navigate).toHaveBeenCalledWith([], navigation);
