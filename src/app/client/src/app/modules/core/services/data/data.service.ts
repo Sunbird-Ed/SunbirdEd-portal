@@ -149,7 +149,7 @@ export class DataService {
       default_headers['X-Channel-Id'] = this.channelId;
     }
     if (this.appId) {
-      default_headers['X-app-id'] = this.appId;
+      default_headers['X-App-Id'] = this.appId;
     }
     if (headers) {
       return { ...default_headers, ...headers };
