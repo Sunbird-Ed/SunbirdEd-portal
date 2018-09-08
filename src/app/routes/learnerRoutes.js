@@ -77,6 +77,11 @@ module.exports = function (app) {
             } else {
               return require('url').parse(learnerURL + urlParam).path
             }
+          },
+          userResDecorator: (proxyRes, proxyResData, req, res) => {
+              proxyData = JSON.parse(proxyResData.toString('utf8'));
+              if(req.method === 'GET' && proxyData.message === 'API not found with these values') res.redirect('/')
+              return proxyResData;
           }
         }))
 }

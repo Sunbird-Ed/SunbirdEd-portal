@@ -13,6 +13,11 @@ module.exports = function (app) {
 
     app.use('/api/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
         proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
-        proxyReqPathResolver: proxyReqPathResolverMethod
+        proxyReqPathResolver: proxyReqPathResolverMethod,
+        userResDecorator: (proxyRes, proxyResData, req, res) => {
+            proxyData = JSON.parse(proxyResData.toString('utf8'));
+            if(req.method === 'GET' && proxyData.message === 'API not found with these values') res.redirect('/')
+            return proxyResData;
+        }
     }))
 }
