@@ -130,7 +130,7 @@ describe('OrgSearchComponent', () => {
     expect(component.inviewLogs).toBeDefined();
   });
 
-  it('should check offset is passing for search api ', inject([SearchService], (searchService) => {
+  it('should call orgsearch with rootorgid', inject([SearchService], (searchService) => {
     const userService = TestBed.get(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userMockData });
     userService._userProfile = Response.userMockData;
