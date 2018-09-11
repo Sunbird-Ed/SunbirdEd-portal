@@ -147,8 +147,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     };
   }
   private setWindowConfig() {
-    window.config = this.configService.editorConfig.CONTENT_EDITOR.CONTENT_WINDOW_CONFIG;
-    window.config.enableTelemetryValidation = environment.enableTelemetryValidation;
+    window.config = this.configService.editorConfig.CONTENT_EDITOR.WINDOW_CONFIG;
     window.config.build_number = this.buildNumber;
     window.config.headerLogo = this.logo;
     window.config.aws_s3_urls = this.userService.cloudStorageUrls || [];

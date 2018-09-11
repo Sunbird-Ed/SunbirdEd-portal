@@ -1,7 +1,15 @@
 {
     "DEFAULT_PARAMS_FIELDS": "createdBy,status,mimeType,contentType,resourceType",
     "COLLECTION_EDITOR": {
-        "COLLECTION_WINDOW_CONFIG": {
+        "WINDOW_CONFIG": {
+            "editorConfig": {
+                "rules": {
+                    "levels": 7,
+                    "objectTypes": []
+                },
+                "publishMode": false,
+                "isFlagReviewer": false
+            },
             "nodeDisplayCriteria": {
                 "contentType": ["Collection"]
             },
@@ -34,7 +42,7 @@
             ],
             "localDispatcherEndpoint": "/collection-editor/telemetry",
             "previewConfig": {
-            "repos": "[' / sunbird - plugins / renderer ']",
+            "repos": ["/sunbird-plugins/renderer"],
             "plugins": [{
                 "id": "org.sunbird.player.endpage",
                 "ver": 1.1,
@@ -254,7 +262,7 @@
             "FlagDraft",
             "FlagReview"
         ],
-        "CONTENT_WINDOW_CONFIG": {
+        "WINDOW_CONFIG": {
             "baseURL": "",
             "modalId": "contentEditor",
             "apislug": "/action",
@@ -312,8 +320,8 @@
             "pluginsRepoUrl": "/plugins/v1/search"
         }
     },
-    "EDITOR_CONFIG": {
-        "GENERIC_WINDOW_CONFIG": {
+    "GENERIC_EDITOR": {
+        "WINDOW_CONFIG": {
             "corePluginsPackaged": true,
             "modalId": "genericEditor",
             "dispatcher": "local",
@@ -322,27 +330,35 @@
             "headerLogo": "",
             "loadingImage": "",
             "plugins": [{
-            "id": "org.ekstep.sunbirdcommonheader",
-            "ver": 1.4,
-            "type": "plugin"
-            }],
+                    "id": "org.ekstep.sunbirdcommonheader",
+                    "ver": "1.4",
+                    "type": "plugin"
+                    }, {
+                    "id": "org.ekstep.sunbirdmetadata",
+                    "ver": "1.1",
+                    "type": "plugin"
+                    }, {
+                    "id": "org.ekstep.metadata",
+                    "ver": "1.1",
+                    "type": "plugin"
+                }],
             "previewConfig": {
-            "repos": "[' / sunbird - plugins / renderer ']",
-            "plugins": [{
-                "id": "org.sunbird.player.endpage",
-                "ver": 1.1,
-                "type": "plugin"
-            }],
-            "splash": {
-                "text": "",
-                "icon": "",
-                "bgImage": "assets/icons/splacebackground_1.png",
-                "webLink": ""
-            },
-            "overlay": {
-                "showUser": false
-            },
-            "showEndPage": false
+                "repos": ["/sunbird-plugins/renderer"],
+                "plugins": [{
+                    "id": "org.sunbird.player.endpage",
+                    "ver": 1.1,
+                    "type": "plugin"
+                }],
+                "splash": {
+                    "text": "",
+                    "icon": "",
+                    "bgImage": "assets/icons/splacebackground_1.png",
+                    "webLink": ""
+                },
+                "overlay": {
+                    "showUser": false
+                },
+                "showEndPage": false
             }
         }
     }

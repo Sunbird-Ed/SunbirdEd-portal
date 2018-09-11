@@ -154,21 +154,11 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     };
   }
   private setWindowConfig() {
-    const editorWindowConfig = this.configService.editorConfig.COLLECTION_EDITOR.COLLECTION_WINDOW_CONFIG;
-    const config = {
-      editorConfig: {
-        rules: {
-          levels: 7,
-          objectTypes: this.getObjectTypes()
-        },
-        publishMode: false,
-        isFlagReviewer: false
-      },
-      enableTelemetryValidation: environment.enableTelemetryValidation,
-      headerLogo: this.logo,
-      build_number: this.buildNumber
-    };
-    window.config = { ...editorWindowConfig, ...config };
+    window.config = this.configService.editorConfig.COLLECTION_EDITOR.WINDOW_CONFIG;
+    window.config.editorConfig.rules.objectTypes = this.getObjectTypes();
+    window.config.headerLogo = this.logo;
+    window.config.build_number = this.buildNumber;
+    window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
     if (this.routeParams.type.toLowerCase() === 'textbook') {
       window.config.plugins.push({
         id: 'org.ekstep.suggestcontent',
