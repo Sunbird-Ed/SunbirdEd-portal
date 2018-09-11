@@ -27,8 +27,7 @@ module.exports = (app) => {
                 }
             },
             userResDecorator: (proxyRes, proxyResData, req, res) => {
-                proxyData = JSON.parse(proxyResData.toString('utf8'));
-                if(req.method === 'GET' && proxyData.message === 'API not found with these values') res.redirect('/')
+                if(req.method === 'GET' && proxyRes.statusCode === 404) res.redirect('/')
                 return proxyResData;
             }
         }))
