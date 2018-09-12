@@ -2,7 +2,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { LearnRoutingModule } from './learn-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from '@sunbird/shared';
+ import { SharedModule } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SlickModule } from 'ngx-slick';
 import { NgInviewModule } from 'angular-inport';
@@ -15,11 +15,11 @@ import { CourseConsumptionService, CourseBatchService, CourseProgressService } f
 import { CoreModule } from '@sunbird/core';
 import { NotesModule } from '@sunbird/notes';
 import { DashboardModule } from '@sunbird/dashboard';
-import {SharedFeaturedModule} from '@sunbird/shared-featured';
+import {SharedFeatureModule} from '@sunbird/shared-feature';
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
+     SharedModule,
     SuiModule,
     DashboardModule,
     SlickModule,
@@ -30,7 +30,7 @@ import {SharedFeaturedModule} from '@sunbird/shared-featured';
     NotesModule,
     TelemetryModule,
     NgInviewModule,
-    SharedFeaturedModule
+    SharedFeatureModule
   ],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,

@@ -12,7 +12,7 @@
       </div>
     </div>
     <div *ngFor="let section of caraouselData">
-      <app-page-section (visits)="prepareVisits($event)" [section]="section" (playEvent)="playContent($event)"></app-page-section>
+      <app-page-section (visits)="prepareVisits($event)" [section]="section" (playEvent)="playContent($event)" (viewAll)="viewAll($event)"></app-page-section>
     </div>
     <div class="twelve wide column" *ngIf="showLoader">
       <app-loader [data]='loaderMessage'></app-loader>

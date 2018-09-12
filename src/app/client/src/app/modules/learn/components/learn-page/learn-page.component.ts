@@ -86,6 +86,7 @@ export class LearnPageComponent implements OnInit, OnDestroy {
   content: any;
   public unsubscribe = new Subject<void>();
   courseDataSubscription: Subscription;
+  sectionUrl: string;
   /**
 	 * Constructor to create injected service(s) object
    * @param {ResourceService} resourceService Reference of ResourceService
@@ -307,6 +308,12 @@ export class LearnPageComponent implements OnInit, OnDestroy {
       event.data.metaData.contentType = 'Course';
     }
     this.playerService.playContent(event.data.metaData);
+  }
+  viewAll(event) {
+    this.activatedRoute.data.subscribe(data => {
+      this.sectionUrl = data.baseUrl + '/view-All/' + event.name;
+    });
+    this.router.navigate([this.sectionUrl, 1], {});
   }
   ngOnDestroy() {
     if (this.courseDataSubscription) {

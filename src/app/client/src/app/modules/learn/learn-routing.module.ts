@@ -10,7 +10,7 @@ import { ResourceService } from '@sunbird/shared';
 import { FlagContentComponent, AuthGuard } from '@sunbird/core';
 import { CourseProgressComponent } from '@sunbird/dashboard';
 import { RedirectComponent } from './../shared/components/redirect/redirect.component';
-import {ViewAllComponent} from '@sunbird/shared-featured';
+import {ViewAllComponent} from '@sunbird/shared-feature';
 const telemetryEnv = 'course';
 const objectType = 'course';
 const routes: Routes = [
@@ -19,7 +19,7 @@ const routes: Routes = [
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }],
       telemetry: { env: telemetryEnv, pageid: 'learn', type: 'view' },
-      url: 'learn'
+      baseUrl: 'learn'
     }
     },
   {
@@ -29,11 +29,11 @@ const routes: Routes = [
     }
   },
   {
-    path: 'view-All/:sectionName/:pageNumber', component: ViewAllComponent,
+    path: 'view-All/:section/:pageNumber', component: ViewAllComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }],
       telemetry: {
-        env: 'viewAll', pageid: 'viewAll', type: 'view', subtype: 'paginate'
+        env: telemetryEnv, pageid: 'viewAll', type: 'view', subtype: 'paginate'
       }
     }
   },
