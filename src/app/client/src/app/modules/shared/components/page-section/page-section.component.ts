@@ -1,4 +1,4 @@
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Component,  Input, EventEmitter, Output } from '@angular/core';
 import {ICaraouselData} from '../../interfaces/caraouselData';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
@@ -97,7 +97,7 @@ export class PageSectionComponent implements OnInit {
   infinite: false,
 };
 
-  constructor(public activatedRoute: ActivatedRoute, public route: Router) {
+  constructor(public activatedRoute: ActivatedRoute) {
   }
   playContent(event) {
     this.playEvent.emit(event);
