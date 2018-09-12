@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 // Import NG testing module(s)
 import { HttpClientModule } from '@angular/common/http';
@@ -11,6 +11,7 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { WorkSpaceService } from './workspace.service';
 import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
+import { CacheService } from 'ng2-cache-service';
 import * as mockData from './workspace.service.spec.data';
 const testData = mockData.mockRes;
 
@@ -24,7 +25,7 @@ describe('WorkSpaceService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, HttpClientModule, CoreModule.forRoot(), SharedModule.forRoot()],
-      providers: [WorkSpaceService,
+      providers: [WorkSpaceService, CacheService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }]
     });
@@ -33,20 +34,20 @@ describe('WorkSpaceService', () => {
     inject([WorkSpaceService, Router], (workSpaceService, route) => {
       workSpaceService.navigateToContent(testData.sucessData.result.content[0], 'draft');
       expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/content/', 'do_1124858179748904961134', 'draft', 'NCF']);
-  }));
+    }));
 
   it('should  launch  collection  editor when mime type is ecml-archive',
     inject([WorkSpaceService, Router], (workSpaceService, route) => {
-    workSpaceService.navigateToContent(testData.sucessData.result.content[1], 'review');
-    expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/collection',
-    'do_1124858179748904961134', 'Resource', 'review', 'NCF']);
-  }));
+      workSpaceService.navigateToContent(testData.sucessData.result.content[1], 'review');
+      expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/collection',
+        'do_1124858179748904961134', 'Resource', 'review', 'NCF']);
+    }));
 
   it('should  launch  generic  editor when mime type is not matching ',
     inject([WorkSpaceService, Router], (workSpaceService, route) => {
       workSpaceService.navigateToContent(testData.sucessData.result.content[2], 'draft');
-      expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/generic/', 'do_1124858179748904961134', 'draft' , 'NCF']);
-  }));
+      expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/generic/', 'do_1124858179748904961134', 'draft', 'NCF']);
+    }));
   it('should call delete api and get success response', inject([WorkSpaceService],
     (workSpaceService) => {
       spyOn(workSpaceService, 'deleteContent').and.callFake(() => observableOf(testData.deleteSuccess));
@@ -56,7 +57,7 @@ describe('WorkSpaceService', () => {
       };
       workSpaceService.deleteContent(DeleteParam);
       expect(workSpaceService).toBeTruthy();
-  }));
+    }));
 
   it('should call delete api and  get error response', inject([WorkSpaceService],
     (workSpaceService) => {
@@ -72,12 +73,12 @@ describe('WorkSpaceService', () => {
           expect(err.responseCode).toBe('UNAUTHORIZED_ACCESS');
         }
       );
-  }));
+    }));
   it('should  launch  content player  when mime type is video/x-youtube and state is upForReview ',
     inject([WorkSpaceService, Router], (workSpaceService, route) => {
       workSpaceService.navigateToContent(testData.upforReviewContentData, 'upForReview');
       expect(route.navigate).toHaveBeenCalledWith(['workspace/content/upForReview/content', 'do_1125083103747932161150']);
-  }));
+    }));
   it('should get session item and show respective alert message based on content type', () => {
     const workSpaceService = TestBed.get(WorkSpaceService);
     spyOn(window, 'addEventListener').and.callThrough();
@@ -90,4 +91,24 @@ describe('WorkSpaceService', () => {
     workSpaceService.toggleWarning();
     expect(window.location.hash).toEqual('');
   });
+  it('should get checklist data and set the cachelist data in cache', inject([WorkSpaceService, CacheService],
+    (workSpaceService: WorkSpaceService, cacheService: CacheService) => {
+      spyOn(workSpaceService, 'setData').and.callThrough();
+      spyOn(workSpaceService, 'getCheckListData').and.callThrough();
+      const param = {
+        'type': 'content',
+        'action': 'requestChangesChecklist',
+        'subType': 'Resource',
+        'rootOrgId': 'b00bc992ef25f1a9a8d63291e20efc8d'
+      };
+      workSpaceService.getCheckListData(param);
+      workSpaceService.getCheckListData(param).subscribe(apiResponse => {
+        expect(apiResponse).toBeDefined();
+        expect(workSpaceService.setData).toHaveBeenCalled();
+        cacheService.set('requestChangesChecklistResource',
+        testData.ChecklistData, { maxAge: 10 * 60 });
+      });
+      expect(workSpaceService.getCheckListData).toHaveBeenCalledWith(param);
+      expect(workSpaceService).toBeTruthy();
+    }));
 });

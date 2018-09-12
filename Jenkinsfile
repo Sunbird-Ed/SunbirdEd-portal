@@ -19,23 +19,28 @@ node('build-slave') {
 
        stage('Build'){
 
-         env.NODE_ENV = "build"
+            env.NODE_ENV = "build"
+            print "Environment will be : ${env.NODE_ENV}"
 
-         print "Environment will be : ${env.NODE_ENV}"
-         sh('sudo ./build.sh')
-
+            // Getting commit short hash
+            GIT_COMMIT_HASH = sh (
+            script: 'git rev-parse --short HEAD',
+            returnStdout: true
+            ).trim()
+            echo "Git Hash: ${GIT_COMMIT_HASH}"
+            // Building image
+            sh("sudo ./build.sh ${GIT_COMMIT_HASH}")
        }
 
        stage('Publish'){
 
-         echo 'Push to Repo'
-         dir('.') {
-          sh 'ARTIFACT_LABEL=bronze ./dockerPushToRepo.sh'
-          sh './src/app/metadata.sh > metadata.json'
-          sh 'cat metadata.json'
-          archive includes: "metadata.json"
-         }
-
+           echo 'Push to Repo'
+           dir('.') {
+               sh 'ARTIFACT_LABEL=bronze ./dockerPushToRepo.sh'
+               sh "./src/app/metadata.sh ${GIT_COMMIT_HASH} > metadata.json"
+               sh "cat metadata.json"
+               archive includes: "metadata.json"
+           }
        }
     }
     catch (err) {

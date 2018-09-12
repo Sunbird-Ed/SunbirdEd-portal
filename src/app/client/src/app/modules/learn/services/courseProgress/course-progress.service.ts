@@ -51,7 +51,8 @@ export class CourseProgressService {
           request: {
             userId: req.userId,
             courseId: req.courseId,
-            contentIds: req.contentIds
+            contentIds: req.contentIds,
+            batchId: req.batchId
           }
         }
       };
@@ -135,6 +136,7 @@ export class CourseProgressService {
         return this.updateContentStateToServer(courseProgress.content[index]).pipe(
           map((res: ServerResponse) => {
             this.courseProgress[courseId_batchId].content[index].status = req.status;
+            this.courseProgress[courseId_batchId].content[index].lastAccessTime = moment(new Date()).format('YYYY-MM-DD HH:mm:ss:SSSZZ');
             this.calculateProgress(courseId_batchId);
             this.courseProgressData.emit(this.courseProgress[courseId_batchId]);
             this.coursesService.updateCourseProgress(req.courseId, req.batchId, this.courseProgress[courseId_batchId].completedCount);

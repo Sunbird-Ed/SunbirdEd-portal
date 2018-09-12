@@ -1,18 +1,17 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { ContentService, UserService } from '@sunbird/core';
+import { UserService } from '@sunbird/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs';
+import { Subject  } from 'rxjs';
 import {
-  ConfigService, IUserData, ResourceService, ToasterService,
+  ConfigService, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData
 } from '@sunbird/shared';
 import { PublicPlayerService } from './../../services';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-public-content-player',
@@ -52,6 +51,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
   contentData: ContentData;
   public unsubscribe$ = new Subject<void>();
   public badgeData: Array<object>;
+  public dialCode: string;
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
@@ -93,29 +93,33 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
    * used to fetch content details and player config. On success launches player.
    */
   getContent() {
+    this.activatedRoute.queryParams.subscribe((queryParams) => {
+      this.dialCode = queryParams.dialCode;
+    });
+    const options: any = { dialCode: this.dialCode };
     this.playerService.getContent(this.contentId).pipe(
-    takeUntil(this.unsubscribe$))
-    .subscribe(
-      (response) => {
-        const contentDetails = {
-          contentId: this.contentId,
-          contentData: response.result.content
-        };
-        this.playerConfig = this.playerService.getConfig(contentDetails);
-        this.contentData = response.result.content;
-             if (this.contentData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
+      takeUntil(this.unsubscribe$))
+      .subscribe(
+        (response) => {
+          const contentDetails = {
+            contentId: this.contentId,
+            contentData: response.result.content
+          };
+          this.playerConfig = this.playerService.getConfig(contentDetails, options);
+          this.contentData = response.result.content;
+          if (this.contentData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
             setTimeout(() => {
               this.showExtContentMsg = true;
             }, 5000);
           }
-        this.showPlayer = true;
-        this.windowScrollService.smoothScroll('content-player');
-        this.badgeData = _.get(response, 'result.content.badgeAssertions');
-      },
-      (err) => {
-        this.showError = true;
-        this.errorMessage = this.resourceService.messages.stmsg.m0009;
-      });
+          this.showPlayer = true;
+          this.windowScrollService.smoothScroll('content-player');
+          this.badgeData = _.get(response, 'result.content.badgeAssertions');
+        },
+        (err) => {
+          this.showError = true;
+          this.errorMessage = this.resourceService.messages.stmsg.m0009;
+        });
   }
   /**
    * retry launching player with same content details
@@ -135,7 +139,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
 
   deviceDetector() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
-    if ( deviceInfo.device === 'android' || deviceInfo.os === 'android') {
+    if (deviceInfo.device === 'android' || deviceInfo.os === 'android') {
       this.showFooter = true;
     }
   }

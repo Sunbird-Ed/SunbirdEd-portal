@@ -1,4 +1,4 @@
-import { combineLatest as observableCombineLatest } from 'rxjs';
+import { combineLatest as observableCombineLatest ,  Subject } from 'rxjs';
 import {
     ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
     ILoaderMessage, UtilService, ICard, NavigationHelperService
@@ -8,14 +8,13 @@ import {
     SearchService, CoursesService, PlayerService, ISort,
     OrgDetailsService
 } from '@sunbird/core';
-import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, NgZone, OnDestroy} from '@angular/core';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
-
+import { filter } from 'rxjs/operators';
 @Component({
     selector: 'app-explore-content',
     templateUrl: './explore-content.component.html',
@@ -112,6 +111,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
      * which is needed to show the pagination on inbox view
      */
     pager: IPagination;
+    exploreRoutingUrl: string;
     /**
      *url value
      */
@@ -127,7 +127,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     sortingOptions: Array<ISort>;
     public unsubscribe$ = new Subject<void>();
     cardIntractEdata: IInteractEventEdata;
-    filterIntractEdata: IInteractEventEdata;
+    dataDrivenFilter: object;
     /**
        * Constructor to create injected service(s) object
        * Default method of Draft Component class
@@ -162,12 +162,13 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
         this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
         const filters = _.pickBy(this.filters, value => value.length > 0);
         filters.channel = this.hashTagId;
+        filters.board = _.get(this.filters, 'board') ? this.filters.board : this.dataDrivenFilter['board'];
         const requestParams = {
             filters: filters,
             limit: this.pageLimit,
             pageNumber: this.pageNumber,
             query: this.queryParams.key,
-            softConstraints: { badgeAssertions: 2, channel: 1 },
+            softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
             facets: this.facetArray
         };
         this.searchService.contentSearch(requestParams).pipe(
@@ -220,18 +221,25 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
             return;
         }
         this.pageNumber = page;
-        this.route.navigate(['explore', this.pageNumber], {
+        this.route.navigate([this.exploreRoutingUrl, this.pageNumber], {
             queryParams: this.queryParams
         });
     }
-
+    getFilters(filters) {
+        _.forEach(filters, (value) => {
+            if (value.code === 'board') {
+                value.range = _.orderBy(value.range, ['index'], ['asc']);
+                this.dataDrivenFilter['board']  = _.get(value, 'range[0].name') ? _.get(value, 'range[0].name') : [];
+            }
+          });
+        this.setFilters();
+    }
     getChannelId() {
         this.orgDetailsService.getOrgDetails(this.slug).pipe(
             takeUntil(this.unsubscribe$))
             .subscribe(
                 (apiResponse: any) => {
                     this.hashTagId = apiResponse.hashTagId;
-                    this.setFilters();
                 },
                 err => {
                     this.route.navigate(['']);
@@ -250,9 +258,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     }
 
     setFilters() {
-        this.filters = {};
-        this.filterType = this.config.appConfig.explore.filterType;
-        this.redirectUrl = this.config.appConfig.explore.searchPageredirectUrl;
         this.filters = {
             contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
         };
@@ -284,7 +289,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
                 if (this.queryParams.sort_by && this.queryParams.sortType) {
                     this.queryParams.sortType = this.queryParams.sortType.toString();
                 }
-                if (this.tempPageNumber !== this.pageNumber || !this.isSearchable) {
+                if (this.tempPageNumber !== this.pageNumber || !this.isSearchable ) {
                     this.tempPageNumber = this.pageNumber;
                     this.populateContentSearch();
                 }
@@ -292,6 +297,18 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+            if (_.includes(this.route.url, '/explore')) {
+              const url  = this.route.url.split('/');
+              if (url.indexOf('explore') === 2) {
+                this.exploreRoutingUrl = url[1] + '/' + url[2];
+              } else {
+                this.exploreRoutingUrl = url[1];
+              }
+            }
+        this.filters = {};
+        this.dataDrivenFilter = {};
+        this.filterType = this.config.appConfig.explore.filterType;
+        this.redirectUrl = this.config.appConfig.explore.searchPageredirectUrl;
         this.slug = this.activatedRoute.snapshot.params.slug;
         this.getChannelId();
         this.activatedRoute.params.subscribe(params => {
@@ -312,11 +329,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
         };
         this.cardIntractEdata = {
             id: 'content-card',
-            type: 'click',
-            pageid: this.activatedRoute.snapshot.data.telemetry.pageid
-        };
-        this.filterIntractEdata = {
-            id: 'filter',
             type: 'click',
             pageid: this.activatedRoute.snapshot.data.telemetry.pageid
         };

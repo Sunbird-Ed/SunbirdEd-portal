@@ -13,7 +13,7 @@
         <div class="description annannouncement-description">
             <div *ngIf="showBatchList" class="ui divided list">
                 <div class="item padding-top-10" *ngFor="let batch of batchList">
-                    <i class="write icon float-ContentRight cursor-pointer" appTelemetryInteract [telemetryInteractEdata]="updateBatchIntractEdata"
+                    <i [ngClass]="userService.userid === batch.createdBy ? 'write' : 'eye'" class="icon float-ContentRight cursor-pointer" appTelemetryInteract [telemetryInteractEdata]="updateBatchIntractEdata"
                         [telemetryInteractObject]="{id:batch.identifier,type:'batch',ver:'1',rollup:{l1:courseId}}" (click)="batchUpdate(batch)"
                         *ngIf="courseMentor"></i>
                     <button class="ui right floated blue basic button enrollBtn" appTelemetryInteract [telemetryInteractEdata]="enrollBatchIntractEdata"
@@ -23,7 +23,7 @@
                     <div class="content padding-bottom-15">
                         <span class="header padding-bottom-5"> {{batch.startDate | dateFormat}} - </span>
                         <span *ngIf="batch.endDate" class="header padding-bottom-5"> {{batch.endDate | dateFormat}} </span>
-                        <div class="description">Created by {{userNames[batch.createdBy].firstName}} {{userNames[batch.createdBy].lastName}}</div>
+                        <div class="description" *ngIf="userNames[batch.createdBy]">Created by {{userNames[batch.createdBy].firstName}} {{userNames[batch.createdBy].lastName}}</div>
                     </div>
                 </div>
                 <div *ngIf="batchList.length <= 0">
@@ -41,8 +41,7 @@
     </div>
     <div class="ui bottom attached batchCard button" appTelemetryInteract [telemetryInteractEdata]="createBatchIntractEdata"
         [telemetryInteractObject]="courseInteractObject" (click)="createBatch()" *ngIf="courseMentor">
-        <a>
-            <i class="add icon"></i>{{resourceService.frmelmnts.lbl.createbatch}}</a>
+        <a><i class="add icon"></i>{{resourceService.frmelmnts.lbl.createbatch}}</a>
     </div>
 </div>
 <div *ngIf="enrolledCourse && enrolledBatchInfo" class="rightSideSectionCards ui card">
@@ -52,8 +51,8 @@
     <div class="content">
         <div class="header">{{enrolledBatchInfo.name}}</div>
         <div class="selectedBatchMeta meta">
-            <span class="date">{{enrolledBatchInfo.startDate | dateFormat}} - </span>
-            <span *ngIf="enrolledBatchInfo.endDate" class="date"> {{enrolledBatchInfo.endDate | dateFormat}}</span>
+            <span class="date">{{enrolledBatchInfo.startDate | dateFormat}} </span>
+            <span *ngIf="enrolledBatchInfo.endDate" class="date"> - {{enrolledBatchInfo.endDate | dateFormat}}</span>
         </div>
     </div>
     <div class="selectedBatchContent extra content">

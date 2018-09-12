@@ -5,6 +5,7 @@ import { ResourceService, ConfigService } from '@sunbird/shared';
 import { ISelectFilter } from '../../interfaces/selectfilter';
 import * as _ from 'lodash';
 import { debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operators';
+import { IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-up-for-review-filter',
   templateUrl: './up-for-review-filter.component.html',
@@ -71,6 +72,7 @@ export class UpforReviewFilterComponent implements OnInit {
   */
   public redirectUrl: string;
   queryParams: any;
+  filterIntractEdata: IInteractEventEdata;
   /**
    * Constructor to create injected service(s) object
    Default method of Draft Component class
@@ -116,6 +118,11 @@ export class UpforReviewFilterComponent implements OnInit {
         this.query = query;
         this.handleSearch();
       });
+      this.filterIntractEdata = {
+        id: 'filter',
+        type: 'click',
+        pageid: 'up-for-review-page'
+      };
   }
   public handleSearch() {
     if (this.query.length > 0) {

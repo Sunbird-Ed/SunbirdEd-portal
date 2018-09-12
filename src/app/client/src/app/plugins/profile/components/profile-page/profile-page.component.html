@@ -17,7 +17,6 @@
                     <app-user-address></app-user-address>
                     <app-user-education></app-user-education>
                     <app-user-skills></app-user-skills>
-                    <!-- <app-profile-badge *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"></app-profile-badge> -->
                     <extension-point *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0" [name]="'profile-widget'"></extension-point>
                     <app-user-additional-info></app-user-additional-info>
                 </div>
@@ -48,9 +47,9 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="twelve wide column" *ngIf='permissionService.permissionAvailable' appPermission [permission]='workSpaceRole'>
-                            <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="workspaceInteractEdata" (click)="navigateToWorkspace()">
+                            <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="workspaceInteractEdata"
+                                (click)="navigateToWorkspace()">
                                 <div class="ui link card width-100">
                                     <div class="content ">
                                         <div class="workspace-navigate">
@@ -68,11 +67,13 @@
                                     <span class="segment-heading">{{resourceService.frmelmnts.scttl.contributions}}</span>
                                     <span class="add-edit-btn-profile">{{contributions.length}} {{resourceService.frmelmnts.lbl.contents}}</span>
                                 </div>
-                                <div class="profileitems contributionsListScroll ui relaxed divided items padding-right-20" id="custom-scroll" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="contributions">
+                                <div class="profileitems contributionsListScroll ui relaxed divided items padding-right-20" id="custom-scroll" in-view-container
+                                    (inview)="inview($event)" [throttle]="[1000]" [trigger]="contributions">
                                     <div in-view-item class="item" *ngFor="let item of contributions;let i = index;" [id]="i" [data]="item">
                                         <!-- implement preview for content on click-->
                                         <img class="ui avatar image " src="{{item.posterImage || 'assets/images/zipFileIcon.png' | cdnprefixurl}}">
-                                        <div appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="myContributionsInteractEdata" class="content" (click)="onClickOfMyContributions(item)">
+                                        <div appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="myContributionsInteractEdata"
+                                            class="content" (click)="onClickOfMyContributions(item)">
                                             <a class=" header ">{{item.name}}</a>
                                             <div class="metadata ">
                                                 <sui-rating *ngIf="item.me_averageRating" class="courseHeader-rating ui star rating" [isReadonly]="true" [ngModel]="item.me_averageRating"
@@ -84,7 +85,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="twelve wide column">
                             <div class="ui raised segment blur-content">
                                 <div class="header">
@@ -127,7 +127,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="twelve wide column blur-content">
                             <div class="ui raised segment ">
                                 <div class="header">
@@ -173,11 +172,9 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
     <div class="one wide column"></div>

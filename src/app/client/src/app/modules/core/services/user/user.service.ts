@@ -11,7 +11,9 @@ import { PublicDataService } from './../public-data/public-data.service';
  * Service to fetch user details from server
  *
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UserService {
   /**
    * Contains user id

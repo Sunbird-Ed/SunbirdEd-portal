@@ -82,7 +82,69 @@ public configService: ConfigService;
   /**
   * Slider setting to display number of cards on the slider.
   */
-  slideConfig = { 'slidesToShow': 4, 'slidesToScroll': 4, infinite: false };
+  slideConfig = {
+    'slidesToShow': 4,
+    'slidesToScroll': 4,
+    'responsive': [
+      {
+        'breakpoint': 2800,
+        'settings': {
+          'slidesToShow': 8,
+          'slidesToScroll': 4,
+        }
+      },
+      {
+        'breakpoint': 2200,
+        'settings': {
+          'slidesToShow': 6,
+          'slidesToScroll': 4,
+        }
+      },
+      {
+        'breakpoint': 2000,
+        'settings': {
+          'slidesToShow': 5,
+          'slidesToScroll': 4,
+        }
+      },
+      {
+        'breakpoint': 1400,
+        'settings': {
+          'slidesToShow': 4,
+          'slidesToScroll': 4,
+        }
+      },
+      {
+        'breakpoint': 1200,
+        'settings': {
+          'slidesToShow': 4,
+          'slidesToScroll': 4,
+        }
+      },
+      {
+        'breakpoint': 800,
+        'settings': {
+          'slidesToShow': 3,
+          'slidesToScroll': 3,
+        }
+      },
+      {
+        'breakpoint': 600,
+        'settings': {
+          'slidesToShow': 2,
+          'slidesToScroll': 2
+        }
+      },
+      {
+        'breakpoint': 425,
+        'settings': {
+          'slidesToShow': 1,
+          'slidesToScroll': 1
+        }
+      }
+    ],
+    infinite: false,
+  };
   /**
    * The "constructor"
    *

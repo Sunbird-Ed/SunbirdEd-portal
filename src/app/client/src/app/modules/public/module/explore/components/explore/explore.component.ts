@@ -1,4 +1,4 @@
-import { combineLatest as observableCombineLatest } from 'rxjs';
+import { combineLatest as observableCombineLatest ,  Subject } from 'rxjs';
 import { PageApiService, PlayerService, ISort, OrgDetailsService } from '@sunbird/core';
 import { PublicPlayerService } from './../../../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -11,7 +11,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'app-explore',
   templateUrl: './explore.component.html',
@@ -65,8 +64,8 @@ export class ExploreComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   telemetryImpression: IImpressionEventInput;
   inviewLogs = [];
-  filterIntractEdata: IInteractEventEdata;
   sortIntractEdata: IInteractEventEdata;
+  prominentFilters: object;
   /**
    * The "constructor"
    *
@@ -90,11 +89,16 @@ export class ExploreComponent implements OnInit, OnDestroy {
   populatePageData() {
     this.showLoader = true;
     this.noResult = false;
+    const filters = _.pickBy(this.filters, value => value.length > 0);
+        filters.channel = this.hashTagId;
+        filters.board = _.get(this.filters, 'board') ? this.filters.board : this.prominentFilters['board'];
     const option = {
       source: 'web',
       name: 'Explore',
-      filters: _.pickBy(this.filters, value => value.length > 0),
-      sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType }
+      filters: filters,
+      softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
+      mode: 'soft',
+      exists: []
     };
     this.pageSectionService.getPageData(option).pipe(
       takeUntil(this.unsubscribe$))
@@ -144,10 +148,10 @@ export class ExploreComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.prominentFilters = {};
     this.slug = this.activatedRoute.snapshot.params.slug;
     this.filterType = this.config.appConfig.explore.filterType;
     this.redirectUrl = this.config.appConfig.explore.inPageredirectUrl;
-    this.getQueryParams();
     this.getChannelId();
     this.telemetryImpression = {
       context: {
@@ -159,11 +163,6 @@ export class ExploreComponent implements OnInit, OnDestroy {
         uri: this.router.url,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype
       }
-    };
-    this.filterIntractEdata = {
-      id: 'filter',
-      type: 'click',
-      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
     this.sortIntractEdata = {
       id: 'sort',
@@ -231,6 +230,15 @@ export class ExploreComponent implements OnInit, OnDestroy {
         }
       });
   }
+  getFilters(filters) {
+        _.forEach(filters, (value) => {
+            if (value.code === 'board') {
+              value.range = _.orderBy(value.range, ['index'], ['asc']);
+               this.prominentFilters['board'] = _.get(value, 'range[0].name') ? _.get(value, 'range[0].name') : [];
+            }
+          });
+    this.getQueryParams();
+    }
 
   getChannelId() {
     this.orgDetailsService.getOrgDetails(this.slug).pipe(

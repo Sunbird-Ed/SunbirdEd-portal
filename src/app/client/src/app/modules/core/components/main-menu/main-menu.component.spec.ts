@@ -3,8 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ConfigService, SharedModule } from '@sunbird/shared';
 import { MainMenuComponent } from './main-menu.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Router, ActivatedRoute } from '@angular/router';
-import { WebExtensionModule } from 'sunbird-web-extension';
+import { Router } from '@angular/router';
+import { WebExtensionModule } from '@project-sunbird/web-extensions';
 
 describe('MainMenuComponent', () => {
   let component: MainMenuComponent;

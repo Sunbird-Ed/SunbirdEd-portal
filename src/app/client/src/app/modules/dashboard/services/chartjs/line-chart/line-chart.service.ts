@@ -107,29 +107,17 @@ export class LineChartService {
   }
 
   /**
-   * Generate random color
-   */
-  getRandomColor(): string {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-
-  /**
    * Get line chart color
    *
    * @param {number} legendCount legendCount
    */
   getChartColors(legendCount: number): string[] {
+    const colors = ['Red', 'Blue', 'Green'];
     const colorArray = [];
     for (let i = 0; i < legendCount; i++) {
-      const randColor = this.getRandomColor();
       colorArray.push({
-        backgroundColor: randColor,
-        borderColor: randColor,
+        backgroundColor: colors[i],
+        borderColor: colors[i],
         fill: false
       });
     }

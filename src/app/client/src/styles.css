@@ -470,11 +470,11 @@ a:hover {
   font-family: 'sunbirdregularfont';
   color: #333333;
 }
-.padding-top-circular-human-icon {
+.primary-header-avatar {
   padding-top: 0.9rem;
   z-index: 88;
 }
-.alarm-icon-header {
+.primary-header-alarm-icon {
   padding-top: 1.5rem;
 }
 .ui.divider.header-search-filters-divider {
@@ -1145,7 +1145,12 @@ i.large.icon.limitedPublishingLinkIcon {
   width: auto;
   height: auto;
 }
-
+.public-header-logo-before-login {
+  display: block;
+  height: 80px;
+  width: auto;
+  padding: 12px 0;
+}
 .blue-text-color-sunbird {
   color: #007AFF;
 }
@@ -1529,6 +1534,8 @@ span.fancytree-title {
   font-size: 1.2em;
   color: #333;
   font-family: 'sunbirdregularfont';
+  display: flex;
+  flex-direction: row;
 }
 .toc-left-nav-btn-content {
   text-align: left;
@@ -1825,6 +1832,7 @@ ul.fancytree-container li {
 .searchinput {
   width: 600px;
 }
+
 @media only screen and (max-width: 1400px) {
   .searchinput {
     width: 500px;
@@ -2770,3 +2778,146 @@ iframe.iziModal-iframe {
   font-size: 1.4em;
   line-height: 1.35;
 }
+
+
+/*mobile responsive code  which we need to remove once we start writing mobile first css*/
+
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+    .header-logo {
+      display: block;
+      max-width: 100px;
+      max-height: 40px;
+      width: auto;
+      height: auto;
+      position: absolute;
+    }
+    .primary-header-avatar {
+      padding-top: 0.5rem;
+      z-index: 88;
+    }
+    .primary-header-alarm-icon {
+      padding-top: 1.2rem;
+    }
+
+    .ui.button.m-responsive-search-dropdown {
+        min-width:100px;
+        max-width:100px;
+        padding-right: 0;
+    }
+
+    /*collection player responsive code*/
+
+    .accordion-content {
+      width: 250px;
+    }  
+
+    .fancytree-plain span.fancytree-node span.fancytree-title {
+      overflow: hidden;
+      overflow-wrap: break-word;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width:210px;
+    }
+  /* content player y0ur progress section margin here !important is added to address specificity issue*/
+    p.m-responsive-cp-header {
+      margin-top:20px !important; 
+      float: left;
+    }
+    .ui.grid.m-responsive-cp-nmt-50 {
+      margin-top: -50px;
+    }
+
+    /* buttons below the content player */
+    .ui.button .header {
+      font-size: 1em;
+    }
+    .take-note-card {
+      width: 30px;
+    }
+
+    /*content player and collection player responsive share icons*/
+    .m-responsive-cp-badge-ml {
+      margin-left: 0 !important;
+    }
+
+    .m-responsive-sort-al {
+      float:left;
+    }
+
+    /*profile page alignment fixes*/
+    i.icon.m-responsive-p-icon-ml {
+      margin-left: 10px;
+    }
+    .ui.items:not(.unstackable)>.item>.image.m-responsive-p-avatar-ml {
+      margin-left: 10px;
+    }
+
+    /*profile header bulk upload alignment fixes*/
+    .m-responsive-p-header-fl {
+      float: left;
+      clear: both;
+      padding-bottom: 10px;
+    }
+
+}
+
+@media only screen and (min-width: 320px) and (max-width: 400px) {
+  .ui.HomeAccordianHeading.m-responsive-cp {
+    margin-top: 10px;
+    font-size: 1.15em;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width:210px;
+  }
+}
+
+.accordion-content {
+  align-self: center;
+} 
+
+i.icon.accordion-content-right {
+  align-self: center;
+  margin-left: auto;
+}
+
+
+
+/*writing media query for device specific sduw to responsive issue with semantic ui*/
+
+@media only screen and (min-width: 320px) and (max-width: 330px) {
+  .searchinput {
+    width: 195px;
+  }
+}
+@media only screen and (min-width: 331px) and (max-width: 377px) {
+  .searchinput {
+    width: 225px;
+  }
+}
+@media only screen and (min-width: 378px) and (max-width: 479px) {
+  .searchinput {
+    width: 275px;
+  }
+}
+@media only screen and (min-width: 480px) and (max-width: 900px) {
+  .searchinput {
+    width: 335px;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .header-logo {
+    max-height: 45px;   
+  }
+}
+.ui.calendar .table td {
+  padding:0.5em;
+}
+
+/* Removing body scroll when modal opens */
+.no-scroll { 
+  overflow-y: hidden;
+  margin-right: 16px; 
+}
+

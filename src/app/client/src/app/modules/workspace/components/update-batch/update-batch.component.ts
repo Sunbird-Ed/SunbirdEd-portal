@@ -84,6 +84,8 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
   public pickerMinDateForEndDate = new Date(this.pickerMinDate.getTime() + (24 * 60 * 60 * 1000));
 
   public unsubscribe = new Subject<void>();
+
+  public courseCreator = false;
   /**
 	 * Constructor to create injected service(s) object
    * @param {Router} router Reference of Router
@@ -117,6 +119,12 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
         }),
         takeUntil(this.unsubscribe))
       .subscribe((data) => {
+        this.courseId = data.batchDetails.courseId;
+        this.batchService.getCourseHierarchy(this.courseId).subscribe((courseDetails) => {
+          if (courseDetails.createdBy === this.userService.userid) {
+            this.courseCreator = true;
+          }
+        });
         this.showUpdateModal = true;
         this.batchDetails = data.batchDetails;
         const userList = this.sortUsers(data.userDetails);
@@ -320,7 +328,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
           this.updateParticipantsToBatch(this.batchId, participants);
         } else {
           this.disableSubmitBtn = false;
-          this.toasterService.success(this.resourceService.messages.smsg.m0033);
+          this.toasterService.success(this.resourceService.messages.smsg.m0034);
           this.reload();
         }
       },
@@ -340,7 +348,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
     this.batchService.addUsersToBatch(userRequest, batchId).pipe(takeUntil(this.unsubscribe))
       .subscribe((res) => {
         this.disableSubmitBtn = false;
-        this.toasterService.success(this.resourceService.messages.smsg.m0033);
+        this.toasterService.success(this.resourceService.messages.smsg.m0034);
         this.reload();
       },
         (err) => {

@@ -79,6 +79,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
    */
   public permissionService: PermissionService;
   public signUpInteractEdata: IInteractEventEdata;
+  public enterDialCodeInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
   tenantDataSubscription: Subscription;
   userDataSubscription: Subscription;
@@ -87,7 +88,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   * value to enable and disable signUp button
   */
   enableSignup = true;
-
+  exploreRoutingUrl: string;
   /*
   * constructor
   */
@@ -173,7 +174,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     } else {
       delete this.queryParam['key'];
     }
-    this.router.navigate(['explore', 1], {
+    this.router.navigate([this.exploreRoutingUrl, 1], {
       queryParams: this.queryParam
     });
   }
@@ -182,6 +183,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
       if (_.includes(urlAfterRedirects.url, '/explore')) {
         this.showExploreHeader = true;
+        const url  = urlAfterRedirects.url.split('/');
+        if (url.indexOf('explore') === 2) {
+          this.exploreRoutingUrl = url[1] + '/' + url[2];
+        } else {
+          this.exploreRoutingUrl = url[1];
+        }
       } else {
         this.showExploreHeader = false;
       }
@@ -201,6 +208,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       id: '',
       type: 'signup',
       ver: '1.0'
+    };
+    this.enterDialCodeInteractEdata = {
+      id: 'click-dial-code',
+      type: 'click',
+      pageid: 'explore'
     };
   }
 

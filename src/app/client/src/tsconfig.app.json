@@ -8,9 +8,6 @@
       "@sunbird/core": [
         "app/modules/core"
       ],
-      "@sunbird/community": [
-        "app/modules/community"
-      ],
       "@sunbird/shared": [
         "app/modules/shared"
       ],
@@ -50,12 +47,9 @@
       "@sunbird/search": [
         "app/modules/search"
       ],
-      "@sunbird/discussion": [
-        "app/modules/discussion"
-      ],
       "@sunbird/telemetry": [
         "app/modules/telemetry"
-      ],  
+      ],
       "@sunbird/badge": [
         "app/modules/badging"
       ],

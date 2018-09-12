@@ -57,6 +57,8 @@ describe('ProminentFilterComponent', () => {
   });
   it('should apply filters and key should have concepts', () => {
     const router = TestBed.get(Router);
+    const activatedRoute = TestBed.get(ActivatedRoute);
+    activatedRoute.parent = 'ap/explore';
     component.formInputData = {
       'subject': ['English'], 'medium': ['English'],
       'concepts': [{
@@ -66,13 +68,25 @@ describe('ProminentFilterComponent', () => {
     };
     const queryParams = { 'subject': ['English'], 'medium': ['English'], 'concepts': ['AI31'] };
     component.applyFilters();
-    expect(router.navigate).toHaveBeenCalledWith([undefined], { queryParams: queryParams });
+    expect(router.navigate).toHaveBeenCalledWith([], {relativeTo: 'ap/explore', queryParams: queryParams });
   });
+
+  it('Filter results should not change on call of  apply filters for same params', () => {
+    const router = TestBed.get(Router);
+    const activatedRoute = TestBed.get(ActivatedRoute);
+    activatedRoute.parent = 'ap/explore';
+    const queryParams = component.formInputData = { 'gradeLevel': ['Grade 1', 'Grade 2'], 'medium': ['English'] };
+    component.applyFilters();
+    expect(component.isFiltered).toBeFalsy();
+    expect(router.navigate).toHaveBeenCalledWith([], { relativeTo: 'ap/explore', queryParams: queryParams });
+  });
+
   it('should get meta data from framework service and call formconfig service if cache not exists', () => {
     const frameworkService = TestBed.get(FrameworkService);
     const formService = TestBed.get(FormService);
     const cacheService = TestBed.get(CacheService);
     component.formFieldProperties = Response.formConfigData;
+    spyOn(component.prominentFilter, 'emit').and.returnValue(Response.formConfigData);
     spyOn(cacheService, 'exists').and.returnValue(false);
     spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
     spyOn(formService, 'getFormConfig').and.returnValue(observableOf(Response.formConfigData));
@@ -80,6 +94,7 @@ describe('ProminentFilterComponent', () => {
     component.fetchFilterMetaData();
     fixture.detectChanges();
     expect(component.formService.getFormConfig).toHaveBeenCalled();
+    expect(component.prominentFilter.emit).toHaveBeenCalledWith(Response.formConfigData);
   });
   it('should call isObject ', () => {
     const value = { id: 'AI113', name: 'artificial inteligence' };
@@ -132,5 +147,24 @@ describe('ProminentFilterComponent', () => {
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue('');
     component.showField(allowedRoles);
     expect(permissionService.checkRolesPermissions).not.toHaveBeenCalled();
+  });
+  it('should call ngOninit to get telemetry Interact Data', () => {
+    const frameworkService = TestBed.get(FrameworkService);
+    component.pageId = 'explore-page';
+    component.hashTagId = '0123166367624478721';
+    const submitIntractEdata = {
+      id: 'submit',
+      type: 'click',
+      pageid: 'explore-page',
+      extra: { filter: { 'subject': ['English'] } }
+    };
+     spyOn(frameworkService, 'initialize').and.callThrough();
+    spyOn(component, 'getQueryParams').and.callThrough();
+    spyOn(component, 'fetchFilterMetaData').and.callThrough();
+    component.ngOnInit();
+    expect(frameworkService.initialize).toHaveBeenCalled();
+    expect(component.getQueryParams).toHaveBeenCalled();
+    expect(component.fetchFilterMetaData).toHaveBeenCalled();
+    expect(component.submitIntractEdata).toEqual(submitIntractEdata);
   });
 });

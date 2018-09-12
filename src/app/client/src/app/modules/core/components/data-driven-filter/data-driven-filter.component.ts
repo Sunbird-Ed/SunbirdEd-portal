@@ -8,7 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, ConceptPickerService, PermissionService, UserService } from './../../services';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
-
+import { IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-data-driven-filter',
   templateUrl: './data-driven-filter.component.html',
@@ -16,15 +16,15 @@ import { CacheService } from 'ng2-cache-service';
 })
 export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   @Input() filterEnv: string;
-  @Input() redirectUrl: string;
   @Input() accordionDefaultOpen: boolean;
   @Input() isShowFilterLabel: boolean;
   @Input() hashTagId = '';
   @Input() ignoreQuery = [];
   @Input() showSearchedParam = true;
   @Input() enrichFilters: object;
+  @Input() pageId: string;
   @Output() filters = new EventEmitter();
-
+  @Output() dataDrivenFilter = new EventEmitter();
   /**
  * To get url, app configs
  */
@@ -77,6 +77,8 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   isShowFilterPlaceholder = true;
   contentTypes: any;
   frameworkDataSubscription: Subscription;
+  filterIntractEdata: IInteractEventEdata;
+  submitIntractEdata: IInteractEventEdata;
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -123,6 +125,17 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
           this.loggedInUserRoles = user.userProfile.userRoles;
         }
       });
+    this.filterIntractEdata = {
+      id: 'filter',
+      type: 'click',
+      pageid: this.pageId
+    };
+    this.submitIntractEdata = {
+      id: 'submit',
+      type: 'click',
+      pageid: this.pageId,
+      extra: { filter: this.formInputData }
+    };
   }
 
   getQueryParams() {
@@ -156,6 +169,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
     if (this.isCachedDataExists) {
       const data: any | null = this._cacheService.get(this.filterEnv + this.formAction);
       this.formFieldProperties = data;
+      this.dataDrivenFilter.emit(this.formFieldProperties);
       this.createFacets();
     } else {
       this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
@@ -183,12 +197,15 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
                 }
               });
               this.getFormConfig();
+              this.dataDrivenFilter.emit(this.formFieldProperties);
             },
             (err: ServerResponse) => {
+              this.dataDrivenFilter.emit([]);
               // this.toasterService.error(this.resourceService.messages.emsg.m0005);
             }
           );
         } else if (frameworkData && frameworkData.err) {
+          this.dataDrivenFilter.emit([]);
           // this.toasterService.error(this.resourceService.messages.emsg.m0005);
         }
       });
@@ -243,7 +260,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       this.formInputData = {};
     }
-    this.router.navigate([this.redirectUrl], { queryParams: this.formInputData });
+    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
     this.refresh = false;
     this.cdr.detectChanges();
     this.refresh = true;
@@ -273,8 +290,8 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
         queryParams[key] = value;
       }
     });
-    queryParams = _.pickBy(queryParams, value => value.length > 0);
-    this.router.navigate([this.redirectUrl], { queryParams: queryParams });
+    queryParams = _.pickBy(queryParams, value => _.isArray(value) && value.length > 0);
+    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
   }
 
   removeFilterSelection(field, item) {

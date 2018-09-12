@@ -10,12 +10,12 @@ import {
   WindowScrollService, ILoaderMessage, ConfigService, ICollectionTreeOptions, NavigationHelperService,
   ToasterService, ResourceService, ExternalUrlPreviewService
 } from '@sunbird/shared';
-import { CourseConsumptionService, CourseBatchService } from './../../../services';
+import { CourseConsumptionService, CourseBatchService, CourseProgressService } from './../../../services';
 import { INoteData } from '@sunbird/notes';
 import {
   IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata
 } from '@sunbird/telemetry';
-
+import { DeviceDetectorService } from 'ngx-device-detector';
 @Component({
   selector: 'app-course-player',
   templateUrl: './course-player.component.html',
@@ -102,6 +102,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   contentIds = [];
 
+  courseProgressData: any;
+
   contentStatus: any;
 
   contentDetails = [];
@@ -123,6 +125,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     loaderMessage: 'Fetching content details!'
   };
 
+  previewContentRoles = ['COURSE_MENTOR', 'CONTENT_REVIEWER', 'CONTENT_CREATOR', 'CONTENT_CREATION'];
+
   public collectionTreeOptions: ICollectionTreeOptions;
 
   public unsubscribe = new Subject<void>();
@@ -132,7 +136,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
     private toasterService: ToasterService, private resourceService: ResourceService, public breadcrumbsService: BreadcrumbsService,
     private cdr: ChangeDetectorRef, public courseBatchService: CourseBatchService, public permissionService: PermissionService,
-    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService) {
+    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService,
+    private courseProgressService: CourseProgressService, private deviceDetectorService: DeviceDetectorService) {
     this.contentService = contentService;
     this.activatedRoute = activatedRoute;
     this.windowScrollService = windowScrollService;
@@ -175,7 +180,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
             this.getContentState();
             this.subscribeToQueryParam();
           }
-        } else if (this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
+        } else if (this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(this.previewContentRoles)
           || this.courseHierarchy.createdBy === this.userService.userid) {
           this.parseChildContent();
           this.subscribeToQueryParam();
@@ -187,6 +192,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }, (error) => {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
+      });
+      this.courseProgressService.courseProgressData.pipe(
+      takeUntil(this.unsubscribe))
+      .subscribe((courseProgressData) => {
+        this.courseProgressData = courseProgressData;
       });
   }
   private parseChildContent() {
@@ -248,7 +258,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   private OnPlayContent(content: { title: string, id: string }, showExtContentMsg?: boolean) {
     if (content && content.id && ((this.enrolledCourse && !this.flaggedCourse &&
       this.enrolledBatchInfo.status > 0) || this.courseStatus === 'Unlisted'
-      || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
+      || this.permissionService.checkRolesPermissions(this.previewContentRoles)
       || this.courseHierarchy.createdBy === this.userService.userid)) {
       this.contentId = content.id;
       this.setTelemetryContentImpression();
@@ -306,7 +316,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.externalUrlPreviewService.generateRedirectUrl(playContentDetail.model, this.userService.userid, this.courseId, this.batchId);
     }
     if ((this.batchId && !this.flaggedCourse && this.enrolledBatchInfo.status > 0)
-      || this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
+      || this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(this.previewContentRoles)
       || this.courseHierarchy.createdBy === this.userService.userid) {
       this.router.navigate([], navigationExtras);
     }
@@ -342,6 +352,31 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public createEventEmitter(data) {
     this.createNoteData = data;
   }
+
+  // on destroy of player if content played was H5P make content as read (status=2)
+  public playerOnDestroy (data) {
+    if (data.contentId) {
+      const playContentDetail = this.findContentById(data.contentId);
+      const index = _.findIndex(this.courseProgressData.content, { 'contentId': data.contentId });
+      if (index !== -1 && this.courseProgressData.content[index].status === 1 &&
+        playContentDetail.model.mimeType === 'application/vnd.ekstep.h5p-archive') {
+        const request: any = {
+          userId: this.userService.userid,
+          contentId: data.contentId,
+          courseId: this.courseId,
+          batchId: this.batchId,
+          status: 2
+        };
+        this.updateContentsStateSubscription = this.courseConsumptionService.updateContentsState(request)
+          .subscribe((updatedRes) => {
+            console.log('updated h5p content status to 2');
+          }, (err) => {
+            console.log('updating content status failed', err);
+          });
+      }
+    }
+  }
+
   ngOnDestroy() {
     if (this.activatedRouteSubscription) {
       this.activatedRouteSubscription.unsubscribe();
@@ -359,6 +394,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
   private setTelemetryStartEndData() {
+    const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     this.telemetryCourseStart = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
@@ -371,7 +407,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        mode: 'play'
+        mode: 'play',
+        uaspec: {
+          agent: deviceInfo.browser,
+          ver: deviceInfo.browser_version,
+          system: deviceInfo.os_version ,
+          platform: deviceInfo.os,
+          raw: deviceInfo.userAgent
+        }
       }
     };
     this.telemetryCourseEndEvent = {
