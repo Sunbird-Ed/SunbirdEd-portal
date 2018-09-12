@@ -49,6 +49,9 @@
       "@sunbird/public": [
         "app/modules/public"
       ],
+      "@sunbird/shared-featured": [
+        "app/modules/shared-featured"
+      ],
       "@sunbird/environment": [
         "environments/environment"
       ]

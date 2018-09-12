@@ -1,4 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component,  Input, EventEmitter, Output } from '@angular/core';
 import {ICaraouselData} from '../../interfaces/caraouselData';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
@@ -28,6 +28,7 @@ export class PageSectionComponent implements OnInit {
   * section is used to render ICaraouselData value on the view
   */
   @Output() visits = new EventEmitter<any>();
+  sectionUrl: string;
   /**
   * This is slider setting
   */
@@ -95,7 +96,7 @@ export class PageSectionComponent implements OnInit {
   infinite: false,
 };
 
-  constructor(public activatedRoute: ActivatedRoute) {
+  constructor(public activatedRoute: ActivatedRoute, public route: Router) {
   }
   playContent(event) {
     this.playEvent.emit(event);
@@ -158,5 +159,11 @@ export class PageSectionComponent implements OnInit {
     if (visits.length > 0) {
       this.visits.emit(visits);
     }
+  }
+  redirect() {
+    this.activatedRoute.data.subscribe(data => {
+      this.sectionUrl = data.url + '/view-All/' + this.section.name;
+    });
+    this.route.navigate([this.sectionUrl, 1], {});
   }
 }
