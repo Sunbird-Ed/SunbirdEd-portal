@@ -9,7 +9,7 @@ import { environment } from '@sunbird/environment';
 import { WorkSpaceService } from '../../../services';
 import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest, of, throwError } from 'rxjs';
-import { skipWhile, map, mergeMap, tap, delay } from 'rxjs/operators';
+import { map, mergeMap, tap, delay } from 'rxjs/operators';
 jQuery.fn.iziModal = iziModal;
 
 /**
@@ -46,6 +46,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
     this.routeParams = this.activatedRoute.snapshot.params;
+    this.disableBrowserBackButton();
     this.getDetails().pipe(
       tap(data => {
         if (data.tenantDetails) {
@@ -60,7 +61,6 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         jQuery('#contentEditor').iziModal('open');
         this.setRenderer();
-        this.disableBrowserBackButton();
       },
         (error) => {
           this.toasterService.error(this.resourceService.messages.emsg.m0004);
@@ -146,7 +146,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     };
   }
   private setWindowConfig() {
-    window.config = this.configService.editorConfig.CONTENT_EDITOR.WINDOW_CONFIG;
+    window.config = _.cloneDeep(this.configService.editorConfig.CONTENT_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config
     window.config.build_number = this.buildNumber;
     window.config.headerLogo = this.logo;
     window.config.aws_s3_urls = this.userService.cloudStorageUrls || [];

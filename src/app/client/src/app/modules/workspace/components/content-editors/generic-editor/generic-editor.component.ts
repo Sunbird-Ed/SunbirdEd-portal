@@ -6,7 +6,8 @@ import { UserService, TenantService } from '@sunbird/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '@sunbird/environment';
 import { WorkSpaceService } from '../../../services';
-import { skipWhile, tap, delay } from 'rxjs/operators';
+import { tap, delay } from 'rxjs/operators';
+import * as _ from 'lodash';
 
 jQuery.fn.iziModal = iziModal;
 
@@ -41,6 +42,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
     this.routeParams = this.activatedRoute.snapshot.params;
+    this.disableBrowserBackButton();
     this.tenantService.tenantData$.pipe(
       tap(data => {
         if (data.tenantData) {
@@ -54,7 +56,6 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       delay(10)) // wait for iziModal lo load
       .subscribe((data) => {
         jQuery('#genericEditor').iziModal('open');
-        this.disableBrowserBackButton();
       });
   }
   ngAfterViewInit() {
@@ -104,7 +105,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     };
   }
   private setWindowConfig() {
-    window.config = this.configService.editorConfig.GENERIC_EDITOR.WINDOW_CONFIG;
+    window.config = _.cloneDeep(this.configService.editorConfig.GENERIC_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config
     window.config.build_number = this.buildNumber;
     window.config.headerLogo = this.logo;
     window.config.extContWhitelistedDomains = this.extContWhitelistedDomains;

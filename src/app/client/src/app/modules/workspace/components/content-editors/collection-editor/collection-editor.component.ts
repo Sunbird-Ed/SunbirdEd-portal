@@ -56,6 +56,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
     this.routeParams = this.activatedRoute.snapshot.params;
+    this.disableBrowserBackButton();
     this.getDetails().pipe(
       tap(data => {
         if (data.tenantDetails) {
@@ -69,7 +70,6 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       delay(10)) // wait for iziModal lo load
     .subscribe((data) => {
       jQuery('#collectionEditor').iziModal('open'); // open iframe
-      this.disableBrowserBackButton();
     },
       (error) => {
         this.toasterService.error(this.resourceService.messages.emsg.m0004);
@@ -153,7 +153,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     };
   }
   private setWindowConfig() {
-    window.config = this.configService.editorConfig.COLLECTION_EDITOR.WINDOW_CONFIG;
+    window.config = _.cloneDeep(this.configService.editorConfig.COLLECTION_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config
     window.config.editorConfig.rules.objectTypes = this.getObjectTypes();
     window.config.headerLogo = this.logo;
     window.config.build_number = this.buildNumber;
