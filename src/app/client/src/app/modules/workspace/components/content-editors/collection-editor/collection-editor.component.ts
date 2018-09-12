@@ -77,8 +77,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       });
   }
   private getDetails() {
-    const tenantDetails$ = this.tenantService.tenantData$.pipe(skipWhile(data => data === undefined || data === null));
-    return combineLatest(tenantDetails$, this.getCollectionDetails()).
+    return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails()).
     pipe(map(data => ({ tenantDetails: data[0].tenantData, collectionDetails: data[1] })));
   }
   private getCollectionDetails() {
@@ -230,15 +229,14 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('collectionEditor')) {
       document.getElementById('collectionEditor').remove();
     }
-    sessionStorage.setItem('inEditor', 'false');
-    this.workspaceService.toggleWarning();
     this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
   }
   ngOnDestroy() {
-    window.location.hash = '';
     if (this.browserBackEventSub) {
       this.browserBackEventSub.unsubscribe();
     }
+    sessionStorage.setItem('inEditor', 'false');
+    this.workspaceService.toggleWarning();
   }
   /**
    * to assign the value to Editor Config

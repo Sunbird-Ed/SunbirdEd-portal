@@ -6,7 +6,7 @@ import { UserService, TenantService } from '@sunbird/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '@sunbird/environment';
 import { WorkSpaceService } from '../../../services';
-import { skipWhile, map, mergeMap, tap, delay } from 'rxjs/operators';
+import { skipWhile, tap, delay } from 'rxjs/operators';
 
 jQuery.fn.iziModal = iziModal;
 
@@ -41,7 +41,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
     this.routeParams = this.activatedRoute.snapshot.params;
-    this.getTenantDetails().pipe(
+    this.tenantService.tenantData$.pipe(
       tap(data => {
         if (data.tenantData) {
           this.logo = data.tenantData.logo;
@@ -56,9 +56,6 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         jQuery('#genericEditor').iziModal('open');
         this.disableBrowserBackButton();
       });
-  }
-  private getTenantDetails() {
-    return this.tenantService.tenantData$.pipe(skipWhile(data => data === undefined || data === null));
   }
   ngAfterViewInit() {
   }
@@ -118,8 +115,8 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   */
   closeModal() {
     this.showLoader = true;
-    if (document.getElementById('collectionEditor')) {
-      document.getElementById('collectionEditor').remove();
+    if (document.getElementById('genericEditor')) {
+      document.getElementById('genericEditor').remove();
     }
     this.navigationHelperService.navigateToWorkSpace('workspace/content/uploaded/1');
   }

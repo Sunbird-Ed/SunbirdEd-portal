@@ -68,8 +68,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
         });
   }
   private getDetails() {
-    const tenantDetails$ = this.tenantService.tenantData$.pipe(skipWhile(data => data === undefined || data === null));
-    return combineLatest(tenantDetails$, this.getContentDetails()).
+    return combineLatest(this.tenantService.tenantData$, this.getContentDetails()).
       pipe(map(data => ({ tenantDetails: data[0].tenantData, contentDetails: data[1] })));
   }
   private getContentDetails() {
@@ -197,13 +196,13 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('contentEditor')) {
       document.getElementById('contentEditor').remove();
     }
-    sessionStorage.setItem('inEditor', 'false');
     this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
   }
   ngOnDestroy() {
     if (this.browserBackEventSub) {
       this.browserBackEventSub.unsubscribe();
     }
+    sessionStorage.setItem('inEditor', 'false');
     this.workspaceService.toggleWarning();
   }
 }

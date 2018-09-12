@@ -1,7 +1,6 @@
 import { combineLatest, Subscription, Subject } from 'rxjs';
 import { map, mergeMap, filter } from 'rxjs/operators';
-import { ResourceService } from '@sunbird/shared';
-import { ToasterService } from './../../../../shared/services/toaster/toaster.service';
+import { ResourceService, ToasterService } from '@sunbird/shared';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
@@ -85,13 +84,13 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   }
   private processBatch() {
     this.courseDataSubscription = this.coursesService.enrolledCourseData$.subscribe(enrolledCourses => {
-      if (enrolledCourses && !enrolledCourses.err) {
+      if (!enrolledCourses.err) {
         const enrollCourse: any = _.find(enrolledCourses.enrolledCourses, { 'batchId': this.batchId });
         if (enrollCourse === undefined) {
           this.toasterService.error(this.resourceService.messages.fmsg.m0001);
           this.router.navigate([`/learn`]);
         }
-      } else if (enrolledCourses && enrolledCourses.err) {
+      } else if (enrolledCourses.err) {
         this.toasterService.error(this.resourceService.messages.fmsg.m0001);
         this.router.navigate([`/learn`]);
       }
