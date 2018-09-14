@@ -199,6 +199,9 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
   }
   ngOnDestroy() {
+    if (document.getElementById('contentEditor')) {
+      document.getElementById('contentEditor').remove();
+    }
     if (this.browserBackEventSub) {
       this.browserBackEventSub.unsubscribe();
     }

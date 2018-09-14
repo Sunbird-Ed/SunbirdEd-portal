@@ -151,6 +151,9 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     }
   }
   ngOnDestroy() {
+    if (document.getElementById('genericEditor')) {
+      document.getElementById('genericEditor').remove();
+    }
     if (this.browserBackEventSub) {
       this.browserBackEventSub.unsubscribe();
     }

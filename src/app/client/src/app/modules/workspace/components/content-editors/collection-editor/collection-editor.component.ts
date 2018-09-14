@@ -232,6 +232,9 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
   }
   ngOnDestroy() {
+    if (document.getElementById('collectionEditor')) {
+      document.getElementById('collectionEditor').remove();
+    }
     if (this.browserBackEventSub) {
       this.browserBackEventSub.unsubscribe();
     }
