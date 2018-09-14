@@ -129,4 +129,20 @@ describe('OrgSearchComponent', () => {
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
   });
+
+  it('should call orgsearch with rootorgid', inject([SearchService], (searchService) => {
+    const userService = TestBed.get(UserService);
+    userService._userData$.next({ err: null, userProfile: Response.userMockData });
+    userService._userProfile = Response.userMockData;
+    spyOn(searchService, 'orgSearch').and.callFake(() => observableOf(Response.successData));
+    const searchParams = {
+      filters: {
+        rootOrgId: userService._userProfile.rootOrgId
+      },
+      limit: 10,
+      pageNumber: 1
+    };
+    searchService.orgSearch(searchParams);
+    expect(searchService.orgSearch).toHaveBeenCalledWith(searchParams);
+  }));
 });
