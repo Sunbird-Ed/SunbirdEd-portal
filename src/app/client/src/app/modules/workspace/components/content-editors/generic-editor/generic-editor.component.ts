@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
+import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
 import { NavigationHelperService, ResourceService, ToasterService, ConfigService, IUserProfile } from '@sunbird/shared';
 import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
@@ -18,7 +18,7 @@ jQuery.fn.iziModal = iziModal;
   templateUrl: './generic-editor.component.html',
   styleUrls: ['./generic-editor.component.css']
 })
-export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy {
+export class GenericEditorComponent implements OnInit, OnDestroy {
 
   private userProfile: IUserProfile;
   private routeParams: any;
@@ -31,8 +31,8 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
 
   constructor(private userService: UserService, public _zone: NgZone, private activatedRoute: ActivatedRoute,
     private tenantService: TenantService, private telemetryService: TelemetryService,
-    private navigationHelperService: NavigationHelperService, private toasterService: ToasterService,
-    private resourceService: ResourceService, public workspaceService: WorkSpaceService, private configService: ConfigService) {
+    private navigationHelperService: NavigationHelperService, public workspaceService: WorkSpaceService,
+    private configService: ConfigService) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.buildNumber = buildNumber ? buildNumber.value : '1.0';
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
@@ -57,8 +57,6 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       .subscribe((data) => {
         jQuery('#genericEditor').iziModal('open');
       });
-  }
-  ngAfterViewInit() {
   }
   /**
    *Launch Generic Editor in the modal
@@ -153,11 +151,10 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
   ngOnDestroy() {
-    window.location.hash = '';
-    sessionStorage.setItem('inEditor', 'false');
     if (this.browserBackEventSub) {
       this.browserBackEventSub.unsubscribe();
     }
+    sessionStorage.setItem('inEditor', 'false');
     this.workspaceService.toggleWarning();
   }
 }
