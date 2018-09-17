@@ -49,6 +49,9 @@
       ],
       "@sunbird/environment": [
         "environments/environment"
+      ],
+      "@sunbird/coures-batch": [
+        "app/modules/coures-batch"
       ]
     },
     "sourceMap": true,
