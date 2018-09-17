@@ -10,6 +10,7 @@ import { SharedModule } from '@sunbird/shared';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { PublicModule } from '@sunbird/public';
 import { TelemetryModule } from '@sunbird/telemetry';
+import {SharedFeatureModule} from '@sunbird/shared-feature';
 import { BootstrapFramework, WebExtensionModule } from '@project-sunbird/web-extensions';
 import { WebExtensionsConfig, PluginModules } from './framework.config';
 import { CacheService } from 'ng2-cache-service';
@@ -32,6 +33,7 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     TelemetryModule.forRoot(),
     DeviceDetectorModule.forRoot(),
     PublicModule,
+    SharedFeatureModule,
     ...PluginModules,
     AppRoutingModule // don't add any module below this because it contains wildcard route
   ],

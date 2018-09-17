@@ -308,6 +308,10 @@ export class LearnPageComponent implements OnInit, OnDestroy {
     }
     this.playerService.playContent(event.data.metaData);
   }
+  viewAll(event) {
+    const sectionUrl = 'learn/view-all/' + event.name;
+    this.router.navigate([sectionUrl, 1], {});
+  }
   ngOnDestroy() {
     if (this.courseDataSubscription) {
       this.courseDataSubscription.unsubscribe();
