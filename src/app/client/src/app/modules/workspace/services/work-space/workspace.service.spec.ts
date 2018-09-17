@@ -1,13 +1,9 @@
 
-import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
-// Import NG testing module(s)
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-// Import Module
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-// Import services
+import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpaceService } from './workspace.service';
 import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
@@ -79,18 +75,6 @@ describe('WorkSpaceService', () => {
       workSpaceService.navigateToContent(testData.upforReviewContentData, 'upForReview');
       expect(route.navigate).toHaveBeenCalledWith(['workspace/content/upForReview/content', 'do_1125083103747932161150']);
     }));
-  it('should get session item and show respective alert message based on content type', () => {
-    const workSpaceService = TestBed.get(WorkSpaceService);
-    spyOn(window, 'addEventListener').and.callThrough();
-    workSpaceService.toggleWarning('TextBook');
-    expect(window.location.hash).toEqual('');
-  });
-  it('should get session item and show alert message if content type is not present', () => {
-    const workSpaceService = TestBed.get(WorkSpaceService);
-    spyOn(window, 'addEventListener').and.callThrough();
-    workSpaceService.toggleWarning();
-    expect(window.location.hash).toEqual('');
-  });
   it('should get checklist data and set the cachelist data in cache', inject([WorkSpaceService, CacheService],
     (workSpaceService: WorkSpaceService, cacheService: CacheService) => {
       spyOn(workSpaceService, 'setData').and.callThrough();
@@ -106,7 +90,7 @@ describe('WorkSpaceService', () => {
         expect(apiResponse).toBeDefined();
         expect(workSpaceService.setData).toHaveBeenCalled();
         cacheService.set('requestChangesChecklistResource',
-        testData.ChecklistData, { maxAge: 10 * 60 });
+          testData.ChecklistData, { maxAge: 10 * 60 });
       });
       expect(workSpaceService.getCheckListData).toHaveBeenCalledWith(param);
       expect(workSpaceService).toBeTruthy();

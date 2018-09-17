@@ -6,7 +6,7 @@ const telemetryHelper = require('../helpers/telemetryHelper.js')
 const reqDataLimitOfContentUpload = '50mb'
 const proxy = require('express-http-proxy')
 
-module.exports = function (app) {
+module.exports = (app) => {
     // Generate telemetry fot proxy service
     app.all('/content/*', telemetryHelper.generateTelemetryForContentService,
         telemetryHelper.generateTelemetryForProxy)
@@ -17,7 +17,7 @@ module.exports = function (app) {
         proxy(contentURL, {
             limit: reqDataLimitOfContentUpload,
             proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
-            proxyReqPathResolver: function (req) {
+            proxyReqPathResolver: (req) => {
                 let urlParam = req.params['0']
                 let query = require('url').parse(req.url).query
                 if (query) {
@@ -25,6 +25,10 @@ module.exports = function (app) {
                 } else {
                     return require('url').parse(contentURL + urlParam).path
                 }
+            },
+            userResDecorator: (proxyRes, proxyResData, req, res) => {
+                if(req.method === 'GET' && proxyRes.statusCode === 404) res.redirect('/')
+                return proxyResData;
             }
         }))
 }
