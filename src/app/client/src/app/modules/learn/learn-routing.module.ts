@@ -29,7 +29,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'view-All/:section/:pageNumber', component: ViewAllComponent,
+    path: 'view-all/:section/:pageNumber', component: ViewAllComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }],
       telemetry: {
