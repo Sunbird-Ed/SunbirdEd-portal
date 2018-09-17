@@ -35,9 +35,6 @@
       "@sunbird/workspace": [
         "app/modules/workspace"
       ],
-      "@sunbird/coures-batch": [
-        "app/modules/coures-batch"
-      ],
       "@sunbird/org-management": [
         "app/modules/org-management"
       ],
@@ -58,6 +55,9 @@
       ],
       "@sunbird/environment": [
         "environments/environment"
+      ],
+      "@sunbird/coures-batch": [
+        "app/modules/coures-batch"
       ]
     },
     "module": "es2015",
