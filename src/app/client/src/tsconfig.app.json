@@ -35,8 +35,8 @@
       "@sunbird/workspace": [
         "app/modules/workspace"
       ],
-      "@sunbird/batch": [
-        "app/modules/batch"
+      "@sunbird/coures-batch": [
+        "app/modules/coures-batch"
       ],
       "@sunbird/org-management": [
         "app/modules/org-management"

@@ -7,4 +7,4 @@ const routes: Routes = [];
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class BatchRoutingModule { }
+export class CourseBatchRoutingModule { }
