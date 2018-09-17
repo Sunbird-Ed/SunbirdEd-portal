@@ -161,7 +161,7 @@ export class PageSectionComponent implements OnInit {
       this.visits.emit(visits);
     }
   }
-  redirect(section) {
+  navigateToViewAll(section) {
     this.viewAll.emit(section);
   }
 }
