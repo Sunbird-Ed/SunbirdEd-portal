@@ -2,7 +2,7 @@ import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { UserService, PermissionService, TenantService } from './../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ConfigService, ResourceService, IUserProfile, IUserData, NavigationHelperService } from '@sunbird/shared';
+import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
@@ -94,7 +94,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   */
   constructor(config: ConfigService, resourceService: ResourceService, public router: Router,
     permissionService: PermissionService, userService: UserService, tenantService: TenantService,
-    public activatedRoute: ActivatedRoute, private cacheService: CacheService, public navigationHelperService: NavigationHelperService) {
+    public activatedRoute: ActivatedRoute, private cacheService: CacheService) {
     this.config = config;
     this.resourceService = resourceService;
     this.permissionService = permissionService;
@@ -208,7 +208,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
         }
       } else {
         this.showExploreHeader = false;
-        const url = urlAfterRedirects.url;
       }
     });
   }
@@ -235,16 +234,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    // this.currentUrl = this.router.url;
-    // console.log('child data:');
-    // this.activatedRoute.snapshot.children.forEach((route) => {
-    //   console.log('data', route);
-    // });
-    // console.log('router url:', this.router.url);
-    // window.location.replace('/logoff');
-    // this.cacheService.removeAll();
-
-
+    window.location.replace('/logoff');
+    this.cacheService.removeAll();
   }
 
   ngOnDestroy() {
