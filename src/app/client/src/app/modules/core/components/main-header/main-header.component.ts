@@ -1,4 +1,4 @@
-
+import { Location } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { UserService, PermissionService, TenantService } from './../../services';
@@ -89,18 +89,20 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   */
   enableSignup = true;
   exploreRoutingUrl: string;
+  currentUrl: string;
   /*
   * constructor
   */
   constructor(config: ConfigService, resourceService: ResourceService, public router: Router,
     permissionService: PermissionService, userService: UserService, tenantService: TenantService,
-    public activatedRoute: ActivatedRoute, private cacheService: CacheService) {
+    public activatedRoute: ActivatedRoute, private cacheService: CacheService,
+    private location: Location ) {
     this.config = config;
     this.resourceService = resourceService;
     this.permissionService = permissionService;
     this.userService = userService;
     this.tenantService = tenantService;
-  }
+   }
 
   ngOnInit() {
     try {
@@ -136,6 +138,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
         }
       });
     this.setInteractEventData();
+    this.currentUrl = this.location.path();
     try {
       const enableSignupButton: string = (<HTMLInputElement>document.getElementById('enableSignup')) ?
         (<HTMLInputElement>document.getElementById('enableSignup')).value : 'true';
