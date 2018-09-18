@@ -1,9 +1,8 @@
-import { Location } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { UserService, PermissionService, TenantService } from './../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
+import { ConfigService, ResourceService, IUserProfile, IUserData, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
@@ -89,14 +88,13 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   */
   enableSignup = true;
   exploreRoutingUrl: string;
-  currentUrl: string;
+  currentUrl: any;
   /*
   * constructor
   */
   constructor(config: ConfigService, resourceService: ResourceService, public router: Router,
     permissionService: PermissionService, userService: UserService, tenantService: TenantService,
-    public activatedRoute: ActivatedRoute, private cacheService: CacheService,
-    private location: Location ) {
+    public activatedRoute: ActivatedRoute, private cacheService: CacheService, public navigationHelperService: NavigationHelperService) {
     this.config = config;
     this.resourceService = resourceService;
     this.permissionService = permissionService;
@@ -105,6 +103,23 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit() {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(event => {
+        let currentRoute = this.activatedRoute.root;
+        while (currentRoute.children.length > 0) {
+          const child: ActivatedRoute[] = currentRoute.children;
+          child.forEach(route => {
+            currentRoute = route;
+              if (route.snapshot.data.telemetry) {
+                if (route.snapshot.data.telemetry.pageid) {
+                  this.currentUrl = route.snapshot.data.telemetry.pageid;
+                } else {
+                  this.currentUrl = route.snapshot.data.telemetry.env;
+                }
+              }
+          });
+        }
+      });
     try {
       this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
     } catch (error) {
@@ -138,7 +153,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
         }
       });
     this.setInteractEventData();
-    this.currentUrl = this.location.path();
     try {
       const enableSignupButton: string = (<HTMLInputElement>document.getElementById('enableSignup')) ?
         (<HTMLInputElement>document.getElementById('enableSignup')).value : 'true';
@@ -186,7 +200,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
       if (_.includes(urlAfterRedirects.url, '/explore')) {
         this.showExploreHeader = true;
-        const url  = urlAfterRedirects.url.split('/');
+        const url = urlAfterRedirects.url.split('/');
         if (url.indexOf('explore') === 2) {
           this.exploreRoutingUrl = url[1] + '/' + url[2];
         } else {
@@ -194,6 +208,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
         }
       } else {
         this.showExploreHeader = false;
+        const url = urlAfterRedirects.url;
       }
     });
   }
@@ -220,8 +235,16 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    window.location.replace('/logoff');
-    this.cacheService.removeAll();
+    // this.currentUrl = this.router.url;
+    // console.log('child data:');
+    // this.activatedRoute.snapshot.children.forEach((route) => {
+    //   console.log('data', route);
+    // });
+    // console.log('router url:', this.router.url);
+    // window.location.replace('/logoff');
+    // this.cacheService.removeAll();
+
+
   }
 
   ngOnDestroy() {
