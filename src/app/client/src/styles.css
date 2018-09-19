@@ -2926,16 +2926,12 @@ i.icon.accordion-content-right {
 .fullpage .ui.dimmer .ui.modal.fullscreen {
   top: 0px;
   position: fixed !important;
-  bottom: 0px;
-  left: 0px !important;
-  right: 0px;
+  bottom: 0;
+  left: 0 !important;
+  right: 0;
   width: 100% !important;
   height: 100%;
   margin: 0 !important;
-}
-
-.margin-bottom-50 {
-  margin-bottom: 50px;
 }
 
 .ui.modal .ui.header.content-header {
@@ -3024,7 +3020,7 @@ i.icon.accordion-content-right {
   font-size: 1.23rem;
   font-weight: 600;
 }
-.margin-bottom-50 {
+.mb-50 {
   margin-bottom: 50px !important;
 }
 
@@ -3043,7 +3039,7 @@ i.icon.accordion-content-right {
 }
 
 .ui.input.with-border input{
-  border: 1px solid #d4d4d5;
+  border: 1px solid #d4d4d5; 
   border-radius: 5px;
 }
 
