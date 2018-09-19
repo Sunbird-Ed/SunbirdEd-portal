@@ -1,0 +1,28 @@
+.ui.image {
+    background-position: center;
+    width: 70px;
+    height: 92px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+.ui.card{
+    width: 292px;
+    margin: 30px;
+    border-radius: 4px;
+    box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.16);
+    background-color: #ffffff;
+    border: solid 0.5px #d0d0d0;
+}
+.card-header{
+  width: 231px;
+  height: 40px;
+  font-family: OpenSans;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.25;
+  letter-spacing: normal;
+  color: #333333;
+}
