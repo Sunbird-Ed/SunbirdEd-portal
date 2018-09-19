@@ -1,4 +1,4 @@
-<div id="collectionEditor" *ngIf="!showModal"></div>
-<sui-dimmer class="page" [isDimmed]="showModal">   
+<div id="collectionEditor"></div>
+<sui-dimmer class="page" *ngIf="showLoader" [isDimmed]="showLoader">
   <div class="ui text loader"><h2>Loading...</h2></div>
 </sui-dimmer>

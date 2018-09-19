@@ -7,6 +7,7 @@ import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';
 import { HttpClient } from '@angular/common/http';
 import { PublicDataService } from './../public-data/public-data.service';
+import { skipWhile } from 'rxjs/operators';
 /**
  * Service to fetch user details from server
  *
@@ -38,7 +39,8 @@ export class UserService {
   /**
    * Read only observable Containing user profile.
    */
-  public readonly userData$: Observable<IUserData> = this._userData$.asObservable();
+  public readonly userData$: Observable<IUserData> = this._userData$.asObservable()
+  .pipe(skipWhile(data => data === undefined || data === null));
   /**
    * reference of config service.
    */

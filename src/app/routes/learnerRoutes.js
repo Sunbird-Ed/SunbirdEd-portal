@@ -77,6 +77,10 @@ module.exports = function (app) {
             } else {
               return require('url').parse(learnerURL + urlParam).path
             }
+          },
+          userResDecorator: (proxyRes, proxyResData, req, res) => {
+              if(req.method === 'GET' && proxyRes.statusCode === 404) res.redirect('/')
+              return proxyResData;
           }
         }))
 }
