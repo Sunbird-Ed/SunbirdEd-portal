@@ -2921,3 +2921,134 @@ i.icon.accordion-content-right {
   margin-right: 16px; 
 }
 
+/* full screen modal */
+
+.fullpage .ui.dimmer .ui.modal.fullscreen {
+  top: 0px;
+  position: fixed !important;
+  bottom: 0px;
+  left: 0px !important;
+  right: 0px;
+  width: 100% !important;
+  height: 100%;
+  margin: 0 !important;
+}
+
+.margin-bottom-50 {
+  margin-bottom: 50px;
+}
+
+.ui.modal .ui.header.content-header {
+  font-size: 1.3em;
+}
+
+.ui.fullpage.divider:not(.vertical):not(.horizontal) {
+  border-top: 1px solid #333;
+}
+
+.ui.modal .ui.header.custom-modal-header {
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+.ui.modal .custom-modal-subheader {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.ui.basic.table tbody tr.modal-table td {
+  border: 0;
+}
+
+.ui[class*="basic"].border-less.table:not(.sortable):not(.striped) thead tr:first-child,
+.ui[class*="basic"].border-less.table:not(.sortable):not(.striped) td:first-child,
+.ui[class*="basic"].border-less.table:not(.sortable):not(.striped) th:first-child {
+  padding-left: 25px;
+}
+
+.ui.basic.border-less.table {
+    border: 0;
+    border-top: 1px solid rgba(34,36,38,.15);
+    border-radius: 0;
+}
+
+.bb-1 {
+  border-bottom: 1px solid #d4d4d5;
+}
+.mt-5 {
+  margin-top: 5px !important;
+}
+.mb-5 {
+  margin-bottom: 5px !important;
+}
+.fl {
+  float: left !important;
+}
+.pl-15 {
+  padding-left: 15px!important;
+}
+.mr-40 {
+  margin-right: 40px !important;
+}
+
+.fullpage .content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  overflow-x: hidden !important;
+  overflow-y: auto;
+  padding: 2rem;
+  bottom: 5rem;
+}
+
+.fullpage .actions {
+  padding: 1rem;
+  background-color: #f9f9f9;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4.5rem;
+}
+
+
+
+/* temp fix */
+.fullpage .fullpage-top-5 {
+  top: 4.9rem;
+}
+.fullpage .fullpage-top-6 {
+  top: 6rem;
+}
+.ui.modal .ui.modal-sub-header {
+  font-size: 1.23rem;
+  font-weight: 600;
+}
+.margin-bottom-50 {
+  margin-bottom: 50px !important;
+}
+
+.batch-type-heading {
+  display: block;
+  margin: 0 0 .28571429rem 0;
+  color: rgba(0,0,0,.87);
+  font-size: .92857143em;
+  font-weight: 700;
+  text-transform: none;
+}
+
+.ui.selection.dropdown.with-border {
+  border: 1px solid #d4d4d5;
+  border-radius: 5px;
+}
+
+.right-content.dividing.border {
+    height: calc(300vh - 60px);
+    border-right: 1px solid #d4d4d5; 
+    padding: 14px 25px;
+}
+
+.ui.modal.fullpage .scrolling.content {
+  max-height: calc(90vh);
+
+}
