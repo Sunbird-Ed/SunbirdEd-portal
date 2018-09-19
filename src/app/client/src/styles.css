@@ -2943,7 +2943,7 @@ i.icon.accordion-content-right {
 }
 
 .ui.fullpage.divider:not(.vertical):not(.horizontal) {
-  border-top: 1px solid #333;
+  border-top: 1px solid #D8D8D8;
 }
 
 .ui.modal .ui.header.custom-modal-header {
@@ -2968,12 +2968,12 @@ i.icon.accordion-content-right {
 
 .ui.basic.border-less.table {
     border: 0;
-    border-top: 1px solid rgba(34,36,38,.15);
+    border-top: 1px solid #D8D8D8;
     border-radius: 0;
 }
 
 .bb-1 {
-  border-bottom: 1px solid #d4d4d5;
+  border-bottom: 1px solid #D8D8D8;
 }
 .mt-5 {
   margin-top: 5px !important;
@@ -3042,13 +3042,19 @@ i.icon.accordion-content-right {
   border-radius: 5px;
 }
 
-.right-content.dividing.border {
+.ui.input.with-border input{
+  border: 1px solid #d4d4d5;
+  border-radius: 5px;
+}
+
+.ui.grid .right-content.dividing-border {
     height: calc(300vh - 60px);
     border-right: 1px solid #d4d4d5; 
     padding: 14px 25px;
 }
 
-.ui.modal.fullpage .scrolling.content {
+.fullpage .ui.modal .scrolling.content {
   max-height: calc(90vh);
 
 }
+

@@ -1,4 +1,4 @@
-<sui-modal [appTelemetryImpression]="telemetryImpression" [isClosable]="false" [isFullScreen]="true" #modal class="fullpage">
+<sui-modal [isClosable]="false" [isFullScreen]="true" #modal class="fullpage">
     <div class="header">
       <div class="ui grid">
         <div class="eleven wide column">
@@ -15,7 +15,7 @@
   
   
       <div class="ui grid margin-none">
-        <div class="three wide column right-content dividing border">
+        <div class="three wide column right-content dividing-border">
           <div class="custom-modal-subheader mb-5">Organisation</div>
           <sui-multi-select class="fluid selection with-border" [(ngModel)]="selectedOptions" [options]="options" labelField="name"
             [isSearchable]="searchable" [isDisabled]="disabled" [hasLabels]="!hideLabels" #multiSelect>
