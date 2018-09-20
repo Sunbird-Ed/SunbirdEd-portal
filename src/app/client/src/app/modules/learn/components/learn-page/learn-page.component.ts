@@ -142,7 +142,6 @@ export class LearnPageComponent implements OnInit, OnDestroy {
    * This method calls the page prefix API.
    */
   populatePageData() {
-    this.filters['status'] = ['Draft'];
     this.noResult = false;
     const option = {
       source: 'web',
