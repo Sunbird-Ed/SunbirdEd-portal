@@ -1,27 +1,25 @@
-<sui-modal [isClosable]="false" [isFullScreen]="true" #modal class="fullpage">
-    <div class="header">
-      <div class="ui grid">
-        <div class="eleven wide column">
-          <span class="ui header">{{resourceService?.frmelmnts.lbl.createnewbatch}}</span>
-        </div>
-        <div class="one wide Right floated right aligned column">
-          <i class="close large icon link" tabindex="0"></i>
-        </div>
+<sui-modal  [isClosable]="false" [isFullScreen]="true" #modal class="fullpage">
+  <div class="header">
+    <div class="ui grid">
+      <div class="eleven wide column">
+        <span class="ui header">{{resourceService?.frmelmnts.lbl.createnewbatch}}</span>
+      </div>
+      <div class="one wide Right floated right aligned column">
+        <i class="close large icon link" tabindex="0"></i>
       </div>
     </div>
-    <div class="scrolling content padding-left-right-0 fullpage-top-6 padding-top-10">
-      <h4 class="ui left floated modal-sub-header padding-left-25 custom-modal-subheader">Select Members</h4>
-      <div class="ui clearing fullpage divider margin-bottom-0"></div>
-  
-  
+  </div>
+  <div class="content padding-left-right-0 padding-top-10 o-x-hide o-y-hide height-100">
+    <h4 class="ui left floated modal-sub-header padding-left-25 custom-modal-subheader">Select Members</h4>
+    <div class="ui clearing fullpage divider margin-bottom-0"></div>
+
+    <div class="scrollable content ">
       <div class="ui grid margin-none">
         <div class="three wide column right-content dividing-border">
           <div class="custom-modal-subheader mb-5">Organisation</div>
-          <sui-multi-select class="fluid selection with-border" [(ngModel)]="selectedOptions" [options]="options" labelField="name"
-            [isSearchable]="searchable" [isDisabled]="disabled" [hasLabels]="!hideLabels" #multiSelect>
-            <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option">
-            </sui-select-option>
-          </sui-multi-select>
+          <div class="ui fluid input with-border">
+              <input type="text" placeholder="Organisation Name">
+          </div>
           <br>
           <div class="custom-modal-subheader mb-5">Sub-Organisation</div>
           <sui-multi-select class="fluid selection with-border" [(ngModel)]="selectedOptions" [options]="options" labelField="name"
@@ -45,8 +43,8 @@
           </sui-multi-select>
           <br>
         </div>
-  
-        <div class="nine wide column padding-left-right-0">
+
+        <div class="nine wide column padding-left-right-0 left-content dividing-border o-y-auto o-x-hide content-with-scroll">
           <div class="ui grid padding-left-25">
             <div class="four wide column">
               <div class="ui fluid category search">
@@ -66,7 +64,7 @@
                 <th>
                   <div class="field">
                     <sui-checkbox [(ngModel)]="eCheck" [isDisabled]="eCheckDisabled" [isReadonly]="eCheckReadonly">
-  
+
                     </sui-checkbox>
                   </div>
                 </th>
@@ -78,13 +76,13 @@
                 <th>Actions</th>
               </tr>
             </thead>
-  
+
             <tbody>
               <tr class="modal-table">
                 <td>
                   <div class="field">
                     <sui-checkbox [(ngModel)]="eCheck" [isDisabled]="eCheckDisabled" [isReadonly]="eCheckReadonly">
-  
+
                     </sui-checkbox>
                   </div>
                 </td>
@@ -102,7 +100,7 @@
                 <td>
                   <div class="field">
                     <sui-checkbox [(ngModel)]="eCheck" [isDisabled]="eCheckDisabled" [isReadonly]="eCheckReadonly">
-  
+
                     </sui-checkbox>
                   </div>
                 </td>
@@ -120,7 +118,7 @@
                 <td>
                   <div class="field">
                     <sui-checkbox [(ngModel)]="eCheck" [isDisabled]="eCheckDisabled" [isReadonly]="eCheckReadonly">
-  
+
                     </sui-checkbox>
                   </div>
                 </td>
@@ -139,8 +137,9 @@
         </div>
       </div>
     </div>
-    <div class="actions">
-      <button class="ui left floated basic primary button" tabindex="0">BACK</button>
-      <button class="ui primary button" id="submitbutton" [disabled]="disableSubmitBtn" tabindex="0">ADD MEMBERS</button>
-    </div>
-  </sui-modal>
+  </div>
+  <div class="actions">
+    <button class="ui left floated basic primary button" tabindex="0">BACK</button>
+    <button class="ui primary button" id="submitbutton" [disabled]="disableSubmitBtn" tabindex="0">ADD MEMBERS</button>
+  </div>
+</sui-modal>
