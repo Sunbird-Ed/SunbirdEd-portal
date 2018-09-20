@@ -5,6 +5,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
+    border-radius: 4px;
 }
 .ui.card{
     width: 292px;
@@ -15,14 +16,33 @@
     border: solid 0.5px #d0d0d0;
 }
 .card-header{
-  width: 231px;
-  height: 40px;
+    width: 231px;
+    height: 40px;
+    font-family: OpenSans;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.25;
+    letter-spacing: normal;
+    color: #333333;
+}
+.card-meta{
+  width: 156px;
+  height: 19px;
   font-family: OpenSans;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
-  line-height: 1.25;
+  line-height: normal;
   letter-spacing: normal;
-  color: #333333;
+  color: #999999;
+}
+.card-label{
+  width: 53px;
+  height: 22px;
+  border-radius: 4px;
+  background-color: #eaeaea;
+  border: solid 0.5px #d9d9d9;
 }

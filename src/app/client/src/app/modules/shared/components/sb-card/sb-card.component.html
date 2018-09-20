@@ -1,4 +1,3 @@
-<!--pre> <div [innerHTML]="data | json"></div> </pre-->
 <div  class="ui link cards margin-top-15 margin-bottom-0" 
       *ngIf="data" (click)="onAction(data,data.action.onImage)" 
       appTelemetryInteract 
@@ -21,29 +20,24 @@
         </div>
         <div class="column">  
           <div class="content">
-            <span class="ui label">Summary</span>
+            <span *ngIf="data.ribbon" class="ui card-label">{{data.ribbon.right.name}}</span>            
           </div>
-          <div class="content">
-          </div>
-          <div class="content">
-          </div>
-          <div class="content">
-            <span class="" >Subject : English Part 1</span>
+          <div class="content bottom attach">
+            <span class="">Subject : {{data.subject}} </span>
             <br/>
-            <span class="" >Class : 6</span>
+            <span class="">Class : {{data.class}}</span>
             <br/>
-            <span class="" >Medium : Hindi</span>
+            <span class="">Medium : {{data.medium}}</span>
           </div>
         </div>
       </div>
     </div>
     <div class="content">
       <div class="ui card-header">
-          Data Structure and Algorithm-
-          Assignment 1 Paperback
+          {{data.name}}
       </div>
-      <div class="meta">
-        Prof.Maria Rukadikar S.
+      <div class="card-meta">
+        {{data.creator}}
       </div>
     </div>
     <div class="ui tiny progress #d4e4e1">
@@ -51,7 +45,7 @@
     </div>
     <div class="content">
       <div class="description">
-        In recent years the subject of computer science programming has been recognized as a displine computer science years the  subject programming
+        {{data.description}}
       </div>
     </div>
   </div>
