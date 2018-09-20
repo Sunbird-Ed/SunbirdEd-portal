@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { combineLatest, Observable, of } from 'rxjs';
 import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
@@ -10,6 +10,7 @@ import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { CacheService } from 'ng2-cache-service';
 @Component({
   selector: 'app-view-all',
   templateUrl: './view-all.component.html',
@@ -113,8 +114,9 @@ export class ViewAllComponent implements OnInit {
   defaultSortBy: any;
   closeUrl: string;
   sectionName: string;
+  cache: boolean;
   constructor(searchService: SearchService, route: Router, private playerService: PlayerService,
-    activatedRoute: ActivatedRoute, paginationService: PaginationService,
+    activatedRoute: ActivatedRoute, paginationService: PaginationService, private _cacheService: CacheService,
     resourceService: ResourceService, toasterService: ToasterService,
     config: ConfigService, coursesService: CoursesService, public utilService: UtilService) {
     this.searchService = searchService;
@@ -141,7 +143,6 @@ export class ViewAllComponent implements OnInit {
       })
     ).subscribe((response: any) => {
       this.showLoader = false;
-      const route = this.route.url.split('?');
       if (response.contentData.result.count && response.contentData.result.content) {
         this.showLoader = false;
         this.noResult = false;
@@ -196,20 +197,17 @@ export class ViewAllComponent implements OnInit {
     };
   }
   private manipulateData(results) {
+    this.cache = this._cacheService.exists('searchQuery');
     this.queryParams = results;
-    const request = JSON.parse(results.query);
-    this.defaultSortBy = request.sort_by;
+    this.filters = {};
+     this.defaultSortBy = JSON.parse(results.defaultSortBy);
     if (!_.isEmpty(results)) {
       _.forOwn(results, (queryValue, queryParam) => {
-        request.filters[queryParam] = queryValue;
+        this.filters[queryParam] = queryValue;
       });
-      request.filters = _.omit(request.filters, ['key', 'sort_by', 'sortType', 'query']);
+      this.filters = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'defaultSortBy']);
     }
-    if (results.sort_by && results.sortType) {
-      request.sort_by = results.sort_by;
-      request.sortType = results.sortType.toString();
-    }
-    return request;
+    return this.queryParams;
   }
 
   private getContentList(request) {
@@ -219,7 +217,7 @@ export class ViewAllComponent implements OnInit {
     this.sectionName = name[1];
     this.pageNumber = request.params.pageNumber;
     const requestParams = {
-      filters: _.pickBy(request.queryParams.filters, value => value.length > 0),
+      filters: _.pickBy(this.filters, value => value.length > 0),
       limit: this.pageLimit,
       pageNumber: request.params.pageNumber,
       query: request.queryParams.key,

@@ -22,6 +22,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   @Input() ignoreQuery = [];
   @Input() showSearchedParam = true;
   @Input() enrichFilters: object;
+  @Input() cacheExists =  false;
   @Input() pageId: string;
   @Output() filters = new EventEmitter();
   @Output() dataDrivenFilter = new EventEmitter();
@@ -255,12 +256,21 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   resetFilters() {
+    let queryParams = {};
     if (!_.isEmpty(this.ignoreQuery)) {
       this.formInputData = _.pick(this.formInputData, this.ignoreQuery);
+      queryParams = this.formInputData;
+    } else if (this.cacheExists) {
+      const data = this._cacheService.get('searchQuery');
+      _.forOwn(data.request.filters, (queryValue, queryParam) => {
+        queryParams[queryParam] = queryValue;
+      });
+      queryParams['defaultSortBy'] = JSON.stringify(data.request.sort_by);
     } else {
       this.formInputData = {};
+      queryParams = {};
     }
-    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
+    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
     this.refresh = false;
     this.cdr.detectChanges();
     this.refresh = true;
