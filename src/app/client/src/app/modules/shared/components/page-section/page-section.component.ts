@@ -36,12 +36,14 @@ export class PageSectionComponent implements OnInit {
  slideConfig = {
   'slidesToShow': 2,
   'slidesToScroll': 3,
+  'variableWidth':true,
   'responsive': [
     {
       'breakpoint': 2800,
       'settings': {
         'slidesToShow': 8,
         'slidesToScroll': 4,
+        'variableWidth':true,
       }
     },
     {
@@ -49,6 +51,7 @@ export class PageSectionComponent implements OnInit {
       'settings': {
         'slidesToShow': 6,
         'slidesToScroll': 4,
+        'variableWidth':true,
       }
     },
     {
@@ -56,6 +59,7 @@ export class PageSectionComponent implements OnInit {
       'settings': {
         'slidesToShow': 5,
         'slidesToScroll': 4,
+        'variableWidth':true,
       }
     },
     {
@@ -63,6 +67,7 @@ export class PageSectionComponent implements OnInit {
       'settings': {
         'slidesToShow': 3.5,
         'slidesToScroll': 3.5,
+        'variableWidth':true,
       }
     },
     {
@@ -70,6 +75,7 @@ export class PageSectionComponent implements OnInit {
       'settings': {
         'slidesToShow': 3.5,
         'slidesToScroll': 3.5,
+        'variableWidth':true,
       }
     },
     {
@@ -77,6 +83,7 @@ export class PageSectionComponent implements OnInit {
       'settings': {
         'slidesToShow': 3,
         'slidesToScroll': 3,
+        'variableWidth':true,
       }
     },
     {
@@ -84,6 +91,7 @@ export class PageSectionComponent implements OnInit {
       'settings': {
         'slidesToShow': 2,
         'slidesToScroll': 2,
+        'variableWidth':true,
       }
     },
     {
@@ -91,6 +99,7 @@ export class PageSectionComponent implements OnInit {
       'settings': {
         'slidesToShow': 1,
         'slidesToScroll': 1,
+        'variableWidth':true,
       }
     }
   ],

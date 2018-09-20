@@ -1,3 +1,11 @@
+sb-app-card{
+    width: 292px;
+    border-radius: 4px;
+    box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.16);
+    background-color: #ffffff;
+    border: solid 0.5px #d0d0d0;
+}
+
 .ui.image {
     background-position: center;
     width: 70px;

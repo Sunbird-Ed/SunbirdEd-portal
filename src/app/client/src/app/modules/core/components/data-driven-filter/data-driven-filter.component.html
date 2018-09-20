@@ -33,17 +33,12 @@
                 <div *ngIf="formFieldProperties" class="ui stackable grid">
                   <div *ngFor="let field of filtersDetails" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column">
                     <div *ngIf="field.inputType==='select'" class="field">
+                      <label>{{field.name}}</label>
                       <sui-multi-select id={{field.code}} name={{field.code}} defaultSelectionText={{field.name}} zeroSelectionText="Select" class="selection filterFieldSearch"
                         [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" #multiSelect>
                         <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
                       </sui-multi-select>
                     </div>
-                    <!-- <div *ngIf="field.inputType==='select' && field.code==='Content'" class="field">
-                      <sui-multi-select id={{field.code}} name={{field.code}} placeholder={{field.name}} class="selection filterFieldSearch" [(ngModel)]="formInputData[field.code]"
-                        [options]="options" [hasLabels]="false" #multiSelect>
-                        <sui-select-option *ngFor="let option of contentTypes" [value]="option.value"></sui-select-option>
-                      </sui-multi-select>
-                    </div> -->
                     <div *ngIf="field.code==='concepts' && showConcepts" class="field">
                       <form class="conceptSelector ui form">
                         <app-concept-picker [selectedConcepts]="formInputData[field.code]" (Concepts)="concepts($event)"></app-concept-picker>
