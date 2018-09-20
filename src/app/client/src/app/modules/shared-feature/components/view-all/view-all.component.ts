@@ -1,14 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { combineLatest, Observable, of } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ILoaderMessage, UtilService, ICard
 } from '@sunbird/shared';
-import { SearchService, CoursesService, ICourses, SearchParam, ISort, PlayerService } from '@sunbird/core';
+import { SearchService, CoursesService, ISort, PlayerService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
+import { takeUntil, first, mergeMap, map, tap } from 'rxjs/operators';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 @Component({
@@ -16,14 +16,14 @@ import { CacheService } from 'ng2-cache-service';
   templateUrl: './view-all.component.html',
   styleUrls: ['./view-all.component.css']
 })
-export class ViewAllComponent implements OnInit {
+export class ViewAllComponent implements OnInit, OnDestroy {
   /**
 	 * telemetryImpression
 	*/
-  telemetryImpression: IImpressionEventInput;
-  closeIntractEdata: IInteractEventEdata;
-  cardIntractEdata: IInteractEventEdata;
-  sortIntractEdata: IInteractEventEdata;
+  public telemetryImpression: IImpressionEventInput;
+  public closeIntractEdata: IInteractEventEdata;
+  public cardIntractEdata: IInteractEventEdata;
+  public sortIntractEdata: IInteractEventEdata;
   /**
    * To call searchService which helps to use list of courses
    */
@@ -35,7 +35,7 @@ export class ViewAllComponent implements OnInit {
   /**
    * To get url, app configs
    */
-  public config: ConfigService;
+  public configService: ConfigService;
   /**
   * To show toaster(error, success etc) after any API calls
   */
@@ -47,7 +47,7 @@ export class ViewAllComponent implements OnInit {
   /**
    * To navigate to other pages
    */
-  private route: Router;
+  private router: Router;
   /**
   * To send activatedRoute.snapshot to router navigation
   * service for redirection to parent component
@@ -110,45 +110,51 @@ export class ViewAllComponent implements OnInit {
    * contains the search filter type
    */
   public filterType: string;
-  sortingOptions: Array<ISort>;
-  defaultSortBy: any;
-  closeUrl: string;
-  sectionName: string;
-  cache: boolean;
-  constructor(searchService: SearchService, route: Router, private playerService: PlayerService,
+  public sortingOptions: Array<ISort>;
+  public closeUrl: string;
+  public sectionName: string;
+  public unsubscribe = new Subject<void>();
+  constructor(searchService: SearchService, router: Router, private playerService: PlayerService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService, private _cacheService: CacheService,
     resourceService: ResourceService, toasterService: ToasterService,
-    config: ConfigService, coursesService: CoursesService, public utilService: UtilService) {
+    configService: ConfigService, coursesService: CoursesService, public utilService: UtilService) {
     this.searchService = searchService;
-    this.route = route;
+    this.router = router;
     this.activatedRoute = activatedRoute;
     this.paginationService = paginationService;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
-    this.config = config;
+    this.configService = configService;
     this.coursesService = coursesService;
-    this.route.onSameUrlNavigation = 'reload';
-    this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+    this.router.onSameUrlNavigation = 'reload';
+    this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
   }
 
   ngOnInit() {
-    this.filterType = this.config.appConfig.course.filterType;
-    this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
+    this.filterType = this.configService.appConfig.course.filterType;
+    this.pageLimit = this.configService.appConfig.ViewAll.PAGE_LIMIT;
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
-      map(results => ({ params: results[0], queryParams: this.manipulateData(results[1])})),
+      map(results => ({ params: results[0], queryParams: results[1] })),
+      tap(res => {
+        this.queryParams = res.queryParams;
+        const route = this.router.url.split('/view-all');
+        this.closeUrl = '/' + route[0].toString();
+        this.sectionName = res.params.section.replace(/\-/g, ' ');
+        this.pageNumber = res.params.pageNumber;
+      }),
       mergeMap((data) => {
+        this.manipulateQueryParam(data.queryParams);
         this.setTelemetryImpressionData();
         this.setInteractEventData();
         return this.getContentList(data);
-      })
+      }),
+      takeUntil(this.unsubscribe)
     ).subscribe((response: any) => {
       this.showLoader = false;
       if (response.contentData.result.count && response.contentData.result.content) {
-        this.showLoader = false;
-        this.noResult = false;
         this.totalCount = response.contentData.result.count;
         this.pager = this.paginationService.getPager(response.contentData.result.count, this.pageNumber, this.pageLimit);
-        this.searchList = this.formatData(response);
+        this.searchList = this.formatSearchresults(response);
       } else {
         this.noResult = true;
         this.noResultMessage = {
@@ -169,13 +175,13 @@ export class ViewAllComponent implements OnInit {
   setTelemetryImpressionData() {
     this.telemetryImpression = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
+        env: _.get(this.activatedRoute.snapshot, 'data.telemetry.env')
       },
       edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.route.url,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+        type: _.get(this.activatedRoute.snapshot, 'data.telemetry.type'),
+        pageid: _.get(this.activatedRoute.snapshot, 'data.telemetry.pageid'),
+        uri: this.router.url,
+        subtype: _.get(this.activatedRoute.snapshot, 'data.telemetry.subtype')
       }
     };
   }
@@ -183,56 +189,43 @@ export class ViewAllComponent implements OnInit {
     this.closeIntractEdata = {
       id: 'close',
       type: 'click',
-      pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+      pageid: _.get(this.activatedRoute.snapshot, 'data.telemetry.pageid'),
     };
     this.cardIntractEdata = {
       id: 'content-card',
       type: 'click',
-      pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+      pageid: _.get(this.activatedRoute.snapshot, 'data.telemetry.pageid'),
     };
     this.sortIntractEdata = {
       id: 'sort',
       type: 'click',
-      pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+      pageid: _.get(this.activatedRoute.snapshot, 'data.telemetry.pageid'),
     };
   }
-  private manipulateData(results) {
-    this.cache = this._cacheService.exists('searchQuery');
-    this.queryParams = results;
+  private manipulateQueryParam(results) {
     this.filters = {};
-     this.defaultSortBy = JSON.parse(results.defaultSortBy);
     if (!_.isEmpty(results)) {
-      _.forOwn(results, (queryValue, queryParam) => {
-        this.filters[queryParam] = queryValue;
+      _.forOwn(results, (queryValue, queryKey) => {
+        this.filters[queryKey] = queryValue;
       });
-      this.filters = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'defaultSortBy']);
+      this.filters = _.omit(results, ['key', 'sort_by', 'sortType', 'defaultSortBy']);
     }
-    return this.queryParams;
   }
 
   private getContentList(request) {
-    const route = this.route.url.split('/view-all');
-    this.closeUrl = '/' + route[0].toString();
-    const name = route[1].split('/');
-    this.sectionName = name[1];
-    this.pageNumber = request.params.pageNumber;
     const requestParams = {
       filters: _.pickBy(this.filters, value => value.length > 0),
       limit: this.pageLimit,
       pageNumber: request.params.pageNumber,
-      query: request.queryParams.key,
-      softConstraints: { badgeAssertions: 1 },
-      sort_by: _.get(request.queryParams, 'sortType') ?
-        { [request.queryParams.sort_by]: request.queryParams.sortType } : this.defaultSortBy
+      sort_by: request.queryParams.sortType ?
+        { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy)
     };
     return combineLatest(
       this.searchService.contentSearch(requestParams),
-      this.coursesService.enrolledCourseData$,
-      (contentData, enrolledCourseData) => ({ contentData, enrolledCourseData })
-    );
+      this.coursesService.enrolledCourseData$).pipe(map(data => ({contentData: data[0] , enrolledCourseData: data[1] })));
   }
 
-  private formatData(response) {
+  private formatSearchresults(response) {
     const enrolledCoursesId = [];
     _.forEach(response.enrolledCourseData.enrolledCourses, (value, index) => {
       enrolledCoursesId[index] = _.get(response.enrolledCourseData.enrolledCourses[index], 'courseId');
@@ -240,24 +233,24 @@ export class ViewAllComponent implements OnInit {
     _.forEach(response.contentData.result.content, (value, index) => {
       if (response.enrolledCourseData.enrolledCourses && response.enrolledCourseData.enrolledCourses.length > 0) {
         if (_.indexOf(enrolledCoursesId, response.contentData.result.content[index].identifier) !== -1) {
-          const constantData = this.config.appConfig.ViewAll.enrolledCourses.constantData;
-          const metaData = { metaData: this.config.appConfig.ViewAll.enrolledCourses.metaData };
+          const constantData = this.configService.appConfig.ViewAll.enrolledCourses.constantData;
+          const metaData = { metaData: this.configService.appConfig.ViewAll.enrolledCourses.metaData };
           const dynamicFields = {};
           const enrolledCourses = _.find(response.enrolledCourseData.enrolledCourses,
             ['courseId', response.contentData.result.content[index].identifier]);
           response.contentData.result.content[index] = this.utilService.processContent(enrolledCourses,
             constantData, dynamicFields, metaData);
         } else {
-          const constantData = this.config.appConfig.ViewAll.otherCourses.constantData;
-          const metaData = this.config.appConfig.ViewAll.metaData;
-          const dynamicFields = this.config.appConfig.ViewAll.dynamicFields;
+          const constantData = this.configService.appConfig.ViewAll.otherCourses.constantData;
+          const metaData = this.configService.appConfig.ViewAll.metaData;
+          const dynamicFields = this.configService.appConfig.ViewAll.dynamicFields;
           response.contentData.result.content[index] = this.utilService.processContent(response.contentData.result.content[index],
             constantData, dynamicFields, metaData);
         }
       } else {
-        const constantData = this.config.appConfig.ViewAll.otherCourses.constantData;
-        const metaData = this.config.appConfig.ViewAll.metaData;
-        const dynamicFields = this.config.appConfig.ViewAll.dynamicFields;
+        const constantData = this.configService.appConfig.ViewAll.otherCourses.constantData;
+        const metaData = this.configService.appConfig.ViewAll.metaData;
+        const dynamicFields = this.configService.appConfig.ViewAll.dynamicFields;
         response.contentData.result.content[index] = this.utilService.processContent(response.contentData.result.content[index],
           constantData, dynamicFields, metaData);
       }
@@ -266,13 +259,13 @@ export class ViewAllComponent implements OnInit {
   }
 
   navigateToPage(page: number): undefined | void {
-    const route = this.route.url.split('?');
+    const route = this.router.url.split('?');
     const url = route[0].substring(0, route[0].lastIndexOf('/'));
     if (page < 1 || page > this.pager.totalPages) {
       return;
     }
     this.pageNumber = page;
-    this.route.navigate([url, this.pageNumber], {
+    this.router.navigate([url, this.pageNumber], {
       queryParams: this.queryParams
     });
   }
@@ -283,5 +276,10 @@ export class ViewAllComponent implements OnInit {
       event.data.metaData.contentType = 'Course';
     }
     this.playerService.playContent(event.data.metaData);
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

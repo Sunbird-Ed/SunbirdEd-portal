@@ -310,19 +310,19 @@ export class LearnPageComponent implements OnInit, OnDestroy {
     this.playerService.playContent(event.data.metaData);
   }
   viewAll(event) {
-    this.cacheService.set('searchQuery', JSON.parse(event.searchQuery), {
-      maxAge: this.browserCacheTtlService.browserCacheTtl
-    });
     const query = JSON.parse(event.searchQuery);
     const queryParams = {};
     _.forIn(query.request.filters, (value, index) => {
       queryParams[index] = value;
     });
     queryParams['defaultSortBy'] = JSON.stringify(query.request.sort_by);
+    this.cacheService.set('viewAllQuery', queryParams, {
+      maxAge: this.browserCacheTtlService.browserCacheTtl
+    });
     _.forIn(this.filters, (value, index) => {
       queryParams[index] = value;
     });
-      const sectionUrl = 'learn/view-all/' + event.name.replace(/\s/g, '');
+      const sectionUrl = 'learn/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], {queryParams: queryParams});
   }
   ngOnDestroy() {

@@ -45,8 +45,8 @@
       "metaData": ["batchId", "courseId"]
       },
        "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
-    
+     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"},
+     "PAGE_LIMIT": 20 
   },
   "Course": {
     "otherCourse": {
