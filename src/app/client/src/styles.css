@@ -990,11 +990,15 @@ i.large.icon.limitedPublishingLinkIcon {
 }
 
 .ui.selection.dropdown {
-  border: 0;
-  border-radius: 0;
   height: 33px;
+  line-height: 33px;
   border-radius: 2px;
   border: solid 0.5px #CBCBCB;
+  color:#979797;
+}
+.ui.form .field.filter>label{
+font-weight:500;
+margin:0 0 10px 0;
 }
 .ui.dropdown.genderSelectionDropDown {
   border: 0;

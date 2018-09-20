@@ -31,8 +31,8 @@
             <div *ngIf="refresh">
               <form class="ui form">
                 <div *ngIf="formFieldProperties" class="ui stackable grid">
-                  <div *ngFor="let field of filtersDetails" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column">
-                    <div *ngIf="field.inputType==='select'" class="field">
+                  <div *ngFor="let field of filtersDetails" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} two wide column">
+                    <div *ngIf="field.inputType==='select'" class="field filter">
                       <label>{{field.name}}</label>
                       <sui-multi-select id={{field.code}} name={{field.code}} defaultSelectionText={{field.name}} zeroSelectionText="Select" class="selection filterFieldSearch"
                         [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" #multiSelect>
