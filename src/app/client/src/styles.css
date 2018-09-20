@@ -3012,7 +3012,6 @@ i.icon.accordion-content-right {
   height: 4.5rem;
 }
 
-
 .ui.modal .ui.modal-sub-header {
   font-size: 1.23rem;
   font-weight: 600;
@@ -3066,8 +3065,12 @@ i.icon.accordion-content-right {
   border: 0;
 }
 
-
-
-
-
+/* temp fix for the more button which need to be removed later */
+.ui.positive.button.read-more-data {
+  border-radius: 250px;
+  background: #3793a7;
+  margin-right: 10px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
 
