@@ -16,11 +16,11 @@
                 <span class="padded chip margin-top--5 margin-right-10" *ngIf='formInputData[field.code] && formInputData[field.code].length > 0'>
                   {{field.name}}:
                   <span *ngFor="let item of formInputData[field.code]">
-                    <a class="ui label margin-top--5" *ngIf='!isObject(item)'>
+                    <a class="ui label margin-top--5 mr-5" *ngIf='!isObject(item)'>
                       {{item}}
                       <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
                     </a>
-                    <a class="ui label margin-top--5" *ngIf='isObject(item)'>
+                    <a class="ui label margin-top--5 mr-5" *ngIf='isObject(item)'>
                       {{item.name}}
                       <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
                     </a>

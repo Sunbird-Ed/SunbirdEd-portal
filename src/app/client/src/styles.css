@@ -2986,6 +2986,9 @@ i.icon.accordion-content-right {
 .mr-40 {
   margin-right: 40px !important;
 }
+.mr-5 {
+  margin-right: 5px !important;
+}
 
 .fullpage .content {
   position: absolute;
