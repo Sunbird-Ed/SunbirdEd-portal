@@ -96,7 +96,9 @@ export class PageSectionComponent implements OnInit {
   ],
   infinite: false,
 };
-
+ /**The button clicked value for interact telemetry event */
+ btnArrow: string;
+ pageid: string;
   constructor(public activatedRoute: ActivatedRoute) {
   }
   playContent(event) {
@@ -104,12 +106,12 @@ export class PageSectionComponent implements OnInit {
   }
   ngOnInit() {
     const id = _.get(this.activatedRoute, 'snapshot.data.telemetry.env');
-    const pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
-    if (id && pageid) {
+    this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
+    if (id && this.pageid) {
       this.cardIntractEdata = {
         id: 'content-card',
         type: 'click',
-        pageid: pageid
+        pageid: this.pageid
       };
     }
   }
@@ -160,6 +162,14 @@ export class PageSectionComponent implements OnInit {
     if (visits.length > 0) {
       this.visits.emit(visits);
     }
+    const $next = $('.slick-slider').find('.slick-next');
+    ($next).on('click', () => {
+      this.btnArrow = 'next-button';
+    });
+    const $prev = $('.slick-slider').find('.slick-prev');
+    ($prev).on('click', () => {
+      this.btnArrow = 'prev-button';
+    });
   }
   navigateToViewAll(section) {
     this.viewAll.emit(section);

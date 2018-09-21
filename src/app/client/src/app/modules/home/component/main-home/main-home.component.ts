@@ -5,6 +5,7 @@ import { CoursesService, UserService, PlayerService } from '@sunbird/core';
 import { ResourceService, ToasterService, ServerResponse, ConfigService, UtilService} from '@sunbird/shared';
 import {  IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
+import * as $ from 'jquery';
 /**
  * This component contains 3 sub components
  * 1)ProfileCard: It displays user profile details.
@@ -145,6 +146,8 @@ public configService: ConfigService;
     ],
     infinite: false,
   };
+  /**The button clicked value for interact telemetry event */
+  btnArrow: string;
   /**
    * The "constructor"
    *
@@ -308,6 +311,14 @@ public configService: ConfigService;
     this.telemetryImpression.edata.visits = this.inviewLogs;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    const $next = $('.slider').find('.slick-next');
+    ($next).on('click', () => {
+      this.btnArrow = 'next-button';
+    });
+    const $prev = $('.slider').find('.slick-prev');
+    ($prev).on('click', () => {
+      this.btnArrow = 'prev-button';
+    });
   }
   public anouncementInview(event) {
     if (event) {
