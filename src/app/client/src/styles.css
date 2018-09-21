@@ -2995,13 +2995,18 @@ i.icon.accordion-content-right {
 }
 
 .fullpage .content {
-  position: absolute;
   left: 0;
   right: 0;
-  overflow-x: hidden !important;
-  overflow-y: auto;
-  padding: 2rem;
-  bottom: 5rem;
+  background: #fff;
+  top: 0;
+  position: relative;
+}
+
+.fullpage .scrollable.content {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  overflow: hidden;
 }
 
 .fullpage .actions {
@@ -3014,15 +3019,6 @@ i.icon.accordion-content-right {
   height: 4.5rem;
 }
 
-
-
-/* temp fix */
-.fullpage .fullpage-top-5 {
-  top: 4.9rem;
-}
-.fullpage .fullpage-top-6 {
-  top: 6rem;
-}
 .ui.modal .ui.modal-sub-header {
   font-size: 1.23rem;
   font-weight: 600;
@@ -3050,14 +3046,38 @@ i.icon.accordion-content-right {
   border-radius: 5px;
 }
 
-.ui.grid .right-content.dividing-border {
-    height: calc(300vh - 60px);
-    border-right: 1px solid #d4d4d5; 
-    padding: 14px 25px;
+.ui.grid .left-content.dividing-border {
+  border-left: 1px solid #d4d4d5;
+  position: absolute !important;
+  height: calc(100% - 140px);
+  right: 0;
 }
 
-.fullpage .ui.modal .scrolling.content {
-  max-height: calc(90vh);
+.o-y-auto {
+  overflow-y: auto !important
+}
+.o-x-hide {
+  overflow-x: hidden!important
+}
+.o-y-hide {
+  overflow-y: hidden!important
+}
+.content-with-scroll {
+  height: calc(100% - 140px) !important;
+}
+.height-100 {
+  height: 100% !important;
+}
+.ui.very.basic.border-less.table {
+  border: 0;
+}
 
+/* temp fix for the more button which need to be removed later */
+.ui.positive.button.read-more-data {
+  border-radius: 250px;
+  background: #3793a7;
+  margin-right: 10px;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
