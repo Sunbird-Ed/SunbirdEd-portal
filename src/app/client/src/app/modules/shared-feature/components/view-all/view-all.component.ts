@@ -131,7 +131,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.filterType = this.configService.appConfig.course.filterType;
+    this.filterType = _.get(this.activatedRoute.snapshot, 'data.filterType');
     this.pageLimit = this.configService.appConfig.ViewAll.PAGE_LIMIT;
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
       map(results => ({ params: results[0], queryParams: results[1] })),
