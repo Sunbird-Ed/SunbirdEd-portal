@@ -77,7 +77,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
     resourceService: ResourceService, config: ConfigService, private activatedRoute: ActivatedRoute, router: Router,
     public utilService: UtilService, public navigationHelperService: NavigationHelperService,
     orgDetailsService: OrgDetailsService, private publicPlayerService: PublicPlayerService,
-    private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,) {
+    private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService) {
     this.pageSectionService = pageSectionService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
