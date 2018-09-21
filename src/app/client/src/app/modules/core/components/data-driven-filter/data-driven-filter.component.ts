@@ -22,6 +22,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   @Input() ignoreQuery = [];
   @Input() showSearchedParam = true;
   @Input() enrichFilters: object;
+  @Input() viewAllMode =  false;
   @Input() pageId: string;
   @Output() filters = new EventEmitter();
   @Output() dataDrivenFilter = new EventEmitter();
@@ -257,8 +258,14 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   resetFilters() {
     if (!_.isEmpty(this.ignoreQuery)) {
       this.formInputData = _.pick(this.formInputData, this.ignoreQuery);
-    } else {
+    }  else {
       this.formInputData = {};
+    }
+     if (this.viewAllMode) {
+     const data = this._cacheService.get('viewAllQuery');
+     _.forIn(data, (value, key ) => {
+      this.formInputData[key] = value;
+     });
     }
     this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
     this.refresh = false;
