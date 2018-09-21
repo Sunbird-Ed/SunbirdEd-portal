@@ -2990,6 +2990,10 @@ i.icon.accordion-content-right {
   margin-right: 5px !important;
 }
 
+.word-break-all {
+  word-break: break-all !important;
+}
+
 .fullpage .content {
   position: absolute;
   left: 0;
