@@ -35,6 +35,7 @@ const routes: Routes = [
       telemetry: {
         env: telemetryEnv, pageid: 'viewAll', type: 'view', subtype: 'paginate'
       },
+      baseUrl: 'learn',
       filterType: 'course'
     }
   },

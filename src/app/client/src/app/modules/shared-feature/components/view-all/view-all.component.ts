@@ -152,6 +152,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     ).subscribe((response: any) => {
       this.showLoader = false;
       if (response.contentData.result.count && response.contentData.result.content) {
+        this.noResult = false;
         this.totalCount = response.contentData.result.count;
         this.pager = this.paginationService.getPager(response.contentData.result.count, this.pageNumber, this.pageLimit);
         this.searchList = this.formatSearchresults(response);
@@ -220,18 +221,22 @@ export class ViewAllComponent implements OnInit, OnDestroy {
       sort_by: request.queryParams.sortType ?
         { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy)
     };
-    return combineLatest(
-      this.searchService.contentSearch(requestParams),
-      this.coursesService.enrolledCourseData$).pipe(map(data => ({contentData: data[0] , enrolledCourseData: data[1] })));
+    if (_.get(this.activatedRoute.snapshot, 'data.baseUrl') === 'learn') {
+      return combineLatest(
+        this.searchService.contentSearch(requestParams),
+        this.coursesService.enrolledCourseData$).pipe(map(data => ({contentData: data[0] , enrolledCourseData: data[1] })));
+    } else {
+      return this.searchService.contentSearch(requestParams).pipe(map(data => ({contentData: data })));
+    }
   }
 
   private formatSearchresults(response) {
     const enrolledCoursesId = [];
-    _.forEach(response.enrolledCourseData.enrolledCourses, (value, index) => {
+    _.forEach(_.get(response, 'enrolledCourseData.enrolledCourses'), (value, index) => {
       enrolledCoursesId[index] = _.get(response.enrolledCourseData.enrolledCourses[index], 'courseId');
     });
     _.forEach(response.contentData.result.content, (value, index) => {
-      if (response.enrolledCourseData.enrolledCourses && response.enrolledCourseData.enrolledCourses.length > 0) {
+      if (_.get(response, 'enrolledCourseData.enrolledCourses') && _.get(response, 'enrolledCourseData.enrolledCourses.length') > 0) {
         if (_.indexOf(enrolledCoursesId, response.contentData.result.content[index].identifier) !== -1) {
           const constantData = this.configService.appConfig.ViewAll.enrolledCourses.constantData;
           const metaData = { metaData: this.configService.appConfig.ViewAll.enrolledCourses.metaData };
