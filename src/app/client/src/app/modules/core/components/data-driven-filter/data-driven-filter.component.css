@@ -1,3 +1,29 @@
-.filterFieldSearch.ui.selection.dropdown {
-    min-width: 100%;
-   }
+.ui.form .field.filter>label{
+    font-weight: 500;
+    margin: 0 0 5px 0;
+    color: #333;
+    font-size: 12px;
+    font-family: 'sunbirdregularfont';
+}
+.ui.selection.dropdown {
+    height: 33px;
+    width: 160px !important;
+    line-height: 33px;
+    border-radius: 2px;
+    border: solid 0.5px #CBCBCB;
+    color: #979797;
+    font-size: 12px;
+    font-family: 'sunbirdregularfont';
+    padding:0;
+}
+.ui.selection.active.dropdown{
+    color: #196d7f;
+    border: solid 0.5px #0d9276;
+    font-weight: bold;
+    box-shadow: 0 2px 3px 0 rgba(34,36,38,.15);
+}
+.ui.selection.active.dropdown~label{
+    color: #196d7f;
+    border-color: #196d7f;
+    font-weight: bold;
+}

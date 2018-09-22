@@ -1,0 +1,25 @@
+/* Fonts */
+@font-face {
+    font-family: 'sunbirdfont';
+    src: url('../../fonts/OpenSans-Light.ttf') format('truetype');
+    font-weight: light;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'sunbirdfont';
+    src: url('../../fonts/OpenSans-Regular.ttf') format('truetype');
+    font-weight: regular;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'sunbirdfont';
+    src: url('../../fonts/OpenSans-SemiBold.ttf') format('truetype');
+    font-weight: semibold;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'sunbirdfont';
+    src: url('../../fonts/OpenSans-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+  }

@@ -1,0 +1,173 @@
+/*==================
+	padding
+===================*/
+.p-0 {
+    padding: 0;
+}
+.p-5 {
+    padding: 5px;
+}
+.p-10 {
+    padding: 10px;
+}
+.p-15 {
+    padding: 15px;
+}
+.p-20 {
+    padding: 20px;
+}
+.p-25 {
+    padding: 25px;
+}
+.p-30 {
+    padding: 30px;
+}
+.p-40 {
+    padding: 40px;
+}
+.px-5 {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.px-10 {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.px-15 {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.px-20 {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.px-25 {
+    padding-left: 25px;
+    padding-right: 25px;
+}
+.px-30 {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.px-40 {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+.py-5 {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.py-10 {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.py-15 {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.py-20 {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.py-25 {
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+.py-30 {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+.py-40 {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+.pt-5 {
+    padding-top: 5px;
+}
+.pt-10 {
+    padding-top: 10px;
+}
+.pt-15 {
+    padding-top: 15px;
+}
+.pt-20 {
+    padding-top: 20px;
+}
+.pt-25 {
+    padding-top: 25px;
+}
+.pt-30 {
+    padding-top: 30px;
+}
+.pt-40 {
+    padding-top: 40px;
+}
+.pt-45 {
+    padding-top: 45px;
+}
+.pt-50 {
+    padding-top: 50px;
+}
+.pr-0 {
+    padding-right: 0;
+}
+.pr-5 {
+    padding-right: 5px;
+}
+.pr-10 {
+    padding-right: 10px;
+}
+.pr-15 {
+    padding-right: 15px;
+}
+.pr-20 {
+    padding-right: 20px;
+}
+.pr-25 {
+    padding-right: 25px;
+}
+.pr-30 {
+    padding-right: 30px;
+}
+.pl-0 {
+    padding-left: 0;
+}
+.pl-5 {
+    padding-left: 5px;
+}
+.pl-10 {
+    padding-left: 10px;
+}
+.pl-15 {
+    padding-left: 15px;
+}
+.pl-20 {
+    padding-left: 20px;
+}
+.pl-25 {
+    padding-left: 25px;
+}
+.pl-30 {
+    padding-left: 30px;
+}
+.pb-5 {
+    padding-bottom: 5px;
+}
+.pb-10 {
+    padding-bottom: 10px;
+}
+.pb-15 {
+    padding-bottom: 15px;
+}
+.pb-20 {
+    padding-bottom: 20px;
+}
+.pb-25 {
+    padding-bottom: 25px;
+}
+.pb-30 {
+    padding-bottom: 30px;
+}
+.pb-40 {
+    padding-bottom: 40px;
+}

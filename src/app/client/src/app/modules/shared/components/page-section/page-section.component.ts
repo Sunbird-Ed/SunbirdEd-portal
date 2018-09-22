@@ -42,7 +42,7 @@ export class PageSectionComponent implements OnInit {
       'breakpoint': 2800,
       'settings': {
         'slidesToShow': 8,
-        'slidesToScroll': 4,
+        'slidesToScroll': 2,
         'variableWidth':true,
       }
     },
@@ -50,7 +50,7 @@ export class PageSectionComponent implements OnInit {
       'breakpoint': 2200,
       'settings': {
         'slidesToShow': 6,
-        'slidesToScroll': 4,
+        'slidesToScroll': 2,
         'variableWidth':true,
       }
     },
@@ -58,7 +58,7 @@ export class PageSectionComponent implements OnInit {
       'breakpoint': 2000,
       'settings': {
         'slidesToShow': 5,
-        'slidesToScroll': 4,
+        'slidesToScroll': 2,
         'variableWidth':true,
       }
     },
@@ -66,7 +66,7 @@ export class PageSectionComponent implements OnInit {
       'breakpoint': 1400,
       'settings': {
         'slidesToShow': 3.5,
-        'slidesToScroll': 3.5,
+        'slidesToScroll': 2,
         'variableWidth':true,
       }
     },
@@ -74,7 +74,7 @@ export class PageSectionComponent implements OnInit {
       'breakpoint': 1200,
       'settings': {
         'slidesToShow': 3.5,
-        'slidesToScroll': 3.5,
+        'slidesToScroll': 2,
         'variableWidth':true,
       }
     },
@@ -82,7 +82,7 @@ export class PageSectionComponent implements OnInit {
       'breakpoint': 800,
       'settings': {
         'slidesToShow': 3,
-        'slidesToScroll': 3,
+        'slidesToScroll': 1,
         'variableWidth':true,
       }
     },
@@ -90,7 +90,7 @@ export class PageSectionComponent implements OnInit {
       'breakpoint': 600,
       'settings': {
         'slidesToShow': 2,
-        'slidesToScroll': 2,
+        'slidesToScroll': 1,
         'variableWidth':true,
       }
     },
