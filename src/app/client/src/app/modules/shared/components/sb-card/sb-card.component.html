@@ -1,0 +1,52 @@
+<div  class="ui link cards" 
+      *ngIf="data" (click)="onAction(data,data.action.onImage)" 
+      appTelemetryInteract 
+      [telemetryInteractObject]="{id:data.metaData.identifier,type:data.telemetryObjectType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion.toString():'1.0'}" 
+      [telemetryInteractEdata]="data.telemetryInteractEdata">
+  <div class="ui fluid card">
+    <div class="content">
+      <div class="two column grid">
+        <div class="column">
+          <div *ngIf="data.image" class="ui">
+            <div class="ui image left floated"
+                [ngStyle]="{'background-image': 'url(' + data.image + ')'}">
+            </div>
+          </div>
+          <div *ngIf="!data.image" class="">
+            <div class="ui image left floated"
+                [ngStyle]="{'background-image': 'url(assets/images/default.png)'}">
+            </div>
+          </div>
+        </div>
+        <div class="column">  
+          <div class="content">
+            <span *ngIf="data.ribbon" class="ui card-label">{{data.ribbon.right.name}}</span>            
+          </div>
+          <div class="content bottom attach">
+            <span class="">Subject : {{data.subject}} </span>
+            <br/>
+            <span class="">Class : {{data.class}}</span>
+            <br/>
+            <span class="">Medium : {{data.medium}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="ui card-header">
+          {{data.name}}
+      </div>
+      <div class="card-meta">
+        {{data.creator}}
+      </div>
+    </div>
+    <div class="ui tiny progress #d4e4e1">
+        <div class="bar"></div>
+    </div>
+    <div class="content">
+      <div class="description">
+        {{data.description}}
+      </div>
+    </div>
+  </div>
+</div>
