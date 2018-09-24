@@ -68,7 +68,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     this.rootNode.walk((node) => {
       node.fileType = MimeTypeTofileType[node.model.mimeType];
       node.id = node.model.identifier;
-      node.title = node.model.name || 'Untitled File';
+      node.dialCode = node.model.code;
       if (node.children && node.children.length) {
         if (this.options.folderIcon) {
           node.icon = this.options.folderIcon;
@@ -90,6 +90,16 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
         }
         node.icon = this.options.customFileIcon[node.fileType] || this.options.fileIcon;
         node.icon = `${node.icon} ${node.iconColor}`;
+      }
+      
+      //const status = (c && c.status) ? content.status.toString() : 0;
+      //node.dialCode = this.iconColor[status];
+      
+      console.log("Node To See",node);
+      if(node.folder && !(node.children.length)){
+        node.title = node.model.name+' (Comming Soon)' || 'Untitled File';
+      }else {
+        node.title = node.model.name || 'Untitled File';
       }
     });
   }
