@@ -475,7 +475,9 @@
         "orgCode": "orgCode",
         "orgType": "orgType",
         "preferredLanguage": "preferredLanguage",
-        "contactDetail": "contactDetail"
+        "contactDetail": "contactDetail",
+        "locationId": "locationId",
+        "locationCode": "locationCode"
       }
     ]
   },
