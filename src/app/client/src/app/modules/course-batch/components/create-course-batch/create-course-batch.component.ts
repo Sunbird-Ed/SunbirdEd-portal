@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { takeUntil, mergeMap } from 'rxjs/operators';
+import { takeUntil, mergeMap, map } from 'rxjs/operators';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Subject, combineLatest } from 'rxjs';
@@ -128,10 +128,7 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
   }
 
   private fetchBatchDetails() {
-    return combineLatest(
-      this.courseBatchService.getCourseHierarchy(this.courseId),
-      (courseDetails) => ({ courseDetails })
-    );
+    return this.courseBatchService.getCourseHierarchy(this.courseId).pipe(map(data => ({courseDetails: data })));
   }
   /**
   * It helps to initialize form fields and apply field level validation
