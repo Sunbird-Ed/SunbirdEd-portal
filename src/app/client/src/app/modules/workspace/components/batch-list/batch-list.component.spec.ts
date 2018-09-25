@@ -1,30 +1,24 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { BatchCardComponent } from './../batch-card/batch-card.component';
 import { BatchListComponent } from './batch-list.component';
-// Import NG testing module(s)
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { FormsModule, NgForm, FormBuilder, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
-// Import services
 import { SharedModule, PaginationService, ToasterService, ResourceService } from '@sunbird/shared';
-import { SearchService, ContentService } from '@sunbird/core';
+import { UserService, LearnerService, SearchService, CoreModule } from '@sunbird/core';
 import { WorkSpaceService, BatchService } from '../../services';
-import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
-import { Ibatch } from './../../interfaces/batch';
-// import batch card comoponet
-
-// Import Module
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-// Test data
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as mockData from './batch-list.component.spec.data';
 const testData = mockData.mockRes;
 import * as _ from 'lodash';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
+
 describe('BatchListComponent', () => {
   let component: BatchListComponent;
   let fixture: ComponentFixture<BatchListComponent>;
@@ -78,12 +72,11 @@ describe('BatchListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [BatchListComponent, BatchCardComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule,
-         Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(),
+        Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(), CoreModule.forRoot(),
         TelemetryModule.forRoot(), NgInviewModule],
-      providers: [PaginationService, WorkSpaceService, UserService,
-        SearchService, ContentService, LearnerService, CoursesService,
-        PermissionService, ResourceService, ToasterService, BatchService,
+      providers: [PaginationService, WorkSpaceService, ResourceService, ToasterService, BatchService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
@@ -179,7 +172,7 @@ describe('BatchListComponent', () => {
     expect(component.batchList).toEqual(testData.updateBatchlist);
   }));
 
-   it('should call  user search api and throws error ', inject([SearchService], (searchService) => {
+  it('should call  user search api and throws error ', inject([SearchService], (searchService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(testData.userlist));

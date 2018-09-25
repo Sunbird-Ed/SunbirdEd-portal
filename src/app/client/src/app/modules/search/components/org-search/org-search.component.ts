@@ -1,7 +1,7 @@
 
 import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage } from '@sunbird/shared';
-import { SearchService } from '@sunbird/core';
+import { SearchService, UserService } from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
@@ -99,6 +99,10 @@ export class OrgSearchComponent implements OnInit {
 	*/
   telemetryImpression: IImpressionEventInput;
   /**
+   * To get user profile of logged-in user
+   */
+  public userService: UserService;
+  /**
    * Constructor to create injected service(s) object
    * Default method of Draft Component class
    * @param {SearchService} searchService Reference of SearchService
@@ -106,10 +110,12 @@ export class OrgSearchComponent implements OnInit {
    * @param {PaginationService} paginationService Reference of PaginationService
    * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
    * @param {ConfigService} config Reference of ConfigService
+   * @param {UserService} userService Reference of UserService
    */
   constructor(searchService: SearchService, route: Router,
     activatedRoute: ActivatedRoute, paginationService: PaginationService, resourceService: ResourceService,
-    toasterService: ToasterService, public ngZone: NgZone, config: ConfigService) {
+    toasterService: ToasterService, public ngZone: NgZone, config: ConfigService,
+    userService: UserService) {
     this.searchService = searchService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -117,6 +123,7 @@ export class OrgSearchComponent implements OnInit {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.config = config;
+    this.userService = userService;
   }
 
   /**
@@ -127,6 +134,7 @@ export class OrgSearchComponent implements OnInit {
     this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
     const searchParams = {
       filters: {
+        rootOrgId: this.userService.rootOrgId,
         orgTypeId: this.queryParams.OrgType
       },
       limit: this.pageLimit,

@@ -76,7 +76,6 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
     this.resourceService = resourceService;
     this.config = config;
     this.toasterService = toasterService;
-    document.body.classList.add('no-scroll'); // This is a workaround  we need to remove it when library add support to remove body scroll
   }
   /**
 * This method defines array of instructions to be displayed
@@ -109,7 +108,9 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
           { instructions: this.resourceService.frmelmnts.instn.t0031 },
           { instructions: this.resourceService.frmelmnts.instn.t0032 },
           { instructions: this.resourceService.frmelmnts.instn.t0049 },
-          { instructions: this.resourceService.frmelmnts.instn.t0050 }
+          { instructions: this.resourceService.frmelmnts.instn.t0050 },
+          { instructions: this.resourceService.frmelmnts.instn.t0078 },
+          { instructions: this.resourceService.frmelmnts.instn.t0079 }
         ]
       }
     ];
@@ -164,20 +165,20 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
       formData.append('org', file[0]);
       const fd = formData;
       this.orgManagementService.bulkOrgUpload(fd).pipe(
-      takeUntil(this.unsubscribe$))
-      .subscribe(
-        (apiResponse: ServerResponse) => {
-          this.showLoader = false;
-          this.processId = apiResponse.result.processId;
-          this.toasterService.success(this.resourceService.messages.smsg.m0031);
-          this.fileName = file[0].name;
-        },
-        err => {
-          this.showLoader = false;
-          const errorMsg =  _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
-           this.resourceService.messages.fmsg.m0051;
-          this.toasterService.error(errorMsg);
-        });
+        takeUntil(this.unsubscribe$))
+        .subscribe(
+          (apiResponse: ServerResponse) => {
+            this.showLoader = false;
+            this.processId = apiResponse.result.processId;
+            this.toasterService.success(this.resourceService.messages.smsg.m0031);
+            this.fileName = file[0].name;
+          },
+          err => {
+            this.showLoader = false;
+            const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
+              this.resourceService.messages.fmsg.m0051;
+            this.toasterService.error(errorMsg);
+          });
     } else if (file[0] && !(file[0].name.match(/.(csv)$/i))) {
       this.showLoader = false;
       this.toasterService.error(this.resourceService.messages.stmsg.m0080);

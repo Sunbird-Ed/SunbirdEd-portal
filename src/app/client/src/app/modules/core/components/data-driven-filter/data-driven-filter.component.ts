@@ -16,13 +16,13 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
 })
 export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   @Input() filterEnv: string;
-  @Input() redirectUrl: string;
   @Input() accordionDefaultOpen: boolean;
   @Input() isShowFilterLabel: boolean;
   @Input() hashTagId = '';
   @Input() ignoreQuery = [];
   @Input() showSearchedParam = true;
   @Input() enrichFilters: object;
+  @Input() viewAllMode =  false;
   @Input() pageId: string;
   @Output() filters = new EventEmitter();
   @Output() dataDrivenFilter = new EventEmitter();
@@ -258,10 +258,16 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   resetFilters() {
     if (!_.isEmpty(this.ignoreQuery)) {
       this.formInputData = _.pick(this.formInputData, this.ignoreQuery);
-    } else {
+    }  else {
       this.formInputData = {};
     }
-    this.router.navigate([this.redirectUrl], { queryParams: this.formInputData });
+     if (this.viewAllMode) {
+     const data = this._cacheService.get('viewAllQuery');
+     _.forIn(data, (value, key ) => {
+      this.formInputData[key] = value;
+     });
+    }
+    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
     this.refresh = false;
     this.cdr.detectChanges();
     this.refresh = true;
@@ -292,7 +298,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
     queryParams = _.pickBy(queryParams, value => _.isArray(value) && value.length > 0);
-    this.router.navigate([this.redirectUrl], { queryParams: queryParams });
+    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
   }
 
   removeFilterSelection(field, item) {

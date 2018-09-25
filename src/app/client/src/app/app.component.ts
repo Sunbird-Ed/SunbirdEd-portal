@@ -118,7 +118,7 @@ export class AppComponent implements OnInit {
     this.permissionService.initialize();
     this.courseService.initialize();
     this.userDataUnsubscribe = this.userService.userData$.subscribe((user: IUserData) => {
-      if (user && !user.err) {
+      if (!user.err) {
         if (this.userDataUnsubscribe) {
           this.userDataUnsubscribe.unsubscribe();
         }
@@ -127,7 +127,7 @@ export class AppComponent implements OnInit {
         const slug = _.get(user, 'userProfile.rootOrg.slug');
         this.initTelemetryService(true);
         this.initTenantService(slug);
-      } else if (user && user.err) {
+      } else if (user.err) {
         if (this.userDataUnsubscribe) {
           this.userDataUnsubscribe.unsubscribe();
         }

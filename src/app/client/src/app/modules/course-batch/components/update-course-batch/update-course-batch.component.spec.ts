@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { UpdateCourseBatchComponent } from './update-course-batch.component';
+import {
+  FormsModule, NgForm, FormBuilder, Validators, FormGroup, ReactiveFormsModule
+} from '@angular/forms';
+import { SuiModule } from 'ng2-semantic-ui';
 
 describe('UpdateCourseBatchComponent', () => {
   let component: UpdateCourseBatchComponent;
@@ -8,9 +11,10 @@ describe('UpdateCourseBatchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UpdateCourseBatchComponent ]
+      declarations: [UpdateCourseBatchComponent],
+      imports: [SuiModule, FormsModule, ReactiveFormsModule]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -22,4 +26,6 @@ describe('UpdateCourseBatchComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });
+

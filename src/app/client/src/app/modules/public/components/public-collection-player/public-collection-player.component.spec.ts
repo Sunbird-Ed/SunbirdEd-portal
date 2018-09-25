@@ -99,8 +99,10 @@ describe('PublicCollectionPlayerComponent', () => {
     const navigation = {
       queryParams: {
         dialCode: '61U24C'
-      }
+      },
+      relativeTo: route
     };
+    component.queryParams = { dialCode: '61U24C'};
     component.closeContentPlayer();
     expect(component.showPlayer).toBeFalsy();
     expect(router.navigate).toHaveBeenCalledWith([], navigation);
@@ -129,6 +131,7 @@ describe('PublicCollectionPlayerComponent', () => {
     };
     spyOn(component, 'OnPlayContent').and.callThrough();
     spyOn(component, 'playContent').and.callThrough();
+    component.queryParams = {};
     component.OnPlayContent(content, true);
     expect(component.OnPlayContent).toHaveBeenCalledWith(content, true);
     expect(component.playContent).toHaveBeenCalledWith(content);

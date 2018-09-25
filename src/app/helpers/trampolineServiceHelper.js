@@ -82,7 +82,7 @@ module.exports = {
           // telemetryHelper.logAPICallEvent(telemetryData)
 
           request(options, function (error, response, body) {
-            telemetryData.statusCode = response.statusCode
+            telemetryData.statusCode = _.get(response, 'statusCode')
             self.errorMsg = 'Request credentials verification failed. Please try with valid credentials.'
             if (error) {
               telemetryData.resp = body
@@ -224,7 +224,7 @@ module.exports = {
     // telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
-      telemetryData.statusCode = response.statusCode
+      telemetryData.statusCode = _.get(response, 'statusCode')
       console.log('check user exists', response.statusCode, 'for Login Id :', loginId)
       if (body.responseCode === 'OK') {
         callback(null, true)
@@ -273,7 +273,7 @@ module.exports = {
     // telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
-      telemetryData.statusCode = response.statusCode
+      telemetryData.statusCode = _.get(response, 'statusCode');
       if (error || response.statusCode !== 200) {
         telemetryData.resp = body
         telemetryHelper.logAPIErrorEvent(telemetryData)

@@ -1,7 +1,7 @@
 
 import { combineLatest,  Subscription ,  Observable ,  Subject } from 'rxjs';
 
-import {first, takeUntil} from 'rxjs/operators';
+import {first, takeUntil, map} from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -148,16 +148,22 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   */
   populateBatchData(): void {
     this.showLoader = true;
-    const option = {
+    const searchParamsCreator = {
       courseId: this.courseId,
       status: ['0', '1', '2'],
       createdBy: this.userId
     };
-    this.courseProgressService.getBatches(option).pipe(
-    takeUntil(this.unsubscribe))
-    .subscribe(
-      (apiResponse: ServerResponse) => {
-        this.batchlist = apiResponse.result.response.content;
+    const searchParamsMentor = {
+      courseId: this.courseId,
+      status: ['0', '1', '2'],
+      mentors: [this.userId]
+    };
+    combineLatest(
+      this.courseProgressService.getBatches(searchParamsCreator),
+      this.courseProgressService.getBatches(searchParamsMentor),
+    ).pipe(takeUntil(this.unsubscribe))
+     .subscribe((results) => {
+        this.batchlist = _.union(results[0].result.response.content, results[1].result.response.content);
         this.showLoader = false;
         const isBatchExist = _.find(this.batchlist, (batch) => batch.id === this.queryParams.batchIdentifier);
         if (this.batchlist.length === 0) {
@@ -172,13 +178,11 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
           this.showWarningDiv = true;
         }
         this.paramSubcription.unsubscribe();
-      },
-      err => {
+      }, (err) => {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
         this.showLoader = false;
         this.showNoBatch = true;
-      }
-    );
+      });
   }
 
   /**

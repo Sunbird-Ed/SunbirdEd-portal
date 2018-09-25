@@ -53,6 +53,9 @@
       "@sunbird/badge": [
         "app/modules/badging"
       ],
+      "@sunbird/shared-feature": [
+        "app/modules/shared-feature"
+      ],
       "@sunbird/environment": [
         "environments/environment"
       ],

@@ -28,6 +28,8 @@ export class PageSectionComponent implements OnInit {
   * section is used to render ICaraouselData value on the view
   */
   @Output() visits = new EventEmitter<any>();
+
+  @Output() viewAll = new EventEmitter<any>();
   /**
   * This is slider setting
   */
@@ -158,5 +160,8 @@ export class PageSectionComponent implements OnInit {
     if (visits.length > 0) {
       this.visits.emit(visits);
     }
+  }
+  navigateToViewAll(section) {
+    this.viewAll.emit(section);
   }
 }

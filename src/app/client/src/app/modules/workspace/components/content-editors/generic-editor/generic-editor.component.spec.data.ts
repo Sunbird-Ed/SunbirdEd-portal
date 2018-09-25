@@ -26,24 +26,11 @@ export const mockRes = {
         'createdDate': '2017-10-31 10:47:04:723+0000',
         'createdBy': '5d7eb482-c2b8-4432-bf38-cc58f3c23b45'
     },
-    tenantMockData: {
-        'id': 'api.tenant.info',
-        'ver': '1.0',
-        'ts': '2018-04-10 15:34:45:875+0530',
-        'params': {
-            'resmsgid': '98b0a030-3ca6-11e8-964f-83be3d8fc737',
-            'msgid': null,
-            'status': 'successful',
-            'err': '',
-            'errmsg': ''
-        },
-        'responseCode': 'OK',
-        'result': {
-            'titleName': 'Sunbird',
-            'logo': 'http://localhost:3000/assets/images/sunbird_logo.png',
-            'poster': 'http://localhost:3000/assets/images/sunbird_logo.png',
-            'favicon': 'http://localhost:3000/assets/images/favicon.ico',
-            'appLogo': 'http://localhost:3000/assets/images/sunbird_logo.png'
-        }
+    tenantMockData:  {
+        'titleName': 'Sunbird',
+        'logo': 'http://localhost:3000/assets/images/sunbird_logo.png',
+        'poster': 'http://localhost:3000/assets/images/sunbird_logo.png',
+        'favicon': 'http://localhost:3000/assets/images/favicon.ico',
+        'appLogo': 'http://localhost:3000/assets/images/sunbird_logo.png'
     }
 };

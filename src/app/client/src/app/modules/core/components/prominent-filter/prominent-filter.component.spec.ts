@@ -57,6 +57,8 @@ describe('ProminentFilterComponent', () => {
   });
   it('should apply filters and key should have concepts', () => {
     const router = TestBed.get(Router);
+    const activatedRoute = TestBed.get(ActivatedRoute);
+    activatedRoute.parent = 'ap/explore';
     component.formInputData = {
       'subject': ['English'], 'medium': ['English'],
       'concepts': [{
@@ -66,15 +68,17 @@ describe('ProminentFilterComponent', () => {
     };
     const queryParams = { 'subject': ['English'], 'medium': ['English'], 'concepts': ['AI31'] };
     component.applyFilters();
-    expect(router.navigate).toHaveBeenCalledWith([undefined], { queryParams: queryParams });
+    expect(router.navigate).toHaveBeenCalledWith([], {relativeTo: 'ap/explore', queryParams: queryParams });
   });
 
   it('Filter results should not change on call of  apply filters for same params', () => {
     const router = TestBed.get(Router);
+    const activatedRoute = TestBed.get(ActivatedRoute);
+    activatedRoute.parent = 'ap/explore';
     const queryParams = component.formInputData = { 'gradeLevel': ['Grade 1', 'Grade 2'], 'medium': ['English'] };
     component.applyFilters();
     expect(component.isFiltered).toBeFalsy();
-    expect(router.navigate).toHaveBeenCalledWith([undefined], { queryParams: queryParams });
+    expect(router.navigate).toHaveBeenCalledWith([], { relativeTo: 'ap/explore', queryParams: queryParams });
   });
 
   it('should get meta data from framework service and call formconfig service if cache not exists', () => {

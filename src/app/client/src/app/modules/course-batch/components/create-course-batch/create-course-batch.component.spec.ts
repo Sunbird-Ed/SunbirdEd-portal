@@ -1,6 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+<<<<<<< HEAD
 import { SuiModule } from 'ng2-semantic-ui';
 import { RouterTestingModule } from '@angular/router/testing';
+=======
+import {
+  FormsModule, NgForm, FormBuilder, Validators, FormGroup, ReactiveFormsModule
+} from '@angular/forms';
+import { SuiModule } from 'ng2-semantic-ui';
+>>>>>>> 93b2c23e943b9d66498a5779c674458fbceffc46
 import { CreateCourseBatchComponent } from './create-course-batch.component';
 import { FormsModule, NgForm, FormBuilder, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -57,6 +64,7 @@ describe('CreateCourseBatchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+<<<<<<< HEAD
       declarations: [CreateCourseBatchComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [FormsModule, SharedModule.forRoot(), CoreModule.forRoot(), SuiModule, RouterTestingModule,
@@ -64,6 +72,10 @@ describe('CreateCourseBatchComponent', () => {
       providers: [CourseBatchService, ToasterService, ResourceService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
+=======
+      declarations: [ CreateCourseBatchComponent ],
+      imports: [SuiModule, FormsModule, ReactiveFormsModule],
+>>>>>>> 93b2c23e943b9d66498a5779c674458fbceffc46
     })
     .compileComponents();
   }));
@@ -109,6 +121,7 @@ describe('CreateCourseBatchComponent', () => {
     expect(component.createBatchForm).toBeDefined();
     expect(toasterService.success).toHaveBeenCalledWith(resourceServiceMockData.messages.smsg.m0033);
   });
+
 });
 
 

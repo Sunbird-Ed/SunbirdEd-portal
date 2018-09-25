@@ -14,7 +14,7 @@
                 <span *ngFor="let value of label">
                         <span class="padded chip padding-right-5" *ngIf='queryParams[value] && queryParams[value].length > 0'>
                           {{value}}:
-                          <a class="ui label margin-top--5" *ngFor="let item of queryParams[value] ">
+                          <a class="ui label margin-top--5 mr-5" *ngFor="let item of queryParams[value] ">
                             {{item}}
                             <i class="delete icon" (click)="removeFilterSelection(value,item)"></i>
                           </a>

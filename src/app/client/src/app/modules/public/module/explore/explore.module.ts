@@ -7,6 +7,7 @@ import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { NgInviewModule } from 'angular-inport';
 import { ExploreComponent } from './components/explore/explore.component';
+import {SharedFeatureModule} from '@sunbird/shared-feature';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { ExploreComponent } from './components/explore/explore.component';
     CoreModule,
     SharedModule,
     NgInviewModule,
-    ExploreRoutingModule
+    ExploreRoutingModule,
+    SharedFeatureModule
   ],
   declarations: [ ExploreContentComponent, ExploreComponent]
 })

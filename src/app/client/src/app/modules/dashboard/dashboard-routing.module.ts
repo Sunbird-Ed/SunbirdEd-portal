@@ -28,7 +28,8 @@ const routes: Routes = [
     }
   },
   {
-    path: 'orgDashboard/organization/:datasetType/:id/:timePeriod', component: OrganisationComponent,
+    // path: 'orgDashboard/organization/:datasetType/:id/:timePeriod', component: OrganisationComponent,
+    path: 'orgDashboard/organization/creation/:id/:timePeriod', component: OrganisationComponent,
     data: {
       telemetry: { env: 'profile', pageid: 'org-admin-dashboard', type: 'view' },
       breadcrumbs: [{ label: 'Home', url: '/home' },

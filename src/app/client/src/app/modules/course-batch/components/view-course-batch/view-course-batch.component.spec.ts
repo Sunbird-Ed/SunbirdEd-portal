@@ -24,4 +24,5 @@ describe('ViewCourseBatchComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });

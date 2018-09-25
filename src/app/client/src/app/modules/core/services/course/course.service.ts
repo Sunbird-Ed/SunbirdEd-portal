@@ -1,4 +1,4 @@
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, skipWhile } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { LearnerService } from './../learner/learner.service';
@@ -36,8 +36,8 @@ export class CoursesService {
   /**
    * Read only observable Containing enrolled courses.
    */
-  public readonly enrolledCourseData$: Observable<IEnrolledCourses> = this._enrolledCourseData$.asObservable();
-
+  public readonly enrolledCourseData$: Observable<IEnrolledCourses> = this._enrolledCourseData$.asObservable()
+  .pipe(skipWhile(data => data === undefined || data === null));
   /**
    * Notification message for external content onclick of Resume course button
    */
