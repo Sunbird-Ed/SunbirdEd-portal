@@ -16,7 +16,8 @@ const routes: Routes = [
       telemetry: {
         env: 'explore', pageid: 'viewAll', type: 'view', subtype: 'paginate'
       },
-      filterType: 'explore'
+      filterType: 'explore',
+      softConstraints: {badgeAssertions: 98, board: 99, channel: 100}
     }
   },
     {
