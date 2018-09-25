@@ -210,7 +210,7 @@ export class AddBatchMembersComponent implements OnInit {
     const mentorId = _.map(this.selectedUserList, 'id');
     if (mentorId.indexOf(mentor.id) !== 1) {
       mentor['role'] = 'mentor';
-      mentor['orgname'] = _.map(this.organizations, 'orgName').toString();
+      mentor['orgname'] = this.rootOrgName;
       this.selectedUserList.push(mentor);
     }
     _.remove(this.mentorList, mentorList => mentorList.id === mentor.id);
@@ -221,7 +221,7 @@ export class AddBatchMembersComponent implements OnInit {
     const participantsId = _.map(this.selectedUserList, 'id');
     if (participantsId.indexOf(participants.id) !== 1) {
       participants['role'] = 'participant';
-      participants['orgname'] = _.map(this.organizations, 'orgName').toString();
+      participants['orgname'] = this.rootOrgName;
       this.selectedUserList.push(participants);
     }
     _.remove(this.participantList, participantList => participantList.id === participants.id);
