@@ -27,4 +27,3 @@ export class CreateCourseBatchComponent implements OnInit {
   ngOnInit() {
   }
 }
-}
