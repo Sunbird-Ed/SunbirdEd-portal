@@ -32,7 +32,6 @@ export class CourseBatchService {
   }
 
   getUserList(requestParam: SearchParam = {}): Observable<ServerResponse> {
-    console.log(requestParam);
     if (_.isEmpty(requestParam) && this.defaultUserList) {
       return observableOf(this.defaultUserList);
     } else {
