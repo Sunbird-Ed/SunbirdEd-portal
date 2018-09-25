@@ -88,7 +88,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   */
   enableSignup = true;
   exploreRoutingUrl: string;
-  currentUrl: any;
+  currentUrl: string;
   /*
   * constructor
   */
@@ -106,10 +106,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(event => {
         let currentRoute = this.activatedRoute.root;
-        while (currentRoute.children.length > 0) {
-          const child: ActivatedRoute[] = currentRoute.children;
-          child.forEach(route => {
-            currentRoute = route;
+        if (currentRoute.children) {
+          while (currentRoute.children.length > 0) {
+            const child: ActivatedRoute[] = currentRoute.children;
+            child.forEach(route => {
+              currentRoute = route;
               if (route.snapshot.data.telemetry) {
                 if (route.snapshot.data.telemetry.pageid) {
                   this.currentUrl = route.snapshot.data.telemetry.pageid;
@@ -117,7 +118,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
                   this.currentUrl = route.snapshot.data.telemetry.env;
                 }
               }
-          });
+            });
+          }
         }
       });
     try {
