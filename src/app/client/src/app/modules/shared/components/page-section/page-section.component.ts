@@ -97,7 +97,7 @@ export class PageSectionComponent implements OnInit {
   infinite: false,
 };
  /**The button clicked value for interact telemetry event */
- btnArrow: string;
+ btnArrow = 'prev-button';
  pageid: string;
   constructor(public activatedRoute: ActivatedRoute) {
   }
@@ -144,7 +144,7 @@ export class PageSectionComponent implements OnInit {
   */
   inviewChange(contentList, event) {
     const visits = [];
-    const slideData = contentList.slice(event.currentSlide + 1, event.currentSlide + 5);
+    const slideData = contentList;
     _.forEach(slideData, (slide, key) => {
       const content = _.find(this.inviewLogs, (eachContent) => {
         if (slide.metaData.courseId) {
@@ -162,14 +162,15 @@ export class PageSectionComponent implements OnInit {
     if (visits.length > 0) {
       this.visits.emit(visits);
     }
-    const $next = $('.slick-slider').find('.slick-next');
-    ($next).on('click', () => {
-      this.btnArrow = 'next-button';
-    });
-    const $prev = $('.slick-slider').find('.slick-prev');
-    ($prev).on('click', () => {
+  }
+  checkSlide(event) {
+    if (event.currentSlide === 0 && event.nextSlide === 0) {
       this.btnArrow = 'prev-button';
-    });
+    } else if (event.currentSlide < event.nextSlide) {
+      this.btnArrow = 'next-button';
+    } else if (event.currentSlide > event.nextSlide) {
+      this.btnArrow = 'prev-button';
+    }
   }
   navigateToViewAll(section) {
     this.viewAll.emit(section);
