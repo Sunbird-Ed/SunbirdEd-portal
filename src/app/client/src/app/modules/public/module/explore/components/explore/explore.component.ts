@@ -265,10 +265,12 @@ export class ExploreComponent implements OnInit, OnDestroy {
     this.cacheService.set('viewAllQuery', queryParams, {
       maxAge: this.browserCacheTtlService.browserCacheTtl
     });
+    queryParams['channel'] = this.hashTagId;
+    queryParams['board'] = this.prominentFilters['board'];
     _.forIn(this.filters, (value, index) => {
       queryParams[index] = value;
     });
-    const url = this.router.url.split('?');
+     const url = this.router.url.split('?');
       const sectionUrl = url[0] + '/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], {queryParams: queryParams});
   }

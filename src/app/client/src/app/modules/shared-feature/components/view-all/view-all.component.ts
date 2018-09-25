@@ -219,7 +219,8 @@ export class ViewAllComponent implements OnInit, OnDestroy {
       limit: this.pageLimit,
       pageNumber: request.params.pageNumber,
       sort_by: request.queryParams.sortType ?
-        { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy)
+        { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy),
+        softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints')
     };
     if (_.get(this.activatedRoute.snapshot, 'data.baseUrl') === 'learn') {
       return combineLatest(

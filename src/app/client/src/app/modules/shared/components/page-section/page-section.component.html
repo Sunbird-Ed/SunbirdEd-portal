@@ -1,7 +1,7 @@
 <div class="ui link popular-section" *ngIf="section.contents && section.contents.length > 0">
     <h4 class="ui header card-section-header sectionHeading">{{section.name}}
         <span class="ui red circular inline label">{{section.contents.length}}</span>
-        <button *ngIf="section.contents.length >= 10 && section.name != 'My Courses' " type="button" class="ui right floated positive button read-more-data" (click)="navigateToViewAll(section)">More</button>
+        <button *ngIf="section.contents.length >= 10 && section.name != 'My Courses' " type="button" class="ui right floated positive button read-more-data" (click)="navigateToViewAll(section)">View all</button>
     </h4>
     <div>
         <ngx-slick in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="section.contents" (afterChange)="inviewChange(section.contents,$event)"class="carousel" #slickModal="slick-modal" [config]="slideConfig">
