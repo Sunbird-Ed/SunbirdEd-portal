@@ -2,11 +2,13 @@
 import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import { PageApiService, PlayerService, ISort } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ServerResponse, ToasterService, INoResultMessage, ConfigService, UtilService} from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, INoResultMessage, ConfigService, UtilService,
+  BrowserCacheTtlService} from '@sunbird/shared';
 import { ICaraouselData, IAction } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { CacheService } from 'ng2-cache-service';
 
 /**
  * This component contains 2 sub components
@@ -75,7 +77,7 @@ export class ResourceComponent implements OnInit {
    */
   constructor(pageSectionService: PageApiService, toasterService: ToasterService, private playerService: PlayerService,
     resourceService: ResourceService, config: ConfigService, private activatedRoute: ActivatedRoute, router: Router,
-  public utilService: UtilService) {
+  public utilService: UtilService, private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService) {
     this.pageSectionService = pageSectionService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
@@ -209,5 +211,22 @@ export class ResourceComponent implements OnInit {
   }
   playContent(event) {
     this.playerService.playContent(event.data.metaData);
+  }
+
+  viewAll(event) {
+    const query = JSON.parse(event.searchQuery);
+    const queryParams = {};
+    _.forIn(query.request.filters, (value, index) => {
+      queryParams[index] = value;
+    });
+    queryParams['defaultSortBy'] = JSON.stringify(query.request.sort_by);
+    this.cacheService.set('viewAllQuery', queryParams, {
+      maxAge: this.browserCacheTtlService.browserCacheTtl
+    });
+    _.forIn(this.filters, (value, index) => {
+      queryParams[index] = value;
+    });
+      const sectionUrl = 'resources/view-all/' + event.name.replace(/\s/g, '-');
+    this.router.navigate([sectionUrl, 1], {queryParams: queryParams});
   }
 }

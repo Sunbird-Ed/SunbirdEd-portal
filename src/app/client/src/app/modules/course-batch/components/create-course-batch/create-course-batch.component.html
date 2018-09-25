@@ -13,7 +13,7 @@
       <h4 class="ui left floated modal-sub-header padding-left-25 custom-modal-subheader">Batch Detail</h4>
       <div class="ui clearing fullpage divider mb-50"></div>
       
-      <form class="ui form batchAddUserForm padding-left-25 padding-right-25">
+      <form [formGroup]="createBatchForm" class="ui form batchAddUserForm padding-left-25 padding-right-25">
         <div class="one field">
           <div class="required field">
             <label>{{resourceService?.frmelmnts?.lbl?.batchname}}</label>
@@ -52,11 +52,11 @@
         <div class="inline fields fl">
           <div class="grouped fields margin-left-10">
             <div class="field">
-              <sui-radio-button name="enrollmentType" value='invite-only' [(ngModel)]="enrollmentType">Invite-only</sui-radio-button>
+              <sui-radio-button name="enrollmentType" value='invite-only'>Invite-only</sui-radio-button>
             </div>
             <div class="field margin-top-10">
                 <div class="field">
-                    <sui-radio-button name="enrollmentType" value='Open' [(ngModel)]="Open">Open</sui-radio-button>
+                    <sui-radio-button name="enrollmentType" value='Open' >Open</sui-radio-button>
                 </div>
             </div>
         </div>
