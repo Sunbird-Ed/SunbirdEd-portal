@@ -4,7 +4,7 @@ import {
   FormsModule, NgForm, FormBuilder, Validators, FormGroup, ReactiveFormsModule
 } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
-
+import { ResourceService } from '@sunbird/shared';
 describe('UpdateCourseBatchComponent', () => {
   let component: UpdateCourseBatchComponent;
   let fixture: ComponentFixture<UpdateCourseBatchComponent>;
@@ -12,7 +12,8 @@ describe('UpdateCourseBatchComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UpdateCourseBatchComponent],
-      imports: [SuiModule, FormsModule, ReactiveFormsModule]
+      imports: [SuiModule, FormsModule, ReactiveFormsModule],
+      providers: [ResourceService]
     })
       .compileComponents();
   }));
