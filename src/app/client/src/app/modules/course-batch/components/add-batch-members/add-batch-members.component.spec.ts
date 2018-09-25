@@ -46,7 +46,7 @@ describe('AddBatchMembersComponent', () => {
       expect(component.subOrganizations.length).toBeGreaterThanOrEqual(8);
       expect(component.selectedUserList.length).toBeLessThanOrEqual(0);
   }));
-  it('should call the fetchMembersDetails method and set the value of mentorList and participantList  ', 
+  it('should call the fetchMembersDetails method and set the value of mentorList and participantList  ',
     inject([CourseBatchService, UserService],
     (courseBatchService, userService) => {
       userService._userData$.next({ err: null, userProfile: testData.userMockData });
