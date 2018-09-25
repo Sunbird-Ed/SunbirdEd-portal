@@ -88,7 +88,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   */
   enableSignup = true;
   exploreRoutingUrl: string;
-  currentUrl: string;
+  pageId: string;
   /*
   * constructor
   */
@@ -113,9 +113,9 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
               currentRoute = route;
               if (route.snapshot.data.telemetry) {
                 if (route.snapshot.data.telemetry.pageid) {
-                  this.currentUrl = route.snapshot.data.telemetry.pageid;
+                  this.pageId = route.snapshot.data.telemetry.pageid;
                 } else {
-                  this.currentUrl = route.snapshot.data.telemetry.env;
+                  this.pageId = route.snapshot.data.telemetry.env;
                 }
               }
             });
@@ -236,8 +236,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    window.location.replace('/logoff');
-    this.cacheService.removeAll();
+    // window.location.replace('/logoff');
+    // this.cacheService.removeAll();
   }
 
   ngOnDestroy() {
