@@ -270,10 +270,10 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     if (page < 1 || page > this.pager.totalPages) {
       return;
     }
-    this.pageNumber = page;
-    this.router.navigate([url, this.pageNumber], {
-      queryParams: this.queryParams
-    });
+      this.router.navigate([url, page], {
+        queryParams: this.queryParams,
+        relativeTo: this.activatedRoute
+      });
   }
 
   playContent(event) {
