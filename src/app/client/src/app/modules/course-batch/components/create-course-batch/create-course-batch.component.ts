@@ -9,7 +9,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { CourseBatchService } from './../../services';
 import { AddBatchMembersComponent } from '../add-batch-members/add-batch-members.component';
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput, IStartEventInput, IEndEventInput, IInteractEventInput,
+IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { DeviceDetectorService } from 'ngx-device-detector';
 @Component({
   selector: 'app-create-course-batch',
   templateUrl: './create-course-batch.component.html',
@@ -83,7 +85,24 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
   * telemetryImpression object for create batch page
  */
   telemetryImpression: IImpressionEventInput;
+  /**
+  * telemetryStart object for create batch page
+  */
+  telemetryStart: IStartEventInput;
+  /**
+  * telemetryEnd object for create batch page
+  */
+  public telemetryEnd: IEndEventInput;
+    /**
+   * telemetryInteract event data
+   */
+  telemetryInteract: IInteractEventInput;
 
+  public saveBatchInteractEdata: IInteractEventEdata;
+  public addmembersInteractEdata: IInteractEventEdata;
+  public telemetryInteractObject: IInteractEventObject;
+  public backBtnInteractEdata: IInteractEventEdata;
+  public createInteractEdata: IInteractEventEdata;
   /**
 	 * Constructor to create injected service(s) object
 	 * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
@@ -95,7 +114,7 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
     route: Router,
     resourceService: ResourceService, userService: UserService,
     courseBatchService: CourseBatchService,
-    toasterService: ToasterService) {
+    toasterService: ToasterService, private deviceDetectorService: DeviceDetectorService) {
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
@@ -110,7 +129,7 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
     this.activatedRoute.parent.params.pipe(mergeMap((params) => {
       this.courseId = params.courseId;
       this.initializeFormFields();
-      this.setTelemetryImpressionData();
+      this.setTelemetryData();
       return this.fetchBatchDetails();
     }),
       takeUntil(this.unsubscribe))
@@ -122,6 +141,7 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
         if (err.error && err.error.params.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
         } else {
+          console.log(err);
           this.toasterService.error(this.resourceService.messages.fmsg.m0056);
         }
       });
@@ -182,7 +202,7 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
           }
         });
   }
-  private setTelemetryImpressionData() {
+  private setTelemetryData() {
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
@@ -193,15 +213,66 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
         uri: this.router.url
       }
     };
+    const deviceInfo = this.deviceDetectorService.getDeviceInfo();
+    this.telemetryStart = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      object: {
+        id:  this.courseId,
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        mode: this.activatedRoute.snapshot.data.telemetry.mode,
+        uaspec: {
+          agent: deviceInfo.browser,
+          ver: deviceInfo.browser_version,
+          system: deviceInfo.os_version ,
+          platform: deviceInfo.os,
+          raw: deviceInfo.userAgent
+        }
+      }
+    };
+  }
+
+  setInteractEventData() {
+    this.saveBatchInteractEdata = {
+      id: 'save-batch',
+      type: 'click',
+      pageid: 'create-batch'
+    };
+    this.addmembersInteractEdata = {
+      id: 'add-memebers',
+      type: 'click',
+      pageid: 'create-batch'
+    };
+    this.backBtnInteractEdata = {
+      id: 'add-memebers',
+      type: 'click',
+      pageid: 'create-batch'
+    };
+    this.createInteractEdata = {
+      id: 'add-memebers',
+      type: 'click',
+      pageid: 'create-batch'
+    };
+    this.telemetryInteractObject = {
+      id: '',
+      type: 'create-batch',
+      ver: '1.0'
+    };
   }
   public redirect() {
     this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
   }
   private reload() {
-    setTimeout(() => {
+    // setTimeout(() => {
       this.courseBatchService.updateEvent.emit({ event: 'create' });
       this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
-    }, 1000);
+    // }, 1000);
   }
   /**
   * It takes form step number as a input and increase the step
