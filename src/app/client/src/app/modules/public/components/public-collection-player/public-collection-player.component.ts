@@ -55,7 +55,12 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   private router: Router;
 
   public loader: Boolean = true;
+  treeModel: any;
+  collectionHierarchy: any;
+  contentDetails = [];
+  nextPlaylistItem: any;
 
+  prevPlaylistItem: any;
   public showFooter: Boolean = false;
   public badgeData: Array<object>;
   private subsrciption: Subscription;
@@ -138,13 +143,22 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     this.initPlayer(data.id);
   }
 
-  private navigateToContent(id: string): void {
+  private navigateToContent(content?: { title: string, id: string }, id?: string): void {
+    if (id) {
     this.queryParams.contentId = id;
     const navigationExtras: NavigationExtras = {
       queryParams: this.queryParams,
       relativeTo: this.route
     };
     this.router.navigate([], navigationExtras);
+  } else
+  if ( content ) {
+    const navigationExtras: NavigationExtras = {
+      queryParams: { 'contentId': content.id },
+      relativeTo: this.activatedRoute
+    };
+    this.router.navigate([], navigationExtras);
+  }
   }
 
   private getPlayerConfig(contentId: string): Observable<PlayerConfig> {
@@ -157,14 +171,44 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
 
   private findContentById(collection: any, id: string) {
     const model = new TreeModel();
+    // this.treeModel = model.parse(collection.data);
     return model.parse(collection.data).first((node) => {
       return node.model.identifier === id;
     });
   }
+  private parseChildContent(collection: any) {
+    const model = new TreeModel();
+    const mimeTypeCount = {};
+    this.treeModel = model.parse(collection.data);
+    this.treeModel.walk((node) => {
+      if (node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
+        if (mimeTypeCount[node.model.mimeType]) {
+          mimeTypeCount[node.model.mimeType] += 1;
+        } else {
+          mimeTypeCount[node.model.mimeType] = 1;
+        }
 
+          console.log('content details lenght: ', this.contentDetails.length);
+        this.contentDetails.push({ id: node.model.identifier, title: node.model.name });
+
+
+
+      }
+    });
+    console.log('contentDetails : ', this.contentDetails);
+  }
+  private setContentNavigators() {
+    const index = _.findIndex(this.contentDetails, ['id', this.contentId]);
+    console.log('index of contet: ', index);
+    this.prevPlaylistItem = this.contentDetails[index - 1];
+    console.log('prev item: ', this.prevPlaylistItem );
+    this.nextPlaylistItem = this.contentDetails[index + 1];
+    console.log('next item: ', this.nextPlaylistItem );
+  }
   public OnPlayContent(content: { title: string, id: string }, isClicked?: boolean) {
     if (content && content.id) {
-      this.navigateToContent(content.id);
+      this.navigateToContent(null, content.id);
+      this.setContentNavigators();
       this.playContent(content);
       if (!isClicked) {
         const playContentDetails = this.findContentById( this.collectionTreeNodes, content.id);
@@ -193,6 +237,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
           this.queryParams = { ...queryParams};
           this.contentId = queryParams.contentId;
           this.dialCode = queryParams.dialCode;
+
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
             if (content) {
@@ -204,6 +249,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
             this.closeContentPlayer();
           }
         });
+        this.parseChildContent(this.collectionTreeNodes);
       }, (error) => {
         // toaster error
       });
