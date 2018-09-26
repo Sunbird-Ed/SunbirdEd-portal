@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Subscription, Subject, combineLatest } from 'rxjs';
 import { takeUntil, first, map } from 'rxjs/operators';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { UserService, SearchService } from '@sunbird/core';
 import { CourseBatchService } from './../../services';
 import * as _ from 'lodash';
+import { ComponentFactoryResolver } from '@angular/core/src/render3';
 @Component({
   selector: 'app-add-batch-members',
   templateUrl: './add-batch-members.component.html',
   styleUrls: ['./add-batch-members.component.css']
 })
 export class AddBatchMembersComponent implements OnInit {
+  @Input() batchDetails: any;
   /**
    * To get logged-in user published course(s)
   */
@@ -85,6 +87,8 @@ export class AddBatchMembersComponent implements OnInit {
   *
  */
   public rootOrgName: string;
+  selectedItems: any = [];
+  removeModalFlag = false;
 
   constructor(userService: UserService, searchService: SearchService,
     courseBatchService: CourseBatchService, toasterService: ToasterService,
@@ -102,6 +106,7 @@ export class AddBatchMembersComponent implements OnInit {
       user => {
         if (user && user.userProfile.organisationIds && user.userProfile.organisationIds.length) {
           this.getSubOrgDetails([user.userProfile.rootOrgId]);
+          this.fetchParticipantDetails();
         }
       },
       err => {
@@ -177,6 +182,49 @@ export class AddBatchMembersComponent implements OnInit {
           }
         });
   }
+  /**
+  * fetch mentors and participant details
+  */
+  private fetchParticipantDetails() {
+    if (this.batchDetails.participant || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
+      const request = {
+        filters: {
+          identifier: _.union(_.keys(this.batchDetails.participant), this.batchDetails.mentors)
+        }
+      };
+      this.courseBatchService.getUserList(request).pipe(takeUntil(this.unsubscribe))
+        .subscribe((res) => {
+          this.processParticipantDetails(res);
+        }, (err) => {
+          if (err.error && err.error.params.errmsg) {
+            this.toasterService.error(err.error.params.errmsg);
+          } else {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+          }
+          // this.redirect();
+        });
+    }
+  }
+  private processParticipantDetails(res) {
+    const users = this.sortUsers(res);
+    const participantList = users.participantList;
+    const mentorList = users.mentorList;
+    _.forEach(this.batchDetails.participant, (value, key) => {
+      const user = _.find(participantList, ['id', key]);
+      if (user) {
+        this.selectedUserList.push(user);
+      }
+    });
+    _.forEach(this.batchDetails.mentors, (value, key) => {
+      const mentor = _.find(mentorList, ['id', value]);
+      if (mentor) {
+        mentor['role'] = 'mentor';
+        mentor['orgname'] = this.rootOrgName;
+        this.selectedUserList.push(mentor);
+      }
+    });
+    this.selectedUserList = _.uniqBy(this.selectedUserList, 'id');
+  }
   private sortUsers(res) {
     const participantList = [];
     const mentorList = [];
@@ -237,6 +285,37 @@ export class AddBatchMembersComponent implements OnInit {
     if (this.participantList.length > 0 && participantsId.indexOf(user.id) !== 1) {
       this.participantList.push(user);
     }
+  }
+  selectAll(event) {
+    if (event) {
+      _.forEach(this.selectedUserList, (key, value) => {
+        this.selectedUserList[value].selected = true;
+      });
+      this.selectedItems = this.selectedUserList;
+    } else {
+      _.forEach(this.selectedUserList, (key, value) => {
+        this.selectedUserList[value].selected = false;
+      });
+      this.selectedItems = [];
+    }
+  }
+  toggle(event: boolean, item: any , id: string) {
+    if (event) {
+      this.selectedItems.push(item);
+    } else {
+      _.remove(this.selectedItems, (currentObject) => {
+       return currentObject['id'] === id;
+      });
+    }
+  }
+  remove() {
+    const selectedItemId = _.map(this.selectedItems, 'id');
+    _.forEach(selectedItemId, (id ) => {
+      const index = this.selectedUserList.findIndex(i => i.id === id);
+      if (index !== -1) {
+        this.selectedUserList.splice(index, 1);
+      }
+    });
 
   }
   private initDropDown() {
