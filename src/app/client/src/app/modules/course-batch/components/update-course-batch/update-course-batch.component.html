@@ -22,22 +22,23 @@
           </div>
           <br>
           <div class="custom-modal-subheader mb-5">Sub-Organisation</div>
-          <sui-multi-select class="fluid selection with-border" [(ngModel)]="selectedOptions" [options]="options" labelField="name"
-            [isSearchable]="searchable" [isDisabled]="disabled" [hasLabels]="!hideLabels" #multiSelect>
+          <sui-multi-select class="fluid selection with-border"   labelField="name"
+               #multiSelect>
             <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option">
             </sui-select-option>
           </sui-multi-select>
           <br>
           <div class="custom-modal-subheader mb-5">Mentors</div>
-          <sui-multi-select class="fluid selection with-border" [(ngModel)]="selectedOptions" [options]="options" labelField="name"
-            [isSearchable]="searchable" [isDisabled]="disabled" [hasLabels]="!hideLabels" #multiSelect>
+          <sui-multi-select class="fluid selection with-border"  
+           labelField="name"
+              #multiSelect>
             <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option">
             </sui-select-option>
           </sui-multi-select>
           <br>
           <div class="custom-modal-subheader mb-5">Participants</div>
-          <sui-multi-select class="fluid selection with-border" [(ngModel)]="selectedOptions" [options]="options" labelField="name"
-            [isSearchable]="searchable" [isDisabled]="disabled" [hasLabels]="!hideLabels" #multiSelect>
+          <sui-multi-select class="fluid selection with-border"   labelField="name"
+             #multiSelect>
             <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option">
             </sui-select-option>
           </sui-multi-select>
@@ -63,7 +64,7 @@
               <tr>
                 <th>
                   <div class="field">
-                    <sui-checkbox [(ngModel)]="eCheck" [isDisabled]="eCheckDisabled" [isReadonly]="eCheckReadonly">
+                    <sui-checkbox >
 
                     </sui-checkbox>
                   </div>
@@ -81,7 +82,7 @@
               <tr class="modal-table">
                 <td>
                   <div class="field">
-                    <sui-checkbox [(ngModel)]="eCheck" [isDisabled]="eCheckDisabled" [isReadonly]="eCheckReadonly">
+                    <sui-checkbox   >
 
                     </sui-checkbox>
                   </div>
@@ -99,7 +100,7 @@
               <tr class="modal-table">
                 <td>
                   <div class="field">
-                    <sui-checkbox [(ngModel)]="eCheck" [isDisabled]="eCheckDisabled" [isReadonly]="eCheckReadonly">
+                    <sui-checkbox   >
 
                     </sui-checkbox>
                   </div>
@@ -117,7 +118,7 @@
               <tr class="modal-table">
                 <td>
                   <div class="field">
-                    <sui-checkbox [(ngModel)]="eCheck" [isDisabled]="eCheckDisabled" [isReadonly]="eCheckReadonly">
+                    <sui-checkbox   >
 
                     </sui-checkbox>
                   </div>
@@ -140,6 +141,6 @@
   </div>
   <div class="actions">
     <button class="ui left floated basic primary button" tabindex="0">BACK</button>
-    <button class="ui primary button" id="submitbutton" [disabled]="disableSubmitBtn" tabindex="0">ADD MEMBERS</button>
+    <button class="ui primary button" id="submitbutton" tabindex="0">ADD MEMBERS</button>
   </div>
 </sui-modal>

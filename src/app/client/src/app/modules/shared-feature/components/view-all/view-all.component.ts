@@ -219,7 +219,8 @@ export class ViewAllComponent implements OnInit, OnDestroy {
       limit: this.pageLimit,
       pageNumber: request.params.pageNumber,
       sort_by: request.queryParams.sortType ?
-        { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy)
+        { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy),
+        softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints')
     };
     if (_.get(this.activatedRoute.snapshot, 'data.baseUrl') === 'learn') {
       return combineLatest(
@@ -269,10 +270,10 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     if (page < 1 || page > this.pager.totalPages) {
       return;
     }
-    this.pageNumber = page;
-    this.router.navigate([url, this.pageNumber], {
-      queryParams: this.queryParams
-    });
+      this.router.navigate([url, page], {
+        queryParams: this.queryParams,
+        relativeTo: this.activatedRoute
+      });
   }
 
   playContent(event) {
