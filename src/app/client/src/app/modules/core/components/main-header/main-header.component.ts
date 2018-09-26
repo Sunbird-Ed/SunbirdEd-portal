@@ -183,7 +183,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
       if (_.includes(urlAfterRedirects.url, '/explore')) {
         this.showExploreHeader = true;
-        const url  = urlAfterRedirects.url.split('/');
+        const url  = urlAfterRedirects.url.split('?')[0].split('/');
         if (url.indexOf('explore') === 2) {
           this.exploreRoutingUrl = url[1] + '/' + url[2];
         } else {
