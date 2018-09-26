@@ -236,6 +236,7 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
         }
       }
     };
+    this.setInteractEventData();
   }
 
   setInteractEventData() {
