@@ -137,7 +137,9 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     window.context = {
       user: {
         id: this.userService.userid,
-        name: this.userProfile.firstName + ' ' + this.userProfile.lastName
+        name: this.userProfile.firstName + ' ' + this.userProfile.lastName,
+        orgIds: this.userProfile.organisationIds,
+        organisations: this.userProfile.orgDetails
       },
       sid: this.userService.sessionId,
       contentId: this.routeParams.contentId,
