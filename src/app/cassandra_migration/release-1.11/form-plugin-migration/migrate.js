@@ -1,16 +1,6 @@
-// Form service migration script
-// Accepted arguments
-// 1. contactPoints: IP with port of DB
-// 2. username: username for DB // optional
-// 3. password: password for DB // optional
-// example: node migration.js 127.0.0.1:9200 username password
-
 const cassandra = require("cassandra-driver");
-let cassandraClientOptions = { contactPoints: [process.argv[2]] };
-if(process.argv[3] && process.argv[4]){
-  cassandraClientOptions.authProvider = new cassandra.auth.PlainTextAuthProvider(process.argv[3], process.argv[4]);
-}
-console.log("connecting to DB with", process.argv[2], process.argv[3], process.argv[4]);
+const envHelper = require("./../../../helpers/environmentVariablesHelper");
+let cassandraClientOptions = { contactPoints: envHelper.PORTAL_CASSANDRA_URLS };
 const client = new cassandra.Client(cassandraClientOptions);
 
 let transformedData = [];
@@ -18,8 +8,16 @@ let dest_obj = {
   created_on: new Date()
 }
 
-const query = "SELECT * FROM sunbird.tenant_preference";
-client.execute(query)
+const schemaCheckQuery = "Select last_modified_on,created_on From qmzbm_form_service.form_data;";
+client.execute(schemaCheckQuery)
+.then((result) => {
+  console.log('nothing to migrate');
+  process.exit(1);
+})
+.catch((error) => {
+  console.log('migrating form data');
+  const sourceQuery = "SELECT * FROM sunbird.tenant_preference";
+  client.execute(sourceQuery)
   .then(result => {
     console.log("no. of records to migrate:", result.rows.length);
     result.rows.forEach((row) => {
@@ -91,7 +89,8 @@ client.execute(query)
   .catch(error => {
     console.log(error);
     process.exit(1);
-  })
+  });
+});
 
 process.on("unhandledRejection", (reason, p) => {
   console.log("Unhandled Rejection at: Promise", p, "reason:", reason);
