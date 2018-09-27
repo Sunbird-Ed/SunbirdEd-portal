@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Subscription, Subject, combineLatest } from 'rxjs';
-import { takeUntil, first, map } from 'rxjs/operators';
-import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
+import { Subscription, Subject, combineLatest, of } from 'rxjs';
+import { takeUntil, first, map, debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operators';
+import { ResourceService, ServerResponse, ToasterService , FilterPipe} from '@sunbird/shared';
 import { UserService, SearchService } from '@sunbird/core';
 import { CourseBatchService } from './../../services';
 import * as _ from 'lodash';
@@ -87,8 +87,21 @@ export class AddBatchMembersComponent implements OnInit {
   *
  */
   public rootOrgName: string;
-  selectedItems: any = [];
+selectedItems: any = [];
   removeModalFlag = false;
+  /**
+  subOrgRequired
+  *
+ */
+  subOrgRequired = false;
+  /**
+   * This variable stores the search input.
+  */
+  searchData: string;
+  /**
+   * This variable stores the searchText for members.
+  */
+  searchTextChanged: Subject<string> = new Subject<string>();
 
   constructor(userService: UserService, searchService: SearchService,
     courseBatchService: CourseBatchService, toasterService: ToasterService,
@@ -102,6 +115,7 @@ export class AddBatchMembersComponent implements OnInit {
 
   ngOnInit() {
     this.rootOrgName = this.userService.rootOrgName;
+    this.getSubOrgDetails([this.userService.userProfile.rootOrgId]);
     this.userDataSubscription = this.userService.userData$.pipe(first()).subscribe(
       user => {
         if (user && user.userProfile.organisationIds && user.userProfile.organisationIds.length) {
@@ -122,6 +136,10 @@ export class AddBatchMembersComponent implements OnInit {
         (data: ServerResponse) => {
           if (data.result.response.content) {
             this.subOrganizations = data.result.response.content;
+            if (this.subOrganizations.length === 1) {
+              this.selectedOrg = _.map(this.subOrganizations, 'id');
+              this.fetchMembersDetails(this.selectedOrg);
+            }
           }
         },
         (err: ServerResponse) => {
@@ -131,6 +149,7 @@ export class AddBatchMembersComponent implements OnInit {
   }
 
   public fetchMembersDetails(event) {
+    this.validateSubOrg();
     const requestBody = {
       orgid: this.selectedOrg
     };
@@ -263,7 +282,13 @@ export class AddBatchMembersComponent implements OnInit {
     }
     _.remove(this.mentorList, mentorList => mentorList.id === mentor.id);
   }
-
+  public validateSubOrg() {
+    if (this.selectedOrg.length === 0) {
+      this.subOrgRequired = true;
+    } else {
+      this.subOrgRequired = false;
+    }
+  }
   public selectParticipants(participants) {
     this.selectedParticipantList.push(participants);
     const participantsId = _.map(this.selectedUserList, 'id');
@@ -341,12 +366,20 @@ export class AddBatchMembersComponent implements OnInit {
     }, 0);
   }
   private getUserListWithQuery(query, type) {
-    if (this.userSearchTime) {
-      clearTimeout(this.userSearchTime);
-    }
-    this.userSearchTime = setTimeout(() => {
-      this.getUserList(query, type);
-    }, 1000);
+    this.searchTextChanged.next(query);
+    this.searchTextChanged.pipe(debounceTime(500),
+      distinctUntilChanged(),
+      flatMap(search => of(search).pipe(delay(500)))
+      ).
+      subscribe(() => {
+        this.getUserList(query , type);
+      });
+    // if (this.userSearchTime) {
+    //   clearTimeout(this.userSearchTime);
+    // }
+    // this.userSearchTime = setTimeout(() => {
+    //   this.getUserList(query, type);
+    // }, 1000);
   }
 }
 

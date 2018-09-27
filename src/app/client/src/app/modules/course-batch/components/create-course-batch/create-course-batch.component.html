@@ -9,7 +9,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="stepNumber === 1" [appTelemetryImpression]="telemetryImpression" class="scrolling content padding-left-right-0 fullpage-top-6 padding-top-10">
+  <div *ngIf="stepNumber === 1"  [appTelemetryStart]="telemetryStart"  [appTelemetryImpression]="telemetryImpression" class="scrolling content padding-left-right-0 fullpage-top-6 padding-top-10">
     <h4 class="ui left floated modal-sub-header padding-left-25 custom-modal-subheader">Batch Detail</h4>
     <div class="ui clearing fullpage divider margin-bottom-50"></div>
 
@@ -79,10 +79,11 @@
     <app-add-batch-members></app-add-batch-members>
   </div>
   <div class="actions">
-    <button *ngIf="stepNumber !== 2" (click)="createBatch()" class="ui left floated basic primary button" tabindex="0" [disabled]="disableSubmitBtn" >SAVE</button>
-    <button *ngIf="stepNumber !== 2" class="ui primary button" id="submitbutton" [disabled]="disableSubmitBtn" tabindex="0"  (click)="navigateToStep(2)" >ADD MEMBERS</button>
-    <button *ngIf="stepNumber !== 1" (click)="navigateToStep((+stepNumber - 1))" class="ui left floated basic primary button" tabindex="0">BACK</button>
-    <button *ngIf="stepNumber !== 1" class="ui primary button" id="submitbutton" (click)="createBatch()"  tabindex="0">CRETAE BATCH</button>
+    <button *ngIf="stepNumber !== 2" (click)="createBatch()" class="ui left floated basic primary button" tabindex="0" [disabled]="disableSubmitBtn" 
+    appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="saveBatchInteractEdata" >SAVE</button>
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="addmembersInteractEdata" *ngIf="stepNumber !== 2" class="ui primary button" id="submitbutton" [disabled]="disableSubmitBtn" tabindex="0"  (click)="navigateToStep(2)" >ADD MEMBERS</button>
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="backBtnInteractEdata" *ngIf="stepNumber !== 1" (click)="navigateToStep((+stepNumber - 1))" class="ui left floated basic primary button" tabindex="0">BACK</button>
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="createInteractEdata" *ngIf="stepNumber !== 1" class="ui primary button" id="submitbutton" (click)="createBatch()"  tabindex="0">CREATE BATCH</button>
   </div>
 </sui-modal>
 

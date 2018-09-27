@@ -10,6 +10,7 @@ import { of as observableOf,
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {SharedModule, ResourceService, ToasterService} from '@sunbird/shared';
 import {CoreModule} from '@sunbird/core';
+import { TelemetryModule } from '@sunbird/telemetry';
 import {CourseBatchService} from '../../services';
 import { UserService } from '@sunbird/core';
 import { mockResponse } from './cretae-course-batch.component.spec.data';
@@ -60,8 +61,8 @@ describe('CreateCourseBatchComponent', () => {
 
       declarations: [CreateCourseBatchComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [FormsModule, SharedModule.forRoot(), CoreModule.forRoot(), SuiModule, RouterTestingModule,
-        HttpClientTestingModule, ],
+      imports: [ReactiveFormsModule, FormsModule, SharedModule.forRoot(), CoreModule.forRoot(), SuiModule, RouterTestingModule,
+        HttpClientTestingModule, TelemetryModule.forRoot() ],
       providers: [CourseBatchService, ToasterService, ResourceService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
