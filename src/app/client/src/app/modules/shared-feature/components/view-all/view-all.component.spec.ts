@@ -153,7 +153,7 @@ describe('ViewAllComponent', () => {
     component.playContent(event);
     expect(playerService.playContent).toHaveBeenCalled();
   });
-  fit('should call navigateToPage method', () => {
+  it('should call navigateToPage method', () => {
     const configService = TestBed.get(ConfigService);
     const route = TestBed.get(Router);
     route.url = 'learn/view-all/LatestCourses/1?contentType: course';
