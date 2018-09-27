@@ -236,8 +236,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    // window.location.replace('/logoff');
-    // this.cacheService.removeAll();
+    window.location.replace('/logoff');
+    this.cacheService.removeAll();
   }
 
   ngOnDestroy() {
