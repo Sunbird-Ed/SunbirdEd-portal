@@ -97,11 +97,14 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
    * Contains step number
   */
   stepNumber = 1;
+  discardModal = false;
   public updateInteractEdata: IInteractEventEdata;
   public addmemebersInteractEdata: IInteractEventEdata;
   public backInteractEdata: IInteractEventEdata;
   public updateBatchInteractEdata: IInteractEventEdata;
   public closeInteractEdata: IInteractEventEdata;
+  public cancelInteractEdata: IInteractEventEdata;
+  public discardInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
   /**
     * Reference of add batch members component
@@ -269,6 +272,21 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
         }
       }
     };
+    this.telemetryEnd = {
+      object: {
+        id: this.courseId,
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+      },
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        mode: this.activatedRoute.snapshot.data.telemetry.mode,
+      }
+    };
   }
   setInteractEventData() {
     this.updateInteractEdata = {
@@ -296,11 +314,24 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'update-batch'
     };
+    this.cancelInteractEdata = {
+      id: 'cancel',
+      type: 'click',
+      pageid: 'update-batch'
+    };
+    this.discardInteractEdata = {
+      id: 'discard',
+      type: 'click',
+      pageid: 'update-batch'
+    };
     this.telemetryInteractObject = {
       id: '',
       type: 'update-batch',
       ver: '1.0'
     };
+  }
+  discard() {
+
   }
   /**
   * It takes form step number as a input and increase the step

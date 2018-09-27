@@ -5,8 +5,8 @@
       <div class="eleven wide column">
         <span class="ui header">{{resourceService?.frmelmnts?.intxt?.t0007}}</span>
       </div>
-      <div class="one wide Right floated right aligned column" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-        [telemetryInteractEdata]="closeInteractEdata" (click)="redirect()">
+      <div class="one wide Right floated right aligned column" [appTelemetryEnd]= "telemetryEnd" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+        [telemetryInteractEdata]="closeInteractEdata" (click)="discardModalFlag = !discardModalFlag">
         <i class="close large icon cursor-pointer" tabindex="0"></i>
       </div>
     </div>
@@ -97,4 +97,12 @@
       *ngIf="stepNumber !== 1" class="ui primary button" id="submitbutton" (click)="updateBatch()" tabindex="0">UPDATE
       BATCH</button>
   </div>
+</sui-modal>
+<sui-modal [isClosable]="false" *ngIf="discardModalFlag" [size]="mini"
+  #discardModal>
+  <div class="header"> Discard Batch</div>
+  <div class="actions">
+        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="cancelInteractEdata" class="ui primary basic button announcement-button"  (click)="discardModalFlag = !discardModalFlag" >Cancel</button>
+        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="discardInteractEdata" class="ui primary button announcement-button" (click)="discardModal.deny(); discard()" >Discard</button>
+      </div>
 </sui-modal>
