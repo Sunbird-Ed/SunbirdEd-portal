@@ -7,7 +7,7 @@ const _ = require('lodash')
 const path = require('path')
 const envHelper = require('../helpers/environmentVariablesHelper.js')
 const tenantHelper = require('../helpers/tenantHelper.js')
-const configHelper = require('../helpers/configHelper.js')
+const configHelper = require('../helpers/config/configHelper.js')
 const defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState()
 const tenantCdnUrl = envHelper.TENANT_CDN_URL
 const defaultTenant = envHelper.DEFAULT_CHANNEL
@@ -74,11 +74,9 @@ module.exports = (app, keycloak) => {
 }
 
 function getLocals (req, callback) {
-  let config_key_allow_signup = 'instance.allow_signup'
-  let env_key_allow_signup = 'ENABLE_SIGNUP'
-
-  configHelper.getConfig(config_key_allow_signup, env_key_allow_signup, function (err, allow_signup) {
-    if (!err) {
+  let config_key_allow_signup = 'ENABLE_SIGNUP'
+  let allow_signup = configHelper.getConfig(config_key_allow_signup)
+    if (allow_signup !== undefined) {
       var locals = {}
       locals.userId = _.get(req, 'kauth.grant.access_token.content.sub') ? req.kauth.grant.access_token.content.sub : null
       locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'kauth.grant.access_token.content.sub') ? req.sessionID : null
@@ -99,8 +97,7 @@ function getLocals (req, callback) {
       callback(null, locals)
     } else {
       callback({}, null)
-    }
-  })
+    }  
 }
 
 function indexPage (req, res) {
