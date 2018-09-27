@@ -3081,3 +3081,14 @@ i.icon.accordion-content-right {
   padding-bottom: 6px;
 }
 
+createbatchdropdown .menu.transition {
+  opacity: 0 !important;
+  height:0 !important;
+  overflow:hidden !important;
+}
+.createbatchdropdown:hover .menu.transition,
+.createbatchdropdown:focus .menu.transition {
+  opacity: 1 !important;
+  height:auto !important;
+  overflow-y:auto !important;
+}
