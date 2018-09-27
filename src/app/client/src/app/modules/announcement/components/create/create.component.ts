@@ -374,7 +374,7 @@ export class CreateComponent implements OnInit, OnDestroy {
   initializeFormFields(): void {
     this.announcementForm = this.sbFormBuilder.group({
       title: ['', [Validators.required, Validators.maxLength(100)]],
-      from: ['', Validators.required],
+      from: ['', [Validators.required, Validators.maxLength(200)]],
       type: ['', Validators.required],
       description: ['', Validators.maxLength(1200)],
       links: this.sbFormBuilder.array([])
