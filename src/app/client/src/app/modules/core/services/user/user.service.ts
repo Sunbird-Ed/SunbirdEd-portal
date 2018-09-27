@@ -247,10 +247,13 @@ export class UserService {
     };
     this.publicDataService.post(option).subscribe
       ((data: ServerResponse) => {
+        const orgDetails = {};
         _.forEach(data.result.response.content, (orgData) => {
           this.orgNames.push(orgData.orgName);
+          orgDetails[orgData.identifier] = orgData.orgName;
         });
         this._userProfile.organisationNames = this.orgNames;
+        this._userProfile.orgDetails = orgDetails;
       },
       (err: ServerResponse) => {
         this.orgNames = [];

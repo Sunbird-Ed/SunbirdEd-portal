@@ -87,7 +87,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       user: {
         id: this.userProfile.userId,
         name: this.userProfile.firstName + ' ' + this.userProfile.lastName,
-        orgIds: this.userProfile.organisationIds
+        orgIds: this.userProfile.organisationIds,
+        organisation: this.userProfile.orgDetails
       },
       sid: this.userService.sessionId,
       contentId: this.routeParams.contentId,

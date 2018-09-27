@@ -57,6 +57,7 @@ export interface IUserProfile {
     organisationIds?: Array<string>;
     hashTagIds?: Array<string>;
     organisationNames?: Array<string>;
+    orgDetails?: {};
 }
 export interface IJobProfile {
     jobName: string;
