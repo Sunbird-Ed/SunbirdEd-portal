@@ -96,6 +96,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     component.ngOnInit();
     expect(component.courseHierarchy).toBeDefined();
+    expect(component.contributions).toBeDefined();
     component.ngOnDestroy();
   });
 
