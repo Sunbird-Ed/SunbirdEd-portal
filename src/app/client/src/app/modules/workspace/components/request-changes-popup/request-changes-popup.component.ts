@@ -188,7 +188,7 @@ export class RequestChangesPopupComponent implements OnInit, OnDestroy {
       formAction: 'requestforchanges',
       subType: 'resource'
     };
-    this.workSpaceService.getCheckListData(formServiceInputParams).subscribe(
+    this.workSpaceService.getFormData(formServiceInputParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.form) {
           this.showModal = true;

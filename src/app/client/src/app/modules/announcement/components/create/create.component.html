@@ -69,6 +69,10 @@
                       <div class="ui pointing red basic label below" *ngIf="announcementForm.controls['from'].errors && announcementForm.controls['from'].errors.required && !announcementForm.controls['from'].pristine">
                         {{resource?.messages?.stmsg?.m0107}}
                       </div>
+                      <div class="ui pointing red basic label below" *ngIf="announcementForm.controls['from'].errors && announcementForm.controls['from'].errors.maxlength && !announcementForm.controls['from'].pristine">
+                        {{resource?.messages?.stmsg?.m0117}}
+                      </div>
+                      <section *ngIf="announcementForm.value.from.length" class="float-ContentRight">{{announcementForm.value.from.length}} / 200</section>
                     </div>
                   </div>
                   <!-- Type -->
