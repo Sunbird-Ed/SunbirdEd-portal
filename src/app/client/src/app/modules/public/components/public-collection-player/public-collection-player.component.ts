@@ -58,7 +58,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   public treeModel: any;
   public contentDetails = [];
   public nextPlaylistItem: any;
-
   public prevPlaylistItem: any;
   public noContentToPlay = 'No content to play';
   public showFooter: Boolean = false;
@@ -223,7 +222,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
           this.queryParams = { ...queryParams};
           this.contentId = queryParams.contentId;
           this.dialCode = queryParams.dialCode;
-
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
             if (content) {

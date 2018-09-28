@@ -3,7 +3,6 @@
     <div class="ui grid">
       <div class="row">
         <div [appTelemetryImpression]="telemetryImpression" class="twelve wide column">
-          <!-- <div  class="ui grid"> -->
           <div id="app-player-collection-renderer" *ngIf="showPlayer" class="row">
             <div class="twelve wide column">
               <div class="ui grid">
@@ -23,8 +22,6 @@
                 </div>
                 <div class="one wide column"></div>
               </div>
-
-
               <div class="ui row padding-top-none">
                 <div class="ui twelve column grid padding-right-none">
                   <div class="one wide tablet only one wide computer only column"></div>
@@ -74,9 +71,9 @@
   </div>
   <div class="row padding-top-none" *ngIf="!loader">
     <div class="one wide column"></div>
-    <div class="ten wide column">
+    <div  class="ten wide column">
       <div class="player-badge-alignment">
-        <app-content-badge [data]="badgeData"></app-content-badge>
+        <app-content-badge [data]="badgeData" ></app-content-badge>
       </div>
     </div>
     <div class="one wide column"></div>
