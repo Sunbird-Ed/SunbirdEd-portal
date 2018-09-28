@@ -17,6 +17,8 @@ export class ContentPlayerMetadataComponent implements OnInit, OnDestroy {
   conceptNames: any;
   filteredConcepts: any;
   conceptDataSubscription: Subscription;
+  contentCreditsData: any;
+  showContentCreditsModal: boolean;
 
   @Input() contentData: ContentData;
   constructor(public resourceService: ResourceService, public conceptPickerService: ConceptPickerService) { }
@@ -40,6 +42,21 @@ export class ContentPlayerMetadataComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  showContentCredits () {
+    const contentCredits = _.get(this.metadata, 'content-credits');
+    this.contentCreditsData = { contributors: '', creators: ''};
+    if (contentCredits && contentCredits.length) {
+      this.contentCreditsData.contributors = _.map(contentCredits, 'name').toString();
+    }
+    if (this.metadata && this.metadata.owner) {
+      this.contentCreditsData.contributors += this.metadata.owner;
+    }
+    if (this.metadata && this.metadata.creator) {
+      this.contentCreditsData.creators = this.metadata.creator;
+    }
+    this.showContentCreditsModal = true;
   }
 
   /**

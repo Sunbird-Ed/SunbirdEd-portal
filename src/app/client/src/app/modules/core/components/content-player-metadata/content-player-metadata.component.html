@@ -239,5 +239,22 @@
                 </div>
             </div>
         </div>
+        <div class="item padding-top-10 padding-bottom-5">
+            <div class="ui grid">
+                <div class="three wide column">
+                    <div class="content content-detail">
+                        {{resourceService.frmelmnts.lbl.ownership}}
+                    </div>
+                </div>
+                <div class="nine wide column">
+                    <!-- *ngIf="metadata.owner" -->
+                    <div class="content" >
+                        sdfsdfsdfdsf {{metadata.owner}} <a (click)="showContentCredits()">Content Credits</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <app-content-credits [contentCreditsData]="contentCreditsData" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false">
+  </app-content-credits>
 </div>

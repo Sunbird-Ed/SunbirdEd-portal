@@ -9,6 +9,8 @@ import { CollectionPlayerMetadataComponent } from './collection-player-metadata.
 import { DateFormatPipe } from '../../pipes';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from '../../services';
 import { CacheService } from 'ng2-cache-service';
+import { Response } from './collection-player-metadata.spec.data';
+
 describe('CollectionPlayerMetadataComponent', () => {
   let component: CollectionPlayerMetadataComponent;
   let fixture: ComponentFixture<CollectionPlayerMetadataComponent>;
@@ -34,5 +36,14 @@ describe('CollectionPlayerMetadataComponent', () => {
   it('should get collection id from activated route', () => {
     fixture.detectChanges();
     expect(component.collectionId).toBe('LP_FT_TextBook2');
+  });
+
+  it('should open popup on click of show content credits with contentCredits data', () => {
+    component.metaData = Response.metaData;
+    spyOn(component, 'showContentCredits').and.callThrough();
+    component.showContentCredits();
+    fixture.detectChanges();
+    expect(component.contentCreditsData).toBeDefined();
+    expect(component.showContentCreditsModal).toBeTruthy();
   });
 });
