@@ -15,7 +15,7 @@ export class ContentCreditsComponent implements OnInit {
   /**
   *input for content credits;
   */
-  @Input() contentCreditsData: object;
+  @Input() contentCreditsData: any;
   /**
   *Output for close popup;
   */
