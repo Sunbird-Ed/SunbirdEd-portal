@@ -137,7 +137,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
         id: this.userProfile.userId,
         name: this.userProfile.firstName + ' ' + this.userProfile.lastName,
         orgIds: this.userProfile.organisationIds,
-        organisations: this.userService.mapOrgIdName
+        organisations: this.userService.orgIdNameMap
       },
       sid: this.userService.sessionId,
       contentId: this.routeParams.contentId,

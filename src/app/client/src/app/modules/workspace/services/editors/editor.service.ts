@@ -75,11 +75,8 @@ export class EditorService {
         };
         return this.workspaceService.getFormData(formServiceInputParams).pipe(
             map(data => {
-                if (_.get(data, 'result.form.data.fields[0].ownershipType') !== undefined) {
-                    return data.result.form.data.fields[0].ownershipType;
-                } else {
-                    return ['createdBy'];
-                }
+                return _.get(data, 'result.form.data.fields[0].ownershipType') ?
+                data.result.form.data.fields[0].ownershipType : ['createdBy'];
             }), catchError(error => {
                 return of(['createdBy']);
             })

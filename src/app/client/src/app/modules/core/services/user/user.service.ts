@@ -262,7 +262,7 @@ export class UserService {
       );
   }
 
-  get mapOrgIdName() {
+  get orgIdNameMap() {
     const mapOrgIdNameData = {};
     _.forEach(this.orgnisationsDetails, (orgDetails) => {
       mapOrgIdNameData[orgDetails.identifier] = orgDetails.orgName;

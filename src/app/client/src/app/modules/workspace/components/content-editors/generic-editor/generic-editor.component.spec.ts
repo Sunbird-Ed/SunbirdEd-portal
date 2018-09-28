@@ -65,6 +65,7 @@ describe('GenericEditorComponent', () => {
       expect(jQuery.fn.iziModal).toHaveBeenCalled();
       expect(window.config).toBeDefined();
       expect(window.context).toBeDefined();
+      expect(window.context.ownershipType).toEqual(['CreatedBy', 'CreatedFor']);
     }));
 
   it('should navigate to draft', inject([ NavigationHelperService], ( navigationHelperService) => () => {
