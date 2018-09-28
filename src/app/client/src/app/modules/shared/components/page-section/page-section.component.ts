@@ -96,9 +96,13 @@ export class PageSectionComponent implements OnInit {
   ],
   infinite: false,
 };
- /**The button clicked value for interact telemetry event */
- btnArrow = 'prev-button';
- pageid: string;
+  /**The previous or next value of the button clicked
+   * to generate interact telemetry data */
+  btnArrow: string;
+  pageid: string;
+  /**Identify if user reached the end of the Slick slider,
+   * for generating interact telemetry data */
+  endOfSlider = false;
   constructor(public activatedRoute: ActivatedRoute) {
   }
   playContent(event) {
@@ -164,9 +168,10 @@ export class PageSectionComponent implements OnInit {
     }
   }
   checkSlide(event) {
-    if (event.currentSlide === 0 && event.nextSlide === 0) {
-      this.btnArrow = 'prev-button';
-    } else if (event.currentSlide < event.nextSlide) {
+    this.endOfSlider = false;
+    (event.nextSlide === 8 || (event.currentSlide === 4 && event.nextSlide === 0)) ?
+      this.endOfSlider = true : this.endOfSlider = false;
+    if (event.currentSlide < event.nextSlide) {
       this.btnArrow = 'next-button';
     } else if (event.currentSlide > event.nextSlide) {
       this.btnArrow = 'prev-button';
