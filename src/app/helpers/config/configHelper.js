@@ -70,7 +70,7 @@ checkAndStoreConfigs = function (configs) {
 readConfigs = function (configKeys) {
   return new Promise(function (resolve, reject) {
     let options = {
-      url: configURL,// + 'v1/read',
+      url: configURL + 'v1/read',
       method: 'POST',
       json: true,
       headers: {
