@@ -76,6 +76,18 @@ describe('CollectionPlayerComponent', () => {
     });
   });
 
+  it('should call playContent method', () => {
+    const windowScrollService = TestBed.get(WindowScrollService);
+    spyOn(windowScrollService, 'smoothScroll');
+    const content = {
+      id: 'do_112474267785674752118',
+      title: 'Test'
+    };
+    component.playContent(content);
+    expect(component.showPlayer).toBeTruthy();
+    expect(component.contentTitle).toEqual(content.title);
+  });
+
   it('should get content based on route/query params', () => {
     const playerService: PlayerService = TestBed.get(PlayerService);
     const windowScrollService = TestBed.get(WindowScrollService);
@@ -87,22 +99,6 @@ describe('CollectionPlayerComponent', () => {
     expect(component.loader).toBeFalsy();
   });
 
-  it('should call onPlayContent and setContentNavigator method', () => {
-    const windowScrollService = TestBed.get(WindowScrollService);
-    const content = { id: 'do_112474267785674752118', title: 'Test' };
-    component.collectionTreeNodes = CollectionHierarchyGetMockResponse.result.content;
-    const playContentDetails = {
-      model : {
-        mimeType : 'application/vnd.ekstep.ecml-archive',
-        channel: '505c7c48ac6dc1edc9b08f21db5a571d'
-      }
-    };
-    spyOn(component, 'OnPlayContent').and.callThrough();
-    spyOn(component, 'playContent').and.callThrough();
-    component.OnPlayContent(content);
-    expect(component.OnPlayContent).toHaveBeenCalledWith(content);
-    expect(component.playContent).toHaveBeenCalledWith(content);
-  });
 
   xit('should navigate to error page on invalid collection id', () => {});
   xit('should navigate to error page on valid collection id but invalid content id', () => {});
