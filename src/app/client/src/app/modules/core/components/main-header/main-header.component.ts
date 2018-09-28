@@ -1,4 +1,3 @@
-
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { UserService, PermissionService, TenantService } from './../../services';
@@ -89,6 +88,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   */
   enableSignup = true;
   exploreRoutingUrl: string;
+  pageId: string;
   /*
   * constructor
   */
@@ -100,9 +100,28 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.permissionService = permissionService;
     this.userService = userService;
     this.tenantService = tenantService;
-  }
+   }
 
   ngOnInit() {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(event => {
+        let currentRoute = this.activatedRoute.root;
+        if (currentRoute.children) {
+          while (currentRoute.children.length > 0) {
+            const child: ActivatedRoute[] = currentRoute.children;
+            child.forEach(route => {
+              currentRoute = route;
+              if (route.snapshot.data.telemetry) {
+                if (route.snapshot.data.telemetry.pageid) {
+                  this.pageId = route.snapshot.data.telemetry.pageid;
+                } else {
+                  this.pageId = route.snapshot.data.telemetry.env;
+                }
+              }
+            });
+          }
+        }
+      });
     try {
       this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
     } catch (error) {
