@@ -81,19 +81,19 @@ function getLocals (req, callback) {
       locals.userId = _.get(req, 'kauth.grant.access_token.content.sub') ? req.kauth.grant.access_token.content.sub : null
       locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'kauth.grant.access_token.content.sub') ? req.sessionID : null
       locals.cdnUrl = envHelper.PORTAL_CDN_URL
-      locals.theme = envHelper.PORTAL_THEME
-      locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
+      locals.theme = configHelper.getConfig('PORTAL_THEME')
+      locals.defaultPortalLanguage = configHelper.getConfig('PORTAL_DEFAULT_LANGUAGE')
       locals.instance = process.env.sunbird_instance
       locals.appId = envHelper.APPID
       locals.defaultTenant = envHelper.DEFAULT_CHANNEL
-      locals.exploreButtonVisibility = envHelper.EXPLORE_BUTTON_VISIBILITY
+      locals.exploreButtonVisibility = configHelper.getConfig('EXPLORE_BUTTON_VISIBILITY')
       locals.defaultTenantIndexStatus = defaultTenantIndexStatus
       locals.enableSignup = allow_signup
-      locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTCONT_WHITELISTED_DOMAINS
+      locals.extContWhitelistedDomains = configHelper.getConfig('SUNBIRD_EXTCONT_WHITELISTED_DOMAINS')
       locals.buildNumber = envHelper.BUILD_NUMBER
       locals.apiCacheTtl = envHelper.PORTAL_API_CACHE_TTL
       locals.cloudStorageUrls = envHelper.CLOUD_STORAGE_URLS
-      locals.userUploadRefLink = envHelper.PORTAL_USER_UPLOAD_REF_LINK
+      locals.userUploadRefLink = configHelper.getConfig('PORTAL_USER_UPLOAD_REF_LINK')
       callback(null, locals)
     } else {
       callback({}, null)
