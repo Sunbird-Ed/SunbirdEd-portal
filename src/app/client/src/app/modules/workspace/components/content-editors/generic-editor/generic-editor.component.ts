@@ -2,11 +2,12 @@ import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
 import { NavigationHelperService, ResourceService, ToasterService, ConfigService, IUserProfile, ServerResponse } from '@sunbird/shared';
 import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
+import { combineLatest, of, throwError } from 'rxjs';
 import { UserService, TenantService } from '@sunbird/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '@sunbird/environment';
-import { WorkSpaceService } from '../../../services';
-import { tap, delay } from 'rxjs/operators';
+import { EditorService, WorkSpaceService } from '../../../services';
+import { tap, delay, map } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 jQuery.fn.iziModal = iziModal;
@@ -28,11 +29,12 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public showLoader = true;
   private browserBackEventSub;
   public extContWhitelistedDomains: string;
+  public ownershipType: Array<string>;
 
   constructor(private userService: UserService, public _zone: NgZone, private activatedRoute: ActivatedRoute,
     private tenantService: TenantService, private telemetryService: TelemetryService,
     private navigationHelperService: NavigationHelperService, public workspaceService: WorkSpaceService,
-    private configService: ConfigService) {
+    private configService: ConfigService, private editorService: EditorService) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.buildNumber = buildNumber ? buildNumber.value : '1.0';
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
@@ -43,11 +45,12 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     this.userProfile = this.userService.userProfile;
     this.routeParams = this.activatedRoute.snapshot.params;
     this.disableBrowserBackButton();
-    this.tenantService.tenantData$.pipe(
+    this.getDetails().pipe(
       tap(data => {
-        if (data.tenantData) {
-          this.logo = data.tenantData.logo;
+        if (data.tenantDetails) {
+          this.logo = data.tenantDetails.logo;
         }
+        this.ownershipType = data.ownershipType;
         this.showLoader = false;
         this.initEditor();
         this.setWindowContext();
@@ -57,6 +60,12 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         jQuery('#genericEditor').iziModal('open');
       });
+  }
+  private getDetails() {
+    return combineLatest(this.tenantService.tenantData$,
+    this.editorService.getOwnershipType()).
+    pipe(map(data => ({ tenantDetails: data[0].tenantData,
+      ownershipType: data[1] })));
   }
   /**
    *Launch Generic Editor in the modal
@@ -88,7 +97,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
         id: this.userProfile.userId,
         name: this.userProfile.firstName + ' ' + this.userProfile.lastName,
         orgIds: this.userProfile.organisationIds,
-        organisations: this.userProfile.orgDetails
+        organisations: this.userService.mapOrgIdName
       },
       sid: this.userService.sessionId,
       contentId: this.routeParams.contentId,
@@ -100,28 +109,9 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       tags: this.userService.dims,
       channel: this.userService.channel,
       env: 'generic-editor',
-      framework: this.routeParams.framework
+      framework: this.routeParams.framework,
+      ownershipType: this.ownershipType
     };
-
-    // Fetching ownership type
-    const formServiceInputParams = {
-      formType: 'content',
-      subType: 'all',
-      formAction: 'ownership',
-      rootOrgId: this.userProfile.rootOrgId
-    };
-    this.workspaceService.getFormData(formServiceInputParams).subscribe(
-      (data: ServerResponse) => {
-        if (_.get(data, 'result.form.data.fields[0].ownershipType') !== undefined) {
-          window.context.ownershipType = data.result.form.data.fields[0].ownershipType;
-        } else {
-          window.context.ownershipType = ['createdBy'];
-        }
-      },
-      (err: ServerResponse) => {
-        window.context.ownershipType = ['createdBy'];
-      }
-    );
   }
   private setWindowConfig() {
     window.config = _.cloneDeep(this.configService.editorConfig.GENERIC_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config

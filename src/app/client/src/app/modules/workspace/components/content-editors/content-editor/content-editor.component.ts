@@ -30,6 +30,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   public showLoader = true;
   private browserBackEventSub;
   public contentDetails: any;
+  public ownershipType: Array<string>;
   /**
   * Default method of class ContentEditorComponent
   */
@@ -52,6 +53,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
         if (data.tenantDetails) {
           this.logo = data.tenantDetails.logo;
         }
+        this.ownershipType = data.ownershipType;
         this.showLoader = false;
         this.initEditor();
         this.setWindowContext();
@@ -68,8 +70,10 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
         });
   }
   private getDetails() {
-    return combineLatest(this.tenantService.tenantData$, this.getContentDetails()).
-      pipe(map(data => ({ tenantDetails: data[0].tenantData, contentDetails: data[1] })));
+    return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
+    this.editorService.getOwnershipType()).
+      pipe(map(data => ({ tenantDetails: data[0].tenantData,
+        contentDetails: data[1], ownershipType: data[2] })));
   }
   private getContentDetails() {
     const options: any = { params: { mode: 'edit' } };
@@ -133,7 +137,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
         id: this.userProfile.userId,
         name: this.userProfile.firstName + ' ' + this.userProfile.lastName,
         orgIds: this.userProfile.organisationIds,
-        organisations: this.userProfile.orgDetails
+        organisations: this.userService.mapOrgIdName
       },
       sid: this.userService.sessionId,
       contentId: this.routeParams.contentId,
@@ -144,28 +148,9 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
       },
       tags: this.userService.dims,
       channel: this.userService.channel,
-      framework: this.routeParams.framework
+      framework: this.routeParams.framework,
+      ownershipType: this.ownershipType
     };
-
-    // Fetching ownership type
-    const formServiceInputParams = {
-      formType: 'content',
-      subType: 'all',
-      formAction: 'ownership',
-      rootOrgId: this.userProfile.rootOrgId
-    };
-    this.workspaceService.getFormData(formServiceInputParams).subscribe(
-      (data: ServerResponse) => {
-        if (_.get(data, 'result.form.data.fields[0].ownershipType') !== undefined) {
-          window.context.ownershipType = data.result.form.data.fields[0].ownershipType;
-        } else {
-          window.context.ownershipType = ['createdBy'];
-        }
-      },
-      (err: ServerResponse) => {
-        window.context.ownershipType = ['createdBy'];
-      }
-    );
   }
   private setWindowConfig() {
     window.config = _.cloneDeep(this.configService.editorConfig.CONTENT_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config

@@ -37,6 +37,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   public showLoader = true;
   private browserBackEventSub;
   public collectionDetails: any;
+  public ownershipType: Array<string>;
   /**
   * Default method of classs CollectionEditorComponent
   * @param {ResourceService} resourceService To get language constant
@@ -62,6 +63,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         if (data.tenantDetails) {
           this.logo = data.tenantDetails.logo;
         }
+        this.ownershipType = data.ownershipType;
         this.showLoader = false;
         this.initEditor();
         this.setWindowContext();
@@ -77,8 +79,10 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       });
   }
   private getDetails() {
-    return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails()).
-    pipe(map(data => ({ tenantDetails: data[0].tenantData, collectionDetails: data[1] })));
+    return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
+    this.editorService.getOwnershipType()).
+    pipe(map(data => ({ tenantDetails: data[0].tenantData,
+      collectionDetails: data[1], ownershipType: data[2] })));
   }
   private getCollectionDetails() {
     const options: any = { params: {} };
@@ -139,7 +143,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         id: this.userService.userid,
         name: this.userProfile.firstName + ' ' + this.userProfile.lastName,
         orgIds: this.userProfile.organisationIds,
-        organisations: this.userProfile.orgDetails
+        organisations: this.userService.mapOrgIdName
       },
       sid: this.userService.sessionId,
       contentId: this.routeParams.contentId,
@@ -151,28 +155,9 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       tags: this.userService.dims,
       channel: this.userService.channel,
       framework: this.routeParams.framework,
-      env: this.routeParams.type.toLowerCase()
+      env: this.routeParams.type.toLowerCase(),
+      ownershipType: this.ownershipType
     };
-
-    // Fetching ownership type
-    const formServiceInputParams = {
-      formType: 'content',
-      subType: 'all',
-      formAction: 'ownership',
-      rootOrgId: this.userProfile.rootOrgId
-    };
-    this.workspaceService.getFormData(formServiceInputParams).subscribe(
-      (data: ServerResponse) => {
-        if (_.get(data, 'result.form.data.fields[0].ownershipType') !== undefined) {
-          window.context.ownershipType = data.result.form.data.fields[0].ownershipType;
-        } else {
-          window.context.ownershipType = ['createdBy'];
-        }
-      },
-      (err: ServerResponse) => {
-        window.context.ownershipType = ['createdBy'];
-      }
-    );
   }
   private setWindowConfig() {
     window.config = _.cloneDeep(this.configService.editorConfig.COLLECTION_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config
