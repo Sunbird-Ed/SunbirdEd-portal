@@ -1,6 +1,6 @@
 import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
-import { NavigationHelperService, ResourceService, ToasterService, ConfigService, IUserProfile } from '@sunbird/shared';
+import { NavigationHelperService, ResourceService, ToasterService, ConfigService, IUserProfile, ServerResponse } from '@sunbird/shared';
 import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
 import { UserService, TenantService } from '@sunbird/core';
 import { ActivatedRoute } from '@angular/router';
@@ -102,6 +102,26 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       env: 'generic-editor',
       framework: this.routeParams.framework
     };
+
+    // Fetching ownership type
+    const formServiceInputParams = {
+      formType: 'content',
+      subType: 'all',
+      formAction: 'ownership',
+      rootOrgId: this.userProfile.rootOrgId
+    };
+    this.workspaceService.getFormData(formServiceInputParams).subscribe(
+      (data: ServerResponse) => {
+        if (_.get(data, 'result.form.data.fields[0].ownershipType') !== undefined) {
+          window.context.ownershipType = data.result.form.data.fields[0].ownershipType;
+        } else {
+          window.context.ownershipType = ['createdBy'];
+        }
+      },
+      (err: ServerResponse) => {
+        window.context.ownershipType = ['createdBy'];
+      }
+    );
   }
   private setWindowConfig() {
     window.config = _.cloneDeep(this.configService.editorConfig.GENERIC_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config

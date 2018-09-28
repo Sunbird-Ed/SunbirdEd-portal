@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, NgZone, Renderer2, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 import * as iziModal from 'izimodal/js/iziModal';
-import { NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserProfile } from '@sunbird/shared';
+import { NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserProfile, ServerResponse } from '@sunbird/shared';
 import { UserService, TenantService } from '@sunbird/core';
 import { ActivatedRoute } from '@angular/router';
 import { EditorService } from './../../../services/editors/editor.service';
@@ -144,8 +144,28 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
       },
       tags: this.userService.dims,
       channel: this.userService.channel,
-      framework: this.routeParams.framework,
+      framework: this.routeParams.framework
     };
+
+    // Fetching ownership type
+    const formServiceInputParams = {
+      formType: 'content',
+      subType: 'all',
+      formAction: 'ownership',
+      rootOrgId: this.userProfile.rootOrgId
+    };
+    this.workspaceService.getFormData(formServiceInputParams).subscribe(
+      (data: ServerResponse) => {
+        if (_.get(data, 'result.form.data.fields[0].ownershipType') !== undefined) {
+          window.context.ownershipType = data.result.form.data.fields[0].ownershipType;
+        } else {
+          window.context.ownershipType = ['createdBy'];
+        }
+      },
+      (err: ServerResponse) => {
+        window.context.ownershipType = ['createdBy'];
+      }
+    );
   }
   private setWindowConfig() {
     window.config = _.cloneDeep(this.configService.editorConfig.CONTENT_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config

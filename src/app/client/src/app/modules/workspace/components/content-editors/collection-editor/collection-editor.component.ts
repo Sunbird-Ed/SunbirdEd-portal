@@ -3,7 +3,7 @@ import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 import * as  iziModal from 'izimodal/js/iziModal';
 import {
-  NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserProfile
+  NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserProfile, ServerResponse
 } from '@sunbird/shared';
 import { UserService, TenantService } from '@sunbird/core';
 import { ActivatedRoute } from '@angular/router';
@@ -153,6 +153,26 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       framework: this.routeParams.framework,
       env: this.routeParams.type.toLowerCase()
     };
+
+    // Fetching ownership type
+    const formServiceInputParams = {
+      formType: 'content',
+      subType: 'all',
+      formAction: 'ownership',
+      rootOrgId: this.userProfile.rootOrgId
+    };
+    this.workspaceService.getFormData(formServiceInputParams).subscribe(
+      (data: ServerResponse) => {
+        if (_.get(data, 'result.form.data.fields[0].ownershipType') !== undefined) {
+          window.context.ownershipType = data.result.form.data.fields[0].ownershipType;
+        } else {
+          window.context.ownershipType = ['createdBy'];
+        }
+      },
+      (err: ServerResponse) => {
+        window.context.ownershipType = ['createdBy'];
+      }
+    );
   }
   private setWindowConfig() {
     window.config = _.cloneDeep(this.configService.editorConfig.COLLECTION_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config
