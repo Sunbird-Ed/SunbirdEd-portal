@@ -2,14 +2,13 @@ const envHelper = require('../environmentVariablesHelper.js')
 const configURL = envHelper.CONFIG_URL
 const apiAuthToken = envHelper.PORTAL_API_AUTH_TOKEN
 const _ = require('lodash')
-const telemetryHelper = require('../telemetryHelper')
 const request = require('request')
 const configModel = require('./configuration')
 const cron = require('node-cron');
 const configServiceEnabled = envHelper.CONFIG_SERVICE_ENABLED
 let configRefreshInterval = envHelper.CONFIG_REFRESH_INTERVAL
 let cacheRefreshEnabled = false
-let configPrefix = 'instance.portal/'
+const configReqKey = 'instance.portal'
 
 // left side 'key' is the configuration service key and right side 'value' is the envhelper key
 const configMap = {
@@ -33,11 +32,7 @@ fetchConfig = function () {
   return new Promise(function (resolve, reject) {
     let configs = {}
     if (configServiceEnabled) {
-      let configKeys = _.keys(configMap)
-      configKeys = configKeys.map(function (item) {
-        return configPrefix + item;
-      })
-      readConfigs(configKeys).then(function (configObj) {
+      readConfigs(configReqKey).then(function (configObj) {
         console.log('Info: Configurations fetched from API successfully')
         resolve(checkAndStoreConfigs(configObj))
       }, function (err) {
@@ -62,7 +57,6 @@ fetchConfig = function () {
  */
 checkAndStoreConfigs = function (configs) {
   _.forOwn(configMap, function (envKey, configKey) {
-    configKey = configPrefix + configKey
     configModel.set(envKey, configs[configKey] || envHelper[envKey])
   })
 }
@@ -76,7 +70,7 @@ checkAndStoreConfigs = function (configs) {
 readConfigs = function (configKeys) {
   return new Promise(function (resolve, reject) {
     let options = {
-      url: configURL + 'v1/read',
+      url: configURL,// + 'v1/read',
       method: 'POST',
       json: true,
       headers: {
@@ -84,21 +78,14 @@ readConfigs = function (configKeys) {
       },
       body: {
         request: {
-          keys: configKeys
+          keys: [configKeys]
         }
       }
     }
-    const telemetryData = {
-      options: options,
-      uri: configURL + 'v1/read'
-    }
     request(options, function (err, response, body) {
       if (!err && body && body.responseCode === 'OK') {
-        resolve(body.result.keys)
+        resolve(body.result.keys[configReqKey])
       } else {
-        telemetryData.statusCode = _.get(response, 'statusCode')
-        telemetryData.resp = body
-        telemetryHelper.logAPIErrorEvent(telemetryData)
         reject(err)
       }
     })
