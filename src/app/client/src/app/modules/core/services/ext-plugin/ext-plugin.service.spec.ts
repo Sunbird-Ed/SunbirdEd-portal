@@ -19,6 +19,6 @@ describe('ExtPlugin', () => {
   it('should set config object and baseUrl', inject([ExtPluginService], (service: ExtPluginService) => {
     expect(service.config).toBeDefined();
     expect(service.config).toEqual(jasmine.any(Object));
-    expect(service.baseUrl).toEqual('/api/');
+    expect(service.baseUrl).toEqual('/plugin/');
   }));
 });
