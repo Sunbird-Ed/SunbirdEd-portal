@@ -445,7 +445,6 @@
         "phone": "phone",
         "email": "email",
         "userName": "userName",
-        "password": "password",
         "externalId": "externalId",
         "externalIdType": "externalIdType",
         "externalIdProvider": "externalIdProvider",
