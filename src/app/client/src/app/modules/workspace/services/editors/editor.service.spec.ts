@@ -5,12 +5,17 @@ import { ConfigService } from '@sunbird/shared';
 import { ContentService } from '@sunbird/core';
 import { mockRes } from './editor.service.spec.data';
 import { WorkSpaceService } from './../work-space/workspace.service';
+import { RouterTestingModule } from '@angular/router/testing';
+import { SharedModule } from '@sunbird/shared';
+import { CoreModule } from '@sunbird/core';
+import { CacheService } from 'ng2-cache-service';
 
 describe('EditorService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [EditorService, ConfigService, ContentService, WorkSpaceService]
+      imports: [HttpClientTestingModule, RouterTestingModule,
+        CoreModule.forRoot(), SharedModule.forRoot()],
+      providers: [EditorService, ConfigService, ContentService, WorkSpaceService, CacheService]
     });
   });
 
