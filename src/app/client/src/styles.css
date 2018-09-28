@@ -2858,7 +2858,20 @@ iframe.iziModal-iframe {
       clear: both;
       padding-bottom: 10px;
     }
-
+  .toc-right-nav-btn-content span.font-white.description, .toc-left-nav-btn-content span.font-white.description {
+      font-size: 12px;
+      max-height: 26px;
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-height: 28px;
+      white-space: normal;
+      line-height: 1.2em;
+  }
+  #app-player-collection-renderer .toc-right-nav-btn-content{
+    max-width: 97%;
+    margin-right: 0.52em;
+  }
 }
 
 @media only screen and (min-width: 320px) and (max-width: 400px) {

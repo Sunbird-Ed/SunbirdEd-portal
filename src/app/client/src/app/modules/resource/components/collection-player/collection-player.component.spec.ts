@@ -87,6 +87,23 @@ describe('CollectionPlayerComponent', () => {
     expect(component.loader).toBeFalsy();
   });
 
+  it('should call onPlayContent and setContentNavigator method', () => {
+    const windowScrollService = TestBed.get(WindowScrollService);
+    const content = { id: 'do_112474267785674752118', title: 'Test' };
+    component.collectionTreeNodes = CollectionHierarchyGetMockResponse.result.content;
+    const playContentDetails = {
+      model : {
+        mimeType : 'application/vnd.ekstep.ecml-archive',
+        channel: '505c7c48ac6dc1edc9b08f21db5a571d'
+      }
+    };
+    spyOn(component, 'OnPlayContent').and.callThrough();
+    spyOn(component, 'playContent').and.callThrough();
+    component.OnPlayContent(content);
+    expect(component.OnPlayContent).toHaveBeenCalledWith(content);
+    expect(component.playContent).toHaveBeenCalledWith(content);
+  });
+
   xit('should navigate to error page on invalid collection id', () => {});
   xit('should navigate to error page on valid collection id but invalid content id', () => {});
   xit('should show service unavailable message on API server error', () => {});
