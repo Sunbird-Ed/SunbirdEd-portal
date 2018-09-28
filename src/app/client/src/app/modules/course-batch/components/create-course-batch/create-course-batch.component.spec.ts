@@ -46,8 +46,9 @@ const fakeActivatedRoute = {
         }
       ],
       data: {
-        telemetry: {
-        }
+        telemetry: { env: 'course', pageid: 'batch-create', type: 'view',  mode: 'create',
+        object: { ver: '1.0', type: 'batch' }
+       }
       }
     }
 };
@@ -111,6 +112,27 @@ describe('CreateCourseBatchComponent', () => {
     component.createBatch();
     expect(component.createBatchForm).toBeDefined();
     expect(toasterService.success).toHaveBeenCalledWith(resourceServiceMockData.messages.smsg.m0033);
+  });
+  it('should create batch and show success error message if api return error', () => {
+    const courseBatchService = TestBed.get(CourseBatchService);
+    const toasterService = TestBed.get(ToasterService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    resourceService.messages = mockResponse.resourceBundle.messages;
+    const userService = TestBed.get(UserService);
+    userService._userProfile = { organisationIds: [] };
+    spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(mockResponse.getUserList));
+    spyOn(courseBatchService, 'getCourseHierarchy').and.
+    returnValue(observableOf({createdBy: 'b2479136-8608-41c0-b3b1-283f38c338ed'}));
+    spyOn(courseBatchService, 'createBatch').and.callFake(() => observableThrowError(mockResponse.errorResponse));
+    spyOn(toasterService, 'error').and.callThrough();
+    fixture.detectChanges();
+    toasterService.error(resourceServiceMockData.messages.fmsg.m0052);
+    component.createBatchForm.value.startDate = new Date();
+    component.createBatch();
+    expect(component.createBatchForm).toBeDefined();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceServiceMockData.messages.fmsg.m0052);
   });
 
 });

@@ -9,8 +9,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { CourseBatchService } from './../../services';
 import { AddBatchMembersComponent } from '../add-batch-members/add-batch-members.component';
-import { IImpressionEventInput, IStartEventInput, IEndEventInput, IInteractEventInput,
-IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import {
+  IImpressionEventInput, IStartEventInput, IEndEventInput, IInteractEventInput,
+  IInteractEventObject, IInteractEventEdata
+} from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
 @Component({
   selector: 'app-create-course-batch',
@@ -82,6 +84,10 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
   */
   private courseId: string;
   /**
+ * discardModal boolean flag
+*/
+  discardModal = false;
+  /**
   * telemetryImpression object for create batch page
  */
   telemetryImpression: IImpressionEventInput;
@@ -93,9 +99,9 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
   * telemetryEnd object for create batch page
   */
   public telemetryEnd: IEndEventInput;
-    /**
-   * telemetryInteract event data
-   */
+  /**
+ * telemetryInteract event data
+ */
   telemetryInteract: IInteractEventInput;
 
   public saveBatchInteractEdata: IInteractEventEdata;
@@ -103,6 +109,8 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
   public telemetryInteractObject: IInteractEventObject;
   public backBtnInteractEdata: IInteractEventEdata;
   public createInteractEdata: IInteractEventEdata;
+  public cancelInteractEdata: IInteractEventEdata;
+  public discardInteractEdata: IInteractEventEdata;
   /**
 	 * Constructor to create injected service(s) object
 	 * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
@@ -148,7 +156,7 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
   }
 
   private fetchBatchDetails() {
-    return this.courseBatchService.getCourseHierarchy(this.courseId).pipe(map(data => ({courseDetails: data })));
+    return this.courseBatchService.getCourseHierarchy(this.courseId).pipe(map(data => ({ courseDetails: data })));
   }
   /**
   * It helps to initialize form fields and apply field level validation
@@ -162,7 +170,7 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
       endDate: new FormControl(),
     });
     this.createBatchForm.valueChanges.subscribe(val => {
-      if (this.createBatchForm.status === 'VALID') {
+      if (this.createBatchForm.status === 'VALID' ) {
         this.disableSubmitBtn = false;
       } else {
         this.disableSubmitBtn = true;
@@ -219,7 +227,7 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
       object: {
-        id:  this.courseId,
+        id: this.courseId,
         type: this.activatedRoute.snapshot.data.telemetry.object.type,
         ver: this.activatedRoute.snapshot.data.telemetry.object.ver
       },
@@ -230,7 +238,7 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
         uaspec: {
           agent: deviceInfo.browser,
           ver: deviceInfo.browser_version,
-          system: deviceInfo.os_version ,
+          system: deviceInfo.os_version,
           platform: deviceInfo.os,
           raw: deviceInfo.userAgent
         }
@@ -261,9 +269,19 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
       pageid: 'create-batch'
     };
     this.telemetryInteractObject = {
-      id: '',
+      id: this.courseId,
       type: 'create-batch',
       ver: '1.0'
+    };
+    this.cancelInteractEdata = {
+      id: 'cancel',
+      type: 'click',
+      pageid: 'update-batch'
+    };
+    this.discardInteractEdata = {
+      id: 'discard',
+      type: 'click',
+      pageid: 'update-batch'
     };
   }
   public redirect() {
@@ -271,8 +289,8 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
   }
   private reload() {
     // setTimeout(() => {
-      this.courseBatchService.updateEvent.emit({ event: 'create' });
-      this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
+    this.courseBatchService.updateEvent.emit({ event: 'create' });
+    this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
     // }, 1000);
   }
   /**

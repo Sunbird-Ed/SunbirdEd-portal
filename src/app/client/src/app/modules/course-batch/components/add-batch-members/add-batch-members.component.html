@@ -1,5 +1,5 @@
 <div class="content padding-left-right-0 padding-top-10 o-x-hide o-y-hide height-100">
-    <h4 class="ui left floated modal-sub-header padding-left-25 custom-modal-subheader">Select Members</h4>
+    <h4 class="ui left floated modal-sub-header padding-left-25 custom-modal-subheader">{{ resourceService?.frmelmnts?.lbl?.selectMembers}}</h4>
     <div class="ui clearing fullpage divider margin-bottom-0"></div>
 
     <div class="scrollable content ">
@@ -7,34 +7,37 @@
             <div class="three wide column right-content dividing-border">
                 <div class="custom-modal-subheader mb-5">{{ resourceService?.frmelmnts?.lbl?.organisation}}</div>
                 <div class="ui fluid input with-border">
-                    <input type="text" [(ngModel)]="rootOrgName" placeholder="Organisation Name" readonly>
+                    <input type="text" [(ngModel)]="rootOrgName" placeholder="{{resourceService?.frmelmnts?.lbl?.organisationName}}">
                 </div>
                 <br>
-                <div class="custom-modal-subheader mb-5">Sub-Organisation</div>
-                <div *ngIf= "subOrganizations.length >1">
-                <sui-multi-select (selectedOptionsChange)="fetchMembersDetails($event)" [(ngModel)]="selectedOrg" [hasLabels]="false" defaultSelectionText="Sub-Organisation"
-                    zeroSelectionText="Select" class="fluid selection with-border" [options]="subOrganizations" valueField="id"
-                    labelField="orgName" #suborgSelect>
-                    <sui-select-option *ngFor="let option of suborgSelect.filteredOptions" [value]="option">
-                    </sui-select-option>
-                </sui-multi-select>
+                <div class="custom-modal-subheader mb-5">{{ resourceService?.frmelmnts?.lbl?.subOrganisation}}</div>
+                <div *ngIf="subOrganizations.length >1">
+                    <sui-multi-select (selectedOptionsChange)="fetchMembersDetails($event)" [(ngModel)]="selectedOrg"
+                        [hasLabels]="false" defaultSelectionText="Sub-Organisation" zeroSelectionText="Select" class="fluid selection with-border"
+                        [options]="subOrganizations" valueField="id" labelField="orgName" #suborgSelect>
+                        <sui-select-option *ngFor="let option of suborgSelect.filteredOptions" [value]="option">
+                        </sui-select-option>
+                    </sui-multi-select>
                 </div>
                 <div class="ui fluid input with-border" *ngIf="subOrganizations.length ==1">
-                    <input type="text" [(ngModel)]="subOrganizations[0].orgName" placeholder="Organisation Name" readonly>
+                    <input type="text" [(ngModel)]="subOrganizations[0].orgName" placeholder={{resourceService?.frmelmnts?.lbl?.organisationName}}
+                        readonly>
                 </div>
                 <div class="margin-bottom-10 ui pointing red basic label below" *ngIf="subOrgRequired">
-                    Please Select
+                    {{ resourceService?.frmelmnts?.lbl?.pleaseSelect}}
                 </div>
                 <br>
                 <div class="one field fluid selection ">
                     <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
-                    <div  (click)="validateSubOrg()" class="mt-5 createbatchdropdown ui fluid with-border multiple search selection dropdown" id="mentors" ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
+                    <div (click)="validateSubOrg()" class="mt-5 createbatchdropdown ui fluid with-border multiple search selection dropdown"
+                        id="mentors" ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
                         <input id="mentorSelList">
                         <i class="dropdown icon"></i>
                         <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
                         <div class="menu">
                             <div (click)="selectMentor(mentor)" class="item" [attr.data-value]="mentor.id" *ngFor="let mentor of mentorList">
-                                <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{mentor.name}}
+                                <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}">
+                                {{mentor.name}}
                             </div>
                         </div>
                     </div>
@@ -48,8 +51,10 @@
                         <i class="dropdown icon"></i>
                         <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
                         <div class="menu">
-                            <div (click)="selectParticipants(user)" class="item" *ngFor="let user of participantList" [attr.data-value]="user.id">
-                                <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl }}"> {{user.name}}
+                            <div (click)="selectParticipants(user)" class="item" *ngFor="let user of participantList"
+                                [attr.data-value]="user.id">
+                                <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl }}">
+                                {{user.name}}
                             </div>
                         </div>
                     </div>
@@ -67,13 +72,22 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="eight wide column">
-            <button class="ui primary basic right floated button mr-40">Remove Selected</button>
-            </div> -->
+                    <div class="eight wide column" *ngIf="selectedItems && selectedItems.length > 0">
+                        <button class="ui primary basic right floated button mr-40" (click)="removeModalFlag = !removeModalFlag">Remove
+                            Selected</button>
+                    </div>
                 </div>
                 <table class="ui basic border-less table" *ngIf="selectedUserList.length > 0">
                     <thead>
                         <tr>
+                            <th>
+                                <div class="field">
+                                    <sui-checkbox [(ngModel)]="eCheck" (ngModelChange)="selectAll($event);"
+                                        [isDisabled]="eCheckDisabled" [isReadonly]="eCheckReadonly">
+
+                                    </sui-checkbox>
+                                </div>
+                            </th>
                             <th>{{ resourceService?.frmelmnts?.lbl?.name}}</th>
                             <th>{{ resourceService?.frmelmnts?.lbl?.email}}</th>
                             <th>{{ resourceService?.frmelmnts?.lbl?.contact}}</th>
@@ -84,6 +98,14 @@
                     </thead>
                     <tbody>
                         <tr class="modal-table" *ngFor="let user of selectedUserList | filter : searchData : ['name','role'];let i = index;">
+                            <td>
+                                <div class="field">
+                                    <sui-checkbox [(ngModel)]="user.selected" (ngModelChange)="toggle($event, user, user.id);"
+                                        [isDisabled]="eCheckDisabled" [isReadonly]="eCheckReadonly">
+
+                                    </sui-checkbox>
+                                </div>
+                            </td>
                             <td>{{user.name}}</td>
                             <td>{{user.email}}</td>
                             <td>{{user.phone}}</td>
@@ -100,3 +122,14 @@
         </div>
     </div>
 </div>
+
+<sui-modal [isClosable]="false" *ngIf="removeModalFlag" [size]="mini" #removeModal>
+    <div class="header"> Remove Members</div>
+    <div class="actions">
+        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="stopCreatingYesInteractEdata"
+            class="ui primary basic button announcement-button" (click)="removeModalFlag = !removeModalFlag"
+            [appTelemetryEnd]="telemetryEnd">Cancel</button>
+        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="stopCreatingNoInteractEdata"
+            class="ui primary button announcement-button" (click)="removeModal.deny(); remove()">Remove</button>
+    </div>
+</sui-modal>

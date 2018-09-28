@@ -1,16 +1,16 @@
-<sui-modal [isClosable]="false"  [isFullScreen]="true" #createBatchModel class="fullpage">
+<sui-modal [isClosable]="false" [isFullScreen]="true" #createBatchModel class="fullpage">
   <div class="header">
     <div class="ui grid">
       <div class="eleven wide column">
         <span class="ui header">{{resourceService?.frmelmnts.lbl.createnewbatch}}</span>
       </div>
-      <div class="one wide Right floated right aligned column" (click)="redirect()">
+      <div class="one wide Right floated right aligned column" (click)="discardModalFlag = !discardModalFlag">
         <i class="close large icon cursor-pointer" tabindex="0"></i>
       </div>
     </div>
   </div>
-  <div *ngIf="stepNumber === 1"  [appTelemetryStart]="telemetryStart"  [appTelemetryImpression]="telemetryImpression" class="scrolling content padding-left-right-0 fullpage-top-6 padding-top-10">
-    <h4 class="ui left floated modal-sub-header padding-left-25 custom-modal-subheader">Batch Detail</h4>
+  <div *ngIf="stepNumber === 1" [appTelemetryStart]="telemetryStart" [appTelemetryImpression]="telemetryImpression" class="scrolling content padding-left-right-0 fullpage-top-6 padding-top-10">
+    <h4 class="ui left floated modal-sub-header padding-left-25 custom-modal-subheader">{{resourceService?.frmelmnts?.lbl?.batchdetails}}</h4>
     <div class="ui clearing fullpage divider margin-bottom-50"></div>
 
     <form [formGroup]="createBatchForm" class="ui form batchAddUserForm padding-left-25 padding-right-25">
@@ -60,14 +60,14 @@
           <div class="field">
             <div class="ui radio checkbox">
               <input type="radio" name="enrollmentType" value='invite-only' formControlName="enrollmentType">
-              <label>Invite-only</label>
+              <label>{{resourceService?.frmelmnts?.lbl?.inviteonly}}</label>
             </div>
           </div>
           <div class="field margin-top-10" *ngIf="courseCreator">
             <div class="field">
               <div class="ui radio checkbox">
                 <input type="radio" value='open' name="enrollmentType" formControlName="enrollmentType">
-                <label>Open</label>
+                <label>{{resourceService?.frmelmnts?.lbl?.open}}</label>
               </div>
             </div>
           </div>
@@ -79,14 +79,33 @@
     <app-add-batch-members></app-add-batch-members>
   </div>
   <div class="actions">
-    <button *ngIf="stepNumber !== 2" (click)="createBatch()" class="ui left floated basic primary button" tabindex="0" [disabled]="disableSubmitBtn" 
-    appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="saveBatchInteractEdata" >SAVE</button>
-    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="addmembersInteractEdata" *ngIf="stepNumber !== 2" class="ui primary button" id="submitbutton" [disabled]="disableSubmitBtn" tabindex="0"  (click)="navigateToStep(2)" >ADD MEMBERS</button>
-    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="backBtnInteractEdata" *ngIf="stepNumber !== 1" (click)="navigateToStep((+stepNumber - 1))" class="ui left floated basic primary button" tabindex="0">BACK</button>
-    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="createInteractEdata" *ngIf="stepNumber !== 1" class="ui primary button" id="submitbutton" (click)="createBatch()"  tabindex="0">CREATE BATCH</button>
+    <button *ngIf="stepNumber !== 2" (click)="createBatch()" class="ui left floated basic primary button" tabindex="0" [disabled]="disableSubmitBtn"
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="saveBatchInteractEdata">{{resourceService?.frmelmnts?.btn?.save}}</button>
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="addmembersInteractEdata"
+      *ngIf="stepNumber !== 2" class="ui primary button" id="submitbutton" [disabled]="disableSubmitBtn || createBatchForm.value.enrollmentType === 'open'? true:false"
+      tabindex="0" (click)="navigateToStep(2)">
+      {{resourceService?.frmelmnts?.btn?.addMembers}}
+    </button>
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="backBtnInteractEdata"
+      *ngIf="stepNumber !== 1" (click)="navigateToStep((+stepNumber - 1))" class="ui left floated basic primary button" tabindex="0">
+      {{resourceService?.frmelmnts?.btn?.back}}
+    </button>
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="createInteractEdata"
+      *ngIf="stepNumber !== 1" class="ui primary button" id="submitbutton" (click)="createBatch()" tabindex="0">
+      {{resourceService?.frmelmnts?.btn?.createbatch}}
+    </button>
   </div>
 </sui-modal>
 
-
-
-
+<sui-modal [isClosable]="false" *ngIf="discardModalFlag" [size]="'mini'" #discardModal>
+  <i class="close icon" (click)="discardModalFlag = !discardModalFlag"></i>
+  <div class="header"> {{resourceService?.frmelmnts?.lbl?.discardBatch}}</div>
+  <div class="actions">
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="cancelInteractEdata"
+      class="ui primary basic button announcement-button" (click)="discardModalFlag = !discardModalFlag">{{resourceService?.frmelmnts?.btn?.cancel}}
+    </button>
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="discardInteractEdata"
+      class="ui primary button announcement-button" (click)="discardModal.deny(); redirect()">{{resourceService?.frmelmnts?.btn?.discard}}
+    </button>
+  </div>
+</sui-modal>
