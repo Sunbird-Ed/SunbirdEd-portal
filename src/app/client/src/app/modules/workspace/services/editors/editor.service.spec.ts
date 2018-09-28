@@ -4,12 +4,13 @@ import { EditorService } from './editor.service';
 import { ConfigService } from '@sunbird/shared';
 import { ContentService } from '@sunbird/core';
 import { mockRes } from './editor.service.spec.data';
+import { WorkSpaceService } from './../work-space/workspace.service';
 
 describe('EditorService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [EditorService, ConfigService, ContentService]
+      providers: [EditorService, ConfigService, ContentService, WorkSpaceService]
     });
   });
 
