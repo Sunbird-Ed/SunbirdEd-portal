@@ -12,7 +12,7 @@ import { CourseHierarchyGetMockResponse, CourseHierarchyGetMockResponseFlagged }
 import { TelemetryModule } from '@sunbird/telemetry';
 import { enrolledBatch } from './../../batch/batch-details/batch-details.component.data';
 import { CoursesService } from './../../../../core/services/course/course.service';
-
+import * as _ from 'lodash';
 describe('CoursePlayerComponent', () => {
   let component: CoursePlayerComponent;
   let fixture: ComponentFixture<CoursePlayerComponent>;
@@ -96,6 +96,8 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     component.ngOnInit();
     expect(component.courseHierarchy).toBeDefined();
+    expect(component.contributions).toBeDefined();
+    expect(_.isString(component.contributions)).toBeTruthy();
     component.ngOnDestroy();
   });
 

@@ -1,4 +1,4 @@
-import { ConfigService, ServerResponse, IUserProfile, IUserData } from '@sunbird/shared';
+import { ConfigService, ServerResponse, IUserProfile, IUserData, IOrganization } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
 import { Injectable } from '@angular/core';
@@ -81,6 +81,8 @@ export class UserService {
   private orgNames: Array<string> = [];
 
   public rootOrgName: string;
+
+  public orgnisationsDetails: Array<IOrganization>;
 
   /**
    * Reference of public data service.
@@ -247,7 +249,8 @@ export class UserService {
     };
     this.publicDataService.post(option).subscribe
       ((data: ServerResponse) => {
-        _.forEach(data.result.response.content, (orgData) => {
+        this.orgnisationsDetails = data.result.response.content;
+        _.forEach(this.orgnisationsDetails, (orgData) => {
           this.orgNames.push(orgData.orgName);
         });
         this._userProfile.organisationNames = this.orgNames;
@@ -257,6 +260,14 @@ export class UserService {
         this._userProfile.organisationNames = this.orgNames;
       }
       );
+  }
+
+  get orgIdNameMap() {
+    const mapOrgIdNameData = {};
+    _.forEach(this.orgnisationsDetails, (orgDetails) => {
+      mapOrgIdNameData[orgDetails.identifier] = orgDetails.orgName;
+    });
+    return mapOrgIdNameData;
   }
 
   get userProfile() {

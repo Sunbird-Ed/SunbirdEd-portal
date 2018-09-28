@@ -59,6 +59,7 @@ describe('CollectionEditorComponent', () => {
       spyOn(workspaceService, 'toggleWarning').and.callFake(() => { });
       spyOn(jQuery.fn, 'iziModal').and.callFake(() => { });
       spyOn(toasterService, 'error').and.callFake(() => {});
+      spyOn(editorService, 'getOwnershipType').and.returnValue(observableOf(['CreatedBy', 'CreatedFor']));
       component.ngOnInit();
       expect(component.logo).toBeDefined();
       expect(component.collectionDetails).toBeDefined();
@@ -66,6 +67,7 @@ describe('CollectionEditorComponent', () => {
       expect(jQuery.fn.iziModal).toHaveBeenCalled();
       expect(window.config).toBeDefined();
       expect(window.context).toBeDefined();
+      expect(window.context.ownershipType).toEqual(['CreatedBy', 'CreatedFor']);
     }));
 
   it('should throw error if getting content details fails',
