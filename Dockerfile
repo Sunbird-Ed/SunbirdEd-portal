@@ -13,5 +13,6 @@ CMD ["node", "migrate.js"]
 # This label is assigned at time of image creation
 # LABEL commitHash
 WORKDIR /home/sunbird/app_dist
+COPY entrypoint.sh .
 EXPOSE 3000
-CMD ["node", "server.js", "&"]
+CMD ["/bin/sh","entrypoint.sh"]
