@@ -96,8 +96,10 @@ export class ResourceComponent implements OnInit {
       source: 'web',
       name: 'Resource',
       filters: _.pickBy(this.filters, value => value.length > 0),
-      sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType  }
     };
+    if (this.queryParams.sort_by) {
+      option['sort_by'] = {[this.queryParams.sort_by]: this.queryParams.sortType  };
+    }
     this.pageSectionService.getPageData(option).subscribe(
       (apiResponse) => {
         if (apiResponse && apiResponse.sections ) {
@@ -220,6 +222,7 @@ export class ResourceComponent implements OnInit {
       queryParams[index] = value;
     });
     queryParams['defaultSortBy'] = JSON.stringify(query.request.sort_by);
+    queryParams['exists'] = query.request.exists;
     this.cacheService.set('viewAllQuery', queryParams, {
       maxAge: this.browserCacheTtlService.browserCacheTtl
     });

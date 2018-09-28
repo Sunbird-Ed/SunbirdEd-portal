@@ -146,9 +146,11 @@ export class LearnPageComponent implements OnInit, OnDestroy {
     const option = {
       source: 'web',
       name: 'Course',
-      filters: _.pickBy(this.filters, value => value.length > 0),
-      sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType }
+      filters: _.pickBy(this.filters, value => value.length > 0)
     };
+    if (this.queryParams.sort_by) {
+      option['sort_by'] = {[this.queryParams.sort_by]: this.queryParams.sortType  };
+    }
     this.pageSectionService.getPageData(option).pipe(
     takeUntil(this.unsubscribe))
     .subscribe(
@@ -316,6 +318,7 @@ export class LearnPageComponent implements OnInit, OnDestroy {
       queryParams[index] = value;
     });
     queryParams['defaultSortBy'] = JSON.stringify(query.request.sort_by);
+    queryParams['exists'] = query.request.exists;
     this.cacheService.set('viewAllQuery', queryParams, {
       maxAge: this.browserCacheTtlService.browserCacheTtl
     });

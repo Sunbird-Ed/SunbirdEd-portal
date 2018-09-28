@@ -9,6 +9,7 @@
     "LEARNER_PREFIX": "/learner/",
     "CONTENT_PREFIX": "/content/",
     "PUBLIC_PREFIX": "/api/",
+    "EXT_PLUGIN_PREFIX": "/plugin/",
     "ANNOUNCEMENT_PREFIX": "/announcement/v1",
     "TENANT_PREFIX": "/v1/tenant",
     "RESOURCEBUNDLES_PREFIX": "resourcebundles/v1",
@@ -126,7 +127,7 @@
     "CONTENT_COLLECTION": "application/vnd.ekstep.content-collection",
     "LOCATION_READ": "org/v1/location/read",
     "TELEMETRY": {
-       "APISLUG": "service/v1/content/",
+      "APISLUG": "service/v1/content/",
       "SYNC": "data/v1/telemetry"
     }
   }
