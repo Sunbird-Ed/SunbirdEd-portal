@@ -116,6 +116,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   prevPlaylistItem: any;
 
+  contributions: any;
+
+  contributionsLength: number;
+
   noContentToPlay = 'No content to play';
 
   showExtContentMsg = false;
@@ -130,7 +134,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public collectionTreeOptions: ICollectionTreeOptions;
 
   public unsubscribe = new Subject<void>();
-
   constructor(contentService: ContentService, activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
@@ -163,6 +166,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
       })).subscribe((response: any) => {
         this.courseHierarchy = response.courseHierarchy;
+        const contentCredits = _.get(this.courseHierarchy, 'content-credits');
+        if (_.isArray(contentCredits)) {
+          this.contributionsLength = contentCredits.length;
+        }
+        this.contributions = _.toString(_.map(contentCredits, 'name'));
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
           type: 'Course',
@@ -198,7 +206,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .subscribe((courseProgressData) => {
         this.courseProgressData = courseProgressData;
       });
-  }
+    }
   private parseChildContent() {
     const model = new TreeModel();
     const mimeTypeCount = {};
