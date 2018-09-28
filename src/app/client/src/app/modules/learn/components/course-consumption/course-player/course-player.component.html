@@ -54,6 +54,8 @@
                                 <br>
                                 <b>{{resourceService.frmelmnts.lbl.updatedon}}: {{courseHierarchy.lastUpdatedOn | dateFormat}}</b>
                                 <br>
+                                <b *ngIf="courseHierarchy.creator">{{resourceService.frmelmnts.lbl.courseCreatedBy}}: {{courseHierarchy.creator}}</b>
+                                <br>
                                 <b>{{resourceService.frmelmnts.lbl.contentCredits}}:</b>
                                 <br>
                                 <div *ngIf="contributionsLength ===1">
