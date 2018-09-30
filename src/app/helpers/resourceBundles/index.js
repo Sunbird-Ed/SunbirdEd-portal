@@ -1,5 +1,4 @@
 let dateFormat = require('dateformat')
-const envHelper = require('./../environmentVariablesHelper.js')
 const configHelper = require('../config/configHelper.js')
 let HttpStatus = require('http-status-codes')
 let uuidv1 = require('uuid/v1')

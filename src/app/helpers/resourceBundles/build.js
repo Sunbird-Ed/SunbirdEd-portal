@@ -3,7 +3,6 @@ const path = require('path')
 const fs = require('fs')
 const properties = require('properties')
 const _ = require('lodash')
-const envHelper = require('./../environmentVariablesHelper.js')
 const configHelper = require('./../config/configHelper.js')
 const resBundlesArr = [
   { name: 'frmelmnts',

@@ -8,7 +8,7 @@ let envVariables = {
   CONTENT_URL: env.sunbird_content_player_url || 'https://staging.open-sunbird.org/api/',
   CONFIG_URL: env.sunbird_config_service_url || 'https://staging.open-sunbird.org/api/config/',
   CONFIG_REFRESH_INTERVAL: env.config_refresh_interval || 10,
-  CONFIG_SERVICE_ENABLED: env.config_service_enabled || true,
+  CONFIG_SERVICE_ENABLED: env.config_service_enabled || false,
   CONTENT_PROXY_URL: env.sunbird_content_proxy_url || 'https://staging.open-sunbird.org',
   PORTAL_REALM: env.sunbird_portal_realm || 'sunbird',
   PORTAL_AUTH_SERVER_URL: env.sunbird_portal_auth_server_url || 'https://staging.open-sunbird.org/auth',

@@ -13,11 +13,11 @@ const configReqKey = 'instance.portal'
 // left side 'key' is the configuration service key and right side 'value' is the envhelper key
 const configMap = {
   sunbird_autocreate_trampoline_user: 'PORTAL_AUTOCREATE_TRAMPOLINE_USER',
-  sunbird_enabless_permission_check: 'ENABLE_PERMISSION_CHECK',
-  sunbird_instance: 'PORTAL_TITLE_NAME',
+  sunbird_enable_permission_check: 'ENABLE_PERMISSION_CHECK',
+  sunbird_instance_name: 'PORTAL_TITLE_NAME',
   sunbird_theme: 'PORTAL_THEME',
-  sunbird_portal_default_language: 'PORTAL_DEFAULT_LANGUAGE',
-  sunbird_portal_primary_bundle_language: 'PORTAL_PRIMARY_BUNDLE_LANGUAGE',
+  sunbird_default_language: 'PORTAL_DEFAULT_LANGUAGE',
+  sunbird_primary_bundle_language: 'PORTAL_PRIMARY_BUNDLE_LANGUAGE',
   sunbird_explore_button_visibility: 'EXPLORE_BUTTON_VISIBILITY',
   sunbird_enable_signup: 'ENABLE_SIGNUP',
   sunbird_extcont_whitelisted_domains: 'SUNBIRD_EXTCONT_WHITELISTED_DOMAINS',
@@ -39,7 +39,7 @@ fetchConfig = function () {
         console.log('Info: Configurations falling back to environment variables due to error in fetching config from API')
         resolve(checkAndStoreConfigs(configs))
       })
-      if (cacheRefreshEnabled == false) {
+      if (!cacheRefreshEnabled) {
         scheduleConfigRefreshJob()
       }
     } else {
