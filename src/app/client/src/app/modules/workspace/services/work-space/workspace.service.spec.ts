@@ -78,21 +78,21 @@ describe('WorkSpaceService', () => {
   it('should get checklist data and set the cachelist data in cache', inject([WorkSpaceService, CacheService],
     (workSpaceService: WorkSpaceService, cacheService: CacheService) => {
       spyOn(workSpaceService, 'setData').and.callThrough();
-      spyOn(workSpaceService, 'getCheckListData').and.callThrough();
+      spyOn(workSpaceService, 'getFormData').and.callThrough();
       const param = {
         'type': 'content',
         'action': 'requestChangesChecklist',
         'subType': 'Resource',
         'rootOrgId': 'b00bc992ef25f1a9a8d63291e20efc8d'
       };
-      workSpaceService.getCheckListData(param);
-      workSpaceService.getCheckListData(param).subscribe(apiResponse => {
+      workSpaceService.getFormData(param);
+      workSpaceService.getFormData(param).subscribe(apiResponse => {
         expect(apiResponse).toBeDefined();
         expect(workSpaceService.setData).toHaveBeenCalled();
         cacheService.set('requestChangesChecklistResource',
           testData.ChecklistData, { maxAge: 10 * 60 });
       });
-      expect(workSpaceService.getCheckListData).toHaveBeenCalledWith(param);
+      expect(workSpaceService.getFormData).toHaveBeenCalledWith(param);
       expect(workSpaceService).toBeTruthy();
     }));
 });
