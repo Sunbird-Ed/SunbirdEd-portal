@@ -9,6 +9,7 @@ import { PermissionService, UserService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { Subject } from 'rxjs';
+import * as moment from 'moment';
 @Component({
   selector: 'app-batch-details',
   templateUrl: './batch-details.component.html',
@@ -25,6 +26,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   public updateBatchIntractEdata: IInteractEventEdata;
   public createBatchIntractEdata: IInteractEventEdata;
   public enrollBatchIntractEdata: IInteractEventEdata;
+  public unenrollBatchIntractEdata: IInteractEventEdata;
   courseMentor = false;
   batchList = [];
   userList = [];
@@ -36,6 +38,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     { name: 'Ongoing', value: 1 },
     { name: 'Upcoming', value: 0 }
   ];
+  todayDate = moment(new Date()).format('YYYY-MM-DD');
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
     public router: Router, public activatedRoute: ActivatedRoute) {
@@ -60,6 +63,11 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     };
     this.enrollBatchIntractEdata = {
       id: 'enroll-batch',
+      type: 'click',
+      pageid: 'course-consumption'
+    };
+    this.unenrollBatchIntractEdata = {
+      id: 'unenroll-batch',
       type: 'click',
       pageid: 'course-consumption'
     };
@@ -179,6 +187,10 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   enrollBatch(batch) {
     this.courseBatchService.setEnrollToBatchDetails(batch);
     this.router.navigate(['enroll/batch', batch.identifier], { relativeTo: this.activatedRoute });
+  }
+  unenrollBatch(batch) {
+    // this.courseBatchService.setEnrollToBatchDetails(batch);
+    this.router.navigate(['unenroll/batch', batch.identifier], { relativeTo: this.activatedRoute });
   }
   ngOnDestroy() {
     this.unsubscribe.next();
