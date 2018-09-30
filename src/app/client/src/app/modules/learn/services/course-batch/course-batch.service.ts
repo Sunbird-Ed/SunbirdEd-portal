@@ -96,7 +96,13 @@ export class CourseBatchService {
     };
     return this.learnerService.post(options);
   }
-
+  unenrollFromCourse(data) {
+    const options = {
+      url: this.configService.urlConFig.URLS.COURSE.UNENROLL_USER_COURSE,
+      data: data
+    };
+    return this.learnerService.post(options);
+  }
   createBatch(request) {
     const option = {
       url: this.configService.urlConFig.URLS.BATCH.CREATE,
