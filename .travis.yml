@@ -8,7 +8,6 @@ before_script:
     - npm install
     - ng lint
     - ng build --prod
-    - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then  ng build --prod; fi'
     - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then cd ./../; fi'
     - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then  npm install; fi'
 script:
