@@ -262,13 +262,15 @@ export class ExploreComponent implements OnInit, OnDestroy {
       queryParams[index] = value;
     });
     queryParams['defaultSortBy'] = JSON.stringify(query.request.sort_by);
+    queryParams['channel'] = this.hashTagId;
+    queryParams['board'] = [this.prominentFilters['board']];
     this.cacheService.set('viewAllQuery', queryParams, {
       maxAge: this.browserCacheTtlService.browserCacheTtl
     });
     _.forIn(this.filters, (value, index) => {
       queryParams[index] = value;
     });
-    const url = this.router.url.split('?');
+     const url = this.router.url.split('?');
       const sectionUrl = url[0] + '/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], {queryParams: queryParams});
   }

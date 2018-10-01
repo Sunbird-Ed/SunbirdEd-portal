@@ -9,8 +9,9 @@ import { ContentService, UserService, LearnerService, TenantService, CoreModule 
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { mockRes } from './generic-editor.component.spec.data';
-import { WorkSpaceService } from '../../../services';
+import { WorkSpaceService, EditorService } from '../../../services';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { of as observableOf } from 'rxjs';
 
 const mockResourceService = { messages: { emsg: { m0004: '1000' } } };
 const mockActivatedRoute = {
@@ -32,7 +33,7 @@ describe('GenericEditorComponent', () => {
       declarations: [GenericEditorComponent],
       imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, CoreModule.forRoot(), TelemetryModule.forRoot()],
       providers: [
-        UserService, LearnerService, ContentService,
+        UserService, LearnerService, ContentService, EditorService,
         ResourceService, ToasterService, ConfigService,
         NavigationHelperService, BrowserCacheTtlService, WorkSpaceService,
         { provide: Router, useClass: RouterStub },
@@ -51,18 +52,20 @@ describe('GenericEditorComponent', () => {
   });
 
   it('should fetch tenant and content details and set logo and collection details if success',
-  inject([ ToasterService, TenantService, WorkSpaceService],
-    ( toasterService, tenantService, workspaceService) => {
+  inject([ ToasterService, TenantService, WorkSpaceService, EditorService],
+    ( toasterService, tenantService, workspaceService, editorService) => {
       tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData });
       spyOn(workspaceService, 'toggleWarning').and.callFake(() => { });
       spyOn(jQuery.fn, 'iziModal').and.callFake(() => { });
       spyOn(toasterService, 'error').and.callFake(() => {});
+      spyOn(editorService, 'getOwnershipType').and.returnValue(observableOf(['CreatedBy', 'CreatedFor']));
       component.ngOnInit();
       expect(component.logo).toBeDefined();
       expect(component.showLoader).toBeFalsy();
       expect(jQuery.fn.iziModal).toHaveBeenCalled();
       expect(window.config).toBeDefined();
       expect(window.context).toBeDefined();
+      expect(window.context.ownershipType).toEqual(['CreatedBy', 'CreatedFor']);
     }));
 
   it('should navigate to draft', inject([ NavigationHelperService], ( navigationHelperService) => () => {

@@ -6,6 +6,7 @@ const envHelper = require('./environmentVariablesHelper.js')
 const async = require('async')
 const _ = require('lodash')
 const telemetryHelper = require('./telemetryHelper')
+const configHelper = require('./config/configHelper.js')
 const appId = envHelper.APPID
 const defaultTenant = envHelper.DEFAULT_CHANNEL
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
@@ -62,7 +63,7 @@ module.exports = {
     let protocol = req.headers['x-forwarded-proto'] || req.protocol
     let baseUrl = envHelper.TENANT_CDN_URL || protocol + '://' + host + (port === '' ? '' : ':' + port)
     let responseObj = {
-      titleName: envHelper.PORTAL_TITLE_NAME
+      titleName: configHelper.getConfig('PORTAL_TITLE_NAME')
     }
     if (tenantId) {
       async.parallel({
