@@ -25,7 +25,7 @@ import { IFancytreeOptions } from '../../interfaces';
   `]
 })
 export class FancyTreeComponent implements AfterViewInit {
-  @ViewChild('fancyTree') public tree: ElementRef; 
+  @ViewChild('fancyTree') public tree: ElementRef;
   @Input() public nodes: any;
   @Input() public options: IFancytreeOptions;
   @Output() public itemSelect: EventEmitter<Fancytree.FancytreeNode> = new EventEmitter();
