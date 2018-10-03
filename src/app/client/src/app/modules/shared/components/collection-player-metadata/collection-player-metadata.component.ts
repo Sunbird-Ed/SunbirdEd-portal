@@ -9,7 +9,7 @@ import * as _ from 'lodash';
   styleUrls: ['./collection-player-metadata.component.css']
 })
 export class CollectionPlayerMetadataComponent implements OnInit {
-  @Input() metaData: any;
+  @Input() metaData: object;
   public collectionMeta: any = {};
   public collectionId: string;
   contributions: string;
