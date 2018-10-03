@@ -145,18 +145,16 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
 
   private navigateToContent(content?: { title: string, id: string }, id?: string): void {
     let navigationExtras: NavigationExtras;
+    navigationExtras = {
+      queryParams: {},
+      relativeTo: this.route
+    };
     if (id) {
       this.queryParams.contentId = id;
-      navigationExtras = {
-        queryParams: this.queryParams,
-        relativeTo: this.route
-      };
+      navigationExtras.queryParams = this.queryParams;
     } else
       if (content) {
-        navigationExtras = {
-          queryParams: { 'contentId': content.id },
-          relativeTo: this.activatedRoute
-        };
+        navigationExtras.queryParams = { 'contentId': content.id };
       }
     this.router.navigate([], navigationExtras);
   }
@@ -177,14 +175,15 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   }
   private parseChildContent(collection: any) {
     const model = new TreeModel();
-    const mimeTypeCount = {};
-    this.treeModel = model.parse(collection.data);
-    this.treeModel.walk((node) => {
-      if (node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
-        this.contentDetails.push({ id: node.model.identifier, title: node.model.name });
-      }
-      this.setContentNavigators();
-    });
+    if (collection.data) {
+      this.treeModel = model.parse(collection.data);
+      this.treeModel.walk((node) => {
+        if (node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
+          this.contentDetails.push({ id: node.model.identifier, title: node.model.name });
+        }
+        this.setContentNavigators();
+      });
+    }
   }
   public setContentNavigators() {
     const index = _.findIndex(this.contentDetails, ['id', this.contentId]);
