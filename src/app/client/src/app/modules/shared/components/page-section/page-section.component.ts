@@ -100,9 +100,6 @@ export class PageSectionComponent implements OnInit {
    * to generate interact telemetry data */
   btnArrow: string;
   pageid: string;
-  /**Identify if user reached the end of the Slick slider,
-   * for generating interact telemetry data */
-  endOfSlider = false;
   constructor(public activatedRoute: ActivatedRoute) {
   }
   playContent(event) {
@@ -168,9 +165,6 @@ export class PageSectionComponent implements OnInit {
     }
   }
   checkSlide(event) {
-    this.endOfSlider = false;
-    (event.nextSlide === 8 || (event.currentSlide === 4 && event.nextSlide === 0)) ?
-      this.endOfSlider = true : this.endOfSlider = false;
     if (event.currentSlide < event.nextSlide) {
       this.btnArrow = 'next-button';
     } else if (event.currentSlide > event.nextSlide) {
