@@ -39,7 +39,7 @@ describe('PublicCollectionPlayerComponent', () => {
   const resourceBundle = {
     'messages': {
       'stmsg': {
-        'm0118': 'No content to display'
+        'm0118': 'No content to play'
       }
     }
   };

@@ -108,7 +108,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   public contentDetails = [];
   public nextPlaylistItem: any;
   public prevPlaylistItem: any;
-  public noContentToPlay: string;
 
   constructor(route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
@@ -120,7 +119,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     this.windowScrollService = windowScrollService;
     this.router = router;
     this.router.onSameUrlNavigation = 'ignore';
-    this.noContentToPlay = this.resourceService.messages.stmsg.m0118;
   }
   ngOnInit() {
     this.getContent();
