@@ -51,7 +51,8 @@ export class ContentCreditsComponent implements OnInit, OnChanges {
       const contentCredits = _.get(this.contentData, 'content-credits');
       if (contentCredits && contentCredits.length) {
         const contentCreditNames = _.map(contentCredits, 'name');
-        this.contentCreditsData['contributors'] = _.compact(contentCreditNames.push(this.contentData['owner'])).join(', ');
+        contentCreditNames.push(this.contentData['owner']);
+        this.contentCreditsData['contributors'] = _.compact(contentCreditNames).join(', ');
       }
       this.contentCreditsData['creators'] = this.contentData['creator'] || '';
     }
