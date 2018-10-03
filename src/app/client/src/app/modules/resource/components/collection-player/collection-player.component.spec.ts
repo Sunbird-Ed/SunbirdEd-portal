@@ -5,7 +5,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CollectionPlayerComponent } from './collection-player.component';
 import { ContentService, PlayerService, CoreModule } from '@sunbird/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { WindowScrollService, ConfigService, SharedModule } from '../../../shared';
+import { WindowScrollService, ConfigService, SharedModule, ResourceService } from '../../../shared';
 import { CollectionTreeComponent, AppLoaderComponent, PlayerComponent, FancyTreeComponent } from '../../../shared/components';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -31,12 +31,21 @@ describe('CollectionPlayerComponent', () => {
     }
   };
 
+  const resourceBundle = {
+    'messages': {
+      'stmsg': {
+        'm0118': 'No content to display'
+      }
+    }
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionPlayerComponent],
       imports: [SuiModule, HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot(), RouterTestingModule],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute }]
+      providers: [ ResourceService, { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: ResourceService, useValue: resourceBundle }]
     })
       .compileComponents();
   }));
