@@ -3,6 +3,7 @@ import {
 } from '@angular/core';
 import { ResourceService } from '../../services/index';
 import * as _ from 'lodash';
+import { ContentData, ContentCreditsData } from '@sunbird/shared';
 
 @Component({
   selector: 'app-content-credits',
@@ -16,7 +17,7 @@ export class ContentCreditsComponent implements OnInit, OnChanges {
   /**
   *input for content credits;
   */
-  @Input() contentData: object;
+  @Input() contentData: ContentData;
   /**
   *Output for close popup;
   */
@@ -26,7 +27,7 @@ export class ContentCreditsComponent implements OnInit, OnChanges {
   */
   public resourceService: ResourceService;
 
-  public contentCreditsData: object;
+  public contentCreditsData: ContentCreditsData;
   /**
   * Refrence of UserService
   */
