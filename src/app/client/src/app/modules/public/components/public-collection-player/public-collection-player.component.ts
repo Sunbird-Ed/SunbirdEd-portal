@@ -59,7 +59,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   public contentDetails = [];
   public nextPlaylistItem: any;
   public prevPlaylistItem: any;
-  public noContentToPlay = 'No content to play';
+  public noContentToPlay: string;
   public showFooter: Boolean = false;
   public badgeData: Array<object>;
   private subsrciption: Subscription;
@@ -99,6 +99,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     this.windowScrollService = windowScrollService;
     this.router = router;
     this.router.onSameUrlNavigation = 'ignore';
+    this.noContentToPlay = this.resourceService.messages.stmsg.m0118;
   }
   ngOnInit() {
     this.getContent();
