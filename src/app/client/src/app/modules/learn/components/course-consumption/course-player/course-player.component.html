@@ -28,11 +28,11 @@
                             <app-collection-tree *ngIf="collectionTreeNodes.data; else dataCommingSoon" (contentSelect)="navigateToContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"
                                     [contentStatus]="contentStatus"></app-collection-tree>
                             <ng-template #dataCommingSoon>
-                                <div class="center" *ngIf="!collectionTreeNodes.data">
-                                    <img src="{{'assets/images/Build2xxxhdpi@3x.png'}}"/>
-                                    <h3 class="header">Comming Soon!</h3>
-                                    <p>We are creating content for this.</p>
-                                </div>
+                                <div class="placeholder margin-top-40" *ngIf="!collectionTreeNodes.data">
+                                    <img src="{{'assets/images/Build2xxxhdpi.png'}}"/>
+                                    <h5 class="header placeholder-heading mb-5">Coming soon!</h5>
+                                    <p class="placeholder-content">We are creating content for this.</p>
+                                </div> 
                             </ng-template>
                             <div class="ui fitted divider margin-bottom-20 margin-top-30"></div>
                             <!--app-collection-tree (contentSelect)="navigateToContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"

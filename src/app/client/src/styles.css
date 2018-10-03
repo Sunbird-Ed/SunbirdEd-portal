@@ -3084,3 +3084,23 @@ i.icon.accordion-content-right {
   padding-bottom: 6px;
 }
 
+
+/* placeholder if content is not there */
+.placeholder {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+/* TODO: need to remove font family once we add fonts in index.html file */
+.placeholder-heading {
+  align-self: center;
+  font-family: 'sunbirdboldfont'; 
+}
+.placeholder-content {
+  align-self: center;
+  font-size: 1.1em;
+  font-weight: 600;
+  opacity:0.6;
+}
+
