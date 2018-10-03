@@ -30,11 +30,10 @@
     <div class="ten wide column">
       <div style="font-weight: 650 !important;" class="ui tiny header padding-top-30"> {{resourceService.frmelmnts?.lbl?.linkedContents}} ({{searchResults.length}})
       </div>
-
     </div>
     <div class="one wide column"></div>
   </div>
-  <div class="row">
+  <div class="row" *ngIf="searchResults.length > 0; else dataCommingSoon">
     <div class="one wide column"></div>
     <div class="ten wide column">
       <div in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="searchResults" class="ui stackable four column grid dynamic-section-card ">
@@ -42,6 +41,19 @@
             <app-card [data]="content" (clickEvent)="getEvent($event)"></app-card>
         </div>
       </div>
+    </div>
+    <div class="one wide column"></div>
+  </div>
+  <div class="row">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <ng-template #dataCommingSoon>
+        <div class="">
+            <img src="{{'assets/images/Build2xxxhdpi.png'}}"/>
+            <h5 class="header placeholder-heading mb-5">Coming soon!</h5>
+            <p class="placeholder-content">We are creating content for this.</p>
+        </div> 
+      </ng-template>
     </div>
     <div class="one wide column"></div>
   </div>
