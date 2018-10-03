@@ -109,10 +109,11 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe))
       .subscribe((data) => {
         this.disableSubmitBtn = true;
+        this.toasterService.success(this.resourceService.messages.smsg.m0045);
         this.goBackToCoursePage();
       }, (err) => {
         this.disableSubmitBtn = false;
-        this.toasterService.error(this.resourceService.messages.emsg.m0001);
+        this.toasterService.error(this.resourceService.messages.emsg.m0009);
       });
   }
   goBackToCoursePage() {
