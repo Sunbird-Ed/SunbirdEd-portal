@@ -1,13 +1,14 @@
 import {
-  Component, OnInit, Input, EventEmitter, Output
+  Component, OnInit, Input, EventEmitter, Output, OnChanges
 } from '@angular/core';
 import { ResourceService } from '../../services/index';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-content-credits',
   templateUrl: './content-credits.component.html'
 })
-export class ContentCreditsComponent implements OnInit {
+export class ContentCreditsComponent implements OnInit, OnChanges {
    /**
    * To show / hide modal
   */
@@ -15,7 +16,7 @@ export class ContentCreditsComponent implements OnInit {
   /**
   *input for content credits;
   */
-  @Input() contentCreditsData: any;
+  @Input() contentData: object;
   /**
   *Output for close popup;
   */
@@ -24,6 +25,8 @@ export class ContentCreditsComponent implements OnInit {
   * To call resource service which helps to use language constant
   */
   public resourceService: ResourceService;
+
+  public contentCreditsData: object;
   /**
   * Refrence of UserService
   */
@@ -40,6 +43,23 @@ export class ContentCreditsComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  ngOnChanges() {
+    this.contentCreditsData = { contributors: '', creators: ''};
+    if (this.contentData) {
+      const contentCredits = _.get(this.contentData, 'content-credits');
+      if (contentCredits && contentCredits.length) {
+        this.contentCreditsData['contributors'] = _.toString( _.map(contentCredits, 'name'));
+      }
+      if (this.contentData && this.contentData.owner) {
+        this.contentCreditsData['contributors'] += (this.contentCreditsData['contributors'] ? ',' : '') + this.contentData.owner;
+      }
+      if (this.contentData && this.contentData.creator) {
+        this.contentCreditsData['creators'] = this.contentData.creator;
+      }
+    }
+  }
+
   public closeModal(contentCreditsModal) {
     contentCreditsModal.deny();
     this.close.emit();

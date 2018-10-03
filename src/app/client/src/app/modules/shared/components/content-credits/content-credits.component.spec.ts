@@ -25,10 +25,24 @@ describe('ContentCreditsComponent', () => {
     fixture = TestBed.createComponent(ContentCreditsComponent);
     component = fixture.componentInstance;
   });
-  it('should take content credits as  INPUT  ', () => {
-    component.contentCreditsData = Response.contentCreditsData;
+  it('should take content data as  INPUT  ', () => {
+    component.contentData = Response.metaData;
+    const actualKeys = Object.keys(component.contentData);
+    const expectedKeys = 'content-credits';
     expect(component.showContentCreditModal).toBeDefined();
     expect(component.showContentCreditModal).toBeFalsy();
+    expect(component.contentData).toBeDefined();
+    expect(actualKeys).toContain(expectedKeys);
+
+  });
+
+  it('should show content credits data', () => {
+    component.contentData = Response.metaData;
+    component.ngOnChanges();
+    const actualKeys = Object.keys(component.contentCreditsData);
+    const expectedKeys = ['contributors', 'creators'];
+    fixture.detectChanges();
+    expect(actualKeys).toEqual(expectedKeys);
     expect(component.contentCreditsData).toBeDefined();
   });
 });

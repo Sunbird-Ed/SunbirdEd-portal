@@ -248,12 +248,13 @@
                 </div>
                 <div class="nine wide column">
                     <div class="content" *ngIf="metadata.owner">
-                        <a (click)="showContentCredits()">Content Credits</a>
+                        {{metadata.owner}} 
+                        <a (click)="showContentCreditsPopup()">Content Credits</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <app-content-credits [contentCreditsData]="contentCreditsData" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false">
+    <app-content-credits [contentData]="metadata" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false">
   </app-content-credits>
 </div>

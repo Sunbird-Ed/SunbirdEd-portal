@@ -15,7 +15,6 @@ export class CollectionPlayerMetadataComponent implements OnInit {
   contributions: string;
   contributionsLength: number;
   showContentCreditsModal: boolean;
-  contentCreditsData: any = {};
 
   constructor(public resourceService: ResourceService, private activatedRoute: ActivatedRoute) { }
 
@@ -25,18 +24,7 @@ export class CollectionPlayerMetadataComponent implements OnInit {
     });
   }
 
-  showContentCredits () {
-    const contentCredits = _.get(this.metaData, 'content-credits');
-    this.contentCreditsData = {contributors: '', creators: ''};
-    if (contentCredits && contentCredits.length) {
-      this.contentCreditsData.contributors = _.map(contentCredits, 'name').toString();
-    }
-    if (this.metaData && this.metaData.owner) {
-      this.contentCreditsData.contributors += this.metaData.owner;
-    }
-    if (this.metaData && this.metaData.creator) {
-      this.contentCreditsData.creators = this.metaData.creator;
-    }
+  showContentCreditsPopup () {
     this.showContentCreditsModal = true;
   }
 

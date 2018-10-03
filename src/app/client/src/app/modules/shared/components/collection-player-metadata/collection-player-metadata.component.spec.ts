@@ -38,12 +38,10 @@ describe('CollectionPlayerMetadataComponent', () => {
     expect(component.collectionId).toBe('LP_FT_TextBook2');
   });
 
-  it('should open popup on click of show content credits with contentCredits data', () => {
-    component.metaData = Response.metaData;
-    spyOn(component, 'showContentCredits').and.callThrough();
-    component.showContentCredits();
+  it('should open popup on click of show content credits', () => {
+    spyOn(component, 'showContentCreditsPopup').and.callThrough();
+    component.showContentCreditsPopup();
     fixture.detectChanges();
-    expect(component.contentCreditsData).toBeDefined();
     expect(component.showContentCreditsModal).toBeTruthy();
   });
 });

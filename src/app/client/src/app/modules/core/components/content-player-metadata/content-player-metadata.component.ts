@@ -17,7 +17,6 @@ export class ContentPlayerMetadataComponent implements OnInit, OnDestroy {
   conceptNames: any;
   filteredConcepts: any;
   conceptDataSubscription: Subscription;
-  contentCreditsData: any;
   showContentCreditsModal: boolean;
 
   @Input() contentData: ContentData;
@@ -44,18 +43,7 @@ export class ContentPlayerMetadataComponent implements OnInit, OnDestroy {
     });
   }
 
-  showContentCredits () {
-    const contentCredits = _.get(this.metadata, 'content-credits');
-    this.contentCreditsData = { contributors: '', creators: ''};
-    if (contentCredits && contentCredits.length) {
-      this.contentCreditsData.contributors = _.map(contentCredits, 'name').toString();
-    }
-    if (this.metadata && this.metadata.owner) {
-      this.contentCreditsData.contributors += this.metadata.owner;
-    }
-    if (this.metadata && this.metadata.creator) {
-      this.contentCreditsData.creators = this.metadata.creator;
-    }
+  showContentCreditsPopup () {
     this.showContentCreditsModal = true;
   }
 
