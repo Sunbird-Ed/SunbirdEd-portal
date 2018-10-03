@@ -25,9 +25,18 @@
                                     {{resourceService.frmelmnts.lbl.coursestructure}}
                                 </b>
                             </div>
-                            <app-collection-tree (contentSelect)="navigateToContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"
-                                [contentStatus]="contentStatus"></app-collection-tree>
+                            <app-collection-tree *ngIf="collectionTreeNodes.data; else dataCommingSoon" (contentSelect)="navigateToContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"
+                                    [contentStatus]="contentStatus"></app-collection-tree>
+                            <ng-template #dataCommingSoon>
+                                <div class="center" *ngIf="!collectionTreeNodes.data">
+                                    <img src="{{'assets/images/Build2xxxhdpi@3x.png'}}"/>
+                                    <h3 class="header">Comming Soon!</h3>
+                                    <p>We are creating content for this.</p>
+                                </div>
+                            </ng-template>
                             <div class="ui fitted divider margin-bottom-20 margin-top-30"></div>
+                            <!--app-collection-tree (contentSelect)="navigateToContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"
+                                [contentStatus]="contentStatus"></app-collection-tree-->
                             <!-- <app-course-discussions></app-course-discussions> -->
                         </div>
                         <div class='three wide column'>
