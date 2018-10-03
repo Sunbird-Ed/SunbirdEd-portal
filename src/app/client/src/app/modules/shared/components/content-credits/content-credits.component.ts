@@ -52,10 +52,10 @@ export class ContentCreditsComponent implements OnInit, OnChanges {
         this.contentCreditsData['contributors'] = _.toString( _.map(contentCredits, 'name'));
       }
       if (this.contentData && this.contentData['owner']) {
-        this.contentCreditsData['contributors'] += (this.contentCreditsData['contributors'] ? ',' : '') + this.contentData.owner;
+        this.contentCreditsData['contributors'] += (this.contentCreditsData['contributors'] ? ',' : '') + this.contentData['owner'];
       }
       if (this.contentData && this.contentData['creator']) {
-        this.contentCreditsData['creators'] = this.contentData.creator;
+        this.contentCreditsData['creators'] = this.contentData['creator'];
       }
     }
   }
