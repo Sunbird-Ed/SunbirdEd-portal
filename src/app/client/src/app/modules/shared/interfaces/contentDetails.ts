@@ -41,3 +41,8 @@ export interface ContentData {
     visibility?: string;
     attributions?: Array<string>;
 }
+
+export interface ContentCreditsData {
+    contributors: string;
+    creators: string;
+}
