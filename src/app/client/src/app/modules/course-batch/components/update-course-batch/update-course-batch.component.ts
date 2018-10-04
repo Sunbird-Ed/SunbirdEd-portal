@@ -94,14 +94,10 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   */
   public telemetryEnd: IEndEventInput;
   /**
-   * Contains step number
-  */
-  stepNumber = 1;
-  /**
   * discardModal boolean flag
   */
   discardModalFlag = false;
-
+  batchStep: any;
   public updateInteractEdata: IInteractEventEdata;
   public addmemebersInteractEdata: IInteractEventEdata;
   public backInteractEdata: IInteractEventEdata;
@@ -135,6 +131,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     this.userService = userService;
     this.courseBatchService = courseBatchService;
     this.toasterService = toasterService;
+    enum batchState {createCourse = 'update', addBatchMember = 'addmember'}
+    this.batchStep = batchState.createCourse;
   }
 
   /**
@@ -339,12 +337,12 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
 
   }
   /**
-  * It takes form step number as a input and increase the step
+  * It takes form step  as a input and change the state 
   *
-  * @param {number}  stepNumber form step number navigateToWizardNumber
+  * @param {number}  step form step number navigateToWizardNumber
   */
-  navigateToStep(stepNumber: number): void {
-    this.stepNumber = Number(stepNumber);
+   navigateToStep(step): void {
+    this.batchStep = step;
   }
   ngOnDestroy() {
     if (this.updateBatchModal && this.updateBatchModal.deny) {

@@ -14,11 +14,13 @@ import {
   IInteractEventObject, IInteractEventEdata
 } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
+
 @Component({
   selector: 'app-create-course-batch',
   templateUrl: './create-course-batch.component.html',
   styleUrls: ['./create-course-batch.component.css']
 })
+
 export class CreateCourseBatchComponent implements OnInit, OnDestroy {
   /**
   * To navigate to other pages
@@ -76,10 +78,6 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
 */
   courseCreator = false;
   /**
-   * Contains step number
-  */
-  stepNumber = 1;
-  /**
    * courseId
   */
   private courseId: string;
@@ -103,7 +101,7 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
  * telemetryInteract event data
  */
   telemetryInteract: IInteractEventInput;
-
+  batchStep: any;
   public saveBatchInteractEdata: IInteractEventEdata;
   public addmembersInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
@@ -129,6 +127,8 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
     this.userService = userService;
     this.courseBatchService = courseBatchService;
     this.toasterService = toasterService;
+    enum batchState {createCourse = 'create', addBatchMember = 'addmember'}
+    this.batchStep = batchState.createCourse;
   }
   /**
    * Initialize form fields and getuserlist
@@ -296,12 +296,12 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
     // }, 1000);
   }
   /**
-  * It takes form step number as a input and increase the step
+  * It takes form step  as a input and change the state 
   *
-  * @param {number}  stepNumber form step number navigateToWizardNumber
+  * @param {number}  step form step number navigateToWizardNumber
   */
-  navigateToStep(stepNumber: number): void {
-    this.stepNumber = Number(stepNumber);
+  navigateToStep(step): void {
+    this.batchStep = step;
   }
   ngOnDestroy() {
     if (this.createBatchModel && this.createBatchModel.deny) {

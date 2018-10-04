@@ -1,4 +1,4 @@
-<sui-modal [isClosable]="false" [isFullScreen]="true" #createBatchModel class="fullpage">
+<sui-modal [ngSwitch]="batchStep" [isClosable]="false" [isFullScreen]="true" #createBatchModel class="fullpage">
   <div class="header">
     <div class="ui grid">
       <div class="eleven wide column">
@@ -9,7 +9,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="stepNumber === 1" [appTelemetryStart]="telemetryStart" [appTelemetryImpression]="telemetryImpression" class="scrolling content padding-left-right-0 fullpage-top-6 padding-top-10">
+  <div *ngSwitchCase="'create'" [appTelemetryStart]="telemetryStart" [appTelemetryImpression]="telemetryImpression" class="scrolling content padding-left-right-0 fullpage-top-6 padding-top-10">
     <h4 class="ui left floated modal-sub-header padding-left-25 custom-modal-subheader">{{resourceService?.frmelmnts?.lbl?.batchdetails}}</h4>
     <div class="ui clearing fullpage divider margin-bottom-50"></div>
 
@@ -75,23 +75,23 @@
       </div>
     </form>
   </div>
-  <div *ngIf="stepNumber === 2" class="height-100">
+  <div *ngSwitchCase="'addmember'" class="height-100">
     <app-add-batch-members></app-add-batch-members>
   </div>
   <div class="actions">
-    <button *ngIf="stepNumber !== 2" (click)="createBatch()" class="ui left floated basic primary button" tabindex="0" [disabled]="disableSubmitBtn"
+    <button *ngSwitchCase="'create'" (click)="createBatch()" class="ui left floated basic primary button" tabindex="0" [disabled]="disableSubmitBtn"
       appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="saveBatchInteractEdata">{{resourceService?.frmelmnts?.btn?.save}}</button>
     <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="addmembersInteractEdata"
-      *ngIf="stepNumber !== 2" class="ui primary button" id="submitbutton" [disabled]="disableSubmitBtn || createBatchForm.value.enrollmentType === 'open'? true:false"
-      tabindex="0" (click)="navigateToStep(2)">
+      *ngSwitchCase="'create'" class="ui primary button" id="submitbutton" [disabled]="disableSubmitBtn || createBatchForm.value.enrollmentType === 'open'? true:false"
+      tabindex="0" (click)="navigateToStep('addmember')">
       {{resourceService?.frmelmnts?.btn?.addMembers}}
     </button>
     <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="backBtnInteractEdata"
-      *ngIf="stepNumber !== 1" (click)="navigateToStep((+stepNumber - 1))" class="ui left floated basic primary button" tabindex="0">
+      *ngSwitchCase="'addmember'" (click)="navigateToStep('create')" class="ui left floated basic primary button" tabindex="0">
       {{resourceService?.frmelmnts?.btn?.back}}
     </button>
     <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="createInteractEdata"
-      *ngIf="stepNumber !== 1" class="ui primary button" id="submitbutton" (click)="createBatch()" tabindex="0">
+      *ngSwitchCase="'addmember'" class="ui primary button" id="submitbutton" (click)="createBatch()" tabindex="0">
       {{resourceService?.frmelmnts?.btn?.createbatch}}
     </button>
   </div>
