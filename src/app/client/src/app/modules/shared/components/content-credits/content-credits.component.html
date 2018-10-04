@@ -1,25 +1,24 @@
-<sui-modal [isClosable]="false" #contentCreditsModal class="share-link-popup">
+<sui-modal [isClosable]="false" #contentCreditsModal class="share-link-popup" size="tiny" >
   <div class="header">
-    <div class="ui grid">
+    <div class="ui grid middle aligned">
       <div class="eleven wide column">
-        <span class="ui header">{{resourceService?.frmelmnts?.lbl?.credits}}</span>
+        <h5>{{resourceService?.frmelmnts?.lbl?.credits}}</h5>
       </div>
-      <div class="one wide column actions">
-        <i class="close icon" (click)="closeModal(contentCreditsModal)"></i>
+      <div class="one wide column p-0">
+        <i class="close icon link" (click)="closeModal(contentCreditsModal)" title="Close"></i>
       </div>
     </div>
   </div>
   <div class="content">
     <div class="ui list">
       <div class="item">
-        <div class="header">{{resourceService?.frmelmnts?.lbl?.creators}}</div>
-        <div class="padding-top-10">{{contentCreditsData.creators}}</div>
+        <div class="header text-gray">{{resourceService?.frmelmnts?.lbl?.creators}}</div>
+        <div class="mt-5">{{contentCreditsData.creators}}</div>
       </div>
-      <div class="item" *ngIf="contentCreditsData.contributors">
-        <div class="header padding-top-10">{{resourceService?.frmelmnts?.lbl?.contributors}}</div>
-        <div class="padding-top-10">{{contentCreditsData.contributors}}</div>
+      <div class="item mt-10" *ngIf="contentCreditsData.contributors">
+        <div class="header text-gray">{{resourceService?.frmelmnts?.lbl?.contributors}}</div>
+        <div class="mt-5">{{contentCreditsData.contributors}}</div>
       </div>
     </div>
   </div>
-  <div class="actions margin-top-20"></div>
 </sui-modal>
