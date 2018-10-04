@@ -19,6 +19,21 @@ import { AddBatchMembersComponent } from './add-batch-members.component';
 import * as mockData from './add-batch-memebers.component.spec.data';
 const testData = mockData.mockRes;
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+const resourceServiceMockData = {
+  messages: {
+    emsg: { m0005: 'Something went wrong, please try in some time....' },
+  },
+  frmelmnts: {
+    btn: {
+      tryagain: 'tryagain',
+      close: 'close'
+    },
+    lbl: {
+      description: 'description',
+      createnewbatch: ''
+    }
+  }
+};
 describe('AddBatchMembersComponent', () => {
   let component: AddBatchMembersComponent;
   let fixture: ComponentFixture<AddBatchMembersComponent>;
@@ -28,7 +43,8 @@ describe('AddBatchMembersComponent', () => {
       declarations: [ AddBatchMembersComponent ],
       imports: [RouterTestingModule, AngularMultiSelectModule,
         FormsModule, HttpClientModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
-      providers: [SearchService, CourseBatchService, ToasterService, ResourceService, UserService]
+      providers: [SearchService, CourseBatchService, ToasterService, UserService,
+        { provide: ResourceService, useValue: resourceServiceMockData }]
     })
     .compileComponents();
   }));

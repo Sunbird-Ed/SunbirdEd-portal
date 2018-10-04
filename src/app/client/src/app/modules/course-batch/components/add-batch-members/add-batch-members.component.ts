@@ -177,7 +177,6 @@ export class AddBatchMembersComponent implements OnInit {
 
   ngOnInit() {
     this.rootOrgName = this.userService.rootOrgName;
-    this.getSubOrgDetails([this.userService.userProfile.rootOrgId]);
     this.userDataSubscription = this.userService.userData$.pipe(first()).subscribe(
       user => {
         if (user && user.userProfile.organisationIds && user.userProfile.organisationIds.length) {
