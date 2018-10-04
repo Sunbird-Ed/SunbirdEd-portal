@@ -296,7 +296,7 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
     // }, 1000);
   }
   /**
-  * It takes form step  as a input and change the state 
+  * It takes form step  as a input and change the state
   *
   * @param {number}  step form step number navigateToWizardNumber
   */
