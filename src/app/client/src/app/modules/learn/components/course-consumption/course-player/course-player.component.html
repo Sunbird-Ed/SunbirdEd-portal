@@ -30,8 +30,8 @@
                             <ng-template #dataCommingSoon>
                                 <div class="placeholder margin-top-40" *ngIf="!collectionTreeNodes.data">
                                     <img src="{{'assets/images/datacomingsoon.png'}}"/>
-                                    <h5 class="header placeholder-heading mb-5">Coming soon!</h5>
-                                    <p class="placeholder-content">We are creating content for this.</p>
+                                    <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0118}}</h5>
+                                    <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0119}}</p>
                                 </div> 
                             </ng-template>
                             <div class="ui fitted divider margin-bottom-20 margin-top-30"></div>
