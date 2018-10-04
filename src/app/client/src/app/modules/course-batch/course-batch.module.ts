@@ -23,7 +23,7 @@ import { ClickOutsideDirective } from './directives';
     TelemetryModule,
     AngularMultiSelectModule,
   ],
-  declarations: [CreateCourseBatchComponent, ViewCourseBatchComponent, UpdateCourseBatchComponent, AddBatchMembersComponent, 
+  declarations: [CreateCourseBatchComponent, ViewCourseBatchComponent, UpdateCourseBatchComponent, AddBatchMembersComponent,
     ClickOutsideDirective],
   providers: [CourseBatchService]
 })
