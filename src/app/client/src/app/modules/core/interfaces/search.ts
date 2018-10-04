@@ -73,4 +73,5 @@ export interface SearchParam {
     * facet filters
   */
  facets?: Array<string>;
+ exists?: Array<string>;
 }

@@ -238,6 +238,7 @@ export class SearchService {
           limit: requestParam.limit,
           query: requestParam.query,
           sort_by: requestParam.sort_by,
+          exists: requestParam.exists,
           softConstraints: requestParam.softConstraints || { badgeAssertions: 1 },
           facets: requestParam.facets && requestParam.facets
         }

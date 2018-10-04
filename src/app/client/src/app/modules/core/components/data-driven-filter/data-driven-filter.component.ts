@@ -286,7 +286,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   applyFilters() {
     this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
-    let queryParams = {};
+    let queryParams: any = {};
     _.forIn(this.queryParams, (value, key) => {
       if (key === 'concepts') {
         queryParams[key] = [];
@@ -297,7 +297,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
         queryParams[key] = value;
       }
     });
-    queryParams = _.pickBy(queryParams, value => _.isArray(value) && value.length > 0);
+    queryParams = _.pickBy(queryParams, value => value && value.length);
     this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
   }
 

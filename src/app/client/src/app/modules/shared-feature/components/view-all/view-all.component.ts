@@ -209,7 +209,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
       _.forOwn(results, (queryValue, queryKey) => {
         this.filters[queryKey] = queryValue;
       });
-      this.filters = _.omit(results, ['key', 'sort_by', 'sortType', 'defaultSortBy']);
+      this.filters = _.omit(results, ['key', 'sort_by', 'sortType', 'defaultSortBy', 'exists']);
     }
   }
 
@@ -218,6 +218,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
       filters: _.pickBy(this.filters, value => value.length > 0),
       limit: this.pageLimit,
       pageNumber: request.params.pageNumber,
+      exists: request.queryParams.exists,
       sort_by: request.queryParams.sortType ?
         { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy),
         softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints')
@@ -270,10 +271,10 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     if (page < 1 || page > this.pager.totalPages) {
       return;
     }
-    this.pageNumber = page;
-    this.router.navigate([url, this.pageNumber], {
-      queryParams: this.queryParams
-    });
+      this.router.navigate([url, page], {
+        queryParams: this.queryParams,
+        relativeTo: this.activatedRoute
+      });
   }
 
   playContent(event) {

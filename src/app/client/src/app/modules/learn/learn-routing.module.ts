@@ -1,7 +1,7 @@
 import { NoteListComponent } from '@sunbird/notes';
 import {
   LearnPageComponent, CourseConsumptionPageComponent, CoursePlayerComponent,
-  EnrollBatchComponent, CreateBatchComponent
+  EnrollBatchComponent, CreateBatchComponent, UnEnrollBatchComponent
 } from './components';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -90,7 +90,13 @@ const routes: Routes = [
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
         },
         children: [
-          { path: 'flag', component: FlagContentComponent }
+          { path: 'flag', component: FlagContentComponent },
+          {
+            path: 'unenroll/batch/:batchId', component: UnEnrollBatchComponent,
+            data: {
+              telemetry: { env: telemetryEnv, pageid: 'batch-enroll', type: 'view', object: { ver: '1.0', type: 'batch' } }
+            }
+          }
         ]
       },
       {
