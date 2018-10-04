@@ -145,6 +145,8 @@ public configService: ConfigService;
     ],
     infinite: false,
   };
+  /**The button clicked value for interact telemetry event */
+  btnArrow: string;
   /**
    * The "constructor"
    *
@@ -164,6 +166,7 @@ public configService: ConfigService;
     this.activatedRoute = activatedRoute;
     this.configService = configService;
     this.utilService = utilService;
+    this.btnArrow = 'prev-button';
   }
   /**
    * This method calls the user API.
@@ -308,6 +311,15 @@ public configService: ConfigService;
     this.telemetryImpression.edata.visits = this.inviewLogs;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+  checkSlide(event) {
+    if (event.currentSlide === 0 && event.nextSlide === 0) {
+      this.btnArrow = 'prev-button';
+    } else if (event.currentSlide < event.nextSlide) {
+      this.btnArrow = 'next-button';
+    } else if (event.currentSlide > event.nextSlide) {
+      this.btnArrow = 'prev-button';
+    }
   }
   public anouncementInview(event) {
     if (event) {
