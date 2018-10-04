@@ -115,7 +115,6 @@ export class SearchService {
     };
     return this.publicDataService.post(option).pipe(
       map((data: ServerResponse) => {
-        this._searchedOrganisationList = data.result.response;
         return data;
       }));
   }

@@ -9,6 +9,8 @@ import { CreateCourseBatchComponent, ViewCourseBatchComponent , UpdateCourseBatc
 AddBatchMembersComponent} from './components';
 import { SharedModule } from '@sunbird/shared';
 import { CourseBatchService } from './services';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+import { ClickOutsideDirective } from './directives';
 @NgModule({
   imports: [
     CommonModule,
@@ -18,9 +20,11 @@ import { CourseBatchService } from './services';
     ReactiveFormsModule,
     CourseBatchRoutingModule,
     SharedModule,
-    TelemetryModule
+    TelemetryModule,
+    AngularMultiSelectModule,
   ],
-  declarations: [CreateCourseBatchComponent, ViewCourseBatchComponent, UpdateCourseBatchComponent, AddBatchMembersComponent],
+  declarations: [CreateCourseBatchComponent, ViewCourseBatchComponent, UpdateCourseBatchComponent, AddBatchMembersComponent, 
+    ClickOutsideDirective],
   providers: [CourseBatchService]
 })
 export class CourseBatchModule { }

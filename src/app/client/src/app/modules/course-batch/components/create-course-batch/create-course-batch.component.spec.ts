@@ -23,7 +23,7 @@ const resourceServiceMockData = {
     imsg: { m0027: 'Something went wrong' },
     stmsg: { m0009: 'error' },
     smsg: {m0033 : 'Batch created sucessfully'},
-    fmsg: {m0052: 'error'}
+    fmsg: {m0052: 'Creating batch failed, please try again later...'}
   },
   frmelmnts: {
     btn: {
@@ -66,6 +66,7 @@ describe('CreateCourseBatchComponent', () => {
         HttpClientTestingModule, TelemetryModule.forRoot() ],
       providers: [CourseBatchService, ToasterService, ResourceService,
         { provide: Router, useClass: RouterStub },
+        { provide: ResourceService, useValue: resourceServiceMockData },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
 
     })
@@ -104,37 +105,34 @@ describe('CreateCourseBatchComponent', () => {
     spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(mockResponse.getUserList));
     spyOn(courseBatchService, 'getCourseHierarchy').and.
     returnValue(observableOf({createdBy: 'b2479136-8608-41c0-b3b1-283f38c338ed'}));
-    spyOn(courseBatchService, 'createBatch').and.returnValue(observableThrowError(mockResponse.createBatchDetails));
+    spyOn(courseBatchService, 'createBatch').and.returnValue(observableOf(mockResponse.createBatchDetails));
     spyOn(toasterService, 'success').and.callThrough();
-    fixture.detectChanges();
     toasterService.success(resourceServiceMockData.messages.smsg.m0033);
+    fixture.detectChanges();
     component.createBatchForm.value.startDate = new Date();
     component.createBatch();
     expect(component.createBatchForm).toBeDefined();
     expect(toasterService.success).toHaveBeenCalledWith(resourceServiceMockData.messages.smsg.m0033);
   });
-  it('should create batch and show success error message if api return error', () => {
+  it('should create batch and show error message if api fails', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const toasterService = TestBed.get(ToasterService);
+    const userService = TestBed.get(UserService);
+    userService._userProfile = { organisationIds: [] };
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     resourceService.messages = mockResponse.resourceBundle.messages;
-    const userService = TestBed.get(UserService);
-    userService._userProfile = { organisationIds: [] };
     spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(mockResponse.getUserList));
     spyOn(courseBatchService, 'getCourseHierarchy').and.
     returnValue(observableOf({createdBy: 'b2479136-8608-41c0-b3b1-283f38c338ed'}));
-    spyOn(courseBatchService, 'createBatch').and.callFake(() => observableThrowError(mockResponse.errorResponse));
+    spyOn(courseBatchService, 'createBatch').and.returnValue(observableThrowError({}));
     spyOn(toasterService, 'error').and.callThrough();
-    fixture.detectChanges();
     toasterService.error(resourceServiceMockData.messages.fmsg.m0052);
+    fixture.detectChanges();
     component.createBatchForm.value.startDate = new Date();
     component.createBatch();
     expect(component.createBatchForm).toBeDefined();
     expect(toasterService.error).toHaveBeenCalledWith(resourceServiceMockData.messages.fmsg.m0052);
   });
-
 });
-
-

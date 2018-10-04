@@ -3,10 +3,11 @@ export const mockResponse = {
         'messages': {
             'fmsg': {
                 'm0079': 'Assigning badge failed, please try again later...',
-                'm0078': 'Fetching badge failed, please try again later...'
+                'm0078': 'Fetching badge failed, please try again later...',
+                'm0052' : 'Creating batch failed, please try again later...'
             },
             'smsg': {
-                'm0044': 'Badge assigned successfully'
+                'm0033': 'Batch created sucessfully'
             }
         }
     },

@@ -21,6 +21,7 @@
               "src/thirdparty",
               "src/favicon.png"
             ],
+            
             "styles": [
               "src/assets/styles/semantic.min.css",
               "src/styles.css",
@@ -28,7 +29,8 @@
               "node_modules/izitoast/dist/css/iziToast.min.css",
               "node_modules/fine-uploader/fine-uploader/fine-uploader-gallery.min.css",
               "src/assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.css",
-              "node_modules/jquery.fancytree/dist/skin-awesome/ui.fancytree.css"
+              "node_modules/jquery.fancytree/dist/skin-awesome/ui.fancytree.css",
+              "node_modules/angular2-multiselect-dropdown/themes/default.theme.css"
             ],
             "scripts": [
               "node_modules/moment/min/moment.min.js",

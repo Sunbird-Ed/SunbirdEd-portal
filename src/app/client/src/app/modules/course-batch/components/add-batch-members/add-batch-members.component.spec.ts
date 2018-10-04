@@ -18,6 +18,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { AddBatchMembersComponent } from './add-batch-members.component';
 import * as mockData from './add-batch-memebers.component.spec.data';
 const testData = mockData.mockRes;
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 describe('AddBatchMembersComponent', () => {
   let component: AddBatchMembersComponent;
   let fixture: ComponentFixture<AddBatchMembersComponent>;
@@ -25,7 +26,7 @@ describe('AddBatchMembersComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AddBatchMembersComponent ],
-      imports: [RouterTestingModule,
+      imports: [RouterTestingModule, AngularMultiSelectModule,
         FormsModule, HttpClientModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
       providers: [SearchService, CourseBatchService, ToasterService, ResourceService, UserService]
     })

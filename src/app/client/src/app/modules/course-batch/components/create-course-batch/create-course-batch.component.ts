@@ -86,7 +86,7 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
   /**
  * discardModal boolean flag
 */
-  discardModal = false;
+  discardModalFlag = false;
   /**
   * telemetryImpression object for create batch page
  */
@@ -189,12 +189,14 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
       startDate: startDate,
       endDate: endDate || null,
       createdBy: this.userService.userid,
-      createdFor: this.addbatchmembers && this.addbatchmembers.selectedOrg ? this.addbatchmembers.selectedOrg :
+      createdFor: this.addbatchmembers && this.addbatchmembers.selectedOrg ? _.map(this.addbatchmembers.selectedOrg, 'id') :
         this.userService.userProfile.organisationIds,
       mentors: this.addbatchmembers && this.addbatchmembers.selectedMentorList ? _.map(this.addbatchmembers.selectedMentorList, 'id') : [],
-      // participants: this.addbatchmembers && this.addbatchmembers.selectedParticipantList ?
-      //  _.map(this.addbatchmembers.selectedParticipantList, 'id') : []
     };
+    if (this.createBatchForm.value.enrollmentType !== 'open') {
+      requestBody['participants'] = this.addbatchmembers && this.addbatchmembers.selectedParticipantList ?
+      _.map(this.addbatchmembers.selectedParticipantList, 'id') : [];
+    }
     this.courseBatchService.createBatch(requestBody).pipe(takeUntil(this.unsubscribe))
       .subscribe((response) => {
         this.disableSubmitBtn = false;

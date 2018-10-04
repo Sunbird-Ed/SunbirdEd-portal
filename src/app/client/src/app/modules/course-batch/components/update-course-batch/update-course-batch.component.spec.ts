@@ -24,7 +24,7 @@ const resourceServiceMockData = {
     imsg: { m0027: 'Something went wrong' },
     stmsg: { m0009: 'error' },
     smsg: {m0034 : 'Batch Updated sucessfully'},
-    fmsg: {m0052: 'error'}
+    fmsg: { 'm0052' : 'Creating batch failed, please try again later...'}
   },
   frmelmnts: {
     btn: {
@@ -114,5 +114,26 @@ describe('UpdateCourseBatchComponent', () => {
     component.updateBatch();
     expect(component.updateBatch).toBeDefined();
     expect(toasterService.success).toHaveBeenCalledWith(resourceServiceMockData.messages.smsg.m0034);
+  });
+  it('should update batch and show error message if api fails', () => {
+    const courseBatchService = TestBed.get(CourseBatchService);
+    const toasterService = TestBed.get(ToasterService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    resourceService.messages = mockResponse.resourceBundle.messages;
+    const userService = TestBed.get(UserService);
+    userService._userProfile = { organisationIds: [] };
+    spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(mockResponse.getUserList));
+    spyOn(courseBatchService, 'getCourseHierarchy').and.
+    returnValue(observableOf({createdBy: 'b2479136-8608-41c0-b3b1-283f38c338ed'}));
+    spyOn(courseBatchService, 'getUpdateBatchDetails').and.
+    returnValue(observableOf(mockResponse.updateBatchDetails));
+    spyOn(courseBatchService, 'updateBatch').and.returnValue(observableThrowError({}));
+    spyOn(toasterService, 'error').and.callThrough();
+    toasterService.error(resourceServiceMockData.messages.fmsg.m0052);
+    component.ngOnInit();
+    component.updateBatch();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceServiceMockData.messages.fmsg.m0052);
   });
 });

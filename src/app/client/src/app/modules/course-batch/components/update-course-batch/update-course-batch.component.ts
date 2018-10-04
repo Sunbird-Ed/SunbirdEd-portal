@@ -97,10 +97,10 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
    * Contains step number
   */
   stepNumber = 1;
-   /**
-   * discardModal boolean flag
+  /**
+  * discardModal boolean flag
   */
-  discardModal = false;
+  discardModalFlag = false;
 
   public updateInteractEdata: IInteractEventEdata;
   public addmemebersInteractEdata: IInteractEventEdata;
@@ -144,6 +144,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     combineLatest(this.activatedRoute.params, this.activatedRoute.parent.params,
       (params, parentParams) => ({ ...params, ...parentParams })).pipe(
         mergeMap((params) => {
+          console.log(params);
           this.batchId = params.batchId;
           this.courseId = params.courseId;
           this.setTelemetryData();

@@ -1,16 +1,21 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, HostListener } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, Subject, combineLatest, of } from 'rxjs';
 import { takeUntil, first, map, debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operators';
-import { ResourceService, ServerResponse, ToasterService , FilterPipe} from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, FilterPipe } from '@sunbird/shared';
 import { UserService, SearchService } from '@sunbird/core';
 import { CourseBatchService } from './../../services';
 import * as _ from 'lodash';
+import { AngularMultiSelect } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 @Component({
   selector: 'app-add-batch-members',
   templateUrl: './add-batch-members.component.html',
-  styleUrls: ['./add-batch-members.component.css']
+  styleUrls: ['./add-batch-members.component.css'],
 })
 export class AddBatchMembersComponent implements OnInit {
+  @ViewChild('mentorDropDown') mentorDropDown;
+  @ViewChild('participantsDropDown') participantsDropDown;
+  @ViewChild('subOrgDropDown') subOrgDropDown;
   @Input() batchDetails: any;
   /**
    * To get logged-in user published course(s)
@@ -44,6 +49,10 @@ export class AddBatchMembersComponent implements OnInit {
    * Organization list
   */
   organizations: Array<any> = [];
+  /**
+* To navigate to other pages
+*/
+  public router: Router;
   /**
   * sub Organization list
  */
@@ -87,10 +96,10 @@ export class AddBatchMembersComponent implements OnInit {
   *
  */
   selectedItems: any = [];
-   /**
+  /**
   removeModalFlag
   *
- */
+  */
   removeModalFlag = false;
   /**
   subOrgRequired
@@ -98,22 +107,72 @@ export class AddBatchMembersComponent implements OnInit {
  */
   subOrgRequired = false;
   /**
+  selectAllUserCheck
+  *
+  */
+  selectAllUserCheck = false;
+  /**
+  to show the selected user check
+  *
+  */
+  selectItemCheck = false;
+
+  /**
    * This variable stores the search input.
   */
   searchData: string;
   /**
    * This variable stores the searchText for members.
   */
- searchInputChanged: Subject<string> = new Subject<string>();
+  searchInputChanged: Subject<string> = new Subject<string>();
+  /**
+  * This variable stores the settings of  subOrgDropDownSettings.
+ */
+  subOrgDropDownSettings = {};
+  /**
+   * This variable stores the settings of  MentorsDropDownSettings.
+  */
+  mentorsDropDownSettings = {};
+  /**
+   * This variable stores the settings of  MentorsDropDownSettings.
+  */
+  participantsDropDownSettings = {};
 
   constructor(userService: UserService, searchService: SearchService,
     courseBatchService: CourseBatchService, toasterService: ToasterService,
-    resourceService: ResourceService) {
+    resourceService: ResourceService,
+    activatedRoute: ActivatedRoute,
+    route: Router) {
     this.searchService = searchService;
     this.userService = userService;
     this.courseBatchService = courseBatchService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
+    this.router = route;
+    this.subOrgDropDownSettings = {
+      text: 'Select Sub-Organisation',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      badgeShowLimit: 1
+    };
+    this.mentorsDropDownSettings = {
+      text: 'Select mentors',
+      enableSearchFilter: true,
+      labelKey: 'name',
+      showCheckbox: false,
+      selectAllText: '',
+      unSelectAllText: '',
+      badgeShowLimit: 1
+    };
+    this.participantsDropDownSettings = {
+      text: 'Select participants',
+      showCheckbox: false,
+      enableSearchFilter: true,
+      labelKey: 'name',
+      selectAllText: '',
+      unSelectAllText: '',
+      badgeShowLimit: 1
+    };
   }
 
   ngOnInit() {
@@ -131,14 +190,23 @@ export class AddBatchMembersComponent implements OnInit {
       }
     );
   }
-
   private getSubOrgDetails(rootOrgId) {
     this.searchService.getSubOrganisationDetails({ rootOrgId: rootOrgId }).pipe(
       takeUntil(this.unsubscribe))
       .subscribe(
         (data: ServerResponse) => {
           if (data.result.response.content) {
-            this.subOrganizations = data.result.response.content;
+            const subOrganization = [];
+            if (data.result.response.content && data.result.response.content.length > 0) {
+              _.forEach(data.result.response.content, (orgData) => {
+                const org = {
+                  id: orgData.id,
+                  itemName: orgData.orgName
+                };
+                subOrganization.push(org);
+              });
+            }
+            this.subOrganizations = subOrganization;
             if (this.subOrganizations.length === 1) {
               this.selectedOrg = _.map(this.subOrganizations, 'id');
               this.fetchMembersDetails(this.selectedOrg);
@@ -152,9 +220,10 @@ export class AddBatchMembersComponent implements OnInit {
   }
 
   public fetchMembersDetails(event) {
+    const orgId = _.map(this.selectedOrg, 'id');
     this.validateSubOrg();
     const requestBody = {
-      orgid: this.selectedOrg
+      orgid: orgId
     };
     if (this.selectedOrg.length > 0) {
       this.courseBatchService.getUserList(requestBody).pipe(
@@ -165,7 +234,6 @@ export class AddBatchMembersComponent implements OnInit {
               const userList = this.sortUsers(data);
               this.participantList = userList.participantList;
               this.mentorList = userList.mentorList;
-              this.initDropDown();
             }
           },
           (err) => {
@@ -270,6 +338,8 @@ export class AddBatchMembersComponent implements OnInit {
         }
       });
     }
+    // check for if route is update show the checkbox
+    this.selectedUserCheck();
     return {
       participantList: _.uniqBy(participantList, 'id'),
       mentorList: _.uniqBy(mentorList, 'id')
@@ -277,7 +347,6 @@ export class AddBatchMembersComponent implements OnInit {
   }
 
   public selectMentor(mentor) {
-    this.selectedMentorList.push(mentor);
     const mentorId = _.map(this.selectedUserList, 'id');
     if (mentorId.indexOf(mentor.id) !== 1) {
       mentor['role'] = 'mentor';
@@ -285,16 +354,9 @@ export class AddBatchMembersComponent implements OnInit {
       this.selectedUserList.push(mentor);
     }
     _.remove(this.mentorList, mentorList => mentorList.id === mentor.id);
-  }
-  public validateSubOrg() {
-    if (this.selectedOrg.length === 0) {
-      this.subOrgRequired = true;
-    } else {
-      this.subOrgRequired = false;
-    }
+    this.selectAllUserCheck = false;
   }
   public selectParticipants(participants) {
-    this.selectedParticipantList.push(participants);
     const participantsId = _.map(this.selectedUserList, 'id');
     if (participantsId.indexOf(participants.id) !== 1) {
       participants['role'] = 'participant';
@@ -302,8 +364,15 @@ export class AddBatchMembersComponent implements OnInit {
       this.selectedUserList.push(participants);
     }
     _.remove(this.participantList, participantList => participantList.id === participants.id);
+    this.selectAllUserCheck = false;
   }
-
+  public selectedUserCheck() {
+    if (_.includes(this.router.url, 'update')) {
+      this.selectItemCheck = true;
+    } else {
+      this.selectItemCheck = false;
+    }
+  }
   public deleteUser(user, index) {
     this.selectedUserList.splice(index, 1);
     const mentorId = _.map(this.mentorList, 'id');
@@ -314,6 +383,20 @@ export class AddBatchMembersComponent implements OnInit {
     if (this.participantList.length > 0 && participantsId.indexOf(user.id) !== 1) {
       this.participantList.push(user);
     }
+    const selectedMentorId = _.map(this.selectedMentorList, 'id');
+    _.forEach(selectedMentorId, (id) => {
+      const mentorIndex = this.selectedMentorList.findIndex(i => i.id === id);
+      if (mentorIndex !== -1) {
+        this.selectedMentorList.splice(mentorIndex, 1);
+      }
+    });
+    const selectedParticipantId = _.map(this.selectedParticipantList, 'id');
+    _.forEach(selectedParticipantId, (id) => {
+      const particcipantIndex = this.selectedParticipantList.findIndex(i => i.id === id);
+      if (particcipantIndex !== -1) {
+        this.selectedParticipantList.splice(particcipantIndex, 1);
+      }
+    });
   }
   selectAll(event) {
     if (event) {
@@ -328,57 +411,94 @@ export class AddBatchMembersComponent implements OnInit {
       this.selectedItems = [];
     }
   }
-  toggle(event: boolean, item: any , id: string) {
+  toggle(event: boolean, item: any, id: string) {
     if (event) {
       this.selectedItems.push(item);
     } else {
       _.remove(this.selectedItems, (currentObject) => {
-       return currentObject['id'] === id;
+        return currentObject['id'] === id;
       });
     }
   }
   remove() {
     const selectedItemId = _.map(this.selectedItems, 'id');
-    _.forEach(selectedItemId, (id ) => {
+    _.forEach(selectedItemId, (id) => {
       const index = this.selectedUserList.findIndex(i => i.id === id);
       if (index !== -1) {
         this.selectedUserList.splice(index, 1);
       }
     });
-
+    const selectedMentorId = _.map(this.selectedMentorList, 'id');
+    _.forEach(selectedMentorId, (id) => {
+      const mentorIndex = this.selectedMentorList.findIndex(i => i.id === id);
+      if (mentorIndex !== -1) {
+        this.selectedMentorList.splice(mentorIndex, 1);
+      }
+    });
+    const selectedParticipantId = _.map(this.selectedParticipantList, 'id');
+    _.forEach(selectedParticipantId, (id) => {
+      const participantIndex = this.selectedParticipantList.findIndex(i => i.id === id);
+      if (participantIndex !== -1) {
+        this.selectedParticipantList.splice(participantIndex, 1);
+      }
+    });
+    this.selectedItems = [];
   }
-  private initDropDown() {
-    setTimeout(() => {
-      $('#participants').dropdown({
-        forceSelection: false,
-        fullTextSearch: true,
-        onAdd: () => {
-        }
-      });
-      $('#mentors').dropdown({
-        fullTextSearch: true,
-        forceSelection: false,
-        onAdd: () => {
-        }
-      });
-      $('#participants input.search').on('keyup', (e) => {
-        this.getUserListWithQuery($('#participants input.search').val(), 'participant');
-      });
-      $('#mentors input.search').on('keyup', (e) => {
-        this.getUserListWithQuery($('#mentors input.search').val(), 'mentor');
-      });
-    }, 0);
+  OnParticipantsDeSelect(event) {
+    const selectedUserListId = _.map(this.selectedUserList, 'id');
+    _.forEach(selectedUserListId, (id) => {
+      const participantIndex = this.selectedUserList.findIndex(i => i.id === event.id);
+      if (participantIndex !== -1) {
+        this.selectedUserList.splice(participantIndex, 1);
+      }
+    });
   }
   private getUserListWithQuery(query, type) {
-    this.searchInputChanged.next(query);
+    this.searchInputChanged.next(query.target.value);
     this.searchInputChanged.pipe(debounceTime(500),
       distinctUntilChanged(),
       flatMap(search => of(search).pipe(delay(500)))
-      ).
-      subscribe(() => {
-        this.getUserList(query , type);
+    ).
+      subscribe((search) => {
+        this.getUserList(search, type);
       });
   }
+  public validateSubOrg() {
+    if (this.selectedOrg.length === 0) {
+      this.subOrgRequired = true;
+    } else {
+      this.subOrgRequired = false;
+    }
+    return this.subOrgRequired;
+  }
+
+  public onMentorDropDownOpen() {
+    this.validateSubOrg();
+    if (this.subOrgRequired && this.mentorDropDown) {
+      this.mentorDropDown.isActive = false;
+    }
+    this.participantsDropDown.isActive = false;
+    this.subOrgDropDown.isActive = false;
+  }
+  public onParticipantDropDownOpen() {
+    this.validateSubOrg();
+    if (this.subOrgRequired && this.participantsDropDown) {
+      this.participantsDropDown.isActive = false;
+    }
+    this.mentorDropDown.isActive = false;
+    this.subOrgDropDown.isActive = false;
+  }
+  public onSubOrgDropDownOpen() {
+    this.mentorDropDown.isActive = false;
+    this.participantsDropDown.isActive = false;
+  }
+  public closeSubOrgDropdown() {
+    this.subOrgDropDown.isActive = false;
+  }
+  public closeMentorDropdown() {
+    this.mentorDropDown.isActive = false;
+  }
+  public closeParticipantsDropdown() {
+    this.participantsDropDown.isActive = false;
+  }
 }
-
-

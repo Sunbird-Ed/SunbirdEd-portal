@@ -1,11 +1,11 @@
 import { of as observableOf, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Injectable, Input, EventEmitter } from '@angular/core';
-import { ConfigService, ServerResponse } from '@sunbird/shared';
+import { ConfigService, ServerResponse, BrowserCacheTtlService } from '@sunbird/shared';
 import { PlayerService } from '@sunbird/core';
 import { SearchParam, LearnerService, UserService, ContentService, SearchService } from '@sunbird/core';
 import * as _ from 'lodash';
-
+import { CacheService } from 'ng2-cache-service';
 @Injectable()
 export class CourseBatchService {
   private _enrollToBatchDetails: any;
@@ -15,9 +15,10 @@ export class CourseBatchService {
   private defaultUserList: any;
   courseHierarchy: any;
 
-  constructor(public searchService: SearchService, public userService: UserService, public content: ContentService,
-  public configService: ConfigService,
-  public learnerService: LearnerService, private playerService: PlayerService) {
+  constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
+    public searchService: SearchService, public userService: UserService, public content: ContentService,
+    public configService: ConfigService,
+    public learnerService: LearnerService, private playerService: PlayerService) {
   }
 
   getCourseHierarchy(courseId) {
@@ -32,32 +33,39 @@ export class CourseBatchService {
   }
 
   getUserList(requestParam: SearchParam = {}): Observable<ServerResponse> {
-    if (_.isEmpty(requestParam) && this.defaultUserList) {
-      return observableOf(this.defaultUserList);
+    const userList: any | null = this.cacheService.get('userList' + requestParam.query);
+    if (userList) {
+      return observableOf(userList.data);
     } else {
-      const request = _.cloneDeep(requestParam);
-      const option = {
-        url: this.configService.urlConFig.URLS.ADMIN.USER_SEARCH,
-        data: {
-          request: {
-            filters: requestParam.filters || {},
-            query: requestParam.query || ''
+      if (_.isEmpty(requestParam) && this.defaultUserList) {
+        return observableOf(this.defaultUserList);
+      } else {
+        const request = _.cloneDeep(requestParam);
+        const option = {
+          url: this.configService.urlConFig.URLS.ADMIN.USER_SEARCH,
+          data: {
+            request: {
+              filters: requestParam.filters || {},
+              query: requestParam.query || ''
+            }
           }
+        };
+        const mentorOrg = this.userService.userProfile.roleOrgMap['COURSE_MENTOR'];
+        if (mentorOrg && mentorOrg.includes(this.userService.rootOrgId)) {
+          option.data.request.filters['rootOrgId'] = this.userService.rootOrgId;
+          option.data.request.filters['organisations.roles'] = ['COURSE_MENTOR'];
+        } else if (mentorOrg) {
+          option.data.request.filters['organisations.organisationId'] = requestParam.orgid;
         }
-      };
-      const mentorOrg = this.userService.userProfile.roleOrgMap['COURSE_MENTOR'];
-      if (mentorOrg && mentorOrg.includes(this.userService.rootOrgId)) {
-        option.data.request.filters['rootOrgId'] = this.userService.rootOrgId;
-        option.data.request.filters['organisations.roles'] = ['COURSE_MENTOR'];
-      } else if (mentorOrg) {
-        option.data.request.filters['organisations.organisationId'] = requestParam.orgid;
+        return this.learnerService.post(option).pipe(map((data) => {
+          if (_.isEmpty(requestParam)) {
+            this.defaultUserList = data;
+          }
+          this.cacheService.set('userList' + requestParam.query, {data},
+          {maxAge: this.browserCacheTtlService.browserCacheTtl});
+          return data;
+        }));
       }
-      return this.learnerService.post(option).pipe(map((data) => {
-        if (_.isEmpty(requestParam)) {
-          this.defaultUserList = data;
-        }
-        return data;
-      }));
     }
   }
 

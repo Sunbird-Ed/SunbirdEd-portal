@@ -5,19 +5,18 @@
     <div class="scrollable content ">
         <div class="ui grid margin-none">
             <div class="three wide column right-content dividing-border">
-                <div class="custom-modal-subheader mb-5">{{ resourceService?.frmelmnts?.lbl?.organisation}}</div>
+                <div class="custom-modal-subheader margin-bottom-10">{{ resourceService?.frmelmnts?.lbl?.organisation}}</div>
                 <div class="ui fluid input with-border">
-                    <input type="text" [(ngModel)]="rootOrgName" placeholder="{{resourceService?.frmelmnts?.lbl?.organisationName}}">
+                    <input type="text" [(ngModel)]="rootOrgName" placeholder="{{resourceService?.frmelmnts?.lbl?.organisationName}}" readonly>
                 </div>
                 <br>
-                <div class="custom-modal-subheader mb-5">{{ resourceService?.frmelmnts?.lbl?.subOrganisation}}</div>
-                <div *ngIf="subOrganizations.length >1">
-                    <sui-multi-select (selectedOptionsChange)="fetchMembersDetails($event)" [(ngModel)]="selectedOrg"
-                        [hasLabels]="false" defaultSelectionText="Sub-Organisation" zeroSelectionText="Select" class="fluid selection with-border"
-                        [options]="subOrganizations" valueField="id" labelField="orgName" #suborgSelect>
-                        <sui-select-option *ngFor="let option of suborgSelect.filteredOptions" [value]="option">
-                        </sui-select-option>
-                    </sui-multi-select>
+                <div class="custom-modal-subheader margin-bottom-10">{{ resourceService?.frmelmnts?.lbl?.subOrganisation}}</div>
+                <div appClickOutside (clickOff)="closeSubOrgDropdown()"  *ngIf="subOrganizations.length >1" (click)="onSubOrgDropDownOpen()">
+
+                    <angular2-multiselect #subOrgDropDown [data]="subOrganizations" [(ngModel)]="selectedOrg" [settings]="subOrgDropDownSettings"
+                        (onSelect)="fetchMembersDetails($event)" (onDeSelect)="fetchMembersDetails($event)" (onSelectAll)="fetchMembersDetails($event)"
+                        (onDeSelectAll)="fetchMembersDetails($event)">
+                    </angular2-multiselect>
                 </div>
                 <div class="ui fluid input with-border" *ngIf="subOrganizations.length ==1">
                     <input type="text" [(ngModel)]="subOrganizations[0].orgName" placeholder={{resourceService?.frmelmnts?.lbl?.organisationName}}
@@ -27,37 +26,35 @@
                     {{ resourceService?.frmelmnts?.lbl?.pleaseSelect}}
                 </div>
                 <br>
-                <div class="one field fluid selection ">
+                <div appClickOutside (clickOff)="closeMentorDropdown()" class="one field fluid selection margin-top-10 " (click)="onMentorDropDownOpen()">
                     <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
-                    <div (click)="validateSubOrg()" class="mt-5 createbatchdropdown ui fluid with-border multiple search selection dropdown"
-                        id="mentors" ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
-                        <input id="mentorSelList">
-                        <i class="dropdown icon"></i>
-                        <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
-                        <div class="menu">
-                            <div (click)="selectMentor(mentor)" class="item" [attr.data-value]="mentor.id" *ngFor="let mentor of mentorList">
-                                <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}">
-                                {{mentor.name}}
-                            </div>
-                        </div>
+                    <div  class="margin-top-10 ui fluid with-border ">
+                        <angular2-multiselect #mentorDropDown [data]="mentorList" [(ngModel)]="selectedMentorList" [settings]="mentorsDropDownSettings"
+                            (onSelect)="selectMentor($event)">
+                            <c-search>
+                                <ng-template>
+                                    <input type="text" (keyup)="getUserListWithQuery($event,'mentor')" placeholder="Search " style="border: none;width: 100%; height: 100%;outline: none;"
+                                    />
+                                </ng-template>
+                            </c-search>
+                        </angular2-multiselect>
                     </div>
                 </div>
                 <br>
-                <div class="one field fluid selection ">
+                <div  appClickOutside (clickOff)="closeParticipantsDropdown()" class="one field fluid selection margin-top-10 " (click)="onParticipantDropDownOpen()">
                     <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
-                    <div (click)="validateSubOrg()" class="mt-5 createbatchdropdown ui fluid multiple with-border search selection dropdown"
-                        id="participants" ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
-                        <input id="userSelList">
-                        <i class="dropdown icon"></i>
-                        <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
-                        <div class="menu">
-                            <div (click)="selectParticipants(user)" class="item" *ngFor="let user of participantList"
-                                [attr.data-value]="user.id">
-                                <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl }}">
-                                {{user.name}}
-                            </div>
-                        </div>
+                    <div class="margin-top-10 ui fluid with-border ">
+                        <angular2-multiselect #participantsDropDown [data]="participantList" [(ngModel)]="selectedParticipantList" [settings]="participantsDropDownSettings"
+                            (onSelect)="selectParticipants($event)" (onDeSelect)="OnParticipantsDeSelect($event)">
+                            <c-search>
+                                <ng-template>
+                                    <input type="text" (keyup)="getUserListWithQuery($event,'participant')" placeholder="Search" style="border: none;width: 100%; height: 100%;outline: none;"
+                                    />
+                                </ng-template>
+                            </c-search>
+                        </angular2-multiselect>
                     </div>
+
                 </div>
                 <br>
             </div>
@@ -73,18 +70,17 @@
                         </div>
                     </div>
                     <div class="eight wide column" *ngIf="selectedItems && selectedItems.length > 0">
-                        <button class="ui primary basic right floated button mr-40" (click)="removeModalFlag = !removeModalFlag">Remove
-                            Selected</button>
+                        <button class="ui primary basic right floated button mr-40" (click)="removeModalFlag = !removeModalFlag">Remove Selected
+                        </button>
                     </div>
                 </div>
                 <table class="ui basic border-less table" *ngIf="selectedUserList.length > 0">
+
                     <thead>
                         <tr>
                             <th>
-                                <div class="field">
-                                    <sui-checkbox [(ngModel)]="eCheck" (ngModelChange)="selectAll($event);"
-                                        [isDisabled]="eCheckDisabled" [isReadonly]="eCheckReadonly">
-
+                                <div class="field" *ngIf="selectItemCheck">
+                                    <sui-checkbox [(ngModel)]="selectAllUserCheck" (ngModelChange)="selectAll($event);" [isDisabled]="eCheckDisabled" [isReadonly]="eCheckReadonly">
                                     </sui-checkbox>
                                 </div>
                             </th>
@@ -99,9 +95,9 @@
                     <tbody>
                         <tr class="modal-table" *ngFor="let user of selectedUserList | filter : searchData : ['name','role'];let i = index;">
                             <td>
-                                <div class="field">
-                                    <sui-checkbox [(ngModel)]="user.selected" (ngModelChange)="toggle($event, user, user.id);"
-                                        [isDisabled]="eCheckDisabled" [isReadonly]="eCheckReadonly">
+                                <div class="field" *ngIf="selectItemCheck">
+                                    <sui-checkbox [(ngModel)]="user.selected" (ngModelChange)="toggle($event, user, user.id);" [isDisabled]="eCheckDisabled"
+                                        [isReadonly]="eCheckReadonly">
 
                                     </sui-checkbox>
                                 </div>
@@ -112,7 +108,7 @@
                             <td>{{user.role}}</td>
                             <td>{{user.orgname}}</td>
                             <td>
-                                <i class="edit icon"></i>
+                                <i *ngIf="user.role === 'mentor'" class="edit icon"></i>
                                 <i class="trash icon" (click)="deleteUser(user,i)"></i>
                             </td>
                         </tr>
@@ -127,8 +123,7 @@
     <div class="header"> Remove Members</div>
     <div class="actions">
         <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="stopCreatingYesInteractEdata"
-            class="ui primary basic button announcement-button" (click)="removeModalFlag = !removeModalFlag"
-            [appTelemetryEnd]="telemetryEnd">Cancel</button>
+            class="ui primary basic button announcement-button" (click)="removeModalFlag = !removeModalFlag" [appTelemetryEnd]="telemetryEnd">{{ resourceService?.frmelmnts?.btn?.cancel}}</button>
         <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="stopCreatingNoInteractEdata"
             class="ui primary button announcement-button" (click)="removeModal.deny(); remove()">Remove</button>
     </div>
