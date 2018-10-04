@@ -21,9 +21,13 @@
   font-family: 'sunbirdboldfont';
   src: url('./assets/fonts/OpenSans-Bold.ttf') format('truetype');
 }
-.contentComingSoon{
+.disabled .title,
+.disabled.fancytree-node {
   pointer-events: none;
   opacity: 0.6;
+}
+.disabled .title span{
+  font-weight: 500;
 }
 /*cards fonts*/
 .cardsHeading {

@@ -93,7 +93,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
       if (node.folder && !(node.children.length)) {
         node.title = node.model.name + '<strong> (Coming Soon!)</strong>';
         node.contentEmpty = true;
-        node.extraClasses = 'contentComingSoon';
+        node.extraClasses = 'disabled';
       } else {
         node.title = node.model.name || 'Untitled File';
         node.contentEmpty = false;
