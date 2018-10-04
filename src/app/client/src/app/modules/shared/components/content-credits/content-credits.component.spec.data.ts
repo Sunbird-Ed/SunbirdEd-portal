@@ -1,5 +1,6 @@
-export const mockRes = {
-    contentData: {
+export const Response = {
+    contentCreditsData: {'contributors': 'test1,test2', 'creators': 'test3,test4'},
+    metaData: {
         'code': 'org.sunbird.JVftCo',
         'subject': 'Mathematics',
         'language': [
@@ -16,9 +17,7 @@ export const mockRes = {
         ],
         'content-credits': [
             {
-              'id': '',
               'name': 'Amit Sharma',
-              'type': ''
             }
         ],
         'collections': [],
@@ -63,5 +62,5 @@ export const mockRes = {
         'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
         'userName': 'created_author',
         'attributions': ['Text Attribution']
-    },
+    }
 };

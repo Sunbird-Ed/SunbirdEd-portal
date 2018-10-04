@@ -1,5 +1,5 @@
-export const mockRes = {
-    contentData: {
+export const Response = {
+    metaData: {
         'code': 'org.sunbird.JVftCo',
         'subject': 'Mathematics',
         'language': [
@@ -16,9 +16,7 @@ export const mockRes = {
         ],
         'content-credits': [
             {
-              'id': '',
               'name': 'Amit Sharma',
-              'type': ''
             }
         ],
         'collections': [],
