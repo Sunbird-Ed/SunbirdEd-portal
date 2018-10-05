@@ -316,6 +316,8 @@ export class AddBatchMembersComponent implements OnInit {
     _.forEach(this.batchDetails.participant, (value, key) => {
       const user = _.find(participantList, ['id', key]);
       if (user) {
+        user['role'] = 'participant';
+        user['orgname'] = this.rootOrgName;
         this.selectedUserList.push(user);
       }
     });
@@ -442,6 +444,7 @@ export class AddBatchMembersComponent implements OnInit {
         this.selectedUserList.splice(index, 1);
       }
     });
+    this.deleteBatchDetails.emit(this.selectedItems);
     const selectedMentorId = _.map(this.selectedMentorList, 'id');
     _.forEach(selectedMentorId, (id) => {
       const mentorIndex = this.selectedMentorList.findIndex(i => i.id === id);

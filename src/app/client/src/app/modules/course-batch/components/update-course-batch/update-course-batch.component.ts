@@ -37,14 +37,14 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   * courseCreator
   */
   public courseCreator = false;
-    /**
-  * To show/hide loader
+  /**
+* To show/hide loader
+*/
+  showLoader: boolean;
+  /**
+  * loader message
   */
- showLoader: boolean;
- /**
- * loader message
- */
- loaderMessage: ILoaderMessage;
+  loaderMessage: ILoaderMessage;
   /**
   * participantList for users
   */
@@ -139,7 +139,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     this.userService = userService;
     this.courseBatchService = courseBatchService;
     this.toasterService = toasterService;
-    enum batchState {createCourse = 'update', addBatchMember = 'addmember'}
+    enum batchState { createCourse = 'update', addBatchMember = 'addmember' }
     this.batchStep = batchState.createCourse;
   }
 
@@ -221,11 +221,11 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       endDate: endDate || null,
       createdFor: this.userService.userProfile.organisationIds,
       mentors: this.addbatchmembers && this.addbatchmembers.selectedMentorList ?
-      _.union(_.map(this.addbatchmembers.selectedMentorList, 'id'), this.batchDetails.mentors) : [],
+        _.union(_.map(this.addbatchmembers.selectedMentorList, 'id'), this.batchDetails.mentors) : [],
     };
     if (this.batchUpdateForm.value.enrollmentType !== 'open') {
       requestBody['participants'] = this.addbatchmembers && this.addbatchmembers.selectedParticipantList ?
-      _.union(_.map(this.addbatchmembers.selectedParticipantList, 'id'), this.batchDetails.participant) : [];
+        _.union(_.map(this.addbatchmembers.selectedParticipantList, 'id'), this.batchDetails.participant) : [];
     }
     this.courseBatchService.updateBatch(requestBody).pipe(takeUntil(this.unsubscribe))
       .subscribe((response) => {
@@ -348,8 +348,34 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   deleteBatchDetails(user) {
     if (this.batchDetails && this.batchDetails.participant ||
       (this.batchDetails && this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
-        this.batchDetails.mentors.splice(this.batchDetails.mentors.indexOf(user.id), 1);
-        this.batchDetails.participant.splice(this.batchDetails.mentors.indexOf(user.id), 1);
+      if (_.isArray(user)) {
+        const selectedItemId = _.map(user, 'id');
+        if (selectedItemId.length > 0) {
+          _.forEach(selectedItemId, (selectedItem, value) => {
+            const mentorIndex = _.indexOf(this.batchDetails.mentors, selectedItem);
+            const participantIndex = _.indexOf(this.batchDetails.participant, selectedItem);
+            if (mentorIndex !== -1) {
+              this.batchDetails.mentors.splice(mentorIndex, 1);
+            }
+            if (participantIndex !== -1) {
+              this.batchDetails.participant.splice(participantIndex, 1);
+            }
+          });
+        } else {
+          this.batchDetails.participant = [];
+          this.batchDetails.mentors = [];
+        }
+      } else {
+        const mentorIndex = _.indexOf(this.batchDetails.mentors, user.id);
+        const participantIndex = _.indexOf(this.batchDetails.participant, user.id);
+        if (mentorIndex !== -1) {
+          this.batchDetails.mentors.splice(mentorIndex, 1);
+        }
+        if (participantIndex !== -1) {
+          this.batchDetails.participant.splice(participantIndex, 1);
+        }
+      }
+
     }
   }
   /**
@@ -357,7 +383,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   *
   * @param {number}  step form step number navigateToWizardNumber
   */
-   navigateToStep(step): void {
+  navigateToStep(step): void {
     this.batchStep = step;
   }
   ngOnDestroy() {
