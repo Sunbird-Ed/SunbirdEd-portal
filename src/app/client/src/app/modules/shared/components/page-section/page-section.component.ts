@@ -96,7 +96,10 @@ export class PageSectionComponent implements OnInit {
   ],
   infinite: false,
 };
-
+  /**The previous or next value of the button clicked
+   * to generate interact telemetry data */
+  btnArrow: string;
+  pageid: string;
   constructor(public activatedRoute: ActivatedRoute) {
   }
   playContent(event) {
@@ -104,12 +107,12 @@ export class PageSectionComponent implements OnInit {
   }
   ngOnInit() {
     const id = _.get(this.activatedRoute, 'snapshot.data.telemetry.env');
-    const pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
-    if (id && pageid) {
+    this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
+    if (id && this.pageid) {
       this.cardIntractEdata = {
         id: 'content-card',
         type: 'click',
-        pageid: pageid
+        pageid: this.pageid
       };
     }
   }
@@ -142,7 +145,7 @@ export class PageSectionComponent implements OnInit {
   */
   inviewChange(contentList, event) {
     const visits = [];
-    const slideData = contentList.slice(event.currentSlide + 1, event.currentSlide + 5);
+    const slideData = contentList;
     _.forEach(slideData, (slide, key) => {
       const content = _.find(this.inviewLogs, (eachContent) => {
         if (slide.metaData.courseId) {
@@ -159,6 +162,13 @@ export class PageSectionComponent implements OnInit {
     });
     if (visits.length > 0) {
       this.visits.emit(visits);
+    }
+  }
+  checkSlide(event) {
+    if (event.currentSlide < event.nextSlide) {
+      this.btnArrow = 'next-button';
+    } else if (event.currentSlide > event.nextSlide) {
+      this.btnArrow = 'prev-button';
     }
   }
   navigateToViewAll(section) {
