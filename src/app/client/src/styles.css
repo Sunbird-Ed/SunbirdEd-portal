@@ -3081,3 +3081,38 @@ i.icon.accordion-content-right {
   padding-bottom: 6px;
 }
 
+.br-0{
+  border-radius: 0 !important;
+}
+.text-gray{
+  color: #9F9F9F !important;
+}
+.p-0{
+  padding: 0 !important;
+}
+.m-0{
+  margin: 0 !important;
+}
+.mt-5{
+  margin-top: 5px !important;
+}
+.mb-5{
+  margin-bottom: 5px !important;
+}
+.mt-10{
+  margin-top: 10px !important;
+}
+.mr-10{
+  margin-right: 10px !important;
+}
+.mr-20{
+  margin-right: 20px !important;
+}
+.d-inline-block{
+  display: inline-block;
+}
+button.slick-prev.slick-arrow.slick-disabled,
+button.slick-next.slick-arrow.slick-disabled {
+  cursor: default;
+  display: none !important;
+}

@@ -6,7 +6,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
-import { EditorService } from './../../services';
+import { EditorService, WorkSpaceService } from './../../services';
 import { ResourceService, SharedModule } from '@sunbird/shared';
 import { UserService, LearnerService, CoreModule } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
@@ -41,7 +41,7 @@ describe('DefaultTemplateComponent', () => {
       imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot()],
       declarations: [ DefaultTemplateComponent ],
       providers: [UserService, LearnerService,
-        CacheService, EditorService,
+        CacheService, EditorService, WorkSpaceService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         {provide: ResourceService, useValue: resourceBundle}],

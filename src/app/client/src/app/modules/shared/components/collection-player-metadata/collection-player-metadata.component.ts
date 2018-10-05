@@ -1,6 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { ResourceService } from './../../services';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import * as _ from 'lodash';
+import { ContentData } from '@sunbird/shared';
 
 @Component({
   selector: 'app-collection-player-metadata',
@@ -8,9 +10,13 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
   styleUrls: ['./collection-player-metadata.component.css']
 })
 export class CollectionPlayerMetadataComponent implements OnInit {
-  @Input() metaData: object;
+  @Input() metaData: ContentData;
   public collectionMeta: any = {};
   public collectionId: string;
+  contributions: string;
+  contributionsLength: number;
+  showContentCreditsModal: boolean;
+
   constructor(public resourceService: ResourceService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
@@ -18,4 +24,9 @@ export class CollectionPlayerMetadataComponent implements OnInit {
       this.collectionId = params.collectionId;
     });
   }
+
+  showContentCreditsPopup () {
+    this.showContentCreditsModal = true;
+  }
+
 }

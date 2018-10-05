@@ -106,7 +106,7 @@ describe('RequestChangesPopupComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceBundle.messages;
     const navigationHelperService: NavigationHelperService = fixture.debugElement.injector.get(NavigationHelperService);
-    spyOn(workspaceservice, 'getCheckListData').and.callFake(() => observableOf(mockRes.requestChangesChecklist));
+    spyOn(workspaceservice, 'getFormData').and.callFake(() => observableOf(mockRes.requestChangesChecklist));
     spyOn(component, 'getCheckListConfig').and.callThrough();
     component.getCheckListConfig();
     component.ngOnInit();
@@ -122,7 +122,7 @@ describe('RequestChangesPopupComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceBundle.messages;
     const navigationHelperService: NavigationHelperService = fixture.debugElement.injector.get(NavigationHelperService);
-    spyOn(workspaceservice, 'getCheckListData').and.callFake(() => observableOf(mockRes.requestChangesChecklistWrongConfig));
+    spyOn(workspaceservice, 'getFormData').and.callFake(() => observableOf(mockRes.requestChangesChecklistWrongConfig));
     spyOn(component, 'getCheckListConfig').and.callThrough();
     component.getCheckListConfig();
     component.ngOnInit();

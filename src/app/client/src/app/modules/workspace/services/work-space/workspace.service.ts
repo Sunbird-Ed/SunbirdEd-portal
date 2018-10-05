@@ -180,7 +180,7 @@ export class WorkSpaceService {
     * @param {formAction} content form action type
     * @param {selectedContent} content selected content type
     */
-  getCheckListData(formInputParams): Observable<ServerResponse> {
+  getFormData(formInputParams): Observable<ServerResponse> {
     const pageData: any = this.cacheService.get(formInputParams.formAction + formInputParams.subType);
     if (pageData) {
       return observableOf(pageData);

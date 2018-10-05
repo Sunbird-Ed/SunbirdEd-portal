@@ -49,6 +49,11 @@
         <div class="header">{{resourceService.frmelmnts.lbl.batchdetails}}</div>
     </div>
     <div class="content">
+        <span>
+            <button class="ui right floated blue basic button unenrollBtn" appTelemetryInteract [telemetryInteractEdata]="unenrollBatchIntractEdata"
+                [telemetryInteractObject]="{id:enrolledBatchInfo.identifier,type:'batch',ver:'1',rollup:{l1:courseId}}"
+                (click)="unenrollBatch(enrolledBatchInfo)" [disabled]="isUnenrollbtnDisabled">{{resourceService.frmelmnts.btn.unenroll}}</button>
+        </span>
         <div class="header">{{enrolledBatchInfo.name}}</div>
         <div class="selectedBatchMeta meta">
             <span class="date">{{enrolledBatchInfo.startDate | dateFormat}} </span>
@@ -62,5 +67,5 @@
         <span>
             {{enrolledBatchInfo.mentors.length}} {{resourceService.frmelmnts.lbl.mentors}}
         </span>
-    </div>
+    </div>    
 </div>
