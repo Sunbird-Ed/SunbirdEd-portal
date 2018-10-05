@@ -7,7 +7,7 @@ const _ = require('lodash')
 const path = require('path')
 const envHelper = require('../helpers/environmentVariablesHelper.js')
 const tenantHelper = require('../helpers/tenantHelper.js')
-const configHelper = require('../helpers/configHelper.js')
+const configHelper = require('../helpers/config/configHelper.js')
 const defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState()
 const tenantCdnUrl = envHelper.TENANT_CDN_URL
 const defaultTenant = envHelper.DEFAULT_CHANNEL
@@ -74,33 +74,26 @@ module.exports = (app, keycloak) => {
 }
 
 function getLocals (req, callback) {
-  let config_key_allow_signup = 'instance.allow_signup'
-  let env_key_allow_signup = 'ENABLE_SIGNUP'
-
-  configHelper.getConfig(config_key_allow_signup, env_key_allow_signup, function (err, allow_signup) {
-    if (!err) {
-      var locals = {}
-      locals.userId = _.get(req, 'kauth.grant.access_token.content.sub') ? req.kauth.grant.access_token.content.sub : null
-      locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'kauth.grant.access_token.content.sub') ? req.sessionID : null
-      locals.cdnUrl = envHelper.PORTAL_CDN_URL
-      locals.theme = envHelper.PORTAL_THEME
-      locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
-      locals.instance = process.env.sunbird_instance
-      locals.appId = envHelper.APPID
-      locals.defaultTenant = envHelper.DEFAULT_CHANNEL
-      locals.exploreButtonVisibility = envHelper.EXPLORE_BUTTON_VISIBILITY
-      locals.defaultTenantIndexStatus = defaultTenantIndexStatus
-      locals.enableSignup = allow_signup
-      locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTCONT_WHITELISTED_DOMAINS
-      locals.buildNumber = envHelper.BUILD_NUMBER
-      locals.apiCacheTtl = envHelper.PORTAL_API_CACHE_TTL
-      locals.cloudStorageUrls = envHelper.CLOUD_STORAGE_URLS
-      locals.userUploadRefLink = envHelper.PORTAL_USER_UPLOAD_REF_LINK
-      callback(null, locals)
-    } else {
-      callback({}, null)
-    }
-  })
+  let config_key_allow_signup = 'ENABLE_SIGNUP'
+  let allow_signup = configHelper.getConfig(config_key_allow_signup)
+  var locals = {}
+  locals.userId = _.get(req, 'kauth.grant.access_token.content.sub') ? req.kauth.grant.access_token.content.sub : null
+  locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'kauth.grant.access_token.content.sub') ? req.sessionID : null
+  locals.cdnUrl = envHelper.PORTAL_CDN_URL
+  locals.theme = configHelper.getConfig('PORTAL_THEME')
+  locals.defaultPortalLanguage = configHelper.getConfig('PORTAL_DEFAULT_LANGUAGE')
+  locals.instance = process.env.sunbird_instance
+  locals.appId = envHelper.APPID
+  locals.defaultTenant = envHelper.DEFAULT_CHANNEL
+  locals.exploreButtonVisibility = configHelper.getConfig('EXPLORE_BUTTON_VISIBILITY')
+  locals.defaultTenantIndexStatus = defaultTenantIndexStatus
+  locals.enableSignup = allow_signup
+  locals.extContWhitelistedDomains = configHelper.getConfig('SUNBIRD_EXTCONT_WHITELISTED_DOMAINS')
+  locals.buildNumber = envHelper.BUILD_NUMBER
+  locals.apiCacheTtl = envHelper.PORTAL_API_CACHE_TTL
+  locals.cloudStorageUrls = envHelper.CLOUD_STORAGE_URLS
+  locals.userUploadRefLink = configHelper.getConfig('PORTAL_USER_UPLOAD_REF_LINK')
+  callback(null, locals)    
 }
 
 function indexPage (req, res) {

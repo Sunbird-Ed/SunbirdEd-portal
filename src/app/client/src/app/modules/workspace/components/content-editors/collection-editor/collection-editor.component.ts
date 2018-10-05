@@ -3,7 +3,7 @@ import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 import * as  iziModal from 'izimodal/js/iziModal';
 import {
-  NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserProfile
+  NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserProfile, ServerResponse
 } from '@sunbird/shared';
 import { UserService, TenantService } from '@sunbird/core';
 import { ActivatedRoute } from '@angular/router';
@@ -37,6 +37,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   public showLoader = true;
   private browserBackEventSub;
   public collectionDetails: any;
+  public ownershipType: Array<string>;
   /**
   * Default method of classs CollectionEditorComponent
   * @param {ResourceService} resourceService To get language constant
@@ -62,6 +63,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         if (data.tenantDetails) {
           this.logo = data.tenantDetails.logo;
         }
+        this.ownershipType = data.ownershipType;
         this.showLoader = false;
         this.initEditor();
         this.setWindowContext();
@@ -77,8 +79,10 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       });
   }
   private getDetails() {
-    return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails()).
-    pipe(map(data => ({ tenantDetails: data[0].tenantData, collectionDetails: data[1] })));
+    return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
+    this.editorService.getOwnershipType()).
+    pipe(map(data => ({ tenantDetails: data[0].tenantData,
+      collectionDetails: data[1], ownershipType: data[2] })));
   }
   private getCollectionDetails() {
     const options: any = { params: {} };
@@ -137,7 +141,9 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     window.context = {
       user: {
         id: this.userService.userid,
-        name: this.userProfile.firstName + ' ' + this.userProfile.lastName
+        name: this.userProfile.firstName + ' ' + this.userProfile.lastName,
+        orgIds: this.userProfile.organisationIds,
+        organisations: this.userService.orgIdNameMap
       },
       sid: this.userService.sessionId,
       contentId: this.routeParams.contentId,
@@ -149,7 +155,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       tags: this.userService.dims,
       channel: this.userService.channel,
       framework: this.routeParams.framework,
-      env: this.routeParams.type.toLowerCase()
+      env: this.routeParams.type.toLowerCase(),
+      ownershipType: this.ownershipType
     };
   }
   private setWindowConfig() {

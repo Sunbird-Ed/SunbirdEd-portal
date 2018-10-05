@@ -165,6 +165,6 @@ describe('AllContentComponent', () => {
     fixture.detectChanges();
     component.fecthAllContent(9, 1, bothParams);
     const  fromnow = new DateFilterXtimeAgoPipe();
-    expect(fromnow.transform(Response.searchSuccessWithCountTwo.result.content[0].lastSubmittedOn, null)).toEqual('5 months ago');
+    expect(fromnow.transform(Response.searchSuccessWithCountTwo.result.content[0].lastSubmittedOn, null)).toEqual('6 months ago');
   }));
 });

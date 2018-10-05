@@ -99,6 +99,8 @@ export interface IAddress {
 }
 export interface IOrganization {
     organisationId: string;
+    identifier: string;
+    orgName: string;
     updatedBy: string;
     addedByName: string;
     addedBy: string;

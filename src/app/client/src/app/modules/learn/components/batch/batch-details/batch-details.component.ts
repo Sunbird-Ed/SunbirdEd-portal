@@ -9,6 +9,7 @@ import { PermissionService, UserService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { Subject } from 'rxjs';
+import * as moment from 'moment';
 @Component({
   selector: 'app-batch-details',
   templateUrl: './batch-details.component.html',
@@ -21,10 +22,13 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   @Input() enrolledCourse: boolean;
   @Input() batchId: string;
   @Input() courseHierarchy: any;
+  @Input() courseProgressData: any;
+
   public courseInteractObject: IInteractEventObject;
   public updateBatchIntractEdata: IInteractEventEdata;
   public createBatchIntractEdata: IInteractEventEdata;
   public enrollBatchIntractEdata: IInteractEventEdata;
+  public unenrollBatchIntractEdata: IInteractEventEdata;
   courseMentor = false;
   batchList = [];
   userList = [];
@@ -36,12 +40,26 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     { name: 'Ongoing', value: 1 },
     { name: 'Upcoming', value: 0 }
   ];
+  todayDate = moment(new Date()).format('YYYY-MM-DD');
+  progress = 0;
+  isUnenrollbtnDisabled = true;
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
     public router: Router, public activatedRoute: ActivatedRoute) {
     this.batchStatus = this.statusOptions[0].value;
   }
-
+  isUnenrollDisabled() {
+    this.isUnenrollbtnDisabled = true;
+    if (this.courseProgressData && this.courseProgressData.progress) {
+      this.progress = this.courseProgressData.progress ? Math.round(this.courseProgressData.progress) : 0;
+    }
+    if ((!(this.enrolledBatchInfo.hasOwnProperty('endDate')) ||
+    (this.enrolledBatchInfo.endDate > this.todayDate)) &&
+    (this.enrolledBatchInfo.enrollmentType === 'open') &&
+    (this.progress !== 100)) {
+      this.isUnenrollbtnDisabled = false;
+    }
+  }
   ngOnInit() {
     this.courseInteractObject = {
       id: this.courseHierarchy.identifier,
@@ -63,6 +81,11 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'course-consumption'
     };
+    this.unenrollBatchIntractEdata = {
+      id: 'unenroll-batch',
+      type: 'click',
+      pageid: 'course-consumption'
+    };
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
       this.courseMentor = true;
     } else {
@@ -70,6 +93,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     }
     if (this.enrolledCourse === true) {
       this.getEnrolledCourseBatchDetails();
+      this.isUnenrollDisabled();
     } else {
       this.getAllBatchDetails();
     }
@@ -179,6 +203,10 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   enrollBatch(batch) {
     this.courseBatchService.setEnrollToBatchDetails(batch);
     this.router.navigate(['enroll/batch', batch.identifier], { relativeTo: this.activatedRoute });
+  }
+  unenrollBatch(batch) {
+    // this.courseBatchService.setEnrollToBatchDetails(batch);
+    this.router.navigate(['unenroll/batch', batch.identifier], { relativeTo: this.activatedRoute });
   }
   ngOnDestroy() {
     this.unsubscribe.next();

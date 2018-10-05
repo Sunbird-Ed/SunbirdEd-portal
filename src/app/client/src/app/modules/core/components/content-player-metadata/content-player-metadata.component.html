@@ -12,12 +12,12 @@
             <span class="ui expand-or-minimize mouse-pointer" (click)="readMore = false">{{resourceService.frmelmnts.lbl.readless}}</span>
         </div>
     </div>
-    <div class="header">
+    <div class="header"> 
         <span class="header">{{resourceService.frmelmnts.lbl.contentinformation}}</span>
     </div>
-    <div class="ui middle aligned list margin-top-0">
-        <div class="item padding-top-10 padding-bottom-5">
-            <div class="ui grid">
+    <div class="ui middle aligned list">
+        <div class="item p-0 mb-5">
+            <div class="ui grid stackable m-0">
                 <div class="three wide column">
                     <div class="content content-detail">
                         {{resourceService.frmelmnts.lbl.title}}
@@ -30,8 +30,23 @@
                 </div>
             </div>
         </div>
-        <div class="item padding-top-10 padding-bottom-5">
-            <div class="ui grid">
+        <div class="item p-0 mb-5">
+            <div class="ui grid stackable m-0">
+                <div class="three wide column">
+                    <div class="content content-detail">
+                        {{resourceService.frmelmnts.lbl.ownership}}
+                    </div>
+                </div>
+                <div class="nine wide column">
+                    <div class="content" *ngIf="metadata.owner">
+                        <span class="d-inline-block mr-20">{{metadata.owner}}</span>
+                        <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}">{{resourceService.frmelmnts.lbl.contentCredits}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="item p-0 mb-5">
+            <div class="ui grid stackable m-0">
                 <div class="three wide column">
                     <div class="content content-detail">
                         {{resourceService.frmelmnts.lbl.author}}
@@ -44,8 +59,9 @@
                 </div>
             </div>
         </div>
-        <div class="item padding-top-10 padding-bottom-5">
-            <div class="ui grid">
+        
+        <div class="item p-0 mb-5">
+            <div class="ui grid stackable m-0">
                 <div class="three wide column">
                     <div class="content content-detail">
                         {{resourceService.frmelmnts.lbl.medium}}
@@ -58,8 +74,8 @@
                 </div>
             </div>
         </div>
-        <div class="item padding-top-10 padding-bottom-5">
-            <div class="ui grid">
+        <div class="item p-0 mb-5">
+            <div class="ui grid stackable m-0">
                 <div class="three wide tablet computer only column">
                     <div class="content content-detail">
                         {{resourceService.frmelmnts.lbl.board}}
@@ -82,8 +98,8 @@
                 </div>
             </div>
         </div>
-        <div class="item padding-top-10 padding-bottom-5">
-            <div class="ui grid">
+        <div class="item p-0 mb-5">
+            <div class="ui grid stackable m-0">
                 <div class="three wide column">
                     <div class="content content-detail">
                         {{resourceService.frmelmnts.lbl.class}}
@@ -97,8 +113,8 @@
             </div>
         </div>
 
-        <div class="item padding-top-10 padding-bottom-5">
-            <div class="ui grid">
+        <div class="item p-0 mb-5">
+            <div class="ui grid stackable m-0">
                 <div class="three wide column">
                     <div class="content content-detail">
                         {{resourceService.frmelmnts.lbl.subject}}
@@ -112,8 +128,8 @@
             </div>
         </div>
 
-        <div class="item padding-top-10 padding-bottom-5" *ngIf="metadata.createdOn">
-            <div class="ui grid">
+        <div class="item p-0 mb-5" *ngIf="metadata.createdOn">
+            <div class="ui grid stackable m-0">
                 <div class="three wide column">
                     <div class="content content-detail">
                         {{resourceService.frmelmnts.lbl.createdon}}
@@ -126,8 +142,8 @@
                 </div>
             </div>
         </div>
-        <div class="item padding-top-10 padding-bottom-5" *ngIf="metadata.lastUpdatedOn">
-            <div class="ui grid">
+        <div class="item p-0 mb-5" *ngIf="metadata.lastUpdatedOn">
+            <div class="ui grid stackable m-0">
                 <div class="three wide column">
                     <div class="content content-detail">
                         {{resourceService.frmelmnts.lbl.lastupdate}}
@@ -140,8 +156,8 @@
                 </div>
             </div>
         </div>
-        <div class="item padding-top-10 padding-bottom-5">
-            <div class="ui grid">
+        <div class="item p-0 mb-5">
+            <div class="ui grid stackable m-0">
                 <div class="three wide column">
                     <div class="content content-detail overflow-word-wrap">
                         {{resourceService.frmelmnts.lbl.concept}}
@@ -154,8 +170,8 @@
                 </div>
             </div>
         </div>
-        <div class="item padding-top-10 padding-bottom-5">
-            <div class="ui grid">
+        <div class="item p-0 mb-5">
+            <div class="ui grid stackable m-0">
                 <div class="three wide column">
                     <div class="content content-detail">
                         {{resourceService.frmelmnts.lbl.keywords}}
@@ -168,8 +184,8 @@
                 </div>
             </div>
         </div>
-        <div class="item padding-top-10 padding-bottom-5">
-            <div class="ui grid">
+        <div class="item p-0 mb-5">
+            <div class="ui grid stackable m-0">
                 <div class="three wide column">
                     <div class="content content-detail">
                         {{resourceService.frmelmnts.lbl.resourcetype}}
@@ -182,8 +198,8 @@
                 </div>
             </div>
         </div>
-        <div class="item padding-top-10 padding-bottom-5" *ngIf="metadata.status === 'Flagged' && metadata.flagReasons">
-            <div class="ui grid">
+        <div class="item p-0 mb-5" *ngIf="metadata.status === 'Flagged' && metadata.flagReasons">
+            <div class="ui grid stackable m-0">
                 <div class="three wide column">
                     <div class="content content-detail overflow-word-wrap">
                         {{resourceService.frmelmnts.lbl.flaggedreason}}
@@ -197,8 +213,8 @@
                 </div>
             </div>
         </div>
-        <div class="item padding-top-10 padding-bottom-5" *ngIf="metadata.status === 'Flagged' && metadata.flaggedBy">
-            <div class="ui grid">
+        <div class="item p-0 mb-5" *ngIf="metadata.status === 'Flagged' && metadata.flaggedBy">
+            <div class="ui grid stackable m-0">
                 <div class="three wide column">
                     <div class="content content-detail">
                         {{resourceService.frmelmnts.lbl.flaggedby}}
@@ -211,8 +227,8 @@
                 </div>
             </div>
         </div>
-        <div class="item padding-top-10 padding-bottom-5" *ngIf="metadata.status === 'Flagged' && metadata.flags">
-            <div class="ui grid">
+        <div class="item p-0 mb-5" *ngIf="metadata.status === 'Flagged' && metadata.flags">
+            <div class="ui grid stackable m-0">
                 <div class="three wide column">
                     <div class="content content-detail overflow-word-wrap">
                         {{resourceService.frmelmnts.lbl.flaggeddescription}}
@@ -225,8 +241,8 @@
                 </div>
             </div>
         </div>
-        <div class="item padding-top-10 padding-bottom-5">
-            <div class="ui grid">
+        <div class="item p-0 mb-5">
+            <div class="ui grid stackable m-0">
                 <div class="three wide column">
                     <div class="content content-detail">
                         {{resourceService.frmelmnts.lbl.credits}}
@@ -239,5 +255,8 @@
                 </div>
             </div>
         </div>
+        
     </div>
+    <app-content-credits [contentData]="metadata" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false">
+  </app-content-credits>
 </div>

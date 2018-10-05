@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, NgZone, Renderer2, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 import * as iziModal from 'izimodal/js/iziModal';
-import { NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserProfile } from '@sunbird/shared';
+import { NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserProfile, ServerResponse } from '@sunbird/shared';
 import { UserService, TenantService } from '@sunbird/core';
 import { ActivatedRoute } from '@angular/router';
 import { EditorService } from './../../../services/editors/editor.service';
@@ -30,6 +30,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   public showLoader = true;
   private browserBackEventSub;
   public contentDetails: any;
+  public ownershipType: Array<string>;
   /**
   * Default method of class ContentEditorComponent
   */
@@ -52,6 +53,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
         if (data.tenantDetails) {
           this.logo = data.tenantDetails.logo;
         }
+        this.ownershipType = data.ownershipType;
         this.showLoader = false;
         this.initEditor();
         this.setWindowContext();
@@ -68,8 +70,10 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
         });
   }
   private getDetails() {
-    return combineLatest(this.tenantService.tenantData$, this.getContentDetails()).
-      pipe(map(data => ({ tenantDetails: data[0].tenantData, contentDetails: data[1] })));
+    return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
+    this.editorService.getOwnershipType()).
+      pipe(map(data => ({ tenantDetails: data[0].tenantData,
+        contentDetails: data[1], ownershipType: data[2] })));
   }
   private getContentDetails() {
     const options: any = { params: { mode: 'edit' } };
@@ -132,6 +136,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
       user: {
         id: this.userProfile.userId,
         name: this.userProfile.firstName + ' ' + this.userProfile.lastName,
+        orgIds: this.userProfile.organisationIds,
+        organisations: this.userService.orgIdNameMap
       },
       sid: this.userService.sessionId,
       contentId: this.routeParams.contentId,
@@ -143,6 +149,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
       tags: this.userService.dims,
       channel: this.userService.channel,
       framework: this.routeParams.framework,
+      ownershipType: this.ownershipType
     };
   }
   private setWindowConfig() {
