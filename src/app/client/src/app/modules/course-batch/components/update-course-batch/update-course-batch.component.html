@@ -4,7 +4,7 @@
   <div class="header">
     <div class="ui grid">
       <div class="eleven wide column">
-        <span class="ui header">{{resourceService?.frmelmnts?.intxt?.t0007}}</span>
+        <span class="ui header uppercase">{{resourceService?.frmelmnts?.intxt?.t0007}}</span>
       </div>
       <div class="one wide Right floated right aligned column" [appTelemetryEnd]="telemetryEnd" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
         [telemetryInteractEdata]="closeInteractEdata" (click)="discardModalFlag = !discardModalFlag">
@@ -110,11 +110,11 @@
   <div class="header"> {{resourceService?.frmelmnts?.lbl?.discardBatch}}</div>
   <div class="actions">
     <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="cancelInteractEdata"
-      class="ui primary basic button announcement-button" (click)="discardModalFlag = !discardModalFlag">
+      class="ui primary  button announcement-button" (click)="discardModalFlag = !discardModalFlag">
       {{resourceService?.frmelmnts?.btn?.cancel}}
     </button>
     <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="discardInteractEdata"
-      class="ui primary button announcement-button" (click)="discardModal.deny(); redirect()">
+      class="ui gray button announcement-button" (click)="discardModal.deny(); redirect()">
       {{resourceService?.frmelmnts?.btn?.discard}}</button>
   </div>
 </sui-modal>

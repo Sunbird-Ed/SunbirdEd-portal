@@ -3,7 +3,7 @@
   <div class="header">
     <div class="ui grid">
       <div class="eleven wide column">
-        <span class="ui header">{{resourceService?.frmelmnts.lbl.createnewbatch}}</span>
+        <span class="ui header uppercase">{{resourceService?.frmelmnts.lbl.createnewbatch}}</span>
       </div>
       <div class="one wide Right floated right aligned column" (click)="discardModalFlag = !discardModalFlag">
         <i class="close large icon cursor-pointer" tabindex="0"></i>
@@ -111,10 +111,10 @@
   <div class="header"> {{resourceService?.frmelmnts?.lbl?.discardBatch}}</div>
   <div class="actions">
     <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="cancelInteractEdata"
-      class="ui primary basic button announcement-button" (click)="discardModalFlag = !discardModalFlag">{{resourceService?.frmelmnts?.btn?.cancel}}
+      class="ui primary  button announcement-button" (click)="discardModalFlag = !discardModalFlag">{{resourceService?.frmelmnts?.btn?.cancel}}
     </button>
     <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="discardInteractEdata"
-      class="ui primary button announcement-button" (click)="discardModal.deny(); redirect()">{{resourceService?.frmelmnts?.btn?.discard}}
+      class="ui gray button announcement-button" (click)="discardModal.deny(); redirect()">{{resourceService?.frmelmnts?.btn?.discard}}
     </button>
   </div>
 </sui-modal>

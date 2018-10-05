@@ -2,7 +2,7 @@
     <h4 class="ui left floated modal-sub-header padding-left-25 custom-modal-subheader">{{ resourceService?.frmelmnts?.lbl?.selectMembers}}</h4>
     <div class="ui clearing fullpage divider margin-bottom-0"></div>
 
-    <div class="scrollable content ">
+    <div class="scrollable content "> 
         <div class="ui grid margin-none">
             <div class="three wide column right-content dividing-border">
                 <div *ngIf="showRootOrg"  class="custom-modal-subheader margin-bottom-10">{{ resourceService?.frmelmnts?.lbl?.organisation}}</div>
@@ -74,12 +74,12 @@
                         </button>
                     </div>
                 </div>
-                <table class="ui basic border-less table" *ngIf="selectedUserList.length > 0">
+                <table class="ui basic border-less table batch-table" *ngIf="selectedUserList.length > 0">
 
                     <thead>
                         <tr>
-                            <th>
-                                <div class="field" *ngIf="selectItemCheck">
+                            <th *ngIf="selectItemCheck">
+                                <div class="field" >
                                     <sui-checkbox [(ngModel)]="selectAllUserCheck" (ngModelChange)="selectAll($event);" [isDisabled]="eCheckDisabled" [isReadonly]="eCheckReadonly">
                                     </sui-checkbox>
                                 </div>
@@ -94,8 +94,8 @@
                     </thead>
                     <tbody>
                         <tr class="modal-table" *ngFor="let user of selectedUserList | filter : searchData : ['name','role'];let i = index;">
-                            <td>
-                                <div class="field" *ngIf="selectItemCheck">
+                            <td *ngIf="selectItemCheck">
+                                <div class="field" >
                                     <sui-checkbox [(ngModel)]="user.selected" (ngModelChange)="toggle($event, user, user.id);" [isDisabled]="eCheckDisabled"
                                         [isReadonly]="eCheckReadonly">
 
@@ -108,8 +108,8 @@
                             <td>{{user.role}}</td>
                             <td>{{user.orgname}}</td>
                             <td>
-                                <i *ngIf="user.role === 'mentor'" class="edit icon"></i>
-                                <i class="trash icon" (click)="deleteUser(user,i)"></i>
+                                <i title="{{ resourceService?.frmelmnts?.lbl?.edit}}" *ngIf="user.role === 'mentor'" class="edit icon link"></i>
+                                <i title="{{ resourceService?.frmelmnts?.lbl?.delete}}" class="trash icon link" (click)="deleteUser(user,i)"></i>
                             </td>
                         </tr>
                     </tbody>
@@ -123,8 +123,8 @@
     <div class="header"> Remove Members</div>
     <div class="actions">
         <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="stopCreatingYesInteractEdata"
-            class="ui primary basic button announcement-button" (click)="removeModalFlag = !removeModalFlag" [appTelemetryEnd]="telemetryEnd">{{ resourceService?.frmelmnts?.btn?.cancel}}</button>
+            class="ui primary  button announcement-button" (click)="removeModalFlag = !removeModalFlag" [appTelemetryEnd]="telemetryEnd">{{ resourceService?.frmelmnts?.btn?.cancel}}</button>
         <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="stopCreatingNoInteractEdata"
-            class="ui primary button announcement-button" (click)="removeModal.deny(); remove()">Remove</button>
+            class="ui gray button announcement-button" (click)="removeModal.deny(); remove()">Remove</button>
     </div>
 </sui-modal>
