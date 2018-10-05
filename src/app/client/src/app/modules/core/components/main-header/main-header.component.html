@@ -5,7 +5,7 @@
         <div class="ui large secondary menu width-100 m-0">
             <div role="banner" class="ui primary-header logo">
                 <a (click)="navigateToHome()">
-                    <img class="image centered" alt={{tenantName}} src="{{logo}}">
+                    <img class="image centered cursor-pointer" alt={{tenantName}} src="{{logo}}">
                 </a>
             </div>
             <nav id="main-nav" aria-label="Primary navigation" class="width-100 flex ml-auto">
@@ -15,7 +15,7 @@
                             <div class="eight wide column"></div>
                             <div class="four wide column flex jc-flex-end">
                                     <a class="item" *ngIf="userService.userid">
-                                        <img src="{{'assets/images/notification.png'}}" class="notification-icon pt-10">
+                                        <img src="{{'assets/images/notification.png'}}" class="notification-icon mt-10">
                                     </a>
                                     <a class="item" *ngIf="userService.userid; else showLoginBtn">
                                         <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing

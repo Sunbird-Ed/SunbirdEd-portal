@@ -3113,6 +3113,7 @@ i.icon.accordion-content-right {
 .ui.primary-header.logo img{
   position: absolute;
   height: 56px;
+  max-height:56px;
   top: 15px;
 }
 
@@ -3249,6 +3250,7 @@ i.icon.accordion-content-right {
   .ui.primary-header.logo img{
     position: absolute;
     height: 56px;
+    max-height: 56px;
     top: 5px;
     left: 10px;
   } 
