@@ -2,6 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CollectionTreeComponent } from './collection-tree.component';
 import { SuiAccordionModule } from 'ng2-semantic-ui';
 import { FancyTreeComponent } from '..';
+// Import services
+import { ResourceService } from '../../services/index';
 
 describe('CollectionTreeComponent', () => {
   let component: CollectionTreeComponent;
@@ -10,7 +12,8 @@ describe('CollectionTreeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiAccordionModule],
-      declarations: [CollectionTreeComponent, FancyTreeComponent]
+      declarations: [CollectionTreeComponent, FancyTreeComponent],
+      providers: [ ResourceService]
     }).compileComponents();
   }));
 
