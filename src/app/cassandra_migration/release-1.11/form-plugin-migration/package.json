@@ -10,5 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "cassandra-driver": "^3.5.0"
+  },
+  "devDependencies": {
+    "webpack-cli": "3.1.2",
+    "webpack": "4.20.2",
+    "webpack-node-externals": "1.7.2"
   }
 }
