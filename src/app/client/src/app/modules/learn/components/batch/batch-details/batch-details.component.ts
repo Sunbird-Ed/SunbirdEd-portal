@@ -22,6 +22,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   @Input() enrolledCourse: boolean;
   @Input() batchId: string;
   @Input() courseHierarchy: any;
+  @Input() courseProgressData: any;
+
   public courseInteractObject: IInteractEventObject;
   public updateBatchIntractEdata: IInteractEventEdata;
   public createBatchIntractEdata: IInteractEventEdata;
@@ -39,12 +41,25 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     { name: 'Upcoming', value: 0 }
   ];
   todayDate = moment(new Date()).format('YYYY-MM-DD');
+  progress = 0;
+  isUnenrollbtnDisabled = true;
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
     public router: Router, public activatedRoute: ActivatedRoute) {
     this.batchStatus = this.statusOptions[0].value;
   }
-
+  isUnenrollDisabled() {
+    this.isUnenrollbtnDisabled = true;
+    if (this.courseProgressData && this.courseProgressData.progress) {
+      this.progress = this.courseProgressData.progress ? Math.round(this.courseProgressData.progress) : 0;
+    }
+    if ((!(this.enrolledBatchInfo.hasOwnProperty('endDate')) ||
+    (this.enrolledBatchInfo.endDate > this.todayDate)) &&
+    (this.enrolledBatchInfo.enrollmentType === 'open') &&
+    (this.progress !== 100)) {
+      this.isUnenrollbtnDisabled = false;
+    }
+  }
   ngOnInit() {
     this.courseInteractObject = {
       id: this.courseHierarchy.identifier,
@@ -78,6 +93,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     }
     if (this.enrolledCourse === true) {
       this.getEnrolledCourseBatchDetails();
+      this.isUnenrollDisabled();
     } else {
       this.getAllBatchDetails();
     }

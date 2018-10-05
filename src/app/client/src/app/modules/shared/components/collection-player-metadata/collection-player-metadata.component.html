@@ -65,4 +65,19 @@
       </div>
     </div>
   </div>
+  <div class="three wide column">
+    <div class="ui list">
+      <div class="item">
+        <div class="content">
+          <div class="header">{{resourceService?.frmelmnts?.lbl?.ownership}}</div>
+          <div ng-if="metaData.owner" class="description padding-top-1rem">
+            <div>{{metaData.owner}}</div>
+            <div><a (click)="showContentCreditsPopup()" title="{{resourceService?.frmelmnts?.lbl?.contentCredits}}">{{resourceService?.frmelmnts?.lbl?.contentCredits}}</a></div>
+          </div>                                
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-content-credits [contentData]="metaData" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false">
+  </app-content-credits>
 </div>
