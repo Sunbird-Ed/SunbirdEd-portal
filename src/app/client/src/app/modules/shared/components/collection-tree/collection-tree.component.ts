@@ -34,7 +34,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     '1': 'fancy-tree-blue',
     '2': 'fancy-tree-green'
   };
-  constructor(resourceService: ResourceService) {
+  constructor(resourceService?: ResourceService) {
     this.resourceService = resourceService;
   }
   ngOnInit() {
