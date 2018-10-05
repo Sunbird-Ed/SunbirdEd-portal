@@ -192,7 +192,6 @@ export const Response = {
             },
             'section': 'Latest Courses'
         },
-        ,
         {
             'name': 'Ext Link usage',
             'image': 'https://ekstep-public-dev.s3-ap-south-1.amazot/c7a7d301f288f1afe24117ad59083b2a_1475430290462.thumb.jpeg',
@@ -260,7 +259,40 @@ export const Response = {
                 'framework': 'NCF',
                 'contentType': 'Course'
             }
+        },
+        {
+            'name': 'Untitled Course 7',
+            'image': 'https://ekstep-p497748578304121/artifact/6f00e56680fa722f16bd8a282480c786_1476254079786.thumb.jpeg',
+            'rating': '0',
+            'action': {
+                'onImage': {
+                    'eventName': 'onImage'
+                }
+            },
+            'metaData': {
+                'identifier': 'do_112493497748578304122',
+                'mimeType': 'application/vnd.ekstep.content-collection',
+                'framework': 'NCF',
+                'contentType': 'Course'
+            }
+        },
+        {
+            'name': 'Untitled Course 8',
+            'image': 'https://ekstep-p497748578304121/artifact/6f00e56680fa722f16bd8a282480c786_1476254079786.thumb.jpeg',
+            'rating': '0',
+            'action': {
+                'onImage': {
+                    'eventName': 'onImage'
+                }
+            },
+            'metaData': {
+                'identifier': 'do_112493497748578304123',
+                'mimeType': 'application/vnd.ekstep.content-collection',
+                'framework': 'NCF',
+                'contentType': 'Course'
+            }
         }
     ],
-    slideEventData: { event: 'w.Event', slick: 'Slick', currentSlide: 4 }
+    slideEventData: { event: 'w.Event', slick: 'Slick', currentSlide: 4 },
+    slide2EventData: { event: 'w.Event', slick: 'Slick', currentSlide: 0,  nextSlide: 4  }
 };

@@ -1,7 +1,7 @@
 import { NoteListComponent } from '@sunbird/notes';
 import {
   LearnPageComponent, CourseConsumptionPageComponent, CoursePlayerComponent,
-  EnrollBatchComponent, CreateBatchComponent, UnEnrollBatchComponent
+  EnrollBatchComponent, UnEnrollBatchComponent,
 } from './components';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';

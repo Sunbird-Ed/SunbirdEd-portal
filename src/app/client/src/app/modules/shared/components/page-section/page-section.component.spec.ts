@@ -11,6 +11,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as _ from 'lodash';
 
 const fakeActivatedRoute = {
   snapshot: {
@@ -72,6 +73,13 @@ describe('PageSectionComponent', () => {
     component.inviewChange(Response.slideContentList, Response.slideEventData);
     expect(component.inviewChange).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
+  });
+  it('should call checkSlide method for interact data', () => {
+    component.section = {name: 'courseTest', length: 1};
+    spyOn(component, 'checkSlide').and.callThrough();
+    component.checkSlide(Response.slide2EventData);
+    console.log('checkslide 2: ', component.checkSlide(Response.slide2EventData));
+    expect(component.checkSlide).toHaveBeenCalled();
   });
   it('should call playContent', () => {
     spyOn(component, 'playContent').and.callThrough();

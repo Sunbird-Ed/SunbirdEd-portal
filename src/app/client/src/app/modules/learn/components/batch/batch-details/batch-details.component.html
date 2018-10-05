@@ -49,16 +49,16 @@
         <div class="header">{{resourceService.frmelmnts.lbl.batchdetails}}</div>
     </div>
     <div class="content">
+        <span>
+            <button class="ui right floated blue basic button unenrollBtn" appTelemetryInteract [telemetryInteractEdata]="unenrollBatchIntractEdata"
+                [telemetryInteractObject]="{id:enrolledBatchInfo.identifier,type:'batch',ver:'1',rollup:{l1:courseId}}"
+                (click)="unenrollBatch(enrolledBatchInfo)" [disabled]="isUnenrollbtnDisabled">{{resourceService.frmelmnts.btn.unenroll}}</button>
+        </span>
         <div class="header">{{enrolledBatchInfo.name}}</div>
         <div class="selectedBatchMeta meta">
             <span class="date">{{enrolledBatchInfo.startDate | dateFormat}} </span>
             <span *ngIf="enrolledBatchInfo.endDate" class="date"> - {{enrolledBatchInfo.endDate | dateFormat}}</span>
         </div>
-        <span *ngIf="(!(enrolledBatchInfo.hasOwnProperty(endDate)) || (enrolledBatchInfo.endDate > todayDate)) && (enrolledBatchInfo.enrollmentType === 'open')">
-            <button class="ui right floated blue basic button unenrollBtn" appTelemetryInteract [telemetryInteractEdata]="unenrollBatchIntractEdata"
-                [telemetryInteractObject]="{id:enrolledBatchInfo.identifier,type:'batch',ver:'1',rollup:{l1:courseId}}"
-                (click)="unenrollBatch(enrolledBatchInfo)">{{resourceService.frmelmnts.btn.unenroll}}</button>
-        </span>
     </div>
     <div class="selectedBatchContent extra content">
         <span class="right floated">

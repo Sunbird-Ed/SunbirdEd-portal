@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Subject, combineLatest } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { RouterNavigationService, ResourceService, ToasterService, ServerResponse, ILoaderMessage } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { CourseBatchService } from './../../services';
@@ -82,9 +82,18 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
   */
   private courseId: string;
   /**
- * discardModal boolean flag
-*/
+  * discardModal boolean flag
+  */
   discardModalFlag = false;
+  /**
+  * To show/hide loader
+  */
+  showLoader: boolean;
+  /**
+  * loader message
+  */
+  loaderMessage: ILoaderMessage;
+
   /**
   * telemetryImpression object for create batch page
  */
@@ -127,7 +136,7 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
     this.userService = userService;
     this.courseBatchService = courseBatchService;
     this.toasterService = toasterService;
-    enum batchState {createCourse = 'create', addBatchMember = 'addmember'}
+    enum batchState { createCourse = 'create', addBatchMember = 'addmember' }
     this.batchStep = batchState.createCourse;
   }
   /**
@@ -153,6 +162,10 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
           this.toasterService.error(this.resourceService.messages.fmsg.m0056);
         }
       });
+    this.showLoader = false;
+    this.loaderMessage = {
+      'loaderMessage': this.resourceService.messages.stmsg.m0118,
+    };
   }
 
   private fetchBatchDetails() {
@@ -170,7 +183,7 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
       endDate: new FormControl(),
     });
     this.createBatchForm.valueChanges.subscribe(val => {
-      if (this.createBatchForm.status === 'VALID' ) {
+      if (this.createBatchForm.status === 'VALID') {
         this.disableSubmitBtn = false;
       } else {
         this.disableSubmitBtn = true;
@@ -179,6 +192,7 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
   }
 
   public createBatch() {
+    this.showLoader = true;
     const startDate = moment(this.createBatchForm.value.startDate).format('YYYY-MM-DD');
     const endDate = this.createBatchForm.value.endDate && moment(this.createBatchForm.value.endDate).format('YYYY-MM-DD');
     const requestBody = {
@@ -195,15 +209,17 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
     };
     if (this.createBatchForm.value.enrollmentType !== 'open') {
       requestBody['participants'] = this.addbatchmembers && this.addbatchmembers.selectedParticipantList ?
-      _.map(this.addbatchmembers.selectedParticipantList, 'id') : [];
+        _.map(this.addbatchmembers.selectedParticipantList, 'id') : [];
     }
     this.courseBatchService.createBatch(requestBody).pipe(takeUntil(this.unsubscribe))
       .subscribe((response) => {
+        this.showLoader = false;
         this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
       },
         (err) => {
+          this.showLoader = false;
           this.disableSubmitBtn = false;
           if (err.error && err.error.params.errmsg) {
             this.toasterService.error(err.error.params.errmsg);

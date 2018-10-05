@@ -9,7 +9,10 @@ export const mockResponse = {
             'smsg': {
                 'm0034': 'batch updated succesfully',
                 'm0044': 'Badge assigned successfully'
-            }
+            },
+            'stmsg': {
+                'm0119': 'We are updating batch...'
+            },
         }
     },
     req: {

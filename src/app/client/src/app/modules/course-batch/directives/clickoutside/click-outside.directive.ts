@@ -6,7 +6,7 @@ import { Directive, EventEmitter, ElementRef, HostListener, Output } from '@angu
 export class ClickOutsideDirective {
   @Output() clickOff = new EventEmitter<MouseEvent>();
   constructor(private elementRef: ElementRef) {
-   }
+ }
    @HostListener('window:mouseup', ['$event', '$event.target'])
    onClick(event: MouseEvent, targetElement: HTMLElement): void {
         if (!targetElement) {
@@ -14,7 +14,7 @@ export class ClickOutsideDirective {
         }
         const clickedInside = this.elementRef.nativeElement.contains(targetElement);
         if (!clickedInside) {
-            this.clickOff.emit(event);
+           this.clickOff.emit(event);
         }
     }
 }

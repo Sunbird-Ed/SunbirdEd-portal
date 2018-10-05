@@ -15,7 +15,7 @@ import { Subject } from 'rxjs';
   styleUrls: ['./unenroll-batch.component.css']
 })
 export class UnEnrollBatchComponent implements OnInit, OnDestroy {
-  @ViewChild('enrollBatch') enrollBatch;
+  @ViewChild('unenrollBatch') unenrollBatch;
   batchId: string;
   batchDetails: any;
   showEnrollDetails = false;
@@ -67,8 +67,8 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy() {
-    if (this.enrollBatch && this.enrollBatch.deny) {
-      this.enrollBatch.deny();
+    if (this.unenrollBatch && this.unenrollBatch.deny) {
+      this.unenrollBatch.deny();
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();
@@ -96,7 +96,7 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy {
       this.showEnrollDetails = true;
     }
   }
-  unenrollFromCourse(batchId) {
+  unenrollFromCourse() {
     const request = {
       request: {
         courseId: this.batchDetails.courseId,
