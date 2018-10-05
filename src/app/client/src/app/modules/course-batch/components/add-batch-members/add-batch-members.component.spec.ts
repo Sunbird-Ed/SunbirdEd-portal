@@ -19,6 +19,7 @@ import { AddBatchMembersComponent } from './add-batch-members.component';
 import * as mockData from './add-batch-memebers.component.spec.data';
 const testData = mockData.mockRes;
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+import { By } from '@angular/platform-browser';
 const resourceServiceMockData = {
   messages: {
     emsg: { m0005: 'Something went wrong, please try in some time....' },

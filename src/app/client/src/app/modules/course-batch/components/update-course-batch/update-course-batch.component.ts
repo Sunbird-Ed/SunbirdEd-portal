@@ -220,11 +220,12 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       startDate: startDate,
       endDate: endDate || null,
       createdFor: this.userService.userProfile.organisationIds,
-      mentors: this.addbatchmembers && this.addbatchmembers.selectedMentorList ? _.map(this.addbatchmembers.selectedMentorList, 'id') : [],
+      mentors: this.addbatchmembers && this.addbatchmembers.selectedMentorList ?
+      _.union(_.map(this.addbatchmembers.selectedMentorList, 'id'), this.batchDetails.mentors) : [],
     };
     if (this.batchUpdateForm.value.enrollmentType !== 'open') {
       requestBody['participants'] = this.addbatchmembers && this.addbatchmembers.selectedParticipantList ?
-      _.map(this.addbatchmembers.selectedParticipantList, 'id') : [];
+      _.union(_.map(this.addbatchmembers.selectedParticipantList, 'id'), this.batchDetails.participant) : [];
     }
     this.courseBatchService.updateBatch(requestBody).pipe(takeUntil(this.unsubscribe))
       .subscribe((response) => {
@@ -343,6 +344,13 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       type: 'update-batch',
       ver: '1.0'
     };
+  }
+  deleteBatchDetails(user) {
+    if (this.batchDetails && this.batchDetails.participant ||
+      (this.batchDetails && this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
+        this.batchDetails.mentors.splice(this.batchDetails.mentors.indexOf(user.id), 1);
+        this.batchDetails.participant.splice(this.batchDetails.mentors.indexOf(user.id), 1);
+    }
   }
   /**
   * It takes form step  as a input and change the state
