@@ -32,7 +32,7 @@
                         </div>
                         <div class='three wide column'>
                             <app-batch-details *ngIf="courseStatus !== 'Unlisted'" [courseId]="courseId" [batchId]="batchId" [enrolledCourse]="enrolledCourse"
-                                [courseHierarchy]="courseHierarchy"></app-batch-details>
+                                [courseHierarchy]="courseHierarchy" [courseProgressData]="courseProgressData"></app-batch-details>
                             <div *ngIf="enrolledCourse" class="margin-bottom-15 margin-top-15">
                                 <div>
                                     <br>

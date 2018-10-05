@@ -20,7 +20,7 @@ describe('ClickOutsideDirective', () => {
     component = fixture.componentInstance;
     inputEl = fixture.debugElement.query(By.css('input'));
   });
-  fit('click outside the  elements', () => {
+  it('click outside the  elements', () => {
     const directive = new ClickOutsideDirective(inputEl);
     fixture.detectChanges();
     const event = new Event('window:mouseup', {});
