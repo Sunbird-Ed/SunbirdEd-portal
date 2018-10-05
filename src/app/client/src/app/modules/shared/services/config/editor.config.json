@@ -21,7 +21,7 @@
             "loadingImage": "",
             "plugins": [{
                     "id": "org.ekstep.sunbirdcommonheader",
-                    "ver": "1.5",
+                    "ver": "1.6",
                     "type": "plugin"
                 },
                 {
@@ -31,7 +31,7 @@
                 },
                 {
                     "id": "org.ekstep.metadata",
-                    "ver": "1.1",
+                    "ver": "1.2",
                     "type": "plugin"
                 },
                 {
@@ -272,7 +272,7 @@
             "aws_s3_urls": [],
             "plugins": [{
                 "id": "org.ekstep.sunbirdcommonheader",
-                "ver": "1.4",
+                "ver": "1.6",
                 "type": "plugin"
             },
             {
@@ -282,7 +282,7 @@
             },
             {
                 "id": "org.ekstep.metadata",
-                "ver": "1.1",
+                "ver": "1.2",
                 "type": "plugin"
             },
             {
@@ -331,7 +331,7 @@
             "loadingImage": "",
             "plugins": [{
                     "id": "org.ekstep.sunbirdcommonheader",
-                    "ver": "1.4",
+                    "ver": "1.6",
                     "type": "plugin"
                     }, {
                     "id": "org.ekstep.sunbirdmetadata",
@@ -339,7 +339,7 @@
                     "type": "plugin"
                     }, {
                     "id": "org.ekstep.metadata",
-                    "ver": "1.1",
+                    "ver": "1.2",
                     "type": "plugin"
                 }],
             "previewConfig": {
