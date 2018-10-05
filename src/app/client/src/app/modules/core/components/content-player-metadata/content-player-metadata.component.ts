@@ -17,6 +17,7 @@ export class ContentPlayerMetadataComponent implements OnInit, OnDestroy {
   conceptNames: any;
   filteredConcepts: any;
   conceptDataSubscription: Subscription;
+  showContentCreditsModal: boolean;
 
   @Input() contentData: ContentData;
   constructor(public resourceService: ResourceService, public conceptPickerService: ConceptPickerService) { }
@@ -40,6 +41,10 @@ export class ContentPlayerMetadataComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  showContentCreditsPopup () {
+    this.showContentCreditsModal = true;
   }
 
   /**
