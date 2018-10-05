@@ -17,19 +17,19 @@ const request = require('request');
 module.exports = { 
 
   getImagePath: function (baseUrl, tenantId, image, callback) {
-    if (envHelper.TENANT_CDN_URL === '' || envHelper.TENANT_CDN_URL === null) {      
+    if (envHelper.TENANT_CDN_URL === '' || envHelper.TENANT_CDN_URL === null) {
       module.exports.getLocalImage(baseUrl, tenantId, image, callback)
     } else {
-      const req = request
-      .get(envHelper.TENANT_CDN_URL + '/' + tenantId + '/' + image)
-      .on('response', function (res) {
-        if (res.statusCode === 200) {
-          baseUrl = envHelper.TENANT_CDN_URL
-          callback(null, baseUrl + '/' + tenantId + '/' + image)
-        } else {
-          callback(null, null);
-        }
-      })
+      request
+        .get(envHelper.TENANT_CDN_URL + '/' + tenantId + '/' + image)
+        .on('response', function (res) {
+          if (res.statusCode === 200) {
+            baseUrl = envHelper.TENANT_CDN_URL
+            callback(null, baseUrl + '/' + tenantId + '/' + image)
+          } else {
+            module.exports.getLocalImage(baseUrl, tenantId, image, callback)
+          }
+        })
     }
   },
   getLocalImage: function(baseUrl, tenantId, image, callback) {
