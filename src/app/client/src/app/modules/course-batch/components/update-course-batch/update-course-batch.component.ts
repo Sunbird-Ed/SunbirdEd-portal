@@ -381,7 +381,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   /**
   * It takes form step  as a input and change the state
   *
-  * @param {number}  step form step number navigateToWizardNumber
+  * @param {number}  step form step number navigateToStep
   */
   navigateToStep(step): void {
     this.batchStep = step;
