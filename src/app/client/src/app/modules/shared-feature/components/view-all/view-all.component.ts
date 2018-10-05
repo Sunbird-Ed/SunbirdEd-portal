@@ -1,3 +1,4 @@
+import { PublicPlayerService } from '@sunbird/public';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { combineLatest, Subject } from 'rxjs';
 import {
@@ -116,7 +117,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();
   constructor(searchService: SearchService, router: Router, private playerService: PlayerService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService, private _cacheService: CacheService,
-    resourceService: ResourceService, toasterService: ToasterService,
+    resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
     configService: ConfigService, coursesService: CoursesService, public utilService: UtilService) {
     this.searchService = searchService;
     this.router = router;
@@ -140,7 +141,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
         const route = this.router.url.split('/view-all');
         this.closeUrl = '/' + route[0].toString();
         this.sectionName = res.params.section.replace(/\-/g, ' ');
-        this.pageNumber = res.params.pageNumber;
+        this.pageNumber = Number(res.params.pageNumber);
       }),
       mergeMap((data) => {
         this.manipulateQueryParam(data.queryParams);
@@ -278,11 +279,16 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   }
 
   playContent(event) {
-    if (event.data.metaData.batchId) {
-      event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
-      event.data.metaData.contentType = 'Course';
+    const url = this.router.url.split('/');
+    if (url[1] === 'learn' || url[1] === 'resources') {
+      if (event.data.metaData.batchId) {
+        event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
+        event.data.metaData.contentType = 'Course';
+      }
+      this.playerService.playContent(event.data.metaData);
+    } else {
+      this.publicPlayerService.playContent(event);
     }
-    this.playerService.playContent(event.data.metaData);
   }
 
   ngOnDestroy() {
