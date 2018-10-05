@@ -31,10 +31,12 @@ describe('ProfileVisibilityComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('should call user service', () => {
+  it('should check profile visibility based on the user profile visibility value for the field', () => {
     const userService = TestBed.get(UserService);
+    component.field = 'skills';
     userService._userProfile = mockProfileVisibilityData.userMockData;
     userService._userData$.next({ err: null, userProfile: mockProfileVisibilityData.userMockData });
+    expect(component.visibility).toBe('private');
   });
   it('should call updateProfileFieldVisibility and update flag and return success response', () => {
     const resourceService = TestBed.get(ResourceService);

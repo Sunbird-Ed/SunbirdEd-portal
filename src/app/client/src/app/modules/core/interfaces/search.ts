@@ -28,6 +28,10 @@ export interface SearchParam {
    */
   orgid?: string[];
   /**
+   * rootOrgId ids
+  */
+  rootOrgId?: string[];
+  /**
   * page limit
   */
   limit?: number;
