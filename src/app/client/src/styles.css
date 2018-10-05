@@ -487,8 +487,8 @@ a:hover {
 }
 /*loged in user icon*/
 .ui.circular.image.logged-in-user {
-  width: 30px;
-  height: 30px;
+  width: 41px;
+  height: 41px;
   margin-top: 2px;
   border-radius: 50%;
   -webkit-border-radius: 50%;
@@ -3113,8 +3113,13 @@ i.icon.accordion-content-right {
 .ui.primary-header.logo img{
   position: absolute;
   height: 56px;
-  top: 17px;
+  top: 15px;
 }
+
+.notification-icon {
+  width: 20px !important;
+  height: 24px;
+}                           
 
 .flex {
   display: flex !important;
@@ -3183,6 +3188,9 @@ i.icon.accordion-content-right {
 .pt-10{
   padding-top: 10px !important;
 }
+.pr-0 {
+  padding-right: 0 !important;
+}
 .pr-15 {
   padding-right: 15px !important;
 }
@@ -3249,9 +3257,6 @@ i.icon.accordion-content-right {
   } 
 
 }
-
-
-
 .ui.large.secondary.menu {
   display:flex;
 }
@@ -3347,4 +3352,8 @@ button.slick-prev.slick-arrow.slick-disabled,
 button.slick-next.slick-arrow.slick-disabled {
   cursor: default;
   display: none !important;
+}
+
+.icon-primary-color {
+  color:#c7c7c7
 }

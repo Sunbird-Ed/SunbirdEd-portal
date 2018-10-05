@@ -14,13 +14,13 @@
                         <div class="p-0" [ngClass]="{'row': userService.userid, 'mt-10': !userService.userid}">
                             <div class="eight wide column"></div>
                             <div class="four wide column flex jc-flex-end">
-                                <a class="item" *ngIf="userService.userid">
-                                        <i class="large alarm icon"></i>
+                                    <a class="item" *ngIf="userService.userid">
+                                        <img src="{{'assets/images/notification.png'}}" class="notification-icon pt-10">
                                     </a>
                                     <a class="item" *ngIf="userService.userid; else showLoginBtn">
                                         <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing
                                                     header-user-container" id="dropdown-menu-list-header">
-                                            <img src="{{ userProfile?.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" class="ui circular image logged-in-user"
+                                            <img src="{{ userProfile?.avatar || 'assets/images/user-profile.png' | cdnprefixurl}}" class="ui circular image logged-in-user pr-0"
                                             />
                                             <div class="menu" suiDropdownMenu>
                                                 <div *ngIf='userProfile' class="item headerDropdownProfile">{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}</div>
@@ -51,15 +51,14 @@
                 </div>
                 <div class="ui text primary-nav menu ml-auto computer only">
                         <app-search *ngIf="userService.userid" class="flex-as-center mr-40"></app-search>
-                        <app-main-menu *ngIf="userService.userid" class="flex"></app-main-menu>
-    
+                        <app-main-menu *ngIf="userService.userid" class="flex"></app-main-menu>    
                         <a class="item ml-20" *ngIf="userService.userid">
-                            <i class="large alarm icon"></i>
+                            <img src="{{'assets/images/notification.png'}}" class="notification-icon">
                         </a>
                         <a class="item pt-0" *ngIf="userService.userid; else showLoginBtn">
                             <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing
                                         header-user-container" id="dropdown-menu-list-header">
-                                <img src="{{ userProfile?.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" class="ui circular image logged-in-user"
+                                <img src="{{ userProfile?.avatar || 'assets/images/user-profile.png' | cdnprefixurl}}" class="ui circular image logged-in-user"
                                 />
                                 <div class="menu" suiDropdownMenu>
                                     <div *ngIf='userProfile' class="item headerDropdownProfile">{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}</div>
