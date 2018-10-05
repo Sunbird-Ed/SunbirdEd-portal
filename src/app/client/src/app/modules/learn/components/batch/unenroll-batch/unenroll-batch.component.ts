@@ -5,7 +5,7 @@ import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared'
 import { CourseBatchService } from '../../../services';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { IEndEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
 
@@ -26,6 +26,7 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy {
 	 * telemetryImpression object for update batch page
 	*/
   telemetryImpression: IImpressionEventInput;
+  public telemetryEnd: IEndEventInput;
   constructor(public router: Router, public activatedRoute: ActivatedRoute, public courseBatchService: CourseBatchService,
     public resourceService: ResourceService, public toasterService: ToasterService, public userService: UserService,
     public configService: ConfigService, public coursesService: CoursesService) { }

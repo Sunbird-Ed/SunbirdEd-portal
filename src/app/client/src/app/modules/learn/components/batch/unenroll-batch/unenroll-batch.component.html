@@ -1,4 +1,4 @@
-<sui-modal [isClosable]="true" #unenrollBatch [size]="mini" (dismissed)="redirect()">
+<sui-modal [isClosable]="true" #unenrollBatch (dismissed)="redirect()">
     <div class="header">{{resourceService.frmelmnts.lbl.unenrollMsg}}</div>
     <div class="actions">
         <button class="ui primary  button announcement-button" (click)="unenrollBatch.deny();" [appTelemetryEnd]="telemetryEnd">Cancel</button>
