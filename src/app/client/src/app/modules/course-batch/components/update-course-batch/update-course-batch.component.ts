@@ -210,13 +210,10 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       createdFor: this.userService.userProfile.organisationIds,
       mentors: this.addbatchmembers && this.addbatchmembers.selectedMentorList ? _.map(this.addbatchmembers.selectedMentorList, 'id') : [],
     };
-    // if (this.batchUpdateForm.value.enrollmentType !== 'open') {
-    //   const selected = [];
-    //   _.forEach(this.selectedMentors, (value) => {
-    //     selected.push(value.id);
-    //   });
-    //   requestBody['mentors'] = _.concat(_.compact(requestBody['mentors']), selected);
-    // }
+    if (this.batchUpdateForm.value.enrollmentType !== 'open') {
+      requestBody['participants'] = this.addbatchmembers && this.addbatchmembers.selectedParticipantList ?
+      _.map(this.addbatchmembers.selectedParticipantList, 'id') : [];
+    }
     this.courseBatchService.updateBatch(requestBody).pipe(takeUntil(this.unsubscribe))
       .subscribe((response) => {
         this.disableSubmitBtn = false;
