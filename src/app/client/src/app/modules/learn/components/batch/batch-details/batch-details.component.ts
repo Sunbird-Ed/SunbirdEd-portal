@@ -1,7 +1,7 @@
 
 import { takeUntil, map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
-import { CourseBatchService } from './../../../services';
+import { CourseBatchService } from '@sunbird/course-batch';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';

@@ -13,7 +13,7 @@
         <div class="description annannouncement-description">
             <div *ngIf="showBatchList" class="ui divided list">
                 <div class="item padding-top-10" *ngFor="let batch of batchList">
-                    <i [ngClass]="userService.userid === batch.createdBy ? 'write' : 'eye'" class="icon float-ContentRight cursor-pointer" appTelemetryInteract [telemetryInteractEdata]="updateBatchIntractEdata"
+                    <i  class="icon float-ContentRight cursor-pointer write" appTelemetryInteract [telemetryInteractEdata]="updateBatchIntractEdata"
                         [telemetryInteractObject]="{id:batch.identifier,type:'batch',ver:'1',rollup:{l1:courseId}}" (click)="batchUpdate(batch)"
                         *ngIf="courseMentor"></i>
                     <button class="ui right floated blue basic button enrollBtn" appTelemetryInteract [telemetryInteractEdata]="enrollBatchIntractEdata"
