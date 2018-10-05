@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil, mergeMap } from 'rxjs/operators';
-import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { RouterNavigationService, ResourceService, ToasterService, ServerResponse, ILoaderMessage } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { AddBatchMembersComponent } from '../add-batch-members/add-batch-members.component';
@@ -37,6 +37,14 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   * courseCreator
   */
   public courseCreator = false;
+    /**
+  * To show/hide loader
+  */
+ showLoader: boolean;
+ /**
+ * loader message
+ */
+ loaderMessage: ILoaderMessage;
   /**
   * participantList for users
   */
@@ -142,7 +150,6 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     combineLatest(this.activatedRoute.params, this.activatedRoute.parent.params,
       (params, parentParams) => ({ ...params, ...parentParams })).pipe(
         mergeMap((params) => {
-          console.log(params);
           this.batchId = params.batchId;
           this.courseId = params.courseId;
           this.setTelemetryData();
@@ -166,6 +173,10 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
         }
         this.redirect();
       });
+    this.showLoader = false;
+    this.loaderMessage = {
+      'loaderMessage': this.resourceService.messages.stmsg.m0119,
+    };
   }
   private fetchBatchDetails() {
     return combineLatest(
@@ -197,6 +208,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     });
   }
   public updateBatch() {
+    this.showLoader = true;
     this.disableSubmitBtn = true;
     const startDate = moment(this.batchUpdateForm.value.startDate).format('YYYY-MM-DD');
     const endDate = this.batchUpdateForm.value.endDate && moment(this.batchUpdateForm.value.endDate).format('YYYY-MM-DD');
@@ -216,11 +228,13 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     }
     this.courseBatchService.updateBatch(requestBody).pipe(takeUntil(this.unsubscribe))
       .subscribe((response) => {
+        this.showLoader = false;
         this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0034);
         this.reload();
       },
         (err) => {
+          this.showLoader = false;
           this.disableSubmitBtn = false;
           if (err.error && err.error.params.errmsg) {
             this.toasterService.error(err.error.params.errmsg);

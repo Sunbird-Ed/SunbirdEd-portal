@@ -1,5 +1,6 @@
 <sui-modal [ngSwitch]="batchStep" *ngIf='showUpdateModal' (dismissed)="redirect()" [isClosable]="false" [isFullScreen]="true"
   #updateBatchModal class="fullpage">
+  
   <div class="header">
     <div class="ui grid">
       <div class="eleven wide column">
@@ -12,6 +13,13 @@
     </div>
   </div>
 
+  <div class="ui grid" *ngIf="showLoader">
+    <div class="twelve wide column">
+      <app-loader [data]="loaderMessage"></app-loader>
+    </div>
+  </div>
+  
+  <div *ngIf="!showLoader"  class="height-100">
   <div *ngSwitchCase="'update'" [appTelemetryStart]="telemetryStart" [appTelemetryImpression]="telemetryImpression" class="scrolling content padding-left-right-0 fullpage-top-6 padding-top-10">
     <h4 class="ui left floated modal-sub-header padding-left-25 custom-modal-subheader">Batch Detail</h4>
     <div class="ui clearing fullpage divider margin-bottom-50"></div>
@@ -81,7 +89,8 @@
   <div *ngSwitchCase="'addmember'" class="height-100">
     <app-add-batch-members [batchDetails]="batchDetails"></app-add-batch-members>
   </div>
-  <div class="actions">
+  </div>
+  <div *ngIf="!showLoader" class="actions">
     <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="updateInteractEdata"
       *ngSwitchCase="'update'" (click)="updateBatch()" class="ui left floated basic primary button" tabindex="0" [disabled]="disableSubmitBtn">{{resourceService?.frmelmnts?.btn?.update}}</button>
     <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="addmemebersInteractEdata"
@@ -93,7 +102,9 @@
       *ngSwitchCase="'addmember'" class="ui primary button" id="submitbutton" (click)="updateBatch()" tabindex="0">
       {{resourceService?.frmelmnts?.btn?.updatebatch}}</button>
   </div>
+  
 </sui-modal>
+
 <sui-modal [isClosable]="false" *ngIf="discardModalFlag" [size]="'mini'" #discardModal>
   <i class="close icon" (click)="discardModalFlag = !discardModalFlag"></i>
   <div class="header"> {{resourceService?.frmelmnts?.lbl?.discardBatch}}</div>

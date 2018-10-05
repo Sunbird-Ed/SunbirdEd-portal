@@ -8,6 +8,9 @@ export const mockResponse = {
             },
             'smsg': {
                 'm0033': 'Batch created sucessfully'
+            },
+            'stmsg': {
+                'm0118': 'We are creating batch...'
             }
         }
     },

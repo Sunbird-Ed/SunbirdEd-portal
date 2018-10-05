@@ -21,7 +21,7 @@ class RouterStub {
 const resourceServiceMockData = {
   messages: {
     imsg: { m0027: 'Something went wrong' },
-    stmsg: { m0009: 'error' },
+    stmsg: { m0009: 'error', m0118 : ' We are creating batch ' },
     smsg: {m0033 : 'Batch created sucessfully'},
     fmsg: {m0052: 'Creating batch failed, please try again later...'}
   },
@@ -113,6 +113,7 @@ describe('CreateCourseBatchComponent', () => {
     component.createBatch();
     expect(component.createBatchForm).toBeDefined();
     expect(toasterService.success).toHaveBeenCalledWith(resourceServiceMockData.messages.smsg.m0033);
+    expect(component.showLoader).toBeFalsy();
   });
   it('should create batch and show error message if api fails', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
@@ -134,5 +135,6 @@ describe('CreateCourseBatchComponent', () => {
     component.createBatch();
     expect(component.createBatchForm).toBeDefined();
     expect(toasterService.error).toHaveBeenCalledWith(resourceServiceMockData.messages.fmsg.m0052);
+    expect(component.showLoader).toBeFalsy();
   });
 });

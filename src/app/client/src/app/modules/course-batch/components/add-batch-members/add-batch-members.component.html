@@ -6,7 +6,7 @@
         <div class="ui grid margin-none">
             <div class="three wide column right-content dividing-border">
                 <div class="custom-modal-subheader margin-bottom-10">{{ resourceService?.frmelmnts?.lbl?.organisation}}</div>
-                <div class="ui fluid input with-border">
+                <div class="ui fluid input with-border" *ngIf="showRootOrg">
                     <input type="text" [(ngModel)]="rootOrgName" placeholder="{{resourceService?.frmelmnts?.lbl?.organisationName}}" readonly>
                 </div>
                 <br>

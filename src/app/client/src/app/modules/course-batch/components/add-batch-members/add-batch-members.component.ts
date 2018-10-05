@@ -116,6 +116,11 @@ export class AddBatchMembersComponent implements OnInit {
   *
   */
   selectItemCheck = false;
+  /**
+  to show showRootOrg
+  *
+  */
+  showRootOrg = false;
 
   /**
    * This variable stores the search input.
@@ -153,7 +158,8 @@ export class AddBatchMembersComponent implements OnInit {
       text: 'Select Sub-Organisation',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      badgeShowLimit: 1
+      badgeShowLimit: 1,
+      labelKey: 'orgName',
     };
     this.mentorsDropDownSettings = {
       text: 'Select mentors',
@@ -197,15 +203,22 @@ export class AddBatchMembersComponent implements OnInit {
           if (data.result.response.content) {
             const subOrganization = [];
             if (data.result.response.content && data.result.response.content.length > 0) {
-              _.forEach(data.result.response.content, (orgData) => {
-                const org = {
-                  id: orgData.id,
-                  itemName: orgData.orgName
-                };
-                subOrganization.push(org);
-              });
+              this.subOrganizations = data.result.response.content;
             }
-            this.subOrganizations = subOrganization;
+            const mentorOrg = this.userService.userProfile.roleOrgMap['COURSE_MENTOR'];
+            if (mentorOrg && mentorOrg.includes(this.userService.rootOrgId)) {
+              this.subOrganizations = _.remove(this.subOrganizations, (subOrg) => {
+                return subOrg.id !== this.userService.rootOrgId;
+              });
+              const org = {
+                id: this.userService.rootOrgId,
+                itemName: this.rootOrgName
+              };
+              this.subOrganizations.push(org);
+              this.showRootOrg = true;
+            } else {
+              this.showRootOrg = false;
+            }
             if (this.subOrganizations.length === 1) {
               this.selectedOrg = _.map(this.subOrganizations, 'id');
               this.fetchMembersDetails(this.selectedOrg);
