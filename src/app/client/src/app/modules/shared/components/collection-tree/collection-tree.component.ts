@@ -23,10 +23,6 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
   @Input() public options: ICollectionTreeOptions;
   @Output() public contentSelect: EventEmitter<{id: string, title: string}> = new EventEmitter();
   @Input() contentStatus: any;
-  /**
-  * reference of ResourceService
-  */
-  public resourceService: ResourceService;
   private rootNode: any;
   public rootChildrens: any;
   private iconColor = {
@@ -34,7 +30,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     '1': 'fancy-tree-blue',
     '2': 'fancy-tree-green'
   };
-  constructor(resourceService?: ResourceService) {
+  constructor(public resourceService?: ResourceService) {
     this.resourceService = resourceService;
   }
   ngOnInit() {
