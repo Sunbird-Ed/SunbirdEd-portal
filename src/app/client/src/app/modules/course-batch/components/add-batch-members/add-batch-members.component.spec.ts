@@ -19,6 +19,7 @@ import { AddBatchMembersComponent } from './add-batch-members.component';
 import * as mockData from './add-batch-memebers.component.spec.data';
 const testData = mockData.mockRes;
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+import { By } from '@angular/platform-browser';
 const resourceServiceMockData = {
   messages: {
     emsg: { m0005: 'Something went wrong, please try in some time....' },
@@ -90,4 +91,27 @@ describe('AddBatchMembersComponent', () => {
       expect(component.selectedMentorList.length).toBeLessThanOrEqual(1);
       expect(component.selectedUserList.length).toBeLessThanOrEqual(1);
   }));
+  it('should emit the event on click of trash icon', () => {
+    const user = {
+      avatar: null,
+      email: 'us********@testss.com',
+      id: '7e51e59e-5aca-410f-933e-851a35437c7e',
+      name: 'Mentor Second User',
+      phone: '******7418'
+    };
+    component.selectedUserList = [{
+      avatar: null,
+      email: 'us********@testss.com',
+      id: '7e51e59e-5aca-410f-933e-851a35437c7e',
+      name: 'Mentor Second User',
+      phone: '******7418'
+    }];
+    fixture.detectChanges();
+    const trashIconElm = fixture.debugElement.nativeElement.querySelector('.trash');
+    spyOn(component, 'deleteUser').and.callThrough();
+    spyOn(component.deleteBatchDetails, 'emit');
+    trashIconElm.dispatchEvent(new Event('click'));
+    expect(component.deleteUser).toHaveBeenCalledWith(user, 0);
+    expect(component.deleteBatchDetails.emit).toHaveBeenCalledWith(user);
+  });
 });

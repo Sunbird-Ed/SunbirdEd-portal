@@ -87,7 +87,7 @@
     </form>
   </div>
   <div *ngSwitchCase="'addmember'" class="height-100">
-    <app-add-batch-members [batchDetails]="batchDetails"></app-add-batch-members>
+    <app-add-batch-members (deleteBatchDetails)="deleteBatchDetails($event)" [batchDetails]="batchDetails"></app-add-batch-members>
   </div>
   </div>
   <div *ngIf="!showLoader" class="actions">
