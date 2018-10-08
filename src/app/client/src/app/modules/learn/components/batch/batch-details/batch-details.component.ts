@@ -93,7 +93,6 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     }
     if (this.enrolledCourse === true) {
       this.getEnrolledCourseBatchDetails();
-      this.isUnenrollDisabled();
     } else {
       this.getAllBatchDetails();
     }
@@ -168,6 +167,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
         } else {
           this.enrolledBatchInfo.participant = [];
         }
+        this.isUnenrollDisabled();
       }, () => {
         // handle error
       });
