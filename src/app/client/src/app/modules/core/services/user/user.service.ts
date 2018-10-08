@@ -178,6 +178,7 @@ export class UserService {
     const orgRoleMap = {};
     const hashTagIds = [];
     this._channel = _.get(profileData, 'rootOrg.hashTagId');
+    profileData.skills = _.get(profileData, 'skills' ) || [];
     hashTagIds.push(this._channel);
     let organisationIds = [];
     profileData.rootOrgAdmin = false;
@@ -205,9 +206,6 @@ export class UserService {
     }
     if (profileData.rootOrgId) {
       organisationIds.push(profileData.rootOrgId);
-    }
-    if (profileData.skills === null) {
-      profileData.skills = [];
     }
     this._dims = _.concat(organisationIds, this.channel);
     organisationIds = _.uniq(organisationIds);
