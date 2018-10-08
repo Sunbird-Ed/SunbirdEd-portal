@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, HostListener, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, Subject, combineLatest, of } from 'rxjs';
 import { takeUntil, first, map, debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operators';
@@ -17,6 +17,7 @@ export class AddBatchMembersComponent implements OnInit {
   @ViewChild('participantsDropDown') participantsDropDown;
   @ViewChild('subOrgDropDown') subOrgDropDown;
   @Input() batchDetails: any;
+  @Output() deleteBatchDetails = new EventEmitter<any>();
   /**
    * To get logged-in user published course(s)
   */
@@ -315,6 +316,8 @@ export class AddBatchMembersComponent implements OnInit {
     _.forEach(this.batchDetails.participant, (value, key) => {
       const user = _.find(participantList, ['id', key]);
       if (user) {
+        user['role'] = 'participant';
+        user['orgname'] = this.rootOrgName;
         this.selectedUserList.push(user);
       }
     });
@@ -409,6 +412,7 @@ export class AddBatchMembersComponent implements OnInit {
         this.selectedParticipantList.splice(particcipantIndex, 1);
       }
     });
+    this.deleteBatchDetails.emit(user);
   }
   selectAll(event) {
     if (event) {
@@ -440,6 +444,7 @@ export class AddBatchMembersComponent implements OnInit {
         this.selectedUserList.splice(index, 1);
       }
     });
+    this.deleteBatchDetails.emit(this.selectedItems);
     const selectedMentorId = _.map(this.selectedMentorList, 'id');
     _.forEach(selectedMentorId, (id) => {
       const mentorIndex = this.selectedMentorList.findIndex(i => i.id === id);
