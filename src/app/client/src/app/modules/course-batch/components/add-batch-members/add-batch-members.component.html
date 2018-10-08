@@ -1,0 +1,130 @@
+<div class="content padding-left-right-0 padding-top-10 o-x-hide o-y-hide height-100">
+    <h4 class="ui left floated modal-sub-header padding-left-25 custom-modal-subheader">{{ resourceService?.frmelmnts?.lbl?.selectMembers}}</h4>
+    <div class="ui clearing fullpage divider margin-bottom-0"></div>
+
+    <div class="scrollable content "> 
+        <div class="ui grid margin-none">
+            <div class="three wide column right-content dividing-border">
+                <div *ngIf="showRootOrg"  class="custom-modal-subheader margin-bottom-10">{{ resourceService?.frmelmnts?.lbl?.organisation}}</div>
+                <div class="ui fluid input with-border" *ngIf="showRootOrg">
+                    <input type="text" [(ngModel)]="rootOrgName" placeholder="{{resourceService?.frmelmnts?.lbl?.organisationName}}" readonly>
+                </div>
+                <br>
+                <div class="custom-modal-subheader margin-bottom-10">{{ resourceService?.frmelmnts?.lbl?.subOrganisation}}</div>
+                <div appClickOutside (clickOff)="closeSubOrgDropdown()"  *ngIf="subOrganizations.length >1" (click)="onSubOrgDropDownOpen()">
+
+                    <angular2-multiselect #subOrgDropDown [data]="subOrganizations" [(ngModel)]="selectedOrg" [settings]="subOrgDropDownSettings"
+                        (onSelect)="fetchMembersDetails($event)" (onDeSelect)="fetchMembersDetails($event)" (onSelectAll)="fetchMembersDetails($event)"
+                        (onDeSelectAll)="fetchMembersDetails($event)">
+                    </angular2-multiselect>
+                </div>
+                <div class="ui fluid input with-border" *ngIf="subOrganizations.length ==1">
+                    <input type="text" [(ngModel)]="subOrganizations[0].orgName" placeholder={{resourceService?.frmelmnts?.lbl?.organisationName}}
+                        readonly>
+                </div>
+                <div class="margin-bottom-10 ui pointing red basic label below" *ngIf="subOrgRequired">
+                    {{ resourceService?.frmelmnts?.lbl?.pleaseSelect}}
+                </div>
+                <br>
+                <div appClickOutside (clickOff)="closeMentorDropdown()" class="one field fluid selection margin-top-10 " (click)="onMentorDropDownOpen()">
+                    <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
+                    <div  class="margin-top-10 ui fluid with-border ">
+                        <angular2-multiselect #mentorDropDown [data]="mentorList" [(ngModel)]="selectedMentorList" [settings]="mentorsDropDownSettings"
+                            (onSelect)="selectMentor($event)">
+                            <c-search>
+                                <ng-template>
+                                    <input type="text" (keyup)="getUserListWithQuery($event,'mentor')" placeholder="Search " style="border: none;width: 100%; height: 100%;outline: none;"
+                                    />
+                                </ng-template>
+                            </c-search>
+                        </angular2-multiselect>
+                    </div>
+                </div>
+                <br>
+                <div  appClickOutside (clickOff)="closeParticipantsDropdown()" class="one field fluid selection margin-top-10 " (click)="onParticipantDropDownOpen()">
+                    <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
+                    <div class="margin-top-10 ui fluid with-border ">
+                        <angular2-multiselect #participantsDropDown [data]="participantList" [(ngModel)]="selectedParticipantList" [settings]="participantsDropDownSettings"
+                            (onSelect)="selectParticipants($event)" (onDeSelect)="OnParticipantsDeSelect($event)">
+                            <c-search>
+                                <ng-template>
+                                    <input type="text" (keyup)="getUserListWithQuery($event,'participant')" placeholder="Search" style="border: none;width: 100%; height: 100%;outline: none;"
+                                    />
+                                </ng-template>
+                            </c-search>
+                        </angular2-multiselect>
+                    </div>
+
+                </div>
+                <br>
+            </div>
+
+            <div class="nine wide column padding-left-right-0 padding-left-right-0 left-content dividing-border o-y-auto o-x-hide content-with-scroll">
+                <div class="ui grid padding-left-25">
+                    <div class="four wide column">
+                        <div class="ui fluid category search">
+                            <div class="ui fluid icon input">
+                                <input [(ngModel)]="searchData" type="text" placeholder="Search members">
+                                <i class="search icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="eight wide column" *ngIf="selectedItems && selectedItems.length > 0">
+                        <button class="ui primary basic right floated button mr-40" (click)="removeModalFlag = !removeModalFlag">Remove Selected
+                        </button>
+                    </div>
+                </div>
+                <table class="ui basic border-less table batch-table" *ngIf="selectedUserList.length > 0">
+
+                    <thead>
+                        <tr>
+                            <th *ngIf="selectItemCheck">
+                                <div class="field" >
+                                    <sui-checkbox [(ngModel)]="selectAllUserCheck" (ngModelChange)="selectAll($event);" [isDisabled]="eCheckDisabled" [isReadonly]="eCheckReadonly">
+                                    </sui-checkbox>
+                                </div>
+                            </th>
+                            <th>{{ resourceService?.frmelmnts?.lbl?.name}}</th>
+                            <th>{{ resourceService?.frmelmnts?.lbl?.email}}</th>
+                            <th>{{ resourceService?.frmelmnts?.lbl?.contact}}</th>
+                            <th>{{ resourceService?.frmelmnts?.lbl?.role}}</th>
+                            <th>{{ resourceService?.frmelmnts?.lbl?.organization}}</th>
+                            <th>{{ resourceService?.frmelmnts?.lbl?.action}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="modal-table" *ngFor="let user of selectedUserList | filter : searchData : ['name','role'];let i = index;">
+                            <td *ngIf="selectItemCheck">
+                                <div class="field" >
+                                    <sui-checkbox [(ngModel)]="user.selected" (ngModelChange)="toggle($event, user, user.id);" [isDisabled]="eCheckDisabled"
+                                        [isReadonly]="eCheckReadonly">
+
+                                    </sui-checkbox>
+                                </div>
+                            </td>
+                            <td>{{user.name}}</td>
+                            <td>{{user.email}}</td>
+                            <td>{{user.phone}}</td>
+                            <td>{{user.role}}</td>
+                            <td>{{user.orgname}}</td>
+                            <td>
+                                <i title="{{ resourceService?.frmelmnts?.lbl?.edit}}" *ngIf="user.role === 'mentor'" class="edit icon link"></i>
+                                <i title="{{ resourceService?.frmelmnts?.lbl?.delete}}" class="trash icon link" (click)="deleteUser(user,i)"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<sui-modal [isClosable]="false" *ngIf="removeModalFlag" [size]="mini" #removeModal>
+    <div class="header"> Remove Members</div>
+    <div class="actions">
+        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="stopCreatingYesInteractEdata"
+            class="ui primary  button announcement-button" (click)="removeModalFlag = !removeModalFlag" [appTelemetryEnd]="telemetryEnd">{{ resourceService?.frmelmnts?.btn?.cancel}}</button>
+        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="stopCreatingNoInteractEdata"
+            class="ui gray button announcement-button" (click)="removeModal.deny(); remove()">Remove</button>
+    </div>
+</sui-modal>

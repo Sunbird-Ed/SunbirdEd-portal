@@ -1,8 +1,4 @@
-.ui.secondary.pointing.menu .ui.item.text-upper-case {
-    text-transform: uppercase;
-} 
-
-.anon-consumption-sec-menu {
+ .anon-consumption-sec-menu {
     border-bottom: 2px solid rgba(34,36,38,.15);   
 }
 

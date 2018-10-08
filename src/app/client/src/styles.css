@@ -487,8 +487,8 @@ a:hover {
 }
 /*loged in user icon*/
 .ui.circular.image.logged-in-user {
-  width: 30px;
-  height: 30px;
+  width: 41px;
+  height: 41px;
   margin-top: 2px;
   border-radius: 50%;
   -webkit-border-radius: 50%;
@@ -498,7 +498,7 @@ a:hover {
   display: inline-block;
   vertical-align: middle;
 }
-.beforelogin.ui.secondary.pointing.menu {
+.ui.secondary.pointing.menu {
   border-bottom: 0;
 }
 .header-user-container {
@@ -1830,17 +1830,17 @@ ul.fancytree-container li {
   border-radius: 0;
 }
 .searchinput {
-  width: 600px;
+  width: 350px;
 }
 
 @media only screen and (max-width: 1400px) {
   .searchinput {
-    width: 500px;
+    width: 350px;
   }
 }
 @media only screen and (max-width: 1097px) {
   .searchinput {
-    width: 405px;
+    width: 350px;
   }
 }
 .searchicon.ui.icon.input input {
@@ -2975,15 +2975,19 @@ i.icon.accordion-content-right {
 .ui[class*="basic"].border-less.table:not(.sortable):not(.striped) th:first-child {
   padding-left: 25px;
 }
-
 .ui.basic.border-less.table {
     border: 0;
     border-top: 1px solid #D8D8D8;
     border-radius: 0;
 }
-
 .bb-1 {
   border-bottom: 1px solid #D8D8D8;
+}
+.m-0 {
+  margin: 0 !important;
+}
+.p-0 {
+  padding:0 !important;
 }
 .mt-5 {
   margin-top: 5px !important;
@@ -3077,7 +3081,7 @@ i.icon.accordion-content-right {
   overflow-y: hidden!important
 }
 .content-with-scroll {
-  height: calc(100% - 140px) !important;
+  height: calc(100% - 160px) !important;
 }
 .height-100 {
   height: 100% !important;
@@ -3095,29 +3099,321 @@ i.icon.accordion-content-right {
   padding-bottom: 6px;
 }
 
+li.pure-checkbox{
+  margin:0;
+}
+angular2-multiselect .select-all{
+  padding: 10px;
+}
+.pure-checkbox input[type="checkbox"]+label{
+  padding: 0 2em 0 0 !important;
+  display: block;
+}
+.pure-checkbox input[type="checkbox"]+label:before{
+  right: 0 !important;
+  left:auto !important;
+}
+.pure-checkbox input[type="checkbox"] + label:before{
+  color: #999 !important;
+  border-color: #999 !important;
+  width: 10px !important;
+  height: 10px !important;
+}
+.pure-checkbox input[type="checkbox"]:checked + label:before {
+  background: #999 !important;
+}
+.pure-checkbox input[type="checkbox"]+label:after {
+  width: 6px !important;
+  height: 2px !important;
+  margin-top: -5px !important;
+  right: 2px !important;
+  left: auto !important;
+}
+li.pure-checkbox.selected-item{
+  background:transparent;
+}
+angular2-multiselect .arrow-up {
+  display:none;
+}
+angular2-multiselect .dropdown-list{
+  padding:0;
+}
+angular2-multiselect .list-area{
+  box-shadow: none;
+  border-radius: 0;
+}
+.selected-list .c-list .c-token{
+  background: #999 !important;
+}
+.uppercase{
+  text-transform: uppercase !important;
+}
+.batch-table sui-checkbox.checked label:before{
+ background: #2185d0 !important;
+}
+.batch-table sui-checkbox.checked label:after{
+  color: #fff !important;
+}
+.br-0{
+  border-radius: 0 !important;
+}
+
+
+/* placeholder if content is not there */
+.placeholder {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+/* TODO: need to remove font family once we add fonts in index.html file */
+.placeholder-heading {
+  align-self: center;
+  font-family: 'sunbirdboldfont'; 
+}
+.placeholder-content {
+  align-self: center;
+  font-size: 1.1em;
+  font-weight: 600;
+  opacity:0.6;
+}
+
+
+
+/* Header */
+.ui.primary-header.logo img{
+  position: absolute;
+  height: 56px;
+  max-height:56px;
+  top: 15px;
+}
+
+.notification-icon {
+  width: 20px !important;
+  height: 24px;
+}                           
+
+.flex {
+  display: flex !important;
+}
+.jc-center {
+  justify-content: center !important;
+}
+.jc-flex-end {
+  justify-content: flex-end !important;
+}
+.ml-auto {
+  margin-left: auto !important;
+}
+.flex-as-center {
+  align-self:center !important;
+}
+
+.flex-as-flex-end {
+  align-self: flex-end !important;
+}
+
+.flex-ai-center {
+  align-items:center !important;
+}
+
+.min-height-0 {
+  height: 0 !important;
+}
+.mt-90 {
+  margin-top: 90px !important;
+}
+.mt-190 {
+  margin-top: 190px !important;  
+}
+.mt-10 {
+  margin-top: 10px !important;  
+}
+.mt-12 {
+  margin-top: 12px !important;  
+}
+.mt-15 {
+  margin-top: 15px !important;  
+}
+.mr-10 {
+  margin-right: 10px !important;  
+}
+
+.ml-5 {
+  margin-left: 5px !important;
+}
+.ml-10 {
+  margin-left:10px !important;
+}
+.ml-20 {
+  margin-left:20px !important;
+}
+.pt-0 {
+  padding-top: 0 !important;
+}
+.pl-5 {
+  padding-left: 5px !important;
+}
+.pl-10 {
+  padding-left: 10px !important;
+}
+.pt-10{
+  padding-top: 10px !important;
+}
+.pr-0 {
+  padding-right: 0 !important;
+}
+.pr-15 {
+  padding-right: 15px !important;
+}
+.pr-20 {
+  padding-right: 20px !important;
+}
+
+/* primary nav with text item with border right */
+.ui.text.primary-nav.menu .item {
+  font-size: 14px;
+  color: #333;  
+}
+.ui.text.primary-nav.menu .item:hover {
+  color: #196d7f;  
+  background: #fff;
+  font-weight: bold;
+}
+.ui.text.primary-nav.menu .item.border-right {
+  border-right: 0.5px solid;
+  border-color: rgba(25,109,127, 0.68);
+  padding-right: 13px;
+}
+
+.font-weight-bold {
+  font-weight: bold !important;;
+}
+
+.primary-color {
+  color: #196d7f !important;
+}
+
+
+/* primary nav bar */
+
+.fixed.light.bar {
+  border: 0;
+  background-color: #fff;
+  border-bottom: 0.5px solid;
+  border-color: rgba(25,109,127, 0.68);
+  height:80px;
+  left: 0; 
+  padding: 0 0;
+  position: fixed;
+  top: 0px;
+  z-index: 900;
+  width: 100%;
+  box-shadow: none;
+}
+
+/* Mobile */
+@media only screen and (max-width: 767px) {
+  .fixed.light.bar {
+    height:70px;
+  }
+
+  .ui.primary-header.logo img{
+    position: absolute;
+    height: 56px;
+    max-height: 56px;
+    top: 5px;
+    left: 10px;
+  } 
+  .height-170 {
+    height:170px !important;
+  } 
+
+}
+.ui.large.secondary.menu {
+  display:flex;
+}
+
+
+/* Deisgn system*/
+
+/* buttons */
+
+.ui.artic.blue.button {  
+  background-color: #3793a7;
+  border-radius: 3px;
+  font-weight: 700;
+  height:36px;
+  padding: 10px 30px;
+}
+
+.ui.artic.blue.button:hover {  
+  background-color: #196d7f;
+}
+
+.ui.artic.blue.button:active {  
+  background-color: #287889;
+}
+
+/* basic buttons */
+.ui.basic.artic.blue.button {  
+  background-color: #fff;
+  border-radius: 3px;
+  border: 0.5px solid #3793a7;
+  box-shadow: none;
+  color: #3793a7;
+  font-weight: 700;
+  height:36px;
+  padding: 10px 30px;
+}
+
+.ui.basic.artic.blue.button:hover {  
+  background-color: #196d7f
+}
+
+.ui.basic.artic.blue.button:active {  
+  background-color: #287889
+}
+
+
+/* Semantic UI has these classes, however they're only applicable to
+ grids, containers, rows and columns.
+plus, there isn't any `mobile hidden`, `X hidden` class.
+this snippet is using the same class names and same approach
+ plus a bit more but to all elements.
+see https://github.com/Semantic-Org/Semantic-UI/issues/1114
+
+*/
+
+/* Mobile */
+@media only screen and (max-width: 767px) {
+  [class*="mobile hidden"],
+  [class*="tablet only"]:not(.mobile),
+  [class*="computer only"]:not(.mobile),
+  [class*="large screen only"]:not(.mobile),
+  [class*="widescreen only"]:not(.mobile),
+  [class*="or lower hidden"] {
+    display: none !important;
+  }
+}
+
+/* Computer / Desktop / iPad Landscape */
+@media only screen and (min-width: 768px) {
+  [class*="mobile only"]:not(.computer),
+  [class*="tablet only"]:not(.computer),
+  [class*="computer hidden"],
+  [class*="large screen only"]:not(.computer),
+  [class*="widescreen only"]:not(.computer),
+  [class*="or lower hidden"]:not(.tablet):not(.mobile) {
+    display: none !important;
+  }
+}
+
 .br-0{
   border-radius: 0 !important;
 }
 .text-gray{
   color: #9F9F9F !important;
-}
-.p-0{
-  padding: 0 !important;
-}
-.m-0{
-  margin: 0 !important;
-}
-.mt-5{
-  margin-top: 5px !important;
-}
-.mb-5{
-  margin-bottom: 5px !important;
-}
-.mt-10{
-  margin-top: 10px !important;
-}
-.mr-10{
-  margin-right: 10px !important;
 }
 .mr-20{
   margin-right: 20px !important;
