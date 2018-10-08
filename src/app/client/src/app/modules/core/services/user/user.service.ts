@@ -206,6 +206,9 @@ export class UserService {
     if (profileData.rootOrgId) {
       organisationIds.push(profileData.rootOrgId);
     }
+    if (profileData.skills === null) {
+      profileData.skills = [];
+    }
     this._dims = _.concat(organisationIds, this.channel);
     organisationIds = _.uniq(organisationIds);
     this._userProfile = profileData;
