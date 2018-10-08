@@ -9,7 +9,7 @@ import { SearchService, CoursesService, ISort, PlayerService } from '@sunbird/co
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { takeUntil, first, mergeMap, map, tap } from 'rxjs/operators';
+import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 @Component({
@@ -77,7 +77,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   /**
    * Current page number of inbox list
    */
-  pageNumber = 1;
+  pageNumber: number;
   /**
 	 * Contains page limit of outbox list
 	 */
@@ -136,6 +136,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     this.pageLimit = this.configService.appConfig.ViewAll.PAGE_LIMIT;
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
       map(results => ({ params: results[0], queryParams: results[1] })),
+      filter( res => this.pageNumber !== Number(res.params.pageNumber) || !_.isEqual(this.queryParams , res.queryParams)),
       tap(res => {
         this.queryParams = res.queryParams;
         const route = this.router.url.split('/view-all');
@@ -218,7 +219,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     const requestParams = {
       filters: _.pickBy(this.filters, value => value.length > 0),
       limit: this.pageLimit,
-      pageNumber: request.params.pageNumber,
+      pageNumber: Number(request.params.pageNumber),
       exists: request.queryParams.exists,
       sort_by: request.queryParams.sortType ?
         { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy),
