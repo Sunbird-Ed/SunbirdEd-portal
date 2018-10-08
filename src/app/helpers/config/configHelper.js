@@ -83,7 +83,8 @@ readConfigs = function (configKeys) {
       }
     }
     request(options, function (err, response, body) {
-      if (!err && body && body.responseCode === 'OK') {
+      if (!err && body && body.responseCode === 'OK' && body.result &&
+       body.result.keys && body.result.keys[configReqKey]) {
         resolve(body.result.keys[configReqKey])
       } else {
         reject(err)
