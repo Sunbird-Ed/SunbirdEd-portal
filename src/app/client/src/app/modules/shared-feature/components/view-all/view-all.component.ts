@@ -1,3 +1,4 @@
+import { PublicPlayerService } from '@sunbird/public';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { combineLatest, Subject } from 'rxjs';
 import {
@@ -8,7 +9,7 @@ import { SearchService, CoursesService, ISort, PlayerService } from '@sunbird/co
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { takeUntil, first, mergeMap, map, tap } from 'rxjs/operators';
+import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 @Component({
@@ -76,7 +77,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   /**
    * Current page number of inbox list
    */
-  pageNumber = 1;
+  pageNumber: number;
   /**
 	 * Contains page limit of outbox list
 	 */
@@ -116,7 +117,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();
   constructor(searchService: SearchService, router: Router, private playerService: PlayerService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService, private _cacheService: CacheService,
-    resourceService: ResourceService, toasterService: ToasterService,
+    resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
     configService: ConfigService, coursesService: CoursesService, public utilService: UtilService) {
     this.searchService = searchService;
     this.router = router;
@@ -135,12 +136,13 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     this.pageLimit = this.configService.appConfig.ViewAll.PAGE_LIMIT;
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
       map(results => ({ params: results[0], queryParams: results[1] })),
+      filter( res => this.pageNumber !== Number(res.params.pageNumber) || !_.isEqual(this.queryParams , res.queryParams)),
       tap(res => {
         this.queryParams = res.queryParams;
         const route = this.router.url.split('/view-all');
         this.closeUrl = '/' + route[0].toString();
         this.sectionName = res.params.section.replace(/\-/g, ' ');
-        this.pageNumber = res.params.pageNumber;
+        this.pageNumber = Number(res.params.pageNumber);
       }),
       mergeMap((data) => {
         this.manipulateQueryParam(data.queryParams);
@@ -217,7 +219,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     const requestParams = {
       filters: _.pickBy(this.filters, value => value.length > 0),
       limit: this.pageLimit,
-      pageNumber: request.params.pageNumber,
+      pageNumber: Number(request.params.pageNumber),
       exists: request.queryParams.exists,
       sort_by: request.queryParams.sortType ?
         { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy),
@@ -278,11 +280,16 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   }
 
   playContent(event) {
-    if (event.data.metaData.batchId) {
-      event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
-      event.data.metaData.contentType = 'Course';
+    const url = this.router.url.split('/');
+    if (url[1] === 'learn' || url[1] === 'resources') {
+      if (event.data.metaData.batchId) {
+        event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
+        event.data.metaData.contentType = 'Course';
+      }
+      this.playerService.playContent(event.data.metaData);
+    } else {
+      this.publicPlayerService.playContent(event);
     }
-    this.playerService.playContent(event.data.metaData);
   }
 
   ngOnDestroy() {
