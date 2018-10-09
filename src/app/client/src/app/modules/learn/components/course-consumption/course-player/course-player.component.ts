@@ -170,7 +170,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         if (_.isArray(contentCredits)) {
           this.contributionsLength = contentCredits.length;
         }
-        this.contributions = _.toString(_.map(contentCredits, 'name'));
+        this.contributions = _.join(_.map(contentCredits, 'name'),', ');
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
           type: 'Course',
