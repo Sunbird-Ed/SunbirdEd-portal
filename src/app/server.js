@@ -134,14 +134,13 @@ console.log('[Extensible framework]: Bootstraping...')
 const subApp = express()
 subApp.use(bodyParser.json({ limit: '50mb' }))
 app.use('/plugin', subApp)
-runApp()
-// frameworkAPI.bootstrap(frameworkConfig, subApp).then(() => {
-  
-// }).catch((error) => {
-//  // console.log('[Extensible framework]: Bootstrap failed!', error)
-//   // if framework fails, do not stop the portal
-//   runApp()
-// })
+frameworkAPI.bootstrap(frameworkConfig, subApp).then(() => {
+  runApp()
+}).catch((error) => {
+ console.log('[Extensible framework]: Bootstrap failed!', error)
+  // if framework fails, do not stop the portal
+  runApp()
+})
 
 // Method called after successful authentication and it will log the telemetry for CP_SESSION_START and updates the login time
 keycloak.authenticated = function (request) {
