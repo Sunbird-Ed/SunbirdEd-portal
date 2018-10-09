@@ -7,7 +7,6 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const async = require('async')
 const helmet = require('helmet')
-const CassandraStore = require('cassandra-session-store')
 const _ = require('lodash')
 const trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js')
 const telemetryHelper = require('./helpers/telemetryHelper.js')
@@ -30,23 +29,14 @@ let memoryStore = null
 const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
 const frameworkConfig = require('./framework.config.js');
 const configHelper = require('./helpers/config/configHelper.js')
+const cassandraUtils = require('./helpers/cassandraUtil.js')
 
 const app = express()
 
 if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
   memoryStore = new session.MemoryStore()
 } else {
-  memoryStore = new CassandraStore({
-    'table': 'sessions',
-    'client': null,
-    'clientOptions': {
-      'contactPoints': envHelper.PORTAL_CASSANDRA_URLS,
-      'keyspace': 'portal',
-      'queryOptions': {
-        'prepare': true
-      }
-    }
-  }, () => { })
+  memoryStore = cassandraUtils.getCassandraConfig()
 }
 
 let keycloak = new Keycloak({ store: memoryStore }, {
@@ -144,13 +134,14 @@ console.log('[Extensible framework]: Bootstraping...')
 const subApp = express()
 subApp.use(bodyParser.json({ limit: '50mb' }))
 app.use('/plugin', subApp)
-frameworkAPI.bootstrap(frameworkConfig, subApp).then(() => {
-  runApp()
-}).catch((error) => {
- // console.log('[Extensible framework]: Bootstrap failed!', error)
-  // if framework fails, do not stop the portal
-  runApp()
-})
+runApp()
+// frameworkAPI.bootstrap(frameworkConfig, subApp).then(() => {
+  
+// }).catch((error) => {
+//  // console.log('[Extensible framework]: Bootstrap failed!', error)
+//   // if framework fails, do not stop the portal
+//   runApp()
+// })
 
 // Method called after successful authentication and it will log the telemetry for CP_SESSION_START and updates the login time
 keycloak.authenticated = function (request) {
