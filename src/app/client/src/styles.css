@@ -3472,3 +3472,8 @@ button.slick-next.slick-arrow.slick-disabled {
     margin-top: 190px !important;
   }
 }
+.ui.text.primary-nav.menu .item.active{
+  color: #196d7f;
+  background: #fff;
+  font-weight: bold;
+}
