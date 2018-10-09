@@ -22,6 +22,33 @@
   src: url('./assets/fonts/OpenSans-Bold.ttf') format('truetype');
 }
 
+/* placeholder if content is not there */
+.placeholder {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+/* TODO: need to remove font family once we add fonts in index.html file */
+.placeholder-heading {
+  align-self: center;
+  font-family: 'sunbirdboldfont'; 
+}
+.placeholder-content {
+  align-self: center;
+  font-size: 1.1em;
+  font-weight: 600;
+  opacity:0.6;
+}
+
+.disabled .title,
+.disabled.fancytree-node {
+  pointer-events: none;
+  opacity: 0.6;
+}
+.disabled .title span{
+  font-weight: 500;
+}
 /*cards fonts*/
 .cardsHeading {
   font-family: 'sunbirdboldfont';
@@ -1661,6 +1688,16 @@ ul.fancytree-container li {
   box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
   transition: box-shadow 0.1s ease, -webkit-transform 0.1s ease;
   transition: box-shadow 0.1s ease, transform 0.1s ease;
+}
+
+.fa-book-open {
+  background-image: url("assets/fonts/book-open-solid.svg");
+  content: " ";
+  display: block;
+  height: 14px;
+  width: 14px;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .ui.styled.accordion .removeline.title {

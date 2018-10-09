@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import * as _ from 'lodash';
 import { ICollectionTreeNodes, ICollectionTreeOptions, MimeTypeTofileType } from '../../interfaces';
+import { ResourceService } from '../../services/index';
 
 @Component({
   selector: 'app-collection-tree',
@@ -29,6 +30,9 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     '1': 'fancy-tree-blue',
     '2': 'fancy-tree-green'
   };
+  constructor(public resourceService?: ResourceService) {
+    this.resourceService = resourceService;
+  }
   ngOnInit() {
     this.initialize();
   }
@@ -68,7 +72,6 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     this.rootNode.walk((node) => {
       node.fileType = MimeTypeTofileType[node.model.mimeType];
       node.id = node.model.identifier;
-      node.title = node.model.name || 'Untitled File';
       if (node.children && node.children.length) {
         if (this.options.folderIcon) {
           node.icon = this.options.folderIcon;
@@ -90,6 +93,13 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
         }
         node.icon = this.options.customFileIcon[node.fileType] || this.options.fileIcon;
         node.icon = `${node.icon} ${node.iconColor}`;
+      }
+      if (node.folder && !(node.children.length)) {
+        node.title = node.model.name + '<strong> (' + this.resourceService.messages.stmsg.m0120 + ')</strong>';
+        node.extraClasses = 'disabled';
+      } else {
+        node.title = node.model.name || 'Untitled File';
+        node.extraClasses = '';
       }
     });
   }
