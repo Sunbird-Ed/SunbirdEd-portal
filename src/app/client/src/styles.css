@@ -3168,3 +3168,18 @@ button.slick-next.slick-arrow.slick-disabled {
   cursor: default;
   display: none !important;
 }
+.selected-list .c-list .c-token{
+  visibility: hidden;
+}
+.selected-list .countplaceholder{
+  visibility: hidden;
+}
+.count .countplaceholder{
+  position: absolute;
+  left: 27px;
+  top: 25%;
+  transform: translateY(-50%);
+  z-index: 100;
+  padding: 0;
+  max-width: 100%;
+}

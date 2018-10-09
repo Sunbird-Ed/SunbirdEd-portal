@@ -156,14 +156,14 @@ export class AddBatchMembersComponent implements OnInit {
     this.resourceService = resourceService;
     this.router = route;
     this.subOrgDropDownSettings = {
-      text: 'Select Sub-Organisation',
+      text: 'Select Sub-Organization',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       badgeShowLimit: 1,
       labelKey: 'orgName',
     };
     this.mentorsDropDownSettings = {
-      text: 'Select mentors',
+      text: 'Select Mentors',
       enableSearchFilter: true,
       labelKey: 'name',
       showCheckbox: false,
@@ -172,7 +172,7 @@ export class AddBatchMembersComponent implements OnInit {
       badgeShowLimit: 1
     };
     this.participantsDropDownSettings = {
-      text: 'Select participants',
+      text: 'Select Participants',
       showCheckbox: false,
       enableSearchFilter: true,
       labelKey: 'name',

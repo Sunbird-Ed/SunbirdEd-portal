@@ -1,5 +1,5 @@
 <div class="content padding-left-right-0 padding-top-10 o-x-hide o-y-hide height-100">
-    <h4 class="ui left floated modal-sub-header padding-left-25 custom-modal-subheader">{{ resourceService?.frmelmnts?.lbl?.selectMembers}}</h4>
+    <!-- <h4 class="ui left floated modal-sub-header padding-left-25 custom-modal-subheader">{{ resourceService?.frmelmnts?.lbl?.selectMembers}}</h4> -->
     <div class="ui clearing fullpage divider margin-bottom-0"></div>
 
     <div class="scrollable content "> 
@@ -11,8 +11,8 @@
                 </div>
                 <br>
                 <div class="custom-modal-subheader margin-bottom-10">{{ resourceService?.frmelmnts?.lbl?.subOrganisation}}</div>
-                <div appClickOutside (clickOff)="closeSubOrgDropdown()"  *ngIf="subOrganizations.length >1" (click)="onSubOrgDropDownOpen()">
-
+                <div class="count" appClickOutside (clickOff)="closeSubOrgDropdown()"  *ngIf="subOrganizations.length >1" (click)="onSubOrgDropDownOpen()">
+                    <div class="countplaceholder" *ngIf="selectedOrg.length>0" >{{selectedOrg.length}} Selected </div>
                     <angular2-multiselect #subOrgDropDown [data]="subOrganizations" [(ngModel)]="selectedOrg" [settings]="subOrgDropDownSettings"
                         (onSelect)="fetchMembersDetails($event)" (onDeSelect)="fetchMembersDetails($event)" (onSelectAll)="fetchMembersDetails($event)"
                         (onDeSelectAll)="fetchMembersDetails($event)">
@@ -27,8 +27,9 @@
                 </div>
                 <br>
                 <div appClickOutside (clickOff)="closeMentorDropdown()" class="one field fluid selection margin-top-10 " (click)="onMentorDropDownOpen()">
-                    <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
-                    <div  class="margin-top-10 ui fluid with-border ">
+                    <label>{{resourceService?.frmelmnts?.lbl?.mentors}}</label>
+                    <div   class="count margin-top-10 ui fluid with-border ">
+                        <div class="countplaceholder" *ngIf="selectedMentorList.length>0" >{{selectedMentorList.length}} Selected </div>
                         <angular2-multiselect #mentorDropDown [data]="mentorList" [(ngModel)]="selectedMentorList" [settings]="mentorsDropDownSettings"
                             (onSelect)="selectMentor($event)">
                             <c-search>
@@ -42,8 +43,9 @@
                 </div>
                 <br>
                 <div  appClickOutside (clickOff)="closeParticipantsDropdown()" class="one field fluid selection margin-top-10 " (click)="onParticipantDropDownOpen()">
-                    <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
-                    <div class="margin-top-10 ui fluid with-border ">
+                    <label>{{resourceService?.frmelmnts?.lbl?.participants}}</label>
+                    <div class="count margin-top-10 ui fluid with-border ">
+                            <div class="countplaceholder" *ngIf="selectedParticipantList.length>0" >{{selectedParticipantList.length}} Selected </div>
                         <angular2-multiselect #participantsDropDown [data]="participantList" [(ngModel)]="selectedParticipantList" [settings]="participantsDropDownSettings"
                             (onSelect)="selectParticipants($event)" (onDeSelect)="OnParticipantsDeSelect($event)">
                             <c-search>
