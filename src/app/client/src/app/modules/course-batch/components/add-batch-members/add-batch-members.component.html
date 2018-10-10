@@ -32,7 +32,7 @@
                             (onSelect)="selectMentor($event)">
                             <c-search>
                                 <ng-template>
-                                    <input type="text" (keyup)="getUserListWithQuery($event,'mentor')" placeholder="Search " style="border: none;width: 100%; height: 100%;outline: none;"
+                                    <input type="text" (keyup)="getUserListWithQuery($event,'mentor')" placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}" style="border: none;width: 100%; height: 100%;outline: none;"
                                     />
                                 </ng-template>
                             </c-search>
@@ -48,7 +48,7 @@
                             (onSelect)="selectParticipants($event)" (onDeSelect)="OnParticipantsDeSelect($event)">
                             <c-search>
                                 <ng-template>
-                                    <input type="text" (keyup)="getUserListWithQuery($event,'participant')" placeholder="Search" style="border: none;width: 100%; height: 100%;outline: none;"
+                                    <input type="text" (keyup)="getUserListWithQuery($event,'participant')" placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}" style="border: none;width: 100%; height: 100%;outline: none;"
                                     />
                                 </ng-template>
                             </c-search>
@@ -67,7 +67,7 @@
                                 <div class="searchfilterinput ui search">
                                     <div class="searchicon ui icon input ">
                                         <input class="upForReviewSearchBox" type="text" name="filter_search" [(ngModel)]="searchData" placeholder="Search members"
-                                            title="Search" autocomplete="off" spellcheck="false" />
+                                            title="{{resourceService?.frmelmnts?.prmpt?.searchMembers}}" autocomplete="off" spellcheck="false" />
                                         <i class="circular search link icon"></i>
                                     </div>
                                 </div>
