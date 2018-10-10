@@ -14,7 +14,7 @@ export const mockRes = {
         'gradeLevel': [
             'KG'
         ],
-        'content-credits': [
+        'contentCredits': [
             {
               'id': '',
               'name': 'Amit Sharma',
