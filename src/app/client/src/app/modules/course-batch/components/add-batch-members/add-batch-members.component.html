@@ -1,5 +1,5 @@
 <div class="content padding-left-right-0 padding-top-10 o-x-hide o-y-hide height-100">
-    <div class="ui clearing fullpage divider margin-bottom-0"></div>
+    <div class="ui clearing fullpage margin-bottom-0"></div>
     <div class="scrollable content ">
         <div class="ui grid margin-none">
             <div class="three wide column right-content dividing-border">
@@ -60,7 +60,7 @@
             </div>
 
             <div class="nine wide column padding-left-right-0 padding-left-right-0 left-content dividing-border o-y-auto o-x-hide content-with-scroll">
-                <div class="ui grid padding-left-25">
+                <div class="ui grid padded">
                     <div class="four wide column">
                         <div class="ui fluid category search">
                             <div class="ui fluid icon input left action" id="search-input-container">
@@ -82,23 +82,22 @@
                 </div>
                 <table class="ui upForReviewTable table" *ngIf="selectedUserList.length > 0 ">
                     <thead>
-                        <tr>
-                            <th *ngIf="selectItemCheck">
-                                <div class="field">
+                        <tr class="UpForReviewListHover">
+                            <th *ngIf="selectItemCheck" class="width-30">
+                                <div class="field ">
                                     <sui-checkbox [(ngModel)]="selectAllUserCheck" (ngModelChange)="selectAll($event);" [isDisabled]="eCheckDisabled" [isReadonly]="eCheckReadonly">
                                     </sui-checkbox>
                                 </div>
                             </th>
-                            <th class="six wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.Name}}</th>
-                            <th class="four wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.email}}</th>
-                            <th class="two wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.contact}}</th>
-                            <th class="two wide UpReviewTableHeader">
-                            </th>
+                            <th class="six  wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.Name}}</th>
+                            <th class="three wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.email}}</th>
+                            <th class="two  wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.contact}}</th>
+                            <th class="one  wide UpReviewTableHeader"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="UpForReviewListHover cursor-pointer" *ngFor="let user of selectedUserList | orderBy:'user.role':true | filter : searchData : ['name','role'];let i = index;">
-                            <td *ngIf="selectItemCheck">
+                        <tr class="UpForReviewListHover" *ngFor="let user of selectedUserList | orderBy:'user.role':true | filter : searchData : ['name','role'];let i = index;">
+                            <td *ngIf="selectItemCheck" class="width-30">
                                 <div class="field">
                                     <sui-checkbox [(ngModel)]="user.selected" (ngModelChange)="toggle($event, user, user.id);" [isDisabled]="eCheckDisabled"
                                         [isReadonly]="eCheckReadonly">
@@ -106,19 +105,18 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="UpReviewHeader">{{user.name | slice:0:40}}
-                                    <i *ngIf="user.name.length > 40">...</i>
-                                </div>
-                                <div class="UpReviewSubHeader">
-                                    {{user.role}}
-                                </div>
-                                <div class="UpReviewSubHeader">
-                                    {{user.orgname}}
-                                </div>
+                                <h5 class="">
+                                    <div class="content batchmember">
+                                        <div class="UpReviewHeader ">{{user.name | slice:0:40}}
+                                            <i *ngIf="user.name.length > 40">...</i>
+                                        </div>
+                                        <div class="UpReviewSubHeader">{{user.orgname}}, {{user.role}}</div>
+                                    </div>
+                                </h5>
                             </td>
-                            <td>{{user.email}}</td>
-                            <td>{{user.phone}}</td>
-                            <td>
+                            <td class="UpReviewHeader">{{user.email}}</td>
+                            <td class="UpReviewHeader">{{user.phone}}</td>
+                            <td class="text-right-align">
                                 <i title="{{ resourceService?.frmelmnts?.lbl?.delete}}" class="trash icon link" (click)="deleteUser(user,i)"></i>
                             </td>
                         </tr>
