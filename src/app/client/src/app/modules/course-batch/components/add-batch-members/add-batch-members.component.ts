@@ -270,9 +270,9 @@ export class AddBatchMembersComponent implements OnInit {
       .subscribe((res) => {
         const list = this.sortUsers(res);
         if (type === 'participant') {
-          this.participantList = list.participantList;
+          this.participantList =  _.filter(list.participantList, (v) => _.indexOf(_.map(this.selectedParticipantList, 'id'), v.id) === -1);
         } else {
-          this.mentorList = list.mentorList;
+          this.mentorList =  _.filter(list.mentorList, (v) => _.indexOf(_.map(this.selectedMentorList, 'id'), v.id) === -1);
         }
       },
         (err) => {
@@ -311,6 +311,20 @@ export class AddBatchMembersComponent implements OnInit {
     const users = this.sortUsers(res);
     const participantList = users.participantList;
     const mentorList = users.mentorList;
+    _.forEach(this.batchDetails.participant, (value, key) => {
+      const user = _.find(participantList, ['id', key]);
+      if (user) {
+        this.selectedParticipantList.push(user);
+      }
+    });
+    _.forEach(this.batchDetails.mentors, (value, key) => {
+      const mentor = _.find(mentorList, ['id', value]);
+      if (mentor) {
+        this.selectedMentorList.push(mentor);
+      }
+    });
+    this.selectedParticipantList = _.uniqBy(this.selectedParticipantList, 'id');
+    this.selectedMentorList = _.uniqBy(this.selectedMentorList, 'id');
     _.forEach(this.batchDetails.participant, (value, key) => {
       const user = _.find(participantList, ['id', key]);
       if (user) {
