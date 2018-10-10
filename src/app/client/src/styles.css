@@ -3054,7 +3054,6 @@ i.icon.accordion-content-right {
 .fullpage .content {
   left: 0;
   right: 0;
-  background: #fff;
   top: 0;
   position: relative;
 }
@@ -3529,7 +3528,7 @@ button.slick-next.slick-arrow.slick-disabled {
 }
 .count .countplaceholder{
   position: absolute;
-  left: 25px;
+  left: 13px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 100;
@@ -3539,4 +3538,14 @@ button.slick-next.slick-arrow.slick-disabled {
   color: #196d7f;
   background: #fff;
   font-weight: bold;
+}
+.batchmember .UpReviewHeader{
+  font-size:14px;
+}
+.batchmember .UpReviewSubHeader{
+  font-size:10px;
+  line-height: 1.5;
+}
+.width-30{
+  max-width: 30px !important;
 }
