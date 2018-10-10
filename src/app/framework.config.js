@@ -4,16 +4,15 @@ const envHelper = require('./helpers/environmentVariablesHelper.js')
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const uuidv1 = require('uuid/v1');
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
+const replicationStrategy = JSON.parse(envHelper.PORTAL_CASSANDRA_REPLICATION_STRATEGY)
 
 module.exports = {
     db: {
         cassandra: {
-        contactPoints: envHelper.PORTAL_CASSANDRA_URLS,
+        contactPoints: envHelper.PORTAL_CASSANDRA_IPS,
+        port: envHelper.PORTAL_CASSANDRA_PORT, 
         defaultKeyspaceSettings: {
-            replication: {
-                'class': 'SimpleStrategy',
-                'replication_factor': '1'
-            }
+            replication: replicationStrategy
         }
     },
     elasticsearch: {

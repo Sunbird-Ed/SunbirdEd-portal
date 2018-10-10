@@ -2,7 +2,7 @@ const CassandraStore = require('cassandra-session-store')
 const envHelper = require('./environmentVariablesHelper.js')
 const expressCassandra = require('express-cassandra')
 
-const contactPoints = envHelper.PORTAL_CASSANDRA_URLS
+const contactPoints = envHelper.PORTAL_CASSANDRA_IPS
 const consistency = getConsistencyLevel(envHelper.PORTAL_CASSANDRA_CONSISTENCY_LEVEL)
 const replicationStrategy = getReplicationStrategy(envHelper.PORTAL_CASSANDRA_REPLICATION_STRATEGY)
 const cassandraPort = envHelper.PORTAL_CASSANDRA_PORT
@@ -33,7 +33,7 @@ function getCassandraConfig  () {
 
 function getConsistencyLevel (consistency) {
   let consistencyValue = expressCassandra.consistencies.one
-  if (consistency && contactPoints) {
+  if (consistency) {
     if (expressCassandra.consistencies[consistency]) {
       consistencyValue = expressCassandra.consistencies[consistency]
     }
@@ -41,15 +41,12 @@ function getConsistencyLevel (consistency) {
   return consistencyValue
 }
 
-function getReplicationStrategy (replicationStrategy) {
-  let replicationStrategyValue = {}
-  if (replicationStrategy && contactPoints) {
-    replicationStrategyValue = JSON.parse(replicationStrategy)
-    if (!Object.keys(replicationStrategyValue).length) {
-      replicationStrategyValue = {}
-    }
+function getReplicationStrategy (replicationStrategy) { 
+  try{
+    return JSON.parse(replicationStrategy)
+  }catch(e){
+    return {"class":"SimpleStrategy","replication_factor":"1"}
   }
-  return replicationStrategyValue
 }
 
 
