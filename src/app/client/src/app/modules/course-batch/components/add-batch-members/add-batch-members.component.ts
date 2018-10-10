@@ -122,7 +122,6 @@ export class AddBatchMembersComponent implements OnInit {
   *
   */
   showRootOrg = false;
-
   /**
    * This variable stores the search input.
   */
@@ -143,7 +142,6 @@ export class AddBatchMembersComponent implements OnInit {
    * This variable stores the settings of  MentorsDropDownSettings.
   */
   participantsDropDownSettings = {};
-
   constructor(userService: UserService, searchService: SearchService,
     courseBatchService: CourseBatchService, toasterService: ToasterService,
     resourceService: ResourceService,
@@ -156,14 +154,14 @@ export class AddBatchMembersComponent implements OnInit {
     this.resourceService = resourceService;
     this.router = route;
     this.subOrgDropDownSettings = {
-      text: 'Select Sub-Organisation',
+      text: 'Select Sub-Organization',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       badgeShowLimit: 1,
       labelKey: 'orgName',
     };
     this.mentorsDropDownSettings = {
-      text: 'Select mentors',
+      text: 'Select Mentors',
       enableSearchFilter: true,
       labelKey: 'name',
       showCheckbox: false,
@@ -172,7 +170,7 @@ export class AddBatchMembersComponent implements OnInit {
       badgeShowLimit: 1
     };
     this.participantsDropDownSettings = {
-      text: 'Select participants',
+      text: 'Select Participants',
       showCheckbox: false,
       enableSearchFilter: true,
       labelKey: 'name',
@@ -227,7 +225,7 @@ export class AddBatchMembersComponent implements OnInit {
           }
         },
         (err: ServerResponse) => {
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+         this.toasterService.error(this.resourceService.messages.emsg.m0005);
         }
       );
   }
@@ -470,7 +468,7 @@ export class AddBatchMembersComponent implements OnInit {
       }
     });
   }
-  private getUserListWithQuery(query, type) {
+  public getUserListWithQuery(query, type) {
     this.searchInputChanged.next(query.target.value);
     this.searchInputChanged.pipe(debounceTime(500),
       distinctUntilChanged(),

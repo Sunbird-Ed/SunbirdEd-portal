@@ -3472,3 +3472,22 @@ button.slick-next.slick-arrow.slick-disabled {
     margin-top: 190px !important;
   }
 }
+
+.selected-list .countplaceholder {
+  visibility: hidden;
+}
+.selected-list .c-list .c-token{
+  visibility: hidden;
+}
+.count {
+  position: relative;
+}
+.count .countplaceholder{
+  position: absolute;
+  left: 25px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+}
+
+
