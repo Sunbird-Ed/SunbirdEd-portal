@@ -62,19 +62,8 @@
                                 <br>
                                 <b *ngIf="courseHierarchy.creator">{{resourceService.frmelmnts.lbl.courseCreatedBy}}: {{courseHierarchy.creator}}</b>
                                 <br>
-                                <b>{{resourceService.frmelmnts.lbl.contentCredits}}:</b>
+                                <!-- <a *ngIf="contributionsLength>0" popupTrigger="outsideClick" [popupPlacement]="'bottom left'" suiPopup popupText={{contributions}}>{{resourceService.frmelmnts.lbl.viewCredits}}</a> -->
                                 <br>
-                                <div *ngIf="contributionsLength ===1">
-                                    <a>{{contributions}}</a>
-                                    <i class="pl-15 cursor-pointer large blue  user icon">
-                                    </i>
-                                </div>
-                                <div *ngIf="contributionsLength>1">
-                                    <a>{{contributionsLength}}</a>
-                                    <i class="pl-15 cursor-pointer large blue  users icon " [popupPlacement]="'bottom left'" suiPopup popupText={{contributions}}>
-                                    </i>
-                                </div>
-
                             </div>
                         </div>
                     </div>
