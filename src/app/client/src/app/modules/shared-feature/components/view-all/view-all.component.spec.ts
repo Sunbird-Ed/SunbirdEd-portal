@@ -8,6 +8,7 @@ import { ViewAllComponent } from './view-all.component';
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './view-all.component.spec.data';
+import { PublicPlayerService } from '@sunbird/public';
 
 describe('ViewAllComponent', () => {
   let component: ViewAllComponent;
@@ -43,7 +44,7 @@ describe('ViewAllComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
       declarations: [ ViewAllComponent ],
-      providers: [ConfigService, CoursesService, SearchService, LearnerService,
+      providers: [ConfigService, CoursesService, SearchService, LearnerService, PublicPlayerService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
@@ -141,12 +142,16 @@ describe('ViewAllComponent', () => {
   });
   it('should call playcontent with batchId', () => {
     const playerService = TestBed.get(PlayerService);
+    const route = TestBed.get(Router);
+    route.url = '/learn/view-all/LatestCourses/1?contentType: course';
     const event = { data: { metaData: { batchId: '0122838911932661768' } } };
     spyOn(playerService, 'playContent').and.callFake(() => observableOf(event.data.metaData));
     component.playContent(event);
     expect(playerService.playContent).toHaveBeenCalled();
   });
   it('should call playcontent without batchId', () => {
+    const route = TestBed.get(Router);
+    route.url = '/learn/view-all/LatestCourses/1?contentType: course';
     const playerService = TestBed.get(PlayerService);
     const event = { data: { metaData: { contentType: 'story' } } };
     spyOn(playerService, 'playContent').and.callFake(() => observableOf(event.data.metaData));
@@ -159,6 +164,7 @@ describe('ViewAllComponent', () => {
     route.url = 'learn/view-all/LatestCourses/1?contentType: course';
     component.queryParams = { contentType: ['Course'], objectType: ['Content'], status: ['Live'],
     defaultSortBy: JSON.stringify({lastPublishedOn: 'desc'})};
+    component.pageNumber = 1;
     component.pager = Response.pager;
     component.pageLimit = 20;
     component.pager.totalPages = 7;

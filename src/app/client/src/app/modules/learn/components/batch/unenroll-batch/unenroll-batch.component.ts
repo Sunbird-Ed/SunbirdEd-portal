@@ -119,6 +119,7 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy {
   goBackToCoursePage() {
     setTimeout(() => {
       this.router.navigate(['/learn/course', this.batchDetails.courseId]);
+      window.location.reload();
     }, 2000);
   }
 }

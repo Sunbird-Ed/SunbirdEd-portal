@@ -1,3 +1,9 @@
-<a class="item margin-top-10" [class.active]="router.isActive('/search/Organisations', false) || router.isActive('/profile', false) || router.isActive('/search/Users', false)"  routerLink="/profile" >
+<a class="item mt-12 mobile only" [class.active]="router.isActive('/search/Organisations', false) || router.isActive('/profile', false) || router.isActive('/search/Users', false)"  routerLink="/profile" >
   {{resourceService?.frmelmnts?.tab?.profile}}
 </a>
+<a class="item mt-15 computer only" [class.active]="router.isActive('/search/Organisations', false) || router.isActive('/profile', false) || router.isActive('/search/Users', false)"  routerLink="/profile" >
+  {{resourceService?.frmelmnts?.tab?.profile}}
+</a>
+
+
+

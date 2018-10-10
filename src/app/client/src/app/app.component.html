@@ -1,3 +1,6 @@
 <app-header></app-header>
-<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>
-<router-outlet *ngIf="initApp"></router-outlet>
+<!-- since header is fixed we have to add margin to the content below it -->
+<div  [ngClass]="{'mc-user': userService.userid, 'mc-nonuser': !userService.userid}" >
+    <app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>
+    <router-outlet *ngIf="initApp"></router-outlet>
+</div>

@@ -86,7 +86,7 @@
       <app-add-batch-members></app-add-batch-members>
     </div>
   </div>
-  <div  *ngIf="!showLoader" class="actions">
+  <div *ngIf="!showLoader" class="actions">
     <div *ngIf="createBatchForm.value.enrollmentType !== 'open'">
       <button *ngSwitchCase="'create'" (click)="createBatch()" class="ui left floated basic primary button" tabindex="0" [disabled]="disableSubmitBtn"
         appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="saveBatchInteractEdata">{{resourceService?.frmelmnts?.btn?.save}}</button>
@@ -104,10 +104,12 @@
         {{resourceService?.frmelmnts?.btn?.createbatch}}
       </button>
     </div>
-    <button  *ngIf="createBatchForm.value.enrollmentType === 'open'" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="createInteractEdata"
-      class="ui primary button" id="submitbutton" (click)="createBatch()" tabindex="0">
-      {{resourceService?.frmelmnts?.btn?.createbatch}}
-    </button>
+    <div *ngIf="createBatchForm.value.enrollmentType === 'open'">
+      <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="createInteractEdata"
+        class="ui primary button" id="submitbutton" (click)="createBatch()" tabindex="0">
+        {{resourceService?.frmelmnts?.btn?.createbatch}}
+      </button>
+    </div>
   </div>
 
 </sui-modal>
