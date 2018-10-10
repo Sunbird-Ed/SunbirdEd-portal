@@ -83,13 +83,13 @@
                 <table class="ui upForReviewTable table" *ngIf="selectedUserList.length > 0 ">
                     <thead>
                         <tr class="UpForReviewListHover">
-                            <th *ngIf="selectItemCheck">
-                                <div class="field">
+                            <th *ngIf="selectItemCheck" class="width-30">
+                                <div class="field ">
                                     <sui-checkbox [(ngModel)]="selectAllUserCheck" (ngModelChange)="selectAll($event);" [isDisabled]="eCheckDisabled" [isReadonly]="eCheckReadonly">
                                     </sui-checkbox>
                                 </div>
                             </th>
-                            <th class="five  wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.Name}}</th>
+                            <th class="six  wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.Name}}</th>
                             <th class="three wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.email}}</th>
                             <th class="two  wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.contact}}</th>
                             <th class="one  wide UpReviewTableHeader"></th>
@@ -97,7 +97,7 @@
                     </thead>
                     <tbody>
                         <tr class="UpForReviewListHover" *ngFor="let user of selectedUserList | orderBy:'user.role':true | filter : searchData : ['name','role'];let i = index;">
-                            <td *ngIf="selectItemCheck">
+                            <td *ngIf="selectItemCheck" class="width-30">
                                 <div class="field">
                                     <sui-checkbox [(ngModel)]="user.selected" (ngModelChange)="toggle($event, user, user.id);" [isDisabled]="eCheckDisabled"
                                         [isReadonly]="eCheckReadonly">

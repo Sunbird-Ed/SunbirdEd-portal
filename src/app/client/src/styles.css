@@ -3546,3 +3546,6 @@ button.slick-next.slick-arrow.slick-disabled {
   font-size:10px;
   line-height: 1.5;
 }
+.width-30{
+  max-width: 30px !important;
+}
