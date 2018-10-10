@@ -270,9 +270,11 @@ export class AddBatchMembersComponent implements OnInit {
       .subscribe((res) => {
         const list = this.sortUsers(res);
         if (type === 'participant') {
-          this.participantList =  _.filter(list.participantList, (v) => _.indexOf(_.map(this.selectedParticipantList, 'id'), v.id) === -1);
+          this.participantList =  _.filter(list.participantList, (participant) =>
+           _.indexOf(_.map(this.selectedParticipantList, 'id'), participant.id) === -1);
         } else {
-          this.mentorList =  _.filter(list.mentorList, (v) => _.indexOf(_.map(this.selectedMentorList, 'id'), v.id) === -1);
+          this.mentorList =  _.filter(list.mentorList, (mentor) =>
+          _.indexOf(_.map(this.selectedMentorList, 'id'), mentor.id) === -1);
         }
       },
         (err) => {
@@ -321,6 +323,18 @@ export class AddBatchMembersComponent implements OnInit {
       const mentor = _.find(mentorList, ['id', value]);
       if (mentor) {
         this.selectedMentorList.push(mentor);
+      }
+    });
+    _.forEach(this.batchDetails.participant, (value, key) => {
+      const user = _.find(participantList, ['id', key]);
+      if (user) {
+        this.participantList.push(user);
+      }
+    });
+    _.forEach(this.batchDetails.mentors, (value, key) => {
+      const mentor = _.find(mentorList, ['id', value]);
+      if (mentor) {
+        this.mentorList.push(mentor);
       }
     });
     this.selectedParticipantList = _.uniqBy(this.selectedParticipantList, 'id');
@@ -502,7 +516,9 @@ export class AddBatchMembersComponent implements OnInit {
   }
 
   public onMentorDropDownOpen() {
-    this.validateSubOrg();
+    if (this.mentorList.length === 0) {
+      this.validateSubOrg();
+    }
     if (this.subOrgRequired && this.mentorDropDown) {
       this.mentorDropDown.isActive = false;
     }
@@ -510,7 +526,9 @@ export class AddBatchMembersComponent implements OnInit {
     this.subOrgDropDown.isActive = false;
   }
   public onParticipantDropDownOpen() {
-    this.validateSubOrg();
+    if (this.participantList.length === 0) {
+      this.validateSubOrg();
+    }
     if (this.subOrgRequired && this.participantsDropDown) {
       this.participantsDropDown.isActive = false;
     }
