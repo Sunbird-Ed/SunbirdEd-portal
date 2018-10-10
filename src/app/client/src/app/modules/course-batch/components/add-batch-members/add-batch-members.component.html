@@ -34,7 +34,7 @@
                             (onSelect)="selectMentor($event)">
                             <c-search>
                                 <ng-template>
-                                    <input  [attr.disabled]="mentorList.length ===0 ? true : null" type="text" (keyup)="getUserListWithQuery($event,'mentor')" placeholder="Search " style="border: none;width: 100%; height: 100%;outline: none;"
+                                    <input   type="text" (keyup)="getUserListWithQuery($event,'mentor')" placeholder="Search " style="border: none;width: 100%; height: 100%;outline: none;"
                                     />
                                 </ng-template>
                             </c-search>
