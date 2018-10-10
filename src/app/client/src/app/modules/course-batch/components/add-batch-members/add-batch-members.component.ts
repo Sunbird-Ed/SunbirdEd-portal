@@ -122,7 +122,6 @@ export class AddBatchMembersComponent implements OnInit {
   *
   */
   showRootOrg = false;
-
   /**
    * This variable stores the search input.
   */
@@ -143,7 +142,6 @@ export class AddBatchMembersComponent implements OnInit {
    * This variable stores the settings of  MentorsDropDownSettings.
   */
   participantsDropDownSettings = {};
-
   constructor(userService: UserService, searchService: SearchService,
     courseBatchService: CourseBatchService, toasterService: ToasterService,
     resourceService: ResourceService,
@@ -156,26 +154,26 @@ export class AddBatchMembersComponent implements OnInit {
     this.resourceService = resourceService;
     this.router = route;
     this.subOrgDropDownSettings = {
-      text: 'Select Sub-Organisation',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
+      text: this.resourceService.frmelmnts.lbl.selectSubOrganisation,
+      selectAllText:  this.resourceService.frmelmnts.lbl.selectAll,
+      unSelectAllText:  this.resourceService.frmelmnts.lbl.unselectAll,
       badgeShowLimit: 1,
-      labelKey: 'orgName',
+      labelKey:  this.resourceService.frmelmnts.lbl.orgName,
     };
     this.mentorsDropDownSettings = {
-      text: 'Select mentors',
+      text: this.resourceService.frmelmnts.lbl.SelectMentors,
       enableSearchFilter: true,
-      labelKey: 'name',
+      labelKey: this.resourceService.frmelmnts.lbl.name,
       showCheckbox: false,
       selectAllText: '',
       unSelectAllText: '',
       badgeShowLimit: 1
     };
     this.participantsDropDownSettings = {
-      text: 'Select participants',
+      text: this.resourceService.frmelmnts.lbl.SelectParticipants,
       showCheckbox: false,
       enableSearchFilter: true,
-      labelKey: 'name',
+      labelKey: this.resourceService.frmelmnts.lbl.name,
       selectAllText: '',
       unSelectAllText: '',
       badgeShowLimit: 1
@@ -227,7 +225,7 @@ export class AddBatchMembersComponent implements OnInit {
           }
         },
         (err: ServerResponse) => {
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+         this.toasterService.error(this.resourceService.messages.emsg.m0005);
         }
       );
   }
@@ -470,7 +468,7 @@ export class AddBatchMembersComponent implements OnInit {
       }
     });
   }
-  private getUserListWithQuery(query, type) {
+  public getUserListWithQuery(query, type) {
     this.searchInputChanged.next(query.target.value);
     this.searchInputChanged.pipe(debounceTime(500),
       distinctUntilChanged(),

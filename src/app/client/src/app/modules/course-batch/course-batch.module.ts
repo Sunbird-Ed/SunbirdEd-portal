@@ -11,6 +11,7 @@ import { SharedModule } from '@sunbird/shared';
 import { CourseBatchService } from './services';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { ClickOutsideDirective } from './directives';
+import { OrderModule } from 'ngx-order-pipe';
 @NgModule({
   imports: [
     CommonModule,
@@ -22,6 +23,7 @@ import { ClickOutsideDirective } from './directives';
     SharedModule,
     TelemetryModule,
     AngularMultiSelectModule,
+    OrderModule
   ],
   declarations: [CreateCourseBatchComponent, ViewCourseBatchComponent, UpdateCourseBatchComponent, AddBatchMembersComponent,
     ClickOutsideDirective],
