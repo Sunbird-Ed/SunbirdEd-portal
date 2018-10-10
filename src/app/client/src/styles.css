@@ -22,6 +22,33 @@
   src: url('./assets/fonts/OpenSans-Bold.ttf') format('truetype');
 }
 
+/* placeholder if content is not there */
+.placeholder {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+/* TODO: need to remove font family once we add fonts in index.html file */
+.placeholder-heading {
+  align-self: center;
+  font-family: 'sunbirdboldfont'; 
+}
+.placeholder-content {
+  align-self: center;
+  font-size: 1.1em;
+  font-weight: 600;
+  opacity:0.6;
+}
+
+.disabled .title,
+.disabled.fancytree-node {
+  pointer-events: none;
+  opacity: 0.6;
+}
+.disabled .title span{
+  font-weight: 500;
+}
 /*cards fonts*/
 .cardsHeading {
   font-family: 'sunbirdboldfont';
@@ -1663,6 +1690,16 @@ ul.fancytree-container li {
   transition: box-shadow 0.1s ease, transform 0.1s ease;
 }
 
+.fa-book-open {
+  background-image: url("assets/fonts/book-open-solid.svg");
+  content: " ";
+  display: block;
+  height: 14px;
+  width: 14px;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
 .ui.styled.accordion .removeline.title {
   margin: 0;
   padding: 0;
@@ -3278,7 +3315,6 @@ angular2-multiselect .list-area{
 .ui.text.primary-nav.menu .item:hover {
   color: #196d7f;  
   background: #fff;
-  font-weight: bold;
 }
 .ui.text.primary-nav.menu .item.border-right {
   border-right: 0.5px solid;
@@ -3434,4 +3470,9 @@ button.slick-next.slick-arrow.slick-disabled {
   .mc-user{
     margin-top: 190px !important;
   }
+}
+.ui.text.primary-nav.menu .item.active{
+  color: #196d7f;
+  background: #fff;
+  font-weight: bold;
 }
