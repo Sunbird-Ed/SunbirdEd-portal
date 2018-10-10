@@ -3315,7 +3315,6 @@ angular2-multiselect .list-area{
 .ui.text.primary-nav.menu .item:hover {
   color: #196d7f;  
   background: #fff;
-  font-weight: bold;
 }
 .ui.text.primary-nav.menu .item.border-right {
   border-right: 0.5px solid;
@@ -3490,4 +3489,8 @@ button.slick-next.slick-arrow.slick-disabled {
   z-index: 100;
 }
 
-
+.ui.text.primary-nav.menu .item.active{
+  color: #196d7f;
+  background: #fff;
+  font-weight: bold;
+}
