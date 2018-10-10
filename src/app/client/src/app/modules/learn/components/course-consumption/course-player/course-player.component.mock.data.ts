@@ -2303,7 +2303,7 @@ export const CourseHierarchyGetMockResponse = {
           'usedByContent': [],
           'board': 'NCERT',
           'status': 'Live',
-          'content-credits': [
+          'contentCredits': [
             {
               'id': '',
               'name': 'Amit Sharma',
