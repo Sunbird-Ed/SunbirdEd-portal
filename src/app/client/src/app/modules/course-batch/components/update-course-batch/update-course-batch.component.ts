@@ -225,7 +225,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     };
     if (this.batchUpdateForm.value.enrollmentType !== 'open') {
       requestBody['participants'] = this.addbatchmembers && this.addbatchmembers.selectedParticipantList ?
-        _.union(_.map(this.addbatchmembers.selectedParticipantList, 'id'), this.batchDetails.participant) : [];
+        _.union(_.map(this.addbatchmembers.selectedParticipantList, 'id'), _.keys(this.batchDetails.participant)) : [];
     }
     this.courseBatchService.updateBatch(requestBody).pipe(takeUntil(this.unsubscribe))
       .subscribe((response) => {
@@ -353,12 +353,12 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
         if (selectedItemId.length > 0) {
           _.forEach(selectedItemId, (selectedItem, value) => {
             const mentorIndex = _.indexOf(this.batchDetails.mentors, selectedItem);
-            const participantIndex = _.indexOf(this.batchDetails.participant, selectedItem);
+            const participantIndex = _.indexOf(_.keys(this.batchDetails.participant), selectedItem );
             if (mentorIndex !== -1) {
               this.batchDetails.mentors.splice(mentorIndex, 1);
             }
             if (participantIndex !== -1) {
-              this.batchDetails.participant.splice(participantIndex, 1);
+              this.batchDetails.participant = Object.assign({}, _.omit(this.batchDetails.participant, selectedItem));
             }
           });
         } else {
@@ -367,12 +367,12 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
         }
       } else {
         const mentorIndex = _.indexOf(this.batchDetails.mentors, user.id);
-        const participantIndex = _.indexOf(this.batchDetails.participant, user.id);
+        const participantIndex = _.indexOf(_.keys(this.batchDetails.participant), user.id);
         if (mentorIndex !== -1) {
           this.batchDetails.mentors.splice(mentorIndex, 1);
         }
         if (participantIndex !== -1) {
-          this.batchDetails.participant.splice(participantIndex, 1);
+          this.batchDetails.participant = Object.assign({}, _.omit(this.batchDetails.participant, [user.id])) ;
         }
       }
 
