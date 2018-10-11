@@ -31,7 +31,7 @@ const configMap = {
 fetchConfig = function () {
   return new Promise(function (resolve, reject) {
     let configs = {}
-    if (configServiceEnabled === true) {
+    if (configServiceEnabled === 'true') {
       readConfigs(configReqKey).then(function (configObj) {
         console.log('Info: Configurations fetched from API successfully')
         resolve(checkAndStoreConfigs(configObj))
