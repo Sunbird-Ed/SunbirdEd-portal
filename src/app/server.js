@@ -137,7 +137,7 @@ app.use('/plugin', subApp)
 frameworkAPI.bootstrap(frameworkConfig, subApp).then(() => {
   runApp()
 }).catch((error) => {
- console.log('[Extensible framework]: Bootstrap failed!', error)
+ // console.log('[Extensible framework]: Bootstrap failed!', error)
   // if framework fails, do not stop the portal
   runApp()
 })
