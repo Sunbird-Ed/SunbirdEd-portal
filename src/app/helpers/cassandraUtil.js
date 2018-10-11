@@ -1,15 +1,10 @@
 const CassandraStore = require('cassandra-session-store')
 const envHelper = require('./environmentVariablesHelper.js')
 const expressCassandra = require('express-cassandra')
-
 const contactPoints = envHelper.PORTAL_CASSANDRA_IPS
 const consistency = getConsistencyLevel(envHelper.PORTAL_CASSANDRA_CONSISTENCY_LEVEL)
 const replicationStrategy = getReplicationStrategy(envHelper.PORTAL_CASSANDRA_REPLICATION_STRATEGY)
 const cassandraPort = envHelper.PORTAL_CASSANDRA_PORT
-
-console.log("contactPoints",contactPoints,cassandraPort)
-console.log("consistency",consistency)
-console.log("replicationStrategy",replicationStrategy)
 
 function getCassandraConfig  () {
   return new CassandraStore({
@@ -48,7 +43,6 @@ function getReplicationStrategy (replicationStrategy) {
     return {"class":"SimpleStrategy","replication_factor":"1"}
   }
 }
-
 
 module.exports = {
   getCassandraConfig: getCassandraConfig
