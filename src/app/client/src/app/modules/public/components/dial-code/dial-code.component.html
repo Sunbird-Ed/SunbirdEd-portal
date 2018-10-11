@@ -30,18 +30,24 @@
     <div class="ten wide column">
       <div style="font-weight: 650 !important;" class="ui tiny header padding-top-30"> {{resourceService.frmelmnts?.lbl?.linkedContents}} ({{searchResults.length}})
       </div>
-
     </div>
     <div class="one wide column"></div>
   </div>
   <div class="row">
     <div class="one wide column"></div>
     <div class="ten wide column">
-      <div in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="searchResults" class="ui stackable four column grid dynamic-section-card ">
+      <div *ngIf="searchResults.length > 0; else dataCommingSoon" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="searchResults" class="ui stackable four column grid dynamic-section-card ">
         <div in-view-item [id]="i" [data]="content" class="column padding-top-5 padding-bottom-5 padding-left-10" *ngFor="let content of searchResults;let i = index;">
             <app-card [data]="content" (clickEvent)="getEvent($event)"></app-card>
         </div>
       </div>
+      <ng-template #dataCommingSoon>
+        <div class="placeholder margin-top-40">
+          <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl}}"/>
+          <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0121}}</h5>
+          <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>
+       </div> 
+    </ng-template>
     </div>
     <div class="one wide column"></div>
   </div>

@@ -22,6 +22,33 @@
   src: url('./assets/fonts/OpenSans-Bold.ttf') format('truetype');
 }
 
+/* placeholder if content is not there */
+.placeholder {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+/* TODO: need to remove font family once we add fonts in index.html file */
+.placeholder-heading {
+  align-self: center;
+  font-family: 'sunbirdboldfont'; 
+}
+.placeholder-content {
+  align-self: center;
+  font-size: 1.1em;
+  font-weight: 600;
+  opacity:0.6;
+}
+
+.disabled .title,
+.disabled.fancytree-node {
+  pointer-events: none;
+  opacity: 0.6;
+}
+.disabled .title span{
+  font-weight: 500;
+}
 /*cards fonts*/
 .cardsHeading {
   font-family: 'sunbirdboldfont';
@@ -1663,6 +1690,16 @@ ul.fancytree-container li {
   transition: box-shadow 0.1s ease, transform 0.1s ease;
 }
 
+.fa-book-open {
+  background-image: url("assets/fonts/book-open-solid.svg");
+  content: " ";
+  display: block;
+  height: 14px;
+  width: 14px;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
 .ui.styled.accordion .removeline.title {
   margin: 0;
   padding: 0;
@@ -2976,9 +3013,11 @@ i.icon.accordion-content-right {
   padding-left: 25px;
 }
 .ui.basic.border-less.table {
-    border: 0;
-    border-top: 1px solid #D8D8D8;
-    border-radius: 0;
+  border: 0;
+  border-top: 1px solid #D8D8D8;
+  border-radius: 0;
+  font-family: sunbirdlightfont;
+  font-size: 13px;
 }
 .bb-1 {
   border-bottom: 1px solid #D8D8D8;
@@ -3015,7 +3054,6 @@ i.icon.accordion-content-right {
 .fullpage .content {
   left: 0;
   right: 0;
-  background: #fff;
   top: 0;
   position: relative;
 }
@@ -3099,28 +3137,69 @@ i.icon.accordion-content-right {
   padding-bottom: 6px;
 }
 
-li.pure-checkbox{
-  margin:0;
+.uppercase{
+  text-transform: uppercase !important;
 }
 angular2-multiselect .select-all{
-  padding: 10px;
+  padding: 0;
+  border: 0;
+}
+.pure-checkbox.select-all input[type="checkbox"]+label{
+  padding: 0 !important;
+}
+.pure-checkbox.select-all span{
+  padding: 10px 18px 10px 10px;
+  display: block;
+  border-bottom: 1px solid #ccc;
+}
+.pure-checkbox.select-all span:empty{
+  display: none !important;
+}
+.pure-checkbox.select-all input[type="checkbox"] + label:before{
+  right: 18px !important;
+}
+.pure-checkbox.select-all input[type="checkbox"] + label:after{
+  right: 20px !important;
+}
+angular2-multiselect .select-all span[hidden]{
+  display: none !important;
+}
+angular2-multiselect .arrow-up {
+  display: none;
+}
+angular2-multiselect .dropdown-list{
+  padding: 0;
+}
+angular2-multiselect .list-area{
+  box-shadow: none;
+  border-radius: 0;
+}
+.pure-checkbox{
+  margin:0;
 }
 .pure-checkbox input[type="checkbox"]+label{
   padding: 0 2em 0 0 !important;
   display: block;
 }
+.pure-checkbox label{
+  font-family: 'sunbirdlightfont';
+  font-size: 13px;
+}
 .pure-checkbox input[type="checkbox"]+label:before{
   right: 0 !important;
-  left:auto !important;
-}
-.pure-checkbox input[type="checkbox"] + label:before{
+  left: auto !important;
   color: #999 !important;
   border-color: #999 !important;
   width: 10px !important;
   height: 10px !important;
 }
-.pure-checkbox input[type="checkbox"]:checked + label:before {
-  background: #999 !important;
+.pure-checkbox input[type="checkbox"]:checked+label:before {
+  background:#2185d0 !important;
+  border-color: #2185d0 !important;
+}
+.selected-list .c-btn{
+  font-family: 'sunbirdlightfont';
+  font-size: 13px;
 }
 .pure-checkbox input[type="checkbox"]+label:after {
   width: 6px !important;
@@ -3129,25 +3208,23 @@ angular2-multiselect .select-all{
   right: 2px !important;
   left: auto !important;
 }
-li.pure-checkbox.selected-item{
-  background:transparent;
+.pure-checkbox.selected-item{
+  background: transparent;
 }
-angular2-multiselect .arrow-up {
-  display:none;
-}
-angular2-multiselect .dropdown-list{
-  padding:0;
-}
-angular2-multiselect .list-area{
-  box-shadow: none;
-  border-radius: 0;
+.pure-checkbox.selected-item label{
+  color: #2185d0 !important;
+  font-family: sunbirdregularfont;
+  font-weight: bold !important;
 }
 .selected-list .c-list .c-token{
   background: #999 !important;
+  font-weight: 600;
 }
-.uppercase{
-  text-transform: uppercase !important;
+.list-message{
+  font-size: 13px;
+  padding: 10px 0;
 }
+
 .batch-table sui-checkbox.checked label:before{
  background: #2185d0 !important;
 }
@@ -3235,6 +3312,12 @@ angular2-multiselect .list-area{
 .mt-15 {
   margin-top: 15px !important;  
 }
+.mt-20 {
+  margin-top: 20px !important;  
+}
+.mt-30 {
+  margin-top: 30px !important;  
+}
 .mr-10 {
   margin-right: 10px !important;  
 }
@@ -3278,7 +3361,6 @@ angular2-multiselect .list-area{
 .ui.text.primary-nav.menu .item:hover {
   color: #196d7f;  
   background: #fff;
-  font-weight: bold;
 }
 .ui.text.primary-nav.menu .item.border-right {
   border-right: 0.5px solid;
@@ -3300,13 +3382,12 @@ angular2-multiselect .list-area{
 .fixed.light.bar {
   border: 0;
   background-color: #fff;
-  border-bottom: 0.5px solid;
-  border-color: rgba(25,109,127, 0.68);
+  border-bottom: 0.5px solid rgba(25,109,127, 0.68);
   height:80px;
-  left: 0; 
-  padding: 0 0;
+  left: 0;
+  top: 0;
+  padding: 0;
   position: fixed;
-  top: 0px;
   z-index: 900;
   width: 100%;
   box-shadow: none;
@@ -3434,4 +3515,37 @@ button.slick-next.slick-arrow.slick-disabled {
   .mc-user{
     margin-top: 190px !important;
   }
+}
+
+.selected-list .countplaceholder {
+  visibility: hidden;
+}
+.selected-list .c-list .c-token{
+  visibility: hidden;
+}
+.count {
+  position: relative;
+}
+.count .countplaceholder{
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+}
+
+.ui.text.primary-nav.menu .item.active{
+  color: #196d7f;
+  background: #fff;
+  font-weight: bold;
+}
+.batchmember .UpReviewHeader{
+  font-size:14px;
+}
+.batchmember .UpReviewSubHeader{
+  font-size:10px;
+  line-height: 1.5;
+}
+.width-30{
+  max-width: 30px !important;
 }

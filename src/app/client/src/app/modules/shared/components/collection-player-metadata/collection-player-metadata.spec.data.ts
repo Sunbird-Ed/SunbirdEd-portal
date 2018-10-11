@@ -14,7 +14,7 @@ export const Response = {
         'gradeLevel': [
             'KG'
         ],
-        'content-credits': [
+        'contentCredits': [
             {
               'name': 'Amit Sharma',
             }

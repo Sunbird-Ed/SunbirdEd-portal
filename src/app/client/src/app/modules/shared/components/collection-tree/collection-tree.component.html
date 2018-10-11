@@ -1,9 +1,10 @@
 <sui-accordion *ngFor="let child of rootChildrens"  class="ui styled accordion margin-top-10  width-100">
-  <sui-accordion-panel (click)="!child.folder && onNodeClick(child)" [(isOpen)]="child.togglePanelIcon" [isDisabled]="!child.folder">
+  <sui-accordion-panel [ngClass]="child.extraClasses" (click)="!child.folder && onNodeClick(child)" [(isOpen)]="child.togglePanelIcon" [isDisabled]="(!child.children.length) || (!child.folder)">
     <div title class="accordian-left-text">
-      <i *ngIf="child.folder" class="fa fa-2x vertical-align-middle" [class.fa-folder-open-o]="child.togglePanelIcon" [class.fa-folder-o]="!child.togglePanelIcon"></i>
-      <i *ngIf="!child.folder" [ngClass]="child.icon"></i>&nbsp;&nbsp;&nbsp;<span>{{child.title}}</span>
-      <i *ngIf="child.folder" class="icon right-float accordion-content-right" [class.plus]="!child.togglePanelIcon" [class.minus]="child.togglePanelIcon"></i>
+      <i *ngIf="child.folder" class="mr-5 fa vertical-align-middle" [class.fa-book-open]="child.togglePanelIcon" [class.fa-book]="!child.togglePanelIcon"></i>
+      <i *ngIf="!child.folder" [ngClass]="child.icon"></i>
+      <span [innerHTML]="child.title"></span>
+      <i *ngIf="child.folder && child.children.length" class="icon right-float accordion-content-right" [class.plus]="!child.togglePanelIcon" [class.minus]="child.togglePanelIcon"></i>
     </div>
     <div *ngIf="child.folder" content>
       <app-fancy-tree (itemSelect)="onItemSelect($event)" [nodes]="child.children" [options]="{ showConnectors: true }"></app-fancy-tree>

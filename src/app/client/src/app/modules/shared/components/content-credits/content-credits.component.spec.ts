@@ -28,7 +28,7 @@ describe('ContentCreditsComponent', () => {
   it('should take content data as  INPUT  ', () => {
     component.contentData = Response.metaData;
     const actualKeys = Object.keys(component.contentData);
-    const expectedKeys = 'content-credits';
+    const expectedKeys = 'contentCredits';
     expect(component.showContentCreditModal).toBeDefined();
     expect(component.showContentCreditModal).toBeFalsy();
     expect(component.contentData).toBeDefined();
