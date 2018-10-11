@@ -1,0 +1,22 @@
+  <div class="ui segment" *ngIf="contentData && reviewDetails">
+    <div class="ui comments">
+      <div class="comment" *ngFor="let rDetails of reviewDetails.comments;">
+        <a class="ui avatar image">
+          <img class="" src="{{rDetails.userImage}}">
+        </a>
+        <div class="content">
+          <span class="author">{{rDetails.userName}}</span>
+          <div class="metadata">
+            <span class="date right floated">{{rDetails.createdOn}}</span>
+          </div>
+          <div class="text">
+            {{rDetails.message}}
+          </div>
+        </div>
+      </div>
+      <section class="float-ContentRight" *ngIf="comments.value">{{comments.value.trim().length}} / 150</section>
+      <textarea class="form-control" [formControl]="comments"></textarea>
+      <button class="" (click)="addReviewComments()" [disabled]="disableSubmitcommentsButton">
+        {{resourceService?.frmelmnts?.btn?.add}}</button>
+    </div>
+  </div>
