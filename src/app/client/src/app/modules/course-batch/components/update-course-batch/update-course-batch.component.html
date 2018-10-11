@@ -114,7 +114,7 @@
 
 <sui-modal [isClosable]="false" *ngIf="discardModalFlag" [size]="'mini'" #discardModal>
   <i class="close icon" (click)="discardModalFlag = !discardModalFlag"></i>
-  <div class="header"> {{resourceService?.frmelmnts?.lbl?.discardBatch}}</div>
+  <div class="header"> {{resourceService?.frmelmnts?.lbl?.discardChange}}</div>
   <div class="actions">
     <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="cancelInteractEdata"
       class="ui primary  button announcement-button" (click)="discardModalFlag = !discardModalFlag">
