@@ -231,8 +231,6 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
  * @param {formFieldProperties} formFieldProperties  - Field information
  */
   getFormConfig() {
-    console.log('this.categoryMasterList', this.categoryMasterList)
-    console.log('this.formFieldProperties', this.formFieldProperties)
     _.forEach(this.categoryMasterList, (category) => {
       _.forEach(this.formFieldProperties, (formFieldCategory) => {
         if (category.code === formFieldCategory.code && category.terms) {
@@ -242,7 +240,6 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
       });
     });
     this.formFieldProperties = _.sortBy(_.uniqBy(this.formFieldProperties, 'code'), 'index');
-    console.log(this.filterEnv + this.formAction)
     this._cacheService.set(this.filterEnv + this.formAction, this.formFieldProperties,
       {
         maxAge: this.browserCacheTtlService.browserCacheTtl
