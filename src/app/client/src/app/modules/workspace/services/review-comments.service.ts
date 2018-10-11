@@ -11,7 +11,7 @@ export class ReviewCommentsService extends DataService {
 
   constructor( http: HttpClient) {
     super(http);
-    this.baseUrl = '/mock';
+    this.baseUrl = '/review-comments';
   }
 
   getThreadList (data) {
