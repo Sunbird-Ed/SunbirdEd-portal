@@ -1,0 +1,89 @@
+<!-- <div class="ui segment">
+  <div class="description">
+    <div class="ui list">
+      <div class="item">
+        <img class="ui avatar image" src="{{'assets/images/user_logo.png' | cdnprefixurl }}">
+        <div class="content">
+          <div class="header">Phanil Bhushan</div>
+          <div class="description">This is test comments</div>
+        </div>
+      </div>
+      <div class="item">
+        <img class="ui avatar image" src="{{'assets/images/user_logo.png' | cdnprefixurl }}">
+        <div class="content">
+          <div class="header">Phanil Bhushan</div>
+          <div class="description">This is test comments</div>
+        </div>
+      </div>
+      <div class="item">
+        <img class="ui avatar image" src="{{'assets/images/user_logo.png' | cdnprefixurl }}">
+        <div class="content">
+          <div class="header">Phanil Bhushan</div>
+          <div class="description">This is test comments</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+
+<!-- <div class="ui segment">
+  <div class="description">
+    <div class="ui items">
+      <div class="item">
+        <img class="ui avatar image" src="{{'assets/images/user_logo.png' | cdnprefixurl }}">
+        <div class="content">
+          <p class="ui blue">Stevie Feliciano</p>
+          <div class="description">
+            <p>This is a test comment. We are sorry we cant publish this.</p>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <img class="ui avatar image" src="{{'assets/images/user_logo.png' | cdnprefixurl }}">
+        <div class="content">
+          <a class="header">Stevie Feliciano</a>
+          <div class="description">
+            <p>Stevie Feliciano is a <a>library scientist</a> living in New York City. She likes to spend her time reading,
+              running, and writing.</p>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <img class="ui avatar image" src="{{'assets/images/user_logo.png' | cdnprefixurl }}">
+        <div class="content">
+          <a class="header">Stevie Feliciano</a>
+          <div class="description">
+            <p>Stevie Feliciano is a <a>library scientist</a> living in New York City. She likes to spend her time reading,
+              running, and writing.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+
+
+  <div class="ui segment" *ngIf="contentData">
+    <div class="ui comments">
+      <div class="comment" *ngFor="let rDetails of reviewDetails.comments;">
+        <a class="ui avatar image">
+          <img class="" src="{{rDetails.userImage}}">
+        </a>
+        <div class="content">
+          <span class="author">{{rDetails.userName}}</span>
+          <div class="metadata">
+            <span class="date right floated">{{rDetails.createdOn}}</span>
+          </div>
+          <div class="text">
+            {{rDetails.message}}
+          </div>
+        </div>
+      </div>
+      <section class="float-ContentRight" *ngIf="comments.value">{{comments.value.trim().length}} / 150</section>
+      <textarea class="form-control" [formControl]="comments"></textarea>
+      <button class="" (click)="addReviewComments()" [disabled]="disableSubmitcommentsButton">
+        {{resourceService?.frmelmnts?.btn?.add}}</button>
+    </div>
+  </div>
