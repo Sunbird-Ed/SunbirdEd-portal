@@ -45,7 +45,9 @@ function getReplicationStrategy (replicationStrategy) {
 }
 
 module.exports = {
-  getCassandraConfig: getCassandraConfig
+  getCassandraConfig: getCassandraConfig,
+  getConsistencyLevel: getConsistencyLevel,
+  getReplicationStrategy: getReplicationStrategy
 }
 
 
