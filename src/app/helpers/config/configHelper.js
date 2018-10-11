@@ -57,7 +57,11 @@ fetchConfig = function () {
  */
 checkAndStoreConfigs = function (configs) {
   _.forOwn(configMap, function (envKey, configKey) {
-    configModel.set(envKey, configs[configKey] || envHelper[envKey])
+    if (configs && configs.hasOwnProperty(configKey)) {
+      configModel.set(envKey, configs[configKey])
+    } else {
+      configModel.set(envKey, envHelper[envKey])
+    }
   })
 }
 
@@ -84,7 +88,7 @@ readConfigs = function (configKeys) {
     }
     request(options, function (err, response, body) {
       if (!err && body && body.responseCode === 'OK' && body.result &&
-       body.result.keys && body.result.keys[configReqKey]) {
+        body.result.keys && body.result.keys[configReqKey]) {
         resolve(body.result.keys[configReqKey])
       } else {
         reject(err)
@@ -116,7 +120,10 @@ function scheduleConfigRefreshJob() {
  * @param configKey name of the configuration to be read
  */
 getConfig = function (configKey) {
-  let configValue = configModel.get(configKey) || envHelper[configKey]
+  let configValue = configModel.get(configKey)
+  if (_.isUndefined(configValue) || _.isNull(configValue)) {
+    configValue = envHelper[configKey]
+  }
   return configValue
 }
 
