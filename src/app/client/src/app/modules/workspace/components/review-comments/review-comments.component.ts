@@ -1,14 +1,18 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ResourceService, ToasterService, ContentData } from '@sunbird/shared';
+import { ResourceService, ToasterService, ContentData, ServerResponse } from '@sunbird/shared';
 import { UserService } from '@sunbird/core';
-
+import { ReviewCommentsService } from './../../services/review-comments.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-review-comments',
   templateUrl: './review-comments.component.html',
   styleUrls: ['./review-comments.component.css']
 })
-export class ReviewCommentsComponent implements OnInit {
+export class ReviewCommentsComponent implements OnInit, OnDestroy {
+
+  public unsubscribe = new Subject<void>();
 
   /**
 	 * Creates a object of the form control
@@ -22,7 +26,7 @@ export class ReviewCommentsComponent implements OnInit {
   @Input() contentData: ContentData;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
-    public userService: UserService) { }
+    public userService: UserService, public reviewCommentsService: ReviewCommentsService) { }
 
   ngOnInit() {
     this.getReviewComments();
@@ -33,34 +37,26 @@ export class ReviewCommentsComponent implements OnInit {
   }
 
   getReviewComments() {
-    this.reviewDetails = {
-      'contentId': 'do_112584109936099328189',
-      'contentVer': '1538720793170',
-      'contentType': 'ecml',
-      'stageId': 'eelk12hj45',
-      'comments': [{
-        'userId': 'd5efd1ab-3cad-4034-8143-32c480f5cc9e',
-        'userName': 'Sourav Dey',
-        'userImage': 'https://dev.open-sunbird.org/assets/images/sunbird_logo.png',
-        'message': 'Cannot see the content clearly on desktop. Please check the dimensions',
-        'createdOn': '2018-10-03 13:33:35:868+0000'
-      },
-      {
-        'userId': 'd5efd1ab-3cad-4034-8143-32c480f5cc9e',
-        'userName': 'Gourav More',
-        'userImage': 'https://dev.open-sunbird.org/assets/images/sunbird_logo.png',
-        'message': 'The image is distorted. Upload a bigger resolution image.',
-        'createdOn': '2018-10-03 13:33:35:868+0000'
-      },
-      {
-        'userId': 'd5efd1ab-3cad-4034-8143-32c480f5cc9e',
-        'userName': 'Vivek Kasture',
-        'userImage': 'https://dev.open-sunbird.org/assets/images/sunbird_logo.png',
-        'message': 'Inapropiate tags such as Resource type and tags',
-        'createdOn': '2018-10-03 13:33:35:868+0000'
+    const requestBody = {
+      'request': {
+        'contextDetails': {
+          'contentId': this.contentData.identifier,
+          'version': this.contentData.versionKey,
+          'contentType': this.contentData.mimeType,
+          'stageId': '1'
+        }
       }
-      ]
     };
+    this.reviewCommentsService.getThreadList(requestBody).pipe(
+      takeUntil(this.unsubscribe))
+      .subscribe(
+        (apiResponse: ServerResponse) => {
+          this.reviewDetails = apiResponse.result;
+        },
+        err => {
+          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        }
+      );
   }
 
   addReviewComments() {
@@ -78,8 +74,20 @@ export class ReviewCommentsComponent implements OnInit {
         'userImage': this.userService.userProfile.avatar
       }
     };
+    this.reviewCommentsService.createThread(requestBody).pipe(
+      takeUntil(this.unsubscribe))
+      .subscribe(
+        (apiResponse: ServerResponse) => {
+        },
+        err => {
+          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        }
+      );
+  }
 
-    console.log('finaldata', requestBody);
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
 }
