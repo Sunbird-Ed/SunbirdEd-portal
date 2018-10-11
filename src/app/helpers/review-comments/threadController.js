@@ -24,23 +24,22 @@ class ThreadController {
               'contentType': 'ecml',
               'stageId': 'eelk12hj45',
               'comments': [{
-                'userId': 'd5efd1ab-3cad-4034-8143-32c480f5cc9e',
-                'userName': 'Sourav Dey',
-                'userImage': 'https://dev.open-sunbird.org/assets/images/sunbird_logo.png',
+                'userId': '3b34c469-460b-4c20-8756-c5fce2de9e69',
                 'message': 'Cannot see the content clearly on desktop. Please check the dimensions',
                 'createdOn': '2018-10-03 13:33:35:868+0000'
               },
               {
-                'userId': 'd5efd1ab-3cad-4034-8143-32c480f5cc9e',
-                'userName': 'Gourav More',
-                'userImage': 'https://dev.open-sunbird.org/assets/images/sunbird_logo.png',
+                'userId': '159e93d1-da0c-4231-be94-e75b0c226d7c',
                 'message': 'The image is distorted. Upload a bigger resolution image.',
                 'createdOn': '2018-10-03 13:33:35:868+0000'
               },
               {
                 'userId': 'd5efd1ab-3cad-4034-8143-32c480f5cc9e',
-                'userName': 'Vivek Kasture',
-                'userImage': 'https://dev.open-sunbird.org/assets/images/sunbird_logo.png',
+                'message': 'Inapropiate tags such as Resource type and tags',
+                'createdOn': '2018-10-03 13:33:35:868+0000'
+              },
+              {
+                'userId': '150c315b-3672-4baa-9037-8a1eece3c827',
                 'message': 'Inapropiate tags such as Resource type and tags',
                 'createdOn': '2018-10-03 13:33:35:868+0000'
               }

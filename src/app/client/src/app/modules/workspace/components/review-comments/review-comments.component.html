@@ -2,7 +2,7 @@
     <div class="ui comments">
       <div class="comment" *ngFor="let rDetails of reviewDetails.comments;">
         <a class="ui avatar image">
-          <img class="" src="{{rDetails.userImage}}">
+          <img class="" src="{{rDetails.userImage || 'assets/images/user-profile.png' | cdnprefixurl}}">
         </a>
         <div class="content">
           <span class="author">{{rDetails.userName}}</span>
