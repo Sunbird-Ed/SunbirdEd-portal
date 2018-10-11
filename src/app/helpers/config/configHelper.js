@@ -25,13 +25,13 @@ const configMap = {
 }
 
 /**
- * Returns a promise which in turn fetches and sets all the configurations mentioned 
+ * Returns a promise which in turn fetches and sets all the configurations mentioned
  * in the 'configMap' variable
  */
 fetchConfig = function () {
   return new Promise(function (resolve, reject) {
     let configs = {}
-    if (configServiceEnabled) {
+    if (configServiceEnabled === true) {
       readConfigs(configReqKey).then(function (configObj) {
         console.log('Info: Configurations fetched from API successfully')
         resolve(checkAndStoreConfigs(configObj))
@@ -50,9 +50,9 @@ fetchConfig = function () {
 }
 
 /**
- * Checks each and every config of 'configMap' with the fetched configuration keys 
+ * Checks each and every config of 'configMap' with the fetched configuration keys
  * and adds them if config is present else adds the config value from enviroment variables
- * 
+ *
  * @param configs fetched configurations from config service
  */
 checkAndStoreConfigs = function (configs) {
@@ -62,9 +62,9 @@ checkAndStoreConfigs = function (configs) {
 }
 
 /**
- * Returns a promise which inturn fetches the given config 
+ * Returns a promise which inturn fetches the given config
  * keys with values from config service
- * 
+ *
  * @param configKeys array of configurations to be fetched
  */
 readConfigs = function (configKeys) {
