@@ -5,7 +5,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CollectionPlayerComponent } from './collection-player.component';
 import { ContentService, PlayerService, CoreModule } from '@sunbird/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { WindowScrollService, ConfigService, SharedModule } from '../../../shared';
+import { WindowScrollService, ConfigService, SharedModule, ResourceService } from '../../../shared';
 import { CollectionTreeComponent, AppLoaderComponent, PlayerComponent, FancyTreeComponent } from '../../../shared/components';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -31,12 +31,21 @@ describe('CollectionPlayerComponent', () => {
     }
   };
 
+  const resourceBundle = {
+    'messages': {
+      'stmsg': {
+        'm0118': 'No content to play'
+      }
+    }
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionPlayerComponent],
       imports: [SuiModule, HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot(), RouterTestingModule],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute }]
+      providers: [ ResourceService, { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: ResourceService, useValue: resourceBundle }]
     })
       .compileComponents();
   }));
@@ -76,6 +85,18 @@ describe('CollectionPlayerComponent', () => {
     });
   });
 
+  it('should call playContent method', () => {
+    const windowScrollService = TestBed.get(WindowScrollService);
+    spyOn(windowScrollService, 'smoothScroll');
+    const content = {
+      id: 'do_112474267785674752118',
+      title: 'Test'
+    };
+    component.playContent(content);
+    expect(component.showPlayer).toBeTruthy();
+    expect(component.contentTitle).toEqual(content.title);
+  });
+
   it('should get content based on route/query params', () => {
     const playerService: PlayerService = TestBed.get(PlayerService);
     const windowScrollService = TestBed.get(WindowScrollService);
@@ -86,6 +107,7 @@ describe('CollectionPlayerComponent', () => {
     expect(component.collectionTreeNodes).toEqual({ data: CollectionHierarchyGetMockResponse.result.content });
     expect(component.loader).toBeFalsy();
   });
+
 
   xit('should navigate to error page on invalid collection id', () => {});
   xit('should navigate to error page on valid collection id but invalid content id', () => {});

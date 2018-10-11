@@ -20,6 +20,7 @@ import * as mockData from './add-batch-memebers.component.spec.data';
 const testData = mockData.mockRes;
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { By } from '@angular/platform-browser';
+import { OrderModule } from 'ngx-order-pipe';
 const resourceServiceMockData = {
   messages: {
     emsg: { m0005: 'Something went wrong, please try in some time....' },
@@ -45,7 +46,7 @@ describe('AddBatchMembersComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AddBatchMembersComponent ],
-      imports: [RouterTestingModule, AngularMultiSelectModule,
+      imports: [OrderModule, RouterTestingModule, AngularMultiSelectModule,
         FormsModule, HttpClientModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
       providers: [SearchService, CourseBatchService, ToasterService, UserService,
         { provide: ResourceService, useValue: resourceServiceMockData }]

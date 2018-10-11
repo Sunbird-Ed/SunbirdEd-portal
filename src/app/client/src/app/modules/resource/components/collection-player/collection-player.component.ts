@@ -104,6 +104,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
    * contains link that can be shared
    */
   shareLink: string;
+  public treeModel: any;
+  public contentDetails = [];
+  public nextPlaylistItem: any;
+  public prevPlaylistItem: any;
 
   constructor(route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
@@ -170,11 +174,17 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     this.initPlayer(data.id);
   }
 
-  private navigateToContent(id: string): void {
-    const navigationExtras: NavigationExtras = {
-      queryParams: { 'contentId': id },
+  private navigateToContent(content?: { title: string, id: string }, id?: string): void {
+    let navigationExtras: NavigationExtras;
+    navigationExtras = {
+      queryParams: {},
       relativeTo: this.route
     };
+    if (id) {
+      navigationExtras.queryParams = { 'contentId': id };
+    } else if (content) {
+      navigationExtras.queryParams = { 'contentId': content.id };
+    }
     this.router.navigate([], navigationExtras);
   }
 
@@ -189,9 +199,29 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     });
   }
 
+  private parseChildContent(collection: any) {
+    const model = new TreeModel();
+    if (collection.data) {
+      this.treeModel = model.parse(collection.data);
+      this.treeModel.walk((node) => {
+        if (node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
+          this.contentDetails.push({ id: node.model.identifier, title: node.model.name });
+        }
+        this.setContentNavigators();
+      });
+    }
+  }
+
+  private setContentNavigators() {
+    const index = _.findIndex(this.contentDetails, ['id', this.contentId]);
+    this.prevPlaylistItem = this.contentDetails[index - 1];
+    this.nextPlaylistItem = this.contentDetails[index + 1];
+  }
+
   public OnPlayContent(content: { title: string, id: string }) {
     if (content && content.id) {
-      this.navigateToContent(content.id);
+      this.navigateToContent(null, content.id);
+      this.setContentNavigators();
       this.playContent(content);
     } else {
       throw new Error(`unable to play collection content for ${this.collectionId}`);
@@ -223,6 +253,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
             this.closeContentPlayer();
           }
         });
+        this.parseChildContent(this.collectionTreeNodes);
       }, (error) => {
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
       });

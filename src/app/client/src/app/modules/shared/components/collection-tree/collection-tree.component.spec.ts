@@ -2,15 +2,20 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CollectionTreeComponent } from './collection-tree.component';
 import { SuiAccordionModule } from 'ng2-semantic-ui';
 import { FancyTreeComponent } from '..';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientModule } from '@angular/common/http';
+// Import services
+import { ResourceService, BrowserCacheTtlService, ConfigService } from '../../services/index';
+import { CacheService } from 'ng2-cache-service';
 describe('CollectionTreeComponent', () => {
   let component: CollectionTreeComponent;
   let fixture: ComponentFixture<CollectionTreeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiAccordionModule],
-      declarations: [CollectionTreeComponent, FancyTreeComponent]
+      imports: [SuiAccordionModule, HttpClientTestingModule, HttpClientModule],
+      declarations: [CollectionTreeComponent, FancyTreeComponent],
+      providers: [ ResourceService, CacheService, ConfigService, BrowserCacheTtlService]
     }).compileComponents();
   }));
 

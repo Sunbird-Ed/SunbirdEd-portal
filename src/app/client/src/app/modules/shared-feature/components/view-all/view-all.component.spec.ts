@@ -164,6 +164,7 @@ describe('ViewAllComponent', () => {
     route.url = 'learn/view-all/LatestCourses/1?contentType: course';
     component.queryParams = { contentType: ['Course'], objectType: ['Content'], status: ['Live'],
     defaultSortBy: JSON.stringify({lastPublishedOn: 'desc'})};
+    component.pageNumber = 1;
     component.pager = Response.pager;
     component.pageLimit = 20;
     component.pager.totalPages = 7;
