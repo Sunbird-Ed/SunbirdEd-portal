@@ -2,7 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { ReviewCommentsService } from './review-comments.service';
 
-describe('ReviewCommentsService', () => {
+xdescribe('ReviewCommentsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ReviewCommentsService]
