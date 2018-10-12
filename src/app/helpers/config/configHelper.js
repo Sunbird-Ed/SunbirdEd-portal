@@ -31,8 +31,8 @@ const configMap = {
 fetchConfig = function () {
   return new Promise(function (resolve, reject) {
     let configs = {}
-    if (configServiceEnabled === 'true') {
-      readConfigs(configReqKey).then(function (configObj) {
+    if (configServiceEnabled.toString() === 'true') {
+      readConfigsFromConfigSource(configReqKey).then(function (configObj) {
         console.log('Info: Configurations fetched from API successfully')
         resolve(checkAndStoreConfigs(configObj))
       }, function (err) {
@@ -71,7 +71,7 @@ checkAndStoreConfigs = function (configs) {
  *
  * @param configKeys array of configurations to be fetched
  */
-readConfigs = function (configKeys) {
+readConfigsFromConfigSource = function (configKeys) {
   return new Promise(function (resolve, reject) {
     let options = {
       url: configURL + 'v1/read',
