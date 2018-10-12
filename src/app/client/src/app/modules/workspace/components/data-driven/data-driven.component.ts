@@ -94,6 +94,10 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
 
   public creationFormLable: string;
 
+  private name: string;
+
+  private description: string;
+
   public isCachedDataExists: boolean;
 
   public framework: string;
@@ -129,6 +133,10 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
     });
     this.resourceType = this.configService.appConfig.resourceType[this.contentType];
     this.creationFormLable = this.configService.appConfig.contentCreateTypeLable[this.contentType];
+    this.name = this.configService.appConfig.contentName[this.contentType] ?
+                this.configService.appConfig.contentName[this.contentType] : 'Untitled Collection';
+   this.description = this.configService.appConfig.contentDescription[this.contentType] ?
+   this.configService.appConfig.contentDescription[this.contentType] : 'Untitled Collection';
   }
 
 
@@ -239,8 +247,8 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
   generateData(data) {
     this.showLoader = true;
     const requestData = _.cloneDeep(data);
-    requestData.name = data.name ? data.name : 'Untitled Collection',
-      requestData.description = data.description ? data.description : 'Untitled Collection',
+    requestData.name = data.name ? data.name : this.name,
+      requestData.description = data.description ? data.description : this.description,
       requestData.creator = this.userProfile.firstName + ' ' + this.userProfile.lastName,
       requestData.createdBy = this.userProfile.id,
       requestData.organisation = this.userProfile.organisationNames,
