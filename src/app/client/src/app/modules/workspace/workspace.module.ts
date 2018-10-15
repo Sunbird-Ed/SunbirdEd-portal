@@ -19,6 +19,7 @@ import {
 } from './components';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { ReviewCommentsComponent } from './components/review-comments/review-comments.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -44,7 +45,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
     LimitedPublishedComponent,
     AllContentComponent,
     FlagReviewerComponent,
-    AllMyContentFilterComponent
+    AllMyContentFilterComponent,
+    ReviewCommentsComponent
   ],
   providers: [WorkSpaceService, EditorService, BatchService]
 })
