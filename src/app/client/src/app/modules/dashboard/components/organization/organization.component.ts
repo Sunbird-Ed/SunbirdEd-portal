@@ -182,7 +182,7 @@ export class OrganisationComponent implements OnDestroy {
     this.initTelemetryImpressionEvent();
     this.activatedRoute.params.subscribe(params => {
       if (params.id && params.timePeriod) {
-        this.datasetType = params.datasetType;
+        // this.datasetType = params.datasetType;
         this.showDashboard = false;
         // update the impression event after an org is selected
         this.telemetryImpression.edata.uri = '/orgDashboard/organization/' + params.datasetType

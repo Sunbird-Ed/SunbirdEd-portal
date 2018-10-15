@@ -8,32 +8,38 @@ import { NavigationHelperService, ResourceService, ConfigService, ToasterService
 import { ContentService, UserService, LearnerService, TenantService, CoreModule } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute } from '@angular/router';
-import { of as observableOf } from 'rxjs';
 import { mockRes } from './generic-editor.component.spec.data';
-import { WorkSpaceService } from '../../../services';
+import { WorkSpaceService, EditorService } from '../../../services';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { of as observableOf } from 'rxjs';
+
+const mockResourceService = { messages: { emsg: { m0004: '1000' } } };
+const mockActivatedRoute = {
+  snapshot: {
+    params: {
+      'contentId': 'do_21247940906829414411032', 'state': 'upForReview', 'framework': 'framework'
+    }
+  }
+};
+class RouterStub {
+  navigate = jasmine.createSpy('navigate');
+}
+const mockUserService = { userProfile: { userId: '68777b59-b28b-4aee-88d6-50d46e4c35090'} };
 describe('GenericEditorComponent', () => {
   let component: GenericEditorComponent;
   let fixture: ComponentFixture<GenericEditorComponent>;
-  class RouterStub {
-    navigate = jasmine.createSpy('navigate');
-  }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [GenericEditorComponent],
       imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, CoreModule.forRoot(), TelemetryModule.forRoot()],
       providers: [
-        UserService, LearnerService, ContentService,
+        UserService, LearnerService, ContentService, EditorService,
         ResourceService, ToasterService, ConfigService,
         NavigationHelperService, BrowserCacheTtlService, WorkSpaceService,
         { provide: Router, useClass: RouterStub },
-        {
-          provide: ActivatedRoute, useValue: {
-            'params': observableOf({
-              'contentId': 'do_21247940906829414411032'
-            })
-          }
-        }
+        { provide: ResourceService, useValue: mockResourceService },
+        { provide: UserService, useValue: mockUserService },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -45,40 +51,26 @@ describe('GenericEditorComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should call userservice, call open editor', inject([UserService, Router, ToasterService,
-    ResourceService, TenantService], (userService, router, toasterService, resourceService, tenantService) => {
-      userService._userData$.next({ err: null, userProfile: mockRes.userMockData });
-      tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData.result });
-      component.tenantService.tenantData = mockRes.tenantMockData.result;
-      component.tenantService.tenantData.logo = mockRes.tenantMockData.result.logo;
-      fixture.detectChanges();
-      expect(component.openGenericEditor).toBeDefined();
-      component.openGenericEditor();
+  it('should fetch tenant and content details and set logo and collection details if success',
+  inject([ ToasterService, TenantService, WorkSpaceService, EditorService],
+    ( toasterService, tenantService, workspaceService, editorService) => {
+      tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData });
+      spyOn(workspaceService, 'toggleWarning').and.callFake(() => { });
+      spyOn(jQuery.fn, 'iziModal').and.callFake(() => { });
+      spyOn(toasterService, 'error').and.callFake(() => {});
+      spyOn(editorService, 'getOwnershipType').and.returnValue(observableOf(['CreatedBy', 'CreatedFor']));
+      component.ngOnInit();
+      expect(component.logo).toBeDefined();
+      expect(component.showLoader).toBeFalsy();
+      expect(jQuery.fn.iziModal).toHaveBeenCalled();
+      expect(window.config).toBeDefined();
+      expect(window.context).toBeDefined();
+      expect(window.context.ownershipType).toEqual(['CreatedBy', 'CreatedFor']);
     }));
 
-  it('test to navigate to create content', inject([Router], (router) => () => {
+  it('should navigate to draft', inject([ NavigationHelperService], ( navigationHelperService) => () => {
+    spyOn(navigationHelperService, 'navigateToWorkSpace').and.callFake(() => { });
     component.closeModal();
-    setTimeout(() => {
-      component.navigateToWorkSpace();
-    }, 1000);
-    expect(component.navigateToWorkSpace).not.toHaveBeenCalled();
-    jasmine.clock().tick(1001);
-    expect(component.navigateToWorkSpace).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledWith(['workspace/content']);
+    expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('workspace/content/draft/1');
   }));
-
-  it('should set the extContWhitelistedDomains variable', async(() => {
-    spyOn(document, 'getElementById').and.callFake(() => {
-      return {
-        value: 'youtube.com'
-      };
-    });
-    component.ngOnInit();
-    expect(component.extContWhitelistedDomains).toEqual('youtube.com');
-  }));
-  it('should listen to the browser back button event', () => {
-    spyOn(sessionStorage, 'setItem').and.callThrough();
-    component.ngOnInit();
-    expect(window.location.hash).toEqual('#no');
-  });
 });

@@ -1,172 +1,76 @@
-import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
+import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
-import {
-  NavigationHelperService, ResourceService, ToasterService, IUserData, IUserProfile
-} from '@sunbird/shared';
-import {
-  TelemetryService, IInteractEventObject, IInteractEventEdata
-} from '@sunbird/telemetry';
+import { NavigationHelperService, ResourceService, ToasterService, ConfigService, IUserProfile, ServerResponse } from '@sunbird/shared';
+import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
+import { combineLatest, of, throwError } from 'rxjs';
 import { UserService, TenantService } from '@sunbird/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { environment } from '@sunbird/environment';
-import { WorkSpaceService } from '../../../services';
+import { EditorService, WorkSpaceService } from '../../../services';
+import { tap, delay, map } from 'rxjs/operators';
+import * as _ from 'lodash';
+
+jQuery.fn.iziModal = iziModal;
 
 /**
  * Component Launches the Generic Editor in a IFrame Modal
- */
-@Component({
+ */@Component({
   selector: 'app-generic-editor',
   templateUrl: './generic-editor.component.html',
   styleUrls: ['./generic-editor.component.css']
 })
-export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy {
+export class GenericEditorComponent implements OnInit, OnDestroy {
 
-  /**
-* To show toaster(error, success etc) after any API calls
-*/
-  private toasterService: ToasterService;
-  /**
-    * To call resource service which helps to use language constant
-    */
-  public resourceService: ResourceService;
-  /**
-  * user profile details.
-  */
-  userService: UserService;
-  /**
-   * Id of the content created
-   */
-  public contentId: string;
-  /**
-   * state of the content
-   */
-  public state: string;
-  /**
-  * framework value of editor
-  */
-  public framework: string;
-  /**
-   * user profile details.
-   */
-  public userProfile: IUserProfile;
-  /**
- * To navigate to other pages
- */
-  private router: Router;
-  /**
-   * Boolean to show and hide modal
-   */
-  public showModal: boolean;
-
-  /**
-   * user tenant details.
-   */
-  public tenantService: TenantService;
-
+  private userProfile: IUserProfile;
+  private routeParams: any;
   private buildNumber: string;
-
+  private portalVersion: string;
   public logo: string;
-
+  public showLoader = true;
+  private browserBackEventSub;
   public extContWhitelistedDomains: string;
-  /**
-   * To send activatedRoute.snapshot to router navigation
-   * service for redirection to draft  component
-  */
-  private activatedRoute: ActivatedRoute;
-  public listener;
-  public editorInteractObject: IInteractEventObject;
-  public browserBackEventSub;
-  constructor(userService: UserService, router: Router, public _zone: NgZone,
-    activatedRoute: ActivatedRoute, tenantService: TenantService, public telemetryService: TelemetryService,
-    public navigationHelperService: NavigationHelperService, toasterService: ToasterService,
-    resourceService: ResourceService, public workspaceService: WorkSpaceService) {
-    this.userService = userService;
-    this.router = router;
-    this.activatedRoute = activatedRoute;
-    this.tenantService = tenantService;
-    this.toasterService = toasterService;
-    this.resourceService = resourceService;
-    try {
-      this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')).value;
-    } catch (error) {
-      this.buildNumber = '1.0';
-    }
+  public ownershipType: Array<string>;
+
+  constructor(private userService: UserService, public _zone: NgZone, private activatedRoute: ActivatedRoute,
+    private tenantService: TenantService, private telemetryService: TelemetryService,
+    private navigationHelperService: NavigationHelperService, public workspaceService: WorkSpaceService,
+    private configService: ConfigService, private editorService: EditorService) {
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    this.buildNumber = buildNumber ? buildNumber.value : '1.0';
+    this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+    this.extContWhitelistedDomains = (<HTMLInputElement>document.getElementById('extContWhitelistedDomains')) ?
+      (<HTMLInputElement>document.getElementById('extContWhitelistedDomains')).value : 'youtube.com,youtu.be';
   }
   ngOnInit() {
-    /**
-     * Call User service to get user data
-     */
-    this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        if (user && !user.err) {
-          this.userProfile = user.userProfile;
+    this.userProfile = this.userService.userProfile;
+    this.routeParams = this.activatedRoute.snapshot.params;
+    this.disableBrowserBackButton();
+    this.getDetails().pipe(
+      tap(data => {
+        if (data.tenantDetails) {
+          this.logo = data.tenantDetails.logo;
         }
+        this.ownershipType = data.ownershipType;
+        this.showLoader = false;
+        this.initEditor();
+        this.setWindowContext();
+        this.setWindowConfig();
+      }),
+      delay(10)) // wait for iziModal lo load
+      .subscribe((data) => {
+        jQuery('#genericEditor').iziModal('open');
       });
-    this.activatedRoute.params.subscribe((params) => {
-      this.contentId = params['contentId'];
-      this.state = params['state'];
-      this.framework = params['framework'];
-      sessionStorage.setItem('inEditor', 'true');
-      window.location.hash = 'no';
-      this.setContentInteractData({ identifier: this.contentId });
-      this.workspaceService.toggleWarning();
-    });
-    try {
-      this.extContWhitelistedDomains = (<HTMLInputElement>document.getElementById('extContWhitelistedDomains')).value;
-    } catch (error) {
-      this.extContWhitelistedDomains = 'youtube.com,youtu.be';
-    }
   }
-
-  ngAfterViewInit() {
-    this.browserBackEventSub =  this.workspaceService.browserBackEvent.subscribe(() => {
-      const closeEditorIntractEdata: IInteractEventEdata = {
-        id: 'browser-back-button',
-        type: 'click',
-        pageid: 'generic-editor'
-      };
-      this.generateInteractEvent(closeEditorIntractEdata);
-    });
-    /**
-     * Fetch header logo and launch the generic editor after window load
-     */
-    this.tenantService.tenantData$.subscribe((data) => {
-      if (data && !data.err) {
-        this.logo = data.tenantData.logo;
-        this.openGenericEditor();
-      } else if (data && data.err) {
-        this.openGenericEditor();
-      }
-    });
-  }
-  private setContentInteractData(rspData) {
-    if (rspData.identifier) {
-      this.editorInteractObject = {
-        id: rspData.identifier,
-        type: rspData.contentType || rspData.resourceType || 'content',
-        ver: rspData.pkgVersion ? rspData.pkgVersion.toString() : '1.0',
-      };
-    }
-  }
-  generateInteractEvent(intractEdata) {
-    if (intractEdata) {
-      const appTelemetryInteractData: any = {
-        context: {
-          env: 'generic-editor'
-        },
-        edata: intractEdata
-      };
-      if (this.editorInteractObject) {
-        appTelemetryInteractData.object = this.editorInteractObject;
-      }
-      this.telemetryService.interact(appTelemetryInteractData);
-    }
+  private getDetails() {
+    return combineLatest(this.tenantService.tenantData$,
+    this.editorService.getOwnershipType()).
+    pipe(map(data => ({ tenantDetails: data[0].tenantData,
+      ownershipType: data[1] })));
   }
   /**
    *Launch Generic Editor in the modal
    */
-  openGenericEditor() {
-    jQuery.fn.iziModal = iziModal;
+  private initEditor() {
     jQuery('#genericEditor').iziModal({
       title: '',
       iframe: true,
@@ -186,109 +90,84 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         });
       }
     });
-
-    setTimeout(() => {
-      jQuery('#genericEditor').iziModal('open');
-    }, 100);
-
-    /**
-     * Assign the values to window context
-     */
+  }
+  private setWindowContext() {
     window.context = {
       user: {
-        id: this.userService.userid,
+        id: this.userProfile.userId,
         name: this.userProfile.firstName + ' ' + this.userProfile.lastName,
-        orgIds: this.userProfile.organisationIds
+        orgIds: this.userProfile.organisationIds,
+        organisations: this.userService.orgIdNameMap
       },
       sid: this.userService.sessionId,
-      contentId: this.contentId,
+      contentId: this.routeParams.contentId,
       pdata: {
         id: this.userService.appId,
-        ver: this.buildNumber.slice(0, 5),
+        ver: this.portalVersion,
         pid: 'sunbird-portal'
       },
       tags: this.userService.dims,
       channel: this.userService.channel,
-      env: 'genericeditor',
-      framework: this.framework
+      env: 'generic-editor',
+      framework: this.routeParams.framework,
+      ownershipType: this.ownershipType
     };
-
-    /**
-     * Assign the values to window config
-     */
-    window.config = {
-      corePluginsPackaged: true,
-      modalId: 'genericEditor',
-      dispatcher: 'local',
-      apislug: '/action',
-      alertOnUnload: true,
-      build_number: this.buildNumber,
-      headerLogo: this.logo,
-      loadingImage: '',
-      extContWhitelistedDomains: this.extContWhitelistedDomains,
-      plugins: [{
-        id: 'org.ekstep.sunbirdcommonheader',
-        ver: '1.4',
-        type: 'plugin'
-      }, {
-        id: 'org.ekstep.sunbirdmetadata',
-        ver: '1.1',
-        type: 'plugin'
-      }, {
-        id: 'org.ekstep.metadata',
-        ver: '1.1',
-        type: 'plugin'
-      }],
-      previewConfig: {
-        'repos': ['/sunbird-plugins/renderer'],
-        plugins: [{
-          'id': 'org.sunbird.player.endpage',
-          ver: 1.1,
-          type: 'plugin'
-        }],
-        splash: {
-          text: '',
-          icon: '',
-          bgImage: 'assets/icons/splacebackground_1.png',
-          webLink: ''
-        },
-        'overlay': {
-          'showUser': false
-        },
-        showEndPage: false
-      }
-
-    };
+  }
+  private setWindowConfig() {
+    window.config = _.cloneDeep(this.configService.editorConfig.GENERIC_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config
+    window.config.build_number = this.buildNumber;
+    window.config.headerLogo = this.logo;
+    window.config.extContWhitelistedDomains = this.extContWhitelistedDomains;
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
   }
   /**
   * Re directed to the workspace on close of modal
   */
   closeModal() {
-    this.showModal = true;
-    setTimeout(() => {
-      this.navigateToWorkSpace();
-    }, 1000);
-  }
-
-  navigateToWorkSpace() {
-    if (document.getElementById('collectionEditor')) {
-      document.getElementById('collectionEditor').remove();
-    }
-    this.navigationHelperService.navigateToWorkSpace('workspace/content/uploaded/1');
-    this.showModal = false;
-  }
-  /**
-   * On componenet destroy remove the genericEditor id from DOM
-   */
-  ngOnDestroy() {
-    if (this.browserBackEventSub) {
-      this.browserBackEventSub.unsubscribe();
-    }
+    this.showLoader = true;
     if (document.getElementById('genericEditor')) {
       document.getElementById('genericEditor').remove();
     }
-    window.location.hash = '';
+    this.navigationHelperService.navigateToWorkSpace('workspace/content/uploaded/1');
+  }
+  private disableBrowserBackButton() {
+    sessionStorage.setItem('inEditor', 'true');
+    window.location.hash = 'no';
+    this.workspaceService.toggleWarning(this.routeParams.type);
+    this.browserBackEventSub = this.workspaceService.browserBackEvent.subscribe(() => {
+      const closeEditorIntractEdata: IInteractEventEdata = {
+        id: 'browser-back-button',
+        type: 'click',
+        pageid: 'generic-editor'
+      };
+      this.generateInteractEvent(closeEditorIntractEdata);
+    });
+  }
+  private generateInteractEvent(intractEdata) {
+    if (intractEdata) {
+      const appTelemetryInteractData: any = {
+        context: {
+          env: 'generic-editor'
+        },
+        edata: intractEdata
+      };
+      if (this.routeParams.contentId) {
+        appTelemetryInteractData.object = {
+          id: this.routeParams.contentId,
+          type: 'content',
+          ver: '1.0'
+        };
+      }
+      this.telemetryService.interact(appTelemetryInteractData);
+    }
+  }
+  ngOnDestroy() {
+    if (document.getElementById('genericEditor')) {
+      document.getElementById('genericEditor').remove();
+    }
+    if (this.browserBackEventSub) {
+      this.browserBackEventSub.unsubscribe();
+    }
     sessionStorage.setItem('inEditor', 'false');
     this.workspaceService.toggleWarning();
   }

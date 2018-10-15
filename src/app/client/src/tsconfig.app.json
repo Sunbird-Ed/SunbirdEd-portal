@@ -53,8 +53,14 @@
       "@sunbird/badge": [
         "app/modules/badging"
       ],
+      "@sunbird/shared-feature": [
+        "app/modules/shared-feature"
+      ],
       "@sunbird/environment": [
         "environments/environment"
+      ],
+      "@sunbird/course-batch": [
+        "app/modules/course-batch"
       ]
     },
     "module": "es2015",

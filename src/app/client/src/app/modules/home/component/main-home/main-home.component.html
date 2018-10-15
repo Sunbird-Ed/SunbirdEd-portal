@@ -14,7 +14,7 @@
           <div class="ui active homePage" [suiCollapse]="collapse" [appTelemetryImpression]="telemetryImpression">
             <div class="regular slider padding-top-10">
               <ngx-slick in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="toDoList" class="carousel" #slickModal="slick-modal"
-                [config]="slideConfig" (afterChange)="inviewChange(toDoList,$event)">
+                [config]="slideConfig" (afterChange)="inviewChange(toDoList,$event)" (beforeChange)="checkSlide($event)" appTelemetryInteract  [telemetryInteractEdata]="{id: btnArrow, type: 'click', pageid: 'home', extra: { section: 'ToDo'}}">
                 <div in-view-item ngxSlickItem *ngFor="let item of toDoList; trackBy: trackByFn;let i = index" class="slide" [id]="i" [data]="item">
                   <div *ngIf="item.type === 'profile'">
                     <a routerLink="/profile" appTelemetryInteract [telemetryInteractEdata]="profileUpdateIntractEdata" [telemetryInteractObject]="telemetryInteractObject">

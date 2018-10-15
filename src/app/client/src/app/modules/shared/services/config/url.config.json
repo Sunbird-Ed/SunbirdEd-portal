@@ -9,6 +9,7 @@
     "LEARNER_PREFIX": "/learner/",
     "CONTENT_PREFIX": "/content/",
     "PUBLIC_PREFIX": "/api/",
+    "EXT_PLUGIN_PREFIX": "/plugin/",
     "ANNOUNCEMENT_PREFIX": "/announcement/v1",
     "TENANT_PREFIX": "/v1/tenant",
     "RESOURCEBUNDLES_PREFIX": "resourcebundles/v1",
@@ -37,7 +38,8 @@
       "USER_CONTENT_STATE_UPDATE": "course/v1/content/state/update",
       "GET_ENROLLED_COURSES": "course/v1/user/enrollment/list",
       "ENROLL_USER_COURSE": "course/v1/enrol",
-      "RECOMMENDED_COURSE": "recommended/courses"
+      "RECOMMENDED_COURSE": "recommended/courses",
+      "UNENROLL_USER_COURSE":"course/v1/unenrol"
     },
     "CONTENT": {
       "SEARCH": "content/v1/search",
@@ -126,7 +128,7 @@
     "CONTENT_COLLECTION": "application/vnd.ekstep.content-collection",
     "LOCATION_READ": "org/v1/location/read",
     "TELEMETRY": {
-       "APISLUG": "service/v1/content/",
+      "APISLUG": "service/v1/content/",
       "SYNC": "data/v1/telemetry"
     }
   }

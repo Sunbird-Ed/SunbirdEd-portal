@@ -1,4 +1,4 @@
-import { ConfigService, ServerResponse, IUserProfile, IUserData } from '@sunbird/shared';
+import { ConfigService, ServerResponse, IUserProfile, IUserData, IOrganization } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
 import { Injectable } from '@angular/core';
@@ -7,6 +7,7 @@ import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';
 import { HttpClient } from '@angular/common/http';
 import { PublicDataService } from './../public-data/public-data.service';
+import { skipWhile } from 'rxjs/operators';
 /**
  * Service to fetch user details from server
  *
@@ -38,7 +39,8 @@ export class UserService {
   /**
    * Read only observable Containing user profile.
    */
-  public readonly userData$: Observable<IUserData> = this._userData$.asObservable();
+  public readonly userData$: Observable<IUserData> = this._userData$.asObservable()
+  .pipe(skipWhile(data => data === undefined || data === null));
   /**
    * reference of config service.
    */
@@ -79,6 +81,8 @@ export class UserService {
   private orgNames: Array<string> = [];
 
   public rootOrgName: string;
+
+  public orgnisationsDetails: Array<IOrganization>;
 
   /**
    * Reference of public data service.
@@ -174,6 +178,7 @@ export class UserService {
     const orgRoleMap = {};
     const hashTagIds = [];
     this._channel = _.get(profileData, 'rootOrg.hashTagId');
+    profileData.skills = _.get(profileData, 'skills' ) || [];
     hashTagIds.push(this._channel);
     let organisationIds = [];
     profileData.rootOrgAdmin = false;
@@ -245,7 +250,8 @@ export class UserService {
     };
     this.publicDataService.post(option).subscribe
       ((data: ServerResponse) => {
-        _.forEach(data.result.response.content, (orgData) => {
+        this.orgnisationsDetails = data.result.response.content;
+        _.forEach(this.orgnisationsDetails, (orgData) => {
           this.orgNames.push(orgData.orgName);
         });
         this._userProfile.organisationNames = this.orgNames;
@@ -255,6 +261,14 @@ export class UserService {
         this._userProfile.organisationNames = this.orgNames;
       }
       );
+  }
+
+  get orgIdNameMap() {
+    const mapOrgIdNameData = {};
+    _.forEach(this.orgnisationsDetails, (orgDetails) => {
+      mapOrgIdNameData[orgDetails.identifier] = orgDetails.orgName;
+    });
+    return mapOrgIdNameData;
   }
 
   get userProfile() {

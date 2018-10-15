@@ -22,7 +22,7 @@ export const mockRes = {
         }
     },
     errorResult: {
-        'responseCode': 'OK',
+        'responseCode': 'ERROR',
         'result': {
             'content': {
                 'identifier': 'do_21247940906829414411032',
@@ -33,108 +33,11 @@ export const mockRes = {
             }
         }
     },
-    successStateResult: {
-        'responseCode': 'OK',
-        'result': {
-            'content': {
-                'identifier': 'do_21247940906829414411032',
-                'createdBy': '68777b59-b28b-4aee-88d6-50d46e4c35090',
-                'mimeType': 'application/vnd.ekstep.ecml-archive',
-                'languageCode': 'en',
-                'status': 'Review',
-                'state': 'UpForReviewContent'
-            }
-        }
-    },
-    resourceBundle: {
-        'messages': {
-            'emsg': {
-                'm0004': 'Cannot preview now.Try again later'
-            }
-        }
-    },
-    userMockData: {
-        'lastName': 'User',
-        'loginId': 'ntptest102',
-        'regOrgId': '0123653943740170242',
-        'roles': [
-            'public'
-        ],
-        'rootOrg': {
-            'dateTime': null,
-            'preferredLanguage': 'English',
-            'approvedBy': null,
-            'channel': 'ROOT_ORG',
-            'description': 'Sunbird',
-            'updatedDate': '2017-08-24 06:02:10:846+0000',
-            'addressId': null,
-            'orgType': null,
-            'provider': null,
-            'orgCode': 'sunbird',
-            'theme': null,
-            'id': 'ORG_001',
-            'communityId': null,
-            'isApproved': null,
-            'slug': 'sunbird',
-            'identifier': 'ORG_001',
-            'thumbnail': null,
-            'orgName': 'Sunbird',
-            'updatedBy': 'user1',
-            'externalId': null,
-            'isRootOrg': true,
-            'rootOrgId': null,
-            'approvedDate': null,
-            'imgUrl': null,
-            'homeUrl': null,
-            'isDefault': null,
-            'contactDetail':
-                '[{\'phone\':\'213124234234\',\'email\':\'test@test.com\'},{\'phone\':\'+91213124234234\',\'email\':\'test1@test.com\'}]',
-            'createdDate': null,
-            'createdBy': null,
-            'parentOrgId': null,
-            'hashTagId': 'b00bc992ef25f1a9a8d63291e20efc8d',
-            'noOfMembers': 1,
-            'status': null
-        },
-        'identifier': '68777b59-b28b-4aee-88d6-50d46e4c3509',
-        'profileSummary': 'asdd',
-        'tcUpdatedDate': null,
-        'avatar': 'https://sunbirddev.blob.core.windows.net/user/874ed8a5-782e-4f6c-8f36-e0288455901e/File-01242833565242982418.png',
-        'userName': 'ntptest102',
-        'rootOrgId': 'ORG_001',
-        'userId': '68777b59-b28b-4aee-88d6-50d46e4c3509',
-        'emailVerified': null,
-        'firstName': 'Cretation',
-        'lastLoginTime': 1519809987692,
-        'createdDate': '2017-10-31 10:47:04:723+0000',
-        'createdBy': '68777b59-b28b-4aee-88d6-50d46e4c3509'
-    },
-    validateModal: {
-        'state': ['upForReview',
-            'review',
-            'published',
-            'limitedPublish'],
-        'status': ['Review', 'Draft', 'Live', 'Unlisted'],
-        mimeType: 'application/vnd.ekstep.ecml-archive'
-    },
-    tenantMockData: {
-        'id': 'api.tenant.info',
-        'ver': '1.0',
-        'ts': '2018-04-10 15:34:45:875+0530',
-        'params': {
-            'resmsgid': '98b0a030-3ca6-11e8-964f-83be3d8fc737',
-            'msgid': null,
-            'status': 'successful',
-            'err': '',
-            'errmsg': ''
-        },
-        'responseCode': 'OK',
-        'result': {
+    tenantMockData:  {
             'titleName': 'Sunbird',
             'logo': 'http://localhost:3000/assets/images/sunbird_logo.png',
             'poster': 'http://localhost:3000/assets/images/sunbird_logo.png',
             'favicon': 'http://localhost:3000/assets/images/favicon.ico',
             'appLogo': 'http://localhost:3000/assets/images/sunbird_logo.png'
         }
-    }
 };

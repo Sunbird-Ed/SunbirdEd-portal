@@ -15,6 +15,7 @@ describe('SortByComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
+    'parent': 'search/Courses/1',
     'queryParams': observableFrom([{ sortType: 'asc', sort_by: 'createdOn' }])
   };
   beforeEach(async(() => {
@@ -47,19 +48,20 @@ describe('SortByComponent', () => {
   });
   it('should call applySorting method with learn url ', inject([ConfigService, Router, ActivatedRoute],
     (configService, route, activatedRoute) => {
+      activatedRoute.parent = 'learn';
       component.url = 'learn';
       component.sortByOption = 'createdOn';
      component.applySorting();
      fixture.detectChanges();
-     expect(route.navigate).toHaveBeenCalledWith(['learn'], {queryParams: component.queryParams });
+     expect(route.navigate).toHaveBeenCalledWith([], { relativeTo: 'learn', queryParams: component.queryParams });
   }));
-  it('should call applySorting method with search/Courses url ', inject([ConfigService, Router],
+  it('should call applySorting method with search/Courses url ', inject([ConfigService, Router, ],
     (configService, route) => {
       component.url = 'search/Courses/1';
       component.sortByOption = 'createdOn';
      component.applySorting();
      fixture.detectChanges();
-     expect(route.navigate).toHaveBeenCalledWith(['search/Courses/1'], {queryParams: component.queryParams });
+     expect(route.navigate).toHaveBeenCalledWith([], {relativeTo: 'search/Courses/1', queryParams: component.queryParams });
   }));
 });
 

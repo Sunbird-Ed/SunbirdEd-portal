@@ -47,8 +47,14 @@
       "@sunbird/public": [
         "app/modules/public"
       ],
+      "@sunbird/shared-feature": [
+        "app/modules/shared-feature"
+      ],
       "@sunbird/environment": [
         "environments/environment"
+      ],
+      "@sunbird/course-batch": [
+        "app/modules/course-batch"
       ]
     },
     "sourceMap": true,

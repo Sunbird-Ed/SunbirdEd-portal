@@ -119,6 +119,28 @@ export class SearchService {
         return data;
       }));
   }
+
+  /**
+   * Get organization details.
+   *
+   * @param {requestParam} requestParam api request data
+  */
+  getSubOrganisationDetails(requestParam: SearchParam): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      data: {
+        request: {
+          filters: {
+            rootOrgId: requestParam.rootOrgId,
+          }
+        }
+      }
+    };
+    return this.publicDataService.post(option).pipe(
+      map((data: ServerResponse) => {
+        return data;
+      }));
+  }
   /**
    * Get searched organization list
    */
@@ -216,6 +238,7 @@ export class SearchService {
           limit: requestParam.limit,
           query: requestParam.query,
           sort_by: requestParam.sort_by,
+          exists: requestParam.exists,
           softConstraints: requestParam.softConstraints || { badgeAssertions: 1 },
           facets: requestParam.facets && requestParam.facets
         }

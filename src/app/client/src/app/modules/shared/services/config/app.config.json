@@ -18,7 +18,35 @@
       "maxCount": "leafNodesCount",
       "progress": "progress"
     }
-
+  },
+  "ViewAll": {
+    "otherCourses": {
+        "constantData":{
+        "action": {
+            "onImage": {"eventName": "onImage" }
+          },
+          "ribbon": {"right":{"class": "ui black right ribbon label"},
+          "left": {"class":  "ui circular label  card-badges-image"} }
+         }
+      },"enrolledCourses": {
+        "constantData": {
+          "action": {
+            "right": {
+              "class": "ui blue basic button",
+              "eventName": "Resume",
+              "displayType": "button",
+              "text": "Resume"
+            },
+            "onImage": {
+              "eventName": "onImage"
+            }
+          }
+        },
+      "metaData": ["batchId", "courseId"]
+      },
+       "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"},
+     "PAGE_LIMIT": 20 
   },
   "Course": {
     "otherCourse": {
@@ -417,7 +445,6 @@
         "phone": "phone",
         "email": "email",
         "userName": "userName",
-        "password": "password",
         "externalId": "externalId",
         "externalIdType": "externalIdType",
         "externalIdProvider": "externalIdProvider",
@@ -447,7 +474,9 @@
         "orgCode": "orgCode",
         "orgType": "orgType",
         "preferredLanguage": "preferredLanguage",
-        "contactDetail": "contactDetail"
+        "contactDetail": "contactDetail",
+        "locationId": "locationId",
+        "locationCode": "locationCode"
       }
     ]
   },

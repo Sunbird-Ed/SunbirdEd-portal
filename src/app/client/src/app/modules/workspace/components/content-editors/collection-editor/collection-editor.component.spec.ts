@@ -1,11 +1,10 @@
 
-import { of as observableOf } from 'rxjs';
+import { of as observableOf, throwError } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { CollectionEditorComponent } from './collection-editor.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { Injectable } from '@angular/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NavigationHelperService, ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
 import { EditorService } from '@sunbird/workspace';
@@ -14,14 +13,22 @@ import { mockRes } from './collection-editor.component.spec.data';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WorkSpaceService } from '../../../services';
 
+const mockResourceService = { messages: { emsg: { m0004: '1000' } } };
+const mockActivatedRoute = {
+  snapshot: {
+    params: {
+      'contentId': 'do_21247940906829414411032',
+      'type': 'collection', 'state': 'upForReview', 'framework': 'framework'
+    }
+  }
+};
+class RouterStub {
+  navigate = jasmine.createSpy('navigate');
+}
+const mockUserService = { userProfile: { userId: '68777b59-b28b-4aee-88d6-50d46e4c35090'} };
 describe('CollectionEditorComponent', () => {
   let component: CollectionEditorComponent;
   let fixture: ComponentFixture<CollectionEditorComponent>;
-
-  class RouterStub {
-    navigate = jasmine.createSpy('navigate');
-  }
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionEditorComponent],
@@ -31,76 +38,51 @@ describe('CollectionEditorComponent', () => {
         ResourceService, ToasterService, ConfigService, LearnerService,
         NavigationHelperService, BrowserCacheTtlService, WorkSpaceService,
         { provide: Router, useClass: RouterStub },
-        {
-          provide: ActivatedRoute, useValue: {
-            'params': observableOf({
-              'contentId': 'do_21247940906829414411032',
-              'type': 'collection', 'state': 'draft', 'framework': 'framework'
-            })
-          }
-        }
+        { provide: ResourceService, useValue: mockResourceService },
+        { provide: UserService, useValue: mockUserService },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   }));
-
   beforeEach(() => {
     fixture = TestBed.createComponent(CollectionEditorComponent);
     component = fixture.componentInstance;
   });
 
-  it('should call userservice, call open editor', inject([EditorService, UserService, Router, ToasterService,
-    ResourceService, TenantService], (editorService, userService, router, toasterService, resourceService, tenantService) => {
-      userService._userData$.next({ err: null, userProfile: mockRes.userMockData });
-      tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData.result });
-      component.tenantService.tenantData = mockRes.tenantMockData.result;
-      component.tenantService.tenantData.logo = mockRes.tenantMockData.result.logo;
-      fixture.detectChanges();
-      spyOn(editorService, 'getById').and.returnValue(observableOf(mockRes.successResult));
-      component.openCollectionEditor();
-      const rspData = mockRes.successResult.result.content;
-      component.validateRequest(rspData, mockRes.validateModal);
-      const status = 'draft';
-      component.updateModeAndStatus('draft');
-      component.updateModeAndStatus('live');
-      component.updateModeAndStatus('flagged');
-      component.getTreeNodes('Course');
-      expect(component.getTreeNodes).not.toBeUndefined();
+  it('should fetch tenant and collection details and set logo and collection details if success',
+  inject([EditorService, ToasterService, TenantService, WorkSpaceService],
+    (editorService, toasterService, tenantService, workspaceService) => {
+      tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData });
+      spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.successResult));
+      spyOn(workspaceService, 'toggleWarning').and.callFake(() => { });
+      spyOn(jQuery.fn, 'iziModal').and.callFake(() => { });
+      spyOn(toasterService, 'error').and.callFake(() => {});
+      spyOn(editorService, 'getOwnershipType').and.returnValue(observableOf(['CreatedBy', 'CreatedFor']));
+      component.ngOnInit();
+      expect(component.logo).toBeDefined();
+      expect(component.collectionDetails).toBeDefined();
+      expect(component.showLoader).toBeFalsy();
+      expect(jQuery.fn.iziModal).toHaveBeenCalled();
+      expect(window.config).toBeDefined();
+      expect(window.context).toBeDefined();
+      expect(window.context.ownershipType).toEqual(['CreatedBy', 'CreatedFor']);
     }));
 
-  it('should call collectioneditor with error data', inject([EditorService, UserService, Router, ToasterService, ResourceService,
-    TenantService],
+  it('should throw error if getting content details fails',
+  inject([EditorService, UserService, Router, ToasterService, ResourceService, TenantService],
     (editorService, userService, router, toasterService, resourceService, tenantService) => {
-      resourceService.messages = mockRes.resourceBundle.messages;
-      userService._userData$.next({ err: null, userProfile: mockRes.userMockData });
-      tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData.result });
-      component.tenantService.tenantData = mockRes.tenantMockData.result;
-      component.tenantService.tenantData.logo = mockRes.tenantMockData.result.logo;
-      fixture.detectChanges();
-      spyOn(editorService, 'getById').and.returnValue(observableOf(mockRes.errorResult));
-      spyOn(toasterService, 'error').and.callThrough();
-      component.openCollectionEditor();
-      const rspData = mockRes.errorResult.result.content;
-      component.validateRequest(rspData, mockRes.validateModal);
+      tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData });
+      spyOn(editorService, 'getContent').and.returnValue(throwError(mockRes.successResult));
+      spyOn(toasterService, 'error').and.callFake(() => {});
+      component.ngOnInit();
       expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0004);
     }));
 
-  it('test to navigate to drafts', inject([Router], (router) => () => {
-    spyOn(component, 'closeModal').and.callThrough();
+  it('should navigate to draft', inject([Router, NavigationHelperService], (router, navigationHelperService) => () => {
+    spyOn(navigationHelperService, 'navigateToWorkSpace').and.callFake(() => { });
     component.closeModal();
-    setTimeout(() => {
-      component.navigateToWorkSpace();
-    }, 1000);
-    expect(component.navigateToWorkSpace).not.toHaveBeenCalled();
-    jasmine.clock().tick(1001);
-    expect(component.navigateToWorkSpace).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledWith(['workspace/content/draft/1']);
+    expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('workspace/content/draft/1');
   }));
-
-  it('should listen to the browser back button event', () => {
-    spyOn(sessionStorage, 'setItem').and.callThrough();
-    component.ngOnInit();
-    expect(window.location.hash).toEqual('#no');
-  });
 });

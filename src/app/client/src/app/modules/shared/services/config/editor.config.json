@@ -1,93 +1,27 @@
 {
-    "EDITOR_CONFIG": {
-        "GENERIC_WINDOW_CONFIG": {
-            "corePluginsPackaged": true,
-            "modalId": "genericEditor",
-            "dispatcher": "local",
-            "apislug": "/action",
-            "alertOnUnload": true,
-            "headerLogo": "",
-            "loadingImage": "",
-            "plugins": [
-                {
-                    "id": "org.ekstep.sunbirdcommonheader",
-                    "ver": 1.4,
-                    "type": "plugin"
-                }
-            ],
-            "previewConfig": {
-                "repos": "['/sunbird-plugins/renderer']",
-                "plugins": [
-                    {
-                        "id": "org.sunbird.player.endpage",
-                        "ver": 1.1,
-                        "type": "plugin"
-                    }
-                ],
-                "splash": {
-                    "text": "",
-                    "icon": "",
-                    "bgImage": "assets/icons/splacebackground_1.png",
-                    "webLink": ""
+    "DEFAULT_PARAMS_FIELDS": "createdBy,status,mimeType,contentType,resourceType",
+    "COLLECTION_EDITOR": {
+        "WINDOW_CONFIG": {
+            "editorConfig": {
+                "rules": {
+                    "levels": 7,
+                    "objectTypes": []
                 },
-                "overlay": {
-                    "showUser": false
-                },
-                "showEndPage": false
-            }
-        },
-        "CONTENT_WINDOW_CONFIG": {
-            "baseURL": "",
-            "modalId": "contentEditor",
-            "apislug": "/action",
-            "alertOnUnload": true,
-            "headerLogo": "",
-            "aws_s3_urls": "",
-            "plugins": [
-                {
-                    "id": "org.ekstep.sunbirdcommonheader",
-                    "ver": 1.4,
-                    "type": "plugin"
-                }
-            ],
-            "dispatcher": "local",
-            "localDispatcherEndpoint": "/content-editor/telemetry",
-            "showHelp": false,
-            "previewConfig": {
-                "repos": [
-                    "/sunbird-plugins/renderer"
-                ],
-                "plugins": [
-                    {
-                        "id": "org.sunbird.player.endpage",
-                        "ver": 1.1,
-                        "type": "plugin"
-                    }
-                ],
-                "splash": {
-                    "text": "",
-                    "icon": "",
-                    "bgImage": "assets/icons/splacebackground_1.png",
-                    "webLink": ""
-                },
-                "overlay": {
-                    "showUser" : false
-                },
-                "showEndPage": false
-            }
-        },
-        "COLLECTION_WINDOW_CONFIG": {
+                "publishMode": false,
+                "isFlagReviewer": false
+            },
+            "nodeDisplayCriteria": {
+                "contentType": ["Collection"]
+            },
             "corePluginsPackaged": true,
             "modalId": "collectionEditor",
             "dispatcher": "local",
             "apislug": "/action",
             "alertOnUnload": true,
-            "headerLogo": "",
             "loadingImage": "",
-            "plugins": [
-                {
+            "plugins": [{
                     "id": "org.ekstep.sunbirdcommonheader",
-                    "ver": "1.5",
+                    "ver": "1.6",
                     "type": "plugin"
                 },
                 {
@@ -97,7 +31,7 @@
                 },
                 {
                     "id": "org.ekstep.metadata",
-                    "ver": "1.1",
+                    "ver": "1.2",
                     "type": "plugin"
                 },
                 {
@@ -107,233 +41,190 @@
                 }
             ],
             "localDispatcherEndpoint": "/collection-editor/telemetry",
-            "editorConfig": {
-                "mode": "Edit",
-                "contentStatus": "draft",
-                "rules": {
-                    "levels": 7,
-                    "objectTypes": ""
-                },
-                "defaultTemplate": {}
-            },
             "previewConfig": {
-                "repos": "['/sunbird-plugins/renderer']",
-                "plugins": [
-                    {
-                        "id": "org.sunbird.player.endpage",
-                        "ver": 1.1
-                        ,
-                        "type": "plugin"
-                    }
-                ],
-                "splash": {
-                    "text": "",
-                    "icon": "",
-                    "bgImage": "assets/icons/splacebackground_1.png",
-                    "webLink": ""
-                },
-                "overlay": {
-                    "showUser": false
-                },
-                "showEndPage": false
+            "repos": ["/sunbird-plugins/renderer"],
+            "plugins": [{
+                "id": "org.sunbird.player.endpage",
+                "ver": 1.1,
+                "type": "plugin"
+            }],
+            "splash": {
+                "text": "",
+                "icon": "",
+                "bgImage": "assets/icons/splacebackground_1.png",
+                "webLink": ""
+            },
+            "overlay": {
+                "showUser": false
+            },
+            "showEndPage": false
             },
             "editorType": "Collection"
         },
-        "COLLECTION_PLUGINS": [
-            {
-                "id": "org.ekstep.sunbirdcommonheader",
-                "ver": "1.5",
-                "type": "plugin"
+        "COURSE_ARRAY": [{
+            "type": "Course",
+            "label": "Course",
+            "isRoot": true,
+            "editable": true,
+            "childrenTypes": [
+                "CourseUnit",
+                "Collection",
+                "Resource"
+            ],
+            "addType": "Editor",
+            "iconClass": "fa fa-book"
             },
             {
-                "id": "org.ekstep.sunbirdmetadata",
-                "ver": "1.1",
-                "type": "plugin"
+            "type": "CourseUnit",
+            "label": "Course Unit",
+            "isRoot": false,
+            "editable": true,
+            "childrenTypes": [
+                "CourseUnit",
+                "Collection",
+                "Resource"
+            ],
+            "addType": "Editor",
+            "iconClass": "fa fa-folder-o"
             },
             {
-                "id": "org.ekstep.metadata",
-                "ver": "1.1",
-                "type": "plugin"
+            "type": "Collection",
+            "label": "Collection",
+            "isRoot": false,
+            "editable": false,
+            "childrenTypes": [],
+            "addType": "Browser",
+            "iconClass": "fa fa-file-o"
             },
             {
-                "id": "org.ekstep.lessonbrowser",
-                "ver": "1.4",
-                "type": "plugin"
-            },
-            {
-                "id": "org.ekstep.contenteditorfunctions",
-                "ver": "1.1",
-                "type": "plugin"
+            "type": "Resource",
+            "label": "Resource",
+            "isRoot": false,
+            "editable": false,
+            "childrenTypes": [],
+            "addType": "Browser",
+            "iconClass": "fa fa-file-o"
             }
         ],
-        "COURSE_ARRAY": [
-            {
-                "type": "Course",
-                "label": "Course",
-                "isRoot": true,
-                "editable": true,
-                "childrenTypes": [
-                    "CourseUnit",
-                    "Collection",
-                    "Resource"
-                ],
-                "addType": "Editor",
-                "iconClass": "fa fa-book"
+        "COLLECTION_ARRAY": [{
+            "type": "Collection",
+            "label": "Collection",
+            "isRoot": true,
+            "editable": true,
+            "childrenTypes": [
+                "Collection",
+                "Resource"
+            ],
+            "addType": "Editor",
+            "iconClass": "fa fa-folder-o"
             },
             {
-                "type": "CourseUnit",
-                "label": "Course Unit",
-                "isRoot": false,
-                "editable": true,
-                "childrenTypes": [
-                    "CourseUnit",
-                    "Collection",
-                    "Resource"
-                ],
-                "addType": "Editor",
-                "iconClass": "fa fa-folder-o"
+            "type": "Collection",
+            "label": "Collection",
+            "isRoot": false,
+            "editable": false,
+            "childrenTypes": [],
+            "addType": "Browser",
+            "iconClass": "fa fa-file-o"
             },
             {
-                "type": "Collection",
-                "label": "Collection",
-                "isRoot": false,
-                "editable": false,
-                "childrenTypes": [],
-                "addType": "Browser",
-                "iconClass": "fa fa-file-o"
-            },
-            {
-                "type": "Resource",
-                "label": "Resource",
-                "isRoot": false,
-                "editable": false,
-                "childrenTypes": [],
-                "addType": "Browser",
-                "iconClass": "fa fa-file-o"
+            "type": "Resource",
+            "label": "Resource",
+            "isRoot": false,
+            "editable": false,
+            "childrenTypes": [],
+            "addType": "Browser",
+            "iconClass": "fa fa-file-o"
             }
         ],
-        "COLLECTION_ARRAY": [
-            {
-                "type": "Collection",
-                "label": "Collection",
-                "isRoot": true,
-                "editable": true,
-                "childrenTypes": [
-                    "Collection",
-                    "Resource"
-                ],
-                "addType": "Editor",
-                "iconClass": "fa fa-folder-o"
+        "LESSON_PLAN": [{
+            "type": "LessonPlan",
+            "label": "LessonPlan",
+            "isRoot": true,
+            "editable": true,
+            "childrenTypes": [
+                "LessonPlanUnit",
+                "Collection",
+                "Resource"
+            ],
+            "addType": "Editor",
+            "iconClass": "fa fa-book"
             },
             {
-                "type": "Collection",
-                "label": "Collection",
-                "isRoot": false,
-                "editable": false,
-                "childrenTypes": [],
-                "addType": "Browser",
-                "iconClass": "fa fa-file-o"
+            "type": "LessonPlanUnit",
+            "label": "LessonPlan Unit",
+            "isRoot": false,
+            "editable": true,
+            "childrenTypes": [
+                "LessonPlanUnit",
+                "Collection",
+                "Resource"
+            ],
+            "addType": "Editor",
+            "iconClass": "fa fa-folder-o"
             },
             {
-                "type": "Resource",
-                "label": "Resource",
-                "isRoot": false,
-                "editable": false,
-                "childrenTypes": [],
-                "addType": "Browser",
-                "iconClass": "fa fa-file-o"
+            "type": "Collection",
+            "label": "Collection",
+            "isRoot": false,
+            "editable": false,
+            "childrenTypes": [],
+            "addType": "Browser",
+            "iconClass": "fa fa-file-o"
+            },
+            {
+            "type": "Resource",
+            "label": "Resource",
+            "isRoot": false,
+            "editable": false,
+            "childrenTypes": [],
+            "addType": "Browser",
+            "iconClass": "fa fa-file-o"
             }
         ],
-        "LESSON_PLAN": [
-            {
-                "type": "LessonPlan",
-                "label": "LessonPlan",
-                "isRoot": true,
-                "editable": true,
-                "childrenTypes": [
-                    "LessonPlanUnit",
-                    "Collection",
-                    "Resource"
-                ],
-                "addType": "Editor",
-                "iconClass": "fa fa-book"
+        "DEFAULT_CONFIG": [{
+            "type": "TextBook",
+            "label": "Textbook",
+            "isRoot": true,
+            "editable": true,
+            "childrenTypes": [
+                "TextBookUnit",
+                "Collection",
+                "Resource"
+            ],
+            "addType": "Editor",
+            "iconClass": "fa fa-book"
             },
             {
-                "type": "LessonPlanUnit",
-                "label": "LessonPlan Unit",
-                "isRoot": false,
-                "editable": true,
-                "childrenTypes": [
-                    "LessonPlanUnit",
-                    "Collection",
-                    "Resource"
-                ],
-                "addType": "Editor",
-                "iconClass": "fa fa-folder-o"
+            "type": "TextBookUnit",
+            "label": "Textbook Unit",
+            "isRoot": false,
+            "editable": true,
+            "childrenTypes": [
+                "TextBookUnit",
+                "Collection",
+                "Resource"
+            ],
+            "addType": "Editor",
+            "iconClass": "fa fa-folder-o"
             },
             {
-                "type": "Collection",
-                "label": "Collection",
-                "isRoot": false,
-                "editable": false,
-                "childrenTypes": [],
-                "addType": "Browser",
-                "iconClass": "fa fa-file-o"
+            "type": "Collection",
+            "label": "Collection",
+            "isRoot": false,
+            "editable": false,
+            "childrenTypes": [],
+            "addType": "Browser",
+            "iconClass": "fa fa-file-o"
             },
             {
-                "type": "Resource",
-                "label": "Resource",
-                "isRoot": false,
-                "editable": false,
-                "childrenTypes": [],
-                "addType": "Browser",
-                "iconClass": "fa fa-file-o"
-            }
-        ],
-        "DEFAULT_CONFIG": [
-            {
-                "type": "TextBook",
-                "label": "Textbook",
-                "isRoot": true,
-                "editable": true,
-                "childrenTypes": [
-                    "TextBookUnit",
-                    "Collection",
-                    "Resource"
-                ],
-                "addType": "Editor",
-                "iconClass": "fa fa-book"
-            },
-            {
-                "type": "TextBookUnit",
-                "label": "Textbook Unit",
-                "isRoot": false,
-                "editable": true,
-                "childrenTypes": [
-                    "TextBookUnit",
-                    "Collection",
-                    "Resource"
-                ],
-                "addType": "Editor",
-                "iconClass": "fa fa-folder-o"
-            },
-            {
-                "type": "Collection",
-                "label": "Collection",
-                "isRoot": false,
-                "editable": false,
-                "childrenTypes": [],
-                "addType": "Browser",
-                "iconClass": "fa fa-file-o"
-            },
-            {
-                "type": "Resource",
-                "label": "Resource",
-                "isRoot": false,
-                "editable": false,
-                "childrenTypes": [],
-                "addType": "Browser",
-                "iconClass": "fa fa-file-o"
+            "type": "Resource",
+            "label": "Resource",
+            "isRoot": false,
+            "editable": false,
+            "childrenTypes": [],
+            "addType": "Browser",
+            "iconClass": "fa fa-file-o"
             }
         ],
         "collectionState": [
@@ -353,9 +244,9 @@
             "FlagDraft",
             "FlagReview"
         ],
-        "mimeCollection": "application/vnd.ekstep.content-collection",
-        "editorQS": "createdBy,status,mimeType,contentType,resourceType",
-        "MODE": "edit",
+        "mimeCollection": "application/vnd.ekstep.content-collection"
+    },
+    "CONTENT_EDITOR": {
         "contentState": [
             "upForReview",
             "review",
@@ -371,58 +262,104 @@
             "FlagDraft",
             "FlagReview"
         ],
-        "DRAFT": "draft",
-        "READ": "Read",
-        "FLAGGED": "flagged",
-        "LIVE": "live",
-        "GENERICEDITOR": "genericeditor",
-        "contentEditor": "contentEditor",
         "WINDOW_CONFIG": {
-            "modalId": "collectionEditor",
+            "baseURL": "",
+            "modalId": "contentEditor",
+            "apislug": "/action",
+            "alertOnUnload": true,
+            "build_number": "1.0",
+            "headerLogo": "",
+            "aws_s3_urls": [],
+            "plugins": [{
+                "id": "org.ekstep.sunbirdcommonheader",
+                "ver": "1.6",
+                "type": "plugin"
+            },
+            {
+                "id": "org.ekstep.sunbirdmetadata",
+                "ver": "1.1",
+                "type": "plugin"
+            },
+            {
+                "id": "org.ekstep.metadata",
+                "ver": "1.2",
+                "type": "plugin"
+            },
+            {
+                "id": "org.ekstep.questionset",
+                "ver": "1.0",
+                "type": "plugin"
+            },
+            {
+                "id": "org.ekstep.video",
+                "ver": "1.1",
+                "type": "plugin"
+            }
+            ],
+            "dispatcher": "local",
+            "localDispatcherEndpoint": "/content-editor/telemetry",
+            "showHelp": false,
+            "previewConfig": {
+            "repos": ["/sunbird-plugins/renderer"],
+            "plugins": [{
+                "id": "org.sunbird.player.endpage",
+                "ver": 1.1,
+                "type": "plugin"
+            }],
+            "splash": {
+                "text": "",
+                "icon": "",
+                "bgImage": "assets/icons/splacebackground_1.png",
+                "webLink": ""
+            },
+            "overlay": {
+                "showUser": false
+            },
+            "showEndPage": false
+            },
+            "pluginsRepoUrl": "/plugins/v1/search"
+        }
+    },
+    "GENERIC_EDITOR": {
+        "WINDOW_CONFIG": {
+            "corePluginsPackaged": true,
+            "modalId": "genericEditor",
             "dispatcher": "local",
             "apislug": "/action",
-            "SB_COMMON_HEADER": "org.ekstep.sunbirdcommonheader",
-            "SUGGEST_CONTENT": "org.ekstep.suggestcontent",
-            "PLUGIN_VERSION": "1.0",
-            "PLUGIN_VERSION_1_1": "1.1",
-            "PLUGIN_VERSION_1_2": "1.2",
-            "PLUGIN_TYPE": "plugin",
-            "LESSON_BROWSER": "org.ekstep.lessonbrowser",
-            "LESSON_BROWSER_VERSION": "1.3",
-            "RENDERER_URL": "['/sunbird-plugins/renderer']",
-            "RULES_LEVEL": "7",
-            "PLUGIN_ENDPAGE": "org.sunbird.player.endpage",
-            "localDispatcherEndpoint": "/collection-editor/telemetry",
-            "CONTENT_ENDPOINT": "/content-editor/telemetry",
-            "METADATA": "org.ekstep.metadata",
-            "contenteditorfunctions": 1.1
-        },
-        "TREE_NODE": {
-            "COURSE": "Course",
-            "CHILDREN_TYPE": "['CourseUnit', 'Collection','Resource' ]",
-            "EDITOR": "Editor",
-            "ICON_CLASS_BOOK": "fa fa-book",
-            "COURSE_TYPE": "CourseUnit",
-            "COURSE_LABEL": "Course Unit",
-            "CU_CHILDREN_TYPE": "['CourseUnit', 'Collection', 'Resource']",
-            "ICON_CLASS_FOLDER": "fa fa-folder-o",
-            "COLLECTION": "Collection",
-            "BROWSER": "Browser",
-            "ICON_CLASS_FILE_O": "fa fa-file-o",
-            "WORKSHEET": "Worksheet",
-            "COLL_CHILDREN_TYPE": "['Collection', 'Resource' ]",
-            "RESOURCE": "Resource",
-            "LESSON_PLAN": "LessonPlan",
-            "LP_CHILDREN_TYPE": "['LessonPlanUnit', 'Collection', 'Resource']",
-            "LESSON_PLAN_UNIT_TYPE": "LessonPlanUnit",
-            "LESSON_PLAN_UNIT_LABEL": "LessonPlan Unit",
-            "LPUNIT_CHILDREN_TYPE": "['LessonPlanUnit', 'Collection', 'Resource' ]",
-            "STORY": "Story",
-            "TEXTBOOK": "TextBook",
-            "TB_CHILDREN_TYPE": "['TextBookUnit', 'Collection', 'Resource']",
-            "TB_UNIT_TYPE": "TextBookUnit",
-            "TB_UNIT_LABEL": "TextBook Unit",
-            "TBUNIT_CHILDREN_TYPE": "['TextBookUnit', 'Collection', 'Resource']"
+            "alertOnUnload": true,
+            "headerLogo": "",
+            "loadingImage": "",
+            "plugins": [{
+                    "id": "org.ekstep.sunbirdcommonheader",
+                    "ver": "1.6",
+                    "type": "plugin"
+                    }, {
+                    "id": "org.ekstep.sunbirdmetadata",
+                    "ver": "1.1",
+                    "type": "plugin"
+                    }, {
+                    "id": "org.ekstep.metadata",
+                    "ver": "1.2",
+                    "type": "plugin"
+                }],
+            "previewConfig": {
+                "repos": ["/sunbird-plugins/renderer"],
+                "plugins": [{
+                    "id": "org.sunbird.player.endpage",
+                    "ver": 1.1,
+                    "type": "plugin"
+                }],
+                "splash": {
+                    "text": "",
+                    "icon": "",
+                    "bgImage": "assets/icons/splacebackground_1.png",
+                    "webLink": ""
+                },
+                "overlay": {
+                    "showUser": false
+                },
+                "showEndPage": false
+            }
         }
     }
 }

@@ -14,6 +14,13 @@ export const mockRes = {
         'gradeLevel': [
             'KG'
         ],
+        'contentCredits': [
+            {
+              'id': '',
+              'name': 'Amit Sharma',
+              'type': ''
+            }
+        ],
         'collections': [],
         'lastUpdatedOn': '2018-04-19T12:11:05.070+0000',
         'contentType': 'Resource',

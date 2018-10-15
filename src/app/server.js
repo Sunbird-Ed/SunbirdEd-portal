@@ -29,6 +29,8 @@ const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 let memoryStore = null
 const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
 const frameworkConfig = require('./framework.config.js');
+const configHelper = require('./helpers/config/configHelper.js')
+
 const app = express()
 
 if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
@@ -206,20 +208,22 @@ function runApp () {
 
   // redirect to home if nothing found
   app.all('*', (req, res) => res.redirect('/'))
-
-  portal.server = app.listen(envHelper.PORTAL_PORT, () => {
-    if (envHelper.PORTAL_CDN_URL) {
-      const req = request
-        .get(envHelper.PORTAL_CDN_URL + 'index.' + packageObj.version + '.' + packageObj.buildHash + '.ejs')
-        .on('response', function (res) {
-          if (res.statusCode === 200) {
-            req.pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')))
-          } else {
-            console.log('Error while fetching '+envHelper.PORTAL_CDN_URL + 'index.' + packageObj.version + '.' + packageObj.buildHash + '.ejs file when CDN enabled');
-          }
-        })
-    }
-    console.log('app running on port ' + envHelper.PORTAL_PORT)
+  // start server after fetching the configuration data
+  configHelper.fetchConfig().then(function(){
+    portal.server = app.listen(envHelper.PORTAL_PORT, () => {
+      if (envHelper.PORTAL_CDN_URL) {
+        const req = request
+          .get(envHelper.PORTAL_CDN_URL + 'index.' + packageObj.version + '.' + packageObj.buildHash + '.ejs')
+          .on('response', function (res) {
+            if (res.statusCode === 200) {
+              req.pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')))
+            } else {
+              console.log('Error while fetching '+envHelper.PORTAL_CDN_URL + 'index.' + packageObj.version + '.' + packageObj.buildHash + '.ejs file when CDN enabled');
+            }
+          })
+      }
+      console.log('app running on port ' + envHelper.PORTAL_PORT)
+    })
   })
 }
 

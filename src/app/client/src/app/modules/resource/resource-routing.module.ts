@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { FlagContentComponent } from '@sunbird/core';
 import { NoteListComponent } from '@sunbird/notes';
+import {ViewAllComponent} from '@sunbird/shared-feature';
 const telemetryEnv = 'library';
 const routes: Routes = [
   {
@@ -13,6 +14,16 @@ const routes: Routes = [
       telemetry: { env: telemetryEnv, pageid: 'resources', type: 'view' }
     }
   }, {
+    path: 'view-all/:section/:pageNumber', component: ViewAllComponent,
+    data: {
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '/resources' }],
+      telemetry: {
+        env: telemetryEnv, pageid: 'viewAll', type: 'view', subtype: 'paginate'
+      },
+      filterType: 'library'
+    }
+  },
+   {
     path: 'play/collection/:collectionId', component: CollectionPlayerComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }],

@@ -9,7 +9,7 @@ import { PublicCollectionPlayerComponent } from './public-collection-player.comp
 import { PublicPlayerService } from '../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { WindowScrollService, SharedModule } from '@sunbird/shared';
+import { WindowScrollService, SharedModule, ResourceService } from '@sunbird/shared';
 import { CollectionHierarchyGetMockResponse, collectionTree } from './public-collection-player.component.spec.data';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
@@ -36,14 +36,22 @@ describe('PublicCollectionPlayerComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
+  const resourceBundle = {
+    'messages': {
+      'stmsg': {
+        'm0118': 'No content to play'
+      }
+    }
+  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [PublicCollectionPlayerComponent],
       imports: [CoreModule.forRoot(), HttpClientTestingModule, RouterTestingModule,
       TelemetryModule.forRoot(), SharedModule.forRoot()],
-      providers: [ContentService, PublicPlayerService,
+      providers: [ContentService, PublicPlayerService, ResourceService,
         { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: ResourceService, useValue: resourceBundle }],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();

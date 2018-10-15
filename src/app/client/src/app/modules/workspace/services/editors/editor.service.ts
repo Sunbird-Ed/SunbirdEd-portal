@@ -1,11 +1,13 @@
-import { ContentService, PublicDataService } from '@sunbird/core';
+import { ContentService, PublicDataService, UserService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
+import { map, switchMap, catchError } from 'rxjs/operators';
+import * as _ from 'lodash';
+import { WorkSpaceService } from './../work-space/workspace.service';
 
 /**
  * Service to provides CRUD methods to make content api request by extending DataService.
- *
  */
 @Injectable()
 export class EditorService {
@@ -16,53 +18,68 @@ export class EditorService {
     /**
      * reference of config service.
      */
-    public config: ConfigService;
+    public configService: ConfigService;
     /**
      * reference of content service.
      */
     public contentService: ContentService;
-
     /**
      * reference of lerner service.
      */
     public publicDataService: PublicDataService;
-
-
     /**
      * constructor
      * @param {ConfigService} config ConfigService reference
-     * @param {HttpClient} http HttpClient reference
      */
-    constructor(config: ConfigService, contentService: ContentService,
-        publicDataService: PublicDataService) {
-        this.config = config;
+    constructor(configService: ConfigService, contentService: ContentService, publicDataService: PublicDataService,
+        public workspaceService: WorkSpaceService, public userService: UserService) {
+        this.configService = configService;
         this.contentService = contentService;
-        this.baseUrl = this.config.urlConFig.URLS.CONTENT_PREFIX;
+        this.baseUrl = this.configService.urlConFig.URLS.CONTENT_PREFIX;
         this.publicDataService = publicDataService;
     }
 
     /**
      * Create content Id for the editor
-     * @param req
+     * @param req OBJECT
      */
     create(req): Observable<ServerResponse> {
         const option = {
-            url: this.config.urlConFig.URLS.CONTENT.CREATE,
+            url: this.configService.urlConFig.URLS.CONTENT.CREATE,
             data: {
                 'request': req
             }
         };
         return this.contentService.post(option);
     }
-/**
- *Create Editor and assign parameters
- */
-    getById(req, qs): Observable<ServerResponse> {
-        const option = {
-            url : this.config.urlConFig.URLS.CONTENT.GET + '/' + req.contentId + '?fields=' + qs.fields + '&mode=' + qs.mode
+    /**
+     * get content details by id and query param
+     */
+    getContent(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
+        const param = { fields: this.configService.editorConfig.DEFAULT_PARAMS_FIELDS };
+        const req = {
+            url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
+            param: { ...param, ...option.params }
         };
-        return this.publicDataService.get(option);
-      }
+        return this.publicDataService.get(req).pipe(map((response: ServerResponse) => {
+            return response;
+        }));
+    }
+
+    getOwnershipType() {
+        const formServiceInputParams = {
+            formType: 'content',
+            subType: 'all',
+            formAction: 'ownership',
+            rootOrgId: this.userService.userProfile.rootOrgId
+        };
+        return this.workspaceService.getFormData(formServiceInputParams).pipe(
+            map(data => {
+                return _.get(data, 'result.form.data.fields[0].ownershipType') ?
+                data.result.form.data.fields[0].ownershipType : ['createdBy'];
+            }), catchError(error => {
+                return of(['createdBy']);
+            })
+        );
+    }
 }
-
-

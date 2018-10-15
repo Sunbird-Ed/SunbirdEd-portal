@@ -74,7 +74,7 @@
                                         <img class="ui avatar image " src="{{item.posterImage || 'assets/images/zipFileIcon.png' | cdnprefixurl}}">
                                         <div appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="myContributionsInteractEdata"
                                             class="content" (click)="onClickOfMyContributions(item)">
-                                            <a class=" header ">{{item.name}}</a>
+                                            <a class="header word-break-all">{{item.name}}</a>
                                             <div class="metadata ">
                                                 <sui-rating *ngIf="item.me_averageRating" class="courseHeader-rating ui star rating" [isReadonly]="true" [ngModel]="item.me_averageRating"
                                                     [maximum]="5"></sui-rating>

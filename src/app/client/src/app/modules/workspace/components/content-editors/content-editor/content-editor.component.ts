@@ -1,156 +1,96 @@
 import { Component, OnInit, AfterViewInit, NgZone, Renderer2, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 import * as iziModal from 'izimodal/js/iziModal';
-import {
-  NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserData, IUserProfile
-} from '@sunbird/shared';
+import { NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserProfile, ServerResponse } from '@sunbird/shared';
 import { UserService, TenantService } from '@sunbird/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { EditorService } from './../../../services/editors/editor.service';
 import { environment } from '@sunbird/environment';
 import { WorkSpaceService } from '../../../services';
-import {
-  TelemetryService, IInteractEventObject, IInteractEventEdata
-} from '@sunbird/telemetry';
+import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
+import { combineLatest, of, throwError } from 'rxjs';
+import { map, mergeMap, tap, delay } from 'rxjs/operators';
+jQuery.fn.iziModal = iziModal;
+
+/**
+ * Component Launches the Content Editor in a IFrame Modal
+ */
 @Component({
   selector: 'app-content-editor',
   templateUrl: './content-editor.component.html',
   styleUrls: ['./content-editor.component.css']
 })
+export class ContentEditorComponent implements OnInit, OnDestroy {
 
-/**
- * Component Launches the Content Editor in a IFrame Modal
- */
-export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy {
-
-  /**
-  * To show toaster(error, success etc) after any API calls
-  */
-  private toasterService: ToasterService;
-  /**
-    * To call resource service which helps to use language constant
-    */
-  public resourceService: ResourceService;
-  /**
-   * To make inbox API calls
-   */
-  private editorService: EditorService;
-  /**
-   * reference of config service.
-   */
-  public config: ConfigService;
-  /**
-   * user profile details.
-   */
-  public userProfile: IUserProfile;
-
-  /**
-   * user tenant details.
-   */
-  public tenantService: TenantService;
-  /**
-   * Content id for editor
-   */
-  public contentId: string;
-  /**
-   * state of the content
-   */
-  public state: string;
-  /**
-  * type for editor
-  */
-  public type: string;
-  /**
-  * framework value of editor
-  */
-  public framework: string;
-  /**
-   * reference of UserService service.
-   */
-  userService: UserService;
-
-  public showModal: boolean;
-
+  private userProfile: IUserProfile;
+  private routeParams: any;
   private buildNumber: string;
-
+  private portalVersion: string;
   public logo: string;
-  public listener;
-  public editorInteractObject: IInteractEventObject;
-  public browserBackEventSub;
+  public showLoader = true;
+  private browserBackEventSub;
+  public contentDetails: any;
+  public ownershipType: Array<string>;
   /**
-  * Default method of classs ContentEditorComponent
-  *
-  * @param {ResourceService} resourceService To get language constant
-  * @param {EditorService} editorService To provide the api services
-  * @param {ConfigService} config Reference of ConfigService
-  * @param {UserService} userService Reference of userService
-  * @param {Router} route for the navigation
-  * @param {ActivatedRoute} activatedRoute for getting params
-  *  @param {NgZone} _zone for angular function inside jQuery
+  * Default method of class ContentEditorComponent
   */
-  constructor(
-    resourceService: ResourceService,
-    toasterService: ToasterService,
-    editorService: EditorService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    config: ConfigService,
-    userService: UserService, public _zone: NgZone,
-    private renderer: Renderer2,
-    tenantService: TenantService,
-    public telemetryService: TelemetryService,
-    public navigationHelperService: NavigationHelperService, public workspaceService: WorkSpaceService
+  constructor(private resourceService: ResourceService, private toasterService: ToasterService,
+    private editorService: EditorService, private activatedRoute: ActivatedRoute, private configService: ConfigService,
+    private userService: UserService, private _zone: NgZone, private renderer: Renderer2,
+    private tenantService: TenantService, private telemetryService: TelemetryService,
+    private navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService
   ) {
-    this.resourceService = resourceService;
-    this.toasterService = toasterService;
-    this.editorService = editorService;
-    this.config = config;
-    this.activatedRoute = activatedRoute;
-    this.userService = userService;
-    this.tenantService = tenantService;
-    try {
-      this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')).value;
-    } catch (error) {
-      this.buildNumber = '1.0';
-    }
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    this.buildNumber = buildNumber ? buildNumber.value : '1.0';
+    this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
   }
   ngOnInit() {
-    /**
-    * Call User service to get user data
-    */
-    this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        if (user && !user.err) {
-          this.userProfile = user.userProfile;
+    this.userProfile = this.userService.userProfile;
+    this.routeParams = this.activatedRoute.snapshot.params;
+    this.disableBrowserBackButton();
+    this.getDetails().pipe(
+      tap(data => {
+        if (data.tenantDetails) {
+          this.logo = data.tenantDetails.logo;
         }
-      });
-    this.activatedRoute.params.subscribe((params) => {
-      this.contentId = params['contentId'];
-      this.state = params['state'];
-      this.type = params['type'];
-      this.framework = params['framework'];
-    });
+        this.ownershipType = data.ownershipType;
+        this.showLoader = false;
+        this.initEditor();
+        this.setWindowContext();
+        this.setWindowConfig();
+      }),
+      delay(10)) // wait for iziModal lo load
+      .subscribe((data) => {
+        jQuery('#contentEditor').iziModal('open');
+        this.setRenderer();
+      },
+        (error) => {
+          this.toasterService.error(this.resourceService.messages.emsg.m0004);
+          this.closeModal();
+        });
+  }
+  private getDetails() {
+    return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
+    this.editorService.getOwnershipType()).
+      pipe(map(data => ({ tenantDetails: data[0].tenantData,
+        contentDetails: data[1], ownershipType: data[2] })));
+  }
+  private getContentDetails() {
+    const options: any = { params: { mode: 'edit' } };
+    return this.editorService.getContent(this.routeParams.contentId, options).
+      pipe(mergeMap((data) => {
+        this.contentDetails = data.result.content;
+        if (this.validateRequest()) {
+          return of(data);
+        } else {
+          return throwError(data);
+        }
+      }));
+  }
+  private disableBrowserBackButton() {
     sessionStorage.setItem('inEditor', 'true');
     window.location.hash = 'no';
-    this.workspaceService.toggleWarning(this.type);
-    this.setRenderer();
-  }
-  setRenderer() {
-    this.renderer.listen('window', 'editor:metadata:edit', () => {
-      this.closeModal();
-    });
-
-    this.renderer.listen('window', 'editor:window:close', () => {
-      this.closeModal();
-    });
-
-    this.renderer.listen('window', 'editor:content:review', () => {
-      this.closeModal();
-    });
-  }
-
-
-  ngAfterViewInit() {
+    this.workspaceService.toggleWarning(this.routeParams.type);
     this.browserBackEventSub = this.workspaceService.browserBackEvent.subscribe(() => {
       const closeEditorIntractEdata: IInteractEventEdata = {
         id: 'browser-back-button',
@@ -159,10 +99,19 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       };
       this.generateInteractEvent(closeEditorIntractEdata);
     });
-    /**
-    * Fetch header logo and launch the content editor after window load
-    */
-    jQuery.fn.iziModal = iziModal;
+  }
+  private setRenderer() {
+    this.renderer.listen('window', 'editor:metadata:edit', () => {
+      this.closeModal();
+    });
+    this.renderer.listen('window', 'editor:window:close', () => {
+      this.closeModal();
+    });
+    this.renderer.listen('window', 'editor:content:review', () => {
+      this.closeModal();
+    });
+  }
+  private initEditor() {
     jQuery('#contentEditor').iziModal({
       title: '',
       iframe: true,
@@ -181,171 +130,54 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         });
       }
     });
-    this.tenantService.tenantData$.subscribe((data) => {
-      if (data && !data.err) {
-        this.logo = data.tenantData.logo;
-        this.getContentData();
-      } else if (data && data.err) {
-        this.getContentData();
-      }
-    });
   }
-
-  ngOnDestroy() {
-    this.setRenderer();
-    if (this.browserBackEventSub) {
-      this.browserBackEventSub.unsubscribe();
-    }
-    if (document.getElementById('contentEditor')) {
-      document.getElementById('contentEditor').remove();
-    }
-    sessionStorage.setItem('inEditor', 'false');
-    this.workspaceService.toggleWarning();
-  }
-  /**
-   * Launch the content editor in Iframe Modal window
-   */
-  openContentEditor() {
-    jQuery('#contentEditor').iziModal('open');
+  private setWindowContext() {
     window.context = {
       user: {
         id: this.userProfile.userId,
         name: this.userProfile.firstName + ' ' + this.userProfile.lastName,
+        orgIds: this.userProfile.organisationIds,
+        organisations: this.userService.orgIdNameMap
       },
       sid: this.userService.sessionId,
-      contentId: this.contentId,
+      contentId: this.routeParams.contentId,
       pdata: {
         id: this.userService.appId,
-        ver: this.buildNumber.slice(0, 5),
+        ver: this.portalVersion,
         pid: 'sunbird-portal'
       },
       tags: this.userService.dims,
       channel: this.userService.channel,
-      framework: this.framework,
+      framework: this.routeParams.framework,
+      ownershipType: this.ownershipType
     };
-    /**
-     * Window config
-     */
-    window.config = {
-      baseURL: '',
-      modalId: 'contentEditor',
-      apislug: '/action',
-      alertOnUnload: true,
-      build_number: this.buildNumber,
-      headerLogo: this.logo,
-      aws_s3_urls: this.userService.cloudStorageUrls || [],
-      plugins: [
-        {
-          id: 'org.ekstep.sunbirdcommonheader',
-          ver: '1.4',
-          type: 'plugin'
-        },
-        {
-          id: 'org.ekstep.sunbirdmetadata',
-          ver: '1.1',
-          type: 'plugin'
-        },
-        {
-          id: 'org.ekstep.metadata',
-          ver: '1.1',
-          type: 'plugin'
-        },
-        {
-          id: 'org.ekstep.questionset',
-          ver: '1.0',
-          type: 'plugin'
-        },
-        {
-          id: 'org.ekstep.video',
-          ver: '1.1',
-          type: 'plugin'
-        }
-      ],
-      dispatcher: 'local',
-      localDispatcherEndpoint: '/content-editor/telemetry',
-      showHelp: false,
-      previewConfig: {
-        repos: ['/sunbird-plugins/renderer'],
-        plugins: [{
-          id: 'org.sunbird.player.endpage',
-          ver: 1.1,
-          type: 'plugin'
-        }],
-        splash: {
-          text: '',
-          icon: '',
-          bgImage: 'assets/icons/splacebackground_1.png',
-          webLink: ''
-        },
-        'overlay': {
-          'showUser': false
-        },
-        showEndPage: false
-      },
-      pluginsRepoUrl: '/plugins/v1/search'
-    };
+  }
+  private setWindowConfig() {
+    window.config = _.cloneDeep(this.configService.editorConfig.CONTENT_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config
+    window.config.build_number = this.buildNumber;
+    window.config.headerLogo = this.logo;
+    window.config.aws_s3_urls = this.userService.cloudStorageUrls || [];
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
   }
-
   /**
-   * Checking the permission using state, status and userId
-   * @param reqData user, state, status validation
-   * @param validateData default data in the Object ValidateData
+   * checks the permission using state, status and userId
    */
-  checkContentAccess(reqData, validateData) {
-    const status = reqData.status;
-    const createdBy = reqData.createdBy;
-    const state = reqData.state;
-    const userId = reqData.userId;
-    const validateDataStatus = validateData.status;
-    if (reqData.mimeType === validateData.mimeType) {
-      const isStatus = _.indexOf(validateDataStatus, status) > -1;
-      const isState = _.indexOf(validateData.state, state) > -1;
-      if (isStatus && isState && createdBy !== this.userProfile.userId) {
+  private validateRequest() {
+    const validStatus = _.indexOf(this.configService.editorConfig.CONTENT_EDITOR.contentStatus, this.contentDetails.status) > -1;
+    const validState = _.indexOf(this.configService.editorConfig.CONTENT_EDITOR.contentState, this.routeParams.state) > -1;
+    if (this.contentDetails.mimeType === this.configService.appConfig.CONTENT_CONST.CREATE_LESSON && validStatus) {
+      if (validState && this.userProfile.userId !== this.userProfile.userId) {
         return true;
-      } else if (isStatus && isState && createdBy === this.userProfile.userId) {
+      } else if (validState && this.userProfile.userId === this.userProfile.userId) {
         return true;
-      } else if (isStatus && createdBy === this.userProfile.userId) {
+      } else if (this.userProfile.userId === this.userProfile.userId) {
         return true;
       }
       return false;
     }
     return false;
   }
-
-  /**
-   * Check the Access and Launch the content Editor
-   */
-  getContentData() {
-    const state = this.state;
-    const req = { contentId: this.contentId };
-    const qs = { fields: 'createdBy,status,mimeType,contentType,resourceType', mode: 'edit' };
-    const validateModal = {
-      'state': this.config.editorConfig.EDITOR_CONFIG.contentState,
-      'status': this.config.editorConfig.EDITOR_CONFIG.contentStatus,
-      'mimeType': this.config.appConfig.CONTENT_CONST.CREATE_LESSON
-    };
-    this.editorService.getById(req, qs).subscribe((response) => {
-      const rspData = response.result.content;
-      rspData.state = state;
-      rspData.userId = this.userProfile.userId;
-      this.setContentInteractData(rspData);
-      if (this.checkContentAccess(rspData, validateModal)) {
-        this.openContentEditor();
-      } else {
-        this.toasterService.error(this.resourceService.messages.emsg.m0004);
-      }
-    }
-    );
-  }
-  private setContentInteractData(rspData) {
-    this.editorInteractObject = {
-      id: rspData.identifier,
-      type: rspData.contentType || rspData.resourceType || 'content',
-      ver: rspData.pkgVersion ? rspData.pkgVersion.toString() : '1.0',
-    };
-  }
-  generateInteractEvent(intractEdata) {
+  private generateInteractEvent(intractEdata) {
     if (intractEdata) {
       const appTelemetryInteractData: any = {
         context: {
@@ -353,8 +185,12 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         },
         edata: intractEdata
       };
-      if (this.editorInteractObject) {
-        appTelemetryInteractData.object = this.editorInteractObject;
+      if (this.contentDetails) {
+        appTelemetryInteractData.object = {
+          id: this.contentDetails.identifier,
+          type: this.contentDetails.contentType || this.contentDetails.resourceType || 'content',
+          ver: this.contentDetails.pkgVersion ? this.contentDetails.pkgVersion.toString() : '1.0',
+        };
       }
       this.telemetryService.interact(appTelemetryInteractData);
     }
@@ -363,17 +199,20 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    * Re directed to the draft on close of modal
    */
   closeModal() {
-    this.showModal = true;
-    setTimeout(() => {
-      this.navigateToWorkSpace();
-    }, 1000);
-  }
-
-  navigateToWorkSpace() {
+    this.showLoader = true;
     if (document.getElementById('contentEditor')) {
       document.getElementById('contentEditor').remove();
     }
     this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
-    this.showModal = false;
+  }
+  ngOnDestroy() {
+    if (document.getElementById('contentEditor')) {
+      document.getElementById('contentEditor').remove();
+    }
+    if (this.browserBackEventSub) {
+      this.browserBackEventSub.unsubscribe();
+    }
+    sessionStorage.setItem('inEditor', 'false');
+    this.workspaceService.toggleWarning();
   }
 }

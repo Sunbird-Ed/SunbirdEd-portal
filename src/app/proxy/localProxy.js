@@ -42,6 +42,7 @@ var learnerServiceApi = {
   'course/v1/content/state/update': 'v1/content/state/update',
   'course/v1/user/enrollment/list': 'v1/user/courses/list',
   'course/v1/enrol': 'v1/course/enrol',
+  'course/v1/unenrol': 'v1/course/unenrol',
   'recommended/courses': 'v1/recommended/courses',
   'content/v1/media/upload': 'v1/file/upload',
   'dashboard/v1/creation/org': 'v1/dashboard/creation/org',

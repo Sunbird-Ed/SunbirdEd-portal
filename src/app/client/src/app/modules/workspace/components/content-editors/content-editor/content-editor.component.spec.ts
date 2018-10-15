@@ -1,5 +1,5 @@
 
-import { of as observableOf, Observable } from 'rxjs';
+import { of as observableOf, throwError } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject, tick } from '@angular/core/testing';
 import { ContentEditorComponent } from './content-editor.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -13,12 +13,21 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { WorkSpaceService } from '../../../services';
 import { TelemetryModule } from '@sunbird/telemetry';
 
+const mockResourceService = { messages: { emsg: { m0004: '1000' } } };
+const mockActivatedRoute = {
+  snapshot: {
+    params: {
+      'contentId': 'do_21247940906829414411032', 'state': 'upForReview', 'framework': 'framework'
+    }
+  }
+};
+class RouterStub {
+  navigate = jasmine.createSpy('navigate');
+}
+const mockUserService = { userProfile: { userId: '68777b59-b28b-4aee-88d6-50d46e4c35090'} };
 describe('ContentEditorComponent', () => {
   let component: ContentEditorComponent;
   let fixture: ComponentFixture<ContentEditorComponent>;
-  class RouterStub {
-    navigate = jasmine.createSpy('navigate');
-  }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentEditorComponent],
@@ -28,14 +37,9 @@ describe('ContentEditorComponent', () => {
         ResourceService, ToasterService, ConfigService, LearnerService,
         NavigationHelperService, WorkSpaceService,
         { provide: Router, useClass: RouterStub },
-        {
-          provide: ActivatedRoute, useValue: {
-            'params': observableOf({
-              'contentId': 'do_21247940906829414411032',
-              'state': 'draft'
-            })
-          }
-        }
+        { provide: ResourceService, useValue: mockResourceService },
+        { provide: UserService, useValue: mockUserService },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -47,49 +51,38 @@ describe('ContentEditorComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should call userservice, call open editor', inject([EditorService, UserService, Router, ToasterService,
-    ResourceService, TenantService], (editorService, userService, router, toasterService, resourceService, tenantService) => {
-      userService._userData$.next({ err: null, userProfile: mockRes.userMockData });
-      tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData.result });
-      component.tenantService.tenantData = mockRes.tenantMockData.result;
-      component.tenantService.tenantData.logo = mockRes.tenantMockData.result.logo;
-      fixture.detectChanges();
-      spyOn(editorService, 'getById').and.returnValue(observableOf(mockRes.successResult));
-      component.getContentData();
-      const rspData = mockRes.successResult.result.content;
-      component.checkContentAccess(rspData, mockRes.validateModal);
-      component.openContentEditor();
+  it('should fetch tenant and content details and set logo and collection details if success',
+  inject([EditorService, ToasterService, TenantService, WorkSpaceService],
+    (editorService, toasterService, tenantService, workspaceService) => {
+      tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData });
+      spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.successResult));
+      spyOn(workspaceService, 'toggleWarning').and.callFake(() => { });
+      spyOn(jQuery.fn, 'iziModal').and.callFake(() => { });
+      spyOn(toasterService, 'error').and.callFake(() => {});
+      spyOn(editorService, 'getOwnershipType').and.returnValue(observableOf(['CreatedBy', 'CreatedFor']));
+      component.ngOnInit();
+      expect(component.logo).toBeDefined();
+      expect(component.contentDetails).toBeDefined();
+      expect(component.showLoader).toBeFalsy();
+      expect(jQuery.fn.iziModal).toHaveBeenCalled();
+      expect(window.config).toBeDefined();
+      expect(window.context).toBeDefined();
+      expect(window.context.ownershipType).toEqual(['CreatedBy', 'CreatedFor']);
     }));
 
-  it('should call contenteditor with error data', inject([EditorService, UserService, Router, ToasterService, ResourceService],
-    (editorService, userService, router, toasterService, resourceService) => {
-      resourceService.messages = mockRes.resourceBundle.messages;
-      userService._userData$.next({ err: null, userProfile: mockRes.userMockData });
-      fixture.detectChanges();
-      spyOn(editorService, 'getById').and.returnValue(observableOf(mockRes.errorResult));
-      spyOn(toasterService, 'error').and.callThrough();
-      component.getContentData();
-      const rspData = mockRes.errorResult.result.content;
-      component.checkContentAccess(rspData, mockRes.validateModal);
+  it('should throw error if getting collection details fails',
+  inject([EditorService, UserService, Router, ToasterService, ResourceService, TenantService],
+    (editorService, userService, router, toasterService, resourceService, tenantService) => {
+      tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData });
+      spyOn(editorService, 'getContent').and.returnValue(throwError(mockRes.successResult));
+      spyOn(toasterService, 'error').and.callFake(() => {});
+      component.ngOnInit();
       expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0004);
     }));
 
-
-  it('test to navigate to drafts', inject([Router], (router) => () => {
+  it('should navigate to draft', inject([ NavigationHelperService], ( navigationHelperService) => () => {
+    spyOn(navigationHelperService, 'navigateToWorkSpace').and.callFake(() => { });
     component.closeModal();
-    setTimeout(() => {
-      component.navigateToWorkSpace();
-    }, 1000);
-
-    expect(component.navigateToWorkSpace).not.toHaveBeenCalled();
-    jasmine.clock().tick(1001);
-    expect(component.navigateToWorkSpace).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledWith(['workspace/content/draft/1']);
+    expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('workspace/content/draft/1');
   }));
-
-  it('should listen to the browser back button event', () => {
-    spyOn(sessionStorage, 'setItem').and.callThrough();
-    component.ngOnInit();
-    expect(window.location.hash).toEqual('#no');
-  });
 });

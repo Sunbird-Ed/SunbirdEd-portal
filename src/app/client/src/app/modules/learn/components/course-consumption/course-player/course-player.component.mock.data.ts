@@ -2302,7 +2302,24 @@ export const CourseHierarchyGetMockResponse = {
           'name': 'Math for dummies',
           'usedByContent': [],
           'board': 'NCERT',
-          'status': 'Live'
+          'status': 'Live',
+          'contentCredits': [
+            {
+              'id': '',
+              'name': 'Amit Sharma',
+              'type': ''
+            },
+            {
+              'id': '',
+              'name': 'sorav dey',
+              'type': ''
+            },
+            {
+              'id': '',
+              'name': 'vinaya',
+              'type': ''
+            }
+          ]
       }
   }
 };

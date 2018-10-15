@@ -3,8 +3,9 @@ const _ = require('lodash')
 const dateFormat = require('dateformat')
 const uuidv1 = require('uuid/v1')
 const envHelper = require('./environmentVariablesHelper.js')
+const configHelper = require('./config/configHelper.js')
 const learnerURL = envHelper.LEARNER_URL
-const enablePermissionCheck = envHelper.ENABLE_PERMISSION_CHECK
+const enablePermissionCheck = configHelper.getConfig('ENABLE_PERMISSION_CHECK')
 const apiAuthToken = envHelper.PORTAL_API_AUTH_TOKEN
 const telemetryHelper = require('./telemetryHelper')
 

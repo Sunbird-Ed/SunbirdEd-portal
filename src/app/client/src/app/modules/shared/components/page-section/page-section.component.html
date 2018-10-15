@@ -1,9 +1,10 @@
 <div class="ui link popular-section" *ngIf="section.contents && section.contents.length > 0">
     <h4 class="ui header card-section-header sectionHeading">{{section.name}}
         <span class="ui red circular inline label">{{section.contents.length}}</span>
+        <button *ngIf="section.contents.length >= 10 && section.name != 'My Courses' " type="button" class="ui right floated positive button read-more-data" (click)="navigateToViewAll(section)">View all</button>
     </h4>
-    <div>
-        <ngx-slick in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="section.contents" (afterChange)="inviewChange(section.contents,$event)"class="carousel" #slickModal="slick-modal" [config]="slideConfig">
+    <div class="slick-slider">
+        <ngx-slick in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="section.contents" (afterChange)="inviewChange(section.contents,$event)" (beforeChange)="checkSlide($event)" appTelemetryInteract  [telemetryInteractEdata]="{id: btnArrow === undefined ? 'prev-button' : btnArrow , type: 'click', pageid: pageid, extra: { section: section.name}}" class="carousel" #slickModal="slick-modal" [config]="slideConfig">
             <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of section.contents;let i = index" class="slide">    
                 <app-card appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" 
                 [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:'1.0'}"

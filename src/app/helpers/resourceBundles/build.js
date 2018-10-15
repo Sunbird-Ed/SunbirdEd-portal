@@ -3,7 +3,7 @@ const path = require('path')
 const fs = require('fs')
 const properties = require('properties')
 const _ = require('lodash')
-const envHelper = require('./../environmentVariablesHelper.js')
+const configHelper = require('./../config/configHelper.js')
 const resBundlesArr = [
   { name: 'frmelmnts',
     path: path.join(__dirname, '/./../../resourcebundles/data/formElements/'),
@@ -84,9 +84,9 @@ var buildBundle = function (item) {
       })
 
       _.forEach(resObj, function (langObj, langKey) {
-        if (resObj[envHelper.PORTAL_PRIMARY_BUNDLE_LANGUAGE] &&
-            langKey !== envHelper.PORTAL_PRIMARY_BUNDLE_LANGUAGE) {
-          fillObject(resObj[envHelper.PORTAL_PRIMARY_BUNDLE_LANGUAGE], resObj[langKey])
+        if (resObj[configHelper.getConfig('PORTAL_PRIMARY_BUNDLE_LANGUAGE')] &&
+            langKey !== configHelper.getConfig('PORTAL_PRIMARY_BUNDLE_LANGUAGE')) {
+          fillObject(resObj[configHelper.getConfig('PORTAL_PRIMARY_BUNDLE_LANGUAGE')], resObj[langKey])
         }
       })
       _.forEach(resObj, function (data, lang) {

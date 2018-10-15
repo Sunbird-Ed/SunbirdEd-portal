@@ -1,0 +1,7 @@
+<sui-modal [isClosable]="true" #unenrollBatch (dismissed)="redirect()">
+    <div class="header">{{resourceService.frmelmnts.lbl.unenrollMsg}}</div>
+    <div class="actions">
+        <button class="ui primary  button announcement-button" (click)="unenrollBatch.deny();">Cancel</button>
+        <button class="ui primary basic button announcement-button" [disabled]="disableSubmitBtn" id="unenrollFromCourse" (click)="unenrollFromCourse()">{{resourceService.frmelmnts.btn.unenroll}}</button>
+    </div>
+ </sui-modal>

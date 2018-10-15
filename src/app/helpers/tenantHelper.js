@@ -6,6 +6,7 @@ const envHelper = require('./environmentVariablesHelper.js')
 const async = require('async')
 const _ = require('lodash')
 const telemetryHelper = require('./telemetryHelper')
+const configHelper = require('./config/configHelper.js')
 const appId = envHelper.APPID
 const defaultTenant = envHelper.DEFAULT_CHANNEL
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
@@ -13,56 +14,52 @@ telemtryEventConfig['pdata']['id'] = appId
 const successResponseStatusCode = 200
 const request = require('request');
 
-module.exports = {
+module.exports = { 
 
   getImagePath: function (baseUrl, tenantId, image, callback) {
-    let cbLocalTenant = true;
+    if (envHelper.TENANT_CDN_URL === '' || envHelper.TENANT_CDN_URL === null) {
+      module.exports.getLocalImage(baseUrl, tenantId, image, callback)
+    } else {
+      request
+        .get(envHelper.TENANT_CDN_URL + '/' + tenantId + '/' + image)
+        .on('response', function (res) {
+          if (res.statusCode === 200) {
+            baseUrl = envHelper.TENANT_CDN_URL
+            callback(null, baseUrl + '/' + tenantId + '/' + image)
+          } else {
+            module.exports.getLocalImage(baseUrl, tenantId, image, callback)
+          }
+        })
+    }
+  },
+  getLocalImage: function(baseUrl, tenantId, image, callback) {
     fs.stat(path.join(__dirname, '../tenant', tenantId, image), function (err, stat) {
       if (err) {
         if (envHelper.DEFAULT_CHANNEL && _.isString(envHelper.DEFAULT_CHANNEL)) {
           fs.stat(path.join(__dirname, '../tenant', envHelper.DEFAULT_CHANNEL, image), function (error, stat) {
             if (error) {
-              module.exports.checkTenantCdnUrl(baseUrl, tenantId, image, false, callback)
+              callback(null, null)
             } else {
               callback(null, baseUrl + '/tenant/' + envHelper.DEFAULT_CHANNEL + '/' + image)
             }
           })
         } else {
-          module.exports.checkTenantCdnUrl(baseUrl, tenantId, image, false, callback)
+          callback(null, null)
         }
       } else {
-        module.exports.checkTenantCdnUrl(baseUrl, tenantId, image, cbLocalTenant, callback)
+        callback(null, baseUrl + '/tenant/' + tenantId + '/' + image)
       }
     })
   },
-  checkTenantCdnUrl: function (baseUrl, tenantId, image, cbLocalTenant, callback) {
-    if (envHelper.TENANT_CDN_URL === '' || envHelper.TENANT_CDN_URL === null) {
-      if (cbLocalTenant) {
-        callback(null, baseUrl + '/tenant/' + tenantId + '/' + image)
-      } else {
-        callback(null, null)
-      }
-    } else {
-      const req = request
-        .get(envHelper.TENANT_CDN_URL + '/' + tenantId + '/' + image)
-        .on('response', function (res) {
-          if (res.statusCode === 200) {
-            callback(null, baseUrl + '/' + tenantId + '/' + image)
-          } else {
-            callback(null, null)
-          }
-        })
-    }
-  },      
   getInfo: function (req, res) {
     let tenantId = req.params.tenantId || envHelper.DEFAULT_CHANNEL
     let host = req.hostname
     let headerHost = req.headers.host.split(':')
     let port = headerHost[1] || ''
     let protocol = req.headers['x-forwarded-proto'] || req.protocol
-    let baseUrl = envHelper.TENANT_CDN_URL || protocol + '://' + host + (port === '' ? '' : ':' + port)
+    let baseUrl = protocol + '://' + host + (port === '' ? '' : ':' + port)
     let responseObj = {
-      titleName: envHelper.PORTAL_TITLE_NAME
+      titleName: configHelper.getConfig('PORTAL_TITLE_NAME')
     }
     if (tenantId) {
       async.parallel({

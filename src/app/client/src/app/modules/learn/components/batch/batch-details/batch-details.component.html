@@ -13,7 +13,7 @@
         <div class="description annannouncement-description">
             <div *ngIf="showBatchList" class="ui divided list">
                 <div class="item padding-top-10" *ngFor="let batch of batchList">
-                    <i [ngClass]="userService.userid === batch.createdBy ? 'write' : 'eye'" class="icon float-ContentRight cursor-pointer" appTelemetryInteract [telemetryInteractEdata]="updateBatchIntractEdata"
+                    <i [ngClass]="userService.userid === batch.createdBy ? 'write' : 'eye'" class="icon float-ContentRight cursor-pointer write" appTelemetryInteract [telemetryInteractEdata]="updateBatchIntractEdata"
                         [telemetryInteractObject]="{id:batch.identifier,type:'batch',ver:'1',rollup:{l1:courseId}}" (click)="batchUpdate(batch)"
                         *ngIf="courseMentor"></i>
                     <button class="ui right floated blue basic button enrollBtn" appTelemetryInteract [telemetryInteractEdata]="enrollBatchIntractEdata"
@@ -49,6 +49,11 @@
         <div class="header">{{resourceService.frmelmnts.lbl.batchdetails}}</div>
     </div>
     <div class="content">
+        <span>
+            <button class="ui right floated blue basic button unenrollBtn" appTelemetryInteract [telemetryInteractEdata]="unenrollBatchIntractEdata"
+                [telemetryInteractObject]="{id:enrolledBatchInfo.identifier,type:'batch',ver:'1',rollup:{l1:courseId}}"
+                (click)="unenrollBatch(enrolledBatchInfo)" [disabled]="isUnenrollbtnDisabled">{{resourceService.frmelmnts.btn.unenroll}}</button>
+        </span>
         <div class="header">{{enrolledBatchInfo.name}}</div>
         <div class="selectedBatchMeta meta">
             <span class="date">{{enrolledBatchInfo.startDate | dateFormat}} </span>
@@ -62,5 +67,5 @@
         <span>
             {{enrolledBatchInfo.mentors.length}} {{resourceService.frmelmnts.lbl.mentors}}
         </span>
-    </div>
+    </div>    
 </div>

@@ -1,187 +1,213 @@
-<div class="ui grid" *ngIf="!showExploreHeader">
-    <div class="center aligned twelve column row" [class.header-height-before-login]="!userService.userid">
-        <div class="one wide tablet computer only column"></div>
-        <div class="two wide tablet computer only column" [class.padding-top-15]="userService.userid">
-            <a (click)="navigateToHome()">
-                <img [class.public-header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
-                    alt={{tenantName}} src="{{logo}}">
-            </a>
-        </div>
-        <div class="two wide mobile only column padding-left-25 padding-top-5">
-            <a (click)="navigateToHome()">
-                <img [class.header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
-                    alt={{tenantName}} src="{{logo}}">
-            </a>
-        </div>
-        <div class="six wide tablet computer only column padding-top-1rem" *ngIf="userService.userid">
-            <app-search></app-search>
-        </div>
-        <div class="six wide mobile only column" *ngIf="userService.userid">
-        </div>
-        <div class="one wide column">
-        </div>
-        <div class="three wide mobile two wide tablet one wide computer column" *ngIf="userService.userid; else showLoginBtn">
-            <i class="float-ContentLeft primary-header-alarm-icon alarm icon large alaramIconColor"></i>
-            <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing
-                header-user-container primary-header-avatar" id="dropdown-menu-list-header">
-                <img src="{{ userProfile?.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" class="ui circular image logged-in-user"
-                />
-                <div class="menu" suiDropdownMenu>
-                    <div *ngIf='userProfile' class="item headerDropdownProfile">{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}</div>
-                    <div *ngIf='userProfile' class="ui divider"></div>
+<!-- primary header with accessability  -->
 
-                    <a class="item" routerLink="profile">{{resourceService.frmelmnts?.lnk?.profile}}</a>
-                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='adminDashboard' routerLink="orgDashboard">{{resourceService.frmelmnts?.lnk?.dashboard}}</a>
-                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='announcementRole' routerLink="announcement/outbox/1">{{resourceService.frmelmnts?.lnk?.announcement}}</a>
-                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='workSpaceRole' (click)="navigateToWorkspace()">{{resourceService.frmelmnts?.lnk?.workSpace}}</a>
-                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='myActivityRole' routerLink="myActivity">{{resourceService.frmelmnts?.lnk?.myactivity}}</a>
-                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='orgSetupRole' routerLink="orgType">{{resourceService.frmelmnts?.lbl?.orgtypes}}</a>
-                    <a class="item" (click)="logout()">{{resourceService.frmelmnts?.lnk?.logout}}</a>
-
-                </div>
+<div class="ui fixed main menu light bar" [class.height-170]="userService.userid" *ngIf="!showExploreHeader">
+    <div class="ui container height-100">
+        <div class="ui large secondary menu width-100 m-0">
+            <div role="banner" class="ui primary-header logo">
+                <a (click)="navigateToHome()">
+                    <img class="image centered cursor-pointer" alt={{tenantName}} src="{{logo}}">
+                </a>
             </div>
-        </div>
-        <ng-template #showLoginBtn>
-            <div class="right floated two wide tablet computer only column">
-                <div class="beforelogin ui secondary pointing menu padding-top-10">
-                    <button *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" class="ui item text-upper-case padding-bottom-20"
-                        routerLink="/explore">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</button>
-                    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="signUpInteractEdata"
-                        *ngIf="enableSignup && router.isActive('', true)" class="ui item padding-bottom-20" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
-                    <a href="/home" class="sunblogin">
-                        <button class="ui item">{{resourceService.frmelmnts?.btn?.login}}</button>
-                    </a>
+            <nav id="main-nav" aria-label="Primary navigation" class="width-100 flex ml-auto">
+                <div class="ui text primary-nav menu ml-auto mobile only m-0">
+                    <div class="ui grid margin-none">
+                        <div class="p-0" [ngClass]="{'row': userService.userid, 'mt-10': !userService.userid}">
+                            <div class="eight wide column"></div>
+                            <div class="four wide column flex jc-flex-end">
+                                    <a class="item" *ngIf="userService.userid">
+                                        <img src="{{'assets/images/notification.png'}}" class="notification-icon mt-10">
+                                    </a>
+                                    <a class="item" *ngIf="userService.userid; else showLoginBtn">
+                                        <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing
+                                                    header-user-container" id="dropdown-menu-list-header">
+                                            <img src="{{ userProfile?.avatar || 'assets/images/user-profile.png' | cdnprefixurl}}" class="ui circular image logged-in-user pr-0"
+                                            />
+                                            <div class="menu" suiDropdownMenu>
+                                                <div *ngIf='userProfile' class="item headerDropdownProfile">{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}</div>
+                                                <div *ngIf='userProfile' class="ui divider"></div>
+                                                <a class="item" routerLink="profile">{{resourceService.frmelmnts?.lnk?.profile}}</a>
+                                                <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='adminDashboard' routerLink="orgDashboard">{{resourceService.frmelmnts?.lnk?.dashboard}}</a>
+                                                <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='announcementRole' routerLink="announcement/outbox/1">{{resourceService.frmelmnts?.lnk?.announcement}}</a>
+                                                <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='workSpaceRole' (click)="navigateToWorkspace()">{{resourceService.frmelmnts?.lnk?.workSpace}}</a>
+                                                <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='myActivityRole' routerLink="myActivity">{{resourceService.frmelmnts?.lnk?.myactivity}}</a>
+                                                <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='orgSetupRole' routerLink="orgType">{{resourceService.frmelmnts?.lbl?.orgtypes}}</a>
+                                                <a class="item" (click)="logout()">{{resourceService.frmelmnts?.lnk?.logout}}</a>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                        </div>
+                        <div class="row p-0 mt-10" *ngIf="userService.userid">
+                            <div class="twelve wide column flex-as-flex-end ">
+                                <app-search  class="flex-as-center width-100"></app-search>
+                            </div>                           
+                        </div>
+                        <div class="row p-0" *ngIf="userService.userid">
+                            <div class="twelve wide column flex jc-center flex-as-center">
+                                <app-main-menu></app-main-menu>
+                            </div>                            
+                        </div>
+                    </div>               
                 </div>
-            </div>
-            <div class="right floated two wide column mobile only padding-top-15">
-                <div class="ui secondary right pointing dropdown" suiDropdown>
+                <div class="ui text primary-nav menu ml-auto computer only">
+                        <app-search *ngIf="userService.userid" class="flex-as-center mr-40"></app-search>
+                        <app-main-menu *ngIf="userService.userid" class="flex"></app-main-menu>    
+                        <a class="item ml-20" *ngIf="userService.userid">
+                            <img src="{{'assets/images/notification.png'}}" class="notification-icon">
+                        </a>
+                        <a class="item pt-0" *ngIf="userService.userid; else showLoginBtn">
+                            <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing
+                                        header-user-container" id="dropdown-menu-list-header">
+                                <img src="{{ userProfile?.avatar || 'assets/images/user-profile.png' | cdnprefixurl}}" class="ui circular image logged-in-user"
+                                />
+                                <div class="menu" suiDropdownMenu>
+                                    <div *ngIf='userProfile' class="item headerDropdownProfile">{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}</div>
+                                    <div *ngIf='userProfile' class="ui divider"></div>
+                                    <a class="item" routerLink="profile">{{resourceService.frmelmnts?.lnk?.profile}}</a>
+                                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='adminDashboard' routerLink="orgDashboard">{{resourceService.frmelmnts?.lnk?.dashboard}}</a>
+                                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='announcementRole' routerLink="announcement/outbox/1">{{resourceService.frmelmnts?.lnk?.announcement}}</a>
+                                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='workSpaceRole' (click)="navigateToWorkspace()">{{resourceService.frmelmnts?.lnk?.workSpace}}</a>
+                                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='myActivityRole' routerLink="myActivity">{{resourceService.frmelmnts?.lnk?.myactivity}}</a>
+                                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='orgSetupRole' routerLink="orgType">{{resourceService.frmelmnts?.lbl?.orgtypes}}</a>
+                                    <a class="item" (click)="logout()">{{resourceService.frmelmnts?.lnk?.logout}}</a>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+            </nav>
+            <ng-template #showLoginBtn>
+                <button *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" aria-label="Explore Sunbird" class="ui artic blue button flex-as-center ml-auto computer only"
+                    tabindex="0" routerLink="/explore">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</button>
+                <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="signUpInteractEdata"
+                    *ngIf="enableSignup && router.isActive('', true)" class="ui item border-right pr-15 pl-10 computer only"
+                    routerLink="/signup">
+                    {{resourceService.frmelmnts?.btn?.signup}}
+                </a>
+                <a href="/home" class="sunblogin item ml-10 font-weight-bold primary-color pl-5 computer only">
+                    {{resourceService.frmelmnts?.btn?.login}}
+                </a>
+                <div class="ui secondary right pointing dropdown flex flex-as-center mt-10 mr-10 mobile only" suiDropdown>
                     <i class="large bars icon"></i>
                     <div class="menu" suiDropdownMenu>
                         <div class="item text-upper-case" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" routerLink="/explore">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</div>
                         <div class="item" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="signUpInteractEdata"
                             *ngIf="router.isActive('', true) && enableSignup" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</div>
                         <div class="item">
-                            <a href="/home" class="sunblogin">
+                            <a href="/home" class="sunblogin ">
                                 <div class="item">{{resourceService.frmelmnts?.btn?.login}}</div>
                             </a>
                         </div>
                     </div>
                 </div>
-            </div>
-        </ng-template>
-        <div class="one wide tablet computer only column"></div>
-    </div>
-    <div class="ui center aligned twelve column centered row padding-top-none padding-bottom-none" *ngIf="userService.userid">
-            <div class="one wide mobile only column padding-bottom-10"></div>
-        <div class="ten wide mobile only column padding-bottom-10 padding-left-none padding-right-none">
-            <app-search></app-search>
+            </ng-template>
         </div>
-        <div class="one wide mobile only column padding-bottom-10"></div>
     </div>
 </div>
-<span *ngIf="!showExploreHeader">
-    <app-main-menu></app-main-menu>
-</span>
+
 
 <div *ngIf="showExploreHeader" class="ui fluid container">
-    <div class="ui grid margin-none">
-        <!--tablet computer view header code starts-->
-        <div class="center aligned twelve wide tablet computer only column">
-            <div class="ui grid">
-                <div class="one wide column"></div>
-                <div class="two wide column padding-left-none">
-                    <a (click)="navigateToHome()">
-                        <img class="image centered public-header-logo-before-login" alt={{tenantName}} src="{{logo}}">
-                    </a>
+        <div class="ui grid margin-none">
+            <!--tablet computer view header code starts-->
+            <div class="center aligned twelve wide tablet computer only column">
+                <div class="ui grid">
+                    <div class="one wide column"></div>
+                    <div class="two wide column padding-left-none">
+                        <a (click)="navigateToHome()">
+                            <img class="image centered public-header-logo-before-login" alt={{tenantName}} src="{{logo}}">
+                        </a>
+                    </div>
+                    <div class="two wide column"></div>
+                    <div class="five wide column padding-top-20">
+                        <div class="ui search">
+                            <div class="searchicon ui icon input width-100">
+                                <input type="text" id="keyword" name="filter_search" title="Search" placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}"
+                                    class="searchinput" [(ngModel)]="key" (keyup.enter)="onEnter(key)" />
+                                <i class="circular search link icon" (click)="onEnter(key)"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="one wide column">
+                        <div class="beforelogin ui secondary pointing menu right-float">
+                            <a href="/home" class="sunblogin padding-top-5">
+                                <button class="ui item padding-right-none">{{resourceService.frmelmnts?.btn?.login}}</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="one wide column"></div>
                 </div>
-                <div class="two wide column"></div>
-                <div class="five wide column padding-top-20">
-                    <div class="ui search">
-                        <div class="searchicon ui icon input width-100">
+            </div>
+            <!--view header view code ends-->
+    
+            <!--mobile header view code starts-->
+            <div class="center aligned twelve wide mobile only column padding-none">
+                <div class="ui grid margin-none">
+                    <div class="three wide column padding-left-10 padding-top-5">
+                        <a (click)="navigateToHome()">
+                            <img class="image centered header-logo-before-login" alt={{tenantName}} src="{{logo}}">
+                        </a>
+                    </div>
+                    <div class="three wide column"></div>
+                    <div class="six wide column">
+                        <a href="/home" class="sunblogin">
+                            <p class="ui item right-float">{{resourceService.frmelmnts?.btn?.login}}</p>
+                        </a>
+                    </div>
+                </div>
+    
+                <div class="ui grid margin-none">
+                    <div class="twelve wide mobile only column padding-10">
+                        <div class="searchicon ui fluid icon input">
                             <input type="text" id="keyword" name="filter_search" title="Search" placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}"
-                                class="searchinput" [(ngModel)]="key" (keyup.enter)="onEnter(key)" />
+                                class="" [(ngModel)]="key" (keyup.enter)="onEnter(key)" />
                             <i class="circular search link icon" (click)="onEnter(key)"></i>
                         </div>
                     </div>
                 </div>
-                <div class="one wide column">
-                    <div class="beforelogin ui secondary pointing menu right-float">
-                        <a href="/home" class="sunblogin padding-top-5">
-                            <button class="ui item padding-right-none">{{resourceService.frmelmnts?.btn?.login}}</button>
-                        </a>
+            </div>
+            <!--mobile header view code ends-->
+        </div>
+        <div class="ui grid margin-top-0">
+            <!--tablet computer sub header view code starts-->
+            <div class="center aligned twelve wide tablet computer only column anon-consumption-sec-menu padding-top-none">
+                <div class="ui grid margin-top-0">
+                    <div class="one wide column"></div>
+                    <div class="two wide column">
+                        <button  class="ui basic button left-float" appTelemetryInteract [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;">
+                            <i class="qrcode icon" ></i>{{resourceService.frmelmnts?.lbl?.enterQrCode}}
+                        </button>
+                    </div>
+                    <div class="six wide column"></div>
+                    <div class="two wide right floated right aligned column">
+                        <app-language-dropdown></app-language-dropdown>
+                    </div>
+                    <div class="one wide column"></div>
+                </div>
+            </div>
+            <!--tablet computer sub header view code ends-->
+    
+            <!--mobile sub header view code starts-->
+            <div class="center aligned twelve wide mobile only column anon-consumption-sec-menu padding-top-none">
+                <div class="ui grid margin-none">
+                    <div class="twelve wide column padding-10">
+                        <button class="ui basic button qr-code-btn width-100" (click)="showQrmodal = true;">
+                            <i class="qrcode icon"></i>{{resourceService.frmelmnts?.lbl?.enterQrCode}}
+                        </button>
                     </div>
                 </div>
-                <div class="one wide column"></div>
-            </div>
-        </div>
-        <!--view header view code ends-->
-
-        <!--mobile header view code starts-->
-        <div class="center aligned twelve wide mobile only column padding-none">
-            <div class="ui grid margin-none">
-                <div class="three wide column padding-left-10 padding-top-5">
-                    <a (click)="navigateToHome()">
-                        <img class="image centered header-logo-before-login" alt={{tenantName}} src="{{logo}}">
-                    </a>
-                </div>
-                <div class="three wide column"></div>
-                <div class="six wide column">
-                    <a href="/home" class="sunblogin">
-                        <p class="ui item right-float">{{resourceService.frmelmnts?.btn?.login}}</p>
-                    </a>
-                </div>
-            </div>
-
-            <div class="ui grid margin-none">
-                <div class="twelve wide mobile only column padding-10">
-                    <div class="searchicon ui fluid icon input">
-                        <input type="text" id="keyword" name="filter_search" title="Search" placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}"
-                            class="" [(ngModel)]="key" (keyup.enter)="onEnter(key)" />
-                        <i class="circular search link icon" (click)="onEnter(key)"></i>
+                <div class="ui grid margin-none">
+                    <div class="twelve wide column padding-10">
+                        <app-language-dropdown></app-language-dropdown>
                     </div>
                 </div>
             </div>
+            <!--mobile sub header view code ends-->
         </div>
-        <!--mobile header view code ends-->
     </div>
-    <div class="ui grid margin-top-0">
-        <!--tablet computer sub header view code starts-->
-        <div class="center aligned twelve wide tablet computer only column anon-consumption-sec-menu padding-top-none">
-            <div class="ui grid margin-top-0">
-                <div class="one wide column"></div>
-                <div class="two wide column">
-                    <button  class="ui basic button left-float" appTelemetryInteract [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;">
-                        <i class="qrcode icon" ></i>{{resourceService.frmelmnts?.lbl?.enterQrCode}}
-                    </button>
-                </div>
-                <div class="six wide column"></div>
-                <div class="two wide right floated right aligned column">
-                    <app-language-dropdown></app-language-dropdown>
-                </div>
-                <div class="one wide column"></div>
-            </div>
-        </div>
-        <!--tablet computer sub header view code ends-->
-
-        <!--mobile sub header view code starts-->
-        <div class="center aligned twelve wide mobile only column anon-consumption-sec-menu padding-top-none">
-            <div class="ui grid margin-none">
-                <div class="twelve wide column padding-10">
-                    <button class="ui basic button qr-code-btn width-100" (click)="showQrmodal = true;">
-                        <i class="qrcode icon"></i>{{resourceService.frmelmnts?.lbl?.enterQrCode}}
-                    </button>
-                </div>
-            </div>
-            <div class="ui grid margin-none">
-                <div class="twelve wide column padding-10">
-                    <app-language-dropdown></app-language-dropdown>
-                </div>
-            </div>
-        </div>
-        <!--mobile sub header view code ends-->
+    
+    <div *ngIf="showQrmodal">
+        <app-qr-code-modal  (closeQrModal)="closeQrModalEvent($event)"></app-qr-code-modal>
     </div>
-</div>
 
-<div *ngIf="showQrmodal">
-    <app-qr-code-modal  (closeQrModal)="closeQrModalEvent($event)"></app-qr-code-modal>
-</div>
+
+
+

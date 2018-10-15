@@ -8,7 +8,7 @@
       </div>
     </div>
     <div *ngFor="let section of caraouselData">
-      <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section"></app-page-section>
+      <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section" (viewAll)="viewAll($event)"></app-page-section>
     </div>
     <div class="twelve wide column" *ngIf="showLoader">
       <app-loader [data]='loaderMessage'></app-loader>
