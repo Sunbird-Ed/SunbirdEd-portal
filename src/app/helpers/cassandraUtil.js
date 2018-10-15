@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const CassandraStore = require('cassandra-session-store')
 const envHelper = require('./environmentVariablesHelper.js')
 const expressCassandra = require('express-cassandra')
@@ -6,7 +7,7 @@ const consistency = getConsistencyLevel(envHelper.PORTAL_CASSANDRA_CONSISTENCY_L
 const replicationStrategy = getReplicationStrategy(envHelper.PORTAL_CASSANDRA_REPLICATION_STRATEGY)
 const cassandraPort = envHelper.PORTAL_CASSANDRA_PORT
 
-function getCassandraConfig  () {
+function getCassandraStoreInstance  () {
   return new CassandraStore({
     'table': 'sessions',
     'client': null,
@@ -27,27 +28,19 @@ function getCassandraConfig  () {
 }
 
 function getConsistencyLevel (consistency) {
-  let consistencyValue = expressCassandra.consistencies.one
-  if (consistency) {
-    if (expressCassandra.consistencies[consistency]) {
-      consistencyValue = expressCassandra.consistencies[consistency]
-    }
-  }
-  return consistencyValue
+  let consistencyValue = consistency && _.get(expressCassandra, `consistencies.${consistency}`) ? _.get(expressCassandra, `consistencies.${consistency}`):  expressCassandra.consistencies.one
+  return consistencyValue;
 }
 
 function getReplicationStrategy (replicationStrategy) { 
   try{
     return JSON.parse(replicationStrategy)
   }catch(e){
+    console.log("err in getReplicationStrategy",e)
     return {"class":"SimpleStrategy","replication_factor":"1"}
   }
 }
 
-module.exports = {
-  getCassandraConfig: getCassandraConfig,
-  getConsistencyLevel: getConsistencyLevel,
-  getReplicationStrategy: getReplicationStrategy
-}
+module.exports = { getCassandraStoreInstance, getConsistencyLevel, getReplicationStrategy }
 
 

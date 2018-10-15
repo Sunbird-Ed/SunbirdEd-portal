@@ -36,7 +36,7 @@ const app = express()
 if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
   memoryStore = new session.MemoryStore()
 } else {
-  memoryStore = cassandraUtils.getCassandraConfig()
+  memoryStore = cassandraUtils.getCassandraStoreInstance()
 }
 
 let keycloak = new Keycloak({ store: memoryStore }, {
