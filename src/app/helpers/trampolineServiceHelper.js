@@ -20,7 +20,7 @@ const trampolineServerUrl = envHelper.PORTAL_AUTH_SERVER_URL
 const trampolineRealm = envHelper.PORTAL_REALM
 const trampolineSecret = envHelper.PORTAL_TRAMPOLINE_SECRET
 const learnerAuthorization = envHelper.PORTAL_API_AUTH_TOKEN
-let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
+let cassandraCP = envHelper.PORTAL_CASSANDRA_IPS
 let memoryStore = null
 
 if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
