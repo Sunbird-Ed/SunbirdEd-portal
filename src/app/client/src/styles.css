@@ -3377,22 +3377,6 @@ angular2-multiselect .list-area{
 }
 
 
-/* primary nav bar */
-
-.fixed.light.bar {
-  border: 0;
-  background-color: #fff;
-  border-bottom: 0.5px solid rgba(25,109,127, 0.68);
-  height:80px;
-  left: 0;
-  top: 0;
-  padding: 0;
-  position: fixed;
-  z-index: 900;
-  width: 100%;
-  box-shadow: none;
-}
-
 /* Mobile */
 @media only screen and (max-width: 767px) {
   .fixed.light.bar {
