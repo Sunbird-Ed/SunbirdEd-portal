@@ -3377,22 +3377,6 @@ angular2-multiselect .list-area{
 }
 
 
-/* primary nav bar */
-
-.fixed.light.bar {
-  border: 0;
-  background-color: #fff;
-  border-bottom: 0.5px solid rgba(25,109,127, 0.68);
-  height:80px;
-  left: 0;
-  top: 0;
-  padding: 0;
-  position: fixed;
-  z-index: 900;
-  width: 100%;
-  box-shadow: none;
-}
-
 /* Mobile */
 @media only screen and (max-width: 767px) {
   .fixed.light.bar {
@@ -3507,10 +3491,7 @@ button.slick-next.slick-arrow.slick-disabled {
   cursor: default;
   display: none !important;
 }
-.mc-nonuser,
-.mc-user{
-  margin-top:90px !important;
-}
+
 @media screen and (max-width:768px){
   .mc-user{
     margin-top: 190px !important;

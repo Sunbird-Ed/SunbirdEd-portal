@@ -1,7 +1,6 @@
 <!-- primary header with accessability  -->
-
-<div class="ui fixed main menu light bar" [class.height-170]="userService.userid" *ngIf="!showExploreHeader">
-    <div class="ui container height-100">
+<div class="ui main menu"  *ngIf="!showExploreHeader">
+    <div class="ui container">
         <div class="ui large secondary menu width-100 m-0">
             <div role="banner" class="ui primary-header logo">
                 <a (click)="navigateToHome()">
@@ -103,8 +102,6 @@
         </div>
     </div>
 </div>
-
-
 <div *ngIf="showExploreHeader" class="ui fluid container">
         <div class="ui grid margin-none">
             <!--tablet computer view header code starts-->
@@ -202,11 +199,10 @@
             </div>
             <!--mobile sub header view code ends-->
         </div>
-    </div>
-    
-    <div *ngIf="showQrmodal">
-        <app-qr-code-modal  (closeQrModal)="closeQrModalEvent($event)"></app-qr-code-modal>
-    </div>
+</div>
+<div *ngIf="showQrmodal">
+    <app-qr-code-modal  (closeQrModal)="closeQrModalEvent($event)"></app-qr-code-modal>
+</div>
 
 
 
