@@ -3507,10 +3507,7 @@ button.slick-next.slick-arrow.slick-disabled {
   cursor: default;
   display: none !important;
 }
-.mc-nonuser,
-.mc-user{
-  margin-top:90px !important;
-}
+
 @media screen and (max-width:768px){
   .mc-user{
     margin-top: 190px !important;
