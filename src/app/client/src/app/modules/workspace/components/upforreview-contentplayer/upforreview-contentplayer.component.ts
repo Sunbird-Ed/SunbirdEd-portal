@@ -43,7 +43,12 @@ export class UpforreviewContentplayerComponent implements OnInit {
   * contain error message
   */
   errorMessage: string;
-  /**
+    /**
+    * This variable is used to increase/decrease the player width
+    * according to content mime type
+    */
+  showCommentBoxClass = 'twelve wide column';
+ /**
   * To call resource service which helps to use language constant
   */
  public resourceService: ResourceService;
@@ -127,6 +132,8 @@ export class UpforreviewContentplayerComponent implements OnInit {
           };
           this.playerConfig = this.playerService.getConfig(contentDetails);
           this.contentData = response.result.content;
+          this.showCommentBoxClass = this.contentData.mimeType ===
+          'application/vnd.ekstep.ecml-archive' ? 'eight wide column' : 'twelve wide column';
           this.showLoader = false;
         } else {
           this.toasterService.warning(this.resourceService.messages.imsg.m0027);

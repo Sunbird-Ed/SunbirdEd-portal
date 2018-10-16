@@ -10,6 +10,8 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { SharedModule,  ToasterService, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { PlayerService, UserService, LearnerService, ContentService, CoreModule } from '@sunbird/core';
 import * as mockData from './upforreview-content.component.spce.data';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+
 const testData = mockData.mockRes;
 describe('UpforreviewContentplayerComponent', () => {
   let component: UpforreviewContentplayerComponent;
@@ -32,6 +34,7 @@ describe('UpforreviewContentplayerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ UpforreviewContentplayerComponent ],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [HttpClientTestingModule, Ng2IziToastModule,
       CoreModule.forRoot(),
       RouterTestingModule, SharedModule.forRoot()],

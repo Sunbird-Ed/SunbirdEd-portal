@@ -262,4 +262,8 @@ describe('DataDrivenComponent', () => {
     componentParent.createContent();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0010);
   });
+  it('When contentType is present', () => {
+   expect(componentParent.name).toBe('Untitled Textbook');
+   expect(componentParent.description).toBe('Enter description for TextBook');
+  });
 });
