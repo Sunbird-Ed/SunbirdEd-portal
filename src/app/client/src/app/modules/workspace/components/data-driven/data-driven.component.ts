@@ -94,9 +94,9 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
 
   public creationFormLable: string;
 
-  private name: string;
+  public name: string;
 
-  private description: string;
+  public description: string;
 
   public isCachedDataExists: boolean;
 
@@ -134,9 +134,9 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
     this.resourceType = this.configService.appConfig.resourceType[this.contentType];
     this.creationFormLable = this.configService.appConfig.contentCreateTypeLable[this.contentType];
     this.name = this.configService.appConfig.contentName[this.contentType] ?
-                this.configService.appConfig.contentName[this.contentType] : 'Untitled Collection';
+                this.configService.appConfig.contentName[this.contentType] : 'Untitled';
    this.description = this.configService.appConfig.contentDescription[this.contentType] ?
-   this.configService.appConfig.contentDescription[this.contentType] : 'Untitled Collection';
+   this.configService.appConfig.contentDescription[this.contentType] : 'Untitled';
   }
 
 
