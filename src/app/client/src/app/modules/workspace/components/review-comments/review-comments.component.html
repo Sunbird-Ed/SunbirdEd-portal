@@ -1,22 +1,26 @@
-  <div class="ui segment" *ngIf="contentData && reviewDetails">
-    <div class="ui comments">
-      <div class="comment" *ngFor="let rDetails of reviewDetails.comments;">
-        <a class="ui avatar image">
-          <img class="" src="{{rDetails.userImage || 'assets/images/user-profile.png' | cdnprefixurl}}">
-        </a>
-        <div class="content">
-          <span class="author">{{rDetails.userName}}</span>
-          <div class="metadata">
-            <span class="date right floated">{{rDetails.createdOn}}</span>
+<div class="review-comments-box">
+  <div class="ui small comments" *ngIf="contentData && reviewDetails" >
+    <div class="comment" *ngFor="let rDetails of reviewDetails.comments;">
+      <a class="avatar">
+        <img src="{{rDetails.userImage || 'assets/images/user-profile.png' | cdnprefixurl}}">
+      </a>
+      <div class="content">
+          <a class="author">{{rDetails.userName}}</a>
+          <div class="ui left floated metadata">
+            <span class="date" innerHTML="{{rDetails.createdOn | date: 'MMM d'}}"></span>
           </div>
           <div class="text">
             {{rDetails.message}}
           </div>
-        </div>
       </div>
-      <section class="float-ContentRight" *ngIf="comments.value">{{comments.value.trim().length}} / 150</section>
-      <textarea class="form-control" [formControl]="comments"></textarea>
-      <button class="" (click)="addReviewComments()" [disabled]="disableSubmitcommentsButton">
-        {{resourceService?.frmelmnts?.btn?.add}}</button>
     </div>
   </div>
+  <div class="margin-left-10">
+      <label>Drop a comment</label>
+      <label class="ui left floated" *ngIf="comments.value">{{comments.value.trim().length}} / 150</label>
+  </div>
+  <div class="margin-left-10 ui icon input comment-input-box">
+    <input type="text" autocomplete="off" class="form-control"[formControl]="comments" >
+    <i (click)="addReviewComments()" class="angle double right icon link" aria-hidden="true"></i>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+.review-comments-box {
+    height: 343px;	
+    width: 290px;	
+    border-radius: 4px;	
+    background-color: #FFFFFF;	
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+.comment-input-box {
+    height: 48px;
+    width: 274px;
+    border-radius: 4px;
+}
+.ui.comments .comment .author {
+    height: 14px;	
+    width: 66px;
+    color: #0079FF;	
+    font-family: "Noto Sans";	
+    font-size: 10px;	
+    line-height: 14px;
+}
+.ui.comments .comment {
+    height: 44px;
+    width: 274px;
+    margin: 2px;
+}
+.comment-input-box input[type=text]:focus + i{
+    color:dodgerBlue;
+}
+input[type=text]:focus{
+    border-color:dodgerBlue;
+    box-shadow:0 0 8px 0 dodgerBlue;
+}
+.comment-input-box.inputIconBg input[type=text]:focus + i{
+    color:#fff;
+    background-color:dodgerBlue;
+}
