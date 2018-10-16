@@ -223,7 +223,6 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
         subject: bothParams.queryParams.subject,
         medium: bothParams.queryParams.medium,
         gradeLevel: bothParams.queryParams.gradeLevel,
-        contentType: bothParams.queryParams.contentType ? bothParams.queryParams.contentType : this.config.appConfig.WORKSPACE.contentType
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),
@@ -231,8 +230,11 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
       sort_by: this.sort
     };
     if (!_.get(bothParams.queryParams, 'contentType')) {
-      const contentType = this.getContentType && this.getContentType().contentType;
-      searchParams.filters.contentType = contentType;
+      console.log('this.getContentType()', this.getContentType());
+      const contentType = this.getContentType && this.getContentType();
+      searchParams.filters['contentType'] = contentType;
+    } else {
+      searchParams.filters['contentType'] =  bothParams.queryParams.contentType;
     }
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
@@ -304,20 +306,18 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
       (user: IUserData) => {
         this.userRoles = user.userProfile.userRoles;
       });
-    const request = {
-      contentType: []
-    };
+    let contentType = [];
 
     if (_.indexOf(this.userRoles, 'BOOK_REVIEWER') !== -1) {
-      request.contentType = ['TextBook'];
+      contentType = ['TextBook'];
     }
     if (_.indexOf(this.userRoles, 'CONTENT_REVIEWER') !== -1) {
-     request.contentType = _.without(this.config.appConfig.WORKSPACE.contentType, 'TextBook');
+     contentType = _.without(this.config.appConfig.WORKSPACE.contentType, 'TextBook');
     }
     if (_.indexOf(this.userRoles, 'CONTENT_REVIEWER') !== -1 &&
       _.indexOf(this.userRoles, 'BOOK_REVIEWER') !== -1) {
-     request.contentType = this.config.appConfig.WORKSPACE.contentType;
+        contentType = this.config.appConfig.WORKSPACE.contentType;
     }
-    return request;
+    return contentType;
   }
 }

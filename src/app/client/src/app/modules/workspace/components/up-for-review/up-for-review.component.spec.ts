@@ -136,7 +136,7 @@ describe('UpForReviewComponent', () => {
     userService._userProfile = mockroleOrgMap;
     userService._userData$.next({ err: null, userProfile: mockUserRoles });
     spyOn(component, 'getContentType').and.callThrough();
-    const returnContentType = component.getContentType().contentType;
+    const returnContentType = component.getContentType();
     const ContentType = ['Collection', 'Course', 'LessonPlan', 'Resource'];
     expect(returnContentType).toEqual(ContentType);
   }));
@@ -193,7 +193,7 @@ describe('UpForReviewComponent', () => {
     userService._userProfile = mockroleOrgMap;
     userService._userData$.next({ err: null, userProfile: BookReviewer });
     spyOn(component, 'getContentType').and.callThrough();
-    const returnContentType = component.getContentType().contentType;
+    const returnContentType = component.getContentType();
     const ContentType = ['TextBook'];
     expect(returnContentType).toEqual(ContentType);
   }));
@@ -208,7 +208,7 @@ describe('UpForReviewComponent', () => {
     userService._userProfile = mockroleOrgMap;
     userService._userData$.next({ err: null, userProfile: BookReviewer });
     spyOn(component, 'getContentType').and.callThrough();
-    const returnContentType = component.getContentType().contentType;
+    const returnContentType = component.getContentType();
     const ContentType = configservice.appConfig.WORKSPACE.contentType;
     expect(returnContentType).toEqual(ContentType);
   }));
