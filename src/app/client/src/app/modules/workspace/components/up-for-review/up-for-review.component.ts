@@ -230,7 +230,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
       sort_by: this.sort
     };
     if (!_.get(bothParams.queryParams, 'contentType')) {
-      searchParams.filters['contentType'] = this.getContentType && this.getContentType();;
+      searchParams.filters['contentType'] = this.getContentType && this.getContentType();
     } else {
       searchParams.filters['contentType'] =  bothParams.queryParams.contentType;
     }
