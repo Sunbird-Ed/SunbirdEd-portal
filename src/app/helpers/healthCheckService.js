@@ -9,7 +9,7 @@ var request = require('request')
 var uuidv1 = require('uuid/v1')
 var envHelper = require('./environmentVariablesHelper.js')
 var cassandra = require('cassandra-driver')
-var contactPoints = envHelper.PORTAL_CASSANDRA_URLS
+var contactPoints = envHelper.PORTAL_CASSANDRA_IPS
 var hcMessages = {
   LEARNER_SERVICE: {
     NAME: 'learnerservice.api',

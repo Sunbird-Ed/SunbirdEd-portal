@@ -1,7 +1,7 @@
 import { NoteListComponent } from '@sunbird/notes';
 import {
   LearnPageComponent, CourseConsumptionPageComponent, CoursePlayerComponent,
-  EnrollBatchComponent, UnEnrollBatchComponent,
+  EnrollBatchComponent, UnEnrollBatchComponent, CreateBatchComponent, UpdateCourseBatchComponent
 } from './components';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -11,7 +11,6 @@ import { FlagContentComponent, AuthGuard } from '@sunbird/core';
 import { CourseProgressComponent } from '@sunbird/dashboard';
 import { RedirectComponent } from './../shared/components/redirect/redirect.component';
 import {ViewAllComponent} from '@sunbird/shared-feature';
-import {CreateCourseBatchComponent, UpdateCourseBatchComponent} from '@sunbird/course-batch';
 const telemetryEnv = 'course';
 const objectType = 'course';
 const routes: Routes = [
@@ -68,7 +67,7 @@ const routes: Routes = [
             }
           },
           {
-            path: 'create/batch', component: CreateCourseBatchComponent, canActivate: [AuthGuard],
+            path: 'create/batch', component: CreateBatchComponent, canActivate: [AuthGuard],
             data: { telemetry: { env: telemetryEnv, pageid: 'batch-create', type: 'view',  mode: 'create',
              object: { ver: '1.0', type: 'batch' }
             },
