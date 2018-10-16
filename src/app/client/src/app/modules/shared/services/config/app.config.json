@@ -494,6 +494,20 @@
     "studymaterial": "createlessontext",
     "lessonplan": "createlessonplan"
   },
+  "contentName": {
+    "textbook": "Untitled Textbook",
+    "course": "Untitled Course",
+    "collection": "Untitled Collection",
+    "studymaterial": "Untitled Resource",
+    "lessonplan": "Untitled Lessonplan"
+  },
+  "contentDescription": {
+    "textbook": "Enter description for TextBook",
+    "course": "Enter description for Course",
+    "collection": "Enter description for Collection",
+    "studymaterial": "Enter description for Resource",
+    "lessonplan": "Enter description for Lessonplan"
+  },
   "contentCreateTypeForEditors": {
     "textbook": "TextBook",
     "course": "Course",
