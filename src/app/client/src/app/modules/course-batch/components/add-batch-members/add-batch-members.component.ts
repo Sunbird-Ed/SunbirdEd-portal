@@ -270,9 +270,11 @@ export class AddBatchMembersComponent implements OnInit {
       .subscribe((res) => {
         const list = this.sortUsers(res);
         if (type === 'participant') {
-          this.participantList = list.participantList;
+          this.participantList =  _.filter(list.participantList, (participant) =>
+           _.indexOf(_.map(this.selectedParticipantList, 'id'), participant.id) === -1);
         } else {
-          this.mentorList = list.mentorList;
+          this.mentorList =  _.filter(list.mentorList, (mentor) =>
+          _.indexOf(_.map(this.selectedMentorList, 'id'), mentor.id) === -1);
         }
       },
         (err) => {
@@ -311,6 +313,32 @@ export class AddBatchMembersComponent implements OnInit {
     const users = this.sortUsers(res);
     const participantList = users.participantList;
     const mentorList = users.mentorList;
+    _.forEach(this.batchDetails.participant, (value, key) => {
+      const user = _.find(participantList, ['id', key]);
+      if (user) {
+        this.selectedParticipantList.push(user);
+      }
+    });
+    _.forEach(this.batchDetails.mentors, (value, key) => {
+      const mentor = _.find(mentorList, ['id', value]);
+      if (mentor) {
+        this.selectedMentorList.push(mentor);
+      }
+    });
+    _.forEach(this.batchDetails.participant, (value, key) => {
+      const user = _.find(participantList, ['id', key]);
+      if (user) {
+        this.participantList.push(user);
+      }
+    });
+    _.forEach(this.batchDetails.mentors, (value, key) => {
+      const mentor = _.find(mentorList, ['id', value]);
+      if (mentor) {
+        this.mentorList.push(mentor);
+      }
+    });
+    this.selectedParticipantList = _.uniqBy(this.selectedParticipantList, 'id');
+    this.selectedMentorList = _.uniqBy(this.selectedMentorList, 'id');
     _.forEach(this.batchDetails.participant, (value, key) => {
       const user = _.find(participantList, ['id', key]);
       if (user) {
@@ -387,7 +415,6 @@ export class AddBatchMembersComponent implements OnInit {
     }
   }
   public deleteUser(user, index) {
-    this.selectedUserList.splice(index, 1);
     const mentorId = _.map(this.mentorList, 'id');
     const participantsId = _.map(this.participantList, 'id');
     if (this.mentorList.length > 0 && mentorId.indexOf(user.id) !== 1) {
@@ -398,14 +425,21 @@ export class AddBatchMembersComponent implements OnInit {
     }
     const selectedMentorId = _.map(this.selectedMentorList, 'id');
     _.forEach(selectedMentorId, (id) => {
-      const mentorIndex = this.selectedMentorList.findIndex(i => i.id === id);
+      const mentorIndex = this.selectedMentorList.findIndex(i => i.id === user.id);
       if (mentorIndex !== -1) {
         this.selectedMentorList.splice(mentorIndex, 1);
       }
     });
+    const selectedUserListId = _.map(this.selectedUserList, 'id');
+    _.forEach(selectedUserListId, (id) => {
+      const selectedUserListIndex = this.selectedUserList.findIndex(i => i.id === user.id);
+      if (selectedUserListIndex !== -1) {
+        this.selectedUserList.splice(selectedUserListIndex, 1);
+      }
+    });
     const selectedParticipantId = _.map(this.selectedParticipantList, 'id');
     _.forEach(selectedParticipantId, (id) => {
-      const particcipantIndex = this.selectedParticipantList.findIndex(i => i.id === id);
+      const particcipantIndex = this.selectedParticipantList.findIndex(i => i.id === user.id);
       if (particcipantIndex !== -1) {
         this.selectedParticipantList.splice(particcipantIndex, 1);
       }
@@ -438,25 +472,19 @@ export class AddBatchMembersComponent implements OnInit {
     const selectedItemId = _.map(this.selectedItems, 'id');
     _.forEach(selectedItemId, (id) => {
       const index = this.selectedUserList.findIndex(i => i.id === id);
+      const mentorIndex = this.selectedMentorList.findIndex(i => i.id === id);
+      const participantIndex = this.selectedParticipantList.findIndex(i => i.id === id);
       if (index !== -1) {
         this.selectedUserList.splice(index, 1);
       }
-    });
-    this.deleteBatchDetails.emit(this.selectedItems);
-    const selectedMentorId = _.map(this.selectedMentorList, 'id');
-    _.forEach(selectedMentorId, (id) => {
-      const mentorIndex = this.selectedMentorList.findIndex(i => i.id === id);
       if (mentorIndex !== -1) {
         this.selectedMentorList.splice(mentorIndex, 1);
       }
-    });
-    const selectedParticipantId = _.map(this.selectedParticipantList, 'id');
-    _.forEach(selectedParticipantId, (id) => {
-      const participantIndex = this.selectedParticipantList.findIndex(i => i.id === id);
       if (participantIndex !== -1) {
         this.selectedParticipantList.splice(participantIndex, 1);
       }
     });
+    this.deleteBatchDetails.emit(this.selectedItems);
     this.selectedItems = [];
   }
   OnParticipantsDeSelect(event) {
@@ -488,7 +516,9 @@ export class AddBatchMembersComponent implements OnInit {
   }
 
   public onMentorDropDownOpen() {
-    this.validateSubOrg();
+    if (this.mentorList.length === 0) {
+      this.validateSubOrg();
+    }
     if (this.subOrgRequired && this.mentorDropDown) {
       this.mentorDropDown.isActive = false;
     }
@@ -496,7 +526,9 @@ export class AddBatchMembersComponent implements OnInit {
     this.subOrgDropDown.isActive = false;
   }
   public onParticipantDropDownOpen() {
-    this.validateSubOrg();
+    if (this.participantList.length === 0) {
+      this.validateSubOrg();
+    }
     if (this.subOrgRequired && this.participantsDropDown) {
       this.participantsDropDown.isActive = false;
     }

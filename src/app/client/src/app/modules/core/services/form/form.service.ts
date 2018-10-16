@@ -1,5 +1,5 @@
 
-import {map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { UserService } from './../user/user.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
@@ -28,7 +28,7 @@ export class FormService {
    */
   constructor(userService: UserService, configService: ConfigService, publicDataService: PublicDataService) {
     this.userService = userService;
-    this.configService  = configService ;
+    this.configService = configService;
     this.publicDataService = publicDataService;
   }
 
@@ -38,18 +38,20 @@ export class FormService {
     * @param {selectedContent} content selected content type
     */
   getFormConfig(formInputParams, hashTagId?: string): Observable<ServerResponse> {
-    const channelOptions = {
+    const channelOptions: any = {
       url: this.configService.urlConFig.URLS.dataDrivenForms.READ,
       data: {
         request: {
           type: formInputParams.formType,
           action: formInputParams.formAction,
           subType: this.configService.appConfig.formApiTypes[formInputParams.contentType],
-          rootOrgId: hashTagId ? hashTagId : this.userService.hashTagId,
-          framework: formInputParams.framework
+          rootOrgId: hashTagId ? hashTagId : this.userService.hashTagId
         }
       }
     };
+    if (formInputParams.framework) {
+      channelOptions.data.request.framework = formInputParams.framework;
+    }
     return this.publicDataService.post(channelOptions).pipe(map(
       (formConfig: ServerResponse) => {
         return formConfig.result.form.data.fields;

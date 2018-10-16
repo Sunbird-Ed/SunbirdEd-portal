@@ -7,7 +7,6 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const async = require('async')
 const helmet = require('helmet')
-const CassandraStore = require('cassandra-session-store')
 const _ = require('lodash')
 const trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js')
 const telemetryHelper = require('./helpers/telemetryHelper.js')
@@ -30,23 +29,14 @@ let memoryStore = null
 const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
 const frameworkConfig = require('./framework.config.js');
 const configHelper = require('./helpers/config/configHelper.js')
+const cassandraUtils = require('./helpers/cassandraUtil.js')
 
 const app = express()
 
 if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
   memoryStore = new session.MemoryStore()
 } else {
-  memoryStore = new CassandraStore({
-    'table': 'sessions',
-    'client': null,
-    'clientOptions': {
-      'contactPoints': envHelper.PORTAL_CASSANDRA_URLS,
-      'keyspace': 'portal',
-      'queryOptions': {
-        'prepare': true
-      }
-    }
-  }, () => { })
+  memoryStore = cassandraUtils.getCassandraStoreInstance()
 }
 
 let keycloak = new Keycloak({ store: memoryStore }, {
@@ -70,6 +60,10 @@ app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
 // announcement api routes
 app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '10mb' }), require('./helpers/announcement')(keycloak))
+
+// mock api routes
+app.use('/review-comments/v1', bodyParser.urlencoded({ extended: false }),
+  bodyParser.json({ limit: '10mb' }), require('./helpers/review-comments')())
 
 app.all('/logoff', endSession, (req, res) => {
   res.cookie('connect.sid', '', { expires: new Date() })

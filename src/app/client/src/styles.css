@@ -3054,7 +3054,6 @@ i.icon.accordion-content-right {
 .fullpage .content {
   left: 0;
   right: 0;
-  background: #fff;
   top: 0;
   position: relative;
 }
@@ -3492,11 +3491,11 @@ button.slick-next.slick-arrow.slick-disabled {
 }
 .mc-nonuser,
 .mc-user{
-  margin-top:90px !important;
+  padding-top:90px !important;
 }
 @media screen and (max-width:768px){
   .mc-user{
-    margin-top: 190px !important;
+    padding-top: 190px !important;
   }
 }
 
@@ -3511,7 +3510,7 @@ button.slick-next.slick-arrow.slick-disabled {
 }
 .count .countplaceholder{
   position: absolute;
-  left: 25px;
+  left: 13px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 100;
@@ -3565,9 +3564,18 @@ button.slick-next.slick-arrow.slick-disabled {
 .bs-0 {
   box-shadow: none !important;
 }
-
 .ui.fixed.main.menu.main-header {
   border:0;
   border-bottom: .5px solid rgba(25,109,127,.68) !important;
   z-index: 9999;
+}
+.batchmember .UpReviewHeader{
+  font-size:14px;
+}
+.batchmember .UpReviewSubHeader{
+  font-size:10px;
+  line-height: 1.5;
+}
+.width-30{
+  max-width: 30px !important;
 }
