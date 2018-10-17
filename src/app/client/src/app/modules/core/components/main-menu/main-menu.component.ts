@@ -1,6 +1,6 @@
-import { ResourceService } from '@sunbird/shared';
+import { ConfigService, ResourceService } from '@sunbird/shared';
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services';
+import { UserService, PermissionService } from '../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 
@@ -14,6 +14,10 @@ import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 })
 export class MainMenuComponent implements OnInit {
   /**
+   * Workspace access roles
+   */
+  workSpaceRole: Array<string>;
+  /**
    * reference of resourceService service.
    */
   public resourceService: ResourceService;
@@ -22,22 +26,37 @@ export class MainMenuComponent implements OnInit {
    */
   public userService: UserService;
   /**
+   * reference of permissionService service.
+   */
+  public permissionService: PermissionService;
+  /**
+   * reference of config service.
+   */
+  public config: ConfigService;
+  /**
    * reference of Router.
    */
   private router: Router;
   homeMenuIntractEdata: IInteractEventEdata;
   learnMenuIntractEdata: IInteractEventEdata;
   libraryMenuIntractEdata: IInteractEventEdata;
+  workspaceMenuIntractEdata: IInteractEventEdata;
   /*
   * constructor
   */
-  constructor(resourceService: ResourceService, userService: UserService, router: Router) {
+  constructor(resourceService: ResourceService, userService: UserService, router: Router,
+     permissionService: PermissionService, config: ConfigService) {
     this.resourceService = resourceService;
     this.userService = userService;
+    this.permissionService = permissionService;
     this.router = router;
+    this.config = config;
+    this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
   }
+
   ngOnInit() {
     this.setInteractData();
+    console.log(this.permissionService);
   }
   setInteractData() {
     this.homeMenuIntractEdata = {
@@ -55,5 +74,17 @@ export class MainMenuComponent implements OnInit {
       type: 'click',
       pageid: 'learn'
     };
+    this.workspaceMenuIntractEdata = {
+      id: 'workspace-tab',
+      type: 'click',
+      pageid: 'workspace'
+    };
+  }
+
+  navigateToWorkspace() {
+    const authroles = this.permissionService.getWorkspaceAuthRoles();
+    if (authroles) {
+      this.router.navigate([authroles.url]);
+    }
   }
 }
