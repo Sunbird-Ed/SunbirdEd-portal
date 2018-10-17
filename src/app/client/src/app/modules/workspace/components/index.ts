@@ -25,3 +25,5 @@ export * from './request-changes-popup/request-changes-popup.component';
 export * from './all-content/all-content.component';
 export * from './flag-reviewer/flag-reviewer.component';
 export * from './all-my-content-filter/all-my-content-filter.component';
+export * from './collaborating-on/collaborating-on.component'
+
