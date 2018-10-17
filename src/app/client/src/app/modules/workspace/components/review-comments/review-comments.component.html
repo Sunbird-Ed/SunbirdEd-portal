@@ -16,11 +16,15 @@
     </div>
   </div>
   <div class="margin-left-10">
-      <label>Drop a comment</label>
-      <label class="ui left floated" *ngIf="comments.value">{{comments.value.trim().length}} / 150</label>
+    <div class="text">
+      {{resourceService.frmelmnts.intxt.t0016}}
+      <span class="right floated" *ngIf="comments.value">{{comments.value.trim().length}} / 150</span>
+    </div>
   </div>
-  <div class="margin-left-10 ui icon input comment-input-box">
-    <input type="text" autocomplete="off" class="form-control"[formControl]="comments" >
-    <i (click)="addReviewComments()" class="angle double right icon link" aria-hidden="true"></i>
+  <div class="margin-left-10">
+    <div class=" ui icon input">
+      <input type="text" maxlength="150" autocomplete="off" class="form-control"[formControl]="comments" >
+      <i (click)="addReviewComments()" class="angle double right icon link" aria-hidden="true"></i>
+    </div>
   </div>
 </div>
