@@ -1,13 +1,13 @@
-<div class="review-comments-box">
-  <div class="ui small comments" *ngIf="contentData && reviewDetails" >
+<div class="review-comments-box br-4 bs-1 p-8">
+  <div class="ui small comments scrolling" *ngIf="contentData && reviewDetails" >
     <div class="comment" *ngFor="let rDetails of reviewDetails.comments;">
-      <a class="avatar">
+      <span class="avatar">
         <img src="{{rDetails.userImage || 'assets/images/user-profile.png' | cdnprefixurl}}">
-      </a>
-      <div class="content">
-          <a class="author">{{rDetails.userName}}</a>
-          <div class="ui left floated metadata">
-            <span class="date" innerHTML="{{rDetails.createdOn | date: 'MMM d'}}"></span>
+      </span>
+      <div class="content pr-8">
+          <div class="d-flex jc-space-around">
+            <span class="text-blue">{{rDetails.userName}}</span>
+            <span class="date ui metadata " innerHTML="{{rDetails.createdOn | date: 'MMM d'}}"></span>
           </div>
           <div class="text">
             {{rDetails.message}}
@@ -15,16 +15,14 @@
       </div>
     </div>
   </div>
-  <div class="margin-left-10">
-    <div class="text">
-      {{resourceService.frmelmnts.intxt.t0016}}
-      <span class="right floated" *ngIf="comments.value">{{comments.value.trim().length}} / 150</span>
+  <div class="ui form p-8">
+    <div class="content mb-5 d-flex jc-space-around">
+      <span>{{resourceService.frmelmnts.intxt.t0016}}</span>
+      <span *ngIf="comments.value">{{comments.value.trim().length}} / 150</span>
     </div>
-  </div>
-  <div class="margin-left-10">
-    <div class=" ui icon input">
-      <input type="text" maxlength="150" autocomplete="off" class="form-control"[formControl]="comments" >
-      <i (click)="addReviewComments()" class="angle double right icon link" aria-hidden="true"></i>
+    <div class="ui icon input width-100">
+      <textarea  maxlength="150" autocomplete="off" class="width-100 br-4 reply-box form-control"[formControl]="comments"></textarea>
+      <i (click)="addReviewComments()" class="angle double right icon link" aria-hidden="true" tabindex="0"></i>
     </div>
   </div>
 </div>

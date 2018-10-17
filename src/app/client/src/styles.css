@@ -3549,3 +3549,24 @@ button.slick-next.slick-arrow.slick-disabled {
 .width-30{
   max-width: 30px !important;
 }
+.br-4{
+  border-radius: 4px;
+}
+.bs-1{
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+.p-8{
+  padding: 8px;
+}
+.d-flex{
+  display: flex;
+}
+.jc-space-around{
+  justify-content: space-between;
+}
+.text-blue{
+  color: #0079FF;
+}
+.pr-8{
+  padding-right: 8px;
+}
