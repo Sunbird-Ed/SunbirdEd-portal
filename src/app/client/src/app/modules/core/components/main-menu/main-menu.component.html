@@ -1,4 +1,4 @@
-<div class="ui text menu m-0 jc-center flex" *ngIf="userService.userid">
+<div class="ui text menu m-0 jc-center flex" *ngIf="userService.loggedIn">
 	<a class="item" appTelemetryInteract [telemetryInteractEdata]="homeMenuIntractEdata" [class.active]="router.isActive('/search/All') || router.isActive('/home')" routerLink="/home">
 		{{resourceService?.frmelmnts?.tab?.home}}
 	</a>
