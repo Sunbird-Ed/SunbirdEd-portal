@@ -39,14 +39,6 @@ describe('userService', () => {
       expect(userData.err).toBeDefined();
     });
   }));
-  it('should return userId when userId get method is called', inject([UserService], (service: UserService) => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
-    userService.initialize(true);
-    const userId = userService.userid;
-    expect(userId).toBeDefined();
-  }));
   it('should return userProfile when userProfile get method is called', inject([UserService], (service: UserService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
