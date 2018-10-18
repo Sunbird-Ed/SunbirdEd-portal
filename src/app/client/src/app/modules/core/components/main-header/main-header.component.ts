@@ -42,10 +42,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
    */
   isOpen: boolean;
   /**
-   * Workspace access roles
-   */
-  workSpaceRole: Array<string>;
-  /**
    * Admin Dashboard access roles
    */
   adminDashboard: Array<string>;
@@ -135,7 +131,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.queryParam = { ...queryParams };
       this.key = this.queryParam['key'];
     });
-    this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
     this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
     this.announcementRole = this.config.rolesConfig.headerDropdownRoles.announcementRole;
     this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
@@ -169,12 +164,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     if (isCachedDataExists) {
       const data: any | null = this.cacheService.get('portalLanguage');
       this.resourceService.getResource(data);
-    }
-  }
-  navigateToWorkspace() {
-    const authroles = this.permissionService.getWorkspaceAuthRoles();
-    if (authroles) {
-      this.router.navigate([authroles.url]);
     }
   }
   navigateToHome() {
