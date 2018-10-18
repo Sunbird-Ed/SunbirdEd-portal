@@ -56,7 +56,6 @@ export class MainMenuComponent implements OnInit {
 
   ngOnInit() {
     this.setInteractData();
-    console.log(this.permissionService);
   }
   setInteractData() {
     this.homeMenuIntractEdata = {
@@ -75,7 +74,7 @@ export class MainMenuComponent implements OnInit {
       pageid: 'learn'
     };
     this.workspaceMenuIntractEdata = {
-      id: 'workspace-tab',
+      id: 'workspace-menu-button',
       type: 'click',
       pageid: 'workspace'
     };
