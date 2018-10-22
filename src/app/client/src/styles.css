@@ -3392,6 +3392,10 @@ angular2-multiselect .list-area{
     height:170px !important;
   } 
 
+  .header-fix {
+    height: 100px !important;
+  }
+
 }
 .ui.large.secondary.menu {
   display:flex;
