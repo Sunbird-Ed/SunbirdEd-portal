@@ -44,7 +44,7 @@ export class ReviewCommentsComponent implements OnInit, OnDestroy {
       'request': {
         'contextDetails': {
           'contentId': this.contentData.identifier,
-          'version': this.contentData.versionKey,
+          'contentVer': this.contentData.versionKey, // changed to contentVer
           'contentType': this.contentData.mimeType,
           'stageId': '1'
         }
@@ -87,11 +87,11 @@ export class ReviewCommentsComponent implements OnInit, OnDestroy {
       'request': {
         'contextDetails': {
           'contentId': this.contentData.identifier,
-          'version': this.contentData.versionKey,
+          'contentVer': this.contentData.versionKey,
           'contentType': this.contentData.mimeType,
           'stageId': '1'
         },
-        'message': this.comments.value,
+        'body': this.comments.value,
         'userId': this.userService.userProfile.userId
       }
     };
@@ -101,9 +101,11 @@ export class ReviewCommentsComponent implements OnInit, OnDestroy {
         (apiResponse: ServerResponse) => {
           this.reviewDetails.comments.push({
             'userId': this.userService.userProfile.userId,
-            'userName': this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName,
-            'userImage': this.userService.userProfile.avatar,
-            'message': this.comments.value,
+            'userInfo': {
+              'name': this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName,
+              'logo': this.userService.userProfile.avatar,
+            },
+            'body': this.comments.value,
             'createdOn': '2018-10-03 13:33:35:868+0000'
           });
           this.comments = new FormControl();

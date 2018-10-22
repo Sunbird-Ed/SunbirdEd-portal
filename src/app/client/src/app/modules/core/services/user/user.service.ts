@@ -214,6 +214,7 @@ export class UserService {
     this._userProfile.orgRoleMap = orgRoleMap;
     this._userProfile.organisationIds = organisationIds;
     this._userProfile.hashTagIds = _.uniq(hashTagIds);
+    this._userProfile.userId = this.userid; // this line is added to handle userId not returned from user service
     this._rootOrgId = this._userProfile.rootOrgId;
     this._hashTagId = this._userProfile.rootOrg.hashTagId;
     this.getOrganisationDetails(organisationIds);
