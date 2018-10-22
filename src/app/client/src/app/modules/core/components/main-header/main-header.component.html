@@ -1,6 +1,6 @@
 <!-- primary header with accessability  -->
 
-<div class="ui fixed main menu bs-0 main-header" [class.height-170]="userService.loggedIn" *ngIf="!showExploreHeader">
+<div class="ui fixed main menu light bar" [class.height-170]="userService.loggedIn" *ngIf="!showExploreHeader">
     <div class="ui container height-100">
         <div class="ui large secondary menu width-100 m-0">
             <div role="banner" class="ui primary-header logo">
@@ -33,8 +33,7 @@
                                                 <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='myActivityRole' routerLink="myActivity">{{resourceService.frmelmnts?.lnk?.myactivity}}</a>
                                                 <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='orgSetupRole' routerLink="orgType">{{resourceService.frmelmnts?.lbl?.orgtypes}}</a>
                                                 <a class="item" (click)="logout()">{{resourceService.frmelmnts?.lnk?.logout}}</a>
-                                            </div>
-                                        </div>
+                                             </div>
                                     </div>
                                 </a>
                             </div>
@@ -74,8 +73,7 @@
                                     <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='myActivityRole' routerLink="myActivity">{{resourceService.frmelmnts?.lnk?.myactivity}}</a>
                                     <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='orgSetupRole' routerLink="orgType">{{resourceService.frmelmnts?.lbl?.orgtypes}}</a>
                                     <a class="item" (click)="logout()">{{resourceService.frmelmnts?.lnk?.logout}}</a>
-                                </div>
-                            </div>
+                               </div>
                         </div>
                     </a>
                 </div>
