@@ -30,6 +30,20 @@ const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
 const frameworkConfig = require('./framework.config.js');
 const configHelper = require('./helpers/config/configHelper.js')
 const cassandraUtils = require('./helpers/cassandraUtil.js')
+const ServiceSourceAdapter = require('./helpers/config/sourceAdapters/serviceSourceAdapter')
+const EnvVarSourceAdapter = require('./helpers/config/sourceAdapters/envVarSourceAdapter')
+const ConfigBuilder = require('./helpers/config/configBuilder')
+
+const configMap = {
+  sunbird_instance_name: 'PORTAL_TITLE_NAME',
+  sunbird_theme: 'PORTAL_THEME',
+  sunbird_default_language: 'PORTAL_DEFAULT_LANGUAGE',
+  sunbird_primary_bundle_language: 'PORTAL_PRIMARY_BUNDLE_LANGUAGE',
+  sunbird_explore_button_visibility: 'EXPLORE_BUTTON_VISIBILITY',
+  sunbird_enable_signup: 'ENABLE_SIGNUP',
+  sunbird_extcont_whitelisted_domains: 'SUNBIRD_EXTCONT_WHITELISTED_DOMAINS',
+  sunbird_portal_user_upload_ref_link: 'PORTAL_USER_UPLOAD_REF_LINK'
+}
 
 const app = express()
 
@@ -79,7 +93,7 @@ require('./routes/clientRoutes.js')(app, keycloak)
 app.all(['/content-editor/telemetry', '/collection-editor/telemetry'], bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)
 
-// learner api routes 
+// learner api routes
 require('./routes/learnerRoutes.js')(app)
 
 app.all(['/content/data/v1/telemetry', '/action/data/v3/telemetry'],
@@ -106,13 +120,13 @@ function addCorsHeaders(req, res, next) {
 // tenant api
 app.get(['/v1/tenant/info', '/v1/tenant/info/:tenantId'], addCorsHeaders, tenantHelper.getInfo)
 
-// public api routes 
+// public api routes
 require('./routes/publicRoutes.js')(app)
 
 // proxy urls
 require('./proxy/contentEditorProxy.js')(app, keycloak)
 
-// content api routes 
+// content api routes
 require('./routes/contentRoutes.js')(app)
 
 // Local proxy for content and learner service
@@ -202,8 +216,12 @@ function runApp () {
 
   // redirect to home if nothing found
   app.all('*', (req, res) => res.redirect('/'))
-  // start server after fetching the configuration data
-  configHelper.fetchConfig().then(function(){
+  // start server after building the configuration data
+  let configBuilder = new ConfigBuilder(configMap)
+  configBuilder.addConfigSource(new ServiceSourceAdapter(envHelper.CONFIG_URL + 'v1/read'))
+  configBuilder.addConfigSource(new EnvVarSourceAdapter(envHelper))
+
+  configBuilder.buildConfig(envHelper.CONFIG_REFRESH_INTERVAL).then(function (status) {
     portal.server = app.listen(envHelper.PORTAL_PORT, () => {
       if (envHelper.PORTAL_CDN_URL) {
         const req = request
