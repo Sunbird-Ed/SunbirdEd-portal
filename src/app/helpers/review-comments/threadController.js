@@ -19,31 +19,45 @@ class ThreadController {
     return async ((requestObj) => {
           return new Promise((resolve, reject) => {
             resolve({
-              'contentId': 'do_112584109936099328189',
-              'contentVer': '1538720793170',
-              'contentType': 'ecml',
-              'stageId': 'eelk12hj45',
-              'comments': [{
-                'userId': '3b34c469-460b-4c20-8756-c5fce2de9e69',
-                'message': 'Cannot see the content clearly on desktop. Please check the dimensions',
-                'createdOn': '2018-10-03 13:33:35:868+0000'
+                'comments': [{
+                  "postId": "91176a19-8eae-426b-8750-418742ccf014",
+                  "threadId": "23d2cfa0-d2d7-11e8-b535-8794514fb191",
+                  "body": "comment for stage eelk12hj45",
+                  "createdOn": "2018-10-18T16:32:07.148Z",
+                  "userId": "NCF",
+                  "tag": "do_112584109936099328189_1_ecml",
+                  "userInfo": {
+                      "logo": "https://dev.open-sunbird.org/assets/images/sunbird_logo.png",
+                      "name": "sham"
+                  },
+                  "stageId": "eelk12hj45"
               },
               {
-                'userId': '159e93d1-da0c-4231-be94-e75b0c226d7c',
-                'message': 'The image is distorted. Upload a bigger resolution image.',
-                'createdOn': '2018-10-03 13:33:35:868+0000'
+                  "postId": "23512478-1b84-4e7e-b94f-2a3bc328d7a8",
+                  "threadId": "23d2cfa0-d2d7-11e8-b535-8794514fb191",
+                  "body": "sample comments for stage kelkghhj35",
+                  "createdOn": "2018-10-18T16:32:06.330Z",
+                  "userId": "NCF",
+                  "tag": "do_112584109936099328189_1_ecml",
+                  "userInfo": {
+                      "logo": "https://dev.open-sunbird.org/assets/images/sunbird_logo.png",
+                      "name": "ram"
+                  },
+                  "stageId": "kelkghhj35"
               },
               {
-                'userId': 'd5efd1ab-3cad-4034-8143-32c480f5cc9e',
-                'message': 'Inapropiate tags such as Resource type and tags',
-                'createdOn': '2018-10-03 13:33:35:868+0000'
-              },
-              {
-                'userId': '150c315b-3672-4baa-9037-8a1eece3c827',
-                'message': 'Inapropiate tags such as Resource type and tags',
-                'createdOn': '2018-10-03 13:33:35:868+0000'
-              }
-              ]
+                "postId": "34512478-1b84-4e7e-b94f-2a3bc328d7a8",
+                "threadId": "23d2cfa0-d2d7-11e8-b535-8794514fb191",
+                "body": "sample comments for stage eelk12hj45",
+                "createdOn": "2018-10-18T16:32:06.330Z",
+                "userId": "NCF",
+                "tag": "do_112584109936099328189_1_ecml",
+                "userInfo": {
+                    "logo": "https://dev.open-sunbird.org/assets/images/sunbird_logo.png",
+                    "name": "ram"
+                },
+                "stageId": "eelk12hj45"
+            }]
             })
           })
     })
