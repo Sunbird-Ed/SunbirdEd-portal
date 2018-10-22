@@ -5,14 +5,13 @@ const properties = require('properties')
 const _ = require('lodash')
 const configHelper = require('./../config/configHelper.js')
 const resBundlesArr = [
-  { name: 'frmelmnts',
-    path: path.join(__dirname, '/./../../resourcebundles/data/formElements/'),
+  { name: 'consumption',
+    path: path.join(__dirname, '/./../../resourcebundles/data/consumption/'),
     dest: path.join(__dirname, '/./../../resourcebundles/json/') },
-  { name: 'messages',
-    path: path.join(__dirname, '/./../../resourcebundles/data/messages/'),
+  { name: 'creation',
+    path: path.join(__dirname, '/./../../resourcebundles/data/creation/'),
     dest: path.join(__dirname, '/./../../resourcebundles/json/') }
 ]
-
 const readFiles = function (dirname) {
   const readDirPr = new Promise(function (resolve, reject) {
     fs.readdir(dirname,
@@ -74,15 +73,14 @@ var buildBundle = function (item) {
         sections: true,
         comments: '#', // Some INI files also consider # as a comment, if so, add it, comments: [";", "#"]
         separators: '=',
-        strict: true
+        strict: true,
+        namespaces: true
         // path: true
       }
-
       allContents.forEach(function (contentObj) {
         var obj = properties.parse(contentObj.content, options)
         resObj[contentObj.name] = obj
       })
-
       _.forEach(resObj, function (langObj, langKey) {
         if (resObj[configHelper.getConfig('PORTAL_PRIMARY_BUNDLE_LANGUAGE')] &&
             langKey !== configHelper.getConfig('PORTAL_PRIMARY_BUNDLE_LANGUAGE')) {
