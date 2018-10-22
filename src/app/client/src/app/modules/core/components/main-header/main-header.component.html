@@ -1,6 +1,6 @@
 <!-- primary header with accessability  -->
 
-<div class="ui fixed main menu light bar" [class.height-170]="userService.userid" *ngIf="!showExploreHeader">
+<div class="ui fixed main menu light bar" [class.height-170]="userService.loggedIn" *ngIf="!showExploreHeader">
     <div class="ui container height-100">
         <div class="ui large secondary menu width-100 m-0">
             <div role="banner" class="ui primary-header logo">
@@ -11,13 +11,13 @@
             <nav id="main-nav" aria-label="Primary navigation" class="width-100 flex ml-auto">
                 <div class="ui text primary-nav menu ml-auto mobile only m-0">
                     <div class="ui grid margin-none">
-                        <div class="p-0" [ngClass]="{'row': userService.userid, 'mt-10': !userService.userid}">
+                        <div class="p-0" [ngClass]="{'row': userService.loggedIn, 'mt-10': !userService.loggedIn}">
                             <div class="eight wide column"></div>
                             <div class="four wide column flex jc-flex-end">
-                                    <a class="item" *ngIf="userService.userid">
+                                    <a class="item" *ngIf="userService.loggedIn">
                                         <img src="{{'assets/images/notification.png'}}" class="notification-icon mt-10">
                                     </a>
-                                    <a class="item" *ngIf="userService.userid; else showLoginBtn">
+                                    <a class="item" *ngIf="userService.loggedIn; else showLoginBtn">
                                         <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing
                                                     header-user-container" id="dropdown-menu-list-header">
                                             <img src="{{ userProfile?.avatar || 'assets/images/user-profile.png' | cdnprefixurl}}" class="ui circular image logged-in-user pr-0"
@@ -28,7 +28,6 @@
                                                 <a class="item" routerLink="profile">{{resourceService.frmelmnts?.lnk?.profile}}</a>
                                                 <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='adminDashboard' routerLink="orgDashboard">{{resourceService.frmelmnts?.lnk?.dashboard}}</a>
                                                 <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='announcementRole' routerLink="announcement/outbox/1">{{resourceService.frmelmnts?.lnk?.announcement}}</a>
-                                                <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='workSpaceRole' (click)="navigateToWorkspace()">{{resourceService.frmelmnts?.lnk?.workSpace}}</a>
                                                 <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='myActivityRole' routerLink="myActivity">{{resourceService.frmelmnts?.lnk?.myactivity}}</a>
                                                 <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='orgSetupRole' routerLink="orgType">{{resourceService.frmelmnts?.lbl?.orgtypes}}</a>
                                                 <a class="item" (click)="logout()">{{resourceService.frmelmnts?.lnk?.logout}}</a>
@@ -37,12 +36,12 @@
                                     </a>
                                 </div>
                         </div>
-                        <div class="row p-0 mt-10" *ngIf="userService.userid">
+                        <div class="row p-0 mt-10" *ngIf="userService.loggedIn">
                             <div class="twelve wide column flex-as-flex-end ">
                                 <app-search  class="flex-as-center width-100"></app-search>
                             </div>                           
                         </div>
-                        <div class="row p-0" *ngIf="userService.userid">
+                        <div class="row p-0" *ngIf="userService.loggedIn">
                             <div class="twelve wide column flex jc-center flex-as-center">
                                 <app-main-menu></app-main-menu>
                             </div>                            
@@ -50,12 +49,12 @@
                     </div>               
                 </div>
                 <div class="ui text primary-nav menu ml-auto computer only">
-                        <app-search *ngIf="userService.userid" class="flex-as-center mr-40"></app-search>
-                        <app-main-menu *ngIf="userService.userid" class="flex"></app-main-menu>    
-                        <a class="item ml-20" *ngIf="userService.userid">
+                        <app-search *ngIf="userService.loggedIn" class="flex-as-center mr-40"></app-search>
+                        <app-main-menu *ngIf="userService.loggedIn" class="flex"></app-main-menu>    
+                        <a class="item ml-20" *ngIf="userService.loggedIn">
                             <img src="{{'assets/images/notification.png'}}" class="notification-icon">
                         </a>
-                        <a class="item pt-0" *ngIf="userService.userid; else showLoginBtn">
+                        <a class="item pt-0" *ngIf="userService.loggedIn; else showLoginBtn">
                             <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing
                                         header-user-container" id="dropdown-menu-list-header">
                                 <img src="{{ userProfile?.avatar || 'assets/images/user-profile.png' | cdnprefixurl}}" class="ui circular image logged-in-user"
@@ -66,7 +65,6 @@
                                     <a class="item" routerLink="profile">{{resourceService.frmelmnts?.lnk?.profile}}</a>
                                     <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='adminDashboard' routerLink="orgDashboard">{{resourceService.frmelmnts?.lnk?.dashboard}}</a>
                                     <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='announcementRole' routerLink="announcement/outbox/1">{{resourceService.frmelmnts?.lnk?.announcement}}</a>
-                                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='workSpaceRole' (click)="navigateToWorkspace()">{{resourceService.frmelmnts?.lnk?.workSpace}}</a>
                                     <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='myActivityRole' routerLink="myActivity">{{resourceService.frmelmnts?.lnk?.myactivity}}</a>
                                     <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='orgSetupRole' routerLink="orgType">{{resourceService.frmelmnts?.lbl?.orgtypes}}</a>
                                     <a class="item" (click)="logout()">{{resourceService.frmelmnts?.lnk?.logout}}</a>
