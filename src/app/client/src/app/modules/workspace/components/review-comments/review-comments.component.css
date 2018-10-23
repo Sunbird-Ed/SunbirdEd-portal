@@ -13,13 +13,17 @@
     resize: none !important;
     padding-right: 2.67142857em !important;
 }
-.icon.icon-send:before {
+.icon.sb-icon-send:before {
     font-size: 18px;
     width: 1.671429em;
 }
-.icon.icon-reviewer:before {
+.icon.sb-icon-reviewer:before {
     font-size: 30px;
+    color: #8BA9CC;
 }
-textarea:focus +i.icon.icon-send:before {
+textarea:focus+i.icon.sb-icon-send:before {
     color:#2185D0;
+}
+.ui.form textarea:focus {
+    border-color:#2185D0;
 }
