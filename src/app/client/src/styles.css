@@ -212,6 +212,9 @@
   font-size: 13px;
   font-family: 'sunbirdregularfont';
 }
+.opacity-1{
+  opacity: 1 !important;
+}
 .padding-none {
   padding: 0px !important;
 }
