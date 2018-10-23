@@ -1,6 +1,7 @@
 @import "../node_modules/slick-carousel/slick/slick.css";
 @import "../node_modules/slick-carousel/slick/slick-theme.css";
 @import "../node_modules/fine-uploader/fine-uploader/fine-uploader-new.min.css";
+@import "./assets/sb-icon.css";
 
 /*sunbird light font*/
 @font-face {
@@ -22,76 +23,6 @@
   font-family: 'sunbirdboldfont';
   src: url('./assets/fonts/OpenSans-Bold.ttf') format('truetype');
 }
-
-/* Added for Custom Icons- START */
-@font-face {
-  font-family: 'icomoon';
-  src:  url('./assets/fonts/icomoon.eot?q5fmh5');
-  src:  url('./assets/fonts/icomoon.eot?q5fmh5#iefix') format('embedded-opentype'),
-    url('./assets/fonts/icomoon.ttf?q5fmh5') format('truetype'),
-    url('./assets/fonts/icomoon.woff?q5fmh5') format('woff'),
-    url('./assets/fonts/icomoon.svg?q5fmh5#icomoon') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-[class^="icon-"], [class*=" icon-"] {
-  /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'icomoon' !important;
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.icon-audio:before {
-  content: "\e900";
-  color: #4c4c4c;
-}
-.icon-collection:before {
-  content: "\e901";
-  color: #4c4c4c;
-}
-.icon-comment:before {
-  content: "\e902";
-  color: #4c4c4c;
-}
-.icon-doc:before {
-  content: "\e903";
-  color: #4c4c4c;
-}
-.icon-interactive:before {
-  content: "\e904";
-  color: #4c4c4c;
-}
-.icon-preview:before {
-  content: "\e905";
-  color: #4c4c4c;
-}
-.icon-reviewer:before {
-  content: "\e906";
-  color: #4c4c4c;
-}
-.icon-send:before {
-  content: "\e907";
-  color: #4c4c4c;
-}
-.icon-textbook:before {
-  content: "\e908";
-  color: #4c4c4c;
-}
-.icon-video:before {
-  content: "\e909";
-  color: #4c4c4c;
-}
-/* Added for Custom Icons- END */
-
 /* placeholder if content is not there */
 .placeholder {
   align-items: center;
