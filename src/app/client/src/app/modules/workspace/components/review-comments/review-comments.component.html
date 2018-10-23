@@ -1,8 +1,9 @@
 <div class="review-comments-box br-4 bs-1 p-8">
-  <div class="ui small comments scrolling" *ngIf="contentData && reviewDetails" >
+  <div class="ui small comments scrolling" *ngIf="contentData && reviewDetails && reviewDetails.comments.length > 0" >
     <div class="comment" *ngFor="let rDetails of reviewDetails.comments;">
       <span class="avatar">
-        <img src="{{rDetails.userImage || 'assets/images/user-profile.png' | cdnprefixurl}}">
+        <img *ngIf="rDetails.userImage" src="{{rDetails.userImage | cdnprefixurl}}">
+        <i *ngIf="!rDetails.userImage" class="icon-reviewer icon" aria-hidden="true"></i>
       </span>
       <div class="content pr-8">
           <div class="d-flex jc-space-around">
@@ -15,14 +16,17 @@
       </div>
     </div>
   </div>
+  <div *ngIf="!reviewDetails.comments.length > 0" class="CommentsNotFound">
+    <i class="icon icon-comment"></i>
+  </div>
   <div class="ui form p-8">
-    <div class="content mb-5 d-flex jc-space-around">
+    <div class="content metadata mb-5 d-flex jc-space-around">
       <span>{{resourceService.frmelmnts.intxt.t0016}}</span>
       <span *ngIf="comments.value">{{comments.value.trim().length}} / 150</span>
     </div>
     <div class="ui icon input width-100">
-      <textarea  maxlength="150" autocomplete="off" class="width-100 br-4 reply-box form-control"[formControl]="comments"></textarea>
-      <i (click)="addReviewComments()" class="angle double right icon link" aria-hidden="true" tabindex="0"></i>
+      <textarea maxlength="150" autocomplete="off" class="width-100 br-4 reply-box form-control"[formControl]="comments"></textarea>
+      <i (click)="addReviewComments()" class="mr-5 right icon-send icon" aria-hidden="true" tabindex="0"></i>
     </div>
   </div>
 </div>
