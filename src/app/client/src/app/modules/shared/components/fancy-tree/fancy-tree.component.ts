@@ -38,7 +38,7 @@ export class FancyTreeComponent implements AfterViewInit {
       glyph: {
         preset: 'awesome4',
         map: {
-          folder: 'fa fa-book fa-lg',
+          folder: 'sb-icon-textbook',
           folderOpen: 'fa fa-book-open fa-lg'
         }
       },
