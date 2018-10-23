@@ -1,22 +1,37 @@
-  <div class="ui segment" *ngIf="contentData && reviewDetails">
-    <div class="ui comments">
-      <div class="comment" *ngFor="let rDetails of reviewDetails.comments;">
-        <a class="ui avatar image">
-          <img class="" src="{{rDetails.userInfo.logo || 'assets/images/user-profile.png' | cdnprefixurl}}">
-        </a>
-        <div class="content">
-          <span class="author">{{rDetails.userInfo.name}}</span>
-          <div class="metadata">
-            <span class="date right floated">{{rDetails.createdOn}}</span>
+<div class="review-comments-box br-4 bs-1 p-8">
+  <div class="ui small comments scrolling" *ngIf="contentData && reviewDetails && reviewDetails.comments.length > 0 else emptyComments" >
+    <div class="comment" *ngFor="let rDetails of reviewDetails.comments;">
+      <span class="avatar">
+        <img *ngIf="rDetails.userInfo.logo" src="{{rDetails.userInfo.logo | cdnprefixurl}}">
+        <i *ngIf="!rDetails.userInfo.logo" class="icon sb-icon-reviewer" aria-hidden="true"></i>
+      </span>
+      <div class="content pr-8">
+          <div class="d-flex jc-space-around">
+            <span class="text-blue">{{rDetails.userInfo.name}}</span>
+            <span class="date ui metadata">{{rDetails.createdOn | date: 'MMM d'}}</span>
           </div>
           <div class="text">
             {{rDetails.body}}
           </div>
-        </div>
       </div>
-      <section class="float-ContentRight" *ngIf="comments.value">{{comments.value.trim().length}} / 150</section>
-      <textarea class="form-control" [formControl]="comments"></textarea>
-      <button class="" (click)="addReviewComments()" [disabled]="disableSubmitcommentsButton">
-        {{resourceService?.frmelmnts?.btn?.add}}</button>
     </div>
   </div>
+  <ng-template #emptyComments>
+    <div class="ui comments scrolling">
+      <div class="placeholder margin-top-91">
+          <i class="sb-icon-comment middle aligned"></i>
+          <span class="">click to add comment to this page</span>
+      </div>
+    </div>
+  </ng-template>
+  <div class="ui form p-8">
+    <div class="content mb-5 d-flex jc-space-around">
+      <span class="ui metadata">{{resourceService.frmelmnts.intxt.t0016}}</span>
+      <span class="ui metadata" *ngIf="comments.value">{{comments.value.trim().length}} / 150</span>
+    </div>
+    <div class="ui icon input width-100">
+      <textarea maxlength="150" autocomplete="off" class="width-100 br-4 reply-box form-control"[formControl]="comments"></textarea>
+      <i (click)="addReviewComments()" class="mr-5 right sb-icon-send icon link" aria-hidden="true" tabindex="0"></i>
+    </div>
+  </div>
+</div>
