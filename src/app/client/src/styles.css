@@ -3325,7 +3325,9 @@ angular2-multiselect .list-area{
 .mr-10 {
   margin-right: 10px !important;  
 }
-
+.mr-15 {
+  margin-right: 15px !important;  
+}
 .ml-5 {
   margin-left: 5px !important;
 }
@@ -3380,28 +3382,8 @@ angular2-multiselect .list-area{
   color: #196d7f !important;
 }
 
-
-/* primary nav bar */
-
-.fixed.light.bar {
-  border: 0;
-  background-color: #fff;
-  border-bottom: 0.5px solid rgba(25,109,127, 0.68);
-  height:80px;
-  left: 0;
-  top: 0;
-  padding: 0;
-  position: fixed;
-  z-index: 900;
-  width: 100%;
-  box-shadow: none;
-}
-
 /* Mobile */
-@media only screen and (max-width: 767px) {
-  .fixed.light.bar {
-    height:70px;
-  }
+@media only screen and (max-width: 1100px) {
 
   .ui.primary-header.logo img{
     position: absolute;
@@ -3413,6 +3395,10 @@ angular2-multiselect .list-area{
   .height-170 {
     height:170px !important;
   } 
+
+  .header-fix {
+    height: 100px !important;
+  }
 
 }
 .ui.large.secondary.menu {
@@ -3471,7 +3457,7 @@ see https://github.com/Semantic-Org/Semantic-UI/issues/1114
 */
 
 /* Mobile */
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 1100px) {
   [class*="mobile hidden"],
   [class*="tablet only"]:not(.mobile),
   [class*="computer only"]:not(.mobile),
@@ -3483,9 +3469,9 @@ see https://github.com/Semantic-Org/Semantic-UI/issues/1114
 }
 
 /* Computer / Desktop / iPad Landscape */
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 1101px) {
   [class*="mobile only"]:not(.computer),
-  [class*="tablet only"]:not(.computer),
+  [class*="tablet only"]:not(.computer), 
   [class*="computer hidden"],
   [class*="large screen only"]:not(.computer),
   [class*="widescreen only"]:not(.computer),
@@ -3542,6 +3528,54 @@ button.slick-next.slick-arrow.slick-disabled {
   color: #196d7f;
   background: #fff;
   font-weight: bold;
+}
+
+.flex-dc {
+  flex-direction: column !important;
+}
+
+.mb-20 {
+  margin-bottom: 20px !important;
+}
+
+.min-height-50 {
+  min-height: 50px !important;
+}
+
+.min-height-80 {
+  min-height: 80px !important;
+}
+
+.ui.selection.dropdown.language-selector {
+  border: 1px solid rgba(51, 51, 51, 0.13);
+  border-radius: 4px;
+  max-height: 36px;
+  min-height: 36px;
+  min-width: 10em;
+}
+@media only screen and (max-width: 767px) {
+  .ui.selection.dropdown.language-selector {
+    min-width: 8em;
+  };
+}
+
+.ui.basic.button.dial-code {
+    box-shadow: none;
+    border: 1px solid rgba(51, 51, 51, 0.33);
+    max-height: 36px;
+}
+
+.mr-100 {
+  margin-right: 100px !important;
+}
+
+.bs-0 {
+  box-shadow: none !important;
+}
+.ui.fixed.main.menu.main-header {
+  border:0;
+  border-bottom: .5px solid rgba(25,109,127,.68) !important;
+  z-index: 9999;
 }
 .batchmember .UpReviewHeader{
   font-size:14px;
