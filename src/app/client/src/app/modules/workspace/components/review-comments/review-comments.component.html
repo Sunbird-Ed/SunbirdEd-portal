@@ -1,5 +1,5 @@
 <div class="review-comments-box br-4 bs-1 p-8">
-  <div class="ui small comments scrolling" *ngIf="contentData && reviewDetails && reviewDetails.comments.length > 0" >
+  <div class="ui small comments scrolling" *ngIf="contentData && reviewDetails && reviewDetails.comments.length > 0 else emptyComments" >
     <div class="comment" *ngFor="let rDetails of reviewDetails.comments;">
       <span class="avatar">
         <img *ngIf="rDetails.userInfo.logo" src="{{rDetails.userInfo.logo | cdnprefixurl}}">
@@ -16,13 +16,18 @@
       </div>
     </div>
   </div>
-  <div *ngIf="!reviewDetails.comments.length > 0" class="CommentsNotFound">
-    <i class="icon icon-comment"></i>
-  </div>
+  <ng-template #emptyComments>
+    <div class="ui comments scrolling">
+      <div class="placeholder margin-top-91">
+          <i class="sb-icon-comment middle aligned"></i>
+          <span class="">click to add comment to this page</span>
+      </div>
+    </div>
+  </ng-template>
   <div class="ui form p-8">
-    <div class="content metadata mb-5 d-flex jc-space-around">
-      <span>{{resourceService.frmelmnts.intxt.t0016}}</span>
-      <span *ngIf="comments.value">{{comments.value.trim().length}} / 150</span>
+    <div class="content mb-5 d-flex jc-space-around">
+      <span class="ui metadata">{{resourceService.frmelmnts.intxt.t0016}}</span>
+      <span class="ui metadata" *ngIf="comments.value">{{comments.value.trim().length}} / 150</span>
     </div>
     <div class="ui icon input width-100">
       <textarea maxlength="150" autocomplete="off" class="width-100 br-4 reply-box form-control"[formControl]="comments"></textarea>

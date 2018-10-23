@@ -17,6 +17,11 @@
     font-size: 18px;
     width: 1.671429em;
 }
+.sb-icon-comment:before {
+    font-size: 72px;
+    width: 72px;
+    color: #66BF00;
+}
 .icon.sb-icon-reviewer:before {
     font-size: 30px;
     color: #8BA9CC;
