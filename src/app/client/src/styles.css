@@ -1,6 +1,8 @@
 @import "../node_modules/slick-carousel/slick/slick.css";
 @import "../node_modules/slick-carousel/slick/slick-theme.css";
 @import "../node_modules/fine-uploader/fine-uploader/fine-uploader-new.min.css";
+@import "./assets/sb-icon.css";
+
 /*sunbird light font*/
 @font-face {
   font-family: 'sunbirdlightfont';
@@ -21,7 +23,6 @@
   font-family: 'sunbirdboldfont';
   src: url('./assets/fonts/OpenSans-Bold.ttf') format('truetype');
 }
-
 /* placeholder if content is not there */
 .placeholder {
   align-items: center;
@@ -380,6 +381,9 @@
 }
 .margin-top-40 {
   margin-top: 40px !important;
+}
+.margin-top-91 {
+  margin-top: 91px !important;
 }
 .margin-top-Negative30 {
   margin-top: -30px !important;
@@ -3582,4 +3586,25 @@ button.slick-next.slick-arrow.slick-disabled {
 }
 .width-30{
   max-width: 30px !important;
+}
+.br-4{
+  border-radius: 4px;
+}
+.bs-1{
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+.p-8{
+  padding: 8px;
+}
+.d-flex{
+  display: flex;
+}
+.jc-space-around{
+  justify-content: space-between;
+}
+.text-blue{
+  color: #0079FF;
+}
+.pr-8{
+  padding-right: 8px;
 }
