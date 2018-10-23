@@ -134,7 +134,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   private setWindowContext() {
     window.context = {
       user: {
-        id: this.userProfile.userId,
+        id: this.userService.userid,
         name: this.userProfile.firstName + ' ' + this.userProfile.lastName,
         orgIds: this.userProfile.organisationIds,
         organisations: this.userService.orgIdNameMap
@@ -166,11 +166,11 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     const validStatus = _.indexOf(this.configService.editorConfig.CONTENT_EDITOR.contentStatus, this.contentDetails.status) > -1;
     const validState = _.indexOf(this.configService.editorConfig.CONTENT_EDITOR.contentState, this.routeParams.state) > -1;
     if (this.contentDetails.mimeType === this.configService.appConfig.CONTENT_CONST.CREATE_LESSON && validStatus) {
-      if (validState && this.userProfile.userId !== this.userProfile.userId) {
+      if (validState && this.contentDetails.createdBy !== this.userService.userid) {
         return true;
-      } else if (validState && this.userProfile.userId === this.userProfile.userId) {
+      } else if (validState && this.contentDetails.createdBy === this.userService.userid) {
         return true;
-      } else if (this.userProfile.userId === this.userProfile.userId) {
+      } else if (this.contentDetails.createdBy === this.userService.userid) {
         return true;
       }
       return false;
