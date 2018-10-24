@@ -11,8 +11,7 @@ const consistency = cassandraUtils.getConsistencyLevel(envHelper.PORTAL_CASSANDR
 module.exports = {
     db: {
         cassandra: {
-        contactPoints: envHelper.PORTAL_CASSANDRA_IPS,
-        port: envHelper.PORTAL_CASSANDRA_PORT, 
+        contactPoints: envHelper.PORTAL_CASSANDRA_URLS,
         defaultKeyspaceSettings: {
             replication: replicationStrategy,
         },

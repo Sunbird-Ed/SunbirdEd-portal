@@ -283,7 +283,8 @@
       "uploaded",
       "published",
       "limited-publish",
-      "allcontent"
+      "allcontent",
+      "collaborating-on"
     ],
     "Draft": {
       "constantData": {
@@ -536,6 +537,11 @@
     "filterType": "allmycontent",
     "inPageredirectUrl": "workspace/content/allcontent/1",
     "searchPageredirectUrl": "workspace/content/allcontent/1"
+   },
+   "collaboration": {
+    "filterType": "collaboration",
+    "inPageredirectUrl": "workspace/content/collaborating-on/1",
+    "searchPageredirectUrl": "workspace/content/collaborating-on/1"
    }, 
   "explore": {
     "filterType": "explore",
@@ -552,7 +558,8 @@
     "allmycontent":"allmycontent",
     "explore": "explore",
     "resourcebundle": "resourcebundle",
-    "upforreview" :"upforreview"
+    "upforreview" :"upforreview",
+    "collaboration":"collaboration"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,

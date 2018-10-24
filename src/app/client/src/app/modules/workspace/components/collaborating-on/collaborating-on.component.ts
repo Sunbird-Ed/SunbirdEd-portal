@@ -22,21 +22,18 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
   @ViewChild('modalTemplate')
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
-     * state for content editior
-    */
+  * state for content editor
+  */
   state: string;
-
   /**
    * To navigate to other pages
    */
   route: Router;
-
   /**
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to draft  component
   */
   private activatedRoute: ActivatedRoute;
-
   /**
    * Contains unique contentIds id
   */
@@ -44,43 +41,35 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
   /**
    * Contains list of published course(s) of logged-in user
   */
- collaboratingContent: Array<IContents> = [];
-
+  collaboratingContent: Array<IContents> = [];
   /**
    * To show / hide loader
   */
   showLoader = true;
-
   /**
    * loader message
   */
   loaderMessage: ILoaderMessage;
-
   /**
    * To show / hide no result message when no result found
   */
   noResult = false;
-
   /**
    * To show / hide error
   */
   showError = false;
-
   /**
-   * no result  message
+  * no result  message
   */
   noResultMessage: INoResultMessage;
-
   /**
-    * For showing pagination on draft list
+  * For showing pagination on draft list
   */
   private paginationService: PaginationService;
-
   /**
-    * Refrence of UserService
+  * Refrence of UserService
   */
   private userService: UserService;
-
   /**
   * To get url, app configs
   */
@@ -93,27 +82,18 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
   * Current page number of inbox list
   */
   pageNumber = 1;
-
   /**
   * totalCount of the list
   */
   totalCount: Number;
   /**
-    status for preselection;
+    status for content;
   */
   status: string;
   /**
   route query param;
   */
   queryParams: any;
-  /**
-  redirectUrl;
-  */
-  public redirectUrl: string;
-  /**
-  filterType;
-  */
-  public filterType: string;
   /**
   sortingOptions ;
   */
@@ -139,7 +119,6 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
   * which is needed to show the pagination on all content view
   */
   pager: IPagination;
-
   /**
   * To show toaster(error, success etc) after any API calls
   */
@@ -152,7 +131,18 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
   * To call resource service which helps to use language constant
   */
   public resourceService: ResourceService;
-
+  /**
+  * column name which we want to sort
+  */
+  column = 'name' ;
+  /**
+  * sortDirection
+  */
+  sortDirection = '';
+  /**
+  *reverse
+  */
+   reverse = false;
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -180,14 +170,15 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
     this.config = config;
     this.state = 'collaborating-on';
     this.loaderMessage = {
-      'loaderMessage': this.resourceService.messages.stmsg.m0110,
+      'loaderMessage': this.resourceService.messages.stmsg.m0124,
     };
-    this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+    this.noResultMessage = {
+      'messageText': this.resourceService.messages.stmsg.m0123
+    };
+    this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.collaboratingOnSortingOptions;
   }
 
   ngOnInit() {
-    this.filterType = this.config.appConfig.allmycontent.filterType;
-    this.redirectUrl = this.config.appConfig.allmycontent.inPageredirectUrl;
     observableCombineLatest(
       this.activatedRoute.params,
       this.activatedRoute.queryParams,
@@ -219,7 +210,7 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
     };
   }
   /**
-  * This method sets the make an api call to get all UpForReviewContent with page No and offset
+  * This method sets the make an api call to get all collaborating with page No and offset
   */
   fecthAllContent(limit: number, pageNumber: number, bothParams) {
     this.showLoader = true;
@@ -252,7 +243,8 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
     };
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
-        if (data.result.count && data.result.content.length > 0) {
+        if (data.result.count && data.result.content &&
+          data.result.content.length > 0) {
           this.collaboratingContent = data.result.content;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, pageNumber, limit);
@@ -262,49 +254,16 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
           this.showError = false;
           this.noResult = true;
           this.showLoader = false;
-          this.noResultMessage = {
-            'messageText': this.resourceService.messages.stmsg.m0111
-          };
         }
       },
       (err: ServerResponse) => {
         this.showLoader = false;
         this.noResult = false;
         this.showError = true;
-        this.toasterService.error(this.resourceService.messages.fmsg.m0081);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0084);
       }
     );
   }
-  public deleteConfirmModal(contentIds) {
-    const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
-    config.isClosable = true;
-    config.size = 'mini';
-    this.modalService
-      .open(config)
-      .onApprove(result => {
-        this.showLoader = true;
-        this.loaderMessage = {
-          'loaderMessage': this.resourceService.messages.stmsg.m0034,
-        };
-        this.delete(contentIds).subscribe(
-          (data: ServerResponse) => {
-            this.showLoader = false;
-            this.collaboratingContent = this.removeContent(this.collaboratingContent, contentIds);
-            if (this.collaboratingContent.length === 0) {
-              this.ngOnInit();
-            }
-            this.toasterService.success(this.resourceService.messages.smsg.m0006);
-          },
-          (err: ServerResponse) => {
-            this.showLoader = false;
-            this.toasterService.error(this.resourceService.messages.fmsg.m0022);
-          }
-        );
-      })
-      .onDeny(result => {
-      });
-  }
-
   /**
    * This method helps to navigate to different pages.
    * If page number is less than 1 or page number is greater than total number
@@ -322,9 +281,8 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
     this.route.navigate(['workspace/content/collaborating-on', this.pageNumber], { queryParams: this.queryParams });
   }
   contentClick(content) {
-    if (content.status.toLowerCase() !== 'processing') {
-      this.workSpaceService.navigateToContent(content, this.state);
-    }
+    console.log(content);
+    this.workSpaceService.navigateToContent(content, this.state);
   }
 
   inview(event) {
@@ -344,10 +302,11 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
-  removeContent(contentList, requestData) {
-    return contentList.filter((content) => {
-      return requestData.indexOf(content.identifier) === -1;
-    });
+ sortColumns(column) {
+    console.log(column);
+    this.column = column;
+    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    this.reverse = !this.reverse;
   }
 }
 

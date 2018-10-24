@@ -7,8 +7,8 @@ import { Subject , Observable, of} from 'rxjs';
 import { debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operators';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
-  selector: 'app-all-my-content-filter',
-  templateUrl: './all-my-content-filter.component.html',
+  selector: 'app-collaboration-content-filter',
+  templateUrl: './collaboration-content-filter.component.html',
   styles: [`
      >>> .ui.dropdown:not(.button)>.default.text {
       display: none;
@@ -22,7 +22,7 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
        }
    `]
 })
-export class AllMyContentFilterComponent implements OnInit {
+export class CollaborationContentFilterComponent implements OnInit {
   modelChanged: Subject<string> = new Subject<string>();
   /**
    * To navigate to other pages
@@ -30,7 +30,7 @@ export class AllMyContentFilterComponent implements OnInit {
   route: Router;
   /**
    * To send activatedRoute.snapshot to router navigation
-   * service for redirection to draft  component
+   * service for redirection to collaboration  component
   */
   private activatedRoute: ActivatedRoute;
   /**
@@ -68,10 +68,12 @@ export class AllMyContentFilterComponent implements OnInit {
   */
   label: Array<string>;
   /**
-  * redirect url
+  * queryParams
   */
-  public redirectUrl: string;
   queryParams: any;
+  /**
+  * Telemetry filterIntractEdata
+  */
   filterIntractEdata: IInteractEventEdata;
 
   /**
@@ -94,12 +96,11 @@ export class AllMyContentFilterComponent implements OnInit {
     this.position = 'bottom right';
     this.route.onSameUrlNavigation = 'reload';
     this.label = this.config.dropDownConfig.FILTER.WORKSPACE.label;
-    this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+    this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.collaboratingOnSortingOptions;
   }
 
   ngOnInit() {
-    this.filterType = this.config.appConfig.allmycontent.filterType;
-    this.redirectUrl = this.config.appConfig.allmycontent.inPageredirectUrl;
+    this.filterType = this.config.appConfig.collaboration.filterType;
     this.activatedRoute.queryParams
       .subscribe(params => {
         this.queryParams = { ...params };
@@ -122,7 +123,7 @@ export class AllMyContentFilterComponent implements OnInit {
       this.filterIntractEdata = {
         id: 'filter',
         type: 'click',
-        pageid: 'all-my-content-page'
+        pageid: 'collaboration-content-page'
       };
   }
   public handleSearch() {
@@ -131,7 +132,7 @@ export class AllMyContentFilterComponent implements OnInit {
     } else {
       delete this.queryParams['query'];
     }
-    this.route.navigate(['workspace/content/allcontent', 1], { queryParams: this.queryParams });
+    this.route.navigate(['workspace/content/collaborating-on', 1], { queryParams: this.queryParams });
   }
   keyup(event) {
     this.query = event;
@@ -141,14 +142,14 @@ export class AllMyContentFilterComponent implements OnInit {
   applySorting(sortByOption) {
     this.sortIcon = !this.sortIcon;
     this.queryParams['sortType'] = this.sortIcon ? 'desc' : 'asc';
-    this.queryParams['sort_by'] = sortByOption;
-    this.route.navigate(['workspace/content/allcontent', 1], { queryParams: this.queryParams });
+     this.queryParams['sort_by'] = sortByOption;
+    this.route.navigate(['workspace/content/collaborating-on', 1], { queryParams: this.queryParams });
   }
   removeFilterSelection(filterType, value) {
     const itemIndex = this.queryParams[filterType].indexOf(value);
     if (itemIndex !== -1) {
       this.queryParams[filterType].splice(itemIndex, 1);
     }
-    this.route.navigate(['workspace/content/allcontent', 1], { queryParams: this.queryParams  });
+    this.route.navigate(['workspace/content/collaborating-on', 1], { queryParams: this.queryParams  });
   }
 }
