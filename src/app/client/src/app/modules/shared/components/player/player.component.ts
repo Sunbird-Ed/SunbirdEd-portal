@@ -15,6 +15,7 @@ export class PlayerComponent implements OnInit, OnChanges, OnDestroy {
   @Output() contentProgressEvent = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
+  @Output() sceneChangeEvent = new EventEmitter<any>();
   buildNumber: string;
   constructor(public configService: ConfigService) {
     try {
@@ -22,7 +23,7 @@ export class PlayerComponent implements OnInit, OnChanges, OnDestroy {
     } catch (error) {
       this.buildNumber = '1.0';
     }
-   }
+  }
   /**
    * showPlayer method will be called
    */
@@ -62,12 +63,25 @@ export class PlayerComponent implements OnInit, OnChanges, OnDestroy {
   }
   generateContentReadEvent(event: any) {
     if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START')) {
+      console.log('start event from player before timeout',
+      this.contentIframe.nativeElement.contentWindow.EkstepRendererAPI.getCurrentStageId());
+      setTimeout(() => {
+        const stageId = this.contentIframe.nativeElement.contentWindow.EkstepRendererAPI.getCurrentStageId();
+        const eventData = { stageId };
+        console.log('start event from player after timeout', stageId);
+        this.sceneChangeEvent.emit(eventData);
+      } , 1000); // waiting for player to load, then fetching stageId (if we dont wait stageId will be undefined)
       this.contentProgressEvent.emit(event);
-    } else if (event.detail.telemetryData.eid === 'END' && _.get(event.detail.telemetryData, 'edata.summary')) {
+    } else if (event.detail.telemetryData.eid &&
+      event.detail.telemetryData.eid === 'END' && _.get(event.detail.telemetryData, 'edata.summary')) {
       const summary = _.find(event.detail.telemetryData.edata.summary , { progress: 100 });
       if (summary) {
         this.contentProgressEvent.emit(event);
       }
+    } else if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'IMPRESSION')) {
+      const stageId = this.contentIframe.nativeElement.contentWindow.EkstepRendererAPI.getCurrentStageId();
+      const eventData = { stageId: stageId};
+      this.sceneChangeEvent.emit(eventData);
     }
   }
   ngOnDestroy() {

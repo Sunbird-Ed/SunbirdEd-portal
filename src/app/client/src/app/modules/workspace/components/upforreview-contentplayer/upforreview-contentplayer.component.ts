@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   ResourceService, ILoaderMessage, PlayerConfig, ContentData,
   WindowScrollService, ToasterService, NavigationHelperService
 } from '@sunbird/shared';
 import { PlayerService, PermissionService, UserService } from '@sunbird/core';
+import * as _ from 'lodash';
 @Component({
   selector: 'app-upforreview-contentplayer',
   templateUrl: './upforreview-contentplayer.component.html',
   styleUrls: ['./upforreview-contentplayer.component.css']
 })
-export class UpforreviewContentplayerComponent implements OnInit {
+export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
   /**
    * To navigate to other pages
    */
@@ -82,6 +83,16 @@ export class UpforreviewContentplayerComponent implements OnInit {
   */
   private toasterService: ToasterService;
 
+  public stageId: string;
+
+  public commentList: any;
+
+  public playerLoaded = false;
+
+  @ViewChild('publishWarningModal') publishWarningModal;
+
+  showPublishWarningModal = false;
+
   /**
   * Constructor to create injected service(s) object
   Default method of Draft Component class
@@ -102,7 +113,17 @@ export class UpforreviewContentplayerComponent implements OnInit {
       'loaderMessage': this.resourceService.messages.stmsg.m0025,
     };
   }
-
+  goToPublish() {
+    console.log('go to publish popup');
+    this.router.navigate(['publish'], {relativeTo: this.activatedRoute});
+  }
+  checkComments() {
+    if (!_.isEmpty(this.commentList)) {
+      this.showPublishWarningModal = true;
+    } else {
+      this.goToPublish();
+    }
+  }
   ngOnInit() {
     this.userService.userData$.subscribe(userdata => {
       if (userdata && !userdata.err) {
@@ -114,6 +135,23 @@ export class UpforreviewContentplayerComponent implements OnInit {
       }
       this.closeUrl = this.navigationHelperService.getPreviousUrl();
     });
+  }
+  ngOnDestroy() {
+    if (this.publishWarningModal) {
+      this.publishWarningModal.deny();
+    }
+  }
+  public handleSceneChangeEvent(data) {
+    if (this.stageId !== data.stageId) {
+      this.stageId = data.stageId;
+    }
+    if (!this.playerLoaded) {
+      this.playerLoaded = true;
+    }
+  }
+  public handleReviewCommentEvent(event) {
+    console.log('fetched comment');
+    this.commentList = event;
   }
   /**
    * used to fetch content details and player config. On success launches player.
@@ -158,6 +196,6 @@ export class UpforreviewContentplayerComponent implements OnInit {
   * @memberof ContentPlayerComponent
   */
   close() {
-   this.navigationHelperService.navigateToWorkSpace('/workspace/content/upForReview/1');
+    this.navigationHelperService.navigateToWorkSpace('/workspace/content/upForReview/1');
   }
 }

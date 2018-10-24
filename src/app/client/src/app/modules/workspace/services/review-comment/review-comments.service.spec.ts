@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { ReviewCommentsService } from './review-comments.service';
+import { ReviewCommentsService } from '../review-comments.service';
 
 xdescribe('ReviewCommentsService', () => {
   beforeEach(() => {
