@@ -22,13 +22,16 @@ export class TelemetryInteractDirective {
   @Input() telemetryInteractEdata: IInteractEventEdata;
 
   @HostListener('click', ['$event'])
+
   private onClick(e) {
+
     if (this.telemetryInteractEdata) {
       this.appTelemetryInteractData = {
        context: {
           env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
           _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
-          _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env') ,
+          _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env') ||
+          this.telemetryInteractEdata.pageid
         },
         edata: this.telemetryInteractEdata
       };
