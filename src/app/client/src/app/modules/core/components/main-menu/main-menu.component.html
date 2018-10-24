@@ -5,10 +5,10 @@
 	<a class="item" appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')" routerLink="/learn">
 		{{resourceService?.frmelmnts?.tab?.courses}}
 	</a>
-	<a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='workSpaceRole' (click)="navigateToWorkspace()" appTelemetryInteract [telemetryInteractEdata]="workspaceMenuIntractEdata" [class.active]="router.isActive('/workspace')">
-		{{resourceService?.frmelmnts?.tab?.workspace}}
-	</a>
 	<a class="item" appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')" routerLink="/resources">
 		{{resourceService?.frmelmnts?.tab?.resources}}
+	</a>
+	<a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='workSpaceRole' (click)="navigateToWorkspace()" appTelemetryInteract [telemetryInteractEdata]="workspaceMenuIntractEdata" [class.active]="router.isActive('/workspace')">
+		{{resourceService?.frmelmnts?.tab?.workspace}}
 	</a>
 </div>

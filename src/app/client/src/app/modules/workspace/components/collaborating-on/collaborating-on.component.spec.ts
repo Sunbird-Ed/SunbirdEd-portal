@@ -12,6 +12,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Response } from './collaborating.component.spec.data';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+import { OrderModule } from 'ngx-order-pipe';
 describe('CollaboratingOnComponent', () => {
   let component: CollaboratingOnComponent;
   let fixture: ComponentFixture<CollaboratingOnComponent>;
@@ -53,7 +54,7 @@ describe('CollaboratingOnComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollaboratingOnComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, OrderModule, SharedModule.forRoot()],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,

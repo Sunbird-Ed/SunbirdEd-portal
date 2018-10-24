@@ -16,7 +16,7 @@
     "build-cdn": "ng build --prod"
   },
   "nodemonConfig": {
-    "ext": "ts,html,json,css"
+    "ext": "ts,html,json,css,scss,less"
   },
   "engines": {
     "node": ">=8.9"
