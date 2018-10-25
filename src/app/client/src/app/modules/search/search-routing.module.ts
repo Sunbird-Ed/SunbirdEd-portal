@@ -5,6 +5,8 @@ import {
   UserSearchComponent, UserEditComponent, UserProfileComponent, HomeSearchComponent,
   UserDeleteComponent, OrgSearchComponent, CourseSearchComponent, LibrarySearchComponent
 } from './components';
+import { AuthGuard } from '../core/guard/auth-gard.service';
+
 const routes: Routes = [
   {
     path: 'All/:pageNumber', component: HomeSearchComponent,
@@ -37,8 +39,9 @@ const routes: Routes = [
 
   },
   {
-    path: 'Users/:pageNumber', component: UserSearchComponent,
+    path: 'Users/:pageNumber', component: UserSearchComponent, canActivate: [AuthGuard],
     data: {
+      roles: 'rootOrgAdmin',
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'Search', url: '' }],
       telemetry: {
         env: 'profile', pageid: 'user-search', type: 'view', subtype: 'paginate'

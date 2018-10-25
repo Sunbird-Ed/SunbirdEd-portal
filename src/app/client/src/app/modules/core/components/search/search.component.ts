@@ -1,8 +1,9 @@
 
 import { filter } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { ResourceService, ConfigService } from '@sunbird/shared';
+import { UserService } from './../../services';
+import { ResourceService, ConfigService, IUserProfile } from '@sunbird/shared';
 
 /**
  * Main menu component
@@ -17,6 +18,9 @@ export class SearchComponent implements OnInit {
    * Sui dropdown initiator
    */
   isOpen: boolean;
+
+  showSuiSelectDropdown: boolean;
+
   /**
    *
    */
@@ -30,6 +34,12 @@ export class SearchComponent implements OnInit {
    */
   key: string;
   resourceService: ResourceService;
+
+  /**
+   * Contains roles
+   */
+  userSearchRoles: Array<string>;
+
   /**
    * option selected on dropdown
    */
@@ -47,6 +57,15 @@ export class SearchComponent implements OnInit {
    */
   searchUrl: object;
   config: ConfigService;
+  userProfile: IUserProfile;
+
+  searchDropdownValues: Array<string> = ['All', 'Courses', 'Library'];
+
+  /**
+   * reference of UserService service.
+   */
+  public userService: UserService;
+
   /**
    * To navigate to other pages
    */
@@ -62,12 +81,14 @@ export class SearchComponent implements OnInit {
      * @param {Router} route Reference of Router
      * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
    */
-  constructor(route: Router, activatedRoute: ActivatedRoute,
-    resourceService: ResourceService, config: ConfigService) {
+  constructor(route: Router, activatedRoute: ActivatedRoute, userService: UserService,
+    resourceService: ResourceService, config: ConfigService,
+    private cdr: ChangeDetectorRef) {
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.config = config;
+    this.userService = userService;
   }
   /**
    * on changing dropdown option
@@ -103,19 +124,38 @@ export class SearchComponent implements OnInit {
     });
     this.route.events.pipe(
       filter(e => e instanceof NavigationEnd)).subscribe((params: any) => {
-        const currUrl = this.route.url.split('?');
-        this.value = currUrl[0].split('/', 3);
-        const searchEnabledStates = this.config.dropDownConfig.FILTER.SEARCH.searchEnabled;
-        if (this.searchUrl[this.value[1]] && searchEnabledStates.includes(this.value[1])) {
-          this.selectedOption = this.searchUrl[this.value[1]];
-          this.showInput = true;
-        } else if (this.value[1] === 'search' && searchEnabledStates.includes(this.value[1])) {
-          this.selectedOption = this.value[2];
-          this.showInput = true;
-        } else {
-          this.selectedOption = 'All';
-          this.showInput = false;
-        }
+        this.userService.userData$.subscribe(userdata => {
+          if (userdata && !userdata.err) {
+            this.userProfile = userdata.userProfile;
+            const currUrl = this.route.url.split('?');
+            this.value = currUrl[0].split('/', 3);
+            const searchEnabledStates = this.config.dropDownConfig.FILTER.SEARCH.searchEnabled;
+            if (this.searchUrl[this.value[1]] && searchEnabledStates.includes(this.value[1])) {
+              if (this.searchUrl[this.value[1]] === 'Users') {
+                if (!this.userProfile.rootOrgAdmin) {
+                  this.selectedOption = 'All';
+                } else {
+                  if (this.searchDropdownValues.indexOf('Users') === -1) {
+                    this.searchDropdownValues.push('Users');
+                  }
+                  this.selectedOption = this.searchUrl[this.value[1]];
+                  this.showSuiSelectDropdown = false;
+                  this.cdr.detectChanges();
+                  this.showSuiSelectDropdown = true;
+                }
+              } else {
+                this.selectedOption = this.searchUrl[this.value[1]];
+              }
+              this.showInput = true;
+            } else if (this.value[1] === 'search' && searchEnabledStates.includes(this.value[1])) {
+              this.selectedOption = this.value[2];
+              this.showInput = true;
+            } else {
+              this.selectedOption = 'All';
+              this.showInput = false;
+            }
+          }
+        });
       });
   }
   /**
@@ -124,5 +164,7 @@ export class SearchComponent implements OnInit {
    */
   ngOnInit() {
     this.setFilters();
+    this.showSuiSelectDropdown = true;
+    this.userSearchRoles = this.config.rolesConfig.ROLES.userSearch;
   }
 }

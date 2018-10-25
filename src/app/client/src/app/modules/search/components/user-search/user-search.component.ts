@@ -190,25 +190,33 @@ export class UserSearchComponent implements OnInit {
         // Setting Org Name
         _.each(this.searchList, (user) => {
           _.each(user.organisations, (org) => {
-            const adminRoles = this.userProfile.orgRoleMap[org.organisationId];
-            // if user belongs to an org in which the current logged in user is ORG_ADMIN, set editable to true
-            if (typeof (user.isEditableProfile) === 'undefined' && (_.indexOf(adminRoles, 'ORG_ADMIN') > -1 ||
-              _.indexOf(adminRoles, 'SYSTEM_ADMINISTRATION') > -1)) {
+            if (this.userProfile.rootOrgAdmin === true) {
               user.isEditableProfile = true;
-            } else if (user.rootOrgId === this.userProfile.rootOrgId &&
-              this.userProfile.rootOrgAdmin === true) {
-              // if current logged in user is ORG_ADMIN, SYSTEM_ADMINISTRATION of the root
-              // org of the user, set editable to true
-              user.isEditableProfile = true;
-            } else {
-              if (user.roles) {
-                // if user is sys admin, only a sys admin can edit
-                const isSystemAdminUser = user.roles.includes('SYSTEM_ADMINISTRATION');
-                if (isSystemAdminUser === true) {
-                  user.isEditableProfile = this.userProfile.userRoles.includes('SYSTEM_ADMINISTRATION');
-                }
-              }
             }
+            // below code could be useful for reference so commented
+            // if (user.rootOrgId === this.userProfile.rootOrgId &&
+            //   this.userProfile.rootOrgAdmin === true) {
+            //   user.isEditableProfile = true;
+            // }
+            // const adminRoles = this.userProfile.orgRoleMap[org.organisationId];
+            // // if user belongs to an org in which the current logged in user is ORG_ADMIN, set editable to true
+            // if (typeof (user.isEditableProfile) === 'undefined' && (_.indexOf(adminRoles, 'ORG_ADMIN') > -1 ||
+            //   _.indexOf(adminRoles, 'SYSTEM_ADMINISTRATION') > -1)) {
+            //   user.isEditableProfile = true;
+            // } else if (user.rootOrgId === this.userProfile.rootOrgId &&
+            //   this.userProfile.rootOrgAdmin === true) {
+            //   // if current logged in user is ORG_ADMIN, SYSTEM_ADMINISTRATION of the root
+            //   // org of the user, set editable to true
+            //   user.isEditableProfile = true;
+            // } else {
+            //   if (user.roles) {
+            //     // if user is sys admin, only a sys admin can edit
+            //     const isSystemAdminUser = user.roles.includes('SYSTEM_ADMINISTRATION');
+            //     if (isSystemAdminUser === true) {
+            //       user.isEditableProfile = this.userProfile.userRoles.includes('SYSTEM_ADMINISTRATION');
+            //     }
+            //   }
+            // }
             const orgNameAndId = _.find(orgApiResponse.result.response.content, (organisation) => {
               return organisation.id === org.organisationId;
             });

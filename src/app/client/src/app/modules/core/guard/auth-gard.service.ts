@@ -60,28 +60,34 @@ export class AuthGuard implements CanActivate, CanLoad {
             this.permissionService.permissionAvailable$.subscribe(
                 permissionAvailable => {
                     if (permissionAvailable && permissionAvailable === 'success') {
-                        if (roles && this.config.rolesConfig.ROLES[roles]) {
+                        if (roles === 'rootOrgAdmin') {
+                            if (this.userService.userProfile.rootOrgAdmin) {
+                                observer.next(true);
+                            } else {
+                                this.navigateToHome(observer);
+                            }
+                        } else if (roles && this.config.rolesConfig.ROLES[roles]) {
                             if (this.permissionService.checkRolesPermissions(this.config.rolesConfig.ROLES[roles])) {
                                 observer.next(true);
                             } else {
-                                this.toasterService.warning(this.resourceService.messages.imsg.m0035);
-                                this.router.navigate(['home']);
-                                observer.next(false);
+                                this.navigateToHome(observer);
                             }
                         } else {
-                            this.toasterService.warning(this.resourceService.messages.imsg.m0035);
-                            this.router.navigate(['home']);
-                            observer.next(false);
+                            this.navigateToHome(observer);
                         }
-                        observer.complete();
                     } else if (permissionAvailable && permissionAvailable === 'error') {
-                        this.toasterService.warning(this.resourceService.messages.imsg.m0035);
-                        this.router.navigate(['home']);
-                        observer.next(false);
-                        observer.complete();
+                        this.navigateToHome(observer);
                     }
                 }
             );
         });
     }
+
+    navigateToHome(observer) {
+        this.toasterService.warning(this.resourceService.messages.imsg.m0035);
+        this.router.navigate(['home']);
+        observer.next(false);
+        observer.complete();
+    }
+
 }
