@@ -141,7 +141,7 @@ export class AllMyContentFilterComponent implements OnInit {
   applySorting(sortByOption) {
     this.sortIcon = !this.sortIcon;
     this.queryParams['sortType'] = this.sortIcon ? 'desc' : 'asc';
-    this.queryParams['sort_by'] = sortByOption;
+     this.queryParams['sort_by'] = sortByOption;
     this.route.navigate(['workspace/content/allcontent', 1], { queryParams: this.queryParams });
   }
   removeFilterSelection(filterType, value) {
