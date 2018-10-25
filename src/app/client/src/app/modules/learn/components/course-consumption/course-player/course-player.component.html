@@ -25,10 +25,11 @@
                                     {{resourceService.frmelmnts.lbl.coursestructure}}
                                 </b>
                             </div>
-                            <app-collection-tree *ngIf="collectionTreeNodes.data; else dataCommingSoon" (contentSelect)="navigateToContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"
+                            <pre innerHTML="{{collectionTreeNodes.data | json}}"></pre>
+                            <app-collection-tree *ngIf="collectionTreeNodes.data && collectionTreeNodes.data.children && collectionTreeNodes.data.children.length >0 ; else dataCommingSoon" (contentSelect)="navigateToContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"
                                     [contentStatus]="contentStatus"></app-collection-tree>
                             <ng-template #dataCommingSoon>
-                                <div class="placeholder margin-top-40" *ngIf="!collectionTreeNodes.data">
+                                <div class="placeholder margin-top-40">
                                     <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl }}"/>
                                     <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0121}}</h5>
                                     <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>
