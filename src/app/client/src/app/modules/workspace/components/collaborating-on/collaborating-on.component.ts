@@ -303,7 +303,6 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
  sortColumns(column) {
-    console.log(column);
     this.column = column;
     this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     this.reverse = !this.reverse;
