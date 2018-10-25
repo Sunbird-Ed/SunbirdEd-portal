@@ -289,7 +289,7 @@
                     "name": "Created On"
                 },
                 {
-                    "field": "Creator name",
+                    "field": "creator",
                     "name": "Creator’s name "
                 }
             ]
