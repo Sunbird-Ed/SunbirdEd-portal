@@ -1,15 +1,40 @@
+
 import { TestBed, inject } from '@angular/core/testing';
+import { ConfigService } from '@sunbird/shared';
+import { ReviewCommentsService } from './review-comments.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CoreModule } from '@sunbird/core';
+import { RouterTestingModule } from '@angular/router/testing';
+import { SharedModule } from '@sunbird/shared';
+import { ExtPluginService } from '@sunbird/core';
 
-import { ReviewCommentsService } from '../review-comments.service';
-
-xdescribe('ReviewCommentsService', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [ReviewCommentsService]
+describe('ReviewCommentsService', () => {
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule, RouterTestingModule, CoreModule.forRoot(), SharedModule.forRoot()],
+        providers: [ReviewCommentsService, ConfigService]
+        });
     });
-  });
 
-  it('should be created', inject([ReviewCommentsService], (service: ReviewCommentsService) => {
-    expect(service).toBeTruthy();
-  }));
+    it('should call create comment api', inject([ReviewCommentsService], (service: ReviewCommentsService) => {
+        const extPluginService = TestBed.get(ExtPluginService);
+        spyOn(extPluginService, 'post').and.callFake(() => 'true');
+        service.createComment({});
+        expect(service.extPluginService.post).toHaveBeenCalled();
+    }));
+
+    it('should call get comment api', inject([ReviewCommentsService], (service: ReviewCommentsService) => {
+        const extPluginService = TestBed.get(ExtPluginService);
+        spyOn(extPluginService, 'post').and.callFake(() => 'true');
+        service.getComments({});
+        expect(service.extPluginService.post).toHaveBeenCalled();
+    }));
+
+    it('should call delete comment api', inject([ReviewCommentsService], (service: ReviewCommentsService) => {
+        const extPluginService = TestBed.get(ExtPluginService);
+        spyOn(extPluginService, 'delete').and.callFake(() => 'true');
+        service.deleteComment({});
+        expect(service.extPluginService.delete).toHaveBeenCalled();
+    }));
+
 });

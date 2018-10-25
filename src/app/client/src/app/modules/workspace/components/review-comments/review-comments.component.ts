@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges, OnDestroy, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ResourceService, ToasterService, ContentData, ServerResponse } from '@sunbird/shared';
-import { UserService, SearchService } from '@sunbird/core';
+import { UserService } from '@sunbird/core';
 import { ReviewCommentsService } from '../../services';
 import { Subject } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
@@ -39,7 +39,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public userService: UserService, public reviewCommentsService: ReviewCommentsService,
-    public searchService: SearchService) { }
+  ) { }
 
   ngOnInit() {
     this.getReviewComments().pipe(takeUntil(this.unsubscribe)).subscribe(
@@ -95,7 +95,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
       return;
     }
-    const requestBody = {
+    const requestBody: any = {
       request: {
         contextDetails: {
           contentId: this.contentData.identifier,
@@ -106,11 +106,13 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
         body: this.comments.value,
         userId: this.userService.userProfile.userId,
         userInfo: {
-          name: this.userService.userProfile.firstName + this.userService.userProfile.lastName,
-          logo: this.userService.userProfile.avatar
+          name: this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName
         }
       }
     };
+    if (this.userService.userProfile.avatar) {
+      requestBody.request.userInfo.logo = this.userService.userProfile.avatar;
+    }
     this.reviewCommentsService.createComment(requestBody).pipe(
       takeUntil(this.unsubscribe))
       .subscribe(

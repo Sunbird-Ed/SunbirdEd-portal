@@ -114,7 +114,6 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
     };
   }
   goToPublish() {
-    console.log('go to publish popup');
     this.router.navigate(['publish'], {relativeTo: this.activatedRoute});
   }
   checkComments() {
@@ -150,7 +149,6 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
     }
   }
   public handleReviewCommentEvent(event) {
-    console.log('fetched comment');
     this.commentList = event;
   }
   /**
