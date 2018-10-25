@@ -39,7 +39,7 @@ export class FancyTreeComponent implements AfterViewInit {
         preset: 'awesome4',
         map: {
           folder: 'sb-icon-textbook',
-          folderOpen: 'fa fa-book-open fa-lg'
+          folderOpen: 'sb-icon-open_textbook'
         }
       },
       click: (event, data): boolean => {
