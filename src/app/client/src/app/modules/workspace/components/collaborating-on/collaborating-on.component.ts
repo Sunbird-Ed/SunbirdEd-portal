@@ -281,7 +281,6 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
     this.route.navigate(['workspace/content/collaborating-on', this.pageNumber], { queryParams: this.queryParams });
   }
   contentClick(content) {
-    console.log(content);
     this.workSpaceService.navigateToContent(content, this.state);
   }
 
