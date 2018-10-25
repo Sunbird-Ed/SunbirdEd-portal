@@ -13,6 +13,9 @@
       column === 'name','descending':sortDirection === 'desc' && column === 'name'}">
         {{ resourceService?.frmelmnts?.lbl?.contentCaps}}
       </th>
+      <th (click)="sortColumns('creator')" class="four wide UpReviewTableHeader sorted" [ngClass]="{'ascending':sortDirection === 'asc' && 
+      column === 'creator','descending':sortDirection === 'desc' && column === 'creator'}">{{ resourceService?.frmelmnts?.lbl?.authorCaps}}
+      </th>
       <th (click)="sortColumns('lastUpdatedOn')" class="four wide UpReviewTableHeader sorted" [ngClass]="{'ascending':sortDirection === 'asc' && 
       column === 'lastUpdatedOn','descending':sortDirection === 'desc' && column === 'lastUpdatedOn'}">
         {{ resourceService?.frmelmnts?.lbl?.lastupdate}}
@@ -38,6 +41,13 @@
             </div>
             <div class="UpReviewSubHeader">{{content.contentType}}
             </div>
+          </div>
+        </h5>
+      </td>
+      <td>
+        <h5 class="ui image header">
+          <div class="content">
+            <div class="UpReviewHeader">{{content.creator}}</div>
           </div>
         </h5>
       </td>
