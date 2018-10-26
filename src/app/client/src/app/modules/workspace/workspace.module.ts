@@ -15,11 +15,13 @@ import {
   BatchListComponent, BatchCardComponent, UpdateBatchComponent,
   UpforreviewContentplayerComponent, FlagConentplayerComponent, ReviewsubmissionsContentplayerComponent,
   PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
-  AllContentComponent, FlagReviewerComponent, AllMyContentFilterComponent
+  AllContentComponent, FlagReviewerComponent, AllMyContentFilterComponent, CollaboratingOnComponent,
+  CollaborationContentFilterComponent
 } from './components';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ReviewCommentsComponent } from './components/review-comments/review-comments.component';
+import { OrderModule } from 'ngx-order-pipe';
 @NgModule({
   imports: [
     CommonModule,
@@ -30,7 +32,8 @@ import { ReviewCommentsComponent } from './components/review-comments/review-com
     CoreModule,
     ReactiveFormsModule,
     NgInviewModule,
-    TelemetryModule
+    TelemetryModule,
+    OrderModule
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
@@ -46,7 +49,10 @@ import { ReviewCommentsComponent } from './components/review-comments/review-com
     AllContentComponent,
     FlagReviewerComponent,
     AllMyContentFilterComponent,
-    ReviewCommentsComponent
+    CollaboratingOnComponent,
+    CollaborationContentFilterComponent,
+    ReviewCommentsComponent,
+    CollaborationContentFilterComponent,
   ],
   providers: [WorkSpaceService, EditorService, BatchService, ReviewCommentsService]
 })
