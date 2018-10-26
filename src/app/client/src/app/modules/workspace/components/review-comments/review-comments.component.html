@@ -19,19 +19,19 @@
   <ng-template #emptyComments>
     <div class="ui comments scrolling">
       <div class="placeholder margin-top-91">
-          <i class="sb-icon-comment middle aligned"></i>
-          <span class="">click to add comment to this page</span>
+          <i class="sb-icon-comment"></i>
+          <span class="">{{resourceService.frmelmnts.lbl.emptycomments}}</span>
       </div>
     </div>
   </ng-template>
   <div class="ui form p-8">
     <div class="content mb-5 d-flex jc-space-around">
-      <span class="ui metadata">{{resourceService.frmelmnts.intxt.t0016}}</span>
+      <span class="ui metadata">{{resourceService.frmelmnts.lbl.dropcomment}}</span>
       <span class="ui metadata" *ngIf="comments.value">{{comments.value.trim().length}} / 150</span>
     </div>
     <div class="ui icon input width-100">
       <textarea maxlength="150" autocomplete="off" class="width-100 br-4 reply-box form-control"[formControl]="comments"></textarea>
-      <i (click)="addReviewComments()" class="mr-5 right sb-icon-send icon link" aria-hidden="true" tabindex="0"></i>
+      <i (click)="addReviewComments()" class="opacity-1 mr-5 right sb-icon-send icon link" aria-hidden="true" tabindex="0"></i>
     </div>
   </div>
 </div>
