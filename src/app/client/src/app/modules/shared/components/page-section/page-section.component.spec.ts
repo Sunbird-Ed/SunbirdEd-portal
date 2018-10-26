@@ -51,7 +51,7 @@ describe('PageSectionComponent', () => {
     component.section = Response.defaultData;
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('div .sectionHeading')).toEqual(null);
-   expect(fixture.nativeElement.querySelector('div span.circular')).toEqual(null);
+    expect(fixture.nativeElement.querySelector('div span.circular')).toEqual(null);
   });
   it('should call inview method for visits data', () => {
     component.section = {name: 'courseTest', length: 1};

@@ -71,7 +71,8 @@ describe('RedirectComponent', () => {
     [Router, ToasterService, ResourceService],
     (router, toasterService, resourceService, service) => {
       resourceService.messages = resourceBundle.messages;
-      spyOn(toasterService, 'warning').and.callThrough();
+      spyOn(toasterService, 'warning').and.callFake(() => 'warning');
+      spyOn(component, 'openWindow').and.callFake(() => 'open');
       component.ngOnInit();
       expect(toasterService.warning).toBeDefined();
       expect(toasterService.warning).toHaveBeenCalledWith(resourceService.messages.imsg.m0034);

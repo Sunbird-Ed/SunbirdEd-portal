@@ -83,10 +83,10 @@ describe('OutboxComponent', () => {
                 expect(outboxResponse.params.status).toBe('successful');
             }
         );
-        fixture.detectChanges();
+        component.ngOnInit();
         expect(component.showLoader).toBe(false);
         expect(component.pageNumber).toBe(1);
-        expect(component.pageLimit).toBe(5);
+        expect(component.pageLimit).toBe(25);
         expect(component.outboxData.count).toBe(1173);
     }));
 
