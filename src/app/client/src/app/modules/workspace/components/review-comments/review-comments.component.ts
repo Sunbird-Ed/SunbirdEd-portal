@@ -27,6 +27,8 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
 
   disableSubmitcommentsButton = true;
 
+  disableTextArea = false;
+
   @Input() contentData: ContentData;
 
   @Input() stageId: string;
@@ -52,7 +54,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
             contentType: this.contentData.mimeType
           };
         },
-        (error) => this.toasterService.error(this.resourceService.messages.emsg.m0005));
+        (error) => this.toasterService.error(this.resourceService.messages.emsg.m0011));
     this.comments.valueChanges.subscribe(data => {
       data = data.trim();
       this.disableSubmitcommentsButton = data.length > 150 || data.length === 0 ? true : false;
@@ -92,9 +94,13 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
 
   addReviewComments() {
     if (!this.stageId) { // if stageId not fetched, throw error
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      this.toasterService.error(this.resourceService.messages.emsg.m0010);
       return;
     }
+    if (!this.comments.value) {
+      return;
+    }
+    this.disableTextArea = true;
     const requestBody: any = {
       request: {
         contextDetails: {
@@ -117,6 +123,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
       takeUntil(this.unsubscribe))
       .subscribe(
         (apiResponse: ServerResponse) => {
+          this.disableTextArea = false;
           const newComment = {
             userId: this.userService.userProfile.userId,
             userInfo: {
@@ -135,7 +142,10 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
           this.reviewCommentEvent.emit(this.sortedComments); // emit data to parent
           this.comments = new FormControl();
         },
-        err => this.toasterService.error(this.resourceService.messages.emsg.m0005)
+        err => {
+          this.disableTextArea = false;
+          this.toasterService.error(this.resourceService.messages.emsg.m0010);
+        }
       );
   }
 
