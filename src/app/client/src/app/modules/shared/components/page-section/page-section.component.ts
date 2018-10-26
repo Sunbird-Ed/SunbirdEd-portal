@@ -1,4 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
+import { ResourceService } from '../../services/index';
 import { Component,  Input, EventEmitter, Output } from '@angular/core';
 import {ICaraouselData} from '../../interfaces/caraouselData';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
@@ -109,7 +110,8 @@ export class PageSectionComponent implements OnInit {
    * to generate interact telemetry data */
   btnArrow: string;
   pageid: string;
-  constructor(public activatedRoute: ActivatedRoute) {
+  constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService) {
+    this.resourceService = resourceService;
   }
   playContent(event) {
     this.playEvent.emit(event);

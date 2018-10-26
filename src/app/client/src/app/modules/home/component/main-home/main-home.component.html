@@ -22,7 +22,7 @@
                     </a>
                   </div>
                   <div *ngIf=" item.type !== 'profile'">
-                    <app-card [data]="item" (clickEvent)="playContent($event)" [customClass]="'margin-right-20'"></app-card>
+                    <app-sb-card [data]="item" (clickEvent)="playContent($event)" [customClass]="'margin-right-20'"></app-sb-card>
                   </div>
                 </div>
               </ngx-slick>

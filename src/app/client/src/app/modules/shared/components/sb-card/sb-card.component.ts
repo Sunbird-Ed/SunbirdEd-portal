@@ -15,6 +15,10 @@ export class SbCardComponent {
   @Input() customClass: string;
   @Output() clickEvent = new EventEmitter<any>();
 
+  constructor(public resourceService: ResourceService) {
+    this.resourceService = resourceService;
+  }
+
   public onAction(data, action) {
     this.clickEvent.emit({ 'action': action, 'data': data });
   }
