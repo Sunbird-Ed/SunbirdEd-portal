@@ -278,7 +278,6 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
     if (content.status.toLowerCase() !== 'processing') {
       this.workSpaceService.navigateToContent(content, this.state);
     }
-    
   }
 
   inview(event) {
@@ -304,7 +303,7 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
     this.reverse = !this.reverse;
   }
   /**
-   * Used to dispaly content 
+   * Used to dispaly content
    *@param {number} index Give position for current entry
    *@param {number} item  Give postion
    */
