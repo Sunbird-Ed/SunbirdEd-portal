@@ -67,16 +67,6 @@ const routes: Routes = [
       }
     }
   }
-  // {
-  //   path: 'Organisations/:pageNumber', component: OrgSearchComponent,
-  //   data: {
-  //     breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'Search', url: '' }],
-  //     telemetry: {
-  //       env: 'profile', pageid: 'organization-search', type: 'view', subtype: 'paginate'
-  //     }
-  //   }
-  // },
-
 ];
 
 @NgModule({
