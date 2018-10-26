@@ -12,15 +12,13 @@ import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { IImpressionEventInput } from '@sunbird/telemetry';
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+import { SuiModalService } from 'ng2-semantic-ui';
 @Component({
   selector: 'app-collaborating-on',
   templateUrl: './collaborating-on.component.html',
   styleUrls: ['./collaborating-on.component.scss']
 })
 export class CollaboratingOnComponent extends WorkSpace implements OnInit {
-  @ViewChild('modalTemplate')
-  public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
   * state for content editor
   */
