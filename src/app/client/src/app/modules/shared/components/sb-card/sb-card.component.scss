@@ -1,12 +1,15 @@
 @import "variables";
 .sbCard{
     width: 100%;
-    max-width: 292px;
+    max-width: 250px;
     border-radius: 4px;
     border: $primary-border;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16);
     background-color: #ffffff;
     cursor: pointer;
+    @media screen and (min-width:768px){
+        max-width: 292px;
+    }
     &:hover{
         box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.16);;
         transform: translateY(-2px);
