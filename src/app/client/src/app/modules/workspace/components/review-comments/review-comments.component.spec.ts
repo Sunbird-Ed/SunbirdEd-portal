@@ -8,6 +8,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ReviewCommentsService } from '../../services';
 import { of, throwError } from 'rxjs';
 import * as _ from 'lodash';
+import { FormControl } from '@angular/forms';
 
 const mockUserService = {
   userProfile: {
@@ -152,6 +153,9 @@ describe('ReviewCommentsComponent', () => {
     spyOn(toasterService, 'error').and.callFake(() => 'true');
     component.contentData = contentData;
     component.stageId = 'hhhh';
+    component.comments = new FormControl();
+    // component.comments = { value: 'data', setValue: () = {}};
+    component.comments.setValue('data');
     spyOn(reviewCommentsService, 'createComment').and.returnValue(of(commentList));
     component.addReviewComments();
     expect(_.isEmpty(component.sortedComments)).toBeFalsy();
@@ -163,6 +167,8 @@ describe('ReviewCommentsComponent', () => {
     spyOn(toasterService, 'error').and.callFake(() => 'true');
     component.contentData = contentData;
     component.stageId = 'hhhh';
+    component.comments = new FormControl();
+    component.comments.setValue('data');
     spyOn(reviewCommentsService, 'createComment').and.returnValue(throwError(commentList));
     component.addReviewComments();
     expect(_.isEmpty(component.sortedComments)).toBeTruthy();
