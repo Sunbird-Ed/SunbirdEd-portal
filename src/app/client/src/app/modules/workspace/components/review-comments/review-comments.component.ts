@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, OnDestroy, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ResourceService, ToasterService, ContentData, ServerResponse } from '@sunbird/shared';
-import { UserService, SearchService } from '@sunbird/core';
-import { ReviewCommentsService } from './../../services/review-comments.service';
+import { UserService } from '@sunbird/core';
+import { ReviewCommentsService } from '../../services';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, map } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 @Component({
@@ -12,7 +12,7 @@ import * as _ from 'lodash';
   templateUrl: './review-comments.component.html',
   styleUrls: ['./review-comments.component.css']
 })
-export class ReviewCommentsComponent implements OnInit, OnDestroy {
+export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
 
   public unsubscribe = new Subject<void>();
 
@@ -21,97 +21,130 @@ export class ReviewCommentsComponent implements OnInit, OnDestroy {
 	 */
   comments = new FormControl();
 
-  reviewDetails: any;
+  sortedComments: any = {};
+
+  contentComments: any;
 
   disableSubmitcommentsButton = true;
 
+  disableTextArea = false;
+
   @Input() contentData: ContentData;
+
+  @Input() stageId: string;
+
+  @Input() playerLoaded: boolean;
+
+  @Output() reviewCommentEvent = new EventEmitter();
+
+  @ViewChild('commentInput') commentInput: ElementRef;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public userService: UserService, public reviewCommentsService: ReviewCommentsService,
-    public searchService: SearchService) { }
+  ) { }
 
   ngOnInit() {
-    this.getReviewComments();
+    this.getReviewComments().pipe(takeUntil(this.unsubscribe)).subscribe(
+        (data) => {
+          this.sortedComments = data;
+          this.reviewCommentEvent.emit(this.sortedComments ); // emit data to parent
+          this.reviewCommentsService.contextDetails = {
+            contentId: this.contentData.identifier,
+            contentVer: this.contentData.pkgVersion ? this.contentData.pkgVersion.toString() : '0', // this should be version not versionKey
+            contentType: this.contentData.mimeType
+          };
+        },
+        (error) => this.toasterService.error(this.resourceService.messages.emsg.m0011));
     this.comments.valueChanges.subscribe(data => {
       data = data.trim();
       this.disableSubmitcommentsButton = data.length > 150 || data.length === 0 ? true : false;
     });
   }
-
+  ngOnChanges() {
+    console.log('stageId changed', this.stageId);
+    this.comments = new FormControl();
+  }
+  focusOnInput() {
+    this.commentInput.nativeElement.focus();
+  }
   getReviewComments() {
+    // fetch all comments for content then show content related to stageID
     const requestBody = {
-      'request': {
-        'contextDetails': {
-          'contentId': this.contentData.identifier,
-          'contentVer': this.contentData.versionKey, // changed to contentVer
-          'contentType': this.contentData.mimeType,
-          'stageId': '1'
+      request: {
+        contextDetails: {
+          contentId: this.contentData.identifier,
+          contentVer: this.contentData.pkgVersion ? this.contentData.pkgVersion.toString() : '0', // this should be version not versionKey
+          contentType: this.contentData.mimeType
         }
       }
     };
-    this.reviewCommentsService.getThreadList(requestBody).pipe(
-      takeUntil(this.unsubscribe))
-      .subscribe(
-        (apiResponse: ServerResponse) => {
-          const userIds = [];
-          _.each(apiResponse.result.comments, (val) => {
-            userIds.push(val.userId);
-          });
-          const searchParams = { filters: { userId: userIds } };
-          this.reviewCommentsService.userSearch(searchParams).subscribe(
-            (userData: ServerResponse) => {
-              _.each(apiResponse.result.comments, (val) => {
-                const user = _.find(userData.result.response.content, (data) => {
-                  return data.id === val.userId;
-                });
-                if (user) {
-                  val.userName = user.firstName + ' ' + user.lastName;
-                  val.userImage = user.avatar;
-                }
-              });
-            },
-            err => {
-            }
-          );
-          this.reviewDetails = apiResponse.result;
-        },
-        err => {
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    return this.reviewCommentsService.getComments(requestBody).pipe(map((data) => {
+      const commentList = _.get(data, 'result.comments');
+      return commentList.reduce((accumulator, current) => {
+        if (accumulator[current.stageId]) {
+          accumulator[current.stageId].push(current);
+        } else {
+          accumulator[current.stageId] = [];
+          accumulator[current.stageId].push(current);
         }
-      );
+        return accumulator;
+      }, {});
+    }));
   }
 
   addReviewComments() {
-    const requestBody = {
-      'request': {
-        'contextDetails': {
-          'contentId': this.contentData.identifier,
-          'contentVer': this.contentData.versionKey,
-          'contentType': this.contentData.mimeType,
-          'stageId': '1'
+    if (!this.stageId) { // if stageId not fetched, throw error
+      this.toasterService.error(this.resourceService.messages.emsg.m0010);
+      return;
+    }
+    if (!this.comments.value) {
+      return;
+    }
+    this.disableTextArea = true;
+    const requestBody: any = {
+      request: {
+        contextDetails: {
+          contentId: this.contentData.identifier,
+          contentVer: this.contentData.pkgVersion ? this.contentData.pkgVersion.toString() : '0', // this should be version not versionKey
+          contentType: this.contentData.mimeType,
+          stageId: this.stageId
         },
-        'body': this.comments.value,
-        'userId': this.userService.userProfile.userId
+        body: this.comments.value,
+        userId: this.userService.userProfile.userId,
+        userInfo: {
+          name: this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName
+        }
       }
     };
-    this.reviewCommentsService.createThread(requestBody).pipe(
+    if (this.userService.userProfile.avatar) {
+      requestBody.request.userInfo.logo = this.userService.userProfile.avatar;
+    }
+    this.reviewCommentsService.createComment(requestBody).pipe(
       takeUntil(this.unsubscribe))
       .subscribe(
         (apiResponse: ServerResponse) => {
-          this.reviewDetails.comments.push({
-            'userId': this.userService.userProfile.userId,
-            'userInfo': {
-              'name': this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName,
-              'logo': this.userService.userProfile.avatar,
+          this.disableTextArea = false;
+          const newComment = {
+            userId: this.userService.userProfile.userId,
+            userInfo: {
+              name: this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName,
+              logo: this.userService.userProfile.avatar,
             },
-            'body': this.comments.value,
-            'createdOn': '2018-10-03 13:33:35:868+0000'
-          });
+            body: this.comments.value,
+            createdOn: new Date()
+          };
+          if (this.sortedComments[this.stageId]) {
+            this.sortedComments[this.stageId].push(newComment);
+          } else {
+            this.sortedComments[this.stageId] = [];
+            this.sortedComments[this.stageId].push(newComment);
+          }
+          this.reviewCommentEvent.emit(this.sortedComments); // emit data to parent
           this.comments = new FormControl();
         },
         err => {
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+          this.disableTextArea = false;
+          this.toasterService.error(this.resourceService.messages.emsg.m0010);
         }
       );
   }

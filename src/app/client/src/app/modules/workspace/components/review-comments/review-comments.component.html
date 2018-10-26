@@ -1,23 +1,23 @@
-<div class="review-comments-box br-4 bs-1 p-8">
-  <div class="ui small comments scrolling" *ngIf="contentData && reviewDetails && reviewDetails.comments.length > 0 else emptyComments" >
-    <div class="comment" *ngFor="let rDetails of reviewDetails.comments;">
+<div *ngIf="playerLoaded" class="review-comments-box br-4 bs-1 p-8">
+  <div class="ui small comments scrolling" *ngIf="sortedComments[stageId] && sortedComments[stageId].length else emptyComments" >
+    <div class="comment" *ngFor="let commentList of sortedComments[stageId]">
       <span class="avatar">
-        <img *ngIf="rDetails.userInfo.logo" src="{{rDetails.userInfo.logo | cdnprefixurl}}">
-        <i *ngIf="!rDetails.userInfo.logo" class="icon sb-icon-reviewer" aria-hidden="true"></i>
+        <img *ngIf="commentList.userInfo.logo" src="{{commentList.userInfo.logo | cdnprefixurl}}">
+        <i *ngIf="!commentList.userInfo.logo" class="icon sb-icon-reviewer" aria-hidden="true"></i>
       </span>
       <div class="content pr-8">
           <div class="d-flex jc-space-around">
-            <span class="text-blue">{{rDetails.userInfo.name}}</span>
-            <span class="date ui metadata">{{rDetails.createdOn | date: 'MMM d'}}</span>
+            <span class="text-blue">{{commentList.userInfo.name}}</span>
+            <span class="date ui metadata">{{commentList.createdOn | date: 'MMM d'}}</span>
           </div>
           <div class="text">
-            {{rDetails.body}}
+            {{commentList.body}}
           </div>
       </div>
     </div>
   </div>
   <ng-template #emptyComments>
-    <div class="ui comments scrolling">
+    <div (click)="focusOnInput()" class="ui comments scrolling">
       <div class="placeholder margin-top-91">
           <i class="sb-icon-comment"></i>
           <span class="">{{resourceService.frmelmnts.lbl.emptycomments}}</span>
@@ -29,9 +29,12 @@
       <span class="ui metadata">{{resourceService.frmelmnts.lbl.dropcomment}}</span>
       <span class="ui metadata" *ngIf="comments.value">{{comments.value.trim().length}} / 150</span>
     </div>
-    <div class="ui icon input width-100">
-      <textarea maxlength="150" autocomplete="off" class="width-100 br-4 reply-box form-control"[formControl]="comments"></textarea>
+    <div [ngClass]="{ 'disabled' : disableTextArea }" class="ui icon input width-100">
+      <textarea [attr.disabled]="disableTextArea ? true : null" #commentInput maxlength="150" (keyup.enter)="addReviewComments()" autocomplete="off" class="width-100 br-4 reply-box form-control"[formControl]="comments"></textarea>
       <i (click)="addReviewComments()" class="opacity-1 mr-5 right sb-icon-send icon link" aria-hidden="true" tabindex="0"></i>
     </div>
   </div>
+</div>
+<div *ngIf="!playerLoaded">
+  <app-loader [data]="{loaderMessage: 'loading comments'}"></app-loader>
 </div>
