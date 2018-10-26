@@ -1,8 +1,0 @@
-.ui.sortable.table thead th{
-    border-left: none !important;
-}
-
-.ui.sortable.table thead th.sorted{
-    background:#f9fafb;
-    color: rgba(0,0,0,.87);
-}

@@ -146,7 +146,7 @@ describe('CollaboratingOnComponent', () => {
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
   });
-  it('should open collection edition on list click   ', inject([WorkSpaceService, Router],
+  it('should open  editor on edit icon click when status is not processing  ', inject([WorkSpaceService, Router],
     (workSpaceService, route, http) => {
       spyOn(component, 'contentClick').and.callThrough();
       component.contentClick(Response.searchSuccessWithCountTwo.result.content[1]);

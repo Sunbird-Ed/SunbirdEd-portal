@@ -16,7 +16,7 @@ import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semanti
 @Component({
   selector: 'app-collaborating-on',
   templateUrl: './collaborating-on.component.html',
-  styleUrls: ['./collaborating-on.component.css']
+  styleUrls: ['./collaborating-on.component.scss']
 })
 export class CollaboratingOnComponent extends WorkSpace implements OnInit {
   @ViewChild('modalTemplate')
@@ -34,10 +34,6 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
    * service for redirection to draft  component
   */
   private activatedRoute: ActivatedRoute;
-  /**
-   * Contains unique contentIds id
-  */
-  contentIds: string;
   /**
    * Contains list of published course(s) of logged-in user
   */
@@ -227,7 +223,7 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
     const searchParams = {
       filters: {
         status: bothParams.queryParams.status ? bothParams.queryParams.status : preStatus,
-        createdBy: this.userService.userid,
+        collaborators: [this.userService.userid],
         contentType: this.config.appConfig.WORKSPACE.contentType,
         objectType: this.config.appConfig.WORKSPACE.objectType,
         board: bothParams.queryParams.board,
@@ -281,7 +277,10 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
     this.route.navigate(['workspace/content/collaborating-on', this.pageNumber], { queryParams: this.queryParams });
   }
   contentClick(content) {
-    this.workSpaceService.navigateToContent(content, this.state);
+    if (content.status.toLowerCase() !== 'processing') {
+      this.workSpaceService.navigateToContent(content, this.state);
+    }
+    
   }
 
   inview(event) {
@@ -301,10 +300,18 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
- sortColumns(column) {
+  sortColumns(column) {
     this.column = column;
     this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     this.reverse = !this.reverse;
+  }
+  /**
+   * Used to dispaly content 
+   *@param {number} index Give position for current entry
+   *@param {number} item  Give postion
+   */
+  trackByFn(index, item) {
+    return item.identifier;
   }
 }
 

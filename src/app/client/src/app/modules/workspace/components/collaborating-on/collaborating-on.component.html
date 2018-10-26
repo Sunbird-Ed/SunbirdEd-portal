@@ -9,27 +9,27 @@
 <table class="ui sortable upForReviewTable table" *ngIf="collaboratingContent.length > 0 && !showLoader && !noResult ">
   <thead>
     <tr>
-      <th (click)="sortColumns('name')" class="five wide UpReviewTableHeader sorted" [ngClass]="{'ascending':sortDirection === 'asc' && 
+      <th (click)="sortColumns('name')" class="five wide UpReviewTableHeader sorted bl-0" [ngClass]="{'ascending':sortDirection === 'asc' && 
       column === 'name','descending':sortDirection === 'desc' && column === 'name'}">
         {{ resourceService?.frmelmnts?.lbl?.contentCaps}}
       </th>
-      <th (click)="sortColumns('creator')" class="four wide UpReviewTableHeader sorted" [ngClass]="{'ascending':sortDirection === 'asc' && 
+      <th (click)="sortColumns('creator')" class="four wide UpReviewTableHeader sorted bl-0" [ngClass]="{'ascending':sortDirection === 'asc' && 
       column === 'creator','descending':sortDirection === 'desc' && column === 'creator'}">{{ resourceService?.frmelmnts?.lbl?.authorCaps}}
       </th>
-      <th (click)="sortColumns('lastUpdatedOn')" class="four wide UpReviewTableHeader sorted" [ngClass]="{'ascending':sortDirection === 'asc' && 
+      <th (click)="sortColumns('lastUpdatedOn')" class="four wide UpReviewTableHeader sorted bl-0" [ngClass]="{'ascending':sortDirection === 'asc' && 
       column === 'lastUpdatedOn','descending':sortDirection === 'desc' && column === 'lastUpdatedOn'}">
         {{ resourceService?.frmelmnts?.lbl?.lastupdate}}
       </th>
-      <th (click)="sortColumns('status')" class="two wide UpReviewTableHeader sorted" [ngClass]="{'ascending':sortDirection === 'asc' && 
+      <th (click)="sortColumns('status')" class="two wide UpReviewTableHeader sorted bl-0" [ngClass]="{'ascending':sortDirection === 'asc' && 
       column === 'status','descending':sortDirection === 'desc' && column === 'status'}">
         {{ resourceService?.frmelmnts?.lbl?.statusCaps}}
       </th>
-      <th class="two wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.editCaps}}
+      <th class="two wide UpReviewTableHeader sorted bl-0">{{ resourceService?.frmelmnts?.lbl?.editCaps}}
       </th>
     </tr>
   </thead>
   <tbody [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inview($event)" [throttle]="1000" [trigger]="collaboratingContent">
-    <tr in-view-item class="UpForReviewListHover" *ngFor="let content of collaboratingContent |orderBy: column :reverse ; let i = index;"
+    <tr in-view-item class="UpForReviewListHover" *ngFor="let content of collaboratingContent |orderBy: column :reverse ; trackBy: trackByFn let i = index;"
       [id]="i" [data]="content" appTelemetryInteract [telemetryInteractObject]="{id:content.identifier,type:content.contentType,ver:content.pkgVersion ? content.pkgVersion.toString(): '1.0' }"
       [telemetryInteractEdata]="{id:'collaborating-on',type:'click',pageid:'CollaboratingOn'}">
       <td>

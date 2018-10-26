@@ -1315,7 +1315,7 @@ export const Response = {
                      'name': 'abcd',
                      'IL_UNIQUE_ID': 'do_112470956978200576116',
                      'board': 'CBSE',
-                     'status': 'Review',
+                     'status': 'processing',
                      'resourceType': 'Story',
                      'node_id': 34837
                   },
