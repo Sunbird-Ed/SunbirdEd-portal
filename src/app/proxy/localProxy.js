@@ -61,7 +61,7 @@ var learnerServiceApi = {
   'course/v1/batch/read': 'v1/course/batch/read',
   'course/v1/batch/list': 'v1/course/batch/search',
   'user/v1/search': 'v1/user/search',
-  // 'org/v1/search': 'v1/org/search',
+  'org/v1/search': 'v1/org/search',
   'user/v1/upload': 'v1/user/upload',
   'org/v1/upload': 'v1/org/upload',
   'data/v1/upload/status': 'v1/upload/status',
@@ -69,7 +69,7 @@ var learnerServiceApi = {
   'org/v1/role/assign': 'v1/user/assign/role',
   'org/v1/badges/list': 'v1/badges/list',
   'user/v1/badges/add': 'v1/user/badges/add',
-  // 'org/v1/type/list': 'v1/org/type/list',
+  'org/v1/type/list': 'v1/org/type/list',
   'org/v1/type/create': 'v1/org/type/create',
   'org/v1/type/update': 'v1/org/type/update',
   'role/read': 'v1/role/read'
