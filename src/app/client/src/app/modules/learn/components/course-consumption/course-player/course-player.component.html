@@ -25,7 +25,6 @@
                                     {{resourceService.frmelmnts.lbl.coursestructure}}
                                 </b>
                             </div>
-                            <pre innerHTML="{{collectionTreeNodes.data | json}}"></pre>
                             <app-collection-tree *ngIf="collectionTreeNodes.data && collectionTreeNodes.data.children && collectionTreeNodes.data.children.length >0 ; else dataCommingSoon" (contentSelect)="navigateToContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"
                                     [contentStatus]="contentStatus"></app-collection-tree>
                             <ng-template #dataCommingSoon>
