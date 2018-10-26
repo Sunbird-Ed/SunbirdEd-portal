@@ -1,0 +1,115 @@
+body {
+    position: relative;
+    background: $bg-body !important;
+    font-family: $font-stack;
+}
+.ui.button.rounded{
+    border-radius: 20px;
+}
+.ui.header,
+h1, h2, h3, h4, h5{
+    font-family: $font-stack;
+}
+.bs-1{
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.29) !important;
+    &:hover{
+        box-shadow: 0 4px 9px 0 rgba(0, 0, 0, 0.29) !important;
+    }
+}
+.bg-contain{
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.br-4{
+    border-radius: 4px;
+}
+.box{
+    width: 100%;
+    max-width: 292px;
+    border-radius: 4px;
+    border: 0.5px solid #dedede;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16);
+    background-color: #ffffff;
+    &:hover{
+        box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.16);;
+        transform: translateY(-2px);
+    }
+    .header{
+        display: flex;
+        align-items: flex-end;
+    }
+    .image {
+        width: 70px;
+        height: 92px;
+        border: 0.5px solid #d0d0d0;
+    }
+    .meta{
+        font-size: 12px;
+        color: #666666;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        justify-content: flex-end;
+        height: 92px;
+        width: 175px;
+        overflow: hidden;
+    }
+    .badge{
+        margin: 0 0 auto auto;
+    }
+    .badge .avtar{
+        height: 31px;
+        width: 31px;
+    }
+    .ui.label{
+        padding: 4px 10px;
+        border-radius: 4px;
+        border: 0.5px solid #d9d9d9;
+        background-color: #eaeaea;
+        color: #333333;
+        font-size: 11px;
+        font-weight: 500;
+        width: auto;
+        align-self: flex-start;
+    }
+    .sub-header{
+        padding: 10px 15px;
+    }
+    .title{
+        font-size: 16px;
+        line-height: 20px;
+        height: 40px;
+        overflow: hidden;
+    }
+    .creator{
+        margin-top: 10px;
+        font-size: 14px;
+        height: 15px;
+        color: #999999;
+    }
+    .description{
+        font-size: 14px;
+        line-height: 20px;
+        height: 110px;
+        color: #666666;
+        padding: 8px 15px;
+        overflow: hidden;
+    }
+    .ui.progress{
+        border-radius: 0;
+        background-color: #d4e4e1;
+        margin: 0;
+        .bar{
+            background-image: $primary-gradient;
+            border-radius: 0 4px 4px 0;
+            height: 4px;
+            .progress{
+                display:none;
+            }
+        }
+        .label{
+            display:none;
+        }
+    }
+}

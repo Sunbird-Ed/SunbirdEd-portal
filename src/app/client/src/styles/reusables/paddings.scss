@@ -4,6 +4,9 @@
 .p-5 {
   @include padding(5px);
 }
+.p-8 {
+  @include padding(8px);
+}
 .p-10 {
   @include padding(10px);
 }
@@ -36,6 +39,9 @@
   @include padding(null 0 null null);
 }
 .pr-5 {
+  @include padding(null 5px null null);
+}
+.pr-8 {
   @include padding(null 5px null null);
 }
 .pr-10 {
@@ -84,34 +90,40 @@
 
 
 .px-0 {
-  @include padding(0 null);
+  @include padding(null 0);
 }
 .px-5 {
-  @include padding(5px null);
+  @include padding(null 5px);
+}
+.px-7 {
+  @include padding(null 7px);
 }
 .px-10 {
-  @include padding(10px null);
+  @include padding(null 10px);
 }
 .px-15 {
-  @include padding(15px null);
+  @include padding(null 15px);
 }
 .px-20 {
-  @include padding(20px null);
+  @include padding(null 20px);
 }
 
 
 .py-0 {
-  @include padding(null 0);
+  @include padding(0 null);
 }
 .py-5 {
-  @include padding(null 5px);
+  @include padding(5px null);
+}
+.py-6 {
+  @include padding(6px null);
 }
 .py-10 {
-  @include padding(null 10px);
+  @include padding(10px null);
 }
 .py-15 {
-  @include padding(null 15px);
+  @include padding(15px null);
 }
 .py-20 {
-  @include padding(null 20px);
+  @include padding(20px null);
 }

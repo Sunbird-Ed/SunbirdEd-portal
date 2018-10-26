@@ -1,0 +1,40 @@
+<div 
+  class="box mt-20 mr-30" 
+  *ngIf="data" 
+  (click)="onAction(data,data.action.onImage)" 
+  appTelemetryInteract 
+  [telemetryInteractObject]="{id:data.metaData.identifier,type:data.telemetryObjectType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion.toString():'1.0'}" 
+  [telemetryInteractEdata]="data.telemetryInteractEdata"
+  >
+    <div class="header p-15 pb-0">
+      <div class="image m-0 mr-15 bg-contain br-4" *ngIf="data.image && data.showImage" [ngStyle]="{'background-image': 'url(' + data.image + ')'}"></div>
+      <div class="image m-0 mr-15 bg-contain br-4" *ngIf="!data.image || !data.showImage" [ngStyle]="{'background-image': 'url(assets/images/default.png)'}"></div>
+      <div class="meta">
+        <div class="ui label tiny mb-auto" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">
+          {{data.ribbon.right.name}}
+        </div>
+        <div class="ui label tiny mb-auto" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.name">
+          {{data.ribbon.left.name}}
+        </div>
+        <div class="badge" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image">
+          <img src="{{data.ribbon.left.image }}" class="ui small avatar image">
+        </div>
+        <div class="subject ellipsis mt-3" *ngIf="data.subject">Subject : {{data.subject}}</div>
+        <div class="class ellipsis mt-3" *ngIf="data.class">Class : {{data.class}}</div>
+        <div class="medium ellipsis mt-3" *ngIf="data.medium">Medium : {{data.medium}}</div>
+      </div>
+    </div>
+    <div class="sub-header">
+        <h4 class="title">
+          {{data.name | slice:0:40 }}
+          <i class="ellipsis horizontal icon" *ngIf="data.name && data.name.length >= 40" ></i>
+        </h4>
+        <div class="creator ellipsis" *ngIf="data.creator">
+          {{data.creator}}
+        </div>
+    </div>
+    <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount" ></sui-progress>
+    <div class="description" *ngIf="data.description && data.description.length > 0">
+      {{data.description | slice:0:120 }}
+    </div>
+</div>

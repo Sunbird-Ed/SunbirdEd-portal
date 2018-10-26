@@ -1,0 +1,17 @@
+@import "../../../../../styles/variables";
+
+.ui.breadcrumb a.breadcrumb-font {
+    color: $link-color;
+    font-size: 0.9375em;
+    line-height: 17px;
+    font-weight: bold;
+  }
+.ui.breadcrumb .active.section {
+    color: $link-color;
+    font-weight: bold;
+    font-size: 0.9375em;
+    line-height: 17px;
+}
+.ui.breadcrumb .divider {
+    color: $link-color;
+}
