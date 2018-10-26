@@ -43,6 +43,7 @@ module.exports = function (config) {
       ChromeHeadless: {
         base: 'Chrome',
         flags: [
+          '--js-flags="--max_old_space_size=4096"',
           '--no-sandbox',
           '--headless',
           '--disable-gpu',
