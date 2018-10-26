@@ -29,26 +29,16 @@ describe('SbCardComponent', () => {
     const cdnprefixPipe = new CdnprefixPipe();
     component.data = Response.cardData;
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('div .sb-card-component-description').innerText).toContain('Untitled Collection');
-    expect(fixture.nativeElement.querySelector('div .text-cencapitalize').innerText).toContain('B1 Test');
+    expect(fixture.nativeElement.querySelector('div .description').innerText).toContain('Untitled Collection');
+    expect(fixture.nativeElement.querySelector('div .title').innerText).toContain('B1 Test');
     expect(fixture.nativeElement.querySelector('div .right').innerText).toEqual('TextBook');
-  });
-  it('should emit the event on click of trash icon', () => {
-    component.data = Response.cardData;
-    fixture.detectChanges();
-    const trashIconElm = fixture.debugElement.nativeElement.querySelector('i');
-    spyOn(component, 'onAction').and.callThrough();
-    spyOn(component.clickEvent, 'emit');
-    trashIconElm.dispatchEvent(new Event('click'));
-    expect(component.onAction).toHaveBeenCalledWith(Response.cardData, Response.cardData.action.right);
-    expect(component.clickEvent.emit).toHaveBeenCalledWith(Response.emitData);
   });
   it('should show badgeClassImage while passing badgesData', () => {
     const cdnprefixPipe = new CdnprefixPipe();
     component.data = Response.librarySearchData;
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('div .sb-card-component-description').innerText).toContain('');
-    expect(fixture.nativeElement.querySelector('div .text-cencapitalize').innerText).toContain('Official Textbook');
+    expect(fixture.nativeElement.querySelector('div .description').innerText).toContain('');
+    expect(fixture.nativeElement.querySelector('div .title').innerText).toContain('Official Textbook');
     const badgesElm = fixture.nativeElement.querySelector('div .avatar');
     expect(badgesElm.src).toContain(Response.librarySearchData.ribbon.left.image);
   });

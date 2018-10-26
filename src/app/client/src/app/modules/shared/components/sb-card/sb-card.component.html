@@ -9,14 +9,14 @@
   >
     <div class="header p-15 pb-0">
       <div class="image m-0 mr-15 br-4">
-        <img *ngIf="data.showImage? false : true" src="{{ data.image || 'assets/images/default.png' | cdnprefixurl}}">
+        <img *ngIf="data.showImage? false : true" src="{{ data.image || 'assets/images/default.png' | cdnprefixurl}}" alt="{{data.name}}">
       </div>
       <div class="meta">
         <div class="top mb-auto d-flex">
-            <div class="ui label tiny" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">
+            <div class="ui label tiny right" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">
                 {{data.ribbon.right.name}}
               </div>
-              <div class="ui label tiny" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.name">
+              <div class="ui label tiny left" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.name">
                 {{data.ribbon.left.name}}
               </div>
               <img src="{{data.ribbon.left.image }}" class="avtar ml-auto" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image" alt="{{data.ribbon.left.name}}">
