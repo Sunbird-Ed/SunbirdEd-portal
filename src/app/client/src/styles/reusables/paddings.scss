@@ -1,0 +1,117 @@
+.p-0 {
+  @include padding(0);
+}
+.p-5 {
+  @include padding(5px);
+}
+.p-10 {
+  @include padding(10px);
+}
+.p-15 {
+  @include padding(15px);
+}
+.p-20 {
+  @include padding(20px);
+}
+
+
+.pt-0 {
+  @include padding(0 null null null);
+}
+.pt-5 {
+  @include padding(5px null null null);
+}
+.pt-10 {
+  @include padding(10px null null null);
+}
+.pt-15 {
+  @include padding(15px null null null);
+}
+.pt-20 {
+  @include padding(20px null null null);
+}
+
+
+.pr-0 {
+  @include padding(null 0 null null);
+}
+.pr-5 {
+  @include padding(null 5px null null);
+}
+.pr-10 {
+  @include padding(null 10px null null);
+}
+.pr-15 {
+  @include padding(null 15px null null);
+}
+.pr-20 {
+  @include padding(null 20px null null);
+}
+
+
+.pb-0 {
+  @include padding(null null 0 null);
+}
+.pb-5 {
+  @include padding(null null 5px null);
+}
+.pb-10 {
+  @include padding(null null 10px null);
+}
+.pb-15 {
+  @include padding(null null 15px null);
+}
+.pb-20 {
+  @include padding(null null 20px null);
+}
+
+
+.pl-0 {
+  @include padding(null null null 0);
+}
+.pl-5 {
+  @include padding(null null null 5px);
+}
+.pl-10 {
+  @include padding(null null null 10px);
+}
+.pl-15 {
+  @include padding(null null null 15px);
+}
+.pl-20 {
+  @include padding(null null null 20px);
+}
+
+
+.px-0 {
+  @include padding(0 null);
+}
+.px-5 {
+  @include padding(5px null);
+}
+.px-10 {
+  @include padding(10px null);
+}
+.px-15 {
+  @include padding(15px null);
+}
+.px-20 {
+  @include padding(20px null);
+}
+
+
+.py-0 {
+  @include padding(null 0);
+}
+.py-5 {
+  @include padding(null 5px);
+}
+.py-10 {
+  @include padding(null 10px);
+}
+.py-15 {
+  @include padding(null 15px);
+}
+.py-20 {
+  @include padding(null 20px);
+}

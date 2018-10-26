@@ -12,6 +12,8 @@
     min-height: 10px !important;
     resize: none !important;
     padding-right: 2.67142857em !important;
+    border: 1px solid #9B9B9B !important;
+    border-radius: 4px !important;
 }
 .icon.sb-icon-send:before {
     font-size: 18px;
@@ -30,5 +32,5 @@ textarea:focus+i.icon.sb-icon-send:before {
     color:#2185D0;
 }
 .ui.form textarea:focus {
-    border-color:#2185D0;
+    border-color:#2185D0 !important;
 }
