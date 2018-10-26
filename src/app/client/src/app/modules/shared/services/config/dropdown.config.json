@@ -275,8 +275,7 @@
                 "resources": "/search/Library",
                 "Library": "/search/Library",
                 "Users": "/search/Users",
-                "profile": "/search/Users",
-                "Organisations": "/search/Organisations"
+                "profile": "/search/Users"
             },
             "searchUrl": {
                 "home": "All",
