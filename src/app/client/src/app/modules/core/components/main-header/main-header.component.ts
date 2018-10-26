@@ -1,4 +1,3 @@
-
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { UserService, PermissionService, TenantService } from './../../services';
@@ -43,10 +42,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
    */
   isOpen: boolean;
   /**
-   * Workspace access roles
-   */
-  workSpaceRole: Array<string>;
-  /**
    * Admin Dashboard access roles
    */
   adminDashboard: Array<string>;
@@ -89,6 +84,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   */
   enableSignup = true;
   exploreRoutingUrl: string;
+  pageId: string;
   /*
   * constructor
   */
@@ -100,9 +96,28 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.permissionService = permissionService;
     this.userService = userService;
     this.tenantService = tenantService;
-  }
+   }
 
   ngOnInit() {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(event => {
+        let currentRoute = this.activatedRoute.root;
+        if (currentRoute.children) {
+          while (currentRoute.children.length > 0) {
+            const child: ActivatedRoute[] = currentRoute.children;
+            child.forEach(route => {
+              currentRoute = route;
+              if (route.snapshot.data.telemetry) {
+                if (route.snapshot.data.telemetry.pageid) {
+                  this.pageId = route.snapshot.data.telemetry.pageid;
+                } else {
+                  this.pageId = route.snapshot.data.telemetry.env;
+                }
+              }
+            });
+          }
+        }
+      });
     try {
       this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
     } catch (error) {
@@ -116,7 +131,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.queryParam = { ...queryParams };
       this.key = this.queryParam['key'];
     });
-    this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
     this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
     this.announcementRole = this.config.rolesConfig.headerDropdownRoles.announcementRole;
     this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
@@ -152,12 +166,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.resourceService.getResource(data);
     }
   }
-  navigateToWorkspace() {
-    const authroles = this.permissionService.getWorkspaceAuthRoles();
-    if (authroles) {
-      this.router.navigate([authroles.url]);
-    }
-  }
   navigateToHome() {
     if (this.userService.loggedIn) {
       this.router.navigate(['home']);
@@ -183,7 +191,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
       if (_.includes(urlAfterRedirects.url, '/explore')) {
         this.showExploreHeader = true;
-        const url  = urlAfterRedirects.url.split('/');
+        const url  = urlAfterRedirects.url.split('?')[0].split('/');
         if (url.indexOf('explore') === 2) {
           this.exploreRoutingUrl = url[1] + '/' + url[2];
         } else {

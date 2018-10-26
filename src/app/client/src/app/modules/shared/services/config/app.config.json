@@ -18,7 +18,35 @@
       "maxCount": "leafNodesCount",
       "progress": "progress"
     }
-
+  },
+  "ViewAll": {
+    "otherCourses": {
+        "constantData":{
+        "action": {
+            "onImage": {"eventName": "onImage" }
+          },
+          "ribbon": {"right":{"class": "ui black right ribbon label"},
+          "left": {"class":  "ui circular label  card-badges-image"} }
+         }
+      },"enrolledCourses": {
+        "constantData": {
+          "action": {
+            "right": {
+              "class": "ui blue basic button",
+              "eventName": "Resume",
+              "displayType": "button",
+              "text": "Resume"
+            },
+            "onImage": {
+              "eventName": "onImage"
+            }
+          }
+        },
+      "metaData": ["batchId", "courseId"]
+      },
+       "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"},
+     "PAGE_LIMIT": 20 
   },
   "Course": {
     "otherCourse": {
@@ -417,7 +445,6 @@
         "phone": "phone",
         "email": "email",
         "userName": "userName",
-        "password": "password",
         "externalId": "externalId",
         "externalIdType": "externalIdType",
         "externalIdProvider": "externalIdProvider",
@@ -447,7 +474,9 @@
         "orgCode": "orgCode",
         "orgType": "orgType",
         "preferredLanguage": "preferredLanguage",
-        "contactDetail": "contactDetail"
+        "contactDetail": "contactDetail",
+        "locationId": "locationId",
+        "locationCode": "locationCode"
       }
     ]
   },
@@ -464,6 +493,20 @@
     "collection": "createcollection",
     "studymaterial": "createlessontext",
     "lessonplan": "createlessonplan"
+  },
+  "contentName": {
+    "textbook": "Untitled Textbook",
+    "course": "Untitled Course",
+    "collection": "Untitled Collection",
+    "studymaterial": "Untitled Resource",
+    "lessonplan": "Untitled Lessonplan"
+  },
+  "contentDescription": {
+    "textbook": "Enter description for TextBook",
+    "course": "Enter description for Course",
+    "collection": "Enter description for Collection",
+    "studymaterial": "Enter description for Resource",
+    "lessonplan": "Enter description for Lessonplan"
   },
   "contentCreateTypeForEditors": {
     "textbook": "TextBook",
@@ -566,18 +609,18 @@
     }
   },
   "collectionTreeOptions": {
-    "fileIcon": "fa fa-file-o fa-lg",
+    "fileIcon": "sb-icon-doc",
     "customFileIcon": {
-      "video": "fa fa-file-video-o fa-lg",
-      "pdf": "fa fa-file-pdf-o fa-lg",
-      "youtube": "fa fa-youtube fa-lg fancy_tree_red",
-      "H5P": "fa fa-html5 fa-lg",
-      "audio": "fa fa-file-audio-o fa-lg",
-      "ECML": "fa fa-file-code-o fa-lg",
-      "HTML": "fa fa-html5 fa-lg",
-      "collection": "fa fa-file-archive-o fa-lg",
-      "epub": "fa fa-file-text fa-lg",
-      "doc": "fa fa-file-text fa-lg"
+      "video": "sb-icon-video",
+      "pdf": "sb-icon-doc",
+      "youtube": "sb-icon-video",
+      "H5P": "sb-icon-interactive",
+      "audio": "sb-icon-audio",
+      "ECML": "sb-icon-interactive",
+      "HTML": "sb-icon-interactive",
+      "collection": "sb-icon-collection",
+      "epub": "sb-icon-textbook",
+      "doc": "sb-icon-doc"
     }
   }
 }

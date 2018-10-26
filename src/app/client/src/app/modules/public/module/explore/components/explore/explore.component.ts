@@ -6,11 +6,12 @@ import {
   ResourceService, ToasterService, INoResultMessage,
   ConfigService, UtilService, NavigationHelperService
 } from '@sunbird/shared';
-import { ICaraouselData } from '@sunbird/shared';
+import { ICaraouselData, BrowserCacheTtlService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
+import { CacheService } from 'ng2-cache-service';
 @Component({
   selector: 'app-explore',
   templateUrl: './explore.component.html',
@@ -75,7 +76,8 @@ export class ExploreComponent implements OnInit, OnDestroy {
   constructor(pageSectionService: PageApiService, toasterService: ToasterService, private playerService: PlayerService,
     resourceService: ResourceService, config: ConfigService, private activatedRoute: ActivatedRoute, router: Router,
     public utilService: UtilService, public navigationHelperService: NavigationHelperService,
-    orgDetailsService: OrgDetailsService, private publicPlayerService: PublicPlayerService) {
+    orgDetailsService: OrgDetailsService, private publicPlayerService: PublicPlayerService,
+    private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService) {
     this.pageSectionService = pageSectionService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
@@ -251,6 +253,26 @@ export class ExploreComponent implements OnInit, OnDestroy {
           this.router.navigate(['']);
         }
       );
+  }
+
+  viewAll(event) {
+    const query = JSON.parse(event.searchQuery);
+    const queryParams = {};
+    _.forIn(query.request.filters, (value, index) => {
+      queryParams[index] = value;
+    });
+    queryParams['defaultSortBy'] = JSON.stringify(query.request.sort_by);
+    queryParams['channel'] = this.hashTagId;
+    queryParams['board'] = [this.prominentFilters['board']];
+    this.cacheService.set('viewAllQuery', queryParams, {
+      maxAge: this.browserCacheTtlService.browserCacheTtl
+    });
+    _.forIn(this.filters, (value, index) => {
+      queryParams[index] = value;
+    });
+     const url = this.router.url.split('?');
+      const sectionUrl = url[0] + '/view-all/' + event.name.replace(/\s/g, '-');
+    this.router.navigate([sectionUrl, 1], {queryParams: queryParams});
   }
 
   ngOnDestroy() {

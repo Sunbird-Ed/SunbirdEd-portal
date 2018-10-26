@@ -20,7 +20,15 @@
         </div>
       </div>
 
-      <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
+      <div class="ui grid">
+        <div [ngClass]="showCommentBoxClass">
+          <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
+        </div>
+        <div class="four wide column" *ngIf="contentData.mimeType === 'application/vnd.ekstep.ecml-archive'">
+            <app-review-comments [contentData]="contentData"></app-review-comments>
+        </div>
+      </div>
+     
     </div>
 
     <div class="row margin-top-10" *ngIf="!showLoader">

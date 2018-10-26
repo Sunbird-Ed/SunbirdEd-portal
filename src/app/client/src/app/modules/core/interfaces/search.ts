@@ -28,6 +28,10 @@ export interface SearchParam {
    */
   orgid?: string[];
   /**
+   * rootOrgId ids
+  */
+  rootOrgId?: string[];
+  /**
   * page limit
   */
   limit?: number;
@@ -69,4 +73,5 @@ export interface SearchParam {
     * facet filters
   */
  facets?: Array<string>;
+ exists?: Array<string>;
 }

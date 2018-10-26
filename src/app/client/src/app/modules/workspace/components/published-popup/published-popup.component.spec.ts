@@ -92,7 +92,7 @@ describe('PublishedPopupComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceBundle.messages;
     const navigationHelperService: NavigationHelperService = fixture.debugElement.injector.get(NavigationHelperService);
-    spyOn(workspaceservice, 'getCheckListData').and.callFake(() => observableOf(mockRes.publishedChecklist));
+    spyOn(workspaceservice, 'getFormData').and.callFake(() => observableOf(mockRes.publishedChecklist));
     spyOn(component, 'getCheckListConfig').and.callThrough();
     component.getCheckListConfig();
     component.ngOnInit();

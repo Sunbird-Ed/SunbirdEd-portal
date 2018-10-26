@@ -21,14 +21,11 @@
               "src/thirdparty",
               "src/favicon.png"
             ],
+            
             "styles": [
-              "src/assets/styles/semantic.min.css",
-              "src/styles.css",
+              "src/styles/semantic/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
-              "node_modules/izitoast/dist/css/iziToast.min.css",
-              "node_modules/fine-uploader/fine-uploader/fine-uploader-gallery.min.css",
-              "src/assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.css",
-              "node_modules/jquery.fancytree/dist/skin-awesome/ui.fancytree.css"
+              "src/styles/styles.scss"
             ],
             "scripts": [
               "node_modules/moment/min/moment.min.js",
@@ -126,13 +123,9 @@
               "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js"
             ],
             "styles": [
-              "src/assets/styles/semantic.min.css",
-              "src/styles.css",
+              "src/styles/semantic/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
-              "node_modules/izitoast/dist/css/iziToast.min.css",
-              "node_modules/fine-uploader/fine-uploader/fine-uploader-gallery.min.css",
-              "src/assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.css",
-              "node_modules/jquery.fancytree/dist/skin-awesome/ui.fancytree.css"
+              "src/styles/styles.scss"
             ],
             "assets": [
               "src/assets",
@@ -160,7 +153,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
-      "styleext": "css"
+      "styleext": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "app"

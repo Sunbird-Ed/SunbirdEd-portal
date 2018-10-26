@@ -13,6 +13,10 @@ module.exports = function (app) {
 
     app.use('/api/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
         proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
-        proxyReqPathResolver: proxyReqPathResolverMethod
+        proxyReqPathResolver: proxyReqPathResolverMethod,
+        userResDecorator: (proxyRes, proxyResData, req, res) => {
+            if(req.method === 'GET' && proxyRes.statusCode === 404) res.redirect('/')
+            return proxyResData;
+        }
     }))
 }

@@ -6,12 +6,12 @@ import { PageApiService, CoursesService, ICourses, ISort, PlayerService } from '
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   ResourceService, ServerResponse, ToasterService, ICaraouselData, IContents, IAction, ConfigService,
-  UtilService, INoResultMessage
+  UtilService, INoResultMessage, BrowserCacheTtlService
 } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-
+import { CacheService } from 'ng2-cache-service';
 /**
  * This component contains 2 sub components
  * 1)PageSection: It displays carousal data.
@@ -93,7 +93,8 @@ export class LearnPageComponent implements OnInit, OnDestroy {
    * @param {PageApiService} pageSectionService Reference of pageSectionService.
    * @param {CoursesService} courseService  Reference of courseService.
 	 */
-  constructor(pageSectionService: PageApiService, coursesService: CoursesService,
+  constructor(pageSectionService: PageApiService, coursesService: CoursesService, private cacheService: CacheService,
+     private browserCacheTtlService: BrowserCacheTtlService,
     toasterService: ToasterService, resourceService: ResourceService, router: Router, private playerService: PlayerService,
     private activatedRoute: ActivatedRoute, configService: ConfigService, public utilService: UtilService) {
     this.pageSectionService = pageSectionService;
@@ -145,9 +146,11 @@ export class LearnPageComponent implements OnInit, OnDestroy {
     const option = {
       source: 'web',
       name: 'Course',
-      filters: _.pickBy(this.filters, value => value.length > 0),
-      sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType }
+      filters: _.pickBy(this.filters, value => value.length > 0)
     };
+    if (this.queryParams.sort_by) {
+      option['sort_by'] = {[this.queryParams.sort_by]: this.queryParams.sortType  };
+    }
     this.pageSectionService.getPageData(option).pipe(
     takeUntil(this.unsubscribe))
     .subscribe(
@@ -307,6 +310,23 @@ export class LearnPageComponent implements OnInit, OnDestroy {
       event.data.metaData.contentType = 'Course';
     }
     this.playerService.playContent(event.data.metaData);
+  }
+  viewAll(event) {
+    const query = JSON.parse(event.searchQuery);
+    const queryParams = {};
+    _.forIn(query.request.filters, (value, index) => {
+      queryParams[index] = value;
+    });
+    queryParams['defaultSortBy'] = JSON.stringify(query.request.sort_by);
+    queryParams['exists'] = query.request.exists;
+    this.cacheService.set('viewAllQuery', queryParams, {
+      maxAge: this.browserCacheTtlService.browserCacheTtl
+    });
+    _.forIn(this.filters, (value, index) => {
+      queryParams[index] = value;
+    });
+      const sectionUrl = 'learn/view-all/' + event.name.replace(/\s/g, '-');
+    this.router.navigate([sectionUrl, 1], {queryParams: queryParams});
   }
   ngOnDestroy() {
     if (this.courseDataSubscription) {

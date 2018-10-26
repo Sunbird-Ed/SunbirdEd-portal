@@ -193,7 +193,7 @@ export class PublishedPopupComponent implements OnInit {
       formAction: 'publish',
       subType: 'resource'
     };
-    this.workSpaceService.getCheckListData(formServiceInputParams).subscribe(
+    this.workSpaceService.getFormData(formServiceInputParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.form) {
           this.showModal = true;

@@ -4,6 +4,7 @@ import { BehaviorSubject ,  Observable } from 'rxjs';
 import { DataService } from '../data/data.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { skipWhile } from 'rxjs/operators';
 
 /**
  * This service returns the organization details.
@@ -18,7 +19,8 @@ export class TenantService extends DataService {
   /**
    * Read only observable containing tenant data.
    */
-  public readonly tenantData$: Observable<ITenantInfo> = this._tenantData$.asObservable();
+  public readonly tenantData$: Observable<ITenantInfo> = this._tenantData$.asObservable()
+  .pipe(skipWhile(data => data === undefined || data === null));
   /**
    * reference of http.
    */

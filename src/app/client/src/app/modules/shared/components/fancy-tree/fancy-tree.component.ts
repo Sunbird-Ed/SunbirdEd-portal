@@ -38,15 +38,15 @@ export class FancyTreeComponent implements AfterViewInit {
       glyph: {
         preset: 'awesome4',
         map: {
-          folder: 'fa fa-folder-o fa-lg',
-          folderOpen: 'fa fa-folder-open-o fa-lg'
+          folder: 'sb-icon-textbook',
+          folderOpen: 'sb-icon-open_textbook'
         }
       },
       click: (event, data): boolean => {
         const node = data.node;
         this.itemSelect.emit(node);
         return true;
-      }
+      },
     };
     options = { ...options, ...this.options };
     $(this.tree.nativeElement).fancytree(options);

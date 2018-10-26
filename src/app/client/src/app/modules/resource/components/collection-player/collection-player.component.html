@@ -22,6 +22,28 @@
         </div>
         <div class="one wide column"></div>
       </div>
+      <div class="ui row padding-top-none">
+        <div class="ui twelve column grid padding-right-none">
+          <div class="one wide tablet only one wide computer only column"></div>
+          <div class="six wide mobile only three wide tablet only three wide computer only column">
+            <button class="ui blue button left floated fluid tocbutton toc-left-nav-btn-content" (click)="navigateToContent(prevPlaylistItem)"
+              [disabled]="prevPlaylistItem === undefined">
+              <span class="header">{{resourceService.frmelmnts.btn.previous}}</span>
+              <br />
+              <span class="font-white description text-ellipsis" title="{{prevPlaylistItem?.title || resourceService.messages.stmsg.m0120}}">{{prevPlaylistItem?.title || resourceService.messages.stmsg.m0120}}</span>
+            </button>
+          </div>
+          <div class="four wide tablet only four wide computer only column"></div>
+          <div class="six wide mobile only three wide tablet only three wide computer only column padding-right-none">
+            <button class="ui blue button right floated fluid toc-right-nav-btn-content" (click)="navigateToContent(nextPlaylistItem)"
+              [disabled]="nextPlaylistItem === undefined">
+              <span class="header">{{resourceService.frmelmnts.btn.next}}</span>
+              <br />
+              <span class="font-white description text-ellipsis" title="{{nextPlaylistItem?.title || resourceService.messages.stmsg.m0120}}">{{nextPlaylistItem?.title || resourceService.messages.stmsg.m0120}}</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
     <div *ngIf="triggerContentImpression" [appTelemetryImpression]="telemetryContentImpression"></div>
   </div>

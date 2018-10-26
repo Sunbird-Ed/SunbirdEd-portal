@@ -2,3 +2,6 @@
    font-size: 1.3rem;
    font-weight: 700;
 }
+.item .ui.grid.stackable .column{
+    padding: 5px !important;
+}

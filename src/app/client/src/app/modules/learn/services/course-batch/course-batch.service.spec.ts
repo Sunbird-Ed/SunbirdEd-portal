@@ -15,8 +15,4 @@ describe('BatchService', () => {
       providers: [CourseBatchService]
     });
   });
-
-  it('should be created', inject([CourseBatchService], (service: CourseBatchService) => {
-    expect(service).toBeTruthy();
-  }));
 });

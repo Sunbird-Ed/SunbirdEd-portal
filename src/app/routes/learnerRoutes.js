@@ -5,7 +5,7 @@ const learnerURL = envHelper.LEARNER_URL
 const telemetryHelper = require('../helpers/telemetryHelper.js')
 const reqDataLimitOfContentUpload = '50mb'
 const proxy = require('express-http-proxy')
-const configHelper = require('../helpers/configHelper.js')
+const configHelper = require('../helpers/config/configHelper.js')
 
 module.exports = function (app) {
     // Generate telemetry fot proxy service
@@ -31,11 +31,9 @@ module.exports = function (app) {
         }))
 
   app.post('/learner/user/v1/create', function (req, res, next) {
-    let config_key_allow_signup = 'instance.allow_signup'
-    let env_key_allow_signup = 'ENABLE_SIGNUP'
-
-    configHelper.getConfig(config_key_allow_signup, env_key_allow_signup, function (err, allow_signup) {
-      if (!err) {
+   let config_key_allow_signup = 'ENABLE_SIGNUP'
+   let allow_signup = configHelper.getConfig(config_key_allow_signup) 
+      if (allow_signup !== undefined) {
         if (allow_signup === 'false') {
           res.sendStatus(403)
         } else {
@@ -44,8 +42,8 @@ module.exports = function (app) {
       } else {
         res.sendStatus(403)
       }
-    })
   })
+
   app.all('/learner/data/v1/role/read',
         proxyUtils.verifyToken(),
         permissionsHelper.checkPermission(),
@@ -77,6 +75,10 @@ module.exports = function (app) {
             } else {
               return require('url').parse(learnerURL + urlParam).path
             }
+          },
+          userResDecorator: (proxyRes, proxyResData, req, res) => {
+              if(req.method === 'GET' && proxyRes.statusCode === 404) res.redirect('/')
+              return proxyResData;
           }
         }))
 }

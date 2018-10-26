@@ -55,7 +55,10 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   private router: Router;
 
   public loader: Boolean = true;
-
+  public treeModel: any;
+  public contentDetails = [];
+  public nextPlaylistItem: any;
+  public prevPlaylistItem: any;
   public showFooter: Boolean = false;
   public badgeData: Array<object>;
   private subsrciption: Subscription;
@@ -138,12 +141,19 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     this.initPlayer(data.id);
   }
 
-  private navigateToContent(id: string): void {
-    this.queryParams.contentId = id;
-    const navigationExtras: NavigationExtras = {
-      queryParams: this.queryParams,
+  private navigateToContent(content?: { title: string, id: string }, id?: string): void {
+    let navigationExtras: NavigationExtras;
+    navigationExtras = {
+      queryParams: {},
       relativeTo: this.route
     };
+    if (id) {
+      this.queryParams.contentId = id;
+      navigationExtras.queryParams = this.queryParams;
+    } else
+      if (content) {
+        navigationExtras.queryParams = { 'contentId': content.id };
+      }
     this.router.navigate([], navigationExtras);
   }
 
@@ -161,10 +171,27 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       return node.model.identifier === id;
     });
   }
-
+  private parseChildContent(collection: any) {
+    const model = new TreeModel();
+    if (collection.data) {
+      this.treeModel = model.parse(collection.data);
+      this.treeModel.walk((node) => {
+        if (node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
+          this.contentDetails.push({ id: node.model.identifier, title: node.model.name });
+        }
+        this.setContentNavigators();
+      });
+    }
+  }
+  public setContentNavigators() {
+    const index = _.findIndex(this.contentDetails, ['id', this.contentId]);
+    this.prevPlaylistItem = this.contentDetails[index - 1];
+    this.nextPlaylistItem = this.contentDetails[index + 1];
+  }
   public OnPlayContent(content: { title: string, id: string }, isClicked?: boolean) {
     if (content && content.id) {
-      this.navigateToContent(content.id);
+      this.navigateToContent(null, content.id);
+      this.setContentNavigators();
       this.playContent(content);
       if (!isClicked) {
         const playContentDetails = this.findContentById( this.collectionTreeNodes, content.id);
@@ -204,6 +231,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
             this.closeContentPlayer();
           }
         });
+        this.parseChildContent(this.collectionTreeNodes);
       }, (error) => {
         // toaster error
       });
