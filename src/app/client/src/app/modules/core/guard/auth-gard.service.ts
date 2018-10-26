@@ -57,29 +57,31 @@ export class AuthGuard implements CanActivate, CanLoad {
 
     getPermission(roles) {
         return Observable.create(observer => {
-            this.permissionService.permissionAvailable$.subscribe(
-                permissionAvailable => {
-                    if (permissionAvailable && permissionAvailable === 'success') {
-                        if (roles === 'rootOrgAdmin') {
-                            if (this.userService.userProfile.rootOrgAdmin) {
-                                observer.next(true);
+            if (roles === 'rootOrgAdmin') {
+                if (this.userService.userProfile.rootOrgAdmin) {
+                    observer.next(true);
+                } else {
+                    this.navigateToHome(observer);
+                }
+            } else {
+                this.permissionService.permissionAvailable$.subscribe(
+                    permissionAvailable => {
+                        if (permissionAvailable && permissionAvailable === 'success') {
+                            if (roles && this.config.rolesConfig.ROLES[roles]) {
+                                if (this.permissionService.checkRolesPermissions(this.config.rolesConfig.ROLES[roles])) {
+                                    observer.next(true);
+                                } else {
+                                    this.navigateToHome(observer);
+                                }
                             } else {
                                 this.navigateToHome(observer);
                             }
-                        } else if (roles && this.config.rolesConfig.ROLES[roles]) {
-                            if (this.permissionService.checkRolesPermissions(this.config.rolesConfig.ROLES[roles])) {
-                                observer.next(true);
-                            } else {
-                                this.navigateToHome(observer);
-                            }
-                        } else {
+                        } else if (permissionAvailable && permissionAvailable === 'error') {
                             this.navigateToHome(observer);
                         }
-                    } else if (permissionAvailable && permissionAvailable === 'error') {
-                        this.navigateToHome(observer);
                     }
-                }
-            );
+                );
+            }
         });
     }
 

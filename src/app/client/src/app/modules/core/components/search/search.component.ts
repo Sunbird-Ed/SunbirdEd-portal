@@ -36,11 +36,6 @@ export class SearchComponent implements OnInit {
   resourceService: ResourceService;
 
   /**
-   * Contains roles
-   */
-  userSearchRoles: Array<string>;
-
-  /**
    * option selected on dropdown
    */
   selectedOption: string;
@@ -89,6 +84,27 @@ export class SearchComponent implements OnInit {
     this.resourceService = resourceService;
     this.config = config;
     this.userService = userService;
+  }
+
+  ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(queryParams => {
+      this.queryParam = { ...queryParams };
+      this.key = this.queryParam['key'];
+    });
+    this.userService.userData$.subscribe(userdata => {
+      if (userdata && !userdata.err) {
+        this.userProfile = userdata.userProfile;
+        if (this.userProfile.rootOrgAdmin) {
+            this.searchDropdownValues.push('Users');
+        }
+      }
+      this.setFilters();
+      this.route.events.pipe(
+        filter(e => e instanceof NavigationEnd)).subscribe((params: any) => {
+          this.setFilters();
+        });
+    });
+    this.showSuiSelectDropdown = true;
   }
   /**
    * on changing dropdown option
@@ -145,31 +161,5 @@ export class SearchComponent implements OnInit {
       this.selectedOption = value;
     }
     this.showInput = true;
-  }
-
-  /**
-   * gets the current url,
-   * and queryParams
-   */
-  ngOnInit() {
-    this.activatedRoute.queryParams.subscribe(queryParams => {
-      this.queryParam = { ...queryParams };
-      this.key = this.queryParam['key'];
-    });
-    this.userService.userData$.subscribe(userdata => {
-      if (userdata && !userdata.err) {
-        this.userProfile = userdata.userProfile;
-        if (this.userProfile.rootOrgAdmin) {
-            this.searchDropdownValues.push('Users');
-        }
-      }
-      this.setFilters();
-      this.route.events.pipe(
-        filter(e => e instanceof NavigationEnd)).subscribe((params: any) => {
-          this.setFilters();
-        });
-    });
-    this.showSuiSelectDropdown = true;
-    this.userSearchRoles = this.config.rolesConfig.ROLES.userSearch;
   }
 }
