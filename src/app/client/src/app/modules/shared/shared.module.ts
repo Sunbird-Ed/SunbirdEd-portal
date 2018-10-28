@@ -37,7 +37,7 @@ import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
     RedirectComponent, CustomMultiSelectComponent],
   exports: [AppLoaderComponent, ContentCreditsComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
     PageSectionComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
-    PlayerComponent, CardComponent, FilterPipe, ShareLinkComponent, CollectionPlayerMetadataComponent, 
+    PlayerComponent, CardComponent, FilterPipe, ShareLinkComponent, CollectionPlayerMetadataComponent,
     BrowserCompatibilityComponent, SbCardComponent, QrCodeModalComponent,
     CdnprefixPipe, InterpolatePipe, RedirectComponent, CustomMultiSelectComponent]
 })
