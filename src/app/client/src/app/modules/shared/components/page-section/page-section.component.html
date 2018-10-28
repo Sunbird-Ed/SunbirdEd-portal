@@ -1,8 +1,8 @@
 <div class="ui grid">
     <div class="ui twelve wide column" *ngIf="section.contents && section.contents.length > 0">
         <div class="d-flex flex-ai-center">
-            <h4 class="ui header m-0 mr-5">{{section.name}}</h4>
-            <span class="ui primary label py-5 px-7">{{section.contents.length}}</span>
+            <h4 class="ui header m-0 mr-5 pageSection-heading">{{section.name}}</h4>
+            <span class="ui primary label py-5 px-7 pageSection-count">{{section.contents.length}}</span>
             <button class="ui button primary rounded bs-1 py-5 m-0 ml-auto" *ngIf="section.contents.length >= 10 && section.name != 'My Courses' " type="button" (click)="navigateToViewAll(section)">{{ resourceService.frmelmnts.lnk.viewall}}</button>
         </div>
         <div class="pageSection-Slider">

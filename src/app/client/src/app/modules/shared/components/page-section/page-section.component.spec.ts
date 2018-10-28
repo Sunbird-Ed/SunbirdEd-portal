@@ -44,14 +44,14 @@ describe('PageSectionComponent', () => {
   it('should show TEST INPUT for success data', () => {
     component.section = Response.successData;
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('div .sectionHeading').innerText).toEqual('Multiple Data 1');
-    expect(fixture.nativeElement.querySelector('div span.circular').innerText).toEqual('1');
+    expect(fixture.nativeElement.querySelector('div .pageSection-heading').innerText).toEqual('Multiple Data 1');
+    expect(fixture.nativeElement.querySelector('div .pageSection-count').innerText).toEqual('1');
   });
   it('should show TEST INPUT for no contents data', () => {
     component.section = Response.defaultData;
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('div .sectionHeading')).toEqual(null);
-   expect(fixture.nativeElement.querySelector('div span.circular')).toEqual(null);
+    expect(fixture.nativeElement.querySelector('div .pageSection-heading')).toEqual(null);
+   expect(fixture.nativeElement.querySelector('div .pageSection-count')).toEqual(null);
   });
   it('should call inview method for visits data', () => {
     component.section = {name: 'courseTest', length: 1};
