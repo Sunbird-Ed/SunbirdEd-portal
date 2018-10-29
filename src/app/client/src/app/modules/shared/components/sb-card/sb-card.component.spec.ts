@@ -15,7 +15,7 @@ describe('SbCardComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       declarations: [ SbCardComponent, CdnprefixPipe ],
-      providers: [ResourceService, ConfigService, CacheService],
+      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
