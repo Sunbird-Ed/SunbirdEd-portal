@@ -15,4 +15,3 @@ export * from './qr-code-modal/qr-code-modal.component';
 export * from './redirect/redirect.component';
 export * from './custom-multi-select/custom-multi-select.component';
 export * from './content-credits/content-credits.component';
-

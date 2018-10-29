@@ -1,10 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ResourceService, ConfigService } from '../../services';
+import { ResourceService, ConfigService, BrowserCacheTtlService } from '../../services';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { Response } from './sb-card.component.spec.data';
 import { SbCardComponent } from './sb-card.component';
+import { CacheService } from 'ng2-cache-service';
 import { CdnprefixPipe } from '../../pipes/cdnprefix.pipe';
 describe('SbCardComponent', () => {
   let component: SbCardComponent;
@@ -14,7 +15,7 @@ describe('SbCardComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       declarations: [ SbCardComponent, CdnprefixPipe ],
-      providers: [ResourceService, ConfigService],
+      providers: [ResourceService, ConfigService, CacheService],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
