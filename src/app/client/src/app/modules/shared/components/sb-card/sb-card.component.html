@@ -9,21 +9,18 @@
   >
     <div class="header p-15 pb-0">
       <div class="image m-0 mr-15 br-4">
-        <img *ngIf="data.showImage? false : true" src="{{ data.image || 'assets/images/default.png' | cdnprefixurl}}" alt="{{data.name}}">
+        <img *ngIf="data.showImage? false : true" src="{{data.image || 'assets/images/book.png' | cdnprefixurl}}" alt="{{data.name}}">
       </div>
       <div class="meta">
         <div class="top mb-auto d-flex">
-            <div class="ui label tiny right" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">
-                {{data.ribbon.right.name}}
-              </div>
-              <div class="ui label tiny left" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.name">
-                {{data.ribbon.left.name}}
-              </div>
-              <img src="{{data.ribbon.left.image }}" class="avatar ml-auto" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image" alt="{{data.ribbon.left.name}}">
+            <div class="ui label tiny right" *ngIf="data.resourceType">
+              {{data.resourceType}}
+            </div>
+            <img src="{{data.ribbon.left.image}}" class="avatar ml-auto" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image" alt="{{data.ribbon.left.name}}">
         </div>
-        <div class="subject ellipsis mt-3" *ngIf="data.subject">{{resourceService.frmelmnts.lbl.subject}} : {{data.subject}}</div>
-        <div class="class ellipsis mt-3" *ngIf="data.class">{{resourceService.frmelmnts.lbl.class}} : {{data.class}}</div>
-        <div class="medium ellipsis mt-3" *ngIf="data.medium">{{resourceService.frmelmnts.lbl.medium}} : {{data.medium}}</div>
+        <div class="subject ellipsis mt-3" *ngIf="data.subject" title="{{data.subject}}">{{resourceService.frmelmnts.lbl.subject}} : {{data.subject}}</div>
+        <div class="class ellipsis mt-3" *ngIf="data.gradeLevel" title="{{data.gradeLevel}}">{{resourceService.frmelmnts.lbl.class}} : {{data.gradeLevel}}</div>
+        <div class="medium ellipsis mt-3" *ngIf="data.medium" title="{{data.medium}}">{{resourceService.frmelmnts.lbl.medium}} : {{data.medium}}</div>
       </div>
     </div>
     <div class="sub-header">
@@ -31,13 +28,9 @@
           {{data.name | slice:0:40 }}
           <span *ngIf="data.name && data.name.length >= 40" >...</span>
         </h4>
-        <div class="creator ellipsis" *ngIf="data.creator">
+        <div class="creator ellipsis">
           {{data.creator}}
         </div>
     </div>
     <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount" ></sui-progress>
-    <div class="description">
-      {{data.description | slice:0:120 }}
-      <span *ngIf="data.description && data.description.length >= 120" >...</span>
-    </div>
 </div>

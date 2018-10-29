@@ -18,7 +18,13 @@ export class UtilService {
       name: data.name || data.courseName,
       image: data.appIcon || data.courseLogoUrl,
       description: data.description,
-      rating: data.me_averageRating || '0'
+      rating: data.me_averageRating || '0',
+      medium: data.medium,
+      subject: data.subject,
+      creator: data.creator,
+      language: data.languageCode,
+      resourceType: data.resourceType,
+      gradeLevel: data.gradeLevel
     };
       _.forIn(staticData, (value, key1) => {
         content[key1] = value;

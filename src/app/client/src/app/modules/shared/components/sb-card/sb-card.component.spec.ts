@@ -30,7 +30,6 @@ describe('SbCardComponent', () => {
     const cdnprefixPipe = new CdnprefixPipe();
     component.data = Response.cardData;
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('div .description').innerText).toContain('Untitled Collection');
     expect(fixture.nativeElement.querySelector('div .title').innerText).toContain('B1 Test');
     expect(fixture.nativeElement.querySelector('div .right').innerText).toEqual('TextBook');
   });
@@ -38,7 +37,6 @@ describe('SbCardComponent', () => {
     const cdnprefixPipe = new CdnprefixPipe();
     component.data = Response.librarySearchData;
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('div .description').innerText).toContain('');
     expect(fixture.nativeElement.querySelector('div .title').innerText).toContain('Official Textbook');
     const badgesElm = fixture.nativeElement.querySelector('.avatar');
     expect(badgesElm.src).toContain(Response.librarySearchData.ribbon.left.image);

@@ -1,12 +1,18 @@
 export interface ICard {
     name: string;
+    medium?: string;
+    subject?: string;
+    creator?: string;
+    language?: string;
+    resourceType?: string;
+    gradeLevel?: any;
     image?: string;
     imageVisibility?: boolean;
     description?: string;
     maxCount?: number;
     progress?: number;
     ribbon?: {
-        right?: { class: string, name: string }
+        right?: { class: string, name: string };
         left?: { class: string, name: string , image: string }
     };
     rating?: number;
