@@ -18,7 +18,7 @@
       </th>
       <th (click)="sortColumns('lastUpdatedOn')" class="four wide UpReviewTableHeader sorted bl-0" [ngClass]="{'ascending':sortDirection === 'asc' && 
       column === 'lastUpdatedOn','descending':sortDirection === 'desc' && column === 'lastUpdatedOn'}">
-        {{ resourceService?.frmelmnts?.lbl?.lastupdate}}
+        {{ resourceService?.frmelmnts?.lbl?.lastupdatedCaps}}
       </th>
       <th (click)="sortColumns('status')" class="two wide UpReviewTableHeader sorted bl-0" [ngClass]="{'ascending':sortDirection === 'asc' && 
       column === 'status','descending':sortDirection === 'desc' && column === 'status'}">
@@ -47,7 +47,7 @@
       <td>
         <h5 class="ui image header">
           <div class="content">
-            <div class="UpReviewHeader">{{content.creator}}</div>
+            <div class="UpReviewHeader">{{content.creator}}</div>creator
           </div>
         </h5>
       </td>
