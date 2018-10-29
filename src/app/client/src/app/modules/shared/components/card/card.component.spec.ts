@@ -49,7 +49,7 @@ describe('CardComponent', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('div .card-component-description').innerText).toContain('');
     expect(fixture.nativeElement.querySelector('div .text-cencapitalize').innerText).toContain('Official Textbook');
-    const badgesElm = fixture.nativeElement.querySelector('.avatar');
+    const badgesElm = fixture.nativeElement.querySelector('div .avatar');
     expect(badgesElm.src).toContain(Response.librarySearchData.ribbon.left.image);
   });
 });

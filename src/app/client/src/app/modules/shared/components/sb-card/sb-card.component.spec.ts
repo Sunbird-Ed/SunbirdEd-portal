@@ -40,7 +40,7 @@ describe('SbCardComponent', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('div .description').innerText).toContain('');
     expect(fixture.nativeElement.querySelector('div .title').innerText).toContain('Official Textbook');
-    const badgesElm = fixture.nativeElement.querySelector('div .avatar');
+    const badgesElm = fixture.nativeElement.querySelector('.avatar');
     expect(badgesElm.src).toContain(Response.librarySearchData.ribbon.left.image);
   });
 });
