@@ -19,7 +19,7 @@
               <div class="ui label tiny left" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.name">
                 {{data.ribbon.left.name}}
               </div>
-              <img src="{{data.ribbon.left.image }}" class="avtar ml-auto" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image" alt="{{data.ribbon.left.name}}">
+              <img src="{{data.ribbon.left.image }}" class="avatar ml-auto" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image" alt="{{data.ribbon.left.name}}">
         </div>
         <div class="subject ellipsis mt-3" *ngIf="data.subject">{{resourceService.frmelmnts.lbl.subject}} : {{data.subject}}</div>
         <div class="class ellipsis mt-3" *ngIf="data.class">{{resourceService.frmelmnts.lbl.class}} : {{data.class}}</div>
