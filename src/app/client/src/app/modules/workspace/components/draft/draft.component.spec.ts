@@ -51,7 +51,7 @@ describe('DraftComponent', () => {
       'stmsg': {
         'm0011': 'We are fetching draft content...',
         'm0008': 'no-results',
-        'm0012': 'You dont have any draft content...'
+        'm0125': 'No content to display. Start Creating Now'
       },
       'smsg': {
         'm0006': 'Content deleted successfully...'

@@ -128,7 +128,7 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
   /**
   * column name which we want to sort
   */
-  column = 'name' ;
+  column = '' ;
   /**
   * sortDirection
   */
