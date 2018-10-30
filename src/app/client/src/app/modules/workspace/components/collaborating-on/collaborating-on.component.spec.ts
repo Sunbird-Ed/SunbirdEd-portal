@@ -23,7 +23,7 @@ describe('CollaboratingOnComponent', () => {
       },
       'stmsg': {
         'm0124': 'We are fetching collaborating content...',
-        'm0123': 'You are not yet collaborating on any creation yet'
+        'm0123': 'You are not collaborating on any content yet'
       },
       'smsg': {
         'm0006': 'Content deleted successfully...'
