@@ -13,8 +13,11 @@
       </div>
       <div class="meta">
         <div class="top mb-auto d-flex">
-            <div class="ui label tiny right" *ngIf="data.resourceType">
-              {{data.resourceType}}
+            <div class="ui label tiny right" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.name">
+              {{data.data.ribbon.left.name}}
+            </div>
+            <div class="ui label tiny right" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">
+              {{data.data.ribbon.right.name}}
             </div>
             <img src="{{data.ribbon.left.image}}" class="avatar ml-auto" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image" alt="{{data.ribbon.left.name}}">
         </div>
@@ -26,9 +29,9 @@
     <div class="sub-header">
         <h4 class="title">
           {{data.name | slice:0:40 }}
-          <span *ngIf="data.name && data.name.length >= 40" >...</span>
+          <span *ngIf="data.name && data.name.length >= 40">...</span>
         </h4>
-        <div class="creator ellipsis">
+        <div class="creator ellipsis" *ngIf="data.creator">
           {{data.creator}}
         </div>
     </div>
