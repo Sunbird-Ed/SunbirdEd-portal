@@ -33,38 +33,38 @@
 /// @access private
 
 @mixin _directional-property(
-  $property,
-  $suffix,
-  $values
+ $property,
+ $suffix,
+ $values
 ) {
-  $top:    $property + "-top"    + if($suffix, "-#{$suffix}", "");
-  $bottom: $property + "-bottom" + if($suffix, "-#{$suffix}", "");
-  $left:   $property + "-left"   + if($suffix, "-#{$suffix}", "");
-  $right:  $property + "-right"  + if($suffix, "-#{$suffix}", "");
-  $all:    $property +             if($suffix, "-#{$suffix}", "");
+ $top:    $property + "-top"    + if($suffix, "-#{$suffix}", "");
+ $bottom: $property + "-bottom" + if($suffix, "-#{$suffix}", "");
+ $left:   $property + "-left"   + if($suffix, "-#{$suffix}", "");
+ $right:  $property + "-right"  + if($suffix, "-#{$suffix}", "");
+ $all:    $property +             if($suffix, "-#{$suffix}", "");
 
-  $values: _compact-shorthand($values);
+ $values: _compact-shorthand($values);
 
-  @if _contains-falsy($values) {
-    @if nth($values, 1) { #{$top}: nth($values, 1) !important; }
+ @if _contains-falsy($values) {
+   @if nth($values, 1) { #{$top}: nth($values, 1) !important; }
 
-    @if length($values) == 1 {
-      @if nth($values, 1) { #{$right}: nth($values, 1) !important; }
-    } @else {
-      @if nth($values, 2) { #{$right}: nth($values, 2) !important; }
-    }
+   @if length($values) == 1 {
+     @if nth($values, 1) { #{$right}: nth($values, 1) !important; }
+   } @else {
+     @if nth($values, 2) { #{$right}: nth($values, 2) !important; }
+   }
 
-    @if length($values) == 2 {
-      @if nth($values, 1) { #{$bottom}: nth($values, 1) !important; }
-      @if nth($values, 2) { #{$left}: nth($values, 2) !important; }
-    } @else if length($values) == 3 {
-      @if nth($values, 3) { #{$bottom}: nth($values, 3) !important; }
-      @if nth($values, 2) { #{$left}: nth($values, 2) !important; }
-    } @else if length($values) == 4 {
-      @if nth($values, 3) { #{$bottom}: nth($values, 3) !important; }
-      @if nth($values, 4) { #{$left}: nth($values, 4) !important; }
-    }
-  } @else {
-    #{$all}: $values !important;
-  }
+   @if length($values) == 2 {
+     @if nth($values, 1) { #{$bottom}: nth($values, 1) !important; }
+     @if nth($values, 2) { #{$left}: nth($values, 2) !important; }
+   } @else if length($values) == 3 {
+     @if nth($values, 3) { #{$bottom}: nth($values, 3) !important; }
+     @if nth($values, 2) { #{$left}: nth($values, 2) !important; }
+   } @else if length($values) == 4 {
+     @if nth($values, 3) { #{$bottom}: nth($values, 3) !important; }
+     @if nth($values, 4) { #{$left}: nth($values, 4) !important; }
+   }
+ } @else {
+   #{$all}: $values !important;
+ }
 }

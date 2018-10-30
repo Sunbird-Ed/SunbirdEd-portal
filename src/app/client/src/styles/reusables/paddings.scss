@@ -16,6 +16,9 @@
 .p-20 {
   @include padding(20px);
 }
+.p-50 {
+  @include padding(50px);
+}
 
 
 .pt-0 {
@@ -32,6 +35,9 @@
 }
 .pt-20 {
   @include padding(20px null null null);
+}
+.pt-30 {
+  @include padding(30px null null null);
 }
 
 
@@ -53,6 +59,12 @@
 .pr-20 {
   @include padding(null 20px null null);
 }
+.pr-30 {
+  @include padding(null 30px null null);
+}
+.pr-60 {
+  @include padding(null 60px null null);
+}
 
 
 .pb-0 {
@@ -70,6 +82,10 @@
 .pb-20 {
   @include padding(null null 20px null);
 }
+.pb-30 {
+  @include padding(null null 30px null);
+}
+
 
 
 .pl-0 {
@@ -87,6 +103,13 @@
 .pl-20 {
   @include padding(null null null 20px);
 }
+.pl-30 {
+  @include padding(null null null 30px);
+}
+.pl-60 {
+  @include padding(null null null 60px);
+}
+
 
 
 .px-0 {
@@ -106,6 +129,9 @@
 }
 .px-20 {
   @include padding(null 20px);
+}
+.px-60 {
+  @include padding(null 60px);
 }
 
 
@@ -127,3 +153,4 @@
 .py-20 {
   @include padding(20px null);
 }
+

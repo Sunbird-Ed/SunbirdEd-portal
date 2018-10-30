@@ -12,3 +12,4 @@ export * from './user-skills/user-skills/user-skills.component';
 export * from './user-skills/edit-user-skills/edit-user-skills.component';
 export * from './user-education/user-education/user-education.component';
 export * from './user-education/edit-user-education/edit-user-education.component';
+export * from './profile-page-redesign/profile-page-redesign.component';

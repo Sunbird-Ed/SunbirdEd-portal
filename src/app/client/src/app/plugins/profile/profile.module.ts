@@ -7,7 +7,7 @@ import {
   ProfilePageComponent, ProfileHeaderComponent, EditExperienceComponent, UserAddressComponent,
   UserSummaryComponent, ProfileVisibilityComponent, UserAdditionalInfoComponent, UserExperienceViewComponent,
   UserSkillsComponent, EditUserAddressComponent, UserEducationComponent, EditUserEducationComponent, EditUserSkillsComponent,
-  EditUserAdditionalInfoComponent
+  EditUserAdditionalInfoComponent, ProfilePageRedesignComponent
 } from './components';
 import { SuiModule } from 'ng2-semantic-ui';
 import { CoreModule } from '@sunbird/core';
@@ -40,6 +40,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
     EditUserSkillsComponent,
     EditUserAdditionalInfoComponent,
     ProfileBadgeComponent,
+    ProfilePageRedesignComponent,
     MenuItemComponent],
   providers: [ProfileService],
   entryComponents: [ProfileBadgeComponent, MenuItemComponent]
