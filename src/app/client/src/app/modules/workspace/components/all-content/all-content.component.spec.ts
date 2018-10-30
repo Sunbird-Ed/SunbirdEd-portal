@@ -25,7 +25,7 @@ describe('AllContentComponent', () => {
       'stmsg': {
         'm0110': 'We are fetching all contnet',
         'm0008': 'no-results',
-        'm0033': 'Looks like there is nothing to show here. Please go to “Create” to start creating content'
+        'm0125': 'No content to display. Start Creating Now'
       },
       'smsg': {
         'm0006': 'Content deleted successfully...'
@@ -92,6 +92,7 @@ describe('AllContentComponent', () => {
     component.fecthAllContent(9, 1, bothParams);
     fixture.detectChanges();
     expect(component.allContent).toBeDefined();
+    console.log(component.allContent);
   }));
 
   it('should call fetchall content method and change the route  ', inject([ConfigService, Router],
