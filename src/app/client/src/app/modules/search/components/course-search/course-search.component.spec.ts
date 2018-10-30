@@ -86,7 +86,6 @@ describe('CourseSearchComponent', () => {
     expect(component.searchList).toBeDefined();
     expect(component.totalCount).toBeDefined();
   });
- 
   it('should subscribe to searchService when enrolled courses are not present', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'courseSearch').and.callFake(() => observableOf(Response.successData));
