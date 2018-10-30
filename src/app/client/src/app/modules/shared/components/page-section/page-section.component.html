@@ -18,14 +18,14 @@
                 #slickModal="slick-modal" 
                 [config]="slideConfig">
                 <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of section.contents;let i = index" class="slide">    
-                    <app-sb-card 
+                    <app-card 
                         appTelemetryInteract 
                         [telemetryInteractEdata]="cardIntractEdata" 
                         [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:'1.0'}"
                         (clickEvent)="playContent($event)"
                         [data]="content" 
                         [customClass]="'margin-right-20'">
-                    </app-sb-card>
+                    </app-card>
                 </div>
             </ngx-slick>
         </div>

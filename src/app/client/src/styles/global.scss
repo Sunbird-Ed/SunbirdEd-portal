@@ -24,21 +24,24 @@ h1, h2, h3, h4, h5{
 .br-4{
     border-radius: 4px;
 }
-.sbCard .ui.progress{
-    border-radius: 0 4px 0 4px;
-    background-color: $progressbar-color;
-    margin: 0;
-    .bar{
-        background-image: $progressbar-gradient;
-        border-radius: 0 4px 4px 4px;
-        height: 4px;
-        min-width: 0;
-        .progress{
+.sbCard,
+.profileCard {
+    .ui.progress{
+        border-radius: 0 4px 0 4px;
+        background-color: $progressbar-color;
+        margin: 0;
+        .bar{
+            background-image: $progressbar-gradient;
+            border-radius: 0 4px 4px 4px;
+            height: 4px;
+            min-width: 0;
+            .progress{
+                display:none;
+            }
+        }
+        .label{
             display:none;
         }
-    }
-    .label{
-        display:none;
     }
 }
 .ellipsis{

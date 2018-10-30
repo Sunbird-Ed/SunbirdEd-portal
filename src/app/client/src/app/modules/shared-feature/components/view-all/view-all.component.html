@@ -22,8 +22,8 @@
         </div>
         <div  *ngIf="!showLoader && !noResult" class="ui stackable four column grid dynamic-section-card ">
             <div class="column padding-top-5 padding-bottom-5 padding-left-10" *ngFor="let content of searchList;let i = index;">
-                <app-sb-card appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" 
-                [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType || 'content',ver:'1.0'}" (clickEvent)="playContent($event)" [data]="content"></app-sb-card>
+                <app-card appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" 
+                [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType || 'content',ver:'1.0'}" (clickEvent)="playContent($event)" [data]="content"></app-card>
             </div>
         </div>
         <div *ngIf="noResult && !showLoader">

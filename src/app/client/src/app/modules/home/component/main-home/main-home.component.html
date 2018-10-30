@@ -21,7 +21,7 @@
                       <app-profile-card [profile]="item"></app-profile-card>
                     </a>
                   </div>
-                  <div *ngIf=" item.type !== 'profile'">
+                  <div *ngIf=" item.type !== 'profile'" class="mr-30">
                     <app-card [data]="item" (clickEvent)="playContent($event)" [customClass]="'margin-right-20'"></app-card>
                   </div>
                 </div>
