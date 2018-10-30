@@ -27,7 +27,7 @@ h1, h2, h3, h4, h5{
 .sbCard,
 .profileCard {
     .ui.progress{
-        border-radius: 0 4px 0 4px;
+        border-radius: 0 0 4px 4px;
         background-color: $progressbar-color;
         margin: 0;
         .bar{

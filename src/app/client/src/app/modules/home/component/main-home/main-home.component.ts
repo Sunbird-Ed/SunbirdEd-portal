@@ -84,7 +84,7 @@ public configService: ConfigService;
   */
   slideConfig = {
     'slidesToShow': 2,
-    'slidesToScroll': 3,
+    'slidesToScroll': 2,
     'variableWidth': true,
     'responsive': [
       {
