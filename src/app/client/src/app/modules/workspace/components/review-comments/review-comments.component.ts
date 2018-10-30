@@ -57,7 +57,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
         (error) => this.toasterService.error(this.resourceService.messages.emsg.m0011));
     this.comments.valueChanges.subscribe(data => {
       data = data.trim();
-      this.disableSubmitcommentsButton = data.length > 150 || data.length === 0 ? true : false;
+      this.disableSubmitcommentsButton = data.length > 250 || data.length === 0 ? true : false;
     });
   }
   ngOnChanges() {
