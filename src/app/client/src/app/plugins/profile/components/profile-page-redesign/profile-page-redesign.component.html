@@ -14,7 +14,7 @@
     <a class="ui dodger-blue basic label mr-15 mt-5">Public</a>
   </div>
   <div class="fs-1 color-2 mb-10 font-w-bold">Show less
-    <i class="chevron up icon"></i>
+    <i class="chevron up icon" tabindex="0"></i>
   </div>
   <div class="fs-1-5 font-w-bold mb-10 text-ac">Veera Panchatantram Higher Secondary School</div>
   <ul class="m-0 pl-0">
@@ -218,7 +218,7 @@
 <!-- popup to edit -->
 
 <!-- <sui-modal [isClosable]="false" [size]="'normal'"  #modal class="z-index-10000">
-    <i class="close icon" (click)="modal.deny()"></i>
+    <i class="close icon" tabindex="0" (click)="modal.deny()"></i>
     <div class="content">
         <div class="ui grid">
             <div class="ten wide column mb-30">
@@ -226,33 +226,33 @@
             </div>
           </div>
         <form [formGroup]="profileForm" class="ui form EditProfileForm" id="EditProfileForm">
-            <div class=" field">
-                <label>Board</label>
-                <div class="field">
+            <div class="field">
+                <label for="board">Board</label>
+                <div class="field" id="board">
                     <sui-multi-select [isSearchable]="false" class="selection" formControlName="board" [options]="boards" #multiSelect>
                         <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option"> </sui-select-option>
                     </sui-multi-select>
                 </div>
             </div>
             <div class="field">
-                <label>Medium</label>
-                <div class="field">
+                <label for="medium">Medium</label>
+                <div class="field" id="medium">
                     <sui-multi-select [isSearchable]="false" class="selection" formControlName="medium" [options]="mediums" #multiSelect>
                         <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option"> </sui-select-option>
                     </sui-multi-select>
                 </div>
             </div>
-            <div class=" field">
-                <label>Class</label>
-                <div class="field">
+            <div class="field">
+                <label for="class">Class</label>
+                <div class="field" id="class">
                     <sui-multi-select [isSearchable]="false" class="selection" formControlName="class" [options]="Classes" #multiSelect>
                         <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option"> </sui-select-option>
                     </sui-multi-select>
                 </div>
             </div>
-            <div class=" field">
-                <label>Subject</label>
-                <div class="field">
+            <div class="field">
+                <label for="subject">Subject</label>
+                <div class="field" id="subject">
                     <sui-multi-select [isSearchable]="false" class="selection" formControlName="subject" [options]="subjects" #multiSelect>
                         <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option"> </sui-select-option>
                     </sui-multi-select>
