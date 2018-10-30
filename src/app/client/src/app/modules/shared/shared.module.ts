@@ -37,9 +37,8 @@ import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
     RedirectComponent, CustomMultiSelectComponent],
   exports: [AppLoaderComponent, ContentCreditsComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
     PageSectionComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
-    PlayerComponent, CardComponent, FilterPipe, ShareLinkComponent, CollectionPlayerMetadataComponent,
-    BrowserCompatibilityComponent, QrCodeModalComponent,
-    CdnprefixPipe, InterpolatePipe, RedirectComponent, CustomMultiSelectComponent]
+    PlayerComponent, CardComponent, FilterPipe, ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent,
+    QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent, CustomMultiSelectComponent]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
