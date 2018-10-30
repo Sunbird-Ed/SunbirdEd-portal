@@ -5,7 +5,7 @@ import { WorkspaceRoutingModule } from './workspace-routing.module';
 import { SharedModule } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
-import { WorkSpaceService, EditorService , BatchService} from './services';
+import { WorkSpaceService, EditorService , BatchService, ReviewCommentsService} from './services';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, UploadedComponent,
@@ -54,6 +54,6 @@ import { OrderModule } from 'ngx-order-pipe';
     ReviewCommentsComponent,
     CollaborationContentFilterComponent,
   ],
-  providers: [WorkSpaceService, EditorService, BatchService]
+  providers: [WorkSpaceService, EditorService, BatchService, ReviewCommentsService]
 })
 export class WorkspaceModule { }
