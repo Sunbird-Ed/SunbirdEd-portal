@@ -3,7 +3,7 @@ export interface ICard {
     medium?: string;
     subject?: string;
     creator?: string;
-    language?: string;
+    language?: string[];
     resourceType?: string;
     gradeLevel?: any;
     image?: string;
