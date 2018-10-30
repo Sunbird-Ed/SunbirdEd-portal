@@ -86,17 +86,7 @@ describe('CourseSearchComponent', () => {
     expect(component.searchList).toBeDefined();
     expect(component.totalCount).toBeDefined();
   });
-  it('should show resume button if enrolled course and other courses have same identifier ', () => {
-    const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'courseSearch').and.callFake(() => observableOf(Response.successData));
-    component.enrolledCourses = Response.sameIdentifier.enrolledCourses;
-    component.searchList = Response.successData.result.course;
-    component.populateCourseSearch();
-    fixture.detectChanges();
-    expect(component.showLoader).toBeFalsy();
-    expect(component.searchList).toBeDefined();
-    expect(component.totalCount).toBeDefined();
-  });
+ 
   it('should subscribe to searchService when enrolled courses are not present', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'courseSearch').and.callFake(() => observableOf(Response.successData));
