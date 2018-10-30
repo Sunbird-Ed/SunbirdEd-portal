@@ -92,7 +92,6 @@ describe('AllContentComponent', () => {
     component.fecthAllContent(9, 1, bothParams);
     fixture.detectChanges();
     expect(component.allContent).toBeDefined();
-    console.log(component.allContent);
   }));
 
   it('should call fetchall content method and change the route  ', inject([ConfigService, Router],

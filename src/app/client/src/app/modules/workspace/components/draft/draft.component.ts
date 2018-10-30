@@ -207,7 +207,6 @@ export class DraftComponent extends WorkSpace implements OnInit {
                     this.showError = false;
                     this.noResult = true;
                     this.showLoader = false;
-                    console.log(this.resourceService.messages.stmsg.m0125);
                     this.noResultMessage = {
                         'messageText': this.resourceService.messages.stmsg.m0125
                     };
