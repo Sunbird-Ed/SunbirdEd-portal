@@ -7,14 +7,14 @@
             <div class="heading">{{resourceService.messages?.stmsg?.m0060}}</div>
             <div *ngFor="let field of profile.missingFields | slice:0:2 ;  let first = first; let last = last" 
                 [ngClass]="{ first: first, last: last }"
-                class="pt-5">
+                class="pt-5 profileCard-missingData">
                     {{first ? 'Add ' + field + ( profile.missingFields.length > 1 ? '' : '' ) : field + (last ? ' now' : '') }}
             </div>
         </div>
     </div>
     <div class="extra bottom">
         <div class="p-10 d-flex">
-            <span class="description">Your profile is <span>{{profile.value}}</span>% complete</span>
+            <span class="description">{{resourceService.messages?.imsg?.m0041}} <span>{{profile.value}}</span>{{resourceService.messages?.imsg?.m0042}}</span>
             <button class="ui blue basic right floated button ml-15">{{resourceService.frmelmnts?.btn?.update}}</button>
         </div>
         <sui-progress class="ui progress" [value]="profile.value" [maximum]="100"></sui-progress>

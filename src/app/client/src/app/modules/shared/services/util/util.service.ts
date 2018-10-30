@@ -22,7 +22,6 @@ export class UtilService {
       medium: data.medium,
       subject: data.subject,
       creator: data.creator,
-      language: data.languageCode,
       resourceType: data.resourceType,
       gradeLevel: data.gradeLevel
     };
