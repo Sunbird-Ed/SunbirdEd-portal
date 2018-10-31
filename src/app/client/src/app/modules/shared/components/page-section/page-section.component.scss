@@ -1,0 +1,9 @@
+@import "variables";
+
+.ui.label {
+    background: $label-color !important;
+    color: #fff;
+}
+.ui.button{
+    background: $link-color !important;
+}
