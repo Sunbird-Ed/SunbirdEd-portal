@@ -1,0 +1,92 @@
+@import "variables";
+.sbCard{
+    width: 100%;
+    max-width: 220px;
+    border-radius: 4px;
+    border: $primary-border;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16);
+    background-color: #ffffff;
+    cursor: pointer;
+    @media screen and (min-width:768px){
+        max-width: 292px;
+    }
+    &:hover{
+        box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.16);;
+        transform: translateY(-2px);
+    }
+    &:focus {
+        outline: -webkit-focus-ring-color auto 5px;
+    }
+    .image {
+        width: 70px;
+        height: 92px;
+        border: $primary-border;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        img{
+            width:100%;
+            height:auto;
+        }
+    }
+    .header{
+        display: flex;
+        align-items: flex-end;
+    }
+    .meta{
+        font-size: 12px;
+        color: $text-lightDark;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        justify-content: flex-end;
+        height: 92px;
+        width: 175px;
+        overflow: hidden;
+    }
+    .avatar{
+        height: 31px;
+        width: 31px;
+    }
+    .ui.label{
+        font-size: 11px;
+        padding: 4px 10px;
+        border-radius: 4px;
+        border: $primary-border;
+        background-color: #eaeaea;
+        color: $text-dark;
+        font-weight: 500;
+        width: auto;
+        align-self: flex-start;
+    }
+    .sub-header{
+        padding: 10px 15px;
+    }
+    .title{
+        font-size: 1.142857143rem;
+        line-height: 1.35em;
+        height: 2.7em;
+        margin: 0;
+        overflow: hidden;
+        padding: 0;
+        border: 0;
+        font-weight: 400;
+        color: initial;
+        font-family: $font-stack;
+    }
+    .creator{
+        font-size: 1rem;
+        height: 1.5em;
+        margin-top: 0.5em;
+        color: $text-gray;
+    }
+    .description{
+        font-size: 1rem;
+        line-height: 1.25em;
+        height: 6em;
+        color: $text-lightDark;
+        padding: 8px 1rem;
+        overflow: hidden;
+        word-break: break-word;
+    }
+}
