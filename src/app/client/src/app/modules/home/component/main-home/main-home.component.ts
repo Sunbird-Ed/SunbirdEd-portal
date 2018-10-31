@@ -261,8 +261,12 @@ public configService: ConfigService;
    *ngOnDestroy unsubscribe the subscription
    */
   ngOnDestroy() {
-    this.userSubscription.unsubscribe();
-    this.courseSubscription.unsubscribe();
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+    if (this.courseSubscription) {
+      this.courseSubscription.unsubscribe();
+    }
   }
 
   /**
