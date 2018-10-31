@@ -6,12 +6,19 @@ import {
 } from '@sunbird/shared';
 import { PlayerService, PermissionService, UserService } from '@sunbird/core';
 import * as _ from 'lodash';
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-upforreview-contentplayer',
   templateUrl: './upforreview-contentplayer.component.html',
   styleUrls: ['./upforreview-contentplayer.component.css']
 })
 export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
+  public requestForChangesInteractEdata: IInteractEventEdata;
+  public publishInteractEdata: IInteractEventEdata;
+  public reviewCommentsWarningYesInteractEdata: IInteractEventEdata;
+  public reviewCommentsWarningNoInteractEdata: IInteractEventEdata;
+  public telemetryInteractObject: IInteractEventObject;
+
   /**
    * To navigate to other pages
    */
@@ -124,6 +131,7 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
     }
   }
   ngOnInit() {
+    this.setInteractEventData();
     this.userService.userData$.subscribe(userdata => {
       if (userdata && !userdata.err) {
         this.userId = userdata.userProfile.userId;
@@ -195,5 +203,33 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
   */
   close() {
     this.navigationHelperService.navigateToWorkSpace('/workspace/content/upForReview/1');
+  }
+
+  setInteractEventData() {
+    this.requestForChangesInteractEdata = {
+      id: 'request-for-changes',
+      type: 'click',
+      pageid: 'upForReview-content-player'
+    };
+    this.publishInteractEdata = {
+      id: 'publish',
+      type: 'click',
+      pageid: 'upForReview-content-player'
+    };
+    this.reviewCommentsWarningYesInteractEdata = {
+      id: 'review-comments-warning-yes',
+      type: 'click',
+      pageid: 'upForReview-content-player'
+    };
+    this.reviewCommentsWarningNoInteractEdata = {
+      id: 'review-comments-warning-no',
+      type: 'click',
+      pageid: 'upForReview-content-player'
+    };
+    this.telemetryInteractObject = {
+      id: '',
+      type: 'up-for-review',
+      ver: '1.0'
+    };
   }
 }

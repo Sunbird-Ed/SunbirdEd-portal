@@ -35,10 +35,12 @@
         <div *ngIf="permissionService.permissionAvailable && contentData && 
           (contentData.status === 'Review' || contentData.status === 'FlagReview') && userId !== contentData.createdBy"
           appPermission [permission]="['CONTENT_REVIEWER', 'CONTENT_REVIEW','BOOK_REVIEWER','FLAG_REVIEWER']">
-          <button (click)="checkComments()" class="ui right floated primary button mouse-pointer">
+          <button (click)="checkComments()" class="ui right floated primary button mouse-pointer"
+          appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="publishInteractEdata">
             {{resourceService?.frmelmnts?.btn?.publish}}
           </button>
-          <button [routerLink]="['requestchanges']" class="ui right floated primary button mouse-pointer">
+          <button [routerLink]="['requestchanges']" class="ui right floated primary button mouse-pointer"
+          appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="requestForChangesInteractEdata">
             {{resourceService?.frmelmnts?.btn?.requestChanges}}
           </button>
         </div>
@@ -72,27 +74,30 @@
   </div>
 </div>
 <!-- publish warning modal -->
-<sui-modal [isClosable]="false" [size]="'small'" [hidden]="!showPublishWarningModal"
-  #publishWarningModal>
-  <div class=" ui segment margin-top-10">
-    <div class="content">
-      <div class="ui grid">
-        <div class="ui centered grid">
-          <div class="row">
-            <div class="ui basic icon circular button cursor-pointer">
-              <i class="ui huge help outline icon"></i>
-            </div>
-          </div>
-          <div class="row">
-            <span class="dashBoardSectionHeading">{{resourceService?.frmelmnts?.lbl?.publhwarng}}</span>
-          </div>
-        </div>
-        <br/>
-        <div class="row ui two column centered grid margin-top-20 actions">
-          <div class="ui primary basic button announcement-button btn-width-34"  (click)="showPublishWarningModal = false; goToPublish();">{{resourceService?.frmelmnts?.btn?.yes}}</div>
-          <div class="ui primary button announcement-button btn-width-34" (click)="showPublishWarningModal = false"  >{{resourceService?.frmelmnts?.btn?.no}}</div>
+<sui-modal [isClosable]="false" [size]="'small'" *ngIf="showPublishWarningModal" #publishWarningModal>
+  <div class="scrolling content">
+    <div class="ui centered grid">
+      <div class="row">
+        <div class="ui basic icon circular button cursor-pointer">
+          <i class="ui huge help outline icon"></i>
         </div>
       </div>
+      <div class="row">
+        <div class="ui small header">
+          <h4>{{resourceService?.frmelmnts?.lbl?.publhwarng}}</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="actions footer">
+    <div class="ui buttons">
+      <button class="ui orange button" type="button " (click)="showPublishWarningModal = false"
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="reviewCommentsWarningNoInteractEdata"
+      >{{resourceService?.frmelmnts?.btn?.no}}</button>
+      <div class="or"></div>
+      <button class="ui blue button " type="button " (click)="showPublishWarningModal = false; goToPublish();"
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="reviewCommentsWarningYesInteractEdata"
+      >{{resourceService?.frmelmnts?.btn?.yes}}</button>
     </div>
   </div>
 </sui-modal>

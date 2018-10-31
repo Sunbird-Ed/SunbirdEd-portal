@@ -6,7 +6,7 @@ import { ReviewCommentsService } from '../../services';
 import { Subject } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
 import * as _ from 'lodash';
-
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-review-comments',
   templateUrl: './review-comments.component.html',
@@ -19,6 +19,10 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
   /**
 	 * Creates a object of the form control
 	 */
+  public submitCommentsInteractEdata: IInteractEventEdata;
+
+  public telemetryInteractObject: IInteractEventObject;
+
   comments = new FormControl();
 
   sortedComments: any = {};
@@ -44,6 +48,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.setInteractEventData();
     this.getReviewComments().pipe(takeUntil(this.unsubscribe)).subscribe(
         (data) => {
           this.sortedComments = data;
@@ -154,4 +159,16 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
     this.unsubscribe.complete();
   }
 
+  setInteractEventData() {
+    this.submitCommentsInteractEdata = {
+      id: 'submit-review-comments',
+      type: 'click',
+      pageid: 'upForReview-content-player'
+    };
+    this.telemetryInteractObject = {
+      id: '',
+      type: 'review-comments',
+      ver: '1.0'
+    };
+  }
 }
