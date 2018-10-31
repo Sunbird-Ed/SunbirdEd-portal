@@ -166,7 +166,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
       pageid: 'upForReview-content-player'
     };
     this.telemetryInteractObject = {
-      id: 'submit-review-comments',
+      id: this.contentData.identifier,
       type: 'review-comments',
       ver: '1.0'
     };

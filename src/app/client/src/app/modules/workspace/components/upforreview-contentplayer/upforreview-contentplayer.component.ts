@@ -131,12 +131,12 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
     }
   }
   ngOnInit() {
-    this.setInteractEventData();
     this.userService.userData$.subscribe(userdata => {
       if (userdata && !userdata.err) {
         this.userId = userdata.userProfile.userId;
         this.activatedRoute.params.subscribe((params) => {
           this.contentId = params.contentId;
+          this.setInteractEventData();
           this.getContent();
         });
       }
@@ -227,7 +227,7 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
       pageid: 'upForReview-content-player'
     };
     this.telemetryInteractObject = {
-      id: '',
+      id: this.contentId,
       type: 'up-for-review',
       ver: '1.0'
     };
