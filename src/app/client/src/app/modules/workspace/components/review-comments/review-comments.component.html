@@ -31,7 +31,7 @@
     </div>
     <div [ngClass]="{ 'disabled' : disableTextArea }" class="ui icon input width-100">
       <textarea [attr.disabled]="disableTextArea ? true : null" #commentInput maxlength="250" autocomplete="off" class="width-100 br-4 reply-box form-control"[formControl]="comments"></textarea>
-      <i (click)="addReviewComments()" class="opacity-1 mr-5 right sb-icon-send icon link" aria-hidden="true" tabindex="0"
+      <i id="submit-review-comments" (click)="addReviewComments()" class="opacity-1 mr-5 right sb-icon-send icon link" aria-hidden="true" tabindex="0"
       appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitCommentsInteractEdata"></i>
     </div>
   </div>
