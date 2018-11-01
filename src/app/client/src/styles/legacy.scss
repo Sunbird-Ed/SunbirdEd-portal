@@ -50,12 +50,12 @@
   font-size: 1.25em;
 }
 .cardsSubHeading {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 1.125em;
   color: #007AFF;
 }
 .cardsDescription {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 1.0625em;
   font-weight: 400;
   line-height: 1.4;
@@ -76,12 +76,12 @@
   padding-left: 10px;
 }
 .sliderCardDesc {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 1em;
   color: #7c7b7b;
 }
 .sliderCardSubDesc {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 0.875em;
   color: grey;
 }
@@ -91,17 +91,17 @@
   font-size: 1.313em;
 }
 .segmentAvatarDesc {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 1.0625em;
   color: rgba(0, 0, 0, 0.85);
 }
 .segmentAvatarSubDesc {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 0.9375em;
   color: #7c7b7b;
 }
 .segmentCardSubDesc {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 1.0625em;
 }
 /*course structure page fonts*/
@@ -114,7 +114,7 @@
   font-size: 0.85em;
 }
 .courseStructureDesc {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 0.7em;
 }
 /*course structure accordian fonts*/
@@ -123,7 +123,7 @@
   font-size: 1.1875em;
 }
 .courseAccordianDesc {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 1.125em;
 }
 .courseAccordianSubDesc {
@@ -150,13 +150,13 @@
   font-size: 0.9375em;
 }
 .ShowFilterSubTitle {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 0.9375em;
   color: #7c7b7b;
 }
 /*note card font*/
 .note-card-time-stamp {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 0.625em;
 }
 .medium-font-text {
@@ -168,23 +168,23 @@
   font-size: 1.4em;
 }
 .dashBoardMenuItem {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 0.9375em;
   color: #007AFF;
 }
 .ui.cards > .card .meta.dashBoardCardText {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 1.1em;
   color: #7c7b7b;
 }
 .ui.cards > .card > .content > .description.dashboardCardSubText {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 1.6em;
   color: #333333;
 }
 /*note card font*/
 .batch-card-desc {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 0.8em;
 }
 /*terms and condition fonts*/
@@ -192,19 +192,19 @@
   color: #333333;
   font-size: 14px;
   font-style: italic;
-  font-family: 'sunbirdmediumfont';
+  font-weight:500;
 }
 .termsConDescrption {
   color: #333333;
   font-family: "Open Sans";
   font-size: 14px;
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
 }
 .termsConAccept {
   opacity: 0.67;
   color: #333333;
   font-size: 13px;
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
 }
 .opacity-1{
   opacity: 1 !important;
@@ -484,7 +484,7 @@ h4.ui.header.sectionHeading {
   font-size: 1.375em;
 }
 .ui.menu {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   color: #333333;
 }
 .primary-header-avatar {
@@ -530,7 +530,7 @@ h4.ui.header.sectionHeading {
 .ui.secondary.pointing.menu .active.item {
   border-color: #007AFF;
   color: #333333;
-  font-family: 'sunbirdmediumfont';
+  font-weight:500;
 }
 .ui.secondary.pointing.menu {
   background: #fdfdfd;
@@ -689,14 +689,14 @@ i.large.icon.limitedPublishingLinkIcon {
 .ui.modal .ui.tiny.header.flag-description {
   color: #979797;
   font-size: 1em;
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
 }
 .ui.form .field > label.flag-form,
 .ui.form .grouped.fields > label {
   color: #979797;
   font-size: 0.9em;
   padding-top: 20px;
-  font-family: 'sunbirdmediumfont';
+  font-weight:500;
 }
 .ui.form .grouped.fields .field.radiomargin {
   margin: 1em 0;
@@ -820,7 +820,7 @@ i.large.icon.limitedPublishingLinkIcon {
   width: 85%;
 }
 .profileUpdateCardSubDesc {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 0.875em;
   color: grey;
 }
@@ -899,45 +899,45 @@ i.large.icon.limitedPublishingLinkIcon {
   border-left-width: 11px;
 }
 .announcement-description {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 1em;
 }
 .announcement-meta-data {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 1em;
   color: #7c7b7b;
 }
 .ann-link-or-attachment {
   color: #007AFF;
   cursor: pointer;
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 0.9em;
 }
 .announcement-extra-data {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 0.8em;
 }
 .showing-all-sent-ann {
   color: #333333;
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 1.13em;
   line-height: 19px;
 }
 .ann-table-heading {
   color: #7c7b7b;
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 1.1em;
   line-height: 19px;
 }
 .table-list-name-ann {
   color: #333333;
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 1.05em;
   line-height: 19px;
 }
 .ann-data-text {
   color: #333333;
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 1em;
   line-height: 19px;
 }
@@ -1011,12 +1011,12 @@ i.file.pdf.ann-details-icon {
 .ui.items > .item > .content p.ann-attachment-detail-meta {
   margin-left: 10px;
   margin-top: -5px;
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 1em ;
   color: #7c7b7b;
 }
 .ui.items > .item > .content p.ann-attachment-detail-heading {
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 1.2em ;
   margin-bottom: 0px;
   margin-left: 10px;
@@ -1037,16 +1037,16 @@ i.file.pdf.ann-details-icon {
 }
 .UpReviewTableHeader {
   font-size: 1em;
-  font-family: 'sunbirdmediumfont';
+  font-weight:500;
 }
 .UpReviewSubHeader {
   font-size: 0.7em;
   opacity: 0.7;
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
 }
 .UpReviewHeader {
   font-size: 1em;
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
 }
 .ui.tiny.image.UpReviewTinyImage {
   height: 40px;
@@ -1060,12 +1060,12 @@ i.file.pdf.ann-details-icon {
 .UpForReviewStatusOrange {
   color: #ffb300;
   font-size: 1.1em;
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
 }
 .UpForReviewStatusGreen {
   color: #47cf73;
   font-size: 1.1em;
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
 }
 .ui.upForReviewTable.table {
   border: none;
@@ -1269,7 +1269,7 @@ span.fancytree-title {
   padding: 8px;
   font-size: 1.2em;
   color: #333;
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   display: flex;
   flex-direction: row;
 }
@@ -1366,7 +1366,7 @@ ul.fancytree-container li {
   display: inline-block;
   text-align: center;
   width: 120px;
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 1em;
   text-decoration: underline;
 }
@@ -1991,7 +1991,7 @@ ul.fancytree-container li {
 }
 .my-text {
   font-size: 1.063em;
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   color: #333333;
   vertical-align: middle;
 }
@@ -2425,7 +2425,7 @@ iframe.iziModal-iframe {
 }
 .ui.card .card-desc-fixed-height {
   color: #7c7b7b;
-  font-family: 'sunbirdregularfont';
+  font-weight:600;
   font-size: 1em;
   height: 2.8em;
   max-height: 2.8em;
@@ -2855,7 +2855,7 @@ angular2-multiselect .list-area{
   display: block;
 }
 .pure-checkbox label{
-  font-family: 'sunbirdlightfont';
+  font-weight:400;
   font-size: 13px;
 }
 .pure-checkbox input[type="checkbox"]+label:before{
@@ -2871,7 +2871,7 @@ angular2-multiselect .list-area{
   border-color: #2185d0 !important;
 }
 .selected-list .c-btn{
-  font-family: 'sunbirdlightfont';
+  font-weight:400;
   font-size: 13px;
 }
 .pure-checkbox input[type="checkbox"]+label:after {
