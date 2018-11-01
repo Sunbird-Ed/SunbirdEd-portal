@@ -68,10 +68,6 @@ describe('OutboxComponent', () => {
         fixture.detectChanges();
     });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
-
     it('should call outbox api and get success response', inject([AnnouncementService], (announcementService) => {
         spyOn(announcementService, 'getOutboxData').and.callFake(() => observableOf(testData.mockRes.outBoxSuccess));
         component.populateOutboxData(5, 1);
@@ -83,10 +79,10 @@ describe('OutboxComponent', () => {
                 expect(outboxResponse.params.status).toBe('successful');
             }
         );
-        fixture.detectChanges();
+        component.ngOnInit();
         expect(component.showLoader).toBe(false);
         expect(component.pageNumber).toBe(1);
-        expect(component.pageLimit).toBe(5);
+        expect(component.pageLimit).toBe(25);
         expect(component.outboxData.count).toBe(1173);
     }));
 
@@ -158,5 +154,5 @@ describe('OutboxComponent', () => {
             spyOn(component.unsubscribe, 'complete');
             component.ngOnDestroy();
             expect(component.unsubscribe.complete).toHaveBeenCalled();
-          });
+    });
 });
