@@ -60,10 +60,6 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
           };
         },
         (error) => this.toasterService.error(this.resourceService.messages.emsg.m0011));
-    this.comments.valueChanges.subscribe(data => {
-      data = data.trim();
-      this.disableSubmitcommentsButton = data.length > 250 || data.length === 0 ? true : false;
-    });
   }
   ngOnChanges() {
     console.log('stageId changed', this.stageId);
@@ -102,7 +98,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
       this.toasterService.error(this.resourceService.messages.emsg.m0010);
       return;
     }
-    if (!this.comments.value) {
+    if (!this.comments.value.trim()) {
       return;
     }
     this.disableTextArea = true;
@@ -168,7 +164,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
     this.telemetryInteractObject = {
       id: this.contentData.identifier,
       type: 'review-comments',
-      ver: '1.0'
+      ver: this.contentData.pkgVersion ? this.contentData.pkgVersion.toString() : '1.0'
     };
   }
 }

@@ -136,7 +136,6 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
         this.userId = userdata.userProfile.userId;
         this.activatedRoute.params.subscribe((params) => {
           this.contentId = params.contentId;
-          this.setInteractEventData();
           this.getContent();
         });
       }
@@ -176,6 +175,7 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
           };
           this.playerConfig = this.playerService.getConfig(contentDetails);
           this.contentData = response.result.content;
+          this.setInteractEventData();
           this.showCommentBoxClass = this.contentData.mimeType ===
           'application/vnd.ekstep.ecml-archive' ? 'eight wide column' : 'twelve wide column';
           this.showLoader = false;
@@ -229,7 +229,7 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
     this.telemetryInteractObject = {
       id: this.contentId,
       type: 'up-for-review',
-      ver: '1.0'
+      ver: this.contentData.pkgVersion ? this.contentData.pkgVersion.toString() : '1.0'
     };
   }
 }
