@@ -145,8 +145,21 @@ app.use('/resourcebundles/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '50mb' }), require('./helpers/resourceBundles')(express))
 
 console.log('[Extensible framework]: Bootstraping...')
+function addCorsHeaders(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE,OPTIONS')
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization,' +
+    'cid, user-id, x-auth, Cache-Control, X-Requested-With, *')
+
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200)
+  } else {
+    next()
+  };
+}
 const subApp = express()
 subApp.use(bodyParser.json({ limit: '50mb' }))
+subApp.use(addCorsHeaders)
 app.use('/plugin', subApp)
 frameworkAPI.bootstrap(frameworkConfig, subApp).then(() => {
   runApp()
