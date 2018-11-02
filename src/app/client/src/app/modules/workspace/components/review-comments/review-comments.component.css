@@ -41,3 +41,6 @@ textarea:focus+i.icon.sb-icon-send:before {
     height: 0;
     clear: both;
 }
+.review-comments-loader {
+    position: relative;
+}

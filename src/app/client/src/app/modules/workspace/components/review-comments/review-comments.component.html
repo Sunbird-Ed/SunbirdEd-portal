@@ -36,6 +36,8 @@
     </div>
   </div>
 </div>
-<div *ngIf="!playerLoaded">
-  <app-loader [data]="{loaderMessage: 'loading comments'}"></app-loader>
+<div *ngIf="!playerLoaded" class="review-comments-box br-4 bs-1 p-8 review-comments-loader">
+    <div class="ui active inverted dimmer">
+      <div class="ui text loader">{{resourceService.frmelmnts.instn.t0080}}</div>
+    </div>
 </div>
