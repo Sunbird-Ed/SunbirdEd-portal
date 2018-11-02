@@ -1,18 +1,18 @@
 @import "variables";
-.fancytree-plain span.fancytree-node span.fancytree-title {
+::ng-deep .fancytree-plain span.fancytree-node span.fancytree-title {
     margin-left: 5px;
     vertical-align: middle;
 }
-span.fancytree-active span.fancytree-title {
+::ng-deep span.fancytree-active span.fancytree-title {
     background-color: #007Aff;
     color: #fff;
 }
-span.fancytree-icon {
+::ng-deep span.fancytree-icon {
   vertical-align: middle;
 }
-span.fancytree-expander {
+::ng-deep span.fancytree-expander {
   vertical-align: middle;
 }
-span.fancytree-title{
+::ng-deep span.fancytree-title{
   margin: 0;
 }
