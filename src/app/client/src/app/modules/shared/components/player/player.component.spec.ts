@@ -25,6 +25,12 @@ const endEventErr = {
     }
   }
 };
+const playerConfig = {
+  config: {},
+  context: {},
+  data: {},
+  metadata: {}
+};
 describe('PlayerComponent', () => {
   let component: PlayerComponent;
   let fixture: ComponentFixture<PlayerComponent>;
@@ -47,7 +53,12 @@ describe('PlayerComponent', () => {
     component.contentProgressEvent.subscribe((data) => {
       contentProgressEvent = data;
     });
+    component.contentIframe.nativeElement.contentWindow.EkstepRendererAPI = {
+      getCurrentStageId: () => 'stageId'
+    };
+    spyOn(component, 'emitSceneChangeEvent').and.callFake(() => 'called');
     component.generateContentReadEvent(startEvent);
+    component.playerConfig = playerConfig;
     expect(contentProgressEvent).toBeDefined();
   });
 
@@ -56,6 +67,7 @@ describe('PlayerComponent', () => {
     component.contentProgressEvent.subscribe((data) => {
       contentProgressEvent = data;
     });
+    component.playerConfig = playerConfig;
     component.generateContentReadEvent(endEventSuc);
     expect(contentProgressEvent).toBeDefined();
   });
@@ -64,6 +76,7 @@ describe('PlayerComponent', () => {
     component.contentProgressEvent.subscribe((data) => {
       contentProgressEvent = data;
     });
+    component.playerConfig = playerConfig;
     component.generateContentReadEvent(endEventErr);
     expect(contentProgressEvent).toBeUndefined();
   });

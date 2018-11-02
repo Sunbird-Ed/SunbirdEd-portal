@@ -1,3 +1,4 @@
+import { delay } from 'rxjs/operators';
 import { WindowScrollService, ConfigService } from './../../services';
 
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Input, OnDestroy, Output, EventEmitter, OnChanges } from '@angular/core';
@@ -15,6 +16,7 @@ export class PlayerComponent implements OnInit, OnChanges, OnDestroy {
   @Output() contentProgressEvent = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
+  @Output() sceneChangeEvent = new EventEmitter<any>();
   buildNumber: string;
   constructor(public configService: ConfigService) {
     try {
@@ -22,7 +24,7 @@ export class PlayerComponent implements OnInit, OnChanges, OnDestroy {
     } catch (error) {
       this.buildNumber = '1.0';
     }
-   }
+  }
   /**
    * showPlayer method will be called
    */
@@ -62,13 +64,24 @@ export class PlayerComponent implements OnInit, OnChanges, OnDestroy {
   }
   generateContentReadEvent(event: any) {
     if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START')) {
+      this.emitSceneChangeEvent(1000);
       this.contentProgressEvent.emit(event);
-    } else if (event.detail.telemetryData.eid === 'END' && _.get(event.detail.telemetryData, 'edata.summary')) {
+    } else if (event.detail.telemetryData.eid &&
+      event.detail.telemetryData.eid === 'END' && _.get(event.detail.telemetryData, 'edata.summary')) {
       const summary = _.find(event.detail.telemetryData.edata.summary , { progress: 100 });
       if (summary) {
         this.contentProgressEvent.emit(event);
       }
+    } else if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'IMPRESSION')) {
+      this.emitSceneChangeEvent();
     }
+  }
+  emitSceneChangeEvent(timer = 0) {
+    setTimeout(() => {
+      const stageId = this.contentIframe.nativeElement.contentWindow.EkstepRendererAPI.getCurrentStageId();
+      const eventData = { stageId };
+      this.sceneChangeEvent.emit(eventData);
+    } , timer); // waiting for player to load, then fetching stageId (if we dont wait stageId will be undefined)
   }
   ngOnDestroy() {
     this.playerOnDestroyEvent.emit( {contentId: this.playerConfig.context.contentId} );

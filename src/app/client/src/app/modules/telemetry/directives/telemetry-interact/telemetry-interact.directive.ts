@@ -22,7 +22,9 @@ export class TelemetryInteractDirective {
   @Input() telemetryInteractEdata: IInteractEventEdata;
 
   @HostListener('click', ['$event'])
+
   private onClick(e) {
+
     if (this.telemetryInteractEdata) {
       this.appTelemetryInteractData = {
        context: {

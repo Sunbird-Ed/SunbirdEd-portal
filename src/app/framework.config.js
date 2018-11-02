@@ -41,10 +41,11 @@ module.exports = {
         authtoken: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN,
         runningEnv: 'server'
     },
-    plugins: [{
-        id: '@project-sunbird/form-service',
-        ver: '1.0'
-    }],
+    plugins: [
+        { id: '@project-sunbird/form-service',ver: '1.0'},
+        { id: '@project-sunbird/review-comment', ver: '1.0' },
+        { id: '@project-sunbird/discussion-service', ver: '1.0' }    
+    ],
     pluginBasePath: __dirname + '/node_modules/',
     logLevel: 'error'
 }

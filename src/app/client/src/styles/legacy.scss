@@ -681,73 +681,6 @@ i.large.icon.limitedPublishingLinkIcon {
   top: -40px;
   z-index: 10;
 }
-.slick-prev {
-  left: -15px;
-}
-.slick-prev,
-.slick-next {
-  right: -10px;
-  top: 40% !important;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-  position: absolute;
-  font-size: 24px;
-  z-index: 3;
-  transition: .3s;
-  height: 47px;
-  width: 47px;
-  padding: 10px 10px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0px 1px 2px 2px rgba(0, 0, 0, 0.3);
-  opacity: 1;
-  line-height: 0;
-  display: block;
-  margin-top: -10px;
-  cursor: pointer;
-  color: transparent;
-  border: none;
-  outline: none;
-}
-.slick-prev:before {
-  left: -20px;
-  content: url(../assets/images/Backword.png) !important;
-  font-family: 'slick';
-  font-size: 20px;
-  line-height: 1;
-  opacity: 1;
-  color: #007AFF;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-.slick-next:before {
-  content: url(../assets/images/Forward.png) !important;
-  font-family: 'slick';
-  font-size: 20px;
-  line-height: 1;
-  opacity: 1 ;
-  color: #007AFF;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-.slider {
-  width: 100%;
-  margin: 0 auto;
-}
-/*slick slider margin bottom removed*/
-.slick-slider {
-  margin-bottom: 0px;
-}
-/*align the cards in left in slicker slider*/
-.slick-track {
-  margin-left: initial;
-}
-.slick-prev:hover,
-.slick-prev:focus,
-.slick-next:hover,
-.slick-next:focus {
-  background: #ffffff;
-}
 .profileImageSizeText {
   font-size: 10px;
   color: #000000;
@@ -2445,13 +2378,6 @@ ol.ui.list ol li:before {
 .btn-width-34 {
   width: 34%;
 }
-body {
-  position: relative;
-  background: #fdfdfd;
-}
-html {
-  height: 100%;
-}
 iframe.iziModal-iframe {
   width: 100vw !important;
   height: 100vh !important;
@@ -2798,31 +2724,9 @@ i.icon.accordion-content-right {
 .bb-1 {
   border-bottom: 1px solid #D8D8D8;
 }
-.m-0 {
-  margin: 0 !important;
-}
-.p-0 {
-  padding:0 !important;
-}
-.mt-5 {
-  margin-top: 5px !important;
-}
-.mb-5 {
-  margin-bottom: 5px !important;
-}
 .fl {
   float: left !important;
 }
-.pl-15 {
-  padding-left: 15px!important;
-}
-.mr-40 {
-  margin-right: 40px !important;
-}
-.mr-5 {
-  margin-right: 5px !important;
-}
-
 .word-break-all {
   word-break: break-all !important;
 }
@@ -2855,10 +2759,6 @@ i.icon.accordion-content-right {
   font-size: 1.23rem;
   font-weight: 600;
 }
-.mb-50 {
-  margin-bottom: 50px !important;
-}
-
 .batch-type-heading {
   display: block;
   margin: 0 0 .28571429rem 0;
@@ -2903,7 +2803,6 @@ i.icon.accordion-content-right {
 .ui.very.basic.border-less.table {
   border: 0;
 }
-
 /* temp fix for the more button which need to be removed later */
 .ui.positive.button.read-more-data {
   border-radius: 250px;
@@ -2912,7 +2811,6 @@ i.icon.accordion-content-right {
   padding-top: 6px;
   padding-bottom: 6px;
 }
-
 .uppercase{
   text-transform: uppercase !important;
 }
@@ -3073,61 +2971,6 @@ angular2-multiselect .list-area{
 .min-height-0 {
   height: 0 !important;
 }
-.mt-90 {
-  margin-top: 90px !important;
-}
-.mt-190 {
-  margin-top: 190px !important;  
-}
-.mt-10 {
-  margin-top: 10px !important;  
-}
-.mt-12 {
-  margin-top: 12px !important;  
-}
-.mt-15 {
-  margin-top: 15px !important;  
-}
-.mt-20 {
-  margin-top: 20px !important;  
-}
-.mt-30 {
-  margin-top: 30px !important;  
-}
-.mr-10 {
-  margin-right: 10px !important;  
-}
-
-.ml-5 {
-  margin-left: 5px !important;
-}
-.ml-10 {
-  margin-left:10px !important;
-}
-.ml-20 {
-  margin-left:20px !important;
-}
-.pt-0 {
-  padding-top: 0 !important;
-}
-.pl-5 {
-  padding-left: 5px !important;
-}
-.pl-10 {
-  padding-left: 10px !important;
-}
-.pt-10{
-  padding-top: 10px !important;
-}
-.pr-0 {
-  padding-right: 0 !important;
-}
-.pr-15 {
-  padding-right: 15px !important;
-}
-.pr-20 {
-  padding-right: 20px !important;
-}
 
 /* primary nav with text item with border right */
 .ui.text.primary-nav.menu .item {
@@ -3260,16 +3103,8 @@ see https://github.com/Semantic-Org/Semantic-UI/issues/1114
 .text-gray{
   color: #9F9F9F !important;
 }
-.mr-20{
-  margin-right: 20px !important;
-}
 .d-inline-block{
   display: inline-block;
-}
-button.slick-prev.slick-arrow.slick-disabled,
-button.slick-next.slick-arrow.slick-disabled {
-  cursor: default;
-  display: none !important;
 }
 .mc-nonuser,
 .mc-user{
@@ -3319,9 +3154,6 @@ button.slick-next.slick-arrow.slick-disabled {
 .bs-1{
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
 }
-.p-8{
-  padding: 8px;
-}
 .d-flex{
   display: flex;
 }
@@ -3331,17 +3163,8 @@ button.slick-next.slick-arrow.slick-disabled {
 .text-blue{
   color: #0079FF;
 }
-.pr-8{
-  padding-right: 8px;
-}
-.mr-15 {
-  margin-right: 15px !important;  
-}
 .flex-dc {
   flex-direction: column !important;
-}
- .mb-20 {
-  margin-bottom: 20px !important;
 }
  .min-height-50 {
   min-height: 50px !important;
@@ -3366,17 +3189,23 @@ button.slick-next.slick-arrow.slick-disabled {
     border: 1px solid rgba(51, 51, 51, 0.33);
     max-height: 36px;
 }
- .mr-100 {
-  margin-right: 100px !important;
-}
  .bs-0 {
   box-shadow: none !important;
 }
 .ui.fixed.main.menu.main-header {
   border:0;
   border-bottom: .5px solid rgba(25,109,127,.68) !important;
-  z-index: 9999;
+  z-index: 999;
 }
 .margin-top-91 {
   margin-top: 91px !important;
 }
+sui-multi-select.ui.selection.dropdown{
+  background: transparent;
+}
+.bl-0{
+  border-left: none !important;
+ }
+ .conceptSelector.ui.form .treepicker-parent input{
+   background: transparent;
+ }
