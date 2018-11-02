@@ -6,7 +6,7 @@ import { ReviewCommentsService } from '../../services';
 import { Subject } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
 import * as _ from 'lodash';
-
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-review-comments',
   templateUrl: './review-comments.component.html',
@@ -19,6 +19,10 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
   /**
 	 * Creates a object of the form control
 	 */
+  public submitCommentsInteractEdata: IInteractEventEdata;
+
+  public telemetryInteractObject: IInteractEventObject;
+
   comments = new FormControl();
 
   sortedComments: any = {};
@@ -44,6 +48,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.setInteractEventData();
     this.getReviewComments().pipe(takeUntil(this.unsubscribe)).subscribe(
         (data) => {
           this.sortedComments = data;
@@ -55,10 +60,6 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
           };
         },
         (error) => this.toasterService.error(this.resourceService.messages.emsg.m0011));
-    this.comments.valueChanges.subscribe(data => {
-      data = data.trim();
-      this.disableSubmitcommentsButton = data.length > 250 || data.length === 0 ? true : false;
-    });
   }
   ngOnChanges() {
     console.log('stageId changed', this.stageId);
@@ -97,7 +98,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
       this.toasterService.error(this.resourceService.messages.emsg.m0010);
       return;
     }
-    if (!this.comments.value) {
+    if (!this.comments.value.trim()) {
       return;
     }
     this.disableTextArea = true;
@@ -154,4 +155,16 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
     this.unsubscribe.complete();
   }
 
+  setInteractEventData() {
+    this.submitCommentsInteractEdata = {
+      id: 'submit-review-comments',
+      type: 'click',
+      pageid: 'upForReview-content-player'
+    };
+    this.telemetryInteractObject = {
+      id: this.contentData.identifier,
+      type: 'review-comments',
+      ver: this.contentData.pkgVersion ? this.contentData.pkgVersion.toString() : '1.0'
+    };
+  }
 }
