@@ -1,8 +1,8 @@
 {
   "name": "player",
   "author": "sunbird",
-  "version": "1.11.1",
-  "buildNumber": "2",
+  "version": "1.11.2",
+  "buildNumber": "3",
   "private": true,
   "devDependencies": {
     "chai": "^4.1.2",
