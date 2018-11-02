@@ -1,6 +1,6 @@
 <div *ngIf="playerLoaded" class="review-comments-box br-4 bs-1 p-8">
   <div class="ui small comments scrolling" *ngIf="sortedComments[stageId] && sortedComments[stageId].length else emptyComments" >
-    <div class="comment" *ngFor="let commentList of sortedComments[stageId]">
+    <div class="comment" *ngFor="let commentList of sortedComments[stageId] | orderBy: 'createdOn'">
       <span class="avatar">
         <img *ngIf="commentList.userInfo.logo" src="{{commentList.userInfo.logo | cdnprefixurl}}">
         <i *ngIf="!commentList.userInfo.logo" class="icon sb-icon-reviewer" aria-hidden="true"></i>
@@ -30,8 +30,9 @@
       <span class="ui metadata" *ngIf="comments.value">{{comments.value.trim().length}} / 250</span>
     </div>
     <div [ngClass]="{ 'disabled' : disableTextArea }" class="ui icon input width-100">
-      <textarea [attr.disabled]="disableTextArea ? true : null" #commentInput maxlength="250" (keyup.enter)="addReviewComments()" autocomplete="off" class="width-100 br-4 reply-box form-control"[formControl]="comments"></textarea>
-      <i (click)="addReviewComments()" class="opacity-1 mr-5 right sb-icon-send icon link" aria-hidden="true" tabindex="0"></i>
+      <textarea [attr.disabled]="disableTextArea ? true : null" #commentInput maxlength="250" autocomplete="off" class="width-100 br-4 reply-box form-control"[formControl]="comments"></textarea>
+      <i id="submit-review-comments" (click)="addReviewComments()" class="opacity-1 mr-5 right sb-icon-send icon link" aria-hidden="true" tabindex="0"
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitCommentsInteractEdata"></i>
     </div>
   </div>
 </div>
