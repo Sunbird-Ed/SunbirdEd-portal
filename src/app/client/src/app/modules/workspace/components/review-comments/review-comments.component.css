@@ -35,7 +35,7 @@ textarea:focus+i.icon.sb-icon-send:before {
     border-color:#2185D0 !important;
 }
 .comment:after {
-    content: " "; 
+    content: ""; 
     visibility: hidden;
     display: block;
     height: 0;
