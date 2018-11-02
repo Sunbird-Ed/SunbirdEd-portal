@@ -34,3 +34,6 @@ textarea:focus+i.icon.sb-icon-send:before {
 .ui.form textarea:focus {
     border-color:#2185D0 !important;
 }
+.comment {
+    clear: both;
+}
