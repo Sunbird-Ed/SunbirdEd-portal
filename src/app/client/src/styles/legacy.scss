@@ -1,22 +1,3 @@
-@font-face {
-  font-family: 'sunbirdlightfont';
-  src: url('./fonts/open-sans/OpenSans-Light.ttf') format('truetype');
-}
-/*sunbird Regular font*/
-@font-face {
-  font-family: 'sunbirdregularfont';
-  src: url('./fonts/open-sans/OpenSans-Regular.ttf') format('truetype');
-}
-/*sunbird Medium font*/
-@font-face {
-  font-family: 'sunbirdmediumfont';
-  src: url('./fonts/open-sans/OpenSans-SemiBold.ttf') format('truetype');
-}
-/*sunbird Bold font*/
-@font-face {
-  font-family: 'sunbirdboldfont';
-  src: url('./fonts/open-sans/OpenSans-Bold.ttf') format('truetype');
-}
 /* placeholder if content is not there */
 .placeholder {
   align-items: center;
@@ -196,7 +177,6 @@
 }
 .termsConDescrption {
   color: #333333;
-  font-family: "Open Sans";
   font-size: 14px;
   font-weight:600;
 }
@@ -716,7 +696,6 @@ i.large.icon.limitedPublishingLinkIcon {
   border-bottom: 1px solid #333;
   border-radius: 0;
   padding: 0.8em 0 0.8em 1em;
-  font-family: Roboto, sans-serif;
 }
 
 .ui.selection.dropdown {
@@ -1101,7 +1080,6 @@ h5.ui.header {
   position: absolute;
   right: 0px;
   top: 0px;
-  font-family: Arial;
   font-size: 118px;
   margin: 0px;
   padding: 0px;
@@ -1650,7 +1628,6 @@ ul.fancytree-container li {
 }
 .conceptSelector.ui.form .treepicker-parent input {
   color: #cdcccc;
-  font-family: Roboto;
   font-size: 13px;
 }
 .ui.input input.filterLocationInput {
@@ -1726,7 +1703,6 @@ ul.fancytree-container li {
 }
 .profilesttingheader.ui.header {
   color: #fdfdfd;
-  font-family: "Open Sans";
   font-size: 13px;
   line-height: 17px;
 }
@@ -1788,7 +1764,6 @@ ul.fancytree-container li {
 }
 .profileitems.ui.items > .item a.header,
 .profileitems.ui.items > .item a.header:hover {
-  font-family: "Open Sans";
   font-size: 1em!important;
   font-weight: 600!important;
   line-height: 20px!important;
@@ -1796,7 +1771,6 @@ ul.fancytree-container li {
 }
 .profileitems.ui.items > .item > .content > a.header,
 .profileitems.ui.items > .item > .content > a.header:hover {
-  font-family: "Open Sans";
   font-size: 1em!important;
   font-weight: 600!important;
   line-height: 20px!important;
@@ -1804,14 +1778,12 @@ ul.fancytree-container li {
 }
 .profileitems.ui.items > .item .description {
   color: #7c7b7b !important;
-  font-family: "Open Sans";
   font-size: 0.89em!important;
   line-height: 17px!important;
   margin-top: 0!important;
 }
 .profileitems .item .metadata .date {
   color: #7c7b7b !important;
-  font-family: "Open Sans";
   font-size: 0.89em!important;
   line-height: 14px!important;
 }
@@ -1944,7 +1916,6 @@ ul.fancytree-container li {
 }
 .workspacetitle.title {
   color: #333333;
-  font-family: "Open Sans";
   font-size: 14px;
   line-height: 17px;
   font-weight: 400;
@@ -1964,7 +1935,6 @@ ul.fancytree-container li {
 
 .uploador p {
   color: #7c7b7b;
-  font-family: "Open Sans";
   font-size: 10px;
 }
 .fileupload.ui.primary.basic.button {
@@ -2025,7 +1995,6 @@ i.trash.outline.icon.trashIcon-fontSize {
   font-size: 13px;
   font-weight: 400;
   white-space: nowrap;
-  font-family: "Open Sans";
 }
 .ann-fileupload-or-text {
   text-align: center;
@@ -2233,7 +2202,6 @@ i.edit.icon.editIcon-fontSize {
 }
 .des-content {
   color: #333333;
-  font-family: "Open Sans";
   font-size: 13px;
   line-height: 18px;
   padding-top: 12px;
@@ -2717,7 +2685,7 @@ i.icon.accordion-content-right {
   border: 0;
   border-top: 1px solid #D8D8D8;
   border-radius: 0;
-  font-family: sunbirdlightfont;
+  font-weight: 400;
   font-size: 13px;
 }
 .bb-1 {
@@ -2886,7 +2854,7 @@ angular2-multiselect .list-area{
 }
 .pure-checkbox.selected-item label{
   color: #2185d0 !important;
-  font-family: sunbirdregularfont;
+  font-weight: 400;
   font-weight: bold !important;
 }
 .selected-list .c-list .c-token{
