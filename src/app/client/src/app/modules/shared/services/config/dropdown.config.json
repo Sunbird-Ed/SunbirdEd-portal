@@ -264,6 +264,34 @@
                     "field": "name",
                     "name": "Name A-Z"
                 }
+            ],
+            "collaboratingOnSortingOptions": [
+                {
+                    "field": "lastUpdatedOn",
+                    "name": "Updated On"
+                },
+                {
+                    "field": "type",
+                    "name": "Type"
+
+                },
+                {
+                    "field": "status",
+                    "name": "Status"
+
+                },
+                {
+                    "field": "name",
+                    "name": "Name A-Z"
+                },
+                {
+                    "field": "createdOn",
+                    "name": "Created On"
+                },
+                {
+                    "field": "creator",
+                    "name": "Creator’s name "
+                }
             ]
         },
         "SEARCH": {
@@ -275,8 +303,7 @@
                 "resources": "/search/Library",
                 "Library": "/search/Library",
                 "Users": "/search/Users",
-                "profile": "/search/Users",
-                "Organisations": "/search/Organisations"
+                "profile": "/search/Users"
             },
             "searchUrl": {
                 "home": "All",

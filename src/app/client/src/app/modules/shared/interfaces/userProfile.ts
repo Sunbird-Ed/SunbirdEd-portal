@@ -27,6 +27,7 @@ export interface IUserProfile {
     tempPassword: string;
     email: string;
     rootOrg: any;
+    rootOrgAdmin?: boolean;
     identifier: string;
     profileVisibility: any;
     thumbnail: any;

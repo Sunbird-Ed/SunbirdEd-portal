@@ -9,6 +9,8 @@ import { SearchComponent } from './search.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router, Params, UrlSegment, NavigationEnd} from '@angular/router';
+import { UserService, LearnerService, ContentService } from '@sunbird/core';
+import { mockResponse } from './search.component.spec.data';
 
 import { CacheService } from 'ng2-cache-service';
 describe('SearchComponent', () => {
@@ -23,6 +25,7 @@ describe('SearchComponent', () => {
     navigate = jasmine.createSpy('navigate');
     public navigationEnd = new NavigationEnd(1, '/learn', '/learn');
     public navigationEnd2 = new NavigationEnd(2, '/search/All/1', '/search/All/1');
+    public url = '/profile';
     public events = new Observable(observer => {
       observer.next(this.navigationEnd);
       observer.complete();
@@ -33,8 +36,8 @@ describe('SearchComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ SearchComponent ],
       imports: [SuiModule, FormsModule, RouterTestingModule, HttpClientTestingModule],
-      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService,
-        { provide: Router, useClass: MockRouter},
+      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, UserService, LearnerService,
+      ContentService, { provide: Router, useClass: MockRouter},
          { provide: ActivatedRoute, useValue: {queryParams: {
           subscribe: (fn: (value: Params) => void) => fn({
             subjects : ['english']
@@ -66,4 +69,35 @@ describe('SearchComponent', () => {
     component.onEnter(key);
     expect(router.navigate).toHaveBeenCalledWith(['/search/All', 1], {queryParams:  component.queryParam});
   });
+  it('should hide users search from dropdown if loggedin user is not rootorgadmin', ( ) => {
+    const userService = TestBed.get(UserService);
+    const route = TestBed.get(Router);
+    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile });
+    component.searchDropdownValues = ['All', 'Courses', 'Library'];
+    component.ngOnInit();
+    expect(component.searchDropdownValues).not.toContain('Users');
+  });
+  it('should show users search from dropdown if loggedin user is rootorgadmin', ( ) => {
+    const userService = TestBed.get(UserService);
+    mockResponse.userMockData.userProfile.rootOrgAdmin = true;
+    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile });
+    component.searchDropdownValues = ['All', 'Courses', 'Library'];
+    component.ngOnInit();
+    expect(component.searchDropdownValues).toContain('Users');
+  });
+  it('search dropdown selected value should be ALL when non rootorgadmin user lands to profile page', ( ) => {
+    const userService = TestBed.get(UserService);
+    mockResponse.userMockData.userProfile.rootOrgAdmin = false;
+    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile });
+    component.ngOnInit();
+    expect(component.selectedOption).toEqual('All');
+  });
+  it('search dropdown selected value should be Users when rootorgadmin user lands to profile page', ( ) => {
+    const userService = TestBed.get(UserService);
+    mockResponse.userMockData.userProfile.rootOrgAdmin = true;
+    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile });
+    component.ngOnInit();
+    expect(component.selectedOption).toEqual('Users');
+  });
+
 });

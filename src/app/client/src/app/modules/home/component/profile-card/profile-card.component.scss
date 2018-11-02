@@ -1,0 +1,52 @@
+@import "variables";
+
+.profileCard{
+    width: 100%;
+    max-width: 220px;
+    border-radius: 4px;
+    border: $primary-border;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16);
+    background-color: #ffffff;
+    height: 204px;
+    position: relative;
+    color: #999;
+    font-size: 12px;
+    @media screen and (min-width:768px){
+        max-width: 250px;
+    }
+    &:hover{
+        box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.16);;
+        transform: translateY(-2px);
+    }
+    &:focus {
+        outline: -webkit-focus-ring-color auto 5px;
+    }
+    .header{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 150px;
+        overflow: hidden;
+        .heading{
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: $link-color;
+        }
+    }
+    .image {
+        max-width: 70px;
+        
+        img {
+            width: 70px;
+            height: 70px;
+            border-radius: 35px;
+            max-height: 70px;
+        }
+    }
+    .bottom{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+}
+

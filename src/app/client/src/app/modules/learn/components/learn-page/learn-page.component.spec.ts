@@ -83,15 +83,14 @@ describe('LearnPageComponent', () => {
     spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.noData));
     component.populatePageData();
     fixture.detectChanges();
-     expect(component.showLoader).toBeFalsy();
-     expect(component.noResult).toBeTruthy();
+    expect(component.showLoader).toBeFalsy();
+    expect(component.noResult).toBeTruthy();
   });
   it('should subscribe to course service', () => {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
     courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses});
     courseService.initialize();
-    fixture.detectChanges();
     component.populateEnrolledCourse();
     expect(component.showLoader).toBeTruthy();
     expect(component.queryParams.sortType).toString();
@@ -113,7 +112,7 @@ describe('LearnPageComponent', () => {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
     const resourceService = TestBed.get(ResourceService);
-   resourceService.messages = Response.resourceBundle.messages;
+    resourceService.messages = Response.resourceBundle.messages;
     courseService._enrolledCourseData$.next({ err: Response.errorCourse, enrolledCourses: null});
     courseService.initialize();
     fixture.detectChanges();

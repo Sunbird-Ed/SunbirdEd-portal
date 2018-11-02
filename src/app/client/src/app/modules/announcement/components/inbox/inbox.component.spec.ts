@@ -62,10 +62,6 @@ describe('InboxComponent', () => {
         fixture.detectChanges();
     });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
-
     it('should call inbox api and get success response', inject([AnnouncementService], (announcementService) => {
         spyOn(announcementService, 'getInboxData').and.callFake(() => observableOf(testData.mockRes.inBoxSuccess));
         spyOn(announcementService, 'receivedAnnouncement').and.callFake(() =>
@@ -82,10 +78,10 @@ describe('InboxComponent', () => {
                 expect(inboxResponse.params.status).toBe('successful');
             }
         );
-        fixture.detectChanges();
+        component.ngOnInit();
         expect(component.showLoader).toBe(false);
         expect(component.pageNumber).toBe(1);
-        expect(component.pageLimit).toBe(5);
+        expect(component.pageLimit).toBe(10);
         expect(component.inboxData.count).toBe(1173);
     }));
 
@@ -160,6 +156,6 @@ describe('InboxComponent', () => {
             spyOn(component.unsubscribe, 'complete');
             component.ngOnDestroy();
             expect(component.unsubscribe.complete).toHaveBeenCalled();
-          });
+        });
 });
 

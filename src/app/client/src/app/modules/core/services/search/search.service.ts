@@ -184,7 +184,7 @@ export class SearchService {
         }
       }
     };
-    return this.content.post(option);
+    return this.learnerService.post(option);
   }
   /**
    * User Search.

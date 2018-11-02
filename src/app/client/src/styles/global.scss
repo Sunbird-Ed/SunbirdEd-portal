@@ -1,0 +1,51 @@
+body {
+    position: relative;
+    background: $bg-body !important;
+    font-family: $font-stack;
+}
+.ui.button.rounded{
+    border-radius: 20px;
+}
+.ui.header,
+h1, h2, h3, h4, h5{
+    font-family: $font-stack;
+}
+.bs-1{
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.29) !important;
+    &:hover{
+        box-shadow: 0 4px 9px 0 rgba(0, 0, 0, 0.29) !important;
+    }
+}
+.bg-contain{
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.br-4{
+    border-radius: 4px;
+}
+.sbCard,
+.profileCard {
+    .ui.progress{
+        border-radius: 0 0 4px 4px;
+        background-color: $progressbar-color;
+        margin: 0;
+        .bar{
+            background-image: $progressbar-gradient;
+            border-radius: 0 4px 4px 4px;
+            height: 4px;
+            min-width: 0;
+            .progress{
+                display:none;
+            }
+        }
+        .label{
+            display:none;
+        }
+    }
+}
+.ellipsis{
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

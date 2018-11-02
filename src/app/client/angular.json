@@ -27,6 +27,11 @@
               "node_modules/font-awesome/css/font-awesome.css",
               "src/styles/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styles/"
+              ]
+            },
             "scripts": [
               "node_modules/moment/min/moment.min.js",
               "node_modules/izitoast/dist/js/iziToast.min.js",
@@ -127,6 +132,11 @@
               "node_modules/font-awesome/css/font-awesome.css",
               "src/styles/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styles/"
+              ]
+            },
             "assets": [
               "src/assets",
               "src/thirdparty",

@@ -14,9 +14,14 @@
   @include margin(20px);
 }
 
-
+.mt-auto {
+  @include margin(auto null null null);
+}
 .mt-0 {
   @include margin(0 null null null);
+}
+.mt-3 {
+  @include margin(3px null null null);
 }
 .mt-5 {
   @include margin(5px null null null);
@@ -30,8 +35,19 @@
 .mt-20 {
   @include margin(20px null null null);
 }
+.mt-30 {
+  @include margin(20px null null null);
+}
+.mt-90 {
+  @include margin(90px null null null);
+}
+.mt-190 {
+  @include margin(190px null null null);
+}
 
-
+.mr-auto {
+  @include margin(null auto null null);
+}
 .mr-0 {
   @include margin(null 0 null null);
 }
@@ -41,14 +57,28 @@
 .mr-10 {
   @include margin(null 10px null null);
 }
+.mr-12 {
+  @include margin(null 12px null null);
+}
 .mr-15 {
   @include margin(null 15px null null);
 }
 .mr-20 {
   @include margin(null 20px null null);
 }
+.mr-30 {
+  @include margin(null 30px null null);
+}
+.mr-40 {
+  @include margin(null 40px null null);
+}
+.mr-100 {
+  @include margin(null 100px null null);
+}
 
-
+.mb-auto {
+  @include margin(null null auto null);
+}
 .mb-0 {
   @include margin(null null 0 null);
 }
@@ -64,8 +94,16 @@
 .mb-20 {
   @include margin(null null 20px null);
 }
+.mb-30 {
+  @include margin(null null 20px null);
+}
+.mb-50 {
+  @include margin(null null 50px null);
+}
 
-
+.ml-auto {
+  @include margin(null null null auto);
+}
 .ml-0 {
   @include margin(null null null 0);
 }
@@ -82,36 +120,40 @@
   @include margin(null null null 20px);
 }
 
-
+.mx-auto {
+  @include margin(null auto);
+}
 .mx-0 {
-  @include margin(0 null);
-}
-.mx-5 {
-  @include margin(5px null);
-}
-.mx-10 {
-  @include margin(10px null);
-}
-.mx-15 {
-  @include margin(15px null);
-}
-.mx-20 {
-  @include margin(20px null);
-}
-
-
-.my-0 {
   @include margin(null 0);
 }
-.my-5 {
+.mx-5 {
   @include margin(null 5px);
 }
-.my-10 {
+.mx-10 {
   @include margin(null 10px);
 }
-.my-15 {
+.mx-15 {
   @include margin(null 15px);
 }
-.my-20 {
+.mx-20 {
   @include margin(null 20px);
+}
+
+.my-auto {
+  @include margin(auto null);
+}
+.my-0 {
+  @include margin(0 null);
+}
+.my-5 {
+  @include margin(5px null);
+}
+.my-10 {
+  @include margin(10px null);
+}
+.my-15 {
+  @include margin(15px null);
+}
+.my-20 {
+  @include margin(20px null);
 }
