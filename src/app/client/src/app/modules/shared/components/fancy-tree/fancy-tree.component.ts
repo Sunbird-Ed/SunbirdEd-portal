@@ -9,8 +9,6 @@ import { IFancytreeOptions } from '../../interfaces';
   ::ng-deep .fancytree-plain span.fancytree-node span.fancytree-title {
       margin-left: 5px;
       vertical-align: middle;
-      padding-top: 4px;
-      padding-bottom: 4px;
   }
   ::ng-deep span.fancytree-active span.fancytree-title {
       background-color: #007Aff;
@@ -21,6 +19,9 @@ import { IFancytreeOptions } from '../../interfaces';
   }
   ::ng-deep span.fancytree-expander {
     vertical-align: middle;
+  }
+  ::ng-deep span.fancytree-title{
+    margin: 0 0 0 0;
   }
   `]
 })
