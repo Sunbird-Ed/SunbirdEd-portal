@@ -5,25 +5,7 @@ import { IFancytreeOptions } from '../../interfaces';
 @Component({
   selector: 'app-fancy-tree',
   templateUrl: './fancy-tree.component.html',
-  styles: [`
-  ::ng-deep .fancytree-plain span.fancytree-node span.fancytree-title {
-      margin-left: 5px;
-      vertical-align: middle;
-  }
-  ::ng-deep span.fancytree-active span.fancytree-title {
-      background-color: #007Aff;
-      color: #fff;
-  }
-  ::ng-deep span.fancytree-icon {
-    vertical-align: middle;
-  }
-  ::ng-deep span.fancytree-expander {
-    vertical-align: middle;
-  }
-  ::ng-deep span.fancytree-title{
-    margin: 0 0 0 0;
-  }
-  `]
+  styleUrls: ['./fancy-tree.component.scss']
 })
 export class FancyTreeComponent implements AfterViewInit {
   @ViewChild('fancyTree') public tree: ElementRef;
