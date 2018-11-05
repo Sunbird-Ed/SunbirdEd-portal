@@ -1,6 +1,6 @@
 <div class="ui fluid small icon input left action" id="search-input-container" [ngClass]="{ 'disabled': !showInput }">
-    <div class="searchdropdown m-responsive-search-dropdown ui basic floating small dropdown button" id="headerSearch">
-        <sui-select *ngIf="showSuiSelectDropdown" [(ngModel)]="selectedOption" (ngModelChange)="onChange()" [isDisabled]="!showInput">
+    <div class="searchdropdown m-responsive-search-dropdown ui basic floating small dropdown main-header-search-dropdown button p-0" id="headerSearch">
+        <sui-select *ngIf="showSuiSelectDropdown" class="px-20" [(ngModel)]="selectedOption" (ngModelChange)="onChange()" [isDisabled]="!showInput">
             <sui-select-option *ngFor="let type of searchDropdownValues" [value]="type"></sui-select-option>
         </sui-select>
     </div>

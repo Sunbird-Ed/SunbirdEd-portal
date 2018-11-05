@@ -37,6 +37,9 @@
                         <button class="blue right floated ui button courseHeaderButton margin-top-10" (click)="showDashboard()">{{resourceService?.frmelmnts?.btn?.viewcoursestats}}</button>
                     </div>
                 </div>
+                <!-- course ended Error message starts -->
+                <h6 class="ui small negative message mt-0 mb-15" *ngIf="courseEndedErrorMessage">{{resourceService?.messages?.imsg?.m0043}}</h6>
+                <!-- course ended Error message ends -->
             </div>
         </div>
         <div class="one wide tablet one wide computer column"></div>
