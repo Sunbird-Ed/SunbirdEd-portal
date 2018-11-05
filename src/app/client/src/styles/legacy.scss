@@ -31,12 +31,12 @@
   font-size: 1.25em;
 }
 .cardsSubHeading {
-  font-weight:600;
+  font-weight:500;
   font-size: 1.125em;
   color: #007AFF;
 }
 .cardsDescription {
-  font-weight:600;
+  font-weight:500;
   font-size: 1.0625em;
   font-weight: 400;
   line-height: 1.4;
@@ -57,12 +57,12 @@
   padding-left: 10px;
 }
 .sliderCardDesc {
-  font-weight:600;
+  font-weight:500;
   font-size: 1em;
   color: #7c7b7b;
 }
 .sliderCardSubDesc {
-  font-weight:600;
+  font-weight:500;
   font-size: 0.875em;
   color: grey;
 }
@@ -72,17 +72,17 @@
   font-size: 1.313em;
 }
 .segmentAvatarDesc {
-  font-weight:600;
+  font-weight:500;
   font-size: 1.0625em;
   color: rgba(0, 0, 0, 0.85);
 }
 .segmentAvatarSubDesc {
-  font-weight:600;
+  font-weight:500;
   font-size: 0.9375em;
   color: #7c7b7b;
 }
 .segmentCardSubDesc {
-  font-weight:600;
+  font-weight:500;
   font-size: 1.0625em;
 }
 /*course structure page fonts*/
@@ -95,7 +95,7 @@
   font-size: 0.85em;
 }
 .courseStructureDesc {
-  font-weight:600;
+  font-weight:500;
   font-size: 0.7em;
 }
 /*course structure accordian fonts*/
@@ -104,7 +104,7 @@
   font-size: 1.1875em;
 }
 .courseAccordianDesc {
-  font-weight:600;
+  font-weight:500;
   font-size: 1.125em;
 }
 .courseAccordianSubDesc {
@@ -131,13 +131,13 @@
   font-size: 0.9375em;
 }
 .ShowFilterSubTitle {
-  font-weight:600;
+  font-weight:500;
   font-size: 0.9375em;
   color: #7c7b7b;
 }
 /*note card font*/
 .note-card-time-stamp {
-  font-weight:600;
+  font-weight:500;
   font-size: 0.625em;
 }
 .medium-font-text {
@@ -149,23 +149,23 @@
   font-size: 1.4em;
 }
 .dashBoardMenuItem {
-  font-weight:600;
+  font-weight:500;
   font-size: 0.9375em;
   color: #007AFF;
 }
 .ui.cards > .card .meta.dashBoardCardText {
-  font-weight:600;
+  font-weight:500;
   font-size: 1.1em;
   color: #7c7b7b;
 }
 .ui.cards > .card > .content > .description.dashboardCardSubText {
-  font-weight:600;
+  font-weight:500;
   font-size: 1.6em;
   color: #333333;
 }
 /*note card font*/
 .batch-card-desc {
-  font-weight:600;
+  font-weight:500;
   font-size: 0.8em;
 }
 /*terms and condition fonts*/
@@ -173,18 +173,18 @@
   color: #333333;
   font-size: 14px;
   font-style: italic;
-  font-weight:500;
+  font-weight:400;
 }
 .termsConDescrption {
   color: #333333;
   font-size: 14px;
-  font-weight:600;
+  font-weight:500;
 }
 .termsConAccept {
   opacity: 0.67;
   color: #333333;
   font-size: 13px;
-  font-weight:600;
+  font-weight:500;
 }
 .opacity-1{
   opacity: 1 !important;
@@ -464,7 +464,7 @@ h4.ui.header.sectionHeading {
   font-size: 1.375em;
 }
 .ui.menu {
-  font-weight:600;
+  font-weight:500;
   color: #333333;
 }
 .primary-header-avatar {
@@ -510,7 +510,7 @@ h4.ui.header.sectionHeading {
 .ui.secondary.pointing.menu .active.item {
   border-color: #007AFF;
   color: #333333;
-  font-weight:500;
+  font-weight:400;
 }
 .ui.secondary.pointing.menu {
   background: #fdfdfd;
@@ -669,14 +669,14 @@ i.large.icon.limitedPublishingLinkIcon {
 .ui.modal .ui.tiny.header.flag-description {
   color: #979797;
   font-size: 1em;
-  font-weight:600;
+  font-weight:500;
 }
 .ui.form .field > label.flag-form,
 .ui.form .grouped.fields > label {
   color: #979797;
   font-size: 0.9em;
   padding-top: 20px;
-  font-weight:500;
+  font-weight:400;
 }
 .ui.form .grouped.fields .field.radiomargin {
   margin: 1em 0;
@@ -799,7 +799,7 @@ i.large.icon.limitedPublishingLinkIcon {
   width: 85%;
 }
 .profileUpdateCardSubDesc {
-  font-weight:600;
+  font-weight:500;
   font-size: 0.875em;
   color: grey;
 }
@@ -878,45 +878,45 @@ i.large.icon.limitedPublishingLinkIcon {
   border-left-width: 11px;
 }
 .announcement-description {
-  font-weight:600;
+  font-weight:500;
   font-size: 1em;
 }
 .announcement-meta-data {
-  font-weight:600;
+  font-weight:500;
   font-size: 1em;
   color: #7c7b7b;
 }
 .ann-link-or-attachment {
   color: #007AFF;
   cursor: pointer;
-  font-weight:600;
+  font-weight:500;
   font-size: 0.9em;
 }
 .announcement-extra-data {
-  font-weight:600;
+  font-weight:500;
   font-size: 0.8em;
 }
 .showing-all-sent-ann {
   color: #333333;
-  font-weight:600;
+  font-weight:500;
   font-size: 1.13em;
   line-height: 19px;
 }
 .ann-table-heading {
   color: #7c7b7b;
-  font-weight:600;
+  font-weight:500;
   font-size: 1.1em;
   line-height: 19px;
 }
 .table-list-name-ann {
   color: #333333;
-  font-weight:600;
+  font-weight:500;
   font-size: 1.05em;
   line-height: 19px;
 }
 .ann-data-text {
   color: #333333;
-  font-weight:600;
+  font-weight:500;
   font-size: 1em;
   line-height: 19px;
 }
@@ -990,12 +990,12 @@ i.file.pdf.ann-details-icon {
 .ui.items > .item > .content p.ann-attachment-detail-meta {
   margin-left: 10px;
   margin-top: -5px;
-  font-weight:600;
+  font-weight:500;
   font-size: 1em ;
   color: #7c7b7b;
 }
 .ui.items > .item > .content p.ann-attachment-detail-heading {
-  font-weight:600;
+  font-weight:500;
   font-size: 1.2em ;
   margin-bottom: 0px;
   margin-left: 10px;
@@ -1016,16 +1016,16 @@ i.file.pdf.ann-details-icon {
 }
 .UpReviewTableHeader {
   font-size: 1em;
-  font-weight:500;
+  font-weight:400;
 }
 .UpReviewSubHeader {
   font-size: 0.7em;
   opacity: 0.7;
-  font-weight:600;
+  font-weight:500;
 }
 .UpReviewHeader {
   font-size: 1em;
-  font-weight:600;
+  font-weight:500;
 }
 .ui.tiny.image.UpReviewTinyImage {
   height: 40px;
@@ -1039,12 +1039,12 @@ i.file.pdf.ann-details-icon {
 .UpForReviewStatusOrange {
   color: #ffb300;
   font-size: 1.1em;
-  font-weight:600;
+  font-weight:500;
 }
 .UpForReviewStatusGreen {
   color: #47cf73;
   font-size: 1.1em;
-  font-weight:600;
+  font-weight:500;
 }
 .ui.upForReviewTable.table {
   border: none;
@@ -1247,7 +1247,7 @@ span.fancytree-title {
   padding: 8px;
   font-size: 1.2em;
   color: #333;
-  font-weight:600;
+  font-weight:500;
   display: flex;
   flex-direction: row;
 }
@@ -1344,7 +1344,7 @@ ul.fancytree-container li {
   display: inline-block;
   text-align: center;
   width: 120px;
-  font-weight:600;
+  font-weight:500;
   font-size: 1em;
   text-decoration: underline;
 }
@@ -1961,7 +1961,6 @@ ul.fancytree-container li {
 }
 .my-text {
   font-size: 1.063em;
-  font-weight:600;
   color: #333333;
   vertical-align: middle;
 }
@@ -2393,7 +2392,7 @@ iframe.iziModal-iframe {
 }
 .ui.card .card-desc-fixed-height {
   color: #7c7b7b;
-  font-weight:600;
+  font-weight:500;
   font-size: 1em;
   height: 2.8em;
   max-height: 2.8em;
