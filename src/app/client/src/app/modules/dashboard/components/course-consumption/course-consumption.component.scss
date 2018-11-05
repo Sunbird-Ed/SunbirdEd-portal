@@ -1,0 +1,6 @@
+@import "variables";
+
+span.dashBoardMenuItem.active {
+    color:$dash-board-menu-item-color;
+    font-weight: bold;
+}
