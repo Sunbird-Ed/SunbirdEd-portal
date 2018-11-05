@@ -159,6 +159,6 @@ describe('CollaboratingOnComponent', () => {
     fixture.detectChanges();
     component.fecthAllContent(9, 1, bothParams);
     const  fromnow = new DateFilterXtimeAgoPipe();
-    expect(fromnow.transform(Response.searchSuccessWithCountTwo.result.content[0].lastSubmittedOn, null)).toEqual('8 months ago');
+    expect(fromnow.transform(Response.searchSuccessWithCountTwo.result.content[0].lastSubmittedOn, null)).toEqual('7 months ago');
   }));
 });
