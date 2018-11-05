@@ -149,7 +149,7 @@ export const Response = {
     'softConstraints': {
       'badgeAssertions': 98, 'board': 99, 'channel': 100
     },
-    'facets': undefined
+    'facets': [ 'board', 'medium', 'subject', 'gradeLevel' ]
   },
   requestParam3: {
     'filters': {
@@ -171,7 +171,7 @@ export const Response = {
     'softConstraints': {
       'badgeAssertions': 98, 'board': 99, 'channel': 100
     },
-    'facets': undefined
+    'facets': [ ]
   },
   orgDetailsSuccessData: {
     'dateTime': null,
