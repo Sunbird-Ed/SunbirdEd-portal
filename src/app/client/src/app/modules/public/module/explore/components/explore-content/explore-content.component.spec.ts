@@ -127,11 +127,6 @@ describe('ExploreContentComponent', () => {
     component.populateContentSearch();
     expect(component.showLoader).toBeFalsy();
   });
-  // it('should call filterData method', () => {
-  //   const facetArray = ['subject', 'medium', 'board'];
-  //   component.filterData(facetArray);
-  //   expect(component.facetArray).toEqual(facetArray);
-  // });
   it('should call processFilterData method', () => {
     const obj = {
       'gradeLevel': [
