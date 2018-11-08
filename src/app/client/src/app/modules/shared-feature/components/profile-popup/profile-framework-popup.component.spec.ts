@@ -43,7 +43,7 @@ describe('PopupComponent', () => {
     fixture = TestBed.createComponent(ProfileFrameworkPopupComponent);
     component = fixture.componentInstance;
   });
-  it('When framework  api throw error', () => {
+  it('Error message to be displayed when framework api returns error', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
     const frameworkService = TestBed.get(FrameworkService);
     const formService = TestBed.get(FormService);
@@ -58,7 +58,7 @@ describe('PopupComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
   });
 
-  it('When formservice api throw error', () => {
+  it('Error message to be displayed when form config service throws error', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
     const frameworkService = TestBed.get(FrameworkService);
     const formService = TestBed.get(FormService);
@@ -73,7 +73,20 @@ describe('PopupComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
   });
 
-  it('when we are sending input field', () => {
+  it('Error message to be displayed when org details API throws error', () => {
+    const orgDetailsService = TestBed.get(OrgDetailsService);
+    const frameworkService = TestBed.get(FrameworkService);
+    const formService = TestBed.get(FormService);
+    const toasterService = TestBed.get(ToasterService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = resourceBundle.messages;
+    spyOn(orgDetailsService, 'getOrgDetails').and.callFake(() => observableThrowError({}));
+    spyOn(toasterService, 'error').and.callThrough();
+    component.ngOnInit();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
+  });
+
+  it('Form to successfully set input framework data sent', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
     const frameworkService = TestBed.get(FrameworkService);
     const formService = TestBed.get(FormService);
@@ -89,18 +102,5 @@ describe('PopupComponent', () => {
     expect(component.class).toEqual(Response.data[2]);
     expect(component.subject).toEqual(Response.data[3]);
     expect(component.showButton).toBeTruthy();
-  });
-
-  it('When org details  api failed', () => {
-    const orgDetailsService = TestBed.get(OrgDetailsService);
-    const frameworkService = TestBed.get(FrameworkService);
-    const formService = TestBed.get(FormService);
-    const toasterService = TestBed.get(ToasterService);
-    const resourceService = TestBed.get(ResourceService);
-    resourceService.messages = resourceBundle.messages;
-    spyOn(orgDetailsService, 'getOrgDetails').and.callFake(() => observableThrowError({}));
-    spyOn(toasterService, 'error').and.callThrough();
-    component.ngOnInit();
-    expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
   });
 });
