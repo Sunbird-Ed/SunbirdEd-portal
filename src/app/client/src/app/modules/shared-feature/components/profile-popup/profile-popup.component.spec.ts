@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { PopupComponent } from './profile-popup.component';
+import { ProfileFrameworkPopupComponent } from './profile-popup.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -10,8 +10,8 @@ import {throwError as observableThrowError, of as observableOf,  Observable } fr
 import { Response } from './profile-popup.component.spec.data';
 
 describe('PopupComponent', () => {
-  let component: PopupComponent;
-  let fixture: ComponentFixture<PopupComponent>;
+  let component: ProfileFrameworkPopupComponent;
+  let fixture: ComponentFixture<ProfileFrameworkPopupComponent>;
   const resourceBundle = {
     'messages': {
       'emsg': {
@@ -29,7 +29,7 @@ describe('PopupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
-      declarations: [ PopupComponent ],
+      declarations: [ ProfileFrameworkPopupComponent ],
       providers: [ConfigService,  LearnerService, OrgDetailsService, FrameworkService, FormService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
@@ -40,7 +40,7 @@ describe('PopupComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PopupComponent);
+    fixture = TestBed.createComponent(ProfileFrameworkPopupComponent);
     component = fixture.componentInstance;
   });
   it('When framework  api throw error', () => {
