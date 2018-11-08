@@ -9,6 +9,7 @@ import { ReviewCommentsService } from '../../services';
 import { of, throwError } from 'rxjs';
 import * as _ from 'lodash';
 import { FormControl } from '@angular/forms';
+import { OrderModule } from 'ngx-order-pipe';
 
 const mockUserService = {
   userProfile: {
@@ -114,7 +115,8 @@ describe('ReviewCommentsComponent', () => {
         { provide: ResourceService, useValue: mockResourceBundle },
         { provide: UserService, useValue: mockUserService },
       ],
-      imports: [SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot()],
+      imports: [SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule,
+        TelemetryModule.forRoot(), OrderModule],
     })
     .compileComponents();
   }));

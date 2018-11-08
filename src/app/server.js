@@ -75,10 +75,6 @@ app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
 app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '10mb' }), require('./helpers/announcement')(keycloak))
 
-// mock api routes
-app.use('/review-comments/v1', bodyParser.urlencoded({ extended: false }),
-  bodyParser.json({ limit: '10mb' }), require('./helpers/review-comments')())
-
 app.all('/logoff', endSession, (req, res) => {
   res.cookie('connect.sid', '', { expires: new Date() })
   res.redirect('/logout')
@@ -148,16 +144,18 @@ app.get('/v1/user/session/start/:deviceId', (req, res) => {
 app.use('/resourcebundles/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '50mb' }), require('./helpers/resourceBundles')(express))
 
-console.log('[Extensible framework]: Bootstraping...')
+
+console.log('[Extensible framework]: Bootstrapping...')
+
 const subApp = express()
 subApp.use(bodyParser.json({ limit: '50mb' }))
+
+// subApp.use('/plugin/review/comment/*', keycloak.protect()); // keycloak protection 
+
 app.use('/plugin', subApp)
-frameworkAPI.bootstrap(frameworkConfig, subApp).then(() => {
-  runApp()
-}).catch((error) => {
- // console.log('[Extensible framework]: Bootstrap failed!', error)
-  // if framework fails, do not stop the portal
-  runApp()
+frameworkAPI.bootstrap(frameworkConfig, subApp).then(data => runApp())
+.catch(error => {
+  runApp()   // if framework fails, do not stop the portal
 })
 
 // Method called after successful authentication and it will log the telemetry for CP_SESSION_START and updates the login time

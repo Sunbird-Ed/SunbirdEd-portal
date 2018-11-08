@@ -16,6 +16,20 @@ import { NoteCardComponent } from './note-card.component';
 import { TimeAgoPipe } from 'time-ago-pipe';
 import * as _ from 'lodash';
 
+const mockResourceBundle = {
+  'messages': {
+    'emsg': {
+      'm0005': 'No content to play'
+    },
+    fmsg: {
+      m0033: ''
+    }
+  },
+  frmelmnts: {
+    lbl: {},
+    lnk: {}
+  }
+};
 describe('NoteCardComponent', () => {
   let component: NoteCardComponent;
   let fixture: ComponentFixture<NoteCardComponent>;
@@ -42,8 +56,9 @@ describe('NoteCardComponent', () => {
       imports: [ OrderModule, HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot() ],
       declarations: [ NoteCardComponent, TimeAgoPipe ],
       providers: [ NotesService,
-         { provide: Router, useClass: RouterStub },
-         { provide: ActivatedRoute, useClass: ActivatedRouteStub } ],
+        { provide: ResourceService, useValue: mockResourceBundle },
+        { provide: Router, useClass: RouterStub },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub } ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents()
@@ -71,23 +86,9 @@ describe('NoteCardComponent', () => {
     expect(component.notesList).toBeDefined();
   });
 
-  it('Should display error message in case of exception in fetching list of notes', () => {
-    const notesService = TestBed.get(NotesService);
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
-    const toasterService = TestBed.get(ToasterService);
-    const resourceService = TestBed.get(ResourceService);
-    resourceService.messages = response.resourceBundle.messages;
-    spyOn(toasterService, 'error').and.callThrough();
-    spyOn(learnerService, 'get').and.callFake(() => observableThrowError({}));
-    spyOn(notesService, 'search').and.callFake(() => observableThrowError(response.responseFailed));
-    userService.getUserProfile();
-    component.getAllNotes();
-    expect(toasterService.error).toHaveBeenCalled();
-  });
-
   it('Should refresh the values of selectedIndex and selectedNote once a note is updated', () => {
     component.notesList = response.responseSuccess.result.response.note;
+    console.log('error test');
     component.updateEventEmitter(response.responseSuccess.result.response.note[0]);
     expect(component.selectedIndex).toBe(0);
     expect(component.selectedNote).toBe(component.notesList[0]);
@@ -131,6 +132,19 @@ describe('NoteCardComponent', () => {
     activatedRouteStub.changeSnapshot(undefined);
     component.viewAllNotes();
     expect(route.navigate).toHaveBeenCalledWith(['/learn/course', 'do_212347136096788480178', 'batch', '01250892550857523234', 'notes']);
+  });
+
+  it('Should display error message in case of exception in fetching list of notes', () => {
+    const notesService = TestBed.get(NotesService);
+    const userService = TestBed.get(UserService);
+    const learnerService = TestBed.get(LearnerService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callFake(() => 'error');
+    spyOn(learnerService, 'get').and.callFake(() => observableThrowError({}));
+    spyOn(notesService, 'search').and.callFake(() => observableThrowError(response.responseFailed));
+    userService.getUserProfile();
+    component.getAllNotes();
+    expect(toasterService.error).toHaveBeenCalled();
   });
 
   it('should unsubscribe from all observable subscriptions', () => {

@@ -64,7 +64,6 @@ export class PlayerComponent implements OnInit, OnChanges, OnDestroy {
   }
   generateContentReadEvent(event: any) {
     if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START')) {
-      this.emitSceneChangeEvent(1000);
       this.contentProgressEvent.emit(event);
     } else if (event.detail.telemetryData.eid &&
       event.detail.telemetryData.eid === 'END' && _.get(event.detail.telemetryData, 'edata.summary')) {

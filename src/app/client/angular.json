@@ -27,6 +27,11 @@
               "node_modules/font-awesome/css/font-awesome.css",
               "src/styles/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styles/"
+              ]
+            },
             "scripts": [
               "node_modules/moment/min/moment.min.js",
               "node_modules/izitoast/dist/js/iziToast.min.js",
@@ -35,7 +40,7 @@
               "src/assets/libs/pagedown-core/Markdown.Converter.js",
               "src/assets/libs/pagedown-core/Markdown.Editor.js",
               "src/assets/libs/pagedown-core/Markdown.Sanitizer.js",
-              "src/assets/libs/telemetry.min.js",
+              "node_modules/@project-sunbird/telemetry-sdk/index.js",
               "node_modules/fine-uploader/fine-uploader/fine-uploader.min.js",
               "src/assets/libs/semantic.min.js",
               "src/assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.js",
@@ -115,7 +120,7 @@
               "src/assets/libs/pagedown-core/Markdown.Converter.js",
               "src/assets/libs/pagedown-core/Markdown.Editor.js",
               "src/assets/libs/pagedown-core/Markdown.Sanitizer.js",
-              "src/assets/libs/telemetry.min.js",
+              "node_modules/@project-sunbird/telemetry-sdk/index.js",
               "node_modules/fine-uploader/fine-uploader/fine-uploader.min.js",
               "src/assets/libs/semantic.min.js",
               "src/assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.js",
@@ -127,6 +132,11 @@
               "node_modules/font-awesome/css/font-awesome.css",
               "src/styles/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styles/"
+              ]
+            },
             "assets": [
               "src/assets",
               "src/thirdparty",

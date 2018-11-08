@@ -3,10 +3,9 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable } from 'rxjs';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
-
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { AnnouncementService, UserService, CoursesService, LearnerService, FrameworkService, ContentService,
-   PlayerService } from '@sunbird/core';
+  PlayerService } from '@sunbird/core';
 import { SharedModule, ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
 import { MainHomeComponent } from './main-home.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -73,9 +72,11 @@ class ActivatedRouteStub {
   it('should subscribe to user service', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callFake(() => 'error');
     userService._userData$.next({ err: null, userProfile: testData.userSuccess});
     userService.getUserProfile();
-    fixture.detectChanges();
+    component.ngOnInit();
     component.populateUserProfile();
     expect(component.showLoader).toBeFalsy();
     expect(component.toDoList).toBeDefined();
@@ -83,60 +84,77 @@ class ActivatedRouteStub {
   it('should throw error in user Service ', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callFake(() => 'error');
     userService._userData$.next({ err: testData.userError, userProfile: null});
     userService.getUserProfile();
-    fixture.detectChanges();
+    component.ngOnInit();
     component.populateUserProfile();
     expect(component.showLoader).toBeFalsy();
   });
   it('should subscribe to course service', () => {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callFake(() => 'error');
     courseService._enrolledCourseData$.next({ err: null, enrolledCourses: testData.courseSuccess});
     courseService.initialize();
-    fixture.detectChanges();
     component.populateEnrolledCourse();
     expect(component.showLoader).toBeFalsy();
     expect(component.toDoList).toBeDefined();
   });
- it('should subscribe to course service throw error', () => {
+  it('should subscribe to course service throw error', () => {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callFake(() => 'error');
     courseService._enrolledCourseData$.next({ err: testData.courseError, enrolledCourses: null});
     courseService.initialize();
-    fixture.detectChanges();
+    component.ngOnInit();
     component.populateEnrolledCourse();
     expect(component.showLoader).toBeFalsy();
   });
   it('should call playcontent', () => {
     const playerService = TestBed.get(PlayerService);
-    spyOn(playerService, 'playContent').and.callThrough();
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callFake(() => 'error');
+    spyOn(playerService, 'playContent').and.callFake(() => {
+      return;
+    });
     component.playContent(testData.metaData);
     expect(playerService.playContent).toHaveBeenCalled();
   });
   it('should call playcontent', () => {
     const playerService = TestBed.get(PlayerService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callFake(() => 'error');
     spyOn(playerService, 'playContent').and.callThrough();
     component.playContent(testData.metaData);
     expect(playerService.playContent).toHaveBeenCalled();
   });
   it('should call inview method for visits data', () => {
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callFake(() => 'error');
     spyOn(component, 'inview').and.callThrough();
-    fixture.detectChanges();
+    component.ngOnInit();
     component.inview(testData.inviewData);
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
   });
   it('should call inviewChange method for visits data', () => {
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callFake(() => 'error');
     spyOn(component, 'inviewChange').and.callThrough();
-    fixture.detectChanges();
+    component.ngOnInit();
     component.inviewChange(testData.toDoList, testData.eventData2);
     expect(component.inviewChange).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
   });
   it('should call announcemnetInview method for visits data', () => {
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callFake(() => 'error');
     spyOn(component, 'anouncementInview').and.callThrough();
-    fixture.detectChanges();
+    component.ngOnInit();
     component.anouncementInview(testData.announcementInview);
     expect(component.anouncementInview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
