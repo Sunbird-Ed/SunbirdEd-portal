@@ -268,10 +268,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   applyFilters() {
     this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
-    let queryParams: any = {};
-    _.forIn(this.queryParams, (value, key) => {
-      queryParams[key] = value;
-    });
+    let queryParams: any = this.queryParams;
     queryParams = _.pickBy(queryParams, value => value && value.length);
     this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
   }
