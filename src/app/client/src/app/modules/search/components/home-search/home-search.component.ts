@@ -93,6 +93,9 @@ export class HomeSearchComponent implements OnInit {
    * which is needed to show the pagination on inbox view
    */
   pager: IPagination;
+
+  public filterType: string;
+
   /**
    *url value
    */
@@ -186,6 +189,7 @@ export class HomeSearchComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.filterType = this.config.appConfig.home.filterType;
     observableCombineLatest(
       this.activatedRoute.params,
       this.activatedRoute.queryParams,

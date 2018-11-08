@@ -521,6 +521,11 @@
     "inPageredirectUrl": "/learn",
     "searchPageredirectUrl": "/search/Courses/1"
   },
+  "home": {
+    "filterType": "home",
+    "inPageredirectUrl": "/home",
+    "searchPageredirectUrl": "/search/All/1"
+  },
   "library": {
     "filterType": "library",
     "inPageredirectUrl": "/resources",
@@ -549,6 +554,7 @@
     "searchPageredirectUrl": "/explore/1"
   },
   "formApiTypes": {
+    "home": "home",
     "textbook": "textbook",
     "course": "course",
     "collection": "collection",
