@@ -559,7 +559,8 @@
     "explore": "explore",
     "resourcebundle": "resourcebundle",
     "upforreview" :"upforreview",
-    "collaboration":"collaboration"
+    "collaboration":"collaboration",
+    "framework": "framework"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,
@@ -592,6 +593,7 @@
       "language": "profile/additionalInfo/edit"
     },
     "defaultViewMoreLimit": 3,
+    "defaultShowMoreLimit": 4,
     "options": [
       {
         "text": "Hide this from everyone",
