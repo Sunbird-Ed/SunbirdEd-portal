@@ -144,29 +144,18 @@ app.get('/v1/user/session/start/:deviceId', (req, res) => {
 app.use('/resourcebundles/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '50mb' }), require('./helpers/resourceBundles')(express))
 
-console.log('[Extensible framework]: Bootstraping...')
-function addCorsHeaders(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE,OPTIONS')
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization,' +
-    'cid, user-id, x-auth, Cache-Control, X-Requested-With, *')
 
-  if (req.method === 'OPTIONS') {
-    res.sendStatus(200)
-  } else {
-    next()
-  };
-}
+console.log('[Extensible framework]: Bootstrapping...')
+
 const subApp = express()
 subApp.use(bodyParser.json({ limit: '50mb' }))
-subApp.use(addCorsHeaders)
+
+// subApp.use('/plugin/review/comment/*', keycloak.protect()); // keycloak protection 
+
 app.use('/plugin', subApp)
-frameworkAPI.bootstrap(frameworkConfig, subApp).then(() => {
-  runApp()
-}).catch((error) => {
- // console.log('[Extensible framework]: Bootstrap failed!', error)
-  // if framework fails, do not stop the portal
-  runApp()
+frameworkAPI.bootstrap(frameworkConfig, subApp).then(data => runApp())
+.catch(error => {
+  runApp()   // if framework fails, do not stop the portal
 })
 
 // Method called after successful authentication and it will log the telemetry for CP_SESSION_START and updates the login time

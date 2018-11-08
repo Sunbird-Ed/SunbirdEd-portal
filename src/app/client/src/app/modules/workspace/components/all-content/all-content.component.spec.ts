@@ -160,11 +160,4 @@ describe('AllContentComponent', () => {
         }
       );
     }));
-  it('should set lastUpdated Date by calling the filter', inject([SearchService], (searchService) => {
-    spyOn(searchService , 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountTwo));
-    fixture.detectChanges();
-    component.fecthAllContent(9, 1, bothParams);
-    const  fromnow = new DateFilterXtimeAgoPipe();
-    expect(fromnow.transform(Response.searchSuccessWithCountTwo.result.content[0].lastSubmittedOn, null)).toEqual('6 months ago');
-  }));
 });
