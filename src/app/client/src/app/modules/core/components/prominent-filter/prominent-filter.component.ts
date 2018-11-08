@@ -223,10 +223,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     } else {
         this.isFiltered = false;
         this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
-        let queryParams = {};
-        _.forIn(this.queryParams, (value, key) => {
-          queryParams[key] = value;
-        });
+        let queryParams = this.queryParams;
         queryParams = _.pickBy(queryParams, value => _.isArray(value) && value.length > 0);
         this.router.navigate([], { relativeTo: this.activatedRoute.parent,
             queryParams: queryParams
