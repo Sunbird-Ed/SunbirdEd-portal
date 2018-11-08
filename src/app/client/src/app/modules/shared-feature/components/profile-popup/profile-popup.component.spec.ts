@@ -1,13 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { PopupComponent } from './popup.component';
+import { PopupComponent } from './profile-popup.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { OrgDetailsService, FrameworkService, FormService, LearnerService, CoreModule } from '@sunbird/core';
 import {ConfigService, ResourceService, Framework, ToasterService, SharedModule} from '@sunbird/shared';
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { Response } from './popup.component.spec.data';
+import { Response } from './profile-popup.component.spec.data';
 
 describe('PopupComponent', () => {
   let component: PopupComponent;
@@ -43,7 +43,7 @@ describe('PopupComponent', () => {
     fixture = TestBed.createComponent(PopupComponent);
     component = fixture.componentInstance;
   });
-  it('should call ngOninit when framework throw error', () => {
+  it('When framework  api throw error', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
     const frameworkService = TestBed.get(FrameworkService);
     const formService = TestBed.get(FormService);
@@ -58,7 +58,7 @@ describe('PopupComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
   });
 
-  it('should call ngOninit when formservice throw error', () => {
+  it('When formservice api throw error', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
     const frameworkService = TestBed.get(FrameworkService);
     const formService = TestBed.get(FormService);
@@ -73,7 +73,7 @@ describe('PopupComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
   });
 
-  it('should call ngOninit', () => {
+  it('when we are sending input field', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
     const frameworkService = TestBed.get(FrameworkService);
     const formService = TestBed.get(FormService);
@@ -91,7 +91,7 @@ describe('PopupComponent', () => {
     expect(component.showButton).toBeTruthy();
   });
 
-  it('should call ngOninit when org details failed', () => {
+  it('When org details  api failed', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
     const frameworkService = TestBed.get(FrameworkService);
     const formService = TestBed.get(FormService);

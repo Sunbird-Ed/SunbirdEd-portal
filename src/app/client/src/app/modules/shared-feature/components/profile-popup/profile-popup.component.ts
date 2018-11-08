@@ -9,10 +9,10 @@ import {
 import * as _ from 'lodash';
 @Component({
   selector: 'app-popup',
-  templateUrl: './popup.component.html',
-  styleUrls: ['./popup.component.scss']
+  templateUrl: './profile-popup.component.html',
+  styleUrls: ['./profile-popup.component.scss']
 })
-export class PopupComponent implements OnInit, OnDestroy {
+export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   @Input() formTitle: string;
   @Input() buttonLabel: string;
   @Input() formInput: any = {};

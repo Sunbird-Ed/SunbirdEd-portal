@@ -1,3 +1,3 @@
 export * from './view-all/view-all.component';
-export * from './popup/popup.component';
+export * from './profile-popup/profile-popup.component';
 
