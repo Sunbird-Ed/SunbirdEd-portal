@@ -9,11 +9,10 @@ import {
 import * as _ from 'lodash';
 @Component({
   selector: 'app-popup',
-  templateUrl: './profile-popup.component.html',
-  styleUrls: ['./profile-popup.component.scss']
+  templateUrl: './profile-framework-popup.component.html',
+  styleUrls: ['./profile-framework-popup.component.scss']
 })
 export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
-  @Input() formTitle: string;
   @Input() buttonLabel: string;
   @Input() formInput: any = {};
   @Output() submit = new EventEmitter<any>();

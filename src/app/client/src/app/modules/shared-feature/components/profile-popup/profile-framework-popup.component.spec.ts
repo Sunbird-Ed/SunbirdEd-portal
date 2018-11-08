@@ -1,13 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ProfileFrameworkPopupComponent } from './profile-popup.component';
+import { ProfileFrameworkPopupComponent } from './profile-framework-popup.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { OrgDetailsService, FrameworkService, FormService, LearnerService, CoreModule } from '@sunbird/core';
 import {ConfigService, ResourceService, Framework, ToasterService, SharedModule} from '@sunbird/shared';
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { Response } from './profile-popup.component.spec.data';
+import { Response } from './profile-framework-popup.component.spec.data';
 
 describe('PopupComponent', () => {
   let component: ProfileFrameworkPopupComponent;
