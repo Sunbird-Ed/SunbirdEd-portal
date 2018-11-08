@@ -68,7 +68,7 @@ describe('PopupComponent', () => {
     spyOn(orgDetailsService, 'getOrgDetails').and.callFake(() => observableOf(Response.orgSuccess));
     frameworkService._frameworkData$.next({err: 'client error', framework: null, frameworkdata: null });
     spyOn(toasterService, 'error').and.callThrough();
-    spyOn(formService, 'getFormConfig').and.callFake(() =>observableThrowError({}));
+    spyOn(formService, 'getFormConfig').and.callFake(() => observableThrowError({}));
     component.ngOnInit();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
   });
