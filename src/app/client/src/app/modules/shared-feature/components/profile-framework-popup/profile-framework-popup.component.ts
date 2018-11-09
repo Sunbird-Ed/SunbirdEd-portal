@@ -84,9 +84,9 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   onChange() {
     if (this.selectedOption['board'] && this.selectedOption['medium'] && this.selectedOption['gradeLevel']) {
       if (this.selectedOption['board'].length > 0 && this.selectedOption['medium'].length > 0
-      && this.selectedOption['gradeLevel'].length > 0) {
-      this.showButton = true;
-    }
+          && this.selectedOption['gradeLevel'].length > 0) {
+        this.showButton = true;
+      }
     } else {
       this.showButton = false;
     }
