@@ -82,9 +82,9 @@ var buildBundle = function (item) {
         resObj[contentObj.name] = obj
       })
       _.forEach(resObj, function (langObj, langKey) {
-        if (resObj[configHelper.getConfig('PORTAL_PRIMARY_BUNDLE_LANGUAGE')] &&
-            langKey !== configHelper.getConfig('PORTAL_PRIMARY_BUNDLE_LANGUAGE')) {
-          fillObject(resObj[configHelper.getConfig('PORTAL_PRIMARY_BUNDLE_LANGUAGE')], resObj[langKey])
+        if (resObj[configHelper.getConfig('sunbird_primary_bundle_language')] &&
+            langKey !== configHelper.getConfig('sunbird_primary_bundle_language')) {
+          fillObject(resObj[configHelper.getConfig('sunbird_primary_bundle_language')], resObj[langKey])
         }
       })
       _.forEach(resObj, function (data, lang) {

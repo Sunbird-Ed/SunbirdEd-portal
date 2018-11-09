@@ -11,7 +11,6 @@ const permissionsHelper = require('./permissionsHelper.js')
 const telemetryHelper = require('./telemetryHelper.js')
 const envHelper = require('./environmentVariablesHelper.js')
 const userHelper = require('./userHelper.js')
-const configHelper = require('./config/configHelper.js')
 const echoAPI = envHelper.PORTAL_ECHO_API_URL
 const createUserFlag = envHelper.PORTAL_AUTOCREATE_TRAMPOLINE_USER
 const learnerURL = envHelper.LEARNER_URL

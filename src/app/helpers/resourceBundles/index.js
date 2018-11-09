@@ -1,5 +1,5 @@
 let dateFormat = require('dateformat')
-const configHelper = require('../config/configHelper.js')
+const configHelper = require('../configServiceSDKHelper.js')
 let HttpStatus = require('http-status-codes')
 let uuidv1 = require('uuid/v1')
 let path = require('path')
@@ -67,7 +67,7 @@ function getErrorCode (httpCode) {
 module.exports = function (express) {
   var router = express.Router()
   router.get('/read/:lang?', (requestObj, responseObj, next) => {
-    var lang = requestObj.params['lang'] || configHelper.getConfig('PORTAL_DEFAULT_LANGUAGE')
+    var lang = requestObj.params['lang'] || configHelper.getConfig('sunbird_default_language')
 
     try {
       var bundles = JSON.parse(fs.readFileSync(path.join(__dirname, '/./../../resourcebundles/json/', lang + '.json')))
