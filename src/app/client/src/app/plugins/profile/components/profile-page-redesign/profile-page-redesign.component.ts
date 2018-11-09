@@ -31,25 +31,25 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
   contributions = [];
   attendedTraining: Array<object>;
   /**
-  * inviewLogs
+  * telemetryLogs
   */
-  inviewLogs = [];
+ telemetryLogs = [];
   roles: Array<string>;
-  showMore = true;
-  showMoreCourse = true;
+  showMoreRoles = true;
+  showMoreTrainings = true;
   /**
    * Contains default limit to show awards
    */
-  defaultLimit = this.configService.appConfig.PROFILE.defaultShowMoreLimit;
+  defaultShowMoreRolesLimit = this.configService.appConfig.PROFILE.defaultShowMoreLimit;
   /**
    * Used to store limit to show/hide awards
    */
-  limit = this.defaultLimit;
-  courseLimit = 3;
+  showMoreRolesLimit = this.defaultShowMoreRolesLimit;
+  courseLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
   /**
  * Admin Dashboard access roles
 */
-  admin: Array<string>;
+adminActions: Array<string>;
   /**
    * input keyword depending on url
    */
@@ -68,8 +68,8 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
   /**
    * option selected on dropdown
    */
-  selectedOption: string;
-  bulkUploadDropdownValues: Array<string> = [this.resourceService.frmelmnts.instn.t0015, this.resourceService.frmelmnts.instn.t0016,
+  adminActionSelectedOption: string;
+  adminActionDropDownOptions: Array<string> = [this.resourceService.frmelmnts.instn.t0015, this.resourceService.frmelmnts.instn.t0016,
   this.resourceService.frmelmnts.lbl.chkuploadsts];
   courseDataSubscription: Subscription;
   orgDetails = [];
@@ -160,7 +160,6 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
   * telemetryImpression
   */
   telemetryImpression: IImpressionEventInput;
-  workspaceInteractEdata: IInteractEventEdata;
   myContributionsInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   constructor(public resourceService: ResourceService, public coursesService: CoursesService,
@@ -171,7 +170,7 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.admin = this.configService.rolesConfig.headerDropdownRoles.adminDashboard;
+    this.adminActions = this.configService.rolesConfig.headerDropdownRoles.adminDashboard;
     this.userSubscription = this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
@@ -239,13 +238,7 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
     // First check local storage
     const response = this.searchService.searchedContentList;
     if (response && response.count) {
-      _.forEach(response.content, (content, key) => {
-        const constantData = this.configService.appConfig.Course.otherCourse.constantData;
-        const metaData = this.configService.appConfig.Course.otherCourse.metaData;
-        const dynamicFields = {};
-        this.contributions[key] = this.utilService.processContent(content,
-          constantData, dynamicFields, metaData);
-      });
+      this.formatMyContributionData(response.content);
     } else if (response && response.count === 0) {
       this.contributions = [];
     } else {
@@ -257,18 +250,22 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
       };
       this.searchService.searchContentByUserId(searchParams).subscribe(
         (data: ServerResponse) => {
-          _.forEach(data.result.content, (content, key) => {
-            const constantData = this.configService.appConfig.Course.otherCourse.constantData;
-            const metaData = this.configService.appConfig.Course.otherCourse.metaData;
-            const dynamicFields = {};
-            this.contributions[key] = this.utilService.processContent(content,
-              constantData, dynamicFields, metaData);
-          });
+          this.formatMyContributionData(data.result.content);
         },
         (err: ServerResponse) => {
         }
       );
     }
+  }
+
+  private formatMyContributionData(contents) {
+    _.forEach(contents, (content, key) => {
+      const constantData = this.configService.appConfig.Course.otherCourse.constantData;
+      const metaData = this.configService.appConfig.Course.otherCourse.metaData;
+      const dynamicFields = {};
+      this.contributions[key] = this.utilService.processContent(content,
+        constantData, dynamicFields, metaData);
+    });
   }
 
   getAttendedTraining() {
@@ -294,20 +291,20 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
    */
   toggle(showMore) {
     if (showMore === true) {
-      this.limit = this.roles.length;
-      this.showMore = false;
+      this.showMoreRolesLimit = this.roles.length;
+      this.showMoreRoles = false;
     } else {
-      this.showMore = true;
-      this.limit = this.defaultLimit;
+      this.showMoreRoles = true;
+      this.showMoreRolesLimit = this.defaultShowMoreRolesLimit;
     }
   }
 
   toggleCourse(showMoreCourse) {
     if (showMoreCourse === true) {
       this.courseLimit = this.attendedTraining.length;
-      this.showMoreCourse = false;
+      this.showMoreTrainings = false;
     } else {
-      this.showMoreCourse = true;
+      this.showMoreTrainings = true;
       this.courseLimit = 3;
     }
   }
@@ -337,7 +334,7 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
    * it navigate
    */
   onChange() {
-    this.router.navigate([this.uploadUrl[this.selectedOption]]);
+    this.router.navigate([this.uploadUrl[this.adminActionSelectedOption]]);
   }
 
   onClickOfMyContributions(content) {
@@ -345,16 +342,16 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * get inviewChange
+   * get onTelemetryEvent
   */
-  inviewChange(contribution, event) {
+ onTelemetryEvent(contribution, event) {
     const slideData = contribution.slice(event.currentSlide + 1, event.currentSlide + 5);
     _.forEach(slideData, (slide, key) => {
-      const obj = _.find(this.inviewLogs, (o) => {
+      const obj = _.find(this.telemetryLogs, (o) => {
         return o.objid === slide.courseId;
       });
       if (obj === undefined) {
-        this.inviewLogs.push({
+        this.telemetryLogs.push({
           objid: slide.courseId,
           objtype: 'profile',
           index: event.currentSlide + key,
@@ -362,11 +359,11 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
         });
       }
     });
-    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.visits = this.telemetryLogs;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
-  checkSlide(event) {
+  beforeContributionSlideChange(event) {
     if (event.currentSlide === 0 && event.nextSlide === 0) {
       this.btnArrow = 'prev-button';
     } else if (event.currentSlide < event.nextSlide) {

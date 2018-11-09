@@ -5,23 +5,23 @@
         <ngx-avatar class="my-avatar" [style]="customStyle" [size]="100" initialsSize="1" name="{{userProfile.firstName}} ">
         </ngx-avatar>
         <div class="ui primary  dropdown button right-aligned-button computer only" *ngIf='permissionService.permissionAvailable'
-          appPermission [permission]='admin'>
-          <sui-select [placeholder]="'Admin Actions'" [(ngModel)]="selectedOption" (ngModelChange)="onChange()">
-            <sui-select-option *ngFor="let type of bulkUploadDropdownValues" [value]="type"></sui-select-option>
+          appPermission [permission]='adminActions'>
+          <sui-select [placeholder]="'Admin Actions'" [(ngModel)]="adminActionSelectedOption" (ngModelChange)="onChange()">
+            <sui-select-option *ngFor="let type of adminActionDropDownOptions" [value]="type"></sui-select-option>
           </sui-select>
         </div>
       </div>
     </div>
     <div class="fs-2-5 font-w-bold mb-15 text-ac">{{userProfile.firstName}} {{userProfile.lastName}}</div>
     <div class="mb-15 text-ac profile-label-container" *ngIf="roles && roles.length > 0">
-      <a class="ui dodger-blue basic label mr-15 mt-5" *ngFor="let role of roles | slice:0:limit">{{role}}</a>
+      <a class="ui dodger-blue basic label mr-15 mt-5" *ngFor="let role of roles | slice:0:showMoreRolesLimit">{{role}}</a>
     </div>
-    <div *ngIf="roles.length > defaultLimit">
-      <div class="fs-1 color-2 mb-10 font-w-bold" *ngIf="showMore" (click)="toggle(true)">+ {{roles.length -
-        defaultLimit}} {{resourceService.frmelmnts.lbl.more}}
+    <div *ngIf="roles.length > defaultShowMoreRolesLimit">
+      <div class="fs-1 color-2 mb-10 font-w-bold" *ngIf="showMoreRoles" (click)="toggle(true)">+ {{roles.length -
+          defaultShowMoreRolesLimit}} {{resourceService.frmelmnts.lbl.more}}
         <i class="chevron down icon"></i>
       </div>
-      <div class="fs-1 color-2 mb-10 font-w-bold" (click)="toggle(false)" *ngIf="!showMore">{{resourceService.frmelmnts.lbl.showLess}}
+      <div class="fs-1 color-2 mb-10 font-w-bold" (click)="toggle(false)" *ngIf="!showMoreRoles">{{resourceService.frmelmnts.lbl.showLess}}
         <i class="chevron up icon"></i>
       </div>
     </div>
@@ -134,8 +134,8 @@
 
       <div class="ui segment">
         <div class="regular slider pt-10">
-          <ngx-slick in-view-container [throttle]="[1000]" [trigger]="item" (afterChange)="inviewChange(contributions,$event)"
-            (beforeChange)="checkSlide($event)" class="carousel" #slickModal="slick-modal" [config]="slideConfig">
+          <ngx-slick in-view-container [throttle]="[1000]" [trigger]="item" (afterChange)="onTelemetryEvent(contributions,$event)"
+            (beforeChange)="beforeContributionSlideChange($event)" class="carousel" #slickModal="slick-modal" [config]="slideConfig">
             <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let item of contributions;let i = index;"
               class="slide">
               <div>
@@ -164,10 +164,10 @@
               <span class="fs-1 color-4" *ngIf="data.completedOn">{{data.completedOn}}</span>
             </li>
             <div *ngIf="attendedTraining.length > 3">
-              <button class="ui semi-circular dodger-blue button mt-30" *ngIf="showMoreCourse" (click)="toggleCourse(true)">{{resourceService.frmelmnts.btn.viewmore}}
+              <button class="ui semi-circular dodger-blue button mt-30" *ngIf="showMoreTrainings" (click)="toggleCourse(true)">{{resourceService.frmelmnts.btn.viewmore}}
                 <i class="chevron down icon"></i>
               </button>
-              <button class="ui semi-circular dodger-blue button mt-30" (click)="toggleCourse(false)" *ngIf="!showMoreCourse">{{resourceService.frmelmnts.btn.viewless}}
+              <button class="ui semi-circular dodger-blue button mt-30" (click)="toggleCourse(false)" *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.btn.viewless}}
               <i class="chevron up icon"></i>
               </button>
             </div>
