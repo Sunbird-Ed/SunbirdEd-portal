@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
+import { AvatarModule } from 'ngx-avatar';
 import {
   LearnerService, AnnouncementService, ConceptPickerService,
   BadgesService, ContentService, CoursesService, PageApiService,
@@ -29,7 +30,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
     FormsModule,
     ReactiveFormsModule,
     WebExtensionModule,
-    TelemetryModule
+    TelemetryModule,
+    AvatarModule
   ],
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent,
     DataDrivenFilterComponent, BreadcrumbsComponent, SortByComponent, ErrorPageComponent, FlagContentComponent,

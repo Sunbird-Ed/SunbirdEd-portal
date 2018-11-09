@@ -1,268 +1,204 @@
-<!-- <section class="pt-30 pb-30 d-flex flex-ai-center flex-dc mt-20">
-  <div class="circular-placeholder mb-15 d-flex flex-ai-center flex-jc-center">
-    <span class="color-5 fs-3-5 font-w-bold">A</span>
-    <div class="ui primary dropdown button right-aligned-button computer only mt-15" tabindex="0">
-        <div class="text">Admin Actions</div>
-        <i class="dropdown icon"></i>
-    </div>
-  </div>
-  <div class="fs-2-5 font-w-bold mb-15 text-ac">Aiyappa Krishnaswamy</div>
-  <div class="mb-15 text-ac profile-label-container">
-    <a class="ui dodger-blue basic label mr-15 mt-5">Course creator</a>
-    <a class="ui dodger-blue basic label mr-15 mt-5">Content creator</a>
-    <a class="ui dodger-blue basic label mr-15 mt-5">Reviewer</a>
-    <a class="ui dodger-blue basic label mr-15 mt-5">Public</a>
-  </div>
-  <div class="fs-1 color-2 mb-10 font-w-bold">Show less
-    <i class="chevron up icon" tabindex="0"></i>
-  </div>
-  <div class="fs-1-5 font-w-bold mb-10 text-ac">Veera Panchatantram Higher Secondary School</div>
-  <ul class="m-0 pl-0">
-    <li class="mb-0 d-flex flex-jc-center m-responsive-flex-dc">
-      <span class="fs-1-3 text-ac">Block :  </span>
-      <span class="fs-1-3 font-w-bold text-ac">Veerapanchapuram</span>
-    </li>
-    <li class="mb-0 d-flex flex-jc-center m-responsive-flex-dc">
-      <span class="fs-1-3 text-ac">District :  </span>
-      <span class="fs-1-3 font-w-bold text-ac">Erode, Tamil Nadu</span>
-    </li>
-  </ul>
-</section>
-
-
-
-<section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3">
-  <div class="d-flex flex-dc">
-    <div class="d-flex flex-jc-center">
-      <div class="ui semi-circular dodger-blue basic label mb-15">
-        <i class="phone blue icon mr-5"></i> +91 XXXXX 12345
+<div *ngIf="userProfile">
+  <section class="pb-30 d-flex flex-ai-center flex-dc">
+    <div class="ui container">
+      <div class=" mb-15 d-flex flex-jc-center position-relative">
+        <ngx-avatar class="my-avatar" [style]="customStyle" [size]="100" initialsSize="1" name="{{userProfile.firstName}} ">
+        </ngx-avatar>
+        <div class="ui primary  dropdown button right-aligned-button computer only" *ngIf='permissionService.permissionAvailable'
+          appPermission [permission]='admin'>
+          <sui-select [placeholder]="'Admin Actions'" [(ngModel)]="selectedOption" (ngModelChange)="onChange()">
+            <sui-select-option *ngFor="let type of bulkUploadDropdownValues" [value]="type"></sui-select-option>
+          </sui-select>
+        </div>
       </div>
     </div>
-    <div class="ui semi-circular dodger-blue basic label">
-      <i class="mail icon mr-5"></i> xxxxxxxxxshna@gmail.com
+    <div class="fs-2-5 font-w-bold mb-15 text-ac">{{userProfile.firstName}} {{userProfile.lastName}}</div>
+    <div class="mb-15 text-ac profile-label-container" *ngIf="roles && roles.length > 0">
+      <a class="ui dodger-blue basic label mr-15 mt-5" *ngFor="let role of roles | slice:0:limit">{{role}}</a>
     </div>
-  </div>
-</section> -->
+    <div *ngIf="roles.length > defaultLimit">
+      <div class="fs-1 color-2 mb-10 font-w-bold" *ngIf="showMore" (click)="toggle(true)">+ {{roles.length -
+        defaultLimit}} {{resourceService.frmelmnts.lbl.more}}
+        <i class="chevron down icon"></i>
+      </div>
+      <div class="fs-1 color-2 mb-10 font-w-bold" (click)="toggle(false)" *ngIf="!showMore">{{resourceService.frmelmnts.lbl.showLess}}
+        <i class="chevron up icon"></i>
+      </div>
+    </div>
+    <div class="fs-1-5 font-w-bold mb-10 text-ac" *ngIf=" orgDetails && orgDetails.orgName">{{orgDetails.orgName}}</div>
+    <!-- {{getLocationDetails('block')}} -->
+    <div class="m-0 pl-0" *ngIf=" orgDetails && orgDetails.locations">
+      <div class="mb-0 d-flex flex-jc-center m-responsive-flex-dc" *ngIf="getLocationDetails(orgDetails.locations, 'block')">
+        <span class="fs-1-16 min-w-90 text-ac">Block :</span>
+        <span class="fs-1-3 font-w-bold text-ac">{{getLocationDetails(orgDetails.locations, 'block')}}</span>
+      </div>
+      <div class="mb-0 d-flex flex-jc-center m-responsive-flex-dc">
+        <span class="fs-1-16 min-w-90 text-ac">District :</span>
+        <span class="fs-1-3 font-w-bold text-ac">{{getLocationDetails(orgDetails.locations, 'district')}},
+          {{getLocationDetails(orgDetails.locations, 'state')}}</span>
+      </div>
+    </div>
+
+  </section>
 
 
-<!-- 
-<section class="d-flex flex-ai-center flex-dc pt-30 pb-30 profile-bg-c-4 position-relative"> -->
-<!-- User info computer view starts-->
-  <!-- <div class="max-w-400 computer only">
-      <div class="mb-15 d-flex ">
-        <span class="fs-1-16 min-w-90">Board :</span>
-        <span class="fs-1-3 font-w-bold">State Board Tamil Nadu</span>
-      </div>
-      <div class="mb-15 d-flex">
-        <span class="fs-1-16 min-w-90">Medium :</span>
-        <span class="fs-1-3 font-w-bold">English, Tamil</span>
-      </div>
-      <div class="mb-15 d-flex">
-        <span class="fs-1-16 min-w-90">Subjects :</span>
-        <span class="fs-1-3 font-w-bold">English, Tamil</span>
-      </div>
-      <div class="d-flex">
-        <span class="fs-1-16 min-w-90">Classes :</span>
-        <span class="fs-1-3 font-w-bold">Class 6, Class 7, Class 8</span>
-      </div>
-      <button class="ui semi-circular dodger-blue button profile-edit-button right-aligned-button"  tabindex="0">Edit</button>
-  </div> -->
-<!-- User info computer view ends-->
 
-<!-- User info mobile view starts-->
-  <!-- <div class="max-w-300 mobile only">
+  <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3" *ngIf="userProfile.email || userProfile.phone">
+    <div class="d-flex flex-dc">
+      <div class="d-flex flex-jc-center">
+        <div class="ui semi-circular dodger-blue basic label mb-15" *ngIf="userProfile.phone">
+          <i class="phone blue icon mr-5"></i> +91 {{userProfile.phone}}
+        </div>
+      </div>
+      <div class="ui semi-circular dodger-blue basic label" *ngIf="userProfile.email">
+        <i class="mail icon mr-5"></i> {{userProfile.email}}
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="d-flex flex-ai-center flex-dc pt-30 pb-30 profile-bg-c-4">
+    <!-- User info computer view starts-->
+    <div class="ui container">
+      <div class=" mb-15 d-flex flex-jc-center position-relative">
+        <div class="max-w-400 computer only">
+          <div class="mb-15 d-flex ">
+            <span class="fs-1-16 min-w-90">{{resourceService.frmelmnts.lbl.boards}} :</span>
+            <span class="fs-1-3 font-w-bold" *ngIf="userProfile.framework">{{covertToString(userProfile.framework.boards)}}</span>
+          </div>
+          <div class="mb-15 d-flex">
+            <span class="fs-1-16 min-w-90">{{resourceService.frmelmnts.lbl.medium}} :</span>
+            <span class="fs-1-3 font-w-bold" *ngIf="userProfile.framework">{{covertToString(userProfile.framework.medium)}}</span>
+          </div>
+          <div class="mb-15 d-flex">
+            <span class="fs-1-16 min-w-90">{{resourceService.frmelmnts.lbl.subjects}} :</span>
+            <span class="fs-1-3 font-w-bold" *ngIf="userProfile.framework">{{covertToString(userProfile.framework.subjects)}}</span>
+          </div>
+          <div class="d-flex">
+            <span class="fs-1-16 min-w-90">{{resourceService.frmelmnts.lbl.classes}} :</span>
+            <span class="fs-1-3 font-w-bold" *ngIf="userProfile.framework">{{covertToString(userProfile.framework.grades)}}</span>
+          </div>
+
+        </div>
+        <button class="ui semi-circular dodger-blue button profile-edit-button center-aligned-button computer only"
+          (click)="showEdit = true">{{resourceService.frmelmnts.lbl.edit}}</button>
+      </div>
+
+    </div>
+    <!-- User info computer view ends-->
+
+    <!-- User info mobile view starts-->
+    <div class="max-w-300 mobile only">
       <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fs-1-16">Board :</span>
-        <span class="fs-1-3 font-w-bold text-ac">State Board Tamil Nadu</span>
+        <span class="fs-1-16">{{resourceService.frmelmnts.lbl.boards}}:</span>
+        <span class="fs-1-3 font-w-bold text-ac" *ngIf="userProfile.framework">{{covertToString(userProfile.framework.boards)}}</span>
       </div>
       <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fs-1-16">Medium :</span>
-        <span class="fs-1-3 font-w-bold text-ac">English, Tamil</span>
+        <span class="fs-1-16">{{resourceService.frmelmnts.lbl.medium}} :</span>
+        <span class="fs-1-3 font-w-bold text-ac" *ngIf="userProfile.framework">{{covertToString(userProfile.framework.medium)}}</span>
       </div>
       <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fs-1-16">Subjects :</span>
-        <span class="fs-1-3 font-w-bold text-ac">English, Tamil</span>
+        <span class="fs-1-16">{{resourceService.frmelmnts.lbl.subjects}} :</span>
+        <span class="fs-1-3 font-w-bold text-ac" *ngIf="userProfile.framework">{{covertToString(userProfile.framework.subjects)}}</span>
       </div>
       <div class="d-flex flex-ai-center flex-dc">
-        <span class="fs-1-16">Classes :</span>
-        <span class="fs-1-3 font-w-bold text-ac">Class 6, Class 7, Class 8</span>
+        <span class="fs-1-16">{{resourceService.frmelmnts.lbl.classes}} :</span>
+        <span class="fs-1-3 font-w-bold text-ac" *ngIf="userProfile.framework">{{covertToString(userProfile.framework.grades)}}</span>
       </div>
-      <div class="d-flex flex-ai-center flex-jc-center">
-        <button class="ui semi-circular dodger-blue button mt-30" tabindex="0">Edit</button>
-      </div>
-  </div> -->
-  <!-- User info mobile view ends-->
-<!-- </section> -->
-
-
-
-<!-- my badges section starts -->
-<!-- <section class="d-flex flex-ai-center flex-jc-center flex-dc pt-30 pb-30">
-    <div class="fs-1-7 font-w-bold mb-30">My badges (8)</div>
-    <div class="d-flex flex-ai-center flex-jc-center flex-dr flex-w-wrap badges-container">
-      <div class="px-60 py-20">
-          <img class="ui small custom circular image" src="../../../../assets/images/default.png" alt="my badges">
-      </div>
-      <div class="px-60 py-20">
-          <img class="ui small custom circular image" src="../../../../assets/images/default.png" alt="my badges">
-      </div>
-      <div class="px-60 py-20">
-          <img class="ui small custom circular image" src="../../../../assets/images/default.png" alt="my badges">
-      </div>
-      <div class="px-60 py-20">
-          <img class="ui small custom circular image" src="../../../../assets/images/default.png" alt="my badges">
-      </div>
-      <div class="px-60 py-20">
-          <img class="ui small custom circular image" src="../../../../assets/images/default.png" alt="my badges">
-      </div>
-      <div class="px-60 py-20">
-          <img class="ui small custom circular image" src="../../../../assets/images/default.png" alt="my badges">
-      </div>
-      <div class="px-60 py-20">
-          <img class="ui small custom circular image" src="../../../../assets/images/default.png" alt="my badges">
-      </div>
-      <div class="px-60 py-20">
-          <img class="ui small custom circular image" src="../../../../assets/images/default.png" alt="my badges">
+      <div class="d-flex flex-ai-center flex-jc-center" (click)="showEdit = true">
+        <button class="ui semi-circular dodger-blue button mt-30">{{resourceService.frmelmnts.lbl.edit}}</button>
       </div>
     </div>
-    <button class="ui semi-circular dodger-blue button mt-30" tabindex="0">View less <i class="chevron up icon ml-5 mr-0"></i></button>
-</section> -->
-<!-- my badges section ends -->
+    <!-- User info mobile view ends-->
+  </section>
 
 
 
-<!-- <div class="p-50 profile-bg-c-2 computer only"> -->
+  <!-- my badges section starts -->
+  <extension-point *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0" [name]="'profile-widget'"></extension-point>
+  <!-- my badges section ends -->
+
+
+
+  <div class="p-50 profile-bg-c-2">
     <!--contributions view starts-->
-      <!-- <div class="fs-1-7 font-w-bold pl-20 mobile only">Contributions (10)</div>
-      <div class="ui divider my-5 mobile only"></div> -->
-        <!--contributions computer view starts-->
-    <!-- <table class="ui basic table profile-bg-c-1 computer only">
-        <thead>
-          <tr>
-            <th colspan="2"  class="fs-1-7 pl-30">Contributions (10)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-            </td>
-          </tr>
-        </tbody>
-    </table> -->
-      <!--contributions computer view ends-->
+    <div class="fs-1-7 font-w-bold pl-20 mobile only" *ngIf="contributions && contributions.length > 0">{{resourceService.frmelmnts.scttl.contributions}}
+      ({{contributions.length}})</div>
+    <div class="ui divider my-5 mobile only"></div>
+    <!--contributions computer view starts-->
+    <div class="ui segments" *ngIf="contributions && contributions.length > 0">
+      <div class="ui segment">
+        <div class="fs-1-7 pl-10">{{resourceService.frmelmnts.scttl.contributions}} ({{contributions.length}})</div>
+      </div>
+
+      <div class="ui segment">
+        <div class="regular slider pt-10">
+          <ngx-slick in-view-container [throttle]="[1000]" [trigger]="item" (afterChange)="inviewChange(contributions,$event)"
+            (beforeChange)="checkSlide($event)" class="carousel" #slickModal="slick-modal" [config]="slideConfig">
+            <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let item of contributions;let i = index;"
+              class="slide">
+              <div>
+                <app-card (clickEvent)="onClickOfMyContributions($event)" [data]="item" [customClass]="'mr-20'"></app-card>
+              </div>
+            </div>
+          </ngx-slick>
+        </div>
+      </div>
+    </div>
+    <!--contributions computer view ends-->
     <!--contributions view ends-->
 
     <!-- tarainings attended computer view strats-->
-    <!-- <table class="ui basic table profile-bg-c-1 mt-20">
+    <table class="ui basic table profile-bg-c-1 mt-20" *ngIf="attendedTraining && attendedTraining.length > 0">
       <thead>
         <tr>
-          <th colspan="2" class="fs-1-7 pl-30" >Trainings attended (3)</th>
+          <th colspan="2" class="fs-1-7 pl-30">Trainings attended ({{attendedTraining.length}})</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <ul class="pl-30 pr-30">
-            <li class="d-flex flex-jc-space-between mb-20">
-              <span class="fs-1-16 color-3">First finisher in 4 courses</span>
-              <span class="fs-1 color-4">June 2016</span>
+            <li class="d-flex flex-jc-space-between mb-20" *ngFor="let data of attendedTraining | slice:0:courseLimit">
+              <span class="fs-1-16 color-3">{{data.courseName}}</span>
+              <span class="fs-1 color-4" *ngIf="data.completedOn">{{data.completedOn}}</span>
             </li>
-            <li class="d-flex flex-jc-space-between mb-20">
-              <span class="fs-1-16 color-3">Presidents Gold Medal Holder</span>
-              <span class="fs-1 color-4">March 2018</span>
-            </li>
-            <li class="d-flex flex-jc-space-between mb-20">
-              <span class="fs-1-16 color-3">Certified in </span>
-              <span class="fs-1 color-4">March 2018</span>
-            </li>
-            <li class="d-flex flex-jc-space-between mb-20">
-              <span class="fs-1-16 color-3">Advance Veda course</span>
-              <span class="fs-1 color-4">March 2018</span>
-            </li>
-        </ul>
+            <div *ngIf="attendedTraining.length > defaultLimit">
+              <button class="ui semi-circular dodger-blue button mt-30" *ngIf="showMoreCourse" (click)="toggleCourse(true)">{{resourceService.frmelmnts.btn.viewmore}}
+                <i class="chevron down icon"></i>
+              </button>
+              <button class="ui semi-circular dodger-blue button mt-30" (click)="toggleCourse(false)" *ngIf="!showMoreCourse">{{resourceService.frmelmnts.btn.viewless}}
+                <i class="chevron up icon"></i>
+              </button>
+            </div>
+          </ul>
         </tr>
       </tbody>
-    </table> -->
+    </table>
     <!-- tarainings attended computer view ends-->
-<!-- </div> -->
+  </div>
 
-<!-- tarainings attended mobile view strats-->
-<!-- <div class="fs-1-7 font-w-bold mt-30 pl-20 mobile only" >Trainings attended (3)</div>
-<div class="ui divider my-5 mobile only"></div>
-<div class="profile-bg-c-1 mobile only">
+  <!-- tarainings attended mobile view strats-->
+  <div class="fs-1-7 font-w-bold mt-30 pl-20 mobile only" *ngIf="attendedTraining && attendedTraining.length > 0">Trainings
+    attended ({{attendedTraining.length}})</div>
+  <div class="ui divider my-5 mobile only"></div>
+  <div class="profile-bg-c-1 mobile only" *ngIf="attendedTraining && attendedTraining.length > 0">
     <ul class="px-20">
-        <li class="d-flex flex-dc mb-20">
-          <span class="fs-1-16 color-3">First finisher in 4 courses</span>
-          <span class="fs-1 color-4">June 2016</span>
-        </li>
-        <li class="d-flex flex-dc mb-20">
-          <span class="fs-1-16 color-3">Presidents Gold Medal Holder</span>
-          <span class="fs-1 color-4">March 2018</span>
-        </li>
-        <li class="d-flex flex-dc mb-20">
-          <span class="fs-1-16 color-3">Certified in </span>
-          <span class="fs-1 color-4">March 2018</span>
-        </li>
-        <li class="d-flex flex-dc mb-20">
-          <span class="fs-1-16 color-3">Advance Veda course</span>
-          <span class="fs-1 color-4">March 2018</span>
-        </li>
+      <li class="d-flex flex-dc mb-20" *ngFor="let data of attendedTraining | slice:0:courseLimit">
+        <span class="fs-1-16 color-3">{{data.courseName}}</span>
+        <span class="fs-1 color-4"*ngIf="data.completedOn">{{data.completedOn}}</span>
+      </li>
     </ul>
-</div> -->
-<!-- tarainings attended mobile view ends-->
+  </div>
+  <!-- tarainings attended mobile view ends-->
+</div>
+<div class="twelve wide column">
+  <div class="ui raised segment " *ngIf="!userProfile">
+    <app-loader [data]='loaderMessage'></app-loader>
+  </div>
+</div>
 
 
-
-
-
-
-<!-- popup to edit -->
-
-<!-- <sui-modal [isClosable]="false" [size]="'normal'"  #modal class="z-index-10000">
-    <i class="close icon" tabindex="0" (click)="modal.deny()"></i>
-    <div class="content">
-        <div class="ui grid">
-            <div class="ten wide column mb-30">
-                <span class="ui header">Enter details to get relevant content</span>
-            </div>
-          </div>
-        <form [formGroup]="profileForm" class="ui form EditProfileForm" id="EditProfileForm">
-            <div class="field">
-                <label for="board">Board</label>
-                <div class="field" id="board">
-                    <sui-multi-select [isSearchable]="false" class="selection" formControlName="board" [options]="boards" #multiSelect>
-                        <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option"> </sui-select-option>
-                    </sui-multi-select>
-                </div>
-            </div>
-            <div class="field">
-                <label for="medium">Medium</label>
-                <div class="field" id="medium">
-                    <sui-multi-select [isSearchable]="false" class="selection" formControlName="medium" [options]="mediums" #multiSelect>
-                        <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option"> </sui-select-option>
-                    </sui-multi-select>
-                </div>
-            </div>
-            <div class="field">
-                <label for="class">Class</label>
-                <div class="field" id="class">
-                    <sui-multi-select [isSearchable]="false" class="selection" formControlName="class" [options]="Classes" #multiSelect>
-                        <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option"> </sui-select-option>
-                    </sui-multi-select>
-                </div>
-            </div>
-            <div class="field">
-                <label for="subject">Subject</label>
-                <div class="field" id="subject">
-                    <sui-multi-select [isSearchable]="false" class="selection" formControlName="subject" [options]="subjects" #multiSelect>
-                        <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option"> </sui-select-option>
-                    </sui-multi-select>
-                </div>
-            </div>
-        </form>
-      <div>
-      </div>
-    </div>
-    <div class="actions text-ac">
-      <button class="ui primary button" tabindex="0" (click)="onSubmitForm()">Submit</button>
-    </div>
-  </sui-modal> -->
+<app-popup *ngIf="showEdit" #profileModal [formInput]="inputData" [showCloseIcon]="true" [buttonLabel]="resourceService.frmelmnts.btn.submit"
+  (submit)="updateProfile($event)"></app-popup>
+<router-outlet></router-outlet>

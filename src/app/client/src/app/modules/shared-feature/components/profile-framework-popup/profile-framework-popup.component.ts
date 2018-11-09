@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectorRef, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, EventEmitter, Output, OnDestroy, ViewChild } from '@angular/core';
 import { OrgDetailsService, FrameworkService, FormService } from '@sunbird/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
@@ -13,6 +13,7 @@ import * as _ from 'lodash';
   styleUrls: ['./profile-framework-popup.component.scss']
 })
 export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
+  @ViewChild('modal') modal;
   @Input() showCloseIcon: boolean;
   @Input() buttonLabel: string;
   @Input() formInput: any = {};
