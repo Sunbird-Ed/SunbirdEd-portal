@@ -34,7 +34,7 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
   * inviewLogs
   */
   inviewLogs = [];
-  roles = [];
+  roles: Array<string>;
   showMore = true;
   showMoreCourse = true;
   /**
@@ -202,6 +202,7 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
 
   getOrgDetails() {
     let orgList = [];
+    this.roles = [];
     _.forEach(this.userProfile.organisations, (org, index) => {
       if (this.userProfile.rootOrgId !== org.organisationId) {
         orgList.push(org);
