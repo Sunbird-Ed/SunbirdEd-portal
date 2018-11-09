@@ -1,5 +1,5 @@
 let configData = {}
-
+let _ = require('lodash')
 /**
  * Get the given config value from 'configModel'
  * @param configKey name of the configuration to be read
@@ -14,6 +14,7 @@ getConfig = function (configKey) {
  */
 loadConfigData = function(configs){
   configData = configs
+  console.log(_.keys(configs).length+' configurations loaded')
 }
 
 module.exports = {

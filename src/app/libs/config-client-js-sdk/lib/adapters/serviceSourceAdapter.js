@@ -1,0 +1,80 @@
+const request = require('request')
+const _ = require('lodash')
+const Joi = require('joi')
+
+let configPrefix = ''
+let removePrefixAfterFetch = false
+let httpOptions = {}
+let httpOptionsSchema = Joi.object().keys({
+  url: Joi.string().required(),
+  method: Joi.string().required().only(['POST']),
+  json: Joi.boolean().required().only(true),
+  headers: Joi.object().keys({
+    authorization: Joi.string().required()
+  }).required(),
+  body: Joi.object().optional()
+})
+
+/**
+ * Returns a promise which inturn fetches the given config
+ * keys with values from config service
+ *
+ * @param configKey key for which value to be fetched
+ */
+
+
+readConfigsFromConfigSource = function (keys) {
+
+  return new Promise(function (resolve, reject) {
+    let options = _.cloneDeep(httpOptions)
+    if (configPrefix) {
+      keys = keys.map(function (i) {
+        return configPrefix + i
+      })
+    }
+    options.body = {
+      request: {
+        keys: {
+          instance: keys
+        }
+      }
+    }
+    request(options, function (err, response, body) {
+      if (!err && body && body.responseCode === 'OK' && body.result &&
+        body.result.keys && body.result.keys.instance ) {
+        resolve(body.result.keys.instance)
+      } else {
+        reject(err)
+      }
+    })
+  })
+}
+
+function getConfigs(keys, cb) {
+  readConfigsFromConfigSource(keys)
+    .then(function (configKeys) {
+      let configs = {}
+      if (removePrefixAfterFetch === true) {
+        _.forOwn(configKeys, function (value, key) {
+          key = key.replace(configPrefix, '')
+          configs[key] = value
+        })
+      }
+      cb(null, configs)
+    }, function (err) {
+      cb(err, null)
+    })
+}
+
+function ServiceSourceAdapter(options, prefix, isRemovePrefix) {
+  const optionsValidation = Joi.validate(options, httpOptionsSchema)
+  if (optionsValidation.error && optionsValidation.error.message) {
+    throw optionsValidation.error
+  }
+  httpOptions = options
+  configPrefix = prefix
+  removePrefixAfterFetch = isRemovePrefix
+  this.getConfigs = getConfigs
+}
+
+module.exports = ServiceSourceAdapter

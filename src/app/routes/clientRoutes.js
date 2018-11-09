@@ -7,7 +7,7 @@ const _ = require('lodash')
 const path = require('path')
 const envHelper = require('../helpers/environmentVariablesHelper.js')
 const tenantHelper = require('../helpers/tenantHelper.js')
-const configHelper = require('../helpers/config/configHelper.js')
+const configHelper = require('../helpers/configServiceSDKHelper.js')
 const defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState()
 const tenantCdnUrl = envHelper.TENANT_CDN_URL
 const defaultTenant = envHelper.DEFAULT_CHANNEL
@@ -74,26 +74,26 @@ module.exports = (app, keycloak) => {
 }
 
 function getLocals (req, callback) {
-  let config_key_allow_signup = 'ENABLE_SIGNUP'
+  let config_key_allow_signup = 'sunbird_enable_signup'
   let allow_signup = configHelper.getConfig(config_key_allow_signup)
   var locals = {}
   locals.userId = _.get(req, 'kauth.grant.access_token.content.sub') ? req.kauth.grant.access_token.content.sub : null
   locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'kauth.grant.access_token.content.sub') ? req.sessionID : null
   locals.cdnUrl = envHelper.PORTAL_CDN_URL
-  locals.theme = configHelper.getConfig('PORTAL_THEME')
-  locals.defaultPortalLanguage = configHelper.getConfig('PORTAL_DEFAULT_LANGUAGE')
+  locals.theme = configHelper.getConfig('sunbird_theme')
+  locals.defaultPortalLanguage = configHelper.getConfig('sunbird_default_language')
   locals.instance = process.env.sunbird_instance
   locals.appId = envHelper.APPID
   locals.defaultTenant = envHelper.DEFAULT_CHANNEL
-  locals.exploreButtonVisibility = configHelper.getConfig('EXPLORE_BUTTON_VISIBILITY')
+  locals.exploreButtonVisibility = configHelper.getConfig('sunbird_explore_button_visibility')
   locals.defaultTenantIndexStatus = defaultTenantIndexStatus
   locals.enableSignup = allow_signup
-  locals.extContWhitelistedDomains = configHelper.getConfig('SUNBIRD_EXTCONT_WHITELISTED_DOMAINS')
+  locals.extContWhitelistedDomains = configHelper.getConfig('sunbird_extcont_whitelisted_domains')
   locals.buildNumber = envHelper.BUILD_NUMBER
   locals.apiCacheTtl = envHelper.PORTAL_API_CACHE_TTL
   locals.cloudStorageUrls = envHelper.CLOUD_STORAGE_URLS
-  locals.userUploadRefLink = configHelper.getConfig('PORTAL_USER_UPLOAD_REF_LINK')
-  callback(null, locals)    
+  locals.userUploadRefLink = configHelper.getConfig('sunbird_portal_user_upload_ref_link')
+  callback(null, locals)
 }
 
 function indexPage (req, res) {
