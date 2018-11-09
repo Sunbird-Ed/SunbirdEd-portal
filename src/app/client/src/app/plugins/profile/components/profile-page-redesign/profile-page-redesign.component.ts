@@ -33,7 +33,7 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
   /**
   * telemetryLogs
   */
- telemetryLogs = [];
+  telemetryLogs = [];
   roles: Array<string>;
   showMoreRoles = true;
   showMoreTrainings = true;
@@ -49,7 +49,7 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
   /**
  * Admin Dashboard access roles
 */
-adminActions: Array<string>;
+  adminActions: Array<string>;
   /**
    * input keyword depending on url
    */
@@ -216,7 +216,7 @@ adminActions: Array<string>;
     this.orgDetails = orgList[0];
   }
 
-  covertToString(value) {
+  convertToString(value) {
     if (_.isArray(value)) {
       return _.join(value, ',');
     }
@@ -344,7 +344,7 @@ adminActions: Array<string>;
   /**
    * get onTelemetryEvent
   */
- onTelemetryEvent(contribution, event) {
+  onTelemetryEvent(contribution, event) {
     const slideData = contribution.slice(event.currentSlide + 1, event.currentSlide + 5);
     _.forEach(slideData, (slide, key) => {
       const obj = _.find(this.telemetryLogs, (o) => {

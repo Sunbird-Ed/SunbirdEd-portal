@@ -65,19 +65,19 @@
         <div class="max-w-400 computer only">
           <div class="mb-15 d-flex ">
             <span class="fs-1-16 min-w-90">{{resourceService.frmelmnts.lbl.boards}} :</span>
-            <span class="fs-1-3 font-w-bold" *ngIf="userProfile.framework">{{covertToString(userProfile.framework.boards)}}</span>
+            <span class="fs-1-3 font-w-bold" *ngIf="userProfile.framework">{{convertToString(userProfile.framework.boards)}}</span>
           </div>
           <div class="mb-15 d-flex">
             <span class="fs-1-16 min-w-90">{{resourceService.frmelmnts.lbl.medium}} :</span>
-            <span class="fs-1-3 font-w-bold" *ngIf="userProfile.framework">{{covertToString(userProfile.framework.medium)}}</span>
+            <span class="fs-1-3 font-w-bold" *ngIf="userProfile.framework">{{convertToString(userProfile.framework.medium)}}</span>
           </div>
           <div class="mb-15 d-flex">
             <span class="fs-1-16 min-w-90">{{resourceService.frmelmnts.lbl.subjects}} :</span>
-            <span class="fs-1-3 font-w-bold" *ngIf="userProfile.framework">{{covertToString(userProfile.framework.subjects)}}</span>
+            <span class="fs-1-3 font-w-bold" *ngIf="userProfile.framework">{{convertToString(userProfile.framework.subjects)}}</span>
           </div>
           <div class="d-flex">
             <span class="fs-1-16 min-w-90">{{resourceService.frmelmnts.lbl.classes}} :</span>
-            <span class="fs-1-3 font-w-bold" *ngIf="userProfile.framework">{{covertToString(userProfile.framework.grades)}}</span>
+            <span class="fs-1-3 font-w-bold" *ngIf="userProfile.framework">{{convertToString(userProfile.framework.grades)}}</span>
           </div>
 
         </div>
@@ -92,19 +92,19 @@
     <div class="max-w-300 mobile only">
       <div class="mb-15 d-flex flex-ai-center flex-dc">
         <span class="fs-1-16">{{resourceService.frmelmnts.lbl.boards}}:</span>
-        <span class="fs-1-3 font-w-bold text-ac" *ngIf="userProfile.framework">{{covertToString(userProfile.framework.boards)}}</span>
+        <span class="fs-1-3 font-w-bold text-ac" *ngIf="userProfile.framework">{{convertToString(userProfile.framework.boards)}}</span>
       </div>
       <div class="mb-15 d-flex flex-ai-center flex-dc">
         <span class="fs-1-16">{{resourceService.frmelmnts.lbl.medium}} :</span>
-        <span class="fs-1-3 font-w-bold text-ac" *ngIf="userProfile.framework">{{covertToString(userProfile.framework.medium)}}</span>
+        <span class="fs-1-3 font-w-bold text-ac" *ngIf="userProfile.framework">{{convertToString(userProfile.framework.medium)}}</span>
       </div>
       <div class="mb-15 d-flex flex-ai-center flex-dc">
         <span class="fs-1-16">{{resourceService.frmelmnts.lbl.subjects}} :</span>
-        <span class="fs-1-3 font-w-bold text-ac" *ngIf="userProfile.framework">{{covertToString(userProfile.framework.subjects)}}</span>
+        <span class="fs-1-3 font-w-bold text-ac" *ngIf="userProfile.framework">{{convertToString(userProfile.framework.subjects)}}</span>
       </div>
       <div class="d-flex flex-ai-center flex-dc">
         <span class="fs-1-16">{{resourceService.frmelmnts.lbl.classes}} :</span>
-        <span class="fs-1-3 font-w-bold text-ac" *ngIf="userProfile.framework">{{covertToString(userProfile.framework.grades)}}</span>
+        <span class="fs-1-3 font-w-bold text-ac" *ngIf="userProfile.framework">{{convertToString(userProfile.framework.grades)}}</span>
       </div>
       <div class="d-flex flex-ai-center flex-jc-center" (click)="showEdit = true">
         <button class="ui semi-circular dodger-blue button mt-30">{{resourceService.frmelmnts.lbl.edit}}</button>
