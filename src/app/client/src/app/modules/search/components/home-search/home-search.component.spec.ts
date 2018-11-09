@@ -42,10 +42,9 @@ describe('HomeSearchComponent', () => {
     }
   };
   const mockQueryParma = {
-    'Curriculum': ['CBSE'],
-    'Medium': ['Bengali'],
-    'Subjects': ['Bengali'],
-    'Concepts': [],
+    'curriculum': ['CBSE'],
+    'medium': ['Bengali'],
+    'subjects': ['Bengali'],
     'query': 'hello'
   };
   beforeEach(async(() => {
