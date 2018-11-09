@@ -13,6 +13,7 @@ import * as _ from 'lodash';
   styleUrls: ['./profile-framework-popup.component.scss']
 })
 export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
+  @Input() showCloseIcon: boolean;
   @Input() buttonLabel: string;
   @Input() formInput: any = {};
   @Output() submit = new EventEmitter<any>();
@@ -81,11 +82,16 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   }
 
   onChange() {
-    if (this.selectedOption['board'].length > 0 && this.selectedOption['medium'].length > 0
+    if (this.selectedOption['board'] && this.selectedOption['medium'] && this.selectedOption['gradeLevel']) {
+      console.log('first');
+      if (this.selectedOption['board'].length > 0 && this.selectedOption['medium'].length > 0
       && this.selectedOption['gradeLevel'].length > 0) {
       this.showButton = true;
+      console.log('second');
+    }
     } else {
       this.showButton = false;
+      console.log('third');
     }
   }
 
