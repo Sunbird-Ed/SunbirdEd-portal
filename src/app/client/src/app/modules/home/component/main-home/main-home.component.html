@@ -60,3 +60,4 @@
   <div class="one wide column"></div>
 </div>
 <app-browser-compatibility></app-browser-compatibility>
+<app-popup #frameWorkPopUp *ngIf= "showFrameWorkPopUp" [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateFrameWork($event)"></app-popup>

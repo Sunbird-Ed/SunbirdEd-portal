@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { CoursesService, UserService, PlayerService } from '@sunbird/core';
 import { ResourceService, ToasterService, ServerResponse, ConfigService, UtilService} from '@sunbird/shared';
 import {  IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
+import { ProfileService } from '@sunbird/profile';
 /**
  * This component contains 3 sub components
  * 1)ProfileCard: It displays user profile details.
@@ -18,6 +19,7 @@ import * as _ from 'lodash';
 })
 
 export class MainHomeComponent implements OnInit, OnDestroy {
+  @ViewChild('frameWorkPopUp') frameWorkPopUp;
   /**
   * inviewLogs
  */
@@ -72,6 +74,9 @@ export class MainHomeComponent implements OnInit, OnDestroy {
 * Contains config service reference
 */
 public configService: ConfigService;
+  /** this variable is used to show the FrameWorkPopUp
+   */
+showFrameWorkPopUp = false;
   /**
    * This variable hepls to show and hide page loader.
    * It is kept true by default as at first when we comes
@@ -166,7 +171,8 @@ public configService: ConfigService;
    */
   constructor(resourceService: ResourceService, private playerService: PlayerService,
     userService: UserService, courseService: CoursesService, toasterService: ToasterService,
-    route: Router, activatedRoute: ActivatedRoute, configService: ConfigService, utilService: UtilService) {
+    route: Router, activatedRoute: ActivatedRoute, configService: ConfigService, utilService: UtilService,
+    public profileService: ProfileService) {
     this.userService = userService;
     this.courseService = courseService;
     this.resourceService = resourceService;
@@ -198,6 +204,9 @@ public configService: ConfigService;
               value: user.userProfile.completeness,
               image: user.userProfile.avatar
             });
+          }
+          if (_.get(user.userProfile, 'framework')) {
+            this.showFrameWorkPopUp = true;
           }
         } else if (user && user.err) {
           this.showLoader = false;
@@ -364,5 +373,16 @@ public configService: ConfigService;
       type: 'user',
       ver: '1.0'
     };
+  }
+
+  updateFrameWork(event) {
+    console.log(event);
+    // this.profileService.updateProfile(req.basicInfo).subscribe(res => {
+    //   this.router.navigate(['/profile']);
+    //   this.toasterService.success(this.resourceService.messages.smsg.m0022);
+    // },
+    //   err => {
+    //     this.toasterService.error(err.error.params.errmsg);
+    //   });
   }
 }
