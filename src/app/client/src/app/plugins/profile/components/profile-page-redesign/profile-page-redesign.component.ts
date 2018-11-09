@@ -345,7 +345,10 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
    * get onTelemetryEvent
   */
   onTelemetryEvent(contribution, event) {
-    const slideData = contribution.slice(event.currentSlide + 1, event.currentSlide + 5);
+    const CONTRIBUTION_SLIDE_COUNT_FIRST = 1;
+    const CONTRIBUTION_SLIDE_COUNT_LAST = 5;
+    const slideData = contribution.slice(event.currentSlide + CONTRIBUTION_SLIDE_COUNT_FIRST,
+      event.currentSlide + CONTRIBUTION_SLIDE_COUNT_LAST);
     _.forEach(slideData, (slide, key) => {
       const obj = _.find(this.telemetryLogs, (o) => {
         return o.objid === slide.courseId;
