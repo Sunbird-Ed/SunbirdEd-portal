@@ -1,5 +1,5 @@
 <sui-modal [isClosable]="false" [size]="'normal'" #modal class="z-index-10000" *ngIf="formFieldProperties">
-  <i class="close icon" (click)="modal.deny()"></i>
+  <i *ngIf="showCloseIcon" class="close icon" (click)="modal.deny()"></i>
   <div class="content">
     <div class="ui grid">
       <div class="ten wide column mb-30">
@@ -23,7 +23,7 @@
         <label>{{medium.label}}</label>
         <div class="field">
           <sui-multi-select id={{medium.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[medium.code]"
-            [options]="options" [ngModelOptions]="{standalone: true}" #multiSelect>
+            [options]="options" (ngModelChange)="onChange()" [ngModelOptions]="{standalone: true}" #multiSelect>
             <sui-select-option *ngFor="let option of medium.range" [value]="option.name"></sui-select-option>
           </sui-multi-select>
         </div>
@@ -35,7 +35,7 @@
         <label>{{class.label}}</label>
         <div class="field">
           <sui-multi-select id={{class.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[class.code]"
-            [options]="options" [ngModelOptions]="{standalone: true}" #multiSelect>
+            [options]="options" (ngModelChange)="onChange()" [ngModelOptions]="{standalone: true}" #multiSelect>
             <sui-select-option *ngFor="let option of class.range" [value]="option.name"></sui-select-option>
           </sui-multi-select>
         </div>
