@@ -3,6 +3,5 @@ export interface IHomeQueryParams {
     curriculum?: Array<string>;
     medium?: Array<string>;
     subject?: Array<string>;
-    concepts?: any ;
     board?: Array<string>;
 }
