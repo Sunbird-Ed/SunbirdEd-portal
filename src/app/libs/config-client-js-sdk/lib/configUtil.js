@@ -1,7 +1,7 @@
 let configData = {}
 let _ = require('lodash')
 /**
- * Get the given config value from 'configModel'
+ * Get the given config value from 'configData'
  * @param configKey name of the configuration to be read
  */
 getConfig = function (configKey) {

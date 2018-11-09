@@ -19,9 +19,9 @@ let httpOptionsSchema = Joi.object().keys({
  * Returns a promise which inturn fetches the given config
  * keys with values from config service
  *
- * @param configKey key for which value to be fetched
+ * @param keys keys for which config values to be fetched
+ *
  */
-
 
 readConfigsFromConfigSource = function (keys) {
 
@@ -50,6 +50,11 @@ readConfigsFromConfigSource = function (keys) {
   })
 }
 
+/**
+ * Fetches configurations for given keys from API and triggers callback
+ * @param {*} keys list of keys to read
+ * @param {*} cb callback to execute after fetching
+ */
 function getConfigs(keys, cb) {
   readConfigsFromConfigSource(keys)
     .then(function (configKeys) {

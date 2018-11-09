@@ -15,11 +15,11 @@ const optionsSchema = Joi.object().keys({
   keys: Joi.array().min(1).required(),
   cacheRefresh: cacheSchema
 })
-let cacheRefreshEnabled = false
+let cronScheduled = false
 
 /**
  * builds the configuration from the added config sources
- * @param cacheRefreshInterval time interval to update the config cache
+ * @returns promise which responds with status or error
  */
 buildConfig = function () {
   return new Promise(function (resolve, reject) {
@@ -29,7 +29,7 @@ buildConfig = function () {
     }
     recursiveFetch(configOptions.sources, configOptions.keys, {}, 0, function (configs) {
       configUtil.loadConfigData(configs)
-      if (configOptions.cacheRefresh && configOptions.cacheRefresh.enabled == true) {
+      if (configOptions.cacheRefresh && configOptions.cacheRefresh.enabled == true && cronScheduled == false) {
         scheduleConfigRefreshJob(configOptions.cacheRefresh.interval)
       }
       resolve(true)
@@ -42,7 +42,7 @@ buildConfig = function () {
  * if the first config source returns null for a config then pass it to next source.
  *
  * @param sourceList list of config source adapters
- * @param keyMap configuration keys object
+ * @param keys configuration keys list
  * @param configData object to store the fetched config data
  * @param index position of the current config source in list
  * @param cb callback to call after fetching all config keys
@@ -70,6 +70,7 @@ recursiveFetch = function (sourceList, keys, configData, index, cb) {
 
 /**
  *  Schedules a cron job to refresh the config data at given intervals
+ *  @param configRefreshInterval Interval at which configurations to be refreshed default : 10 mins
  */
 function scheduleConfigRefreshJob(configRefreshInterval) {
   if (configRefreshInterval == undefined || !Number.isInteger(Number(configRefreshInterval)) ||
@@ -83,8 +84,13 @@ function scheduleConfigRefreshJob(configRefreshInterval) {
     })
   })
   console.log('Info: config refresh scheduler enabled')
-  cacheRefreshEnabled = true
+  cronScheduled = true
 }
+
+/**
+ *  Validates the provided configuration options like sources,keys and
+ *  cache refresh options using Joi validator
+ */
 
 validateConfigOptions = function () {
   let err = null
