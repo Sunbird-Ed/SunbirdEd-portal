@@ -163,12 +163,12 @@
               <span class="fs-1-16 color-3">{{data.courseName}}</span>
               <span class="fs-1 color-4" *ngIf="data.completedOn">{{data.completedOn}}</span>
             </li>
-            <div *ngIf="attendedTraining.length > defaultLimit">
+            <div *ngIf="attendedTraining.length > 3">
               <button class="ui semi-circular dodger-blue button mt-30" *ngIf="showMoreCourse" (click)="toggleCourse(true)">{{resourceService.frmelmnts.btn.viewmore}}
                 <i class="chevron down icon"></i>
               </button>
               <button class="ui semi-circular dodger-blue button mt-30" (click)="toggleCourse(false)" *ngIf="!showMoreCourse">{{resourceService.frmelmnts.btn.viewless}}
-                <i class="chevron up icon"></i>
+              <i class="chevron up icon"></i>
               </button>
             </div>
           </ul>
