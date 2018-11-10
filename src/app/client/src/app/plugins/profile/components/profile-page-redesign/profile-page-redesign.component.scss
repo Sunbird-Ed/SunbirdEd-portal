@@ -14,17 +14,7 @@
 
   
 
-  .ui.small.custom.circular.image {
-    height: 75px;
-    width: 75px;
-    max-height: 75px;
-    max-width: 75px; 
-  }
-
-  .badges-container {
-    max-width: calc(195px * 4);
-  }
-
+ 
 
   /* profile page color palate */
 
@@ -68,11 +58,14 @@
 
   .right-aligned-button {
     position: absolute;
-    top: 50%;
-    right: 140px;
-    transform: translate(50%,-50%);
+    right: 0;
   }
 
   .position-relative {
       position: relative !important;
+  }
+  .center-aligned-button {
+    position: absolute;
+    right: 0;
+    top: 50%;
   }
