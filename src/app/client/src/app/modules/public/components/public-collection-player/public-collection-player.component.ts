@@ -74,14 +74,14 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     customFileIcon: {
       'video': 'fa fa-file-video-o fa-lg',
       'pdf': 'fa fa-file-pdf-o fa-lg',
-      'youtube': 'fa fa-youtube fa-lg fancy_tree_red',
+      'youtube': 'fa fa-youtube fa-lg',
       'H5P': 'fa fa-html5 fa-lg',
       'audio': 'fa fa-file-audio-o fa-lg',
       'ECML': 'fa fa-file-code-o fa-lg',
-      'HTML': 'fa fa-html5 fa-lg',
+      'HTML': 'fa fa-html5-o fa-lg',
       'collection': 'fa fa-file-archive-o fa-lg',
-      'epub': 'fa fa-file-text fa-lg',
-      'doc': 'fa fa-file-text fa-lg'
+      'epub': 'fa fa-text-o fa-lg',
+      'doc': 'fa fa-text-o fa-lg'
     }
   };
   /**
