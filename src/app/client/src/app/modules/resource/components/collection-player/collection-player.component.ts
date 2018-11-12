@@ -238,7 +238,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       }), )
       .subscribe((data) => {
         this.collectionTreeNodes = data;
-        console.log('Here Is Collection Tree', this.collectionTreeNodes);
         this.setTelemetryData();
         this.loader = false;
         this.route.queryParams.subscribe((queryParams) => {
