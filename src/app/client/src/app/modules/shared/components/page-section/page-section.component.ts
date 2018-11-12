@@ -38,6 +38,7 @@ export class PageSectionComponent implements OnInit {
   'slidesToShow': 2,
   'slidesToScroll': 3,
   'variableWidth': true,
+  'rtl': true,
   'responsive': [
     {
       'breakpoint': 2800,

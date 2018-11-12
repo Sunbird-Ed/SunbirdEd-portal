@@ -86,6 +86,7 @@ public configService: ConfigService;
     'slidesToShow': 2,
     'slidesToScroll': 2,
     'variableWidth': true,
+    'rtl': true,
     'responsive': [
       {
         'breakpoint': 2800,
