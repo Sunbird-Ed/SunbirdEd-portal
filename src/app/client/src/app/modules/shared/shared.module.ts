@@ -21,6 +21,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
+import { InstallAppComponent } from './components/install-app/install-app.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -34,7 +35,7 @@ import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
     DateFormatPipe, PageSectionComponent, NoResultComponent, DateFilterXtimeAgoPipe,
     CollectionTreeComponent, FancyTreeComponent, PlayerComponent, CardComponent, FilterPipe, InterpolatePipe,
     ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe,
-    RedirectComponent, CustomMultiSelectComponent],
+    RedirectComponent, CustomMultiSelectComponent, InstallAppComponent],
   exports: [AppLoaderComponent, ContentCreditsComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
     PageSectionComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
     PlayerComponent, CardComponent, FilterPipe, ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent,

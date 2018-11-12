@@ -205,8 +205,10 @@ showFrameWorkPopUp = false;
               image: user.userProfile.avatar
             });
           }
-          if (_.get(user.userProfile, 'framework')) {
+          if (!_.get(user.userProfile, 'framework')) {
             this.showFrameWorkPopUp = true;
+          }  else {
+            this.showFrameWorkPopUp = false;
           }
         } else if (user && user.err) {
           this.showLoader = false;
@@ -261,6 +263,8 @@ showFrameWorkPopUp = false;
   * user details and enrolled courses.
   */
   ngOnInit() {
+    console.log('here');
+    console.log(this.showFrameWorkPopUp);
     this.populateUserProfile();
     this.populateEnrolledCourse();
     this.telemetryImpression = {
@@ -285,6 +289,7 @@ showFrameWorkPopUp = false;
     if (this.courseSubscription) {
       this.courseSubscription.unsubscribe();
     }
+    this.showFrameWorkPopUp = false;
   }
 
   /**
@@ -376,13 +381,25 @@ showFrameWorkPopUp = false;
   }
 
   updateFrameWork(event) {
-    console.log(event);
-    // this.profileService.updateProfile(req.basicInfo).subscribe(res => {
-    //   this.router.navigate(['/profile']);
-    //   this.toasterService.success(this.resourceService.messages.smsg.m0022);
-    // },
-    //   err => {
-    //     this.toasterService.error(err.error.params.errmsg);
-    //   });
+    console.log(this.frameWorkPopUp);
+    const req = {
+      framework: {
+        board: event.board,
+        medium: event.medium,
+        class: event.gradeLevel,
+        subject: _.get(event, 'subject') ? _.get(event, 'subject') : []
+      }
+    };
+    this.profileService.updateProfile(req.framework).subscribe(res => {
+      this.showFrameWorkPopUp = false;
+      if (this.userSubscription) {
+        this.userSubscription.unsubscribe();
+      }
+      this.frameWorkPopUp.modal.deny();
+      console.log(this.showFrameWorkPopUp);
+    },
+    (err) => {
+        this.toasterService.error(err.error.params.errmsg);
+    });
   }
 }
