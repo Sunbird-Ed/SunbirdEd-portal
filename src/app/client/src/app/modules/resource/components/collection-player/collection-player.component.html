@@ -111,14 +111,7 @@
   <div class="row">
     <div class="one wide column"></div>
     <div class="ten wide column">
-      <app-collection-tree *ngIf="collectionTreeNodes.data && collectionTreeNodes.data.children && collectionTreeNodes.data.children.length >0 ; else dataCommingSoon" (contentSelect)="OnPlayContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"></app-collection-tree>
-      <ng-template #dataCommingSoon>
-          <div class="placeholder margin-top-40">
-              <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl }}"/>
-              <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0121}}</h5>
-              <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>
-          </div> 
-      </ng-template>
+      <app-collection-tree (contentSelect)="OnPlayContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"></app-collection-tree>
     </div>
     <div class="one wide column"></div>
   </div>
