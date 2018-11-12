@@ -74,7 +74,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     customFileIcon: {
       'video': 'sb-icon-video',
       'pdf': 'sb-icon-doc',
-      'youtube': 'sb-icon-video fancy_tree_red',
+      'youtube': 'sb-icon-video',
       'H5P': 'sb-icon-interactive',
       'audio': 'sb-icon-audio',
       'ECML': 'sb-icon-interactive',
