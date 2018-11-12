@@ -86,18 +86,18 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   public collectionData: any;
 
   public collectionTreeOptions: ICollectionTreeOptions = {
-    fileIcon: 'fa fa-file-o fa-lg',
+    fileIcon: 'sb-icon-doc',
     customFileIcon: {
-      'video': 'fa fa-file-video-o fa-lg',
-      'pdf': 'fa fa-file-pdf-o fa-lg',
-      'youtube': 'fa fa-youtube fa-lg fancy_tree_red',
-      'H5P': 'fa fa-html5 fa-lg',
-      'audio': 'fa fa-file-audio-o fa-lg',
-      'ECML': 'fa fa-file-code-o fa-lg',
-      'HTML': 'fa fa-html5 fa-lg',
-      'collection': 'fa fa-file-archive-o fa-lg',
-      'epub': 'fa fa-file-text fa-lg',
-      'doc': 'fa fa-file-text fa-lg'
+      'video': 'sb-icon-video',
+      'pdf': 'sb-icon-doc',
+      'youtube': 'sb-icon-video fancy_tree_red',
+      'H5P': 'sb-icon-interactive',
+      'audio': 'sb-icon-audio',
+      'ECML': 'sb-icon-interactive',
+      'HTML': 'sb-icon-interactive',
+      'collection': 'sb-icon-collection',
+      'epub': 'sb-icon-textbook',
+      'doc': 'sb-icon-doc'
     }
   };
   /**
@@ -238,6 +238,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       }), )
       .subscribe((data) => {
         this.collectionTreeNodes = data;
+        console.log('Here Is Collection Tree', this.collectionTreeNodes);
         this.setTelemetryData();
         this.loader = false;
         this.route.queryParams.subscribe((queryParams) => {
