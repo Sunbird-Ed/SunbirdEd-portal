@@ -108,6 +108,13 @@
             "Transgender"
         ]
     },
+    "ORG": {
+        "UPLOAD": {
+            "Upload Organizations": "/profile/bulkUpload/organizationUpload",
+            "Upload Users": "/profile/bulkUpload/userUpload",
+            "Check Upload Status": "/profile/bulkUpload/checkStatus"
+        }
+    },
     "FILTER": {
         "RESOURCES": {
             "roles": [

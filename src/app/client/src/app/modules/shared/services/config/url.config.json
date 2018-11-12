@@ -1,7 +1,7 @@
 {
   "params": {
     "userReadParam": {
-      "fields": "completeness,missingFields,lastLoginTime"
+      "fields": "completeness,missingFields,lastLoginTime,organisations,roles"
     },
     "contentGet": "creator,body,editorState,templateId,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher,subject,author,flagReasons,flaggedBy,flags,createdOn,lastUpdatedOn,board,keywords,resourceType,framework,license,badgeAssertions,pkgVersion"
   },
@@ -25,7 +25,7 @@
     "USER": {
       "SIGNUP": "user/v1/create",
       "UPDATE_USER_PROFILE": "user/v1/update",
-      "GET_PROFILE": "user/v1/read/",
+      "GET_PROFILE": "user/v2/read/",
       "TENANT_LOGO": "get/tenant/logo",
       "SKILLS": "data/v1/skills",
       "ENDORSE_SKILLS": "user/v1/skill/endorse/add",

@@ -3,8 +3,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
 import {
-  FrameworkService, FormService, ContentService, UserService, LearnerService,
-  ConceptPickerService, SearchService, PermissionService
+  FrameworkService, FormService, ContentService, UserService, LearnerService, SearchService, PermissionService
 } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ProminentFilterComponent } from './prominent-filter.component';
@@ -42,7 +41,7 @@ describe('ProminentFilterComponent', () => {
       declarations: [ProminentFilterComponent],
       providers: [FrameworkService, FormService, UserService, ContentService,
         LearnerService, SearchService,
-        CacheService, ResourceService, ConceptPickerService, PermissionService,
+        CacheService, ResourceService, PermissionService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
@@ -55,18 +54,14 @@ describe('ProminentFilterComponent', () => {
     fixture = TestBed.createComponent(ProminentFilterComponent);
     component = fixture.componentInstance;
   });
-  it('should apply filters and key should have concepts', () => {
+  it('should apply filters and key should have subject and medium', () => {
     const router = TestBed.get(Router);
     const activatedRoute = TestBed.get(ActivatedRoute);
     activatedRoute.parent = 'ap/explore';
     component.formInputData = {
-      'subject': ['English'], 'medium': ['English'],
-      'concepts': [{
-        identifier: 'AI31',
-        name: '(Artificial) Neural Network'
-      }]
+      'subject': ['English'], 'medium': ['English']
     };
-    const queryParams = { 'subject': ['English'], 'medium': ['English'], 'concepts': ['AI31'] };
+    const queryParams = { 'subject': ['English'], 'medium': ['English']};
     component.applyFilters();
     expect(router.navigate).toHaveBeenCalledWith([], {relativeTo: 'ap/explore', queryParams: queryParams });
   });

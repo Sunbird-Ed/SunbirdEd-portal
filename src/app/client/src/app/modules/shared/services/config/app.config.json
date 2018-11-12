@@ -521,6 +521,11 @@
     "inPageredirectUrl": "/learn",
     "searchPageredirectUrl": "/search/Courses/1"
   },
+  "home": {
+    "filterType": "home",
+    "inPageredirectUrl": "/home",
+    "searchPageredirectUrl": "/search/All/1"
+  },
   "library": {
     "filterType": "library",
     "inPageredirectUrl": "/resources",
@@ -549,6 +554,7 @@
     "searchPageredirectUrl": "/explore/1"
   },
   "formApiTypes": {
+    "home": "home",
     "textbook": "textbook",
     "course": "course",
     "collection": "collection",
@@ -559,7 +565,8 @@
     "explore": "explore",
     "resourcebundle": "resourcebundle",
     "upforreview" :"upforreview",
-    "collaboration":"collaboration"
+    "collaboration":"collaboration",
+    "framework": "framework"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,
@@ -592,6 +599,7 @@
       "language": "profile/additionalInfo/edit"
     },
     "defaultViewMoreLimit": 3,
+    "defaultShowMoreLimit": 4,
     "options": [
       {
         "text": "Hide this from everyone",
