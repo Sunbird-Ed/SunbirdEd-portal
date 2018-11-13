@@ -3108,7 +3108,7 @@ see https://github.com/Semantic-Org/Semantic-UI/issues/1114
 }
 .mc-nonuser,
 .mc-user{
-  padding-top:90px !important;
+  padding-top:76px !important;
 }
 @media screen and (max-width:768px){
   .mc-user{
@@ -3209,3 +3209,20 @@ sui-multi-select.ui.selection.dropdown{
  .conceptSelector.ui.form .treepicker-parent input{
    background: transparent;
  }
+ .modal.mini.fixed-small {
+  max-width:320px;
+  width:100%;
+}
+.modal.mini.fixed-mini{
+  max-width:200px;
+  width:100%;
+}
+.relative{
+  position: relative;
+}
+.text-capitalize {
+  text-transform: capitalize;
+}
+.va-middle{
+  vertical-align: middle;
+}
