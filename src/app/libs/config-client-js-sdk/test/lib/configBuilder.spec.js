@@ -8,7 +8,7 @@ let configUtil = require('../../lib/configUtil');
 
 const scheduleConfigRefreshJob = rewireConfigBuilder.__get__('scheduleConfigRefreshJob')
 const envHelper = process.env
-const keys = ['sunbird_instance_name', 'sunbird_theme', 'sunbird_default_language',
+const keys = ['sunbird_default_language','sunbird_instance_name', 'sunbird_theme',
 'sunbird_primary_bundle_language', 'sunbird_explore_button_visibility', 'sunbird_enable_signup',
 'sunbird_extcont_whitelisted_domains', 'sunbird_portal_user_upload_ref_link']
 
@@ -71,6 +71,8 @@ describe('Config Builder methods test', function () {
         })
         configBuilder.buildConfig().then(function (status) {
             expect(status).to.equal(true)
+            let configVal = configUtil.getConfig(keys[0])
+            expect(configVal).to.not.equal(null)
             done()
         }, function (err) {
             expect(err).to.equal(null)
@@ -85,7 +87,7 @@ describe('Config Builder methods test', function () {
       })
       configBuilder.buildConfig().then(function (status) {
           expect(status).to.equal(true)
-          expect(configUtil.getConfig('not_found_key')).to.equal(undefined)
+          expect(configUtil.getConfig('not_found_key')).to.equal(null)
           done()
       }, function (err) {
           expect(err).to.equal(null)

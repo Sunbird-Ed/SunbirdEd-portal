@@ -29,7 +29,6 @@ buildConfig = function () {
     }
     // Use a callback function handler to load configs into cache and resolve the promise after recursive fetch
     recursiveFetch(configOptions.sources, configOptions.keys, {}, 0, function (configs) {
-      console.log(configs)
       configUtil.loadConfigData(configs)
       // schedule cron-job to refresh configurations at specific intervals
       if (configOptions.cacheRefresh && configOptions.cacheRefresh.enabled == true && cronScheduled == false) {
@@ -66,6 +65,11 @@ recursiveFetch = function (sourceList, keys, configData, index, cb) {
       recursiveFetch(sourceList, keys, configData, index + 1, cb)
     })
   } else {
+    if (keys.length > 0) {
+      _.forEach(keys, function (key) {
+        configData[key] = null
+      })
+    }
     cb(configData)
   }
 }

@@ -41,7 +41,7 @@ readConfigsFromConfigSource = function (keys) {
     }
     request(options, function (err, response, body) {
       if (!err && body && body.responseCode === 'OK' && body.result &&
-        body.result.keys && body.result.keys.instance ) {
+        body.result.keys && body.result.keys.instance) {
         resolve(body.result.keys.instance)
       } else {
         reject(err)
@@ -58,17 +58,18 @@ readConfigsFromConfigSource = function (keys) {
 function getConfigs(keys, cb) {
   readConfigsFromConfigSource(keys)
     .then(function (configKeys) {
-      let configs = {}
-      if (removePrefixAfterFetch === true) {
+        let configs = {}
         _.forOwn(configKeys, function (value, key) {
-          key = key.replace(configPrefix, '')
+          if (removePrefixAfterFetch === true) {
+            key = key.replace(configPrefix, '')
+          }
           configs[key] = value
         })
-      }
-      cb(null, configs)
-    }, function (err) {
-      cb(err, null)
-    })
+        cb(null, configs)
+      },
+      function (err) {
+        cb(err, null)
+      })
 }
 
 function ServiceSourceAdapter(options, prefix, isRemovePrefix) {
