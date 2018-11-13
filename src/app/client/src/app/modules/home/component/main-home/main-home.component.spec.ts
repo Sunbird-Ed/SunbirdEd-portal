@@ -69,29 +69,6 @@ class ActivatedRouteStub {
         component = fixture.componentInstance;
       });
   }));
-  it('should subscribe to user service', () => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'error').and.callFake(() => 'error');
-    userService._userData$.next({ err: null, userProfile: testData.userSuccess});
-    userService.getUserProfile();
-    component.ngOnInit();
-    component.populateUserProfile();
-    expect(component.showLoader).toBeFalsy();
-    expect(component.toDoList).toBeDefined();
-  });
-  it('should throw error in user Service ', () => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'error').and.callFake(() => 'error');
-    userService._userData$.next({ err: testData.userError, userProfile: null});
-    userService.getUserProfile();
-    component.ngOnInit();
-    component.populateUserProfile();
-    expect(component.showLoader).toBeFalsy();
-  });
   it('should subscribe to course service', () => {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);

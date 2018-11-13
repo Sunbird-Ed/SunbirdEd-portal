@@ -20,40 +20,50 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
   /**
-  * Reference of User Profile interface
-  */
+   * Reference of User Profile interface
+   */
   userProfile: any;
 
   @ViewChild('profileModal') profileModal;
+
   /**
    * Contains list of contributions
    */
   contributions = [];
+
   attendedTraining: Array<object>;
+
   /**
-  * telemetryLogs
-  */
+   * telemetryLogs
+   */
   telemetryLogs = [];
+
   roles: Array<string>;
+
   showMoreRoles = true;
   showMoreTrainings = true;
+
   /**
-   * Contains default limit to show awards
+   * Contains default limit to show more roles
    */
   defaultShowMoreRolesLimit = this.configService.appConfig.PROFILE.defaultShowMoreLimit;
+
   /**
-   * Used to store limit to show/hide awards
+   * Used to store limit to show more awards
    */
   showMoreRolesLimit = this.defaultShowMoreRolesLimit;
+
   courseLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
   /**
- * Admin Dashboard access roles
-*/
+   * Admin Dashboard access roles
+   */
   adminActions: Array<string>;
+
   /**
-   * input keyword depending on url
+   * Bulk upload URL
    */
   uploadUrl: object = this.configService.dropDownConfig.ORG.UPLOAD;
+
   /**
    * Contains loader message to display
    */
@@ -61,18 +71,24 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
     headerMessage: '',
     loaderMessage: 'Loading profile ...'
   };
+
   showEdit = false;
   userSubscription: ISubscription;
-  /**The button clicked value for interact telemetry event */
+
+  /** The button clicked value for interact telemetry event */
   btnArrow: string;
+
   /**
-   * option selected on dropdown
+   * Admin action option selected on dropdown
    */
   adminActionSelectedOption: string;
   adminActionDropDownOptions: Array<string> = [this.resourceService.frmelmnts.instn.t0015, this.resourceService.frmelmnts.instn.t0016,
   this.resourceService.frmelmnts.lbl.chkuploadsts];
+
   courseDataSubscription: Subscription;
+
   orgDetails = [];
+
   customStyle = {
     backgroundColor: '#ffffff',
     border: '1px solid #fff',
@@ -80,9 +96,10 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
     borderRadius: '50%',
     color: '#9017FF'
   };
+
   /**
-    * Slider setting to display number of cards on the slider.
-    */
+   * Slider setting to display number of cards on the slider.
+   */
   slideConfig = {
     'slidesToShow': 2,
     'slidesToScroll': 2,
@@ -155,13 +172,15 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
     ],
     infinite: false,
   };
+
   inputData: any;
   /**
-  * telemetryImpression
-  */
+   * telemetryImpression
+   */
   telemetryImpression: IImpressionEventInput;
   myContributionsInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
+
   constructor(public resourceService: ResourceService, public coursesService: CoursesService,
     public permissionService: PermissionService, public toasterService: ToasterService, public profileService: ProfileService,
     public userService: UserService, public configService: ConfigService, public router: Router, public utilService: UtilService,
@@ -285,7 +304,6 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
     );
   }
 
-
   /**
    * This method is used to show/hide ViewMore based on the limit
    */
@@ -329,10 +347,11 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
         this.showEdit = false;
       });
   }
+
   /**
-   * on changing dropdown option
-   * it navigate
-   */
+     * on changing dropdown option
+     * it navigate
+     */
   onChange() {
     this.router.navigate([this.uploadUrl[this.adminActionSelectedOption]]);
   }
@@ -343,7 +362,7 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
 
   /**
    * get onTelemetryEvent
-  */
+   */
   onTelemetryEvent(contribution, event) {
     const CONTRIBUTION_SLIDE_COUNT_FIRST = 1;
     const CONTRIBUTION_SLIDE_COUNT_LAST = 5;
@@ -366,6 +385,7 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
+
   beforeContributionSlideChange(event) {
     if (event.currentSlide === 0 && event.nextSlide === 0) {
       this.btnArrow = 'prev-button';
@@ -377,7 +397,7 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
   }
 
   /**
-   *ngOnDestroy unsubscribe the subscription
+   * ngOnDestroy unsubscribe the subscription
    */
   ngOnDestroy() {
     if (this.userSubscription) {

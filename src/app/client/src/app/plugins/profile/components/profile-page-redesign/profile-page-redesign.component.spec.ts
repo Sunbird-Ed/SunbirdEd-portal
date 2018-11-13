@@ -88,26 +88,14 @@ describe('ProfilePageRedesignComponent', () => {
     expect(component.getAttendedTraining).toHaveBeenCalled();
   });
 
-  it('should call searchservice to get myContribution data', () => {
+  it('should call search service to get my contributions data', () => {
     const searchService = TestBed.get(SearchService);
-    const response = undefined;
-    const searchParams = {
-      status: ['Live'],
-      contentType: ['Collection', 'TextBook', 'Course', 'LessonPlan', 'Resource'],
-      params: { lastUpdatedOn: 'desc' }
-    };
     spyOn(searchService, 'searchContentByUserId').and.returnValue(observableOf(Response.success));
     component.getMyContent();
     expect(component.contributions).toBeDefined();
   });
-  it('should not call searchService to get myContribution data', () => {
-    const searchService = TestBed.get(SearchService);
-    const response = Response.success.result;
-    spyOn(searchService, 'searchContentByUserId').and.returnValue(observableOf(Response.success));
-    component.getMyContent();
-    expect(component.contributions).toBeDefined();
-  });
-  it('should not call user searchService when myContribution data count is zero', () => {
+
+  it('should not call user search service when my contributions data count is zero', () => {
     const searchService = TestBed.get(SearchService);
    searchService._searchedContentList = Response.zeroData.result;
     const response = searchService.searchedContentList;
@@ -116,13 +104,15 @@ describe('ProfilePageRedesignComponent', () => {
     expect(component.contributions).toBeDefined();
     expect(component.contributions).toEqual([]);
   });
-  it('should call playcontent when clicked on my contribution', () => {
+
+  it('should call play content when clicked on one of my contributions', () => {
     const playerService = TestBed.get(PlayerService);
     const event = { data: { metaData: { identifier: 'do_11262255104183500812' } } };
     spyOn(playerService, 'playContent').and.callFake(() => observableOf(Response.event.data.metaData));
     component.onClickOfMyContributions(event);
     expect(playerService.playContent).toHaveBeenCalled();
   });
+
   it('should call course service to get attended training data', () => {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
