@@ -11,19 +11,19 @@ const routes: Routes = [
     path: '', component: ResourceComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }],
-      telemetry: { env: telemetryEnv, pageid: 'resources', type: 'view' }
+      telemetry: { env: telemetryEnv, pageid: 'library', type: 'view' }
     }
   }, {
     path: 'view-all/:section/:pageNumber', component: ViewAllComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '/resources' }],
       telemetry: {
-        env: telemetryEnv, pageid: 'viewAll', type: 'view', subtype: 'paginate'
+        env: telemetryEnv, pageid: 'view-all', type: 'view', subtype: 'paginate'
       },
       filterType: 'library'
     }
   },
-   {
+  {
     path: 'play/collection/:collectionId', component: CollectionPlayerComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }],
