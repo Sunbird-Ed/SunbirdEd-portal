@@ -1,3 +1,5 @@
+@import "variables";
+
 .ui.cards>.card.workspace-card {
     width: 240px;
 }
@@ -22,12 +24,12 @@
 .batch-content-description {
     text-transform: capitalize;
     text-align: left;
-    font-family: 'sunbirdboldfont';
+    font-weight: bold;
     font-size: 1.1875em;
     padding-left: 10px;
 }
 .batch-content-meta {
-    font-family: 'sunbirdregularfont';
     font-size: 0.875em;
+    font-weight: 500;
     color: #7c7b7b;
 }
