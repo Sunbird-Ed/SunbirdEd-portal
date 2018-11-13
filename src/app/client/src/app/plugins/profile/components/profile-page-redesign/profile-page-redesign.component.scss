@@ -1,71 +1,68 @@
- 
+@import "variables";
+
+.profile-avatar{
+  font-family: $font-stack !important;
+  color: $profile-avatar-color !important;
+}
 /* fonts */
-  .font-w-bold {
-    font-weight: bold !important;
-  }
+.font-w-bold {
+  font-weight: bold !important;  
+}
 
-  /* colors */
-  .color-2 {
-    color: #007aff !important;
-  }
-  .color-5 {
-    color: #9017FF !important;
-  }
+/* colors */
+.color-2 {
+  color: #007aff !important;
+}
+.color-5 {
+  color: #9017FF !important;
+}
 
-  
+/* profile page color palate */
 
- 
+.profile-bg-c-1 {
+  background: #fff !important;
+}
+.profile-bg-c-2 {
+  background: #fafafa !important;
+}
+.profile-bg-c-3 {
+  background: #196DAB !important;
+}
+.profile-bg-c-4 {
+  background: #E0EFFF !important;
+}
 
-  /* profile page color palate */
+/* width */
+.max-w-300 {
+  max-width: 300px !important;
+}
+.max-w-400 {
+  max-width: 400px !important;
+}
+.min-w-90 {
+  min-width: 90px !important;
+}
+.profile-label-container {
+  max-width: 600px !important;
+}
 
-  .profile-bg-c-1 {
-    background: #fff !important;
-  }
-  .profile-bg-c-2 {
-    background: #fafafa !important;
-  }
-  .profile-bg-c-3 {
-    background: #196DAB !important;
-  }
-  .profile-bg-c-4 {
-    background: #E0EFFF !important;
-  }
-
-
-  /* width */
-  .max-w-300 {
-    max-width: 300px !important;
-  }
-  .max-w-400 {
-    max-width: 400px !important;
-  }
-  .min-w-90 {
-    min-width: 90px !important;
-  }
-
+@media only screen and (max-width: 767px) {
   .profile-label-container {
-    max-width: 600px !important;
+    max-width: 200px !important;
   }
-
-  @media only screen and (max-width: 767px) {
-    .profile-label-container {
-        max-width: 200px !important;
-    }
-    .m-responsive-flex-dc {
-        flex-direction: column;
-    }
+  .m-responsive-flex-dc {
+    flex-direction: column;
   }
-
-  .right-aligned-button {
-    position: absolute;
-    right: 0;
-  }
-
-  .position-relative {
-      position: relative !important;
-  }
-  .center-aligned-button {
-    position: absolute;
-    right: 0;
-    top: 50%;
-  }
+}
+.right-aligned-button {
+  position: absolute;
+  right: 0;
+}
+.position-relative {
+  position: relative !important;
+}
+.center-aligned-button {
+  position: absolute;
+  right: 0;
+  top: 50%;
+}

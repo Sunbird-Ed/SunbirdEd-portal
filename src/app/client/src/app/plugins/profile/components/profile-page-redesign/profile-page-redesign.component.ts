@@ -89,12 +89,16 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
 
   orgDetails = [];
 
-  customStyle = {
+  avtarStyle = {
     backgroundColor: '#ffffff',
-    border: '1px solid #fff',
     boxShadow: '0 0 6px 0 rgba(0,0,0,0.38)',
     borderRadius: '50%',
-    color: '#9017FF'
+    color: 'inherit',
+    fontFamily: 'inherit',
+    fontSize: '50px',
+    fontWeight: 'bold',
+    lineHeight: '92px',
+    
   };
 
   /**
@@ -404,5 +408,4 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
       this.userSubscription.unsubscribe();
     }
   }
-
 }
