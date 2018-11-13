@@ -1,14 +1,15 @@
 const configClientJsSdk = require('config-client-js-sdk')
 const envHelper = require('./environmentVariablesHelper.js')
 
-const cfgUtil = configClientJsSdk.configUtil
-const cfgAdapters = configClientJsSdk.Adapters
+const configUtil = configClientJsSdk.configUtil
+const configAdapters = configClientJsSdk.Adapters
 const configKeys = ['sunbird_instance_name', 'sunbird_theme', 'sunbird_default_language',
   'sunbird_primary_bundle_language', 'sunbird_explore_button_visibility', 'sunbird_enable_signup',
-  'sunbird_extcont_whitelisted_domains', 'sunbird_portal_user_upload_ref_link'
-]
+  'sunbird_extcont_whitelisted_domains', 'sunbird_portal_user_upload_ref_link']
+const authBearer = 'Bearer '
+const configPRefix = 'portal.'
 
-let cfgOptions = {
+let configOptions = {
   sources: [],
   keys: configKeys,
   cacheRefresh: {
@@ -20,20 +21,20 @@ let httpOptions = {
   url: envHelper.CONFIG_URL+'v1/read',
   method: 'POST',
   headers: {
-    authorization: 'Bearer '+ envHelper.PORTAL_API_AUTH_TOKEN
+    authorization: authBearer + envHelper.PORTAL_API_AUTH_TOKEN
   },
   json: true
 }
-cfgOptions.sources.push(new cfgAdapters.ServiceSourceAdapter(httpOptions, 'portal.', true))
-cfgOptions.sources.push(new cfgAdapters.EnvVarSourceAdapter(envHelper))
+configOptions.sources.push(new configAdapters.ServiceSourceAdapter(httpOptions,configPRefix , true))
+configOptions.sources.push(new configAdapters.EnvVarSourceAdapter(envHelper))
 
-const cfgBuilder = new configClientJsSdk.ConfigBuilder(cfgOptions)
+const configBuilder = new configClientJsSdk.ConfigBuilder(configOptions)
 
 module.exports = {
   getConfig: function (key) {
-    return cfgUtil.getConfig(key)
+    return configUtil.getConfig(key)
   },
   init: function () {
-    return cfgBuilder.buildConfig()
+    return configBuilder.buildConfig()
   }
 }
