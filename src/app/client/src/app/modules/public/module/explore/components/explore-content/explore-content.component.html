@@ -4,7 +4,7 @@
         <div class="ui stackable grid padding-top-10">
             <div class="twelve wide column" *ngIf="hashTagId">
                 <app-data-driven-filter [pageId]="'explore-search'" *ngIf="filterType" [filterEnv]="filterType" [enrichFilters]="facets" [ignoreQuery]="['key', 'language']"
-         [accordionDefaultOpen]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" [showSearchedParam]=true (filters)="filterData($event)" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
+         [accordionDefaultOpen]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" [showSearchedParam]=true (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
             </div>
         </div>
   

@@ -1,7 +1,9 @@
+import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { ProfileService } from './services';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '@sunbird/shared';
+import { SlickModule } from 'ngx-slick';
 import { ProfileRoutingModule } from './profile-routing.module';
 import {
   ProfilePageComponent, ProfileHeaderComponent, EditExperienceComponent, UserAddressComponent,
@@ -18,6 +20,7 @@ import { ProfileBadgeComponent } from './components/profile-badge/profile-badge.
 import { MenuItemComponent } from './components/menu-item/menu-item.component';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { AvatarModule } from 'ngx-avatar';
 @NgModule({
   imports: [
     CommonModule,
@@ -30,7 +33,10 @@ import { TelemetryModule } from '@sunbird/telemetry';
     OrgManagementModule,
     WebExtensionModule,
     NgInviewModule,
-    TelemetryModule
+    TelemetryModule,
+    SlickModule,
+    AvatarModule,
+    SharedFeatureModule
   ],
   declarations: [ProfilePageComponent, ProfileHeaderComponent, UserSummaryComponent, ProfileVisibilityComponent,
     UserExperienceViewComponent, EditExperienceComponent, UserAddressComponent, UserEducationComponent, UserSkillsComponent,

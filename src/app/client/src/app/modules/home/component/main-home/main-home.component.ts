@@ -263,8 +263,6 @@ showFrameWorkPopUp = false;
   * user details and enrolled courses.
   */
   ngOnInit() {
-    console.log('here');
-    console.log(this.showFrameWorkPopUp);
     this.populateUserProfile();
     this.populateEnrolledCourse();
     this.telemetryImpression = {
@@ -396,7 +394,6 @@ showFrameWorkPopUp = false;
         this.userSubscription.unsubscribe();
       }
       this.frameWorkPopUp.modal.deny();
-      console.log(this.showFrameWorkPopUp);
     },
     (err) => {
         this.toasterService.error(err.error.params.errmsg);
