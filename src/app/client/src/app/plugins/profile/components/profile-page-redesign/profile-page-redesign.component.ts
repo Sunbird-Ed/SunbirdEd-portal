@@ -88,54 +88,21 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
     fontFamily: 'inherit',
     fontSize: '50px',
     fontWeight: 'bold',
-    lineHeight: '92px',
-    
+    lineHeight: '92px'
   };
 
   /**
    * Slider setting to display number of cards on the slider.
    */
   slideConfig = {
-    'slidesToShow': 2,
+    'slidesToShow': 4,
     'slidesToScroll': 2,
     'variableWidth': true,
     'responsive': [
       {
-        'breakpoint': 2800,
-        'settings': {
-          'slidesToShow': 8,
-          'slidesToScroll': 2,
-          'variableWidth': true
-        }
-      },
-      {
-        'breakpoint': 2200,
-        'settings': {
-          'slidesToShow': 6,
-          'slidesToScroll': 2,
-          'variableWidth': true
-        }
-      },
-      {
-        'breakpoint': 2000,
-        'settings': {
-          'slidesToShow': 5,
-          'slidesToScroll': 2,
-          'variableWidth': true
-        }
-      },
-      {
-        'breakpoint': 1400,
-        'settings': {
-          'slidesToShow': 3.5,
-          'slidesToScroll': 2,
-          'variableWidth': true
-        }
-      },
-      {
         'breakpoint': 1200,
         'settings': {
-          'slidesToShow': 3.5,
+          'slidesToShow': 4,
           'slidesToScroll': 2,
           'variableWidth': true
         }
@@ -164,8 +131,8 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
           'variableWidth': true
         }
       }
-    ],
-    infinite: false,
+      ],
+    infinite: false
   };
 
   inputData: any;
