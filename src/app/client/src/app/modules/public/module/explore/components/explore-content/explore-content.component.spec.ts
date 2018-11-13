@@ -127,11 +127,6 @@ describe('ExploreContentComponent', () => {
     component.populateContentSearch();
     expect(component.showLoader).toBeFalsy();
   });
-  it('should call filterData method', () => {
-    const facetArray = ['subject', 'medium', 'board'];
-    component.filterData(facetArray);
-    expect(component.facetArray).toEqual(facetArray);
-  });
   it('should call processFilterData method', () => {
     const obj = {
       'gradeLevel': [
@@ -268,6 +263,7 @@ describe('ExploreContentComponent', () => {
     spyOn(component, 'populateContentSearch').and.callThrough();
     spyOn(searchService, 'contentSearch').and.callThrough();
     component.getFilters(filters);
+    expect(component.facetArray).toEqual([ 'board', 'medium', 'subject', 'gradeLevel' ]);
     expect(component.dataDrivenFilter['board']).toBe('CBSE');
     expect(component.populateContentSearch).toHaveBeenCalled();
     expect(searchService.contentSearch).toHaveBeenCalledWith(requestParams);

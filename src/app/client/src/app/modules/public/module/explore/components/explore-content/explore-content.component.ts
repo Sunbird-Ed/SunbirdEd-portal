@@ -226,6 +226,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
         });
     }
     getFilters(filters) {
+        this.facetArray =  filters.map(element => element.code);
         _.forEach(filters, (value) => {
             if (value.code === 'board') {
                 value.range = _.orderBy(value.range, ['index'], ['asc']);
@@ -357,9 +358,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
-    }
-    filterData(event) {
-        this.facetArray = event;
     }
     processFilterData() {
         const facetObj = {};

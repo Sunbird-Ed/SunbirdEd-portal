@@ -69,6 +69,10 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
    * reference of resourceService service.
    */
   public resourceService: ResourceService;
+  customStyle = {
+    backgroundColor: '#fff',
+    color: '#333'
+  };
   /**
    * reference of permissionService service.
    */
