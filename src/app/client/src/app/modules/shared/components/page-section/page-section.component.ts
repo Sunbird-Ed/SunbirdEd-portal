@@ -35,46 +35,14 @@ export class PageSectionComponent implements OnInit {
   * This is slider setting
   */
  slideConfig = {
-  'slidesToShow': 2,
-  'slidesToScroll': 3,
+  'slidesToShow': 4,
+  'slidesToScroll': 2,
   'variableWidth': true,
   'responsive': [
     {
-      'breakpoint': 2800,
-      'settings': {
-        'slidesToShow': 8,
-        'slidesToScroll': 2,
-        'variableWidth': true
-      }
-    },
-    {
-      'breakpoint': 2200,
-      'settings': {
-        'slidesToShow': 6,
-        'slidesToScroll': 2,
-        'variableWidth': true
-      }
-    },
-    {
-      'breakpoint': 2000,
-      'settings': {
-        'slidesToShow': 5,
-        'slidesToScroll': 2,
-        'variableWidth': true
-      }
-    },
-    {
-      'breakpoint': 1400,
-      'settings': {
-        'slidesToShow': 3.5,
-        'slidesToScroll': 2,
-        'variableWidth': true
-      }
-    },
-    {
       'breakpoint': 1200,
       'settings': {
-        'slidesToShow': 3.5,
+        'slidesToShow': 4,
         'slidesToScroll': 2,
         'variableWidth': true
       }

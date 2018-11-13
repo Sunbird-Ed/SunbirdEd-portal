@@ -8,7 +8,7 @@
     background-color: #ffffff;
     cursor: pointer;
     @media screen and (min-width:768px){
-        max-width: 292px;
+        max-width: 250px;
     }
     &:hover{
         box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.16);;
@@ -47,6 +47,7 @@
     .avatar{
         height: 31px;
         width: 31px;
+        border-radius: 31px;
     }
     .ui.label{
         font-size: 11px;
@@ -63,7 +64,7 @@
         padding: 10px 15px;
     }
     .title{
-        font-size: 1.142857143rem;
+        font-size: 1rem;
         line-height: 1.35em;
         height: 2.7em;
         margin: 0;
@@ -73,6 +74,9 @@
         font-weight: 400;
         color: initial;
         font-family: $font-stack;
+        @media screen and (min-width:768px){
+            font-size: 1.142857143rem; 
+        }
     }
     .creator{
         font-size: 1rem;
