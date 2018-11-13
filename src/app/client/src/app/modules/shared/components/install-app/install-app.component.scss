@@ -2,25 +2,24 @@
 
 .appPopup-header {
   font-weight: 500 !important;
-  font-size: 14px !important;
+  font-size: 1rem !important;
   display: flex !important;
   align-content: flex-start;
 }
 .appPopup-header .small{
-  font-size:11px;
-  line-height:1.3;
+  font-size: 0.7857rem;
+  line-height: 1.3;
 }
 .appPopup-computer .appPopup-header {
-  font-size: 16px !important;
+  font-size: 1rem !important;
 }
 .appPopup-computer .appPopup-header .small {
-  font-size: 12px !important;
+  font-size: 0.8571rem !important;
 }
 .appPopup-logo{
   width: 65px;
-  height:65px;
+  height: 65px;
   float: left;
-  margin: 0 15px 0 0;
 }
 .appPopup-cover .ui .actions {
   background: transparent !important;
@@ -31,24 +30,18 @@
   padding-right: 1rem!important;
 }
 .appPopup-mobile .ui.button {
-  font-weight:600;
+  font-weight: 600;
   width: 135px;
   height: 38px;
-  line-height:38px;
-  margin-left:0.25em !important;
+  line-height: 38px;
+  margin-left: 0.25em !important;
 }
 .appPopup-computer .ui.button {
-  font-weight:600;
+  font-weight: 600;
   min-width: 170px;
-}
-.va-middle{
-  vertical-align:middle;
 }
 .text-lightGray{
   color: #979797 !important;
-}
-.text-capitalize {
-  text-transform: capitalize;
 }
 .bg-white {
   background-color: #fff !important;
@@ -86,17 +79,6 @@
 .ui.basic.positive.buttons .button:hover {
   border-color: #177342 !important;
   color: #177342 !important;
-}
-.modal.mini.fixed-small {
-  max-width:320px;
-  width:100%;
-}
-.modal.mini.fixed-mini{
-  max-width:200px;
-  width:100%;
-}
-.relative{
-  position: relative;
 }
 .img-cover {
   border: 1px solid #bbb;
