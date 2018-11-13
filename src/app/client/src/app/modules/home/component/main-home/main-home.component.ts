@@ -27,10 +27,6 @@ export class MainHomeComponent implements OnInit, OnDestroy {
 	*/
   telemetryImpression: IImpressionEventInput;
   /**
-	 * profileUpdateIntractEdata
-	*/
-  profileUpdateIntractEdata: IInteractEventEdata;
-  /**
 	 * telemetryInteractObject
 	*/
   telemetryInteractObject: IInteractEventObject;
@@ -326,11 +322,6 @@ public configService: ConfigService;
     }
   }
   setInteractEventData() {
-    // this.profileUpdateIntractEdata = {
-    //   id: 'home',
-    //   type: 'click',
-    //   pageid: 'home'
-    // };
     this.telemetryInteractObject =  {
       id: this.userService.userid,
       type: 'user',
