@@ -21,8 +21,8 @@
       </div>
 
       <div class="ui grid">
-        <div [ngClass]="showCommentBoxClass">
-          <app-player class="content-player" [playerConfig]="playerConfig" (sceneChangeEvent)="handleSceneChangeEvent($event)"></app-player>
+        <div [ngClass]="showCommentBoxClass" >
+          <app-player class="content-player mr-10" [playerConfig]="playerConfig" (sceneChangeEvent)="handleSceneChangeEvent($event)"></app-player>
         </div>
         <div class="four wide column" *ngIf="contentData.mimeType === 'application/vnd.ekstep.ecml-archive'">
           <app-review-comments [contentData]="contentData" [playerLoaded]="playerLoaded" [stageId]="stageId" (reviewCommentEvent)="handleReviewCommentEvent($event)"></app-review-comments>
@@ -31,7 +31,7 @@
     </div>
 
     <div class="row margin-top-10" *ngIf="!showLoader">
-      <div class="margin-top--5 videosegment ui clearing segment">
+      <div class="margin-top-20 videosegment ui clearing segment">
         <div *ngIf="permissionService.permissionAvailable && contentData && 
           (contentData.status === 'Review' || contentData.status === 'FlagReview') && userId !== contentData.createdBy"
           appPermission [permission]="['CONTENT_REVIEWER', 'CONTENT_REVIEW','BOOK_REVIEWER','FLAG_REVIEWER']">
