@@ -205,7 +205,7 @@ showFrameWorkPopUp = false;
               image: user.userProfile.avatar
             });
           }
-          if (!_.get(user.userProfile, 'framework')) {
+          if (_.isEmpty(user.userProfile.framework)) {
             this.showFrameWorkPopUp = true;
           }  else {
             this.showFrameWorkPopUp = false;
@@ -379,16 +379,11 @@ showFrameWorkPopUp = false;
   }
 
   updateFrameWork(event) {
-    console.log(this.frameWorkPopUp);
+    console.log(event);
     const req = {
-      framework: {
-        board: event.board,
-        medium: event.medium,
-        class: event.gradeLevel,
-        subject: _.get(event, 'subject') ? _.get(event, 'subject') : []
-      }
+      framework: event
     };
-    this.profileService.updateProfile(req.framework).subscribe(res => {
+    this.profileService.updateProfile(req).subscribe(res => {
       this.showFrameWorkPopUp = false;
       if (this.userSubscription) {
         this.userSubscription.unsubscribe();
@@ -396,7 +391,8 @@ showFrameWorkPopUp = false;
       this.frameWorkPopUp.modal.deny();
     },
     (err) => {
-        this.toasterService.error(err.error.params.errmsg);
+      this.toasterService.error(this.resourceService.messages.fmsg.m0085);
+      this.frameWorkPopUp.modal.deny();
     });
   }
 }
