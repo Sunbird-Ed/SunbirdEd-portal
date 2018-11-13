@@ -1,7 +1,7 @@
 <div *ngIf="userProfile">
   <section class="pb-30 d-flex flex-ai-center flex-dc">
     <div class="ui container">
-      <div class="mb-15 d-flex flex-jc-center position-relative">
+      <div class="mb-15 d-flex flex-jc-center relative">
         <ngx-avatar 
           class="profile-avatar"
           [style]="avtarStyle"
@@ -11,7 +11,7 @@
           round="true">
         </ngx-avatar>
         <div 
-          class="ui primary dropdown button right-aligned-button computer only" 
+          class="ui primary dropdown button adminActionsButton computer only" 
           *ngIf='permissionService.permissionAvailable'
           appPermission [permission]='adminActions'>
           <sui-select 
@@ -26,11 +26,11 @@
         </div>
       </div>
     </div>
-    <div class="fs-2-57 font-w-bold mb-15 text-ac">
+    <div class="profileName mb-15 text-ac">
       {{userProfile.firstName}} {{userProfile.lastName}}
     </div>
     <div 
-      class="mb-15 text-ac profile-label-container" 
+      class="mb-15 text-ac profileLabels" 
       *ngIf="roles && roles.length > 0">
       <span 
         class="ui dodger-blue basic label mr-15 mt-5" 
@@ -52,30 +52,32 @@
       </div>
     </div>
     <div 
-      class="fs-1-429 font-w-bold mb-10 text-ac" 
+      class="profileOrg font-w-bold mb-10 text-ac" 
       *ngIf=" orgDetails && orgDetails.orgName">
       {{orgDetails.orgName}}
     </div>
-    <div class="m-0 pl-0 fs-1-286" *ngIf=" orgDetails && orgDetails.locations">
-      <div 
-        class="mb-0 d-flex flex-jc-center m-responsive-flex-dc" 
-        *ngIf="getLocationDetails(orgDetails.locations, 'block')">
-        <span class="min-w-90 text-ac">
-          Block :
-        </span>
-        <span class="text-ac">
-          {{getLocationDetails(orgDetails.locations, 'block')}}
-        </span>
-      </div>
-      <div class="mb-0 d-flex flex-jc-center m-responsive-flex-dc">
-        <span class="min-w-90 text-ac">
-          District :
-        </span>
-        <span class="text-ac">
-          {{getLocationDetails(orgDetails.locations, 'district')}},
-          {{getLocationDetails(orgDetails.locations, 'state')}}
-        </span>
-      </div>
+    <div 
+      class="profileGeo m-0 pl-0" 
+      *ngIf=" orgDetails && orgDetails.locations">
+        <div 
+          class="mb-0 d-flex flex-jc-center m-responsive-flex-dc" 
+          *ngIf="getLocationDetails(orgDetails.locations, 'block')">
+          <span class="min-w-90 text-ac">
+            Block :
+          </span>
+          <span class="text-ac">
+            {{getLocationDetails(orgDetails.locations, 'block')}}
+          </span>
+        </div>
+        <div class="mb-0 d-flex flex-jc-center">
+          <span class="min-w-90 text-ac">
+            District :
+          </span>
+          <span class="text-ac">
+            {{getLocationDetails(orgDetails.locations, 'district')}},
+            {{getLocationDetails(orgDetails.locations, 'state')}}
+          </span>
+        </div>
     </div>
   </section>
 
@@ -101,106 +103,50 @@
   </section>
 
   <section class="d-flex flex-ai-center flex-dc pt-30 pb-30 profile-bg-c-4">
-    <!-- User info computer view starts-->
     <div class="ui container">
-      <div class=" mb-15 d-flex flex-jc-center position-relative">
-        <div class="max-w-400 computer only">
-          <div class="mb-15 d-flex">
-            <span class="fs-1-143 min-w-90">
+      <div class="mb-15 relative profileTeachingCover">
+        <div class="profileTeaching">
+          <div class="mb-15 row">
+            <span class="left">
               {{resourceService.frmelmnts.lbl.boards}} :
             </span>
-            <span class="fs-1-286 font-w-bold">
-              <!--{{convertToString(userProfile.framework.boards)}}-->
-              State Board Tamil Nadu
+            <span class="right" *ngIf="userProfile.framework">
+              {{convertToString(userProfile.framework.boards)}}
             </span>
           </div>
-          <div class="mb-15 d-flex">
-            <span class="fs-1-143 min-w-90">
+          <div class="mb-15 row">
+            <span class="left">
               {{resourceService.frmelmnts.lbl.medium}} :
             </span>
-            <span class="fs-1-286 font-w-bold">
-              <!--{{convertToString(userProfile.framework.medium)}}-->
-              English, Tamil
+            <span class="right" *ngIf="userProfile.framework">
+              {{convertToString(userProfile.framework.medium)}}
             </span>
           </div>
-          <div class="mb-15 d-flex">
-            <span class="fs-1-143 min-w-90">
+          <div class="mb-15 row">
+            <span class="left">
               {{resourceService.frmelmnts.lbl.subjects}} :
             </span>
-            <span class="fs-1-286 font-w-bold">
-              <!--{{convertToString(userProfile.framework.subjects)}}-->
-              English, Mathematics, Tamil
+            <span class="right" *ngIf="userProfile.framework">
+              {{convertToString(userProfile.framework.subjects)}}
             </span>
           </div>
-          <div class="d-flex">
-            <span class="fs-1-143 min-w-90">
+          <div class="row">
+            <span class="left">
               {{resourceService.frmelmnts.lbl.classes}} :
             </span>
-            <span class="fs-1-286 font-w-bold">
-              <!--{{convertToString(userProfile.framework.grades)}}-->
-              Class 6, Class 7, Class 8
+            <span class="right" *ngIf="userProfile.framework">
+              {{convertToString(userProfile.framework.grades)}}
             </span>
           </div>
         </div>
         <button 
-          class="ui semi-circular dodger-blue button profile-edit-button center-aligned-button computer only"
+          class="ui button semi-circular dodger-blue profileEditButton mt-20"
           (click)="showEdit = true">
             {{resourceService.frmelmnts.lbl.edit}}
         </button>
       </div>
 
     </div>
-    <!-- User info computer view ends-->
-
-    <!-- User info mobile view starts-->
-    <div class="max-w-300 mobile only">
-      <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fs-1-16">
-          {{resourceService.frmelmnts.lbl.boards}}:
-        </span>
-        <span 
-          class="fs-1-3 font-w-bold text-ac" 
-          *ngIf="userProfile.framework">
-            {{convertToString(userProfile.framework.boards)}}
-          </span>
-      </div>
-      <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fs-1-16">
-          {{resourceService.frmelmnts.lbl.medium}} :
-        </span>
-        <span 
-          class="fs-1-3 font-w-bold text-ac" 
-          *ngIf="userProfile.framework">
-            {{convertToString(userProfile.framework.medium)}}
-        </span>
-      </div>
-      <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fs-1-16">
-          {{resourceService.frmelmnts.lbl.subjects}} :
-        </span>
-        <span 
-          class="fs-1-3 font-w-bold text-ac" 
-          *ngIf="userProfile.framework">
-            {{convertToString(userProfile.framework.subjects)}}
-        </span>
-      </div>
-      <div class="d-flex flex-ai-center flex-dc">
-        <span class="fs-1-16">
-          {{resourceService.frmelmnts.lbl.classes}} :
-        </span>
-        <span 
-          class="fs-1-3 font-w-bold text-ac" 
-          *ngIf="userProfile.framework">
-            {{convertToString(userProfile.framework.grades)}}
-        </span>
-      </div>
-      <div class="d-flex flex-ai-center flex-jc-center" (click)="showEdit = true">
-        <button class="ui semi-circular dodger-blue button mt-30">
-          {{resourceService.frmelmnts.lbl.edit}}
-        </button>
-      </div>
-    </div>
-    <!-- User info mobile view ends-->
   </section>
 
   <!-- my badges section starts -->

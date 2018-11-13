@@ -3165,3 +3165,16 @@ sui-multi-select.ui.selection.dropdown{
  .conceptSelector.ui.form .treepicker-parent input{
    background: transparent;
  }
+.adminActionsButton{
+  position: absolute !important;
+  right: 0;
+  background: #007AFF !important;
+  padding: 0 !important;
+  sui-select{
+    padding: .78571429em 1.5em .78571429em;
+    display: block;
+  }
+  .default.text{
+    color: #fff !important;
+  }
+}

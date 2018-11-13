@@ -1,9 +1,9 @@
 @import "variables";
 
-.profile-avatar{
-  font-family: $font-stack !important;
-  color: $profile-avatar-color !important;
+.min-w-90 {
+  min-width: 90px !important;
 }
+
 /* fonts */
 .font-w-bold {
   font-weight: bold !important;  
@@ -32,37 +32,71 @@
   background: #E0EFFF !important;
 }
 
-/* width */
-.max-w-300 {
-  max-width: 300px !important;
+
+.profileAvatar{
+  font-family: $font-stack !important;
+  color: $profile-avatar-color !important;
 }
-.max-w-400 {
-  max-width: 400px !important;
-}
-.min-w-90 {
-  min-width: 90px !important;
-}
-.profile-label-container {
+.profileLabels {
   max-width: 600px !important;
 }
-
-@media only screen and (max-width: 767px) {
-  .profile-label-container {
-    max-width: 200px !important;
+.profileName{
+  font-size: 1.429rem;
+  font-weight: bold;
+  @media screen and (min-width:768px){
+    font-size: 2.571rem;
   }
-  .m-responsive-flex-dc {
+}
+.profileOrg{
+  font-size: 1.286rem;
+  @media screen and (min-width:768px){
+    font-size: 1.429rem;
+  }
+}
+.profileGeo{
+  font-size: 1rem;
+  @media screen and (min-width:768px){
+    font-size: 1.286rem;
+  }
+}
+.profileTeachingCover{
+  text-align: center;
+  @media screen and (min-width:768px){
+    display: flex;
+    justify-content: center;
+    text-align: initial;
+  }
+}
+.profileTeaching{
+  .row{
+    display: flex;
     flex-direction: column;
+    @media only screen and (min-width: 767px) {
+      flex-direction: row;
+    }
+    .left{
+      min-width:90px;
+      margin-bottom: 5px;
+      font-size: 1rem;
+      @media only screen and (min-width: 767px) {
+        font-size: 1.143rem;
+      }
+    }
+    .right{
+      font-weight: bold;
+      font-size: 1rem;
+      @media only screen and (min-width: 767px) {
+        font-size: 1.286rem;
+      }
+    }
   }
 }
-.right-aligned-button {
-  position: absolute;
-  right: 0;
-}
-.position-relative {
-  position: relative !important;
-}
-.center-aligned-button {
-  position: absolute;
-  right: 0;
-  top: 50%;
+.profileEditButton{
+  @media screen and (min-width: 767px) {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin: 0 !important;
+    transform: translateY(-50%)
+  }
 }
