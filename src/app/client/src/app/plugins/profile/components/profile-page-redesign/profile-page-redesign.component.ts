@@ -25,29 +25,22 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
   userProfile: any;
 
   @ViewChild('profileModal') profileModal;
-  
   /**
    * Contains list of contributions
    */
   contributions = [];
-  
   attendedTraining: Array<object>;
-  
   /**
    * telemetryLogs
    */
   telemetryLogs = [];
-  
   roles: Array<string>;
-  
   showMoreRoles = true;
   showMoreTrainings = true;
-  
   /**
    * Contains default limit to show more roles
    */
   defaultShowMoreRolesLimit = this.configService.appConfig.PROFILE.defaultShowMoreLimit;
-  
   /**
    * Used to store limit to show more awards
    */
@@ -71,10 +64,8 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
     headerMessage: '',
     loaderMessage: 'Loading profile ...'
   };
-  
   showEdit = false;
   userSubscription: ISubscription;
-  
   /** The button clicked value for interact telemetry event */
   btnArrow: string;
 
