@@ -32,6 +32,9 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
   roles: Array<string>;
   showMoreRoles = true;
   showMoreTrainings = true;
+  attendedTraining: Array<object>;
+  telemetryLogs = [];
+
   /**
    * Contains default limit to show more roles
    */
