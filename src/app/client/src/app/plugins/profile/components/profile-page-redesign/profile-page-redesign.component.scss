@@ -97,6 +97,52 @@
     right: 0;
     top: 50%;
     margin: 0 !important;
-    transform: translateY(-50%)
+    transform: translateY(-50%);
+  }
+}
+.profileContributions{
+  @media screen and (min-width: 767px) {
+    padding: 50px;
+  }
+  .ui.segments{
+    @media screen and (max-width: 767px) {
+      border-radius: 0;
+      border: 0;
+      box-shadow: none;
+      margin: 0;
+    }
+  }
+  .ui.segment{
+    .header{
+      font-weight: bold;
+      font-size: 1.143rem;
+      padding: 13px 0;
+      @media screen and (min-width: 767px) {
+        font-size: 1.714rem;
+        padding: 0;
+      }
+    }
+    padding: 20px 30px;
+    @media screen and (max-width: 767px) {
+      border-radius: 0;
+      padding: 0 30px;
+    }
+  }
+}
+.profileTrainings.ui.table.basic{
+  th{
+    font-weight: bold;
+    font-size: 1.143rem;
+    padding: 13px 30px 0 30px !important;
+    @media screen and (min-width: 767px) {
+      font-size: 1.714rem;
+      padding: 20px 30px !important;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    margin: 0 !important;
   }
 }

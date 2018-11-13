@@ -156,19 +156,10 @@
   </extension-point>
   <!-- my badges section ends -->
 
-  <div class="p-50 profile-bg-c-2">
-    <!--contributions view starts-->
-    <div 
-      class="fs-1-7 font-w-bold pl-20 mobile only" 
-      *ngIf="contributions && contributions.length > 0">
-        {{resourceService.frmelmnts.scttl.contributions}}
-        ({{contributions.length}})
-    </div>
-    <div class="ui divider my-5 mobile only"></div>
-    <!--contributions computer view starts-->
+  <div class="profileContributions profile-bg-c-2">
     <div class="ui segments" *ngIf="contributions && contributions.length > 0">
       <div class="ui segment">
-        <div class="fs-1-7 pl-10">
+        <div class="header">
           {{resourceService.frmelmnts.scttl.contributions}} ({{contributions.length}})
         </div>
       </div>
@@ -202,80 +193,54 @@
         </div>
       </div>
     </div>
-    <!--contributions computer view ends-->
-    <!--contributions view ends-->
 
-    <!-- tarainings attended computer view strats-->
     <table 
-      class="ui basic table profile-bg-c-1 mt-20" 
+      class="profileTrainings ui basic table profile-bg-c-1 mt-20" 
       *ngIf="attendedTraining && attendedTraining.length > 0">
       <thead>
         <tr>
-          <th colspan="2" class="fs-1-7 pl-30">
+          <th>
             Trainings attended ({{attendedTraining.length}})
           </th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <ul class="pl-30 pr-30">
-            <li 
-              class="d-flex flex-jc-space-between mb-20" 
-              *ngFor="let data of attendedTraining | slice:0:courseLimit">
-              <span class="fs-1-16 color-3">
-                {{data.courseName}}
-              </span>
-              <span class="fs-1 color-4" *ngIf="data.completedOn">
-                {{data.completedOn}}
-              </span>
-            </li>
-            <div *ngIf="attendedTraining.length > 3">
-              <button 
-                class="ui semi-circular dodger-blue button mt-30" 
-                *ngIf="showMoreTrainings" 
-                (click)="toggleCourse(true)">
-                  {{resourceService.frmelmnts.btn.viewmore}}
-                  <i class="chevron down icon"></i>
-              </button>
-              <button 
-                class="ui semi-circular dodger-blue button mt-30" 
-                (click)="toggleCourse(false)" 
-                *ngIf="!showMoreTrainings">
-                {{resourceService.frmelmnts.btn.viewless}}
-                <i class="chevron up icon"></i>
-              </button>
-            </div>
-          </ul>
+          <td>
+            <ul>
+              <li 
+                class="d-flex flex-jc-space-between mb-20" 
+                *ngFor="let data of attendedTraining | slice:0:courseLimit">
+                <span class="fs-1-16 color-3">
+                  {{data.courseName}}
+                </span>
+                <span class="fs-1 color-4" *ngIf="data.completedOn">
+                  {{data.completedOn}}
+                </span>
+              </li>
+              <div *ngIf="attendedTraining.length > 3" class="text-center mt-30">
+                <button 
+                  class="ui semi-circular dodger-blue button" 
+                  *ngIf="showMoreTrainings" 
+                  (click)="toggleCourse(true)">
+                    {{resourceService.frmelmnts.btn.viewmore}}
+                    <i class="chevron down icon"></i>
+                </button>
+                <button 
+                  class="ui semi-circular dodger-blue button" 
+                  (click)="toggleCourse(false)" 
+                  *ngIf="!showMoreTrainings">
+                  {{resourceService.frmelmnts.btn.viewless}}
+                  <i class="chevron up icon"></i>
+                </button>
+              </div>
+            </ul>
+        </td>
         </tr>
       </tbody>
     </table>
-    <!-- tarainings attended computer view ends-->
   </div>
 
-  <!-- tarainings attended mobile view strats-->
-  <div 
-    class="fs-1-7 font-w-bold mt-30 pl-20 mobile only" 
-    *ngIf="attendedTraining && attendedTraining.length > 0">
-    Trainings attended ({{attendedTraining.length}})
-  </div>
-  <div class="ui divider my-5 mobile only"></div>
-  <div 
-    class="profile-bg-c-1 mobile only" 
-    *ngIf="attendedTraining && attendedTraining.length > 0">
-      <ul class="px-20">
-        <li 
-          class="d-flex flex-dc mb-20" 
-          *ngFor="let data of attendedTraining | slice:0:courseLimit">
-            <span class="fs-1-16 color-3">
-              {{data.courseName}}
-            </span>
-            <span class="fs-1 color-4"*ngIf="data.completedOn">
-              {{data.completedOn}}
-            </span>
-        </li>
-      </ul>
-  </div>
-  <!-- tarainings attended mobile view ends-->
 </div>
 <div class="twelve wide column">
   <div class="ui raised segment " *ngIf="!userProfile">
