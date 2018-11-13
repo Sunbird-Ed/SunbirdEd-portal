@@ -25,7 +25,6 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
   userProfile: any;
 
   @ViewChild('profileModal') profileModal;
-
   /**
    * Contains list of contributions
    */
@@ -47,7 +46,6 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
    * Contains default limit to show more roles
    */
   defaultShowMoreRolesLimit = this.configService.appConfig.PROFILE.defaultShowMoreLimit;
-
   /**
    * Used to store limit to show more awards
    */

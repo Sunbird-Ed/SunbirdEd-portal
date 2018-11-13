@@ -1,3 +1,5 @@
+@import "variables";
+
 .landing-page-section {
     background-color: #ffffff;
     border-bottom: 1px solid rgba(206, 197, 197, 0.79);
@@ -22,6 +24,6 @@
 }
 .ui.card .article-header-padding {
     padding: 0 0 1em 1em;
-    font-family: 'sunbirdboldfont';
+    font-weight: bold;
     font-size: 1.25em;
 }
