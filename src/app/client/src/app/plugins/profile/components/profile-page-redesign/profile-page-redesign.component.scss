@@ -145,4 +145,18 @@
     padding: 0;
     margin: 0 !important;
   }
+  .profileTrainingsListItems{
+    font-weight: 400 !important;
+    font-size: 1rem;
+    span{
+      display:block;
+    }
+    @media screen and (min-width:768px){
+      display: flex;
+      justify-content: space-between;
+      .left{
+        font-size: 1.16rem;
+      }
+    }
+  }
 }

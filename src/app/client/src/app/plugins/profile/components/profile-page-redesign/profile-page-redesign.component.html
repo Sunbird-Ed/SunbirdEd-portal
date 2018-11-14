@@ -207,14 +207,14 @@
       <tbody>
         <tr>
           <td>
-            <ul>
+            <ul class="profileTrainingsList pl-20">
               <li 
-                class="d-flex flex-jc-space-between mb-20" 
+                class="profileTrainingsListItems mb-15" 
                 *ngFor="let data of attendedTraining | slice:0:courseLimit">
-                <span class="fs-1-16 color-3">
+                <span class="left color-3">
                   {{data.courseName}}
                 </span>
-                <span class="fs-1 color-4" *ngIf="data.completedOn">
+                <span class="color-4" *ngIf="data.completedOn">
                   {{data.completedOn}}
                 </span>
               </li>

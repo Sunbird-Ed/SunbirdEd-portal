@@ -19,6 +19,7 @@
     }
     .image {
         width: 70px;
+        min-width: 70px;
         height: 92px;
         border: $primary-border;
         overflow: hidden;
