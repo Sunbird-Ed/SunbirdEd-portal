@@ -150,7 +150,7 @@ export class AppComponent implements OnInit {
       first()).subscribe((data) => {
         this.orgDetails = data;
         this.initTelemetryService(false);
-        this.setAnonymousSessionStartData(); // date should be set after telemetry service initialized
+        this.logAnonymousSessionStart();
         this.initTenantService(slug);
         this.userService.initialize(false);
         this.initApp = true; // this line should be at the end
@@ -271,7 +271,7 @@ export class AppComponent implements OnInit {
     }
     localStorage.setItem('anonymousSessionDetails', JSON.stringify(anonymousSessionDetails));
   }
-  setAnonymousSessionStartData() {
+  logAnonymousSessionStart() {
     if (!this.logAnonymousSessionStartEvent) {
       return;
     }
