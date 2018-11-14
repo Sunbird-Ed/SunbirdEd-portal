@@ -11,7 +11,7 @@ import { SharedModule} from '@sunbird/shared';
 // Import component
 import {
  HomeCalendarCardComponent, HomeFeedCardComponent, MainHomeComponent,
-  ProfileCardComponent, HomeAnnouncementComponent, NotificationComponent
+ HomeAnnouncementComponent, NotificationComponent
 } from './component/index';
 import { HomeAnnouncementService } from './service/index';
 import { NgInviewModule } from 'angular-inport';
@@ -32,7 +32,6 @@ import {SharedFeatureModule} from '@sunbird/shared-feature';
     SharedFeatureModule
   ],
   declarations: [
-    ProfileCardComponent,
     MainHomeComponent,
     HomeFeedCardComponent,
     HomeCalendarCardComponent,

@@ -28,10 +28,6 @@ export class MainHomeComponent implements OnInit, OnDestroy {
 	*/
   telemetryImpression: IImpressionEventInput;
   /**
-	 * profileUpdateIntractEdata
-	*/
-  profileUpdateIntractEdata: IInteractEventEdata;
-  /**
 	 * telemetryInteractObject
 	*/
   telemetryInteractObject: IInteractEventObject;
@@ -179,35 +175,6 @@ export class MainHomeComponent implements OnInit, OnDestroy {
     this.btnArrow = 'prev-button';
   }
   /**
-   * This method calls the user API.
-  */
-  public populateUserProfile() {
-    const profile = 'profile';
-    this.userSubscription = this.userService.userData$.subscribe(
-      user => {
-        if (user && !user.err) {
-          this.showLoader = false;
-          if (user.userProfile.completeness < 100) {
-            const missingField = [];
-            _.forEach(user.userProfile.missingFields, (val, key) => {
-              val = val.match(/([A-Z]?[^A-Z]*)/g).join(' ');
-              missingField.push(_.capitalize(val));
-            });
-            this.toDoList.unshift({
-              type: profile,
-              missingFields: missingField,
-              value: user.userProfile.completeness,
-              image: user.userProfile.avatar
-            });
-          }
-        } else if (user && user.err) {
-          this.showLoader = false;
-          this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-        }
-      }
-    );
-  }
-  /**
    * This method calls the course API.
    */
   public populateEnrolledCourse() {
@@ -253,7 +220,7 @@ export class MainHomeComponent implements OnInit, OnDestroy {
   * user details and enrolled courses.
   */
   ngOnInit() {
-    this.populateUserProfile();
+    // this.populateUserProfile();
     this.populateEnrolledCourse();
     this.telemetryImpression = {
       context: {
@@ -355,12 +322,16 @@ export class MainHomeComponent implements OnInit, OnDestroy {
     }
   }
   setInteractEventData() {
+<<<<<<< HEAD
     this.profileUpdateIntractEdata = {
       id: 'home',
       type: 'click',
       pageid: 'home'
     };
     this.telemetryInteractObject = {
+=======
+    this.telemetryInteractObject =  {
+>>>>>>> upstream/release-1.12
       id: this.userService.userid,
       type: 'user',
       ver: '1.0'

@@ -4,9 +4,9 @@ import { ProfileFrameworkPopupComponent } from './profile-framework-popup.compon
 import { SuiModule } from 'ng2-semantic-ui';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { OrgDetailsService, FrameworkService, FormService, LearnerService, CoreModule } from '@sunbird/core';
-import {ConfigService, ResourceService, Framework, ToasterService, SharedModule} from '@sunbird/shared';
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { FrameworkService, FormService, LearnerService, CoreModule, UserService } from '@sunbird/core';
+import { ConfigService, ResourceService, Framework, ToasterService, SharedModule } from '@sunbird/shared';
+import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 import { Response } from './profile-framework-popup.component.spec.data';
 
 describe('PopupComponent', () => {
@@ -29,14 +29,14 @@ describe('PopupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
-      declarations: [ ProfileFrameworkPopupComponent ],
-      providers: [ConfigService,  LearnerService, OrgDetailsService, FrameworkService, FormService,
+      declarations: [ProfileFrameworkPopupComponent],
+      providers: [ConfigService, LearnerService, UserService, FrameworkService, FormService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
         schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -44,14 +44,14 @@ describe('PopupComponent', () => {
     component = fixture.componentInstance;
   });
   it('Error message to be displayed when framework api returns error', () => {
-    const orgDetailsService = TestBed.get(OrgDetailsService);
+    const userService = TestBed.get(UserService);
     const frameworkService = TestBed.get(FrameworkService);
     const formService = TestBed.get(FormService);
     const toasterService = TestBed.get(ToasterService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceBundle.messages;
-    spyOn(orgDetailsService, 'getOrgDetails').and.callFake(() => observableOf(Response.orgSuccess));
-    frameworkService._frameworkData$.next({err: 'client error', framework: null, frameworkdata: null });
+    userService._userData$.next({ err: null, userProfile: Response.userData });
+    frameworkService._frameworkData$.next({ err: 'client error', framework: null, frameworkdata: null });
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(formService, 'getFormConfig').and.callFake(() => observableOf(Response.formData.result.form.data.fields));
     component.ngOnInit();
@@ -59,14 +59,13 @@ describe('PopupComponent', () => {
   });
 
   it('Error message to be displayed when form config service throws error', () => {
-    const orgDetailsService = TestBed.get(OrgDetailsService);
-    const frameworkService = TestBed.get(FrameworkService);
+    const userService = TestBed.get(UserService); const frameworkService = TestBed.get(FrameworkService);
     const formService = TestBed.get(FormService);
     const toasterService = TestBed.get(ToasterService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceBundle.messages;
-    spyOn(orgDetailsService, 'getOrgDetails').and.callFake(() => observableOf(Response.orgSuccess));
-    frameworkService._frameworkData$.next({err: 'client error', framework: null, frameworkdata: null });
+    userService._userData$.next({ err: null, userProfile: Response.userData });
+    frameworkService._frameworkData$.next({ err: 'client error', framework: null, frameworkdata: null });
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(formService, 'getFormConfig').and.callFake(() => observableThrowError({}));
     component.ngOnInit();
@@ -74,24 +73,24 @@ describe('PopupComponent', () => {
   });
 
   it('Error message to be displayed when org details API throws error', () => {
-    const orgDetailsService = TestBed.get(OrgDetailsService);
+    const userService = TestBed.get(UserService);
     const frameworkService = TestBed.get(FrameworkService);
     const formService = TestBed.get(FormService);
     const toasterService = TestBed.get(ToasterService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceBundle.messages;
-    spyOn(orgDetailsService, 'getOrgDetails').and.callFake(() => observableThrowError({}));
+    userService._userData$.next({ err: 'err', userProfile: null });
     spyOn(toasterService, 'error').and.callThrough();
     component.ngOnInit();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
   });
 
   it('Form to successfully set input framework data sent', () => {
-    const orgDetailsService = TestBed.get(OrgDetailsService);
+    const userService = TestBed.get(UserService);
     const frameworkService = TestBed.get(FrameworkService);
     const formService = TestBed.get(FormService);
-    component.formInput = { board: ['NCERT'], medium: ['English'], gradeLevel: ['KG']};
-    spyOn(orgDetailsService, 'getOrgDetails').and.callFake(() => observableOf(Response.orgSuccess));
+    component.formInput = { board: ['NCERT'], medium: ['English'], gradeLevel: ['KG'] };
+    userService._userData$.next({ err: null, userProfile: Response.userData });
     frameworkService._frameworkData$.next(Response.frameworkData);
     spyOn(formService, 'getFormConfig').and.callFake(() => observableOf(Response.formData.result.form.data.fields));
     component.ngOnInit();
