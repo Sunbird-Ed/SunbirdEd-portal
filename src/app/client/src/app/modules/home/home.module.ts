@@ -16,7 +16,6 @@ import {
 import { HomeAnnouncementService } from './service/index';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
-import {SharedFeatureModule} from '@sunbird/shared-feature';
 @NgModule({
   imports: [
     SuiModule,
@@ -29,7 +28,6 @@ import {SharedFeatureModule} from '@sunbird/shared-feature';
     CoreModule,
     NgInviewModule,
     TelemetryModule,
-    SharedFeatureModule
   ],
   declarations: [
     MainHomeComponent,
