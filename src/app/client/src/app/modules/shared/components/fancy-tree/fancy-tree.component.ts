@@ -21,7 +21,7 @@ export class FancyTreeComponent implements AfterViewInit {
       glyph: {
         preset: '',
         map: {
-          folder: 'sb-icon-textbook',
+          folder: 'sb-icon-collection',
           folderOpen: 'sb-icon-open_textbook'
         }
       },

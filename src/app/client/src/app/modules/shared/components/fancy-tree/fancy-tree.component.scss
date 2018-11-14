@@ -10,6 +10,10 @@
 ::ng-deep span.fancytree-icon {
   vertical-align: middle;
   margin-left: 0;
+  cursor: pointer;
+}
+::ng-deep span.fancytree-custom-icon {
+  cursor: pointer;
 }
 ::ng-deep span.fancytree-expander {
   vertical-align: middle;
