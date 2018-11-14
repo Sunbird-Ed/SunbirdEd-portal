@@ -70,7 +70,7 @@ export class UserService {
    */
   private _cloudStorageUrls: string[];
   private _authenticated: boolean;
-  public anonymousSid: string;
+  private _anonymousSid: string;
   /**
    * Reference of content service.
    */
@@ -106,14 +106,18 @@ export class UserService {
       this._authenticated = true;
     } catch (error) {
       this._authenticated = false;
-      this.anonymousSid = UUID.UUID();
     }
     try {
       this._appId = (<HTMLInputElement>document.getElementById('appId')).value;
       this._cloudStorageUrls = (<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(',');
     } catch (error) {
     }
-
+  }
+  set anonymousSid(anonymousSid) {
+    this._anonymousSid = anonymousSid;
+  }
+  get anonymousSid() {
+    return this._anonymousSid;
   }
   /**
    * returns login status.

@@ -81,7 +81,7 @@ describe('AppComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockData.success));
     spyOn(component.telemetryService, 'initialize').and.returnValue(observableOf({}));
-    component.initializeLogedInsession();
+    component.initializeLoggedInSession();
     const config = {
       userOrgDetails: {
         userId: component.userProfile.userId,
