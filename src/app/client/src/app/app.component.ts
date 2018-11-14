@@ -248,7 +248,6 @@ export class AppComponent implements OnInit {
       framework: event
     };
     this.profileService.updateProfile(req).subscribe(res => {
-      console.log('call me', event);
       this.frameWorkPopUp.modal.deny();
       this.showFrameWorkPopUp = false;
       this.utilService.toggleAppPopup();
