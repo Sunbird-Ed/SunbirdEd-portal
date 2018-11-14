@@ -18,7 +18,6 @@ import * as _ from 'lodash';
 })
 
 export class MainHomeComponent implements OnInit, OnDestroy {
-  @ViewChild('frameWorkPopUp') frameWorkPopUp;
   /**
   * inviewLogs
  */
@@ -322,16 +321,7 @@ export class MainHomeComponent implements OnInit, OnDestroy {
     }
   }
   setInteractEventData() {
-<<<<<<< HEAD
-    this.profileUpdateIntractEdata = {
-      id: 'home',
-      type: 'click',
-      pageid: 'home'
-    };
-    this.telemetryInteractObject = {
-=======
     this.telemetryInteractObject =  {
->>>>>>> upstream/release-1.12
       id: this.userService.userid,
       type: 'user',
       ver: '1.0'
