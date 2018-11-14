@@ -6,7 +6,7 @@ const routes: Routes = [
   {
     path: '', component: ExploreComponent, data: {
       telemetry: {
-        env: 'public', pageid: 'explore', type: 'view', subtype: 'paginate'
+        env: 'explore', pageid: 'explore', type: 'view', subtype: 'paginate'
       }
     }
   },
@@ -14,7 +14,7 @@ const routes: Routes = [
     path: 'view-all/:section/:pageNumber', component: ViewAllComponent,
     data: {
       telemetry: {
-        env: 'explore', pageid: 'viewAll', type: 'view', subtype: 'paginate'
+        env: 'explore', pageid: 'view-all', type: 'view', subtype: 'paginate'
       },
       filterType: 'explore',
       softConstraints: {badgeAssertions: 98, board: 99, channel: 100}
@@ -23,7 +23,7 @@ const routes: Routes = [
     {
       path: ':pageNumber', component: ExploreContentComponent, data: {
         telemetry: {
-          env: 'public', pageid: 'explore', type: 'view', subtype: 'paginate'
+          env: 'explore', pageid: 'explore-search', type: 'view', subtype: 'paginate'
         }
       }
     }
