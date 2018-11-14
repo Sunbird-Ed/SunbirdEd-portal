@@ -29,14 +29,12 @@ export class ProfilePageRedesignComponent implements OnInit, OnDestroy {
    * Contains list of contributions
    */
   contributions = [];
-  attendedTraining: Array<object>;
-  /**
-   * telemetryLogs
-   */
-  telemetryLogs = [];
   roles: Array<string>;
   showMoreRoles = true;
   showMoreTrainings = true;
+  attendedTraining: Array<object>;
+  telemetryLogs = [];
+
   /**
    * Contains default limit to show more roles
    */

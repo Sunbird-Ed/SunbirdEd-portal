@@ -128,6 +128,9 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
       type: 'click',
       pageid: this.pageId
     };
+    this.setFilterInteractData();
+  }
+  setFilterInteractData() {
     this.submitIntractEdata = {
       id: 'submit',
       type: 'click',
@@ -135,7 +138,6 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
       extra: { filter: this.formInputData }
     };
   }
-
   getQueryParams() {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParams = { ...params };
