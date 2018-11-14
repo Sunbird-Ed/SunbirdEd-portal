@@ -58,7 +58,7 @@
                         <a class="item ml-20" *ngIf="userService.loggedIn">
                             <img src="{{'assets/images/notification.png'}}" class="notification-icon">
                         </a>
-                        <a class="item pt-0" *ngIf="userService.loggedIn; else showLoginBtn">
+                        <a class="item" *ngIf="userService.loggedIn; else showLoginBtn">
                             <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing
                                         header-user-container" id="dropdown-menu-list-header">
                                         <ngx-avatar *ngIf='userProfile' [style]="customStyle" [textSizeRatio] ="2" class="my-avatar"  [size]= "40" initialsSize="1" name="{{userProfile?.firstName}} "> </ngx-avatar>
