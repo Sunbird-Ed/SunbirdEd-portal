@@ -1,7 +1,7 @@
 <!-- App Install Popup -->
     <div id="appSection" class="appPopup-cover js-appPopup">
         
-        <div class="ui grid padded mobile only tablet only appPopup-mobile">
+        <div class="ui grid padded mobile only tablet only appPopup-mobile" *ngIf="showPopUp">
             <div class="ui dimmer modals page transition active ">
                 <div class="ui mini fixed-small modal active p-0">
                     <div class="header appPopup-header p-10">
@@ -19,10 +19,10 @@
                         <p>Store lessons, textbooks and content offline on your device</p>
                     </div>
                     <div class="actions pl-0 pr-0">
-                        <a class="ui mini button positive p-0" href="https://play.google.com/store/apps/details?id=in.gov.diksha.app" title="INSTALL APP" >
+                        <a  (click) ="closePopUp()" class="ui mini button positive p-0" href="https://play.google.com/store/apps/details?id=in.gov.diksha.app" target="_blank" title="INSTALL APP" >
                             INSTALL APP
                         </a>
-                        <button class="ui mini basic button positive p-0 js-setAppPopupCookie" title="VIEW IN BROWSER" >
+                        <button (click) ="navigateToLibrary()" class="ui mini basic button positive p-0 js-setAppPopupCookie" title="VIEW IN BROWSER" >
                             VIEW IN BROWSER
                         </button>
                     </div>
@@ -30,7 +30,7 @@
             </div>
         </div>
         
-        <div class="ui grid padded computer only bg-lightGray appPopup-computer border-1">
+        <div  *ngIf="showPopUp" class="ui grid padded computer only bg-lightGray appPopup-computer border-1">
             <div class="one wide column"></div>
             <div class="ten wide column px-0">
                 <div class="ui grid middle aligned">
@@ -47,17 +47,17 @@
                         </div>
                     </div>
                     <div class="six wide column right floated right aligned">
-                        <a class="ui button positive m-5" href="https://play.google.com/store/apps/details?id=in.gov.diksha.app" title="INSTALL APP" >
+                        <a  (click) ="closePopUp()" class="ui button positive m-5" href="https://play.google.com/store/apps/details?id=in.gov.diksha.app"  target="_blank" title="INSTALL APP" >
                             INSTALL APP
                         </a>
-                        <button class="ui basic button blue m-5 bg-white js-setAppPopupCookie" title="VIEW IN BROWSER" >
+                        <button (click) ="navigateToLibrary()" class="ui basic button blue m-5 bg-white js-setAppPopupCookie" title="VIEW IN BROWSER" >
                             VIEW IN BROWSER
                         </button>
                     </div>
                 </div>
             </div>
             <div class="one wide column center aligned" >
-                <i class="close icon link js-setAppPopupCookie" title="Close" tabindex="0"></i>
+                <i (click) ="closePopUp()"class="close icon link js-setAppPopupCookie" title="Close" tabindex="0"></i>
             </div>
         </div>
         

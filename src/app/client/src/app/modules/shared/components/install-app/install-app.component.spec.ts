@@ -1,25 +1,30 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { InstallAppComponent } from './install-app.component';
 
 describe('InstallAppComponent', () => {
-  let component: InstallAppComponent;
-  let fixture: ComponentFixture<InstallAppComponent>;
+    let comp: InstallAppComponent;
+    let fixture: ComponentFixture<InstallAppComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ InstallAppComponent ]
-    })
-    .compileComponents();
-  }));
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            declarations: [ InstallAppComponent ],
+            schemas: [ NO_ERRORS_SCHEMA ]
+        });
+        fixture = TestBed.createComponent(InstallAppComponent);
+        comp = fixture.componentInstance;
+    });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(InstallAppComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    it('can load instance', () => {
+        expect(comp).toBeTruthy();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+    it('showPopUp defaults to: true', () => {
+        expect(comp.showPopUp).toEqual(true);
+    });
+    it(' makes expected calls to   navigateToLibrary', () => {
+      spyOn(comp, 'closePopUp');
+      comp.navigateToLibrary();
+      expect(comp.closePopUp).toHaveBeenCalled();
   });
 });

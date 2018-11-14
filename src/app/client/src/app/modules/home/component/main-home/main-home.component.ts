@@ -2,10 +2,9 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { CoursesService, UserService, PlayerService } from '@sunbird/core';
-import { ResourceService, ToasterService, ServerResponse, ConfigService, UtilService} from '@sunbird/shared';
-import {  IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { ResourceService, ToasterService, ServerResponse, ConfigService, UtilService } from '@sunbird/shared';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
-import { ProfileService } from '@sunbird/profile';
 /**
  * This component contains 3 sub components
  * 1)ProfileCard: It displays user profile details.
@@ -70,13 +69,10 @@ export class MainHomeComponent implements OnInit, OnDestroy {
    * Contains details of userprofile and enrolled courses.
    */
   toDoList: Array<object> = [];
-/**
-* Contains config service reference
-*/
-public configService: ConfigService;
-  /** this variable is used to show the FrameWorkPopUp
-   */
-showFrameWorkPopUp = false;
+  /**
+  * Contains config service reference
+  */
+  public configService: ConfigService;
   /**
    * This variable hepls to show and hide page loader.
    * It is kept true by default as at first when we comes
@@ -171,8 +167,7 @@ showFrameWorkPopUp = false;
    */
   constructor(resourceService: ResourceService, private playerService: PlayerService,
     userService: UserService, courseService: CoursesService, toasterService: ToasterService,
-    route: Router, activatedRoute: ActivatedRoute, configService: ConfigService, utilService: UtilService,
-    public profileService: ProfileService) {
+    route: Router, activatedRoute: ActivatedRoute, configService: ConfigService, utilService: UtilService) {
     this.userService = userService;
     this.courseService = courseService;
     this.resourceService = resourceService;
@@ -194,7 +189,7 @@ showFrameWorkPopUp = false;
           this.showLoader = false;
           if (user.userProfile.completeness < 100) {
             const missingField = [];
-            _.forEach( user.userProfile.missingFields, (val, key) => {
+            _.forEach(user.userProfile.missingFields, (val, key) => {
               val = val.match(/([A-Z]?[^A-Z]*)/g).join(' ');
               missingField.push(_.capitalize(val));
             });
@@ -204,11 +199,6 @@ showFrameWorkPopUp = false;
               value: user.userProfile.completeness,
               image: user.userProfile.avatar
             });
-          }
-          if (_.isEmpty(user.userProfile.framework)) {
-            this.showFrameWorkPopUp = true;
-          }  else {
-            this.showFrameWorkPopUp = false;
           }
         } else if (user && user.err) {
           this.showLoader = false;
@@ -226,13 +216,13 @@ showFrameWorkPopUp = false;
         if (data && !data.err) {
           this.showLoader = false;
           const constantData = this.configService.appConfig.Home.enrolledCourses.constantData;
-            const metaData = { metaData: this.configService.appConfig.Home.enrolledCourses.metaData };
-            const dynamicFields = {
-              'maxCount': this.configService.appConfig.Home.enrolledCourses.maxCount,
-              'progress': this.configService.appConfig.Home.enrolledCourses.progress
-            };
-            const courses = this.utilService.getDataForCard(data.enrolledCourses,
-              constantData, dynamicFields, metaData);
+          const metaData = { metaData: this.configService.appConfig.Home.enrolledCourses.metaData };
+          const dynamicFields = {
+            'maxCount': this.configService.appConfig.Home.enrolledCourses.maxCount,
+            'progress': this.configService.appConfig.Home.enrolledCourses.progress
+          };
+          const courses = this.utilService.getDataForCard(data.enrolledCourses,
+            constantData, dynamicFields, metaData);
           this.toDoList = this.toDoList.concat(courses);
         } else if (data && data.err) {
           this.showLoader = false;
@@ -287,7 +277,6 @@ showFrameWorkPopUp = false;
     if (this.courseSubscription) {
       this.courseSubscription.unsubscribe();
     }
-    this.showFrameWorkPopUp = false;
   }
 
   /**
@@ -297,9 +286,9 @@ showFrameWorkPopUp = false;
     _.forEach(event.inview, (inview, key) => {
       const obj = _.find(this.inviewLogs, (o) => {
         if (inview.data.type !== 'profile') {
-          return o.objid === inview.data.courseId  ;
+          return o.objid === inview.data.courseId;
         } else {
-          return o.objid === this.userService.userid  ;
+          return o.objid === this.userService.userid;
         }
       });
       if (obj === undefined) {
@@ -371,28 +360,10 @@ showFrameWorkPopUp = false;
       type: 'click',
       pageid: 'home'
     };
-    this.telemetryInteractObject =  {
+    this.telemetryInteractObject = {
       id: this.userService.userid,
       type: 'user',
       ver: '1.0'
     };
-  }
-
-  updateFrameWork(event) {
-    console.log(event);
-    const req = {
-      framework: event
-    };
-    this.profileService.updateProfile(req).subscribe(res => {
-      this.showFrameWorkPopUp = false;
-      if (this.userSubscription) {
-        this.userSubscription.unsubscribe();
-      }
-      this.frameWorkPopUp.modal.deny();
-    },
-    (err) => {
-      this.toasterService.error(this.resourceService.messages.fmsg.m0085);
-      this.frameWorkPopUp.modal.deny();
-    });
   }
 }
