@@ -18,6 +18,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   @Input() buttonLabel: string;
   @Input() formInput: any = {};
   @Output() submit = new EventEmitter<any>();
+  @Output() close = new EventEmitter<any>();
   private frameworkDataSubscription: Subscription;
   private formType = 'user';
   public formFieldProperties: any;
@@ -97,6 +98,11 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
 
   onSubmitForm() {
     this.submit.emit(this.selectedOption);
+  }
+
+  onClose(modal) {
+    modal.deny();
+    this.close.emit();
   }
 
   ngOnDestroy() {

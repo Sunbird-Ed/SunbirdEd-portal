@@ -69,6 +69,19 @@
     right: 0;
     top: 50%;
   }
-  .center-aligned {
-    right: 470px;
+
+.right-aligned-button  {
+  ::ng-deep {
+    .ui.inline.dropdown>.text {
+      color: #fff;
+      margin-left: 10px;
+      }
+      .ui.inline.dropdown .dropdown.icon{
+        color: #fff;
+      }
   }
+};
+
+.ui.primary.admin-button {
+  background: #007aff !important;
+}
