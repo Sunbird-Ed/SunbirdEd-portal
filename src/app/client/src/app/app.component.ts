@@ -67,8 +67,6 @@ export class AppComponent implements OnInit {
 
   public version: string;
 
-  private logAnonymousSessionStartEvent = false;
-
   userDataUnsubscribe: Subscription;
   /**
    * constructor
@@ -86,6 +84,8 @@ export class AppComponent implements OnInit {
     this.tenantService = tenantService;
     this.telemetryService = telemetryService;
     this.config = config;
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    this.version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
   }
   /**
    * dispatch telemetry window unload event before browser closes
@@ -97,33 +97,28 @@ export class AppComponent implements OnInit {
   }
   ngOnInit() {
     this.resourceService.initialize();
-    this.navigationHelperService.initialize();
-    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
-    this.version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
-    this.getDeviceId().subscribe((deviceId) => {
-      (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-      this.initializeApp();
+    this.setDeviceId().subscribe(() => {
+      this.navigationHelperService.initialize();
+      if (this.userService.loggedIn) {
+          this.conceptPickerService.initialize();
+          this.initializeLoggedInSession();
+      } else {
+        this.router.events.pipe(filter(event => event instanceof NavigationEnd), first()).subscribe((urlAfterRedirects: NavigationEnd) => {
+            this.initializeAnonymousSession(_.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug'));
+        });
+      }
     });
   }
-  public getDeviceId(): Observable<string> {
+  public setDeviceId(): Observable<string> {
     return new Observable(observer => {
       fingerPrint2.get((deviceId) => {
+        (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
         observer.next(deviceId);
         observer.complete();
       });
     });
   }
-  private initializeApp() {
-    if (this.userService.loggedIn) {
-        this.conceptPickerService.initialize();
-        this.initializeLoggedInSession();
-    } else {
-      this.router.events.pipe(filter(event => event instanceof NavigationEnd), first()).subscribe((urlAfterRedirects: NavigationEnd) => {
-          this.initializeAnonymousSession(_.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug'));
-      });
-    }
-  }
-  initializeLoggedInSession() {
+  private initializeLoggedInSession() {
     this.userService.startSession();
     this.userService.initialize(true);
     this.permissionService.initialize();
@@ -147,7 +142,7 @@ export class AppComponent implements OnInit {
       }
     });
   }
-  initializeAnonymousSession(slug) {
+  private initializeAnonymousSession(slug) {
     this.orgDetailsService.getOrgDetails(slug).pipe(
       first()).subscribe((data) => {
         this.orgDetails = data;
@@ -160,7 +155,7 @@ export class AppComponent implements OnInit {
         console.log('unable to get organization details');
       });
   }
-  public initTelemetryService(loggedIn) {
+  private initTelemetryService(loggedIn) {
     let config: ITelemetryContext;
     if (loggedIn) {
       config = this.getLoggedInUserConfig();
@@ -198,7 +193,7 @@ export class AppComponent implements OnInit {
       }
     };
   }
-  getAnonymousUserConfig() {
+  private getAnonymousUserConfig() {
     return {
       userOrgDetails: {
         userId: 'anonymous',
