@@ -201,7 +201,7 @@
     <ul class="px-20">
       <li class="d-flex flex-dc mb-20" *ngFor="let data of attendedTraining | slice:0:courseLimit">
         <span class="fs-1-16 color-3">{{data.courseName}}</span>
-        <span class="fs-1 color-4" *ngIf="data.completedOn">{{data.completedOn}}</span>
+        <span class="fs-1 color-4" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy'}}</span>
       </li>
       <div class=" mb-15 d-flex flex-jc-center position-relative" *ngIf="attendedTraining.length > 3">
         <button class="ui semi-circular dodger-blue button center-aligned" *ngIf="showMoreTrainings" (click)="toggleCourse(true)">{{resourceService.frmelmnts.lbl.viewmore}}
