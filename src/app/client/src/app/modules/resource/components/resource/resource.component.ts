@@ -80,6 +80,7 @@ export class ResourceComponent implements OnInit, OnDestroy {
   */
   showAppPopUp = false;
   viewinBrowser = false;
+  dataDrivenFilters: object;
   /**
    * The "constructor"
    *
@@ -108,17 +109,14 @@ export class ResourceComponent implements OnInit, OnDestroy {
     let softConstraints = {};
     const filters = _.pickBy(this.filters, value => value.length > 0);
       if (this.viewinBrowser && _.isEmpty(this.queryParams)) {
-      filters.board = _.get(this.framework, 'board') ;
-      filters.medium = _.get(this.framework, 'medium') ;
-      filters.subject = _.get(this.framework, 'subject');
-      filters.gradeLevel = _.get(this.framework, 'gradeLevel');
-      softConstraints = { subject: 98, medium: 99,  board: 100 };
+        filters.board = this.dataDrivenFilters['board'];
+        softConstraints = {board: 100 };
     }
     const option = {
       source: 'web',
       name: 'Resource',
       filters: filters,
-      softConstraints: softConstraints,
+      softConstraints : softConstraints
     };
     if (this.queryParams.sort_by) {
       option['sort_by'] = {[this.queryParams.sort_by]: this.queryParams.sortType  };
@@ -171,6 +169,7 @@ export class ResourceComponent implements OnInit, OnDestroy {
  *This method calls the populatePageData
  */
   ngOnInit() {
+    this.dataDrivenFilters = {};
     this.filterType = this.config.appConfig.library.filterType;
     this.redirectUrl = this.config.appConfig.library.inPageredirectUrl;
     this.showAppPopUp = this.utilService.showAppPopUp;
@@ -269,6 +268,17 @@ export class ResourceComponent implements OnInit, OnDestroy {
     this.viewinBrowser = true;
     this.populatePageData();
   }
+
+  getFilters(filters) {
+    _.forEach(filters, (value) => {
+      if (value.code === 'board') {
+        value.range = _.orderBy(value.range, ['index'], ['asc']);
+        this.dataDrivenFilters['board'] = _.get(value, 'range[0].name') ? _.get(value, 'range[0].name') : [];
+      }
+    });
+    this.getQueryParams();
+  }
+
 
   ngOnDestroy() {
     this.utilService.toggleAppPopup();
