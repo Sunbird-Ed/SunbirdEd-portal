@@ -5,7 +5,7 @@
         <ngx-avatar class="my-avatar" [style]="customStyle" [size]="100" initialsSize="1" [textSizeRatio]="2" name="{{userProfile.firstName}} ">
         </ngx-avatar>
           <div class="right-aligned-button computer only" *ngIf='permissionService.permissionAvailable' appPermission [permission]='adminActions'>
-            <sui-select class="inline primary admin-button button" icon="dropdown" placeholder="Admin Actions  " [(ngModel)]="adminActionSelectedOption"
+            <sui-select class="inline primary admin-button button" icon="dropdown" placeholder="Admin Actions" [(ngModel)]="adminActionSelectedOption"
               (ngModelChange)="onChange()">
               <sui-select-option *ngFor="let type of adminActionDropDownOptions" [value]="type"></sui-select-option>
             </sui-select>
