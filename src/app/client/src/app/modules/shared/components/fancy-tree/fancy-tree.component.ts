@@ -19,7 +19,7 @@ export class FancyTreeComponent implements AfterViewInit {
       clickFolderMode: 3,
       source: this.nodes,
       glyph: {
-        preset: '',
+        preset: 'awesome4',
         map: {
           folder: 'sb-icon-collection',
           folderOpen: 'sb-icon-collection'
