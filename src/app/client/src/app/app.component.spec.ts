@@ -57,7 +57,7 @@ describe('AppComponent', () => {
     const navigationHelperService = TestBed.get(NavigationHelperService);
     spyOn(navigationHelperService, 'initialize').and.callFake(() => {});
     spyOn(component.telemetryService, 'initialize');
-    spyOn(component, 'getDeviceId').and.returnValue(of('device'));
+    spyOn(component, 'setDeviceId').and.returnValue(of('device'));
     spyOn(document, 'querySelector').and.returnValue({ setAttribute: () => { }});
     spyOn(Fingerprint2, 'constructor').and.returnValue({get: () => {}});
     spyOn(document, 'getElementById').and.callFake((id) => {
