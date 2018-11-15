@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectorRef, EventEmitter, Output, OnDestroy, ViewChild } from '@angular/core';
-import { OrgDetailsService, FrameworkService, FormService } from '@sunbird/core';
+import { FrameworkService, FormService, UserService } from '@sunbird/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
 import { combineLatest, Subscription, Subject } from 'rxjs';
@@ -30,38 +30,40 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   public selectedOption: object = {};
   public showButton = false;
   public unsubscribe = new Subject<void>();
-
-  constructor(public orgDetailsService: OrgDetailsService, public frameworkService: FrameworkService,
+  userSubscription: Subscription;
+  constructor(public userService: UserService, public frameworkService: FrameworkService,
     public formService: FormService, public resourceService: ResourceService, private cdr: ChangeDetectorRef,
     public toasterService: ToasterService, ) { }
 
   ngOnInit() {
-    this.orgDetailsService.getOrgDetails().pipe(
-      takeUntil(this.unsubscribe)).subscribe((response: any) => {
-      this.frameworkService.initialize(response.hashTagId);
-      this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
-        if (frameworkData && !frameworkData.err) {
-          this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
-          const formServiceInputParams = {
-            formType: this.formType,
-            formAction: this.formAction,
-            contentType: 'framework',
-            framework: frameworkData.framework
-          };
-          this.formService.getFormConfig(formServiceInputParams, response.hashTagId).pipe(
-            takeUntil(this.unsubscribe)).subscribe((data: ServerResponse) => {
-            this.formFieldProperties = data;
-            this.getFormConfig();
-          }, (err: ServerResponse) => {
-            this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    this.userSubscription = this.userService.userData$.subscribe(
+      (user: any) => {
+        if (user && !user.err) {
+          this.frameworkService.initialize(user.userProfile.rootOrg.hashTagId);
+          this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
+            if (frameworkData && !frameworkData.err) {
+              this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
+              const formServiceInputParams = {
+                formType: this.formType,
+                formAction: this.formAction,
+                contentType: 'framework',
+                framework: frameworkData.framework
+              };
+              this.formService.getFormConfig(formServiceInputParams, user.userProfile.rootOrg.hashTagId).pipe(
+                takeUntil(this.unsubscribe)).subscribe((data: ServerResponse) => {
+                  this.formFieldProperties = data;
+                  this.getFormConfig();
+                }, (err: ServerResponse) => {
+                  this.toasterService.error(this.resourceService.messages.emsg.m0005);
+                });
+            } else if (frameworkData && frameworkData.err) {
+              this.toasterService.error(this.resourceService.messages.emsg.m0005);
+            }
           });
-        } else if (frameworkData && frameworkData.err) {
+        } else if (user.err) {
           this.toasterService.error(this.resourceService.messages.emsg.m0005);
         }
       });
-    }, (err) => {
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
-    });
   }
 
   getFormConfig() {
@@ -100,6 +102,9 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.frameworkDataSubscription) {
       this.frameworkDataSubscription.unsubscribe();
+    }
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();

@@ -33,7 +33,7 @@ const routes: Routes = [
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }],
       telemetry: {
-        env: telemetryEnv, pageid: 'viewAll', type: 'view', subtype: 'paginate'
+        env: telemetryEnv, pageid: 'view-all', type: 'view', subtype: 'paginate'
       },
       baseUrl: 'learn',
       filterType: 'course'

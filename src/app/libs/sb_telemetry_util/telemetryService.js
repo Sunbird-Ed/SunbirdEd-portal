@@ -1,4 +1,4 @@
-var Telemetry = require('./telemetryLibrary.js')
+var Telemetry = require('@project-sunbird/telemetry-sdk')
 var telemetrySyncManager = require('./telemetrySyncManager.js')
 
 var default_config = {
