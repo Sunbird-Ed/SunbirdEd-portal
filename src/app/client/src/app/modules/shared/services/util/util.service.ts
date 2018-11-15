@@ -18,21 +18,33 @@ export class UtilService {
       name: data.name || data.courseName,
       image: data.appIcon || data.courseLogoUrl,
       description: data.description,
-      rating: data.me_averageRating || '0'
+      rating: data.me_averageRating || '0',
+      subject: data.subject,
+      medium: data.medium,
+      orgDetails: data.orgDetails,
+      gradeLevel: '',
+      resourceType: data.resourceType
     };
-      _.forIn(staticData, (value, key1) => {
-        content[key1] = value;
-      });
-      _.forIn(metaData, (value, key1) => {
-        content[key1] = _.pick(data, value);
-      });
-      _.forIn(dynamicFields, (fieldData, fieldName) => {
-          fieldValue =  _.get(data, fieldData);
-          const name = _.zipObjectDeep([fieldName], [fieldValue]);
-          _.forIn(name, (values, index) => {
-            content[index] = _.merge(name[index], content[index]);
-          });
-      });
+    if (data.gradeLevel && data.gradeLevel.length) {
+      if (typeof(data.gradeLevel) === 'string') {
+        content['gradeLevel'] = data.gradeLevel;
+      } else {
+        content['gradeLevel'] = data.gradeLevel.join(',');
+      }
+    }
+    _.forIn(staticData, (value, key1) => {
+      content[key1] = value;
+    });
+    _.forIn(metaData, (value, key1) => {
+      content[key1] = _.pick(data, value);
+    });
+    _.forIn(dynamicFields, (fieldData, fieldName) => {
+        fieldValue =  _.get(data, fieldData);
+        const name = _.zipObjectDeep([fieldName], [fieldValue]);
+        _.forIn(name, (values, index) => {
+          content[index] = _.merge(name[index], content[index]);
+        });
+    });
      return content;
   }
 }
