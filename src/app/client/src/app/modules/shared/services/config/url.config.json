@@ -13,6 +13,7 @@
     "ANNOUNCEMENT_PREFIX": "/announcement/v1",
     "TENANT_PREFIX": "/v1/tenant",
     "RESOURCEBUNDLES_PREFIX": "resourcebundles/v1",
+    "DEVICE_REGISTER": "v3/device/register/",
     "PAGE_PREFIX": "data/v1/page/assemble",
     "RESOURCEBUNDLES": {
       "ENG": "/read"

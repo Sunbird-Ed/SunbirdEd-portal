@@ -93,6 +93,8 @@ function getLocals (req, callback) {
   locals.apiCacheTtl = envHelper.PORTAL_API_CACHE_TTL
   locals.cloudStorageUrls = envHelper.CLOUD_STORAGE_URLS
   locals.userUploadRefLink = configHelper.getConfig('PORTAL_USER_UPLOAD_REF_LINK')
+  locals.deviceRegisterApi = envHelper.DEVICE_REGISTER_API
+  locals.deviceRegisterApiKey = envHelper.DEVICE_REGISTER_API_KEY
   callback(null, locals)    
 }
 
