@@ -18,11 +18,11 @@
       <a class="ui dodger-blue basic label mr-15 mt-5" *ngFor="let role of roles | slice:0:showMoreRolesLimit">{{role}}</a>
     </div>
     <div *ngIf="roles.length > defaultShowMoreRolesLimit">
-      <div class="fs-1 color-2 mb-10 font-w-bold" *ngIf="showMoreRoles" (click)="toggle(true)">+ {{roles.length -
+      <div class="fs-1 color-2 mb-10 font-w-bold cursor-pointer" *ngIf="showMoreRoles" (click)="toggle(true)">+ {{roles.length -
         defaultShowMoreRolesLimit}} {{resourceService.frmelmnts.lbl.more}}
         <i class="chevron down icon"></i>
       </div>
-      <div class="fs-1 color-2 mb-10 font-w-bold" (click)="toggle(false)" *ngIf="!showMoreRoles">{{resourceService.frmelmnts.lbl.showLess}}
+      <div class="fs-1 color-2 mb-10 font-w-bold cursor-pointer" (click)="toggle(false)" *ngIf="!showMoreRoles">{{resourceService.frmelmnts.lbl.showLess}}
         <i class="chevron up icon"></i>
       </div>
     </div>
