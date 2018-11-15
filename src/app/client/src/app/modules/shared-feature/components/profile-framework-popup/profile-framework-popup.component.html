@@ -1,5 +1,5 @@
 <sui-modal [isClosable]="false" [size]="'normal'" #modal class="z-index-10000" *ngIf="formFieldProperties">
-  <i *ngIf="showCloseIcon" class="close icon" (click)="modal.deny()"></i>
+  <i *ngIf="showCloseIcon" class="close icon" (click)="onClose(modal)"></i>
   <div class="content">
     <div class="ui grid">
       <div class="ten wide column mb-30">

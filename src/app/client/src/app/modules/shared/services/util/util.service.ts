@@ -1,8 +1,17 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { ICard } from '@sunbird/shared';
-@Injectable()
+import { Subject, Observable } from 'rxjs';
+  // Dependency injection creates new instance each time if used in router sub-modules
 export class UtilService {
+  static singletonInstance: UtilService;
+  public showAppPopUp = false;
+  constructor() {
+    if (!UtilService.singletonInstance) {
+      UtilService.singletonInstance = this;
+    }
+    return UtilService.singletonInstance;
+  }
   getDataForCard(data, staticData, dynamicFields, metaData) {
     const list: Array<ICard> = [];
     _.forEach(data, (item, key) => {
@@ -39,12 +48,15 @@ export class UtilService {
       content[key1] = _.pick(data, value);
     });
     _.forIn(dynamicFields, (fieldData, fieldName) => {
-        fieldValue =  _.get(data, fieldData);
-        const name = _.zipObjectDeep([fieldName], [fieldValue]);
-        _.forIn(name, (values, index) => {
-          content[index] = _.merge(name[index], content[index]);
-        });
+      fieldValue = _.get(data, fieldData);
+      const name = _.zipObjectDeep([fieldName], [fieldValue]);
+      _.forIn(name, (values, index) => {
+        content[index] = _.merge(name[index], content[index]);
+      });
     });
-     return content;
+    return content;
+  }
+  public toggleAppPopup() {
+    this.showAppPopUp = !this.showAppPopUp;
   }
 }
