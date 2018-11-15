@@ -1,4 +1,4 @@
-<div *ngIf="playerLoaded" class="review-comments-box br-4 bs-1 p-8">
+<div *ngIf="playerLoaded" class="review-comments-box br-4 bs-2 p-8">
   <div class="ui small comments scrolling" *ngIf="sortedComments[stageId] && sortedComments[stageId].length else emptyComments" >
     <div class="comment" *ngFor="let commentList of sortedComments[stageId] | orderBy: 'createdOn'">
       <span class="avatar">
@@ -36,7 +36,7 @@
     </div>
   </div>
 </div>
-<div *ngIf="!playerLoaded" class="review-comments-box br-4 bs-1 p-8 review-comments-loader">
+<div *ngIf="!playerLoaded" class="review-comments-box br-4 bs-2 p-8 review-comments-loader">
     <div class="ui active inverted dimmer">
       <div class="ui text loader">{{resourceService.frmelmnts.instn.t0080}}</div>
     </div>
