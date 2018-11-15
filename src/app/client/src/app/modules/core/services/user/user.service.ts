@@ -106,6 +106,7 @@ export class UserService {
       this._authenticated = true;
     } catch (error) {
       this._authenticated = false;
+      this._anonymousSid = UUID.UUID();
     }
     try {
       this._appId = (<HTMLInputElement>document.getElementById('appId')).value;
@@ -113,13 +114,10 @@ export class UserService {
     } catch (error) {
     }
   }
-  set anonymousSid(anonymousSid) {
-    this._anonymousSid = anonymousSid;
-  }
   get anonymousSid() {
     return this._anonymousSid;
   }
-  /**
+    /**
    * returns login status.
    */
   get loggedIn(): boolean {
@@ -254,7 +252,7 @@ export class UserService {
     };
     this.publicDataService.post(option).subscribe
       ((data: ServerResponse) => {
-        this.orgnisationsDetails = data.result.response.content;
+        this.orgnisationsDetails = _.get(data, 'result.response.content');
         _.forEach(this.orgnisationsDetails, (orgData) => {
           this.orgNames.push(orgData.orgName);
         });
@@ -328,4 +326,3 @@ export class UserService {
     });
   }
 }
-

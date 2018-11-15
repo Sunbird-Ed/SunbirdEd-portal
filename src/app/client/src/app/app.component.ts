@@ -3,18 +3,16 @@ import { first, filter } from 'rxjs/operators';
 import { environment } from '@sunbird/environment';
 import { ITelemetryContext } from '@sunbird/telemetry';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { TelemetryService, IStartEventInput } from '@sunbird/telemetry';
+import { TelemetryService } from '@sunbird/telemetry';
 import { ResourceService, IUserData, IUserProfile, NavigationHelperService, ConfigService } from '@sunbird/shared';
 import { Component, HostListener, OnInit } from '@angular/core';
 import {
-  UserService, PermissionService, CoursesService, TenantService, ConceptPickerService, OrgDetailsService
+  UserService, PermissionService, CoursesService, TenantService, ConceptPickerService, OrgDetailsService,
+  DeviceRegisterService
 } from '@sunbird/core';
 import * as _ from 'lodash';
-import { Subscription } from 'rxjs';
-import * as moment from 'moment';
-import { UUID } from 'angular2-uuid';
-import { DeviceDetectorService } from 'ngx-device-detector';
-const anonymousSessionDuration = 1;
+import { Subscription, Observable } from 'rxjs';
+const fingerPrint2 = new Fingerprint2();
 
 /**
  * main app component
@@ -76,8 +74,8 @@ export class AppComponent implements OnInit {
    * constructor
    */
   constructor(userService: UserService, public navigationHelperService: NavigationHelperService,
-    permissionService: PermissionService, resourceService: ResourceService,
-    courseService: CoursesService, tenantService: TenantService, private deviceDetectorService: DeviceDetectorService,
+    permissionService: PermissionService, resourceService: ResourceService, private deviceRegisterService: DeviceRegisterService,
+    courseService: CoursesService, tenantService: TenantService,
     telemetryService: TelemetryService, conceptPickerService: ConceptPickerService, public router: Router,
     config: ConfigService, public orgDetailsService: OrgDetailsService, public activatedRoute: ActivatedRoute) {
     this.resourceService = resourceService;
@@ -96,22 +94,26 @@ export class AppComponent implements OnInit {
   @HostListener('window:beforeunload', ['$event'])
   public beforeunloadHandler($event) {
     this.telemetryService.syncEvents();
-    if (!this.userService.loggedIn) {
-      this.resetAnonymousSessionDetails();
-    }
   }
   ngOnInit() {
-    const fingerPrint2 = new Fingerprint2();
     this.resourceService.initialize();
     this.navigationHelperService.initialize();
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
-    fingerPrint2.get((deviceId) => {
+    this.getDeviceId().subscribe((deviceId) => {
       (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
       this.initializeApp();
     });
   }
-  initializeApp() {
+  public getDeviceId(): Observable<string> {
+    return new Observable(observer => {
+      fingerPrint2.get((deviceId) => {
+        observer.next(deviceId);
+        observer.complete();
+      });
+    });
+  }
+  private initializeApp() {
     if (this.userService.loggedIn) {
         this.conceptPickerService.initialize();
         this.initializeLoggedInSession();
@@ -150,12 +152,10 @@ export class AppComponent implements OnInit {
       first()).subscribe((data) => {
         this.orgDetails = data;
         this.initTelemetryService(false);
-        this.logAnonymousSessionStart();
         this.initTenantService(slug);
         this.userService.initialize(false);
         this.initApp = true; // this line should be at the end
       }, (err) => {
-        this.userService.anonymousSid = UUID.UUID();
         this.initApp = true;
         console.log('unable to get organization details');
       });
@@ -164,9 +164,11 @@ export class AppComponent implements OnInit {
     let config: ITelemetryContext;
     if (loggedIn) {
       config = this.getLoggedInUserConfig();
+      this.deviceRegisterService.registerDevice(this.userService.hashTagId);
       this.telemetryService.initialize(config);
     } else {
       config = this.getAnonymousUserConfig();
+      this.deviceRegisterService.registerDevice(this.orgDetails.hashTagId);
       this.telemetryService.initialize(config);
     }
   }
@@ -197,7 +199,6 @@ export class AppComponent implements OnInit {
     };
   }
   getAnonymousUserConfig() {
-    const anonymousSessionId =  this.getAnonymousSessionId();
     return {
       userOrgDetails: {
         userId: 'anonymous',
@@ -214,86 +215,12 @@ export class AppComponent implements OnInit {
         apislug: this.config.urlConFig.URLS.CONTENT_PREFIX,
         host: '',
         uid: 'anonymous',
-        sid: anonymousSessionId,
+        sid: this.userService.anonymousSid,
         channel: this.orgDetails.hashTagId,
         env: 'home',
         enableValidation: environment.enableTelemetryValidation
       }
     };
-  }
-  private getAnonymousSessionId() {
-    let anonymousSessionDetails;
-    try {
-      anonymousSessionDetails = JSON.parse(localStorage.getItem('anonymousSessionDetails'));
-    } catch {
-    }
-    if (!_.get(anonymousSessionDetails, 'lastAccessedTime') || !_.get(anonymousSessionDetails, 'sessionId')
-    || this.anonymousSessionExpired(anonymousSessionDetails.lastAccessedTime)) {
-
-      if (_.get(anonymousSessionDetails, 'tabCount') && _.get(anonymousSessionDetails, 'tabCount')) {
-        anonymousSessionDetails.tabCount = anonymousSessionDetails.tabCount + 1;
-      } else {
-        anonymousSessionDetails = {
-          tabCount: 1,
-          sessionId: UUID.UUID(),
-          lastAccessedTime: new Date()
-        };
-        this.logAnonymousSessionStartEvent = true;
-      }
-
-      localStorage.setItem('anonymousSessionDetails', JSON.stringify(anonymousSessionDetails));
-    } else {
-      anonymousSessionDetails.lastAccessedTime = new Date();
-      anonymousSessionDetails.tabCount = anonymousSessionDetails.tabCount + 1;
-      localStorage.setItem('anonymousSessionDetails', JSON.stringify(anonymousSessionDetails));
-    }
-    this.userService.anonymousSid = anonymousSessionDetails.sessionId;
-    return anonymousSessionDetails.sessionId;
-  }
-  private anonymousSessionExpired(lastAccessedTime = new Date()) {
-    const start = moment();
-    const end = moment(lastAccessedTime);
-    return (moment.duration(start.diff(end)).asMinutes() > anonymousSessionDuration);
-  }
-  private resetAnonymousSessionDetails() {
-    const anonymousSessionDetails = {
-      tabCount: 0,
-      sessionId: this.userService.anonymousSid,
-      lastAccessedTime: new Date()
-    };
-    try {
-      const localSessionData = JSON.parse(localStorage.getItem('anonymousSessionDetails'));
-      if (localSessionData && localSessionData.tabCount) {
-        anonymousSessionDetails.tabCount = localSessionData.tabCount - 1;
-        anonymousSessionDetails.lastAccessedTime = new Date();
-      }
-    } catch {
-    }
-    localStorage.setItem('anonymousSessionDetails', JSON.stringify(anonymousSessionDetails));
-  }
-  logAnonymousSessionStart() {
-    if (!this.logAnonymousSessionStartEvent) {
-      return;
-    }
-    const deviceInfo = this.deviceDetectorService.getDeviceInfo();
-    const telemetryStart = {
-      context: {
-        env: 'anonymousUser'
-      },
-      edata: {
-        type: 'session',
-        pageid: 'public',
-        mode: 'anonymous',
-        uaspec: {
-          agent: deviceInfo.browser,
-          ver: deviceInfo.browser_version,
-          system: deviceInfo.os_version ,
-          platform: deviceInfo.os,
-          raw: deviceInfo.userAgent
-        }
-      }
-    };
-    setTimeout(() => this.telemetryService.start(telemetryStart), 1000); // to avoid sync issue in telemetry lib
   }
   private initTenantService(slug?: string) {
     this.tenantService.getTenantInfo(slug);
