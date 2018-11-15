@@ -1,5 +1,4 @@
 import { PluginConfig, PluginPlacement } from '@project-sunbird/web-extensions';
-import { MenuItemComponent } from './components/menu-item/menu-item.component';
 import { ProfileBadgeComponent } from './components/profile-badge/profile-badge.component';
 
 @PluginConfig({
@@ -7,7 +6,6 @@ import { ProfileBadgeComponent } from './components/profile-badge/profile-badge.
   description: 'Shows user profile data of sunbird portal user',
   placements: [
     new PluginPlacement({ name: 'profile-widget', priority: 1, component: ProfileBadgeComponent }),
-    new PluginPlacement({ name: 'header-menu-item', priority: 1, component: MenuItemComponent })
   ]
 })
 export class ProfilePlugin {

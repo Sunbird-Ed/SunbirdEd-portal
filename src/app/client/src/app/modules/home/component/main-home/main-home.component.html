@@ -16,11 +16,7 @@
               <ngx-slick in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="toDoList" class="carousel" #slickModal="slick-modal"
                 [config]="slideConfig" (afterChange)="inviewChange(toDoList,$event)" (beforeChange)="checkSlide($event)" appTelemetryInteract  [telemetryInteractEdata]="{id: btnArrow, type: 'click', pageid: 'home', extra: { section: 'ToDo'}}">
                 <div in-view-item ngxSlickItem *ngFor="let item of toDoList; trackBy: trackByFn;let i = index" class="slide" [id]="i" [data]="item">
-                  <div *ngIf="item.type === 'profile'" class="mr-30 mt-20">
-                    <a routerLink="/profile" appTelemetryInteract [telemetryInteractEdata]="profileUpdateIntractEdata" [telemetryInteractObject]="telemetryInteractObject">
-                      <app-profile-card [profile]="item"></app-profile-card>
-                    </a>
-                  </div>
+            
                   <div *ngIf=" item.type !== 'profile'">
                     <app-card [data]="item" (clickEvent)="playContent($event)" [customClass]="'mr-20'"></app-card>
                   </div>
