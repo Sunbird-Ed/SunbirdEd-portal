@@ -8,11 +8,14 @@ import { UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
   NavigationHelperService, ConfigService } from '@sunbird/shared';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import {
-  UserService, PermissionService, CoursesService, TenantService, ConceptPickerService, OrgDetailsService
+  UserService, PermissionService, CoursesService, TenantService, ConceptPickerService, OrgDetailsService,
+  DeviceRegisterService
 } from '@sunbird/core';
 import * as _ from 'lodash';
-import { Subscription } from 'rxjs';
 import { ProfileService } from '@sunbird/profile';
+import { Subscription, Observable } from 'rxjs';
+const fingerPrint2 = new Fingerprint2();
+
 /**
  * main app component
  *
@@ -73,21 +76,17 @@ export class AppComponent implements OnInit {
   /** this variable is used to show the FrameWorkPopUp
    */
   showFrameWorkPopUp = false;
+
   userDataUnsubscribe: Subscription;
-  /**
-   * To navigate to other pages
-   */
-  route: Router;
   /**
    * constructor
    */
   constructor(userService: UserService, public navigationHelperService: NavigationHelperService,
-    permissionService: PermissionService, resourceService: ResourceService,
+    permissionService: PermissionService, resourceService: ResourceService, private deviceRegisterService: DeviceRegisterService,
     courseService: CoursesService, tenantService: TenantService,
     telemetryService: TelemetryService, conceptPickerService: ConceptPickerService, public router: Router,
     config: ConfigService, public orgDetailsService: OrgDetailsService, public activatedRoute: ActivatedRoute,
-    public profileService: ProfileService,  toasterService: ToasterService, public utilService: UtilService,
-    route: Router) {
+    public profileService: ProfileService,  toasterService: ToasterService, public utilService: UtilService) {
     this.resourceService = resourceService;
     this.permissionService = permissionService;
     this.userService = userService;
@@ -97,7 +96,8 @@ export class AppComponent implements OnInit {
     this.telemetryService = telemetryService;
     this.toasterService = toasterService;
     this.config = config;
-    this.route = route;
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    this.version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
   }
   /**
    * dispatch telemetry window unload event before browser closes
@@ -108,28 +108,29 @@ export class AppComponent implements OnInit {
     this.telemetryService.syncEvents();
   }
   ngOnInit() {
-    const fingerPrint2 = new Fingerprint2();
     this.resourceService.initialize();
-    this.navigationHelperService.initialize();
-    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
-    this.version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
-    if (this.userService.loggedIn) {
+    this.setDeviceId().subscribe(() => {
+      this.navigationHelperService.initialize();
+      if (this.userService.loggedIn) {
+          this.conceptPickerService.initialize();
+          this.initializeLoggedInSession();
+      } else {
+        this.router.events.pipe(filter(event => event instanceof NavigationEnd), first()).subscribe((urlAfterRedirects: NavigationEnd) => {
+            this.initializeAnonymousSession(_.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug'));
+        });
+      }
+    });
+  }
+  public setDeviceId(): Observable<string> {
+    return new Observable(observer => {
       fingerPrint2.get((deviceId) => {
         (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-        this.conceptPickerService.initialize();
-        this.initializeLogedInsession();
+        observer.next(deviceId);
+        observer.complete();
       });
-    } else {
-      this.router.events.pipe(filter(event => event instanceof NavigationEnd), first()).subscribe((urlAfterRedirects: NavigationEnd) => {
-        const slug = _.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug');
-        fingerPrint2.get((deviceId) => {
-          (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-          this.initializeAnonymousSession(slug);
-        });
-      });
-    }
+    });
   }
-  initializeLogedInsession() {
+  private initializeLoggedInSession() {
     this.userService.startSession();
     this.userService.initialize(true);
     this.permissionService.initialize();
@@ -158,26 +159,28 @@ export class AppComponent implements OnInit {
       }
     });
   }
-  initializeAnonymousSession(slug) {
+  private initializeAnonymousSession(slug) {
     this.orgDetailsService.getOrgDetails(slug).pipe(
       first()).subscribe((data) => {
         this.orgDetails = data;
         this.initTelemetryService(false);
         this.initTenantService(slug);
         this.userService.initialize(false);
-        this.initApp = true;
+        this.initApp = true; // this line should be at the end
       }, (err) => {
         this.initApp = true;
         console.log('unable to get organization details');
       });
   }
-  public initTelemetryService(loggedIn) {
+  private initTelemetryService(loggedIn) {
     let config: ITelemetryContext;
     if (loggedIn) {
       config = this.getLoggedInUserConfig();
+      this.deviceRegisterService.registerDevice(this.userService.hashTagId);
       this.telemetryService.initialize(config);
     } else {
       config = this.getAnonymousUserConfig();
+      this.deviceRegisterService.registerDevice(this.orgDetails.hashTagId);
       this.telemetryService.initialize(config);
     }
   }
@@ -207,7 +210,7 @@ export class AppComponent implements OnInit {
       }
     };
   }
-  getAnonymousUserConfig() {
+  private getAnonymousUserConfig() {
     return {
       userOrgDetails: {
         userId: 'anonymous',
@@ -231,7 +234,6 @@ export class AppComponent implements OnInit {
       }
     };
   }
-
   private initTenantService(slug?: string) {
     this.tenantService.getTenantInfo(slug);
     this.tenantService.tenantData$.subscribe(
@@ -251,7 +253,7 @@ export class AppComponent implements OnInit {
       this.frameWorkPopUp.modal.deny();
       this.showFrameWorkPopUp = false;
       this.utilService.toggleAppPopup();
-      this.route.navigate(['/resources']);
+      this.router.navigate(['/resources']);
     },
       (err) => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0085);
