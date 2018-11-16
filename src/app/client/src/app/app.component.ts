@@ -4,13 +4,15 @@ import { environment } from '@sunbird/environment';
 import { ITelemetryContext } from '@sunbird/telemetry';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TelemetryService } from '@sunbird/telemetry';
-import { ResourceService, IUserData, IUserProfile, NavigationHelperService, ConfigService } from '@sunbird/shared';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
+  NavigationHelperService, ConfigService } from '@sunbird/shared';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import {
   UserService, PermissionService, CoursesService, TenantService, ConceptPickerService, OrgDetailsService,
   DeviceRegisterService
 } from '@sunbird/core';
 import * as _ from 'lodash';
+import { ProfileService } from '@sunbird/profile';
 import { Subscription, Observable } from 'rxjs';
 const fingerPrint2 = new Fingerprint2();
 
@@ -24,6 +26,7 @@ const fingerPrint2 = new Fingerprint2();
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  @ViewChild('frameWorkPopUp') frameWorkPopUp;
   /**
    * user profile details.
    */
@@ -57,6 +60,10 @@ export class AppComponent implements OnInit {
    */
   public telemetryService: TelemetryService;
   /**
+ * To show toaster(error, success etc) after any API calls.
+ */
+  private toasterService: ToasterService;
+  /**
     * To get url, app configs
   */
   public config: ConfigService;
@@ -66,6 +73,9 @@ export class AppComponent implements OnInit {
   private orgDetails: any;
 
   public version: string;
+  /** this variable is used to show the FrameWorkPopUp
+   */
+  showFrameWorkPopUp = false;
 
   userDataUnsubscribe: Subscription;
   /**
@@ -75,7 +85,8 @@ export class AppComponent implements OnInit {
     permissionService: PermissionService, resourceService: ResourceService, private deviceRegisterService: DeviceRegisterService,
     courseService: CoursesService, tenantService: TenantService,
     telemetryService: TelemetryService, conceptPickerService: ConceptPickerService, public router: Router,
-    config: ConfigService, public orgDetailsService: OrgDetailsService, public activatedRoute: ActivatedRoute) {
+    config: ConfigService, public orgDetailsService: OrgDetailsService, public activatedRoute: ActivatedRoute,
+    public profileService: ProfileService,  toasterService: ToasterService, public utilService: UtilService) {
     this.resourceService = resourceService;
     this.permissionService = permissionService;
     this.userService = userService;
@@ -83,6 +94,7 @@ export class AppComponent implements OnInit {
     this.conceptPickerService = conceptPickerService;
     this.tenantService = tenantService;
     this.telemetryService = telemetryService;
+    this.toasterService = toasterService;
     this.config = config;
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
@@ -127,6 +139,11 @@ export class AppComponent implements OnInit {
       if (!user.err) {
         if (this.userDataUnsubscribe) {
           this.userDataUnsubscribe.unsubscribe();
+        }
+        if (_.isEmpty(user.userProfile.framework)) {
+          this.showFrameWorkPopUp = true;
+        } else {
+          this.showFrameWorkPopUp = false;
         }
         this.initApp = true;
         this.userProfile = user.userProfile;
@@ -227,5 +244,20 @@ export class AppComponent implements OnInit {
         }
       }
     );
+  }
+  updateFrameWork(event) {
+    const req = {
+      framework: event
+    };
+    this.profileService.updateProfile(req).subscribe(res => {
+      this.frameWorkPopUp.modal.deny();
+      this.showFrameWorkPopUp = false;
+      this.utilService.toggleAppPopup();
+      this.router.navigate(['/resources']);
+    },
+      (err) => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0085);
+        this.frameWorkPopUp.modal.deny();
+      });
   }
 }

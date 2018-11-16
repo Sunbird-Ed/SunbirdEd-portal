@@ -14,6 +14,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { RouterTestingModule } from '@angular/router/testing';
 import * as _ from 'lodash';
+import { ProfileService } from '@sunbird/profile';
+
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 
 class RouterStub {
@@ -45,7 +47,7 @@ describe('AppComponent', () => {
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         ToasterService, TenantService,
         UserService, ConfigService, LearnerService,
-        PermissionService, ResourceService, CoursesService, OrgDetailsService,
+        PermissionService, ResourceService, CoursesService, OrgDetailsService, ProfileService,
         TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, ConceptPickerService, SearchService, ContentService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
@@ -188,5 +190,17 @@ describe('AppComponent', () => {
     expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
     expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
   });
+  it('should check framework key is in user read api and open the popup  ', async(() => {
+    const learnerService = TestBed.get(LearnerService);
+    const publicDataService = TestBed.get(PublicDataService);
+    const tenantService = TestBed.get(TenantService);
+    const userService = TestBed.get(UserService);
+    userService._authenticated = true;
+    spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
+    spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
+    spyOn(learnerService, 'get').and.returnValue(of(mockData.success));
+    component.ngOnInit();
+    expect(component.showFrameWorkPopUp).toBeTruthy();
+  }));
 
 });

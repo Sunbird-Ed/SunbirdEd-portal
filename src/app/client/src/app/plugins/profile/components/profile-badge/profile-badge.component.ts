@@ -20,7 +20,7 @@ export class ProfileBadgeComponent implements OnInit {
   /**
    * Contains default limit to show awards
    */
-  defaultLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
+  defaultLimit = this.configService.appConfig.PROFILE.defaultShowMoreLimit;
   /**
    * Used to store limit to show/hide awards
    */
