@@ -35,11 +35,7 @@ export class UtilService {
       resourceType: data.resourceType
     };
     if (data.gradeLevel && data.gradeLevel.length) {
-      if (typeof(data.gradeLevel) === 'string') {
-        content['gradeLevel'] = data.gradeLevel;
-      } else {
-        content['gradeLevel'] = data.gradeLevel.join(',');
-      }
+        content['gradeLevel'] = _.isString(data.gradeLevel) ? data.gradeLevel : data.gradeLevel.join(',');
     }
     _.forIn(staticData, (value, key1) => {
       content[key1] = value;

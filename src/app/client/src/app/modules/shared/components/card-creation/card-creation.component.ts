@@ -5,7 +5,7 @@ import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry'
 @Component({
   selector: 'app-card-creation',
   templateUrl: './card-creation.component.html',
-  styleUrls: ['./card-creation.component.css']
+  styleUrls: ['./card-creation.component.scss']
 })
 export class CardCreationComponent {
   /**
