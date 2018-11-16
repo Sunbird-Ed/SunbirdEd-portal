@@ -8,8 +8,7 @@ import { UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
   NavigationHelperService, ConfigService } from '@sunbird/shared';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import {
-  UserService, PermissionService, CoursesService, TenantService, ConceptPickerService, OrgDetailsService,
-  DeviceRegisterService
+  UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService
 } from '@sunbird/core';
 import * as _ from 'lodash';
 import { ProfileService } from '@sunbird/profile';
@@ -52,10 +51,6 @@ export class AppComponent implements OnInit {
    */
   public courseService: CoursesService;
   /**
-   * reference of conceptPickerService service.
-    */
-  public conceptPickerService: ConceptPickerService;
-  /**
    * reference of telemetryService service.
    */
   public telemetryService: TelemetryService;
@@ -88,14 +83,13 @@ export class AppComponent implements OnInit {
   constructor(userService: UserService, public navigationHelperService: NavigationHelperService,
     permissionService: PermissionService, resourceService: ResourceService, private deviceRegisterService: DeviceRegisterService,
     courseService: CoursesService, tenantService: TenantService,
-    telemetryService: TelemetryService, conceptPickerService: ConceptPickerService, public router: Router,
+    telemetryService: TelemetryService, public router: Router,
     config: ConfigService, public orgDetailsService: OrgDetailsService, public activatedRoute: ActivatedRoute,
     public profileService: ProfileService,  toasterService: ToasterService, public utilService: UtilService) {
     this.resourceService = resourceService;
     this.permissionService = permissionService;
     this.userService = userService;
     this.courseService = courseService;
-    this.conceptPickerService = conceptPickerService;
     this.tenantService = tenantService;
     this.telemetryService = telemetryService;
     this.toasterService = toasterService;
@@ -118,7 +112,6 @@ export class AppComponent implements OnInit {
           this.navigationHelperService.initialize();
           this.userService.initialize(this.userService.loggedIn);
           if (this.userService.loggedIn) {
-            this.conceptPickerService.initialize();
             this.permissionService.initialize();
             this.courseService.initialize();
           }
