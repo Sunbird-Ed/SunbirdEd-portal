@@ -80,8 +80,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       'ECML': 'fa fa-file-code-o fa-lg',
       'HTML': 'fa fa-html5-o fa-lg',
       'collection': 'fa fa-file-archive-o fa-lg',
-      'epub': 'fa fa-text-o fa-lg',
-      'doc': 'fa fa-text-o fa-lg'
+      'epub': 'fa fa-file-text fa-lg',
+      'doc': 'fa fa-file-text fa-lg'
     }
   };
   /**
