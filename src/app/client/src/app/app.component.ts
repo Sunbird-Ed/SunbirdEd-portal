@@ -1,5 +1,5 @@
 
-import { first, filter } from 'rxjs/operators';
+import { first, filter, map, mergeMap, tap } from 'rxjs/operators';
 import { environment } from '@sunbird/environment';
 import { ITelemetryContext } from '@sunbird/telemetry';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
@@ -13,7 +13,7 @@ import {
 } from '@sunbird/core';
 import * as _ from 'lodash';
 import { ProfileService } from '@sunbird/profile';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, of, throwError } from 'rxjs';
 const fingerPrint2 = new Fingerprint2();
 
 /**
@@ -77,7 +77,11 @@ export class AppComponent implements OnInit {
    */
   showFrameWorkPopUp = false;
 
-  userDataUnsubscribe: Subscription;
+  private userDataUnsubscribe: Subscription;
+
+  private slug: string;
+
+  private channel: string;
   /**
    * constructor
    */
@@ -109,16 +113,30 @@ export class AppComponent implements OnInit {
   }
   ngOnInit() {
     this.resourceService.initialize();
-    this.setDeviceId().subscribe(() => {
-      this.navigationHelperService.initialize();
-      if (this.userService.loggedIn) {
-          this.conceptPickerService.initialize();
-          this.initializeLoggedInSession();
-      } else {
-        this.router.events.pipe(filter(event => event instanceof NavigationEnd), first()).subscribe((urlAfterRedirects: NavigationEnd) => {
-            this.initializeAnonymousSession(_.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug'));
-        });
+    this.setDeviceId().pipe(
+        tap(deviceId => {
+          this.navigationHelperService.initialize();
+          this.userService.initialize(this.userService.loggedIn);
+          if (this.userService.loggedIn) {
+            this.conceptPickerService.initialize();
+            this.permissionService.initialize();
+            this.courseService.initialize();
+          }
+        }),
+        mergeMap(deviceId => this.setUserAndOrgDetails()))
+    .subscribe(data => {
+      this.tenantService.getTenantInfo(this.slug);
+      this.setPortalTitleLogo();
+      this.telemetryService.initialize(this.getTelemetryConfig());
+      this.deviceRegisterService.registerDevice(this.channel);
+      if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
+        this.showFrameWorkPopUp = true;
       }
+      this.initApp = true;
+      console.log('app initialized');
+    }, error => {
+      this.initApp = true;
+      console.log('app initialing failed', error);
     });
   }
   public setDeviceId(): Observable<string> {
@@ -130,61 +148,44 @@ export class AppComponent implements OnInit {
       });
     });
   }
-  private initializeLoggedInSession() {
-    this.userService.startSession();
-    this.userService.initialize(true);
-    this.permissionService.initialize();
-    this.courseService.initialize();
-    this.userDataUnsubscribe = this.userService.userData$.subscribe((user: IUserData) => {
-      if (!user.err) {
-        if (this.userDataUnsubscribe) {
-          this.userDataUnsubscribe.unsubscribe();
-        }
-        if (_.isEmpty(user.userProfile.framework)) {
-          this.showFrameWorkPopUp = true;
-        } else {
-          this.showFrameWorkPopUp = false;
-        }
-        this.initApp = true;
-        this.userProfile = user.userProfile;
-        const slug = _.get(user, 'userProfile.rootOrg.slug');
-        this.initTelemetryService(true);
-        this.initTenantService(slug);
-      } else if (user.err) {
-        if (this.userDataUnsubscribe) {
-          this.userDataUnsubscribe.unsubscribe();
-        }
-        this.initApp = true;
-        this.initTenantService();
-      }
-    });
-  }
-  private initializeAnonymousSession(slug) {
-    this.orgDetailsService.getOrgDetails(slug).pipe(
-      first()).subscribe((data) => {
-        this.orgDetails = data;
-        this.initTelemetryService(false);
-        this.initTenantService(slug);
-        this.userService.initialize(false);
-        this.initApp = true; // this line should be at the end
-      }, (err) => {
-        this.initApp = true;
-        console.log('unable to get organization details');
-      });
-  }
-  private initTelemetryService(loggedIn) {
-    let config: ITelemetryContext;
-    if (loggedIn) {
-      config = this.getLoggedInUserConfig();
-      this.deviceRegisterService.registerDevice(this.userService.hashTagId);
-      this.telemetryService.initialize(config);
+  private setUserAndOrgDetails() {
+    if (this.userService.loggedIn) {
+      return this.setUserDetails();
     } else {
-      config = this.getAnonymousUserConfig();
-      this.deviceRegisterService.registerDevice(this.orgDetails.hashTagId);
-      this.telemetryService.initialize(config);
+      return this.setOrgDetails();
     }
   }
-
+  private setUserDetails() {
+    return this.userService.userData$.pipe(first(),
+      mergeMap((user: IUserData) => {
+          if (user.err) {
+            throwError(user.err);
+          }
+          this.userProfile = user.userProfile;
+          this.slug = _.get(this.userProfile, 'userProfile.rootOrg.slug');
+          this.channel = this.userService.hashTagId;
+          return of(user.userProfile);
+    }));
+  }
+  private setOrgDetails() {
+    return this.router.events.pipe(filter(event => event instanceof NavigationEnd), first(),
+      mergeMap((navigationEnd: NavigationEnd) => {
+        this.slug = _.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug');
+        return this.orgDetailsService.getOrgDetails(this.slug);
+      }),
+      tap(data =>  {
+        this.orgDetails = data;
+        this.channel = this.orgDetails.hashTagId;
+      })
+    );
+  }
+  private getTelemetryConfig() {
+    if (this.userService.loggedIn) {
+      return this.getLoggedInUserConfig();
+    } else {
+      return this.getAnonymousUserConfig();
+    }
+  }
   private getLoggedInUserConfig(): ITelemetryContext {
     return {
       userOrgDetails: {
@@ -234,18 +235,15 @@ export class AppComponent implements OnInit {
       }
     };
   }
-  private initTenantService(slug?: string) {
-    this.tenantService.getTenantInfo(slug);
-    this.tenantService.tenantData$.subscribe(
-      data => {
-        if (data && !data.err) {
+  private setPortalTitleLogo() {
+    this.tenantService.tenantData$.subscribe(data => {
+        if (!data.err) {
           document.title = this.userService.rootOrgName || data.tenantData.titleName;
           document.querySelector('link[rel*=\'icon\']').setAttribute('href', data.tenantData.favicon);
         }
-      }
-    );
+      });
   }
-  updateFrameWork(event) {
+  public updateFrameWork(event) {
     const req = {
       framework: event
     };
@@ -254,10 +252,9 @@ export class AppComponent implements OnInit {
       this.showFrameWorkPopUp = false;
       this.utilService.toggleAppPopup();
       this.router.navigate(['/resources']);
-    },
-      (err) => {
+    }, err => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0085);
         this.frameWorkPopUp.modal.deny();
-      });
+    });
   }
 }

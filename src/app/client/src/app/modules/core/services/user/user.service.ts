@@ -167,10 +167,10 @@ export class UserService {
   }
 
   public initialize(loggedIn) {
-    if (loggedIn === true) {
+    if (loggedIn) {
       this.getUserProfile();
+      this.startSession(); // logs session start with device id
     }
-    // this.getAppIdEnv();
   }
   /**
    * method to set user profile to behavior subject.
