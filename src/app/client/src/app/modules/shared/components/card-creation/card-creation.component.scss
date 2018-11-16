@@ -1,0 +1,32 @@
+.ui.image {
+    height: 150px;
+    overflow:hidden;
+}
+.card-component-description {
+    color: #7c7b7b;
+    font-family: 'sunbirdregularfont';
+    font-size: 1em;
+    height: 2.8em;
+    max-height: 2.8em;
+    overflow: hidden;   
+    overflow-wrap: break-word;
+}
+.ui.cards>.card.workspace-card {
+    width: 240px;
+}
+.ui.cards {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin: -.875em -.5em -.875em 0;
+}
+.ui.cards>.card {
+    margin: .875em .5em .875em 0.1em;
+}
+
+.ui.circular.label.card-badges-image{
+    left: 10px;
+    position: absolute;
+    top: 9px;
+}
+

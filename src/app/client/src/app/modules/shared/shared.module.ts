@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
    AnnouncementInboxCardComponent, ContentCreditsComponent,
   PageSectionComponent, NoResultComponent, AppLoaderComponent, PlayerComponent,
-  CollectionTreeComponent, FancyTreeComponent, CardComponent, ShareLinkComponent, CollectionPlayerMetadataComponent,
+  CollectionTreeComponent, FancyTreeComponent, CardComponent, CardCreationComponent, ShareLinkComponent, CollectionPlayerMetadataComponent,
   BrowserCompatibilityComponent, QrCodeModalComponent, RedirectComponent, CustomMultiSelectComponent,
   InstallAppComponent
 } from './components';
@@ -33,13 +33,14 @@ import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
   ],
   declarations: [AppLoaderComponent, ContentCreditsComponent, AnnouncementInboxCardComponent,
     DateFormatPipe, PageSectionComponent, NoResultComponent, DateFilterXtimeAgoPipe,
-    CollectionTreeComponent, FancyTreeComponent, PlayerComponent, CardComponent, FilterPipe, InterpolatePipe,
+    CollectionTreeComponent, FancyTreeComponent, PlayerComponent, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
     ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe,
     RedirectComponent, CustomMultiSelectComponent, InstallAppComponent],
   exports: [AppLoaderComponent, ContentCreditsComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
     PageSectionComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
-    PlayerComponent, CardComponent, FilterPipe, ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent,
-    QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent, CustomMultiSelectComponent, InstallAppComponent]
+    PlayerComponent, CardComponent, CardCreationComponent, FilterPipe, ShareLinkComponent, CollectionPlayerMetadataComponent,
+    BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent, CustomMultiSelectComponent,
+    InstallAppComponent]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
