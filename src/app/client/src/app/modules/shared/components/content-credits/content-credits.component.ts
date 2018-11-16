@@ -46,15 +46,19 @@ export class ContentCreditsComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.contentCreditsData = { contributors: '', creators: '' };
+    this.contentCreditsData = { contributors: '', creators: '', attributions: '' };
     if (this.contentData) {
       const contentCredits = _.get(this.contentData, 'contentCredits');
+      const attributions = _.get(this.contentData, 'attributions');
       if (contentCredits && contentCredits.length) {
         const contentCreditNames = _.map(contentCredits, 'name');
         contentCreditNames.push(this.contentData['owner']);
         this.contentCreditsData['contributors'] = (_.compact(_.uniq(contentCreditNames))).join(', ');
       }
       this.contentCreditsData['creators'] = this.contentData['creator'] || '';
+      if (attributions && attributions.length) {
+        this.contentCreditsData['attributions'] = attributions.join(', ');
+      }
     }
   }
 

@@ -1,5 +1,5 @@
 export const Response = {
-    contentCreditsData: {'contributors': 'test1,test2', 'creators': 'test3,test4'},
+    contentCreditsData: {'contributors': 'test1,test2', 'creators': 'test3,test4', 'attributions': 'test5,test6'},
     metaData: {
         'code': 'org.sunbird.JVftCo',
         'subject': 'Mathematics',
