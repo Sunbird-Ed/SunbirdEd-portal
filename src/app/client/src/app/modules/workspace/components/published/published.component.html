@@ -7,7 +7,7 @@
   <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression">
     <div class="ui stackable three column grid" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="publishedContent">
       <div in-view-item *ngFor="let content of publishedContent;let i = index;" [id]="i" [data]="content" class="column padding-top-5 padding-bottom-5 padding-left-10">
-       <app-card [data]="content" (clickEvent)="contentClick($event)"></app-card>
+       <app-card-creation [data]="content" (clickEvent)="contentClick($event)"></app-card-creation>
       </div>
     </div>
     <div *ngIf="noResult">

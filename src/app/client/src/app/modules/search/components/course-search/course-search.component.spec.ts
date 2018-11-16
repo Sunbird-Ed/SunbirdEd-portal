@@ -15,6 +15,17 @@ describe('CourseSearchComponent', () => {
   let component: CourseSearchComponent;
   let fixture: ComponentFixture<CourseSearchComponent>;
   const resourceBundle = {
+    'frmelmnts': {
+      'instn': {
+        't0015': 'Upload Organization',
+        't0016': 'Upload User'
+      },
+      'lbl' : {
+        'medium': 'Medium',
+        'class' : 'Class',
+        'subject' : 'subject'
+      },
+    },
     'messages': {
       'stmsg': {
         'm0007': 'Search for something else',

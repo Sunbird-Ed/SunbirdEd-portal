@@ -16,6 +16,17 @@ describe('DialCodeComponent', () => {
   let component: DialCodeComponent;
   let fixture: ComponentFixture<DialCodeComponent>;
   const resourceBundle = {
+    'frmelmnts': {
+      'instn': {
+        't0015': 'Upload Organization',
+        't0016': 'Upload User'
+      },
+      'lbl' : {
+        'medium': 'Medium',
+        'class' : 'Class',
+        'subject' : 'subject'
+      },
+    },
     'messages': {
       'stmsg': {
         'm0007': 'Search for something else',

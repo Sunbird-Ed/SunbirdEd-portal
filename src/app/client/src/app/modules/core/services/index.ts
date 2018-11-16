@@ -19,3 +19,4 @@ export * from './copy-content/copy-content.service';
 export * from './org-details/org-details.service';
 export *  from './public-data/public-data.service';
 export * from './ext-plugin/ext-plugin.service';
+export * from './device-register/device-register.service';

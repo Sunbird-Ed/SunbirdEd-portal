@@ -27,7 +27,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
     SharedModule,
     CoreModule,
     NgInviewModule,
-    TelemetryModule
+    TelemetryModule,
   ],
   declarations: [
     MainHomeComponent,
