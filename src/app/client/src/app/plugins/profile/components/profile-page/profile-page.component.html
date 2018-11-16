@@ -28,11 +28,11 @@
     </div>
     <div class="fs-1-5 font-w-bold mb-10 text-ac" *ngIf=" orgDetails && orgDetails.orgName">{{orgDetails.orgName}}</div>
     <div class="m-0 pl-0 computer only" *ngIf=" orgDetails && orgDetails.locations">
-      <div class="mb-0 d-flex flex-ai-center" *ngIf="getLocationDetails(orgDetails.locations, 'block')">
+      <div class="mb-0 d-flex" *ngIf="getLocationDetails(orgDetails.locations, 'block')">
         <span class="fs-1-16 min-w-90 ">{{resourceService.frmelmnts.lbl.block}} :</span>
         <span class="fs-1-3 font-w-bold ">{{getLocationDetails(orgDetails.locations, 'block')}}</span>
       </div>
-      <div class="mb-0 d-flex flex-ai-center" *ngIf="getLocationDetails(orgDetails.locations, 'district') && getLocationDetails(orgDetails.locations, 'state') ">
+      <div class="mb-0 d-flex" *ngIf="getLocationDetails(orgDetails.locations, 'district') && getLocationDetails(orgDetails.locations, 'state') ">
         <span class="fs-1-16 min-w-90 ">{{resourceService.frmelmnts.lbl.district}} :</span>
         <span class="fs-1-3 font-w-bold ">{{getLocationDetails(orgDetails.locations, 'district')}},
           {{getLocationDetails(orgDetails.locations, 'state')}}</span>
@@ -73,19 +73,19 @@
     <div class="ui container">
       <div class="d-flex flex-jc-center position-relative">
         <div class="max-w-400 computer only">
-          <div class="mb-15 d-flex flex-ai-center">
+          <div class="mb-15 d-flex">
             <span class="fs-1-16 min-w-90">{{resourceService.frmelmnts.lbl.boards}} :</span>
             <span class="fs-1-3 font-w-bold" *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board)}}</span>
           </div>
-          <div class="mb-15 d-flex flex-ai-center">
+          <div class="mb-15 d-flex">
             <span class="fs-1-16 min-w-90">{{resourceService.frmelmnts.lbl.medium}} :</span>
             <span class="fs-1-3 font-w-bold" *ngIf="userProfile.framework">{{convertToString(userProfile.framework.medium)}}</span>
           </div>
-          <div class="mb-15 d-flex flex-ai-center">
+          <div class="mb-15 d-flex">
             <span class="fs-1-16 min-w-90">{{resourceService.frmelmnts.lbl.subjects}} :</span>
             <span class="fs-1-3 font-w-bold" *ngIf="userProfile.framework">{{convertToString(userProfile.framework.subject)}}</span>
           </div>
-          <div class="d-flex flex-ai-center">
+          <div class="d-flex">
             <span class="fs-1-16 min-w-90">{{resourceService.frmelmnts.lbl.classes}} :</span>
             <span class="fs-1-3 font-w-bold" *ngIf="userProfile.framework">{{convertToString(userProfile.framework.gradeLevel)}}</span>
           </div>
