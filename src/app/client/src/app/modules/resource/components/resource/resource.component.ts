@@ -1,7 +1,7 @@
 
-import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
-import { PageApiService, PlayerService, ISort } from '@sunbird/core';
-import { Component, OnInit } from '@angular/core';
+import {combineLatest as observableCombineLatest,  Observable,  SubscriptionLike as ISubscription  } from 'rxjs';
+import { PageApiService, PlayerService, ISort, UserService,  } from '@sunbird/core';
+import { Component, OnInit , OnDestroy } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, INoResultMessage, ConfigService, UtilService,
   BrowserCacheTtlService} from '@sunbird/shared';
 import { ICaraouselData, IAction } from '@sunbird/shared';
@@ -20,7 +20,7 @@ import { CacheService } from 'ng2-cache-service';
   templateUrl: './resource.component.html',
   styleUrls: ['./resource.component.css']
 })
-export class ResourceComponent implements OnInit {
+export class ResourceComponent implements OnInit, OnDestroy {
   /**
   * inviewLogs
   */
@@ -38,6 +38,10 @@ export class ResourceComponent implements OnInit {
    * To call resource service which helps to use language constant
    */
   public resourceService: ResourceService;
+   /**
+   * To get user details.
+   */
+  private userService: UserService;
   /**
   * To call get resource data.
   */
@@ -57,6 +61,7 @@ export class ResourceComponent implements OnInit {
    * no result  message
   */
   noResultMessage: INoResultMessage;
+  userSubscription: ISubscription;
   /**
   * Contains result object returned from getPageData API.
   */
@@ -69,6 +74,13 @@ export class ResourceComponent implements OnInit {
   public redirectUrl: string;
   sortingOptions: Array<ISort>;
   contents: any;
+  framework: any;
+  /**
+  * Variable to show popup to install the app
+  */
+  showAppPopUp = false;
+  viewinBrowser = false;
+  dataDrivenFilters: object;
   /**
    * The "constructor"
    *
@@ -77,7 +89,8 @@ export class ResourceComponent implements OnInit {
    */
   constructor(pageSectionService: PageApiService, toasterService: ToasterService, private playerService: PlayerService,
     resourceService: ResourceService, config: ConfigService, private activatedRoute: ActivatedRoute, router: Router,
-  public utilService: UtilService, private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService) {
+  public utilService: UtilService, private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
+  userService: UserService) {
     this.pageSectionService = pageSectionService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
@@ -85,6 +98,7 @@ export class ResourceComponent implements OnInit {
     this.router = router;
     this.router.onSameUrlNavigation = 'reload';
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+    this.userService = userService;
   }
   /**
   * Subscribe to getPageData api.
@@ -92,10 +106,17 @@ export class ResourceComponent implements OnInit {
   populatePageData() {
     this.showLoader = true;
     this.noResult = false;
+    let softConstraints = {};
+    const filters = _.pickBy(this.filters, value => value.length > 0);
+      if (this.viewinBrowser && _.isEmpty(this.queryParams)) {
+        filters.board = this.dataDrivenFilters['board'];
+        softConstraints = {board: 100 };
+    }
     const option = {
       source: 'web',
       name: 'Resource',
-      filters: _.pickBy(this.filters, value => value.length > 0),
+      filters: filters,
+      softConstraints : softConstraints
     };
     if (this.queryParams.sort_by) {
       option['sort_by'] = {[this.queryParams.sort_by]: this.queryParams.sortType  };
@@ -148,8 +169,10 @@ export class ResourceComponent implements OnInit {
  *This method calls the populatePageData
  */
   ngOnInit() {
+    this.dataDrivenFilters = {};
     this.filterType = this.config.appConfig.library.filterType;
     this.redirectUrl = this.config.appConfig.library.inPageredirectUrl;
+    this.showAppPopUp = this.utilService.showAppPopUp;
     this.getQueryParams();
     this.telemetryImpression = {
       context: {
@@ -167,6 +190,13 @@ export class ResourceComponent implements OnInit {
       type: 'click',
       pageid: 'resource-page'
     };
+    this.userSubscription = this.userService.userData$.subscribe(
+      user => {
+        if (user && !user.err) {
+          this.framework = user.userProfile.framework;
+        }
+      }
+    );
   }
   prepareVisits(event) {
     _.forEach(event, (inview, index) => {
@@ -208,6 +238,7 @@ export class ResourceComponent implements OnInit {
         if (this.queryParams.sort_by && this.queryParams.sortType) {
                this.queryParams.sortType = this.queryParams.sortType.toString();
               }
+        this.viewinBrowser = false;
         this.populatePageData();
       });
   }
@@ -231,5 +262,28 @@ export class ResourceComponent implements OnInit {
     });
       const sectionUrl = 'resources/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], {queryParams: queryParams});
+  }
+
+  viewInBrowser() {
+    this.viewinBrowser = true;
+    this.populatePageData();
+  }
+
+  getFilters(filters) {
+    _.forEach(filters, (value) => {
+      if (value.code === 'board') {
+        value.range = _.orderBy(value.range, ['index'], ['asc']);
+        this.dataDrivenFilters['board'] = _.get(value, 'range[0].name') ? _.get(value, 'range[0].name') : [];
+      }
+    });
+    this.getQueryParams();
+  }
+
+
+  ngOnDestroy() {
+    this.utilService.toggleAppPopup();
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 }
