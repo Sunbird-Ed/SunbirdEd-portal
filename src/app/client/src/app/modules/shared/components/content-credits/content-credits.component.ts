@@ -46,7 +46,7 @@ export class ContentCreditsComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.contentCreditsData = { contributors: '', creators: '' };
+    this.contentCreditsData = { contributors: '', creators: '', attributions: '' };
     if (this.contentData) {
       const contentCredits = _.get(this.contentData, 'contentCredits');
       if (contentCredits && contentCredits.length) {
@@ -55,6 +55,10 @@ export class ContentCreditsComponent implements OnInit, OnChanges {
         this.contentCreditsData['contributors'] = (_.compact(_.uniq(contentCreditNames))).join(', ');
       }
       this.contentCreditsData['creators'] = this.contentData['creator'] || '';
+      const attributions = _.get(this.contentData, 'attributions');
+      if (attributions && attributions.length) {
+        this.contentCreditsData['attributions'] = _.isString(attributions) ? attributions : attributions.join(', ');
+      }
     }
   }
 
