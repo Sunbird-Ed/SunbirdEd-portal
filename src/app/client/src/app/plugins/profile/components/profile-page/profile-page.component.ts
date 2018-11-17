@@ -178,7 +178,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       (user: IUserData) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
-          this.inputData =  _.cloneDeep(_.get(this.userProfile, 'framework'));
+          this.inputData =  _.get(this.userProfile, 'framework') ? _.cloneDeep(_.get(this.userProfile, 'framework')) : {};
           this.getOrgDetails();
           this.getMyContent();
           this.getAttendedTraining();
