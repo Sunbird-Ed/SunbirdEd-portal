@@ -27,8 +27,16 @@ export class UtilService {
       name: data.name || data.courseName,
       image: data.appIcon || data.courseLogoUrl,
       description: data.description,
-      rating: data.me_averageRating || '0'
+      rating: data.me_averageRating || '0',
+      subject: data.subject,
+      medium: data.medium,
+      orgDetails: data.orgDetails,
+      gradeLevel: '',
+      resourceType: data.resourceType
     };
+    if (data.gradeLevel && data.gradeLevel.length) {
+        content['gradeLevel'] = _.isString(data.gradeLevel) ? data.gradeLevel : data.gradeLevel.join(',');
+    }
     _.forIn(staticData, (value, key1) => {
       content[key1] = value;
     });
