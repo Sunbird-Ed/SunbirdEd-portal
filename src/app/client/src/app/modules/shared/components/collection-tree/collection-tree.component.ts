@@ -26,7 +26,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
   private rootNode: any;
   public rootChildrens: any;
   private iconColor = {
-    '0': 'fancy-tree-grey',
+    '0': 'fancy-tree-black',
     '1': 'fancy-tree-blue',
     '2': 'fancy-tree-green'
   };
