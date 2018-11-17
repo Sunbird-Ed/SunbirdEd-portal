@@ -12,7 +12,7 @@ import {
 } from '@sunbird/core';
 import * as _ from 'lodash';
 import { ProfileService } from '@sunbird/profile';
-import { Subscription, Observable, of, throwError } from 'rxjs';
+import { Subscription, Observable, of, throwError, combineLatest } from 'rxjs';
 const fingerPrint2 = new Fingerprint2();
 
 /**
@@ -73,9 +73,17 @@ export class AppComponent implements OnInit {
   showFrameWorkPopUp = false;
 
   private userDataUnsubscribe: Subscription;
-
+  /**
+   * Used to fetch tenant details and org details for Anonymous user. Possible values
+   * 1. url slug param will be slug for Anonymous user
+   * 2. user profile rootOrg slug for logged in
+   */
   private slug: string;
-
+  /**
+   * Used to config telemetry service and device register api. Possible values
+   * 1. org hashtag for Anonymous user
+   * 2. user profile rootOrg hashtag for logged in
+   */
   private channel: string;
   /**
    * constructor
@@ -107,16 +115,18 @@ export class AppComponent implements OnInit {
   }
   ngOnInit() {
     this.resourceService.initialize();
-    this.setDeviceId().pipe(
-        tap(deviceId => {
-          this.navigationHelperService.initialize();
-          this.userService.initialize(this.userService.loggedIn);
-          if (this.userService.loggedIn) {
-            this.permissionService.initialize();
-            this.courseService.initialize();
-          }
-        }),
-        mergeMap(deviceId => this.setUserAndOrgDetails()))
+    combineLatest( this.setSlug(), this.setDeviceId()).pipe(
+      mergeMap(data => {
+        this.navigationHelperService.initialize();
+        this.userService.initialize(this.userService.loggedIn);
+        if (this.userService.loggedIn) {
+          this.permissionService.initialize();
+          this.courseService.initialize();
+          return this.setUserDetails();
+        } else {
+          return this.setOrgDetails();
+        }
+      }))
     .subscribe(data => {
       this.tenantService.getTenantInfo(this.slug);
       this.setPortalTitleLogo();
@@ -134,25 +144,22 @@ export class AppComponent implements OnInit {
   }
   public setDeviceId(): Observable<string> {
     return new Observable(observer => {
-      fingerPrint2.get((deviceId) => {
-        (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-        observer.next(deviceId);
-        observer.complete();
+        fingerPrint2.get((deviceId) => {
+          (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+          observer.next(deviceId);
+          observer.complete();
+        });
       });
-    });
   }
-  private setUserAndOrgDetails() {
-    if (this.userService.loggedIn) {
-      return this.setUserDetails();
-    } else {
-      return this.setOrgDetails();
-    }
+  private setSlug() {
+    return this.router.events.pipe(filter(event => event instanceof NavigationEnd), first(),
+    tap(data => this.slug = _.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug')));
   }
   private setUserDetails() {
     return this.userService.userData$.pipe(first(),
       mergeMap((user: IUserData) => {
           if (user.err) {
-            throwError(user.err);
+            return throwError(user.err);
           }
           this.userProfile = user.userProfile;
           this.slug = _.get(this.userProfile, 'userProfile.rootOrg.slug');
@@ -161,11 +168,7 @@ export class AppComponent implements OnInit {
     }));
   }
   private setOrgDetails() {
-    return this.router.events.pipe(filter(event => event instanceof NavigationEnd), first(),
-      mergeMap((navigationEnd: NavigationEnd) => {
-        this.slug = _.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug');
-        return this.orgDetailsService.getOrgDetails(this.slug);
-      }),
+    return this.orgDetailsService.getOrgDetails(this.slug).pipe(
       tap(data =>  {
         this.orgDetails = data;
         this.channel = this.orgDetails.hashTagId;

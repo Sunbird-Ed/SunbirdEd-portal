@@ -69,6 +69,9 @@ describe('AppComponent', () => {
       if (id === 'deviceId') {
         return { value: 'device' };
       }
+      if (id === 'defaultTenant') {
+        return { value: 'defaultTenant' };
+      }
     });
   });
 
@@ -121,13 +124,13 @@ describe('AppComponent', () => {
     component.ngOnInit();
     expect(deviceRegisterService.registerDevice).toHaveBeenCalledWith('b00bc992ef25f1a9a8d63291e20efc8d');
   });
-
+const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654', rootOrgId: '1235654'}] }}};
   it('should config telemetry service for Anonymous Session', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
     const publicDataService = TestBed.get(PublicDataService);
     const tenantService = TestBed.get(TenantService);
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
-    spyOn(publicDataService, 'post').and.returnValue(of({}));
+    spyOn(publicDataService, 'post').and.returnValue(of(maockOrgDetails));
     orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
     component.ngOnInit();
     const config = {
