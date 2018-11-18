@@ -35,6 +35,9 @@ const fakeActivatedRoute = {
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
+  let telemetryService;
+  let configService;
+  let userService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule.forRoot(),
@@ -57,14 +60,17 @@ describe('AppComponent', () => {
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
     const navigationHelperService = TestBed.get(NavigationHelperService);
+    telemetryService = TestBed.get(TelemetryService);
+    configService = TestBed.get(ConfigService);
+    userService = TestBed.get(UserService);
     spyOn(navigationHelperService, 'initialize').and.callFake(() => {});
-    spyOn(component.telemetryService, 'initialize');
+    spyOn(telemetryService, 'initialize');
     spyOn(component, 'setDeviceId').and.returnValue(of('device'));
     spyOn(document, 'querySelector').and.returnValue({ setAttribute: () => { }});
     spyOn(Fingerprint2, 'constructor').and.returnValue({get: () => {}});
     spyOn(document, 'getElementById').and.callFake((id) => {
       if (id === 'buildNumber') {
-        return { value: '1.9.0.1' };
+        return { value: '1.1.12.0' };
       }
       if (id === 'deviceId') {
         return { value: 'device' };
@@ -79,7 +85,6 @@ describe('AppComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     const publicDataService = TestBed.get(PublicDataService);
     const tenantService = TestBed.get(TenantService);
-    const userService = TestBed.get(UserService);
     userService._authenticated = true;
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
@@ -87,34 +92,33 @@ describe('AppComponent', () => {
     component.ngOnInit();
     const config = {
       userOrgDetails: {
-        userId: component.userProfile.userId,
-        rootOrgId: component.userProfile.rootOrgId,
-        rootOrg: component.userProfile.rootOrg,
-        organisationIds: component.userProfile.hashTagIds
+        userId: userService.userProfile.userId,
+        rootOrgId: userService.userProfile.rootOrgId,
+        rootOrg: userService.userProfile.rootOrg,
+        organisationIds: userService.userProfile.hashTagIds
       },
       config: {
         pdata: {
           id: component.userService.appId,
-          ver: component.version,
-          pid: component.config.appConfig.TELEMETRY.PID
+          ver: '1.1.12',
+          pid: configService.appConfig.TELEMETRY.PID
         },
-        endpoint: component.config.urlConFig.URLS.TELEMETRY.SYNC,
-        apislug: component.config.urlConFig.URLS.CONTENT_PREFIX,
+        endpoint: configService.urlConFig.URLS.TELEMETRY.SYNC,
+        apislug: configService.urlConFig.URLS.CONTENT_PREFIX,
         host: '',
-        uid: component.userProfile.userId,
+        uid: userService.userProfile.userId,
         sid: component.userService.sessionId,
-        channel: _.get(component.userProfile, 'rootOrg.hashTagId'),
+        channel: _.get(userService.userProfile, 'rootOrg.hashTagId'),
         env: 'home',
         enableValidation: true
       }
     };
-    expect(component.telemetryService.initialize).toHaveBeenCalledWith(config);
+    expect(telemetryService.initialize).toHaveBeenCalledWith(config);
   });
   it('should call register Device api for login Session', () => {
     const learnerService = TestBed.get(LearnerService);
     const publicDataService = TestBed.get(PublicDataService);
     const tenantService = TestBed.get(TenantService);
-    const userService = TestBed.get(UserService);
     const deviceRegisterService = TestBed.get(DeviceRegisterService);
     userService._authenticated = true;
     spyOn(deviceRegisterService, 'registerDevice');
@@ -142,11 +146,11 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
       config: {
         pdata: {
           id: component.userService.appId,
-          ver: component.version,
-          pid: component.config.appConfig.TELEMETRY.PID
+          ver: '1.1.12',
+          pid: configService.appConfig.TELEMETRY.PID
         },
-        endpoint: component.config.urlConFig.URLS.TELEMETRY.SYNC,
-        apislug: component.config.urlConFig.URLS.CONTENT_PREFIX,
+        endpoint: configService.urlConFig.URLS.TELEMETRY.SYNC,
+        apislug: configService.urlConFig.URLS.CONTENT_PREFIX,
         host: '',
         uid: 'anonymous',
         sid: component.userService.anonymousSid,
@@ -155,7 +159,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
         enableValidation: true
       }
     };
-    expect(component.telemetryService.initialize).toHaveBeenCalledWith(config);
+    expect(telemetryService.initialize).toHaveBeenCalledWith(config);
   });
   it('should call register Device api for Anonymous Session', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
@@ -197,7 +201,6 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     const learnerService = TestBed.get(LearnerService);
     const publicDataService = TestBed.get(PublicDataService);
     const tenantService = TestBed.get(TenantService);
-    const userService = TestBed.get(UserService);
     userService._authenticated = true;
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
