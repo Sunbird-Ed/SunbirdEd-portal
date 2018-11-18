@@ -22,7 +22,7 @@
                                     <a class="item" *ngIf="userService.loggedIn; else showLoginBtn">
                                         <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing
                                                     header-user-container" id="dropdown-menu-list-header">
-                                                    <ngx-avatar *ngIf='userProfile' class="my-avatar" [textSizeRatio] ="2" [style]="customStyle"  [size]= "40" initialsSize="1" name="{{userProfile?.firstName}} "> </ngx-avatar>
+                                                    <ngx-avatar *ngIf='userProfile' class="my-avatar" [textSizeRatio] ="2" [style]="customStyle"  [size]= "38" initialsSize="1" name="{{userProfile?.firstName}} "> </ngx-avatar>
                                             <div class="menu" suiDropdownMenu>
                                                 <div *ngIf='userProfile' class="item headerDropdownProfile">{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}</div>
                                                 <div *ngIf='userProfile' class="ui divider"></div>
@@ -61,7 +61,7 @@
                         <a class="item" *ngIf="userService.loggedIn; else showLoginBtn">
                             <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing
                                         header-user-container" id="dropdown-menu-list-header">
-                                        <ngx-avatar *ngIf='userProfile' [style]="customStyle" [textSizeRatio] ="2" class="my-avatar"  [size]= "40" initialsSize="1" name="{{userProfile?.firstName}} "> </ngx-avatar>
+                                        <ngx-avatar *ngIf='userProfile' [style]="customStyle" [textSizeRatio] ="2" class="my-avatar"  [size]= "38" initialsSize="1" name="{{userProfile?.firstName}} "> </ngx-avatar>
                                 <div class="menu" suiDropdownMenu>
                                     <div *ngIf='userProfile' class="item headerDropdownProfile">{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}</div>
                                     <div *ngIf='userProfile' class="ui divider"></div>
