@@ -4,7 +4,7 @@
     <div class="ui container height-100">
         <div class="ui large secondary menu width-100 m-0">
             <div role="banner" class="ui primary-header logo">
-                <a (click)="navigateToHome()">
+                <a (click)="navigateToHome()" tabindex="0">
                     <img class="image centered cursor-pointer" alt={{tenantName}} src="{{logo}}">
                 </a>
             </div>
@@ -12,17 +12,17 @@
 
                 <!-- mobile only view starts -->
                 <div class="ui text primary-nav menu ml-auto mobile only m-0">
-                    <div class="ui grid margin-none">
+                    <div class="ui grid m-0">
                         <div class="p-0" [ngClass]="{'row': userService.loggedIn, 'mt-10': !userService.loggedIn}">
                             <div class="eight wide column"></div>
-                            <div class="four wide column flex jc-flex-end">
+                            <div class="four wide column flex jc-flex-end mt-10">
                                     <a class="item" *ngIf="userService.loggedIn">
-                                        <img src="{{'assets/images/notification.png'}}" class="notification-icon mt-10">
+                                        <img src="{{'assets/images/notification.png'}}" class="notification-icon">
                                     </a>
                                     <a class="item" *ngIf="userService.loggedIn; else showLoginBtn">
                                         <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing
                                                     header-user-container" id="dropdown-menu-list-header">
-                                                    <ngx-avatar *ngIf='userProfile' class="my-avatar" [textSizeRatio] ="2" [style]="customStyle"  [size]= "38" initialsSize="1" name="{{userProfile?.firstName}} "> </ngx-avatar>
+                                                    <ngx-avatar *ngIf='userProfile'  [style]="avtarMobileStyle"  [size]= "38" initialsSize="1" name="{{userProfile?.firstName}} "> </ngx-avatar>
                                             <div class="menu" suiDropdownMenu>
                                                 <div *ngIf='userProfile' class="item headerDropdownProfile">{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}</div>
                                                 <div *ngIf='userProfile' class="ui divider"></div>
@@ -37,12 +37,12 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="row p-0 mt-10" *ngIf="userService.loggedIn">
+                        <div class="row p-0 mt-20" *ngIf="userService.loggedIn">
                             <div class="twelve wide column flex-as-flex-end ">
                                 <app-search class="flex-as-center width-100"></app-search>
                             </div>
                         </div>
-                        <div class="row p-0" *ngIf="userService.loggedIn">
+                        <div class="row" *ngIf="userService.loggedIn">
                             <div class="twelve wide column flex jc-center flex-as-center">
                                 <app-main-menu></app-main-menu>
                             </div>
@@ -58,10 +58,10 @@
                         <a class="item ml-20" *ngIf="userService.loggedIn">
                             <img src="{{'assets/images/notification.png'}}" class="notification-icon">
                         </a>
-                        <a class="item pt-0" *ngIf="userService.loggedIn; else showLoginBtn">
+                        <a class="item pt-5" *ngIf="userService.loggedIn; else showLoginBtn">
                             <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing
                                         header-user-container" id="dropdown-menu-list-header">
-                                        <ngx-avatar *ngIf='userProfile' [style]="customStyle" [textSizeRatio] ="2" class="my-avatar"  [size]= "38" initialsSize="1" name="{{userProfile?.firstName}} "> </ngx-avatar>
+                                        <ngx-avatar *ngIf='userProfile' [style]="avtarDesktopStyle" [size]= "38" initialsSize="1" name="{{userProfile?.firstName}}"> </ngx-avatar>
                                 <div class="menu" suiDropdownMenu>
                                     <div *ngIf='userProfile' class="item headerDropdownProfile">{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}</div>
                                     <div *ngIf='userProfile' class="ui divider"></div>
@@ -113,7 +113,7 @@
     <div class="ui container height-100">
         <div class="ui large secondary menu width-100 m-0 min-height-80">
             <div role="banner" class="ui primary-header logo">
-                <a (click)="navigateToHome()">
+                <a (click)="navigateToHome()" tabindex="0">
                     <img class="image centered cursor-pointer" alt={{tenantName}} src="{{logo}}">
                 </a>
             </div>
@@ -121,7 +121,7 @@
 
                  <!-- mobile only view starts -->
                 <div class="ui text primary-nav menu ml-auto mobile only m-0">
-                    <div class="ui grid margin-none">
+                    <div class="ui grid m-0">
                         <div class="row p-0 min-height-50 ">
                             <div class="eight wide column"></div>
                             <div class="four wide column flex jc-flex-end flex-as-flex-end">
