@@ -1,23 +1,19 @@
 
-import { first, filter, map, mergeMap, tap } from 'rxjs/operators';
 import { environment } from '@sunbird/environment';
-import { ITelemetryContext } from '@sunbird/telemetry';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { TelemetryService } from '@sunbird/telemetry';
+import { TelemetryService, ITelemetryContext } from '@sunbird/telemetry';
 import { UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
-  NavigationHelperService, ConfigService } from '@sunbird/shared';
+NavigationHelperService, ConfigService } from '@sunbird/shared';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import {
-  UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService
-} from '@sunbird/core';
+import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { ProfileService } from '@sunbird/profile';
-import { Subscription, Observable, of, throwError, combineLatest } from 'rxjs';
+import { Observable, of, throwError, combineLatest } from 'rxjs';
+import { first, filter, mergeMap, tap, map } from 'rxjs/operators';
 const fingerPrint2 = new Fingerprint2();
 
 /**
  * main app component
- *
  */
 @Component({
   selector: 'app-root',
@@ -29,50 +25,19 @@ export class AppComponent implements OnInit {
   /**
    * user profile details.
    */
-  userProfile: IUserProfile;
+  private userProfile: IUserProfile;
   /**
-   * reference of TenantService.
+   * user to load app after fetching user/org details.
    */
-  public tenantService: TenantService;
-  /**
-   * reference of UserService service.
-   */
-  public userService: UserService;
-  /**
-   * reference of config service.
-   */
-  public permissionService: PermissionService;
-  /**
-   * reference of resourceService service.
-   */
-  public resourceService: ResourceService;
-  /**
-   * reference of courseService service.
-   */
-  public courseService: CoursesService;
-  /**
-   * reference of telemetryService service.
-   */
-  public telemetryService: TelemetryService;
-  /**
- * To show toaster(error, success etc) after any API calls.
- */
-  private toasterService: ToasterService;
-  /**
-    * To get url, app configs
-  */
-  public config: ConfigService;
-
   public initApp = false;
-
-  private orgDetails: any;
-
-  public version: string;
-  /** this variable is used to show the FrameWorkPopUp
+  /**
+   * stores organization details for Anonymous user.
    */
-  showFrameWorkPopUp = false;
-
-  private userDataUnsubscribe: Subscription;
+  private orgDetails: any;
+  /**
+   * this variable is used to show the FrameWorkPopUp
+   */
+  public showFrameWorkPopUp = false;
   /**
    * Used to fetch tenant details and org details for Anonymous user. Possible values
    * 1. url slug param will be slug for Anonymous user
@@ -88,22 +53,12 @@ export class AppComponent implements OnInit {
   /**
    * constructor
    */
-  constructor(userService: UserService, public navigationHelperService: NavigationHelperService,
-    permissionService: PermissionService, resourceService: ResourceService, private deviceRegisterService: DeviceRegisterService,
-    courseService: CoursesService, tenantService: TenantService,
-    telemetryService: TelemetryService, public router: Router,
-    config: ConfigService, public orgDetailsService: OrgDetailsService, public activatedRoute: ActivatedRoute,
-    public profileService: ProfileService,  toasterService: ToasterService, public utilService: UtilService) {
-    this.resourceService = resourceService;
-    this.permissionService = permissionService;
-    this.userService = userService;
-    this.courseService = courseService;
-    this.tenantService = tenantService;
-    this.telemetryService = telemetryService;
-    this.toasterService = toasterService;
-    this.config = config;
-    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
-    this.version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+  constructor(public userService: UserService, private navigationHelperService: NavigationHelperService,
+    private permissionService: PermissionService, public resourceService: ResourceService,
+    private deviceRegisterService: DeviceRegisterService, private courseService: CoursesService, private tenantService: TenantService,
+    private telemetryService: TelemetryService, public router: Router, private configService: ConfigService,
+    private orgDetailsService: OrgDetailsService, private activatedRoute: ActivatedRoute,
+    private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService) {
   }
   /**
    * dispatch telemetry window unload event before browser closes
@@ -130,44 +85,56 @@ export class AppComponent implements OnInit {
     .subscribe(data => {
       this.tenantService.getTenantInfo(this.slug);
       this.setPortalTitleLogo();
-      this.telemetryService.initialize(this.getTelemetryConfig());
+      this.telemetryService.initialize(this.getTelemetryContext());
       this.deviceRegisterService.registerDevice(this.channel);
       if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
         this.showFrameWorkPopUp = true;
       }
       this.initApp = true;
-      console.log('app initialized');
     }, error => {
       this.initApp = true;
-      console.log('app initialing failed', error);
     });
   }
+  /**
+   * fetch device id using fingerPrint2 library.
+   */
   public setDeviceId(): Observable<string> {
-    return new Observable(observer => {
-        fingerPrint2.get((deviceId) => {
-          (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-          observer.next(deviceId);
-          observer.complete();
-        });
-      });
-  }
-  private setSlug() {
-    return this.router.events.pipe(filter(event => event instanceof NavigationEnd), first(),
-    tap(data => this.slug = _.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug')));
-  }
-  private setUserDetails() {
-    return this.userService.userData$.pipe(first(),
-      mergeMap((user: IUserData) => {
-          if (user.err) {
-            return throwError(user.err);
-          }
-          this.userProfile = user.userProfile;
-          this.slug = _.get(this.userProfile, 'userProfile.rootOrg.slug');
-          this.channel = this.userService.hashTagId;
-          return of(user.userProfile);
+    return new Observable(observer => fingerPrint2.get((deviceId) => {
+      (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+      observer.next(deviceId);
+      observer.complete();
     }));
   }
-  private setOrgDetails() {
+  /**
+   * set slug from url only for Anonymous user.
+   */
+  private setSlug(): Observable<string> {
+    if (this.userService.loggedIn) {
+      return of(undefined);
+    } else {
+      return this.router.events.pipe(filter(event => event instanceof NavigationEnd), first(),
+      map(data => this.slug = _.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug')));
+    }
+  }
+  /**
+   * set user details for loggedIn user.
+   */
+  private setUserDetails(): Observable<any> {
+    return this.userService.userData$.pipe(first(),
+      mergeMap((user: IUserData) => {
+        if (user.err) {
+          return throwError(user.err);
+        }
+        this.userProfile = user.userProfile;
+        this.slug = _.get(this.userProfile, 'userProfile.rootOrg.slug');
+        this.channel = this.userService.hashTagId;
+        return of(user.userProfile);
+    }));
+  }
+  /**
+   * set org Details for Anonymous user.
+   */
+  private setOrgDetails(): Observable<any> {
     return this.orgDetailsService.getOrgDetails(this.slug).pipe(
       tap(data =>  {
         this.orgDetails = data;
@@ -175,63 +142,65 @@ export class AppComponent implements OnInit {
       })
     );
   }
-  private getTelemetryConfig() {
+  /**
+   * returns telemetry context based on user loggedIn
+   */
+  private getTelemetryContext(): ITelemetryContext  {
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     if (this.userService.loggedIn) {
-      return this.getLoggedInUserConfig();
+      return {
+        userOrgDetails: {
+          userId: this.userProfile.userId,
+          rootOrgId: this.userProfile.rootOrgId,
+          rootOrg: this.userProfile.rootOrg,
+          organisationIds: this.userProfile.hashTagIds
+        },
+        config: {
+          pdata: {
+            id: this.userService.appId,
+            ver: version,
+            pid: this.configService.appConfig.TELEMETRY.PID
+          },
+          endpoint: this.configService.urlConFig.URLS.TELEMETRY.SYNC,
+          apislug: this.configService.urlConFig.URLS.CONTENT_PREFIX,
+          host: '',
+          uid: this.userProfile.userId,
+          sid: this.userService.sessionId,
+          channel: _.get(this.userProfile, 'rootOrg.hashTagId'),
+          env: 'home',
+          enableValidation: environment.enableTelemetryValidation
+        }
+      };
     } else {
-      return this.getAnonymousUserConfig();
+      return {
+        userOrgDetails: {
+          userId: 'anonymous',
+          rootOrgId: this.orgDetails.rootOrgId,
+          organisationIds: [this.orgDetails.hashTagId]
+        },
+        config: {
+          pdata: {
+            id: this.userService.appId,
+            ver: version,
+            pid: this.configService.appConfig.TELEMETRY.PID
+          },
+          endpoint: this.configService.urlConFig.URLS.TELEMETRY.SYNC,
+          apislug: this.configService.urlConFig.URLS.CONTENT_PREFIX,
+          host: '',
+          uid: 'anonymous',
+          sid: this.userService.anonymousSid,
+          channel: this.orgDetails.hashTagId,
+          env: 'home',
+          enableValidation: environment.enableTelemetryValidation
+        }
+      };
     }
   }
-  private getLoggedInUserConfig(): ITelemetryContext {
-    return {
-      userOrgDetails: {
-        userId: this.userProfile.userId,
-        rootOrgId: this.userProfile.rootOrgId,
-        rootOrg: this.userProfile.rootOrg,
-        organisationIds: this.userProfile.hashTagIds
-      },
-      config: {
-        pdata: {
-          id: this.userService.appId,
-          ver: this.version,
-          pid: this.config.appConfig.TELEMETRY.PID
-        },
-        endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
-        apislug: this.config.urlConFig.URLS.CONTENT_PREFIX,
-        host: '',
-        uid: this.userProfile.userId,
-        sid: this.userService.sessionId,
-        channel: _.get(this.userProfile, 'rootOrg.hashTagId'),
-        env: 'home',
-        enableValidation: environment.enableTelemetryValidation
-      }
-    };
-  }
-  private getAnonymousUserConfig() {
-    return {
-      userOrgDetails: {
-        userId: 'anonymous',
-        rootOrgId: this.orgDetails.rootOrgId,
-        organisationIds: [this.orgDetails.hashTagId]
-      },
-      config: {
-        pdata: {
-          id: this.userService.appId,
-          ver: this.version,
-          pid: this.config.appConfig.TELEMETRY.PID
-        },
-        endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
-        apislug: this.config.urlConFig.URLS.CONTENT_PREFIX,
-        host: '',
-        uid: 'anonymous',
-        sid: this.userService.anonymousSid,
-        channel: this.orgDetails.hashTagId,
-        env: 'home',
-        enableValidation: environment.enableTelemetryValidation
-      }
-    };
-  }
-  private setPortalTitleLogo() {
+  /**
+   * set app title and favicon after getting tenant data
+   */
+  private setPortalTitleLogo(): void {
     this.tenantService.tenantData$.subscribe(data => {
         if (!data.err) {
           document.title = this.userService.rootOrgName || data.tenantData.titleName;
@@ -239,6 +208,9 @@ export class AppComponent implements OnInit {
         }
       });
   }
+  /**
+   * updates user framework. After update redirects to library
+   */
   public updateFrameWork(event) {
     const req = {
       framework: event
