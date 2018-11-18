@@ -70,7 +70,7 @@ export class UserService {
    */
   private _cloudStorageUrls: string[];
   private _authenticated: boolean;
-  public anonymousSid: string;
+  private _anonymousSid: string;
   /**
    * Reference of content service.
    */
@@ -106,16 +106,18 @@ export class UserService {
       this._authenticated = true;
     } catch (error) {
       this._authenticated = false;
-      this.anonymousSid = UUID.UUID();
+      this._anonymousSid = UUID.UUID();
     }
     try {
       this._appId = (<HTMLInputElement>document.getElementById('appId')).value;
       this._cloudStorageUrls = (<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(',');
     } catch (error) {
     }
-
   }
-  /**
+  get anonymousSid() {
+    return this._anonymousSid;
+  }
+    /**
    * returns login status.
    */
   get loggedIn(): boolean {
@@ -165,10 +167,10 @@ export class UserService {
   }
 
   public initialize(loggedIn) {
-    if (loggedIn === true) {
+    if (loggedIn) {
       this.getUserProfile();
+      this.startSession(); // logs session start with device id
     }
-    // this.getAppIdEnv();
   }
   /**
    * method to set user profile to behavior subject.
@@ -250,7 +252,7 @@ export class UserService {
     };
     this.publicDataService.post(option).subscribe
       ((data: ServerResponse) => {
-        this.orgnisationsDetails = data.result.response.content;
+        this.orgnisationsDetails = _.get(data, 'result.response.content');
         _.forEach(this.orgnisationsDetails, (orgData) => {
           this.orgNames.push(orgData.orgName);
         });
@@ -324,4 +326,3 @@ export class UserService {
     });
   }
 }
-

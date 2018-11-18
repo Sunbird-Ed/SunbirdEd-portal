@@ -31,8 +31,8 @@
           {{data.name | slice:0:40 }}
           <span *ngIf="data.name && data.name.length >= 40">...</span>
         </h4>
-        <div class="creator ellipsis">
-          {{data.creator}}
+        <div class="creator ellipsis" *ngIf="data.orgDetails && data.orgDetails.orgName">
+          {{data.orgDetails.orgName}}
         </div>
     </div>
     <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount" ></sui-progress>

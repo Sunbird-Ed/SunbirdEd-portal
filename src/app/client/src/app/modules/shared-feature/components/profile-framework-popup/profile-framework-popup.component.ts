@@ -18,6 +18,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   @Input() buttonLabel: string;
   @Input() formInput: any = {};
   @Output() submit = new EventEmitter<any>();
+  @Output() close = new EventEmitter<any>();
   private frameworkDataSubscription: Subscription;
   private formType = 'user';
   public formFieldProperties: any;
@@ -80,7 +81,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     this.medium = _.find(this.formFieldProperties, { code: 'medium' });
     this.class = _.find(this.formFieldProperties, { code: 'gradeLevel' });
     this.subject = _.find(this.formFieldProperties, { code: 'subject' });
-    this.selectedOption = this.formInput;
+    this.selectedOption = _.cloneDeep(this.formInput);
     this.onChange();
   }
 
@@ -89,14 +90,19 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       if (this.selectedOption['board'].length > 0 && this.selectedOption['medium'].length > 0
           && this.selectedOption['gradeLevel'].length > 0) {
         this.showButton = true;
+      } else {
+        this.showButton = false;
       }
-    } else {
-      this.showButton = false;
     }
   }
 
   onSubmitForm() {
     this.submit.emit(this.selectedOption);
+  }
+
+  onClose(modal) {
+    modal.deny();
+    this.close.emit();
   }
 
   ngOnDestroy() {

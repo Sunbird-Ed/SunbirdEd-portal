@@ -45,4 +45,5 @@ export interface ContentData {
 export interface ContentCreditsData {
     contributors: string;
     creators: string;
+    attributions: string;
 }

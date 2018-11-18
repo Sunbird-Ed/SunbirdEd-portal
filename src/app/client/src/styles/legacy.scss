@@ -3064,7 +3064,7 @@ see https://github.com/Semantic-Org/Semantic-UI/issues/1114
 }
 .mc-nonuser,
 .mc-user{
-  padding-top:90px !important;
+  padding-top:76px !important;
 }
 @media screen and (max-width:768px){
   .mc-user{
@@ -3104,11 +3104,8 @@ see https://github.com/Semantic-Org/Semantic-UI/issues/1114
 .width-30{
   max-width: 30px !important;
 }
-.br-4{
-  border-radius: 4px;
-}
-.bs-1{
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+.bs-2{
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.29) !important;
 }
 .d-flex{
   display: flex;
@@ -3177,4 +3174,20 @@ sui-multi-select.ui.selection.dropdown{
   .default.text{
     color: #fff !important;
   }
+ .modal.mini.fixed-small {
+  max-width:320px;
+  width:100%;
+}
+.modal.mini.fixed-mini{
+  max-width:200px;
+  width:100%;
+}
+.relative{
+  position: relative;
+}
+.text-capitalize {
+  text-transform: capitalize;
+}
+.va-middle{
+  vertical-align: middle;
 }

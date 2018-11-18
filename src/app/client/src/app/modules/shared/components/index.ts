@@ -8,10 +8,11 @@ export * from './fancy-tree/fancy-tree.component';
 export * from './share-link/share-link.component';
 export * from './player/player.component';
 export * from './card/card.component';
+export * from './card-creation/card-creation.component';
 export * from './collection-player-metadata/collection-player-metadata.component';
 export * from './browser-compatibility/browser-compatibility.component';
 export * from './qr-code-modal/qr-code-modal.component';
 export * from './redirect/redirect.component';
 export * from './custom-multi-select/custom-multi-select.component';
 export * from './content-credits/content-credits.component';
-
+export * from './install-app/install-app.component';

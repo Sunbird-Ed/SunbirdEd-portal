@@ -21,8 +21,8 @@ export class FancyTreeComponent implements AfterViewInit {
       glyph: {
         preset: 'awesome4',
         map: {
-          folder: 'sb-icon-textbook',
-          folderOpen: 'sb-icon-open_textbook'
+          folder: 'fa fa-folder-o fa-lg',
+          folderOpen: 'fa fa-folder-open-o fa-lg'
         }
       },
       click: (event, data): boolean => {
