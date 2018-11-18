@@ -1,15 +1,11 @@
 @import "variables";
 .sbCard{
     width: 100%;
-    max-width: 220px;
     border-radius: 4px;
     border: $primary-border;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16);
     background-color: #ffffff;
     cursor: pointer;
-    @media screen and (min-width:768px){
-        max-width: 292px;
-    }
     &:hover{
         box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.16);;
         transform: translateY(-2px);
@@ -24,9 +20,13 @@
         overflow: hidden;
         display: flex;
         align-items: center;
+        min-width: 70px;
+        max-width: 70px;
         img{
-            width:100%;
-            height:auto;
+            object-fit: cover;
+            width: 70px;
+            height: 92px;
+            max-width: 100%;
         }
     }
     .header{
@@ -41,12 +41,13 @@
         flex-direction: column;
         justify-content: flex-end;
         height: 92px;
-        width: 175px;
         overflow: hidden;
     }
     .avatar{
         height: 31px;
         width: 31px;
+        object-fit: cover;
+        border-radius: 50%;
     }
     .ui.label{
         font-size: 11px;

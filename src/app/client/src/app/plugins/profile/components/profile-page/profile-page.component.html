@@ -152,7 +152,7 @@
               <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let item of contributions;let i = index;"
                 class="slide">
                 <div>
-                  <app-card (clickEvent)="onClickOfMyContributions($event)" [data]="item" [customClass]="'mr-20'"></app-card>
+                  <app-card (clickEvent)="onClickOfMyContributions($event)" [data]="item" [customClass]="'pr-20'" class="pr-20"></app-card>
                 </div>
               </div>
             </ngx-slick>
