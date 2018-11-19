@@ -28,22 +28,10 @@ const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 let memoryStore = null
 const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
 const frameworkConfig = require('./framework.config.js');
-const configHelper = require('./helpers/config/configHelper.js')
+const configHelper = require('./helpers/configServiceSDKHelper.js')
 const cassandraUtils = require('./helpers/cassandraUtil.js')
-const ServiceSourceAdapter = require('./helpers/config/sourceAdapters/serviceSourceAdapter')
-const EnvVarSourceAdapter = require('./helpers/config/sourceAdapters/envVarSourceAdapter')
-const ConfigBuilder = require('./helpers/config/configBuilder')
 
-const configMap = {
-  sunbird_instance_name: 'PORTAL_TITLE_NAME',
-  sunbird_theme: 'PORTAL_THEME',
-  sunbird_default_language: 'PORTAL_DEFAULT_LANGUAGE',
-  sunbird_primary_bundle_language: 'PORTAL_PRIMARY_BUNDLE_LANGUAGE',
-  sunbird_explore_button_visibility: 'EXPLORE_BUTTON_VISIBILITY',
-  sunbird_enable_signup: 'ENABLE_SIGNUP',
-  sunbird_extcont_whitelisted_domains: 'SUNBIRD_EXTCONT_WHITELISTED_DOMAINS',
-  sunbird_portal_user_upload_ref_link: 'PORTAL_USER_UPLOAD_REF_LINK'
-}
+
 
 const app = express()
 
@@ -215,11 +203,8 @@ function runApp () {
   // redirect to home if nothing found
   app.all('*', (req, res) => res.redirect('/'))
   // start server after building the configuration data
-  let configBuilder = new ConfigBuilder(configMap)
-  configBuilder.addConfigSource(new ServiceSourceAdapter(envHelper.CONFIG_URL + 'v1/read'))
-  configBuilder.addConfigSource(new EnvVarSourceAdapter(envHelper))
 
-  configBuilder.buildConfig(envHelper.CONFIG_REFRESH_INTERVAL).then(function (status) {
+  configHelper.init().then(function (status) {
     portal.server = app.listen(envHelper.PORTAL_PORT, () => {
       if (envHelper.PORTAL_CDN_URL) {
         const req = request
@@ -234,6 +219,8 @@ function runApp () {
       }
       console.log('app running on port ' + envHelper.PORTAL_PORT)
     })
+  },function(error){
+    console.log('Error in loading configs ' + error)
   })
 }
 
