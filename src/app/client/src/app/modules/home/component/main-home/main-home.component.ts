@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { CoursesService, UserService, PlayerService } from '@sunbird/core';
-import { ResourceService, ToasterService, ServerResponse, ConfigService, UtilService} from '@sunbird/shared';
-import {  IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { ResourceService, ToasterService, ServerResponse, ConfigService, UtilService } from '@sunbird/shared';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 /**
  * This component contains 3 sub components
@@ -26,10 +26,6 @@ export class MainHomeComponent implements OnInit, OnDestroy {
 	 * telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
-  /**
-	 * profileUpdateIntractEdata
-	*/
-  profileUpdateIntractEdata: IInteractEventEdata;
   /**
 	 * telemetryInteractObject
 	*/
@@ -68,10 +64,10 @@ export class MainHomeComponent implements OnInit, OnDestroy {
    * Contains details of userprofile and enrolled courses.
    */
   toDoList: Array<object> = [];
-/**
-* Contains config service reference
-*/
-public configService: ConfigService;
+  /**
+  * Contains config service reference
+  */
+  public configService: ConfigService;
   /**
    * This variable hepls to show and hide page loader.
    * It is kept true by default as at first when we comes
@@ -178,35 +174,6 @@ public configService: ConfigService;
     this.btnArrow = 'prev-button';
   }
   /**
-   * This method calls the user API.
-  */
-  public populateUserProfile() {
-    const profile = 'profile';
-    this.userSubscription = this.userService.userData$.subscribe(
-      user => {
-        if (user && !user.err) {
-          this.showLoader = false;
-          if (user.userProfile.completeness < 100) {
-            const missingField = [];
-            _.forEach( user.userProfile.missingFields, (val, key) => {
-              val = val.match(/([A-Z]?[^A-Z]*)/g).join(' ');
-              missingField.push(_.capitalize(val));
-            });
-            this.toDoList.unshift({
-              type: profile,
-              missingFields: missingField,
-              value: user.userProfile.completeness,
-              image: user.userProfile.avatar
-            });
-          }
-        } else if (user && user.err) {
-          this.showLoader = false;
-          this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-        }
-      }
-    );
-  }
-  /**
    * This method calls the course API.
    */
   public populateEnrolledCourse() {
@@ -215,13 +182,13 @@ public configService: ConfigService;
         if (data && !data.err) {
           this.showLoader = false;
           const constantData = this.configService.appConfig.Home.enrolledCourses.constantData;
-            const metaData = { metaData: this.configService.appConfig.Home.enrolledCourses.metaData };
-            const dynamicFields = {
-              'maxCount': this.configService.appConfig.Home.enrolledCourses.maxCount,
-              'progress': this.configService.appConfig.Home.enrolledCourses.progress
-            };
-            const courses = this.utilService.getDataForCard(data.enrolledCourses,
-              constantData, dynamicFields, metaData);
+          const metaData = { metaData: this.configService.appConfig.Home.enrolledCourses.metaData };
+          const dynamicFields = {
+            'maxCount': this.configService.appConfig.Home.enrolledCourses.maxCount,
+            'progress': this.configService.appConfig.Home.enrolledCourses.progress
+          };
+          const courses = this.utilService.getDataForCard(data.enrolledCourses,
+            constantData, dynamicFields, metaData);
           this.toDoList = this.toDoList.concat(courses);
         } else if (data && data.err) {
           this.showLoader = false;
@@ -252,7 +219,7 @@ public configService: ConfigService;
   * user details and enrolled courses.
   */
   ngOnInit() {
-    this.populateUserProfile();
+    // this.populateUserProfile();
     this.populateEnrolledCourse();
     this.telemetryImpression = {
       context: {
@@ -285,9 +252,9 @@ public configService: ConfigService;
     _.forEach(event.inview, (inview, key) => {
       const obj = _.find(this.inviewLogs, (o) => {
         if (inview.data.type !== 'profile') {
-          return o.objid === inview.data.courseId  ;
+          return o.objid === inview.data.courseId;
         } else {
-          return o.objid === this.userService.userid  ;
+          return o.objid === this.userService.userid;
         }
       });
       if (obj === undefined) {
@@ -354,11 +321,6 @@ public configService: ConfigService;
     }
   }
   setInteractEventData() {
-    this.profileUpdateIntractEdata = {
-      id: 'home',
-      type: 'click',
-      pageid: 'home'
-    };
     this.telemetryInteractObject =  {
       id: this.userService.userid,
       type: 'user',

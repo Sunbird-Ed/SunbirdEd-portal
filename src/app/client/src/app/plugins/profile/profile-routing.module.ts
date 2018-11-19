@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ProfilePageRedesignComponent } from './components';
+import { ProfilePageComponent } from './components';
 import {
   OrgManagementModule, OrganizationUploadComponent,
   UserUploadComponent, BulkUploadComponent, StatusComponent
@@ -11,7 +11,7 @@ const telemetryEnv = 'profile';
 const objectType = 'profile';
 const routes: Routes = [
   {
-    path: 'profile', component: ProfilePageRedesignComponent,
+    path: 'profile', component: ProfilePageComponent,
     data: {
       telemetry: {
         env: telemetryEnv, type: 'view', mode: 'create', subtype: 'paginate', object: { type: objectType, ver: '1.0' }
@@ -51,7 +51,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'profile/:section', component: ProfilePageRedesignComponent,
+    path: 'profile/:section', component: ProfilePageComponent,
     data: {
       telemetry: {
         env: telemetryEnv, type: 'view', mode: 'create', subtype: 'paginate', object: { type: objectType, ver: '1.0' }
@@ -59,7 +59,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'profile/:section/:action', component: ProfilePageRedesignComponent,
+    path: 'profile/:section/:action', component: ProfilePageComponent,
     data: {
       telemetry: {
         env: telemetryEnv, type: 'view', mode: 'create', subtype: 'paginate', object: { type: objectType, ver: '1.0' }

@@ -11,7 +11,7 @@ import { SharedModule} from '@sunbird/shared';
 // Import component
 import {
  HomeCalendarCardComponent, HomeFeedCardComponent, MainHomeComponent,
-  ProfileCardComponent, HomeAnnouncementComponent, NotificationComponent
+ HomeAnnouncementComponent, NotificationComponent
 } from './component/index';
 import { HomeAnnouncementService } from './service/index';
 import { NgInviewModule } from 'angular-inport';
@@ -27,10 +27,9 @@ import { TelemetryModule } from '@sunbird/telemetry';
     SharedModule,
     CoreModule,
     NgInviewModule,
-    TelemetryModule
+    TelemetryModule,
   ],
   declarations: [
-    ProfileCardComponent,
     MainHomeComponent,
     HomeFeedCardComponent,
     HomeCalendarCardComponent,

@@ -1,152 +1,124 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { SharedModule, ResourceService } from '@sunbird/shared';
+import { CoreModule, UserService, SearchService, PlayerService , LearnerService, CoursesService} from '@sunbird/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CoreModule, UserService, SearchService, PlayerService } from '@sunbird/core';
-import { ProfileService, ProfilePageComponent } from '@sunbird/profile';
+import { NgInviewModule } from 'angular-inport';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
+import { ProfileService, ProfilePageComponent } from '@sunbird/profile';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SharedModule } from '@sunbird/shared';
-import { mockProfilePageData } from './profile-page.component.spec.data';
-import { TelemetryModule } from '@sunbird/telemetry';
-import { NgInviewModule } from 'angular-inport';
+import { SlickModule } from 'ngx-slick';
+import { Response } from './profile-page.spec.data';
+import {of as observableOf,  Observable } from 'rxjs';
 
 describe('ProfilePageComponent', () => {
   let component: ProfilePageComponent;
   let fixture: ComponentFixture<ProfilePageComponent>;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
-  }
-  const fakeActivatedRoute = {
-    'params': observableOf({ contentId: 'd0_33567325' }),
-    'root': {
-      children: [{
-        snapshot: {
-          queryParams: {}
-        }
-      }]
-    },
     snapshot: {
-      params: [
-        {
-          section: 'education',
-        },
-        {
-          action: 'add'
-        }
-      ],
       data: {
         telemetry: {
-          env: 'profile', pageid: 'profile-read', type: 'view',
-          object: { type: 'Resource', ver: '1.0' }
+          env: 'profile', pageid: 'profile', subtype: 'paginate', type: 'view',
+          object: { type: '', ver: '1.0' }
         }
+      }
+    };
+  }
+  const env = 'profile';
+  class ActivatedRouteStub {
+    snapshot = {
+      root: { firstChild : {data: { telemetry: { env: env} } } },
+      data : {
+         telemetry: { env: env }
+      }
+    };
+  }
+  const resourceBundle = {
+    'frmelmnts': {
+      'instn': {
+        't0015': 'Upload Organization',
+        't0016': 'Upload User'
+      },
+      'lbl' : {
+        'chkuploadsts': 'Check Status'
+      },
+    },
+    'messages': {
+      'smsg': {},
+      'fmsg': {
+        'm0001': 'api failed, please try again',
+        'm0004': 'api failed, please try again'
       }
     }
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule.forRoot(),
-      TelemetryModule, NgInviewModule],
-      declarations: [ProfilePageComponent],
+      imports: [HttpClientTestingModule,  SharedModule.forRoot(), CoreModule.forRoot(),
+        TelemetryModule, NgInviewModule, SlickModule],
+      declarations: [ ProfilePageComponent ],
       providers: [ProfileService, UserService, SearchService,
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        { provide: Router, useClass: RouterStub }],
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
+        { provide: Router, useClass: RouterStub },
+        { provide: ResourceService, useValue: resourceBundle }],
       schemas: [NO_ERRORS_SCHEMA]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfilePageComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
   it('should call user service', () => {
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.frelmnts = resourceBundle.frmelmnts;
+    resourceService.messages = resourceBundle.messages;
     const userService = TestBed.get(UserService);
-    userService._userData$.next({ err: null, userProfile: mockProfilePageData.userMockData });
+    userService._userData$.next({ err: null, userProfile: Response.userData });
+    spyOn(component, 'getOrgDetails').and.callThrough();
     spyOn(component, 'getMyContent').and.callThrough();
-    component.getMyContent();
+    spyOn(component, 'getAttendedTraining').and.callThrough();
+    component.ngOnInit();
+    expect(component).toBeTruthy();
+    expect(component.userProfile).toEqual(Response.userData);
+    expect(component.getOrgDetails).toHaveBeenCalled();
     expect(component.getMyContent).toHaveBeenCalled();
+    expect(component.getAttendedTraining).toHaveBeenCalled();
   });
-  it('should call updateAction and route to selected field', () => {
-    const router = TestBed.get(Router);
-    const actions = {
-      profileSummary: 'profile/summary/edit',
-      jobProfile: 'profile/experience/add',
-      address: 'profile/address/add',
-      education: 'profile/education/add',
-      location: 'profile/additionalInfo/edit',
-      dob: 'profile/additionalInfo/edit',
-      subject: 'profile/additionalInfo/edit',
-      grade: 'profile/additionalInfo/edit'
-    };
-    const fields = 'address';
-    component.updateAction(fields);
-    expect(router.navigate).toHaveBeenCalledWith(
-      ['profile/address/add']);
-  });
-  it('should call updateAction and not route', () => {
-    const router = TestBed.get(Router);
-    const actions = {
-      profileSummary: 'profile/summary/edit',
-      jobProfile: 'profile/experience/add',
-      address: 'profile/address/add',
-      education: 'profile/education/add',
-      location: 'profile/additionalInfo/edit',
-      dob: 'profile/additionalInfo/edit',
-      subject: 'profile/additionalInfo/edit',
-      grade: 'profile/additionalInfo/edit'
-    };
-    const fields = '';
-    component.updateAction(fields);
-    expect(router.navigate).not.toHaveBeenCalledWith(
-      ['profile/address/add']);
-  });
-  it('should call user searchService searchContentByUserId', () => {
+
+  it('should call search service to get my contributions data', () => {
     const searchService = TestBed.get(SearchService);
-    const response = undefined;
-    const searchParams = {
-      status: ['Live'],
-      contentType: ['Collection', 'TextBook', 'Course', 'LessonPlan', 'Resource'],
-      params: { lastUpdatedOn: 'desc' }
-    };
-    spyOn(searchService, 'searchContentByUserId').and.returnValue(observableOf(mockProfilePageData.success));
+    spyOn(searchService, 'searchContentByUserId').and.returnValue(observableOf(Response.success));
     component.getMyContent();
     expect(component.contributions).toBeDefined();
   });
-  it('should not call user searchService searchContentByUserId', () => {
+
+  it('should not call user search service when my contributions data count is zero', () => {
     const searchService = TestBed.get(SearchService);
-    const response = mockProfilePageData.success.result;
-    spyOn(searchService, 'searchContentByUserId').and.returnValue(observableOf(mockProfilePageData.success));
-    component.getMyContent();
-    expect(component.contributions).toBeDefined();
-  });
-  it('should not call user searchService searchContentByUserId when count is zero', () => {
-    const searchService = TestBed.get(SearchService);
-   searchService._searchedContentList = mockProfilePageData.zeroData.result;
+   searchService._searchedContentList = Response.zeroData.result;
     const response = searchService.searchedContentList;
    component.getMyContent();
     expect(response.count).toEqual(0);
     expect(component.contributions).toBeDefined();
     expect(component.contributions).toEqual([]);
   });
-  it('should call player service', () => {
+
+  it('should call play content when clicked on one of my contributions', () => {
     const playerService = TestBed.get(PlayerService);
-    const response = mockProfilePageData.success.result.content;
-    spyOn(playerService, 'playContent').and.callThrough();
-    component.onClickOfMyContributions(response);
+    const event = { data: { metaData: { identifier: 'do_11262255104183500812' } } };
+    spyOn(playerService, 'playContent').and.callFake(() => observableOf(Response.event.data.metaData));
+    component.onClickOfMyContributions(event);
     expect(playerService.playContent).toHaveBeenCalled();
   });
-  it('should call inview method for visits data', () => {
-    component.telemetryImpression = mockProfilePageData.telemetryData;
-    spyOn(component, 'inview').and.callThrough();
-    component.inview(mockProfilePageData.event.inview);
-    expect(component.inview).toHaveBeenCalled();
-    expect(component.inviewLogs).toBeDefined();
+
+  it('should call course service to get attended training data', () => {
+    const courseService = TestBed.get(CoursesService);
+    const learnerService = TestBed.get(LearnerService);
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses});
+    courseService.initialize();
+    component.getAttendedTraining();
+    expect(component.attendedTraining).toBeDefined();
   });
 });

@@ -3,7 +3,7 @@
     "userReadParam": {
       "fields": "completeness,missingFields,lastLoginTime,organisations,roles"
     },
-    "contentGet": "creator,body,editorState,templateId,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher,subject,author,flagReasons,flaggedBy,flags,createdOn,lastUpdatedOn,board,keywords,resourceType,framework,license,badgeAssertions,pkgVersion"
+    "contentGet": "creator,body,editorState,templateId,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher,subject,author,flagReasons,flaggedBy,flags,createdOn,lastUpdatedOn,board,keywords,resourceType,framework,license,badgeAssertions,pkgVersion,contentCredits,attributions"
   },
   "URLS": {
     "LEARNER_PREFIX": "/learner/",
@@ -13,6 +13,7 @@
     "ANNOUNCEMENT_PREFIX": "/announcement/v1",
     "TENANT_PREFIX": "/v1/tenant",
     "RESOURCEBUNDLES_PREFIX": "resourcebundles/v1",
+    "DEVICE_REGISTER": "v3/device/register/",
     "PAGE_PREFIX": "data/v1/page/assemble",
     "RESOURCEBUNDLES": {
       "ENG": "/read"
