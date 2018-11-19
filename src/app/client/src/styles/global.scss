@@ -2,6 +2,7 @@ body {
     position: relative;
     background: $bg-body !important;
     font-family: $font-stack;
+    letter-spacing: 0.2px; 
 }
 .ui.button.rounded{
     border-radius: 20px;
@@ -89,4 +90,13 @@ h1, h2, h3, h4, h5,
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.relative {
+    position: relative !important;
+}
+.text-center{
+    text-align: center;
+}
+app-card{
+    display: block;
 }
