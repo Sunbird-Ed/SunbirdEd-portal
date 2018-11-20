@@ -11,7 +11,6 @@ import { UserService } from './../user/user.service';
 import { ConfigService } from '@sunbird/shared';
 import { PublicDataService } from './../public-data/public-data.service';
 
-
 describe('SearchService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -41,4 +40,22 @@ describe('SearchService', () => {
       expect(service).toBeTruthy();
       expect(publicDataService.post).toHaveBeenCalled();
     }));
-});
+
+    it('should call processFilterData', inject([SearchService],
+      (service: SearchService) => {
+        const facetData = [{
+          'values': [{
+            'name': 'kindergarten',
+            'count': 87
+          }, {
+            'name': 'other',
+            'count': 48
+          }],
+          'name': 'gradeLevel'
+        }];
+        const result = { 'gradeLevel': [{ 'name': 'kindergarten', 'count': 87 }, { 'name': 'other', 'count': 48 }] }
+        const modifiedFacetData = service.processFilterData(facetData);
+        expect(service).toBeTruthy();
+        expect(modifiedFacetData).toEqual(result);
+      }));
+  });
