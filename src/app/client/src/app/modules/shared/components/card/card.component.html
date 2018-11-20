@@ -13,11 +13,8 @@
       </div>
       <div class="meta">
         <div class="top mb-auto d-flex">
-            <div class="ui label tiny right" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.name">
-              {{data.ribbon.left.name}}
-            </div>
-            <div class="ui label tiny right" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">
-              {{data.ribbon.right.name}}
+            <div class="ui label tiny right" *ngIf="data.resourceType">
+              {{data.resourceType}}
             </div>
             <img src="{{data.ribbon.left.image}}" class="avatar ml-auto" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image" alt="{{data.ribbon.left.name}}">
         </div>
