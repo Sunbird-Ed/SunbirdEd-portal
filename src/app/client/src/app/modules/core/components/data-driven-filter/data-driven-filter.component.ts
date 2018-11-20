@@ -152,6 +152,9 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
       this.refresh = true;
     });
   }
+  handleTopicChange(topicsSelected) {
+    console.log(topicsSelected);
+  }
   /**
 * fetchFilterMetaData is gives form config data
 */
