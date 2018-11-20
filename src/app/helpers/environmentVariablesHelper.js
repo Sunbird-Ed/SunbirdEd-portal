@@ -42,7 +42,7 @@ let envVariables = {
   PORTAL_CASSANDRA_CONSISTENCY_LEVEL: env.sunbird_cassandra_consistency_level || 'one',
   PORTAL_CASSANDRA_REPLICATION_STRATEGY: env.sunbird_cassandra_replication_strategy || '{"class":"SimpleStrategy","replication_factor":1}',
   PORTAL_EXT_PLUGIN_URL: process.env.sunbird_ext_plugin_url || 'http://player_player:3000/plugin/',
-  DEVICE_REGISTER_API: process.env.device_register_api || 'https://devapi.open-sunbird.org/v3/device/register/',
+  DEVICE_REGISTER_API: process.env.sunbird_device_register_api || 'https://api.open-sunbird.org/v3/device/register/',
   sunbird_instance_name: env.sunbird_instance || 'Sunbird',
   sunbird_theme: env.sunbird_theme || 'default',
   sunbird_default_language: env.sunbird_portal_default_language || 'en',
