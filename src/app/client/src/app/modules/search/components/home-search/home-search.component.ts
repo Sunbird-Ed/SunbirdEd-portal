@@ -100,6 +100,8 @@ export class HomeSearchComponent implements OnInit {
    *url value
    */
   queryParams: IHomeQueryParams;
+  public facetArray: Array<string>;
+  public facets: any;
   /**
      * Constructor to create injected service(s) object
      * @param {SearchService} searchService Reference of SearchService
@@ -132,19 +134,22 @@ export class HomeSearchComponent implements OnInit {
       filters: {
         contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Course'],
         board: this.queryParams.board,
-        language: this.queryParams.medium,
+        medium: this.queryParams.medium,
         subject: this.queryParams.subject
       },
       limit: this.pageLimit,
       offset: (this.pageNumber - 1 ) * (this.pageLimit),
-      query: this.queryParams.key
+      query: this.queryParams.key,
+      facets: this.facetArray
     };
     this.searchService.compositeSearch(searchParams).subscribe(
       (apiResponse: ServerResponse) => {
-        if (apiResponse.result.count && apiResponse.result.content.length > 0) {
+        if (apiResponse.result.count && apiResponse.result.content
+          && apiResponse.result.content.length > 0) {
           this.showLoader = false;
           this.noResult = false;
           this.totalCount = apiResponse.result.count;
+          this.facets = this.searchService.processFilterData(apiResponse.result.facets);
           this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
           const constantData = this.config.appConfig.HomeSearch.constantData;
         const metaData = this.config.appConfig.HomeSearch.metaData;
@@ -188,8 +193,12 @@ export class HomeSearchComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.filterType = this.config.appConfig.home.filterType;
+  getFilters(filters) {
+    this.facetArray =  filters.map(element => element.code);
+    this.setFilters();
+  }
+
+  setFilters () {
     observableCombineLatest(
       this.activatedRoute.params,
       this.activatedRoute.queryParams,
@@ -206,6 +215,10 @@ export class HomeSearchComponent implements OnInit {
         this.queryParams = { ...bothParams.queryParams };
         this.populateCompositeSearch();
       });
+  }
+
+  ngOnInit() {
+    this.filterType = this.config.appConfig.home.filterType;
       this.setInteractEventData();
       this.telemetryImpression = {
         context: {
