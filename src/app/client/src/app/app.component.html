@@ -1,4 +1,4 @@
-<app-popup [showCloseIcon]="true" (close)="showEdit = !showEdit" #frameWorkPopUp *ngIf="showFrameWorkPopUp" [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateFrameWork($event)"></app-popup>
+<app-popup [showCloseIcon]="true" (close)="showFrameWorkPopUp = !showFrameWorkPopUp" #frameWorkPopUp *ngIf="showFrameWorkPopUp" [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateFrameWork($event)"></app-popup>
 <app-header></app-header>
 <!-- since header is fixed we have to add margin to the content below it -->
 <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn"></app-install-app>

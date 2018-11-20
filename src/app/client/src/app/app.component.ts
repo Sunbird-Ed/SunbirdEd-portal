@@ -58,6 +58,7 @@ export class AppComponent implements OnInit {
   */
   showAppPopUp = false;
   viewinBrowser = false;
+  showEdit = false;
   constructor(public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
     private deviceRegisterService: DeviceRegisterService, private courseService: CoursesService, private tenantService: TenantService,

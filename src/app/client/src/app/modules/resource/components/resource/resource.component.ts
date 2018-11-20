@@ -169,7 +169,7 @@ export class ResourceComponent implements OnInit, OnDestroy {
     this.dataDrivenFilters = {};
     this.filterType = this.config.appConfig.library.filterType;
     this.redirectUrl = this.config.appConfig.library.inPageredirectUrl;
-    this.getQueryParams();
+    // this.getQueryParams();
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
