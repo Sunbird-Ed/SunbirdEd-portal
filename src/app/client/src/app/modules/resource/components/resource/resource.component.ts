@@ -60,6 +60,7 @@ export class ResourceComponent implements OnInit, OnDestroy {
    /**
    * no result  message
   */
+ viewinBrowser = false;
   noResultMessage: INoResultMessage;
   userSubscription: ISubscription;
   /**
