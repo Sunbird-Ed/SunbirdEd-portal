@@ -53,6 +53,11 @@ export class AppComponent implements OnInit {
   /**
    * constructor
    */
+  /**
+  * Variable to show popup to install the app
+  */
+  showAppPopUp = true;
+  viewinBrowser = false;
   constructor(public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
     private deviceRegisterService: DeviceRegisterService, private courseService: CoursesService, private tenantService: TenantService,
@@ -88,6 +93,8 @@ export class AppComponent implements OnInit {
       this.telemetryService.initialize(this.getTelemetryContext());
       this.deviceRegisterService.registerDevice(this.channel);
       if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
+        this.showFrameWorkPopUp = true;
+      } else {
         this.showFrameWorkPopUp = true;
       }
       this.initApp = true;
@@ -220,9 +227,14 @@ export class AppComponent implements OnInit {
       this.showFrameWorkPopUp = false;
       this.utilService.toggleAppPopup();
       this.router.navigate(['/resources']);
+      this.showAppPopUp = this.utilService.showAppPopUp;
+      console.log(this.showAppPopUp);
     }, err => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0085);
         this.frameWorkPopUp.modal.deny();
     });
+  }
+  viewInBrowser() {
+    this.router.navigate(['/resources']);
   }
 }

@@ -75,11 +75,6 @@ export class ResourceComponent implements OnInit, OnDestroy {
   sortingOptions: Array<ISort>;
   contents: any;
   framework: any;
-  /**
-  * Variable to show popup to install the app
-  */
-  showAppPopUp = false;
-  viewinBrowser = false;
   dataDrivenFilters: object;
   /**
    * The "constructor"
@@ -116,7 +111,9 @@ export class ResourceComponent implements OnInit, OnDestroy {
       source: 'web',
       name: 'Resource',
       filters: filters,
-      softConstraints : softConstraints
+      softConstraints : softConstraints,
+      mode: 'soft',
+      exists: []
     };
     if (this.queryParams.sort_by) {
       option['sort_by'] = {[this.queryParams.sort_by]: this.queryParams.sortType  };
@@ -172,7 +169,6 @@ export class ResourceComponent implements OnInit, OnDestroy {
     this.dataDrivenFilters = {};
     this.filterType = this.config.appConfig.library.filterType;
     this.redirectUrl = this.config.appConfig.library.inPageredirectUrl;
-    this.showAppPopUp = this.utilService.showAppPopUp;
     this.getQueryParams();
     this.telemetryImpression = {
       context: {
@@ -262,11 +258,6 @@ export class ResourceComponent implements OnInit, OnDestroy {
     });
       const sectionUrl = 'resources/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], {queryParams: queryParams});
-  }
-
-  viewInBrowser() {
-    this.viewinBrowser = true;
-    this.populatePageData();
   }
 
   getFilters(filters) {
