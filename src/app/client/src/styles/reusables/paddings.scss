@@ -1,3 +1,4 @@
+/* Padding in all direction */
 .p-0 {
   @include padding(0);
 }
@@ -20,7 +21,7 @@
   @include padding(50px);
 }
 
-
+/* Padding in top direction */
 .pt-0 {
   @include padding(0 null null null);
 }
@@ -40,33 +41,7 @@
   @include padding(30px null null null);
 }
 
-
-.pr-0 {
-  @include padding(null 0 null null);
-}
-.pr-5 {
-  @include padding(null 5px null null);
-}
-.pr-8 {
-  @include padding(null 5px null null);
-}
-.pr-10 {
-  @include padding(null 10px null null);
-}
-.pr-15 {
-  @include padding(null 15px null null);
-}
-.pr-20 {
-  @include padding(null 20px null null);
-}
-.pr-30 {
-  @include padding(null 30px null null);
-}
-.pr-60 {
-  @include padding(null 60px null null);
-}
-
-
+/* Padding in bottom direction */
 .pb-0 {
   @include padding(null null 0 null);
 }
@@ -86,32 +61,7 @@
   @include padding(null null 30px null);
 }
 
-
-
-.pl-0 {
-  @include padding(null null null 0);
-}
-.pl-5 {
-  @include padding(null null null 5px);
-}
-.pl-10 {
-  @include padding(null null null 10px);
-}
-.pl-15 {
-  @include padding(null null null 15px);
-}
-.pl-20 {
-  @include padding(null null null 20px);
-}
-.pl-30 {
-  @include padding(null null null 30px);
-}
-.pl-60 {
-  @include padding(null null null 60px);
-}
-
-
-
+/* Padding in horizontal direction */
 .px-0 {
   @include padding(null 0);
 }
@@ -137,7 +87,7 @@
   @include padding(null 60px);
 }
 
-
+/* Padding in vertical direction */
 .py-0 {
   @include padding(0 null);
 }
@@ -160,3 +110,105 @@
   @include padding(20px null);
 }
 
+/* Padding in left direction if ltr but will be right in rtl */
+*[dir="ltr"]{
+  .pl-0 {
+    @include padding(null null null 0);
+  }
+  .pl-5 {
+    @include padding(null null null 5px);
+  }
+  .pl-10 {
+    @include padding(null null null 10px);
+  }
+  .pl-15 {
+    @include padding(null null null 15px);
+  }
+  .pl-20 {
+    @include padding(null null null 20px);
+  }
+  .pl-30 {
+    @include padding(null null null 30px);
+  }
+  .pl-60 {
+    @include padding(null null null 60px);
+  }
+}
+
+*[dir="rtl"]{
+  .pl-0 {
+    @include padding(null 0 null null);
+  }
+  .pl-5 {
+    @include padding(null 5px null null);
+  }
+  .pl-10 {
+    @include padding(null 10px null null);
+  }
+  .pl-15 {
+    @include padding(null 15px null null);
+  }
+  .pl-20 {
+    @include padding(null 20px null null);
+  }
+  .pl-30 {
+    @include padding(null 30px null null);
+  }
+  .pl-60 {
+    @include padding(null 60px null null);
+  }
+}
+
+/* Padding in right direction if ltr but will be left in rtl */
+*[dir="ltr"]{
+  .pr-0 {
+    @include padding(null 0 null null);
+  }
+  .pr-5 {
+    @include padding(null 5px null null);
+  }
+  .pr-8 {
+    @include padding(null 5px null null);
+  }
+  .pr-10 {
+    @include padding(null 10px null null);
+  }
+  .pr-15 {
+    @include padding(null 15px null null);
+  }
+  .pr-20 {
+    @include padding(null 20px null null);
+  }
+  .pr-30 {
+    @include padding(null 30px null null);
+  }
+  .pr-60 {
+    @include padding(null 60px null null);
+  }
+}
+*[dir="rtl"]{
+  .pr-0 {
+    @include padding(null null null 0);
+  }
+  .pr-5 {
+    @include padding(null null null 5px);
+  }
+  .pr-8 {
+    @include padding(null null null 5px);
+  }
+  .pr-10 {
+    @include padding(null null null 10px);
+  }
+  .pr-15 {
+    @include padding(null null null 15px);
+  }
+  .pr-20 {
+    @include padding(null null null 20px);
+  }
+  .pr-30 {
+    @include padding(null null null 30px);
+  }
+  .pr-60 {
+    @include padding(null null null 60px);
+  }
+}
