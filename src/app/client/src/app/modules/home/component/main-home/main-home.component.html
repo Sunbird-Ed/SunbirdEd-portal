@@ -18,7 +18,7 @@
                 <div in-view-item ngxSlickItem *ngFor="let item of toDoList; trackBy: trackByFn;let i = index" class="slide" [id]="i" [data]="item">
             
                   <div *ngIf=" item.type !== 'profile'">
-                    <app-card [data]="item" (clickEvent)="playContent($event)" [customClass]="'mr-20'"></app-card>
+                    <app-card [data]="item" (clickEvent)="playContent($event)" [customClass]="'pr-20'" class="pr-20"></app-card>
                   </div>
                 </div>
               </ngx-slick>

@@ -69,9 +69,17 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
    * reference of resourceService service.
    */
   public resourceService: ResourceService;
-  customStyle = {
+  avtarMobileStyle = {
     backgroundColor: '#fff',
-    color: '#333'
+    color: '#333',
+    fontFamily: 'inherit',
+    fontSize: '20px'
+  };
+  avtarDesktopStyle = {
+    backgroundColor: '#fff',
+    color: '#333',
+    fontFamily: 'inherit',
+    fontSize: '20px'
   };
   /**
    * reference of permissionService service.

@@ -35,76 +35,60 @@ export class PageSectionComponent implements OnInit {
   * This is slider setting
   */
  slideConfig = {
-  'slidesToShow': 2,
-  'slidesToScroll': 3,
-  'variableWidth': true,
+  'slidesToShow': 4,
+  'slidesToScroll': 4,
   'responsive': [
     {
       'breakpoint': 2800,
       'settings': {
         'slidesToShow': 8,
-        'slidesToScroll': 2,
-        'variableWidth': true
+        'slidesToScroll': 8
       }
     },
     {
       'breakpoint': 2200,
       'settings': {
         'slidesToShow': 6,
-        'slidesToScroll': 2,
-        'variableWidth': true
+        'slidesToScroll': 6
       }
     },
     {
       'breakpoint': 2000,
       'settings': {
         'slidesToShow': 5,
-        'slidesToScroll': 2,
-        'variableWidth': true
+        'slidesToScroll': 5
       }
     },
     {
-      'breakpoint': 1400,
+      'breakpoint': 1600,
       'settings': {
-        'slidesToShow': 3.5,
-        'slidesToScroll': 2,
-        'variableWidth': true
+        'slidesToShow': 4,
+        'slidesToScroll': 4
       }
     },
     {
       'breakpoint': 1200,
       'settings': {
-        'slidesToShow': 3.5,
-        'slidesToScroll': 2,
-        'variableWidth': true
-      }
-    },
-    {
-      'breakpoint': 800,
-      'settings': {
         'slidesToShow': 3,
-        'slidesToScroll': 1,
-        'variableWidth': true
+        'slidesToScroll': 3
       }
     },
     {
-      'breakpoint': 600,
+      'breakpoint': 900,
       'settings': {
         'slidesToShow': 2,
-        'slidesToScroll': 1,
-        'variableWidth': true
+        'slidesToScroll': 2
       }
     },
     {
-      'breakpoint': 425,
+      'breakpoint': 450,
       'settings': {
         'slidesToShow': 1,
-        'slidesToScroll': 1,
-        'variableWidth': true
+        'slidesToScroll': 1
       }
     }
   ],
-  infinite: false,
+  infinite: false
 };
   /**The previous or next value of the button clicked
    * to generate interact telemetry data */
