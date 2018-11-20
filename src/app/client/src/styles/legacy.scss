@@ -189,179 +189,7 @@
 .opacity-1{
   opacity: 1 !important;
 }
-.padding-none {
-  padding: 0px !important;
-}
-.padding-top-none {
-  padding-top: 0px !important;
-}
-.padding-bottom-none {
-  padding-bottom: 0px !important;
-}
-.padding-right-none {
-  padding-right: 0px !important;
-}
-.padding-left-none {
-  padding-left: 0px !important;
-}
-.padding-10 {
-  padding: 10px !important;
-}
-.padding-left-right-0 {
-  padding-left: 0px !important;
-  padding-right: 0px !important;
-}
-.padding-top-bottom-0 {
-  padding-top: 0px !important;
-  padding-bottom: 0px !important;
-}
-.padding-bottom-15 {
-  padding-bottom: 15px !important;
-}
-.padding-top-10 {
-  padding-top: 10px !important;
-}
-.padding-top-20 {
-  padding-top: 20px !important;
-}
-.padding-top-30 {
-  padding-top: 30px !important;
-}
-.padding-topBottom-20 {
-  padding: 10px 0px!important;
-}
-.padding-left-25 {
-  padding-left: 25px !important;
-}
-.padding-right-25 {
-  padding-right: 25px !important;
-}
-.padding-topBottom-35 {
-  padding: 35px 0px!important;
-}
-.padding-topBottomNone {
-  padding-top: 0px!important;
-  padding-bottom: 0px!important;
-}
-.padding-all-10 {
-  padding: 10px!important;
-}
-.padding-bottom-5 {
-  padding-bottom: 5px!important;
-}
-.padding-top-5 {
-  padding-top: 5px!important;
-}
-.padding-bottom-10 {
-  padding-bottom: 10px!important;
-}
-.padding-bottom-20 {
-  padding-bottom: 20px!important;
-}
-.padding-bottom-none {
-  padding-bottom: 0px!important;
-}
-.padding-right-5 {
-  padding-right: 5px!important;
-}
-.padding-right-10 {
-  padding-right: 10px!important;
-}
-.padding-right-28 {
-  padding-right: 28px!important;
-}
-.padding-right-20 {
-  padding-right: 20px!important;
-}
-.padding-left-10 {
-  padding-left: 10px!important;
-}
-.padding-right-none {
-  padding-right: 0px!important;
-}
-.margin-none {
-  margin: 0em !important;
-}
-.margin-top-0 {
-  margin-top: 0px !important;
-}
-.margin-bottom-0 {
-  margin-bottom: 0px !important;
-}
-.margin-left-right-0 {
-  margin-left: 0px !important;
-  margin-right: 0px !important;
-}
-.margin-top--5 {
-  margin-top: 5px !important;
-}
-.margin-left-right-10 {
-  margin-left: 10px !important;
-  margin-right: 10px !important;
-}
-.margin-top-10 {
-  margin-top: 10px !important;
-}
-.margin-top-15 {
-  margin-top: 15px !important;
-}
-.margin-bottom-10 {
-  margin-bottom: 10px !important;
-}
-.margin-bottom-15 {
-  margin-bottom: 15px !important;
-}
-.margin-bottom-20 {
-  margin-bottom: 20px !important;
-}
-.margin-top-20 {
-  margin-top: 20px !important;
-}
-.margin-auto {
-  margin: auto !important;
-}
-.margin-right-none {
-  margin-right: 0px !important;
-}
-.margin-right-10 {
-  margin-right: 10px !important;
-}
-.margin-right-20 {
-  margin-right: 20px !important;
-}
-.margin-right-15 {
-  margin-right: 15px !important;
-}
-.margin-left-0 {
-  margin-left: 0 !important;
-}
-.margin-left-10 {
-  margin-left: 10px !important;
-}
-.margin-left-20 {
-  margin-left: 20px !important;
-}
-.margin-left-25 {
-  margin-left: 25px !important;
-}
-.margin-left-30 {
-  margin-left: 30px !important;
-}
-.margin-top-30 {
-  margin-top: 30px !important;
-}
-.margin-bottom-30 {
-  margin-bottom: 30px !important;
-}
-.margin-top-3rem {
-  margin-top: -3rem !important;
-}
-.margin-top-40 {
-  margin-top: 40px !important;
-}
-.margin-top-Negative30 {
-  margin-top: -30px !important;
-}
+
 .text-align-right {
   text-align: right !important;
 }
@@ -398,12 +226,6 @@
 }
 .text-align-center {
   text-align: center !important;
-}
-.padding-left-50 {
-  padding-left: 3rem !important;
-}
-.padding-right-50 {
-  padding-right: 3rem !important;
 }
 .vertical-align-middle {
   vertical-align: middle !important;
@@ -467,13 +289,6 @@ h4.ui.header.sectionHeading {
   font-weight:500;
   color: #333333;
 }
-.primary-header-avatar {
-  padding-top: 0.9rem;
-  z-index: 88;
-}
-.primary-header-alarm-icon {
-  padding-top: 1.5rem;
-}
 .ui.divider.header-search-filters-divider {
   margin-top: 0px;
   border-color: transparent;
@@ -504,9 +319,6 @@ h4.ui.header.sectionHeading {
 .padding-top-header-large-icons {
   padding-top: 1.5rem;
 }
-.padding-top-1rem {
-  padding-top: 1rem;
-}
 .ui.secondary.pointing.menu .active.item {
   border-color: #007AFF;
   color: #333333;
@@ -515,9 +327,7 @@ h4.ui.header.sectionHeading {
 .ui.secondary.pointing.menu {
   background: #fdfdfd;
   margin: 0rem;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
 }
 .ui.dropdown .menu > .item.headerDropdownProfile {
   cursor: text;
@@ -771,99 +581,12 @@ i.large.icon.limitedPublishingLinkIcon {
   /* font-weight: 600; */
   color: #7c7b7b;
 }
-.profileCard-circular-image {
-  position: relative;
-  font-size: 120px;
-  width: 1em;
-  height: 1em;
-  border-radius: 50%;
-  float: left;
-  margin: 0 0.1em 0.1em 0;
-}
-.profileCard-circular-image.small {
-  font-size: 80px;
-}
-.profileCard-circular-image > .profpic {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  padding-top: 7%;
-  padding-left: 7%;
-  z-index: 1;
-  left: 0;
-  top: 0;
-}
-.profileCard-circular-image > .profpic img {
-  height: 85%;
-  width: 85%;
-}
-.profileUpdateCardSubDesc {
-  font-weight:500;
-  font-size: 0.875em;
-  color: grey;
-}
-.profileUpdateCardHeading {
-  margin-top: -10px;
-  font-weight: bold;
-  font-size: 1.3em;
-  line-height: 1.2;
-}
-.profileUpdateCardPadding {
-  padding: 25px 15px 17px 10px;
-  border: 0.5px solid rgba(151, 151, 151, 0.54);
-}
 .ui.card > .sliderCards.content.CardcontentTopPadding {
   padding-top: 50px;
 }
 .profileUpdateCardContentHeight {
   height: 100px;
   max-height: 100px;
-}
-@media screen and (max-width: 1100px) and (min-width: 1024px) {
-  .profileUpdateCardHeading {
-    margin-top: -10px;
-    font-weight: bold;
-    font-size: 1em;
-    line-height: 1.2;
-  }
-  .profileUpdateCardPadding {
-    padding: 0px 0px 40px 0px;
-  }
-  .ui.card > .sliderCards.content.CardcontentTopPadding {
-    padding-top: 40px;
-  }
-}
-@media screen and (max-width: 1280px) and (min-width: 1200px) {
-  .profileUpdateCardHeading {
-    margin-top: -10px;
-    font-weight: bold;
-    font-size: 1.2em;
-    line-height: 1.2;
-  }
-  .profileUpdateCardPadding {
-    padding: 20px 15px 22px 10px;
-  }
-}
-.header-logo {
-  display: block;
-  max-width: 200px;
-  max-height: 80px;
-  width: auto;
-  height: auto;
-  position: absolute;
-}
-.header-logo-before-login {
-  display: block;
-  max-width: 90px;
-  max-height: 40px;
-  width: auto;
-  height: auto;
-}
-.public-header-logo-before-login {
-  display: block;
-  height: 80px;
-  width: auto;
-  padding: 12px 0;
 }
 .blue-text-color-sunbird {
   color: #007AFF;
@@ -1208,19 +931,7 @@ span.fancytree-title {
   margin: 0px 0px 10px 0px;
 }
 .noselect {
-  -webkit-touch-callout: none;
-  /* iOS Safari */
-  -webkit-user-select: none;
-  /* Safari */
-  -khtml-user-select: none;
-  /* Konqueror HTML */
-  -moz-user-select: none;
-  /* Firefox */
-  -ms-user-select: none;
-  /* Internet Explorer/Edge */
   user-select: none;
-  /* Non-prefixed version, currently
-                                 supported by Chrome and Opera */
   cursor: default !important;
   border: none !important;
   background-color: none !important;
@@ -1230,7 +941,6 @@ span.fancytree-title {
 }
 .popular-section {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  /* box-shadow: 0 8px 6px -8px @tertiary-color;*/
   padding-top: 1em;
   padding-bottom: 1em;
   padding-left: 0;
@@ -1392,9 +1102,6 @@ ul.fancytree-container li {
 }
 .main-home-comp .slick-slider {
   margin-bottom: 0;
-}
-.todolabel.ui.label {
-  margin-left: 0.5em;
 }
 .sunblogin {
   color: #333333;
@@ -1790,9 +1497,6 @@ ul.fancytree-container li {
 .workspacebutton.ui.card {
   width: inherit;
 }
-.workspacebutton.ui.card:first-child {
-  /*margin-top: 20px;*/
-}
 .profileitems .ui.avatar.image {
   width: 3em;
   height: 3em;
@@ -1811,17 +1515,6 @@ ul.fancytree-container li {
   border-bottom: 1px dashed #fdfdfd;
   padding-bottom: 10px;
 }
-.profileitems.ui.items > .item > .image + .content {
-  padding-left: 1em!important;
-}
-.profileViewSubHeader {
-  color: #7c7b7b !important;
-  font-size: 1.2em;
-}
-.profileViewProgress {
-  color: #7c7b7b !important;
-  font-size: 1em;
-}
 .searchListInfo {
   border-bottom: 1px solid rgba(34, 36, 38, 0.15) !important;
 }
@@ -1832,17 +1525,6 @@ ul.fancytree-container li {
   font-size: 1.05em!important;
   line-height: 16px!important;
   color: #7c7b7b !important;
-}
-.profile-des .item .right.floated.content {
-  width: 50% !important;
-  text-align: right !important;
-  word-break: normal !important;
-}
-.profile-des .item .right.floated.content span {
-  word-break: normal !important;
-}
-.profileUpdateAddDetails {
-  font-size: 1em !important;
 }
 .ui.basic.label {
   border: 1px solid #fdfdfd !important;
@@ -2420,15 +2102,11 @@ iframe.iziModal-iframe {
   outline: none !important;
 }
 
-.capitalize-text {
-  text-transform: capitalize;
-}
+
 .left-float {
   float: left !important;
 }
-.padding-top-15 {
-  padding-top: 15px !important;
-}
+
 .ui.icon.input>i.icon.dialcode-search-icon:not(.link) {
   pointer-events: auto;
 }
@@ -2444,23 +2122,13 @@ iframe.iziModal-iframe {
   flex-direction: row;
 }
 
-.inline-block-content {
-  display:inline-block !important;
-}
+
 
 .player-badge-alignment {
   display:flex;
   flex-direction: row;
 }
-.margin-left-auto {
-  margin-left: auto;
-}
-.cursor-text {
-  cursor: text !important;
-}
-.vertical-align-bottom {
-  vertical-align: bottom !important;
-}
+
 .filter-title {
     font-weight: bold;
     font-size: 0.98em;
@@ -2477,27 +2145,6 @@ iframe.iziModal-iframe {
 /*mobile responsive code  which we need to remove once we start writing mobile first css*/
 
 @media only screen and (min-width: 320px) and (max-width: 767px) {
-    .header-logo {
-      display: block;
-      max-width: 100px;
-      max-height: 40px;
-      width: auto;
-      height: auto;
-      position: absolute;
-    }
-    .primary-header-avatar {
-      padding-top: 0.5rem;
-      z-index: 88;
-    }
-    .primary-header-alarm-icon {
-      padding-top: 1.2rem;
-    }
-
-    .ui.button.m-responsive-search-dropdown {
-        min-width:100px;
-        max-width:100px;
-        padding-right: 0;
-    }
 
     /*collection player responsive code*/
 
@@ -2740,15 +2387,6 @@ i.icon.accordion-content-right {
   right: 0;
 }
 
-.o-y-auto {
-  overflow-y: auto !important
-}
-.o-x-hide {
-  overflow-x: hidden!important
-}
-.o-y-hide {
-  overflow-y: hidden!important
-}
 .content-with-scroll {
   height: calc(100% - 160px) !important;
 }
@@ -2853,18 +2491,12 @@ angular2-multiselect .list-area{
   font-size: 13px;
   padding: 10px 0;
 }
-
 .batch-table sui-checkbox.checked label:before{
  background: #2185d0 !important;
 }
 .batch-table sui-checkbox.checked label:after{
   color: #fff !important;
 }
-.br-0{
-  border-radius: 0 !important;
-}
-
-
 /* placeholder if content is not there */
 .placeholder {
   align-items: center;
@@ -2883,183 +2515,8 @@ angular2-multiselect .list-area{
   font-weight: 600;
   opacity:0.6;
 }
-
-
-
-/* Header */
-.ui.primary-header.logo img{
-  position: absolute;
-  height: 56px;
-  max-height:56px;
-  top: 15px;
-}
-
-.notification-icon {
-  width: 20px !important;
-  height: 24px;
-}                           
-
-.flex {
-  display: flex !important;
-}
-.jc-center {
-  justify-content: center !important;
-}
-.jc-flex-end {
-  justify-content: flex-end !important;
-}
-.ml-auto {
-  margin-left: auto !important;
-}
-.flex-as-center {
-  align-self:center !important;
-}
-
-.flex-as-flex-end {
-  align-self: flex-end !important;
-}
-
-.flex-ai-center {
-  align-items:center !important;
-}
-
 .min-height-0 {
   height: 0 !important;
-}
-
-/* primary nav with text item with border right */
-.ui.text.primary-nav.menu .item {
-  font-size: 14px;
-  color: #333;  
-}
-.ui.text.primary-nav.menu .item:hover {
-  color: #196d7f;  
-  background: #fff;
-}
-.ui.text.primary-nav.menu .item.border-right {
-  border-right: 0.5px solid;
-  border-color: rgba(25,109,127, 0.68);
-  padding-right: 13px;
-}
-
-.font-weight-bold {
-  font-weight: bold !important;;
-}
-
-.primary-color {
-  color: #196d7f !important;
-}
-
-
-/* primary nav bar */
-
-
-
-/* Mobile */
-@media only screen and (max-width: 767px) {
-
-  .ui.primary-header.logo img{
-    position: absolute;
-    height: 56px;
-    max-height: 56px;
-    top: 5px;
-    left: 10px;
-  } 
-  .height-170 {
-    height:170px !important;
-  } 
-   .header-fix {
-    height: 100px !important;
-  }
-
-}
-.ui.large.secondary.menu {
-  display:flex;
-}
-
-
-/* Deisgn system*/
-
-/* buttons */
-
-.ui.artic.blue.button {  
-  background-color: #3793a7;
-  border-radius: 3px;
-  font-weight: 700;
-  height:36px;
-  padding: 10px 30px;
-}
-
-.ui.artic.blue.button:hover {  
-  background-color: #196d7f;
-}
-
-.ui.artic.blue.button:active {  
-  background-color: #287889;
-}
-
-/* basic buttons */
-.ui.basic.artic.blue.button {  
-  background-color: #fff;
-  border-radius: 3px;
-  border: 0.5px solid #3793a7;
-  box-shadow: none;
-  color: #3793a7;
-  font-weight: 700;
-  height:36px;
-  padding: 10px 30px;
-}
-
-.ui.basic.artic.blue.button:hover {  
-  background-color: #196d7f
-}
-
-.ui.basic.artic.blue.button:active {  
-  background-color: #287889
-}
-
-
-/* Semantic UI has these classes, however they're only applicable to
- grids, containers, rows and columns.
-plus, there isn't any `mobile hidden`, `X hidden` class.
-this snippet is using the same class names and same approach
- plus a bit more but to all elements.
-see https://github.com/Semantic-Org/Semantic-UI/issues/1114
-
-*/
-
-/* Mobile */
-@media only screen and (max-width: 1100px) {
-  [class*="mobile hidden"],
-  [class*="tablet only"]:not(.mobile),
-  [class*="computer only"]:not(.mobile),
-  [class*="large screen only"]:not(.mobile),
-  [class*="widescreen only"]:not(.mobile),
-  [class*="or lower hidden"] {
-    display: none !important;
-  }
-}
-
-/* Computer / Desktop / iPad Landscape */
-@media only screen and (min-width: 1101px) {
-  [class*="mobile only"]:not(.computer),
-  [class*="tablet only"]:not(.computer),
-  [class*="computer hidden"],
-  [class*="large screen only"]:not(.computer),
-  [class*="widescreen only"]:not(.computer),
-  [class*="or lower hidden"]:not(.tablet):not(.mobile) {
-    display: none !important;
-  }
-}
-
-.br-0{
-  border-radius: 0 !important;
-}
-.text-gray{
-  color: #9F9F9F !important;
-}
-.d-inline-block{
-  display: inline-block;
 }
 .mc-nonuser,
 .mc-user{
@@ -3070,7 +2527,6 @@ see https://github.com/Semantic-Org/Semantic-UI/issues/1114
     padding-top: 190px !important;
   }
 }
-
 .selected-list .countplaceholder {
   visibility: hidden;
 }
@@ -3087,12 +2543,6 @@ see https://github.com/Semantic-Org/Semantic-UI/issues/1114
   transform: translateY(-50%);
   z-index: 100;
 }
-
-.ui.text.primary-nav.menu .item.active{
-  color: #196d7f;
-  background: #fff;
-  font-weight: bold;
-}
 .batchmember .UpReviewHeader{
   font-size:14px;
 }
@@ -3102,21 +2552,6 @@ see https://github.com/Semantic-Org/Semantic-UI/issues/1114
 }
 .width-30{
   max-width: 30px !important;
-}
-.bs-2{
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.29) !important;
-}
-.d-flex{
-  display: flex;
-}
-.jc-space-around{
-  justify-content: space-between;
-}
-.text-blue{
-  color: #0079FF;
-}
-.flex-dc {
-  flex-direction: column !important;
 }
  .min-height-50 {
   min-height: 50px !important;
@@ -3141,12 +2576,10 @@ see https://github.com/Semantic-Org/Semantic-UI/issues/1114
     border: 1px solid rgba(51, 51, 51, 0.33);
     max-height: 36px;
 }
- .bs-0 {
-  box-shadow: none !important;
-}
+ 
 .ui.fixed.main.menu.main-header {
   border:0;
-  border-bottom: .5px solid rgba(25,109,127,.68) !important;
+  border-bottom: .5px solid $header-bottom-border !important;
   z-index: 999;
 }
 .margin-top-91 {
@@ -3155,9 +2588,7 @@ see https://github.com/Semantic-Org/Semantic-UI/issues/1114
 sui-multi-select.ui.selection.dropdown{
   background: transparent;
 }
-.bl-0{
-  border-left: none !important;
- }
+
  .conceptSelector.ui.form .treepicker-parent input{
    background: transparent;
  }
@@ -3168,13 +2599,4 @@ sui-multi-select.ui.selection.dropdown{
 .modal.mini.fixed-mini{
   max-width:200px;
   width:100%;
-}
-.relative{
-  position: relative;
-}
-.text-capitalize {
-  text-transform: capitalize;
-}
-.va-middle{
-  vertical-align: middle;
 }

@@ -11,16 +11,16 @@
             </span>
           </div>
           <div content>
-            <div *ngIf="formFieldProperties && formInputData && showSearchedParam" class="twelve wide column content margin-bottom-15">
+            <div *ngIf="formFieldProperties && formInputData && showSearchedParam" class="twelve wide column content mb-15">
               <span *ngFor="let field of filtersDetails">
-                <span class="padded chip margin-top--5 margin-right-10" *ngIf='formInputData[field.code] && formInputData[field.code].length > 0'>
+                <span class="padded chip mt-5 mr-10" *ngIf='formInputData[field.code] && formInputData[field.code].length > 0'>
                   {{field.name}}:
                   <span *ngFor="let item of formInputData[field.code]">
-                    <a class="ui label margin-top--5 mr-5" *ngIf='!isObject(item)'>
+                    <a class="ui label mt-5 mr-5" *ngIf='!isObject(item)'>
                       {{item}}
                       <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
                     </a>
-                    <a class="ui label margin-top--5 mr-5" *ngIf='isObject(item)'>
+                    <a class="ui label mt-5 mr-5" *ngIf='isObject(item)'>
                       {{item.name}}
                       <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
                     </a>
@@ -40,7 +40,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="three wide column filter-button margin-top-10">
+                <div class="three wide column filter-button mt-10">
                   <a class="searchfilterbutton ui blue tiny  button" (click)="applyFilters()" appTelemetryInteract [telemetryInteractEdata]="submitIntractEdata">{{resourceService.frmelmnts?.btn?.apply}}</a>
                   <a class="searchfilterbutton ui primary tiny basic button" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</a>
                 </div>

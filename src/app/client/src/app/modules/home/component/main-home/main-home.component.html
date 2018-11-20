@@ -1,11 +1,11 @@
-<div class="ui grid">
+<div class="ui grid mt-20">
   <div class="one wide column"></div>
   <div class="ten wide column">
     <div class="row">
       <div class="twelve wide column">
         <div *ngIf="toDoList.length > 0 && !showLoader" class="ui styled accordion align-content">
-          <span class="ui header accordian-heading">{{resourceService.frmelmnts?.scttl?.todo}}</span>
-          <span class="todolabel ui red circular inline label ">{{toDoList.length}}</span>
+          <span class="ui header accordian-heading mt-0">{{resourceService.frmelmnts?.scttl?.todo}}</span>
+          <span class="todolabel ui red d-inline label small ml-5 py-3">{{toDoList.length}}</span>
           <span class="removeline title title-padding-left active right-float" suiPopup popupHeader="{{collapse==true?'Expand':'Collapse'}}"
             popupInverted>
             <i [ngStyle]="{'transform': collapse === true ? 'rotate(0deg)' : 'rotate(180deg)'}" class="add large angle down icon pt-5 right-float"
@@ -18,7 +18,7 @@
                 <div in-view-item ngxSlickItem *ngFor="let item of toDoList; trackBy: trackByFn;let i = index" class="slide" [id]="i" [data]="item">
             
                   <div *ngIf=" item.type !== 'profile'">
-                    <app-card [data]="item" (clickEvent)="playContent($event)" [customClass]="'pr-20'" class="pr-20"></app-card>
+                    <app-card [data]="item" (clickEvent)="playContent($event)" [customClass]="'pr-20'" class="pr-20 d-block"></app-card>
                   </div>
                 </div>
               </ngx-slick>

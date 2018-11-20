@@ -36,7 +36,13 @@
   @include margin(20px null null null);
 }
 .mt-30 {
-  @include margin(20px null null null);
+  @include margin(30px null null null);
+}
+.mt-40 {
+  @include margin(40px null null null);
+}
+.mt-60 {
+  @include margin(60px null null null);
 }
 .mt-90 {
   @include margin(90px null null null);

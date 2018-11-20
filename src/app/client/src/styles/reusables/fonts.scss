@@ -43,3 +43,20 @@
   .fs-3-5 {
     font-size: 3.5rem !important;
   }
+
+*[lang="en"],
+*[lang="hi"]{
+	font-family: $font-stack;
+}
+*[lang="ur"]{
+	font-family: $font-stack-ur;
+}
+*[lang="ta"]{
+	font-family: $font-stack-ta;
+}
+*[lang="kn"]{
+	font-family: $font-stack-kn;
+}
+*[lang="te"]{
+	font-family: $font-stack-te;
+}
