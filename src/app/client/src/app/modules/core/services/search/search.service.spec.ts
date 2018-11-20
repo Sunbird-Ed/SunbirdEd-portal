@@ -53,7 +53,7 @@ describe('SearchService', () => {
           }],
           'name': 'gradeLevel'
         }];
-        const result = { 'gradeLevel': [{ 'name': 'kindergarten', 'count': 87 }, { 'name': 'other', 'count': 48 }] }
+        const result = { 'gradeLevel': [{ 'name': 'kindergarten', 'count': 87 }, { 'name': 'other', 'count': 48 }] };
         const modifiedFacetData = service.processFilterData(facetData);
         expect(service).toBeTruthy();
         expect(modifiedFacetData).toEqual(result);
