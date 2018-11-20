@@ -17,3 +17,19 @@ $progressbar-color: #d4e4e1;
 $progressbar-gradient: linear-gradient(to left, #2971a5, #0d9276);
 $primary-blue:#007AFF;
 $course-progress:#bdbdbd;
+[lang="en"],
+[lang="hi"]{
+	font-family: $font-stack;
+}
+[lang="ur"]{
+	font-family: $font-stack-ur;
+}
+[lang="ta"]{
+	font-family: $font-stack-ta;
+}
+[lang="kn"]{
+	font-family: $font-stack-kn;
+}
+[lang="te"]{
+	font-family: $font-stack-te;
+} 
