@@ -41,6 +41,7 @@ export const Response = {
                 'class': 'ui black right ribbon label'
             }
         },
+        'resourceType': 'Worksheet',
         'telemetryInteractEdata': {
             'id': 'draftContentId',
             'type': 'click',
