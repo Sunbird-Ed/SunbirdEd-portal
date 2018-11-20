@@ -60,7 +60,6 @@ export class ResourceComponent implements OnInit, OnDestroy {
    /**
    * no result  message
   */
- viewinBrowser = false;
   noResultMessage: INoResultMessage;
   userSubscription: ISubscription;
   /**
@@ -104,7 +103,7 @@ export class ResourceComponent implements OnInit, OnDestroy {
     this.noResult = false;
     let softConstraints = {};
     const filters = _.pickBy(this.filters, value => value.length > 0);
-      if (this.viewinBrowser && _.isEmpty(this.queryParams)) {
+      if (_.isEmpty(this.queryParams)) {
         filters.board = this.dataDrivenFilters['board'];
         softConstraints = {board: 100 };
     }
@@ -235,7 +234,6 @@ export class ResourceComponent implements OnInit, OnDestroy {
         if (this.queryParams.sort_by && this.queryParams.sortType) {
                this.queryParams.sortType = this.queryParams.sortType.toString();
               }
-        this.viewinBrowser = false;
         this.populatePageData();
       });
   }

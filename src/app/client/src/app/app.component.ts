@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
   /**
   * Variable to show popup to install the app
   */
-  showAppPopUp = true;
+  showAppPopUp = false;
   viewinBrowser = false;
   constructor(public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -226,7 +226,6 @@ export class AppComponent implements OnInit {
       this.frameWorkPopUp.modal.deny();
       this.showFrameWorkPopUp = false;
       this.utilService.toggleAppPopup();
-      this.router.navigate(['/resources']);
       this.showAppPopUp = this.utilService.showAppPopUp;
       console.log(this.showAppPopUp);
     }, err => {
