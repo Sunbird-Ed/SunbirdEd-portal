@@ -13,7 +13,7 @@
         transform: translateY(-2px);
     }
     &:focus {
-        outline: -webkit-focus-ring-color auto 5px;
+        outline: $primary-color auto 1px;
     }
     .image {
         width: 70px;
@@ -24,9 +24,7 @@
         align-items: center;
         min-width: 70px;
         max-width: 70px;
-        &.empty{
-            background-color: $primary-background;
-        }
+        background-color: $primary-background;
         img{
             object-fit: cover;
             width: 70px;
@@ -89,7 +87,7 @@
         padding: 0;
         border: 0;
         font-weight: bold;
-        color: $primary-color;
+        color: $primary-color !important;
     }
     .creator{
         font-size: 1rem;

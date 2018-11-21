@@ -8,18 +8,18 @@
   tabindex="0"
   >
     <div class="header p-15 pb-0">
-      <div class="image m-0 mr-15 br-4" [class.empty]="!data.image">
+      <div class="image m-0 mr-15 br-4">
         <img *ngIf="data.showImage? false : true" src="{{data.image || 'assets/images/book.png' | cdnprefixurl}}" alt="{{data.name}}">
       </div>
 
       <!--Course-->
       <div class="meta course" *ngIf="data.courseCard">
         <div class="topic mb-15" *ngIf="data.topic" title="{{data.topic}}">
-          {{resourceService.frmelmnts.lbl.topic}} : {{data.topic | slice:0:30}} 
+          {{resourceService.frmelmnts.lbl.topic}} : {{data.topic | slice:0:40}} 
           <span *ngIf="data.topic && data.topic.length >= 30">...</span>
         </div>
         <div class="subtopic" *ngIf="data.subtopic" title="{{data.subtopic}}">
-          {{resourceService.frmelmnts.lbl.subtopic}} : {{data.subtopic | slice:0:30}} 
+          {{resourceService.frmelmnts.lbl.subtopic}} : {{data.subtopic | slice:0:40}} 
           <span *ngIf="data.subtopic && data.subtopic.length >= 30">...</span>
         </div>
       </div>

@@ -38,36 +38,31 @@
     }
     
 }
-*[dir="ltr"] .slick-list{
+.slick-list{
     &:after{
         content: ' ';
         display: block;
-        background: linear-gradient(270deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
         position: absolute;
         top: 20px;
-        bottom: 0;
-        right: 0;
+        bottom: 5px;
         width: 50px;
         @media screen and (min-width:768px){
             width: 100px;
         }
+    }
+}
+/**[dir="ltr"] .slick-list{
+    &:after{
+        background: linear-gradient(270deg, rgba(243, 247, 250, 0.501961) 0%, rgba(255,255,255,0) 100%);
+        right: 0; 
     }
 }
 *[dir="rtl"] .slick-list{
     &:after{
-        content: ' ';
-        display: block;
-        background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
-        position: absolute;
-        top: 20px;
-        bottom: 0;
+        background: linear-gradient(90deg, rgba(243, 247, 250, 0.501961) 0%, rgba(255,255,255,0) 100%);
         left: 0;
-        width: 50px;
-        @media screen and (min-width:768px){
-            width: 100px;
-        }
     }
-}
+}*/
 .slick-slider .slick-track,
 .slick-slider .slick-list {
     -webkit-transform: translate3d(0, 0, 0);
@@ -130,7 +125,15 @@
         height: auto;
         border: 1px solid transparent;
     }
+    /*&:last-child{
+        app-card{
+            padding:0 !important;
+        }
+    }*/
 }
 .slick-arrow.slick-hidden {
+    display: none;
+}
+.slick-next.slick-disabled~.slick-list:after{
     display: none;
 }
