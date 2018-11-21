@@ -3,13 +3,14 @@ import { environment } from '@sunbird/environment';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TelemetryService, ITelemetryContext } from '@sunbird/telemetry';
 import { UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
-NavigationHelperService, ConfigService } from '@sunbird/shared';
+NavigationHelperService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { ProfileService } from '@sunbird/profile';
 import { Observable, of, throwError, combineLatest } from 'rxjs';
 import { first, filter, mergeMap, tap, map } from 'rxjs/operators';
+import { CacheService } from 'ng2-cache-service';
 const fingerPrint2 = new Fingerprint2();
 
 /**
@@ -58,8 +59,8 @@ export class AppComponent implements OnInit {
   */
   showAppPopUp = false;
   viewinBrowser = false;
-  showEdit = false;
-  constructor(public userService: UserService, private navigationHelperService: NavigationHelperService,
+  constructor(  private cacheService: CacheService,  private browserCacheTtlService: BrowserCacheTtlService,
+    public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
     private deviceRegisterService: DeviceRegisterService, private courseService: CoursesService, private tenantService: TenantService,
     private telemetryService: TelemetryService, public router: Router, private configService: ConfigService,
@@ -93,10 +94,13 @@ export class AppComponent implements OnInit {
       this.setPortalTitleLogo();
       this.telemetryService.initialize(this.getTelemetryContext());
       this.deviceRegisterService.registerDevice(this.channel);
-      if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
-        this.showFrameWorkPopUp = true;
+      const frameWorkPopUp: boolean = this.cacheService.get('showFrameWorkPopUp');
+      if (frameWorkPopUp) {
+        this.showFrameWorkPopUp = false;
       } else {
-        this.showFrameWorkPopUp = true;
+        if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
+          this.showFrameWorkPopUp = true;
+        }
       }
       this.initApp = true;
     }, error => {
@@ -236,5 +240,9 @@ export class AppComponent implements OnInit {
   }
   viewInBrowser() {
     this.router.navigate(['/resources']);
+  }
+  closeIcon() {
+    this.showFrameWorkPopUp = false;
+    this.cacheService.set('showFrameWorkPopUp', 'installApp' );
   }
 }
