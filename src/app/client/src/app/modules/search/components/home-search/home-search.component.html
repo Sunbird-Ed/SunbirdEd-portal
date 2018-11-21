@@ -29,7 +29,7 @@
     <div class="ui grid">
       <div class="two wide column"></div>
       <div class="ten wide column pt-0">
-        <div class="pb10" *ngIf="searchList && totalCount > config.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
+        <div class="pb-10" *ngIf="searchList && totalCount > config.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
           <div class="ui pagination menu mt-10 right-floated pt-0" *ngIf="pager.pages.length">
             <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
             <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>

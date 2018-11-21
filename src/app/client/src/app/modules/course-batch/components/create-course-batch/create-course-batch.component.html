@@ -27,7 +27,7 @@
             <input type="text" name="name" formControlName="name">
           </div>
         </div>
-        <div class="mt-0 mb-10 ui pointing red basic label below" *ngIf="createBatchForm.controls.name.invalid && createBatchForm.controls['name'].errors.required && !createBatchForm.controls['name'].pristine">
+        <div class="my-10 ui pointing red basic label below" *ngIf="createBatchForm.controls.name.invalid && createBatchForm.controls['name'].errors.required && !createBatchForm.controls['name'].pristine">
           {{resourceService?.messages?.stmsg?.m0114}}
         </div>
         <div class="one field mt-30">
@@ -46,7 +46,7 @@
                 <input [pickerMinDate]='pickerMinDate' suiDatepicker formControlName="startDate" [pickerMode]="'date'">
               </div>
             </div>
-            <div class="mt-0 mb-10 ui pointing red basic label below" *ngIf="createBatchForm.controls.startDate.invalid && createBatchForm.controls['startDate'].errors.required && !createBatchForm.controls['startDate'].pristine">
+            <div class="my-10 ui pointing red basic label below" *ngIf="createBatchForm.controls.startDate.invalid && createBatchForm.controls['startDate'].errors.required && !createBatchForm.controls['startDate'].pristine">
               {{resourceService?.messages?.stmsg?.m0113}}
             </div>
           </div>
