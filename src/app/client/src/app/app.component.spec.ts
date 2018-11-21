@@ -1,6 +1,7 @@
 
 import { Observable, of } from 'rxjs';
-import { ConfigService, ToasterService, ResourceService, SharedModule, NavigationHelperService } from '@sunbird/shared';
+import { ConfigService, ToasterService, ResourceService, SharedModule, NavigationHelperService,
+  BrowserCacheTtlService } from '@sunbird/shared';
 import {
   UserService, LearnerService, CoursesService, PermissionService, TenantService, PublicDataService,
   ConceptPickerService, SearchService, ContentService, CoreModule, OrgDetailsService, DeviceRegisterService
@@ -49,7 +50,7 @@ describe('AppComponent', () => {
         { provide: Router, useClass: RouterStub},
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         ToasterService, TenantService,
-        UserService, ConfigService, LearnerService,
+        UserService, ConfigService, LearnerService, BrowserCacheTtlService,
         PermissionService, ResourceService, CoursesService, OrgDetailsService, ProfileService,
         TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, ConceptPickerService, SearchService, ContentService],
       schemas: [NO_ERRORS_SCHEMA]
