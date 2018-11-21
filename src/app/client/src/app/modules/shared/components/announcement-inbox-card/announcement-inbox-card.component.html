@@ -1,10 +1,10 @@
-<div class="ui raised segment padding-10 cursor-pointer margin-bottom-10" [ngClass]="{'ann-segment-left-border':announcement.read  === false}">
+<div class="ui raised segment p-10 cursor-pointer mb-10" [ngClass]="{'ann-segment-left-border':announcement.read  === false}">
   <div>
     <p class="ui grey label annType" *ngIf="announcement.type">
       {{announcement.type | uppercase}}
     </p>
   </div>
-  <div class="header padding-top-5 segment-heading">   
+  <div class="header pt-5 segment-heading">   
       {{announcement.title}}
   </div>
   <div>
@@ -12,7 +12,7 @@
       {{announcement.from}}
     </p>
   </div>
-  <div class="padding-top-5">
+  <div class="pt-5">
     <span class="announcement-description">
       {{announcement.description | slice:0:180}}
     </span>
@@ -23,7 +23,7 @@
       </span>
     </span>
   </div>
-  <div class="padding-top-20" *ngIf="announcement.links && announcement.links.length > 0">
+  <div class="pt-20" *ngIf="announcement.links && announcement.links.length > 0">
     <div appTelemetryInteract [telemetryInteractObject]="{id:'',type:'announcement-list',ver:'1.0'}" [telemetryInteractEdata]="{id:'view-announcement',type:'click',pageid:'announcement-list'}" *ngFor="let links of announcement.links ;  let first = first; let last = last; let i = index" [ngClass]="{ first: first , last: last}">
       <div *ngIf="first">
         <i class="linkify icon opacity04">
@@ -36,13 +36,13 @@
         </span>
       </div>
       <div *ngIf="last">
-        <span class="margin-left-30 announcement-meta-data announcement-extra-data" *ngIf="announcement.links && (announcement.links.length - 1) > 0">
+        <span class="ml-30 announcement-meta-data announcement-extra-data" *ngIf="announcement.links && (announcement.links.length - 1) > 0">
           {{announcement.links.length - 1}} more weblink(s)
         </span>
       </div>
     </div>
   </div>
-  <div class="padding-top-10" *ngIf="announcement.attachments && announcement.attachments.length > 0">
+  <div class="pt-10" *ngIf="announcement.attachments && announcement.attachments.length > 0">
     <div *ngFor="let attachment of announcement.attachments; let first = first; let last = last; let i = index" [ngClass]="{ first: first , last: last}">
       <div *ngIf="first">
         <i class="file text outline icon opacity04">
@@ -64,7 +64,7 @@
         </span>
       </div>
       <div *ngIf="last">
-        <span class="margin-left-30 announcement-extra-data" *ngIf="(announcement.attachments.length - 1) > 0">
+        <span class="ml-30 announcement-extra-data" *ngIf="(announcement.attachments.length - 1) > 0">
           {{announcement.attachments.length - 1}} more attachment(s)
         </span>
       </div>

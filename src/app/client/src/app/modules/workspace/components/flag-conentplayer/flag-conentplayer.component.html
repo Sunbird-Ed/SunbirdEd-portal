@@ -5,7 +5,7 @@
       <app-loader [data]="loaderMessage"></app-loader>
     </div>
 
-    <div class="row margin-top-10" *ngIf="!showLoader && contentData">
+    <div class="row mt-10" *ngIf="!showLoader && contentData">
 
       <div class="videosegment  ui clearing segment">
         <div class="ten wide column">
@@ -23,8 +23,8 @@
       <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
     </div>
 
-    <div class="row margin-top-10" *ngIf="!showLoader">
-      <div class="margin-top--5 videosegment ui clearing segment">
+    <div class="row mt-10" *ngIf="!showLoader">
+      <div class="mt-5 videosegment ui clearing segment">
         <div *ngIf="userService.userid !== contentData.createdBy &&  permissionService.permissionAvailable && contentData && contentData.status === 'Flagged'"
          appPermission [permission]="['FLAG_REVIEWER']">
           <button class="ui right floated primary button mouse-pointer" (click)="acceptContentFlag()">
