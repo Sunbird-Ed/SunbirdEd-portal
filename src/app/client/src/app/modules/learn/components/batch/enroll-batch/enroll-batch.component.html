@@ -33,7 +33,7 @@
                                     </div>
                                 </div>
                                 <div class="four wide column">
-                                    <button [disabled]="disableSubmitBtn" class="ui fluid blue right floated  ui button margin-top-0" id="enrollToCourse" (click)="enrollToCourse()">
+                                    <button [disabled]="disableSubmitBtn" class="ui fluid blue right floated  ui button mt-0" id="enrollToCourse" (click)="enrollToCourse()">
                                         <span class="text">{{resourceService.frmelmnts.lbl.enrollcourse}}</span>
                                     </button>
                                 </div>
@@ -45,17 +45,17 @@
                                 </div>
                                 <div class="six wide column  end-date">
                                     <label>{{resourceService.frmelmnts.lbl.enddate}}</label>
-                                    <span *ngIf="batchDetails.endDate" class="padding-left-10">{{batchDetails.endDate | dateFormat}}</span>
+                                    <span *ngIf="batchDetails.endDate" class="pl-10">{{batchDetails.endDate | dateFormat}}</span>
                                 </div>
                             </div>
                             <div *ngIf="batchDetails.participantDetails && batchDetails.participantDetails.length">
-                                <div class="member padding-top-20">
+                                <div class="member pt-20">
                                     <label>{{resourceService.frmelmnts.lbl.batchmembers}}</label>
                                 </div>
-                                <div class="ui very relaxed list padding-top-10 batch-list-items">
+                                <div class="ui very relaxed list pt-10 batch-list-items">
                                     <div class="item" *ngFor='let user of batchDetails.participantDetails'>
                                         <img class="ui avatar  image" src="{{user.thumbnail || 'assets/images/user_logo.png' | cdnprefixurl}}">
-                                        <div class="content padding-top-10">
+                                        <div class="content pt-10">
                                             <div class="header">{{user.firstName}} {{user.lastName}}</div>
                                         </div>
                                     </div>

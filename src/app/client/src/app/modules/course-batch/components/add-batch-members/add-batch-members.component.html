@@ -24,7 +24,7 @@
                     {{ resourceService?.frmelmnts?.lbl?.pleaseSelect}}
                 </div>
                 <br>
-                <div appClickOutside (clickOff)="closeMentorDropdown()" class="one field fluid selection margin-top-10 " (click)="onMentorDropDownOpen()">
+                <div appClickOutside (clickOff)="closeMentorDropdown()" class="one field fluid selection mt-10 " (click)="onMentorDropDownOpen()">
                     <label>{{resourceService?.frmelmnts?.lbl?.mentors}}</label>
                     <div class="count mt-10 ui fluid with-border ">
                         <div class="countplaceholder" *ngIf="selectedMentorList.length>0">{{selectedMentorList.length}} {{ resourceService?.frmelmnts?.lbl?.selected}}</div>
@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <br>
-                <div appClickOutside (clickOff)="closeParticipantsDropdown()" class="one field fluid selection margin-top-10 " (click)="onParticipantDropDownOpen()">
+                <div appClickOutside (clickOff)="closeParticipantsDropdown()" class="one field fluid selection mt-10 " (click)="onParticipantDropDownOpen()">
                     <label>{{resourceService?.frmelmnts?.lbl?.participants}}</label>
                     <div class="count mt-10 ui fluid with-border ">
                         <div class="countplaceholder" *ngIf="selectedParticipantList.length>0">{{selectedParticipantList.length}} {{ resourceService?.frmelmnts?.lbl?.selected}}</div>
