@@ -2,7 +2,7 @@
     <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
         <div class="ui text centered inline loader mt-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
     </div>
-    <div class="ui stackable grid margin-top-4rem courseStructureHeader m-responsive-cp-nmt-50">
+    <div class="ui stackable grid courseStructureHeader m-responsive-cp-nmt-50">
         <div class="one wide tablet one wide computer column"></div>
         <div class="ten wide column pt-0">
             <div class="ui stackable grid">
@@ -22,7 +22,7 @@
                     <h6 class="ui small negative message" *ngIf="courseHierarchy.status === 'Flagged'">{{resourceService?.messages?.imsg?.m0001}}</h6>
                 </div>
                 <div class="three wide column">
-                    <div *ngIf="enrolledCourse" class="margin-top-Negative30">
+                    <div *ngIf="enrolledCourse" class="">
                         <span>
                             <p class="text-align-center m-responsive-cp-header">{{resourceService?.messages?.stmsg?.m0108}} {{ progress }}%</p>
                         </span>
@@ -45,7 +45,7 @@
         <div class="one wide tablet one wide computer column"></div>
     </div>
 </div>
-<div class="ui grid progress-bar-margin" *ngIf="enrolledCourse">
+<div class="ui grid mt-15" *ngIf="enrolledCourse">
     <div class="twelve wide column p-0 ">
         <sui-progress class="ui tiny progress orange" [value]="progress" [maximum]="100"></sui-progress>
     </div>
