@@ -1,8 +1,8 @@
 <sui-modal *ngIf="!showAnnouncementForm" [isClosable]="false" [mustScroll]="true" [size]="'large'" [hidden]="(modalName === 'success' || modalName === 'cancel')"
   (dismissed)="redirectToOutbox()" #createModal>
   <i class="close icon" (click)="modalName = 'cancel'"></i>
-  <div class="ui segment margin-top-10" [appTelemetryStart]="telemetryStart" [appTelemetryImpression]="telemetryImpression">
-    <div class="margin-bottom-15">
+  <div class="ui segment mt-10" [appTelemetryStart]="telemetryStart" [appTelemetryImpression]="telemetryImpression">
+    <div class="mb-15">
       <div class="ui stackable grid">
         <div class="ten wide column">
             <!-- Step 1 -->
@@ -37,9 +37,9 @@
         </div>
         <div class="two wide column">
           <div class="ui label text-align-center ann-step-notifier right-float">
-              <span class="detail margin-left-0">{{resource?.frmelmnts?.lbl?.anncmntstep}}</span>
+              <span class="detail mlt-0">{{resource?.frmelmnts?.lbl?.anncmntstep}}</span>
               <br/>
-              <span class="detail margin-left-0 margin-top-10">{{stepNumber}} / 4</span>
+              <span class="detail ml-0 mt-10">{{stepNumber}} / 4</span>
           </div>
         </div>
       </div>
@@ -50,8 +50,8 @@
           <div class="eight wide column">
             <form class="ui form announcementForm" [formGroup]="announcementForm">
               <div class="create-ann-form-scroller">
-                <div class="padding-right-25">
-                  <div class="field required padding-top-5">
+                <div class="pr-25">
+                  <div class="field required pt-5">
                     <label>{{resource?.frmelmnts?.lbl?.anncmnttitle}}</label>
                     <input formControlName="title" placeholder="{{resource?.frmelmnts?.instn?.t0057}}">
                     <div class="ui pointing red basic label below " *ngIf="announcementForm.controls['title'].errors && announcementForm.controls['title'].errors.required && !announcementForm.controls['title'].pristine">
@@ -103,7 +103,7 @@
                       <div class="field" *ngFor="let item of announcementForm.get('links')['controls']; let i = index;">
                         <div [formGroupName]="i" class="ui action input">
                           <input formControlName="url" placeholder="{{resource?.frmelmnts?.instn?.t0053}}">
-                          <i class="trash icon blue-text-color-sunbird margin-top-10 cursor-pointer" (click)="removeLink(i)"></i>
+                          <i class="trash icon blue-text-color-sunbird mt-10 cursor-pointer" (click)="removeLink(i)"></i>
                         </div>
                         <div class="ui pointing red basic label below" *ngIf="announcementForm.controls['links'].controls[i].status === 'INVALID'">
                           {{resource?.messages?.stmsg?.m0101}}
@@ -140,7 +140,7 @@
         </div>
       </div>
       <div class="ui form announcementForm">
-        <div class="ui segment items-area padding-top-none padding-right-none padding-left-none" *ngIf="showResendLoader">
+        <div class="ui segment items-area pt-0 px-0" *ngIf="showResendLoader">
           <app-loader></app-loader>
         </div>
         <!-- GEO explorer -->
@@ -150,14 +150,14 @@
         <!-- Preview announcement -->
         <div *ngIf="stepNumber === 3" class="ui list ui grid">
           <div class="eight wide column create-ann-form-scroller">
-            <div class="ui message padding-10" *ngFor="let item of recipientsList">
+            <div class="ui message p-10" *ngFor="let item of recipientsList">
               <i appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="removeRecipientInteractEdata" class="close icon" (click)="removeRecipient(item)" ></i>
               <span class="create-ann-Selected-secepient">{{item.location}}</span>
             </div>
           </div>
         </div>
         <!-- Preview announcement -->
-        <div *ngIf="stepNumber === 4" class="ui grid margin-right-none">
+        <div *ngIf="stepNumber === 4" class="ui grid mr-0">
           <div class="box width-100 eight wide column create-ann-form-scroller">
             <app-details [announcementDetails]="announcementDetails"></app-details>
           </div>
@@ -182,7 +182,7 @@
 <!-- Success modal-->
 <sui-modal *ngIf="modalName === 'success'" [size]="'small'" [isClosable]="true" (dismissed)="redirectToOutbox()" #successModal>
   <i class="close icon"></i>
-  <div class=" ui segment margin-top-10">
+  <div class=" ui segment mt-10">
     <div class="content">
       <div class="ui grid">
         <div class="ui centered grid">
@@ -197,7 +197,7 @@
           </div>
         </div>
         <br/>
-        <div class="row ui two column centered grid margin-top-20 actions">
+        <div class="row ui two column centered grid mt-20 actions">
           <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="announcementSentInteractEdata" class="ui primary basic button announcement-button btn-width-34 approve" (click)="successModal.deny(); redirectToOutbox();">
             <span class="announcement-button-text">{{resource?.frmelmnts?.btn?.anncmntgotit}}</span>
           </button>
@@ -209,7 +209,7 @@
 <!-- Cancel modal -->
 <sui-modal [isClosable]="false" [size]="'small'" [hidden]="(modalName === 'create' || modalName === 'success' || modalName === 'close')"
   #cancelModal>
-  <div class=" ui segment margin-top-10">
+  <div class=" ui segment mt-10">
     <div class="content">
       <div class="ui grid">
         <div class="ui centered grid">
@@ -226,7 +226,7 @@
           </div>
         </div>
         <br/>
-        <div class="row ui two column centered grid margin-top-20 actions">
+        <div class="row ui two column centered grid mt-20 actions">
           <div appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="stopCreatingYesInteractEdata" class="ui primary basic button announcement-button btn-width-34"  (click)="cancelModal.deny();redirectToOutbox();" [appTelemetryEnd]= "telemetryEnd" >{{resource?.frmelmnts?.btn?.yes}}</div>
           <div appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="stopCreatingNoInteractEdata" class="ui primary button announcement-button btn-width-34" (click)="modalName = 'create';"  >{{resource?.frmelmnts?.btn?.no}}</div>
         </div>

@@ -1,8 +1,9 @@
 .text-capitalize {
     text-transform: capitalize;
 }
-.text-center{
-    text-align: center;
+.text-center,
+.text-ac{
+    text-align: center !important;
 }
 .ellipsis{
     white-space: nowrap; 

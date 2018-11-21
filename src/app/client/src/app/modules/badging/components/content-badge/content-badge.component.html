@@ -1,9 +1,9 @@
 <div class="ui grid">
   <div class="twelve wide column">
     <div *ngIf="data && data.length > 0">
-      <div class="ui circular margin-right-10 inline-block-content" *ngFor="let selectedbadge of data">
+      <div class="ui circular mr-10 inline-block-content" *ngFor="let selectedbadge of data">
         <div *ngIf="selectedbadge.badgeClassImage || selectedbadge.name">
-          <img class="ui mini circular image margin-right-none" src="{{selectedbadge.badgeClassImage ||selectedbadge.image }}" suiPopup
+          <img class="ui mini circular image mr-0" src="{{selectedbadge.badgeClassImage ||selectedbadge.image }}" suiPopup
             popupText="{{selectedbadge.badgeClassName || selectedbadge.name | uppercase}}" [popupPlacement]="'top'">
         </div>
       </div>
