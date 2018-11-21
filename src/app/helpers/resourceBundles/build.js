@@ -3,7 +3,7 @@ const path = require('path')
 const fs = require('fs')
 const properties = require('properties')
 const _ = require('lodash')
-const configHelper = require('./../config/configHelper.js')
+const configHelper = require('./../configServiceSDKHelper.js')
 const resBundlesArr = [
   { name: 'consumption',
     path: path.join(__dirname, '/./../../resourcebundles/data/consumption/'),
