@@ -50,7 +50,7 @@
   background-color: #fafafa !important;
 }
 .bg-blue{
-  background-color: #007AFF;
+  background-color: $primary-color;
 }
 .box-shadow-1{
   box-shadow: 0 1px 2px 0 rgba(0,0,0,0.54) !important;
@@ -64,21 +64,20 @@
 }
 .ui.positive.button,
 .ui.positive.buttons .button {
-  background-color: #078944;
+  background-color: $install-app-button;
 }
 .ui.positive.button:hover,
 .ui.positive.buttons .button:hover {
-  background-color: #177342;
+  opacity: 0.9;
 }
 .ui.basic.positive.button,
 .ui.basic.positive.buttons .button {
-  border-color: #078944 !important;
-  color: #078944 !important;
+  border-color: $install-app-button !important;
+  color: $install-app-button !important;
 }
 .ui.basic.positive.button:hover,
 .ui.basic.positive.buttons .button:hover {
-  border-color: #177342 !important;
-  color: #177342 !important;
+  opacity: 0.9;
 }
 .img-cover {
   border: 1px solid #bbb;

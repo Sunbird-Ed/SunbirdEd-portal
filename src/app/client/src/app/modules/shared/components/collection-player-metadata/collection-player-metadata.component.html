@@ -27,7 +27,7 @@
           <div class="content">
             <div class="header">{{resourceService?.frmelmnts?.lbl?.class}}</div>
             <div class="description pt-15">
-              <span class="inline-block-content" *ngFor="let gradeLevel of metaData.gradeLevel; let isLast=last;">
+              <span class="d-inline-block" *ngFor="let gradeLevel of metaData.gradeLevel; let isLast=last;">
                 {{gradeLevel}}<span *ngIf="!isLast">,&nbsp;</span> 
               </span>
             </div>

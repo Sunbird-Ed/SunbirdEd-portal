@@ -825,7 +825,6 @@ ul.subList-padding {
   padding-left: 8% !important;
 }
 .courseStructureHeader {
-  background-color: #ffffff !important;
   border-bottom: 2px solid rgba(34, 36, 38, 0.15) !important;
 }
 .courseStructureHeaderText {
@@ -833,16 +832,13 @@ ul.subList-padding {
   font-size: 16px;
   font-weight: bold;
 }
-.marginTop {
-  margin: 0 !important;
-}
+
 .ui.styled.accordion.title {
   margin: 0;
   padding: 2%;
   font-size: 1em;
   padding: .75em 1em;
   color: rgba(0, 0, 0, 0.95);
-  /* font-weight: 900; */
   border-top: 1px solid rgba(34, 36, 38, 0.15);
   transition: background .1s ease,color .1s ease;
   font-size: 20px;
@@ -2523,6 +2519,7 @@ sui-multi-select.ui.selection.dropdown{
  .modal.mini.fixed-small {
   max-width:320px;
   width:100%;
+  transform: translate(-50%,-50%);
 }
 .modal.mini.fixed-mini{
   max-width:200px;

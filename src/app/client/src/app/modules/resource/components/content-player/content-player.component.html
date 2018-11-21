@@ -47,7 +47,7 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="showPlayer && contentData" class="ui stackable twelve column grid pt-10">
+                <div *ngIf="showPlayer && contentData" class="ui stackable twelve column grid pt-30">
                     <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
                         <div class="ui text centered inline loader mt-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
                     </div>
@@ -58,7 +58,7 @@
                     </div>
                     <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
                     <div class="twelve wide column contentMetaSection">
-                        <div class="ui stackable grid mt-10">
+                        <div class="ui stackable grid mt-30">
                             <div class="row">
                                 <div class="three wide column "></div>
                                 <div class="six wide column center aligned">
