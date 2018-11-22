@@ -209,16 +209,9 @@ describe('DataDrivenFilterComponent', () => {
     component.formInputData = { 'subject': ['English'], 'medium': ['English'] };
     const activatedRoute = TestBed.get(ActivatedRoute);
     activatedRoute.parent = 'ap/explore';
-    component.queryParams = {
-      'concepts': [
-        {
-          identifier: 'AI31',
-          name: '(Artificial) Neural Network'
-        }
-      ]
-    };
     component.applyFilters();
-    expect(router.navigate).toHaveBeenCalledWith([], { relativeTo: 'ap/explore', queryParams: component.queryParams });
+    expect(router.navigate).toHaveBeenCalledWith([], { relativeTo: 'ap/explore', queryParams:
+    { 'subject': ['English'], 'medium': ['English'] } });
   });
   it('should call ngOninit to get telemetry Interact Data', () => {
      const frameworkService = TestBed.get(FrameworkService);
