@@ -37,10 +37,11 @@ export const Response = {
         },
         'ribbon': {
             'right': {
-                'name': 'TextBook',
+                'name': 'Worksheet',
                 'class': 'ui black right ribbon label'
             }
         },
+        'resourceType': 'Worksheet',
         'telemetryInteractEdata': {
             'id': 'draftContentId',
             'type': 'click',
