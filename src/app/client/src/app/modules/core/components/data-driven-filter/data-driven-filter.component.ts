@@ -152,6 +152,9 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
       this.refresh = true;
     });
   }
+  handleTopicChange(topicsSelected) {
+    this.formInputData['topic'] = topicsSelected;
+  }
   /**
 * fetchFilterMetaData is gives form config data
 */
@@ -269,10 +272,15 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   isObject(val) { return typeof val === 'object'; }
 
   applyFilters() {
-    this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
-    let queryParams: any = this.queryParams;
-    queryParams = _.pickBy(queryParams, value => value && value.length);
-    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
+    const queryParamsNew: any = {};
+    _.forIn(this.formInputData, (eachInputs: Array<any | object>, key) => {
+        const formatedValue = _.compact(_.map(eachInputs, value =>
+          typeof value === 'string' ? value : _.get(value, 'identifier')));
+        if (formatedValue.length) {
+          queryParamsNew[key] = formatedValue;
+        }
+    });
+    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParamsNew });
   }
 
   removeFilterSelection(field, item) {
