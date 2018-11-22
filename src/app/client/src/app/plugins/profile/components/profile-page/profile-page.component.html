@@ -4,12 +4,6 @@
       <div class=" mb-15 d-flex flex-jc-center position-relative">
         <ngx-avatar class="my-avatar" [style]="customStyle" [size]="90" initialsSize="1" [textSizeRatio]="2" name="{{userProfile.firstName}} ">
         </ngx-avatar>
-          <div class="right-aligned-button computer only" *ngIf='permissionService.permissionAvailable' appPermission [permission]='adminActions'>
-            <sui-select class="inline primary admin-button button" icon="dropdown" placeholder="Admin Actions" [(ngModel)]="adminActionSelectedOption"
-              (ngModelChange)="onChange()">
-              <sui-select-option *ngFor="let type of adminActionDropDownOptions" [value]="type"></sui-select-option>
-            </sui-select>
-          </div>
       </div>
     </div>
     <div class="fs-2-5 font-w-bold mb-15 text-ac">{{userProfile.firstName | titlecase}} {{userProfile.lastName |
