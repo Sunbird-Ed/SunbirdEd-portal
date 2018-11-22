@@ -31,8 +31,7 @@ export class UtilService {
       subject: data.subject,
       medium: data.medium,
       orgDetails: data.orgDetails,
-      gradeLevel: '',
-      resourceType: data.resourceType
+      gradeLevel: ''
     };
     if (data.gradeLevel && data.gradeLevel.length) {
         content['gradeLevel'] = _.isString(data.gradeLevel) ? data.gradeLevel : data.gradeLevel.join(',');
