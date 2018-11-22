@@ -35,7 +35,7 @@ describe('FrameworkService', () => {
     service.isApiCall = true;
     service.getFrameworkCategories();
     service.frameworkData$.subscribe(frameworkData => {
-      expect(service._frameworkData).toBe(mockFrameworkData.frameworkSuccess.result.framework.categories);
+      expect(service._frameworkData).toEqual(mockFrameworkData.frameworkData);
     });
   });
 
