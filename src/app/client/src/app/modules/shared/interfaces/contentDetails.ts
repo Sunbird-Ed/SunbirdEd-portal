@@ -23,6 +23,8 @@ export interface ContentData {
     createdBy?: string;
     createdOn?: string;
     creator?: string;
+    owner?: string;
+    creators?: string;
     framework: string;
     gradeLevel?: Array<string>;
     language?: Array<string>;
