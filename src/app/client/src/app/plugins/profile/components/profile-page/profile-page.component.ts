@@ -46,14 +46,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
    */
   showMoreRolesLimit = this.defaultShowMoreRolesLimit;
   courseLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
-/**
- * Admin Dashboard access roles
-*/
-  adminActions: Array<string>;
-  /**
-   * input keyword depending on url
-   */
-  uploadUrl: object = this.configService.dropDownConfig.ORG.UPLOAD;
   /**
    * Contains loader message to display
    */
@@ -65,10 +57,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   userSubscription: ISubscription;
   /** The button clicked value for interact telemetry event */
   btnArrow: string;
-  /**
-   * Admin action option selected on dropdown
-   */
-  adminActionSelectedOption: string;
   adminActionDropDownOptions: Array<string> = [this.resourceService.frmelmnts.instn.t0015, this.resourceService.frmelmnts.instn.t0016,
   this.resourceService.frmelmnts.lbl.chkuploadsts];
   courseDataSubscription: Subscription;
@@ -178,7 +166,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.adminActions = this.configService.rolesConfig.headerDropdownRoles.adminDashboard;
     this.userSubscription = this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
@@ -334,13 +321,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         this.profileModal.modal.deny();
         this.showEdit = false;
       });
-  }
-  /**
-   * on changing dropdown option
-   * it navigate
-   */
-  onChange() {
-    this.router.navigate([this.uploadUrl[this.adminActionSelectedOption]]);
   }
 
   onClickOfMyContributions(content) {
