@@ -22,14 +22,14 @@
           <div class="required field" [ngClass]="signUpForm.controls.userName.invalid && signUpForm.controls['userName'].errors.required && !signUpForm.controls['userName'].pristine || (signUpForm.controls['userName'].errors && signUpForm.controls['userName'].errors.pattern) ? 'error' : ''">
             <label>{{resourceService?.frmelmnts?.lbl?.username}}</label>
             <input type="text" formControlName="userName" placeholder="eg:user.name , min 5 character required">
-            <div class="margin-bottom-10 ui pointing red basic label below" *ngIf="signUpForm.controls.userName.invalid && signUpForm.controls['userName'].errors.required && !signUpForm.controls['userName'].pristine || (signUpForm.controls['userName'].errors && signUpForm.controls['userName'].errors.pattern)">
+            <div class="mb-10 ui pointing red basic label below" *ngIf="signUpForm.controls.userName.invalid && signUpForm.controls['userName'].errors.required && !signUpForm.controls['userName'].pristine || (signUpForm.controls['userName'].errors && signUpForm.controls['userName'].errors.pattern)">
               {{resourceService?.messages?.stmsg?.m0087}}
             </div>
           </div>
           <div class="required field" [ngClass]="signUpForm.controls.password.invalid && signUpForm.controls['password'].errors.required && !signUpForm.controls['password'].pristine || (signUpForm.controls['password'].errors && signUpForm.controls['password'].errors.pattern) ? 'error' : ''">
             <label>{{resourceService?.frmelmnts?.lbl?.password}}</label>
             <input type="password" formControlName="password" placeholder="Password" />
-            <div class="margin-bottom-10 ui pointing red basic label below" *ngIf="signUpForm.controls.password.invalid && signUpForm.controls['password'].errors.required && !signUpForm.controls['password'].pristine || (signUpForm.controls['password'].errors && signUpForm.controls['password'].errors.pattern)">
+            <div class="mb-10 ui pointing red basic label below" *ngIf="signUpForm.controls.password.invalid && signUpForm.controls['password'].errors.required && !signUpForm.controls['password'].pristine || (signUpForm.controls['password'].errors && signUpForm.controls['password'].errors.pattern)">
               {{resourceService?.messages?.stmsg?.m0088}}
             </div>
           </div>
@@ -47,21 +47,21 @@
           </div>
         </div>
       </div>
-      <div class="margin-top-0 margin-bottom-10 ui pointing red basic label below" *ngIf="signUpForm.controls.firstName.invalid && signUpForm.controls['firstName'].errors.required && !signUpForm.controls['firstName'].pristine || (signUpForm.controls['firstName'].errors && signUpForm.controls['firstName'].errors.pattern)">
+      <div class="mt-0 mb-10 ui pointing red basic label below" *ngIf="signUpForm.controls.firstName.invalid && signUpForm.controls['firstName'].errors.required && !signUpForm.controls['firstName'].pristine || (signUpForm.controls['firstName'].errors && signUpForm.controls['firstName'].errors.pattern)">
         {{resourceService?.messages?.stmsg?.m0092}}
       </div>
       <div class="two fields">
         <div class="required field" [ngClass]="signUpForm.controls.phone.invalid && signUpForm.controls['phone'].errors.required && !signUpForm.controls['phone'].pristine || (signUpForm.controls['phone'].errors && signUpForm.controls['phone'].errors.pattern) ? 'error' : ''">
           <label>{{resourceService?.frmelmnts?.lbl?.phonenumber}}</label>
           <input type="text" formControlName="phone" placeholder="eg:XXXXXXXXXX">
-          <div class="margin-bottom-10 ui pointing red basic label below" *ngIf="signUpForm.controls.phone.invalid && signUpForm.controls['phone'].errors.required && !signUpForm.controls['phone'].pristine || (signUpForm.controls['phone'].errors && signUpForm.controls['phone'].errors.pattern)">
+          <div class="mb-10 ui pointing red basic label below" *ngIf="signUpForm.controls.phone.invalid && signUpForm.controls['phone'].errors.required && !signUpForm.controls['phone'].pristine || (signUpForm.controls['phone'].errors && signUpForm.controls['phone'].errors.pattern)">
             {{resourceService?.messages?.stmsg?.m0091}}
           </div>
         </div>
         <div class="required field" [ngClass]="signUpForm.controls.email.invalid && signUpForm.controls['email'].errors.required && !signUpForm.controls['email'].pristine || (signUpForm.controls['email'].errors && signUpForm.controls['email'].errors.pattern) ? 'error' : ''">
           <label>{{resourceService?.frmelmnts?.lbl?.email}}</label>
           <input type="text" formControlName="email" placeholder="User@example.com">
-          <div class="margin-bottom-10 ui pointing red basic label below" *ngIf="signUpForm.controls.email.invalid && signUpForm.controls['email'].errors.required && !signUpForm.controls['email'].pristine || (signUpForm.controls['email'].errors && signUpForm.controls['email'].errors.pattern)">
+          <div class="mb-10 ui pointing red basic label below" *ngIf="signUpForm.controls.email.invalid && signUpForm.controls['email'].errors.required && !signUpForm.controls['email'].pristine || (signUpForm.controls['email'].errors && signUpForm.controls['email'].errors.pattern)">
             {{resourceService?.messages?.stmsg?.m0089}}
           </div>
         </div>
@@ -74,7 +74,7 @@
           </sui-multi-select>
         </div>
       </div>
-      <div class="margin-top-0 margin-bottom-10 ui pointing red basic label below" *ngIf="signUpForm.controls.language.invalid && signUpForm.controls['language'].errors.required && !signUpForm.controls['language'].pristine">
+      <div class="mt-0 mb-10 ui pointing red basic label below" *ngIf="signUpForm.controls.language.invalid && signUpForm.controls['language'].errors.required && !signUpForm.controls['language'].pristine">
         {{resourceService?.messages?.stmsg?.m0090}}
       </div>
       <div class="ui error message">

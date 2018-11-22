@@ -31,7 +31,7 @@
         <h5>{{resourceService?.frmelmnts?.lbl?.processid}}: {{processId}}</h5>
       </div>
       <div *ngFor="let status of [statusResponse.successResult, statusResponse.failureResult]">
-        <div class="margin-top-40 overflowContentHorizontal" *ngIf="getStatusResult(status).length">
+        <div class="mt-40 overflowContentHorizontal" *ngIf="getStatusResult(status).length">
           <h5 *ngIf="status === statusResponse.successResult">{{resourceService?.frmelmnts?.lbl?.successres}}</h5>
           <h5 *ngIf="status === statusResponse.failureResult">{{resourceService?.frmelmnts?.lbl?.failres}}</h5>
           <table class="ui celled padded table">

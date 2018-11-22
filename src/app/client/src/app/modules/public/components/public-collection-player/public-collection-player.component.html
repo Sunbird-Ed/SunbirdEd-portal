@@ -9,7 +9,7 @@
                 <div class="one wide column"></div>
                 <div class="ten wide column">
                   <span class="ui HomeAccordianHeading m-responsive-cp left floated header">{{contentTitle}}</span>
-                  <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="closeContentPlayer()">
+                  <h5 class="ui right floated basic icon circular button mouse-pointer" (click)="closeContentPlayer()">
                     <i class="ui remove icon"></i>
                   </h5>
                 </div>
@@ -22,8 +22,8 @@
                 </div>
                 <div class="one wide column"></div>
               </div>
-              <div class="ui row padding-top-none">
-                <div class="ui twelve column grid padding-right-none">
+              <div class="ui row pt-0">
+                <div class="ui twelve column grid pr-0">
                   <div class="one wide tablet only one wide computer only column"></div>
                   <div class="six wide mobile only three wide tablet only three wide computer only column">
                     <button class="ui blue button left floated fluid tocbutton toc-left-nav-btn-content" (click)="navigateToContent(prevPlaylistItem)"
@@ -34,7 +34,7 @@
                     </button>
                   </div>
                   <div class="four wide tablet only four wide computer only column"></div>
-                  <div class="six wide mobile only three wide tablet only three wide computer only column padding-right-none">
+                  <div class="six wide mobile only three wide tablet only three wide computer only column pr-0">
                     <button class="ui blue button right floated fluid toc-right-nav-btn-content" (click)="navigateToContent(nextPlaylistItem)"
                       [disabled]="nextPlaylistItem === undefined">
                       <span class="header">{{resourceService.frmelmnts.btn.next}}</span>
@@ -60,7 +60,7 @@
     <div class="ten wide column">
       <span class="ui HomeAccordianHeading m-responsive-cp left floated header">{{collectionTitle}}</span>
       <h5 appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeCollectionPlayerInteractEdata"
-        class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="closeCollectionPlayer()">
+        class="ui right floated basic icon circular button mouse-pointer" (click)="closeCollectionPlayer()">
         <i class="ui remove icon"></i>
       </h5>
     </div>
@@ -68,7 +68,7 @@
     <div class="one wide column"></div>
     <div class="one wide column"></div>
   </div>
-  <div class="row padding-top-none" *ngIf="!loader">
+  <div class="row pt-0" *ngIf="!loader">
     <div class="one wide column"></div>
     <div  class="ten wide column">
       <div class="player-badge-alignment">
@@ -83,7 +83,7 @@
       <app-collection-tree *ngIf="collectionTreeNodes.data && collectionTreeNodes.data.children && collectionTreeNodes.data.children.length >0 ; else dataCommingSoon" (contentSelect)="OnPlayContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions">
       </app-collection-tree>
       <ng-template #dataCommingSoon>
-        <div class="placeholder margin-top-40">
+        <div class="placeholder mt-40">
             <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl }}"/>
             <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0121}}</h5>
             <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>

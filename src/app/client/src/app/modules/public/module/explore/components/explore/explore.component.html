@@ -1,9 +1,9 @@
-<div class="header-fix"></div>
-<div [appTelemetryImpression]="telemetryImpression" class=" ui grid">
+
+<div [appTelemetryImpression]="telemetryImpression" class="ui grid ">
   <div class="one wide column"></div>
   <div class="ten wide column">
-    <div class="ui grid margin-bottom-0">
-      <div class="twelve wide column">
+    <div class="ui grid mb-0">
+      <div class="twelve wide column my-20">
         <app-prominent-filter [pageId]="'explore-page'" *ngIf="filterType" [filterEnv]="filterType"  [ignoreQuery]="['key', 'language']" 
        [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter>
       </div>

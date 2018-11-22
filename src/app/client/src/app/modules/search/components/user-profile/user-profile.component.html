@@ -8,22 +8,22 @@
   </div>
 </div>
 <!-- header -->
-<div class="ui grid padding-topBottom-10 courseStructureHeader" *ngIf="!showLoader && !showError">
+<div class="ui grid py-10 courseStructureHeader" *ngIf="!showLoader && !showError">
   <div class="one wide column"></div>
   <div class=" ten wide column">
     <div class="ui grid">
       <div class="eight wide column">
         <div class="profileheader ui link items">
           <div class="ui grid">
-            <div class="two wide column padding-top-none">
+            <div class="two wide column pt-0">
               <div class="userAvtarWrap field link ui small circular image header-image-profile">
                 <img class="ui small circular image header-image-profile" [src]="userDetails.avatar || 'assets/images/user_logo.png' | cdnprefixurl">
               </div>
             </div>
-            <div class="ten wide column profile-header-text padding-top-none">
-              <div class="content padding-top-10">
+            <div class="ten wide column profile-header-text pt-0">
+              <div class="content pt-10">
                 <div class="sectionHeading header">{{userDetails.firstName}} &nbsp;{{userDetails.lastName}}</div>
-                <div class="meta profileViewSubHeader padding-bottom-10">
+                <div class="meta profileViewSubHeader pb-10">
                   <span *ngIf="userDetails.location">{{userDetails.location}}</span>
                 </div>
               </div>
@@ -48,11 +48,11 @@
     <div class="ui grid">
       <!--Profile summary-->
       <div class="twelve wide column" *ngIf="userDetails.profileSummary">
-        <div class="margin-top-20 ui raised segment">
+        <div class="mt-20 ui raised segment">
           <div class="header">
             <span class="segment-heading"> {{resourceService.frmelmnts?.lbl?.summary}} </span>
           </div>
-          <div class="description padding-top-10">
+          <div class="description pt-10">
             <div *ngIf="descriptionReadMore && userDetails.profileSummary.length > 120">
               <span class="overflow-word-wrap">{{userDetails.profileSummary | slice:0:120 }}&nbsp;</span>
               <span class="ui expand-or-minimize" (click)="descriptionReadMore = false;">{{resourceService.frmelmnts?.lbl?.readmore}}</span>
@@ -100,7 +100,7 @@
                 <a class=" header ">{{experience.jobName}}</a>
                 <div class="description ">{{experience.role}}
                   <span *ngIf="experience.role">&nbsp;,&nbsp;</span>{{experience.orgName}}
-                  <p class="margin-bottom-0 " *ngIf="experience.subject.length ">{{resourceService.frmelmnts?.lbl?.subjectstaught}} :
+                  <p class="mb-0 " *ngIf="experience.subject.length ">{{resourceService.frmelmnts?.lbl?.subjectstaught}} :
                     <span>
                       <span *ngFor="let sub of experience.subject; let last = last;">{{sub}}
                         <span *ngIf="!last ">, </span>
@@ -142,7 +142,7 @@
       </div>
       <!-- skills -->
       <div class="twelve wide column">
-        <div class="ui raised segment margin-bottom-0">
+        <div class="ui raised segment mb-0">
           <div class="header announcementCard-header ">
             <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.skillTags}}</span>
           </div>
@@ -182,14 +182,14 @@
 
       <!--Badge-->
       <div class="twelve wide column" *ngIf="userDetails.badgeArray && userDetails.badgeArray.length > 0">
-        <div class="ui raised segment margin-bottom-0">
+        <div class="ui raised segment mb-0">
           <div class="header announcementCard-header">
             <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.certificationAward}}</span>
           </div>
-          <div class="ui items margin-top-10">
+          <div class="ui items mt-10">
             <div class="item" *ngFor="let badge of userDetails.badgeArray | slice:0:badgeLimit">
               <img class="ui avatar image" [src]="badge.image || badge.badgeClassImage">
-              <div class="middle aligned content padding-left-10">
+              <div class="middle aligned content pl-10">
                 <div class="ui huge sub header secondary-text-color-sunbird">{{badge.badgeClassName}}</div>
                 <div class="description">
                   <div class="secondary-text-color-sunbird">{{badge.description | slice:0:70 }}

@@ -6,12 +6,12 @@
     </div>
     <div class="ui container stackable two column grid">
       <div class="column center aligned text-container">
-        <h1 class="qr-code-modal-header padding-top-10"> {{resourceService.frmelmnts?.lbl?.exploreContentOn  | interpolate:'{instance}':resourceService.instance.charAt(0).toUpperCase() + resourceService.instance.slice(1)}}
-          <div class="qr-code-modal-sub-header padding-top-10">
+        <h1 class="qr-code-modal-header pt-10"> {{resourceService.frmelmnts?.lbl?.exploreContentOn  | interpolate:'{instance}':resourceService.instance.charAt(0).toUpperCase() + resourceService.instance.slice(1)}}
+          <div class="qr-code-modal-sub-header pt-10">
             {{resourceService.frmelmnts?.lbl?.startExploringContent}}
           </div>
         </h1>
-        <div class="ui fluid icon input dial-section-input margin-top-30">
+        <div class="ui fluid icon input dial-section-input mt-30">
           <input name="search" #dialCodeVal placeholder="{{resourceService.frmelmnts?.lbl?.enterDialCode}}" title="Search" type="text" ng-reflect-name="search" class="ng-untouched ng-pristine ng-valid">
           <i class="search icon"></i>
         </div>

@@ -1,14 +1,14 @@
-<div class="content padding-left-right-0 padding-top-10 o-x-hide o-y-hide height-100">
-    <div class="ui clearing fullpage margin-bottom-0"></div>
+<div class="content px-0 pt-10 o-x-hide o-y-hide height-100">
+    <div class="ui clearing fullpage mb-0"></div>
     <div class="scrollable content ">
-        <div class="ui grid margin-none">
+        <div class="ui grid m-0">
             <div class="three wide column right-content dividing-border">
-                <div *ngIf="showRootOrg" class="custom-modal-subheader margin-bottom-10">{{ resourceService?.frmelmnts?.lbl?.organisation}}</div>
+                <div *ngIf="showRootOrg" class="custom-modal-subheader mb-10">{{ resourceService?.frmelmnts?.lbl?.organisation}}</div>
                 <div class="ui fluid input with-border" *ngIf="showRootOrg">
                     <input type="text" [(ngModel)]="rootOrgName" placeholder="{{resourceService?.frmelmnts?.lbl?.organisationName}}" readonly>
                 </div>
                 <br>
-                <div class="custom-modal-subheader margin-bottom-10">{{ resourceService?.frmelmnts?.lbl?.subOrganisation}}</div>
+                <div class="custom-modal-subheader mb-10">{{ resourceService?.frmelmnts?.lbl?.subOrganisation}}</div>
                 <div class="count" appClickOutside (clickOff)="closeSubOrgDropdown()" *ngIf="subOrganizations.length >1" (click)="onSubOrgDropDownOpen()">
                     <div class="countplaceholder" *ngIf="selectedOrg.length>0">{{selectedOrg.length}} {{ resourceService?.frmelmnts?.lbl?.selected}} </div>
                     <angular2-multiselect #subOrgDropDown [data]="subOrganizations" [(ngModel)]="selectedOrg" [settings]="subOrgDropDownSettings"
@@ -20,13 +20,13 @@
                     <input type="text" [(ngModel)]="subOrganizations[0].orgName" placeholder={{resourceService?.frmelmnts?.lbl?.organisationName}}
                         readonly>
                 </div>
-                <div class="margin-bottom-10 ui pointing red basic label below" *ngIf="subOrgRequired">
+                <div class="mb-10 ui pointing red basic label below" *ngIf="subOrgRequired">
                     {{ resourceService?.frmelmnts?.lbl?.pleaseSelect}}
                 </div>
                 <br>
-                <div appClickOutside (clickOff)="closeMentorDropdown()" class="one field fluid selection margin-top-10 " (click)="onMentorDropDownOpen()">
+                <div appClickOutside (clickOff)="closeMentorDropdown()" class="one field fluid selection mt-10 " (click)="onMentorDropDownOpen()">
                     <label>{{resourceService?.frmelmnts?.lbl?.mentors}}</label>
-                    <div class="count margin-top-10 ui fluid with-border ">
+                    <div class="count mt-10 ui fluid with-border ">
                         <div class="countplaceholder" *ngIf="selectedMentorList.length>0">{{selectedMentorList.length}} {{ resourceService?.frmelmnts?.lbl?.selected}}</div>
                         <angular2-multiselect #mentorDropDown [data]="mentorList" [(ngModel)]="selectedMentorList" [settings]="mentorsDropDownSettings"
                             (onSelect)="selectMentor($event)">
@@ -40,9 +40,9 @@
                     </div>
                 </div>
                 <br>
-                <div appClickOutside (clickOff)="closeParticipantsDropdown()" class="one field fluid selection margin-top-10 " (click)="onParticipantDropDownOpen()">
+                <div appClickOutside (clickOff)="closeParticipantsDropdown()" class="one field fluid selection mt-10 " (click)="onParticipantDropDownOpen()">
                     <label>{{resourceService?.frmelmnts?.lbl?.participants}}</label>
-                    <div class="count margin-top-10 ui fluid with-border ">
+                    <div class="count mt-10 ui fluid with-border ">
                         <div class="countplaceholder" *ngIf="selectedParticipantList.length>0">{{selectedParticipantList.length}} {{ resourceService?.frmelmnts?.lbl?.selected}}</div>
                         <angular2-multiselect #participantsDropDown [data]="participantList" [(ngModel)]="selectedParticipantList" [settings]="participantsDropDownSettings"
                             (onSelect)="selectParticipants($event)" (onDeSelect)="OnParticipantsDeSelect($event)">
@@ -59,7 +59,7 @@
                 <br>
             </div>
 
-            <div class="nine wide column padding-left-right-0 padding-left-right-0 left-content dividing-border o-y-auto o-x-hide content-with-scroll">
+            <div class="nine wide column px-0  left-content dividing-border o-y-auto o-x-hide content-with-scroll">
                 <div class="ui grid padded">
                     <div class="four wide column">
                         <div class="ui fluid category search">

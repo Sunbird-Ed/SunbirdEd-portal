@@ -1,5 +1,10 @@
-@import url('https://fonts.googleapis.com/css?family=Noto+Sans');
+@import "./fonts/notosans/notosans.css";
+@import "./fonts/noto-nastaliqurdu/notonastaliqurdu.css";
+@import "./fonts/notosans-tamil/notosanstamil.css";
+@import "./fonts/notosans-kannada/notosanskannada.css";
+@import "./fonts/notosans-kannada/notosanskannada.css";
 @import "./variables";
+@import "./semantic/semantic-rtl";
 @import "./components/slick";
 @import "./components/slick-theme";
 @import "./components/fine-uploader-new";
@@ -11,5 +16,6 @@
 @import "./components/angular2select-default.theme";
 @import "./legacy";
 @import "./reusables/reusables";
+@import "./components/cards";
+@import "./components/header";
 @import "./global";
-

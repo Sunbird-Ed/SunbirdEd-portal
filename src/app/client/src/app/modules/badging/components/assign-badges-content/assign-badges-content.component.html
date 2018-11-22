@@ -1,9 +1,9 @@
 <div class="ui grid">
   <div class="six wide column"></div>
-<div class="six wide column margin-top-0 padding-top-none text-align-right" *ngIf="allBadgeList && allBadgeList.length > 0">
+<div class="six wide column mt-0 pt-0 text-align-right" *ngIf="allBadgeList && allBadgeList.length > 0">
   <span>{{resourceService?.frmelmnts?.lbl?.markas}}:</span>
   <button appTelemetryInteract [telemetryInteractObject]="{id:badge.badgeId,type:'badge',ver:'1.0'}" 
-  [telemetryInteractEdata]="badgeInteractEdata" class="ui small basic primary compact button margin-left-10 margin-top-10" 
+  [telemetryInteractEdata]="badgeInteractEdata" class="ui small basic primary compact button ml-10 mt-10" 
   *ngFor="let badge of allBadgeList" (click)="setBadge(badge);showBadgeAssingModel=true;">{{badge.name | uppercase}}</button>
 </div>
 </div>
