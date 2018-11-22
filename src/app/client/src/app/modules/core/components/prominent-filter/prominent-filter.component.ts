@@ -141,14 +141,14 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
       this.prominentFilter.emit(this.formFieldProperties);
     } else {
       this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
-        if (frameworkData && !frameworkData.err) {
-          this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
-          this.framework = frameworkData.framework;
+        if (!frameworkData.err && frameworkData.frameworkdata !== null) {
+          this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
+          this.framework = frameworkData.frameworkdata['defaultFramework'].code;
           const formServiceInputParams = {
             formType: this.formType,
             formAction: this.formAction,
             contentType: this.filterEnv,
-            framework: frameworkData.framework
+            framework: this.framework
           };
           this.formService.getFormConfig(formServiceInputParams, this.hashTagId).subscribe(
             (data: ServerResponse) => {

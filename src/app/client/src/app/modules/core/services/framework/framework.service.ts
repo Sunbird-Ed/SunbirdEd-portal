@@ -2,11 +2,14 @@ import { Injectable } from '@angular/core';
 import { UserService } from './../user/user.service';
 import {
   ConfigService, ToasterService, ResourceService, ServerResponse,
-  Framework, FrameworkCategorie, IUserData, IUserProfile
+  Framework, IUserData, IUserProfile, FrameworkData
 } from '@sunbird/shared';
 import { Observable ,  BehaviorSubject } from 'rxjs';
+import { skipWhile } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { PublicDataService } from './../public-data/public-data.service';
+import * as _ from 'lodash';
+
 @Injectable()
 export class FrameworkService {
   /**
@@ -29,7 +32,7 @@ export class FrameworkService {
    * BehaviorSubject Containing framework data.
    */
 
-  private _frameworkData: FrameworkCategorie;
+  private _frameworkData:  FrameworkData = {};
   /**
  * isApiCall is used to set flag as true to call api.
  */
@@ -41,7 +44,8 @@ export class FrameworkService {
   /**
    * Read only observable Containing framework data.
    */
-  public readonly frameworkData$: Observable<Framework> = this._frameworkData$.asObservable();
+  public readonly frameworkData$: Observable<Framework> = this._frameworkData$.asObservable()
+  .pipe(skipWhile(data => data === undefined || data === null));
   /**
  * userProfile is of type userprofile interface
  */
@@ -70,21 +74,20 @@ export class FrameworkService {
     this.publicDataService = publicDataService;
   }
 
-  public initialize(hashTagId?: string) {
-    if (hashTagId === '' || hashTagId === undefined) {
-      this.userService.userData$.subscribe(
-        (user: IUserData) => {
-          if (user && !user.err) {
-            this.hashTagId = this.userService.hashTagId;
-            if (this.isApiCall === true) {
+  public initialize(framewrok?: string) {
+    if (framewrok) {
+      if (this._frameworkData && !_.get( this._frameworkData , framewrok) ) {
+        this.getFrameworkCategories(framewrok);
+      }
+    } else  {
+      if (this._frameworkData && !_.get( this._frameworkData , 'defaultFramework') ) {
+        this.userService.userData$.subscribe(
+          (user: IUserData) => {
+            if (user && !user.err) {
+              this.hashTagId = this.userService.hashTagId;
               this.getFramework();
             }
-          }
-        });
-    } else {
-      this.hashTagId = hashTagId;
-      if (this.isApiCall === true) {
-        this.getFramework();
+          });
       }
     }
   }
@@ -99,13 +102,13 @@ export class FrameworkService {
     this.publicDataService.get(channelOptions).subscribe(
       (data: ServerResponse) => {
         this.defaultFramework = data.result.channel.defaultFramework;
-        // this._frameworkData$.next({ err: null, framework: this.defaultFramework, frameworkdata: null });
+        this._frameworkData$.next({ err: null,  frameworkdata: null });
         if (this.defaultFramework) {
           this.getFrameworkCategories();
         }
       },
       (err: ServerResponse) => {
-        this._frameworkData$.next({ err: err, framework: null, frameworkdata: null });
+        this._frameworkData$.next({ err: err, frameworkdata: null });
       }
     );
   }
@@ -113,18 +116,23 @@ export class FrameworkService {
 * getFramework data   .
 *
 */
-  public getFrameworkCategories(): void {
+  public getFrameworkCategories(framework ?: string): void {
+    const requestFramewrok = framework  ? framework : this.defaultFramework;
     const frameworkOptions = {
-      url: this.configService.urlConFig.URLS.FRAMEWORK.READ + '/' + this.defaultFramework
+      url: this.configService.urlConFig.URLS.FRAMEWORK.READ + '/' + requestFramewrok
     };
     this.publicDataService.get(frameworkOptions).subscribe(
       (frameworkData: ServerResponse) => {
         this.isApiCall = false;
-        this._frameworkData = frameworkData.result.framework.categories;
-        this._frameworkData$.next({ err: null, framework: this.defaultFramework, frameworkdata: this._frameworkData });
+        if (framework) {
+          this._frameworkData[framework] = frameworkData.result.framework;
+        } else {
+          this._frameworkData['defaultFramework']  = frameworkData.result.framework;
+        }
+        this._frameworkData$.next({ err: null, frameworkdata: this._frameworkData });
       },
       (err: ServerResponse) => {
-        this._frameworkData$.next({ err: err, framework: null, frameworkdata: null });
+       this._frameworkData$.next({ err: err, frameworkdata: null });
       }
     );
   }
