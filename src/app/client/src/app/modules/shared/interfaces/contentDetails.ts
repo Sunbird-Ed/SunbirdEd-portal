@@ -23,8 +23,10 @@ export interface ContentData {
     createdBy?: string;
     createdOn?: string;
     creator?: string;
-    owner?: string;
+    contributors?: string;
+    attributions?: Array<string>;
     creators?: string;
+    owner?: string;
     framework: string;
     gradeLevel?: Array<string>;
     language?: Array<string>;
@@ -41,7 +43,6 @@ export interface ContentData {
     userName: string;
     pkgVersion?: string;
     visibility?: string;
-    attributions?: Array<string>;
 }
 
 export interface ContentCreditsData {
