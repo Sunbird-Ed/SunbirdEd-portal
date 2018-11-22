@@ -20,6 +20,7 @@ declare const Fingerprint2: any;
 
 interface JQuery {
   treePicker(options?: any);
+  topicTreePicker(options?: any)
   iziModal(options?: any);
   dropdown(options?: any);
 }

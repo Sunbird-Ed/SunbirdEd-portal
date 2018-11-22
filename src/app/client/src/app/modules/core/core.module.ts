@@ -15,7 +15,7 @@ import {
 import {
   MainHeaderComponent, MainMenuComponent, SearchComponent, ConceptPickerComponent, DataDrivenFilterComponent,
   ErrorPageComponent, SortByComponent, FlagContentComponent, ContentPlayerMetadataComponent,
-  BreadcrumbsComponent, LanguageDropdownComponent, ProminentFilterComponent
+  BreadcrumbsComponent, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent
 } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
@@ -35,10 +35,10 @@ import { TelemetryModule } from '@sunbird/telemetry';
   ],
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent,
     DataDrivenFilterComponent, BreadcrumbsComponent, SortByComponent, ErrorPageComponent, FlagContentComponent,
-    ContentPlayerMetadataComponent, LanguageDropdownComponent, ProminentFilterComponent],
+    ContentPlayerMetadataComponent, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent],
   exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent, DataDrivenFilterComponent,
     SortByComponent, BreadcrumbsComponent, FlagContentComponent, ContentPlayerMetadataComponent,
-    TelemetryModule, LanguageDropdownComponent, ProminentFilterComponent]
+    TelemetryModule, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent]
 })
 export class CoreModule {
   static forRoot(): ModuleWithProviders {
