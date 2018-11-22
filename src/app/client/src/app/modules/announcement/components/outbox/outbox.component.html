@@ -1,14 +1,14 @@
 <div class="ui stackable grid">
   <div class="one wide column"></div>
   <div class="ten wide column">
-    <div class="ui stackable grid margin-top-10">
+    <div class="ui stackable grid mt-10">
       <div class="nine wide column">
         <div class="ui">
-          <div class="text ann-section-heading padding-top-10">
-            <i class="announcement icon padding-right-10"></i> {{resourceService?.frmelmnts?.lbl?.anncmntmine}}</div>
+          <div class="text ann-section-heading pt-10">
+            <i class="announcement icon pr-10"></i> {{resourceService?.frmelmnts?.lbl?.anncmntmine}}</div>
         </div>
       </div>
-      <div class="right floated three wide column padding-right-dropdown padding-right-10">
+      <div class="right floated three wide column padding-right-dropdown pr-10">
         <div class="ui right-float">
           <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="createAnnouncementInteractEdata"
             class="ui primary basic button announcement-button" [routerLink]="['../../create/1']">
@@ -25,13 +25,13 @@
     <div class="ui grid">
       <div class="eight wide column">
         <div class="ui">
-          <div class="text padding-top-5 showing-all-sent-ann">{{resourceService?.frmelmnts?.lbl?.anncmntsent}}</div>
+          <div class="text pt-5 showing-all-sent-ann">{{resourceService?.frmelmnts?.lbl?.anncmntsent}}</div>
         </div>
       </div>
       <div class="four wide column">
         <div class="ui right-float">
           <div class="text showing-all-sent-ann">
-            <span class="margin-right-10">Viewing {{pager.startIndex+1}} - {{pager.endIndex+1}} of {{outboxData.count}} </span>
+            <span class="mr-10">Viewing {{pager.startIndex+1}} - {{pager.endIndex+1}} of {{outboxData.count}} </span>
             <div class="ui small basic icon buttons">
               <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="navigateInteractEdata"
                 class="ui button" [ngClass]="{'disabled' : pager.startIndex === 0}" (click)="navigateToPage(pager.currentPage - 1)">
@@ -63,7 +63,7 @@
     </div>
   </div>
 </div>
-<div class="margin-top-10" *ngIf="outboxData && outboxData.announcements.length > 0 && !showLoader">
+<div class="mt-10" *ngIf="outboxData && outboxData.announcements.length > 0 && !showLoader">
   <div class="resource-padding ui grid" [appTelemetryImpression]="telemetryImpression">
     <div class="one wide column"></div>
     <div class="ten wide column">

@@ -12,24 +12,24 @@
           {{announcementDetails.type | uppercase}}
         </p>
       </div>
-      <div class="header padding-top-5">
-        <div class="padding-top-10 segment-heading" *ngIf="announcementDetails.title">
+      <div class="header pt-5">
+        <div class="pt-10 segment-heading" *ngIf="announcementDetails.title">
           {{announcementDetails.title}}
         </div>
-        <div class="ng-binding announcement-org-name padding-top-10" *ngIf="announcementDetails.from">
+        <div class="ng-binding announcement-org-name pt-10" *ngIf="announcementDetails.from">
           {{announcementDetails.from}}
         </div>
-        <div class="padding-top-20 announcement-description" *ngIf="announcementDetails.description">
+        <div class="pt-20 announcement-description" *ngIf="announcementDetails.description">
           {{announcementDetails.description}}
         </div>
       </div>
       <div *ngIf="announcementDetails.links && announcementDetails.links.length">
-        <div class="padding-top-20">
+        <div class="pt-20">
           <strong>
             {{resourceService?.frmelmnts?.lbl?.anncmntdtlsweblinks}}
           </strong>
         </div>
-        <div class="padding-top-10 tweleve wide column">
+        <div class="pt-10 tweleve wide column">
           <div *ngFor="let link of announcementDetails.links">
             <p>
               <a class="ann-link-or-attachment" href="{{link}}" target="_blank">
@@ -41,12 +41,12 @@
         </div>
       </div>
       <div *ngIf="announcementDetails.attachments && announcementDetails.attachments.length">
-        <div class="padding-top-20">
+        <div class="pt-20">
           <strong>
             {{resourceService?.frmelmnts?.lbl?.anncmntdtlsattachments}}
           </strong>
         </div>
-        <div class="sixteen wide column margin-bottom-20">
+        <div class="sixteen wide column mb-20">
           <div class="ui items">
             <div class="ui item box" *ngFor="let attachment of announcementDetails.attachments">
               <div class="ui grid">
@@ -57,7 +57,7 @@
                   </div>
                 </div>
               </div>
-              <div class="middle aligned content padding-left-none">
+              <div class="middle aligned content pl-0">
                 <div class="ui right-float">
                   <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="viewAnnouncementInteractEdata" class="ui primary basic button announcement-button" href="{{attachment.link}}" target="_blank">
                     <span class="announcement-button-text">

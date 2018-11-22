@@ -1,6 +1,6 @@
 <div class="ui grid" [appTelemetryImpression]="telemetryImpression">
     <div class="one wide column"></div>
-    <div class="ten wide column margin-top-10">
+    <div class="ten wide column mt-10">
         <div class="ui raised segment" *ngIf="showLoader">
             <app-loader></app-loader>
         </div>
@@ -11,12 +11,12 @@
                     <i class="big plus icon"></i>
                 </a>
             </div>
-            <div class="margin-top-10 ">
-                <span class="padded chip margin-top--5">
-                    <a class="ui label margin-top--5" *ngFor="let orgnisation of orgTypes;" appTelemetryInteract
+            <div class="mt-10 ">
+                <span class="padded chip mt-5">
+                    <a class="ui label mt-5" *ngFor="let orgnisation of orgTypes;" appTelemetryInteract
                 [telemetryInteractObject]="{id:orgnisation.id,type:'org-type',ver:'1.0'}" [telemetryInteractEdata]="updateOrganizationType">
                         {{orgnisation.name}}
-                        <i class="large write icon  margin-none padding-left-10" [routerLink]="['update/' + orgnisation.id]"></i>
+                        <i class="large write icon m-0 pl-10" [routerLink]="['update/' + orgnisation.id]"></i>
                     </a>
                 </span>
             </div>

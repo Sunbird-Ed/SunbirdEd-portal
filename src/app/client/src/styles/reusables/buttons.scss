@@ -33,7 +33,31 @@
     height: 92px;
     width: 92px;
 }
-
-.text-ac {
-    text-align:center !important;
+.ui.button.rounded{
+    border-radius: 20px;
+}
+.ui.explore.blue.button {  
+    background-color: $primary-color;
+    padding: 10px 30px;
+}
+.ui.explore.blue.button:hover {  
+    opacity: 0.8;
+}
+.ui.explore.blue.button:active {  
+    opacity: 0.9;
+}
+.ui.basic.explore.blue.button {  
+    background-color: #fff;
+    border: 0.5px solid $primary-color;
+    box-shadow: none;
+    color: $primary-color;
+    font-weight: 700;
+    height:36px;
+    padding: 10px 30px;
+}
+.ui.basic.explore.blue.button:hover {  
+    opacity: 0.8;
+}
+.ui.basic.explore.blue.button:active {  
+    opacity: 0.9;
 }

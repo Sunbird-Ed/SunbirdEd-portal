@@ -70,16 +70,26 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
    */
   public resourceService: ResourceService;
   avtarMobileStyle = {
-    backgroundColor: '#fff',
-    color: '#333',
+    backgroundColor: 'transparent',
+    color: '#AAAAAA',
     fontFamily: 'inherit',
-    fontSize: '20px'
+    fontSize: '17px',
+    lineHeight: '38px',
+    border: '1px solid #e8e8e8',
+    borderRadius: '50%',
+    height: '38px',
+    width: '38px'
   };
   avtarDesktopStyle = {
-    backgroundColor: '#fff',
-    color: '#333',
+    backgroundColor: 'transparent',
+    color: '#AAAAAA',
     fontFamily: 'inherit',
-    fontSize: '20px'
+    fontSize: '17px',
+    lineHeight: '38px',
+    border: '1px solid #e8e8e8',
+    borderRadius: '50%',
+    height: '38px',
+    width: '38px'
   };
   /**
    * reference of permissionService service.
