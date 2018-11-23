@@ -258,7 +258,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
     });
   }
-  private findContentById(id: string) {
+  public findContentById(id: string) {
     return this.treeModel.first((node) => {
       return node.model.identifier === id;
     });

@@ -374,4 +374,70 @@ describe('CoursePlayerComponent', () => {
     expect(toasterService.error).not.toHaveBeenCalled();
     expect(component.courseStatus).toEqual('Unlisted');
   });
+  it('should make update contentState api call if the content is youTube and progress is greater than 20%', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const contentData = {model: { mimeType: 'video/x-youtube'}};
+    const telemetryEvent = { detail: {
+      telemetryData: { eid: 'END',
+        edata: {summary: [{progress: 20}]}
+      }}};
+    spyOn(component, 'findContentById').and.returnValue(contentData);
+    spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
+    component.batchId = '123';
+    component.enrolledBatchInfo = {status: 1};
+    component.contentProgressEvent(telemetryEvent);
+    expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
+  });
+  it('should make update contentState api call if the content is video/mp4 and progress is greater than 20%', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const contentData = {model: { mimeType: 'video/mp4'}};
+    const telemetryEvent = { detail: {
+      telemetryData: { eid: 'END',
+        edata: {summary: [{progress: 20}]}
+      }}};
+    spyOn(component, 'findContentById').and.returnValue(contentData);
+    spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
+    component.batchId = '123';
+    component.enrolledBatchInfo = {status: 1};
+    component.contentProgressEvent(telemetryEvent);
+    expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
+  });
+  it('should make update contentState api call if the content is html and progress is greater than 0%', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const contentData = {model: { mimeType: 'application/vnd.ekstep.html-archive'}};
+    const playerDestroyData = { contentId: '123'};
+    spyOn(component, 'findContentById').and.returnValue(contentData);
+    spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
+    component.courseProgressData = { content: [{ contentId: '123', status: 1}]};
+    component.enrolledBatchInfo = {status: 1};
+    component.playerOnDestroy(playerDestroyData);
+    expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
+  });
+  it('should make update contentState api call if the content is h5p and progress is greater than 0%', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const contentData = {model: { mimeType: 'application/vnd.ekstep.h5p-archive'}};
+    const playerDestroyData = { contentId: '123'};
+    spyOn(component, 'findContentById').and.returnValue(contentData);
+    spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
+    component.courseProgressData = { content: [{ contentId: '123', status: 1}]};
+    component.enrolledBatchInfo = {status: 1};
+    component.playerOnDestroy(playerDestroyData);
+    expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
+  });
+  it('should not make update contentState api call if the progress is not equal to 100', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const contentData = {model: { mimeType: 'application/vnd.ekstep.eclm-archive'}};
+    const playerDestroyData = { contentId: '123'};
+    const telemetryEvent = { detail: {
+      telemetryData: { eid: 'END',
+        edata: {summary: [{progress: 20}]}
+      }}};
+    spyOn(component, 'findContentById').and.returnValue(contentData);
+    spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
+    component.courseProgressData = { content: [{ contentId: '123', status: 1}]};
+    component.enrolledBatchInfo = {status: 1};
+    component.playerOnDestroy(playerDestroyData);
+    component.contentProgressEvent(telemetryEvent);
+    expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
+  });
 });
