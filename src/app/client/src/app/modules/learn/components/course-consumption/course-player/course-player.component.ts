@@ -200,13 +200,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }, (error) => {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
-      });
-      this.courseProgressService.courseProgressData.pipe(
+    });
+    this.courseProgressService.courseProgressData.pipe(
       takeUntil(this.unsubscribe))
       .subscribe((courseProgressData) => {
         this.courseProgressData = courseProgressData;
       });
-    }
+  }
   private parseChildContent() {
     const model = new TreeModel();
     const mimeTypeCount = {};
@@ -330,21 +330,37 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
   }
   public contentProgressEvent(event) {
-    if (this.batchId && this.enrolledBatchInfo && this.enrolledBatchInfo.status === 1) {
-      const eid = event.detail.telemetryData.eid;
-      const request: any = {
-        userId: this.userService.userid,
-        contentId: this.contentId,
-        courseId: this.courseId,
-        batchId: this.batchId,
-        status: eid === 'END' ? 2 : 1
-      };
-      this.updateContentsStateSubscription = this.courseConsumptionService.updateContentsState(request)
-        .subscribe((updatedRes) => {
-          this.contentStatus = updatedRes.content;
-        }, (err) => {
-          console.log('updating content status failed', err);
-        });
+    if (!this.batchId && _.get(this.enrolledBatchInfo, 'status') !== 1) {
+      return;
+    }
+    const eid = event.detail.telemetryData.eid;
+    if (eid === 'END' && !this.validEndEvent(event)) {
+      return;
+    }
+    const request: any = {
+      userId: this.userService.userid,
+      contentId: this.contentId,
+      courseId: this.courseId,
+      batchId: this.batchId,
+      status: eid === 'END' ? 2 : 1
+    };
+    this.updateContentsStateSubscription = this.courseConsumptionService.updateContentsState(request)
+    .subscribe((updatedRes) => {
+      this.contentStatus = updatedRes.content;
+    }, (err) => {
+      console.log('updating content status failed', err);
+    });
+  }
+  private validEndEvent(event) {
+    const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
+    const playContentDetail = this.findContentById(this.contentId);
+    if (_.find(playerSummary , summary => summary && summary.progress >= 20)
+      && ( playContentDetail.model.mimeType === 'video/x-youtube' || playContentDetail.model.mimeType === 'video/mp4')) {
+        return true;
+    } else if (_.find(playerSummary , summary => summary && summary.progress === 100)) {
+      return true;
+    } else {
+      return false;
     }
   }
   public closeContentPlayer() {
@@ -367,7 +383,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       const playContentDetail = this.findContentById(data.contentId);
       const index = _.findIndex(this.courseProgressData.content, { 'contentId': data.contentId });
       if (index !== -1 && this.courseProgressData.content[index].status === 1 &&
-        playContentDetail.model.mimeType === 'application/vnd.ekstep.h5p-archive') {
+        (playContentDetail.model.mimeType === 'application/vnd.ekstep.h5p-archive' ||
+        playContentDetail.model.mimeType === 'application/vnd.ekstep.html-archive')) {
         const request: any = {
           userId: this.userService.userid,
           contentId: data.contentId,
