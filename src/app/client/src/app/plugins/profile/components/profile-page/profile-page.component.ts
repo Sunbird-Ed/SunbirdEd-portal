@@ -206,7 +206,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       _.forEach(org.roles, (value, key) => {
         if (value !== 'PUBLIC') {
           const roleName = _.find(this.userProfile.roleList, {id: value});
-          this.roles.push(roleName['name']);
+          if (roleName) {
+            this.roles.push(roleName['name']);
+          }
         }
       });
     });
@@ -312,6 +314,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       framework: data
     };
     this.profileService.updateProfile(request).subscribe(res => {
+      this.userProfile.framework = data;
       this.toasterService.success(this.resourceService.messages.smsg.m0046);
       this.profileModal.modal.deny();
       this.showEdit = false;
