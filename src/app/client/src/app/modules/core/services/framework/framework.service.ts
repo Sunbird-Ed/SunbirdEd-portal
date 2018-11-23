@@ -117,9 +117,9 @@ export class FrameworkService {
 *
 */
   public getFrameworkCategories(framework ?: string): void {
-    const requestFramewrok = framework  ? framework : this.defaultFramework;
+    const requestFramework = framework  ? framework : this.defaultFramework;
     const frameworkOptions = {
-      url: this.configService.urlConFig.URLS.FRAMEWORK.READ + '/' + requestFramewrok
+      url: this.configService.urlConFig.URLS.FRAMEWORK.READ + '/' + requestFramework
     };
     this.publicDataService.get(frameworkOptions).subscribe(
       (frameworkData: ServerResponse) => {
