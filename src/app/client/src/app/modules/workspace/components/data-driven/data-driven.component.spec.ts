@@ -81,7 +81,7 @@ describe('DataDrivenComponent', () => {
   it('should create', () => {
     expect(componentParent).toBeTruthy();
   });
-  fit('should fetch framework details', () => {
+  it('should fetch framework details', () => {
     const service = TestBed.get(FrameworkService);
     const cacheService = TestBed.get(CacheService);
     const contentService = TestBed.get(ContentService);
