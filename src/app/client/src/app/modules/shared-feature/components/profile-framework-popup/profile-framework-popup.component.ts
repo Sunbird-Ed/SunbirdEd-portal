@@ -42,7 +42,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         if (user && !user.err) {
           this.frameworkService.initialize();
           this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
-            if (!frameworkData.err  && frameworkData.frameworkdata !== null) {
+            if (!frameworkData.err) {
               this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
               const formServiceInputParams = {
                 formType: this.formType,

@@ -180,9 +180,9 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
   fetchFrameworkMetaData() {
 
     this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
-      if (frameworkData && !frameworkData.err) {
-        this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
-        // this.framework = frameworkData.framework;
+      if (!frameworkData.err) {
+        this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
+        this.framework = frameworkData.frameworkdata['defaultFramework'].code;
         /**
   * isCachedDataExists will check data is exists in cache or not. If exists should not call
   * form api otherwise call form api and get form data
@@ -196,7 +196,7 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
             formType: this.formType,
             formAction: this.formAction,
             contentType: this.contentType,
-            // framework: frameworkData.framework
+            framework: this.framework
           };
           this.formService.getFormConfig(formServiceInputParams).subscribe(
             (data: ServerResponse) => {

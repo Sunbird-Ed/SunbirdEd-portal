@@ -102,7 +102,6 @@ export class FrameworkService {
     this.publicDataService.get(channelOptions).subscribe(
       (data: ServerResponse) => {
         this.defaultFramework = data.result.channel.defaultFramework;
-        this._frameworkData$.next({ err: null,  frameworkdata: null });
         if (this.defaultFramework) {
           this.getFrameworkCategories();
         }

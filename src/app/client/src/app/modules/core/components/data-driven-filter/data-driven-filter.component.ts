@@ -169,7 +169,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
       this.createFacets();
     } else {
       this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
-        if (!frameworkData.err && frameworkData.frameworkdata !== null) {
+        if (!frameworkData.err) {
           if (this.frameworkName && _.get(frameworkData.frameworkdata, this.frameworkName)) {
             this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata[this.frameworkName].categories);
             this.framework = this.frameworkName;
