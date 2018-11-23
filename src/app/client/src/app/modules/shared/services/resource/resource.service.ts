@@ -75,11 +75,11 @@ export class ResourceService {
       };
       this.get(option).subscribe(
         (data: ServerResponse) => {
-          this.messages = data.result.messages;
-          this.frmelmnts = data.result.frmelmnts;
+          this.messages = _.merge({},  data.result.creation.messages, data.result.consumption.messages);
+          this.frmelmnts = _.merge({}, data.result.creation.frmelmnts, data.result.consumption.frmelmnts);
           this.cacheService.set('resourcebundles' + language, {
-            messages: data.result.messages,
-            frmelmnts: data.result.frmelmnts
+            messages: this.messages,
+            frmelmnts: this.frmelmnts
           }, {
               maxAge: this.browserCacheTtlService.browserCacheTtl
             });

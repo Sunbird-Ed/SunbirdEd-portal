@@ -1,9 +1,10 @@
-<div [appTelemetryImpression]="telemetryImpression" class=" ui grid">
+<div [appTelemetryImpression]="telemetryImpression" class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
         <div class=" ui grid">
             <div class="ten wide column">
-                <app-data-driven-filter [pageId]="'library-search'" [ignoreQuery]="['key']" *ngIf="filterType" [filterEnv]="filterType"
+                <app-data-driven-filter (dataDrivenFilter)="getFilters($event)" [enrichFilters]="facets"
+                [pageId]="'library-search'" [ignoreQuery]="['key']" *ngIf="filterType" [filterEnv]="filterType"
          [accordionDefaultOpen]=false [isShowFilterLabel]=true></app-data-driven-filter>
             </div>
             <div class="two wide column">
@@ -12,7 +13,7 @@
         </div>
 
         <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && !noResult">
-            <div class="ui left floated header margin-auto ">
+            <div class="ui left floated header  ">
                 <p class="serch-allresult">Showing results
                     <span class="lower-case" *ngIf="this.queryParams.key">
                         for {{this.queryParams.key}}
@@ -25,7 +26,7 @@
             </h5>
         </div>
         <div in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="searchList" *ngIf="!showLoader && !noResult" class="ui stackable four column grid dynamic-section-card ">
-            <div in-view-item [id]="i" [data]="content" class="column padding-top-5 padding-bottom-5 padding-left-10" *ngFor="let content of searchList;let i = index;">
+            <div in-view-item [id]="i" [data]="content" class="column py-5 pl-10" *ngFor="let content of searchList;let i = index;">
                 <app-card appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" 
                 [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType || 'content',ver:'1.0'}"
                 (clickEvent)="playContent($event)" [data]="content"></app-card>
@@ -36,9 +37,9 @@
         </div>
         <div class="ui grid">
             <div class="two wide column"></div>
-            <div class="ten wide column padding-top-none">
-                <div class="padding-bottom-10" *ngIf="searchList && totalCount > config.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
-                    <div class="ui pagination menu margin-top-10 right-floated padding-top-none " *ngIf="pager.pages.length">
+            <div class="ten wide column pt-0">
+                <div class="pb-10" *ngIf="searchList && totalCount > config.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
+                    <div class="ui pagination menu mt-10 right-floated pt-0" *ngIf="pager.pages.length">
                         <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
                         <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
                         <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)" class="item">{{page}}</a>

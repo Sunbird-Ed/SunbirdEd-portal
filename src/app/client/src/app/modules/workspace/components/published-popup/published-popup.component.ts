@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { ContentService, UserService } from '@sunbird/core';
 import { ResourceService, ConfigService, ToasterService, ServerResponse,
   RouterNavigationService, NavigationHelperService } from '@sunbird/shared';
-import { WorkSpaceService } from './../../services';
+import { WorkSpaceService, ReviewCommentsService } from './../../services';
 
 /**
  * This component displays the checklist for publish content for reviewer and
@@ -110,7 +110,7 @@ export class PublishedPopupComponent implements OnInit {
     contentService: ContentService,
     userService: UserService,
     public navigationHelperService: NavigationHelperService,
-    public workSpaceService: WorkSpaceService) {
+    public workSpaceService: WorkSpaceService, public reviewCommentsService: ReviewCommentsService) {
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
@@ -167,23 +167,43 @@ export class PublishedPopupComponent implements OnInit {
     this.contentService.post(option).subscribe(response => {
       this.toasterService.success(this.resourceService.messages.smsg.m0004);
       this.modal.deny();
-      if (this.closeUrl.url.includes('flagreviewer')) {
-        this.route.navigate(['workspace/content/flagreviewer/1']);
-      } else {
-        this.route.navigate(['workspace/content/upForReview/1']);
-      }
+      this.deleteReviewComments();
     }, (err) => {
       this.toasterService.error(this.resourceService.messages.fmsg.m0019);
       this.modal.deny();
       this.redirect();
     });
   }
-
+  navigateToWorkspace() {
+    if (this.closeUrl.url.includes('flagreviewer')) {
+      this.route.navigate(['workspace/content/flagreviewer/1']);
+    } else {
+      this.route.navigate(['workspace/content/upForReview/1']);
+    }
+  }
+  deleteReviewComments() {
+    if (this.contentId !== _.get(this.reviewCommentsService.contextDetails, 'contentId')) { // if stageId not fetched, throw error
+      this.navigateToWorkspace();
+      return ;
+    }
+    const requestBody = {
+      request: {
+        contextDetails: {
+          contentId: _.get(this.reviewCommentsService.contextDetails, 'contentId'),
+          contentVer: _.get(this.reviewCommentsService.contextDetails, 'contentVer'),
+          contentType: _.get(this.reviewCommentsService.contextDetails, 'contentType')
+        }
+      }
+    };
+    this.reviewCommentsService.deleteComment(requestBody)
+    .subscribe((res) => this.navigateToWorkspace(),
+    (err) => this.navigateToWorkspace());
+  }
   /**
    * Method to redirect to parent url
    */
   redirect() {
-   this.route.navigate(['../'], {relativeTo: this.activatedRoute});
+    this.route.navigate(['../'], {relativeTo: this.activatedRoute});
   }
 
   getCheckListConfig() {

@@ -22,7 +22,7 @@ import { Subject } from 'rxjs';
 @Component({
   selector: 'app-course-consumption',
   templateUrl: './course-consumption.component.html',
-  styleUrls: ['./course-consumption.component.css']
+  styleUrls: ['./course-consumption.component.scss']
 })
 export class CourseConsumptionComponent implements OnDestroy {
   /**

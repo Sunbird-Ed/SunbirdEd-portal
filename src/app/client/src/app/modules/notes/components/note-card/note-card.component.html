@@ -1,4 +1,4 @@
-<div class="notes-card-section ui card margin-bottom-15 width-100"  *ngIf="notesList.length > 0">
+<div class="notes-card-section ui card mb-15 width-100"  *ngIf="notesList.length > 0">
     <div class="content">
         <div class="header">
             <span>{{resourceService?.frmelmnts?.lbl?.mynotebook}}</span>
@@ -15,7 +15,7 @@
                             </span>
                             <span class="note-card-time-stamp right floated">{{note.updatedDate | timeAgo}}</span>
                         </span>
-                        <div class="description margin-top-0 notedec">
+                        <div class="description mt-0 notedec">
                             <span Markdown content="noteData">{{ note.note | slice:0:15 }}</span>
                         </div>
                     </div>

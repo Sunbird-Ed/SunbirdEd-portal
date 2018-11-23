@@ -589,7 +589,8 @@ export const mockData = {
                 ],
                 'currentLoginTime': null,
                 'location': '',
-                'status': 1
+                'status': 1,
+                'framework': {}
             }
         }
     },

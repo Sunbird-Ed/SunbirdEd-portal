@@ -4,8 +4,9 @@ import { PageSectionComponent } from './page-section.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
-import { ResourceService, ConfigService  } from '@sunbird/shared';
+import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { CacheService } from 'ng2-cache-service';
 import {Response} from './page-section.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
@@ -30,7 +31,8 @@ describe('PageSectionComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SlickModule, NgInviewModule, TelemetryModule.forRoot(), RouterTestingModule],
       declarations: [ PageSectionComponent ],
-      providers: [ ResourceService, ConfigService, { provide: ActivatedRoute, useValue: fakeActivatedRoute } ],
+      providers: [ ResourceService, ConfigService, CacheService, BrowserCacheTtlService,
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute } ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -44,14 +46,14 @@ describe('PageSectionComponent', () => {
   it('should show TEST INPUT for success data', () => {
     component.section = Response.successData;
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('div .sectionHeading').innerText).toEqual('Multiple Data 1');
-    expect(fixture.nativeElement.querySelector('div span.circular').innerText).toEqual('1');
+    expect(fixture.nativeElement.querySelector('.pageSection-heading').innerText).toEqual('Multiple Data');
+    expect(fixture.nativeElement.querySelector('.pageSection-count').innerText).toEqual('1');
   });
   it('should show TEST INPUT for no contents data', () => {
     component.section = Response.defaultData;
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('div .sectionHeading')).toEqual(null);
-   expect(fixture.nativeElement.querySelector('div span.circular')).toEqual(null);
+    expect(fixture.nativeElement.querySelector('.pageSection-heading')).toEqual(null);
+   expect(fixture.nativeElement.querySelector('.pageSection-count')).toEqual(null);
   });
   it('should call inview method for visits data', () => {
     component.section = {name: 'courseTest', length: 1};

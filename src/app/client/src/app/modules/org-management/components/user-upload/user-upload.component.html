@@ -28,7 +28,7 @@
           </div>
         </div>
       </div>
-      <div *ngIf="!processId" class="ui horizontal divider margin-top-40">
+      <div *ngIf="!processId" class="ui horizontal divider mt-40">
         Or
       </div>
       <div class="ui grid" *ngIf="!processId">
@@ -54,7 +54,7 @@
       <h5>{{resourceService?.frmelmnts?.lbl?.processid}}: {{processId}}</h5>
       <p>{{resourceService?.frmelmnts?.instn?.t0012}}</p>
     </div>
-    <div *ngIf="!processId && !showLoader" class="ui horizontal divider margin-top-40">
+    <div *ngIf="!processId && !showLoader" class="ui horizontal divider mt-40">
 
     </div>
     <div *ngIf="resourceService.frmelmnts && !processId && !showLoader" class="ui info message">

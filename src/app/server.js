@@ -7,7 +7,6 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const async = require('async')
 const helmet = require('helmet')
-const CassandraStore = require('cassandra-session-store')
 const _ = require('lodash')
 const trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js')
 const telemetryHelper = require('./helpers/telemetryHelper.js')
@@ -29,24 +28,17 @@ const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 let memoryStore = null
 const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
 const frameworkConfig = require('./framework.config.js');
-const configHelper = require('./helpers/config/configHelper.js')
+const configHelper = require('./helpers/configServiceSDKHelper.js')
+const cassandraUtils = require('./helpers/cassandraUtil.js')
+
+
 
 const app = express()
 
 if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
   memoryStore = new session.MemoryStore()
 } else {
-  memoryStore = new CassandraStore({
-    'table': 'sessions',
-    'client': null,
-    'clientOptions': {
-      'contactPoints': envHelper.PORTAL_CASSANDRA_URLS,
-      'keyspace': 'portal',
-      'queryOptions': {
-        'prepare': true
-      }
-    }
-  }, () => { })
+  memoryStore = cassandraUtils.getCassandraStoreInstance()
 }
 
 let keycloak = new Keycloak({ store: memoryStore }, {
@@ -85,7 +77,7 @@ require('./routes/clientRoutes.js')(app, keycloak)
 app.all(['/content-editor/telemetry', '/collection-editor/telemetry'], bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)
 
-// learner api routes 
+// learner api routes
 require('./routes/learnerRoutes.js')(app)
 
 app.all(['/content/data/v1/telemetry', '/action/data/v3/telemetry'],
@@ -112,13 +104,13 @@ function addCorsHeaders(req, res, next) {
 // tenant api
 app.get(['/v1/tenant/info', '/v1/tenant/info/:tenantId'], addCorsHeaders, tenantHelper.getInfo)
 
-// public api routes 
+// public api routes
 require('./routes/publicRoutes.js')(app)
 
 // proxy urls
 require('./proxy/contentEditorProxy.js')(app, keycloak)
 
-// content api routes 
+// content api routes
 require('./routes/contentRoutes.js')(app)
 
 // Local proxy for content and learner service
@@ -140,16 +132,18 @@ app.get('/v1/user/session/start/:deviceId', (req, res) => {
 app.use('/resourcebundles/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '50mb' }), require('./helpers/resourceBundles')(express))
 
-console.log('[Extensible framework]: Bootstraping...')
+
+console.log('[Extensible framework]: Bootstrapping...')
+
 const subApp = express()
 subApp.use(bodyParser.json({ limit: '50mb' }))
+
+// subApp.use('/plugin/review/comment/*', keycloak.protect()); // keycloak protection 
+
 app.use('/plugin', subApp)
-frameworkAPI.bootstrap(frameworkConfig, subApp).then(() => {
-  runApp()
-}).catch((error) => {
- // console.log('[Extensible framework]: Bootstrap failed!', error)
-  // if framework fails, do not stop the portal
-  runApp()
+frameworkAPI.bootstrap(frameworkConfig, subApp).then(data => runApp())
+.catch(error => {
+  runApp()   // if framework fails, do not stop the portal
 })
 
 // Method called after successful authentication and it will log the telemetry for CP_SESSION_START and updates the login time
@@ -208,8 +202,9 @@ function runApp () {
 
   // redirect to home if nothing found
   app.all('*', (req, res) => res.redirect('/'))
-  // start server after fetching the configuration data
-  configHelper.fetchConfig().then(function(){
+  // start server after building the configuration data
+
+  configHelper.init().then(function (status) {
     portal.server = app.listen(envHelper.PORTAL_PORT, () => {
       if (envHelper.PORTAL_CDN_URL) {
         const req = request
@@ -224,6 +219,8 @@ function runApp () {
       }
       console.log('app running on port ' + envHelper.PORTAL_PORT)
     })
+  },function(error){
+    console.log('Error in loading configs ' + error)
   })
 }
 

@@ -4,7 +4,7 @@
     <div>
       <app-org-filter appTelemetryInteract [telemetryInteractEdata]="filterIntractEdata"></app-org-filter>
       <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && !noResult">
-        <div class="ui left floated header margin-auto ">
+        <div class="ui left floated header  ">
           <p class="serch-allresult">Showing results
             <span class="lower-case" *ngIf="this.queryParams.key">
                for {{this.queryParams.key}}
@@ -53,11 +53,11 @@
       </div>
     </div>
 
-    <div class="ui grid margin-top-20">
+    <div class="ui grid mt-20">
       <div class="two wide column"></div>
-      <div class="ten wide column padding-top-none">
-        <div class="padding-bottom-10" *ngIf="searchList && totalCount > config.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
-          <div class="ui pagination menu margin-top-10 right-floated padding-top-none " *ngIf="pager.pages.length">
+      <div class="ten wide column pt-0">
+        <div class="pb-10" *ngIf="searchList && totalCount > config.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
+          <div class="ui pagination menu mt-10 right-floated pt-0 " *ngIf="pager.pages.length">
             <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
             <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
             <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)" class="item">{{page}}</a>

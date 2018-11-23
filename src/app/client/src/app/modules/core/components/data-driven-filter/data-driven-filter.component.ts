@@ -5,7 +5,7 @@ import {
 } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnDestroy, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FrameworkService, FormService, ConceptPickerService, PermissionService, UserService } from './../../services';
+import { FrameworkService, FormService, PermissionService, UserService } from './../../services';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventEdata } from '@sunbird/telemetry';
@@ -24,6 +24,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   @Input() enrichFilters: object;
   @Input() viewAllMode =  false;
   @Input() pageId: string;
+  @Input() frameworkName: string;
   @Output() filters = new EventEmitter();
   @Output() dataDrivenFilter = new EventEmitter();
   /**
@@ -72,8 +73,6 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   public userService: UserService;
   public loggedInUserRoles = [];
 
-  selectedConcepts: Array<object>;
-  showConcepts = false;
   refresh = true;
   isShowFilterPlaceholder = true;
   contentTypes: any;
@@ -97,7 +96,6 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
     formService: FormService,
     toasterService: ToasterService,
     userService: UserService,
-    public conceptPickerService: ConceptPickerService,
     permissionService: PermissionService,
     private browserCacheTtlService: BrowserCacheTtlService
 
@@ -115,7 +113,11 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit() {
-    this.frameworkService.initialize(this.hashTagId);
+    if (this.frameworkName) {
+      this.frameworkService.initialize(this.frameworkName);
+    } else  {
+      this.frameworkService.initialize();
+    }
     this.formInputData = {};
     this.getQueryParams();
     this.fetchFilterMetaData();
@@ -131,6 +133,9 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
       type: 'click',
       pageid: this.pageId
     };
+    this.setFilterInteractData();
+  }
+  setFilterInteractData() {
     this.submitIntractEdata = {
       id: 'submit',
       type: 'click',
@@ -138,7 +143,6 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
       extra: { filter: this.formInputData }
     };
   }
-
   getQueryParams() {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParams = { ...params };
@@ -151,16 +155,10 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
       this.refresh = false;
       this.cdr.detectChanges();
       this.refresh = true;
-      this.conceptPickerService.conceptData$.subscribe(conceptData => {
-        if (conceptData && !conceptData.err) {
-          this.selectedConcepts = conceptData.data;
-          if (this.formInputData && this.formInputData.concepts) {
-            this.formInputData.concepts = this.conceptPickerService.processConcepts(this.formInputData.concepts, this.selectedConcepts);
-          }
-          this.showConcepts = true;
-        }
-      });
     });
+  }
+  handleTopicChange(topicsSelected) {
+    this.formInputData['topic'] = topicsSelected;
   }
   /**
 * fetchFilterMetaData is gives form config data
@@ -174,14 +172,21 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
       this.createFacets();
     } else {
       this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
-        if (frameworkData && !frameworkData.err) {
-          this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
-          this.framework = frameworkData.framework;
+        if (!frameworkData.err) {
+          if (this.frameworkName && _.get(frameworkData.frameworkdata, this.frameworkName)) {
+            this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata[this.frameworkName].categories);
+            this.framework = this.frameworkName;
+          } else {
+            if (_.get(frameworkData.frameworkdata, 'defaultFramework')) {
+              this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
+              this.framework = frameworkData.frameworkdata['defaultFramework'].code;
+            }
+          }
           const formServiceInputParams = {
             formType: this.formType,
             formAction: this.formAction,
             contentType: this.filterEnv,
-            framework: frameworkData.framework
+            framework: this.framework
           };
           this.formService.getFormConfig(formServiceInputParams, this.hashTagId).subscribe(
             (data: ServerResponse) => {
@@ -274,31 +279,20 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   /**
- * to get selected concepts from concept picker.
- */
-  concepts(events) {
-    this.formInputData['concepts'] = events;
-  }
-  /**
  * To check filterType.
  */
   isObject(val) { return typeof val === 'object'; }
 
   applyFilters() {
-    this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
-    let queryParams: any = {};
-    _.forIn(this.queryParams, (value, key) => {
-      if (key === 'concepts') {
-        queryParams[key] = [];
-        value.forEach((conceptDetails) => {
-          queryParams[key].push(conceptDetails.identifier);
-        });
-      } else {
-        queryParams[key] = value;
-      }
+    const queryParamsNew: any = {};
+    _.forIn(this.formInputData, (eachInputs: Array<any | object>, key) => {
+        const formatedValue = _.compact(_.map(eachInputs, value =>
+          typeof value === 'string' ? value : _.get(value, 'identifier')));
+        if (formatedValue.length) {
+          queryParamsNew[key] = formatedValue;
+        }
     });
-    queryParams = _.pickBy(queryParams, value => value && value.length);
-    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
+    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParamsNew });
   }
 
   removeFilterSelection(field, item) {

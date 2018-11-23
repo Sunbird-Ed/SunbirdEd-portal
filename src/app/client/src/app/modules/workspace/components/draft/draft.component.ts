@@ -208,8 +208,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
                     this.noResult = true;
                     this.showLoader = false;
                     this.noResultMessage = {
-                        'message': this.resourceService.messages.stmsg.m0008,
-                        'messageText': this.resourceService.messages.stmsg.m0012
+                        'messageText': this.resourceService.messages.stmsg.m0125
                     };
                 }
             },
