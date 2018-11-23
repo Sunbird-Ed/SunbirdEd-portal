@@ -74,7 +74,7 @@ export class FrameworkService {
     this.publicDataService = publicDataService;
   }
 
-  public initialize(framewrok?: string) {
+  public initialize(framewrok?: string, hashTagId?: string) {
     if (framewrok) {
       if (this._frameworkData && !_.get( this._frameworkData , framewrok) ) {
         this.getFrameworkCategories(framewrok);
@@ -88,6 +88,10 @@ export class FrameworkService {
               this.getFramework();
             }
           });
+        if (hashTagId) {
+          this.hashTagId = hashTagId;
+          this.getFramework();
+        }
       }
     }
   }

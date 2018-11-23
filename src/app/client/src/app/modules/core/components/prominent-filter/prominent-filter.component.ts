@@ -20,6 +20,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   @Input() showSearchedParam = true;
   @Input() pageId: string;
   @Output() filters = new EventEmitter();
+  @Input() frameworkName: string;
   @Output() prominentFilter = new EventEmitter();
   /**
  * To get url, app configs
@@ -104,7 +105,11 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.frameworkService.initialize(this.hashTagId);
+    if (this.frameworkName) {
+      this.frameworkService.initialize(this.frameworkName);
+    } else  {
+      this.frameworkService.initialize('', this.hashTagId);
+    }
     this.formInputData = {};
     this.getQueryParams();
     this.fetchFilterMetaData();
