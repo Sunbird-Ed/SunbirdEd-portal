@@ -24,6 +24,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   @Input() enrichFilters: object;
   @Input() viewAllMode =  false;
   @Input() pageId: string;
+  @Input() frameworkName: string;
   @Output() filters = new EventEmitter();
   @Output() dataDrivenFilter = new EventEmitter();
   /**
@@ -112,7 +113,11 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit() {
-    this.frameworkService.initialize(this.hashTagId);
+    if (this.frameworkName) {
+      this.frameworkService.initialize(this.frameworkName);
+    } else  {
+      this.frameworkService.initialize();
+    }
     this.formInputData = {};
     this.getQueryParams();
     this.fetchFilterMetaData();
@@ -167,14 +172,21 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
       this.createFacets();
     } else {
       this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
-        if (frameworkData && !frameworkData.err) {
-          this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
-          this.framework = frameworkData.framework;
+        if (!frameworkData.err) {
+          if (this.frameworkName && _.get(frameworkData.frameworkdata, this.frameworkName)) {
+            this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata[this.frameworkName].categories);
+            this.framework = this.frameworkName;
+          } else {
+            if (_.get(frameworkData.frameworkdata, 'defaultFramework')) {
+              this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
+              this.framework = frameworkData.frameworkdata['defaultFramework'].code;
+            }
+          }
           const formServiceInputParams = {
             formType: this.formType,
             formAction: this.formAction,
             contentType: this.filterEnv,
-            framework: frameworkData.framework
+            framework: this.framework
           };
           this.formService.getFormConfig(formServiceInputParams, this.hashTagId).subscribe(
             (data: ServerResponse) => {
