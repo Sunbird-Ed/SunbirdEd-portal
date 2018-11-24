@@ -15,7 +15,7 @@
             <sui-select-option *ngFor="let option of board.range" [value]="option.name"></sui-select-option>
           </sui-multi-select>
         </div>
-        <div class="margin-top-0 ui pointing red basic label below" *ngIf="selectedOption && selectedOption[board.code] && selectedOption[board.code].length == 0">
+        <div class="mt-0 ui pointing red basic label below" *ngIf="selectedOption && selectedOption[board.code] && selectedOption[board.code].length == 0">
           {{resourceService?.messages?.stmsg?.m0126}}
         </div>
       </div>
@@ -27,7 +27,7 @@
             <sui-select-option *ngFor="let option of medium.range" [value]="option.name"></sui-select-option>
           </sui-multi-select>
         </div>
-        <div class="margin-top-0  ui pointing red basic label below" *ngIf="selectedOption && selectedOption[medium.code] && selectedOption[medium.code].length == 0">
+        <div class="mt-0  ui pointing red basic label below" *ngIf="selectedOption && selectedOption[medium.code] && selectedOption[medium.code].length == 0">
           {{resourceService?.messages?.stmsg?.m0127}}
         </div>
       </div>
@@ -39,7 +39,7 @@
             <sui-select-option *ngFor="let option of class.range" [value]="option.name"></sui-select-option>
           </sui-multi-select>
         </div>
-        <div class="margin-top-0 ui pointing red basic label below" *ngIf="selectedOption && selectedOption[class.code] && selectedOption[class.code].length == 0">
+        <div class="mt-0 ui pointing red basic label below" *ngIf="selectedOption && selectedOption[class.code] && selectedOption[class.code].length == 0">
           {{resourceService?.messages?.stmsg?.m0128}}
         </div>
       </div>

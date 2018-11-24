@@ -1,7 +1,7 @@
 <div *ngIf="!enrolledCourse" class="rightSideSectionCards ui card">
     <div class="header batchCardAlign">
         <span class="header headerBatchCard">{{resourceService?.frmelmnts?.lbl?.batches}}</span>
-        <a>
+        <a class="opacity-1">
             <sui-select (selectedOptionChange)="getAllBatchDetails()" class="batchCardDropDown" [(ngModel)]="batchStatus" [options]="statusOptions"
                 valueField="value" labelField="name" #batchStatusSelect>
                 <sui-select-option *ngFor="let option of batchStatusSelect.filteredOptions" [value]="option">
@@ -12,7 +12,7 @@
     <div class="content batchcardListContent" id="batchcardList">
         <div class="description annannouncement-description">
             <div *ngIf="showBatchList" class="ui divided list">
-                <div class="item padding-top-10" *ngFor="let batch of batchList">
+                <div class="item pt-10" *ngFor="let batch of batchList">
                     <i [ngClass]="userService.userid === batch.createdBy ? 'write' : 'eye'" class="icon float-ContentRight cursor-pointer write" appTelemetryInteract [telemetryInteractEdata]="updateBatchIntractEdata"
                         [telemetryInteractObject]="{id:batch.identifier,type:'batch',ver:'1',rollup:{l1:courseId}}" (click)="batchUpdate(batch)"
                         *ngIf="courseMentor"></i>
@@ -20,9 +20,9 @@
                         [telemetryInteractObject]="{id:batch.identifier,type:'batch',ver:'1',rollup:{l1:courseId}}" (click)="enrollBatch(batch)"
                         *ngIf="!courseMentor">{{resourceService.frmelmnts.btn.enroll}}</button>
                     <i class="calendar outline icon"></i>
-                    <div class="content padding-bottom-15">
-                        <span class="header padding-bottom-5"> {{batch.startDate | dateFormat}} - </span>
-                        <span *ngIf="batch.endDate" class="header padding-bottom-5"> {{batch.endDate | dateFormat}} </span>
+                    <div class="content pb-15">
+                        <span class="header pb-5"> {{batch.startDate | dateFormat}} - </span>
+                        <span *ngIf="batch.endDate" class="header pb-5"> {{batch.endDate | dateFormat}} </span>
                         <div class="description" *ngIf="userNames[batch.createdBy]">Created by {{userNames[batch.createdBy].firstName}} {{userNames[batch.createdBy].lastName}}</div>
                     </div>
                 </div>

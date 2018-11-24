@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { SearchParam } from './../../interfaces/search';
 import { LearnerService } from './../learner/learner.service';
 import { PublicDataService } from './../public-data/public-data.service';
+import * as _ from 'lodash';
 /**
  * Service to search content
  */
@@ -161,7 +162,8 @@ export class SearchService {
           offset: requestParam.offset,
           limit: requestParam.limit,
           query: requestParam.query,
-          sort_by: requestParam.sort_by
+          sort_by: requestParam.sort_by,
+          facets: requestParam.facets
         }
       }
     };
@@ -217,7 +219,8 @@ export class SearchService {
           offset: (requestParam.pageNumber - 1) * requestParam.limit,
           limit: requestParam.limit,
           query: requestParam.query,
-          sort_by: requestParam.sort_by
+          sort_by: requestParam.sort_by,
+          facets: requestParam.facets
         }
       }
     };
@@ -292,6 +295,18 @@ export class SearchService {
       }
     };
     return this.learnerService.post(option);
+  }
+
+  processFilterData(facets) {
+    const facetObj = {};
+    _.forEach(facets, (value) => {
+        if (value) {
+            let data = {};
+            data = value.values;
+            facetObj[value.name] = data;
+        }
+    });
+    return facetObj;
   }
 }
 

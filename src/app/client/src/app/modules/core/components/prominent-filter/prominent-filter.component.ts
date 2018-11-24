@@ -20,6 +20,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   @Input() showSearchedParam = true;
   @Input() pageId: string;
   @Output() filters = new EventEmitter();
+  @Input() frameworkName: string;
   @Output() prominentFilter = new EventEmitter();
   /**
  * To get url, app configs
@@ -104,7 +105,11 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.frameworkService.initialize(this.hashTagId);
+    if (this.frameworkName) {
+      this.frameworkService.initialize(this.frameworkName);
+    } else  {
+      this.frameworkService.initialize('', this.hashTagId);
+    }
     this.formInputData = {};
     this.getQueryParams();
     this.fetchFilterMetaData();
@@ -141,14 +146,14 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
       this.prominentFilter.emit(this.formFieldProperties);
     } else {
       this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
-        if (frameworkData && !frameworkData.err) {
-          this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
-          this.framework = frameworkData.framework;
+        if (!frameworkData.err) {
+          this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
+          this.framework = frameworkData.frameworkdata['defaultFramework'].code;
           const formServiceInputParams = {
             formType: this.formType,
             formAction: this.formAction,
             contentType: this.filterEnv,
-            framework: frameworkData.framework
+            framework: this.framework
           };
           this.formService.getFormConfig(formServiceInputParams, this.hashTagId).subscribe(
             (data: ServerResponse) => {

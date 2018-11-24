@@ -2,8 +2,8 @@
     <div class="ui twelve wide column" *ngIf="section.contents && section.contents.length > 0">
         <div class="d-flex flex-ai-center">
             <h4 class="ui header m-0 mr-5 pageSection-heading">{{section.name}}</h4>
-            <span class="ui primary label py-5 px-7 pageSection-count">{{section.contents.length}}</span>
-            <button class="ui button primary rounded bs-1 py-5 m-0 ml-auto" *ngIf="section.contents.length >= 10 && section.name != 'My Courses' " type="button" (click)="navigateToViewAll(section)">{{ resourceService.frmelmnts.lnk.viewall}}</button>
+            <span class="ui primary label pageSection-count">{{section.contents.length}}</span>
+            <button class="ui button small bs-1 py-5 m-0 ml-auto" *ngIf="section.contents.length >= 10 && section.name != 'My Courses' " type="button" (click)="navigateToViewAll(section)">{{ resourceService.frmelmnts.lnk.viewall}}</button>
         </div>
         <div class="pageSection-Slider">
             <ngx-slick 
@@ -25,7 +25,7 @@
                         (clickEvent)="playContent($event)"
                         [data]="content" 
                         [customClass]="'mr-20'"
-                        class="pr-20">
+                        class="pr-20 d-block">
                     </app-card>
                 </div>
             </ngx-slick>

@@ -92,10 +92,10 @@ describe('DataDrivenComponent', () => {
             contentType: 'textbook',
             framework: 'textbook'
     };
-    service._frameWorkData$ = mockFrameworkData.success;
+    service._frameWorkData$ = mockFrameworkData.frameworkData;
     service._frameworkData$.next({
       err: null, framework: mockFrameworkData.success.framework,
-      frameworkdata: mockFrameworkData.success.frameworkdata
+      frameworkdata: mockFrameworkData.frameworkData
     });
     componentParent.isCachedDataExists = true;
     componentParent.formFieldProperties = mockFrameworkData.formSuccess.fields;

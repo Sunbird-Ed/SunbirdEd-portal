@@ -75,11 +75,6 @@ export class ResourceComponent implements OnInit, OnDestroy {
   sortingOptions: Array<ISort>;
   contents: any;
   framework: any;
-  /**
-  * Variable to show popup to install the app
-  */
-  showAppPopUp = false;
-  viewinBrowser = false;
   dataDrivenFilters: object;
   /**
    * The "constructor"
@@ -108,7 +103,7 @@ export class ResourceComponent implements OnInit, OnDestroy {
     this.noResult = false;
     let softConstraints = {};
     const filters = _.pickBy(this.filters, value => value.length > 0);
-      if (this.viewinBrowser && _.isEmpty(this.queryParams)) {
+      if (_.isEmpty(this.queryParams)) {
         filters.board = this.dataDrivenFilters['board'];
         softConstraints = {board: 100 };
     }
@@ -116,7 +111,9 @@ export class ResourceComponent implements OnInit, OnDestroy {
       source: 'web',
       name: 'Resource',
       filters: filters,
-      softConstraints : softConstraints
+      softConstraints : softConstraints,
+      mode: 'soft',
+      exists: []
     };
     if (this.queryParams.sort_by) {
       option['sort_by'] = {[this.queryParams.sort_by]: this.queryParams.sortType  };
@@ -172,8 +169,6 @@ export class ResourceComponent implements OnInit, OnDestroy {
     this.dataDrivenFilters = {};
     this.filterType = this.config.appConfig.library.filterType;
     this.redirectUrl = this.config.appConfig.library.inPageredirectUrl;
-    this.showAppPopUp = this.utilService.showAppPopUp;
-    this.getQueryParams();
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
@@ -238,7 +233,6 @@ export class ResourceComponent implements OnInit, OnDestroy {
         if (this.queryParams.sort_by && this.queryParams.sortType) {
                this.queryParams.sortType = this.queryParams.sortType.toString();
               }
-        this.viewinBrowser = false;
         this.populatePageData();
       });
   }
@@ -262,11 +256,6 @@ export class ResourceComponent implements OnInit, OnDestroy {
     });
       const sectionUrl = 'resources/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], {queryParams: queryParams});
-  }
-
-  viewInBrowser() {
-    this.viewinBrowser = true;
-    this.populatePageData();
   }
 
   getFilters(filters) {

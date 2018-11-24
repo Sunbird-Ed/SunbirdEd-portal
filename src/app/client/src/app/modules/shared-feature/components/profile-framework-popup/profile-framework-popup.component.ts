@@ -40,15 +40,15 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     this.userSubscription = this.userService.userData$.subscribe(
       (user: any) => {
         if (user && !user.err) {
-          this.frameworkService.initialize(user.userProfile.rootOrg.hashTagId);
+          this.frameworkService.initialize();
           this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
-            if (frameworkData && !frameworkData.err) {
-              this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
+            if (!frameworkData.err) {
+              this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
               const formServiceInputParams = {
                 formType: this.formType,
                 formAction: this.formAction,
                 contentType: 'framework',
-                framework: frameworkData.framework
+                framework: frameworkData.frameworkdata['defaultFramework'].code
               };
               this.formService.getFormConfig(formServiceInputParams, user.userProfile.rootOrg.hashTagId).pipe(
                 takeUntil(this.unsubscribe)).subscribe((data: ServerResponse) => {

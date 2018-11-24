@@ -1,10 +1,18 @@
 import { ServerResponse } from './serverResponse';
 export interface Framework {
     err: ServerResponse;
-    framework: string;
-    frameworkdata: FrameworkCategorie;
+    frameworkdata: FrameworkData;
 }
-export interface FrameworkCategorie {
+export interface FrameworkData {
+    [keys: string]: FrameworkCategories | any;
+}
+export interface FrameworkCategories {
+    code: string;
+    description: string;
+    identifier: string;
+    name: string;
+    objectType: string;
+    type: string;
     Categories: Array<CategoriesData>;
 }
 export interface CategoriesData {
