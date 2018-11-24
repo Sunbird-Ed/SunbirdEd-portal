@@ -63,14 +63,9 @@ export class PlayerComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   generateContentReadEvent(event: any) {
-    if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START')) {
+    if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START' ||
+    event.detail.telemetryData.eid === 'END')) {
       this.contentProgressEvent.emit(event);
-    } else if (event.detail.telemetryData.eid &&
-      event.detail.telemetryData.eid === 'END' && _.get(event.detail.telemetryData, 'edata.summary')) {
-      const summary = _.find(event.detail.telemetryData.edata.summary , { progress: 100 });
-      if (summary) {
-        this.contentProgressEvent.emit(event);
-      }
     } else if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'IMPRESSION')) {
       this.emitSceneChangeEvent();
     }
