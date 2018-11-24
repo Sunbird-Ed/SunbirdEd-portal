@@ -53,7 +53,7 @@
                                 </div>
                             </div>
                             <br>
-                            <app-carriculum-card *ngIf="curriculum && curriculum.length > 0" [curriculum]="curriculum"></app-carriculum-card>
+                            <app-curriculum-card *ngIf="curriculum && curriculum.length > 0" [curriculum]="curriculum"></app-curriculum-card>
                             <br>
                             <div class="courseupdate">
                                 <b>{{resourceService.frmelmnts.lbl.coursecreatedon}}: {{courseHierarchy.createdOn | dateFormat}}</b>
@@ -62,7 +62,7 @@
                                 <br>
                                 <b *ngIf="courseHierarchy.creator">{{resourceService.frmelmnts.lbl.courseCreatedBy}}: {{courseHierarchy.creator}}</b>
                                 <br>
-                                <!-- <a *ngIf="contributionsLength>0" popupTrigger="outsideClick" [popupPlacement]="'bottom left'" suiPopup popupText={{contributions}}>{{resourceService.frmelmnts.lbl.viewCredits}}</a> -->
+                                <!-- <a *ngIf="contributions" popupTrigger="outsideClick" [popupPlacement]="'bottom left'" suiPopup popupText={{contributions}}>{{resourceService.frmelmnts.lbl.viewCredits}}</a> -->
                                 <br>
                             </div>
                         </div>
@@ -92,8 +92,7 @@
                                 </div>
                                 <div class="ui grid">
                                     <div class="twelve wide column" [appTelemetryImpression]="telemetryContentImpression">
-                                        <app-player (playerOnDestroyEvent)="playerOnDestroy($event)" (contentProgressEvent)="contentProgressEvent($event)" class="content-player"
-                                            [playerConfig]="playerConfig"></app-player>
+                                        <app-player (contentProgressEvent)="contentProgressEvent($event)" class="content-player" [playerConfig]="playerConfig"></app-player>
                                     </div>
                                 </div>
                             </div>
@@ -138,7 +137,6 @@
             <div class="ui grid">
                 <div class="row">
                     <div class="eight wide column">
-                        <!-- <course-discussions></course-discussions> -->
                     </div>
                     <div class="four wide column toc-note-content">
                         <app-note-card [ids]="{contentId:contentId, courseId:courseId}" [createNoteData]="createNoteData"></app-note-card>
@@ -150,7 +148,6 @@
             <app-loader [data]="loaderMessage"></app-loader>
         </div>
         <div *ngIf="showError">
-            <!-- <error-message data="{{toc.error}}" visibility="toc.error.showError"></error-message> -->
         </div>
         <div class="one wide column"></div>
     </div>

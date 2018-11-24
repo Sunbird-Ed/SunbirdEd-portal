@@ -1,7 +1,5 @@
-import { delay } from 'rxjs/operators';
-import { WindowScrollService, ConfigService } from './../../services';
-
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Input, OnDestroy, Output, EventEmitter, OnChanges } from '@angular/core';
+import { ConfigService } from './../../services';
+import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
 import {PlayerConfig} from './../../interfaces';
@@ -11,7 +9,7 @@ import {PlayerConfig} from './../../interfaces';
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.css']
 })
-export class PlayerComponent implements OnInit, OnChanges, OnDestroy {
+export class PlayerComponent implements OnInit, OnChanges {
   @Input() playerConfig: PlayerConfig;
   @Output() contentProgressEvent = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
@@ -76,8 +74,5 @@ export class PlayerComponent implements OnInit, OnChanges, OnDestroy {
       const eventData = { stageId };
       this.sceneChangeEvent.emit(eventData);
     } , timer); // waiting for player to load, then fetching stageId (if we dont wait stageId will be undefined)
-  }
-  ngOnDestroy() {
-    this.playerOnDestroyEvent.emit( {contentId: this.playerConfig.context.contentId} );
   }
 }
