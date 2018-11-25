@@ -1,9 +1,9 @@
-import { Subscription, Observable } from 'rxjs';
+import { of, throwError } from 'rxjs';
+import { first, mergeMap, map, tap } from 'rxjs/operators';
 import {
-  ConfigService, ResourceService, Framework, ToasterService, ServerResponse,
-  BrowserCacheTtlService, IUserData
+  ConfigService, ResourceService, Framework, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnDestroy, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, PermissionService, UserService } from './../../services';
 import * as _ from 'lodash';
@@ -14,346 +14,199 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
   templateUrl: './data-driven-filter.component.html',
   styleUrls: ['./data-driven-filter.component.css']
 })
-export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
+export class DataDrivenFilterComponent implements OnInit, OnChanges {
   @Input() filterEnv: string;
   @Input() accordionDefaultOpen: boolean;
   @Input() isShowFilterLabel: boolean;
-  @Input() hashTagId = '';
+  @Input() hashTagId: string;
   @Input() ignoreQuery = [];
   @Input() showSearchedParam = true;
   @Input() enrichFilters: object;
-  @Input() viewAllMode =  false;
+  @Input() viewAllMode = false;
   @Input() pageId: string;
   @Input() frameworkName: string;
-  @Output() filters = new EventEmitter();
   @Output() dataDrivenFilter = new EventEmitter();
-  /**
- * To get url, app configs
- */
-  public configService: ConfigService;
 
-  public resourceService: ResourceService;
+  public showFilters = false;
 
-  public filterType: string;
-  /**
- * To navigate to other pages
- */
-  public router: Router;
-  /**
-* To show toaster(error, success etc) after any API calls
-*/
-  public toasterService: ToasterService;
+  public formFieldProperties: Array<any>;
 
-  public frameworkService: FrameworkService;
+  public filtersDetails: Array<any>;
 
-  public formService: FormService;
-
-  public formFieldProperties: any;
-  public filtersDetails: any;
-
-  public categoryMasterList: any;
+  public categoryMasterList: Array<any>;
 
   public framework: string;
 
-  public isCachedDataExists: boolean;
-
-  public formType = 'content';
-
   public formAction = 'search';
 
-  public queryParams: any;
-  /**
- * formInputData is to take input data's from form
- */
   public formInputData: any;
 
-  userRoles = [];
+  public refresh = true;
 
-  public permissionService: PermissionService;
-  public userService: UserService;
-  public loggedInUserRoles = [];
+  public isShowFilterPlaceholder = true;
 
-  refresh = true;
-  isShowFilterPlaceholder = true;
-  contentTypes: any;
-  frameworkDataSubscription: Subscription;
-  filterIntractEdata: IInteractEventEdata;
-  submitIntractEdata: IInteractEventEdata;
-  /**
-    * Constructor to create injected service(s) object
-    Default method of Draft Component class
-    * @param {Router} route Reference of Router
-    * @param {PaginationService} paginationService Reference of PaginationService
-    * @param {ConfigService} config Reference of ConfigService
-  */
-  constructor(configService: ConfigService,
-    resourceService: ResourceService,
-    router: Router,
-    private activatedRoute: ActivatedRoute,
-    private _cacheService: CacheService,
-    private cdr: ChangeDetectorRef,
-    frameworkService: FrameworkService,
-    formService: FormService,
-    toasterService: ToasterService,
-    userService: UserService,
-    permissionService: PermissionService,
-    private browserCacheTtlService: BrowserCacheTtlService
+  public filterIntractEdata: IInteractEventEdata;
 
-  ) {
-    this.userService = userService;
-    this.configService = configService;
-    this.resourceService = resourceService;
-    this.router = router;
-    this.frameworkService = frameworkService;
-    this.formService = formService;
-    this.toasterService = toasterService;
-    this.permissionService = permissionService;
-    this.formInputData = {};
+  public submitIntractEdata: IInteractEventEdata;
+
+  constructor(public configService: ConfigService, public resourceService: ResourceService, public router: Router,
+    private activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
+    public frameworkService: FrameworkService, public formService: FormService,
+    public userService: UserService, public permissionService: PermissionService,
+    private browserCacheTtlService: BrowserCacheTtlService) {
     this.router.onSameUrlNavigation = 'reload';
   }
 
   ngOnInit() {
-    if (this.frameworkName) {
-      this.frameworkService.initialize(this.frameworkName);
-    } else  {
-      this.frameworkService.initialize();
-    }
-    this.formInputData = {};
-    this.getQueryParams();
-    this.fetchFilterMetaData();
-    this.contentTypes = this.configService.dropDownConfig.FILTER.RESOURCES.contentTypes;
-    this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        if (user && !user.err) {
-          this.loggedInUserRoles = user.userProfile.userRoles;
-        }
-      });
-    this.filterIntractEdata = {
-      id: 'filter',
-      type: 'click',
-      pageid: this.pageId
-    };
+    this.frameworkService.initialize(this.frameworkName, this.hashTagId);
+    this.getFormatedFilterDetails().subscribe((formFieldProperties) => {
+      this.formFieldProperties = formFieldProperties;
+      this.filtersDetails = _.cloneDeep(formFieldProperties);
+      this.dataDrivenFilter.emit(formFieldProperties);
+      this.subscribeToQueryParams();
+    }, (err) => {
+      this.dataDrivenFilter.emit([]);
+      console.log(err);
+    });
     this.setFilterInteractData();
   }
-  setFilterInteractData() {
+  getFormatedFilterDetails() {
+    const cachedFormData = this.cacheService.get(this.filterEnv + this.formAction);
+    if (cachedFormData) {
+      return of(cachedFormData);
+    } else {
+      return this.fetchFrameWorkDetails().pipe(
+        mergeMap((frameworkDetails: any) => {
+          this.categoryMasterList = frameworkDetails.categories;
+          this.framework = frameworkDetails.code;
+          return this.getFormDetails();
+        }),
+        map((formData: any) => {
+          let formFieldProperties = _.filter(formData, (formFieldCategory) => {
+            if (!_.isEmpty(formFieldCategory.allowedRoles)
+              && !this.permissionService.checkRolesPermissions(formFieldCategory.allowedRoles)) {
+                return false;
+            }
+            const loggedInUserRoles = _.get(this.userService, 'userProfile.userRoles');
+            const frameworkTerms = _.get(_.find(this.categoryMasterList, { code : formFieldCategory.code}), 'terms');
+            formFieldCategory.range = _.union(formFieldCategory.range, frameworkTerms);
+            if (this.filterEnv === 'upforreview' && formFieldCategory.code === 'contentType' &&
+            _.intersection(loggedInUserRoles, ['CONTENT_REVIEWER', 'BOOK_REVIEWER']).length) {
+                if (!_.find(formFieldCategory.range, { name: 'TextBook' })) {
+                  formFieldCategory.range.push({ name: 'TextBook' });
+                }
+            }
+            return true;
+          });
+          formFieldProperties = _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index');
+          return formFieldProperties;
+        }),
+        tap((formFieldProperties) => {
+          this.cacheService.set(this.filterEnv + this.formAction, formFieldProperties,
+            {maxAge: this.browserCacheTtlService.browserCacheTtl});
+        }));
+    }
+  }
+  private fetchFrameWorkDetails() {
+    return this.frameworkService.frameworkData$.pipe(first(),
+      mergeMap((frameworkDetails: Framework) => {
+        if (!frameworkDetails.err) {
+          const framework = this.frameworkName ? this.frameworkName : 'defaultFramework';
+          const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
+          if (frameworkData) {
+            return of({categoryMasterList: frameworkData.categories, framework: frameworkData.code});
+          } else {
+            return throwError('no result for ' + this.frameworkName); // framework error need to handle this
+          }
+        } else {
+          return throwError(frameworkDetails.err); // framework error
+        }
+      }));
+  }
+  private subscribeToQueryParams() {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.formInputData = {};
+      _.forIn(params, (value, key) => this.formInputData[key] = typeof value === 'string' && key !== 'key' ? [value] : value);
+      console.log('query', this.formInputData);
+      this.showFilters = true;
+      this.hardRefreshFilter();
+    });
+  }
+  private getFormDetails() {
+    const formServiceInputParams = {
+      formType: 'content',
+      formAction: this.formAction,
+      contentType: this.filterEnv,
+      framework: this.framework
+    };
+    console.log('getFormDetails');
+    return this.formService.getFormConfig(formServiceInputParams, this.hashTagId);
+  }
+
+  public resetFilters() {
+    this.formInputData = _.pick(this.formInputData, this.ignoreQuery);
+    if (this.viewAllMode) {
+      const data = this.cacheService.get('viewAllQuery');
+      _.forIn(data, (value, key ) => this.formInputData[key] = value);
+    }
+    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
+    this.hardRefreshFilter();
+  }
+
+  public applyFilters() {
+    const queryParams: any = {};
+    _.forIn(this.formInputData, (eachInputs: Array<any | object>, key) => {
+        const formatedValue = typeof eachInputs === 'string' ? eachInputs :
+        _.compact(_.map(eachInputs, value => typeof value === 'string' ? value : _.get(value, 'identifier')));
+        if (formatedValue.length) {
+          queryParams[key] = formatedValue;
+        }
+    });
+    console.log('apply filter', queryParams);
+    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
+  }
+
+  public removeFilterSelection(field, item) {
+    const itemIndex = this.formInputData[field].indexOf(item);
+    if (itemIndex !== -1) {
+      this.formInputData[field].splice(itemIndex, 1);
+      this.formInputData = _.pickBy(this.formInputData);
+      this.hardRefreshFilter();
+    }
+  }
+  ngOnChanges() {
+    if (this.formFieldProperties && this.enrichFilters) {
+      this.enrichFiltersOnInputChange();
+    }
+  }
+  private enrichFiltersOnInputChange() {
+    this.filtersDetails = _.map(this.formFieldProperties, (eachFields) => {
+      console.log(eachFields);
+      eachFields.range = _.filter(this.enrichFilters[eachFields.code],
+        (field) => _.get(field, 'name') && field.name !== '');
+      return eachFields;
+    });
+    this.hardRefreshFilter();
+  }
+  public handleTopicChange(topicsSelected) {
+    this.formInputData['topic'] = topicsSelected;
+  }
+  private setFilterInteractData() {
     this.submitIntractEdata = {
       id: 'submit',
       type: 'click',
       pageid: this.pageId,
       extra: { filter: this.formInputData }
     };
+    this.filterIntractEdata = {
+      id: 'filter',
+      type: 'click',
+      pageid: this.pageId
+    };
   }
-  getQueryParams() {
-    this.activatedRoute.queryParams.subscribe((params) => {
-      this.queryParams = { ...params };
-      _.forIn(params, (value, key) => {
-        if (typeof value === 'string' && key !== 'key' && key !== 'language') {
-          this.queryParams[key] = [value];
-        }
-      });
-      this.formInputData = _.pickBy(this.queryParams);
-      this.refresh = false;
-      this.cdr.detectChanges();
-      this.refresh = true;
-    });
-  }
-  handleTopicChange(topicsSelected) {
-    this.formInputData['topic'] = topicsSelected;
-  }
-  /**
-* fetchFilterMetaData is gives form config data
-*/
-  fetchFilterMetaData() {
-    this.isCachedDataExists = this._cacheService.exists(this.filterEnv + this.formAction);
-    if (this.isCachedDataExists) {
-      const data: any | null = this._cacheService.get(this.filterEnv + this.formAction);
-      this.formFieldProperties = data;
-      this.dataDrivenFilter.emit(this.formFieldProperties);
-      this.createFacets();
-    } else {
-      this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
-        if (!frameworkData.err) {
-          if (this.frameworkName && _.get(frameworkData.frameworkdata, this.frameworkName)) {
-            this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata[this.frameworkName].categories);
-            this.framework = this.frameworkName;
-          } else {
-            if (_.get(frameworkData.frameworkdata, 'defaultFramework')) {
-              this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
-              this.framework = frameworkData.frameworkdata['defaultFramework'].code;
-            }
-          }
-          const formServiceInputParams = {
-            formType: this.formType,
-            formAction: this.formAction,
-            contentType: this.filterEnv,
-            framework: this.framework
-          };
-          this.formService.getFormConfig(formServiceInputParams, this.hashTagId).subscribe(
-            (data: ServerResponse) => {
-              this.formFieldProperties = data;
-              _.forEach(this.formFieldProperties, (formFieldCategory) => {
-                if (formFieldCategory && formFieldCategory.allowedRoles) {
-                  const userRoles = formFieldCategory.allowedRoles.filter(element => this.userRoles.includes(element));
-                  if (!this.showField(formFieldCategory.allowedRoles)) {
-                    this.formFieldProperties.splice(this.formFieldProperties.indexOf(formFieldCategory), 1);
-                  }
-                  if (formServiceInputParams.contentType === 'upforreview') {
-                    this.updateFormFields(formFieldCategory);
-                  }
-                }
-              });
-              this.getFormConfig();
-              this.dataDrivenFilter.emit(this.formFieldProperties);
-            },
-            (err: ServerResponse) => {
-              this.dataDrivenFilter.emit([]);
-              // this.toasterService.error(this.resourceService.messages.emsg.m0005);
-            }
-          );
-        } else if (frameworkData && frameworkData.err) {
-          this.dataDrivenFilter.emit([]);
-          // this.toasterService.error(this.resourceService.messages.emsg.m0005);
-        }
-      });
-    }
-  }
-
-  updateFormFields(formFieldCategory) {
-    if (formFieldCategory && formFieldCategory.code === 'contentType') {
-      if (_.indexOf(this.loggedInUserRoles, 'CONTENT_REVIEWER') !== -1 &&
-        _.indexOf(this.loggedInUserRoles, 'BOOK_REVIEWER') !== -1) {
-        const contentTypeIndex = _.findIndex(this.formFieldProperties, { code: 'contentType' });
-        const rangeTextBookIndex = _.findIndex(this.formFieldProperties[contentTypeIndex].range, { name: 'TextBook' });
-        if (rangeTextBookIndex === -1) {
-          this.formFieldProperties[contentTypeIndex].range.push({ name: 'TextBook' });
-        }
-      }
-    }
-  }
-
-  /**
- * @description - Which is used to config the form field vlaues
- * @param {formFieldProperties} formFieldProperties  - Field information
- */
-  getFormConfig() {
-    _.forEach(this.categoryMasterList, (category) => {
-      _.forEach(this.formFieldProperties, (formFieldCategory) => {
-        if (category.code === formFieldCategory.code && category.terms) {
-          formFieldCategory.range = category.terms;
-        }
-        return formFieldCategory;
-      });
-    });
-    this.formFieldProperties = _.sortBy(_.uniqBy(this.formFieldProperties, 'code'), 'index');
-    this._cacheService.set(this.filterEnv + this.formAction, this.formFieldProperties,
-      {
-        maxAge: this.browserCacheTtlService.browserCacheTtl
-      });
-    this.createFacets();
-  }
-  createFacets() {
-    this.filtersDetails = _.cloneDeep(this.formFieldProperties);
-    const filterArray = [];
-    _.forEach(this.filtersDetails, (value) => {
-      filterArray.push(value.code);
-    });
-    this.filters.emit(filterArray);
-  }
-
-  resetFilters() {
-    if (!_.isEmpty(this.ignoreQuery)) {
-      this.formInputData = _.pick(this.formInputData, this.ignoreQuery);
-    }  else {
-      this.formInputData = {};
-    }
-     if (this.viewAllMode) {
-     const data = this._cacheService.get('viewAllQuery');
-     _.forIn(data, (value, key ) => {
-      this.formInputData[key] = value;
-     });
-    }
-    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
+  private hardRefreshFilter() {
     this.refresh = false;
     this.cdr.detectChanges();
     this.refresh = true;
-  }
-
-  /**
- * To check filterType.
- */
-  isObject(val) { return typeof val === 'object'; }
-
-  applyFilters() {
-    const queryParamsNew: any = {};
-    _.forIn(this.formInputData, (eachInputs: Array<any | object>, key) => {
-        const formatedValue = _.compact(_.map(eachInputs, value =>
-          typeof value === 'string' ? value : _.get(value, 'identifier')));
-        if (formatedValue.length) {
-          queryParamsNew[key] = formatedValue;
-        }
-    });
-    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParamsNew });
-  }
-
-  removeFilterSelection(field, item) {
-    const itemIndex = this.formInputData[field].indexOf(item);
-    if (itemIndex !== -1) {
-      this.formInputData[field].splice(itemIndex, 1);
-      this.formInputData = _.pickBy(this.formInputData);
-      this.refresh = false;
-      this.cdr.detectChanges();
-      this.refresh = true;
-    }
-  }
-
-  showField(allowedRoles) {
-    if (allowedRoles) {
-      return this.permissionService.checkRolesPermissions(allowedRoles);
-    } else {
-      return true;
-    }
-  }
-  ngOnChanges() {
-    const enrichedArray = [];
-    if (this.enrichFilters) {
-      _.forIn(this.formFieldProperties, (value, key) => {
-        if (this.enrichFilters[value.code]) {
-          const enrichedObj = {};
-          enrichedObj['code'] = value.code;
-          enrichedObj['range'] = this.generateRange(this.enrichFilters[value.code]);
-          enrichedObj['name'] = value.name;
-          enrichedObj['inputType'] = value.inputType;
-          enrichedObj['renderingHints'] = value.renderingHints;
-          enrichedObj['renderingHints']['semanticColumnWidth'] = value.renderingHints.semanticColumnWidth;
-          enrichedArray.push(enrichedObj);
-        } else {
-          const enrichedObj = {};
-          enrichedObj['code'] = value.code;
-          enrichedObj['range'] = [];
-          enrichedObj['name'] = value.name;
-          enrichedObj['inputType'] = value.inputType;
-          enrichedObj['renderingHints'] = value.renderingHints;
-          enrichedObj['renderingHints']['semanticColumnWidth'] = value.renderingHints.semanticColumnWidth;
-          enrichedArray.push(enrichedObj);
-        }
-      });
-    }
-    this.filtersDetails = enrichedArray;
-  }
-  generateRange(enrichedRange) {
-    const rangeArray = [];
-    _.forEach(enrichedRange, (value) => {
-      if (value && value.name !== '') {
-        const rangeObj = _.find(enrichedRange, { name: value.name });
-        rangeArray.push(rangeObj);
-      }
-    });
-    return _.compact(rangeArray);
-  }
-
-  ngOnDestroy() {
-    if (this.frameworkDataSubscription) {
-      this.frameworkDataSubscription.unsubscribe();
-    }
   }
 }

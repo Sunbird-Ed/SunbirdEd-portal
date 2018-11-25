@@ -136,10 +136,7 @@ export class PermissionService {
    * @param {Array<string>}  roles roles to validate.
    */
   public checkRolesPermissions(roles: Array<string>): boolean {
-    if (this.userRoles && this.userRoles.length > 0) {
-      if ((_.intersection(roles, this.userRoles).length === 0)) {
-        return false;
-      }
+    if ((_.intersection(roles, this.userRoles).length)) {
       return true;
     }
     return false;
@@ -149,11 +146,11 @@ export class PermissionService {
     return this.mainRoles;
   }
   getWorkspaceAuthRoles() {
-    const authroles = _.find(this.config.rolesConfig.WORKSPACEAUTHGARDROLES, (role, key) => {
+    const authRoles = _.find(this.config.rolesConfig.WORKSPACEAUTHGARDROLES, (role, key) => {
       if (this.checkRolesPermissions(role.roles)) {
         return role;
       }
     });
-    return authroles;
+    return authRoles;
   }
 }

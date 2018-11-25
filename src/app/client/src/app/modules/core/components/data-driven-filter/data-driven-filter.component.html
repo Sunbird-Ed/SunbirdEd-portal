@@ -1,6 +1,6 @@
 <div>
   <div class="ui stackable grid">
-    <div class="twelve wide column cursor-text">
+    <div *ngIf="showFilters" class="twelve wide column cursor-text">
       <sui-accordion [closeOthers]="false">
         <sui-accordion-panel [isOpen]="accordionDefaultOpen" [isDisabled]="true">
           <div *ngIf="isShowFilterLabel" title class="cursor-text filter-title">
@@ -11,16 +11,16 @@
             </span>
           </div>
           <div content>
-            <div *ngIf="formFieldProperties && formInputData && showSearchedParam" class="twelve wide column content mb-15">
+            <div *ngIf="filtersDetails && formInputData && showSearchedParam" class="twelve wide column content mb-15">
               <span *ngFor="let field of filtersDetails">
                 <span class="padded chip mt-5 mr-10" *ngIf='formInputData[field.code] && formInputData[field.code].length > 0'>
                   {{field.name}}:
                   <span *ngFor="let item of formInputData[field.code]">
-                    <a class="ui label mt-5 mr-5" *ngIf='!isObject(item)'>
+                    <a class="ui label mt-5 mr-5" *ngIf='!item?.name'>
                       {{item}}
                       <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
                     </a>
-                    <a class="ui label mt-5 mr-5" *ngIf='isObject(item)'>
+                    <a class="ui label mt-5 mr-5" *ngIf='item?.name'>
                       {{item.name}}
                       <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
                     </a>
@@ -29,8 +29,8 @@
               </span>
             </div>
             <div *ngIf="refresh">
-              <form class="ui form">
-                <div *ngIf="formFieldProperties" class="ui stackable grid">
+              <form *ngIf="filtersDetails" class="ui form">
+                <div class="ui stackable grid">
                   <div *ngFor="let field of filtersDetails" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column">
                     <div *ngIf="field.inputType==='select'" class="field">
                       <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}} defaultSelectionText={{field.name}} zeroSelectionText="Select" class="selection filterFieldSearch"

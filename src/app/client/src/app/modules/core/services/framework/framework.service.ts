@@ -1,142 +1,70 @@
 import { Injectable } from '@angular/core';
 import { UserService } from './../user/user.service';
 import {
-  ConfigService, ToasterService, ResourceService, ServerResponse,
-  Framework, IUserData, IUserProfile, FrameworkData
+  ConfigService, ToasterService, ResourceService, ServerResponse, Framework, FrameworkData
 } from '@sunbird/shared';
-import { Observable ,  BehaviorSubject } from 'rxjs';
-import { skipWhile } from 'rxjs/operators';
-import { CacheService } from 'ng2-cache-service';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { skipWhile, mergeMap } from 'rxjs/operators';
 import { PublicDataService } from './../public-data/public-data.service';
 import * as _ from 'lodash';
 
 @Injectable()
 export class FrameworkService {
-  /**
-   * Reference of user service.
-   */
-  public userService: UserService;
-  /**
-   * Reference of config service
-   */
-  public configService: ConfigService;
-  /**
-  * defaultFramework
-  */
-  public defaultFramework: string;
-  /**
-  * defaultFramework
-  */
-  public frameworkCategories: any;
-  /**
-   * BehaviorSubject Containing framework data.
-   */
 
-  private _frameworkData:  FrameworkData = {};
-  /**
- * isApiCall is used to set flag as true to call api.
- */
-  private isApiCall: Boolean = true;
-  /**
-   * BehaviorSubject Containing framework data.
-   */
+  private _frameworkData: FrameworkData = {};
+
   private _frameworkData$ = new BehaviorSubject<Framework>(undefined);
-  /**
-   * Read only observable Containing framework data.
-   */
-  public readonly frameworkData$: Observable<Framework> = this._frameworkData$.asObservable()
-  .pipe(skipWhile(data => data === undefined || data === null));
-  /**
- * userProfile is of type userprofile interface
- */
-  public userProfile: IUserProfile;
-  /**
-   * public hashTagId
-   */
-  public hashTagId: any;
-  /**
-   * Reference of public data service
-   */
-  public publicDataService: PublicDataService;
 
-  /**
-     * Default method of OrganisationService class
-     *
-     * @param {UserService} user user service reference
-     * @param {ContentService} content content service reference
-     * @param {ConfigService} config config service reference
-     */
-  constructor(userService: UserService, configService: ConfigService,
-    private _cacheService: CacheService,
-    public toasterService: ToasterService, public resourceService: ResourceService, publicDataService: PublicDataService) {
-    this.userService = userService;
-    this.configService = configService;
-    this.publicDataService = publicDataService;
-  }
+  public readonly frameworkData$: Observable<Framework> = this._frameworkData$
+    .asObservable().pipe(skipWhile(data => data === undefined || data === null));
 
-  public initialize(framewrok?: string, hashTagId?: string) {
-    if (framewrok) {
-      if (this._frameworkData && !_.get( this._frameworkData , framewrok) ) {
-        this.getFrameworkCategories(framewrok);
-      }
-    } else  {
-      if (this._frameworkData && !_.get( this._frameworkData , 'defaultFramework') ) {
-        this.userService.userData$.subscribe(
-          (user: IUserData) => {
-            if (user && !user.err) {
-              this.hashTagId = this.userService.hashTagId;
-              this.getFramework();
-            }
+  constructor( private userService: UserService, private configService: ConfigService,
+    public toasterService: ToasterService, public resourceService: ResourceService,
+    private publicDataService: PublicDataService
+  ) {}
+
+  public initialize(framework?: string, hashTagId?: string) {
+
+    if (framework && !_.get(this._frameworkData, framework)) {
+
+      this.getFrameworkCategories(framework).subscribe(
+        (frameworkData: ServerResponse) => {
+          console.log('frameworkData', frameworkData);
+          const frameWorkName = framework ? framework : 'defaultFramework';
+          this._frameworkData[frameWorkName] = frameworkData.result.framework;
+          this._frameworkData$.next({ err: null, frameworkdata: this._frameworkData});
+        },
+        err => {
+          this._frameworkData$.next({ err: err, frameworkdata: null });
+      });
+    } else {
+      if (!_.get(this._frameworkData, 'defaultFramework')) {
+
+        this.getDefaultFrameWork(hashTagId ? hashTagId : this.userService.hashTagId)
+          .pipe(mergeMap(data => {
+              return this.getFrameworkCategories(_.get(data, 'result.channel.defaultFramework'));
+          })).subscribe(
+            (frameworkData: ServerResponse) => {
+              const frameWorkName = framework ? framework : 'defaultFramework';
+              this._frameworkData[frameWorkName] = frameworkData.result.framework;
+              this._frameworkData$.next({ err: null, frameworkdata: this._frameworkData});
+            },
+            err => {
+              this._frameworkData$.next({ err: err, frameworkdata: null });
           });
-        if (hashTagId) {
-          this.hashTagId = hashTagId;
-          this.getFramework();
-        }
       }
     }
   }
-  /**
-* getdefaultFramework   .
-*
-*/
-  public getFramework(): void {
+  private getDefaultFrameWork(hashTagId) {
     const channelOptions = {
-      url: this.configService.urlConFig.URLS.CHANNEL.READ + '/' + this.hashTagId
+      url: this.configService.urlConFig.URLS.CHANNEL.READ + '/' + hashTagId
     };
-    this.publicDataService.get(channelOptions).subscribe(
-      (data: ServerResponse) => {
-        this.defaultFramework = data.result.channel.defaultFramework;
-        if (this.defaultFramework) {
-          this.getFrameworkCategories();
-        }
-      },
-      (err: ServerResponse) => {
-        this._frameworkData$.next({ err: err, frameworkdata: null });
-      }
-    );
+    return this.publicDataService.get(channelOptions);
   }
-  /**
-* getFramework data   .
-*
-*/
-  public getFrameworkCategories(framework ?: string): void {
-    const requestFramework = framework  ? framework : this.defaultFramework;
+  private getFrameworkCategories(framework: string) {
     const frameworkOptions = {
-      url: this.configService.urlConFig.URLS.FRAMEWORK.READ + '/' + requestFramework
+      url: this.configService.urlConFig.URLS.FRAMEWORK.READ + '/' + framework
     };
-    this.publicDataService.get(frameworkOptions).subscribe(
-      (frameworkData: ServerResponse) => {
-        this.isApiCall = false;
-        if (framework) {
-          this._frameworkData[framework] = frameworkData.result.framework;
-        } else {
-          this._frameworkData['defaultFramework']  = frameworkData.result.framework;
-        }
-        this._frameworkData$.next({ err: null, frameworkdata: this._frameworkData });
-      },
-      (err: ServerResponse) => {
-       this._frameworkData$.next({ err: err, frameworkdata: null });
-      }
-    );
+    return this.publicDataService.get(frameworkOptions);
   }
 }

@@ -1,5 +1,5 @@
 
-import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import { throwError, of , Observable } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FrameworkService, UserService, CoreModule, PublicDataService } from '@sunbird/core';
@@ -9,55 +9,88 @@ import { mockFrameworkData } from './framework.mock.spec.data';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 
 describe('FrameworkService', () => {
+  let userService, publicDataService, frameworkService;
+  let mockHashTagId: string, mockFrameworkInput: string;
+  let mockFrameworkCategories: Array<any> = [];
+  let makeChannelReadSuc, makeFrameworkReadSuc  = true;
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule.forRoot()],
-      providers: [FrameworkService, PublicDataService, UserService, CacheService]
+      providers: [CacheService]
+    });
+    userService = TestBed.get(UserService);
+    publicDataService = TestBed.get(PublicDataService);
+    frameworkService = TestBed.get(FrameworkService);
+    spyOn(publicDataService, 'get').and.callFake((options) => {
+      if (options.url === 'channel/v1/read/' + mockHashTagId && makeChannelReadSuc) {
+        return of({result: {channel: {defaultFramework: mockFrameworkInput}}});
+      } else if (options.url === 'framework/v1/read/' + mockFrameworkInput && makeFrameworkReadSuc) {
+        return of({result: {framework: {code: mockFrameworkInput, categories: mockFrameworkCategories}}});
+      }
+      return throwError({});
     });
   });
 
-  it('should call user service', () => {
-    const service = TestBed.get(FrameworkService);
-    const userService = TestBed.get(UserService);
-    service.isApiCall = true;
-    service.hashTagId = '0123456789';
-    service.defaultFramework = 'NCF';
-    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
-    spyOn(service, 'getFramework').and.callThrough();
-    service.getFramework();
-    expect(service.getFramework).toHaveBeenCalled();
-  });
-
-  it('should fetch framework details', () => {
-    const service = TestBed.get(FrameworkService);
-    const publicDataService = TestBed.get(PublicDataService);
-    spyOn(publicDataService, 'get').and.returnValue(observableOf(mockFrameworkData.frameworkSuccess));
-    service.isApiCall = true;
-    service.getFrameworkCategories();
-    service.frameworkData$.subscribe(frameworkData => {
-      expect(service._frameworkData).toEqual(mockFrameworkData.frameworkData);
+  it('should fetch channel then framework data if initial was call with 0 param and emit data if both api return data', () => {
+    mockHashTagId = undefined;
+    mockFrameworkInput = undefined;
+    mockFrameworkCategories = [];
+    makeChannelReadSuc = true;
+    makeFrameworkReadSuc = true;
+    frameworkService.initialize();
+    frameworkService.frameworkData$.subscribe((data) => {
+      expect(data.frameworkdata).toBeDefined();
+      expect(data.err).toBeNull();
     });
   });
-
-  it('should emit error on getFramework api failure', () => {
-    const service = TestBed.get(FrameworkService);
-    const publicDataService = TestBed.get(PublicDataService);
-    spyOn(publicDataService, 'get').and.returnValue(observableThrowError(mockFrameworkData.error));
-    service.isApiCall = true;
-    service.getFrameworkCategories();
-    service.frameworkData$.subscribe(frameworkData => {
-      expect(frameworkData.err).toBe(mockFrameworkData.error);
+  it('should fetch channel then framework data if initial was call with 0 param and emit error if channel api fails', () => {
+    mockHashTagId = undefined;
+    mockFrameworkInput = undefined;
+    mockFrameworkCategories = [];
+    makeChannelReadSuc = false;
+    makeFrameworkReadSuc = true;
+    frameworkService.initialize();
+    frameworkService.frameworkData$.subscribe((data) => {
+      expect(data.frameworkdata).toBeNull();
+      expect(data.err).toBeDefined();
     });
   });
-  it('should emit error on getFrameworkCategories api failure', () => {
-    const service = TestBed.get(FrameworkService);
-    const publicDataService = TestBed.get(PublicDataService);
-    spyOn(publicDataService, 'get').and.returnValue(observableThrowError(mockFrameworkData.error));
-    service.isApiCall = true;
-    service.defaultFramework = 'NCF';
-    service.getFrameworkCategories();
-    service.frameworkData$.subscribe(frameworkData => {
-      expect(frameworkData.err).toBe(mockFrameworkData.error);
+  it('should fetch channel then framework data if initial was call with 0 param and emit error if framework read api fails', () => {
+    mockHashTagId = undefined;
+    mockFrameworkInput = undefined;
+    mockFrameworkCategories = [];
+    makeChannelReadSuc = true;
+    makeFrameworkReadSuc = false;
+    frameworkService.initialize();
+    frameworkService.frameworkData$.subscribe((data) => {
+      expect(data.frameworkdata).toBeNull();
+      expect(data.err).toBeDefined();
+    });
+  });
+  it('should fetch only framework data if initial was call with framework param and emit data if framework read api return data', () => {
+    mockHashTagId = undefined;
+    mockFrameworkInput = 'NCF';
+    mockFrameworkCategories = [];
+    makeChannelReadSuc = true;
+    makeFrameworkReadSuc = true;
+    frameworkService.initialize('NCF');
+    frameworkService.frameworkData$.subscribe((data) => {
+      expect(data.frameworkdata).toBeDefined();
+      expect(data.err).toBeNull();
+    });
+  });
+  it('should fetch only framework data if initial was call with framework param and emit data if framework read api return data', () => {
+    mockHashTagId = undefined;
+    mockFrameworkInput = 'NCF';
+    mockFrameworkCategories = [];
+    makeChannelReadSuc = true;
+    makeFrameworkReadSuc = false;
+    frameworkService.initialize('NCF');
+    frameworkService.frameworkData$.subscribe((data) => {
+      expect(data.frameworkdata).toBeNull();
+      expect(data.err).toBeDefined();
     });
   });
 });
+
+

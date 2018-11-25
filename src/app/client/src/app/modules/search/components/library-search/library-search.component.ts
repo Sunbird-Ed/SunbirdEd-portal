@@ -151,12 +151,12 @@ export class LibrarySearchComponent implements OnInit {
     };
     this.searchService.contentSearch(requestParams).subscribe(
       (apiResponse: ServerResponse) => {
+        this.facets = this.searchService.processFilterData(_.get(apiResponse, 'result.facets'));
         if (apiResponse.result.count && apiResponse.result.content) {
           this.showLoader = false;
           this.noResult = false;
           this.searchList = apiResponse.result.content;
           this.totalCount = apiResponse.result.count;
-          this.facets = this.searchService.processFilterData(apiResponse.result.facets);
           this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
           const constantData = this.config.appConfig.LibrarySearch.constantData;
         const metaData = this.config.appConfig.LibrarySearch.metaData;
@@ -172,6 +172,7 @@ export class LibrarySearchComponent implements OnInit {
         }
       },
       err => {
+        this.facets = {};
         this.showLoader = false;
         this.noResult = true;
         this.noResultMessage = {
