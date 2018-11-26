@@ -169,7 +169,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
             pageNumber: this.pageNumber,
             query: this.queryParams.key,
             softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
-            facets: this.facetArray
+            facets: this.facetArray,
+            params : this.config.appConfig.ExplorePage.contentApiQueryParams
         };
         this.searchService.contentSearch(requestParams).pipe(
             takeUntil(this.unsubscribe$))

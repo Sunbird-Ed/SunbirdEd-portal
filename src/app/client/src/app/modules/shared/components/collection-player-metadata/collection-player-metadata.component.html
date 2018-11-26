@@ -78,6 +78,21 @@
       </div>
     </div>
   </div>
+  <div class="three wide column" *ngIf="metadata.orgDetails && metadata.orgDetails.orgName" >
+    <div class="ui list">
+      <div class="item">
+        <div class="content">
+          <div class="header">{{resourceService?.frmelmnts?.lbl?.organization}}</div>
+          <div class="description pt-15">
+            <div>{{metadata.orgDetails?.orgName}}</div>
+            <div class="mt-5" ng-if="metadata.orgDetails?.email">
+              <a ng-if="metadata.orgDetails.email" href="mailto:{{metadata.orgDetails?.email}}?subject={{metadata.name}}">{{metadata.orgDetails?.email}}</a>
+            </div>
+          </div>                                
+        </div>
+      </div>
+    </div>
+  </div>
   <app-content-credits [contentData]="metaData" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false">
   </app-content-credits>
 </div>

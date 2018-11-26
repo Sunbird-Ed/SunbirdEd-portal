@@ -146,7 +146,8 @@ export class LearnPageComponent implements OnInit, OnDestroy {
     const option = {
       source: 'web',
       name: 'Course',
-      filters: _.pickBy(this.filters, value => value.length > 0)
+      filters: _.pickBy(this.filters, value => value.length > 0),
+      params : this.configService.appConfig.Library.contentApiQueryParams
     };
     if (this.queryParams.sort_by) {
       option['sort_by'] = {[this.queryParams.sort_by]: this.queryParams.sortType  };

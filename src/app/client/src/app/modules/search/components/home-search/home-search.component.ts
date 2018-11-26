@@ -137,7 +137,8 @@ export class HomeSearchComponent implements OnInit {
       },
       limit: this.pageLimit,
       offset: (this.pageNumber - 1 ) * (this.pageLimit),
-      query: this.queryParams.key
+      query: this.queryParams.key,
+      params : this.config.appConfig.Library.contentApiQueryParams
     };
     this.searchService.compositeSearch(searchParams).subscribe(
       (apiResponse: ServerResponse) => {

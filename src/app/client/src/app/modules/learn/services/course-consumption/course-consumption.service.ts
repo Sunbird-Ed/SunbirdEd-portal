@@ -13,11 +13,11 @@ export class CourseConsumptionService {
 
   constructor(private playerService: PlayerService, private courseProgressService: CourseProgressService) { }
 
-  getCourseHierarchy(courseId) {
+  getCourseHierarchy(courseId, option: any = { params: {} }) {
     if (this.courseHierarchy && this.courseHierarchy.identifier === courseId) {
       return observableOf(this.courseHierarchy);
     } else {
-      return this.playerService.getCollectionHierarchy(courseId).pipe(map((response: ServerResponse) => {
+      return this.playerService.getCollectionHierarchy(courseId, option).pipe(map((response: ServerResponse) => {
         this.courseHierarchy = response.result.content;
         return response.result.content;
       }));

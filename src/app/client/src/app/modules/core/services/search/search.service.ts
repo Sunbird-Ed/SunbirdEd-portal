@@ -155,6 +155,7 @@ export class SearchService {
   compositeSearch(requestParam: SearchParam): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.COMPOSITE.SEARCH,
+      param: { ...requestParam.params },
       data: {
         request: {
           filters: requestParam.filters,
@@ -211,6 +212,7 @@ export class SearchService {
   courseSearch(requestParam: SearchParam): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.COURSE.SEARCH,
+      param: { ...requestParam.params },
       data: {
         request: {
           filters: requestParam.filters,
@@ -232,6 +234,7 @@ export class SearchService {
     Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.CONTENT.SEARCH,
+      param: { ...requestParam.params },
       data: {
         request: {
           filters: requestParam.filters,
