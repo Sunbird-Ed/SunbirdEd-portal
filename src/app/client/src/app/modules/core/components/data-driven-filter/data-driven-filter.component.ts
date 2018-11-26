@@ -90,10 +90,9 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
             const frameworkTerms = _.get(_.find(this.categoryMasterList, { code : formFieldCategory.code}), 'terms');
             formFieldCategory.range = _.union(formFieldCategory.range, frameworkTerms);
             if (this.filterEnv === 'upforreview' && formFieldCategory.code === 'contentType' &&
-            _.intersection(loggedInUserRoles, ['CONTENT_REVIEWER', 'BOOK_REVIEWER']).length) {
-                if (!_.find(formFieldCategory.range, { name: 'TextBook' })) {
+            (_.includes(loggedInUserRoles, 'CONTENT_REVIEWER') && _.includes(loggedInUserRoles, 'BOOK_REVIEWER') &&
+            !_.find(formFieldCategory.range, { name: 'TextBook' }))) {
                   formFieldCategory.range.push({ name: 'TextBook' });
-                }
             }
             return true;
           });
