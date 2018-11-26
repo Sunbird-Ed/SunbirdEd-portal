@@ -127,9 +127,9 @@ export class AllMyContentFilterComponent implements OnInit {
   }
   public handleSearch() {
     if (this.query.length > 0) {
-      this.queryParams = {query: this.query };
+      this.queryParams['query'] = this.query;
     } else {
-      this.queryParams = {};
+      delete this.queryParams['query'];
     }
     this.route.navigate(['workspace/content/allcontent', 1], { queryParams: this.queryParams});
   }
