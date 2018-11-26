@@ -144,12 +144,12 @@ export class HomeSearchComponent implements OnInit {
     };
     this.searchService.compositeSearch(searchParams).subscribe(
       (apiResponse: ServerResponse) => {
+        this.facets = this.searchService.processFilterData(_.get(apiResponse, 'result.facets'));
         if (apiResponse.result.count && apiResponse.result.content
           && apiResponse.result.content.length > 0) {
           this.showLoader = false;
           this.noResult = false;
           this.totalCount = apiResponse.result.count;
-          this.facets = this.searchService.processFilterData(apiResponse.result.facets);
           this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
           const constantData = this.config.appConfig.HomeSearch.constantData;
         const metaData = this.config.appConfig.HomeSearch.metaData;
@@ -165,12 +165,13 @@ export class HomeSearchComponent implements OnInit {
         }
       },
       err => {
+        this.facets = {};
         this.showLoader = false;
         this.noResult = true;
         this.noResultMessage = {
           'messageText': this.resourceService.messages.fmsg.m0077
         };
-         this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
       }
     );
   }
