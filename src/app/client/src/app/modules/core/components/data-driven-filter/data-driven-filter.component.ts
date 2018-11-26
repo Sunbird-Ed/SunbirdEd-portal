@@ -66,7 +66,6 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
       this.subscribeToQueryParams();
     }, (err) => {
       this.dataDrivenFilter.emit([]);
-      console.log(err);
     });
     this.setFilterInteractData();
   }
@@ -77,7 +76,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
     } else {
       return this.fetchFrameWorkDetails().pipe(
         mergeMap((frameworkDetails: any) => {
-          this.categoryMasterList = frameworkDetails.categories;
+          this.categoryMasterList = frameworkDetails.categoryMasterList;
           this.framework = frameworkDetails.code;
           return this.getFormDetails();
         }),
@@ -127,7 +126,6 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.formInputData = {};
       _.forIn(params, (value, key) => this.formInputData[key] = typeof value === 'string' && key !== 'key' ? [value] : value);
-      console.log('query', this.formInputData);
       this.showFilters = true;
       this.hardRefreshFilter();
     });
@@ -139,7 +137,6 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
       contentType: this.filterEnv,
       framework: this.framework
     };
-    console.log('getFormDetails');
     return this.formService.getFormConfig(formServiceInputParams, this.hashTagId);
   }
 
@@ -162,7 +159,6 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
           queryParams[key] = formatedValue;
         }
     });
-    console.log('apply filter', queryParams);
     this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
   }
 
@@ -181,7 +177,6 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
   }
   private enrichFiltersOnInputChange() {
     this.filtersDetails = _.map(this.formFieldProperties, (eachFields) => {
-      console.log(eachFields);
       eachFields.range = _.filter(this.enrichFilters[eachFields.code],
         (field) => _.get(field, 'name') && field.name !== '');
       return eachFields;

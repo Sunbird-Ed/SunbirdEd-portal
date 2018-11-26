@@ -29,7 +29,6 @@ export class FrameworkService {
 
       this.getFrameworkCategories(framework).subscribe(
         (frameworkData: ServerResponse) => {
-          console.log('frameworkData', frameworkData);
           const frameWorkName = framework ? framework : 'defaultFramework';
           this._frameworkData[frameWorkName] = frameworkData.result.framework;
           this._frameworkData$.next({ err: null, frameworkdata: this._frameworkData});

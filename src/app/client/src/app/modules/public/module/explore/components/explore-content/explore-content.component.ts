@@ -162,7 +162,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
         this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
         const filters = _.pickBy(this.filters, value => value && value.length);
         filters.channel = this.hashTagId;
-        console.log(this.dataDrivenFilter);
         if (!_.get(this.filters, 'board') && !_.isEmpty(this.dataDrivenFilter['board'])) {
             filters.board = _.get(this.filters, 'board') ? this.filters.board : this.dataDrivenFilter['board'];
         }
