@@ -17,14 +17,6 @@
     font-size: 1.143rem !important;
 }
 
-*[dir="ltr"]{
-    .pageSection-Slider .carousel .last-card {
+.pageSection-Slider .carousel .last-card {
     padding-right: 2px !important; 
-    }
-}
-
-*[dir="rtl"]{
-    .pageSection-Slider .carousel .last-card {
-    padding-left: 2px !important; 
-    }
 }
