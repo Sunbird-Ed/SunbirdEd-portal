@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: install jq
-          command: sudo apt update && #sudo apt-get install -y jq
+          command: sudo apt update && sudo apt-get install -y jq
       - run:
           name: run build file
           command: sudo ./build.sh
