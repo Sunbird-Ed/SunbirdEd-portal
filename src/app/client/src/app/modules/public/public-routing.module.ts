@@ -62,6 +62,12 @@ const routes: Routes = [
   },
   {
     path: ':slug/explore', loadChildren: './module/explore/explore.module#ExploreModule'
+  },
+  {
+    path: 'explore-course', loadChildren: './module/course/course.module#CourseModule'
+  },
+  {
+    path: ':slug/explore-course', loadChildren: './module/course/course.module#CourseModule'
   }
 ];
 @NgModule({
