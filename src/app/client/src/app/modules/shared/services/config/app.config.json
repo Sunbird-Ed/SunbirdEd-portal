@@ -45,7 +45,7 @@
       "metaData": ["batchId", "courseId"]
       },
        "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"},
+     "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"},
      "PAGE_LIMIT": 20 
   },
   "Course": {
@@ -83,7 +83,7 @@
         "left": {"class":  "ui circular label  card-badges-image"} }
        },
        "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-       "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
+       "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
   },
   "ExplorePage": {
     "constantData":{
@@ -94,7 +94,7 @@
         "left": {"class":  "ui circular label  card-badges-image"} }
        },
        "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-       "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
+       "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
   },
   "CoursePage": {
     "constantData":{
@@ -118,7 +118,7 @@
         "telemetryObjectType":"public"
        },
      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
+     "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
   },
   "HomeSearch": {
     "constantData":{
@@ -161,7 +161,7 @@
         "left": {"class":  "ui circular label  card-badges-image"} }
        },
      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
+     "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
   },
   "TELEMETRY": {
     "MAX_BATCH_SIZE": 10,

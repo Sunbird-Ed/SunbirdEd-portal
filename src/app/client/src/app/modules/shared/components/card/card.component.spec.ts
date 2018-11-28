@@ -31,7 +31,7 @@ describe('CardComponent', () => {
     component.data = Response.cardData;
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('div .title').innerText).toContain('B1 Test');
-    expect(fixture.nativeElement.querySelector('div .right').innerText).toEqual('TextBook');
+    expect(fixture.nativeElement.querySelector('div .right').innerText).toEqual('Worksheet');
   });
   it('should show badgeClassImage while passing badgesData', () => {
     const cdnprefixPipe = new CdnprefixPipe();

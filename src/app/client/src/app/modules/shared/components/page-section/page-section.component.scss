@@ -3,7 +3,20 @@
 .ui.label {
     background: $label-color !important;
     color: #fff;
+    padding: 3px 6px !important;
 }
 .ui.button{
-    background: $link-color !important;
+    background: $view-all-button !important;
+    color: #fff;
+    font-size: 0.8571rem;
+    padding: 4px 10px !important;
+    font-weight: 500;
+    height: 25px;
+}
+.pageSection-heading{
+    font-size: 1.143rem !important;
+}
+
+.pageSection-Slider .carousel .last-card {
+    padding-right: 2px !important; 
 }

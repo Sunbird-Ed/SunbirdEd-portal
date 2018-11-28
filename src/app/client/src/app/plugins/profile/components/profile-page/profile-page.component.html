@@ -4,12 +4,6 @@
       <div class=" mb-15 d-flex flex-jc-center position-relative">
         <ngx-avatar class="my-avatar" [style]="customStyle" [size]="90" initialsSize="1" [textSizeRatio]="2" name="{{userProfile.firstName}} ">
         </ngx-avatar>
-          <div class="right-aligned-button computer only" *ngIf='permissionService.permissionAvailable' appPermission [permission]='adminActions'>
-            <sui-select class="inline primary admin-button button" icon="dropdown" placeholder="Admin Actions" [(ngModel)]="adminActionSelectedOption"
-              (ngModelChange)="onChange()">
-              <sui-select-option *ngFor="let type of adminActionDropDownOptions" [value]="type"></sui-select-option>
-            </sui-select>
-          </div>
       </div>
     </div>
     <div class="fs-2-5 font-w-bold mb-15 text-ac">{{userProfile.firstName | titlecase}} {{userProfile.lastName |
@@ -140,8 +134,8 @@
       <div class="ui divider my-5 mobile only"></div>
       <!--contributions computer view starts-->
       <div class="ui segments" *ngIf="contributions && contributions.length > 0">
-        <div class="ui segment  computer only ">
-          <div class="fs-1-7 pl-10">{{resourceService.frmelmnts.scttl.contributions}} ({{contributions.length}})</div>
+        <div class="ui segment computer only">
+          <div class="fs-1-7 pl-10 font-w-bold">{{resourceService.frmelmnts.scttl.contributions}} ({{contributions.length}})</div>
         </div>
 
         <div class="ui segment">
@@ -152,7 +146,7 @@
               <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let item of contributions;let i = index;"
                 class="slide">
                 <div>
-                  <app-card (clickEvent)="onClickOfMyContributions($event)" [data]="item" [customClass]="'pr-20'" class="pr-20"></app-card>
+                  <app-card (clickEvent)="onClickOfMyContributions($event)" [data]="item" [customClass]="'pr-20'" class="pr-20 d-block"></app-card>
                 </div>
               </div>
             </ngx-slick>

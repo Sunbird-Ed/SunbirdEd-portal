@@ -46,14 +46,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
    */
   showMoreRolesLimit = this.defaultShowMoreRolesLimit;
   courseLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
-/**
- * Admin Dashboard access roles
-*/
-  adminActions: Array<string>;
-  /**
-   * input keyword depending on url
-   */
-  uploadUrl: object = this.configService.dropDownConfig.ORG.UPLOAD;
   /**
    * Contains loader message to display
    */
@@ -65,10 +57,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   userSubscription: ISubscription;
   /** The button clicked value for interact telemetry event */
   btnArrow: string;
-  /**
-   * Admin action option selected on dropdown
-   */
-  adminActionSelectedOption: string;
   adminActionDropDownOptions: Array<string> = [this.resourceService.frmelmnts.instn.t0015, this.resourceService.frmelmnts.instn.t0016,
   this.resourceService.frmelmnts.lbl.chkuploadsts];
   courseDataSubscription: Subscription;
@@ -93,29 +81,29 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       {
         'breakpoint': 2800,
         'settings': {
-          'slidesToShow': 8,
-          'slidesToScroll': 8
-        }
-      },
-      {
-        'breakpoint': 2200,
-        'settings': {
           'slidesToShow': 6,
           'slidesToScroll': 6
         }
       },
       {
-        'breakpoint': 2000,
+        'breakpoint': 2200,
         'settings': {
           'slidesToShow': 5,
           'slidesToScroll': 5
         }
       },
       {
-        'breakpoint': 1600,
+        'breakpoint': 2000,
         'settings': {
           'slidesToShow': 4,
           'slidesToScroll': 4
+        }
+      },
+      {
+        'breakpoint': 1600,
+        'settings': {
+          'slidesToShow': 3.5,
+          'slidesToScroll': 3
         }
       },
       {
@@ -128,8 +116,29 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       {
         'breakpoint': 900,
         'settings': {
+          'slidesToShow': 2.5,
+          'slidesToScroll': 2
+        }
+      },
+      {
+        'breakpoint': 750,
+        'settings': {
           'slidesToShow': 2,
           'slidesToScroll': 2
+        }
+      },
+      {
+        'breakpoint': 660,
+        'settings': {
+          'slidesToShow': 1.75,
+          'slidesToScroll': 1
+        }
+      },
+      {
+        'breakpoint': 530,
+        'settings': {
+          'slidesToShow': 1.25,
+          'slidesToScroll': 1
         }
       },
       {
@@ -157,7 +166,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.adminActions = this.configService.rolesConfig.headerDropdownRoles.adminDashboard;
     this.userSubscription = this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
@@ -198,7 +206,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       _.forEach(org.roles, (value, key) => {
         if (value !== 'PUBLIC') {
           const roleName = _.find(this.userProfile.roleList, {id: value});
-          this.roles.push(roleName['name']);
+          if (roleName) {
+            this.roles.push(roleName['name']);
+          }
         }
       });
     });
@@ -304,6 +314,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       framework: data
     };
     this.profileService.updateProfile(request).subscribe(res => {
+      this.userProfile.framework = data;
       this.toasterService.success(this.resourceService.messages.smsg.m0046);
       this.profileModal.modal.deny();
       this.showEdit = false;
@@ -313,13 +324,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         this.profileModal.modal.deny();
         this.showEdit = false;
       });
-  }
-  /**
-   * on changing dropdown option
-   * it navigate
-   */
-  onChange() {
-    this.router.navigate([this.uploadUrl[this.adminActionSelectedOption]]);
   }
 
   onClickOfMyContributions(content) {

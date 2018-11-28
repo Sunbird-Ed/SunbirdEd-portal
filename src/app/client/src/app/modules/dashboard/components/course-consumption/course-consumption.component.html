@@ -1,7 +1,7 @@
-<div class="ui grid margin-top">
+<div class="ui grid">
   <div class="one wide column"></div>
   <div class="ten wide column">
-    <div class="ui grid margin-top-20">
+    <div class="ui grid mt-20">
       <div class="five wide column float-ContentLeft" *ngIf="myCoursesList && myCoursesList.length === 1">
         <span class="dashBoardSectionHeading">
           <i class="large bar chart icon"></i>
@@ -10,7 +10,7 @@
       </div>
       <div class="one wide column" *ngIf="myCoursesList && myCoursesList.length > 1">
         <span class="dashBoardSectionHeading">
-          <i class="large bar chart icon padding-top-5"></i>
+          <i class="large bar chart icon pt-5"></i>
         </span>
       </div>
       <div class="four wide column float-ContentLeft course-dropdown" *ngIf="myCoursesList && myCoursesList.length > 1">
@@ -24,9 +24,9 @@
       </div>
     </div>
     <!-- Filters -->
-    <div class="ui grid margin-top-10 padding-left-5" *ngIf="showDashboard">
+    <div class="ui grid mt-10 pl-5" *ngIf="showDashboard">
       <div class="six wide column" *ngIf="myCoursesList && myCoursesList.length > 0">
-        <div class="ui text menu float-ContentLeft padding-top-10">
+        <div class="ui text menu float-ContentLeft pt-10">
           <span class="dashBoardMenuItem cursor-pointer active" (click)="onAfterFilterChange('7d')" [ngClass]="{'active': timePeriod === '7d' }"
             appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'7d',type:'click',pageid:'course-creator-dashboard'}">
             {{resourceService?.frmelmnts?.lbl?.dashboardsevendaysfilter}}
@@ -44,7 +44,7 @@
       <div class="two wide column"></div>
     </div>
     <!-- Loader -->
-    <div class="twelve wide column margin-top-20" *ngIf="showLoader">
+    <div class="twelve wide column mt-20" *ngIf="showLoader">
       <app-loader></app-loader>
     </div>
     <!-- Select course div -->
@@ -53,7 +53,7 @@
       {{resourceService?.frmelmnts?.lbl?.dashboardnocourseselecteddesc}}
     </div>
     <!-- Empty course -->
-    <div *ngIf="!showLoader" class="margin-top-20">
+    <div *ngIf="!showLoader" class="mt-20">
       <div class="ui info message" *ngIf="myCoursesList && myCoursesList.length === 0">
         <div class="header" [appTelemetryImpression]="telemetryImpression">{{resourceService?.frmelmnts?.instn?.t0061}}</div>
         <ul class="list">
@@ -71,9 +71,9 @@
           </div>
         </div>
       </div>
-      <div class="ui one column grid margin-top-20" *ngIf="graphData && graphData.length > 0">
+      <div class="ui one column grid mt-20" *ngIf="graphData && graphData.length > 0">
         <div class="column">
-          <div class="regular slider padding-top-30 course-graph-holder">
+          <div class="regular slider pt-30 course-graph-holder">
             <div *ngFor="let block of graphData;let graphIndex = index;">
               <div [hidden]="showGraph === graphIndex">
                 <div class="ui segment">

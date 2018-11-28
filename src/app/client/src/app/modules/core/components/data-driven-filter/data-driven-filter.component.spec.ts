@@ -1,5 +1,5 @@
 
-import { throwError as observableThrowError, of as observableOf } from 'rxjs';
+import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as _ from 'lodash';
 import { DataDrivenFilterComponent } from './data-driven-filter.component';
@@ -8,18 +8,23 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
 import {
-  FrameworkService, FormService, ContentService, UserService, LearnerService,
-  ConceptPickerService, SearchService, PermissionService
+  CoreModule, FrameworkService, FormService, ContentService, UserService, LearnerService,
+  ConceptPickerService, SearchService, PermissionService, PublicDataService
 } from '@sunbird/core';
+import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
-import { expand } from 'rxjs/operators';
 import * as mockData from './data-driven-filter.component.spec.data';
 
 describe('DataDrivenFilterComponent', () => {
   let component: DataDrivenFilterComponent;
   let fixture: ComponentFixture<DataDrivenFilterComponent>;
+  let frameworkService, formService, cacheService, userService, publicDataService;
+  let mockHashTagId: string, mockFrameworkInput: string;
+  let mockFrameworkCategories: Array<any> = [];
+  let mockFormFields: Array<any> = [];
+  let makeChannelReadSuc, makeFrameworkReadSuc, makeFormReadSuc  = true;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
     url = jasmine.createSpy('url');
@@ -36,21 +41,24 @@ describe('DataDrivenFilterComponent', () => {
       }
     }
   };
-  const fakeActivatedRoute = {
-    'params': observableOf({ pageNumber: '1' }),
-    'queryParams': observableOf({ subject: ['English'] })
-  };
+  class FakeActivatedRoute {
+    queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
+    get queryParams() {
+      return this.queryParamsMock.asObservable();
+    }
+    public changeQueryParams(queryParams) {
+      this.queryParamsMock.next(queryParams);
+    }
+  }
   const mockUserRoles = {
-   userRoles: ['PUBLIC', 'CONTENT_REVIEWER']
-   };
+    userRoles: ['PUBLIC', 'CONTENT_REVIEWER']
+  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule],
-      declarations: [DataDrivenFilterComponent],
-      providers: [FrameworkService, FormService, UserService, ConfigService, ToasterService, LearnerService, ContentService,
-        CacheService, ResourceService, ConceptPickerService, SearchService, PermissionService, BrowserCacheTtlService,
+      imports: [SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
+      providers: [ConfigService, CacheService,
         { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: ActivatedRoute, useClass: FakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -60,189 +68,68 @@ describe('DataDrivenFilterComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DataDrivenFilterComponent);
     component = fixture.componentInstance;
-  });
-  it('should create', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
-  it('should get meta data from framework service and call formconfig service if cache not exists', () => {
-    const frameworkService = TestBed.get(FrameworkService);
-    const formService = TestBed.get(FormService);
-    const cacheService = TestBed.get(CacheService);
-    component.formFieldProperties = mockData.mockRes.formConfigData;
-    spyOn(component.dataDrivenFilter, 'emit').and.returnValue(mockData.mockRes.formConfigData);
-    spyOn(cacheService, 'exists').and.returnValue(false);
-    spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
-    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.mockRes.formConfigData));
-    frameworkService._frameworkData$.next({ frameworkdata: mockData.mockRes.frameworkData });
-    component.fetchFilterMetaData();
-    fixture.detectChanges();
-    expect(component.formService.getFormConfig).toHaveBeenCalled();
-    expect(component.dataDrivenFilter.emit).toHaveBeenCalledWith(mockData.mockRes.formConfigData);
-  });
-  it('should get meta data from framework service and handle error from formconfig service', () => {
-    const frameworkService = TestBed.get(FrameworkService);
-    const formService = TestBed.get(FormService);
-    const cacheService = TestBed.get(CacheService);
-    const toasterService = TestBed.get(ToasterService);
-    component.formFieldProperties = mockData.mockRes.formConfigData;
-    spyOn(toasterService, 'error').and.callThrough();
-    spyOn(cacheService, 'exists').and.returnValue(false);
-    spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
-    spyOn(formService, 'getFormConfig').and.returnValue(observableThrowError({ err: { error: 'SERVER_ERROR' } }));
-    frameworkService._frameworkData$.next({ frameworkdata: mockData.mockRes.frameworkData });
-    component.fetchFilterMetaData();
-    fixture.detectChanges();
-    // expect(toasterService.error).toHaveBeenCalled(); // should not throw error should be handled in component
+    frameworkService = TestBed.get(FrameworkService);
+    formService = TestBed.get(FormService);
+    cacheService = TestBed.get(CacheService);
+    userService = TestBed.get(UserService);
+    publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'get').and.callFake((options) => {
+      if (options.url === 'channel/v1/read/' + mockHashTagId && makeChannelReadSuc) {
+        return of({result: {channel: {defaultFramework: mockFrameworkInput}}});
+      } else if (options.url === 'framework/v1/read/' + mockFrameworkInput && makeFrameworkReadSuc) {
+        return of({result: {framework: {code: mockFrameworkInput, categories: mockFrameworkCategories}}});
+      }
+      return throwError({});
+    });
+    spyOn(publicDataService, 'post').and.callFake((options) => {
+      if (makeFormReadSuc) {
+        return of({result: {form: {data: {fields: mockFormFields}}}});
+      }
+      return throwError({});
+    });
   });
 
-  it('should get meta data from framework service and get formconfig from cache service if cache exists', () => {
-    const cacheService = TestBed.get(CacheService);
-    const frameworkService = TestBed.get(FrameworkService);
-    const formService = TestBed.get(FormService);
-    component.formFieldProperties = mockData.mockRes.formConfigData;
-    cacheService.set(component.filterType + component.formAction, mockData.mockRes.formConfigData);
-    spyOn(component.dataDrivenFilter, 'emit').and.returnValue(mockData.mockRes.formConfigData);
-    spyOn(cacheService, 'get').and.returnValue(mockData.mockRes.formConfigData);
-    spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
-    frameworkService._frameworkData$.next({ frameworkdata: mockData.mockRes.frameworkData });
-    component.fetchFilterMetaData();
-    fixture.detectChanges();
-    expect(component.formFieldProperties).toEqual(mockData.mockRes.formConfigData);
-    expect(component.filtersDetails).toBeDefined();
-    expect(component.filtersDetails).toEqual(component.formFieldProperties);
-    expect(component.dataDrivenFilter.emit).toHaveBeenCalledWith(mockData.mockRes.formConfigData);
-  });
-  it('should return proper error object if framework service returns error', () => {
-    const frameworkService = TestBed.get(FrameworkService);
-    const toasterService = TestBed.get(ToasterService);
-    const cacheService = TestBed.get(CacheService);
-    spyOn(toasterService, 'error').and.callThrough();
-    spyOn(cacheService, 'exists').and.returnValue(false);
-    frameworkService._frameworkData$.next({ err: { error: 'SERVER_ERROR' } });
-    component.fetchFilterMetaData();
-    fixture.detectChanges();
-    // expect(toasterService.error).toHaveBeenCalled();
-  });
-  it('should frame form config data', () => {
-    component.categoryMasterList = _.cloneDeep(mockData.mockRes.frameworkData);
-    component.getFormConfig();
-   fixture.detectChanges();
+  it('should get formated filter data from session storage if data exist, set showFilter to true and emit filter data to parent', () => {
+    spyOn(cacheService, 'get').and.returnValue([]);
+    spyOn(component.dataDrivenFilter, 'emit').and.returnValue([]);
+    mockHashTagId = undefined;
+    mockFrameworkInput = undefined;
+    component.ngOnInit();
     expect(component.formFieldProperties).toBeDefined();
+    expect(component.filtersDetails).toBeDefined();
+    expect(component.dataDrivenFilter.emit).toHaveBeenCalledWith([]);
+    expect(component.showFilters).toBeTruthy();
   });
-  it('should apply filters', () => {
-    spyOn(component, 'applyFilters').and.returnValue(null);
-    component.applyFilters();
-     fixture.detectChanges();
-    expect(component.applyFilters).toHaveBeenCalled();
+
+  it('should get formated filter data by calling framework service and form service and set formated date in session', () => {
+    mockHashTagId = undefined;
+    mockFrameworkInput = undefined;
+    mockFrameworkCategories = [];
+    mockFormFields = [];
+    makeChannelReadSuc = true;
+    makeFrameworkReadSuc = true;
+    makeFormReadSuc = true;
+    spyOn(cacheService, 'get').and.returnValue(undefined);
+    spyOn(cacheService, 'set').and.returnValue(undefined);
+    spyOn(component.dataDrivenFilter, 'emit').and.returnValue([]);
+    component.ngOnInit();
+    expect(component.formFieldProperties).toBeDefined();
+    expect(component.filtersDetails).toBeDefined();
+    expect(component.dataDrivenFilter.emit).toHaveBeenCalledWith([]);
+    expect(component.showFilters).toBeTruthy();
+    expect(cacheService.set).toHaveBeenCalled();
   });
   it('should reset filters', () => {
-    spyOn(component, 'applyFilters').and.returnValue(null);
     component.resetFilters();
-    fixture.detectChanges();
     expect(component.router.navigate).toHaveBeenCalled();
   });
-  it('should initalize in page search incase of inpage filter is enabled', () => {
-    component.filterType = 'course';
-    const emitData = _.pickBy(component.queryParams);
+  it('should apply filters', () => {
     component.applyFilters();
-    fixture.detectChanges();
-  });
-  it('should initalize search and navigate to search page if inpage filter is not enabled', () => {
-    component.filterType = 'course';
-    component.applyFilters();
-    fixture.detectChanges();
+    expect(component.router.navigate).toHaveBeenCalled();
   });
   it('should remove filter selection', () => {
-    const userService = TestBed.get(UserService);
-    userService._userData$.next({ err: null, userProfile: mockData.mockRes.userProfile });
     component.formInputData = { 'subject': ['English'] };
     component.removeFilterSelection('subject', 'English');
-     fixture.detectChanges();
+    expect(component.formInputData.subject).toEqual([]);
   });
-  it('should unsubscribe from all observable subscriptions', () => {
-    const frameworkService = TestBed.get(FrameworkService);
-    const formService = TestBed.get(FormService);
-    const cacheService = TestBed.get(CacheService);
-    const userService = TestBed.get(UserService);
-    userService._userData$.next({ err: null, userProfile: mockData.mockRes.userProfile });
-    userService.getUserProfile();
-    component.formFieldProperties = mockData.mockRes.formConfigData;
-    spyOn(cacheService, 'exists').and.returnValue(false);
-    spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
-    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.mockRes.formConfigData));
-    frameworkService._frameworkData$.next({ frameworkdata: mockData.mockRes.frameworkData });
-    component.fetchFilterMetaData();
-    fixture.detectChanges();
-    spyOn(component.frameworkDataSubscription, 'unsubscribe');
-    component.ngOnDestroy();
-    expect(component.frameworkDataSubscription.unsubscribe).toHaveBeenCalled();
-  });
-  it('should call resetFilters method', () => {
-    component.ignoreQuery = ['key', 'language'];
-    component.resetFilters();
-    expect(component.refresh).toBeTruthy();
-  });
-  it('should call ngOnChanges method', () => {
-    component.enrichFilters = mockData.mockRes.enrichFilterData;
-    component.formFieldProperties = mockData.mockRes.formData;
-    spyOn(component, 'generateRange').and.callThrough();
-    component.ngOnChanges();
-    expect(component.generateRange).toHaveBeenCalled();
-  });
-  it('should not call permission service if allowedRoles are present', () => {
-    const permissionService = TestBed.get(PermissionService);
-    const allowedRoles = ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'];
-    spyOn(permissionService, 'checkRolesPermissions').and.returnValue('');
-    component.showField(allowedRoles);
-    expect(permissionService.checkRolesPermissions).toHaveBeenCalled();
-  });
-  it('should not call permission service if allowedRoles are empty', () => {
-    const permissionService = TestBed.get(PermissionService);
-    const allowedRoles = undefined;
-    spyOn(permissionService, 'checkRolesPermissions').and.returnValue('');
-    component.showField(allowedRoles);
-    expect(permissionService.checkRolesPermissions).not.toHaveBeenCalled();
-  });
-  it('should apply filters and key should have concepts', () => {
-    const router = TestBed.get(Router);
-    component.formInputData = { 'subject': ['English'], 'medium': ['English'] };
-    const activatedRoute = TestBed.get(ActivatedRoute);
-    activatedRoute.parent = 'ap/explore';
-    component.queryParams = {
-      'concepts': [
-        {
-          identifier: 'AI31',
-          name: '(Artificial) Neural Network'
-        }
-      ]
-    };
-    component.applyFilters();
-    expect(router.navigate).toHaveBeenCalledWith([], { relativeTo: 'ap/explore', queryParams: component.queryParams });
-  });
-  it('should call ngOninit to get telemetry Interact Data', () => {
-     const frameworkService = TestBed.get(FrameworkService);
-     component.pageId = 'course-page';
-     component.hashTagId = '0123166367624478721';
-     const filterInteractEdata = {
-       id: 'filter',
-       type: 'click',
-       pageid: component.pageId
-     };
-     const submitIntractEdata = {
-       id: 'submit',
-       type: 'click',
-       pageid: 'course-page',
-       extra: { filter: { 'subject': ['English'] } }
-     };
-      spyOn(frameworkService, 'initialize').and.callThrough();
-     spyOn(component, 'getQueryParams').and.callThrough();
-     spyOn(component, 'fetchFilterMetaData').and.callThrough();
-     component.ngOnInit();
-     expect(frameworkService.initialize).toHaveBeenCalled();
-     expect(component.getQueryParams).toHaveBeenCalled();
-     expect(component.fetchFilterMetaData).toHaveBeenCalled();
-     expect(component.filterIntractEdata).toEqual(filterInteractEdata);
-     expect(component.submitIntractEdata).toEqual(submitIntractEdata);
-   });
 });

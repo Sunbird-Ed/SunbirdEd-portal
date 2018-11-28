@@ -1,4 +1,4 @@
-<div class="ui stackable grid margin-top-20" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
+<div class="ui stackable grid mt-20" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
     <div class="one wide column"></div>
     <div class="ten wide column">
         <div *ngIf="!enableContentPlayer && !loader">
@@ -10,7 +10,7 @@
                                 <span class="content courseStructureHeading">
                                     {{resourceService.frmelmnts.lbl.aboutthecourse}}
                                 </span>
-                                <div *ngIf="courseHierarchy.description" class="margin-top-10">
+                                <div *ngIf="courseHierarchy.description" class="mt-10">
                                     <p *ngIf="!readMore" class="courseStructureDesc"> {{ courseHierarchy.description | slice:0:200 }}&nbsp;
                                         <span class="ui cardsKnowMore mouse-pointer" *ngIf="courseHierarchy.description && courseHierarchy.description.length > 200 && readMore === false"
                                             (click)="readMore = !readMore;">{{resourceService.frmelmnts.lbl.readmore}}</span>
@@ -28,22 +28,22 @@
                             <app-collection-tree *ngIf="collectionTreeNodes.data && collectionTreeNodes.data.children && collectionTreeNodes.data.children.length >0 ; else dataCommingSoon" (contentSelect)="navigateToContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"
                                     [contentStatus]="contentStatus"></app-collection-tree>
                             <ng-template #dataCommingSoon>
-                                <div class="placeholder margin-top-40">
+                                <div class="placeholder mt-40">
                                     <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl }}"/>
                                     <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0121}}</h5>
                                     <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>
                                 </div> 
                             </ng-template>
-                            <div class="ui fitted divider margin-bottom-20 margin-top-30"></div>
+                            <div class="ui fitted divider mb-20 mt-30"></div>
                         </div>
                         <div class='three wide column'>
                             <app-batch-details *ngIf="courseStatus !== 'Unlisted'" [courseId]="courseId" [batchId]="batchId" [enrolledCourse]="enrolledCourse"
                                 [courseHierarchy]="courseHierarchy" [courseProgressData]="courseProgressData"></app-batch-details>
-                            <div *ngIf="enrolledCourse" class="margin-bottom-15 margin-top-15">
+                            <div *ngIf="enrolledCourse" class="my-15">
                                 <div>
                                     <br>
                                     <span (click)="showNoteEditor=!showNoteEditor" class="cursor-pointer">
-                                        <i class="circular icon margin-right-10 plus"></i>&nbsp;{{resourceService.frmelmnts.lbl.addnote}}
+                                        <i class="circular icon mr-10 plus"></i>&nbsp;{{resourceService.frmelmnts.lbl.addnote}}
                                         <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId, courseId:courseId}" (exitModal)="showNoteEditor=false"
                                             (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
                                     </span>
@@ -53,7 +53,7 @@
                                 </div>
                             </div>
                             <br>
-                            <app-carriculum-card *ngIf="curriculum && curriculum.length > 0" [curriculum]="curriculum"></app-carriculum-card>
+                            <app-curriculum-card *ngIf="curriculum && curriculum.length > 0" [curriculum]="curriculum"></app-curriculum-card>
                             <br>
                             <div class="courseupdate">
                                 <b>{{resourceService.frmelmnts.lbl.coursecreatedon}}: {{courseHierarchy.createdOn | dateFormat}}</b>
@@ -62,7 +62,7 @@
                                 <br>
                                 <b *ngIf="courseHierarchy.creator">{{resourceService.frmelmnts.lbl.courseCreatedBy}}: {{courseHierarchy.creator}}</b>
                                 <br>
-                                <!-- <a *ngIf="contributionsLength>0" popupTrigger="outsideClick" [popupPlacement]="'bottom left'" suiPopup popupText={{contributions}}>{{resourceService.frmelmnts.lbl.viewCredits}}</a> -->
+                                <!-- <a *ngIf="contributions" popupTrigger="outsideClick" [popupPlacement]="'bottom left'" suiPopup popupText={{contributions}}>{{resourceService.frmelmnts.lbl.viewCredits}}</a> -->
                                 <br>
                             </div>
                         </div>
@@ -80,7 +80,7 @@
                                     <div class="twelve wide column">
                                         <span class="ui HomeAccordianHeading left floated header">{{contentTitle}}</span>
                                         <h5 appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="contentInteractObject"
-                                            class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="closeContentPlayer()">
+                                            class="ui right floated basic icon circular button mouse-pointer" (click)="closeContentPlayer()">
                                             <i class="ui remove icon"></i>
                                         </h5>
                                     </div>
@@ -92,14 +92,13 @@
                                 </div>
                                 <div class="ui grid">
                                     <div class="twelve wide column" [appTelemetryImpression]="telemetryContentImpression">
-                                        <app-player (playerOnDestroyEvent)="playerOnDestroy($event)" (contentProgressEvent)="contentProgressEvent($event)" class="content-player"
-                                            [playerConfig]="playerConfig"></app-player>
+                                        <app-player (contentProgressEvent)="contentProgressEvent($event)" class="content-player" [playerConfig]="playerConfig"></app-player>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="ui row padding-top-none">
-                            <div class="ui twelve column grid padding-right-none">
+                        <div class="ui row pt-0">
+                            <div class="ui twelve column grid pr-0">
                                 <div class="five wide mobile only three wide tablet only three wide computer only column">
                                     <button class="ui blue button left floated fluid tocbutton toc-left-nav-btn-content" (click)="navigateToContent(prevPlaylistItem)"
                                         [disabled]="prevPlaylistItem === undefined">
@@ -120,7 +119,7 @@
                                     </h2>
                                 </div>
                                 <div class="two wide tablet only two wide computer only column"></div>
-                                <div class="five wide mobile only three wide tablet only three wide computer only column padding-right-none">
+                                <div class="five wide mobile only three wide tablet only three wide computer only column pr-0">
                                     <button class="ui blue button right floated fluid toc-right-nav-btn-content" (click)="navigateToContent(nextPlaylistItem)"
                                         [disabled]="nextPlaylistItem === undefined">
                                         <span class="header">{{resourceService.frmelmnts.btn.next}}</span>
@@ -138,7 +137,6 @@
             <div class="ui grid">
                 <div class="row">
                     <div class="eight wide column">
-                        <!-- <course-discussions></course-discussions> -->
                     </div>
                     <div class="four wide column toc-note-content">
                         <app-note-card [ids]="{contentId:contentId, courseId:courseId}" [createNoteData]="createNoteData"></app-note-card>
@@ -150,7 +148,6 @@
             <app-loader [data]="loaderMessage"></app-loader>
         </div>
         <div *ngIf="showError">
-            <!-- <error-message data="{{toc.error}}" visibility="toc.error.showError"></error-message> -->
         </div>
         <div class="one wide column"></div>
     </div>
