@@ -191,7 +191,6 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
       this.formInputData[field].splice(itemIndex, 1);
       if (field === 'channel') {
         this.channelInputLabel.splice(itemIndex, 1);
-        this.orgDetailsService.setOrg(this.channelInputLabel);
       }
       this.formInputData = _.pickBy(this.formInputData);
       this.hardRefreshFilter();
