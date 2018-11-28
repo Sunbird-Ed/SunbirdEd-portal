@@ -1,11 +1,11 @@
 import { of, throwError } from 'rxjs';
-import { first, mergeMap, map, tap } from 'rxjs/operators';
+import { first, mergeMap, map, tap , catchError} from 'rxjs/operators';
 import {
   ConfigService, ResourceService, Framework, BrowserCacheTtlService
 } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FrameworkService, FormService, PermissionService, UserService } from './../../services';
+import { FrameworkService, FormService, PermissionService, UserService, OrgDetailsService  } from './../../services';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventEdata } from '@sunbird/telemetry';
@@ -25,6 +25,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
   @Input() viewAllMode = false;
   @Input() pageId: string;
   @Input() frameworkName: string;
+  @Input() formAction: string;
   @Output() dataDrivenFilter = new EventEmitter();
 
   public showFilters = false;
@@ -36,8 +37,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
   public categoryMasterList: Array<any>;
 
   public framework: string;
-
-  public formAction = 'search';
+  public channelInputLabel: any;
 
   public formInputData: any;
 
@@ -53,7 +53,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
     private activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
     public frameworkService: FrameworkService, public formService: FormService,
     public userService: UserService, public permissionService: PermissionService,
-    private browserCacheTtlService: BrowserCacheTtlService) {
+    private browserCacheTtlService: BrowserCacheTtlService, private orgDetailsService: OrgDetailsService ) {
     this.router.onSameUrlNavigation = 'reload';
   }
 
@@ -70,7 +70,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
     this.setFilterInteractData();
   }
   getFormatedFilterDetails() {
-    const cachedFormData = this.cacheService.get(this.filterEnv + this.formAction);
+    const cachedFormData = this.cacheService.get(this.filterEnv + this.formAction ? this.formAction : 'search');
     if (cachedFormData) {
       return of(cachedFormData);
     } else {
@@ -80,13 +80,30 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
           this.framework = frameworkDetails.code;
           return this.getFormDetails();
         }),
+        mergeMap((formData: any) => {
+          if (_.find(formData, {code: 'channel'})) {
+            return this.getOrgSearch().pipe(map((channelData: any) => {
+              return {formData: formData, channelData: channelData};
+            }));
+          } else {
+            return of({formData: formData});
+          }
+        }),
         map((formData: any) => {
-          let formFieldProperties = _.filter(formData, (formFieldCategory) => {
+          let formFieldProperties = _.filter(formData.formData, (formFieldCategory) => {
             if (!_.isEmpty(formFieldCategory.allowedRoles)
               && !this.permissionService.checkRolesPermissions(formFieldCategory.allowedRoles)) {
                 return false;
             }
-            const loggedInUserRoles = _.get(this.userService, 'userProfile.userRoles');
+            if (formFieldCategory.code === 'channel') {
+              formFieldCategory.range = _.map(formData.channelData, (value) => {
+                return {category: 'channel',
+                identifier: value.hashTagId,
+                name: value.orgName,
+              };
+              });
+            } else {
+              const loggedInUserRoles = _.get(this.userService, 'userProfile.userRoles');
             const frameworkTerms = _.get(_.find(this.categoryMasterList, { code : formFieldCategory.code}), 'terms');
             formFieldCategory.range = _.union(formFieldCategory.range, frameworkTerms);
             if (this.filterEnv === 'upforreview' && formFieldCategory.code === 'contentType' &&
@@ -94,13 +111,14 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
             !_.find(formFieldCategory.range, { name: 'TextBook' }))) {
                   formFieldCategory.range.push({ name: 'TextBook' });
             }
+            }
             return true;
           });
           formFieldProperties = _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index');
           return formFieldProperties;
         }),
         tap((formFieldProperties) => {
-          this.cacheService.set(this.filterEnv + this.formAction, formFieldProperties,
+          this.cacheService.set(this.filterEnv + this.formAction ? this.formAction : 'search', formFieldProperties,
             {maxAge: this.browserCacheTtlService.browserCacheTtl});
         }));
     }
@@ -125,6 +143,10 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.formInputData = {};
       _.forIn(params, (value, key) => this.formInputData[key] = typeof value === 'string' && key !== 'key' ? [value] : value);
+       if (params.channel) {
+        this.modelChange(params.channel);
+         this.channelInputLabel = this.orgDetailsService.getOrg();
+       }
       this.showFilters = true;
       this.hardRefreshFilter();
     });
@@ -132,7 +154,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
   private getFormDetails() {
     const formServiceInputParams = {
       formType: 'content',
-      formAction: this.formAction,
+      formAction: this.formAction ? this.formAction : 'search',
       contentType: this.filterEnv,
       framework: this.framework
     };
@@ -165,6 +187,10 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
     const itemIndex = this.formInputData[field].indexOf(item);
     if (itemIndex !== -1) {
       this.formInputData[field].splice(itemIndex, 1);
+      if (field === 'channel') {
+        this.channelInputLabel.splice(itemIndex, 1);
+        this.orgDetailsService.setOrg(this.channelInputLabel);
+      }
       this.formInputData = _.pickBy(this.formInputData);
       this.hardRefreshFilter();
     }
@@ -184,6 +210,16 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
   }
   public handleTopicChange(topicsSelected) {
     this.formInputData['topic'] = topicsSelected;
+    this.cdr.detectChanges();
+  }
+
+  private modelChange(data) {
+    this.channelInputLabel = [];
+    const orgDetails = _.find(this.formFieldProperties, ['code', 'channel']);
+       _.forEach(data, (value, key) => {
+        this.channelInputLabel.push(_.find(orgDetails['range'], {identifier: value}));
+        this.orgDetailsService.setOrg(this.channelInputLabel);
+       });
   }
   private setFilterInteractData() {
     this.submitIntractEdata = {
@@ -202,5 +238,11 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
     this.refresh = false;
     this.cdr.detectChanges();
     this.refresh = true;
+  }
+  getOrgSearch() {
+    return this.orgDetailsService.getOrgSerach().pipe(map(data => ( data.content )),
+    catchError(err => {
+      return [];
+    }));
   }
 }
