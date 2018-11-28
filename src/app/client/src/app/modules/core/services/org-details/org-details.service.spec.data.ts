@@ -127,8 +127,7 @@ export const serverRes = {
                 'hashTagId': '01258430450937036873',
                 'noOfMembers': null,
                 'status': 1
-              },]
-              
+              }]
             }
 
     }
