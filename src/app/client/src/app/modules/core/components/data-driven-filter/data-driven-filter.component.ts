@@ -70,7 +70,9 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
     this.setFilterInteractData();
   }
   getFormatedFilterDetails() {
-    const cachedFormData = this.cacheService.get(this.filterEnv + this.formAction ? this.formAction : 'search');
+    const formAction = this.formAction ? this.formAction : 'search';
+    console.log(this.filterEnv + formAction);
+    const cachedFormData = this.cacheService.get(this.filterEnv + formAction);
     if (cachedFormData) {
       return of(cachedFormData);
     } else {
@@ -118,7 +120,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
           return formFieldProperties;
         }),
         tap((formFieldProperties) => {
-          this.cacheService.set(this.filterEnv + this.formAction ? this.formAction : 'search', formFieldProperties,
+          this.cacheService.set(this.filterEnv + formAction, formFieldProperties,
             {maxAge: this.browserCacheTtlService.browserCacheTtl});
         }));
     }

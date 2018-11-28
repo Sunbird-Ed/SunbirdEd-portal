@@ -119,7 +119,8 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   }
 
   getFormatedFilterDetails() {
-    const cachedFormData = this._cacheService.get(this.filterEnv + this.formAction ? this.formAction : 'search');
+    const formAction = this.formAction ? this.formAction : 'search';
+    const cachedFormData = this._cacheService.get(this.filterEnv + formAction : 'search');
     if (cachedFormData) {
       return of(cachedFormData);
     } else {
@@ -161,7 +162,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
           return formFieldProperties;
         }),
         tap((formFieldProperties) => {
-          this._cacheService.set(this.filterEnv + this.formAction ? this.formAction : 'search', formFieldProperties,
+          this._cacheService.set(this.filterEnv + formAction, formFieldProperties,
             {maxAge: this.browserCacheTtlService.browserCacheTtl});
         }));
     }
