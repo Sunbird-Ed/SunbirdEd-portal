@@ -145,7 +145,6 @@ export const Response = {
     'limit': 20,
     'pageNumber': 3,
     'query': 'hello',
-    'softConstraints': { 'channel': 100}
   },
   requestParam3: {
     'filters': {
@@ -162,10 +161,7 @@ export const Response = {
     },
     'limit': 20,
     'pageNumber': 3,
-    'query': 'hello',
-    'softConstraints': {
-      'channel': 100
-    }
+    'query': 'hello'
   },
   orgDetailsSuccessData: {
     'dateTime': null,
