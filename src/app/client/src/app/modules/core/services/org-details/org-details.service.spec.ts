@@ -31,5 +31,22 @@ describe('OrgDetailsService', () => {
       }
     );
   });
+  it('Get a org details', () => {
+    const service = TestBed.get(OrgDetailsService);
+    const contentService = TestBed.get(ContentService);
+    spyOn(contentService, 'post').and.callFake(() => observableOf(serverRes.orgDetails));
+    service.getOrgSerach().subscribe(
+      apiResponse => {
+        expect(apiResponse).toBe(serverRes.orgDetails.result.response);
+      }
+    );
+  });
+
+  it('should call setOrg method to set the org data  ', inject([OrgDetailsService],
+    (service: OrgDetailsService) => {
+      service.setOrg(serverRes.orgDetails.result.response.content[0]);
+      expect(service.orgInfo).toBeDefined();
+      expect(service).toBeTruthy();
+    }));
 });
 

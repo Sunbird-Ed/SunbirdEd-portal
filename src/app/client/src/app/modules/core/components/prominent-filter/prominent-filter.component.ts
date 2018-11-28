@@ -120,7 +120,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
 
   getFormatedFilterDetails() {
     const formAction = this.formAction ? this.formAction : 'search';
-    const cachedFormData = this._cacheService.get(this.filterEnv + formAction : 'search');
+    const cachedFormData = this._cacheService.get(this.filterEnv + formAction);
     if (cachedFormData) {
       return of(cachedFormData);
     } else {
