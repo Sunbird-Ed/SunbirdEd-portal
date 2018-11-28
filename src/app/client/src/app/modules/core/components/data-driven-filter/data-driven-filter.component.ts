@@ -71,7 +71,6 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
   }
   getFormatedFilterDetails() {
     const formAction = this.formAction ? this.formAction : 'search';
-    console.log(this.filterEnv + formAction);
     const cachedFormData = this.cacheService.get(this.filterEnv + formAction);
     if (cachedFormData) {
       return of(cachedFormData);
