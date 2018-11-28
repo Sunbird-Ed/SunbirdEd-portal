@@ -6,10 +6,8 @@ import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { NgInviewModule } from 'angular-inport';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
-import { CourseComponent } from './components/course/course.component';
+import { CourseComponent, CourseContentComponent } from './components';
 import { SuiModule } from 'ng2-semantic-ui';
-import { CourseContentComponent } from './components/course-content/course-content.component';
-
 @NgModule({
   imports: [
     CommonModule,
