@@ -583,7 +583,8 @@
     "upforreview" :"upforreview",
     "collaboration":"collaboration",
     "framework": "framework",
-    "explore-course":"explore-course"
+    "explore-course":"explore-course",
+    "framework-code":"framework-code"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,

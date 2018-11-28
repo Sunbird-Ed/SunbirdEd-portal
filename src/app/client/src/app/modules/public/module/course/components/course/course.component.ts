@@ -1,12 +1,10 @@
 import { combineLatest as observableCombineLatest ,  Subject } from 'rxjs';
-import { PageApiService, PlayerService, ISort, OrgDetailsService } from '@sunbird/core';
-import { PublicPlayerService } from './../../../../services';
+import { PageApiService, PlayerService, ISort, OrgDetailsService, FormService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   ResourceService, ToasterService, INoResultMessage,
-  ConfigService, UtilService, NavigationHelperService
-} from '@sunbird/shared';
-import { ICaraouselData, BrowserCacheTtlService } from '@sunbird/shared';
+  ConfigService, UtilService, NavigationHelperService, ICaraouselData, BrowserCacheTtlService,
+ServerResponse} from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
@@ -32,6 +30,8 @@ export class CourseComponent implements OnInit, OnDestroy {
   private pageSectionService: PageApiService;
 
   public orgDetailsService: OrgDetailsService;
+
+  public formService: FormService;
   /**
    * This variable hepls to show and hide page loader.
    * It is kept true by default as at first when we comes
@@ -51,6 +51,10 @@ export class CourseComponent implements OnInit, OnDestroy {
   * no result  message
  */
   noResultMessage: INoResultMessage;
+  /**
+  * frameWorkName to pass for prominent filter
+ */
+  frameWorkName: string;
   /**
   * Contains result object returned from getPageData API.
   */
@@ -80,8 +84,8 @@ export class CourseComponent implements OnInit, OnDestroy {
   constructor(pageSectionService: PageApiService, toasterService: ToasterService, private playerService: PlayerService,
     resourceService: ResourceService, config: ConfigService, private activatedRoute: ActivatedRoute, router: Router,
     public utilService: UtilService, public navigationHelperService: NavigationHelperService,
-    orgDetailsService: OrgDetailsService, private publicPlayerService: PublicPlayerService,
-    private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService) {
+    orgDetailsService: OrgDetailsService, private cacheService: CacheService,
+    private browserCacheTtlService: BrowserCacheTtlService,  formService: FormService) {
     this.pageSectionService = pageSectionService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
@@ -90,6 +94,7 @@ export class CourseComponent implements OnInit, OnDestroy {
     this.router = router;
     this.router.onSameUrlNavigation = 'reload';
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+    this.formService = formService;
   }
 
   populatePageData() {
@@ -155,6 +160,7 @@ export class CourseComponent implements OnInit, OnDestroy {
     this.filterType = this.config.appConfig.explore.filterType;
     this.redirectUrl = this.config.appConfig.explore.inPageredirectUrl;
     this.getChannelId();
+    this.getframeWorkData();
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
@@ -173,7 +179,28 @@ export class CourseComponent implements OnInit, OnDestroy {
     };
     this.getQueryParams();
   }
-
+  getframeWorkData() {
+    const framework = this.cacheService.get('framework' + 'search');
+    if (framework) {
+      this.frameWorkName = framework;
+    } else {
+      const formServiceInputParams = {
+        formType: 'framework',
+        formAction: 'search',
+        contentType: 'framework-code',
+      };
+      this.formService.getFormConfig(formServiceInputParams, this.hashTagId).subscribe(
+        (data: ServerResponse) => {
+          this.frameWorkName = _.find(data, 'framework').framework;
+          this.cacheService.set('framework' + 'search', this.frameWorkName ,
+            {maxAge: this.browserCacheTtlService.browserCacheTtl});
+        },
+        (err: ServerResponse) => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        }
+      );
+    }
+  }
   prepareVisits(event) {
     _.forEach(event, (inview, index) => {
       if (inview.metaData.identifier) {
