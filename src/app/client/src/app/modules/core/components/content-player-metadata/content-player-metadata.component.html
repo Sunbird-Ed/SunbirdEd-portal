@@ -241,21 +241,6 @@
                 </div>
             </div>
         </div>
-        <div class="item p-0 mb-5">
-            <div class="ui grid stackable m-0">
-                <div class="three wide column">
-                    <div class="content content-detail">
-                        {{resourceService.frmelmnts.lbl.credits}}
-                    </div>
-                </div>
-                <div class="nine wide column">
-                    <div class="content" *ngIf="metadata.attributions">
-                        {{metadata.attributions}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        
     </div>
     <app-content-credits [contentData]="metadata" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false">
   </app-content-credits>
