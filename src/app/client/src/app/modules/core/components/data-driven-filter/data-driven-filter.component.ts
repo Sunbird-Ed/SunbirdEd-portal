@@ -145,7 +145,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
       this.formInputData = {};
       _.forIn(params, (value, key) => this.formInputData[key] = typeof value === 'string' && key !== 'key' ? [value] : value);
        if (params.channel) {
-        this.modelChange(params.channel);
+        this.modelChange(this.formInputData.channel);
          this.channelInputLabel = this.orgDetailsService.getOrg();
        }
       this.showFilters = true;
