@@ -248,7 +248,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         contentType: ['Collection', 'TextBook', 'Course', 'LessonPlan', 'Resource'],
         params: { lastUpdatedOn: 'desc' }
       };
-      this.searchService.searchContentByUserId(searchParams).subscribe(
+      const inputParams = {params: this.configService.appConfig.PROFILE.contentApiQueryParams};
+      this.searchService.searchContentByUserId(searchParams, inputParams).subscribe(
         (data: ServerResponse) => {
           this.formatMyContributionData(data.result.content);
         },

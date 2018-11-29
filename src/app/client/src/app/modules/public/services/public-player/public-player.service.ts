@@ -45,10 +45,12 @@ export class PublicPlayerService {
    * @param {string} contentId
    * @returns {Observable<ServerResponse>}
    */
-  getContent(contentId: string): Observable<ServerResponse> {
+  getContent(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
+    let param = { fields: this.configService.urlConFig.params.contentGet };
+    param = { ...param, ...option.params };
     const req = {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
-      param: { fields: this.configService.urlConFig.params.contentGet }
+      param: param
     };
     return this.publicDataService.get(req).pipe(map((response: ServerResponse) => {
       this.contentData = response.result.content;
@@ -81,9 +83,10 @@ export class PublicPlayerService {
     }
     return configuration;
   }
-  public getCollectionHierarchy(identifier: string): Observable<CollectionHierarchyAPI.Get> {
+  public getCollectionHierarchy(identifier: string, option: any = { params: {} }): Observable<CollectionHierarchyAPI.Get> {
     const req = {
-      url: `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`
+      url: `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`,
+      param: option.params
     };
     return this.publicDataService.get(req).pipe(map((response: ServerResponse) => {
       this.collectionData = response.result.content;

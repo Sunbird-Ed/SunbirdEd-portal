@@ -1,11 +1,13 @@
 import { Subscription, Observable } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse, BrowserCacheTtlService } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnDestroy, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FrameworkService, FormService, PermissionService } from './../../services';
+import { FrameworkService, FormService, PermissionService, OrgDetailsService } from './../../services';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+import { first, mergeMap, map, tap , catchError} from 'rxjs/operators';
 @Component({
   selector: 'app-prominent-filter',
   templateUrl: './prominent-filter.component.html',
@@ -21,6 +23,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   @Input() pageId: string;
   @Output() filters = new EventEmitter();
   @Input() frameworkName: string;
+  @Input() formAction: string;
   @Output() prominentFilter = new EventEmitter();
   /**
  * To get url, app configs
@@ -54,9 +57,8 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
 
   public formType = 'content';
 
-  public formAction = 'search';
-
   public queryParams: any;
+  public showFilters = false;
   /**
  * formInputData is to take input data's from form
  */
@@ -90,7 +92,8 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     formService: FormService,
     toasterService: ToasterService,
     permissionService: PermissionService,
-    private browserCacheTtlService: BrowserCacheTtlService
+    private browserCacheTtlService: BrowserCacheTtlService,
+    private orgDetailsService: OrgDetailsService
 
   ) {
     this.configService = configService;
@@ -105,101 +108,107 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.frameworkName) {
-      this.frameworkService.initialize(this.frameworkName);
-    } else  {
-      this.frameworkService.initialize('', this.hashTagId);
-    }
-    this.formInputData = {};
-    this.getQueryParams();
-    this.fetchFilterMetaData();
-    this.contentTypes = this.configService.dropDownConfig.FILTER.RESOURCES.contentTypes;
-    this.submitIntractEdata = {
-      id: 'submit',
-      type: 'click',
-      pageid: this.pageId,
-      extra: {filter: this.formInputData}
-  };
-  }
-  getQueryParams() {
-    this.activatedRoute.queryParams.subscribe((params) => {
-      this.queryParams = { ...params };
-      _.forIn(params, (value, key) => {
-        if (typeof value === 'string' && key !== 'key' && key !== 'language') {
-          this.queryParams[key] = [value];
-        }
-      });
-      this.formInputData = _.pickBy(this.queryParams);
-      this.refresh = false;
-      this.cdr.detectChanges();
-      this.refresh = true;
+    this.frameworkService.initialize(this.frameworkName, this.hashTagId);
+    this.getFormatedFilterDetails().subscribe((formFieldProperties) => {
+      this.formFieldProperties = formFieldProperties;
+      this.prominentFilter.emit(formFieldProperties);
+      this.subscribeToQueryParams();
+    }, (err) => {
+      this.prominentFilter.emit([]);
     });
-  }
-  /**
-* fetchFilterMetaData is gives form config data
-*/
-  fetchFilterMetaData() {
-    this.isCachedDataExists = this._cacheService.exists(this.filterEnv + this.formAction);
-    if (this.isCachedDataExists) {
-      const data: any | null = this._cacheService.get(this.filterEnv + this.formAction);
-      this.formFieldProperties = data;
-      this.prominentFilter.emit(this.formFieldProperties);
-    } else {
-      this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
-        if (!frameworkData.err) {
-          this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
-          this.framework = frameworkData.frameworkdata['defaultFramework'].code;
-          const formServiceInputParams = {
-            formType: this.formType,
-            formAction: this.formAction,
-            contentType: this.filterEnv,
-            framework: this.framework
-          };
-          this.formService.getFormConfig(formServiceInputParams, this.hashTagId).subscribe(
-            (data: ServerResponse) => {
-              this.formFieldProperties = data;
-              _.forEach(this.formFieldProperties, (formFieldCategory) => {
-                if (formFieldCategory && formFieldCategory.allowedRoles) {
-                  const userRoles = formFieldCategory.allowedRoles.filter(element => this.userRoles.includes(element));
-                  if (!this.showField(formFieldCategory.allowedRoles)) {
-                    this.formFieldProperties.splice(this.formFieldProperties.indexOf(formFieldCategory), 1);
-                  }
-                }
-              });
-              this.getFormConfig();
-              this.prominentFilter.emit(this.formFieldProperties);
-            },
-            (err: ServerResponse) => {
-              this.prominentFilter.emit([]);
-              // this.toasterService.error(this.resourceService.messages.emsg.m0005);
-            }
-          );
-        } else if (frameworkData && frameworkData.err) {
-          this.prominentFilter.emit([]);
-          // this.toasterService.error(this.resourceService.messages.emsg.m0005);
-        }
-      });
-    }
   }
 
-  /**
- * @description - Which is used to config the form field vlaues
- * @param {formFieldProperties} formFieldProperties  - Field information
- */
-  getFormConfig() {
-    _.forEach(this.categoryMasterList, (category) => {
-      _.forEach(this.formFieldProperties, (formFieldCategory) => {
-        if (category.code === formFieldCategory.code && category.terms) {
-          formFieldCategory.range = category.terms;
+  getFormatedFilterDetails() {
+    const formAction = this.formAction ? this.formAction : 'search';
+    const cachedFormData = this._cacheService.get(this.filterEnv + formAction);
+    if (cachedFormData) {
+      return of(cachedFormData);
+    } else {
+      return this.fetchFrameWorkDetails().pipe(
+        mergeMap((frameworkDetails: any) => {
+          this.categoryMasterList = frameworkDetails.categoryMasterList;
+          this.framework = frameworkDetails.code;
+          return this.getFormDetails();
+        }),
+        mergeMap((formData: any) => {
+          if (_.find(formData, {code: 'channel'})) {
+            return this.getOrgSearch().pipe(map((channelData: any) => {
+              const data = _.filter(channelData, 'hashTagId');
+              return {formData: formData, channelData: data};
+            }));
+          } else {
+            return of({formData: formData});
+          }
+        }),
+        map((formData: any) => {
+          let formFieldProperties = _.filter(formData.formData, (formFieldCategory) => {
+            if (!_.isEmpty(formFieldCategory.allowedRoles)
+              && !this.permissionService.checkRolesPermissions(formFieldCategory.allowedRoles)) {
+                return false;
+            }
+            if (formFieldCategory.code === 'channel') {
+              formFieldCategory.range = _.map(formData.channelData, (value) => {
+                return {category: 'channel',
+                identifier: value.hashTagId,
+                name: value.orgName,
+              };
+              });
+            } else {
+            const frameworkTerms = _.get(_.find(this.categoryMasterList, { code : formFieldCategory.code}), 'terms');
+            formFieldCategory.range = _.union(formFieldCategory.range, frameworkTerms);
+            }
+            return true;
+          });
+          formFieldProperties = _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index');
+          return formFieldProperties;
+        }),
+        tap((formFieldProperties) => {
+          this._cacheService.set(this.filterEnv + formAction, formFieldProperties,
+            {maxAge: this.browserCacheTtlService.browserCacheTtl});
+        }));
+    }
+  }
+  private fetchFrameWorkDetails() {
+    return this.frameworkService.frameworkData$.pipe(first(),
+      mergeMap((frameworkDetails: Framework) => {
+        if (!frameworkDetails.err) {
+          const framework = this.frameworkName ? this.frameworkName : 'defaultFramework';
+          const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
+          if (frameworkData) {
+            return of({categoryMasterList: frameworkData.categories, framework: frameworkData.code});
+          } else {
+            return throwError('no result for ' + this.frameworkName); // framework error need to handle this
+          }
+        } else {
+          return throwError(frameworkDetails.err); // framework error
         }
-        return formFieldCategory;
-      });
+      }));
+  }
+  private subscribeToQueryParams() {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.formInputData = {};
+      _.forIn(params, (value, key) => this.formInputData[key] = typeof value === 'string' && key !== 'key' ? [value] : value);
+      if (this.formInputData.channel && this.formFieldProperties) { // To manuplulate channel data from identifier to name
+        const channel = [];
+         _.forEach(this.formInputData.channel, (value, key) => {
+          const orgDetails = _.find(this.formFieldProperties, {code: 'channel'});
+          const range = _.find(orgDetails['range'], {'identifier': value});
+          channel.push(range['name']);
+         });
+         this.formInputData['channel'] =  channel;
+      }
+      this.showFilters = true;
+      this.hardRefreshFilter();
     });
-    this.formFieldProperties = _.sortBy(_.uniqBy(this.formFieldProperties, 'code'), 'index');
-    this._cacheService.set(this.filterEnv + this.formAction, this.formFieldProperties,
-      {
-        maxAge: this.browserCacheTtlService.browserCacheTtl
-      });
+  }
+  private getFormDetails() {
+    const formServiceInputParams = {
+      formType: 'content',
+      formAction: this.formAction ? this.formAction : 'search',
+      contentType: this.filterEnv,
+      framework: this.framework
+    };
+    return this.formService.getFormConfig(formServiceInputParams, this.hashTagId);
   }
 
   resetFilters() {
@@ -209,9 +218,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
       this.formInputData = {};
     }
     this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
-    this.refresh = false;
-    this.cdr.detectChanges();
-    this.refresh = true;
+    this.hardRefreshFilter();
   }
   selectedValue(event, code) {
     this.formInputData[code] = event;
@@ -226,22 +233,47 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     if (_.isEqual(this.formInputData, this.queryParams)) {
       this.isFiltered = true;
     } else {
-        this.isFiltered = false;
-        this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
-        let queryParams = this.queryParams;
-        queryParams = _.pickBy(queryParams, value => _.isArray(value) && value.length > 0);
-        this.router.navigate([], { relativeTo: this.activatedRoute.parent,
-            queryParams: queryParams
-        });
+      this.isFiltered = false;
+      const queryParams: any = {};
+    _.forIn(this.formInputData, (eachInputs: Array<any | object>, key) => {
+        const formatedValue = typeof eachInputs === 'string' ? eachInputs :
+        _.compact(_.map(eachInputs, value => typeof value === 'string' ? value : _.get(value, 'identifier')));
+        if (formatedValue.length) {
+          queryParams[key] = formatedValue;
+        }
+        if (key === 'channel') {
+          queryParams[key] = this.populateChannelData(formatedValue);
+        }
+    });
+    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
     }
-}
+  }
 
-  showField(allowedRoles) {
-    if (allowedRoles) {
-      return this.permissionService.checkRolesPermissions(allowedRoles);
-    } else {
-      return true;
-    }
+  private populateChannelData(data) {
+    const channel = [];
+         _.forEach(data, (value, key) => {
+          const orgDetails = _.find(this.formFieldProperties, {code: 'channel'});
+          const range = _.find(orgDetails['range'], {name: value});
+          channel.push(range['identifier']);
+         });
+         return channel;
+  }
+
+  public handleTopicChange(topicsSelected) {
+    this.formInputData['topic'] = topicsSelected;
+    this.cdr.detectChanges();
+  }
+
+  private hardRefreshFilter() {
+    this.refresh = false;
+    this.cdr.detectChanges();
+    this.refresh = true;
+  }
+  private getOrgSearch() {
+    return this.orgDetailsService.searchOrg().pipe(map(data => ( data.content )),
+    catchError(err => {
+      return [];
+    }));
   }
   ngOnDestroy() {
     if (this.frameworkDataSubscription) {

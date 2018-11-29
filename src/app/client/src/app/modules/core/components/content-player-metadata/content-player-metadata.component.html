@@ -45,6 +45,21 @@
                 </div>
             </div>
         </div>
+        <div class="item p-0 mb-5" *ngIf="metadata.orgDetails && metadata.orgDetails.orgName">
+            <div class="ui grid stackable m-0">
+                <div class="three wide column">
+                    <div class="content content-detail">
+                        {{resourceService.frmelmnts.lbl.organization}}
+                    </div>
+                </div>
+                <div class="nine wide column">
+                    <div class="content">
+                        <span class="d-inline-block mr-20">{{metadata.orgDetails?.orgName}}</span>
+                        <a ng-if="metadata.orgDetails?.email" href="mailto:{{metadata.orgDetails?.email}}?subject={{metadata.name}}">{{metadata.orgDetails?.email}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="item p-0 mb-5">
             <div class="ui grid stackable m-0">
                 <div class="three wide column">
