@@ -101,7 +101,6 @@ export class CourseComponent implements OnInit, OnDestroy {
     this.showLoader = true;
     this.noResult = false;
     const filters = _.pickBy(this.filters, value => value.length > 0);
-          filters.channel = this.hashTagId;
     const option = {
       source: 'web',
       name: 'AnonymousCourse',

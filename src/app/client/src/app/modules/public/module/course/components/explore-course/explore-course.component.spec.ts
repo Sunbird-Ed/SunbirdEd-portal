@@ -92,12 +92,13 @@ describe('ExploreCourseComponent', () => {
     expect(component.showLoader).toBeFalsy();
     expect(component.noResult).toBeTruthy();
   });
-  fit('when count is 0 should show no result found', () => {
+  it('when count is 0 should show no result found', () => {
     component.slug = '123456567';
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgDetailsService);
     component.dataDrivenFilter = {};
     spyOn(searchService, 'courseSearch').and.callFake(() => observableOf(Response.noResult));
+    component.queryParams = mockQueryParma;
     component.populateCourseSearch();
     expect(component.showLoader).toBeFalsy();
   });

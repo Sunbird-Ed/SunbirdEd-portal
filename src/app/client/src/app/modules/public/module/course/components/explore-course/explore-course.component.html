@@ -13,6 +13,9 @@
               <p class="serch-allresult">{{resourceService.frmelmnts?.lbl?.showingResultsFor | interpolate:'{searchString}':this.queryParams.key}} 
               </p>
           </div>
+          <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="ui right floated basic icon circular button" [routerLink]="['/explore-course']">
+                <i class="ui remove icon "></i>
+            </h5>
           
       </div>
       <div in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="searchList" *ngIf="!showLoader && !noResult" class="ui stackable four column grid dynamic-section-card ">
