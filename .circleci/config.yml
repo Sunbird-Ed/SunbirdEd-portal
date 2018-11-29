@@ -4,8 +4,8 @@ jobs:
     machine:
       image: circleci/classic:latest
     steps:
-      - checkout
-      - run:
+    #  - checkout
+     # - run:
           name: install jq
           command: sudo apt update && sudo apt-get install -y jq
       - run:
