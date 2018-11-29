@@ -61,7 +61,8 @@ export class CoursesService {
    */
   public getEnrolledCourses() {
     const option = {
-      url: this.config.urlConFig.URLS.COURSE.GET_ENROLLED_COURSES + '/' + this.userid
+      url: this.config.urlConFig.URLS.COURSE.GET_ENROLLED_COURSES + '/' + this.userid,
+      param: this.config.appConfig.Course.contentApiQueryParams
     };
     return this.learnerService.get(option).pipe(
       map((apiResponse: ServerResponse) => {

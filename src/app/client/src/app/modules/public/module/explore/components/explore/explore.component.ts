@@ -100,7 +100,8 @@ export class ExploreComponent implements OnInit, OnDestroy {
       filters: filters,
       softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
       mode: 'soft',
-      exists: []
+      exists: [],
+      params : this.config.appConfig.ExplorePage.contentApiQueryParams
     };
     this.pageSectionService.getPageData(option).pipe(
       takeUntil(this.unsubscribe$))
