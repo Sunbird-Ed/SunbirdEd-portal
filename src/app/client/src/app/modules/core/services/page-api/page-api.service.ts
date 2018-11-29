@@ -54,6 +54,7 @@ export class PageApiService {
     } else {
       const option: any = {
         url: this.config.urlConFig.URLS.PAGE_PREFIX,
+        param: { ...requestParam.params },
         data: {
           request: {
             source: requestParam.source,

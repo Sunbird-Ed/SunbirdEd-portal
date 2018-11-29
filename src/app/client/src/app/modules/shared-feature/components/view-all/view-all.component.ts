@@ -223,7 +223,8 @@ export class ViewAllComponent implements OnInit, OnDestroy {
       exists: request.queryParams.exists,
       sort_by: request.queryParams.sortType ?
         { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy),
-        softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints')
+        softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
+      params : this.configService.appConfig.ViewAll.contentApiQueryParams
     };
     if (_.get(this.activatedRoute.snapshot, 'data.baseUrl') === 'learn') {
       return combineLatest(

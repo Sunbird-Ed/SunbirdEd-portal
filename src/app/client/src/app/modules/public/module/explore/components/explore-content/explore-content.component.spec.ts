@@ -92,7 +92,9 @@ describe('ExploreContentComponent', () => {
     };
     component.dataDrivenFilter = {};
     component.dataDrivenFilter['board'] = ['CBSE'];
+    const config = TestBed.get(ConfigService);
     const requestParams = Response.requestParam;
+    requestParams['params'] = config.appConfig.ExplorePage.contentApiQueryParams;
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgDetailsService);
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
@@ -211,6 +213,8 @@ describe('ExploreContentComponent', () => {
     const searchService = TestBed.get(SearchService);
     const filters = Response.filters;
     const requestParams = Response.requestParam2;
+    const config = TestBed.get(ConfigService);
+    requestParams['params'] = config.appConfig.ExplorePage.contentApiQueryParams;
     component.dataDrivenFilter = {};
     component.hashTagId =   '0123166367624478721';
     spyOn(component, 'populateContentSearch').and.callThrough();
@@ -224,7 +228,9 @@ describe('ExploreContentComponent', () => {
   it('should call getFilters with no data', () => {
     const searchService = TestBed.get(SearchService);
     const filters = [];
+    const config = TestBed.get(ConfigService);
     const requestParams = Response.requestParam3;
+    requestParams['params'] = config.appConfig.ExplorePage.contentApiQueryParams;
     component.dataDrivenFilter = {};
     component.hashTagId =   '0123166367624478721';
     spyOn(component, 'populateContentSearch').and.callThrough();
