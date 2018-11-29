@@ -332,6 +332,6 @@ export const Response = {
     requestParam3: {
       source: 'web',
       name: 'AnonymousCourse',
-      filters: {subject: ['English'], board: ['NCERT', 'ICSE'], 'channel': '0123166367624478721'},
+      filters: {subject: ['English'], board: ['NCERT', 'ICSE']},
     },
 };
