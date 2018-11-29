@@ -1,3 +1,4 @@
+import { ExploreCourseComponent } from './explore-course.component';
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -7,13 +8,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CourseContentComponent } from './course-content.component';
-import { Response } from './course-content.component.spec.data';
+import { Response } from './explore-course.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { PublicPlayerService } from './../../../../services';
-describe('CourseContentComponent', () => {
-  let component: CourseContentComponent;
-  let fixture: ComponentFixture<CourseContentComponent>;
+describe('ExploreCourseComponent', () => {
+  let component: ExploreCourseComponent;
+  let fixture: ComponentFixture<ExploreCourseComponent>;
   const resourceBundle = {
     'messages': {
       'stmsg': {
@@ -52,7 +52,7 @@ describe('CourseContentComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
-      declarations: [CourseContentComponent],
+      declarations: [ExploreCourseComponent],
       providers: [ConfigService, SearchService, LearnerService, OrgDetailsService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
@@ -62,7 +62,7 @@ describe('CourseContentComponent', () => {
       .compileComponents();
   }));
   beforeEach(() => {
-    fixture = TestBed.createComponent(CourseContentComponent);
+    fixture = TestBed.createComponent(ExploreCourseComponent);
     component = fixture.componentInstance;
   });
   it('should subscribe to searchService', () => {
@@ -147,9 +147,6 @@ describe('CourseContentComponent', () => {
         }
       ]
     };
-    component.facets = Response.facetData;
-    component.processFilterData();
-    expect(component.facets).toEqual(obj);
   });
   it('should call compareObjects method', () => {
     const objA = {
@@ -226,9 +223,6 @@ describe('CourseContentComponent', () => {
     component.hashTagId =   '0123166367624478721';
     spyOn(component, 'populateContentSearch').and.callThrough();
     spyOn(searchService, 'contentSearch').and.callThrough();
-    component.getFilters(filters);
-    expect(component.facetArray).toEqual([ 'board', 'medium', 'subject', 'gradeLevel' ]);
-    expect(component.dataDrivenFilter['board']).toBe('CBSE');
     expect(component.populateContentSearch).toHaveBeenCalled();
     expect(searchService.contentSearch).toHaveBeenCalledWith(requestParams);
   });
@@ -240,8 +234,8 @@ describe('CourseContentComponent', () => {
     component.hashTagId =   '0123166367624478721';
     spyOn(component, 'populateContentSearch').and.callThrough();
     spyOn(searchService, 'contentSearch').and.callThrough();
-    component.getFilters(filters);
     expect(component.populateContentSearch).toHaveBeenCalled();
     expect(searchService.contentSearch).toHaveBeenCalledWith(requestParams);
   });
 });
+

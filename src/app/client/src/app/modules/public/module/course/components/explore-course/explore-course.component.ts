@@ -16,11 +16,11 @@ import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 import { filter } from 'rxjs/operators';
 @Component({
-  selector: 'app-course-content',
-  templateUrl: './course-content.component.html',
-  styleUrls: ['./course-content.component.scss']
+  selector: 'app-explore-course',
+  templateUrl: './explore-course.component.html',
+  styleUrls: ['./explore-course.component.scss']
 })
-export class CourseContentComponent implements OnInit, OnDestroy {
+export class ExploreCourseComponent implements OnInit, OnDestroy {
     inviewLogs: any = [];
     /**
        * telemetryImpression
@@ -172,7 +172,7 @@ export class CourseContentComponent implements OnInit, OnDestroy {
             pageNumber: this.pageNumber,
             query: this.queryParams.key,
         };
-        this.searchService.contentSearch(requestParams).pipe(
+        this.searchService.contentSearch(requestParams, false).pipe(
             takeUntil(this.unsubscribe$))
             .subscribe(
                 (apiResponse: ServerResponse) => {
@@ -181,8 +181,6 @@ export class CourseContentComponent implements OnInit, OnDestroy {
                         this.noResult = false;
                         this.searchList = apiResponse.result.content;
                         this.totalCount = apiResponse.result.count;
-                        this.facets = apiResponse.result.facets;
-                        this.processFilterData();
                         this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
                         const constantData = this.config.appConfig.CoursePage.constantData;
                         const metaData = this.config.appConfig.CoursePage.metaData;
@@ -226,16 +224,6 @@ export class CourseContentComponent implements OnInit, OnDestroy {
             queryParams: this.queryParams
         });
     }
-    getFilters(filters) {
-        this.facetArray =  filters.map(element => element.code);
-        _.forEach(filters, (value) => {
-            if (value.code === 'board') {
-                value.range = _.orderBy(value.range, ['index'], ['asc']);
-                this.dataDrivenFilter['board']  = _.get(value, 'range[0].name') ? _.get(value, 'range[0].name') : [];
-            }
-          });
-        this.setFilters();
-    }
     getChannelId() {
         this.orgDetailsService.getOrgDetails(this.slug).pipe(
             takeUntil(this.unsubscribe$))
@@ -260,9 +248,6 @@ export class CourseContentComponent implements OnInit, OnDestroy {
     }
 
     setFilters() {
-        this.filters = {
-            contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
-        };
         observableCombineLatest(
             this.activatedRoute.params,
             this.activatedRoute.queryParams,
@@ -279,9 +264,6 @@ export class CourseContentComponent implements OnInit, OnDestroy {
                     this.pageNumber = Number(bothParams.params.pageNumber);
                 }
                 this.queryParams = { ...bothParams.queryParams };
-                this.filters = {
-                    contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
-                };
                 if (!_.isEmpty(this.queryParams)) {
                     _.forOwn(this.queryParams, (queryValue, queryParam) => {
                         this.filters[queryParam] = queryValue;
@@ -296,12 +278,13 @@ export class CourseContentComponent implements OnInit, OnDestroy {
                     this.populateContentSearch();
                 }
             });
+        console.log('>>>', this.filters);
     }
 
     ngOnInit() {
-            if (_.includes(this.route.url, '/explore')) {
+            if (_.includes(this.route.url, '/explore-course')) {
               const url  = this.route.url.split('/');
-              if (url.indexOf('explore') === 2) {
+              if (url.indexOf('explore-course') === 2) {
                 this.exploreRoutingUrl = url[1] + '/' + url[2];
               } else {
                 this.exploreRoutingUrl = url[1];
@@ -316,6 +299,7 @@ export class CourseContentComponent implements OnInit, OnDestroy {
         this.activatedRoute.params.subscribe(params => {
             this.setTelemetryData();
         });
+        this.setFilters();
     }
     setTelemetryData() {
         this.telemetryImpression = {
@@ -337,6 +321,7 @@ export class CourseContentComponent implements OnInit, OnDestroy {
     }
 
     public playContent(event) {
+        this.showLoginModal = false;
     }
     inview(event) {
         _.forEach(event.inview, (inview, key) => {
@@ -358,17 +343,6 @@ export class CourseContentComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
-    }
-    processFilterData() {
-        const facetObj = {};
-        _.forEach(this.facets, (value) => {
-            if (value) {
-                let data = {};
-                data = value.values;
-                facetObj[value.name] = data;
-                this.facets = facetObj;
-            }
-        });
     }
     closeModal() {
       this.showLoginModal = false;

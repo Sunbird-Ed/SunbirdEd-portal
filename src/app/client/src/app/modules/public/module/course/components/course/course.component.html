@@ -24,10 +24,10 @@
 <sui-modal [isClosable]="true" size="tiny" (dismissed)="closeModal()" #modal *ngIf="showLoginModal">
   <div class="content">
     <div class="ui center aligned segment">
-      <div class="header cardsHeading">Sign in to enroll this course </div>
+      <div class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.signinenrollTitle}} </div>
       <br/>
       <div class="announcement-description">
-        Courses are for register users. Sign in to access the course. 
+        {{resourceService?.frmelmnts?.lbl?.signinenrollHeader}}
       </div>
       <br/>
       <br/>
