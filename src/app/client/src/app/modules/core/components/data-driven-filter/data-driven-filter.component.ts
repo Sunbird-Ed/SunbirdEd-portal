@@ -84,7 +84,8 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
         mergeMap((formData: any) => {
           if (_.find(formData, {code: 'channel'})) {
             return this.getOrgSearch().pipe(map((channelData: any) => {
-              return {formData: formData, channelData: channelData};
+              const data = _.filter(channelData, 'hashTagId');
+              return {formData: formData, channelData: data};
             }));
           } else {
             return of({formData: formData});
@@ -240,7 +241,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
     this.refresh = true;
   }
   getOrgSearch() {
-    return this.orgDetailsService.getOrgSerach().pipe(map(data => ( data.content )),
+    return this.orgDetailsService.searchOrg().pipe(map(data => ( data.content )),
     catchError(err => {
       return [];
     }));

@@ -35,7 +35,7 @@ describe('OrgDetailsService', () => {
     const service = TestBed.get(OrgDetailsService);
     const contentService = TestBed.get(ContentService);
     spyOn(contentService, 'post').and.callFake(() => observableOf(serverRes.orgDetails));
-    service.getOrgSerach().subscribe(
+    service.searchOrg().subscribe(
       apiResponse => {
         expect(apiResponse).toBe(serverRes.orgDetails.result.response);
       }

@@ -75,7 +75,7 @@ export class OrgDetailsService {
     this.publicDataService.channelId = this.orgDetails.channel;
   }
 
-  getOrgSerach() {
+  searchOrg() {
     const option = {
       url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH,
       data: {
