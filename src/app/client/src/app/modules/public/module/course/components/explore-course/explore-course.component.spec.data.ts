@@ -119,7 +119,7 @@ export const Response = {
     'responseCode': 'OK',
     'result': {
         'count': 0,
-        'content': [
+        'course': [
             {}]
     }
 },
