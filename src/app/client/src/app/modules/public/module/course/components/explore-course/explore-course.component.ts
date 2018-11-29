@@ -165,7 +165,6 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
         this.showLoader = true;
         this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
         const filters = _.pickBy(this.filters, value => value.length > 0);
-        filters.channel = this.hashTagId;
         const requestParams = {
             filters: filters,
             limit: this.pageLimit,
