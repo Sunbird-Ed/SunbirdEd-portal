@@ -221,10 +221,10 @@ describe('ExploreCourseComponent', () => {
     const requestParams = Response.requestParam2;
     component.dataDrivenFilter = {};
     component.hashTagId =   '0123166367624478721';
-    spyOn(component, 'populateContentSearch').and.callThrough();
-    spyOn(searchService, 'contentSearch').and.callThrough();
+    spyOn(component, 'populateCourseSearch').and.callThrough();
+    spyOn(searchService, 'courseSearch').and.callThrough();
     component.ngOnInit();
-    expect(component.populateContentSearch).toHaveBeenCalled();
+    expect(component.populateCourseSearch).toHaveBeenCalled();
   });
   it('should call getFilters with no data', () => {
     const searchService = TestBed.get(SearchService);
@@ -232,8 +232,8 @@ describe('ExploreCourseComponent', () => {
     const requestParams = Response.requestParam3;
     component.dataDrivenFilter = {};
     component.hashTagId =   '0123166367624478721';
-    spyOn(component, 'populateContentSearch').and.callThrough();
-    spyOn(searchService, 'contentSearch').and.callThrough();
+    spyOn(component, 'populateCourseSearch').and.callThrough();
+    spyOn(searchService, 'courseSearch').and.callThrough();
     component.ngOnInit();
   });
 });

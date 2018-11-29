@@ -161,7 +161,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
     /**
      * This method sets the make an api call to get all search data with page No and offset
      */
-    populateContentSearch() {
+    populateCourseSearch() {
         this.showLoader = true;
         this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
         const filters = _.pickBy(this.filters, value => value.length > 0);
@@ -172,7 +172,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
             pageNumber: this.pageNumber,
             query: this.queryParams.key,
         };
-        this.searchService.contentSearch(requestParams, false).pipe(
+        this.searchService.courseSearch(requestParams).pipe(
             takeUntil(this.unsubscribe$))
             .subscribe(
                 (apiResponse: ServerResponse) => {
@@ -275,7 +275,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
                 }
                 if (this.tempPageNumber !== this.pageNumber || !this.isSearchable ) {
                     this.tempPageNumber = this.pageNumber;
-                    this.populateContentSearch();
+                    this.populateCourseSearch();
                 }
             });
     }
