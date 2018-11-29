@@ -239,7 +239,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
 
   private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
     const inputParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
-    return this.playerService.getCollectionHierarchy(collectionId,inputParams).pipe(
+    return this.playerService.getCollectionHierarchy(collectionId, inputParams).pipe(
       map((response) => {
         this.collectionData = response.result.content;
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
