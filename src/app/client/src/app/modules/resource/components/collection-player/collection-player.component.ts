@@ -6,7 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import {
-  WindowScrollService, ILoaderMessage, PlayerConfig, ICollectionTreeOptions, NavigationHelperService,
+  WindowScrollService, ConfigService, ILoaderMessage, PlayerConfig, ICollectionTreeOptions, NavigationHelperService,
   ToasterService, ResourceService, ContentData, ContentUtilsServiceService, ITelemetryShare
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
@@ -47,6 +47,11 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   private windowScrollService: WindowScrollService;
 
   private router: Router;
+
+  /**
+   * Reference of config service
+   */
+  public config: ConfigService;
 
   public loader: Boolean = true;
 
@@ -113,11 +118,12 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     private toasterService: ToasterService, private resourceService: ResourceService,
     public permissionService: PermissionService, public copyContentService: CopyContentService,
-    public contentUtilsServiceService: ContentUtilsServiceService) {
+    public contentUtilsServiceService: ContentUtilsServiceService, config: ConfigService) {
     this.route = route;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
     this.router = router;
+    this.config = config;
     this.router.onSameUrlNavigation = 'ignore';
   }
   ngOnInit() {
@@ -288,9 +294,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   }
 
   private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
-    const option: any = {};
+    const option: any = { params: {} };
+    option.params = this.config.appConfig.PublicPlayer.contentApiQueryParams;
     if (this.collectionStatus && this.collectionStatus === 'Unlisted') {
-      option.params = { mode: 'edit' };
+      option.params['mode'] = 'edit';
     }
     return this.playerService.getCollectionHierarchy(collectionId, option).pipe(
       map((response) => {

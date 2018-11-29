@@ -70,7 +70,7 @@
       <div class="item">
         <div class="content">
           <div class="header">{{resourceService?.frmelmnts?.lbl?.ownership}}</div>
-          <div ng-if="metaData.owner" class="description pt-15">
+          <div *ngIf="metaData.owner" class="description pt-15">
             <div>{{metaData.owner}}</div>
             <div class="mt-5"><a (click)="showContentCreditsPopup()" title="{{resourceService?.frmelmnts?.lbl?.contentCredits}}">{{resourceService?.frmelmnts?.lbl?.contentCredits}}</a></div>
           </div>                                
@@ -78,15 +78,15 @@
       </div>
     </div>
   </div>
-  <div class="three wide column" *ngIf="metadata.orgDetails && metadata.orgDetails.orgName" >
+  <div class="three wide column" *ngIf="metaData.orgDetails && metaData.orgDetails.orgName" >
     <div class="ui list">
       <div class="item">
         <div class="content">
           <div class="header">{{resourceService?.frmelmnts?.lbl?.organization}}</div>
           <div class="description pt-15">
-            <div>{{metadata.orgDetails?.orgName}}</div>
-            <div class="mt-5" ng-if="metadata.orgDetails?.email">
-              <a ng-if="metadata.orgDetails.email" href="mailto:{{metadata.orgDetails?.email}}?subject={{metadata.name}}">{{metadata.orgDetails?.email}}</a>
+            <div>{{metaData?.orgDetails?.orgName}}</div>
+            <div class="mt-5" *ngIf="metaData.orgDetails?.email">
+              <a *ngIf="metaData.orgDetails.email" href="mailto:{{metaData.orgDetails?.email}}?subject={{metaData.name}}">{{metaData.orgDetails?.email}}</a>
             </div>
           </div>                                
         </div>

@@ -83,9 +83,10 @@ export class PublicPlayerService {
     }
     return configuration;
   }
-  public getCollectionHierarchy(identifier: string): Observable<CollectionHierarchyAPI.Get> {
+  public getCollectionHierarchy(identifier: string, option: any = { params: {} }): Observable<CollectionHierarchyAPI.Get> {
     const req = {
-      url: `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`
+      url: `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`,
+      param: option.params
     };
     return this.publicDataService.get(req).pipe(map((response: ServerResponse) => {
       this.collectionData = response.result.content;
