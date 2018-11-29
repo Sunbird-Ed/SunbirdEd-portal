@@ -1,0 +1,38 @@
+<div class="header-fix"></div>
+<div [appTelemetryImpression]="telemetryImpression" class=" ui grid">
+  <div class="one wide column"></div>
+  <div class="ten wide column">
+    <div class="ui grid margin-bottom-0">
+      <div class="twelve wide column" *ngIf="frameWorkName">
+        <app-prominent-filter [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-page'" *ngIf="filterType" [filterEnv]="filterType"  [ignoreQuery]="['key', 'language']" 
+       [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" ></app-prominent-filter>
+      </div>
+    </div>
+    <div *ngFor="let section of caraouselData">
+      <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section" (viewAll)="viewAll($event)"></app-page-section>
+    </div>
+    <div class="twelve wide column" *ngIf="showLoader">
+      <app-loader [data]='loaderMessage'></app-loader>
+    </div>
+    <div *ngIf="noResult && !showLoader">
+      <app-no-result [data]="noResultMessage"></app-no-result>
+    </div>
+  </div>
+  <div class="one wide column">
+  </div>
+</div>
+<sui-modal [isClosable]="true" size="tiny" (dismissed)="closeModal()" #modal *ngIf="showLoginModal">
+  <div class="content">
+    <div class="ui center aligned segment">
+      <div class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.signinenrollTitle}} </div>
+      <br/>
+      <div class="announcement-description">
+        {{resourceService?.frmelmnts?.lbl?.signinenrollHeader}}
+      </div>
+      <br/>
+      <br/>
+      <a href="/home" class ="ui button primary announcement-button btn-width-26 close" >{{resourceService.frmelmnts?.btn?.signin}}</a> 
+    </div>
+  </div>
+</sui-modal>
+

@@ -7,18 +7,18 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
 import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Response } from './explore.component.spec.data';
+import { Response } from './course.component.spec.data';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
-import { ExploreComponent } from './explore.component';
+import { CourseComponent } from './course.component';
 import {} from 'jasmine';
 import { PublicPlayerService } from './../../../../services';
 
-describe('ExploreComponent', () => {
-  let component: ExploreComponent;
-  let fixture: ComponentFixture<ExploreComponent>;
+describe('CourseComponent', () => {
+  let component: CourseComponent;
+  let fixture: ComponentFixture<CourseComponent>;
   const resourceBundle = {
     'messages': {
       'stmsg': {
@@ -35,7 +35,7 @@ describe('ExploreComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': observableOf({ pageNumber: '1' }),
+    'params': observableOf({ }),
     'queryParams': observableOf({ subject: ['English']}),
     snapshot: {
       params: {
@@ -43,7 +43,7 @@ describe('ExploreComponent', () => {
       },
       data: {
         telemetry: {
-          env: 'resource', pageid: 'resource-search', type: 'view', subtype: 'paginate'
+          env: 'course', pageid: 'explore-course', type: 'view', subtype: 'paginate'
         }
       }
     }
@@ -53,8 +53,8 @@ describe('ExploreComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SlickModule,
         SharedModule.forRoot(), CoreModule.forRoot(), NgInviewModule, TelemetryModule.forRoot()],
-      declarations: [ExploreComponent],
-      providers: [ ConfigService, { provide: ResourceService, useValue: resourceBundle },
+      declarations: [CourseComponent],
+      providers: [{ provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useValue: fakeActivatedRoute }, OrgDetailsService, PublicPlayerService],
       schemas: [NO_ERRORS_SCHEMA]
@@ -63,7 +63,7 @@ describe('ExploreComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ExploreComponent);
+    fixture = TestBed.createComponent(CourseComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -76,7 +76,6 @@ describe('ExploreComponent', () => {
     spyOn(component, 'populatePageData').and.callThrough();
     spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.successData.result.response));
     component.populatePageData();
-    expect(component).toBeTruthy();
     expect(component.showLoader).toBeFalsy();
     expect(component.caraouselData).toBeDefined();
   });
@@ -87,7 +86,6 @@ describe('ExploreComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.secondData.result.response));
     component.populatePageData();
-    expect(component).toBeTruthy();
     expect(component.showLoader).toBeFalsy();
     expect(component.caraouselData).toBeDefined();
   });
@@ -98,7 +96,6 @@ describe('ExploreComponent', () => {
     const orgManagementService = TestBed.get(OrgDetailsService);
     spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.thirdData.result.response));
     component.populatePageData();
-    expect(component).toBeTruthy();
     expect(component.showLoader).toBeFalsy();
     expect(component.caraouselData).toBeDefined();
   });
@@ -124,47 +121,12 @@ describe('ExploreComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
-  it('should call getFilters with data ', () => {
-    const service = TestBed.get(PageApiService);
-    const config = TestBed.get(ConfigService);
-    const filters = Response.filters;
-    component.prominentFilters = {};
-    component.hashTagId = '0123166367624478721';
-    const requestParams = Response.requestParam2;
-    requestParams['params'] = config.appConfig.ExplorePage.contentApiQueryParams;
-    spyOn(component, 'getQueryParams').and.callThrough();
-    spyOn(component, 'populatePageData').and.callThrough();
-    spyOn(service, 'getPageData').and.callThrough();
-    component.getFilters(filters);
-    expect(component.getQueryParams).toHaveBeenCalled();
-    expect(component.prominentFilters['board']).toBe('CBSE');
-    expect(component.populatePageData).toHaveBeenCalled();
-    expect(service.getPageData).toHaveBeenCalledWith(requestParams);
-  });
-  it('should call getFilters with no data', () => {
-    const filters = [];
-    component.queryParams = {};
-    const service = TestBed.get(PageApiService);
-    const config = TestBed.get(ConfigService);
-    component.hashTagId = '0123166367624478721';
-    const requestParams = Response.requestParam;
-    requestParams['params'] = config.appConfig.ExplorePage.contentApiQueryParams;
-    spyOn(component, 'getQueryParams').and.callThrough();
-    spyOn(component, 'populatePageData').and.callThrough();
-    spyOn(service, 'getPageData').and.callThrough();
-    component.getFilters(filters);
-    expect(component.getQueryParams).toHaveBeenCalled();
-    expect(component.populatePageData).toHaveBeenCalled();
-    expect(service.getPageData).toHaveBeenCalledWith(requestParams);
-  });
-  it('should call populatePageData with datwhen filter applied', () => {
+  it('should call populatePageData with data when filter applied', () => {
     component.filters = {subject: ['English'], board: ['NCERT', 'ICSE']};
     component.prominentFilters['board'] = 'CBSE';
     const service = TestBed.get(PageApiService);
-    const config = TestBed.get(ConfigService);
     component.hashTagId = '0123166367624478721';
     const requestParams = Response.requestParam3;
-    requestParams['params'] = config.appConfig.ExplorePage.contentApiQueryParams;
     spyOn(component, 'populatePageData').and.callThrough();
     spyOn(service, 'getPageData').and.callThrough();
     component.populatePageData();
@@ -172,3 +134,4 @@ describe('ExploreComponent', () => {
     expect(service.getPageData).toHaveBeenCalledWith(requestParams);
   });
 });
+
