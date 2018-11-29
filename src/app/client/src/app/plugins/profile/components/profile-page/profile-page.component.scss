@@ -56,21 +56,6 @@
     }
   }
 
-  .right-aligned-button {
-    position: absolute;
-    right: 0;
-  }
-
-  .position-relative {
-      position: relative !important;
-  }
-  .center-aligned-button {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translate(0%, -50%);
-  }
-
 .right-aligned-button  {
   ::ng-deep {
     .ui.inline.dropdown>.text {
