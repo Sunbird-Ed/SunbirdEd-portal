@@ -173,9 +173,9 @@ export class CourseSearchComponent implements OnInit {
       limit: this.pageLimit,
       pageNumber: this.pageNumber,
       query: this.queryParams.key,
-      sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType}
+      sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType},
+      params : this.config.appConfig.Course.contentApiQueryParams
     };
-
     this.searchService.courseSearch(requestParams).subscribe(
       (apiResponse: ServerResponse) => {
         if (apiResponse.result.count && apiResponse.result.course) {

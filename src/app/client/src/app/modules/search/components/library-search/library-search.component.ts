@@ -147,6 +147,7 @@ export class LibrarySearchComponent implements OnInit {
       query: this.queryParams.key,
       softConstraints: { badgeAssertions: 1 },
       sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType},
+      params : this.config.appConfig.Library.contentApiQueryParams,
       facets: this.facetArray
     };
     this.searchService.contentSearch(requestParams).subscribe(

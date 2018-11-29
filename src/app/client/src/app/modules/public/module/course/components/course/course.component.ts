@@ -1,23 +1,21 @@
 import { combineLatest as observableCombineLatest ,  Subject } from 'rxjs';
-import { PageApiService, PlayerService, ISort, OrgDetailsService } from '@sunbird/core';
-import { PublicPlayerService } from './../../../../services';
+import { PageApiService, PlayerService, ISort, OrgDetailsService, FormService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   ResourceService, ToasterService, INoResultMessage,
-  ConfigService, UtilService, NavigationHelperService
-} from '@sunbird/shared';
-import { ICaraouselData, BrowserCacheTtlService } from '@sunbird/shared';
+  ConfigService, UtilService, NavigationHelperService, ICaraouselData, BrowserCacheTtlService,
+ServerResponse} from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 @Component({
-  selector: 'app-explore',
-  templateUrl: './explore.component.html',
-  styleUrls: ['./explore.component.css']
+  selector: 'app-course',
+  templateUrl: './course.component.html',
+  styleUrls: ['./course.component.scss']
 })
-export class ExploreComponent implements OnInit, OnDestroy {
+export class CourseComponent implements OnInit, OnDestroy {
   /**
    * To show toaster(error, success etc) after any API calls
    */
@@ -32,6 +30,8 @@ export class ExploreComponent implements OnInit, OnDestroy {
   private pageSectionService: PageApiService;
 
   public orgDetailsService: OrgDetailsService;
+
+  public formService: FormService;
   /**
    * This variable hepls to show and hide page loader.
    * It is kept true by default as at first when we comes
@@ -43,10 +43,18 @@ export class ExploreComponent implements OnInit, OnDestroy {
   * To show / hide no result message when no result found
  */
   noResult = false;
+    /**
+  * To show / hide login popup on click of content
+  */
+  showLoginModal = false;
   /**
   * no result  message
  */
   noResultMessage: INoResultMessage;
+  /**
+  * frameWorkName to pass for prominent filter
+ */
+  frameWorkName: string;
   /**
   * Contains result object returned from getPageData API.
   */
@@ -76,8 +84,8 @@ export class ExploreComponent implements OnInit, OnDestroy {
   constructor(pageSectionService: PageApiService, toasterService: ToasterService, private playerService: PlayerService,
     resourceService: ResourceService, config: ConfigService, private activatedRoute: ActivatedRoute, router: Router,
     public utilService: UtilService, public navigationHelperService: NavigationHelperService,
-    orgDetailsService: OrgDetailsService, private publicPlayerService: PublicPlayerService,
-    private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService) {
+    orgDetailsService: OrgDetailsService, private cacheService: CacheService,
+    private browserCacheTtlService: BrowserCacheTtlService,  formService: FormService) {
     this.pageSectionService = pageSectionService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
@@ -86,22 +94,18 @@ export class ExploreComponent implements OnInit, OnDestroy {
     this.router = router;
     this.router.onSameUrlNavigation = 'reload';
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+    this.formService = formService;
   }
 
   populatePageData() {
     this.showLoader = true;
     this.noResult = false;
     const filters = _.pickBy(this.filters, value => value.length > 0);
-        filters.channel = this.hashTagId;
-        filters.board = _.get(this.filters, 'board') ? this.filters.board : this.prominentFilters['board'];
+          filters.channel = this.hashTagId;
     const option = {
       source: 'web',
-      name: 'Explore',
-      filters: filters,
-      softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
-      mode: 'soft',
-      exists: [],
-      params : this.config.appConfig.ExplorePage.contentApiQueryParams
+      name: 'AnonymousCourse',
+      filters: filters
     };
     this.pageSectionService.getPageData(option).pipe(
       takeUntil(this.unsubscribe$))
@@ -113,9 +117,9 @@ export class ExploreComponent implements OnInit, OnDestroy {
             this.caraouselData = apiResponse.sections;
             _.forEach(this.caraouselData, (value, index) => {
               if (this.caraouselData[index].contents && this.caraouselData[index].contents.length > 0) {
-                const constantData = this.config.appConfig.ExplorePage.constantData;
-                const metaData = this.config.appConfig.ExplorePage.metaData;
-                const dynamicFields = this.config.appConfig.ExplorePage.dynamicFields;
+                const constantData = this.config.appConfig.CoursePage.constantData;
+                const metaData = this.config.appConfig.CoursePage.metaData;
+                const dynamicFields = this.config.appConfig.CoursePage.dynamicFields;
                 this.caraouselData[index].contents = this.utilService.getDataForCard(this.caraouselData[index].contents,
                   constantData, dynamicFields, metaData);
               }
@@ -153,9 +157,10 @@ export class ExploreComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.prominentFilters = {};
     this.slug = this.activatedRoute.snapshot.params.slug;
-    this.filterType = this.config.appConfig.explore.filterType;
-    this.redirectUrl = this.config.appConfig.explore.inPageredirectUrl;
+    this.filterType = this.config.appConfig.exploreCourse.filterType;
+    this.redirectUrl = this.config.appConfig.exploreCourse.inPageredirectUrl;
     this.getChannelId();
+    this.getframeWorkData();
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
@@ -172,8 +177,30 @@ export class ExploreComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
+    this.getQueryParams();
   }
-
+  getframeWorkData() {
+    const framework = this.cacheService.get('framework' + 'search');
+    if (framework) {
+      this.frameWorkName = framework;
+    } else {
+      const formServiceInputParams = {
+        formType: 'framework',
+        formAction: 'search',
+        contentType: 'framework-code',
+      };
+      this.formService.getFormConfig(formServiceInputParams, this.hashTagId).subscribe(
+        (data: ServerResponse) => {
+          this.frameWorkName = _.find(data, 'framework').framework;
+          this.cacheService.set('framework' + 'search', this.frameWorkName ,
+            {maxAge: this.browserCacheTtlService.browserCacheTtl});
+        },
+        (err: ServerResponse) => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        }
+      );
+    }
+  }
   prepareVisits(event) {
     _.forEach(event, (inview, index) => {
       if (inview.metaData.identifier) {
@@ -191,7 +218,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
   }
 
   public playContent(event) {
-    this.publicPlayerService.playContent(event);
+    this.showLoginModal = true;
   }
 
   compareObjects(a, b) {
@@ -233,15 +260,6 @@ export class ExploreComponent implements OnInit, OnDestroy {
         }
       });
   }
-  getFilters(filters) {
-        _.forEach(filters, (value) => {
-            if (value.code === 'board') {
-              value.range = _.orderBy(value.range, ['index'], ['asc']);
-               this.prominentFilters['board'] = _.get(value, 'range[0].name') ? _.get(value, 'range[0].name') : [];
-            }
-          });
-    this.getQueryParams();
-    }
 
   getChannelId() {
     this.orgDetailsService.getOrgDetails(this.slug).pipe(
@@ -279,5 +297,8 @@ export class ExploreComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+  closeModal() {
+    this.showLoginModal = false;
   }
 }

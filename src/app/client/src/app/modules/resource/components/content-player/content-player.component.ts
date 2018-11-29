@@ -136,7 +136,7 @@ export class ContentPlayerComponent implements OnInit {
    * used to fetch content details and player config. On success launches player.
    */
   getContent() {
-    const option: any = {};
+    const option = { params: this.configService.appConfig.ContentPlayer.contentApiQueryParams };
     if (this.contentStatus && this.contentStatus === 'Unlisted') {
       option.params = { mode: 'edit' };
     }

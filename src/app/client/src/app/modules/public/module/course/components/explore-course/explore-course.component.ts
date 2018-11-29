@@ -16,11 +16,11 @@ import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 import { filter } from 'rxjs/operators';
 @Component({
-    selector: 'app-explore-content',
-    templateUrl: './explore-content.component.html',
-    styleUrls: ['./explore-content.component.css']
+  selector: 'app-explore-course',
+  templateUrl: './explore-course.component.html',
+  styleUrls: ['./explore-course.component.scss']
 })
-export class ExploreContentComponent implements OnInit, OnDestroy {
+export class ExploreCourseComponent implements OnInit, OnDestroy {
     inviewLogs: any = [];
     /**
        * telemetryImpression
@@ -88,6 +88,10 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
      * Current page number of inbox list
      */
     pageNumber = 1;
+    /**
+    * To show / hide login popup on click of content
+    */
+    showLoginModal = false;
     /**
       * Contains page limit of outbox list
       */
@@ -157,38 +161,32 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     /**
      * This method sets the make an api call to get all search data with page No and offset
      */
-    populateContentSearch() {
+    populateCourseSearch() {
         this.showLoader = true;
         this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
-        const filters = _.pickBy(this.filters, value => value && value.length);
+        const filters = _.pickBy(this.filters, value => value.length > 0);
         filters.channel = this.hashTagId;
-        if (!_.get(this.filters, 'board') && !_.isEmpty(this.dataDrivenFilter['board'])) {
-            filters.board = _.get(this.filters, 'board') ? this.filters.board : this.dataDrivenFilter['board'];
-        }
         const requestParams = {
             filters: filters,
             limit: this.pageLimit,
             pageNumber: this.pageNumber,
             query: this.queryParams.key,
-            softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
-            facets: this.facetArray,
-            params : this.config.appConfig.ExplorePage.contentApiQueryParams
         };
-        this.searchService.contentSearch(requestParams).pipe(
+        this.searchService.courseSearch(requestParams).pipe(
             takeUntil(this.unsubscribe$))
             .subscribe(
                 (apiResponse: ServerResponse) => {
-                    this.facets = this.searchService.processFilterData(_.get(apiResponse, 'result.facets'));
-                    if (apiResponse.result.count && apiResponse.result.content && apiResponse.result.content.length > 0) {
+                    if (apiResponse.result.count && apiResponse.result.course && apiResponse.result.course.length > 0) {
                         this.showLoader = false;
                         this.noResult = false;
-                        this.searchList = apiResponse.result.content;
+                        this.searchList = apiResponse.result.course;
+                        console.log(this.searchList);
                         this.totalCount = apiResponse.result.count;
                         this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
-                        const constantData = this.config.appConfig.LibrarySearch.constantData;
-                        const metaData = this.config.appConfig.LibrarySearch.metaData;
-                        const dynamicFields = this.config.appConfig.LibrarySearch.dynamicFields;
-                        this.searchList = this.utilService.getDataForCard(apiResponse.result.content,
+                        const constantData = this.config.appConfig.CoursePage.constantData;
+                        const metaData = this.config.appConfig.CoursePage.metaData;
+                        const dynamicFields = this.config.appConfig.CoursePage.dynamicFields;
+                        this.searchList = this.utilService.getDataForCard(apiResponse.result.course,
                             constantData, dynamicFields, metaData);
                     } else {
                         this.noResult = true;
@@ -200,7 +198,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
                     }
                 },
                 err => {
-                    this.facets = {};
                     this.showLoader = false;
                     this.noResult = true;
                     this.noResultMessage = {
@@ -228,16 +225,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
             queryParams: this.queryParams
         });
     }
-    getFilters(filters) {
-        this.facetArray =  filters.map(element => element.code);
-        _.forEach(filters, (value) => {
-            if (value.code === 'board') {
-                value.range = _.orderBy(value.range, ['index'], ['asc']);
-                this.dataDrivenFilter['board']  = _.get(value, 'range[0].name') ? _.get(value, 'range[0].name') : [];
-            }
-        });
-        this.setFilters();
-    }
     getChannelId() {
         this.orgDetailsService.getOrgDetails(this.slug).pipe(
             takeUntil(this.unsubscribe$))
@@ -262,9 +249,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     }
 
     setFilters() {
-        this.filters = {
-            contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
-        };
         observableCombineLatest(
             this.activatedRoute.params,
             this.activatedRoute.queryParams,
@@ -281,9 +265,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
                     this.pageNumber = Number(bothParams.params.pageNumber);
                 }
                 this.queryParams = { ...bothParams.queryParams };
-                this.filters = {
-                    contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
-                };
                 if (!_.isEmpty(this.queryParams)) {
                     _.forOwn(this.queryParams, (queryValue, queryParam) => {
                         this.filters[queryParam] = queryValue;
@@ -295,15 +276,15 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
                 }
                 if (this.tempPageNumber !== this.pageNumber || !this.isSearchable ) {
                     this.tempPageNumber = this.pageNumber;
-                    this.populateContentSearch();
+                    this.populateCourseSearch();
                 }
             });
     }
 
     ngOnInit() {
-            if (_.includes(this.route.url, '/explore')) {
+            if (_.includes(this.route.url, '/explore-course')) {
               const url  = this.route.url.split('/');
-              if (url.indexOf('explore') === 2) {
+              if (url.indexOf('explore-course') === 2) {
                 this.exploreRoutingUrl = url[1] + '/' + url[2];
               } else {
                 this.exploreRoutingUrl = url[1];
@@ -311,13 +292,14 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
             }
         this.filters = {};
         this.dataDrivenFilter = {};
-        this.filterType = this.config.appConfig.explore.filterType;
-        this.redirectUrl = this.config.appConfig.explore.searchPageredirectUrl;
+        this.filterType = this.config.appConfig.course.filterType;
+        this.redirectUrl = this.config.appConfig.course.searchPageredirectUrl;
         this.slug = this.activatedRoute.snapshot.params.slug;
         this.getChannelId();
         this.activatedRoute.params.subscribe(params => {
             this.setTelemetryData();
         });
+        this.setFilters();
     }
     setTelemetryData() {
         this.telemetryImpression = {
@@ -339,7 +321,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     }
 
     public playContent(event) {
-        this.publicPlayerService.playContent(event);
+        this.showLoginModal = true;
     }
     inview(event) {
         _.forEach(event.inview, (inview, key) => {
@@ -361,5 +343,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
+    }
+    closeModal() {
+      this.showLoginModal = false;
     }
 }
