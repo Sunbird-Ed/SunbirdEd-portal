@@ -179,13 +179,13 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
                     if (apiResponse.result.count && apiResponse.result.content && apiResponse.result.content.length > 0) {
                         this.showLoader = false;
                         this.noResult = false;
-                        this.searchList = apiResponse.result.content;
+                        this.searchList = apiResponse.result.course;
                         this.totalCount = apiResponse.result.count;
                         this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
                         const constantData = this.config.appConfig.CoursePage.constantData;
                         const metaData = this.config.appConfig.CoursePage.metaData;
                         const dynamicFields = this.config.appConfig.CoursePage.dynamicFields;
-                        this.searchList = this.utilService.getDataForCard(apiResponse.result.content,
+                        this.searchList = this.utilService.getDataForCard(apiResponse.result.course,
                             constantData, dynamicFields, metaData);
                     } else {
                         this.noResult = true;
