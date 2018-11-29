@@ -321,7 +321,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
     }
 
     public playContent(event) {
-        this.showLoginModal = false;
+        this.showLoginModal = true;
     }
     inview(event) {
         _.forEach(event.inview, (inview, key) => {
