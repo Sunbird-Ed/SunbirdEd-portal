@@ -72,9 +72,9 @@ describe('ExploreCourseComponent', () => {
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgDetailsService);
     component.dataDrivenFilter = {};
-    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
-    component.searchList = Response.successData.result.content;
-    component.populateContentSearch();
+    spyOn(searchService, 'courseSearch').and.callFake(() => observableOf(Response.successData));
+    component.searchList = Response.successData.result.course;
+    component.populateCourseSearch();
     expect(component.queryParams.sortType).toString();
     expect(component.showLoader).toBeFalsy();
     expect(component.searchList).toBeDefined();
@@ -86,9 +86,9 @@ describe('ExploreCourseComponent', () => {
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgDetailsService);
     component.dataDrivenFilter = {};
-    spyOn(searchService, 'contentSearch').and.callFake(() => observableThrowError({}));
+    spyOn(searchService, 'courseSearch').and.callFake(() => observableThrowError({}));
     component.queryParams = mockQueryParma;
-    component.populateContentSearch();
+    component.populateCourseSearch();
     expect(component.showLoader).toBeFalsy();
     expect(component.noResult).toBeTruthy();
   });
@@ -97,7 +97,7 @@ describe('ExploreCourseComponent', () => {
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgDetailsService);
     component.dataDrivenFilter = {};
-    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.noResult));
+    spyOn(searchService, 'courseSearch').and.callFake(() => observableOf(Response.noResult));
     component.searchList = Response.noResult.result.content;
     component.totalCount = Response.noResult.result.count;
     component.queryParams = mockQueryParma;

@@ -1,108 +1,128 @@
 export const Response = {
-    successData: {
-      'id': 'api.content.search',
-      'ver': '1.0',
-      'ts': '2018-04-20T12:08:27.166Z',
-      'params': {
-        'resmsgid': '884143e0-4493-11e8-953e-4d77b46d6543',
-        'msgid': '8835f940-4493-11e8-a1ed-091dca70410a',
+  successData: {
+    'id': 'api.course.search',
+    'ver': '1.0',
+    'ts': '2018-04-17T09:11:29.891Z',
+    'params': {
+        'resmsgid': '50a06b30-421f-11e8-aff0-874e9450fe3b',
+        'msgid': '507626e0-421f-11e8-abea-5f1cb2054cae',
         'status': 'successful',
         'err': null,
         'errmsg': null
-      },
-      'responseCode': 'OK',
-      'result': {
-        'count': 283,
-        'content': [
-          {
-            'channel': 'in.ekstep',
-            'downloadUrl': 'https://ekstep-public-dev.s3-ap-soom/ecd-from-akshara-kannada_1488879924286_do_1121933583296348161147_1.0.ecar',
-            'language': [
-              'English'
-            ],
-            'variants': {
-              'spine': {
-                'ecarUrl': 'https://ekstep-publi96348161147/kshara-kannada_1488879925028_do_1121933583296348161147_1.0_spine.ecar',
-                'size': 822
-              }
-            },
-            'mimeType': 'application/vnd.ekstep.plugin-archive',
-            'objectType': 'Content',
-            'gradeLevel': [
-              'Grade 1'
-            ],
-            'collections': [
-              'do_1124708996919214081275',
-              'do_112472116139458560178'
-            ],
-            'appId': 'dev.ekstep.in',
-            'copyType': 'Enhance',
-            'contentEncoding': 'gzip',
-            'artifactUrl': 'https://ekstep-public-817/artifact/akshara_kan_1487743191313.zip',
-            'contentType': 'Worksheet',
-            'lastUpdatedBy': '452',
-            'identifier': 'do_1121933583296348161147',
-            'audience': [
-              'Learner'
-            ],
-            'visibility': 'Default',
-            'consumerId': 'f6878ac4-e9c9-4bc4-80be-298c5a73b447',
-            'portalOwner': '449',
-            'mediaType': 'content',
-            'osId': 'org.ekstep.quiz.app',
-            'ageGroup': [
-              '5-6'
-            ],
-            'lastPublishedBy': '452',
-            'languageCode': 'en',
-            'graph_id': 'domain',
-            'nodeType': 'DATA_NODE',
-            'prevState': 'Review',
-            'size': 1870310,
-            'lastPublishedOn': '2017-03-07T09:45:24.285+0000',
-            'name': 'Copied From Akshara - Kannada',
-            'status': 'Live',
-            'code': 'org.ekstep.feb22.story.test03.fork',
-            'origin': 'do_11218758555843788817',
-            'description': 'Akshara Kannada',
-            'idealScreenSize': 'normal',
-            'createdOn': '2017-03-02T09:31:01.723+0000',
-            'contentDisposition': 'inline',
-            'lastUpdatedOn': '2017-05-24T17:46:37.879+0000',
-            'SYS_INTERNAL_LAST_UPDATED_ON': '2017-06-09T06:45:11.972+0000',
-            'owner': 'EkStep',
-            'os': [
-              'All'
-            ],
-            'pkgVersion': 1,
-            'versionKey': '1496990711972',
-            'idealScreenDensity': 'hdpi',
-            's3Key': 'ecar_files/do_1121933583296348161147/copied-from-akshara-kannada_1488879924286_do_1121933583296348161147_1.0.ecar',
-            'framework': 'NCF',
-            'createdBy': '449',
-            'compatibilityLevel': 1,
-            'node_id': 96096
-          }
+    },
+    'responseCode': 'OK',
+    'result': {
+        'count': 549,
+        'course': [
+            {
+                'keywords': [
+                    'AILP'
+                ],
+                'subject': 'Machine Learning',
+                'channel': '0124806738824970246',
+                'downloadUrl': 'https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/ecar_files/do_2124765386384179201514_spine.ecar',
+                'language': [
+                    'English'
+                ],
+                'mimeType': 'application/vnd.ekstep.content-collection',
+                'variants': {
+                    'spine': {
+                        'ecarUrl': 'https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/ailp-april_1523017594571__spine.ecar',
+                        'size': 26356
+                    }
+                },
+                'objectType': 'Content',
+                'gradeLevel': [
+                    'Basic'
+                ],
+                'appIcon': 'https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/content/1-1_1485252935201.thumb.png',
+                'children': [],
+                'appId': 'staging.sunbird.portal',
+                'contentEncoding': 'gzip',
+                'mimeTypesCount': '{\'application/vnd.ekstep.html-archive\':1,\':1,\'application/vnd.ekstep.content-collection\':1}',
+                'contentType': 'Course',
+                'identifier': 'do_2124765386384179201514',
+                'lastUpdatedBy': '7d3dd6ec-e9bb-4298-b260-12b95200984e',
+                'audience': [
+                    'Learner'
+                ],
+                'visibility': 'Default',
+                'toc_url': 'https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/content/do_2124765386384179201514toc.json',
+                'contentTypesCount': '{\'CourseUnit\':1,\'Resource\':2}',
+                'consumerId': 'a1e30e28-0bb9-4582-b6e9-bc6aee7cd38d',
+                'childNodes': [
+                    'do_2124742570044129281182',
+                    'do_2124636232165949441550',
+                    'do_2124765554540298241518'
+                ],
+                'mediaType': 'content',
+                'osId': 'org.ekstep.quiz.app',
+                'graph_id': 'domain',
+                'nodeType': 'DATA_NODE',
+                'lastPublishedBy': '7d3dd6ec-e9bb-4298-b260-12b95200984e',
+                'prevState': 'Review',
+                'size': 26356,
+                'lastPublishedOn': '2018-04-06T12:26:34.561+0000',
+                'concepts': [
+                    'AI33'
+                ],
+                'IL_FUNC_OBJECT_TYPE': 'Content',
+                'name': 'AILP April',
+                'topic': 'Machine Learning',
+                'status': 'Live',
+                'code': 'org.sunbird.f5tewv',
+                'description': 'April session for AILP course',
+                'idealScreenSize': 'normal',
+                'posterImage': 'https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/assets/1-1_1485252935201.png',
+                'createdOn': '2018-04-06T11:42:50.509+0000',
+                'c_sunbird_private_batch_count': 1,
+                'contentDisposition': 'inline',
+                'lastUpdatedOn': '2018-04-06T12:26:33.903+0000',
+                'SYS_INTERNAL_LAST_UPDATED_ON': '2018-04-12T07:45:01.474+0000',
+                'subtopic': 'Machine Learning',
+                'creator': 'Content Creator',
+                'createdFor': [
+                    '0124453662635048969'
+                ],
+                'IL_SYS_NODE_TYPE': 'DATA_NODE',
+                'os': [
+                    'All'
+                ],
+                'pkgVersion': 1,
+                'versionKey': '1523017593903',
+                'idealScreenDensity': 'hdpi',
+                'c_sunbird_open_batch_count': 1,
+                'framework': 'atl',
+                's3Key': 'ecar_files/do_2124765386384179201514/ailp-april_1523017594571_do_2124765386384179201514_1.0_spine.ecar',
+                'lastSubmittedOn': '2018-04-06T12:20:22.978+0000',
+                'createdBy': '6d113327-45ba-4d6d-9802-515ea05e3af6',
+                'compatibilityLevel': 4,
+                'leafNodesCount': 2,
+                'IL_UNIQUE_ID': 'do_2124765386384179201514',
+                'resourceType': 'Story',
+                'node_id': 101378
+            }
         ]
-      }
-    },
-    noResult: {
-      'id': 'api.content.search',
-      'ver': '1.0',
-      'ts': '2018-04-20T12:08:27.166Z',
-      'params': {
-        'resmsgid': '884143e0-4493-11e8-953e-4d77b46d6543',
-        'msgid': '8835f940-4493-11e8-a1ed-091dca70410a',
+    }
+  },
+  noResult: {
+    'id': 'api.course.search',
+    'ver': '1.0',
+    'ts': '2018-04-17T09:11:29.891Z',
+    'params': {
+        'resmsgid': '50a06b30-421f-11e8-aff0-874e9450fe3b',
+        'msgid': '507626e0-421f-11e8-abea-5f1cb2054cae',
         'status': 'successful',
         'err': null,
         'errmsg': null
-      },
-      'responseCode': 'OK',
-      'result': {
-        'count': 0,
-        'content': []
-      }
     },
+    'responseCode': 'OK',
+    'result': {
+        'count': 0,
+        'content': [
+            {}]
+    }
+},
     pager: {
       'totalItems': 1173, 'currentPage': 3, 'pageSize': 25, 'totalPages': 47,
       'startPage': 30, 'endPage': 34, 'startIndex': 725, 'endIndex': 749, 'pages': [30, 31, 32, 33, 34]
