@@ -601,6 +601,7 @@
     "setTime": 1500
   },
   "PROFILE": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "profileField": {
       "profileSummary": "profile/summary/edit",
       "jobProfile": "profile/experience/add",

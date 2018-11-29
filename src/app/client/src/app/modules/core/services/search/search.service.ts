@@ -64,9 +64,10 @@ export class SearchService {
    *
    * @param {SearchParam} requestParam api request data
    */
-  searchContentByUserId(requestParam: SearchParam): Observable<ServerResponse> {
+  searchContentByUserId(requestParam: SearchParam, options: any = { params: {} }): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.COMPOSITE.SEARCH,
+      param: options.params,
       data: {
         request: {
           filters: {
