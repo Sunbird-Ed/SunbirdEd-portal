@@ -176,10 +176,11 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
             takeUntil(this.unsubscribe$))
             .subscribe(
                 (apiResponse: ServerResponse) => {
-                    if (apiResponse.result.count && apiResponse.result.content && apiResponse.result.content.length > 0) {
+                    if (apiResponse.result.count && apiResponse.result.course && apiResponse.result.course.length > 0) {
                         this.showLoader = false;
                         this.noResult = false;
                         this.searchList = apiResponse.result.course;
+                        console.log(this.searchList);
                         this.totalCount = apiResponse.result.count;
                         this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
                         const constantData = this.config.appConfig.CoursePage.constantData;
