@@ -101,7 +101,7 @@ describe('ExploreCourseComponent', () => {
     component.searchList = Response.noResult.result.content;
     component.totalCount = Response.noResult.result.count;
     component.queryParams = mockQueryParma;
-    component.populateContentSearch();
+    component.populateCourseSearch();
     expect(component.showLoader).toBeFalsy();
   });
   it('should call processFilterData method', () => {
