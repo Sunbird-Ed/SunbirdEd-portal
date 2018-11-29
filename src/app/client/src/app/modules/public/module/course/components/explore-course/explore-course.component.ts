@@ -278,7 +278,6 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
                     this.populateContentSearch();
                 }
             });
-        console.log('>>>', this.filters);
     }
 
     ngOnInit() {
@@ -292,8 +291,8 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
             }
         this.filters = {};
         this.dataDrivenFilter = {};
-        this.filterType = this.config.appConfig.explore.filterType;
-        this.redirectUrl = this.config.appConfig.explore.searchPageredirectUrl;
+        this.filterType = this.config.appConfig.exploreCourse.filterType;
+        this.redirectUrl = this.config.appConfig.exploreCourse.searchPageredirectUrl;
         this.slug = this.activatedRoute.snapshot.params.slug;
         this.getChannelId();
         this.activatedRoute.params.subscribe(params => {

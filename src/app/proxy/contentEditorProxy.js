@@ -105,8 +105,10 @@ module.exports = function (app) {
   }))
   app.use('/action/content/v1/textbook/toc/*', addCorsHeaders,
   proxy(contentServiceBaseUrl, {
-    proxyReqPathResolver: req => {
-      return req.originalUrl.replace('/action', '/api')
+    proxyReqPathResolver: (req) => {
+      var originalUrl = req.originalUrl
+      originalUrl = originalUrl.replace('/action/', '')
+      return require('url').parse(contentServiceBaseUrl + originalUrl).path
     }
   }))
 

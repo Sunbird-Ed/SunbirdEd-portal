@@ -157,8 +157,8 @@ export class CourseComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.prominentFilters = {};
     this.slug = this.activatedRoute.snapshot.params.slug;
-    this.filterType = this.config.appConfig.explore.filterType;
-    this.redirectUrl = this.config.appConfig.explore.inPageredirectUrl;
+    this.filterType = this.config.appConfig.exploreCourse.filterType;
+    this.redirectUrl = this.config.appConfig.exploreCourse.inPageredirectUrl;
     this.getChannelId();
     this.getframeWorkData();
     this.telemetryImpression = {

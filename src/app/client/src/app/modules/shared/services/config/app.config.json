@@ -564,10 +564,16 @@
     "inPageredirectUrl": "/explore",
     "searchPageredirectUrl": "/explore/1"
   },
+
   "exploreCourse": {
     "filterType": "explore-course",
     "inPageredirectUrl": "/explore-course",
     "searchPageredirectUrl": "/explore-course/1"
+  },
+  "courses": {
+    "filterType": "courses",
+    "inPageredirectUrl": "/learn",
+    "searchPageredirectUrl": "/search/Courses/1"
   },
   "formApiTypes": {
     "home": "home",
@@ -584,7 +590,8 @@
     "collaboration":"collaboration",
     "framework": "framework",
     "explore-course":"explore-course",
-    "framework-code":"framework-code"
+    "framework-code":"framework-code",
+    "courses": "courses"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,

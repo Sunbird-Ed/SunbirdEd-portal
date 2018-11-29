@@ -329,7 +329,6 @@ module.exports = {
       json: true
     }
     request(options, function (error, response, body) {
-      console.log()
       if (_.isFunction(callback)) {
         if (error) {
           console.log('telemetry sync error while syncing  portal', error)
@@ -386,10 +385,10 @@ module.exports = {
       dims = req.session.orgs ? _.concat(dims, req.session.orgs) : dims
       dims = _.concat(dims, channel)
       const context = telemetry.getContextData({ channel: channel, env: req.telemetryEnv })
-      if (req.sessionID) {         
+      if (req.sessionID) {
         context.sid = req.sessionID
       }
-      if (req.get('x-device-id')) {         
+      if (req.get('x-device-id')) {
         context.did = req.get('x-device-id')
       }
       context.rollup = telemetry.getRollUpData(dims)
