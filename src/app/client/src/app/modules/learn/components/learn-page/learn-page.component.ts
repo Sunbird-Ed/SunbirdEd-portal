@@ -2,7 +2,7 @@
 import {combineLatest as observableCombineLatest,  Subscription ,  Observable ,  Subject } from 'rxjs';
 
 import {takeUntil} from 'rxjs/operators';
-import { PageApiService, CoursesService, ICourses, ISort, PlayerService } from '@sunbird/core';
+import { PageApiService, CoursesService, ICourses, ISort, PlayerService, FormService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   ResourceService, ServerResponse, ToasterService, ICaraouselData, IContents, IAction, ConfigService,
@@ -84,6 +84,7 @@ export class LearnPageComponent implements OnInit, OnDestroy {
   public queryParams: any = {};
   sortingOptions: Array<ISort>;
   content: any;
+  frameWorkName: string;
   public unsubscribe = new Subject<void>();
   courseDataSubscription: Subscription;
   /**
@@ -94,7 +95,7 @@ export class LearnPageComponent implements OnInit, OnDestroy {
    * @param {CoursesService} courseService  Reference of courseService.
 	 */
   constructor(pageSectionService: PageApiService, coursesService: CoursesService, private cacheService: CacheService,
-     private browserCacheTtlService: BrowserCacheTtlService,
+     private browserCacheTtlService: BrowserCacheTtlService,  private formService: FormService,
     toasterService: ToasterService, resourceService: ResourceService, router: Router, private playerService: PlayerService,
     private activatedRoute: ActivatedRoute, configService: ConfigService, public utilService: UtilService) {
     this.pageSectionService = pageSectionService;
@@ -233,8 +234,9 @@ export class LearnPageComponent implements OnInit, OnDestroy {
  *This method calls the populateEnrolledCourse
  */
   ngOnInit() {
-    this.filterType = this.configService.appConfig.course.filterType;
-    this.redirectUrl = this.configService.appConfig.course.inPageredirectUrl;
+    this.filterType = this.configService.appConfig.courses.filterType;
+    this.redirectUrl = this.configService.appConfig.courses.inPageredirectUrl;
+    this.getframeWorkData();
     this.getQueryParams();
     this.telemetryImpression = {
       context: {
@@ -328,6 +330,28 @@ export class LearnPageComponent implements OnInit, OnDestroy {
     });
       const sectionUrl = 'learn/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], {queryParams: queryParams});
+  }
+  private getframeWorkData() {
+    const framework = this.cacheService.get('framework' + 'search');
+    if (framework) {
+      this.frameWorkName = framework;
+    } else {
+      const formServiceInputParams = {
+        formType: 'framework',
+        formAction: 'search',
+        contentType: 'framework-code',
+      };
+      this.formService.getFormConfig(formServiceInputParams).subscribe(
+        (data: ServerResponse) => {
+          this.frameWorkName = _.find(data, 'framework').framework;
+          this.cacheService.set('framework' + 'search', this.frameWorkName ,
+            {maxAge: this.browserCacheTtlService.browserCacheTtl});
+        },
+        (err: ServerResponse) => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        }
+      );
+    }
   }
   ngOnDestroy() {
     if (this.courseDataSubscription) {

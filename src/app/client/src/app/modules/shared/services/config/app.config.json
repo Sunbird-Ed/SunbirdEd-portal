@@ -571,6 +571,11 @@
     "inPageredirectUrl": "/explore",
     "searchPageredirectUrl": "/explore/1"
   },
+  "courses": {
+    "filterType": "courses",
+    "inPageredirectUrl": "/learn",
+    "searchPageredirectUrl": "/search/Courses/1"
+  },
   "formApiTypes": {
     "home": "home",
     "textbook": "textbook",
@@ -584,7 +589,9 @@
     "resourcebundle": "resourcebundle",
     "upforreview" :"upforreview",
     "collaboration":"collaboration",
-    "framework": "framework"
+    "framework": "framework",
+    "courses": "courses",
+    "framework-code": "framework-code"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,
