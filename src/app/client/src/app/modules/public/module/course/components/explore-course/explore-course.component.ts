@@ -292,8 +292,8 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
             }
         this.filters = {};
         this.dataDrivenFilter = {};
-        this.filterType = this.config.appConfig.exploreCourse.filterType;
-        this.redirectUrl = this.config.appConfig.exploreCourse.searchPageredirectUrl;
+        this.filterType = this.config.appConfig.course.filterType;
+        this.redirectUrl = this.config.appConfig.course.searchPageredirectUrl;
         this.slug = this.activatedRoute.snapshot.params.slug;
         this.getChannelId();
         this.activatedRoute.params.subscribe(params => {
