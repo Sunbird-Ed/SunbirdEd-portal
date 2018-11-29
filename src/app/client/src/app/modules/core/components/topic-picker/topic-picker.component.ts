@@ -59,6 +59,7 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
     $('.topic-picker-selector').treePicker({
       data: data,
       name: 'Topics',
+      noDataMessage: 'No Topics/SubTopics found',
       picked: _.map(this.selectedTopics, 'identifier'),
       onSubmit: (selectedNodes) => {
         this.selectedTopics = _.map(selectedNodes, node => ({
