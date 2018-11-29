@@ -107,6 +107,8 @@ export class LibrarySearchComponent implements OnInit {
 
   public redirectUrl: string;
   sortingOptions: Array<ISort>;
+  public facetArray: Array<string>;
+  public facets: any;
   /**
      * Constructor to create injected service(s) object
      * Default method of Draft Component class
@@ -145,10 +147,12 @@ export class LibrarySearchComponent implements OnInit {
       query: this.queryParams.key,
       softConstraints: { badgeAssertions: 1 },
       sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType},
-      params : this.config.appConfig.Library.contentApiQueryParams
+      params : this.config.appConfig.Library.contentApiQueryParams,
+      facets: this.facetArray
     };
     this.searchService.contentSearch(requestParams).subscribe(
       (apiResponse: ServerResponse) => {
+        this.facets = this.searchService.processFilterData(_.get(apiResponse, 'result.facets'));
         if (apiResponse.result.count && apiResponse.result.content) {
           this.showLoader = false;
           this.noResult = false;
@@ -169,6 +173,7 @@ export class LibrarySearchComponent implements OnInit {
         }
       },
       err => {
+        this.facets = {};
         this.showLoader = false;
         this.noResult = true;
         this.noResultMessage = {
@@ -196,9 +201,13 @@ export class LibrarySearchComponent implements OnInit {
       queryParams: this.queryParams
     });
   }
-  ngOnInit() {
-    this.filterType = this.config.appConfig.library.filterType;
-    this.redirectUrl = this.config.appConfig.library.searchPageredirectUrl;
+
+  getFilters(filters) {
+    this.facetArray =  filters.map(element => element.code);
+    this.setFilters();
+  }
+
+  setFilters () {
     observableCombineLatest(
       this.activatedRoute.params,
       this.activatedRoute.queryParams,
@@ -216,7 +225,7 @@ export class LibrarySearchComponent implements OnInit {
         let filters = {};
         if (!_.isEmpty(this.queryParams)) {
           _.forOwn(this.queryParams, (queryValue, queryParam) => {
-              filters[queryParam] = queryValue;
+            filters[queryParam] = queryValue;
           });
           filters = _.omit(filters, ['key', 'sort_by', 'sortType']);
         }
@@ -225,18 +234,23 @@ export class LibrarySearchComponent implements OnInit {
         }
         this.populateContentSearch(filters);
       });
-      this.setInteractEventData();
-      this.telemetryImpression = {
-        context: {
-          env: this.activatedRoute.snapshot.data.telemetry.env
-        },
-        edata: {
-          type: this.activatedRoute.snapshot.data.telemetry.type,
-          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-          uri: this.route.url,
-          subtype: this.activatedRoute.snapshot.data.telemetry.subtype
-        }
-      };
+  }
+
+  ngOnInit() {
+    this.filterType = this.config.appConfig.library.filterType;
+    this.redirectUrl = this.config.appConfig.library.searchPageredirectUrl;
+    this.setInteractEventData();
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.route.url,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+      }
+    };
   }
   setInteractEventData() {
     this.closeIntractEdata = {

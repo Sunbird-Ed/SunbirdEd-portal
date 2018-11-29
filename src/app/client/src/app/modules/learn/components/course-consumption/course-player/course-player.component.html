@@ -53,7 +53,7 @@
                                 </div>
                             </div>
                             <br>
-                            <app-carriculum-card *ngIf="curriculum && curriculum.length > 0" [curriculum]="curriculum"></app-carriculum-card>
+                            <app-curriculum-card *ngIf="curriculum && curriculum.length > 0" [curriculum]="curriculum"></app-curriculum-card>
                             <br>
                             <div class="courseupdate">
                                 <b>{{resourceService.frmelmnts.lbl.coursecreatedon}}: {{courseHierarchy.createdOn | dateFormat}}</b>
@@ -98,8 +98,7 @@
                                 </div>
                                 <div class="ui grid">
                                     <div class="twelve wide column" [appTelemetryImpression]="telemetryContentImpression">
-                                        <app-player (playerOnDestroyEvent)="playerOnDestroy($event)" (contentProgressEvent)="contentProgressEvent($event)" class="content-player"
-                                            [playerConfig]="playerConfig"></app-player>
+                                        <app-player (contentProgressEvent)="contentProgressEvent($event)" class="content-player" [playerConfig]="playerConfig"></app-player>
                                     </div>
                                 </div>
                             </div>
@@ -144,7 +143,6 @@
             <div class="ui grid">
                 <div class="row">
                     <div class="eight wide column">
-                        <!-- <course-discussions></course-discussions> -->
                     </div>
                     <div class="four wide column toc-note-content">
                         <app-note-card [ids]="{contentId:contentId, courseId:courseId}" [createNoteData]="createNoteData"></app-note-card>
@@ -156,7 +154,6 @@
             <app-loader [data]="loaderMessage"></app-loader>
         </div>
         <div *ngIf="showError">
-            <!-- <error-message data="{{toc.error}}" visibility="toc.error.showError"></error-message> -->
         </div>
         <div class="one wide column"></div>
     </div>

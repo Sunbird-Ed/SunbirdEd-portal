@@ -100,6 +100,8 @@ export class HomeSearchComponent implements OnInit {
    *url value
    */
   queryParams: IHomeQueryParams;
+  public facetArray: Array<string>;
+  public facets: any;
   /**
      * Constructor to create injected service(s) object
      * @param {SearchService} searchService Reference of SearchService
@@ -132,17 +134,20 @@ export class HomeSearchComponent implements OnInit {
       filters: {
         contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Course'],
         board: this.queryParams.board,
-        language: this.queryParams.medium,
+        medium: this.queryParams.medium,
         subject: this.queryParams.subject
       },
       limit: this.pageLimit,
       offset: (this.pageNumber - 1 ) * (this.pageLimit),
       query: this.queryParams.key,
-      params : this.config.appConfig.Library.contentApiQueryParams
+      params : this.config.appConfig.Library.contentApiQueryParams,
+      facets: this.facetArray
     };
     this.searchService.compositeSearch(searchParams).subscribe(
       (apiResponse: ServerResponse) => {
-        if (apiResponse.result.count && apiResponse.result.content.length > 0) {
+        this.facets = this.searchService.processFilterData(_.get(apiResponse, 'result.facets'));
+        if (apiResponse.result.count && apiResponse.result.content
+          && apiResponse.result.content.length > 0) {
           this.showLoader = false;
           this.noResult = false;
           this.totalCount = apiResponse.result.count;
@@ -161,12 +166,13 @@ export class HomeSearchComponent implements OnInit {
         }
       },
       err => {
+        this.facets = {};
         this.showLoader = false;
         this.noResult = true;
         this.noResultMessage = {
           'messageText': this.resourceService.messages.fmsg.m0077
         };
-         this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
       }
     );
   }
@@ -189,8 +195,12 @@ export class HomeSearchComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.filterType = this.config.appConfig.home.filterType;
+  getFilters(filters) {
+    this.facetArray =  filters.map(element => element.code);
+    this.setFilters();
+  }
+
+  setFilters () {
     observableCombineLatest(
       this.activatedRoute.params,
       this.activatedRoute.queryParams,
@@ -207,6 +217,10 @@ export class HomeSearchComponent implements OnInit {
         this.queryParams = { ...bothParams.queryParams };
         this.populateCompositeSearch();
       });
+  }
+
+  ngOnInit() {
+    this.filterType = this.config.appConfig.home.filterType;
       this.setInteractEventData();
       this.telemetryImpression = {
         context: {

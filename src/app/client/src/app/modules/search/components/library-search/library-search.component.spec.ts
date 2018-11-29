@@ -80,10 +80,10 @@ describe('LibrarySearchComponent', () => {
     component.populateContentSearch(filters);
     fixture.detectChanges();
     expect(component.queryParams.sortType).toString();
-    expect(component.queryParams.sortType).toBe('desc');
     expect(component.showLoader).toBeFalsy();
     expect(component.searchList).toBeDefined();
     expect(component.totalCount).toBeDefined();
+    expect(component.facets).toBeDefined();
   });
   it('should throw error when searchService api throw error ', () => {
     const searchService = TestBed.get(SearchService);
@@ -128,4 +128,13 @@ describe('LibrarySearchComponent', () => {
     expect(component.showLoader).toBeFalsy();
     expect(component.noResult).toBeFalsy();
   });
+  it('should call getFilters with data', () => {
+    const searchService = TestBed.get(SearchService);
+    const filters = Response.filters;
+    spyOn(component, 'populateContentSearch').and.callThrough();
+    spyOn(searchService, 'contentSearch').and.callThrough();
+    component.getFilters(filters);
+    expect(component.facetArray).toEqual([ 'board', 'medium', 'subject', 'gradeLevel' ]);
+  });
+
 });

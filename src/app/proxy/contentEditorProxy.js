@@ -103,6 +103,14 @@ module.exports = function (app) {
       return req.originalUrl.replace('/action', '/plugin')
     }
   }))
+  app.use('/action/content/v1/textbook/toc/*', addCorsHeaders,
+  proxy(contentServiceBaseUrl, {
+    proxyReqPathResolver: (req) => {
+      var originalUrl = req.originalUrl
+      originalUrl = originalUrl.replace('/action/', '')
+      return require('url').parse(contentServiceBaseUrl + originalUrl).path
+    }
+  }))
 
   app.use('/action/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
     preserveHostHdr: true,

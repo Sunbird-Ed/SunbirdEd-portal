@@ -160,9 +160,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     populateContentSearch() {
         this.showLoader = true;
         this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
-        const filters = _.pickBy(this.filters, value => value.length > 0);
+        const filters = _.pickBy(this.filters, value => value && value.length);
         filters.channel = this.hashTagId;
-        filters.board = _.get(this.filters, 'board') ? this.filters.board : this.dataDrivenFilter['board'];
+        if (!_.get(this.filters, 'board') && !_.isEmpty(this.dataDrivenFilter['board'])) {
+            filters.board = _.get(this.filters, 'board') ? this.filters.board : this.dataDrivenFilter['board'];
+        }
         const requestParams = {
             filters: filters,
             limit: this.pageLimit,
@@ -176,13 +178,12 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
             takeUntil(this.unsubscribe$))
             .subscribe(
                 (apiResponse: ServerResponse) => {
+                    this.facets = this.searchService.processFilterData(_.get(apiResponse, 'result.facets'));
                     if (apiResponse.result.count && apiResponse.result.content && apiResponse.result.content.length > 0) {
                         this.showLoader = false;
                         this.noResult = false;
                         this.searchList = apiResponse.result.content;
                         this.totalCount = apiResponse.result.count;
-                        this.facets = apiResponse.result.facets;
-                        this.processFilterData();
                         this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
                         const constantData = this.config.appConfig.LibrarySearch.constantData;
                         const metaData = this.config.appConfig.LibrarySearch.metaData;
@@ -199,6 +200,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
                     }
                 },
                 err => {
+                    this.facets = {};
                     this.showLoader = false;
                     this.noResult = true;
                     this.noResultMessage = {
@@ -233,7 +235,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
                 value.range = _.orderBy(value.range, ['index'], ['asc']);
                 this.dataDrivenFilter['board']  = _.get(value, 'range[0].name') ? _.get(value, 'range[0].name') : [];
             }
-          });
+        });
         this.setFilters();
     }
     getChannelId() {
@@ -359,16 +361,5 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
-    }
-    processFilterData() {
-        const facetObj = {};
-        _.forEach(this.facets, (value) => {
-            if (value) {
-                let data = {};
-                data = value.values;
-                facetObj[value.name] = data;
-                this.facets = facetObj;
-            }
-        });
     }
 }

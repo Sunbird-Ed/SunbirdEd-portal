@@ -129,53 +129,6 @@ describe('ExploreContentComponent', () => {
     component.populateContentSearch();
     expect(component.showLoader).toBeFalsy();
   });
-  it('should call processFilterData method', () => {
-    const obj = {
-      'gradeLevel': [
-        {
-          'name': 'grade 7',
-          'count': 8
-        },
-        {
-          'name': 'class 2',
-          'count': 85
-        }
-      ],
-      'subject': [
-        {
-          'name': 'chemistry',
-          'count': 2
-        },
-        {
-          'name': 'marathi',
-          'count': 9
-        }
-      ],
-      'medium': [
-        {
-          'name': 'nepali',
-          'count': 1
-        },
-        {
-          'name': 'odia',
-          'count': 12
-        }
-      ],
-      'board': [
-        {
-          'name': 'state (uttar pradesh)',
-          'count': 7
-        },
-        {
-          'name': 'state (tamil nadu)',
-          'count': 5
-        }
-      ]
-    };
-    component.facets = Response.facetData;
-    component.processFilterData();
-    expect(component.facets).toEqual(obj);
-  });
   it('should call compareObjects method', () => {
     const objA = {
       board: ['gradeLevel']
