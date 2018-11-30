@@ -66,6 +66,8 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
     console.log('stageId changed', this.stageId);
     if (!this.stageId) {
       this.disableTextArea = true;
+    } else {
+      this.disableTextArea = false;
     }
     this.comments = new FormControl();
   }
