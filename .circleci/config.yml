@@ -1,16 +1,31 @@
 version: 2.1
 jobs:
   build:
-    machine:
-      image: circleci/classic:latest
+    docker:
+      image: g33tha/circleci
     steps:
       - checkout
       - run:
-          name: install jq
-          command: sudo apt update && sudo apt-get install -y jq
-      - run:
           name: run build file
           command: sudo ./build.sh
+      - type: shell
+        name: PR - Add comment on PR with URL details
+        command: |
+         prdata=$(curl -X GET -u $GITHUB_USER_TOKEN:x-oauth-basic https://api.github.com/repos/G33tha/repo1/pulls/$CIRCLE_PR_NUMBER)
+         branchname=$(echo "${prdata}" | jq '.base.ref')
+         branch=${branchname//\"/}
+         username=$(echo "${prdata}" | jq '.user.login')
+         contributor=${username//\"/}
+         
+         updatedfiles=$(curl -X GET -u $GITHUB_USER_TOKEN:x-oauth-basic https://api.github.com/repos/G33tha/repo1/pulls/$CIRCLE_PR_NUMBER/files)
+         updatedfileslist=''
+         updatedsectionslist=''
+         
+         curl \
+          -X POST \
+          -u $GITHUB_USER_TOKEN:x-oauth-basic \
+          -d '{"body": "Hello @'"$contributor"',<br/><br/> _This is a auto-generated response._ <br/><br/> Click the URL for review pull request - http://'"$CIRCLE_PR_NUMBER"'.sunbird-portal/'"$branch"/' .<br/> **Note:** Only _'"$branch"'_ version was generated for PR preview. <br/><br/> **Modified pages are -** <br />'"$updatedfileslist"' <br/> **Modified sections are -** <br />'"$updatedsectionslist"' "}' \
+          https://api.github.com/repos/G33tha/sunbird-portal/issues/$CIRCLE_PR_NUMBER/comments
       
 
 
