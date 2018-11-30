@@ -104,7 +104,8 @@ export class CourseComponent implements OnInit, OnDestroy {
     const option = {
       source: 'web',
       name: 'AnonymousCourse',
-      filters: filters
+      filters: filters,
+      params : this.config.appConfig.ExplorePage.contentApiQueryParams
     };
     this.pageSectionService.getPageData(option).pipe(
       takeUntil(this.unsubscribe$))

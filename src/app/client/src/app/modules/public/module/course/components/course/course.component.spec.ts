@@ -54,7 +54,7 @@ describe('CourseComponent', () => {
       imports: [HttpClientTestingModule, SuiModule, SlickModule,
         SharedModule.forRoot(), CoreModule.forRoot(), NgInviewModule, TelemetryModule.forRoot()],
       declarations: [CourseComponent],
-      providers: [{ provide: ResourceService, useValue: resourceBundle },
+      providers: [ ConfigService, { provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useValue: fakeActivatedRoute }, OrgDetailsService, PublicPlayerService],
       schemas: [NO_ERRORS_SCHEMA]
@@ -125,8 +125,10 @@ describe('CourseComponent', () => {
     component.filters = {subject: ['English'], board: ['NCERT', 'ICSE']};
     component.prominentFilters['board'] = 'CBSE';
     const service = TestBed.get(PageApiService);
+    const config = TestBed.get(ConfigService);
     component.hashTagId = '0123166367624478721';
     const requestParams = Response.requestParam3;
+    requestParams['params'] = config.appConfig.Explore.contentApiQueryParams;
     spyOn(component, 'populatePageData').and.callThrough();
     spyOn(service, 'getPageData').and.callThrough();
     component.populatePageData();
