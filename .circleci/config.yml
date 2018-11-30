@@ -8,7 +8,7 @@ jobs:
       - run:
           name: run build file
           command: sudo ./build.sh
-      - type: shell
+      - run: 
         name: PR - Add comment on PR with URL details
         command: |
          prdata=$(curl -X GET -u $GITHUB_USER_TOKEN:x-oauth-basic https://api.github.com/repos/G33tha/repo1/pulls/$CIRCLE_PR_NUMBER)
