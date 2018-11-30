@@ -92,6 +92,11 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
     * To show / hide login popup on click of content
     */
     showLoginModal = false;
+
+    /**
+    *baseUrl;
+    */
+    public baseUrl: string;
     /**
       * Contains page limit of outbox list
       */
@@ -320,6 +325,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
     }
 
     public playContent(event) {
+        this.baseUrl = document.location.origin + '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
         this.showLoginModal = true;
     }
     inview(event) {
