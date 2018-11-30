@@ -2019,10 +2019,10 @@ iframe.iziModal-iframe {
   color:#929292;
 }
 .fancy-tree-blue {
-  color:#55b2f7;
+  color:$primary-color;
 }
 .fancy-tree-green {
-  color:#54d40f;
+  color:$success-color;
 }
 
 /*adding outline none because router link of angular is adding extra outline, */
@@ -2531,4 +2531,16 @@ sui-multi-select.ui.selection.dropdown{
   flex-wrap: nowrap !important;
   font-size: 13px;
   line-height: 1.2;
+}
+.ui.list .list>.item a.header,
+.ui.list>.item a.header{
+  color: $primary-color !important;
+}
+.ui.list .list>.item a.header:hover,
+.ui.list>.item a.header:hover{
+  color: $primary-color !important;
+  opacity: 0.8;
+}
+i.blue.icon{
+  color: $primary-color !important;
 }

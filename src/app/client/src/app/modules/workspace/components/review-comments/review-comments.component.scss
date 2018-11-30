@@ -31,13 +31,13 @@
 }
 .icon.sb-icon-reviewer:before {
     font-size: 30px;
-    color: #8BA9CC;
+    color: $primary-color;
 }
 textarea:focus+i.icon.sb-icon-send:before {
-    color:#2185D0;
+    color: $primary-color;
 }
 .ui.form textarea:focus {
-    border-color:#2185D0 !important;
+    border-color:$primary-color !important;
 }
 .comment:after {
     content: ""; 
