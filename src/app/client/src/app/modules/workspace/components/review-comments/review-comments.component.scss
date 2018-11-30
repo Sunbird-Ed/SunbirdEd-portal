@@ -1,5 +1,10 @@
+@import "variables";
+
 .review-comments-box {
     height: 409.869px;		
+}
+.ui.dimmer{
+    z-index: inherit;
 }
 .ui.comments.scrolling{
     height:100%;
@@ -22,7 +27,7 @@
 .sb-icon-comment:before {
     font-size: 72px;
     width: 72px;
-    color: #66BF00;
+    color: $view-all-button;
 }
 .icon.sb-icon-reviewer:before {
     font-size: 30px;

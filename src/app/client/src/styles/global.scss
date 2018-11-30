@@ -54,12 +54,16 @@ h1, h2, h3, h4, h5,
 .ui.blue.buttons .button{
     background-color: $primary-color !important;
 }
+.ui.primary.button, 
+.ui.primary.buttons .button{
+    background-color: $primary-color !important;
+}
 .ui.basic.primary.button,
 .ui.basic.primary.buttons .button{
     color: $primary-color !important;
 }
 .ui.red.label, 
 .ui.red.labels .label{
-    background: #E76026 !important;
-    border-color: #E76026 !important;
+    background: $label-color !important;
+    border-color: $label-color !important;
 }

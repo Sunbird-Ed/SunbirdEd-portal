@@ -11,7 +11,7 @@ import * as moment from 'moment';
 @Component({
   selector: 'app-review-comments',
   templateUrl: './review-comments.component.html',
-  styleUrls: ['./review-comments.component.css']
+  styleUrls: ['./review-comments.component.scss']
 })
 export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
 
