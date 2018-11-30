@@ -50,3 +50,16 @@ h1, h2, h3, h4, h5,
     font-family: inherit;
 }
 
+.ui.blue.button,
+.ui.blue.buttons .button{
+    background-color: $primary-color !important;
+}
+.ui.basic.primary.button,
+.ui.basic.primary.buttons .button{
+    color: $primary-color !important;
+}
+.ui.red.label, 
+.ui.red.labels .label{
+    background: #E76026 !important;
+    border-color: #E76026 !important;
+}

@@ -2,8 +2,8 @@
 <div [appTelemetryImpression]="telemetryImpression" class=" ui grid">
   <div class="one wide column"></div>
   <div class="ten wide column">
-    <div class="ui grid margin-bottom-0">
-      <div class="twelve wide column" *ngIf="frameWorkName">
+    <div class="ui grid mb-0">
+      <div class="twelve wide column my-20" *ngIf="frameWorkName">
         <app-prominent-filter [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-page'" *ngIf="filterType" [filterEnv]="filterType"  [ignoreQuery]="['key', 'language']" 
        [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" ></app-prominent-filter>
       </div>
@@ -29,9 +29,7 @@
       <div class="announcement-description">
         {{resourceService?.frmelmnts?.lbl?.signinenrollHeader}}
       </div>
-      <br/>
-      <br/>
-      <a href="/home" class ="ui button primary announcement-button btn-width-26 close" >{{resourceService.frmelmnts?.btn?.signin}}</a> 
+      <a href="/home" class ="ui button primary announcement-button close mt-20" >{{resourceService.frmelmnts?.btn?.signin}}</a> 
     </div>
   </div>
 </sui-modal>

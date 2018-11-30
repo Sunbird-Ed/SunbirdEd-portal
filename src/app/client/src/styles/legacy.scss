@@ -1211,7 +1211,8 @@ ul.fancytree-container li {
   padding-left: 1.39em;
 }
 .searchfilterbutton.ui.tiny.button {
-  font-size: 1em;
+  font-size: 1rem;
+  padding: .75em 1em;
 }
 .searchdropdown.ui.basic.button {
   box-shadow: 0 0 0 1px rgba(51, 51, 51, 0.33) inset;
@@ -2524,4 +2525,9 @@ sui-multi-select.ui.selection.dropdown{
 .modal.mini.fixed-mini{
   max-width:200px;
   width:100%;
+}
+.template-checkbox{
+  flex-wrap: nowrap !important;
+  font-size: 13px;
+  line-height: 1.2;
 }
