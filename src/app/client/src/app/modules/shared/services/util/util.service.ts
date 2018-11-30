@@ -39,8 +39,8 @@ export class UtilService {
     if (_.has(data, 'content')) {
       content['topic'] = _.size(data.content.topic) > 0 ? data.content.topic[0] : '';
       content['subTopic'] = _.size(data.content.topic) > 1 ? data.content.topic[1] : '';
-      content['contentType'] = 'Course';
-      content['orgDetails'] = data.content.orgDetails ? data.content.orgDetails : {};
+      content['contentType'] = _.get(data.content, 'contentType') || '';
+      content['orgDetails'] = _.get(data.content, 'orgDetails') || {};
     }
 
     if (data.gradeLevel && data.gradeLevel.length) {

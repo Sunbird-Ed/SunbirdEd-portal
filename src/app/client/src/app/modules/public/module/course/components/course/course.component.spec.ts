@@ -128,7 +128,7 @@ describe('CourseComponent', () => {
     const config = TestBed.get(ConfigService);
     component.hashTagId = '0123166367624478721';
     const requestParams = Response.requestParam3;
-    requestParams['params'] = config.appConfig.Explore.contentApiQueryParams;
+    requestParams['params'] = config.appConfig.ExplorePage.contentApiQueryParams;
     spyOn(component, 'populatePageData').and.callThrough();
     spyOn(service, 'getPageData').and.callThrough();
     component.populatePageData();
