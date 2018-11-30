@@ -110,6 +110,17 @@
        "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
        "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
   },
+  "CoursePage": {
+    "constantData":{
+      "action": {
+          "onImage": {"eventName": "onImage" }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"},
+        "left": {"class":  "ui circular label  card-badges-image"} }
+       },
+       "metaData": {"metaData": ["identifier", "mimeType", "framework","contentType"]},
+       "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
+  },
   "GetPage":{
     "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "constantData":{
@@ -571,6 +582,12 @@
     "inPageredirectUrl": "/explore",
     "searchPageredirectUrl": "/explore/1"
   },
+
+  "exploreCourse": {
+    "filterType": "explore-course",
+    "inPageredirectUrl": "/explore-course",
+    "searchPageredirectUrl": "/explore-course/1"
+  },
   "courses": {
     "filterType": "courses",
     "inPageredirectUrl": "/learn",
@@ -590,8 +607,9 @@
     "upforreview" :"upforreview",
     "collaboration":"collaboration",
     "framework": "framework",
-    "courses": "courses",
-    "framework-code": "framework-code"
+    "explore-course":"explore-course",
+    "framework-code":"framework-code",
+    "courses": "courses"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,

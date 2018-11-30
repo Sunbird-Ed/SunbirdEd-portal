@@ -1,5 +1,5 @@
 .review-comments-box {
-    height: 397.371px;		
+    height: 409.869px;		
 }
 .ui.comments.scrolling{
     height:100%;
@@ -43,7 +43,4 @@ textarea:focus+i.icon.sb-icon-send:before {
 }
 .review-comments-loader {
     position: relative;
-}
-.right-floated{
-    float: right;
 }
