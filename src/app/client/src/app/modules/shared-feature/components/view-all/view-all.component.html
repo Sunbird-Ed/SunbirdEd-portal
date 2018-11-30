@@ -2,7 +2,7 @@
     <div class="one wide column"></div>
     <div class="ten wide column">
         <div class=" ui grid">
-            <div class="ten wide column">
+            <div class="ten wide column" *ngIf ="showFilter">
                 <app-data-driven-filter [pageId]="'view-all'" *ngIf="filterType" [filterEnv]="filterType" [viewAllMode] = "true"
          [accordionDefaultOpen]=false [isShowFilterLabel]=true [hashTagId]="hashTagId"></app-data-driven-filter>
             </div>

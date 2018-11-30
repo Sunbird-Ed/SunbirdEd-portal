@@ -1,5 +1,5 @@
 import { PublicPlayerService } from '@sunbird/public';
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { combineLatest, Subject } from 'rxjs';
 import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
@@ -107,6 +107,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
  */
   filters: any;
   hashTagId: string;
+  showFilter = false;
   /**
    * contains the search filter type
    */
@@ -135,6 +136,8 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (_.get(this.activatedRoute.snapshot, 'data.anounymousUser')) {
       this.getChannelId();
+    } else  {
+ this.showFilter = true;
     }
     this.filterType = _.get(this.activatedRoute.snapshot, 'data.filterType');
     this.pageLimit = this.configService.appConfig.ViewAll.PAGE_LIMIT;
@@ -305,9 +308,10 @@ export class ViewAllComponent implements OnInit, OnDestroy {
       .subscribe(
         (apiResponse: any) => {
           this.hashTagId = apiResponse.hashTagId;
+          this.showFilter = true;
         },
         err => {
-          this.router.navigate(['']);
+
         }
       );
   }
