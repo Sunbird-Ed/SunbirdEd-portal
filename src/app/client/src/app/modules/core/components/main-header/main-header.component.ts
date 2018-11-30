@@ -219,7 +219,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
         } else {
           this.exploreRoutingUrl = url[1];
         }
-      }  if (_.includes(urlAfterRedirects.url, '/explore-course')) {
+      } else if (_.includes(urlAfterRedirects.url, '/explore-course')) {
         this.showExploreHeader = true;
         const url  = urlAfterRedirects.url.split('?')[0].split('/');
         if (url.indexOf('explore-course') === 2) {
