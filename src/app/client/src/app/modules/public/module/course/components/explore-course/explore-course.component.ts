@@ -184,7 +184,6 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
                         this.showLoader = false;
                         this.noResult = false;
                         this.searchList = apiResponse.result.course;
-                        console.log(this.searchList);
                         this.totalCount = apiResponse.result.count;
                         this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
                         const constantData = this.config.appConfig.CoursePage.constantData;
