@@ -55,6 +55,10 @@ export class CourseComponent implements OnInit, OnDestroy {
   * frameWorkName to pass for prominent filter
  */
   frameWorkName: string;
+    /**
+  *baseUrl;
+  */
+  public baseUrl: string;
   /**
   * Contains result object returned from getPageData API.
   */
@@ -218,6 +222,7 @@ export class CourseComponent implements OnInit, OnDestroy {
   }
 
   public playContent(event) {
+    this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
     this.showLoginModal = true;
   }
 
