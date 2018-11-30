@@ -1,11 +1,11 @@
 import { PublicPlayerService } from '@sunbird/public';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { combineLatest, Subject } from 'rxjs';
 import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ILoaderMessage, UtilService, ICard
 } from '@sunbird/shared';
-import { SearchService, CoursesService, ISort, PlayerService } from '@sunbird/core';
+import { SearchService, CoursesService, ISort, PlayerService, OrgDetailsService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
@@ -106,7 +106,8 @@ export class ViewAllComponent implements OnInit, OnDestroy {
  *search filters
  */
   filters: any;
-
+  hashTagId: string;
+  showFilter = false;
   /**
    * contains the search filter type
    */
@@ -118,7 +119,8 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   constructor(searchService: SearchService, router: Router, private playerService: PlayerService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService, private _cacheService: CacheService,
     resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
-    configService: ConfigService, coursesService: CoursesService, public utilService: UtilService) {
+    configService: ConfigService, coursesService: CoursesService, public utilService: UtilService,
+    private orgDetailsService: OrgDetailsService) {
     this.searchService = searchService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -132,6 +134,11 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    if (_.get(this.activatedRoute.snapshot, 'data.anounymousUser')) {
+      this.getChannelId();
+    } else  {
+ this.showFilter = true;
+    }
     this.filterType = _.get(this.activatedRoute.snapshot, 'data.filterType');
     this.pageLimit = this.configService.appConfig.ViewAll.PAGE_LIMIT;
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
@@ -226,6 +233,9 @@ export class ViewAllComponent implements OnInit, OnDestroy {
         softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
       params : this.configService.appConfig.ViewAll.contentApiQueryParams
     };
+    if (requestParams.filters && requestParams.filters['c_Sunbird_Dev_open_batch_count']) {
+      requestParams.filters['c_Sunbird_Dev_open_batch_count'] = JSON.parse(requestParams.filters['c_Sunbird_Dev_open_batch_count']);
+    }
     if (_.get(this.activatedRoute.snapshot, 'data.baseUrl') === 'learn') {
       return combineLatest(
         this.searchService.contentSearch(requestParams),
@@ -293,6 +303,18 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     }
   }
 
+  getChannelId() {
+    this.orgDetailsService.getOrgDetails()
+      .subscribe(
+        (apiResponse: any) => {
+          this.hashTagId = apiResponse.hashTagId;
+          this.showFilter = true;
+        },
+        err => {
+
+        }
+      );
+  }
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();

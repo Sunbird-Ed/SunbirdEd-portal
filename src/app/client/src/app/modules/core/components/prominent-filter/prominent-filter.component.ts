@@ -7,7 +7,7 @@ import { FrameworkService, FormService, PermissionService, OrgDetailsService } f
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventEdata } from '@sunbird/telemetry';
-import { first, mergeMap, map, tap , catchError} from 'rxjs/operators';
+import { first, mergeMap, map, tap , catchError, filter} from 'rxjs/operators';
 @Component({
   selector: 'app-prominent-filter',
   templateUrl: './prominent-filter.component.html',
@@ -169,7 +169,18 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     }
   }
   private fetchFrameWorkDetails() {
-    return this.frameworkService.frameworkData$.pipe(first(),
+    return this.frameworkService.frameworkData$.pipe(filter((frameworkDetails) => {
+      if (!frameworkDetails.err) {
+        const framework = this.frameworkName ? this.frameworkName : 'defaultFramework';
+        const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
+        if (frameworkData) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+      return true;
+    }), first(),
       mergeMap((frameworkDetails: Framework) => {
         if (!frameworkDetails.err) {
           const framework = this.frameworkName ? this.frameworkName : 'defaultFramework';
