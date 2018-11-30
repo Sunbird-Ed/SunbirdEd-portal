@@ -92,7 +92,6 @@ export class OrgDetailsService {
     } else {
       return this.publicDataService.post(option).pipe(mergeMap((data: ServerResponse) => {
         if (data.result.response.count > 0) {
-          this.orgDetails = data.result.response;
           this.setOrgDetails(data.result.response);
           return observableOf(data.result.response);
         }
