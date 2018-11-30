@@ -13,20 +13,20 @@
       </div>
 
       <!--Course-->
-      <div class="meta course" *ngIf="data.courseCard">
+      <div class="meta course" *ngIf="data.contentType === 'Course'">
         <div class="topic mb-15" *ngIf="data.topic" title="{{data.topic}}">
           {{resourceService.frmelmnts.lbl.topic}} : {{data.topic | slice:0:40}} 
           <span *ngIf="data.topic && data.topic.length >= 30">...</span>
         </div>
-        <div class="subtopic" *ngIf="data.subtopic" title="{{data.subtopic}}">
-          {{resourceService.frmelmnts.lbl.subtopic}} : {{data.subtopic | slice:0:40}} 
-          <span *ngIf="data.subtopic && data.subtopic.length >= 30">...</span>
+        <div class="subtopic" *ngIf="data.subTopic" title="{{data.subTopic}}">
+          {{resourceService.frmelmnts.lbl.subtopic}} : {{data.subTopic | slice:0:40}} 
+          <span *ngIf="data.subTopic && data.subTopic.length >= 30">...</span>
         </div>
       </div>
       <!--/Course-->
 
       <!--Non-Course-->
-      <div class="meta non-course" *ngIf="!data.courseCard">
+      <div class="meta non-course" *ngIf="data.contentType !== 'Course'">
         <div class="mb-auto d-flex">
           <div class="ui label tiny right" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">{{data.ribbon.right.name}}</div>
           <img src="{{data.ribbon.left.image}}" class="avatar ml-auto" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image" alt="{{data.ribbon.left.name}}">

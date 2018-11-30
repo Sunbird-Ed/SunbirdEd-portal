@@ -30,9 +30,19 @@ export class UtilService {
       rating: data.me_averageRating || '0',
       subject: data.subject,
       medium: data.medium,
-      orgDetails: data.orgDetails,
-      gradeLevel: ''
+      orgDetails: data.orgDetails || {},
+      gradeLevel: '',
+      contentType: data.contentType
     };
+
+    // this customization is done for enrolled courses
+    if (_.has(data, 'content')) {
+      content['topic'] = _.size(data.content.topic) > 0 ? data.content.topic[0] : '';
+      content['subTopic'] = _.size(data.content.topic) > 1 ? data.content.topic[1] : '';
+      content['contentType'] = 'Course';
+      content['orgDetails'] = data.content.orgDetails ? data.content.orgDetails : {};
+    }
+
     if (data.gradeLevel && data.gradeLevel.length) {
         content['gradeLevel'] = _.isString(data.gradeLevel) ? data.gradeLevel : data.gradeLevel.join(',');
     }
@@ -49,6 +59,7 @@ export class UtilService {
         content[index] = _.merge(name[index], content[index]);
       });
     });
+
     return content;
   }
   public toggleAppPopup() {
