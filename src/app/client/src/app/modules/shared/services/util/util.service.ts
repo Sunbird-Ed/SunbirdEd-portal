@@ -32,13 +32,15 @@ export class UtilService {
       medium: data.medium,
       orgDetails: data.orgDetails || {},
       gradeLevel: '',
-      contentType: data.contentType
+      contentType: data.contentType,
+      topic: this.getTopicSubTopic('topic', data.topic),
+      subTopic: this.getTopicSubTopic('subTopic', data.topic)
     };
 
     // this customization is done for enrolled courses
     if (_.has(data, 'content')) {
-      content['topic'] = _.size(data.content.topic) > 0 ? data.content.topic[0] : '';
-      content['subTopic'] = _.size(data.content.topic) > 1 ? data.content.topic[1] : '';
+      content['topic'] = this.getTopicSubTopic('topic', data.content.topic);
+      content['subTopic'] = this.getTopicSubTopic('subTopic', data.content.topic);
       content['contentType'] = _.get(data.content, 'contentType') || '';
       content['orgDetails'] = _.get(data.content, 'orgDetails') || {};
     }
@@ -62,6 +64,15 @@ export class UtilService {
 
     return content;
   }
+
+  public getTopicSubTopic (type, topic) {
+    if (type === 'topic') {
+      return _.size(topic) > 0 ? topic[0] : '';
+    } else {
+      return _.size(topic) > 1 ? topic[1] : '';
+    }
+  }
+
   public toggleAppPopup() {
     this.showAppPopUp = !this.showAppPopUp;
   }
