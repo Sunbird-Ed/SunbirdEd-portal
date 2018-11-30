@@ -175,6 +175,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
             limit: this.pageLimit,
             pageNumber: this.pageNumber,
             query: this.queryParams.key,
+            params : this.config.appConfig.ExplorePage.contentApiQueryParams
         };
         this.searchService.courseSearch(requestParams).pipe(
             takeUntil(this.unsubscribe$))
