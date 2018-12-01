@@ -2001,16 +2001,6 @@ iframe.iziModal-iframe {
   font-weight: bold;
   font-size: 1.25em;
 }
-.ui.styled.accordion.align-content {
-  margin-top: 10px;
-  margin-bottom: 20px;
-  padding:16px;
-  width: 100%;
-}
-.ui.styled.accordion>.header.accordian-heading {
-  font-weight: bold;
-  font-size: 1.375em;
-}
 .ann-section-heading {
   font-weight: bold;
   font-size: 1.4em;
@@ -2030,11 +2020,9 @@ iframe.iziModal-iframe {
   outline: none !important;
 }
 
-
 .left-float {
   float: left !important;
 }
-
 .ui.icon.input>i.icon.dialcode-search-icon:not(.link) {
   pointer-events: auto;
 }
@@ -2049,8 +2037,6 @@ iframe.iziModal-iframe {
   display:flex;
   flex-direction: row;
 }
-
-
 
 .player-badge-alignment {
   display:flex;
@@ -2166,34 +2152,6 @@ i.icon.accordion-content-right {
 }
 
 
-
-/*writing media query for device specific sduw to responsive issue with semantic ui*/
-
-@media only screen and (min-width: 320px) and (max-width: 330px) {
-  .searchinput {
-    width: 195px;
-  }
-}
-@media only screen and (min-width: 331px) and (max-width: 377px) {
-  .searchinput {
-    width: 225px;
-  }
-}
-@media only screen and (min-width: 378px) and (max-width: 479px) {
-  .searchinput {
-    width: 275px;
-  }
-}
-@media only screen and (min-width: 480px) and (max-width: 900px) {
-  .searchinput {
-    width: 335px;
-  }
-}
-@media only screen and (min-width: 768px) and (max-width: 1024px) {
-  .header-logo {
-    max-height: 45px;   
-  }
-}
 .ui.calendar .table td {
   padding:0.5em;
 }
