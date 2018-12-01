@@ -9,14 +9,13 @@
       </div>
 
       <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && !noResult && this.queryParams.key">
-          <div class="ui left floated header">
-              <p class="serch-allresult">{{resourceService.frmelmnts?.lbl?.showingResultsFor | interpolate:'{searchString}':this.queryParams.key}} 
-              </p>
-          </div>
-          <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="ui right floated basic icon circular button" [routerLink]="['/explore-course']">
-                <i class="ui remove icon "></i>
-            </h5>
-          
+        <div class="ui left floated header">
+            <p class="serch-allresult">{{resourceService.frmelmnts?.lbl?.showingResultsFor | interpolate:'{searchString}':this.queryParams.key}} 
+            </p>
+        </div>
+        <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="ui right floated basic icon circular button" [routerLink]="['/explore-course']">
+            <i class="ui remove icon "></i>
+        </h5>
       </div>
       <div in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="searchList" *ngIf="!showLoader && !noResult" class="ui stackable four column grid dynamic-section-card ">
           <div in-view-item [id]="i" [data]="content" class="column pt-5 pb-5 pl-10" *ngFor="let content of searchList;let i = index;">
@@ -67,9 +66,7 @@
         <div class="announcement-description">
             {{resourceService.frmelmnts?.lbl?.signinenrollHeader}}
         </div>
-        <br/>
-        <br/>
-        <a href={{baseUrl}} class ="ui button primary announcement-button btn-width-26 close" >{{resourceService.frmelmnts?.btn?.signin}}</a> 
+        <a href={{baseUrl}} class ="ui button primary announcement-button close mt-20" >{{resourceService.frmelmnts?.btn?.signin}}</a> 
       </div>
     </div>
   </sui-modal>
