@@ -1,8 +1,8 @@
 <div *ngIf="refresh">
   <ng-template let-option #optionTemplate >
     <div class="field m-0" >
-      <div class="template-checkbox d-flex">
-        <div class="p-5" [ngClass]="{'blue-text-color-sunbird': checkBox[option.name] }" title="{{option.name}}">
+      <div class="template-checkbox">
+        <div class="p-5 option-text" [ngClass]="{'blue-text-color-sunbird': checkBox[option.name] }" title="{{option.name}}">
           {{option.name}}
         </div>
         <div class="ml-auto">
@@ -18,7 +18,7 @@
       <div [ngClass]="{'blue-text-color-sunbird': selectAllCheckBox }">
         Select All
       </div>
-      <div class="ml-auto ">
+      <div class="ml-auto">
         <i class="square outline medium icon " [ngClass]="{'check blue': selectAllCheckBox}"></i>
       </div>
     </div>
