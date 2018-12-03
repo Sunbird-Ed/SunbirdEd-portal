@@ -6,7 +6,7 @@ import {
 import { PublicPlayerService } from './../../../../services';
 import {
     SearchService, CoursesService, PlayerService, ISort,
-    OrgDetailsService, FormService
+    OrgDetailsService, UserService, FormService
 } from '@sunbird/core';
 import { Component, OnInit, NgZone, OnDestroy} from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
@@ -69,6 +69,10 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
      * For showing pagination on inbox list
      */
     private paginationService: PaginationService;
+    /**
+    * Refrence of UserService
+    */
+    private userService: UserService;
     /**
       * To show / hide no result message when no result found
      */
@@ -157,7 +161,8 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
         resourceService: ResourceService, toasterService: ToasterService, private browserCacheTtlService: BrowserCacheTtlService,
         config: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
         private formService: FormService, public navigationHelperService: NavigationHelperService,
-        private publicPlayerService: PublicPlayerService) {
+        private publicPlayerService: PublicPlayerService,
+        userService: UserService) {
         this.searchService = searchService;
         this.route = route;
         this.activatedRoute = activatedRoute;
@@ -166,6 +171,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
         this.toasterService = toasterService;
         this.config = config;
         this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+        this.userService = userService;
     }
     /**
      * This method sets the make an api call to get all search data with page No and offset
@@ -351,8 +357,12 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
     }
 
     public playContent(event) {
-        this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
-        this.showLoginModal = true;
+        if (!this.userService.loggedIn) {
+            this.showLoginModal = true;
+            this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
+        } else {
+            this.publicPlayerService.playContent(event);
+        }
     }
     inview(event) {
         _.forEach(event.inview, (inview, key) => {
