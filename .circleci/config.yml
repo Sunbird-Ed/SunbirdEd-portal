@@ -55,7 +55,7 @@ jobs:
             url='- '$sections' <br /> '
             updatedsectionslist=$updatedsectionslist$url
             fi
-           done
+            done
          
             curl \
              -X POST \
