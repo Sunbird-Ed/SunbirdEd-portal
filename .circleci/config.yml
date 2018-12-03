@@ -12,10 +12,10 @@ jobs:
           name: PR - Add comment on PR with URL details
           command: |
             prdata=$(curl -X GET -u $GITHUB_USER_TOKEN:x-oauth-basic https://api.github.com/repos/G33tha/sunbird-portal/pulls/$CIRCLE_PR_NUMBER)
-            echo $prdate
             branchname=$(echo "${prdata}" | jq '.base.ref')
             branch=${branchname//\"/}
             username=$(echo "${prdata}" | jq '.user.login')
+            echo $username
             contributor=${username//\"/}
          
             updatedfiles=$(curl -X GET -u $GITHUB_USER_TOKEN:x-oauth-basic https://api.github.com/repos/G33tha/sunbird-portal/pulls/$CIRCLE_PR_NUMBER/files)
