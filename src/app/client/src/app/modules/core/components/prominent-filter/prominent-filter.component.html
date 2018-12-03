@@ -2,8 +2,8 @@
   <div class="ui stackable grid">
     <div class="twelve wide column" *ngIf="refresh">
       <form class="ui form">
-        <div class="ui stackable grid">
-          <div class="nine wide column">
+        <div class="ui stackable grid middle aligned">
+          <div class="ten wide column">
             <div *ngIf="formFieldProperties" class="ui stackable grid">
               <div *ngFor="let field of formFieldProperties" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column">
                 <div *ngIf="field.inputType==='select' || field.inputType==='multi-select'" class="field">
@@ -21,7 +21,7 @@
               </div>
             </div>
           </div>
-          <div class="three wide right floated column filter-button mt-30">
+          <div class="two wide right floated center aligned column filter-button p-0 pt-30">
             <a class="searchfilterbutton ui blue tiny  button" (click)="applyFilters()" appTelemetryInteract [telemetryInteractEdata]="submitIntractEdata">{{resourceService.frmelmnts?.btn?.submit}}</a>
             <a class="searchfilterbutton ui primary tiny basic button" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</a>
           </div>
