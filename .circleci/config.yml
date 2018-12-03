@@ -8,6 +8,7 @@ jobs:
       - run:
           name: run build file
           command: sudo ./build.sh
+  
   testcases:
     steps:
       - run: npm install -g @angular/cli
@@ -38,10 +39,11 @@ jobs:
           
 workflows:
   version: 2
-  workflow:
+  build_and_test:
     jobs:
       - build
       - testcases
+      - comment
             
       
 
