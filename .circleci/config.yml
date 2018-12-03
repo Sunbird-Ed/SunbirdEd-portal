@@ -22,11 +22,9 @@ jobs:
              -u $GITHUB_USER_TOKEN:x-oauth-basic \
              -d '{"body": "Hello @'"$contributor"',<br/><br/> _This is a auto-generated response. <br/><br/> **Note:** Only _'"$branch"'_ version was generated for PR preview. "}' \
              https://api.github.com/repos/G33tha/sunbird-portal/issues/$CIRCLE_PR_NUMBER/comments
-      - run:
-          name: run build file
-          command: sudo ./build.sh
+ 
           
-workflow:
+workflows:
   version: 2
   workflow:
     jobs:
