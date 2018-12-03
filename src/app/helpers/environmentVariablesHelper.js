@@ -48,7 +48,7 @@ let envVariables = {
   sunbird_default_language: env.sunbird_portal_default_language || 'en',
   sunbird_primary_bundle_language: env.sunbird_portal_primary_bundle_language || 'en',
   learner_Service_Local_BaseUrl: env.sunbird_learner_service_local_base_url || 'http://learner-service:9000',
-  content_Service_Local_BaseUrl: env.sunbird_content_service_local_base_url || 'http://content_service_content_service:5000',
+  content_Service_Local_BaseUrl: env.sunbird_content_service_local_base_url || 'http://content-service:5000',
   sunbird_explore_button_visibility: env.sunbird_explore_button_visibility || 'true',
   sunbird_enable_signup: env.sunbird_enable_signup || 'true',
   sunbird_extcont_whitelisted_domains: env.sunbird_extcont_whitelisted_domains || 'youtube.com,youtu.be',
