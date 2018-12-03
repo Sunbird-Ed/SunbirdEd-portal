@@ -10,12 +10,12 @@ jobs:
           command: sudo ./build.sh
   testcases:
     steps:
-      - npm install -g @angular/cli
-      - cd src/app/client/
-      - npm install
-      - ng lint
-      - ng build --prod
-      - npm run test-with-coverage
+      - run: npm install -g @angular/cli
+      - run: cd src/app/client/
+      - run: npm install
+      - run: ng lint
+      - run: ng build --prod
+      - run: npm run test-with-coverage
     
   comment:
     steps:
