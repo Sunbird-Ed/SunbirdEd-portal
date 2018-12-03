@@ -3,8 +3,8 @@
     </div>
     <div class="ten wide column">
       <div class="ui stackable grid">
-        <div class="ten wide column" *ngIf="frameWorkName">
-          <app-data-driven-filter [pageId]="'course-page'" *ngIf="filterType" [filterEnv]="filterType" 
+        <div class="ten wide column">
+          <app-data-driven-filter [pageId]="'course-page'" *ngIf="frameWorkName && filterType" [filterEnv]="filterType" 
           [accordionDefaultOpen]=false [isShowFilterLabel]=true [formAction]="'filter'" [frameworkName]="frameWorkName"></app-data-driven-filter>
         </div>
         <div class="two wide column">

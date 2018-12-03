@@ -104,7 +104,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
       this.toasterService.error(this.resourceService.messages.emsg.m0010);
       return;
     }
-    if (!this.comments.value.trim()) {
+    if (!this.comments.value || !this.comments.value.trim()) {
       return;
     }
     this.disableTextArea = true;
