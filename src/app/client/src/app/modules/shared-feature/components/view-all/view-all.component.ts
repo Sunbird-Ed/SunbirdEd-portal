@@ -5,7 +5,7 @@ import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ILoaderMessage, UtilService, ICard
 } from '@sunbird/shared';
-import { SearchService, CoursesService, ISort, PlayerService, OrgDetailsService } from '@sunbird/core';
+import { SearchService, CoursesService, ISort, PlayerService, OrgDetailsService, UserService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
@@ -63,6 +63,10 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   */
   coursesService: CoursesService;
   /**
+  * Refrence of UserService
+  */
+   private userService: UserService;
+  /**
     * To show / hide no result message when no result found
    */
   noResult = false;
@@ -90,6 +94,10 @@ export class ViewAllComponent implements OnInit, OnDestroy {
    */
   showLoader = true;
   /**
+  *baseUrl;
+  */
+  public baseUrl: string;
+  /**
      * loader message
     */
   loaderMessage: ILoaderMessage;
@@ -109,6 +117,11 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   hashTagId: string;
   showFilter = false;
   /**
+  * To show / hide login popup on click of content
+  */
+  showLoginModal = false;
+ /**
+  /**
    * contains the search filter type
    */
   public filterType: string;
@@ -120,7 +133,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     activatedRoute: ActivatedRoute, paginationService: PaginationService, private _cacheService: CacheService,
     resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
     configService: ConfigService, coursesService: CoursesService, public utilService: UtilService,
-    private orgDetailsService: OrgDetailsService) {
+    private orgDetailsService: OrgDetailsService, userService: UserService) {
     this.searchService = searchService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -129,6 +142,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     this.toasterService = toasterService;
     this.configService = configService;
     this.coursesService = coursesService;
+    this.userService = userService;
     this.router.onSameUrlNavigation = 'reload';
     this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
   }
@@ -291,15 +305,20 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   }
 
   playContent(event) {
-    const url = this.router.url.split('/');
-    if (url[1] === 'learn' || url[1] === 'resources') {
-      if (event.data.metaData.batchId) {
-        event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
-        event.data.metaData.contentType = 'Course';
-      }
-      this.playerService.playContent(event.data.metaData);
+    if (_.get(this.activatedRoute.snapshot, 'data.anounymousUser') && !this.userService.loggedIn) {
+      this.showLoginModal = true;
+      this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
     } else {
-      this.publicPlayerService.playContent(event);
+      const url = this.router.url.split('/');
+      if (url[1] === 'learn' || url[1] === 'resources') {
+        if (event.data.metaData.batchId) {
+          event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
+          event.data.metaData.contentType = 'Course';
+        }
+        this.playerService.playContent(event.data.metaData);
+      } else {
+        this.publicPlayerService.playContent(event);
+      }
     }
   }
 
@@ -318,5 +337,8 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+  closeModal() {
+    this.showLoginModal = false;
   }
 }

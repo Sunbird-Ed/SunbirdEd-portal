@@ -1,5 +1,5 @@
 import { combineLatest as observableCombineLatest ,  Subject } from 'rxjs';
-import { PageApiService, PlayerService, ISort, OrgDetailsService, FormService } from '@sunbird/core';
+import { PageApiService, PlayerService, ISort, OrgDetailsService, FormService, UserService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   ResourceService, ToasterService, INoResultMessage,
@@ -32,6 +32,10 @@ export class CourseComponent implements OnInit, OnDestroy {
   public orgDetailsService: OrgDetailsService;
 
   public formService: FormService;
+  /**
+  * Refrence of UserService
+  */
+  private userService: UserService;
   /**
    * This variable hepls to show and hide page loader.
    * It is kept true by default as at first when we comes
@@ -89,7 +93,8 @@ export class CourseComponent implements OnInit, OnDestroy {
     resourceService: ResourceService, config: ConfigService, private activatedRoute: ActivatedRoute, router: Router,
     public utilService: UtilService, public navigationHelperService: NavigationHelperService,
     orgDetailsService: OrgDetailsService, private cacheService: CacheService,
-    private browserCacheTtlService: BrowserCacheTtlService,  formService: FormService) {
+    private browserCacheTtlService: BrowserCacheTtlService,  formService: FormService,
+    userService: UserService ) {
     this.pageSectionService = pageSectionService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
@@ -99,6 +104,7 @@ export class CourseComponent implements OnInit, OnDestroy {
     this.router.onSameUrlNavigation = 'reload';
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
     this.formService = formService;
+    this.userService = userService;
   }
 
   populatePageData() {
@@ -223,7 +229,9 @@ export class CourseComponent implements OnInit, OnDestroy {
 
   public playContent(event) {
     this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
-    this.showLoginModal = true;
+    if (!this.userService.loggedIn) {
+      this.showLoginModal = true;
+    }
   }
 
   compareObjects(a, b) {
