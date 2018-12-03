@@ -15,52 +15,12 @@ jobs:
             branchname=$(echo "${prdata}" | jq '.base.ref')
             branch=${branchname//\"/}
             username=$(echo "${prdata}" | jq '.user.login')
-            echo $username
             contributor=${username//\"/}
-         
-            updatedfiles=$(curl -X GET -u $GITHUB_USER_TOKEN:x-oauth-basic https://api.github.com/repos/project-sunbird/sunbird.org-docs/pulls/$CIRCLE_PR_NUMBER/files)
-            updatedfileslist=''
-            updatedsectionslist=''
-            for row in $(echo "${updatedfiles}" | jq -r '.[] | @base64')
-            do  
-             _jq() 
-            {
-             echo ${row} | base64 --decode | jq -r ${1}
-            }
-            file=$(_jq '.filename')
-            echo $file
-            if [[ "$file" == *.md ]]
-            then
-            filedocs=${file//\.md/}
-            filedocs=${filedocs//index/}
-            filedocs=${filedocs//.html/}
-            filedocs=${filedocs//pages\//}
-            url='- http://'$CIRCLE_PR_NUMBER'.qa.docs.sunbird.org/'$branch'/'$filedocs'/ <br /> '
-            updatedfileslist=$updatedfileslist$url
-            echo $url
-            fi
-            if [[ "$file" == apis/* ]]
-            then
-            fileremove=${file##*/}
-            echo $fileremove
-            fileapi=${file//$fileremove/}
-            url='- http://'$CIRCLE_PR_NUMBER'.qa.docs.sunbird.org/'$branch'/'$fileapi'/ <br /> '
-            updatedfileslist=$updatedfileslist$url
-            echo $url
-            fi
-            if [[ "$file" == _includes/* ]]
-            then
-            sections=${file//.html/}
-            sections=${sections//_includes\//}
-            url='- '$sections' <br /> '
-            updatedsectionslist=$updatedsectionslist$url
-            fi
-            done
          
             curl \
              -X POST \
              -u $GITHUB_USER_TOKEN:x-oauth-basic \
-             -d '{"body": "Hello @'"$contributor"',<br/><br/> _This is a auto-generated response._ <br/><br/> Click the URL for review pull request - http://'"$CIRCLE_PR_NUMBER"'.sunbird-portal/'"$branch"/' .<br/> **Note:** Only _'"$branch"'_ version was generated for PR preview. <br/><br/> **Modified pages are -** <br />'"$updatedfileslist"' <br/> **Modified sections are -** <br />'"$updatedsectionslist"' "}' \
+             -d '{"body": "Hello @'"$contributor"',<br/><br/> _This is a auto-generated response._ <br/><br/> Click the URL for review pull request - http://'"$CIRCLE_PR_NUMBER"'.sunbird-portal/'"$branch"/' .<br/> **Note:** Only _'"$branch"'_ version was generated for PR preview. "}' \
              https://api.github.com/repos/G33tha/sunbird-portal/issues/$CIRCLE_PR_NUMBER/comments
           
 workflow:
