@@ -10,6 +10,7 @@ import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
+import { PublicPlayerService } from './../../../../services';
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
@@ -94,7 +95,7 @@ export class CourseComponent implements OnInit, OnDestroy {
     public utilService: UtilService, public navigationHelperService: NavigationHelperService,
     orgDetailsService: OrgDetailsService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService,  formService: FormService,
-    userService: UserService ) {
+    userService: UserService,  private publicPlayerService: PublicPlayerService, ) {
     this.pageSectionService = pageSectionService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
@@ -228,9 +229,11 @@ export class CourseComponent implements OnInit, OnDestroy {
   }
 
   public playContent(event) {
-    this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
     if (!this.userService.loggedIn) {
       this.showLoginModal = true;
+      this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
+    } else {
+      this.publicPlayerService.playContent(event);
     }
   }
 

@@ -331,10 +331,11 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
     }
 
     public playContent(event) {
-        this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
-        this.showLoginModal = true;
         if (!this.userService.loggedIn) {
             this.showLoginModal = true;
+            this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
+        } else {
+            this.publicPlayerService.playContent(event);
         }
     }
     inview(event) {
