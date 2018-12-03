@@ -5,9 +5,20 @@ jobs:
       - image: g33tha/circleci
     steps:
       - checkout
-      #- run:
-          #name: run build file
-          #command: sudo ./build.sh
+      - run:
+          name: run build file
+          command: sudo ./build.sh
+  testcases:
+    steps:
+      - npm install -g @angular/cli
+      - cd src/app/client/
+      - npm install
+      - ng lint
+      - ng build --prod
+      - npm run test-with-coverage
+    
+  comment:
+    steps:
       - run:
           name: Add comment on PR
           command: |
@@ -30,6 +41,7 @@ workflows:
   workflow:
     jobs:
       - build
+      - testcases
             
       
 
