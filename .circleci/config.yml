@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      image: g33tha/circleci
+      - image: g33tha/circleci
     steps:
       - checkout
       #- run:
