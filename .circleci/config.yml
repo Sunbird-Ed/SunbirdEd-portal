@@ -18,9 +18,44 @@ jobs:
             echo $username
             contributor=${username//\"/}
          
-            updatedfiles=$(curl -X GET -u $GITHUB_USER_TOKEN:x-oauth-basic https://api.github.com/repos/G33tha/sunbird-portal/pulls/$CIRCLE_PR_NUMBER/files)
+            updatedfiles=$(curl -X GET -u $GITHUB_USER_TOKEN:x-oauth-basic https://api.github.com/repos/project-sunbird/sunbird.org-docs/pulls/$CIRCLE_PR_NUMBER/files)
             updatedfileslist=''
             updatedsectionslist=''
+            for row in $(echo "${updatedfiles}" | jq -r '.[] | @base64')
+            do  
+             _jq() 
+            {
+             echo ${row} | base64 --decode | jq -r ${1}
+            }
+            file=$(_jq '.filename')
+            echo $file
+            if [[ "$file" == *.md ]]
+            then
+            filedocs=${file//\.md/}
+            filedocs=${filedocs//index/}
+            filedocs=${filedocs//.html/}
+            filedocs=${filedocs//pages\//}
+            url='- http://'$CIRCLE_PR_NUMBER'.qa.docs.sunbird.org/'$branch'/'$filedocs'/ <br /> '
+            updatedfileslist=$updatedfileslist$url
+            echo $url
+            fi
+            if [[ "$file" == apis/* ]]
+            then
+            fileremove=${file##*/}
+            echo $fileremove
+            fileapi=${file//$fileremove/}
+            url='- http://'$CIRCLE_PR_NUMBER'.qa.docs.sunbird.org/'$branch'/'$fileapi'/ <br /> '
+            updatedfileslist=$updatedfileslist$url
+            echo $url
+            fi
+            if [[ "$file" == _includes/* ]]
+            then
+            sections=${file//.html/}
+            sections=${sections//_includes\//}
+            url='- '$sections' <br /> '
+            updatedsectionslist=$updatedsectionslist$url
+            fi
+           done
          
             curl \
              -X POST \
