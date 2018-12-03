@@ -148,10 +148,10 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (_.get(this.activatedRoute.snapshot, 'data.anounymousUser')) {
+    if (!this.userService.loggedIn) {
       this.getChannelId();
     } else  {
- this.showFilter = true;
+      this.showFilter = true;
     }
     this.filterType = _.get(this.activatedRoute.snapshot, 'data.filterType');
     this.pageLimit = this.configService.appConfig.ViewAll.PAGE_LIMIT;
@@ -305,7 +305,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   }
 
   playContent(event) {
-    if (_.get(this.activatedRoute.snapshot, 'data.anounymousUser') && !this.userService.loggedIn) {
+    if (!this.userService.loggedIn) {
       this.showLoginModal = true;
       this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
     } else {
