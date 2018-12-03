@@ -90,7 +90,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     this.getContent();
     this.setInteractEventData();
     this.deviceDetector();
-
   }
   setTelemetryData() {
     this.telemetryImpression = {
@@ -265,5 +264,4 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       this.showFooter = true;
     }
   }
-  
 }
