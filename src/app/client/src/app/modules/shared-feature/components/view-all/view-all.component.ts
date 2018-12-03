@@ -305,7 +305,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   }
 
   playContent(event) {
-    if (!this.userService.loggedIn) {
+    if (!this.userService.loggedIn && event.data.contentType === 'Course') {
       this.showLoginModal = true;
       this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
     } else {
