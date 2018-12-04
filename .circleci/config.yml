@@ -1,6 +1,7 @@
 version: 2.1
 jobs:
   build:
+    parallelism: 1
     machine:
       image: circleci/classic:latest
     steps:
@@ -43,6 +44,8 @@ workflows:
     jobs:
       - build
       - test-cases
+          requires:
+            - build
    
             
       
