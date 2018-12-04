@@ -15,6 +15,7 @@ import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 import { filter } from 'rxjs/operators';
+import { UserService } from '@sunbird/core';
 @Component({
     selector: 'app-explore-content',
     templateUrl: './explore-content.component.html',
@@ -68,9 +69,22 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
      */
     private paginationService: PaginationService;
     /**
+    * Reference of UserService
+    */
+    private userService: UserService;
+    /**
       * To show / hide no result message when no result found
      */
     noResult = false;
+    /**
+    * To show / hide login popup on click of content
+    */
+    showLoginModal = false;
+
+    /**
+    *baseUrl;
+    */
+    public baseUrl: string;
     /**
      * Contains slug which comes from the url
      */
@@ -144,7 +158,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
         activatedRoute: ActivatedRoute, paginationService: PaginationService,
         resourceService: ResourceService, toasterService: ToasterService,
         config: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
-        public navigationHelperService: NavigationHelperService, private publicPlayerService: PublicPlayerService) {
+        public navigationHelperService: NavigationHelperService, private publicPlayerService: PublicPlayerService,
+        userService: UserService) {
         this.searchService = searchService;
         this.route = route;
         this.activatedRoute = activatedRoute;
@@ -152,6 +167,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
         this.resourceService = resourceService;
         this.toasterService = toasterService;
         this.config = config;
+        this.userService = userService;
         this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
     }
     /**
@@ -339,7 +355,12 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     }
 
     public playContent(event) {
-        this.publicPlayerService.playContent(event);
+        if (!this.userService.loggedIn && event.data.contentType === 'Course') {
+            this.showLoginModal = true;
+            this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
+        } else {
+            this.publicPlayerService.playContent(event);
+        }
     }
     inview(event) {
         _.forEach(event.inview, (inview, key) => {
@@ -357,6 +378,9 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
         this.telemetryImpression.edata.visits = this.inviewLogs;
         this.telemetryImpression.edata.subtype = 'pageexit';
         this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    }
+    closeModal() {
+        this.showLoginModal = false;
     }
     ngOnDestroy() {
         this.unsubscribe$.next();

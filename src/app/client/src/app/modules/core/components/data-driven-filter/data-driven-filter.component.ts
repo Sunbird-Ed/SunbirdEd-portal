@@ -1,5 +1,5 @@
 import { of, throwError } from 'rxjs';
-import { first, mergeMap, map, tap , catchError} from 'rxjs/operators';
+import { first, mergeMap, map, tap , catchError, filter} from 'rxjs/operators';
 import {
   ConfigService, ResourceService, Framework, BrowserCacheTtlService
 } from '@sunbird/shared';
@@ -126,7 +126,18 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
     }
   }
   private fetchFrameWorkDetails() {
-    return this.frameworkService.frameworkData$.pipe(first(),
+    return this.frameworkService.frameworkData$.pipe(filter((frameworkDetails) => { // wait to get the framework name if passed as input
+      if (!frameworkDetails.err) {
+        const framework = this.frameworkName ? this.frameworkName : 'defaultFramework';
+        const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
+        if (frameworkData) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+      return true;
+    }), first(),
       mergeMap((frameworkDetails: Framework) => {
         if (!frameworkDetails.err) {
           const framework = this.frameworkName ? this.frameworkName : 'defaultFramework';
@@ -217,10 +228,12 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
   private modelChange(data) {
     this.channelInputLabel = [];
     const orgDetails = _.find(this.formFieldProperties, ['code', 'channel']);
-       _.forEach(data, (value, key) => {
+    if (orgDetails) {
+      _.forEach(data, (value, key) => {
         this.channelInputLabel.push(_.find(orgDetails['range'], {identifier: value}));
         this.orgDetailsService.setOrg(this.channelInputLabel);
        });
+    }
   }
   private setFilterInteractData() {
     this.submitIntractEdata = {

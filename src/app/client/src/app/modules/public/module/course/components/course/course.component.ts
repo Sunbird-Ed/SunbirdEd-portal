@@ -1,5 +1,5 @@
 import { combineLatest as observableCombineLatest ,  Subject } from 'rxjs';
-import { PageApiService, PlayerService, ISort, OrgDetailsService, FormService } from '@sunbird/core';
+import { PageApiService, PlayerService, ISort, OrgDetailsService, FormService, UserService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   ResourceService, ToasterService, INoResultMessage,
@@ -10,6 +10,7 @@ import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
+import { PublicPlayerService } from './../../../../services';
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
@@ -32,6 +33,10 @@ export class CourseComponent implements OnInit, OnDestroy {
   public orgDetailsService: OrgDetailsService;
 
   public formService: FormService;
+  /**
+  * Refrence of UserService
+  */
+  private userService: UserService;
   /**
    * This variable hepls to show and hide page loader.
    * It is kept true by default as at first when we comes
@@ -89,7 +94,8 @@ export class CourseComponent implements OnInit, OnDestroy {
     resourceService: ResourceService, config: ConfigService, private activatedRoute: ActivatedRoute, router: Router,
     public utilService: UtilService, public navigationHelperService: NavigationHelperService,
     orgDetailsService: OrgDetailsService, private cacheService: CacheService,
-    private browserCacheTtlService: BrowserCacheTtlService,  formService: FormService) {
+    private browserCacheTtlService: BrowserCacheTtlService,  formService: FormService,
+    userService: UserService,  private publicPlayerService: PublicPlayerService, ) {
     this.pageSectionService = pageSectionService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
@@ -99,6 +105,7 @@ export class CourseComponent implements OnInit, OnDestroy {
     this.router.onSameUrlNavigation = 'reload';
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
     this.formService = formService;
+    this.userService = userService;
   }
 
   populatePageData() {
@@ -222,8 +229,12 @@ export class CourseComponent implements OnInit, OnDestroy {
   }
 
   public playContent(event) {
-    this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
-    this.showLoginModal = true;
+    if (!this.userService.loggedIn) {
+      this.showLoginModal = true;
+      this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
+    } else {
+      this.publicPlayerService.playContent(event);
+    }
   }
 
   compareObjects(a, b) {
@@ -283,11 +294,13 @@ export class CourseComponent implements OnInit, OnDestroy {
     const query = JSON.parse(event.searchQuery);
     const queryParams = {};
     _.forIn(query.request.filters, (value, index) => {
-      queryParams[index] = value;
+      if (index === 'c_Sunbird_Dev_open_batch_count') {
+        queryParams[index] = JSON.stringify(value);
+      } else {
+        queryParams[index] = value;
+      }
     });
     queryParams['defaultSortBy'] = JSON.stringify(query.request.sort_by);
-    queryParams['channel'] = this.hashTagId;
-    queryParams['board'] = [this.prominentFilters['board']];
     this.cacheService.set('viewAllQuery', queryParams, {
       maxAge: this.browserCacheTtlService.browserCacheTtl
     });

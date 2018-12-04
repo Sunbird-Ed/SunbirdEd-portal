@@ -11,7 +11,7 @@ import * as moment from 'moment';
 @Component({
   selector: 'app-review-comments',
   templateUrl: './review-comments.component.html',
-  styleUrls: ['./review-comments.component.css']
+  styleUrls: ['./review-comments.component.scss']
 })
 export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -104,7 +104,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
       this.toasterService.error(this.resourceService.messages.emsg.m0010);
       return;
     }
-    if (!this.comments.value.trim()) {
+    if (!this.comments.value || !this.comments.value.trim()) {
       return;
     }
     this.disableTextArea = true;

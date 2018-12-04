@@ -2,14 +2,15 @@
 import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ILoaderMessage, UtilService, ICard
+  ILoaderMessage, UtilService, ICard, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { SearchService, CoursesService, ICourses, SearchParam , ISort, PlayerService} from '@sunbird/core';
+import { SearchService, CoursesService, ICourses, FormService , ISort, PlayerService} from '@sunbird/core';
 import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { CacheService } from 'ng2-cache-service';
 
 @Component({
   selector: 'app-course-search',
@@ -117,6 +118,9 @@ export class CourseSearchComponent implements OnInit {
   public filterType: string;
 
   public redirectUrl: string;
+
+  frameWorkName: string;
+
   sortingOptions: Array<ISort>;
 
   /**
@@ -132,9 +136,10 @@ export class CourseSearchComponent implements OnInit {
      * @param {ToasterService} toasterService Reference of ToasterService
    */
   constructor(searchService: SearchService, route: Router, private playerService: PlayerService,
-    activatedRoute: ActivatedRoute, paginationService: PaginationService,
+    activatedRoute: ActivatedRoute, paginationService: PaginationService, private cacheService: CacheService,
     resourceService: ResourceService, toasterService: ToasterService, private changeDetectorRef: ChangeDetectorRef,
-    config: ConfigService, coursesService: CoursesService, public utilService: UtilService) {
+    config: ConfigService, coursesService: CoursesService, public utilService: UtilService, private formService: FormService,
+    private browserCacheTtlService: BrowserCacheTtlService) {
     this.searchService = searchService;
     this.route = route;
     this.coursesService = coursesService;
@@ -255,10 +260,32 @@ export class CourseSearchComponent implements OnInit {
       queryParams: this.queryParams
     });
   }
-
+  private getframeWorkData() {
+    const framework = this.cacheService.get('framework' + 'search');
+    if (framework) {
+      this.frameWorkName = framework;
+    } else {
+      const formServiceInputParams = {
+        formType: 'framework',
+        formAction: 'search',
+        contentType: 'framework-code',
+      };
+      this.formService.getFormConfig(formServiceInputParams).subscribe(
+        (data: ServerResponse) => {
+          this.frameWorkName = _.find(data, 'framework').framework;
+          this.cacheService.set('framework' + 'search', this.frameWorkName ,
+            {maxAge: this.browserCacheTtlService.browserCacheTtl});
+        },
+        (err: ServerResponse) => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        }
+      );
+    }
+  }
   ngOnInit() {
     this.filterType = this.config.appConfig.course.filterType;
     this.redirectUrl = this.config.appConfig.course.searchPageredirectUrl;
+    this.getframeWorkData();
     this.filters = {
       objectType: ['Content']
     };
