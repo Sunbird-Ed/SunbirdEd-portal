@@ -1,13 +1,18 @@
 version: 2.1
 jobs:
   build:
+    machine:
+      - image: circleci/classic:latest
+    steps:
+      - checkout
+      - run:
+          name: run build file
+          command: ./build.sh
+  test-cases:
     docker:
       - image: g33tha/circleci
     steps:
       - checkout
-      #- run:
-          #name: run build file
-          #command: ./build.sh
       #- run: npm cache clean --force
       - run: npm install -g @angular/cli
       - run: cd src/app/client/
@@ -37,6 +42,9 @@ workflows:
   build_and_test:
     jobs:
       - build
+      - test-cases
+          requires:
+            - build
             
       
 
