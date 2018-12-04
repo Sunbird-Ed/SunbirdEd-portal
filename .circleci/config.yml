@@ -8,7 +8,7 @@ jobs:
       #- run:
           #name: run build file
           #command: ./build.sh
-      - run: npm install -g @angular/cli
+      - run: sudo npm install -g @angular/cli
       - run: cd src/app/client/
       - run: npm install
       - run: ng lint
