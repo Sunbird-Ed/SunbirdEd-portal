@@ -1,14 +1,14 @@
 version: 2.1
 jobs:
-  build:
-    parallelism: 1
-    machine:
-      image: circleci/classic:latest
-    steps:
-      - checkout
-      - run:
-          name: run build file
-          command: ./build.sh
+  #build:
+    #parallelism: 1
+    #machine:
+      #image: circleci/classic:latest
+    #steps:
+      #- checkout
+      #- run:
+          #name: run build file
+          #command: ./build.sh
   test-cases:
     docker:
       - image: g33tha/node-8.11
@@ -42,7 +42,7 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
+      #- build
       - test-cases
    
             
