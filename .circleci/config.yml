@@ -14,15 +14,8 @@ jobs:
       - image: g33tha/node-8.11
     steps:
       - checkout
-      - run:
-          name: npm test
-          command: |
-            npm install @angular/cl
-            cd src/app/client/
-            npm install
-            ng lint
-            ng build --prod
-            npm run test-with-coverage
+      - run: sh test.sh
+          
       - run:
           name: Add comment on PR
           command: |
