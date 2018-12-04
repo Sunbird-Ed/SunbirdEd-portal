@@ -44,8 +44,7 @@ workflows:
     jobs:
       - build
       - test-cases
-          requires:
-            - build
+          requires: build
    
             
       
