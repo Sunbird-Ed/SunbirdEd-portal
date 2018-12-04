@@ -11,7 +11,7 @@ jobs:
           command: ./build.sh
   test-cases:
     docker:
-      - image: g33tha/circleci
+      - image: g33tha/node-8.11
     steps:
       - checkout
       #- run: npm cache clean --force
