@@ -1,12 +1,12 @@
 import { combineLatest as observableCombineLatest ,  Subject } from 'rxjs';
 import {
     ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-    ILoaderMessage, UtilService, ICard, NavigationHelperService
+    ILoaderMessage, UtilService, ICard, NavigationHelperService, BrowserCacheTtlService
 } from '@sunbird/shared';
 import { PublicPlayerService } from './../../../../services';
 import {
     SearchService, CoursesService, PlayerService, ISort,
-    OrgDetailsService
+    OrgDetailsService, UserService, FormService
 } from '@sunbird/core';
 import { Component, OnInit, NgZone, OnDestroy} from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
@@ -15,6 +15,8 @@ import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 import { filter } from 'rxjs/operators';
+import { CacheService } from 'ng2-cache-service';
+
 @Component({
   selector: 'app-explore-course',
   templateUrl: './explore-course.component.html',
@@ -68,6 +70,10 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
      */
     private paginationService: PaginationService;
     /**
+    * Refrence of UserService
+    */
+    private userService: UserService;
+    /**
       * To show / hide no result message when no result found
      */
     noResult = false;
@@ -92,6 +98,11 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
     * To show / hide login popup on click of content
     */
     showLoginModal = false;
+
+    /**
+    *baseUrl;
+    */
+    public baseUrl: string;
     /**
       * Contains page limit of outbox list
       */
@@ -132,6 +143,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
     public unsubscribe$ = new Subject<void>();
     cardIntractEdata: IInteractEventEdata;
     dataDrivenFilter: object;
+    frameWorkName: string;
     /**
        * Constructor to create injected service(s) object
        * Default method of Draft Component class
@@ -145,10 +157,12 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
        * @param {ToasterService} toasterService Reference of ToasterService
      */
     constructor(searchService: SearchService, route: Router, private playerService: PlayerService,
-        activatedRoute: ActivatedRoute, paginationService: PaginationService,
-        resourceService: ResourceService, toasterService: ToasterService,
+        activatedRoute: ActivatedRoute, paginationService: PaginationService, private cacheService: CacheService,
+        resourceService: ResourceService, toasterService: ToasterService, private browserCacheTtlService: BrowserCacheTtlService,
         config: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
-        public navigationHelperService: NavigationHelperService, private publicPlayerService: PublicPlayerService) {
+        private formService: FormService, public navigationHelperService: NavigationHelperService,
+        private publicPlayerService: PublicPlayerService,
+        userService: UserService) {
         this.searchService = searchService;
         this.route = route;
         this.activatedRoute = activatedRoute;
@@ -157,6 +171,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
         this.toasterService = toasterService;
         this.config = config;
         this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+        this.userService = userService;
     }
     /**
      * This method sets the make an api call to get all search data with page No and offset
@@ -170,6 +185,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
             limit: this.pageLimit,
             pageNumber: this.pageNumber,
             query: this.queryParams.key,
+            params : this.config.appConfig.ExplorePage.contentApiQueryParams
         };
         this.searchService.courseSearch(requestParams).pipe(
             takeUntil(this.unsubscribe$))
@@ -179,7 +195,6 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
                         this.showLoader = false;
                         this.noResult = false;
                         this.searchList = apiResponse.result.course;
-                        console.log(this.searchList);
                         this.totalCount = apiResponse.result.count;
                         this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
                         const constantData = this.config.appConfig.CoursePage.constantData;
@@ -279,7 +294,28 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
                 }
             });
     }
-
+    getframeWorkData() {
+        const framework = this.cacheService.get('framework' + 'search');
+        if (framework) {
+          this.frameWorkName = framework;
+        } else {
+          const formServiceInputParams = {
+            formType: 'framework',
+            formAction: 'search',
+            contentType: 'framework-code',
+          };
+          this.formService.getFormConfig(formServiceInputParams, this.hashTagId).subscribe(
+            (data: ServerResponse) => {
+              this.frameWorkName = _.find(data, 'framework').framework;
+              this.cacheService.set('framework' + 'search', this.frameWorkName ,
+                {maxAge: this.browserCacheTtlService.browserCacheTtl});
+            },
+            (err: ServerResponse) => {
+            this.toasterService.error(this.resourceService.messages.emsg.m0005);
+            }
+          );
+        }
+      }
     ngOnInit() {
             if (_.includes(this.route.url, '/explore-course')) {
               const url  = this.route.url.split('/');
@@ -291,10 +327,11 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
             }
         this.filters = {};
         this.dataDrivenFilter = {};
-        this.filterType = this.config.appConfig.course.filterType;
+        this.filterType = this.config.appConfig.exploreCourse.filterType;
         this.redirectUrl = this.config.appConfig.course.searchPageredirectUrl;
         this.slug = this.activatedRoute.snapshot.params.slug;
         this.getChannelId();
+        this.getframeWorkData();
         this.activatedRoute.params.subscribe(params => {
             this.setTelemetryData();
         });
@@ -320,7 +357,12 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
     }
 
     public playContent(event) {
-        this.showLoginModal = true;
+        if (!this.userService.loggedIn) {
+            this.showLoginModal = true;
+            this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
+        } else {
+            this.publicPlayerService.playContent(event);
+        }
     }
     inview(event) {
         _.forEach(event.inview, (inview, key) => {

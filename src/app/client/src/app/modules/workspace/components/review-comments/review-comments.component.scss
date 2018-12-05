@@ -1,5 +1,10 @@
+@import "variables";
+
 .review-comments-box {
-    height: 397.371px;		
+    height: 409.869px;		
+}
+.ui.dimmer{
+    z-index: inherit;
 }
 .ui.comments.scrolling{
     height:100%;
@@ -22,17 +27,17 @@
 .sb-icon-comment:before {
     font-size: 72px;
     width: 72px;
-    color: #66BF00;
+    color: $view-all-button;
 }
 .icon.sb-icon-reviewer:before {
     font-size: 30px;
-    color: #8BA9CC;
+    color: $primary-color;
 }
 textarea:focus+i.icon.sb-icon-send:before {
-    color:#2185D0;
+    color: $primary-color;
 }
 .ui.form textarea:focus {
-    border-color:#2185D0 !important;
+    border-color:$primary-color !important;
 }
 .comment:after {
     content: ""; 
@@ -43,7 +48,4 @@ textarea:focus+i.icon.sb-icon-send:before {
 }
 .review-comments-loader {
     position: relative;
-}
-.right-floated{
-    float: right;
 }

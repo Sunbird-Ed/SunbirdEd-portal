@@ -1,12 +1,12 @@
-<sui-modal [isClosable]="false" [size]="'normal'" #modal class="z-index-10000" *ngIf="formFieldProperties">
+<sui-modal [isClosable]="false" [size]="'normal'" #modal [mustScroll]="'true'" appBodyScroll *ngIf="formFieldProperties">
   <i *ngIf="showCloseIcon" class="close icon" (click)="onClose(modal)"></i>
-  <div class="content">
+  <div class="scrollable content">
     <div class="ui grid">
       <div class="ten wide column mb-30">
-        <span class="ui header">{{resourceService?.frmelmnts?.lbl?.profilePopup}}</span>
+        <span class="ui header">{{resourceService?.frmelmnts?.lbl?.profilePopup}}&lrm;</span>
       </div>
     </div>
-    <form class="ui form ">
+    <form class="ui form">
       <div class="required field" *ngIf="board">
         <label>{{board.label}}</label>
         <div class="field">

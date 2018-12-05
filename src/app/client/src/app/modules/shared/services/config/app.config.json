@@ -121,7 +121,7 @@
         "left": {"class":  "ui circular label  card-badges-image"} }
        },
        "metaData": {"metaData": ["identifier", "mimeType", "framework","contentType"]},
-       "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
+       "dynamicFields": {"ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
   },
   "GetPage":{
     "contentApiQueryParams": {"orgdetails":"orgName,email"},
