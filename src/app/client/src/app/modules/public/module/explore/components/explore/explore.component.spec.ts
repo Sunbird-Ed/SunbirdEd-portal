@@ -1,26 +1,22 @@
 import { BehaviorSubject, throwError, of } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
 } from '@sunbird/shared';
 import { PageApiService, OrgDetailsService, CoreModule, UserService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicPlayerService } from './../../../../services';
 import { SuiModule } from 'ng2-semantic-ui';
-import { SlickModule } from 'ngx-slick';
 import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './explore.component.spec.data';
-import { Ng2IzitoastService } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { NgInviewModule } from 'angular-inport';
 import { ExploreComponent } from './explore.component';
 
 describe('ExploreComponent', () => {
   let component: ExploreComponent;
   let fixture: ComponentFixture<ExploreComponent>;
-  let toasterService, configService, userService,
-  utilService, browserCacheTtlService, pageApiService, orgDetailsService;
+  let toasterService, userService, pageApiService, orgDetailsService;
   const mockPageSection: Array<any> = Response.successData.result.response.sections;
   let sendOrgDetails = true;
   let sendPageApi = true;
@@ -62,10 +58,7 @@ describe('ExploreComponent', () => {
     fixture = TestBed.createComponent(ExploreComponent);
     component = fixture.componentInstance;
     toasterService = TestBed.get(ToasterService);
-    configService = TestBed.get(ConfigService);
     userService = TestBed.get(UserService);
-    utilService = TestBed.get(UtilService);
-    browserCacheTtlService = TestBed.get(BrowserCacheTtlService);
     pageApiService = TestBed.get(PageApiService);
     orgDetailsService = TestBed.get(OrgDetailsService);
     sendOrgDetails = true;

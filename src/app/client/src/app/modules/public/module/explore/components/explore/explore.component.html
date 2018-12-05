@@ -4,7 +4,7 @@
   <div class="ten wide column">
     <div class="ui grid mb-0">
       <div class="twelve wide column mt-30">
-        <app-prominent-filter [pageId]="'explore-page'" *ngIf="filterType && hashTagId" [filterEnv]="filterType"  [ignoreQuery]="['key', 'language']" 
+        <app-prominent-filter [pageId]="'explore-page'" *ngIf="filterType && hashTagId" [filterEnv]="filterType"  [ignoreQuery]="['key']" 
         [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter>
       </div>
     </div>
