@@ -277,7 +277,7 @@ export class CourseComponent implements OnInit, OnDestroy {
     const query = JSON.parse(event.searchQuery);
     const queryParams = {};
     _.forIn(query.request.filters, (value, index) => {
-      if (index === 'c_Sunbird_Dev_open_batch_count') {
+      if (_.isPlainObject(value)) {
         queryParams[index] = JSON.stringify(value);
       } else {
         queryParams[index] = value;

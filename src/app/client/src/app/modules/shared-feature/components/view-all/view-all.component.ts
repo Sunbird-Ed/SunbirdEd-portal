@@ -214,17 +214,21 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   }
   private manipulateQueryParam(results) {
     this.filters = {};
-    if (!_.isEmpty(results)) {
-      _.forOwn(results, (queryValue, queryKey) => {
-        this.filters[queryKey] = queryValue;
+    const queryFilters = _.omit(results, ['key', 'sort_by', 'sortType', 'defaultSortBy', 'exists']);
+    if (!_.isEmpty(queryFilters)) {
+      _.forOwn(queryFilters, (queryValue, queryKey) => {
+        if (_.includes(this.configService.appConfig.ViewAll.filters, queryKey)) {
+          this.filters[queryKey] = JSON.parse(queryValue);
+        } else {
+          this.filters[queryKey] = queryValue;
+        }
       });
-      this.filters = _.omit(results, ['key', 'sort_by', 'sortType', 'defaultSortBy', 'exists']);
     }
   }
 
   private getContentList(request) {
     const requestParams = {
-      filters: _.pickBy(this.filters, value => value.length > 0),
+      filters: this.filters,
       limit: this.pageLimit,
       pageNumber: Number(request.params.pageNumber),
       exists: request.queryParams.exists,
@@ -233,9 +237,6 @@ export class ViewAllComponent implements OnInit, OnDestroy {
         softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
       params : this.configService.appConfig.ViewAll.contentApiQueryParams
     };
-    if (requestParams.filters && requestParams.filters['c_Sunbird_Dev_open_batch_count']) {
-      requestParams.filters['c_Sunbird_Dev_open_batch_count'] = JSON.parse(requestParams.filters['c_Sunbird_Dev_open_batch_count']);
-    }
     if (_.get(this.activatedRoute.snapshot, 'data.baseUrl') === 'learn') {
       return combineLatest(
         this.searchService.contentSearch(requestParams),
