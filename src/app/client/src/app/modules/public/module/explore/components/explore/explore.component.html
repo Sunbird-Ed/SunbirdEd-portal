@@ -4,11 +4,11 @@
   <div class="ten wide column">
     <div class="ui grid mb-0">
       <div class="twelve wide column mt-30">
-        <app-prominent-filter [pageId]="'explore-page'" *ngIf="filterType" [filterEnv]="filterType"  [ignoreQuery]="['key', 'language']" 
-       [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter>
+        <app-prominent-filter [pageId]="'explore-page'" *ngIf="filterType && hashTagId" [filterEnv]="filterType"  [ignoreQuery]="['key', 'language']" 
+        [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter>
       </div>
     </div>
-    <div *ngFor="let section of caraouselData;">
+    <div *ngFor="let section of carouselData;">
       <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section" (viewAll)="viewAll($event)"></app-page-section>
     </div>
     <div class="twelve wide column mt-30" *ngIf="showLoader">
@@ -21,7 +21,7 @@
   <div class="one wide column">
   </div>
 </div>
-<sui-modal [isClosable]="true" size="tiny" (dismissed)="closeModal()" #modal *ngIf="showLoginModal">
+<sui-modal [isClosable]="true" size="tiny" (dismissed)="showLoginModal = false" #modal *ngIf="showLoginModal">
   <div class="content">
     <div class="ui center aligned segment">
       <div class="header cardsHeading">{{resourceService.frmelmnts?.lbl?.signinenrollTitle}} </div>
