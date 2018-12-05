@@ -295,7 +295,7 @@ export class CourseComponent implements OnInit, OnDestroy {
     const queryParams = {};
     _.forIn(query.request.filters, (value, index) => {
       if (_.isPlainObject(value)) {
-        queryParams[index] = JSON.stringify(value);
+        queryParams['dynamic'] = JSON.stringify({[index]: value});
       } else {
         queryParams[index] = value;
       }

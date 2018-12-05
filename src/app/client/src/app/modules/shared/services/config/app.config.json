@@ -48,9 +48,7 @@
       },
        "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
      "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"},
-     "PAGE_LIMIT": 20 ,
-     "filters": { "c_Sunbird_Dev_open_batch_count": "c_Sunbird_Dev_open_batch_count",
-      "c_Sunbird_Staging_open_batch_count": "c_Sunbird_Staging_open_batch_count"}
+     "PAGE_LIMIT": 20 
   },
   "CourseConsumption" : {
     "contentApiQueryParams": {"orgdetails":"orgName,email"}
