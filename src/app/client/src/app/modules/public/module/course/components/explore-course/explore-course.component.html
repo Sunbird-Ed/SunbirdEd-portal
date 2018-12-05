@@ -3,8 +3,8 @@
   <div class="ten wide column">
       <div class="ui stackable grid pt-10">
           <div class="twelve wide column" *ngIf="hashTagId">
-              <app-data-driven-filter [pageId]="'explore-search'" *ngIf="filterType" [filterEnv]="filterType"  [ignoreQuery]="['key', 'language']"
-       [accordionDefaultOpen]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" [showSearchedParam]=true ></app-data-driven-filter>
+            <app-data-driven-filter [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-search'" *ngIf="hashTagId && filterType && frameWorkName" [filterEnv]="filterType"  [ignoreQuery]="['key', 'language']" 
+            [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" ></app-data-driven-filter>
           </div>
       </div>
 
