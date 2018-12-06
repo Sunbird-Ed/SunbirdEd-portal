@@ -9,11 +9,11 @@
     <form class="ui form">
       <div class="required field" *ngIf="board">
         <label>{{board.label}}</label>
-        <div class="field">
-          <sui-multi-select id={{board.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[board.code]"
+        <div class="field" >
+          <sui-select id={{board.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[board.code] && selectedOption[board.code][0]"
             [options]="options" (ngModelChange)="onChange()" [ngModelOptions]="{standalone: true}" #multiSelect>
             <sui-select-option *ngFor="let option of board.range" [value]="option.name"></sui-select-option>
-          </sui-multi-select>
+          </sui-select>
         </div>
         <div class="mt-0 ui pointing red basic label below" *ngIf="selectedOption && selectedOption[board.code] && selectedOption[board.code].length == 0">
           {{resourceService?.messages?.stmsg?.m0126}}
