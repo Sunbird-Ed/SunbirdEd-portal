@@ -16,7 +16,9 @@ const routes: Routes = [
       telemetry: {
         env: 'explore', pageid: 'explore-view-all', type: 'view', subtype: 'paginate'
       },
-      filterType: 'explore'
+      filterType: 'explore-course',
+      frameworkName: true,
+      formAction: 'filter'
     }
   },
     {
