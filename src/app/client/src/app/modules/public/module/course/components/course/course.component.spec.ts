@@ -118,18 +118,23 @@ describe('CourseComponent', () => {
     component.getFilters([]);
     expect(component.router.navigate).toHaveBeenCalledWith(['']);
   });
-  it('should navigate to landing page if fetching frameWork from form service fails and data driven filter returns data', () => {
-    sendFormApi = false;
-    component.ngOnInit();
-    component.getFilters([]);
-    expect(component.router.navigate).toHaveBeenCalledWith(['']);
-  });
   it('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', () => {
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     expect(component.hashTagId).toEqual('123');
     expect(component.frameWorkName).toEqual('TPD');
     expect(component.prominentFilters).toEqual({ board: 'NCRT'});
+    expect(component.showLoader).toBeFalsy();
+    expect(component.carouselData.length).toEqual(1);
+    expect(component.noResult).toBeFalsy();
+  });
+  it('should not navigate to landing page if fetching frameWork from form service fails and data driven filter returns data', () => {
+    sendFormApi = false;
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    expect(component.hashTagId).toEqual('123');
+    expect(component.frameWorkName).toEqual(undefined);
+    expect(component.prominentFilters).toEqual({});
     expect(component.showLoader).toBeFalsy();
     expect(component.carouselData.length).toEqual(1);
     expect(component.noResult).toBeFalsy();

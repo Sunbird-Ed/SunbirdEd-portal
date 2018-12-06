@@ -1,4 +1,4 @@
-import { combineLatest, Subject, of } from 'rxjs';
+import { combineLatest, Subject, of, Observable } from 'rxjs';
 import { PageApiService, OrgDetailsService, FormService, UserService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import {
@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { PublicPlayerService } from './../../../../services';
-import { takeUntil, map, mergeMap, first, filter } from 'rxjs/operators';
+import { takeUntil, map, mergeMap, first, filter, catchError } from 'rxjs/operators';
 
 @Component({
   templateUrl: './course.component.html',
@@ -33,6 +33,7 @@ export class CourseComponent implements OnInit, OnDestroy {
   public prominentFilters: any = {};
   public dataDrivenFilter = new EventEmitter();
   public frameWorkName: string;
+  public initFilters = false;
 
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
@@ -51,8 +52,13 @@ export class CourseComponent implements OnInit, OnDestroy {
     ).pipe(
       mergeMap((data: any) => {
         this.hashTagId = data[0].hashTagId;
-        this.frameWorkName = data[1];
-        return this.dataDrivenFilter;
+        if (data[1]) {
+          this.initFilters = true;
+          this.frameWorkName = data[1];
+          return this.dataDrivenFilter;
+        } else {
+          return of({});
+        }
       }), first()
     ).subscribe((filters: any) => {
         this.prominentFilters = filters;
@@ -83,12 +89,14 @@ export class CourseComponent implements OnInit, OnDestroy {
         formAction: 'search',
         contentType: 'framework-code',
       };
-      return this.formService.getFormConfig(formServiceInputParams, this.hashTagId).pipe(
-        map((data: ServerResponse) => {
-          const frameWork = _.find(data, 'framework').framework;
-          this.cacheService.set('framework' + 'search', frameWork, { maxAge: this.browserCacheTtlService.browserCacheTtl});
-          return frameWork;
-      }));
+      return this.formService.getFormConfig(formServiceInputParams, this.hashTagId)
+        .pipe(map((data: ServerResponse) => {
+            const frameWork = _.find(data, 'framework').framework;
+            this.cacheService.set('framework' + 'search', frameWork, { maxAge: this.browserCacheTtlService.browserCacheTtl});
+            return frameWork;
+        }), catchError((error) => {
+          return of(false);
+        }));
     }
   }
   private fetchContent() {
