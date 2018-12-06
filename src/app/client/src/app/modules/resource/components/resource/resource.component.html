@@ -1,25 +1,24 @@
-<div [appTelemetryImpression]="telemetryImpression" class="ui grid mb-30">
-  <div class="one wide column"></div>
-  <div class="ten wide column">
-    <div class="ui stackable grid">
-      <div class="ten wide column">
-        <app-data-driven-filter (dataDrivenFilter)="getFilters($event)" [pageId]="'resource-page'" *ngIf="filterType" [filterEnv]="filterType"
-       [accordionDefaultOpen]=false [isShowFilterLabel]=true></app-data-driven-filter>
-      </div>
-      <div class="two wide column">
-        <app-sort-by appTelemetryInteract [telemetryInteractEdata]="sortIntractEdata" [sortingOptions]="sortingOptions" [url]="redirectUrl"></app-sort-by>
+<div class="ui container">
+  <div class="ui grid stackable" [appTelemetryImpression]="telemetryImpression" >
+    <div class="twelve wide column">
+      <div class="ui grid">
+        <div class="ten wide column">
+          <app-data-driven-filter (dataDrivenFilter)="getFilters($event)" [pageId]="'resource-page'" *ngIf="filterType" [filterEnv]="filterType"
+        [accordionDefaultOpen]=false [isShowFilterLabel]=true></app-data-driven-filter>
+        </div>
+        <div class="two wide column">
+          <app-sort-by appTelemetryInteract [telemetryInteractEdata]="sortIntractEdata" [sortingOptions]="sortingOptions" [url]="redirectUrl"></app-sort-by>
+        </div>
       </div>
     </div>
-    <div *ngFor="let section of caraouselData">
+    <div class="twelve wide column mt-30" *ngFor="let section of caraouselData">
       <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section" (viewAll)="viewAll($event)"></app-page-section>
     </div>
-    <div class="twelve wide column" *ngIf="showLoader">
+    <div class="twelve wide column mt-30" *ngIf="showLoader">
       <app-loader [data]='loaderMessage'></app-loader>
     </div>
-    <div *ngIf="noResult && !showLoader">
+    <div class="twelve wide column mt-30" *ngIf="noResult && !showLoader">
       <app-no-result [data]="noResultMessage"></app-no-result>
     </div>
-  </div>
-  <div class="one wide column">
   </div>
 </div>

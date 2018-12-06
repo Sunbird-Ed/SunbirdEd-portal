@@ -1,6 +1,6 @@
-<div class="ui raised segment p-10 cursor-pointer mb-10" [ngClass]="{'ann-segment-left-border':announcement.read  === false}">
+<div class="ui raised segment cursor-pointer p-10 mb-20" [ngClass]="{'ann-segment-left-border':announcement.read  === false}">
   <div>
-    <p class="ui grey label annType" *ngIf="announcement.type">
+    <p class="ui grey label py-4" *ngIf="announcement.type">
       {{announcement.type | uppercase}}
     </p>
   </div>

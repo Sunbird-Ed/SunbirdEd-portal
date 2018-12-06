@@ -634,12 +634,7 @@ i.file.pdf.ann-details-icon {
   font-size: 1.2em ;
   padding-top: 15px ;
 }
-.ui.grey.label.annType {
-  padding-top: 4px;
-  padding-bottom: 4px;
-  background-color: #9a9a9a !important;
-  border-color: #9a9a9a !important;
-}
+
 .ui.items > .item > .content p.ann-attachment-detail-meta {
   margin-left: 10px;
   margin-top: -5px;
@@ -2399,11 +2394,11 @@ angular2-multiselect .list-area{
 }
 .mc-nonuser,
 .mc-user{
-  padding-top:76px !important;
+  padding-top:90px !important;
 }
 @media screen and (max-width:768px){
   .mc-user{
-    padding-top: 190px !important;
+    padding-top: 170px !important;
   }
 }
 .selected-list .countplaceholder {

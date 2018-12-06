@@ -5,10 +5,10 @@
         <div *ngIf="toDoList.length > 0 && !showLoader" class="ui styled accordion p-15 width-100">
           <span class="todo-heading">{{resourceService.frmelmnts?.scttl?.todo}}</span>
           <span class="ui red d-inline label small ml-5 py-3">{{toDoList.length}}</span>
-          <span class="" suiPopup popupHeader="{{collapse==true?'Expand':'Collapse'}}"
+          <span title="{{collapse==true?'Expand':'Collapse'}}"
             popupInverted>
             <i [ngStyle]="{'transform': collapse === true ? 'rotate(0deg)' : 'rotate(180deg)'}" class="add large angle down icon pt-5 right-float"
-                (click)="collapse = !collapse"></i>
+                (click)="collapse = !collapse"> </i>
           </span>
           <div class="ui active" [suiCollapse]="collapse" [appTelemetryImpression]="telemetryImpression">
             <ngx-slick in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="toDoList" class="carousel" #slickModal="slick-modal"
