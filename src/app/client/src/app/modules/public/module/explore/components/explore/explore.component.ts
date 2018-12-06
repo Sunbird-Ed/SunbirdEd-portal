@@ -50,7 +50,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
       }), first()
     ).subscribe((filters: any) => {
         this.prominentFilters = filters;
-        this.fetchContent();
+        this.fetchContentOnParamChange();
         this.setNoResultMessage();
       },
       error => {
@@ -67,40 +67,23 @@ export class ExploreComponent implements OnInit, OnDestroy {
       }, {});
     this.dataDrivenFilter.emit(defaultFilters);
   }
-  private fetchContent() {
+  private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
     .pipe(map((result) => ({params: result[0], queryParams: result[1]})),
         filter(({queryParams}) => !_.isEqual(this.queryParams, queryParams)), // fetch data if queryParams changed
-        mergeMap(({params, queryParams}) => {
-          this.queryParams = { ...queryParams };
-          return this.fetchPageData();
-        }),
         takeUntil(this.unsubscribe$))
-      .subscribe(data => {
-        this.showLoader = false;
-        this.carouselData = this.prepareCarouselData(_.get(data, 'sections'));
-        if (this.carouselData.length) {
-          this.noResult = false;
-        } else {
-          this.noResult = true;
-        }
+      .subscribe(({params, queryParams}) => {
+        this.showLoader = true;
+        this.noResult = false;
+        this.queryParams = { ...queryParams };
+        this.carouselData = [];
+        this.fetchPageData();
       }, err => {
         this.showLoader = false;
         this.noResult = true;
+        this.carouselData = [];
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
     });
-  }
-  private prepareCarouselData(sections = []) {
-      const carouselData = _.reduce(sections, (collector, element) => {
-        const contents = _.get(element, 'contents') || [];
-        const { constantData, metaData, dynamicFields } = this.configService.appConfig.ExplorePage;
-        element.contents = this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
-        if (element.contents && element.contents.length) {
-          collector.push(element);
-        }
-        return collector;
-      }, []);
-      return carouselData;
   }
   private fetchPageData() {
     const filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value.length);
@@ -115,7 +98,33 @@ export class ExploreComponent implements OnInit, OnDestroy {
       exists: [],
       params : this.configService.appConfig.ExplorePage.contentApiQueryParams
     };
-    return this.pageApiService.getPageData(option);
+    this.pageApiService.getPageData(option)
+      .subscribe(data => {
+        this.showLoader = false;
+        this.carouselData = this.prepareCarouselData(_.get(data, 'sections'));
+        if (this.carouselData.length) {
+          this.noResult = false;
+        } else {
+          this.noResult = true;
+        }
+      }, err => {
+        this.showLoader = false;
+        this.noResult = true;
+        this.carouselData = [];
+        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+    });
+  }
+  private prepareCarouselData(sections = []) {
+    const carouselData = _.reduce(sections, (collector, element) => {
+      const contents = _.get(element, 'contents') || [];
+      const { constantData, metaData, dynamicFields } = this.configService.appConfig.ExplorePage;
+      element.contents = this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
+      if (element.contents && element.contents.length) {
+        collector.push(element);
+      }
+      return collector;
+    }, []);
+    return carouselData;
   }
   public prepareVisits(event) {
     _.forEach(event, (inView, index) => {

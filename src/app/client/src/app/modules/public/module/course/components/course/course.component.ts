@@ -62,7 +62,7 @@ export class CourseComponent implements OnInit, OnDestroy {
       }), first()
     ).subscribe((filters: any) => {
         this.prominentFilters = filters;
-        this.fetchContent();
+        this.fetchContentOnParamChange();
         this.setNoResultMessage();
       },
       error => {
@@ -99,40 +99,23 @@ export class CourseComponent implements OnInit, OnDestroy {
         }));
     }
   }
-  private fetchContent() {
+  private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
     .pipe(map((result) => ({params: result[0], queryParams: result[1]})),
         filter(({queryParams}) => !_.isEqual(this.queryParams, queryParams)), // fetch data if queryParams changed
-        mergeMap(({params, queryParams}) => {
-          this.queryParams = { ...queryParams };
-          return this.fetchPageData();
-        }),
         takeUntil(this.unsubscribe$))
-      .subscribe(data => {
-        this.showLoader = false;
-        this.carouselData = this.prepareCarouselData(_.get(data, 'sections'));
-        if (this.carouselData.length) {
-          this.noResult = false;
-        } else {
-          this.noResult = true;
-        }
+      .subscribe(({params, queryParams}) => {
+        this.showLoader = true;
+        this.noResult = false;
+        this.queryParams = { ...queryParams };
+        this.carouselData = [];
+        this.fetchPageData();
       }, err => {
         this.showLoader = false;
         this.noResult = true;
+        this.carouselData = [];
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
     });
-  }
-  private prepareCarouselData(sections = []) {
-      const carouselData = _.reduce(sections, (collector, element) => {
-        const contents = _.get(element, 'contents') || [];
-        const { constantData, metaData, dynamicFields } = this.configService.appConfig.CoursePage;
-        element.contents = this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
-        if (element.contents && element.contents.length) {
-          collector.push(element);
-        }
-        return collector;
-      }, []);
-      return carouselData;
   }
   private fetchPageData() {
     const filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value.length);
@@ -147,7 +130,33 @@ export class CourseComponent implements OnInit, OnDestroy {
       // exists: [],
       params : this.configService.appConfig.ExplorePage.contentApiQueryParams
     };
-    return this.pageApiService.getPageData(option);
+    this.pageApiService.getPageData(option).pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => {
+        this.showLoader = false;
+        this.carouselData = this.prepareCarouselData(_.get(data, 'sections'));
+        if (this.carouselData.length) {
+          this.noResult = false;
+        } else {
+          this.noResult = true;
+        }
+      }, err => {
+        this.showLoader = false;
+        this.noResult = true;
+        this.carouselData = [];
+        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+    });
+  }
+  private prepareCarouselData(sections = []) {
+      const carouselData = _.reduce(sections, (collector, element) => {
+        const contents = _.get(element, 'contents') || [];
+        const { constantData, metaData, dynamicFields } = this.configService.appConfig.CoursePage;
+        element.contents = this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
+        if (element.contents && element.contents.length) {
+          collector.push(element);
+        }
+        return collector;
+      }, []);
+      return carouselData;
   }
   public prepareVisits(event) {
     _.forEach(event, (inView, index) => {
@@ -174,15 +183,19 @@ export class CourseComponent implements OnInit, OnDestroy {
   }
   public viewAll(event) {
     const searchQuery = JSON.parse(event.searchQuery);
-    searchQuery.request.filters.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
+    const searchQueryParams: any = {};
+    _.forIn(searchQuery.request.filters, (value, key) => {
+      if (_.isPlainObject(value)) {
+        searchQueryParams.dynamic = JSON.stringify({[key]: value});
+      } else {
+        searchQueryParams[key] = value;
+      }
+    });
+    searchQueryParams.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
     // searchQuery.request.filters.channel = this.hashTagId;
     // searchQuery.request.filters.board = this.prominentFilters.board;
-    if (searchQuery.request.filters.c_Sunbird_Dev_open_batch_count) {
-      searchQuery.request.filters.c_Sunbird_Dev_open_batch_count =
-        JSON.stringify(searchQuery.request.filters.c_Sunbird_Dev_open_batch_count);
-    }
-    this.cacheService.set('viewAllQuery', searchQuery.request.filters, { maxAge: this.browserCacheTtlService.browserCacheTtl });
-    const queryParams = { ...searchQuery.request.filters, ...this.queryParams};
+    this.cacheService.set('viewAllQuery', searchQueryParams, { maxAge: this.browserCacheTtlService.browserCacheTtl });
+    const queryParams = { ...searchQueryParams, ...this.queryParams};
     const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], {queryParams: queryParams});
   }

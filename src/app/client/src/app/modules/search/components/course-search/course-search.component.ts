@@ -283,7 +283,7 @@ export class CourseSearchComponent implements OnInit {
     }
   }
   ngOnInit() {
-    this.filterType = this.config.appConfig.course.filterType;
+    this.filterType = this.config.appConfig.courses.filterType;
     this.redirectUrl = this.config.appConfig.course.searchPageredirectUrl;
     this.getframeWorkData();
     this.filters = {
