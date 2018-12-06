@@ -363,8 +363,6 @@ export class ViewAllComponent implements OnInit, OnDestroy {
           }
         );
       }
-    } else {
-      this.frameWorkName = undefined;
     }
   }
   ngOnDestroy() {
