@@ -38,19 +38,7 @@
     }
     
 }
-.slick-list{
-    &:after{
-        content: ' ';
-        display: block;
-        position: absolute;
-        top: 20px;
-        bottom: 5px;
-        width: 50px;
-        @media screen and (min-width:768px){
-            width: 100px;
-        }
-    }
-}
+
 /**[dir="ltr"] .slick-list{
     &:after{
         background: linear-gradient(270deg, rgba(243, 247, 250, 0.501961) 0%, rgba(255,255,255,0) 100%);
