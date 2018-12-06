@@ -318,8 +318,8 @@ export class LearnPageComponent implements OnInit, OnDestroy {
     const query = JSON.parse(event.searchQuery);
     const queryParams = {};
     _.forIn(query.request.filters, (value, index) => {
-      if (index === 'c_Sunbird_Dev_open_batch_count') {
-        queryParams[index] = JSON.stringify(value);
+      if (_.isPlainObject(value)) {
+        queryParams['dynamic'] = JSON.stringify({[index]: value});
       } else {
         queryParams[index] = value;
       }
