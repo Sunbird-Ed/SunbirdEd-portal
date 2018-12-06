@@ -126,7 +126,6 @@ describe('CourseComponent', () => {
     expect(component.prominentFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
     expect(component.carouselData.length).toEqual(1);
-    expect(component.noResult).toBeFalsy();
   });
   it('should not navigate to landing page if fetching frameWork from form service fails and data driven filter returns data', () => {
     sendFormApi = false;
@@ -137,7 +136,6 @@ describe('CourseComponent', () => {
     expect(component.prominentFilters).toEqual({});
     expect(component.showLoader).toBeFalsy();
     expect(component.carouselData.length).toEqual(1);
-    expect(component.noResult).toBeFalsy();
   });
   it('should fetch content after getting hashTagId and filter data and throw error if page api fails', () => {
     sendPageApi = false;
@@ -149,7 +147,6 @@ describe('CourseComponent', () => {
     expect(component.prominentFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
     expect(component.carouselData.length).toEqual(0);
-    expect(component.noResult).toBeTruthy();
     expect(toasterService.error).toHaveBeenCalled();
   });
   it('should unsubscribe from all observable subscriptions', () => {

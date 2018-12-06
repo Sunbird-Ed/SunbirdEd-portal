@@ -4,7 +4,7 @@
   <div class="ten wide column">
     <div class="ui grid mb-0">
       <div class="twelve wide column mt-30">
-        <app-prominent-filter [pageId]="'explore-page'" *ngIf="filterType && hashTagId" [filterEnv]="filterType"  [ignoreQuery]="['key']" 
+        <app-prominent-filter [pageId]="'explore-page'" *ngIf="initFilters" [filterEnv]="filterType"  [ignoreQuery]="['key']" 
         [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter>
       </div>
     </div>
@@ -14,7 +14,7 @@
     <div class="twelve wide column mt-30" *ngIf="showLoader">
       <app-loader [data]='loaderMessage'></app-loader>
     </div>
-    <div *ngIf="noResult && !showLoader" class="mt-30">
+    <div *ngIf="carouselData.length === 0 && !showLoader" class="mt-30">
       <app-no-result [data]="noResultMessage"></app-no-result>
     </div>
   </div>

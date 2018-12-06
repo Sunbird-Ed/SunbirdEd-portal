@@ -18,7 +18,6 @@ import { takeUntil, map, mergeMap, first, filter, catchError } from 'rxjs/operat
 export class CourseComponent implements OnInit, OnDestroy {
 
   public showLoader = true;
-  public noResult = false;
   public showLoginModal = false;
   public baseUrl: string;
   public noResultMessage: INoResultMessage;
@@ -106,16 +105,10 @@ export class CourseComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe$))
       .subscribe(({params, queryParams}) => {
         this.showLoader = true;
-        this.noResult = false;
         this.queryParams = { ...queryParams };
         this.carouselData = [];
         this.fetchPageData();
-      }, err => {
-        this.showLoader = false;
-        this.noResult = true;
-        this.carouselData = [];
-        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-    });
+      });
   }
   private fetchPageData() {
     const filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value.length);
@@ -134,14 +127,8 @@ export class CourseComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.showLoader = false;
         this.carouselData = this.prepareCarouselData(_.get(data, 'sections'));
-        if (this.carouselData.length) {
-          this.noResult = false;
-        } else {
-          this.noResult = true;
-        }
       }, err => {
         this.showLoader = false;
-        this.noResult = true;
         this.carouselData = [];
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
     });
