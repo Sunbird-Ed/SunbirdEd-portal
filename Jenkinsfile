@@ -18,11 +18,8 @@ node('build-slave') {
        stage('Build'){
             sh("printenv")
             echo "Git Hash: "+commit_hash
-            def org = sunbird
-            def name = player
-            def version = branch_name
             // Building image
-            sh("sudo ./build.sh")
+            sh("sudo ./build.sh ${commit_hash} ${branch_name}")
        }
     }
     catch (err) {

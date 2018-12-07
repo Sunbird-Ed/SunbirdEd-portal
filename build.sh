@@ -1,10 +1,7 @@
-#!/bin/sh
-# Build script
-# set -o errexit
 commit_hash=$1
 org=sunbird
 name=player
-version=${GIT_BRANCH}
+version=$2
 
 docker build -f ./Dockerfile.Build --build-arg commit_hash=${commit_hash} -t ${org}/${name}:${version}-build . 
 docker run --name=${name}-${version}-build ${org}/${name}:${version}-build
