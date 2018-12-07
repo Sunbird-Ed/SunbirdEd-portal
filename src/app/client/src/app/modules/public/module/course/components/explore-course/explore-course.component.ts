@@ -279,6 +279,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
                     this.pageNumber = Number(bothParams.params.pageNumber);
                 }
                 this.queryParams = { ...bothParams.queryParams };
+                this.filters = {};
                 if (!_.isEmpty(this.queryParams)) {
                     _.forOwn(this.queryParams, (queryValue, queryParam) => {
                         this.filters[queryParam] = queryValue;
@@ -328,7 +329,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
         this.filters = {};
         this.dataDrivenFilter = {};
         this.filterType = this.config.appConfig.exploreCourse.filterType;
-        this.redirectUrl = this.config.appConfig.course.searchPageredirectUrl;
+        this.redirectUrl = this.config.appConfig.exploreCourse.searchPageredirectUrl;
         this.slug = this.activatedRoute.snapshot.params.slug;
         this.getChannelId();
         this.getframeWorkData();
