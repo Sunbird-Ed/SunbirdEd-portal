@@ -279,6 +279,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
                     this.pageNumber = Number(bothParams.params.pageNumber);
                 }
                 this.queryParams = { ...bothParams.queryParams };
+                this.filters = {};
                 if (!_.isEmpty(this.queryParams)) {
                     _.forOwn(this.queryParams, (queryValue, queryParam) => {
                         this.filters[queryParam] = queryValue;

@@ -107,6 +107,7 @@ module.exports = function (app) {
   }))
   app.use('/action/textbook/v1/toc/*', addCorsHeaders,
   proxy(learner_Service_Local_BaseUrl, {
+    proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
     proxyReqPathResolver: (req) => {
       var originalUrl = req.originalUrl
       originalUrl = originalUrl.replace('/action/textbook/v1/', '/v1/textbook/')

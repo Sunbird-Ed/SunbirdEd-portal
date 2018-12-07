@@ -1,14 +1,19 @@
 @import "variables";
 
 .review-comments-box {
-    height: 409.869px;		
+    max-height: calc(100% - 4px);
+    position: absolute;
+    top: 15px;
+    bottom: 18px;
+    left: 15px;
+    right: 15px;	
 }
 .ui.dimmer{
     z-index: inherit;
 }
 .ui.comments.scrolling{
-    height:100%;
-    max-height: 260px;
+    height:calc(100% - 115px);
+    max-height: calc(100% - 115px);
     overflow-y: auto;
 }
 .reply-box{
@@ -48,4 +53,7 @@ textarea:focus+i.icon.sb-icon-send:before {
 }
 .review-comments-loader {
     position: relative;
+}
+.placeholder{
+    height:100%;
 }
