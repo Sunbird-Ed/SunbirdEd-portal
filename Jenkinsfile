@@ -21,6 +21,9 @@ node('build-slave') {
             // Building image
             sh("sudo ./build.sh ${commit_hash} ${branch_name}")
        }
+       stage('ArchiveArtifacts'){
+           archiveArtifacts "metadata.json"
+        }
     }
     catch (err) {
         currentBuild.result = "FAILURE"
