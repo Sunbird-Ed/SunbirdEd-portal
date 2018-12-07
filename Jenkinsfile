@@ -4,8 +4,10 @@ node('build-slave') {
     try {
        stage('Checkout'){
           checkout scm
+          echo $GIT_BRANCH
        }
        stage('Build'){
+            sh("printenv")
             // Getting commit short hash
             def commit_hash=env.GIT_COMMIT.substring(0,9)
             echo "Git Hash: "+commit_hash
