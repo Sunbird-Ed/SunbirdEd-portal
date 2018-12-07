@@ -3,7 +3,7 @@
     <div class="ten wide column">
         <div class=" ui grid">
             <div class="ten wide column">
-                <app-data-driven-filter (dataDrivenFilter)="getFilters($event)" [enrichFilters]="facets"
+                <app-data-driven-filter (dataDrivenFilter)="getFilters($event)"
                 [pageId]="'library-search'" [ignoreQuery]="['key']" *ngIf="filterType" [filterEnv]="filterType"
          [accordionDefaultOpen]=false [isShowFilterLabel]=true></app-data-driven-filter>
             </div>
