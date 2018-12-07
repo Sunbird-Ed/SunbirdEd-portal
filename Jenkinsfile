@@ -10,7 +10,7 @@ node('build-slave') {
           returnStdout: true
           ).trim()
           branch_name = sh (
-          script: 'git rev-parse --abbrev-ref HEAD',
+          script: 'git name-rev --name-only HEAD | rev | cut -d "/" -f1| rev',
           returnStdout: true
           ).trim()
           echo 'branch_name: '+branch_name
