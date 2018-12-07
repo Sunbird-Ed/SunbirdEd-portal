@@ -24,8 +24,8 @@ node('build-slave') {
             // Building image
             sh"""
                 sudo su
-                docker build -f ./Dockerfile.Build --build-arg commit_hash=${commit_hash} -t ${org}/${name}:${version}-build . 
-                docker run --name=${name}-${version}-build ${org}/${name}:${version}-build
+                docker build -f ./Dockerfile.Build --build-arg commit_hash=${commit_hash} -t ${org}/${name}:${version}\-build . 
+                docker run --name=${name}-${version}-build ${org}/${name}:${version}\-build
                 containerid=$(docker ps -aqf "name=${name}-${version}-build")
                 rm -rf ./dist
                 docker cp $containerid:/opt/player/app/player-dist.tar.gz .
