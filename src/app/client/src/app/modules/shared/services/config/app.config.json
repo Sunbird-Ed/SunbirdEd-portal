@@ -100,6 +100,7 @@
   },
   "ExplorePage": {
     "contentApiQueryParams": {"orgdetails":"orgName,email"},
+    "slickSize": 10,
     "constantData":{
       "action": {
           "onImage": {"eventName": "onImage" }
@@ -111,6 +112,7 @@
        "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
   },
   "CoursePage": {
+    "slickSize": 10,
     "constantData":{
       "action": {
           "onImage": {"eventName": "onImage" }

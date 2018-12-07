@@ -105,8 +105,8 @@ export class ExploreComponent implements OnInit, OnDestroy {
   }
   private prepareCarouselData(sections = []) {
     const carouselData = _.reduce(sections, (collector, element) => {
-      const contents = _.get(element, 'contents') || [];
-      const { constantData, metaData, dynamicFields } = this.configService.appConfig.ExplorePage;
+      const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.ExplorePage;
+      const contents = _.slice(_.get(element, 'contents'), 0, slickSize) || [];
       element.contents = this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
       if (element.contents && element.contents.length) {
         collector.push(element);
