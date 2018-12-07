@@ -131,7 +131,8 @@ describe('ExploreCourseComponent', () => {
     expect(component.showLoader).toBeFalsy();
     expect(component.contentList.length).toEqual(1);
   }));
-  it('should not navigate to landing page if fetching frameWork from form service fails and data driven filter returns data', () => {
+  it(`should not navigate to landing page if fetching frameWork from form service fails and data driven
+    filter returns data`, fakeAsync(() => {
     sendFormApi = false;
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
@@ -141,7 +142,7 @@ describe('ExploreCourseComponent', () => {
     expect(component.dataDrivenFilters).toEqual({});
     expect(component.showLoader).toBeFalsy();
     expect(component.contentList.length).toEqual(1);
-  });
+  }));
   it('should fetch content only once for when component displays content for the first time', fakeAsync(() => {
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
