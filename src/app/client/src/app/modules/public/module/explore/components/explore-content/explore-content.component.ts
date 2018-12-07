@@ -117,7 +117,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
             this.facetsList = [];
             this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
                 this.configService.appConfig.SEARCH.PAGE_LIMIT);
-            this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+            this.toasterService.error(this.resourceService.messages.fmsg.m0051);
         });
     }
     public navigateToPage(page: number): void {
