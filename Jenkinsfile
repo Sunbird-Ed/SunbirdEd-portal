@@ -18,6 +18,9 @@ node('build-slave') {
        stage('Build'){
             sh("printenv")
             echo "Git Hash: "+commit_hash
+            def org = sunbird
+            def name = player
+            def version = branch_name
             // Building image
             sh"""
                 sudo su
