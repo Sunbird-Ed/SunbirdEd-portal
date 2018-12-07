@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: run build file
-          command: ./build.sh
+          command: ./build.sh ${CIRCLE_BRANCH}
   test-cases:
     docker:
       - image: g33tha/node-8.11
