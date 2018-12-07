@@ -16,7 +16,7 @@ export class CourseConsumptionService {
 
   getCourseHierarchy(courseId, option: any = { params: {} }) {
     // fetch from api always if params exists
-    if (this.courseHierarchy && this.courseHierarchy.identifier === courseId && !_.keys(option.params).length) {
+    if (this.courseHierarchy && this.courseHierarchy.identifier === courseId) {
       return observableOf(this.courseHierarchy);
     } else {
       return this.playerService.getCollectionHierarchy(courseId, option).pipe(map((response: ServerResponse) => {

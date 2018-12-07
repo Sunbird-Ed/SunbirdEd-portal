@@ -1,6 +1,6 @@
 import { combineLatest, Subscription, Subject } from 'rxjs';
 import { map, mergeMap, filter } from 'rxjs/operators';
-import { ResourceService, ToasterService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
@@ -23,7 +23,8 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();
 
   enrolledBatchInfo: any;
-  constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
+  constructor(private activatedRoute: ActivatedRoute, private configService: ConfigService,
+    private courseConsumptionService: CourseConsumptionService,
     private coursesService: CoursesService, public toasterService: ToasterService, public courseBatchService: CourseBatchService,
     private resourceService: ResourceService, public router: Router, public breadcrumbsService: BreadcrumbsService) {
   }
@@ -34,11 +35,14 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         mergeMap((params) => {
           this.batchId = params.batchId;
           this.courseId = params.courseId;
+          const inputParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
           if (this.batchId) {
-            return combineLatest(this.courseConsumptionService.getCourseHierarchy(params.courseId), this.getEnrolledCourseBatchDetails())
+            return combineLatest(this.courseConsumptionService.getCourseHierarchy(params.courseId, inputParams),
+            this.getEnrolledCourseBatchDetails())
               .pipe(map((result) => ({ courseHierarchy: result[0], enrolledBatchDetails: result[1] })));
           } else {
-            return this.courseConsumptionService.getCourseHierarchy(params.courseId).pipe(map((courseHierarchy) => ({ courseHierarchy })));
+            return this.courseConsumptionService.getCourseHierarchy(params.courseId, inputParams)
+            .pipe(map((courseHierarchy) => ({ courseHierarchy })));
           }
         })).subscribe((data) => {
           this.processCourseHierarchy(data.courseHierarchy);
