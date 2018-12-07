@@ -4,15 +4,18 @@ node('build-slave') {
     try {
        stage('Checkout'){
           checkout scm
-          echo $GIT_BRANCH
+          // Getting commit short hash
+          commit_hash = sh (
+          script: 'git rev-parse --short HEAD',
+          returnStdout: true
+          ).trim()
+          branch_name = scm.branches[0].name
        }
        stage('Build'){
             sh("printenv")
-            // Getting commit short hash
-            def commit_hash=env.GIT_COMMIT.substring(0,9)
             echo "Git Hash: "+commit_hash
             // Building image
-            sh("sudo ./build.sh ${commit_hash}")
+            sh("sudo ./build.sh ${commit_hash} ${branch_name}")
        }
     }
     catch (err) {
