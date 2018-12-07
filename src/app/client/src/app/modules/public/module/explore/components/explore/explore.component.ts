@@ -28,9 +28,10 @@ export class ExploreComponent implements OnInit, OnDestroy {
   public telemetryImpression: IImpressionEventInput;
   public inViewLogs = [];
   public sortIntractEdata: IInteractEventEdata;
-  public prominentFilters: any = {};
-  public dataDrivenFilter = new EventEmitter();
+  public dataDrivenFilters: any = {};
+  public dataDrivenFilterEvent = new EventEmitter();
   public initFilters = false;
+  public loaderMessage;
 
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
@@ -47,10 +48,10 @@ export class ExploreComponent implements OnInit, OnDestroy {
       mergeMap((orgDetails: any) => {
         this.hashTagId = orgDetails.hashTagId;
         this.initFilters = true;
-        return this.dataDrivenFilter;
+        return this.dataDrivenFilterEvent;
       }), first()
     ).subscribe((filters: any) => {
-        this.prominentFilters = filters;
+        this.dataDrivenFilters = filters;
         this.fetchContentOnParamChange();
         this.setNoResultMessage();
       },
@@ -66,7 +67,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
         }
         return collector;
       }, {});
-    this.dataDrivenFilter.emit(defaultFilters);
+    this.dataDrivenFilterEvent.emit(defaultFilters);
   }
   private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
@@ -83,7 +84,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
   private fetchPageData() {
     const filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value.length);
     filters.channel = this.hashTagId;
-    filters.board = _.get(this.queryParams, 'board') || this.prominentFilters.board;
+    filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
     const option = {
       source: 'web',
       name: 'Explore',
@@ -104,8 +105,8 @@ export class ExploreComponent implements OnInit, OnDestroy {
     });
   }
   private prepareCarouselData(sections = []) {
+    const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.ExplorePage;
     const carouselData = _.reduce(sections, (collector, element) => {
-      const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.ExplorePage;
       const contents = _.slice(_.get(element, 'contents'), 0, slickSize) || [];
       element.contents = this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
       if (element.contents && element.contents.length) {
@@ -142,7 +143,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
     const searchQuery = JSON.parse(event.searchQuery);
     searchQuery.request.filters.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
     searchQuery.request.filters.channel = this.hashTagId;
-    searchQuery.request.filters.board = this.prominentFilters.board;
+    searchQuery.request.filters.board = this.dataDrivenFilters.board;
     this.cacheService.set('viewAllQuery', searchQuery.request.filters, { maxAge: this.browserCacheTtlService.browserCacheTtl });
     const queryParams = { ...searchQuery.request.filters, ...this.queryParams};
     const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');

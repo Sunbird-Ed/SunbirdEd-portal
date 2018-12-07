@@ -27,7 +27,7 @@ describe('DataDrivenFilterComponent', () => {
   let makeChannelReadSuc, makeFrameworkReadSuc, makeFormReadSuc  = true;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
-    url = jasmine.createSpy('url');
+    url = '/explore/1?';
   }
   const resourceBundle = {
     'messages': {
@@ -43,6 +43,9 @@ describe('DataDrivenFilterComponent', () => {
   };
   class FakeActivatedRoute {
     queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
+    snapshot = {
+      params: {pageNumber: '1'},
+    };
     get queryParams() {
       return this.queryParamsMock.asObservable();
     }

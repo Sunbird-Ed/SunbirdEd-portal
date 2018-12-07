@@ -77,20 +77,20 @@ describe('ExploreComponent', () => {
     });
   });
   it('should emit filter data when getFilters is called with data', () => {
-    spyOn(component.dataDrivenFilter, 'emit');
+    spyOn(component.dataDrivenFilterEvent, 'emit');
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
-    expect(component.dataDrivenFilter.emit).toHaveBeenCalledWith({ board: 'NCRT'});
+    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({ board: 'NCRT'});
   });
   it('should emit filter data when getFilters is called with no data', () => {
-    spyOn(component.dataDrivenFilter, 'emit');
+    spyOn(component.dataDrivenFilterEvent, 'emit');
     component.getFilters([]);
-    expect(component.dataDrivenFilter.emit).toHaveBeenCalledWith({});
+    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({});
   });
   it('should fetch hashTagId from API and filter details from data driven filter component', () => {
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     expect(component.hashTagId).toEqual('123');
-    expect(component.prominentFilters).toEqual({ board: 'NCRT'});
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
   });
   it('should navigate to landing page if fetching org details fails and data driven filter dint returned data', () => {
     sendOrgDetails = false;
@@ -107,7 +107,7 @@ describe('ExploreComponent', () => {
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     expect(component.hashTagId).toEqual('123');
-    expect(component.prominentFilters).toEqual({ board: 'NCRT'});
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
     expect(component.carouselData.length).toEqual(1);
   });
@@ -117,7 +117,7 @@ describe('ExploreComponent', () => {
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     expect(component.hashTagId).toEqual('123');
-    expect(component.prominentFilters).toEqual({ board: 'NCRT'});
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
     expect(component.carouselData.length).toEqual(0);
     expect(toasterService.error).toHaveBeenCalled();

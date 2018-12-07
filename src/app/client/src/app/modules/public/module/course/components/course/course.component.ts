@@ -29,10 +29,11 @@ export class CourseComponent implements OnInit, OnDestroy {
   public telemetryImpression: IImpressionEventInput;
   public inViewLogs = [];
   public sortIntractEdata: IInteractEventEdata;
-  public prominentFilters: any = {};
-  public dataDrivenFilter = new EventEmitter();
+  public dataDrivenFilters: any = {};
+  public dataDrivenFilterEvent = new EventEmitter();
   public frameWorkName: string;
   public initFilters = false;
+  public loaderMessage;
 
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
@@ -54,13 +55,13 @@ export class CourseComponent implements OnInit, OnDestroy {
         if (data[1]) {
           this.initFilters = true;
           this.frameWorkName = data[1];
-          return this.dataDrivenFilter;
+          return this.dataDrivenFilterEvent;
         } else {
           return of({});
         }
       }), first()
     ).subscribe((filters: any) => {
-        this.prominentFilters = filters;
+        this.dataDrivenFilters = filters;
         this.fetchContentOnParamChange();
         this.setNoResultMessage();
       },
@@ -76,7 +77,7 @@ export class CourseComponent implements OnInit, OnDestroy {
         }
         return collector;
       }, {});
-    this.dataDrivenFilter.emit(defaultFilters);
+    this.dataDrivenFilterEvent.emit(defaultFilters);
   }
   private getFrameWork() {
     const framework = this.cacheService.get('framework' + 'search');
@@ -134,8 +135,8 @@ export class CourseComponent implements OnInit, OnDestroy {
     });
   }
   private prepareCarouselData(sections = []) {
+    const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.CoursePage;
       const carouselData = _.reduce(sections, (collector, element) => {
-        const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.CoursePage;
         const contents = _.slice(_.get(element, 'contents'), 0, slickSize) || [];
         element.contents = this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
         if (element.contents && element.contents.length) {
