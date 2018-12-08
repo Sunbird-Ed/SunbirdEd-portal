@@ -62,7 +62,8 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
                 if (data[1]) {
                     this.initFilters = true;
                     this.frameWorkName = data[1];
-                    return this.dataDrivenFilterEvent;
+                    return of({});
+                    // return this.dataDrivenFilterEvent;
                 } else {
                     return of({});
                 }

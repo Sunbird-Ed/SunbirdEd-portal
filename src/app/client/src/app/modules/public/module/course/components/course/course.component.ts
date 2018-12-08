@@ -55,7 +55,8 @@ export class CourseComponent implements OnInit, OnDestroy {
         if (data[1]) {
           this.initFilters = true;
           this.frameWorkName = data[1];
-          return this.dataDrivenFilterEvent;
+          return of({});
+          // return this.dataDrivenFilterEvent;
         } else {
           return of({});
         }
@@ -114,7 +115,7 @@ export class CourseComponent implements OnInit, OnDestroy {
   private fetchPageData() {
     const filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value.length);
     // filters.channel = this.hashTagId;
-    // filters.board = _.get(this.queryParams, 'board') || this.prominentFilters.board;
+    // filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
     const option = {
       source: 'web',
       name: 'AnonymousCourse',
@@ -181,7 +182,7 @@ export class CourseComponent implements OnInit, OnDestroy {
     });
     searchQueryParams.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
     // searchQuery.request.filters.channel = this.hashTagId;
-    // searchQuery.request.filters.board = this.prominentFilters.board;
+    // searchQuery.request.filters.board = this.dataDrivenFilters.board;
     this.cacheService.set('viewAllQuery', searchQueryParams, { maxAge: this.browserCacheTtlService.browserCacheTtl });
     const queryParams = { ...searchQueryParams, ...this.queryParams};
     const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');

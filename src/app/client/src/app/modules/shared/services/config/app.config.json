@@ -80,6 +80,37 @@
       "progress": "progress"
     }
   },
+  "CoursePageSection": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
+    "course": {
+      "slickSize": 10,
+      "constantData":{
+        "action": {
+            "onImage": {"eventName": "onImage" }
+          }
+      },
+      "metaData": {"metaData": ["identifier", "mimeType", "framework","contentType"]}
+    },
+    "enrolledCourses": {
+      "slickSize": 10,
+      "constantData": {
+        "action": {
+          "right": {
+            "class": "ui blue basic button",
+            "eventName": "Resume",
+            "displayType": "button",
+            "text": "Resume"
+          },
+          "onImage": {"eventName": "onImage"}
+        }
+      },
+      "metaData": { "metaData": ["batchId", "courseId"]},
+      "dynamicFields": {
+        "maxCount": "leafNodesCount",
+        "progress": "progress"
+      }
+    }
+  },
   "Library": {
     "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "constantData":{
