@@ -1,8 +1,8 @@
 import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-    ICard, ILoaderMessage, UtilService, NavigationHelperService, BrowserCacheTtlService
+    ICard, ILoaderMessage, UtilService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { SearchService, PlayerService, OrgDetailsService, UserService, FormService } from '@sunbird/core';
+import { SearchService, OrgDetailsService, UserService, FormService } from '@sunbird/core';
 import { IPagination } from '@sunbird/announcement';
 import { PublicPlayerService } from '../../../../services';
 import { combineLatest, Subject, of } from 'rxjs';
@@ -41,13 +41,12 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
 
     public frameWorkName: string;
 
-    constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
+    constructor(public searchService: SearchService, public router: Router,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
         public configService: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
-        public navigationHelperService: NavigationHelperService, private publicPlayerService: PublicPlayerService,
-        public userService: UserService, public cacheService: CacheService, public formService: FormService,
-        public browserCacheTtlService: BrowserCacheTtlService) {
+        private publicPlayerService: PublicPlayerService, public userService: UserService, public cacheService: CacheService,
+        public formService: FormService, public browserCacheTtlService: BrowserCacheTtlService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.exploreCourse.filterType;
         this.setTelemetryData();
@@ -192,6 +191,13 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
         this.telemetryImpression.edata.visits = this.inViewLogs;
         this.telemetryImpression.edata.subtype = 'pageexit';
         this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    }
+    public navigateToPage(page: number): void {
+        if (page < 1 || page > this.paginationDetails.totalPages) {
+            return;
+        }
+        const url = this.router.url.split('?')[0].replace(/.$/, page.toString());
+        this.router.navigate([url], { queryParams: this.queryParams });
     }
     ngOnDestroy() {
         this.unsubscribe$.next();
