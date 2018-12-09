@@ -38,7 +38,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     public cardIntractEdata: IInteractEventEdata;
     public loaderMessage: ILoaderMessage;
 
-    constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
+    constructor(public searchService: SearchService, public router: Router,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
         public configService: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,

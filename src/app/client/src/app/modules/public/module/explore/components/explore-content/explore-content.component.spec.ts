@@ -1,4 +1,4 @@
-import { ExploreContentComponent } from './explore-content.component'; // SearchService
+import { ExploreContentComponent } from './explore-content.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
