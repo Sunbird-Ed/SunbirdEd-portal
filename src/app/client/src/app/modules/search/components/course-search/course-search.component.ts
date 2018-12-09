@@ -52,7 +52,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     public formService: FormService, public browserCacheTtlService: BrowserCacheTtlService) {
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.courses.filterType;
-    this.redirectUrl = this.configService.appConfig.course.searchPageredirectUrl;
+    this.redirectUrl = this.configService.appConfig.courses.searchPageredirectUrl;
     this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
     this.setTelemetryData();
   }

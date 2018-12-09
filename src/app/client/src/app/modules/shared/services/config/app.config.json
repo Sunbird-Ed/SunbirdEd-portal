@@ -112,6 +112,7 @@
     }
   },
   "Library": {
+    "slickSize": 10,
     "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "constantData":{
       "action": {
