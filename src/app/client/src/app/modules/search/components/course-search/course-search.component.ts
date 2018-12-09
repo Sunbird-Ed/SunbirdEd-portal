@@ -128,6 +128,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     });
   }
   public getFilters(filters) {
+    this.facets = filters.map(element => element.code);
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
         if (element.code === 'board') {
           collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
