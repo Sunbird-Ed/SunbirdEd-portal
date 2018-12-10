@@ -1,6 +1,8 @@
 @import "../node_modules/slick-carousel/slick/slick.css";
 @import "../node_modules/slick-carousel/slick/slick-theme.css";
 @import "../node_modules/fine-uploader/fine-uploader/fine-uploader-new.min.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 /*sunbird light font*/
 @font-face {
   font-family: 'sunbirdlightfont';

@@ -21,9 +21,13 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
+import { MaterialUi } from '../../material';
+
+
 @NgModule({
   imports: [
     CommonModule,
+    MaterialUi,
     SuiModule,
     SlickModule,
     FormsModule,

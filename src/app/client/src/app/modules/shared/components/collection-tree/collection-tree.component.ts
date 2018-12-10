@@ -10,7 +10,8 @@ import {
 } from '@angular/core';
 import * as _ from 'lodash';
 import { ICollectionTreeNodes, ICollectionTreeOptions, MimeTypeTofileType } from '../../interfaces';
-
+import { ResourceService, PlayContent } from '../../services/index';
+// import {Subscription , Subject} from 'rxjs';
 @Component({
   selector: 'app-collection-tree',
   templateUrl: './collection-tree.component.html',
@@ -22,6 +23,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
   @Input() public options: ICollectionTreeOptions;
   @Output() public contentSelect: EventEmitter<{id: string, title: string}> = new EventEmitter();
   @Input() contentStatus: any;
+  @Input() nodeRoot: any;
   private rootNode: any;
   public rootChildrens: any;
   private iconColor = {
@@ -29,6 +31,13 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     '1': 'fancy-tree-blue',
     '2': 'fancy-tree-green'
   };
+  public subscription: any;
+  constructor(public player: PlayContent , public resourceService?: ResourceService  ) {
+    this.resourceService = resourceService;
+    this.player = player;
+    this.subscription = this.player.subject;
+    // this.subscription = this.contentService.subject;
+  }
   ngOnInit() {
     this.initialize();
   }
@@ -39,20 +48,33 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
 
   public onNodeClick(node: any) {
     if (!node.folder) {
+
       this.contentSelect.emit({ id: node.id, title: node.title });
     }
   }
 
   public onItemSelect(item: any) {
+    console.log(item);
     if (!item.folder) {
-      this.contentSelect.emit({ id: item.data.id, title: item.title });
+      console.log(typeof item.id , typeof item.title, 'this is the id  and titile node node node ');
+      this.subscription.next({ id: item.id, title: item.title });
     }
   }
+
+
+
+  public onItemSelect2(child: any) {
+    console.log(child.id , child.title, '///////////*\\\\\\\\\\');
+      this.contentSelect.emit({ id: child.id, title: child.title });
+  }
+
 
   private initialize() {
     this.rootNode = this.createTreeModel();
     if (this.rootNode) {
       this.rootChildrens = this.rootNode.children;
+      this.nodeRoot = this.rootNode;
+      console.log(this.rootNode, '***********this is my root node ******************//');
       this.addNodeMeta();
     }
   }
@@ -60,15 +82,16 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
   private createTreeModel() {
     if (!this.nodes) { return; }
     const model = new TreeModel();
+
     return model.parse(this.nodes.data);
   }
 
   private addNodeMeta() {
     if (!this.rootNode) { return; }
     this.rootNode.walk((node) => {
+      // console.log(node , "***********this is the node we are waling on *******************");
       node.fileType = MimeTypeTofileType[node.model.mimeType];
       node.id = node.model.identifier;
-      node.title = node.model.name || 'Untitled File';
       if (node.children && node.children.length) {
         if (this.options.folderIcon) {
           node.icon = this.options.folderIcon;
@@ -90,6 +113,13 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
         }
         node.icon = this.options.customFileIcon[node.fileType] || this.options.fileIcon;
         node.icon = `${node.icon} ${node.iconColor}`;
+      }
+      if (node.folder && !(node.children.length)) {
+        node.title = node.model.name + '<strong> (' + this.resourceService.messages.stmsg.m0121 + ')</strong>';
+        node.extraClasses = 'disabled';
+      } else {
+        node.title = node.model.name || 'Untitled File';
+        node.extraClasses = '';
       }
     });
   }

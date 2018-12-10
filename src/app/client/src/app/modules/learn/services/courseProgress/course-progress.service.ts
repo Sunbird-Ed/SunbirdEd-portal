@@ -133,7 +133,7 @@ export class CourseProgressService {
         && courseProgress.content[index].status !== 2) {
         courseProgress.content[index].status = req.status;
         return this.updateContentStateToServer(courseProgress.content[index]).pipe(
-          map((res: ServerResponse) => {
+          map((res: any) => {
             this.courseProgress[courseId_batchId].content[index].status = req.status;
             this.calculateProgress(courseId_batchId);
             this.courseProgressData.emit(this.courseProgress[courseId_batchId]);

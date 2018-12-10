@@ -10,3 +10,4 @@ export * from './content-utils/content-utils.service';
 export * from './util/util.service';
 export * from './browser-cache-ttl/browser-cache-ttl.service';
 export * from './exturl-util/exturl-util.service';
+export * from './play-content/play-content';

@@ -15,11 +15,16 @@ import { WebExtensionsConfig, PluginModules } from './framework.config';
 import { CacheService } from 'ng2-cache-service';
 import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storage/cache-storage-abstract.service';
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MaterialUi } from './material';
+
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    BrowserAnimationsModule,
+    MaterialUi,
     CoreModule.forRoot(),
     CommonModule,
     BrowserModule,
