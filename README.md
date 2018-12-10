@@ -1,5 +1,5 @@
 # sunbird-portal
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0b87d6c5ba9a404aa9c72db3bb024a2b)](https://www.codacy.com/app/SMYALTAMASH/sunbird-portal?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Sunbird-Ed/sunbird-portal&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d2b8276a2af34fb39a5b5b89606cb682)](https://www.codacy.com/app/SMYALTAMASH/SunbirdEd-mobile?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Sunbird-Ed/SunbirdEd-mobile&amp;utm_campaign=Badge_Grade)
 
 [![Build Status](https://travis-ci.org/project-sunbird/sunbird-portal.svg?branch=master)](https://travis-ci.org/project-sunbird/sunbird-portal)
 
