@@ -46,15 +46,27 @@ export class ContentCreditsComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.contentCreditsData = { contributors: '', creators: '' };
+    this.contentCreditsData = { contributors: '', creators: '', attributions: '' };
     if (this.contentData) {
+      // contributors , it is a combination of content credits names, creators, and owner
       const contentCredits = _.get(this.contentData, 'contentCredits');
-      if (contentCredits && contentCredits.length) {
-        const contentCreditNames = _.map(contentCredits, 'name');
-        contentCreditNames.push(this.contentData['owner']);
-        this.contentCreditsData['contributors'] = (_.compact(_.uniq(contentCreditNames))).join(', ');
+      const contentCreditNames = contentCredits && contentCredits.length ? _.map(contentCredits, 'name') : [];
+      const contirbutors = this.contentData['contributors'] ? this.contentData['contributors'].split(',') : [];
+      if (this.contentData['owner']) {
+        contirbutors.push(this.contentData['owner']);
       }
-      this.contentCreditsData['creators'] = this.contentData['creator'] || '';
+      this.contentCreditsData['contributors'] = (_.compact(_.uniq(_.union(contentCreditNames, contirbutors).sort())).join(', '));
+      // creators is a combination of creators and creator
+      const creators = this.contentData['creators'] ? this.contentData['creators'].split(',') : [];
+      if (this.contentData['creator']) {
+        creators.push(this.contentData['creator']);
+      }
+      this.contentCreditsData['creators'] = (_.compact(_.uniq(creators).sort()).join(', '));
+      // attributors
+      const attributions = _.get(this.contentData, 'attributions');
+      if (attributions && attributions.length) {
+        this.contentCreditsData['attributions'] = _.isString(attributions) ? attributions : attributions.join(', ');
+      }
     }
   }
 

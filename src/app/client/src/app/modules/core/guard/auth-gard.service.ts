@@ -57,31 +57,39 @@ export class AuthGuard implements CanActivate, CanLoad {
 
     getPermission(roles) {
         return Observable.create(observer => {
-            this.permissionService.permissionAvailable$.subscribe(
-                permissionAvailable => {
-                    if (permissionAvailable && permissionAvailable === 'success') {
-                        if (roles && this.config.rolesConfig.ROLES[roles]) {
-                            if (this.permissionService.checkRolesPermissions(this.config.rolesConfig.ROLES[roles])) {
-                                observer.next(true);
-                            } else {
-                                this.toasterService.warning(this.resourceService.messages.imsg.m0035);
-                                this.router.navigate(['home']);
-                                observer.next(false);
-                            }
-                        } else {
-                            this.toasterService.warning(this.resourceService.messages.imsg.m0035);
-                            this.router.navigate(['home']);
-                            observer.next(false);
-                        }
-                        observer.complete();
-                    } else if (permissionAvailable && permissionAvailable === 'error') {
-                        this.toasterService.warning(this.resourceService.messages.imsg.m0035);
-                        this.router.navigate(['home']);
-                        observer.next(false);
-                        observer.complete();
-                    }
+            if (roles === 'rootOrgAdmin') {
+                if (this.userService.userProfile.rootOrgAdmin) {
+                    observer.next(true);
+                } else {
+                    this.navigateToHome(observer);
                 }
-            );
+            } else {
+                this.permissionService.permissionAvailable$.subscribe(
+                    permissionAvailable => {
+                        if (permissionAvailable && permissionAvailable === 'success') {
+                            if (roles && this.config.rolesConfig.ROLES[roles]) {
+                                if (this.permissionService.checkRolesPermissions(this.config.rolesConfig.ROLES[roles])) {
+                                    observer.next(true);
+                                } else {
+                                    this.navigateToHome(observer);
+                                }
+                            } else {
+                                this.navigateToHome(observer);
+                            }
+                        } else if (permissionAvailable && permissionAvailable === 'error') {
+                            this.navigateToHome(observer);
+                        }
+                    }
+                );
+            }
         });
     }
+
+    navigateToHome(observer) {
+        this.toasterService.warning(this.resourceService.messages.imsg.m0035);
+        this.router.navigate(['home']);
+        observer.next(false);
+        observer.complete();
+    }
+
 }

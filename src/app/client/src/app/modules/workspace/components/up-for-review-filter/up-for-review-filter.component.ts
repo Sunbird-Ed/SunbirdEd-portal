@@ -130,7 +130,7 @@ export class UpforReviewFilterComponent implements OnInit {
     } else {
       delete this.queryParams['query'];
     }
-    this.route.navigate(['workspace/content/upForReview', 1], { queryParams: this.queryParams });
+    this.route.navigate(['workspace/content/upForReview', 1], { queryParams: this.queryParams});
   }
   keyup(event) {
     this.query = event;

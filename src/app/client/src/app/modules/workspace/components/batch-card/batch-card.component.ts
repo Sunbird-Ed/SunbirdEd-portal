@@ -9,7 +9,7 @@ import { WorkSpaceService, BatchService } from '../../services';
 @Component({
   selector: 'app-batch-card',
   templateUrl: './batch-card.component.html',
-  styleUrls: ['./batch-card.component.css']
+  styleUrls: ['./batch-card.component.scss']
 })
 export class BatchCardComponent {
   /**

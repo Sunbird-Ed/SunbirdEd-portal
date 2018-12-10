@@ -94,6 +94,10 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
 
   public creationFormLable: string;
 
+  public name: string;
+
+  public description: string;
+
   public isCachedDataExists: boolean;
 
   public framework: string;
@@ -129,6 +133,10 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
     });
     this.resourceType = this.configService.appConfig.resourceType[this.contentType];
     this.creationFormLable = this.configService.appConfig.contentCreateTypeLable[this.contentType];
+    this.name = this.configService.appConfig.contentName[this.contentType] ?
+                this.configService.appConfig.contentName[this.contentType] : 'Untitled';
+   this.description = this.configService.appConfig.contentDescription[this.contentType] ?
+   this.configService.appConfig.contentDescription[this.contentType] : 'Untitled';
   }
 
 
@@ -172,9 +180,9 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
   fetchFrameworkMetaData() {
 
     this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
-      if (frameworkData && !frameworkData.err) {
-        this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
-        this.framework = frameworkData.framework;
+      if (!frameworkData.err) {
+        this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
+        this.framework = frameworkData.frameworkdata['defaultFramework'].code;
         /**
   * isCachedDataExists will check data is exists in cache or not. If exists should not call
   * form api otherwise call form api and get form data
@@ -188,7 +196,7 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
             formType: this.formType,
             formAction: this.formAction,
             contentType: this.contentType,
-            framework: frameworkData.framework
+            framework: this.framework
           };
           this.formService.getFormConfig(formServiceInputParams).subscribe(
             (data: ServerResponse) => {
@@ -239,8 +247,8 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
   generateData(data) {
     this.showLoader = true;
     const requestData = _.cloneDeep(data);
-    requestData.name = data.name ? data.name : 'Untitled Collection',
-      requestData.description = data.description ? data.description : 'Untitled Collection',
+    requestData.name = data.name ? data.name : this.name,
+      requestData.description = data.description ? data.description : this.description,
       requestData.creator = this.userProfile.firstName + ' ' + this.userProfile.lastName,
       requestData.createdBy = this.userProfile.id,
       requestData.organisation = this.userProfile.organisationNames,

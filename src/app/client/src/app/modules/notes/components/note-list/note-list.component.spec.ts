@@ -80,7 +80,7 @@ describe('NoteListComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = response.resourceBundle.messages;
-    spyOn(toasterService, 'error').and.callThrough();
+    spyOn(toasterService, 'error').and.callFake(() => 'error');
     spyOn(learnerService, 'get').and.callFake(() => observableThrowError({}));
     spyOn(notesService, 'search').and.callFake(() => observableThrowError(response.responseFailed));
     component.courseId = 'do_212347136096788480178';

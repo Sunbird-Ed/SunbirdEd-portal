@@ -94,7 +94,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   private setWindowContext() {
     window.context = {
       user: {
-        id: this.userProfile.userId,
+        id: this.userService.userid,
         name: this.userProfile.firstName + ' ' + this.userProfile.lastName,
         orgIds: this.userProfile.organisationIds,
         organisations: this.userService.orgIdNameMap

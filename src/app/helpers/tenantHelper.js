@@ -6,7 +6,7 @@ const envHelper = require('./environmentVariablesHelper.js')
 const async = require('async')
 const _ = require('lodash')
 const telemetryHelper = require('./telemetryHelper')
-const configHelper = require('./config/configHelper.js')
+const configHelper = require('./configServiceSDKHelper.js')
 const appId = envHelper.APPID
 const defaultTenant = envHelper.DEFAULT_CHANNEL
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
@@ -14,7 +14,7 @@ telemtryEventConfig['pdata']['id'] = appId
 const successResponseStatusCode = 200
 const request = require('request');
 
-module.exports = { 
+module.exports = {
 
   getImagePath: function (baseUrl, tenantId, image, callback) {
     if (envHelper.TENANT_CDN_URL === '' || envHelper.TENANT_CDN_URL === null) {
@@ -59,7 +59,7 @@ module.exports = {
     let protocol = req.headers['x-forwarded-proto'] || req.protocol
     let baseUrl = protocol + '://' + host + (port === '' ? '' : ':' + port)
     let responseObj = {
-      titleName: configHelper.getConfig('PORTAL_TITLE_NAME')
+      titleName: configHelper.getConfig('sunbird_instance_name')
     }
     if (tenantId) {
       async.parallel({

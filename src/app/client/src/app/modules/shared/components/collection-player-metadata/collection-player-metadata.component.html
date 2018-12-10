@@ -6,7 +6,7 @@
       <div class="item">
         <div class="content">
           <div class="header">{{resourceService?.frmelmnts?.lbl?.author}}</div>
-          <div class="description padding-top-1rem">{{metaData.author}}</div>
+          <div class="description pt-15">{{metaData.author}}</div>
         </div>
       </div>
     </div>
@@ -16,7 +16,7 @@
       <div class="item">
         <div class="content">
           <div class="header">{{resourceService?.frmelmnts?.lbl?.medium}}</div>
-          <div class="description padding-top-1rem">{{metaData.medium}}</div>
+          <div class="description pt-15">{{metaData.medium}}</div>
         </div>
       </div>
     </div>
@@ -26,8 +26,8 @@
       <div class="item">
           <div class="content">
             <div class="header">{{resourceService?.frmelmnts?.lbl?.class}}</div>
-            <div class="description padding-top-1rem">
-              <span class="inline-block-content" *ngFor="let gradeLevel of metaData.gradeLevel; let isLast=last;">
+            <div class="description pt-15">
+              <span class="d-inline-block" *ngFor="let gradeLevel of metaData.gradeLevel; let isLast=last;">
                 {{gradeLevel}}<span *ngIf="!isLast">,&nbsp;</span> 
               </span>
             </div>
@@ -40,7 +40,7 @@
       <div class="item">
         <div class="content">
           <div class="header">{{resourceService?.frmelmnts?.lbl?.subject}}</div>
-          <div class="description padding-top-1rem">{{metaData.subject}}</div>
+          <div class="description pt-15">{{metaData.subject}}</div>
         </div>
       </div>
     </div>
@@ -50,7 +50,7 @@
       <div class="item">
         <div class="content">
           <div class="header">{{resourceService?.frmelmnts?.lbl?.lastupdate}}</div>
-          <div class="description padding-top-1rem">{{metaData.lastUpdatedOn | dateFormat: 'MMMM Do YYYY'}}</div>
+          <div class="description pt-15">{{metaData.lastUpdatedOn | dateFormat: 'MMMM Do YYYY'}}</div>
         </div>
       </div>
     </div>
@@ -60,7 +60,7 @@
       <div class="item">
         <div class="content">
           <div class="header">{{resourceService?.frmelmnts?.lbl?.createdon}}</div>
-          <div class="description padding-top-1rem">{{metaData.createdOn | dateFormat: 'MMMM Do YYYY'}}</div>
+          <div class="description pt-15">{{metaData.createdOn | dateFormat: 'MMMM Do YYYY'}}</div>
         </div>
       </div>
     </div>
@@ -70,7 +70,7 @@
       <div class="item">
         <div class="content">
           <div class="header">{{resourceService?.frmelmnts?.lbl?.ownership}}</div>
-          <div ng-if="metaData.owner" class="description padding-top-1rem">
+          <div ng-if="metaData.owner" class="description pt-15">
             <div>{{metaData.owner}}</div>
             <div class="mt-5"><a (click)="showContentCreditsPopup()" title="{{resourceService?.frmelmnts?.lbl?.contentCredits}}">{{resourceService?.frmelmnts?.lbl?.contentCredits}}</a></div>
           </div>                                

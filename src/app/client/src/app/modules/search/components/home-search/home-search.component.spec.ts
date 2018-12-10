@@ -42,10 +42,9 @@ describe('HomeSearchComponent', () => {
     }
   };
   const mockQueryParma = {
-    'Curriculum': ['CBSE'],
-    'Medium': ['Bengali'],
-    'Subjects': ['Bengali'],
-    'Concepts': [],
+    'curriculum': ['CBSE'],
+    'medium': ['Bengali'],
+    'subjects': ['Bengali'],
     'query': 'hello'
   };
   beforeEach(async(() => {
@@ -73,6 +72,7 @@ describe('HomeSearchComponent', () => {
     fixture.detectChanges();
     expect(component.searchList).toBeDefined();
     expect(component.totalCount).toBeDefined();
+    expect(component.facets).toBeDefined();
     expect(component.showLoader).toBeFalsy();
     expect(component.noResult).toBeFalsy();
   });
@@ -104,8 +104,16 @@ describe('HomeSearchComponent', () => {
     component.pager.totalPages = 7;
     component.navigateToPage(3);
     fixture.detectChanges();
-    expect(component.pageNumber).toEqual(1);
+    expect(component.pageNumber).toEqual(3);
     expect(component.pageLimit).toEqual(configService.appConfig.SEARCH.PAGE_LIMIT);
     expect(route.navigate).toHaveBeenCalledWith(['search/All', 3], { queryParams:  queryParams });
+  });
+  it('should call getFilters with data', () => {
+    const searchService = TestBed.get(SearchService);
+    const filters = Response.filters;
+    spyOn(component, 'populateCompositeSearch').and.callThrough();
+    spyOn(searchService, 'contentSearch').and.callThrough();
+    component.getFilters(filters);
+    expect(component.facetArray).toEqual([ 'board', 'medium', 'subject', 'gradeLevel' ]);
   });
 });

@@ -1,0 +1,63 @@
+.ui.dodger-blue.basic.label {
+    border: 1px solid #007aff !important;	
+    border-radius: 4px;
+    color: #007aff;
+    font-size: 1rem;
+    font-weight: 300;
+    padding: 4px 16px;
+
+}
+.ui.semi-circular.dodger-blue.basic.label {
+    border: 1px solid #007aff !important;
+    border-radius: 18.5px;
+    color: #007aff;
+    font-size: 1.16rem;
+    padding: 10px 27px;
+}
+
+.ui.semi-circular.dodger-blue.button {
+    border: 1px solid #007AFF;
+    border-radius: 18.5px;
+    background: #007aff;
+    color: #fff;
+    font-size: 1rem;    
+    font-weight: 100;
+    padding: 6px 27px;
+}
+
+.circular-placeholder {
+	border: 6px solid #fff;
+	background-color: #fff;
+    box-shadow: 0 0 6px 0 rgba(0,0,0,0.38);
+    border-radius: 100%;
+    height: 92px;
+    width: 92px;
+}
+.ui.button.rounded{
+    border-radius: 20px;
+}
+.ui.explore.blue.button {  
+    background-color: $primary-color;
+    padding: 10px 30px;
+}
+.ui.explore.blue.button:hover {  
+    opacity: 0.8;
+}
+.ui.explore.blue.button:active {  
+    opacity: 0.9;
+}
+.ui.basic.explore.blue.button {  
+    background-color: #fff;
+    border: 0.5px solid $primary-color;
+    box-shadow: none;
+    color: $primary-color;
+    font-weight: 700;
+    height:36px;
+    padding: 10px 30px;
+}
+.ui.basic.explore.blue.button:hover {  
+    opacity: 0.8;
+}
+.ui.basic.explore.blue.button:active {  
+    opacity: 0.9;
+}

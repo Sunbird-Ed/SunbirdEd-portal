@@ -2,7 +2,7 @@ import { Subscription, Observable } from 'rxjs';
 import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse, BrowserCacheTtlService } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnDestroy, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FrameworkService, FormService, ConceptPickerService, PermissionService } from './../../services';
+import { FrameworkService, FormService, PermissionService } from './../../services';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventEdata } from '@sunbird/telemetry';
@@ -20,6 +20,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   @Input() showSearchedParam = true;
   @Input() pageId: string;
   @Output() filters = new EventEmitter();
+  @Input() frameworkName: string;
   @Output() prominentFilter = new EventEmitter();
   /**
  * To get url, app configs
@@ -65,8 +66,6 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
 
   public permissionService: PermissionService;
 
-  selectedConcepts: Array<object>;
-  showConcepts = false;
   refresh = true;
   isShowFilterPlaceholder = true;
   contentTypes: any;
@@ -90,7 +89,6 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     frameworkService: FrameworkService,
     formService: FormService,
     toasterService: ToasterService,
-    public conceptPickerService: ConceptPickerService,
     permissionService: PermissionService,
     private browserCacheTtlService: BrowserCacheTtlService
 
@@ -107,7 +105,11 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.frameworkService.initialize(this.hashTagId);
+    if (this.frameworkName) {
+      this.frameworkService.initialize(this.frameworkName);
+    } else  {
+      this.frameworkService.initialize('', this.hashTagId);
+    }
     this.formInputData = {};
     this.getQueryParams();
     this.fetchFilterMetaData();
@@ -131,15 +133,6 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
       this.refresh = false;
       this.cdr.detectChanges();
       this.refresh = true;
-      this.conceptPickerService.conceptData$.subscribe(conceptData => {
-        if (conceptData && !conceptData.err) {
-          this.selectedConcepts = conceptData.data;
-          if (this.formInputData && this.formInputData.concepts) {
-            this.formInputData.concepts = this.conceptPickerService.processConcepts(this.formInputData.concepts, this.selectedConcepts);
-          }
-          this.showConcepts = true;
-        }
-      });
     });
   }
   /**
@@ -153,14 +146,14 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
       this.prominentFilter.emit(this.formFieldProperties);
     } else {
       this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
-        if (frameworkData && !frameworkData.err) {
-          this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
-          this.framework = frameworkData.framework;
+        if (!frameworkData.err) {
+          this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
+          this.framework = frameworkData.frameworkdata['defaultFramework'].code;
           const formServiceInputParams = {
             formType: this.formType,
             formAction: this.formAction,
             contentType: this.filterEnv,
-            framework: frameworkData.framework
+            framework: this.framework
           };
           this.formService.getFormConfig(formServiceInputParams, this.hashTagId).subscribe(
             (data: ServerResponse) => {
@@ -225,12 +218,6 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   }
 
   /**
- * to get selected concepts from concept picker.
- */
-  concepts(events) {
-    this.formInputData['concepts'] = events;
-  }
-  /**
  * To check filterType.
  */
   isObject(val) { return typeof val === 'object'; }
@@ -241,17 +228,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     } else {
         this.isFiltered = false;
         this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
-        let queryParams = {};
-        _.forIn(this.queryParams, (value, key) => {
-            if (key === 'concepts') {
-                queryParams[key] = [];
-                value.forEach((conceptDetails) => {
-                    queryParams[key].push(conceptDetails.identifier);
-                });
-            } else {
-                queryParams[key] = value;
-            }
-        });
+        let queryParams = this.queryParams;
         queryParams = _.pickBy(queryParams, value => _.isArray(value) && value.length > 0);
         this.router.navigate([], { relativeTo: this.activatedRoute.parent,
             queryParams: queryParams

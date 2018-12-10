@@ -15,7 +15,7 @@
 
     <div class="scrolling content">
         <div appTelemetryInteract [telemetryInteractEdata]="organizationIntractEdata" [telemetryInteractObject]="{id:userId,type:'user',ver:'1.0'}"
-            class="ui selection dropdown margin-left-10" suiDropdown *ngIf="userDetails && userDetails.organisations.length > 0">
+            class="ui selection dropdown ml-10" suiDropdown *ngIf="userDetails && userDetails.organisations.length > 0">
             <i class="dropdown icon"></i>
             <div>{{selectedOrgName || userDetails.organisations[0].orgName || selectedOrgId}}</div>
 
@@ -24,7 +24,7 @@
                     (click)="selectedOrgName = org.orgName; selectedOrgUserRoles=org.roles; selectedOrgId=org.organisationId">{{org.orgName || org.organisationId}}</div>
             </div>
         </div>
-        <div class="ui form margin-top-40" *ngIf="selectedOrgUserRoles">
+        <div class="ui form mt-40" *ngIf="selectedOrgUserRoles">
             <ul class="selectOrgRoles">
 
                 <li class="orgRolesListView" *ngFor="let role of allRoles">

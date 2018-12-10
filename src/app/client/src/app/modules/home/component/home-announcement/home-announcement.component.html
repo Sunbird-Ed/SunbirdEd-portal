@@ -2,7 +2,7 @@
   <div class="ui grid">
     <div class="nine wide column" *ngIf="announcementlist && announcementlist.announcements.length > 0 && !showLoader">
       <div class="ui">
-        <div class="text dashBoardSectionHeading padding-top-10  margin-bottom-10">{{resourceService.frmelmnts?.lbl?.anncmntinboxannmsg}}</div>
+        <div class="text dashBoardSectionHeading pt-10  mb-10">{{resourceService.frmelmnts?.lbl?.anncmntinboxannmsg}}</div>
       </div>
     </div>
     <div class="three wide column" *ngIf="announcementlist && announcementlist.announcements.length > 0 && !showLoader">
@@ -12,7 +12,7 @@
       <app-loader [data]='loaderMessage'></app-loader>
     </div>
   </div>
-  <div in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="announcementlist.announcements" class=" margin-bottom-10" *ngIf="announcementlist && announcementlist.announcements.length > 0 && !showLoader">
+  <div in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="announcementlist.announcements" class=" mb-10" *ngIf="announcementlist && announcementlist.announcements.length > 0 && !showLoader">
     <div in-view-item *ngFor="let announcement of announcementlist.announcements;let i = index"
      [id]="i" [data]="announcement">
       <div appTelemetryInteract [telemetryInteractObject]="{id:announcement.id,type:'announcement',ver:'1.0'}" [telemetryInteractEdata]="{id:'view-announcement',type:'click',pageid:'announcement-list'}" (click)="readAnnouncement(announcement.id, announcement.read); announcementService.announcementDetailsObject = announcement; announcement.read=true;"

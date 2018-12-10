@@ -84,6 +84,32 @@ module.exports = function (app) {
     }
   }))
 
+  const addCorsHeaders = (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE,OPTIONS')
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization,' +
+      'cid, user-id, x-auth, Cache-Control, X-Requested-With, *')
+  
+    if (req.method === 'OPTIONS') {
+      res.sendStatus(200)
+    } else {
+      next()
+    };
+  }
+
+  app.use('/action/review/comment/*', addCorsHeaders,
+  proxy(envHelper.PORTAL_EXT_PLUGIN_URL, {
+    proxyReqPathResolver: req => {
+      return req.originalUrl.replace('/action', '/plugin')
+    }
+  }))
+  app.use('/action/content/v1/textbook/toc/*', addCorsHeaders,
+  proxy(contentServiceBaseUrl, {
+    proxyReqPathResolver: req => {
+      return req.originalUrl.replace('/action', '/api')
+    }
+  }))
+
   app.use('/action/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
     preserveHostHdr: true,
     limit: reqDataLimitOfContentUpload,

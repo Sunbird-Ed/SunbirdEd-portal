@@ -53,7 +53,7 @@ describe('RedirectComponent', () => {
         ResourceService,
         ConfigService,
         CacheService,
-         ToasterService,
+        ToasterService,
         BrowserCacheTtlService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
@@ -71,27 +71,13 @@ describe('RedirectComponent', () => {
     [Router, ToasterService, ResourceService],
     (router, toasterService, resourceService, service) => {
       resourceService.messages = resourceBundle.messages;
-      spyOn(toasterService, 'warning').and.callThrough();
+      spyOn(toasterService, 'warning').and.callFake(() => 'warning');
+      spyOn(component, 'openWindow').and.callFake(() => 'open');
       component.ngOnInit();
       expect(toasterService.warning).toBeDefined();
       expect(toasterService.warning).toHaveBeenCalledWith(resourceService.messages.imsg.m0034);
     }
   ));
 
-  it('should call window.open() in same tab', inject(
-    [Router, ToasterService, ResourceService],
-    (router, toasterService, resourceService, service) => {
-      const windowSpy = spyOn(window, 'open');
-      window.open('/learn/redirect', '_blank');
-      expect(windowSpy).toHaveBeenCalled();
-      expect(window.open).toHaveBeenCalledWith('/learn/redirect', '_blank');
-    }
-  ));
-
-  it('test goback function', () => {
-    component.goBack();
-    window.close();
-    expect(component.goBack).toBeDefined();
-  });
 });
 

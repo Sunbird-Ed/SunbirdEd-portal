@@ -1,19 +1,20 @@
 
-import { first, filter } from 'rxjs/operators';
 import { environment } from '@sunbird/environment';
-import { ITelemetryContext } from '@sunbird/telemetry';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { TelemetryService } from '@sunbird/telemetry';
-import { ResourceService, IUserData, IUserProfile, NavigationHelperService, ConfigService } from '@sunbird/shared';
-import { Component, HostListener, OnInit } from '@angular/core';
-import {
-  UserService, PermissionService, CoursesService, TenantService, ConceptPickerService, OrgDetailsService
-} from '@sunbird/core';
+import { TelemetryService, ITelemetryContext } from '@sunbird/telemetry';
+import { UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
+NavigationHelperService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService } from '@sunbird/core';
 import * as _ from 'lodash';
-import { Subscription } from 'rxjs';
+import { ProfileService } from '@sunbird/profile';
+import { Observable, of, throwError, combineLatest } from 'rxjs';
+import { first, filter, mergeMap, tap, map } from 'rxjs/operators';
+import { CacheService } from 'ng2-cache-service';
+const fingerPrint2 = new Fingerprint2();
+
 /**
  * main app component
- *
  */
 @Component({
   selector: 'app-root',
@@ -21,66 +22,50 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  @ViewChild('frameWorkPopUp') frameWorkPopUp;
   /**
    * user profile details.
    */
-  userProfile: IUserProfile;
+  private userProfile: IUserProfile;
   /**
-   * reference of TenantService.
+   * user to load app after fetching user/org details.
    */
-  public tenantService: TenantService;
-  /**
-   * reference of UserService service.
-   */
-  public userService: UserService;
-  /**
-   * reference of config service.
-   */
-  public permissionService: PermissionService;
-  /**
-   * reference of resourceService service.
-   */
-  public resourceService: ResourceService;
-  /**
-   * reference of courseService service.
-   */
-  public courseService: CoursesService;
-  /**
-   * reference of conceptPickerService service.
-    */
-  public conceptPickerService: ConceptPickerService;
-  /**
-   * reference of telemetryService service.
-   */
-  public telemetryService: TelemetryService;
-  /**
-    * To get url, app configs
-  */
-  public config: ConfigService;
-
   public initApp = false;
-
+  /**
+   * stores organization details for Anonymous user.
+   */
   private orgDetails: any;
-
-  public version: string;
-
-  userDataUnsubscribe: Subscription;
+  /**
+   * this variable is used to show the FrameWorkPopUp
+   */
+  public showFrameWorkPopUp = false;
+  /**
+   * Used to fetch tenant details and org details for Anonymous user. Possible values
+   * 1. url slug param will be slug for Anonymous user
+   * 2. user profile rootOrg slug for logged in
+   */
+  private slug: string;
+  /**
+   * Used to config telemetry service and device register api. Possible values
+   * 1. org hashtag for Anonymous user
+   * 2. user profile rootOrg hashtag for logged in
+   */
+  private channel: string;
   /**
    * constructor
    */
-  constructor(userService: UserService, public navigationHelperService: NavigationHelperService,
-    permissionService: PermissionService, resourceService: ResourceService,
-    courseService: CoursesService, tenantService: TenantService,
-    telemetryService: TelemetryService, conceptPickerService: ConceptPickerService, public router: Router,
-    config: ConfigService, public orgDetailsService: OrgDetailsService, public activatedRoute: ActivatedRoute) {
-    this.resourceService = resourceService;
-    this.permissionService = permissionService;
-    this.userService = userService;
-    this.courseService = courseService;
-    this.conceptPickerService = conceptPickerService;
-    this.tenantService = tenantService;
-    this.telemetryService = telemetryService;
-    this.config = config;
+  /**
+  * Variable to show popup to install the app
+  */
+  showAppPopUp = false;
+  viewinBrowser = false;
+  constructor(  private cacheService: CacheService,  private browserCacheTtlService: BrowserCacheTtlService,
+    public userService: UserService, private navigationHelperService: NavigationHelperService,
+    private permissionService: PermissionService, public resourceService: ResourceService,
+    private deviceRegisterService: DeviceRegisterService, private courseService: CoursesService, private tenantService: TenantService,
+    private telemetryService: TelemetryService, public router: Router, private configService: ConfigService,
+    private orgDetailsService: OrgDetailsService, private activatedRoute: ActivatedRoute,
+    private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService) {
   }
   /**
    * dispatch telemetry window unload event before browser closes
@@ -91,134 +76,173 @@ export class AppComponent implements OnInit {
     this.telemetryService.syncEvents();
   }
   ngOnInit() {
-    const fingerPrint2 = new Fingerprint2();
     this.resourceService.initialize();
-    this.navigationHelperService.initialize();
-    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
-    this.version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
-    if (this.userService.loggedIn) {
-      fingerPrint2.get((deviceId) => {
-        (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-        this.conceptPickerService.initialize();
-        this.initializeLogedInsession();
-      });
-    } else {
-      this.router.events.pipe(filter(event => event instanceof NavigationEnd), first()).subscribe((urlAfterRedirects: NavigationEnd) => {
-        const slug = _.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug');
-        fingerPrint2.get((deviceId) => {
-          (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-          this.initializeAnonymousSession(slug);
-        });
-      });
-    }
-  }
-  initializeLogedInsession() {
-    this.userService.startSession();
-    this.userService.initialize(true);
-    this.permissionService.initialize();
-    this.courseService.initialize();
-    this.userDataUnsubscribe = this.userService.userData$.subscribe((user: IUserData) => {
-      if (!user.err) {
-        if (this.userDataUnsubscribe) {
-          this.userDataUnsubscribe.unsubscribe();
+    combineLatest( this.setSlug(), this.setDeviceId()).pipe(
+      mergeMap(data => {
+        this.navigationHelperService.initialize();
+        this.userService.initialize(this.userService.loggedIn);
+        if (this.userService.loggedIn) {
+          this.permissionService.initialize();
+          this.courseService.initialize();
+          return this.setUserDetails();
+        } else {
+          return this.setOrgDetails();
         }
-        this.initApp = true;
-        this.userProfile = user.userProfile;
-        const slug = _.get(user, 'userProfile.rootOrg.slug');
-        this.initTelemetryService(true);
-        this.initTenantService(slug);
-      } else if (user.err) {
-        if (this.userDataUnsubscribe) {
-          this.userDataUnsubscribe.unsubscribe();
+      }))
+    .subscribe(data => {
+      this.tenantService.getTenantInfo(this.slug);
+      this.setPortalTitleLogo();
+      this.telemetryService.initialize(this.getTelemetryContext());
+      this.deviceRegisterService.registerDevice(this.channel);
+      const frameWorkPopUp: boolean = this.cacheService.get('showFrameWorkPopUp');
+      if (frameWorkPopUp) {
+        this.showFrameWorkPopUp = false;
+      } else {
+        if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
+          this.showFrameWorkPopUp = true;
         }
-        this.initApp = true;
-        this.initTenantService();
       }
+      this.initApp = true;
+    }, error => {
+      this.initApp = true;
     });
   }
-  initializeAnonymousSession(slug) {
-    this.orgDetailsService.getOrgDetails(slug).pipe(
-      first()).subscribe((data) => {
-        this.orgDetails = data;
-        this.initTelemetryService(false);
-        this.initTenantService(slug);
-        this.userService.initialize(false);
-        this.initApp = true;
-      }, (err) => {
-        this.initApp = true;
-        console.log('unable to get organization details');
-      });
+  /**
+   * fetch device id using fingerPrint2 library.
+   */
+  public setDeviceId(): Observable<string> {
+    return new Observable(observer => fingerPrint2.get((deviceId) => {
+      (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+      observer.next(deviceId);
+      observer.complete();
+    }));
   }
-  public initTelemetryService(loggedIn) {
-    let config: ITelemetryContext;
-    if (loggedIn) {
-      config = this.getLoggedInUserConfig();
-      this.telemetryService.initialize(config);
+  /**
+   * set slug from url only for Anonymous user.
+   */
+  private setSlug(): Observable<string> {
+    if (this.userService.loggedIn) {
+      return of(undefined);
     } else {
-      config = this.getAnonymousUserConfig();
-      this.telemetryService.initialize(config);
+      return this.router.events.pipe(filter(event => event instanceof NavigationEnd), first(),
+      map(data => this.slug = _.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug')));
     }
   }
-
-  private getLoggedInUserConfig(): ITelemetryContext {
-    return {
-      userOrgDetails: {
-        userId: this.userProfile.userId,
-        rootOrgId: this.userProfile.rootOrgId,
-        rootOrg: this.userProfile.rootOrg,
-        organisationIds: this.userProfile.hashTagIds
-      },
-      config: {
-        pdata: {
-          id: this.userService.appId,
-          ver: this.version,
-          pid: this.config.appConfig.TELEMETRY.PID
-        },
-        endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
-        apislug: this.config.urlConFig.URLS.CONTENT_PREFIX,
-        host: '',
-        uid: this.userProfile.userId,
-        sid: this.userService.sessionId,
-        channel: _.get(this.userProfile, 'rootOrg.hashTagId'),
-        env: 'home',
-        enableValidation: environment.enableTelemetryValidation
-      }
-    };
+  /**
+   * set user details for loggedIn user.
+   */
+  private setUserDetails(): Observable<any> {
+    return this.userService.userData$.pipe(first(),
+      mergeMap((user: IUserData) => {
+        if (user.err) {
+          return throwError(user.err);
+        }
+        this.userProfile = user.userProfile;
+        this.slug = _.get(this.userProfile, 'userProfile.rootOrg.slug');
+        this.channel = this.userService.hashTagId;
+        return of(user.userProfile);
+    }));
   }
-  getAnonymousUserConfig() {
-    return {
-      userOrgDetails: {
-        userId: 'anonymous',
-        rootOrgId: this.orgDetails.rootOrgId,
-        organisationIds: [this.orgDetails.hashTagId]
-      },
-      config: {
-        pdata: {
-          id: this.userService.appId,
-          ver: this.version,
-          pid: this.config.appConfig.TELEMETRY.PID
-        },
-        endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
-        apislug: this.config.urlConFig.URLS.CONTENT_PREFIX,
-        host: '',
-        uid: 'anonymous',
-        sid: this.userService.anonymousSid,
-        channel: this.orgDetails.hashTagId,
-        env: 'home',
-        enableValidation: environment.enableTelemetryValidation
-      }
-    };
+  /**
+   * set org Details for Anonymous user.
+   */
+  private setOrgDetails(): Observable<any> {
+    return this.orgDetailsService.getOrgDetails(this.slug).pipe(
+      tap(data =>  {
+        this.orgDetails = data;
+        this.channel = this.orgDetails.hashTagId;
+      })
+    );
   }
-
-  private initTenantService(slug?: string) {
-    this.tenantService.getTenantInfo(slug);
-    this.tenantService.tenantData$.subscribe(
-      data => {
-        if (data && !data.err) {
+  /**
+   * returns telemetry context based on user loggedIn
+   */
+  private getTelemetryContext(): ITelemetryContext  {
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+    if (this.userService.loggedIn) {
+      return {
+        userOrgDetails: {
+          userId: this.userProfile.userId,
+          rootOrgId: this.userProfile.rootOrgId,
+          rootOrg: this.userProfile.rootOrg,
+          organisationIds: this.userProfile.hashTagIds
+        },
+        config: {
+          pdata: {
+            id: this.userService.appId,
+            ver: version,
+            pid: this.configService.appConfig.TELEMETRY.PID
+          },
+          endpoint: this.configService.urlConFig.URLS.TELEMETRY.SYNC,
+          apislug: this.configService.urlConFig.URLS.CONTENT_PREFIX,
+          host: '',
+          uid: this.userProfile.userId,
+          sid: this.userService.sessionId,
+          channel: _.get(this.userProfile, 'rootOrg.hashTagId'),
+          env: 'home',
+          enableValidation: environment.enableTelemetryValidation
+        }
+      };
+    } else {
+      return {
+        userOrgDetails: {
+          userId: 'anonymous',
+          rootOrgId: this.orgDetails.rootOrgId,
+          organisationIds: [this.orgDetails.hashTagId]
+        },
+        config: {
+          pdata: {
+            id: this.userService.appId,
+            ver: version,
+            pid: this.configService.appConfig.TELEMETRY.PID
+          },
+          endpoint: this.configService.urlConFig.URLS.TELEMETRY.SYNC,
+          apislug: this.configService.urlConFig.URLS.CONTENT_PREFIX,
+          host: '',
+          uid: 'anonymous',
+          sid: this.userService.anonymousSid,
+          channel: this.orgDetails.hashTagId,
+          env: 'home',
+          enableValidation: environment.enableTelemetryValidation
+        }
+      };
+    }
+  }
+  /**
+   * set app title and favicon after getting tenant data
+   */
+  private setPortalTitleLogo(): void {
+    this.tenantService.tenantData$.subscribe(data => {
+        if (!data.err) {
           document.title = this.userService.rootOrgName || data.tenantData.titleName;
           document.querySelector('link[rel*=\'icon\']').setAttribute('href', data.tenantData.favicon);
         }
-      }
-    );
+      });
+  }
+  /**
+   * updates user framework. After update redirects to library
+   */
+  public updateFrameWork(event) {
+    const req = {
+      framework: event
+    };
+    this.profileService.updateProfile(req).subscribe(res => {
+      this.frameWorkPopUp.modal.deny();
+      this.showFrameWorkPopUp = false;
+      this.utilService.toggleAppPopup();
+      this.showAppPopUp = this.utilService.showAppPopUp;
+      console.log(this.showAppPopUp);
+    }, err => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0085);
+        this.frameWorkPopUp.modal.deny();
+    });
+  }
+  viewInBrowser() {
+    this.router.navigate(['/resources']);
+  }
+  closeIcon() {
+    this.showFrameWorkPopUp = false;
+    this.cacheService.set('showFrameWorkPopUp', 'installApp' );
   }
 }

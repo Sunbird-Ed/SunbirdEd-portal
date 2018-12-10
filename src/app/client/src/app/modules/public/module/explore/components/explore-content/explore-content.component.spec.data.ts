@@ -149,7 +149,7 @@ export const Response = {
     'softConstraints': {
       'badgeAssertions': 98, 'board': 99, 'channel': 100
     },
-    'facets': undefined
+    'facets': [ 'board', 'medium', 'subject', 'gradeLevel' ]
   },
   requestParam3: {
     'filters': {
@@ -162,7 +162,6 @@ export const Response = {
         'Worksheet',
         'Game'
       ],
-      'board': undefined ,
       'channel': '0123166367624478721'
     },
     'limit': 20,
@@ -171,7 +170,7 @@ export const Response = {
     'softConstraints': {
       'badgeAssertions': 98, 'board': 99, 'channel': 100
     },
-    'facets': undefined
+    'facets': [ ]
   },
   orgDetailsSuccessData: {
     'dateTime': null,

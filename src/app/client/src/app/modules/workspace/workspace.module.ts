@@ -5,7 +5,7 @@ import { WorkspaceRoutingModule } from './workspace-routing.module';
 import { SharedModule } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
-import { WorkSpaceService, EditorService , BatchService} from './services';
+import { WorkSpaceService, EditorService , BatchService, ReviewCommentsService} from './services';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, UploadedComponent,
@@ -15,10 +15,13 @@ import {
   BatchListComponent, BatchCardComponent, UpdateBatchComponent,
   UpforreviewContentplayerComponent, FlagConentplayerComponent, ReviewsubmissionsContentplayerComponent,
   PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
-  AllContentComponent, FlagReviewerComponent, AllMyContentFilterComponent
+  AllContentComponent, FlagReviewerComponent, AllMyContentFilterComponent, CollaboratingOnComponent,
+  CollaborationContentFilterComponent
 } from './components';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { ReviewCommentsComponent } from './components/review-comments/review-comments.component';
+import { OrderModule } from 'ngx-order-pipe';
 @NgModule({
   imports: [
     CommonModule,
@@ -29,7 +32,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
     CoreModule,
     ReactiveFormsModule,
     NgInviewModule,
-    TelemetryModule
+    TelemetryModule,
+    OrderModule
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
@@ -44,8 +48,12 @@ import { TelemetryModule } from '@sunbird/telemetry';
     LimitedPublishedComponent,
     AllContentComponent,
     FlagReviewerComponent,
-    AllMyContentFilterComponent
+    AllMyContentFilterComponent,
+    CollaboratingOnComponent,
+    CollaborationContentFilterComponent,
+    ReviewCommentsComponent,
+    CollaborationContentFilterComponent,
   ],
-  providers: [WorkSpaceService, EditorService, BatchService]
+  providers: [WorkSpaceService, EditorService, BatchService, ReviewCommentsService]
 })
 export class WorkspaceModule { }
