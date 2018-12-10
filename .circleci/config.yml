@@ -4,7 +4,7 @@ jobs:
     machine:
       image: circleci/classic:latest
     steps:
-      - checkout
+      - checkout $CIRCLE_BRANCH
       - run:
           name: run build file
           command: ./build.sh
