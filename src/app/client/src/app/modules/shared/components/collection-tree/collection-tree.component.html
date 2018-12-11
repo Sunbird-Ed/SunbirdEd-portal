@@ -21,11 +21,11 @@
         <mat-panel-description>
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <app-collection-tree *ngIf="child.children.length > 0" [nodeRoot]="child"></app-collection-tree>
+      <app-collection-tree *ngIf="child.children.length > 0" [nodeRoot]="child"></app-collection-tree>      
     </mat-expansion-panel>
 
     <mat-card *ngIf="child.children.length == 0" (click)="onItemSelect(child)" tabindex="0" style="margin-bottom: 4px">
-      <mat-checkbox style="margin-right:3px"></mat-checkbox> <span [ngClass]="child.icon"> </span> {{child.title}}
+      <mat-checkbox (click)="onContentCheckBoxClick(child)" style="margin-right:3px" [checked]='child.completed' color="primary"></mat-checkbox> <span [ngClass]="child.icon" > </span> {{child.title}}
     </mat-card>
 
   </mat-accordion>

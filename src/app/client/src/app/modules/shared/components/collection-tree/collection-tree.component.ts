@@ -21,7 +21,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
 
   @Input() public nodes: ICollectionTreeNodes;
   @Input() public options: ICollectionTreeOptions;
-  @Output() public contentSelect: EventEmitter<{id: string, title: string}> = new EventEmitter();
+  @Output() public contentSelect: EventEmitter<{ id: string, title: string }> = new EventEmitter();
   @Input() contentStatus: any;
   @Input() nodeRoot: any;
   private rootNode: any;
@@ -32,11 +32,13 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     '2': 'fancy-tree-green'
   };
   public subscription: any;
-  constructor(public player: PlayContent , public resourceService?: ResourceService  ) {
+  public courseProgress: any;
+  constructor(public player: PlayContent, public resourceService?: ResourceService) {
     this.resourceService = resourceService;
     this.player = player;
     this.subscription = this.player.subject;
     // this.subscription = this.contentService.subject;
+    this.courseProgress = this.player.CourseProgressListner;
   }
   ngOnInit() {
     this.initialize();
@@ -56,16 +58,18 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
   public onItemSelect(item: any) {
     console.log(item);
     if (!item.folder) {
-      console.log(typeof item.id , typeof item.title, 'this is the id  and titile node node node ');
+      console.log(typeof item.id, typeof item.title, 'this is the id  and titile node node node ');
       this.subscription.next({ id: item.id, title: item.title });
     }
   }
-
+  public onContentCheckBoxClick(child) {
+    this.courseProgress.next({ content_id: child.id });
+  }
 
 
   public onItemSelect2(child: any) {
-    console.log(child.id , child.title, '///////////*\\\\\\\\\\');
-      this.contentSelect.emit({ id: child.id, title: child.title });
+    console.log(child.id, child.title, '///////////*\\\\\\\\\\');
+    this.contentSelect.emit({ id: child.id, title: child.title });
   }
 
 
@@ -98,14 +102,19 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
         }
         node.folder = true;
       } else {
-        if ( node.fileType === MimeTypeTofileType['application/vnd.ekstep.content-collection']) {
+        node.completed = false;
+        if (node.fileType === MimeTypeTofileType['application/vnd.ekstep.content-collection']) {
           node.folder = true;
         } else {
-          const indexOf = _.findIndex(this.contentStatus, { });
+          const indexOf = _.findIndex(this.contentStatus, {});
           if (this.contentStatus) {
-            const content: any = _.find(this.contentStatus, { 'contentId': node.model.identifier});
+            const content: any = _.find(this.contentStatus, { 'contentId': node.model.identifier });
             const status = (content && content.status) ? content.status.toString() : 0;
             node.iconColor = this.iconColor[status];
+            if (status === '2') {
+              node.completed = true;
+            }
+
           } else {
             node.iconColor = this.iconColor['0'];
           }

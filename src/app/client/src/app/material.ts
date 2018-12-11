@@ -7,6 +7,8 @@ import { MatIconModule } from '@angular/material';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import {MatRadioModule} from '@angular/material/radio';
+
 @NgModule({
   imports: [MatCheckboxModule,
     MatSidenavModule,
@@ -14,7 +16,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatTreeModule,
     MatExpansionModule,
     MatCardModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatRadioModule
   ],
   exports: [MatCheckboxModule,
     MatSidenavModule,
@@ -23,7 +26,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatIconModule,
     MatExpansionModule,
     MatCardModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatRadioModule
   ],
 })
 

@@ -23,7 +23,7 @@ import { checkNoChangesView } from '@angular/core/src/view/view';
   selector: 'app-course-player',
   templateUrl: './course-player.component.html',
   styleUrls: ['./course-player.component.css'],
-  providers : [PlayContent]
+  providers: [PlayContent]
 })
 export class CoursePlayerComponent implements OnInit, OnDestroy {
 
@@ -139,14 +139,15 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   public unsubscribe = new Subject<void>();
   public subscribed: Subscription;
-  constructor( contentService: ContentService, activatedRoute: ActivatedRoute, private configService: ConfigService,
+  public courseProgressListner: Subscription;
+  constructor(contentService: ContentService, activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
     private toasterService: ToasterService, private resourceService: ResourceService, public breadcrumbsService: BreadcrumbsService,
     private cdr: ChangeDetectorRef, public courseBatchService: CourseBatchService, public permissionService: PermissionService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService,
-    private courseProgressService: CourseProgressService, private deviceDetectorService: DeviceDetectorService ,
-    public  player: PlayContent) {
+    private courseProgressService: CourseProgressService, private deviceDetectorService: DeviceDetectorService,
+    public player: PlayContent) {
     this.contentService = contentService;
     this.activatedRoute = activatedRoute;
     this.windowScrollService = windowScrollService;
@@ -156,7 +157,16 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.player = player;
     this.subscribed = this.player.subject.subscribe(
       item => this.navigateToContent(item)
-       );
+    );
+    this.courseProgressListner = this.player.CourseProgressListner.subscribe(
+      next => {
+        console.log('listining to the next event');
+        this.contentProgressEvent({
+          status: 'END',
+          content_id: next.content_id
+        });
+      }
+    );
 
   }
   ngOnInit() {
@@ -178,7 +188,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
       })).subscribe((response: any) => {
         this.courseHierarchy = response.courseHierarchy;
-        console.log(this.courseHierarchy , '+++++++++++++++++++++++++++++++ this is courese hierarchy object------------------');
+        console.log(this.courseHierarchy, '+++++++++++++++++++++++++++++++ this is courese hierarchy object------------------');
         const contentCredits = _.get(this.courseHierarchy, 'contentCredits');
         if (_.isArray(contentCredits)) {
           this.contributionsLength = contentCredits.length;
@@ -217,12 +227,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
       });
-      this.courseProgressService.courseProgressData.pipe(
+    this.courseProgressService.courseProgressData.pipe(
       takeUntil(this.unsubscribe))
       .subscribe((courseProgressData) => {
         this.courseProgressData = courseProgressData;
       });
-    }
+  }
   private parseChildContent() {
     const model = new TreeModel();
     const mimeTypeCount = {};
@@ -286,7 +296,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.enrolledBatchInfo.status > 0) || this.courseStatus === 'Unlisted'
       || this.permissionService.checkRolesPermissions(this.previewContentRoles)
       || this.courseHierarchy.createdBy === this.userService.userid)) {
-        console.log('inside on play content');
+      console.log('inside on play content');
       this.contentId = content.id;
       this.setTelemetryContentImpression();
       this.setContentNavigators();
@@ -352,15 +362,28 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
   }
   public contentProgressEvent(event) {
+    console.log(this.enrolledBatchInfo, '---------------------');
     if (this.batchId && this.enrolledBatchInfo && this.enrolledBatchInfo.status === 1) {
-      const eid = event.detail.telemetryData.eid;
+      let eid: any;
+      let content_id: any;
+      console.log(event, 'Course Progress event is called');
+      if (event.status === 'END') {
+        console.log('inside if');
+        eid = event.status;
+      } else { eid = event.detail.telemetryData.eid; }
+
+      if (event.content_id) {
+        console.log('inside content id-----------');
+        content_id = event.content_id;
+      } else { content_id = this.contentId; }
       const request: any = {
         userId: this.userService.userid,
-        contentId: this.contentId,
+        contentId: content_id,
         courseId: this.courseId,
         batchId: this.batchId,
         status: eid === 'END' ? 2 : 1
       };
+      console.log(request, 'this is the request object-----------------------');
       this.updateContentsStateSubscription = this.courseConsumptionService.updateContentsState(request)
         .subscribe((updatedRes) => {
           this.contentStatus = updatedRes.content;
@@ -384,7 +407,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   // on destroy of player if content played was H5P make content as read (status=2)
-  public playerOnDestroy (data) {
+  public playerOnDestroy(data) {
     if (data.contentId) {
       const playContentDetail = this.findContentById(data.contentId);
       const index = _.findIndex(this.courseProgressData.content, { 'contentId': data.contentId });
@@ -441,7 +464,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         uaspec: {
           agent: deviceInfo.browser,
           ver: deviceInfo.browser_version,
-          system: deviceInfo.os_version ,
+          system: deviceInfo.os_version,
           platform: deviceInfo.os,
           raw: deviceInfo.userAgent
         }
