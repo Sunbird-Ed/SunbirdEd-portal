@@ -16,6 +16,7 @@ import { CacheService } from 'ng2-cache-service';
 import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storage/cache-storage-abstract.service';
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent
@@ -25,6 +26,7 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     CommonModule,
     BrowserModule,
     HttpClientModule,
+    BrowserAnimationsModule,
     SuiModule,
     SharedModule.forRoot(),
     Ng2IziToastModule,

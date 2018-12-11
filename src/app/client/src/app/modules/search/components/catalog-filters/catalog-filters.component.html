@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-md-12">
+    <form>
+      <fieldset>
+        <div *ngIf="formFieldProperties">
+          <div *ngFor="let field of filtersDetails">
+            <div class="card text-white mb-3" *ngIf="field.inputType==='select'">
+              <div class="card-header bg-success">
+                 <i alt="Filter" class="icon filter"></i>  &nbsp;{{field.name}} 
+                 <i class="far fa-times-circle float-right" (click)="resetFilters2(field.code)"></i>
+              </div>
+              <div class="card-body filtersBody">
+                <div class="form-group" *ngIf="field.inputType==='select'">
+                  <fieldset class="form-group" *ngIf="field.inputType==='select'">
+                    <div class="form-check" *ngFor="let option of field.range">
+                      <label class="form-check-label">
+                        <input (change)="onFilterChange($event)" name={{field.code}} class="form-check-input" type="checkbox"
+                          [value]="option.name">
+                       &nbsp; {{option.name}} </label>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div *ngIf="field.code==='concepts' && showConcepts" class="field">
+                <form class="conceptSelector ui form">
+                  <app-concept-picker [selectedConcepts]="formInputData[field.code]" (Concepts)="concepts($event)"></app-concept-picker>
+                </form>
+              </div> -->
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

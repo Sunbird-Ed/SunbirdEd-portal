@@ -1,0 +1,56 @@
+<div class="container-fluid catalog">
+
+  <div class="row">
+    <div class="col-md-3">
+      <app-catalog-filters (appliedFilters)="appliedFilters($event)" [pageId]="'course-search'" *ngIf="filterType"
+        [ignoreQuery]="['key']" [filterEnv]="filterType" [isShowFilterLabel]=true></app-catalog-filters>
+    </div>
+
+    <div class="col-md-9">
+      <div class="alert alert-dismissible alert-success" *ngIf="!showLoader && !noResult">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h5> {{totalCount }} Matching Result(s)
+            <button routerLink="/learn" type="button" class="btn btn-danger float-right">View Enrolled Courses</button>
+        </h5>
+      </div>
+      
+      <div class="jumbotron" *ngIf="noResult && !showLoader">
+        <app-no-result [data]="noResultMessage"></app-no-result>
+      </div>
+
+      <div class="jumbotron" *ngIf="showLoader">
+          <app-loader [data]='loaderMessage'></app-loader>
+      </div>
+
+      <div class="jumbotron" *ngIf="!showLoader && !noResult">
+        <div class="row">
+          <div in-view-item [id]="i" [data]="content" class="col-md-3" *ngFor="let content of searchList;let i = index;">
+            <app-card appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:'1.0'}"
+              [data]="content" (clickEvent)="playContent($event)"></app-card>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="searchList && totalCount > config.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
+        <ul class="pagination pagination-lg justify-content-center" *ngIf="pager.pages.length">
+          <li class="page-item">
+            <a class="page-link" tabindex="-1" (click)="navigateToPage(1)">First</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" tabindex="-1" (click)="navigateToPage(pager.currentPage - 1)">&laquo;</a>
+          </li>
+          <li *ngFor="let page of pager.pages ; let index" class="page-item" [ngClass]="{active:pager.currentPage===page}">
+            <a class="page-link" tabindex="index" (click)="navigateToPage(page)">
+              {{page}}</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" tabindex="-1" (click)="navigateToPage(pager.currentPage + 1)">&raquo;</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" tabindex="-1" (click)="navigateToPage(pager.totalPages)">Last</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -5,6 +5,7 @@ import {
   UserSearchComponent, UserEditComponent, UserProfileComponent, HomeSearchComponent,
   UserDeleteComponent, OrgSearchComponent, CourseSearchComponent, LibrarySearchComponent
 } from './components';
+import { CatalogComponent } from './components/catalog/catalog.component';
 const routes: Routes = [
   {
     path: 'All/:pageNumber', component: HomeSearchComponent,
@@ -12,6 +13,16 @@ const routes: Routes = [
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Search', url: '' }],
       telemetry: {
         env: 'home', pageid: 'home-search', type: 'view', subtype: 'paginate'
+      }
+    }
+
+  },
+  {
+    path: 'catalog/:pageNumber', component: CatalogComponent,
+    data: {
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Catalog', url: '' }],
+      telemetry: {
+        env: 'catalog', pageid: 'course-catalog', type: 'view', subtype: 'paginate'
       }
     }
 
