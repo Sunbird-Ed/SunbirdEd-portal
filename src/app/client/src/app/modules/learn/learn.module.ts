@@ -15,7 +15,6 @@ import { CourseConsumptionService, CourseBatchService, CourseProgressService } f
 import { CoreModule } from '@sunbird/core';
 import { NotesModule } from '@sunbird/notes';
 import { DashboardModule } from '@sunbird/dashboard';
-
 @NgModule({
   imports: [
     CommonModule,

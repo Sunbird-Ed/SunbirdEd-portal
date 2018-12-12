@@ -22,6 +22,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     AppComponent
   ],
   imports: [
+    BrowserAnimationsModule,
     CoreModule.forRoot(),
     CommonModule,
     BrowserModule,

@@ -1,4 +1,4 @@
-<sui-accordion *ngFor="let child of rootChildrens"  class="ui styled accordion margin-top-10  width-100">
+<!-- <sui-accordion *ngFor="let child of rootChildrens"  class="ui styled accordion margin-top-10  width-100">
   <sui-accordion-panel (click)="!child.folder && onNodeClick(child)" [(isOpen)]="child.togglePanelIcon" [isDisabled]="!child.folder">
     <div title class="accordian-left-text">
       <i *ngIf="child.folder" class="fa fa-2x vertical-align-middle" [class.fa-folder-open-o]="child.togglePanelIcon" [class.fa-folder-o]="!child.togglePanelIcon"></i>
@@ -9,4 +9,24 @@
       <app-fancy-tree (itemSelect)="onItemSelect($event)" [nodes]="child.children" [options]="{ showConnectors: true }"></app-fancy-tree>
     </div>
   </sui-accordion-panel>
-</sui-accordion>
+</sui-accordion> -->
+
+<div *ngFor="let child of nodeRoot.children">
+  <mat-accordion>
+    <mat-expansion-panel *ngIf="child.children.length > 0" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <span [ngClass]="child.icon"></span> {{child.title}}
+        </mat-panel-title>
+        <mat-panel-description>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-collection-tree *ngIf="child.children.length > 0" [nodeRoot]="child"></app-collection-tree>      
+    </mat-expansion-panel>
+
+    <mat-card *ngIf="child.children.length == 0" (click)="onItemSelect(child)" tabindex="0" style="margin-bottom: 4px">
+      <mat-checkbox (click)="onContentCheckBoxClick(child)" style="margin-right:3px" [checked]='child.completed' color="primary"></mat-checkbox> <span [ngClass]="child.icon" > </span> {{child.title}}
+    </mat-card>
+
+  </mat-accordion>
+</div>
