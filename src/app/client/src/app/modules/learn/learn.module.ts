@@ -10,13 +10,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
   CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
-  UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent  } from './components';
-import { CourseConsumptionService, CourseBatchService, CourseProgressService } from './services';
+  UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent, TestAllBatchesComponent } from './components';
+import { CourseConsumptionService, CourseBatchService, CourseProgressService, } from './services';
 import { CoreModule } from '@sunbird/core';
 import { NotesModule } from '@sunbird/notes';
 import { DashboardModule } from '@sunbird/dashboard';
 import { MaterialUi } from '../../material';
-import { TestAllBatchesComponent } from './components/test-all-batches/test-all-batches.component';
 
 @NgModule({
   imports: [
