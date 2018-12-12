@@ -15,16 +15,14 @@ import { CourseConsumptionService, CourseBatchService, CourseProgressService } f
 import { CoreModule } from '@sunbird/core';
 import { NotesModule } from '@sunbird/notes';
 import { DashboardModule } from '@sunbird/dashboard';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatIconModule} from '@angular/material/icon';
-import {MatListModule} from '@angular/material/list';
-import {MatCardModule} from '@angular/material/card';
-
+import { MaterialUi } from '../../material';
+import { TestAllBatchesComponent } from './test-all-batches/test-all-batches.component';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
+    MaterialUi,
     SuiModule,
     DashboardModule,
     SlickModule,
@@ -35,14 +33,10 @@ import {MatCardModule} from '@angular/material/card';
     NotesModule,
     TelemetryModule,
     NgInviewModule,
-    MatTabsModule,
-    MatIconModule,
-    MatListModule,
-    MatCardModule
   ],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
-    UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent]
+    UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent, TestAllBatchesComponent]
 })
 export class LearnModule { }

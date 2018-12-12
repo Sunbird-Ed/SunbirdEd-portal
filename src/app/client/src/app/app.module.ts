@@ -17,12 +17,15 @@ import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storag
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MaterialUi } from './material';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    BrowserAnimationsModule,
+    MaterialUi,
     CoreModule.forRoot(),
     CommonModule,
     BrowserAnimationsModule,

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CourseConsumptionService, CourseBatchService } from '../../services';
 import { UserService, LearnerService } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
@@ -31,6 +31,7 @@ export class PreviewCourseComponent implements OnInit {
     public learnerService: LearnerService,
     public config: ConfigService,
     public sanitizer: DomSanitizer,
+    public router: Router,
   ) { }
 
   ngOnInit() {
@@ -101,6 +102,10 @@ export class PreviewCourseComponent implements OnInit {
       }
     }
     this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.previewurl[0]);
+  }
+
+  redirect() {
+    this.router.navigate(['/learn/course', this.courseId]);
   }
 
 
