@@ -16,7 +16,7 @@ import { CoreModule } from '@sunbird/core';
 import { NotesModule } from '@sunbird/notes';
 import { DashboardModule } from '@sunbird/dashboard';
 import { MaterialUi } from '../../material';
-import { TestAllBatchesComponent } from './test-all-batches/test-all-batches.component';
+import { TestAllBatchesComponent } from './components/test-all-batches/test-all-batches.component';
 
 @NgModule({
   imports: [
