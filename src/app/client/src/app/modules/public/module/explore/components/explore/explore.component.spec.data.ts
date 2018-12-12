@@ -14,7 +14,7 @@ export const Response = {
                 'name': 'Resources',
                 'sections': [
                      {
-                        'name': 'Multiple Data',
+                        'name': 'Story',
                         'length': 1,
                         'contents': [
                             { 'name': 'Test1182016-02',
