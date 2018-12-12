@@ -36,8 +36,8 @@ const routes: Routes = [
     data: { telemetry: { env: telemetryEnv } },
     children: [
       {
-        path: ':courseId', component: TestAllBatchesComponent,
-        // path: ':courseId', component: CoursePlayerComponent,
+        // path: ':courseId', component: TestAllBatchesComponent,
+        path: ':courseId', component: CoursePlayerComponent,
         // path: ':courseId', component: PreviewCourseComponent,
         data: {
           telemetry: {
