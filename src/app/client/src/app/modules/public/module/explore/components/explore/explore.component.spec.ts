@@ -1,7 +1,7 @@
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { SharedModule, ResourceService, ServerResponse, ConfigService, ToasterService, ICaraouselData, IAction } from '@sunbird/shared';
-import { PageApiService, PlayerService, LearnerService, CoreModule, OrgDetailsService } from '@sunbird/core';
+import { PageApiService, PlayerService, LearnerService, CoreModule, OrgDetailsService, UserService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
@@ -19,6 +19,7 @@ import { PublicPlayerService } from './../../../../services';
 describe('ExploreComponent', () => {
   let component: ExploreComponent;
   let fixture: ComponentFixture<ExploreComponent>;
+  let userService;
   const resourceBundle = {
     'messages': {
       'stmsg': {
@@ -54,7 +55,7 @@ describe('ExploreComponent', () => {
       imports: [HttpClientTestingModule, SuiModule, SlickModule,
         SharedModule.forRoot(), CoreModule.forRoot(), NgInviewModule, TelemetryModule.forRoot()],
       declarations: [ExploreComponent],
-      providers: [ ConfigService, { provide: ResourceService, useValue: resourceBundle },
+      providers: [ ConfigService, UserService, { provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useValue: fakeActivatedRoute }, OrgDetailsService, PublicPlayerService],
       schemas: [NO_ERRORS_SCHEMA]
@@ -65,6 +66,7 @@ describe('ExploreComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ExploreComponent);
     component = fixture.componentInstance;
+    userService = TestBed.get(UserService);
     fixture.detectChanges();
   });
 
@@ -170,5 +172,29 @@ describe('ExploreComponent', () => {
     component.populatePageData();
     expect(component.populatePageData).toHaveBeenCalled();
     expect(service.getPageData).toHaveBeenCalledWith(requestParams);
+  });
+  it('should call inview method for visits data', () => {
+    spyOn(component, 'prepareVisits').and.callThrough();
+    component.prepareVisits(Response.event);
+    expect(component.prepareVisits).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
+  });
+  it('should call playcontent when user is loggedIn', () => {
+    const playerService = TestBed.get(PlayerService);
+    const event = { data: { metaData: { batchId: '0122838911932661768' } } };
+    spyOn(component, 'playContent').and.callThrough();
+    spyOn(playerService, 'playContent').and.callThrough();
+    component.playContent(event);
+    playerService.playContent(event);
+    expect(playerService.playContent).toHaveBeenCalled();
+    expect(component.showLoginModal).toBeFalsy();
+  });
+  it('should call playcontent when user is not loggedIn and content type is course', () => {
+    const playerService = TestBed.get(PlayerService);
+    const event = { data: { contentType : 'Course', metaData: { identifier: '0122838911932661768' } } };
+    userService._authenticated = false;
+    component.playContent(event);
+    expect(component.showLoginModal).toBeTruthy();
+    expect(component.baseUrl).toEqual('/learn/course/0122838911932661768');
   });
 });

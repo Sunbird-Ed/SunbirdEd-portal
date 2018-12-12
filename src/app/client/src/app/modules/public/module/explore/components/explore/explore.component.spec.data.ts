@@ -115,55 +115,65 @@ export const Response = {
     'result': { }
     },
     event: [
-        {
-          'name': 'flag test',
-          'image': 'https://ekstep-public-dev.s32.thumb.jpeg',
-          'description': '',
-          'rating': '0',
-          'action': {
-            'right': {
-              'class': 'ui blue basic button',
-              'eventName': 'Resume',
-              'displayType': 'button',
-              'text': 'Resume'
-            },
-            'onImage': {
-              'eventName': 'onImage'
-            }
-          },
-          'metaData': {
-            'batchId': '01250987188871168027',
-            'courseId': 'do_112499049696583680148'
-          },
-          'maxCount': 0,
-          'progress': 0,
-          'section': 'My Courses'
+      {
+        'name': 'Test1462016-02',
+        'description': 'Test',
+        'rating': '0',
+        'orgDetails': {},
+        'gradeLevel': 'Kindergarten,Grade 1,Grade 2,Grade 3,Grade 4,Grade 5,Other',
+        'contentType': 'Story',
+        'topic': '',
+        'subTopic': '',
+        'action': {
+          'onImage': {
+            'eventName': 'onImage'
+          }
         },
-        {
-          'name': 'AAAA',
-          'image': 'https://ekstep-publit/short_stories_lionandmouse3_1467102846349.thumb.jpg',
-          'description': 'Untitled Collection',
-          'rating': '0',
-          'action': {
-            'right': {
-              'class': 'ui blue basic button',
-              'eventName': 'Resume',
-              'displayType': 'button',
-              'text': 'Resume'
-            },
-            'onImage': {
-              'eventName': 'onImage'
-            }
+        'ribbon': {
+          'left': {
+            'class': 'ui circular label  card-badges-image'
           },
-          'metaData': {
-            'batchId': '01251320263126220811',
-            'courseId': 'do_1125131909441945601309'
+          'right': {
+            'class': 'ui black right ribbon label'
+          }
+        },
+        'metaData': {
+          'identifier': 'domain_70474',
+          'mimeType': 'application/vnd.ekstep.ecml-archive',
+          'contentType': 'Story'
+        },
+        'section': 'Popular Story'
+      },
+      {
+        'name': 'test_ginti',
+        'description': 'test_ginti',
+        'rating': '0',
+        'orgDetails': {},
+        'gradeLevel': 'Kindergarten,Grade 1,Grade 2,Grade 3,Grade 4,Grade 5,Other',
+        'contentType': 'Story',
+        'topic': '',
+        'subTopic': '',
+        'action': {
+          'onImage': {
+            'eventName': 'onImage'
+          }
+        },
+        'ribbon': {
+          'left': {
+            'class': 'ui circular label  card-badges-image'
           },
-          'maxCount': 4,
-          'progress': 0,
-          'section': 'My Courses'
-        }
-      ],
+          'right': {
+            'class': 'ui black right ribbon label'
+          }
+        },
+        'metaData': {
+          'identifier': 'domain_71549',
+          'mimeType': 'application/vnd.ekstep.ecml-archive',
+          'contentType': 'Story'
+        },
+        'section': 'Popular Story'
+      }
+    ],
     filters: [
       {
         'code': 'board',
