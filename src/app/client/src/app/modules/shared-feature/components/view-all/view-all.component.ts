@@ -232,7 +232,11 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   }
   private manipulateQueryParam(results) {
     this.filters = {};
+<<<<<<< HEAD
     const queryFilters = _.omit(results, ['key', 'defaultBoard', 'sort_by', 'sortType', 'defaultSortBy', 'exists', 'dynamic']);
+=======
+    const queryFilters = _.omit(results, ['key', 'sort_by', 'sortType', 'defaultBoard', 'defaultSortBy', 'exists', 'dynamic']);
+>>>>>>> 5179d7f587a39c67db6968f33de86c4e6f61cbcb
     if (!_.isEmpty(queryFilters)) {
       _.forOwn(queryFilters, (queryValue, queryKey) => {
         this.filters[queryKey] = queryValue;
@@ -249,8 +253,13 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   private getContentList(request) {
     let softConstraints = {};
     if (request.queryParams.defaultBoard && !this.filters.board) {
+<<<<<<< HEAD
      this.filters.board = request.queryParams.defaultBoard;
      softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints');
+=======
+      this.filters.board = request.queryParams.defaultBoard;
+      softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints');
+>>>>>>> 5179d7f587a39c67db6968f33de86c4e6f61cbcb
     }
     const requestParams = {
       filters: this.filters,
