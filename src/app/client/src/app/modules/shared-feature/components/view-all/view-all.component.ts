@@ -211,11 +211,16 @@ export class ViewAllComponent implements OnInit, OnDestroy {
       _.forOwn(results, (queryValue, queryKey) => {
         this.filters[queryKey] = queryValue;
       });
-      this.filters = _.omit(results, ['key', 'sort_by', 'sortType', 'defaultSortBy', 'exists']);
+      this.filters = _.omit(results, ['key', 'sort_by', 'defaultBoard', 'sortType', 'defaultSortBy', 'exists']);
     }
   }
 
   private getContentList(request) {
+    let softConstraints = {};
+    if (request.queryParams.defaultBoard && !this.filters.board) {
+     this.filters.board = request.queryParams.defaultBoard;
+     softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints');
+    }
     const requestParams = {
       filters: _.pickBy(this.filters, value => value.length > 0),
       limit: this.pageLimit,
@@ -223,7 +228,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
       exists: request.queryParams.exists,
       sort_by: request.queryParams.sortType ?
         { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy),
-        softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints')
+      softConstraints: softConstraints
     };
     if (_.get(this.activatedRoute.snapshot, 'data.baseUrl') === 'learn') {
       return combineLatest(
