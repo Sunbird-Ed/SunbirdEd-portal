@@ -7,10 +7,11 @@ import { Subject } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import * as moment from 'moment';
 @Component({
   selector: 'app-review-comments',
   templateUrl: './review-comments.component.html',
-  styleUrls: ['./review-comments.component.css']
+  styleUrls: ['./review-comments.component.scss']
 })
 export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -63,6 +64,11 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
   }
   ngOnChanges() {
     console.log('stageId changed', this.stageId);
+    if (!this.stageId) {
+      this.disableTextArea = true;
+    } else {
+      this.disableTextArea = false;
+    }
     this.comments = new FormControl();
   }
   focusOnInput() {
@@ -98,7 +104,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
       this.toasterService.error(this.resourceService.messages.emsg.m0010);
       return;
     }
-    if (!this.comments.value.trim()) {
+    if (!this.comments.value || !this.comments.value.trim()) {
       return;
     }
     this.disableTextArea = true;
@@ -132,7 +138,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
               logo: this.userService.userProfile.avatar,
             },
             body: this.comments.value,
-            createdOn: new Date()
+            createdOn: moment().format()
           };
           if (this.sortedComments[this.stageId]) {
             this.sortedComments[this.stageId].push(newComment);

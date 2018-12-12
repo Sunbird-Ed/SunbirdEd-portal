@@ -1,5 +1,5 @@
 import { combineLatest as observableCombineLatest ,  Subject } from 'rxjs';
-import { PageApiService, PlayerService, ISort, OrgDetailsService } from '@sunbird/core';
+import { PageApiService, PlayerService, ISort, OrgDetailsService, UserService } from '@sunbird/core';
 import { PublicPlayerService } from './../../../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
@@ -33,6 +33,10 @@ export class ExploreComponent implements OnInit, OnDestroy {
 
   public orgDetailsService: OrgDetailsService;
   /**
+  * Reference of UserService
+  */
+   private userService: UserService;
+  /**
    * This variable hepls to show and hide page loader.
    * It is kept true by default as at first when we comes
    * to a page the loader should be displayed before showing
@@ -43,6 +47,15 @@ export class ExploreComponent implements OnInit, OnDestroy {
   * To show / hide no result message when no result found
  */
   noResult = false;
+  /**
+  * To show / hide login popup on click of content
+  */
+   showLoginModal = false;
+
+   /**
+   *baseUrl;
+   */
+   public baseUrl: string;
   /**
   * no result  message
  */
@@ -77,7 +90,8 @@ export class ExploreComponent implements OnInit, OnDestroy {
     resourceService: ResourceService, config: ConfigService, private activatedRoute: ActivatedRoute, router: Router,
     public utilService: UtilService, public navigationHelperService: NavigationHelperService,
     orgDetailsService: OrgDetailsService, private publicPlayerService: PublicPlayerService,
-    private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService) {
+    private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
+    userService: UserService) {
     this.pageSectionService = pageSectionService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
@@ -86,6 +100,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
     this.router = router;
     this.router.onSameUrlNavigation = 'reload';
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+    this.userService = userService;
   }
 
   populatePageData() {
@@ -100,7 +115,8 @@ export class ExploreComponent implements OnInit, OnDestroy {
       filters: filters,
       softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
       mode: 'soft',
-      exists: []
+      exists: [],
+      params : this.config.appConfig.ExplorePage.contentApiQueryParams
     };
     this.pageSectionService.getPageData(option).pipe(
       takeUntil(this.unsubscribe$))
@@ -190,7 +206,12 @@ export class ExploreComponent implements OnInit, OnDestroy {
   }
 
   public playContent(event) {
-    this.publicPlayerService.playContent(event);
+    if (!this.userService.loggedIn && event.data.contentType === 'Course') {
+      this.showLoginModal = true;
+      this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
+    } else {
+      this.publicPlayerService.playContent(event);
+    }
   }
 
   compareObjects(a, b) {
@@ -273,6 +294,9 @@ export class ExploreComponent implements OnInit, OnDestroy {
      const url = this.router.url.split('?');
       const sectionUrl = url[0] + '/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], {queryParams: queryParams});
+  }
+  closeModal() {
+    this.showLoginModal = false;
   }
 
   ngOnDestroy() {

@@ -113,7 +113,8 @@ export class ResourceComponent implements OnInit, OnDestroy {
       filters: filters,
       softConstraints : softConstraints,
       mode: 'soft',
-      exists: []
+      exists: [],
+      params: this.config.appConfig.Library.contentApiQueryParams
     };
     if (this.queryParams.sort_by) {
       option['sort_by'] = {[this.queryParams.sort_by]: this.queryParams.sortType  };

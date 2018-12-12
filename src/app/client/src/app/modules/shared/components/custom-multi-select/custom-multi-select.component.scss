@@ -1,3 +1,5 @@
+@import "variables";
+
 .selection.multiselect-square-border {
     border-radius: 5px;
     border: 1px solid rgba(34,36,38,.15);
@@ -8,14 +10,15 @@
 .template-checkbox{
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap !important;
     align-items: center;
+    font-size: 1rem;
+    line-height: 1.2;
 }
 .ui.selection.multiselect-square-border {
-    min-width: 8em;
+    min-width: 75%;
 }
-@media screen and (min-width:1200px) {
-    .ui.selection.multiselect-square-border {
-        min-width: 12em;
-    }
+.option-text{
+    width: calc(100% - 30px);
+    word-break: break-word;
 }

@@ -501,16 +501,6 @@ span.fancytree-title {
   border: 1px solid transparent;
   border-radius: 0;
 }
-span.fancytree-focused span.fancytree-title {
-  outline: 1px dotted black;
-}
-span.fancytree-active span.fancytree-title {
-  background-color: #D4D4D4;
-}
-.fancytree-treefocus span.fancytree-active span.fancytree-title {
-  color: white;
-  background-color: #3875D7;
-}
 /*******************************************************************************
  * 'table' extension
  */
@@ -534,4 +524,8 @@ table.fancytree-ext-columnview span.fancytree-node.fancytree-expanded {
 }
 table.fancytree-ext-columnview span.fancytree-node.fancytree-active {
   background-color: royalblue;
+}
+span.fancytree-active span.fancytree-title{
+  background: transparent !important;
+  color: #000 !important;
 }

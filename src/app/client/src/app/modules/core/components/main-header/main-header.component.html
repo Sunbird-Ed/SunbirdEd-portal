@@ -11,7 +11,7 @@
 
             <nav id="main-nav" aria-label="Primary navigation" class="width-100 d-flex ml-auto">
                 <!-- mobile only view starts -->
-                <div class="ui text primary-nav menu ml-auto mobile only m-0">
+                <div class="ui text primary-nav menu mobile only">
                     <div class="ui grid m-0">
                         <div class="p-0" [ngClass]="{'row': userService.loggedIn, 'mt-10': !userService.loggedIn}">
                             <div class="eight wide column"></div>
@@ -37,12 +37,12 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="row p-0 mt-20" *ngIf="userService.loggedIn">
-                            <div class="twelve wide column flex-as-flex-end ">
+                        <div class="p-0 row" *ngIf="userService.loggedIn">
+                            <div class="twelve wide column mt-10">
                                 <app-search class="flex-as-center width-100"></app-search>
                             </div>
                         </div>
-                        <div class="row" *ngIf="userService.loggedIn">
+                        <div class="p-0 row" *ngIf="userService.loggedIn">
                             <div class="twelve wide column d-flex flex-jc-center flex-as-center">
                                 <app-main-menu></app-main-menu>
                             </div>
