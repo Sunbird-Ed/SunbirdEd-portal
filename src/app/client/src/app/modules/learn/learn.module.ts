@@ -16,7 +16,9 @@ import { CoreModule } from '@sunbird/core';
 import { NotesModule } from '@sunbird/notes';
 import { DashboardModule } from '@sunbird/dashboard';
 import { MaterialUi } from '../../material';
-
+import {MatCardModule} from '@angular/material/card';
+import {MatSelectModule} from '@angular/material/select';
+import {MatIconModule} from '@angular/material/icon';
 @NgModule({
   imports: [
     CommonModule,
@@ -31,8 +33,15 @@ import { MaterialUi } from '../../material';
     ReactiveFormsModule,
     NotesModule,
     TelemetryModule,
-    NgInviewModule
+    NgInviewModule,
+    MatCardModule,
+    MatSelectModule,
+    MatIconModule
   ],
+  exports: [MatCardModule,
+  MatSelectModule,
+  MatIconModule
+],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,

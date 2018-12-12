@@ -2,7 +2,16 @@
 @import "../node_modules/slick-carousel/slick/slick-theme.css";
 @import "../node_modules/fine-uploader/fine-uploader/fine-uploader-new.min.css";
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 /*sunbird light font*/
 @font-face {
   font-family: 'sunbirdlightfont';
@@ -1224,7 +1233,7 @@ ui.primary.basic.button.ann-upload-attachment {
   color: #007AFF;
   font-family: 'sunbirdboldfont';
   font-size: 1em;
-  line-height: 17px; 
+  line-height: 17px;
 }
 .linkify.icon.opacity04 {
   opacity: 0.4;
@@ -2649,7 +2658,7 @@ iframe.iziModal-iframe {
   right: 0;
   left: 0;
   bottom: 0;
-} 
+}
 
 .overflow-word-wrap {
   overflow-wrap: break-word !important;
@@ -2732,10 +2741,10 @@ iframe.iziModal-iframe {
 .ui.icon.input>i.icon.dialcode-search-icon:not(.link) {
   pointer-events: auto;
 }
-.text-ellipsis { 
+.text-ellipsis {
   white-space: nowrap;
-  overflow: hidden; 
-  text-overflow:ellipsis; 
+  overflow: hidden;
+  text-overflow:ellipsis;
   display: block;
   line-height:1.4em;
 }

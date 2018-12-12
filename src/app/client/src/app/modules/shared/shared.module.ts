@@ -22,6 +22,9 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
 import { MaterialUi } from '../../material';
+import {MatCardModule} from '@angular/material/card';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+
 
 
 @NgModule({
@@ -32,7 +35,10 @@ import { MaterialUi } from '../../material';
     SlickModule,
     FormsModule,
     TelemetryModule,
-    NgInviewModule
+    NgInviewModule,
+    MatCardModule,
+    MatProgressBarModule
+
   ],
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
     DateFormatPipe, PageSectionComponent, NoResultComponent, DateFilterXtimeAgoPipe,
@@ -42,7 +48,8 @@ import { MaterialUi } from '../../material';
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
     PageSectionComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
     PlayerComponent, CardComponent, FilterPipe, ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent,
-    QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent, CustomMultiSelectComponent]
+    QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent, CustomMultiSelectComponent,
+  MatCardModule, MatProgressBarModule]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
