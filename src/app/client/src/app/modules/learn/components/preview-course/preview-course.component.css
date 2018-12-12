@@ -1,10 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Carter+One|Cabin+Sketch');
 @import '../../../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-/* font-family: 'Carter One', cursive;
-font-family: 'Cabin Sketch', cursive;
-font-family: 'Black Ops One', cursive;
-font-family: 'Nanum Gothic Coding', monospace;
-font-family: 'Plaster', cursive; */
+
+html{
+    scroll-behavior: smooth;
+}
 body{
     background-attachment: fixed;
     background-image: url('https://raw.githubusercontent.com/rheafernandes/rheafernandes.github.io/master/Itadakimasu/dist/4a5b0a776dbd2b9cd79681a8b0989724.jpg');
@@ -13,10 +12,7 @@ body{
 .navbar-brand{
     font-size: 1.5rem;
     font-family: 'Carter One', cursive;
-
-    /* background: -webkit-linear-gradient(#25e099 25%,#1bc0c0 10%, #0e034b) !important; */
-     background: -webkit-linear-gradient(orange 40%, #920663 70% ) !important;
-    /* background: -webkit-linear-gradient(#f19a37 25%, #4d0000) !important; */
+     background: -webkit-linear-gradient(orange 50%, #920663 50% ) !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
 }
@@ -33,10 +29,6 @@ body{
     font-size:1.2em;
     font-weight:bold;
     color:orange;
-    /* background: -webkit-linear-gradient(#51ffff , #0e034b ) !important;
-    background: -webkit-linear-gradient(#15a7a7, #5fe681) !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important; */
 }
 
 .btn-info{
@@ -204,7 +196,7 @@ li:hover{
     background:white;
     box-shadow: 0 10px 30px 5px grey;
     border-radius: 10px;
-    padding: 10vh;
+    padding: 5vh;
 }
 
 .jumbotron{
@@ -226,33 +218,56 @@ width: 300px
 .jumbo-li-text{
     font-size:15px
 }
-.chapters-container {
-    border:1px solid;
-  
-  /* display:flex;
-  justify-content: space-around; */
-  }
-  .divided {
-    padding:100px;
-    display: flex;
-    align-items: center;
-    overflow-x: scroll;
-  overflow-y: hidden;
-  }
-  
-  .divider {
-    flex-grow: 1;
-    padding-right:90px;
-    border-bottom: 6px solid black;
-    margin: 5px;
-  }
-  .span-radius {
-    padding:35px;
-    color: orange;
+
+.divided {
+ padding:100px;
+ display: flex;
+ align-items: center;
+ overflow-x: scroll;
+overflow-y: hidden;
+}
+
+.divider {
+ flex-grow: 1;
+ padding-right:90px;
+ border-bottom: 6px solid black;
+ margin: 5px;
+}
+.span-radius {
+ width:200px;
+ height: 200px;
+ color: orange;
+ background: black;
+ box-shadow: 0px 10px 10px 0px  #3f3f3f ;
+ border-radius: 50%;
+}
+.span-radius a {
+ color: orange;
+
+}
+.video-text {
+ color: white !important;
+ font-size: 30px;
+}
+.list-header {
+ font-family:'Cabin Sketch',cursive;
+ color: orange;
+ font-size: 30px;
+}
+.list-data {
+    font-size:20px;
+    color: black;
+    text-shadow: black;
+}
+
+.video-text {
+    color: white;
+    font-size: 15px;
+}
+
+.circle{
     background: black;
-    box-shadow: 0px 3px 10px 0px  #000000;
     border-radius: 50%;
-  }
-  .span-radius a {
-    color: orange;
-  }
+    height: 150px;
+    width: 150px;
+}

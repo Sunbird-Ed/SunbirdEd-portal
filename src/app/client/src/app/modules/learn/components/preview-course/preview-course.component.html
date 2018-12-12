@@ -242,12 +242,12 @@ For easy navigation of course preview -->
       This section is for Preview/Sample video  -->
 <section class="course-preview-section container-fluid bg-dark" id="preview">
   <h2>Sneak-Peak</h2>
-  <mat-tab-group>
-    <mat-tab label="Sample Video" style="color:white !important;">
+  <mat-tab-group class="video-text">
+    <mat-tab label="Sample Video ">
       <iframe width="720" height="450" [src]='safeUrl' frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen></iframe>
     </mat-tab>
-    <mat-tab label="Sample Chapter" style="color:white !important; ">
+    <mat-tab label="Sample Chapter">
       <iframe width="720" height="450" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS-ORUK9ChAFCMDw0zjPwYrxcgp1n47iTqCPnNSdfq5AKvhvJkHbWqmuSNb8qTuvaRdRxh3v9EbKBYO/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
     </mat-tab>
   </mat-tab-group>
@@ -255,8 +255,22 @@ For easy navigation of course preview -->
 </section>
 <!-- Section #5
       This section is for milestones/roadmap -->
-<section class="course-roadmap-section ">
-
+<section class="course-roadmap-section bg-light chapters-container">
+  <h2 class="light-section-header">Milestones</h2>
+  <div class="divided">
+    <div *ngFor="let chapter of coursechapters ; let i=index" class="col-sm-4">
+      <div class="row">
+        <div class="col-sm-6 text-center">
+          <div class="circle">
+              <a href="#">{{chapter.name}}</a>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div *ngIf="i <coursechapters.length-1" class="divider"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 <!-- Section #6
       This section is for Instructors/Mentors -->
