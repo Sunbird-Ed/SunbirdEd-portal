@@ -33,12 +33,14 @@ import { MaterialUi } from './material';
     SharedModule.forRoot(),
     Ng2IziToastModule,
     WebExtensionModule.forRoot(),
+
     // ...WebExtensionsConfig.plugins.map((data) => data.module),
     TelemetryModule.forRoot(),
     PublicModule,
     ...PluginModules,
     AppRoutingModule // don't add any module below this because it is having wildcard route
   ],
+  exports: [BrowserAnimationsModule],
   entryComponents: [AppComponent],
   bootstrap: [AppComponent],
   providers: [
