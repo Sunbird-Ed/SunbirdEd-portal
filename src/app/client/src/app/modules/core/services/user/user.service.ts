@@ -147,6 +147,20 @@ export class UserService {
       }
     );
   }
+  public getUserProfileTest(userId): void {
+    const option = {
+      url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${userId}`,
+      param: this.config.urlConFig.params.userReadParam
+    };
+    this.learnerService.get(option).subscribe(
+      (data: ServerResponse) => {
+        this.setUserProfile(data);
+      },
+      (err: ServerResponse) => {
+        this._userData$.next({ err: err, userProfile: this._userProfile });
+      }
+    );
+  }
   /**
    * get method to fetch appId.
    */
