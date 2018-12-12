@@ -10,6 +10,7 @@ import { ResourceService } from '@sunbird/shared';
 import { FlagContentComponent, AuthGuard } from '@sunbird/core';
 import { CourseProgressComponent } from '@sunbird/dashboard';
 import { RedirectComponent } from './../shared/components/redirect/redirect.component';
+import { PreviewCourseComponent } from './components/preview-course/preview-course.component';
 const telemetryEnv = 'course';
 const objectType = 'course';
 const routes: Routes = [
@@ -27,11 +28,15 @@ const routes: Routes = [
     }
   },
   {
+    path: 'preview/:courseId' , component: PreviewCourseComponent
+  },
+  {
     path: 'course', component: CourseConsumptionPageComponent,
     data: { telemetry: { env: telemetryEnv } },
     children: [
       {
         path: ':courseId', component: CoursePlayerComponent,
+        // path: ':courseId', component: PreviewCourseComponent,
         data: {
           telemetry: {
             env: telemetryEnv, pageid: 'course-player', type: 'view', object: { ver: '1.0', type: 'batch' }

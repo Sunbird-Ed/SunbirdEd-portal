@@ -1,0 +1,273 @@
+@import url('https://fonts.googleapis.com/css?family=Carter+One|Cabin+Sketch');
+@import '../../../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+html{
+    scroll-behavior: smooth;
+}
+body{
+    background-attachment: fixed;
+    background-image: url('https://raw.githubusercontent.com/rheafernandes/rheafernandes.github.io/master/Itadakimasu/dist/4a5b0a776dbd2b9cd79681a8b0989724.jpg');
+    background-repeat: repeat;
+}
+.navbar-brand{
+    font-size: 1.5rem;
+    font-family: 'Carter One', cursive;
+     background: -webkit-linear-gradient(orange 50%, #920663 50% ) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+.bg-dark{
+    background-color: black !important;
+}
+.bg-light{
+    background-attachment: fixed;
+    background-image: url('https://raw.githubusercontent.com/rheafernandes/rheafernandes.github.io/master/Itadakimasu/dist/4a5b0a776dbd2b9cd79681a8b0989724.jpg');
+    background-repeat: repeat;
+}
+.btn-enroll{
+    font-family: 'Cabin Sketch', cursive;
+    font-size:1.2em;
+    font-weight:bold;
+    color:orange;
+}
+
+.btn-info{
+    background: #920663;
+    border:none;
+}
+
+h2{
+    font-family:'Cabin Sketch',cursive;
+    color: orange;
+    text-shadow: 2px 2px 3px black;
+    font-size: 4rem;
+    /* background: -webkit-linear-gradient(#51ffff 25%, #0e034b) !important;
+    background: -webkit-linear-gradient(#f19a37 25%, #4d0000) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important; */
+    text-align: center;
+}
+.light-section-header{
+    font-family:'Cabin Sketch',cursive;
+    color: black;
+}
+.tagline{
+    font-size: 2rem;
+    font-family:'Cabin Sketch',cursive;
+    color: black;
+    text-shadow: 1px 2px 1px black;
+}
+ul{
+    list-style-type: none;
+}
+li{
+    border:white;
+    display: block;
+}
+li:hover{
+    display: block;
+    color: #1d1f1f
+}
+.fa{
+    color: orange;
+}
+.card {
+    width:300px;
+    min-height:400px;
+    background:#fff;
+    box-shadow: 0 3px 10px 0px rgb(39, 39, 39);
+    border-radius:10px;
+    transition:0.5s;
+}
+.card:hover {
+    box-shadow: 0 3px 10px 0px rgb(39, 39, 39);
+}
+.card .box {
+    text-align:center;
+    padding:20px;
+    box-sizing:border-box;
+    width:100%;
+}
+.card .box .img {
+    width:200px;
+    height:200px;
+    margin:0 auto;
+    border-radius:50%;
+    overflow:hidden;
+}
+.card .box .img img {
+    width:100%;
+    height:100%;
+}
+.card .box h2 {
+    font-size:20px;
+    color:#262626;
+    margin:20px auto;
+    text-shadow: none;
+}
+.card .box h2 span {
+    font-size:14px;
+    background:#920663;
+    color:#fff;
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:15px;
+}
+.card .box p {
+    color:#262626;
+}
+.card .box span {
+    display:inline-flex;
+}
+.card .box ul {
+    margin:0;
+    padding:0;
+}
+.card .box ul li {
+    list-style:none;
+    float:left;
+}
+.card .box ul li a {
+    display:block;
+    color:#aaa;
+    margin:0 10px;
+    font-size:20px;
+    transition:0.5s;
+    text-align:center;
+}
+.card .box ul li:hover a {
+    color:#920663;
+    transform:rotateY(360deg);
+}
+
+.wrapper {
+	min-height: 100%;
+    width: 300px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 3px 10px 0px rgb(39, 39, 39);
+}
+
+.recommended-image{
+    width:100px;
+    height:100px;
+    align-self: center;
+    padding: 20px;
+    margin:0 auto;
+    overflow:hidden;
+}
+.mentor-card{
+    width:300px;
+    height:300px;
+}
+.recommended-card-header{
+    margin:auto;
+    margin-top:0;
+    font-size:1.5em;
+}
+.rating-section{
+    margin:auto !important;
+}
+
+.checked{
+    color: orange;
+}
+.course-preview-section{
+    padding:0 20vw;
+}
+.box .review-img{
+    width:200px;
+    height:200px;
+    margin:0 auto;
+    padding: 0 auto;
+    border-radius:50%;
+    overflow:hidden;
+  }
+  
+  .box .review-img img {
+    width:100%;
+    height:100%;
+  }
+  .reviews{
+    color:white;
+  }
+
+.inner-card{
+    background:white;
+    box-shadow: 0 10px 30px 5px grey;
+    border-radius: 10px;
+    padding: 5vh;
+}
+
+.jumbotron{
+    margin: 0;
+}
+
+.container-fluid{
+    padding-top:5vh;
+    padding-bottom:5vh;
+}
+
+.jumbotron-text{
+    text-align: center;
+}
+.image-jumbo{
+height: 300px;
+width: 300px
+}
+.jumbo-li-text{
+    font-size:15px
+}
+
+.divided {
+ padding:100px;
+ display: flex;
+ align-items: center;
+ overflow-x: scroll;
+overflow-y: hidden;
+}
+
+.divider {
+ flex-grow: 1;
+ padding-right:90px;
+ border-bottom: 6px solid black;
+ margin: 5px;
+}
+.span-radius {
+ width:200px;
+ height: 200px;
+ color: orange;
+ background: black;
+ box-shadow: 0px 10px 10px 0px  #3f3f3f ;
+ border-radius: 50%;
+}
+.span-radius a {
+ color: orange;
+
+}
+.video-text {
+ color: white !important;
+ font-size: 30px;
+}
+.list-header {
+ font-family:'Cabin Sketch',cursive;
+ color: orange;
+ font-size: 30px;
+}
+.list-data {
+    font-size:20px;
+    color: black;
+    text-shadow: black;
+}
+
+.video-text {
+    color: white;
+    font-size: 15px;
+}
+
+.circle{
+    background: black;
+    border-radius: 50%;
+    height: 150px;
+    width: 150px;
+}
