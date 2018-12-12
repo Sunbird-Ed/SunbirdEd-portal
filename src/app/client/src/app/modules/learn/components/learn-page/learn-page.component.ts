@@ -33,7 +33,7 @@ import {
 } from '@sunbird/telemetry';
 import { CourseBatchService } from '../../services';
 import { forEach } from '@angular/router/src/utils/collection';
-import {formatDate } from '@angular/common';
+import { formatDate } from '@angular/common';
 /**
  * This component contains 2 sub components
  * 1)PageSection: It displays carousal data.
@@ -90,7 +90,7 @@ export class LearnPageComponent implements OnInit, OnDestroy {
    * To show / hide no result message when no result found
    */
   noResult = false;
-  today= new Date();
+  today = new Date();
   jstoday = formatDate(this.today, 'yyyy-MM-dd', 'en-US', '+0530');
   /**
    * Contains config service reference
@@ -110,8 +110,8 @@ export class LearnPageComponent implements OnInit, OnDestroy {
   content: any;
   public unsubscribe = new Subject<void>();
   courseDataSubscription: Subscription;
-   newarr = [];
-   unique = {};
+  newarr = [];
+  unique = {};
   currentDate = new Date().toJSON().slice(0, 10);
   /**
    * Constructor to create injected service(s) object
@@ -148,36 +148,52 @@ export class LearnPageComponent implements OnInit, OnDestroy {
     this.showLoader = true;
     this.courseDataSubscription = this.coursesService.enrolledCourseData$.subscribe(
       data => {
-          const active = [];
-            const inactive = [];
-            const completed = [];
+        const active = [];
+        const inactive = [];
+        const completed = [];
         if (data && !data.err) {
           if (data.enrolledCourses.length > 0) {
             this.enrolledCourses = data.enrolledCourses;
             console.log('enrolled courses', this.enrolledCourses);
             for (const enrolledCourses of this.enrolledCourses) {
-                this.batchData.getEnrolledBatchDetails(enrolledCourses.batchId)
-                 .subscribe(
-                   batch => {
-                     console.log('batch deatails', batch);
-  console.log('after subscribe ', batch.endDate , 'current date ' , this.currentDate, 'batch' , batch , 'encoure' , enrolledCourses);
-                let constantData;
-                const courses = [];
-                const metaData = {
-                  metaData: this.configService.appConfig.Course.enrolledCourses
-                    .metaData
-                };
-                const dynamicFields = {
-                  maxCount: this.configService.appConfig.Course.enrolledCourses
-                    .maxCount,
-                  progress: this.configService.appConfig.Course.enrolledCourses
-                    .progress
-                };
-                    if (enrolledCourses.progress === 0 && this.currentDate <= batch.endDate) {
+              this.batchData
+                .getEnrolledBatchDetails(enrolledCourses.batchId)
+                .subscribe(batch => {
+                  console.log('batch deatails', batch);
+                  console.log('after subscribe ', batch.endDate, 'current date ' , this.currentDate,
+                    'batch',
+                    batch,
+                    'encoure',
+                    enrolledCourses
+                  );
+                  let constantData;
+                  const courses = [];
+                  const metaData = {
+                    metaData: this.configService.appConfig.Course
+                      .enrolledCourses.metaData
+                  };
+                  const dynamicFields = {
+                    maxCount: this.configService.appConfig.Course
+                      .enrolledCourses.maxCount,
+                    progress: this.configService.appConfig.Course
+                      .enrolledCourses.progress
+                  };
+
+                  console.log(
+                    ' (batch.countDecrementStatus === false )',
+                    batch.countDecrementStatus === false,
+                    ' batch.countIncrementStatus === true',
+                    batch.countIncrementStatus === true
+                  );
+                  // This is View, Continue, Start part
+                  // for (const enrolledCourse of this.enrolledCourses) {
+                  if (
+                    enrolledCourses.progress === 0 && this.currentDate <= batch.endDate
+                  ) {
                     const newCourses = [];
                     newCourses.push(enrolledCourses);
                     constantData = this.configService.appConfig.Course
-                    .enrolledCourses.startData;
+                      .enrolledCourses.startData;
                     const testCourses = this.utilService.getDataForCard(
                       newCourses,
                       constantData,
@@ -185,17 +201,21 @@ export class LearnPageComponent implements OnInit, OnDestroy {
                       metaData
                     );
                     for (const course of testCourses) {
-                      courses.push (course);
+                      courses.push(course);
                       active.push(course);
                       console.log('active', active);
                     }
                   }
                   // tslint:disable-next-line:max-line-length
-                   // (batch.countDecrementStatus === false || batch.countDecrementStatus === true ) && ( batch.countIncrementStatus === true ) && (String(batch.endDate).localeCompare(this.currentDate)) && enrolledCourses.progress === 0
+                  // (batch.countDecrementStatus === false || batch.countDecrementStatus === true ) && ( batch.countIncrementStatus === true ) && (String(batch.endDate).localeCompare(this.currentDate)) && enrolledCourses.progress === 0
                   // tslint:disable-next-line:max-line-length
-                  if (enrolledCourses.progress > 0 && (enrolledCourses.progress < enrolledCourses.leafNodesCount) && this.currentDate <= batch.endDate) {
+                  if (
+                    enrolledCourses.progress > 0 &&
+                    enrolledCourses.progress < enrolledCourses.leafNodesCount &&
+                    this.currentDate <= batch.endDate
+                  ) {
                     constantData = this.configService.appConfig.Course
-                    .enrolledCourses.constantData;
+                      .enrolledCourses.constantData;
                     const continueCourses = [];
                     continueCourses.push(enrolledCourses);
                     const testCourses = this.utilService.getDataForCard(
@@ -205,16 +225,23 @@ export class LearnPageComponent implements OnInit, OnDestroy {
                       metaData
                     );
                     for (const course of testCourses) {
-                      courses.push (course);
+                      courses.push(course);
                       active.push(course);
                       console.log('acive', active);
                     }
                   }
                   // tslint:disable-next-line:max-line-length
-                  if (enrolledCourses.progress === enrolledCourses.leafNodesCount && this.currentDate <= batch.endDate) {
-                     console.log('inside if', (String(batch.endDate).localeCompare(this.currentDate)));
+                  if (
+                    enrolledCourses.progress ===
+                      enrolledCourses.leafNodesCount &&
+                    this.currentDate <= batch.endDate
+                  ) {
+                    console.log(
+                      'inside if',
+                      String(batch.endDate).localeCompare(this.currentDate)
+                    );
                     constantData = this.configService.appConfig.Course
-                    .enrolledCourses.viewData;
+                      .enrolledCourses.viewData;
                     const endedCourses = [];
                     endedCourses.push(enrolledCourses);
                     const testCourses = this.utilService.getDataForCard(
@@ -224,16 +251,19 @@ export class LearnPageComponent implements OnInit, OnDestroy {
                       metaData
                     );
                     for (const course of testCourses) {
-                      courses.push (course);
+                      courses.push(course);
                       completed.push(course);
                       console.log('com', completed);
                     }
                   }
                   // tslint:disable-next-line:max-line-length
                   if (this.currentDate > batch.endDate) {
-                     console.log('inside if', (String(batch.endDate).localeCompare(this.currentDate)));
+                    console.log(
+                      'inside if',
+                      String(batch.endDate).localeCompare(this.currentDate)
+                    );
                     constantData = this.configService.appConfig.Course
-                    .enrolledCourses.viewData;
+                      .enrolledCourses.viewData;
                     const endedCourses = [];
                     endedCourses.push(enrolledCourses);
                     const testCourses = this.utilService.getDataForCard(
@@ -243,16 +273,16 @@ export class LearnPageComponent implements OnInit, OnDestroy {
                       metaData
                     );
                     for (const course of testCourses) {
-                      courses.push (course);
-                     inactive.push(course);
+                      courses.push(course);
+                      inactive.push(course);
                       console.log('com', completed);
                     }
                   }
-                  if (batch.endDate === undefined) {
+                  if (batch.endDate === undefined && enrolledCourses.progress === 0) {
                     const newCourses = [];
                     newCourses.push(enrolledCourses);
                     constantData = this.configService.appConfig.Course
-                    .enrolledCourses.startData;
+                      .enrolledCourses.startData;
                     const testCourses = this.utilService.getDataForCard(
                       newCourses,
                       constantData,
@@ -260,34 +290,32 @@ export class LearnPageComponent implements OnInit, OnDestroy {
                       metaData
                     );
                     for (const course of testCourses) {
-                      courses.push (course);
+                      courses.push(course);
                       active.push(course);
                       console.log(' no end date active', active);
                     }
                   }
-            console.log('courses', courses);
-            // tslint:disable-next-line:no-shadowed-variable
-    // courses.forEach( data => {
-    //           console.log('check data', data);
-    //             const s = '' + data.progress;
-    //             console.log('check cdata', data.progress, 'string', s);
-    //             if (s === '0') {
-    //             active.push(data);
-    //             console.log('active', active, 'cdata', data.progress );
-    //           } else if (data.progress === 1) {
-    //             console.log('inactive');
-    //             inactive.push(data);
-    //           } else {
-    //             completed.push(data);
-    //           }
-    //             });
-
-            // this.caraouselData.unshift({
-            //   name: 'My courses',
-            //   length: courses.length,
-            //   contents: courses
-            // });
-          }); }
+                  // tslint:disable-next-line:max-line-length
+                  if (batch.endDate === undefined && enrolledCourses.progress > 0 && enrolledCourses.progress < enrolledCourses.leafNodesCount) {
+                    const newCourses = [];
+                    newCourses.push(enrolledCourses);
+                    constantData = this.configService.appConfig.Course
+                      .enrolledCourses.constantData;
+                    const testCourses = this.utilService.getDataForCard(
+                      newCourses,
+                      constantData,
+                      dynamicFields,
+                      metaData
+                    );
+                    for (const course of testCourses) {
+                      courses.push(course);
+                      active.push(course);
+                      console.log(' no end date active', active);
+                    }
+                  }
+                  console.log('courses', courses);
+                });
+            }
             this.caraouselData.unshift({
               name: 'Completed',
               length: completed.length,
@@ -303,7 +331,7 @@ export class LearnPageComponent implements OnInit, OnDestroy {
               length: active.length,
               contents: active
             });
-            console.log('active array' , active);
+            console.log('active array', active);
           }
           this.populatePageData();
         } else if (data && data.err) {
@@ -527,9 +555,8 @@ export class LearnPageComponent implements OnInit, OnDestroy {
       event.data.metaData.mimeType =
         'application/vnd.ekstep.content-collection';
       event.data.metaData.contentType = 'Course';
-
     }
-    // console.log('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[',event.data.metaData);
+    console.log('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[', event.data.metaData);
     this.playerService.playContent(event.data.metaData);
   }
   ngOnDestroy() {
