@@ -1,5 +1,5 @@
-<div class="ui grid">
-    <div class="ui twelve wide column" *ngIf="section.contents && section.contents.length > 0">
+<div class="ui grid mt-30" *ngIf="section.contents && section.contents.length > 0">
+    <div class="ui twelve wide column">
         <div class="d-flex flex-ai-center">
             <h4 class="ui header m-0 mr-5 pageSection-heading">{{section.name}}</h4>
             <span class="ui primary label pageSection-count">{{section.contents.length}}</span>
@@ -25,7 +25,7 @@
                         (clickEvent)="playContent($event)"
                         [data]="content" 
                         [customClass]="'mr-20'"
-                        class="pr-20 d-block" [class.last-card]="last">
+                        class="pr-20 d-block" [class.last-card]="pr-0">
                     </app-card>
                 </div>
             </ngx-slick>

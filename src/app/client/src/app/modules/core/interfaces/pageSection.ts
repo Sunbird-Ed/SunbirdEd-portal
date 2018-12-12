@@ -27,4 +27,5 @@ export interface IPageSection {
      */
     mode?: string;
     exists?: Array<string>;
+    params?: object;
 }

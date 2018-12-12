@@ -1,9 +1,19 @@
+@import "variables";
+
 .review-comments-box {
-    height: 397.371px;		
+    max-height: calc(100% - 4px);
+    position: absolute;
+    top: 15px;
+    bottom: 18px;
+    left: 15px;
+    right: 15px;	
+}
+.ui.dimmer{
+    z-index: inherit;
 }
 .ui.comments.scrolling{
-    height:100%;
-    max-height: 260px;
+    height:calc(100% - 115px);
+    max-height: calc(100% - 115px);
     overflow-y: auto;
 }
 .reply-box{
@@ -22,17 +32,17 @@
 .sb-icon-comment:before {
     font-size: 72px;
     width: 72px;
-    color: #66BF00;
+    color: $view-all-button;
 }
 .icon.sb-icon-reviewer:before {
     font-size: 30px;
-    color: #8BA9CC;
+    color: $primary-color;
 }
 textarea:focus+i.icon.sb-icon-send:before {
-    color:#2185D0;
+    color: $primary-color;
 }
 .ui.form textarea:focus {
-    border-color:#2185D0 !important;
+    border-color:$primary-color !important;
 }
 .comment:after {
     content: ""; 
@@ -43,4 +53,7 @@ textarea:focus+i.icon.sb-icon-send:before {
 }
 .review-comments-loader {
     position: relative;
+}
+.placeholder{
+    height:100%;
 }

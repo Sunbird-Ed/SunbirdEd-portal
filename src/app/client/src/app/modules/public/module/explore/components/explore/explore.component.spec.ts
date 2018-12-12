@@ -54,7 +54,7 @@ describe('ExploreComponent', () => {
       imports: [HttpClientTestingModule, SuiModule, SlickModule,
         SharedModule.forRoot(), CoreModule.forRoot(), NgInviewModule, TelemetryModule.forRoot()],
       declarations: [ExploreComponent],
-      providers: [{ provide: ResourceService, useValue: resourceBundle },
+      providers: [ ConfigService, { provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useValue: fakeActivatedRoute }, OrgDetailsService, PublicPlayerService],
       schemas: [NO_ERRORS_SCHEMA]
@@ -126,10 +126,12 @@ describe('ExploreComponent', () => {
   });
   it('should call getFilters with data ', () => {
     const service = TestBed.get(PageApiService);
+    const config = TestBed.get(ConfigService);
     const filters = Response.filters;
     component.prominentFilters = {};
     component.hashTagId = '0123166367624478721';
     const requestParams = Response.requestParam2;
+    requestParams['params'] = config.appConfig.ExplorePage.contentApiQueryParams;
     spyOn(component, 'getQueryParams').and.callThrough();
     spyOn(component, 'populatePageData').and.callThrough();
     spyOn(service, 'getPageData').and.callThrough();
@@ -143,8 +145,10 @@ describe('ExploreComponent', () => {
     const filters = [];
     component.queryParams = {};
     const service = TestBed.get(PageApiService);
+    const config = TestBed.get(ConfigService);
     component.hashTagId = '0123166367624478721';
     const requestParams = Response.requestParam;
+    requestParams['params'] = config.appConfig.ExplorePage.contentApiQueryParams;
     spyOn(component, 'getQueryParams').and.callThrough();
     spyOn(component, 'populatePageData').and.callThrough();
     spyOn(service, 'getPageData').and.callThrough();
@@ -157,8 +161,10 @@ describe('ExploreComponent', () => {
     component.filters = {subject: ['English'], board: ['NCERT', 'ICSE']};
     component.prominentFilters['board'] = 'CBSE';
     const service = TestBed.get(PageApiService);
+    const config = TestBed.get(ConfigService);
     component.hashTagId = '0123166367624478721';
     const requestParams = Response.requestParam3;
+    requestParams['params'] = config.appConfig.ExplorePage.contentApiQueryParams;
     spyOn(component, 'populatePageData').and.callThrough();
     spyOn(service, 'getPageData').and.callThrough();
     component.populatePageData();

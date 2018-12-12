@@ -3,9 +3,9 @@
   <div class="ten wide column">
     <div class="row">
       <div class="twelve wide column">
-        <div *ngIf="toDoList.length > 0 && !showLoader" class="ui styled accordion align-content">
-          <span class="ui header accordian-heading mt-0">{{resourceService.frmelmnts?.scttl?.todo}}</span>
-          <span class="todolabel ui red d-inline label small ml-5 py-3">{{toDoList.length}}</span>
+        <div *ngIf="toDoList.length > 0 && !showLoader" class="ui styled accordion p-15 width-100 align-content">
+          <span class="todo-heading">{{resourceService.frmelmnts?.scttl?.todo}}</span>
+          <span class="ui red d-inline label small ml-5 py-3">{{toDoList.length}}</span>
           <span class="removeline title title-padding-left active right-float" suiPopup popupHeader="{{collapse==true?'Expand':'Collapse'}}"
             popupInverted>
             <i [ngStyle]="{'transform': collapse === true ? 'rotate(0deg)' : 'rotate(180deg)'}" class="add large angle down icon pt-5 right-float"
@@ -16,7 +16,6 @@
               <ngx-slick in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="toDoList" class="carousel" #slickModal="slick-modal"
                 [config]="slideConfig" (afterChange)="inviewChange(toDoList,$event)" (beforeChange)="checkSlide($event)" appTelemetryInteract  [telemetryInteractEdata]="{id: btnArrow, type: 'click', pageid: 'home', extra: { section: 'ToDo'}}">
                 <div in-view-item ngxSlickItem *ngFor="let item of toDoList; trackBy: trackByFn;let i = index" class="slide" [id]="i" [data]="item">
-            
                   <div *ngIf=" item.type !== 'profile'">
                     <app-card [data]="item" (clickEvent)="playContent($event)" [customClass]="'pr-20'" class="pr-20 d-block"></app-card>
                   </div>
@@ -26,7 +25,7 @@
           </div>
         </div>
       </div>
-      <div class="twelve wide column" *ngIf="showLoader">
+      <div class="twelve wide column mt-20" *ngIf="showLoader">
         <app-loader [data]='loaderMessage'></app-loader>
       </div>
     </div>
