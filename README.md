@@ -1,6 +1,8 @@
 # sunbird-portal
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d2b8276a2af34fb39a5b5b89606cb682)](https://www.codacy.com/app/SMYALTAMASH/SunbirdEd-mobile?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Sunbird-Ed/SunbirdEd-mobile&amp;utm_campaign=Badge_Grade)
 
 [![Build Status](https://travis-ci.org/project-sunbird/sunbird-portal.svg?branch=master)](https://travis-ci.org/project-sunbird/sunbird-portal)
+
 
 ## What is Sunbird?
 [Sunbird](http://sunbird.org) is a next-generation scalable open-source learning solution for teachers and tutors. Built for the 21st century with [state-of-the-art technology](http://www.sunbird.org/architecture/views/physical/), Sunbird runs natively in [cloud/mobile environments](http://www.sunbird.org/features/). The [open-source governance](LICENSE) of Sunbird allows a massive community of nation-builders to co-create and extend the solution in novel ways.
