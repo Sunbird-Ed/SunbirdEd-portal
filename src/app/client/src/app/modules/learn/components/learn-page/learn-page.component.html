@@ -4,14 +4,14 @@
     <div class="ten wide column">
       <div class="ui stackable grid">
         <div class="ten wide column">
-          <app-data-driven-filter [pageId]="'course-page'" *ngIf="filterType" [filterEnv]="filterType" 
-          [accordionDefaultOpen]=false [isShowFilterLabel]=true></app-data-driven-filter>
+          <app-data-driven-filter [pageId]="'course-page'" *ngIf="frameWorkName && filterType" [filterEnv]="filterType" 
+          [accordionDefaultOpen]=false [isShowFilterLabel]=true [formAction]="'filter'" [frameworkName]="frameWorkName"></app-data-driven-filter>
         </div>
         <div class="two wide column">
           <app-sort-by appTelemetryInteract [telemetryInteractEdata]="sortIntractEdata" [sortingOptions]="sortingOptions" [url]="redirectUrl"></app-sort-by>
         </div>
       </div>
-      <div *ngFor="let section of caraouselData" class="mt-30">
+      <div *ngFor="let section of caraouselData">
         <app-page-section (visits)="prepareVisits($event)" [section]="section" (playEvent)="playContent($event)" (viewAll)="viewAll($event)"></app-page-section>
       </div>
       <div class="twelve wide column mt-30" *ngIf="showLoader">
@@ -23,4 +23,4 @@
     </div>
     <div class="one wide column">
     </div>
-  </div>
+</div>

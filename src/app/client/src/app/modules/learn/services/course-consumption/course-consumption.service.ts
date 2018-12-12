@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { PlayerService } from '@sunbird/core';
 import { ServerResponse } from '@sunbird/shared';
 import { CourseProgressService } from '../courseProgress/course-progress.service';
+import * as _ from 'lodash';
 
 @Injectable()
 export class CourseConsumptionService {
@@ -13,11 +14,12 @@ export class CourseConsumptionService {
 
   constructor(private playerService: PlayerService, private courseProgressService: CourseProgressService) { }
 
-  getCourseHierarchy(courseId) {
-    if (this.courseHierarchy && this.courseHierarchy.identifier === courseId) {
+  getCourseHierarchy(courseId, option: any = { params: {} }) {
+    // fetch from api always if params exists
+    if (this.courseHierarchy && this.courseHierarchy.identifier === courseId && !_.keys(option.params).length) {
       return observableOf(this.courseHierarchy);
     } else {
-      return this.playerService.getCollectionHierarchy(courseId).pipe(map((response: ServerResponse) => {
+      return this.playerService.getCollectionHierarchy(courseId, option).pipe(map((response: ServerResponse) => {
         this.courseHierarchy = response.result.content;
         return response.result.content;
       }));

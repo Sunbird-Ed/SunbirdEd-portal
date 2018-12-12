@@ -10,7 +10,7 @@
         <app-sort-by appTelemetryInteract [telemetryInteractEdata]="sortIntractEdata" [sortingOptions]="sortingOptions" [url]="redirectUrl"></app-sort-by>
       </div>
     </div>
-    <div *ngFor="let section of caraouselData" class="mt-30">
+    <div *ngFor="let section of caraouselData">
       <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section" (viewAll)="viewAll($event)"></app-page-section>
     </div>
     <div class="twelve wide column" *ngIf="showLoader">

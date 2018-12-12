@@ -1,5 +1,5 @@
 
-import {of as observableOf,  BehaviorSubject ,  Observable } from 'rxjs';
+import {of as observableOf, BehaviorSubject, Observable } from 'rxjs';
 
 import {map} from 'rxjs/operators';
 import { UserService } from './../user/user.service';
@@ -54,6 +54,7 @@ export class PageApiService {
     } else {
       const option: any = {
         url: this.config.urlConFig.URLS.PAGE_PREFIX,
+        param: { ...requestParam.params },
         data: {
           request: {
             source: requestParam.source,
@@ -61,11 +62,13 @@ export class PageApiService {
             filters: requestParam.filters,
             sort_by: requestParam.sort_by,
             softConstraints: requestParam.softConstraints || { badgeAssertions: 1 },
-            mode: requestParam.mode,
-            exists: requestParam.exists
+            mode: requestParam.mode
           }
         }
       };
+      if (!_.isEmpty(requestParam.exists)) {
+        option.data['exists'] = requestParam.exists;
+      }
       return this.publicDataService.post(option).pipe(map((data) => {
         this.setData(data, requestParam);
         return { sections : data.result.response.sections };

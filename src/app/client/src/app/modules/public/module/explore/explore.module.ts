@@ -8,7 +8,7 @@ import { SharedModule } from '@sunbird/shared';
 import { NgInviewModule } from 'angular-inport';
 import { ExploreComponent } from './components/explore/explore.component';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
-
+import { SuiModule } from 'ng2-semantic-ui';
 
 @NgModule({
   imports: [
@@ -18,7 +18,8 @@ import {SharedFeatureModule} from '@sunbird/shared-feature';
     SharedModule,
     NgInviewModule,
     ExploreRoutingModule,
-    SharedFeatureModule
+    SharedFeatureModule,
+    SuiModule
   ],
   declarations: [ ExploreContentComponent, ExploreComponent]
 })

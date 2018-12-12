@@ -21,7 +21,7 @@
             "loadingImage": "",
             "plugins": [{
                     "id": "org.ekstep.sunbirdcommonheader",
-                    "ver": "1.6",
+                    "ver": "1.7",
                     "type": "plugin"
                 },
                 {
@@ -272,7 +272,7 @@
             "aws_s3_urls": [],
             "plugins": [{
                 "id": "org.ekstep.sunbirdcommonheader",
-                "ver": "1.6",
+                "ver": "1.7",
                 "type": "plugin"
             },
             {
@@ -335,7 +335,7 @@
             "loadingImage": "",
             "plugins": [{
                     "id": "org.ekstep.sunbirdcommonheader",
-                    "ver": "1.6",
+                    "ver": "1.7",
                     "type": "plugin"
                     }, {
                     "id": "org.ekstep.sunbirdmetadata",

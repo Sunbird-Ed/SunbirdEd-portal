@@ -97,7 +97,8 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
       this.dialCode = queryParams.dialCode;
     });
     const options: any = { dialCode: this.dialCode };
-    this.playerService.getContent(this.contentId).pipe(
+    const params = {params: this.configService.appConfig.PublicPlayer.contentApiQueryParams};
+    this.playerService.getContent(this.contentId, params).pipe(
       takeUntil(this.unsubscribe$))
       .subscribe(
         (response) => {
