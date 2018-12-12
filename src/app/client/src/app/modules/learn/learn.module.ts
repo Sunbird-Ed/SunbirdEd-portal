@@ -28,7 +28,7 @@ import { DashboardModule } from '@sunbird/dashboard';
     ReactiveFormsModule,
     NotesModule,
     TelemetryModule,
-    NgInviewModule
+    NgInviewModule,
   ],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,

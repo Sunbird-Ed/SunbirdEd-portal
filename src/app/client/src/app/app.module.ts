@@ -39,6 +39,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     ...PluginModules,
     AppRoutingModule // don't add any module below this because it contains wildcard route
   ],
+  exports: [BrowserAnimationsModule],
   entryComponents: [AppComponent],
   bootstrap: [AppComponent],
   providers: [
