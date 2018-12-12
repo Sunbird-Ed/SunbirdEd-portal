@@ -57,4 +57,15 @@
     .text-decoration-underline{
       text-decoration: overline !important;
     }
+    .ui.dropdown .menu>.item {
+      text-align: right;
+    }
+    
+    .ui.label>.delete.icon {
+      margin-right: .5em;
+    }
+    
+    .ui.multiple.dropdown {
+      padding: .22619048em .35714286em .22619048em 2.1em;
+    }
 } 

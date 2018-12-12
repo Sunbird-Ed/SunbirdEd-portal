@@ -1,5 +1,6 @@
 {
   "Home": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "enrolledCourses": {
       "constantData": {
         "action": {
@@ -20,6 +21,7 @@
     }
   },
   "ViewAll": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "otherCourses": {
         "constantData":{
         "action": {
@@ -48,7 +50,11 @@
      "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"},
      "PAGE_LIMIT": 20 
   },
+  "CourseConsumption" : {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"}
+  },
   "Course": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "otherCourse": {
       "constantData": {
         "action": {
@@ -75,6 +81,7 @@
     }
   },
   "Library": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "constantData":{
       "action": {
           "onImage": {"eventName": "onImage" }
@@ -84,8 +91,15 @@
        },
        "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
        "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
+  },
+  "PublicPlayer": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"}
+  },
+  "ContentPlayer": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"}
   },
   "ExplorePage": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "constantData":{
       "action": {
           "onImage": {"eventName": "onImage" }
@@ -96,7 +110,19 @@
        "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
        "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
   },
+  "CoursePage": {
+    "constantData":{
+      "action": {
+          "onImage": {"eventName": "onImage" }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"},
+        "left": {"class":  "ui circular label  card-badges-image"} }
+       },
+       "metaData": {"metaData": ["identifier", "mimeType", "framework","contentType"]},
+       "dynamicFields": {"ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
+  },
   "GetPage":{
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "constantData":{
       "action": {
           "onImage": {"eventName": "onImage" }
@@ -110,6 +136,7 @@
      "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
   },
   "HomeSearch": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "constantData":{
       "action": {
           "onImage": {"eventName": "onImage" }
@@ -118,6 +145,7 @@
        "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]}
   },
   "CourseSearch": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "otherCourses":{
       "constantData":{
       "action": {
@@ -142,6 +170,7 @@
    "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]}
   },
   "LibrarySearch":{
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "constantData":{
       "action": {
           "onImage": {"eventName": "onImage" }
@@ -553,6 +582,17 @@
     "inPageredirectUrl": "/explore",
     "searchPageredirectUrl": "/explore/1"
   },
+
+  "exploreCourse": {
+    "filterType": "explore-course",
+    "inPageredirectUrl": "/explore-course",
+    "searchPageredirectUrl": "/explore-course/1"
+  },
+  "courses": {
+    "filterType": "courses",
+    "inPageredirectUrl": "/learn",
+    "searchPageredirectUrl": "/search/Courses/1"
+  },
   "formApiTypes": {
     "home": "home",
     "textbook": "textbook",
@@ -566,7 +606,10 @@
     "resourcebundle": "resourcebundle",
     "upforreview" :"upforreview",
     "collaboration":"collaboration",
-    "framework": "framework"
+    "framework": "framework",
+    "explore-course":"explore-course",
+    "framework-code":"framework-code",
+    "courses": "courses"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,
@@ -583,6 +626,7 @@
     "setTime": 1500
   },
   "PROFILE": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "profileField": {
       "profileSummary": "profile/summary/edit",
       "jobProfile": "profile/experience/add",

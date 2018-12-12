@@ -26,5 +26,6 @@ a{
     color: $link-color;
     &:hover{
         opacity:0.8;
+        color: $link-color;
     }
 }

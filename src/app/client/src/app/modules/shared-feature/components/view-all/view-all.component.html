@@ -1,10 +1,10 @@
-<div [appTelemetryImpression]="telemetryImpression" class=" ui grid">
+<div [appTelemetryImpression]="telemetryImpression" class="ui grid mt-30">
     <div class="one wide column"></div>
     <div class="ten wide column">
         <div class=" ui grid">
-            <div class="ten wide column">
+            <div class="ten wide column" *ngIf ="showFilter">
                 <app-data-driven-filter [pageId]="'view-all'" *ngIf="filterType" [filterEnv]="filterType" [viewAllMode] = "true"
-         [accordionDefaultOpen]=false [isShowFilterLabel]=true></app-data-driven-filter>
+         [accordionDefaultOpen]=false [isShowFilterLabel]=true [hashTagId]="hashTagId" [formAction]="formAction" [frameworkName]="frameWorkName"></app-data-driven-filter>
             </div>
             <div class="two wide column">
                 <app-sort-by appTelemetryInteract [telemetryInteractEdata]="sortIntractEdata" [sortingOptions]="sortingOptions" ></app-sort-by>
@@ -49,3 +49,18 @@
     </div>
     <div class="one wide column"></div>
 </div>
+
+<sui-modal [isClosable]="true" size="tiny" (dismissed)="closeModal()" #modal *ngIf="showLoginModal">
+    <div class="content">
+      <div class="ui center aligned segment">
+        <div class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.signinenrollTitle}} </div>
+        <br/>
+        <div class="announcement-description">
+          <!-- {{resourceService?.frmelmnts?.lbl?.signinenrollHeader}} -->
+        </div>
+        <br/>
+        <br/>
+       <a href ={{baseUrl}} class ="ui button primary announcement-button btn-width-26 close" >{{resourceService.frmelmnts?.btn?.signin}}</a> 
+      </div>
+    </div>
+  </sui-modal>

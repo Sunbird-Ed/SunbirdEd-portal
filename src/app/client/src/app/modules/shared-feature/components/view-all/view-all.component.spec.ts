@@ -9,7 +9,7 @@ import {throwError as observableThrowError, of as observableOf,  Observable } fr
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './view-all.component.spec.data';
 import { PublicPlayerService } from '@sunbird/public';
-
+import { SuiModule } from 'ng2-semantic-ui';
 describe('ViewAllComponent', () => {
   let component: ViewAllComponent;
   let fixture: ComponentFixture<ViewAllComponent>;
@@ -42,7 +42,7 @@ describe('ViewAllComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
+      imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
       declarations: [ ViewAllComponent ],
       providers: [ConfigService, CoursesService, SearchService, LearnerService, PublicPlayerService,
         { provide: ResourceService, useValue: resourceBundle },
@@ -77,6 +77,7 @@ describe('ViewAllComponent', () => {
      spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
      spyOn(component, 'setTelemetryImpressionData').and.callThrough();
      spyOn(component, 'setInteractEventData').and.callThrough();
+    spyOn(document, 'getElementById').and.returnValue('true');
     component.ngOnInit();
     component.setTelemetryImpressionData();
     component.setInteractEventData();
@@ -120,6 +121,7 @@ describe('ViewAllComponent', () => {
      spyOn(component, 'setTelemetryImpressionData').and.callThrough();
      spyOn(component, 'setInteractEventData').and.callThrough();
      spyOn(toasterService, 'error').and.callThrough();
+     spyOn(document, 'getElementById').and.returnValue('true');
     component.ngOnInit();
     component.setTelemetryImpressionData();
     component.setInteractEventData();

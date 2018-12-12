@@ -2,21 +2,25 @@ import { LearnerService } from './../learner/learner.service';
 import { throwError as observableThrowError, of as observableOf, Observable, BehaviorSubject } from 'rxjs';
 import { mergeMap, catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { ConfigService, ServerResponse, ToasterService, ResourceService } from '@sunbird/shared';
+import { ConfigService, ServerResponse, ToasterService, ResourceService, BrowserCacheTtlService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { ContentService } from './../content/content.service';
 import { PublicDataService } from './../public-data/public-data.service';
+import { CacheService } from 'ng2-cache-service';
+import { getOrCreateChangeDetectorRef } from '@angular/core/src/render3/di';
 
 @Injectable()
 export class OrgDetailsService {
 
   orgDetails: any;
+  orgInfo: any ;
 
   private _orgDetails$ = new BehaviorSubject<any>(undefined);
 
   public readonly orgDetails$: Observable<any> = this._orgDetails$.asObservable();
 
-  constructor(public configService: ConfigService,
+  constructor(public configService: ConfigService, private cacheService: CacheService,
+    private browserCacheTtlService: BrowserCacheTtlService,
     public contentService: ContentService, public router: Router, public toasterService: ToasterService,
     public resourceService: ResourceService, public learnerService: LearnerService, public publicDataService: PublicDataService) {
   }
@@ -70,5 +74,43 @@ export class OrgDetailsService {
     this.publicDataService.rootOrgId = this.orgDetails.rootOrgId;
     this.publicDataService.channelId = this.orgDetails.channel;
   }
+
+  searchOrg() {
+    const option = {
+      url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      data: {
+        request: {
+          filters: {
+            isRootOrg: true
+          }
+        }
+      }
+    };
+    const orgDetails: any = this.cacheService.get('orgDetails');
+    if (orgDetails) {
+      return observableOf(orgDetails);
+    } else {
+      return this.publicDataService.post(option).pipe(mergeMap((data: ServerResponse) => {
+        if (data.result.response.count > 0) {
+          this.setOrgDetails(data.result.response);
+          return observableOf(data.result.response);
+        }
+      }));
+    }
+  }
+
+  setOrgDetails(data) {
+    this.cacheService.set('orgDetails', data, {
+      maxAge: this.browserCacheTtlService.browserCacheTtl
+    });
+  }
+  public setOrg(orgdata) {
+    this.orgInfo = orgdata;
 }
+
+public getOrg(): void {
+    return this.orgInfo;
+}
+}
+
 

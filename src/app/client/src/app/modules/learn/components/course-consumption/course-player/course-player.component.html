@@ -56,13 +56,23 @@
                             <app-curriculum-card *ngIf="curriculum && curriculum.length > 0" [curriculum]="curriculum"></app-curriculum-card>
                             <br>
                             <div class="courseupdate">
+                                <b *ngIf="courseHierarchy.creator">{{resourceService.frmelmnts.lbl.courseCreatedBy}}: {{courseHierarchy.creator}}</b>
+                                <br>
+                                <b *ngIf="courseHierarchy.orgDetails?.orgName">{{courseHierarchy.orgDetails.orgName}}</b>
+                                <br>
+                                <b *ngIf="courseHierarchy.orgDetails?.email">
+                                    <a href="mailto:{{courseHierarchy.orgDetails?.email}}?subject={{courseHierarchy.name}}">{{courseHierarchy.orgDetails?.email}}</a>
+                                </b>
+                                <br>
+
+                                <div class="ui divider"></div>
+
                                 <b>{{resourceService.frmelmnts.lbl.coursecreatedon}}: {{courseHierarchy.createdOn | dateFormat}}</b>
                                 <br>
                                 <b>{{resourceService.frmelmnts.lbl.updatedon}}: {{courseHierarchy.lastUpdatedOn | dateFormat}}</b>
                                 <br>
-                                <b *ngIf="courseHierarchy.creator">{{resourceService.frmelmnts.lbl.courseCreatedBy}}: {{courseHierarchy.creator}}</b>
-                                <br>
-                                <!-- <a *ngIf="contributions" popupTrigger="outsideClick" [popupPlacement]="'bottom left'" suiPopup popupText={{contributions}}>{{resourceService.frmelmnts.lbl.viewCredits}}</a> -->
+                                
+                                <!-- <a *ngIf="contributionsLength>0" popupTrigger="outsideClick" [popupPlacement]="'bottom left'" suiPopup popupText={{contributions}}>{{resourceService.frmelmnts.lbl.viewCredits}}</a> -->
                                 <br>
                             </div>
                         </div>
