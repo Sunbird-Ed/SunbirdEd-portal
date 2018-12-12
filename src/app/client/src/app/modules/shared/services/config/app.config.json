@@ -92,8 +92,16 @@
   "CourseSearch": {
     "otherCourses":{
       "constantData":{
-      "action": {
-          "onImage": {"eventName": "onImage" }
+        "action": {
+          "right": {
+            "class": "ui blue basic button",
+            "eventName": "Preview",
+            "displayType": "button",
+            "text": "Preview"
+          },
+          "onImage": {
+            "eventName": "onImage"
+          }
         }
        }
     },"enrolledCourses": {
