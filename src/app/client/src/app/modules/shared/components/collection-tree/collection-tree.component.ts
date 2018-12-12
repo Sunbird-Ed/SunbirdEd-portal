@@ -26,6 +26,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
   @Input() nodeRoot: any;
   private rootNode: any;
   public rootChildrens: any;
+  public enrolledCourseDetailsRendered:boolean ;
   private iconColor = {
     '0': 'fancy-tree-grey',
     '1': 'fancy-tree-blue',
@@ -39,6 +40,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     this.subscription = this.player.subject;
     // this.subscription = this.contentService.subject;
     this.courseProgress = this.player.CourseProgressListner;
+    this.enrolledCourseDetailsRendered=this.player.EnrolledCourseDetailsRendered;
   }
   ngOnInit() {
     this.initialize();

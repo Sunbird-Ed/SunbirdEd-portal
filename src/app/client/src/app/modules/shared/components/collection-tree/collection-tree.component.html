@@ -11,7 +11,13 @@
   </sui-accordion-panel>
 </sui-accordion> -->
 
+<mat-card *ngIf="nodeRoot.model.visibility!='Parent'"  style="margin-bottom: 4px">
+    <span > this is course detais  </span>
+  </mat-card>
+
 <div *ngFor="let child of nodeRoot.children">
+    
+    
   <mat-accordion>
     <mat-expansion-panel *ngIf="child.children.length > 0" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
       <mat-expansion-panel-header>
