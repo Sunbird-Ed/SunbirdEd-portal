@@ -77,6 +77,10 @@ export class WorkspacesidebarComponent implements OnInit {
   * flagReviewer  access roles
   */
   flagReviewer: Array<string>;
+    /**
+  * allContentRole  access roles
+  */
+ collaboratingRole: Array<string>;
 
    /**
    * reference of Router.
@@ -111,6 +115,7 @@ export class WorkspacesidebarComponent implements OnInit {
     this.startRole = this.config.rolesConfig.workSpaceRole.startRole;
     this.allContentRole = this.config.rolesConfig.workSpaceRole.allContentRole;
     this.flagReviewer = this.config.rolesConfig.workSpaceRole.flagReviewer;
+    this.collaboratingRole = this.config.rolesConfig.workSpaceRole.collaboratingRole;
   }
 
 }

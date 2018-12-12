@@ -1,6 +1,6 @@
 <sui-modal [isClosable]="true" (dismissed)="goToCreate(); " [mustScroll]="true" #modal>
-    <div class=" ui segment margin-top-10" [appTelemetryImpression]="telemetryImpression">
-        <div class=" margin-bottom-15">
+    <div class=" ui segment mt-10" [appTelemetryImpression]="telemetryImpression">
+        <div class=" mb-15">
             <div class="ui grid">
                 <div class="eleven wide column">
                     <span class="ui header">
@@ -15,23 +15,23 @@
                     <app-content-creation-default-template #formData [formFieldProperties]="formFieldProperties" [categoryMasterList]="categoryMasterList">
                     </app-content-creation-default-template>
                 </div>
-                <div class="actions margin-top-10">
-                    <p class="text-align-center padding-top-20">
+                <div class="actions mt-10">
+                    <p class="text-align-center pt-20">
                         <button class="ui primary text-align-center icon button" (click)="createContent();modal.deny()">
                             {{resourceService?.frmelmnts?.btn?.startcreating}}
                         </button>
                     </p>
                     <div [ngSwitch]="creationFormLable">
-                        <h4 class="text-align-center margin-top-10" *ngSwitchCase="'createtextbook'">{{resourceService?.frmelmnts?.lbl?.bookfillater}}</h4>
-                        <h4 class="text-align-center margin-top-10" *ngSwitchCase="'designcourse'">{{resourceService?.frmelmnts?.lbl?.coursefilllater}}</h4>
-                        <h4 class="text-align-center margin-top-10" *ngSwitchCase="'createcollection'">{{resourceService?.frmelmnts?.lbl?.collectionfillater}}</h4>
-                        <h4 class="text-align-center margin-top-10" *ngSwitchCase="'createlessontext'">{{resourceService?.frmelmnts?.lbl?.lessonfillater}}</h4>
-                        <h4 class="text-align-center margin-top-10" *ngSwitchCase="'createlessonplan'">{{resourceService?.frmelmnts?.lbl?.lpfilllater}}</h4>
+                        <h4 class="text-align-center mt-10" *ngSwitchCase="'createtextbook'">{{resourceService?.frmelmnts?.lbl?.bookfillater}}</h4>
+                        <h4 class="text-align-center mt-10" *ngSwitchCase="'designcourse'">{{resourceService?.frmelmnts?.lbl?.coursefilllater}}</h4>
+                        <h4 class="text-align-center mt-10" *ngSwitchCase="'createcollection'">{{resourceService?.frmelmnts?.lbl?.collectionfillater}}</h4>
+                        <h4 class="text-align-center mt-10" *ngSwitchCase="'createlessontext'">{{resourceService?.frmelmnts?.lbl?.lessonfillater}}</h4>
+                        <h4 class="text-align-center mt-10" *ngSwitchCase="'createlessonplan'">{{resourceService?.frmelmnts?.lbl?.lpfilllater}}</h4>
                         <h4 *ngSwitchDefault></h4>
                     </div>
                     <div>
                         <label>
-                            <p class="text-align-center margin-top-10">
+                            <p class="text-align-center mt-10">
                                 {{resourceService?.frmelmnts?.lbl?.agreeandproceedtext}}
                             </p>
                         </label>

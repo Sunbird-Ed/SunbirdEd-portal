@@ -264,7 +264,7 @@ export class AllContentComponent extends WorkSpace implements OnInit {
           this.noResult = true;
           this.showLoader = false;
           this.noResultMessage = {
-            'messageText': this.resourceService.messages.stmsg.m0111
+            'messageText': this.resourceService.messages.stmsg.m0125
           };
         }
       },

@@ -10,7 +10,7 @@ export const Response = {
         },
         'action': {
             'right': { 'class': 'trash large icon', 'eventName': 'right', 'displayType': 'icon' },
-            'left': { 'class': 'ui blue basic button margin-top-10', 'eventName': 'left', 'displayType': 'button', 'text': 'Resume' }
+            'left': { 'class': 'ui blue basic button mt-10', 'eventName': 'left', 'displayType': 'button', 'text': 'Resume' }
         }
     },
     defaultData: {
@@ -37,10 +37,11 @@ export const Response = {
         },
         'ribbon': {
             'right': {
-                'name': 'TextBook',
+                'name': 'Worksheet',
                 'class': 'ui black right ribbon label'
             }
         },
+        'resourceType': 'Worksheet',
         'telemetryInteractEdata': {
             'id': 'draftContentId',
             'type': 'click',

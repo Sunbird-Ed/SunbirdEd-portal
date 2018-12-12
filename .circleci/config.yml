@@ -7,14 +7,15 @@ jobs:
       - checkout
       - run:
           name: run build file
-          command: ./build.sh
+          command: /bin/bash -x build.sh ${CIRCLE_SHA1} test
   test-cases:
     docker:
       - image: g33tha/node-8.11
     steps:
       - checkout
       - run: sh test.sh
-          
+
+ 
           
 workflows:
   version: 2

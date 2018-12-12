@@ -64,8 +64,12 @@ describe('ResourceComponent', () => {
   it('should subscribe to service', () => {
     const pageSectionService = TestBed.get(PageApiService);
     const learnerService = TestBed.get(LearnerService);
+    const filters = Response.filters;
     spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.successData.result.response));
+    spyOn(component, 'getQueryParams').and.callThrough();
+    component.getFilters(filters);
     component.populatePageData();
+    expect(component.getQueryParams).toHaveBeenCalled();
     expect(component.queryParams.sortType).toString();
     expect(component.queryParams.sortType).toBe('desc');
     expect(component).toBeTruthy();
@@ -75,19 +79,26 @@ describe('ResourceComponent', () => {
   it('should subscribe to service and no contents', () => {
     const pageSectionService = TestBed.get(PageApiService);
     const learnerService = TestBed.get(LearnerService);
+    const filters = Response.filters;
     spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.secondData.result.response));
+    spyOn(component, 'getQueryParams').and.callThrough();
+    component.getFilters(filters);
     component.populatePageData();
+    expect(component.getQueryParams).toHaveBeenCalled();
     expect(component.queryParams.sortType).toString();
     expect(component.queryParams.sortType).toBe('desc');
-    expect(component).toBeTruthy();
     expect(component.showLoader).toBeFalsy();
     expect(component.caraouselData).toBeDefined();
   });
   it('should subscribe to service and contents to be undefined', () => {
     const pageSectionService = TestBed.get(PageApiService);
     const learnerService = TestBed.get(LearnerService);
+    const filters = Response.filters;
     spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.thirdData.result.response));
+    spyOn(component, 'getQueryParams').and.callThrough();
+    component.getFilters(filters);
     component.populatePageData();
+    expect(component.getQueryParams).toHaveBeenCalled();
     expect(component.queryParams.sortType).toString();
     expect(component.queryParams.sortType).toBe('desc');
     expect(component).toBeTruthy();
@@ -100,9 +111,13 @@ describe('ResourceComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceBundle.messages;
     const toasterService = TestBed.get(ToasterService);
+    const filters = Response.filters;
     spyOn(pageSectionService, 'getPageData').and.callFake(() => observableThrowError(Response.error));
     spyOn(toasterService, 'error').and.callThrough();
+    spyOn(component, 'getQueryParams').and.callThrough();
+    component.getFilters(filters);
     component.populatePageData();
+    expect(component.getQueryParams).toHaveBeenCalled();
     expect(component.queryParams.sortType).toString();
     expect(component.queryParams.sortType).toBe('desc');
     expect(component.showLoader).toBeFalsy();
@@ -121,5 +136,11 @@ describe('ResourceComponent', () => {
     component.prepareVisits(Response.event);
     expect(component.prepareVisits).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.userSubscription, 'unsubscribe');
+    component.ngOnDestroy();
+    expect(component.userSubscription.unsubscribe).toHaveBeenCalled();
   });
 });

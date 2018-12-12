@@ -27,6 +27,7 @@ export interface IUserProfile {
     tempPassword: string;
     email: string;
     rootOrg: any;
+    rootOrgAdmin?: boolean;
     identifier: string;
     profileVisibility: any;
     thumbnail: any;
@@ -57,6 +58,7 @@ export interface IUserProfile {
     organisationIds?: Array<string>;
     hashTagIds?: Array<string>;
     organisationNames?: Array<string>;
+    framework?: any;
 }
 export interface IJobProfile {
     jobName: string;

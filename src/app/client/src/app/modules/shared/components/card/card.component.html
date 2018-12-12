@@ -1,63 +1,51 @@
-<div class="ui link cards  margin-top-15 margin-bottom-0" *ngIf="data" (click)="onAction(data,data.action.onImage)" 
- appTelemetryInteract [telemetryInteractObject]="{id:data.metaData.identifier,type:data.telemetryObjectType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion.toString():'1.0'}" [telemetryInteractEdata]="data.telemetryInteractEdata" >
-  <div class="ui fluid card margin-top-10" [ngClass]="customClass">
-    <div class="top attached indicating active " *ngIf="data.maxCount && data.progress > 0">
-      <sui-progress class="top attached active orange ui progress" [value]="data.progress" [maximum]="data.maxCount"></sui-progress>
-    </div>
-    <div class="ui image" >
-      <a class="{{data.ribbon.left.class}}" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.name">{{data.ribbon.left.name}}</a>
-      <a class="{{data.ribbon.left.class}}" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image">
-        <img src="{{data.ribbon.left.image }}" class="ui small avatar image margin-right-none">
-      </a>
-      <a class="{{data.ribbon.right.class}}" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">{{data.ribbon.right.name}}</a>
-      <img *ngIf="data.showImage? false : true" src="{{ data.image || 'assets/images/default.png' | cdnprefixurl}}">
-      <div class="cardImageText center aligned " suiPopup popupText="{{data.name}}">
-        <span class="sliderCardHeading text-cencapitalize"  >{{data.name | slice:0:20}}
-           <i class="ellipsis horizontal icon" *ngIf="data.name && data.name.length >= 20" ></i>
-        </span>
+<div 
+  class="sbCard mt-20 mr-30 mb-5" 
+  *ngIf="data" 
+  (click)="onAction(data,data.action.onImage)" 
+  appTelemetryInteract 
+  [telemetryInteractObject]="{id:data.metaData.identifier,type:data.telemetryObjectType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion.toString():'1.0'}" 
+  [telemetryInteractEdata]="data.telemetryInteractEdata"
+  tabindex="0"
+  >
+    <div class="header p-15 pb-0">
+      <div class="image m-0 mr-15 br-4">
+        <img *ngIf="data.showImage? false : true" src="{{data.image || 'assets/images/book.png' | cdnprefixurl}}" alt="{{data.name}}">
       </div>
-    </div>
-    <div class="content">
-      <div class="card-component-description">
-        <div *ngIf="data.description && data.description.length > 0">
-          {{data.description | slice:0:40}}
-          <i class="ellipsis horizontal icon" *ngIf="data.description && data.description.length >= 40" suiPopup popupText="{{data.description}}"></i>
+
+      <!--Course-->
+      <div class="meta course" *ngIf="data.courseCard">
+        <div class="topic mb-15" *ngIf="data.topic" title="{{data.topic}}">
+          {{resourceService.frmelmnts.lbl.topic}} : {{data.topic | slice:0:40}} 
+          <span *ngIf="data.topic && data.topic.length >= 30">...</span>
+        </div>
+        <div class="subtopic" *ngIf="data.subtopic" title="{{data.subtopic}}">
+          {{resourceService.frmelmnts.lbl.subtopic}} : {{data.subtopic | slice:0:40}} 
+          <span *ngIf="data.subtopic && data.subtopic.length >= 30">...</span>
         </div>
       </div>
-    </div>
-    <div *ngIf="data.action && (data.action.right || data.action.left || data.rating)" class="extra data">
-      <div *ngIf=" data.action.right" class="right floated">
-        <a [ngSwitch]="data.action.right.displayType">
-          <span *ngSwitchCase="'button'">
-            <button class="{{data.action.right.class}}" (click)="onAction(data,data.action.right); $event.stopPropagation()">
-              <span *ngIf="data.action.right.text">{{data.action.right.text}}</span>
-            </button>
-          </span>
-          <span *ngSwitchCase="'icon'">
-            <i class="{{data.action.right.class}}" (click)="onAction(data,data.action.right); $event.stopPropagation()">
-            </i>
-            <span *ngIf="data.action.right.text">{{data.action.right.text}}</span>
-          </span>
-        </a>
+      <!--/Course-->
+
+      <!--Non-Course-->
+      <div class="meta non-course" *ngIf="!data.courseCard">
+        <div class="mb-auto d-flex">
+          <div class="ui label tiny right" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">{{data.ribbon.right.name}}</div>
+          <img src="{{data.ribbon.left.image}}" class="avatar ml-auto" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image" alt="{{data.ribbon.left.name}}">
+        </div>
+        <div class="subject ellipsis mt-3" *ngIf="data.subject" title="{{data.subject}}">{{resourceService.frmelmnts.lbl.subject}} : {{data.subject}}</div>
+        <div class="class ellipsis mt-3" *ngIf="data.gradeLevel" title="{{data.gradeLevel}}">{{resourceService.frmelmnts.lbl.class}} : {{data.gradeLevel}}</div>
+        <div class="medium ellipsis mt-3" *ngIf="data.medium" title="{{data.medium}}">{{resourceService.frmelmnts.lbl.medium}} : {{data.medium}}</div>
       </div>
-      <div *ngIf=" data.action.left" class="left floated">
-        <a [ngSwitch]="data.action.right.displayType">
-          <span *ngSwitchCase="'button'">
-            <button class="{{data.action.left.class}}" (click)="onAction(data,data.action.left); $event.stopPropagation()">
-              <span *ngIf="data.action.left.text">{{data.action.left.text}}</span>
-            </button>
-          </span>
-          <span *ngSwitchCase="'icon'">
-            <i class="{{data.action.left.class}}" (click)="onAction(data,data.action.left); $event.stopPropagation()">
-            </i>
-            <span *ngIf="data.action.left.text">{{data.action.left.text}}</span>
-          </span>
-        </a>
-      </div>
-      <span *ngIf="data.rating">
-          <sui-rating class="courseHeader-rating star left floated" [ngModel]="data.rating | number:0" [maximum]="5" [isReadonly]="true">
-          </sui-rating>
-        </span>
+      <!--/Non-Course-->
+
     </div>
-  </div>
+    <div class="sub-header">
+        <h4 class="title">
+          {{data.name | slice:0:40 }}
+          <span *ngIf="data.name && data.name.length >= 40">...</span>
+        </h4>
+        <div class="creator ellipsis" *ngIf="data.orgDetails && data.orgDetails.orgName">
+          {{data.orgDetails.orgName}}
+        </div>
+    </div>
+    <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount" ></sui-progress>
 </div>

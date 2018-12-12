@@ -11,7 +11,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { ContentService, CoreModule } from '@sunbird/core';
 import { SharedModule, ResourceService, ConfigService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { PublishedPopupComponent } from './published-popup.component';
-import { WorkSpaceService } from './../../services';
+import { WorkSpaceService, ReviewCommentsService } from './../../services';
 import {mockRes} from './published-popup.component.spec.data';
 describe('PublishedPopupComponent', () => {
   let component: PublishedPopupComponent;
@@ -71,7 +71,7 @@ describe('PublishedPopupComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot()],
       declarations: [PublishedPopupComponent],
-      providers: [ToasterService, NavigationHelperService, WorkSpaceService,
+      providers: [ToasterService, NavigationHelperService, WorkSpaceService, ReviewCommentsService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
@@ -165,4 +165,3 @@ describe('PublishedPopupComponent', () => {
     expect(component.showModal).toBeFalsy();
   });
 });
-

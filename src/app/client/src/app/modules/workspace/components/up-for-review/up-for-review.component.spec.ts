@@ -38,7 +38,7 @@ describe('UpForReviewComponent', () => {
   }
   const fakeActivatedRoute = {
     'params': observableOf({ pageNumber: '1' }),
-    'queryParams': observableOf({ subject: ['english'] }),
+    'queryParams': observableOf({ subject: ['english'] , contentType: ['Collection'] , sort_by: 'Updated On'}),
     snapshot: {
       params: [
         {
@@ -54,7 +54,7 @@ describe('UpForReviewComponent', () => {
     }
   };
 
-  const bothParams = { 'params': { 'pageNumber': '1' }, 'queryParams': { 'sort_by': 'Updated On' } };
+  const bothParams = { 'params': { 'pageNumber': '1' }, 'queryParams': { 'sort_by': 'Updated On' , 'contentType': ['Collection'] } };
   const mockroleOrgMap = {
     'ORG_MODERATOR': ['01232002070124134414'],
     'COURSE_MENTOR': ['01232002070124134414'],
@@ -136,7 +136,7 @@ describe('UpForReviewComponent', () => {
     userService._userProfile = mockroleOrgMap;
     userService._userData$.next({ err: null, userProfile: mockUserRoles });
     spyOn(component, 'getContentType').and.callThrough();
-    const returnContentType = component.getContentType().contentType;
+    const returnContentType = component.getContentType();
     const ContentType = ['Collection', 'Course', 'LessonPlan', 'Resource'];
     expect(returnContentType).toEqual(ContentType);
   }));
@@ -193,7 +193,7 @@ describe('UpForReviewComponent', () => {
     userService._userProfile = mockroleOrgMap;
     userService._userData$.next({ err: null, userProfile: BookReviewer });
     spyOn(component, 'getContentType').and.callThrough();
-    const returnContentType = component.getContentType().contentType;
+    const returnContentType = component.getContentType();
     const ContentType = ['TextBook'];
     expect(returnContentType).toEqual(ContentType);
   }));
@@ -208,10 +208,27 @@ describe('UpForReviewComponent', () => {
     userService._userProfile = mockroleOrgMap;
     userService._userData$.next({ err: null, userProfile: BookReviewer });
     spyOn(component, 'getContentType').and.callThrough();
-    const returnContentType = component.getContentType().contentType;
+    const returnContentType = component.getContentType();
     const ContentType = configservice.appConfig.WORKSPACE.contentType;
     expect(returnContentType).toEqual(ContentType);
   }));
+  it('should check contentType is passing when send it from query param', inject([SearchService], (searchService) => {
+    const configservice  = TestBed.get(ConfigService);
+    const userService = TestBed.get(UserService);
+    const learnerService = TestBed.get(LearnerService);
+    const BookReviewer = {
+      userRoles: ['PUBLIC', 'BOOK_REVIEWER', 'CONTENT_REVIEWER']
+    };
+    spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
+    userService._userProfile = mockroleOrgMap;
+    userService._userData$.next({ err: null, userProfile: BookReviewer });
+    component.ngOnInit();
+    fixture.detectChanges();
+    spyOn(component, 'fecthUpForReviewContent').and.callThrough();
+    component.fecthUpForReviewContent(0, 9, bothParams);
+    expect(component.fecthUpForReviewContent).toHaveBeenCalledWith(0, 9, bothParams);
+  }));
+
 
 });
 

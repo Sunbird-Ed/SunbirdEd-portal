@@ -14,7 +14,7 @@
           </div>
           <div class="one wide column" *ngIf="batchlist.length > 1">
             <span class="dashBoardSectionHeading">
-              <i class="large bar chart icon padding-top-5"></i>
+              <i class="large bar chart icon pt-5"></i>
             </span>
           </div>
           <div class="four wide column float-ContentLeft" *ngIf="batchlist.length > 1">
@@ -26,17 +26,17 @@
             </sui-select>
           </div>
           <!-- Blank six wide column-->
-          <div class="six wide column padding-top-20 ng-scope"></div>
-          <div class="one wide column padding-top-20 padding-right-5">
+          <div class="six wide column pt-20 ng-scope"></div>
+          <div class="one wide column pt-20 pr-5">
             <a class="ui item basic icon circular float-ContentRight" data-tooltip="Close the dashboard"
             appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'closeDashboard',type:'click',pageid:'course-progress-dashboard'}">
               <i (click)='redirect()' class="ui remove icon CloseButtonFont"></i>
             </a>
           </div>
         </div>
-        <div class="ui grid centered margin-top-10" *ngIf="batchlist && batchlist.length > 0 && queryParams.batchIdentifier && !showWarningDiv">
+        <div class="ui grid centered mt-10" *ngIf="batchlist && batchlist.length > 0 && queryParams.batchIdentifier && !showWarningDiv">
           <div class="six wide column">
-            <div class="ui text menu float-ContentLeft padding-top-10">
+            <div class="ui text menu float-ContentLeft pt-10">
               <span class="dashBoardMenuItem cursor-pointer active" [ngClass]="{active:queryParams.timePeriod === '7d'}" (click)="setTimePeriod('7d')"
               appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'7d',type:'click',pageid:'course-progress-dashboard'}">
               {{resourceService?.frmelmnts?.lbl?.dashboardsevendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -155,9 +155,9 @@
             </tbody>
           </table>
         </div>
-        <div class="twelve wide column margin-top-20" *ngIf="dashboarData && dashboarData.length > 0">
+        <div class="twelve wide column mt-20" *ngIf="dashboarData && dashboarData.length > 0">
           <p class="text-align-right dashBoardCardText">{{resourceService?.frmelmnts?.instn?.t0058}}
-            <a href="javascript:void(0);" class="item text-decoration-underline padding-left-10" (click)="downloadReport();"
+            <a href="javascript:void(0);" class="item text-decoration-underline pl-10" (click)="downloadReport();"
             appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'download',type:'click',pageid:'course-progress-dashboard'}">
             {{resourceService?.frmelmnts?.instn?.t0059}}</a>
           </p>
@@ -206,7 +206,7 @@
   <div class="content">
     <p class="meta">{{resourceService?.messages?.stmsg?.m0095}}</p>
   </div>
-  <div class="actions margin-top-20 ">
+  <div class="actions mt-20 ">
     <div></div>
   </div>
 </sui-modal>

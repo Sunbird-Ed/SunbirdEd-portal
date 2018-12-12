@@ -1,6 +1,5 @@
-import { WindowScrollService, ConfigService } from './../../services';
-
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Input, OnDestroy, Output, EventEmitter, OnChanges } from '@angular/core';
+import { ConfigService } from './../../services';
+import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
 import {PlayerConfig} from './../../interfaces';
@@ -10,11 +9,12 @@ import {PlayerConfig} from './../../interfaces';
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.css']
 })
-export class PlayerComponent implements OnInit, OnChanges, OnDestroy {
+export class PlayerComponent implements OnInit, OnChanges {
   @Input() playerConfig: PlayerConfig;
   @Output() contentProgressEvent = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
+  @Output() sceneChangeEvent = new EventEmitter<any>();
   buildNumber: string;
   constructor(public configService: ConfigService) {
     try {
@@ -22,7 +22,7 @@ export class PlayerComponent implements OnInit, OnChanges, OnDestroy {
     } catch (error) {
       this.buildNumber = '1.0';
     }
-   }
+  }
   /**
    * showPlayer method will be called
    */
@@ -61,16 +61,18 @@ export class PlayerComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   generateContentReadEvent(event: any) {
-    if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START')) {
+    if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START' ||
+    event.detail.telemetryData.eid === 'END')) {
       this.contentProgressEvent.emit(event);
-    } else if (event.detail.telemetryData.eid === 'END' && _.get(event.detail.telemetryData, 'edata.summary')) {
-      const summary = _.find(event.detail.telemetryData.edata.summary , { progress: 100 });
-      if (summary) {
-        this.contentProgressEvent.emit(event);
-      }
+    } else if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'IMPRESSION')) {
+      this.emitSceneChangeEvent();
     }
   }
-  ngOnDestroy() {
-    this.playerOnDestroyEvent.emit( {contentId: this.playerConfig.context.contentId} );
+  emitSceneChangeEvent(timer = 0) {
+    setTimeout(() => {
+      const stageId = this.contentIframe.nativeElement.contentWindow.EkstepRendererAPI.getCurrentStageId();
+      const eventData = { stageId };
+      this.sceneChangeEvent.emit(eventData);
+    } , timer); // waiting for player to load, then fetching stageId (if we dont wait stageId will be undefined)
   }
 }
