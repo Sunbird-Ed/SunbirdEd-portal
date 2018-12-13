@@ -25,7 +25,7 @@
                             <mat-card-actions>
                                 <button mat-button *ngIf="upcoming.enrollmentType==='open'" (click)="openEnrollDetailsDialog()">Enroll
                                 </button>
-                                <button mat-button *ngIf="upcoming.enrollmentType==='invite-only'" (click)="openContactDetailsDialog()">Contact</button>
+                                <button mat-button *ngIf="upcoming.enrollmentType==='invite-only'" (click)="openContactDetailsDialog(upcoming)">Contact</button>
                             </mat-card-actions>
                         </mat-card>
                     </div>
@@ -57,7 +57,7 @@
                             <mat-card-actions>
                                 <button mat-button *ngIf="ongoing.enrollmentType==='open'" (click)="openEnrollDetailsDialog()">Enroll
                                 </button>
-                                <button mat-button *ngIf="ongoing.enrollmentType==='invite-only'" (click)="openContactDetailsDialog()">Contact</button>
+                                <button mat-button *ngIf="ongoing.enrollmentType==='invite-only'" (click)="openContactDetailsDialog(ongoing)">Contact</button>
                             </mat-card-actions>
                         </mat-card>
                     </div>
