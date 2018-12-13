@@ -10,6 +10,7 @@ import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { FormControl } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 @Component({
   selector: 'app-catalog-filters',
   templateUrl: './catalog-filters.component.html',
@@ -100,8 +101,8 @@ export class CatalogFiltersComponent implements OnInit, OnDestroy, OnChanges {
     userService: UserService,
     public conceptPickerService: ConceptPickerService,
     permissionService: PermissionService,
-    private browserCacheTtlService: BrowserCacheTtlService
-
+    private browserCacheTtlService: BrowserCacheTtlService,
+    private snackBar: MatSnackBar
   ) {
     this.userService = userService;
     this.configService = configService;
@@ -283,6 +284,7 @@ export class CatalogFiltersComponent implements OnInit, OnDestroy, OnChanges {
 
     if ((name in this.formInputData)) {
       delete this.formInputData[name];
+      this.toasterService.info(`All ${name} filters removed`);
     }
 
     this.applyFilters();
@@ -387,14 +389,15 @@ export class CatalogFiltersComponent implements OnInit, OnDestroy, OnChanges {
       }
       if (!this.formInputData[name].includes(value)) {
         this.formInputData[name].push(value);
+        this.toasterService.info(`${name} - ${value} filter added`);
       }
     } else {
       const index = this.formInputData[name].indexOf(value);
       if (index > -1) {
         this.formInputData[name].splice(index, 1);
+        this.toasterService.info(`${name} - ${value} filter removed`);
       }
     }
-
     this.applyFilters();
   }
 }
