@@ -24,7 +24,6 @@ export class CourseSearchComponent implements OnInit {
   telemetryImpression: IImpressionEventInput;
   closeIntractEdata: IInteractEventEdata;
   cardIntractEdata: IInteractEventEdata;
-  filterIntractEdata: IInteractEventEdata;
   sortIntractEdata: IInteractEventEdata;
   /**
    * To call searchService which helps to use list of courses
@@ -311,11 +310,6 @@ export class CourseSearchComponent implements OnInit {
     };
     this.cardIntractEdata = {
       id: 'course-card',
-      type: 'click',
-      pageid: 'course-search'
-    };
-    this.filterIntractEdata = {
-      id: 'filter',
       type: 'click',
       pageid: 'course-search'
     };

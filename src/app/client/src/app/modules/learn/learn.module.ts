@@ -10,20 +10,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
   CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
-  UpdateCourseBatchComponent, CarriculumCardComponent } from './components';
+  UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent  } from './components';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService } from './services';
 import { CoreModule } from '@sunbird/core';
 import { NotesModule } from '@sunbird/notes';
 import { DashboardModule } from '@sunbird/dashboard';
-import { MaterialUi } from '../../material';
-import {MatCardModule} from '@angular/material/card';
-import {MatSelectModule} from '@angular/material/select';
-import {MatIconModule} from '@angular/material/icon';
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
-    MaterialUi,
     SuiModule,
     DashboardModule,
     SlickModule,
@@ -34,17 +29,10 @@ import {MatIconModule} from '@angular/material/icon';
     NotesModule,
     TelemetryModule,
     NgInviewModule,
-    MatCardModule,
-    MatSelectModule,
-    MatIconModule
   ],
-  exports: [MatCardModule,
-  MatSelectModule,
-  MatIconModule
-],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
-    UpdateCourseBatchComponent, CarriculumCardComponent]
+    UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent]
 })
 export class LearnModule { }

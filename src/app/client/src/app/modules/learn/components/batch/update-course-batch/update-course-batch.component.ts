@@ -2,7 +2,7 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {combineLatest, Subject } from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {takeUntil,  mergeMap } from 'rxjs/operators';
 import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
@@ -10,7 +10,6 @@ import { CourseConsumptionService, CourseBatchService } from './../../../service
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { mergeMap } from 'rxjs/operators';
 @Component({
   selector: 'app-update-course-batch',
   templateUrl: './update-course-batch.component.html',
@@ -31,6 +30,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   private courseId: string;
 
   public selectedParticipants: any = [];
+
+  public showFormInViewMode: boolean;
 
   public selectedMentors: any = [];
 
@@ -179,6 +180,10 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
         this.disableSubmitBtn = true;
       }
     });
+    if (this.batchDetails.createdBy !== this.userService.userid) {
+      this.showFormInViewMode = true;
+      this.batchUpdateForm.disable();
+    }
   }
   /**
   * fetch mentors and participant details
@@ -337,7 +342,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
           this.updateParticipantsToBatch(this.batchId, participants);
         } else {
           this.disableSubmitBtn = false;
-          this.toasterService.success(this.resourceService.messages.smsg.m0033);
+          this.toasterService.success(this.resourceService.messages.smsg.m0034);
           this.reload();
         }
       },
@@ -357,7 +362,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     this.courseBatchService.addUsersToBatch(userRequest, batchId).pipe(takeUntil(this.unsubscribe))
       .subscribe((res) => {
         this.disableSubmitBtn = false;
-        this.toasterService.success(this.resourceService.messages.smsg.m0033);
+        this.toasterService.success(this.resourceService.messages.smsg.m0034);
         this.reload();
       },
       (err) => {

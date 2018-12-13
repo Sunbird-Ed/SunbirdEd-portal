@@ -11,8 +11,7 @@ export class CustomMultiSelectComponent implements OnInit {
   checkBox: object;
   selectAllCheckBox = false;
   refresh = true;
-  @Output('selectedValue')
-  selectedValue = new EventEmitter<any>();
+  @Output() selectedValue = new EventEmitter<any>();
 
   constructor( private cdr: ChangeDetectorRef) { }
   checkbox(name) {

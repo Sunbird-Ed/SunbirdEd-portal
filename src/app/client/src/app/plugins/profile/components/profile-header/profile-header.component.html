@@ -1,10 +1,10 @@
 <div *ngIf='userProfile' class="ui grid padding-topBottom-10 courseStructureHeader">
     <div class="one wide column"></div>
-    <div class=" ten wide column">
-        <div class="ui grid">
-            <div class="eight wide column">
+    <div class="eleven wide mobile ten wide tablet ten wide computer column">
+        <div class="ui stackable grid">
+            <div class="twelve wide mobile eight wide tablet eight wide computer column">
                 <div class="profileheader ui link items">
-                    <div class="ui grid">
+                    <div class="ui stackable grid">
                         <div class="two wide column padding-top-none">
                             <div class="userAvtarWrap field link ui small circular image header-image-profile">
                                 <img class="ui small circular image header-image-profile" src="{{userProfile.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"
@@ -49,11 +49,14 @@
             </div>
         </div>
         <div class="ui grid">
-            <div class="two wide column padding-top-none">
+            <div class="two wide tablet computer only column padding-top-none">
+                <div class="profileImageSizeText">Max upload size 4MB</div>
+            </div>
+            <div class="twelve wide mobile only column padding-top-none padding-bottom-none">
                 <div class="profileImageSizeText">Max upload size 4MB</div>
             </div>
         </div>
     </div>
-    <div class="one wide column"></div>
+    <div class="one wide tablet one wide computer column"></div>
 </div>
 <!-- <router-outlet></router-outlet> -->

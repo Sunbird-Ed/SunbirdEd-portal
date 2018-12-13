@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf,  Observable , throwError as observableThrowError} from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -8,7 +8,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { LearnerService, CoreModule } from '@sunbird/core';
 import { OrgManagementService } from '@sunbird/org-management';
 import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
-import { ResourceService, ConfigService, SharedModule } from '@sunbird/shared';
+import { ResourceService, ConfigService, SharedModule, ToasterService } from '@sunbird/shared';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { mockRes } from './organization-upload.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -82,8 +82,9 @@ describe('OrganizationUploadComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });
   it('should call downloadSample method and download a sample csv file', () => {
+    spyOn(component, 'downloadSample').and.callThrough();
     component.downloadSample();
-    fixture.detectChanges();
+    expect(component.downloadSample).toHaveBeenCalled();
   });
   xit('should call openImageBrowser method', () => {
     let inputEl: DebugElement;
@@ -101,11 +102,14 @@ describe('OrganizationUploadComponent', () => {
   });
   it('should call uploadOrg method and return error response', () => {
     const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
     const orgManagementService = TestBed.get(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
-    spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => observableOf(mockRes.errorResponse));
+    spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => observableThrowError(mockRes.errorResponse));
+    spyOn(toasterService, 'error').and.callThrough();
     component.uploadOrg(mockRes.invalidfile);
     expect(component.showLoader).toBe(false);
+    expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.invalidColumnSingelLine);
   });
   it('should not call uploadOrg method', () => {
     const resourceService = TestBed.get(ResourceService);
@@ -123,5 +127,38 @@ describe('OrganizationUploadComponent', () => {
     spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
+  it('should call uploadOrg method and return error response with message for empty file', () => {
+    const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
+    const orgManagementService = TestBed.get(OrgManagementService);
+    resourceService.messages = mockRes.resourceBundle.messages;
+    spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => observableThrowError(mockRes.errorForEmpty));
+    spyOn(toasterService, 'error').and.callThrough();
+    component.uploadOrg(mockRes.emptyFile);
+    expect(component.showLoader).toBe(false);
+    expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.emptyFiles);
+  });
+  it('should call uploadOrg method and return error response with message of multiple lines', () => {
+    const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
+    const orgManagementService = TestBed.get(OrgManagementService);
+    resourceService.messages = mockRes.resourceBundle.messages;
+    spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => observableThrowError(mockRes.errorFormultipleLines));
+    spyOn(toasterService, 'error').and.callThrough();
+    component.uploadOrg(mockRes.invalidfile);
+    expect(component.showLoader).toBe(false);
+    expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.invalidColumnMultipleLines);
+  });
+  it('should call uploadOrg method and return 502 error then show default error ', () => {
+    const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
+    const orgManagementService = TestBed.get(OrgManagementService);
+    resourceService.messages = mockRes.resourceBundle.messages;
+    spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => observableThrowError(mockRes.noErrorMessage));
+    spyOn(toasterService, 'error').and.callThrough();
+    component.uploadOrg(mockRes.invalidfile);
+    expect(component.showLoader).toBe(false);
+    expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0051);
   });
 });

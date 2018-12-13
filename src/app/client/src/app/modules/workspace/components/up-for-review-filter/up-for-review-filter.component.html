@@ -16,7 +16,7 @@
   <div class="two wide column padding-top-10" id="showFilterButton">
     <span class="browse item cursor-pointer" suiPopup [popupPlacement]="position" [popupTemplate]="popupTemplate" popupTrigger="outsideClick">
       {{resourceService?.frmelmnts?.lbl?.showFilters}}
-      <i class="dropdown icon"></i>
+      <i class="dropdown icon" appTelemetryInteract [telemetryInteractEdata]="filterIntractEdata"></i>
     </span>
   </div>
   <div class="two wide column padding-top-5">
@@ -43,7 +43,7 @@
 
 <ng-template let-popup #popupTemplate>
   <div class="popup-content">
-      <app-data-driven-filter [ignoreQuery]="['key']" *ngIf="filterType" [filterEnv]="filterType" [redirectUrl]="redirectUrl"
+      <app-data-driven-filter [pageId]="'up-for-review-page'" [ignoreQuery]="['key']" *ngIf="filterType" [filterEnv]="filterType"
       [accordionDefaultOpen]=true [isShowFilterLabel]=false [showSearchedParam]=false></app-data-driven-filter>
     </div>
 </ng-template>

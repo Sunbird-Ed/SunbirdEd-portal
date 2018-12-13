@@ -23,10 +23,10 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
 	 * telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
-  queryParams: any;
+  public queryParams: any;
   public collectionData: object;
 
-  private route: ActivatedRoute;
+  public route: ActivatedRoute;
 
   public showPlayer: Boolean = false;
 
@@ -81,7 +81,10 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       'doc': 'fa fa-text-o fa-lg'
     }
   };
-
+  /**
+	 * dialCode
+	*/
+  public dialCode: string;
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
@@ -136,15 +139,20 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   }
 
   private navigateToContent(id: string): void {
+    this.queryParams.contentId = id;
     const navigationExtras: NavigationExtras = {
-      queryParams: { 'contentId': id },
+      queryParams: this.queryParams,
       relativeTo: this.route
     };
     this.router.navigate([], navigationExtras);
   }
 
   private getPlayerConfig(contentId: string): Observable<PlayerConfig> {
-    return this.playerService.getConfigByContent(contentId);
+    if (this.dialCode) {
+      return this.playerService.getConfigByContent(contentId, { dialCode: this.dialCode });
+    } else {
+      return this.playerService.getConfigByContent(contentId);
+    }
   }
 
   private findContentById(collection: any, id: string) {
@@ -182,7 +190,9 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
         this.collectionTreeNodes = data;
         this.loader = false;
         this.route.queryParams.subscribe((queryParams) => {
+          this.queryParams = { ...queryParams};
           this.contentId = queryParams.contentId;
+          this.dialCode = queryParams.dialCode;
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
             if (content) {
@@ -195,7 +205,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
           }
         });
       }, (error) => {
-        // toster error
+        // toaster error
       });
   }
 
@@ -213,8 +223,10 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   }
   closeContentPlayer() {
     this.showPlayer = false;
+    delete this.queryParams.contentId;
     const navigationExtras: NavigationExtras = {
-      relativeTo: this.route
+      relativeTo: this.route,
+      queryParams: this.queryParams
     };
     this.router.navigate([], navigationExtras);
   }

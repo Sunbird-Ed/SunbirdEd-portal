@@ -14,6 +14,7 @@ export const mockRes = {
         'result': {
             'response': [
                 {
+                    'status': 'COMPLETED',
                     'failureResult': [
                     ],
                     'processId': '012465880638177280660',
@@ -50,6 +51,29 @@ export const mockRes = {
                     'objectType': 'user'
                 }
             ]
+        }
+    },
+    successResponseWithStatusInprogress: {
+        'id': 'api.upload.status',
+        'ver': 'v1',
+        'ts': '2018-03-22 10:11:17:147+0000',
+        'params': {
+            'resmsgid': null,
+            'msgid': '49a712f9-1973-96f6-fca3-ec6ecd9353a0',
+            'err': null,
+            'status': 'success',
+            'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+            'response': [{
+                'status': 'IN PROGRESS',
+                'processId': '012564195710017536329',
+                'message': 'Operation is {1}.',
+                'failureResult': [],
+                'successResult': [],
+                'objectType': 'user'
+            }]
         }
     },
     failureResponse: {
@@ -133,6 +157,9 @@ export const mockRes = {
             },
             'stmsg': {
                 'm0006': 'No results found'
+            },
+            'imsg': {
+                'm0040': 'Operation is still in progress, Please try after some time.'
             }
         }
     }

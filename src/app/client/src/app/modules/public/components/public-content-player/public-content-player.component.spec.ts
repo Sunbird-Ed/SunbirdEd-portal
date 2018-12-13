@@ -18,6 +18,7 @@ class RouterStub {
 }
 const fakeActivatedRoute = {
   'params': observableOf({ contentId: 'd0_33567325' }),
+  'queryParams': observableOf({ language: ['en'] }, {dialCode: '61U24C'}),
   snapshot: {
     data: {
       telemetry: {

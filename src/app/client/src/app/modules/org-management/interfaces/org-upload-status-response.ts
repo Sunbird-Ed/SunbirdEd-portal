@@ -2,6 +2,7 @@ import { ServerResponse } from '@sunbird/shared';
 export interface IOrgUploadStatusResponse {
     objectType: string;
     processId: string;
+    status: string;
     successResult: Array<IOrgUploadStatusResult>;
     failureResult: Array<IOrgUploadStatusResult>;
 }

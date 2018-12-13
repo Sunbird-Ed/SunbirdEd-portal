@@ -22,6 +22,9 @@ export class DataService {
    * Contains channel Id
    */
   channelId: string;
+   /**
+   * Contains appId
+   */
   appId: string;
   /**
    * Contains devoce Id
@@ -134,6 +137,7 @@ export class DataService {
     };
     try {
       this.deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
+      this.appId = (<HTMLInputElement>document.getElementById('appId')).value;
     } catch (err) { }
     if (this.deviceId) {
       default_headers['X-Device-ID'] = this.deviceId;
@@ -143,6 +147,9 @@ export class DataService {
     }
     if (this.channelId) {
       default_headers['X-Channel-Id'] = this.channelId;
+    }
+    if (this.appId) {
+      default_headers['X-App-Id'] = this.appId;
     }
     if (headers) {
       return { ...default_headers, ...headers };

@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, ConceptPickerService, PermissionService } from './../../services';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
-
+import { IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-prominent-filter',
   templateUrl: './prominent-filter.component.html',
@@ -13,14 +13,14 @@ import { CacheService } from 'ng2-cache-service';
 })
 export class ProminentFilterComponent implements OnInit, OnDestroy {
   @Input() filterEnv: string;
-  @Input() redirectUrl: string;
   @Input() accordionDefaultOpen: boolean;
   @Input() isShowFilterLabel: boolean;
   @Input() hashTagId = '';
   @Input() ignoreQuery = [];
   @Input() showSearchedParam = true;
+  @Input() pageId: string;
   @Output() filters = new EventEmitter();
-
+  @Output() prominentFilter = new EventEmitter();
   /**
  * To get url, app configs
  */
@@ -71,6 +71,8 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   isShowFilterPlaceholder = true;
   contentTypes: any;
   frameworkDataSubscription: Subscription;
+  isFiltered = true;
+  submitIntractEdata: IInteractEventEdata;
   /**
    *
     * Constructor to create injected service(s) object
@@ -110,6 +112,12 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     this.getQueryParams();
     this.fetchFilterMetaData();
     this.contentTypes = this.configService.dropDownConfig.FILTER.RESOURCES.contentTypes;
+    this.submitIntractEdata = {
+      id: 'submit',
+      type: 'click',
+      pageid: this.pageId,
+      extra: {filter: this.formInputData}
+  };
   }
   getQueryParams() {
     this.activatedRoute.queryParams.subscribe((params) => {
@@ -142,6 +150,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     if (this.isCachedDataExists) {
       const data: any | null = this._cacheService.get(this.filterEnv + this.formAction);
       this.formFieldProperties = data;
+      this.prominentFilter.emit(this.formFieldProperties);
     } else {
       this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
         if (frameworkData && !frameworkData.err) {
@@ -165,12 +174,15 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
                 }
               });
               this.getFormConfig();
+              this.prominentFilter.emit(this.formFieldProperties);
             },
             (err: ServerResponse) => {
+              this.prominentFilter.emit([]);
               // this.toasterService.error(this.resourceService.messages.emsg.m0005);
             }
           );
         } else if (frameworkData && frameworkData.err) {
+          this.prominentFilter.emit([]);
           // this.toasterService.error(this.resourceService.messages.emsg.m0005);
         }
       });
@@ -203,7 +215,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     } else {
       this.formInputData = {};
     }
-    this.router.navigate([this.redirectUrl], { queryParams: this.formInputData });
+    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
     this.refresh = false;
     this.cdr.detectChanges();
     this.refresh = true;
@@ -224,21 +236,29 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   isObject(val) { return typeof val === 'object'; }
 
   applyFilters() {
-    this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
-    let queryParams = {};
-    _.forIn(this.queryParams, (value, key) => {
-      if (key === 'concepts') {
-        queryParams[key] = [];
-        value.forEach((conceptDetails) => {
-          queryParams[key].push(conceptDetails.identifier);
+    if (_.isEqual(this.formInputData, this.queryParams)) {
+      this.isFiltered = true;
+    } else {
+        this.isFiltered = false;
+        this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
+        let queryParams = {};
+        _.forIn(this.queryParams, (value, key) => {
+            if (key === 'concepts') {
+                queryParams[key] = [];
+                value.forEach((conceptDetails) => {
+                    queryParams[key].push(conceptDetails.identifier);
+                });
+            } else {
+                queryParams[key] = value;
+            }
         });
-      } else {
-        queryParams[key] = value;
-      }
-    });
-    queryParams = _.pickBy(queryParams, (value: any ) => value.length > 0);
-    this.router.navigate([this.redirectUrl], { queryParams: queryParams });
-  }
+        queryParams = _.pickBy(queryParams, value => _.isArray(value) && value.length > 0);
+        this.router.navigate([], { relativeTo: this.activatedRoute.parent,
+            queryParams: queryParams
+        });
+    }
+}
+
   showField(allowedRoles) {
     if (allowedRoles) {
       return this.permissionService.checkRolesPermissions(allowedRoles);

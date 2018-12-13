@@ -21,7 +21,7 @@ describe('PublicCollectionPlayerComponent', () => {
   const fakeActivatedRoute = {
     params: observableOf({ collectionId: collectionId }),
     // queryParams: Observable.of({ contentId: contentId }),
-    'queryParams': observableOf({ language: ['en'] }),
+    'queryParams': observableOf({ language: ['en'] }, {dialCode: '61U24C'}),
     snapshot: {
       params: {
         collectionId: collectionId
@@ -97,8 +97,12 @@ describe('PublicCollectionPlayerComponent', () => {
     const router = TestBed.get(Router);
     const route = TestBed.get(ActivatedRoute);
     const navigation = {
+      queryParams: {
+        dialCode: '61U24C'
+      },
       relativeTo: route
     };
+    component.queryParams = { dialCode: '61U24C'};
     component.closeContentPlayer();
     expect(component.showPlayer).toBeFalsy();
     expect(router.navigate).toHaveBeenCalledWith([], navigation);
@@ -127,6 +131,7 @@ describe('PublicCollectionPlayerComponent', () => {
     };
     spyOn(component, 'OnPlayContent').and.callThrough();
     spyOn(component, 'playContent').and.callThrough();
+    component.queryParams = {};
     component.OnPlayContent(content, true);
     expect(component.OnPlayContent).toHaveBeenCalledWith(content, true);
     expect(component.playContent).toHaveBeenCalledWith(content);

@@ -61,7 +61,6 @@ describe('DataDrivenFilterComponent', () => {
     fixture = TestBed.createComponent(DataDrivenFilterComponent);
     component = fixture.componentInstance;
   });
-
   it('should create', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
@@ -71,6 +70,7 @@ describe('DataDrivenFilterComponent', () => {
     const formService = TestBed.get(FormService);
     const cacheService = TestBed.get(CacheService);
     component.formFieldProperties = mockData.mockRes.formConfigData;
+    spyOn(component.dataDrivenFilter, 'emit').and.returnValue(mockData.mockRes.formConfigData);
     spyOn(cacheService, 'exists').and.returnValue(false);
     spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
     spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.mockRes.formConfigData));
@@ -78,6 +78,7 @@ describe('DataDrivenFilterComponent', () => {
     component.fetchFilterMetaData();
     fixture.detectChanges();
     expect(component.formService.getFormConfig).toHaveBeenCalled();
+    expect(component.dataDrivenFilter.emit).toHaveBeenCalledWith(mockData.mockRes.formConfigData);
   });
   it('should get meta data from framework service and handle error from formconfig service', () => {
     const frameworkService = TestBed.get(FrameworkService);
@@ -101,6 +102,7 @@ describe('DataDrivenFilterComponent', () => {
     const formService = TestBed.get(FormService);
     component.formFieldProperties = mockData.mockRes.formConfigData;
     cacheService.set(component.filterType + component.formAction, mockData.mockRes.formConfigData);
+    spyOn(component.dataDrivenFilter, 'emit').and.returnValue(mockData.mockRes.formConfigData);
     spyOn(cacheService, 'get').and.returnValue(mockData.mockRes.formConfigData);
     spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
     frameworkService._frameworkData$.next({ frameworkdata: mockData.mockRes.frameworkData });
@@ -109,6 +111,7 @@ describe('DataDrivenFilterComponent', () => {
     expect(component.formFieldProperties).toEqual(mockData.mockRes.formConfigData);
     expect(component.filtersDetails).toBeDefined();
     expect(component.filtersDetails).toEqual(component.formFieldProperties);
+    expect(component.dataDrivenFilter.emit).toHaveBeenCalledWith(mockData.mockRes.formConfigData);
   });
   it('should return proper error object if framework service returns error', () => {
     const frameworkService = TestBed.get(FrameworkService);
@@ -124,13 +127,13 @@ describe('DataDrivenFilterComponent', () => {
   it('should frame form config data', () => {
     component.categoryMasterList = _.cloneDeep(mockData.mockRes.frameworkData);
     component.getFormConfig();
-    fixture.detectChanges();
+   fixture.detectChanges();
     expect(component.formFieldProperties).toBeDefined();
   });
   it('should apply filters', () => {
     spyOn(component, 'applyFilters').and.returnValue(null);
     component.applyFilters();
-    fixture.detectChanges();
+     fixture.detectChanges();
     expect(component.applyFilters).toHaveBeenCalled();
   });
   it('should reset filters', () => {
@@ -155,7 +158,7 @@ describe('DataDrivenFilterComponent', () => {
     userService._userData$.next({ err: null, userProfile: mockData.mockRes.userProfile });
     component.formInputData = { 'subject': ['English'] };
     component.removeFilterSelection('subject', 'English');
-    fixture.detectChanges();
+     fixture.detectChanges();
   });
   it('should unsubscribe from all observable subscriptions', () => {
     const frameworkService = TestBed.get(FrameworkService);
@@ -204,6 +207,8 @@ describe('DataDrivenFilterComponent', () => {
   it('should apply filters and key should have concepts', () => {
     const router = TestBed.get(Router);
     component.formInputData = { 'subject': ['English'], 'medium': ['English'] };
+    const activatedRoute = TestBed.get(ActivatedRoute);
+    activatedRoute.parent = 'ap/explore';
     component.queryParams = {
       'concepts': [
         {
@@ -213,6 +218,31 @@ describe('DataDrivenFilterComponent', () => {
       ]
     };
     component.applyFilters();
-    expect(router.navigate).toHaveBeenCalledWith([undefined], { queryParams: component.queryParams });
+    expect(router.navigate).toHaveBeenCalledWith([], { relativeTo: 'ap/explore', queryParams: component.queryParams });
   });
+  it('should call ngOninit to get telemetry Interact Data', () => {
+     const frameworkService = TestBed.get(FrameworkService);
+     component.pageId = 'course-page';
+     component.hashTagId = '0123166367624478721';
+     const filterInteractEdata = {
+       id: 'filter',
+       type: 'click',
+       pageid: component.pageId
+     };
+     const submitIntractEdata = {
+       id: 'submit',
+       type: 'click',
+       pageid: 'course-page',
+       extra: { filter: { 'subject': ['English'] } }
+     };
+      spyOn(frameworkService, 'initialize').and.callThrough();
+     spyOn(component, 'getQueryParams').and.callThrough();
+     spyOn(component, 'fetchFilterMetaData').and.callThrough();
+     component.ngOnInit();
+     expect(frameworkService.initialize).toHaveBeenCalled();
+     expect(component.getQueryParams).toHaveBeenCalled();
+     expect(component.fetchFilterMetaData).toHaveBeenCalled();
+     expect(component.filterIntractEdata).toEqual(filterInteractEdata);
+     expect(component.submitIntractEdata).toEqual(submitIntractEdata);
+   });
 });

@@ -1,5 +1,5 @@
 
-import {takeUntil} from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { HomeAnnouncementService } from './../../service/index';
 import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { AnnouncementService } from '@sunbird/core';
@@ -21,9 +21,10 @@ import { Subject } from 'rxjs';
   styleUrls: ['./home-announcement.component.css']
 })
 export class HomeAnnouncementComponent implements OnInit, OnDestroy {
+
   public unsubscribe = new Subject<void>();
-  @Output('inviewEvent')
-  inviewEvent = new EventEmitter<any>();
+
+  @Output() inviewEvent = new EventEmitter<any>();
 
 
   /**
@@ -88,25 +89,25 @@ export class HomeAnnouncementComponent implements OnInit, OnDestroy {
       limit: this.pageLimit
     };
     this.homeAnnouncementService.getInboxData(option).pipe(
-    takeUntil(this.unsubscribe))
-    .subscribe(
-      (apiResponse) => {
-        this.showLoader = false;
-        if (apiResponse) {
-          this.announcementlist = apiResponse;
-          // Calling received API
-          _.each(this.announcementlist.announcements, (key) => {
-            if (key.received === false) {
-              this.announcementService.receivedAnnouncement({ announcementId: key.id }).subscribe(
-                (response: ServerResponse) => { }
-              );
-            }
-          });
-        }
-      },
-      err => {
-        this.showLoader = false;
-      });
+      takeUntil(this.unsubscribe))
+      .subscribe(
+        (apiResponse) => {
+          this.showLoader = false;
+          if (apiResponse) {
+            this.announcementlist = apiResponse;
+            // Calling received API
+            _.each(this.announcementlist.announcements, (key) => {
+              if (key.received === false) {
+                this.announcementService.receivedAnnouncement({ announcementId: key.id }).subscribe(
+                  (response: ServerResponse) => { }
+                );
+              }
+            });
+          }
+        },
+        err => {
+          this.showLoader = false;
+        });
   }
 
   /**
@@ -120,16 +121,16 @@ export class HomeAnnouncementComponent implements OnInit, OnDestroy {
   readAnnouncement(announcementId: string, read: boolean): void {
     if (read === false) {
       this.announcementService.readAnnouncement({ announcementId: announcementId }).pipe(
-      takeUntil(this.unsubscribe))
-      .subscribe(
-        (response: ServerResponse) => {
-          _.each(this.announcementlist.announcements, (key, index) => {
-            if (announcementId === key.id) {
-              this.announcementlist.announcements[index].read = true;
-            }
-          });
-        }
-      );
+        takeUntil(this.unsubscribe))
+        .subscribe(
+          (response: ServerResponse) => {
+            _.each(this.announcementlist.announcements, (key, index) => {
+              if (announcementId === key.id) {
+                this.announcementlist.announcements[index].read = true;
+              }
+            });
+          }
+        );
     }
   }
 
