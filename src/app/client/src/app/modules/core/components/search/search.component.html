@@ -1,5 +1,5 @@
 <div class="ui fluid icon input left action" id="search-input-container" [ngClass]="{ 'disabled': !showInput }">
-    <div class="searchdropdown m-responsive-search-dropdown ui basic floating dropdown button" id="headerSearch">
+    <div class="searchdropdown m-responsive-search-dropdown ui floating dropdown button" id="headerSearch" style="background:white;">
         <sui-select [(ngModel)]="selectedOption" (ngModelChange)="onChange()" [isDisabled]="!showInput">
             <sui-select-option value="All"></sui-select-option>
             <sui-select-option value="Courses"></sui-select-option>
