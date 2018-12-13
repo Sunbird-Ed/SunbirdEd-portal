@@ -250,7 +250,7 @@ overflow-y: hidden;
 }
 .video-text {
  color: white !important;
- font-size: 30px;
+ font-size: 15px;
 }
 .list-header {
  font-family:'Cabin Sketch',cursive;
@@ -263,10 +263,6 @@ overflow-y: hidden;
     text-shadow: black;
 }
 
-.video-text {
-    color: white;
-    font-size: 15px;
-}
 
 .circle{
     background: black;
