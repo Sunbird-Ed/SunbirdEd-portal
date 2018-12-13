@@ -72,6 +72,9 @@ app.all('/logoff', endSession, (req, res) => {
 app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth)
 
 // client app routes
+require('./routes/googleSignInRoutes.js')(app, keycloak)
+
+// client app routes
 require('./routes/clientRoutes.js')(app, keycloak)
 
 app.all(['/content-editor/telemetry', '/collection-editor/telemetry'], bodyParser.urlencoded({ extended: false }),
