@@ -160,7 +160,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     );
     this.courseProgressListner = this.player.CourseProgressListner.subscribe(
       next => {
-        console.log('listining to the next event');
         this.contentProgressEvent({
           status: 'END',
           content_id: next.content_id
@@ -170,7 +169,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   }
   ngOnInit() {
-    console.log('sdf;khsd;flkjas;dklfhsldakfh;lksadfpoiwe;kjbsda;jb');
     this.activatedRouteSubscription = this.activatedRoute.params.pipe(first(),
       mergeMap((params) => {
         this.courseId = params.courseId;
@@ -188,7 +186,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
       })).subscribe((response: any) => {
         this.courseHierarchy = response.courseHierarchy;
-        console.log(this.courseHierarchy, '+++++++++++++++++++++++++++++++ this is courese hierarchy object------------------');
         const contentCredits = _.get(this.courseHierarchy, 'contentCredits');
         if (_.isArray(contentCredits)) {
           this.contributionsLength = contentCredits.length;
@@ -209,18 +206,15 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           this.parseChildContent();
           if (this.enrolledBatchInfo.status > 0 && this.contentIds.length > 0) {
             this.getContentState();
-            console.log('before subscribe');
             this.subscribeToQueryParam();
           }
         } else if (this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(this.previewContentRoles)
           || this.courseHierarchy.createdBy === this.userService.userid) {
           this.parseChildContent();
-          console.log('else');
           this.subscribeToQueryParam();
         } else {
           this.parseChildContent();
         }
-        console.log('fetching the course hierarchy data');
         this.collectionTreeNodes = { data: this.courseHierarchy };
         this.loader = false;
       }, (error) => {
@@ -270,11 +264,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   private subscribeToQueryParam() {
     this.queryParamSubscription = this.activatedRoute.queryParams.subscribe((queryParams) => {
       if (queryParams.contentId) {
-        console.log(queryParams, 'inside subqpam 1st if condn-=========00000000');
         const content = this.findContentById(queryParams.contentId);
         const isExtContentMsg = this.coursesService.showExtContentMsg ? this.coursesService.showExtContentMsg : false;
         if (content) {
-          console.log('callig onplaycontent');
           this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') },
             isExtContentMsg);
         } else {
@@ -296,7 +288,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.enrolledBatchInfo.status > 0) || this.courseStatus === 'Unlisted'
       || this.permissionService.checkRolesPermissions(this.previewContentRoles)
       || this.courseHierarchy.createdBy === this.userService.userid)) {
-      console.log('inside on play content');
       this.contentId = content.id;
       this.setTelemetryContentImpression();
       this.setContentNavigators();
@@ -312,7 +303,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.nextPlaylistItem = this.contentDetails[index + 1];
   }
   private playContent(data: any, showExtContentMsg?: boolean): void {
-    console.log('play content is called ---------------===========---');
     this.enableContentPlayer = false;
     this.loader = true;
     const options: any = { courseId: this.courseId };
@@ -332,7 +322,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         } else {
           this.showExtContentMsg = false;
         }
-        console.log('enable content player');
         this.enableContentPlayer = true;
         this.contentTitle = data.title;
         this.breadcrumbsService.setBreadcrumbs([{ label: this.contentTitle, url: '' }]);
@@ -344,7 +333,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   public navigateToContent(content: { title: string, id: string }): void {
-    console.log('navigate to content is called');
     const navigationExtras: NavigationExtras = {
       queryParams: { 'contentId': content.id },
       relativeTo: this.activatedRoute
@@ -362,18 +350,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
   }
   public contentProgressEvent(event) {
-    console.log(this.enrolledBatchInfo, '---------------------');
     if (this.batchId && this.enrolledBatchInfo && this.enrolledBatchInfo.status === 1) {
       let eid: any;
       let content_id: any;
-      console.log(event, 'Course Progress event is called');
       if (event.status === 'END') {
-        console.log('inside if');
         eid = event.status;
       } else { eid = event.detail.telemetryData.eid; }
 
       if (event.content_id) {
-        console.log('inside content id-----------');
         content_id = event.content_id;
       } else { content_id = this.contentId; }
       const request: any = {
@@ -383,12 +367,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         batchId: this.batchId,
         status: eid === 'END' ? 2 : 1
       };
-      console.log(request, 'this is the request object-----------------------');
       this.updateContentsStateSubscription = this.courseConsumptionService.updateContentsState(request)
         .subscribe((updatedRes) => {
           this.contentStatus = updatedRes.content;
         }, (err) => {
-          console.log('updating content status failed', err);
         });
     }
   }

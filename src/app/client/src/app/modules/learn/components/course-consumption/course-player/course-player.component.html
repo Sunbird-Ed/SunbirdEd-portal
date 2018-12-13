@@ -6,7 +6,9 @@
         [contentStatus]="contentStatus"></app-collection-tree>
     </mat-drawer>
     <div class="example-sidenav-content">
-        <a mat-button (click)="drawer.toggle()" id="icon"><mat-icon >list</mat-icon></a>
+      <a> <i mat-button (click)="drawer.toggle()" id="icon" class="material-icons">
+            view_list
+            </i></a>
         <!-- <span>{{enableContentPlayer}} {{loader}}</span>  -->
       <div *ngIf="enableContentPlayer && !loader" id="player">￼
         <div class="ui stackable grid">
@@ -15,10 +17,10 @@
                     <div class="row">
                         <div class="twelve wide column">
                             <div class="ui grid" id="app-player-collection-renderer">
-                                <div class="twelve wide column">
+                                <!-- <div class="twelve wide column">
                                     <span class="ui HomeAccordianHeading left floated header">{{contentTitle}}</span>
 
-                                </div>
+                                </div> -->
                             </div>
                             <div class="ui warning message click-notify-xurl" *ngIf="showExtContentMsg">
                                 <div class="column twelve wide">
@@ -36,7 +38,7 @@
                     <div class="ui row padding-top-none">
                         <div class="ui twelve column grid padding-right-none">
                             <div class="five wide mobile only three wide tablet only three wide computer only column">
-                                <button class="ui blue button left floated fluid tocbutton toc-left-nav-btn-content" (click)="navigateToContent(prevPlaylistItem)"
+                                <button id="previous" class="ui blue button left floated fluid tocbutton toc-left-nav-btn-content" (click)="navigateToContent(prevPlaylistItem)"
                                     [disabled]="prevPlaylistItem === undefined">
                                     <span class="header">{{resourceService.frmelmnts.btn.previous}}</span>
                                     <br />
@@ -56,7 +58,7 @@
                             </div>
                             <div class="two wide tablet only two wide computer only column"></div>
                             <div class="five wide mobile only three wide tablet only three wide computer only column padding-right-none">
-                                <button class="ui blue button right floated fluid toc-right-nav-btn-content" (click)="navigateToContent(nextPlaylistItem)"
+                                <button id="previous" class="ui blue button right floated fluid toc-right-nav-btn-content" (click)="navigateToContent(nextPlaylistItem)"
                                     [disabled]="nextPlaylistItem === undefined">
                                     <span class="header">{{resourceService.frmelmnts.btn.next}}</span>
                                     <br />
@@ -180,6 +182,5 @@
             </div>
         </div>
     </div>
-<<<<<<< Updated upstream
 </div> -->
 <router-outlet></router-outlet>

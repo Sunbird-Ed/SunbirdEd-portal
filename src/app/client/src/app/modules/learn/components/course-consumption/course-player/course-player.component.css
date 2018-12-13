@@ -13,7 +13,7 @@
 .example-container {
   width: 100%;
   height: 100%;
-  /* background-color: #d6d6d6; */
+  background-color: black;
 }
 
 .example-sidenav-content {
@@ -22,22 +22,29 @@
   align-items: center;
   justify-content: center;
   padding-left: 2%;
-
+  font-size: 30px;
 }
 
 .example-sidenav {
-  padding: 20px;
+  padding: 10px;
   width: 30%;
-  background-color: aliceblue;
-  /* background-color: #d6d6d6; */
+  background-color: rgb(13, 13, 14);
+  font-size: 30px;
+  border-right-color: orange;
+  border-right: 30px;
+}
+
+.example-sidenav::-webkit-scrollbar-thumb {
+  background-color: orange;
 }
 
 #icon {
   position: absolute;
   top: 0;
   left: 2px;
-  color: rgb(12, 10, 10);
-  size: 20px;
+  color: orange;
+  font-size: 40px;
+  border-radius: 20px;
 }
 
 
@@ -47,4 +54,9 @@
 }
 a :hover{
   background-color: aliceblue;
+}
+
+#previous {
+   background-color: orange;
+
 }
