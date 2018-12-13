@@ -10,6 +10,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatListModule} from '@angular/material/list';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 @NgModule({
   imports: [MatCheckboxModule,
@@ -22,6 +24,8 @@ import {MatListModule} from '@angular/material/list';
     MatRadioModule,
     MatTabsModule,
     MatListModule,
+    MatDialogModule,
+    MatGridListModule,
   ],
   exports: [MatCheckboxModule,
     MatSidenavModule,
@@ -34,6 +38,8 @@ import {MatListModule} from '@angular/material/list';
     MatRadioModule,
     MatTabsModule,
     MatListModule,
+    MatDialogModule,
+    MatGridListModule,
   ],
 })
 
