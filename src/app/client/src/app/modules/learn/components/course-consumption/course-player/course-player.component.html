@@ -1,12 +1,14 @@
 
-<mat-drawer-container class="example-container">
+<mat-drawer-container *ngIf="enableContentPlayer" class="example-container">
     <mat-drawer #drawer class="example-sidenav" mode="side">
       <!-- <h2>Course content</h2> -->
         <app-collection-tree *ngIf="collectionTreeNodes; else dataCommingSoon" (contentSelect)="navigateToContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"
         [contentStatus]="contentStatus"></app-collection-tree>
     </mat-drawer>
     <div class="example-sidenav-content">
-        <a mat-button (click)="drawer.toggle()" id="icon"><mat-icon >list</mat-icon></a>
+        <a mat-button (click)="drawer.toggle()" id="icon"><i class="material-icons">
+            view_list
+            </i></a>
         <!-- <span>{{enableContentPlayer}} {{loader}}</span>  -->
       <div *ngIf="enableContentPlayer && !loader" id="player">￼
         <div class="ui stackable grid">
@@ -15,10 +17,10 @@
                     <div class="row">
                         <div class="twelve wide column">
                             <div class="ui grid" id="app-player-collection-renderer">
-                                <div class="twelve wide column">
+                                <!-- <div class="twelve wide column">
                                     <span class="ui HomeAccordianHeading left floated header">{{contentTitle}}</span>
 
-                                </div>
+                                </div> -->
                             </div>
                             <div class="ui warning message click-notify-xurl" *ngIf="showExtContentMsg">
                                 <div class="column twelve wide">

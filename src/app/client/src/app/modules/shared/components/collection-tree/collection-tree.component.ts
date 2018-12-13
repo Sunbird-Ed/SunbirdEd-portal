@@ -31,6 +31,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     '1': 'fancy-tree-blue',
     '2': 'fancy-tree-green'
   };
+  count: number;
   public subscription: any;
   public courseProgress: any;
   constructor(public player: PlayContent, public resourceService?: ResourceService) {
@@ -63,6 +64,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     }
   }
   public onContentCheckBoxClick(child) {
+    this.count++;
     this.courseProgress.next({ content_id: child.id });
   }
 
@@ -112,6 +114,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
             const status = (content && content.status) ? content.status.toString() : 0;
             node.iconColor = this.iconColor[status];
             if (status === '2') {
+              this.count++;
               node.completed = true;
             }
 

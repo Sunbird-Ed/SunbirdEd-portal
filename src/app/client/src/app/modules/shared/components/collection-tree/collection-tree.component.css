@@ -9,9 +9,14 @@
   /* color: rgb(28, 53, 56); */
 }
 
-.card {
+mat-card{
   margin-bottom: 10px;
   box-shadow: 10px 10px 5px grey;
+  text-overflow: ellipsis;
+  /* display: inline; */
+
+  /* margin-left: -20px;
+  margin-right: -20px; */
 }
 
 mat-expansion-panel{
