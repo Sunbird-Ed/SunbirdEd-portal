@@ -533,7 +533,7 @@
   "course": {
     "filterType": "course",
     "inPageredirectUrl": "/learn",
-    "searchPageredirectUrl": "/search/Courses/1"
+    "searchPageredirectUrl": "/search/catalog/1"
   },
   "library": {
     "filterType": "library",

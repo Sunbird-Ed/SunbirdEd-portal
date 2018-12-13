@@ -379,7 +379,9 @@ export class CatalogFiltersComponent implements OnInit, OnDestroy, OnChanges {
       if (!(name in this.formInputData)) {
         this.formInputData[name] = [];
       }
-      this.formInputData[name].push(value);
+      if (!this.formInputData[name].includes(value)) {
+        this.formInputData[name].push(value);
+      }
     } else {
       const index = this.formInputData[name].indexOf(value);
       if (index > -1) {

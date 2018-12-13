@@ -4,6 +4,9 @@
 html{
     scroll-behavior: smooth;
 }
+mat-list mat-list-item h4 {
+  color:black !important;
+}
 body{
     background-attachment: fixed;
     background-image: url('https://raw.githubusercontent.com/rheafernandes/rheafernandes.github.io/master/Itadakimasu/dist/4a5b0a776dbd2b9cd79681a8b0989724.jpg');
@@ -183,7 +186,7 @@ li:hover{
     border-radius:50%;
     overflow:hidden;
   }
-  
+
   .box .review-img img {
     width:100%;
     height:100%;

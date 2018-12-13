@@ -5,11 +5,12 @@ import {
   ILoaderMessage, UtilService, ICard
 } from '@sunbird/shared';
 import { SearchService, CoursesService, ICourses, SearchParam, ISort, PlayerService } from '@sunbird/core';
-import { Component, OnInit, NgZone, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, NgZone, ChangeDetectorRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { CatalogFiltersComponent } from '../catalog-filters/catalog-filters.component';
 
 
 @Component({
@@ -111,14 +112,13 @@ export class CatalogComponent implements OnInit {
   * Contains result object returned from enrolled course API.
   */
   enrolledCourses: Array<ICourses>;
-
   /**
    * contains the search filter type
    */
   public filterType: string;
-
   public redirectUrl: string;
   sortingOptions: Array<ISort>;
+  @ViewChild(CatalogFiltersComponent) catalogFiltersComponent: CatalogFiltersComponent;
 
   /**
      * Constructor to create injected service(s) object
@@ -351,6 +351,13 @@ export class CatalogComponent implements OnInit {
     });
   }
 
+  checkForEmptyObject(obj) {
+    return _.isEmpty(obj);
+  }
 
+  clearFilters() {
+    this.filters = {};
+    this.catalogFiltersComponent.resetFilters();
+  }
 
 }

@@ -31,6 +31,7 @@ import { MaterialUi } from '../../material';
     NotesModule,
     TelemetryModule,
     NgInviewModule,
+    MaterialUi
   ],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
