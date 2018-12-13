@@ -1,51 +1,32 @@
 #!groovy
-
 node('build-slave') {
-
     currentBuild.result = "SUCCESS"
-
     try {
-
        stage('Checkout'){
-
           checkout scm
+          // Getting commit short hash
+          commit_hash = sh (
+          script: 'git rev-parse --short HEAD',
+          returnStdout: true
+          ).trim()
+          branch_name = sh (
+          script: 'git name-rev --name-only HEAD | rev | cut -d "/" -f1| rev',
+          returnStdout: true
+          ).trim()
+          echo 'branch_name: '+branch_name
        }
-
-       stage('Pre-Build'){
-
-         sh('./installDeps.sh')
-
-       }
-
        stage('Build'){
-
-            env.NODE_ENV = "build"
-            print "Environment will be : ${env.NODE_ENV}"
-
-            // Getting commit short hash
-            GIT_COMMIT_HASH = sh (
-            script: 'git rev-parse --short HEAD',
-            returnStdout: true
-            ).trim()
-            echo "Git Hash: ${GIT_COMMIT_HASH}"
+            sh("printenv")
+            echo "Git Hash: "+commit_hash
             // Building image
-            sh("sudo ./build.sh ${GIT_COMMIT_HASH}")
+            sh("sudo ./build.sh ${commit_hash} ${branch_name}")
        }
-
-       stage('Publish'){
-
-           echo 'Push to Repo'
-           dir('.') {
-               sh 'ARTIFACT_LABEL=bronze ./dockerPushToRepo.sh'
-               sh "./src/app/metadata.sh ${GIT_COMMIT_HASH} > metadata.json"
-               sh "cat metadata.json"
-               archive includes: "metadata.json"
-           }
-       }
+       stage('ArchiveArtifacts'){
+           archiveArtifacts "metadata.json"
+        }
     }
     catch (err) {
         currentBuild.result = "FAILURE"
         throw err
     }
-
 }
