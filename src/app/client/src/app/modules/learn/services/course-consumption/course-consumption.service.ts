@@ -31,7 +31,6 @@ export class CourseConsumptionService {
     return this.courseProgressService.getContentState(req);
   }
   updateContentsState(req) {
-    console.log('in course consumption update content', req);
     return this.courseProgressService.updateContentsState(req);
   }
 }

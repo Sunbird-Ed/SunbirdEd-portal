@@ -26,7 +26,6 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     '1': 'fancy-tree-blue',
     '2': 'fancy-tree-green'
   };
-  count: number;
   public subscription: any;
   public courseProgress: any;
   constructor(public player: PlayContent, public resourceService?: ResourceService) {
@@ -52,20 +51,16 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
   }
 
   public onItemSelect(item: any) {
-    console.log(item);
     if (!item.folder) {
-      console.log(typeof item.id, typeof item.title, 'this is the id  and titile node node node ');
       this.subscription.next({ id: item.id, title: item.title });
     }
   }
   public onContentCheckBoxClick(child) {
-    this.count++;
     this.courseProgress.next({ content_id: child.id });
   }
 
 
   public onItemSelect2(child: any) {
-    console.log(child.id, child.title, '///////////*\\\\\\\\\\');
     this.contentSelect.emit({ id: child.id, title: child.title });
   }
 
@@ -75,7 +70,6 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     if (this.rootNode) {
       this.rootChildrens = this.rootNode.children;
       this.nodeRoot = this.rootNode;
-      console.log(this.rootNode, '***********this is my root node ******************//');
       this.addNodeMeta();
     }
   }
@@ -90,7 +84,6 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
   private addNodeMeta() {
     if (!this.rootNode) { return; }
     this.rootNode.walk((node) => {
-      // console.log(node , "***********this is the node we are waling on *******************");
       node.fileType = MimeTypeTofileType[node.model.mimeType];
       node.id = node.model.identifier;
       if (node.children && node.children.length) {
@@ -109,7 +102,6 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
             const status = (content && content.status) ? content.status.toString() : 0;
             node.iconColor = this.iconColor[status];
             if (status === '2') {
-              this.count++;
               node.completed = true;
             }
 

@@ -11,7 +11,7 @@
   </sui-accordion-panel>
 </sui-accordion> -->
 
-<div *ngFor="let child of nodeRoot.children">
+<div *ngFor="let child of nodeRoot.children" class="expansion">
   <mat-accordion>
     <mat-expansion-panel
       *ngIf="child.children.length > 0"
@@ -22,7 +22,6 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           <span [ngClass]="child.icon"></span> {{ child.title }} &nbsp;&nbsp;
-          {{ count }}/{{ child.children.length }}
         </mat-panel-title>
 
           <mat-panel-description>
