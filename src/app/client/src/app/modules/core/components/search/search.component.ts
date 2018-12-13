@@ -13,6 +13,7 @@ import { ResourceService, ConfigService } from '@sunbird/shared';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
+
   /**
    * Sui dropdown initiator
    */

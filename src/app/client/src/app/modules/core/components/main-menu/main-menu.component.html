@@ -18,6 +18,10 @@
 
 <mat-menu #main_menu="matMenu">
 	<button mat-menu-item routerLink="/search/catalog/1">View All Courses</button>
+	<button mat-menu-item [matMenuTriggerFor]="sub_main_menu">Browse With</button>
+</mat-menu>
+
+<mat-menu #sub_main_menu="matMenu">
 	<ng-container *ngFor="let category of categoryMasterList">
 		<button mat-menu-item [matMenuTriggerFor]="sub_menu">{{ category?.code}}</button>
 		<mat-menu #sub_menu="matMenu">

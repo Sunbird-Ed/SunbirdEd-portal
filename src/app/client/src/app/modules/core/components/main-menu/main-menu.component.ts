@@ -48,7 +48,7 @@ export class MainMenuComponent  implements OnInit {
     console.log(node, '-', child);
     const queryParams = {};
     queryParams[node] = child;
-    this.router.navigate(['search/catalog/1'], {queryParams: queryParams});
+    this.router.navigate(['search/catalog/1', {cat: node}], {queryParams: queryParams});
   }
 
 }
