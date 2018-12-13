@@ -13,6 +13,7 @@ import { ResourceService, ConfigService } from '@sunbird/shared';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
+
   /**
    * Sui dropdown initiator
    */
@@ -102,7 +103,6 @@ export class SearchComponent implements OnInit {
     });
     this.route.events.pipe(
       filter(e => e instanceof NavigationEnd)).subscribe((params: any) => {
-        debugger;
         const currUrl = this.route.url.split('?');
         this.value = currUrl[0].split('/', 3);
         const searchEnabledStates = this.config.dropDownConfig.FILTER.SEARCH.searchEnabled;
