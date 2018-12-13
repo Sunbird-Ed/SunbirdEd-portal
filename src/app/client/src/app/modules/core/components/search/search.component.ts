@@ -102,6 +102,7 @@ export class SearchComponent implements OnInit {
     });
     this.route.events.pipe(
       filter(e => e instanceof NavigationEnd)).subscribe((params: any) => {
+        debugger;
         const currUrl = this.route.url.split('?');
         this.value = currUrl[0].split('/', 3);
         const searchEnabledStates = this.config.dropDownConfig.FILTER.SEARCH.searchEnabled;
