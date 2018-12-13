@@ -5,6 +5,7 @@ export interface IEnrolledCourses {
 }
 
 export interface ICourses {
+  status: number;
    /**
     * course name
     */
