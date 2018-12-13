@@ -30,12 +30,12 @@ For easy navigation of course preview -->
           <a class="nav-link" href="#instructors">Instructors</a>
         </li>
       </ul>
-      <button type="button" (click)="redirect()" class="btn btn-dark btn-enroll ml-auto">View Batches</button>
+      <button type="button" (click)="redirect()" class="btn btn-dark btn-enroll ml-auto" style="background: black;">View Batches</button>
     </div>
   </div>
 </nav>
 
-<!-- Section #1 
+<!-- Section #1
       This showcases the course details  -->
 <section class="showcase-section container-fluid bg-light">
   <header class="showcase-header">
@@ -195,39 +195,38 @@ For easy navigation of course preview -->
 <section class="course-highlights-section containter-fluid bg-light" id="highlights">
   <section class="container inner-card" style="box-shadow:0px 10px 3px 3px gray; border-radius: 10px;">
     <mat-card>
-      <mat-list>
-        <h2 class="light-section-header">What you'll learn / Highlights</h2>
-        <mat-list-item>
+
+      <h2 class="light-section-header">What you'll learn / Highlights</h2>
+        <mat-list>
+          <h3 mat-subheader>Java OOPs Concepts</h3>
+
+        <mat-list-item >
           <mat-icon mat-list-icon>done</mat-icon>
-          <h4 mat-line>Java OOPs Concepts</h4>
+          <h4 mat-line >Java Inheritance</h4>
         </mat-list-item>
-        <mat-list-item>
-          <mat-icon mat-list-icon>done</mat-icon>
-          <h4 mat-line>Java Inheritance</h4>
-        </mat-list-item>
-        <mat-list-item>
+        <mat-list-item >
           <mat-icon mat-list-icon>done</mat-icon>
           <h4 mat-line>Java Polymorphism</h4>
         </mat-list-item>
         <mat-list-item>
           <mat-icon mat-list-icon>done</mat-icon>
-          <h4 mat-line>Java Abstraction</h4>
+          <h4 mat-line  >Java Abstraction</h4>
+        </mat-list-item>
+        <mat-list-item >
+          <mat-icon mat-list-icon>done</mat-icon>
+          <h4 mat-line >Java Encapsulation</h4>
         </mat-list-item>
         <mat-list-item>
           <mat-icon mat-list-icon>done</mat-icon>
-          <h4 mat-line>Java Encapsulation</h4>
-        </mat-list-item>
-        <mat-list-item>
-          <mat-icon mat-list-icon>done</mat-icon>
-          <h4 mat-line>Java Array</h4>
+          <h4 mat-line  >Java Array</h4>
         </mat-list-item>
         <mat-divider></mat-divider>
         <h3 mat-subheader>Collections</h3>
-        <mat-list-item>
+        <mat-list-item >
           <mat-icon mat-list-icon>done</mat-icon>
           <h4 mat-line> Collections in Java</h4>
         </mat-list-item>
-        <mat-list-item>
+        <mat-list-item >
           <mat-icon mat-list-icon>done</mat-icon>
           <h4 mat-line>What is a framework in Java</h4>
         </mat-list-item>
@@ -260,8 +259,8 @@ For easy navigation of course preview -->
     <div *ngFor="let chapter of coursechapters ; let i=index" class="col-sm-4">
       <div class="row">
         <div class="col-sm-6 text-center">
-          <div class="circle">
-              <a href="#">{{chapter.name}}</a>
+          <div class="circle pt-5" >
+              <a href="#" style="color: orange;font-size: 17px;">{{chapter.name}}</a>
           </div>
         </div>
         <div class="col-sm-6">
@@ -344,7 +343,7 @@ For easy navigation of course preview -->
   </div>
 
 </section>
-<!-- 
+<!--
       Section #7
       This section is for Recommended COurses -->
 <section class="course-recommended-section">

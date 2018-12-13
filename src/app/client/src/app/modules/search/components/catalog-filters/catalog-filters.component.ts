@@ -5,16 +5,17 @@ import {
 } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnDestroy, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FrameworkService, FormService, ConceptPickerService, PermissionService, UserService } from './../../services';
+import { FrameworkService, FormService, ConceptPickerService, PermissionService, UserService } from '../../../core/services';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+import { FormControl } from '@angular/forms';
 @Component({
-  selector: 'app-data-driven-filter',
-  templateUrl: './data-driven-filter.component.html',
-  styleUrls: ['./data-driven-filter.component.css']
+  selector: 'app-catalog-filters',
+  templateUrl: './catalog-filters.component.html',
+  styleUrls: ['./catalog-filters.component.css']
 })
-export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
+export class CatalogFiltersComponent implements OnInit, OnDestroy, OnChanges {
   @Input() filterEnv: string;
   @Input() accordionDefaultOpen: boolean;
   @Input() isShowFilterLabel: boolean;
@@ -267,6 +268,20 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.refresh = true;
   }
 
+  resetFilters2(name) {
+
+    const checkboxes: any = document.getElementsByName(name);
+    for (let i = 0, n = checkboxes.length; i < n; i++) {
+      checkboxes[i].checked = false;
+    }
+
+    if ((name in this.formInputData)) {
+      delete this.formInputData[name];
+    }
+
+    this.applyFilters();
+  }
+
   /**
  * to get selected concepts from concept picker.
  */
@@ -356,4 +371,25 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
       this.frameworkDataSubscription.unsubscribe();
     }
   }
+
+  onFilterChange(event) {
+    const { name, value } = event.target;
+    console.log('name' , name , 'value' , value);
+    if (event.target.checked) {
+      if (!(name in this.formInputData)) {
+        this.formInputData[name] = [];
+      }
+      if (!this.formInputData[name].includes(value)) {
+        this.formInputData[name].push(value);
+      }
+    } else {
+      const index = this.formInputData[name].indexOf(value);
+      if (index > -1) {
+        this.formInputData[name].splice(index, 1);
+      }
+    }
+
+    this.applyFilters();
+  }
 }
+

@@ -1,8 +1,3 @@
-/*
-*
-* Author: Sunil A S<sunils@ilimi.in>
-*
-*/
 
 import {
   Component, OnInit, Input, ElementRef,

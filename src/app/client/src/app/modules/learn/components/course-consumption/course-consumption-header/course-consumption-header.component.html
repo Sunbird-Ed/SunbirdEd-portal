@@ -2,8 +2,8 @@
     <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
         <div class="ui text centered inline loader margin-top-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
     </div>
-    <div class="ui stackable grid margin-top-4rem courseStructureHeader m-responsive-cp-nmt-50">
-        <div class="one wide tablet one wide computer column"></div>
+    <div class="ui grid margin-top-4rem courseStructureHeader">
+        <!-- <div class="one wide column"></div>
         <div class="ten wide column padding-top-none">
             <div class="ui stackable grid">
                 <div class="nine wide column padding-top-none">
@@ -20,8 +20,8 @@
                         <i class="ui large blue clone outline icon"></i>
                     </span>
                     <h6 class="ui small negative message" *ngIf="courseHierarchy.status === 'Flagged'">{{resourceService?.messages?.imsg?.m0001}}</h6>
-                </div>
-                <div class="three wide column">
+                </div> -->
+                <!-- <div class="three wide column">
                     <div *ngIf="enrolledCourse" class="margin-top-Negative30">
                         <span>
                             <p class="text-align-center m-responsive-cp-header">{{resourceService?.messages?.stmsg?.m0108}} {{ progress }}%</p>
@@ -32,15 +32,15 @@
                             {{resourceService?.frmelmnts?.btn?.resumecourse}}
                             <i class="caret right icon"></i>
                         </button>
-                    </div>
-                    <div *ngIf="permissionService.permissionAvailable && !enrolledCourse" appPermission [permission]="dashboardPermission">
+                    </div> -->
+                    <!-- <div *ngIf="permissionService.permissionAvailable && !enrolledCourse" appPermission [permission]="dashboardPermission">
                         <button class="blue right floated ui button courseHeaderButton margin-top-10" (click)="showDashboard()">{{resourceService?.frmelmnts?.btn?.viewcoursestats}}</button>
-                    </div>
-                </div>
+                    </div> -->
+                <!-- </div>
             </div>
-        </div>
-        <div class="one wide tablet one wide computer column"></div>
-    </div>
+        </div> -->
+        <!-- <div class="one wide column "></div>
+    </div> -->
 </div>
 <div class="ui grid progress-bar-margin" *ngIf="enrolledCourse">
     <div class="twelve wide column padding-none ">

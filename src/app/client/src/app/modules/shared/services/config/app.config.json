@@ -7,8 +7,36 @@
             "class": "ui blue basic button",
             "eventName": "Resume",
             "displayType": "button",
-            "text": "Resume"
+            "text": "Continue"
           },
+
+          "onImage": {"eventName": "onImage"}
+        },
+        "telemetryInteractEdata": {"id":"courseId","type":"click","pageid":"home"},
+        "telemetryObjectType":"home"
+      },
+      "startData": {
+        "action": {
+          "right": {
+            "class": "ui blue basic button",
+            "eventName": "Resume",
+            "displayType": "button",
+            "text": "Start"
+          },
+          "onImage": {"eventName": "onImage"}
+        },
+        "telemetryInteractEdata": {"id":"courseId","type":"click","pageid":"home"},
+        "telemetryObjectType":"home"
+      },
+      "viewData": {
+        "action": {
+          "right": {
+            "class": "ui blue basic button",
+            "eventName": "Resume",
+            "displayType": "button",
+            "text": "View"
+          },
+
           "onImage": {"eventName": "onImage"}
         },
         "telemetryInteractEdata": {"id":"courseId","type":"click","pageid":"home"},
@@ -36,14 +64,36 @@
             "class": "ui blue basic button",
             "eventName": "Resume",
             "displayType": "button",
-            "text": "Resume"
+            "text": "Continue"
           },
           "onImage": {"eventName": "onImage"}
         }
       },
       "metaData": ["batchId", "courseId"],
       "maxCount": "leafNodesCount",
-      "progress": "progress"
+      "progress": "progress",
+      "viewData": {
+        "action": {
+          "right": {
+            "class": "ui blue basic button",
+            "eventName": "Resume",
+            "displayType": "button",
+            "text": "View"
+          },
+          "onImage": {"eventName": "onImage"}
+        }
+      },
+      "startData": {
+        "action": {
+          "right": {
+            "class": "ui blue basic button",
+            "eventName": "Resume",
+            "displayType": "button",
+            "text": "Start"
+          },
+          "onImage": {"eventName": "onImage"}
+        }
+      }
     }
   },
   "Library": {
@@ -92,8 +142,16 @@
   "CourseSearch": {
     "otherCourses":{
       "constantData":{
-      "action": {
-          "onImage": {"eventName": "onImage" }
+        "action": {
+          "right": {
+            "class": "ui blue basic button",
+            "eventName": "Preview",
+            "displayType": "button",
+            "text": "Preview"
+          },
+          "onImage": {
+            "eventName": "onImage"
+          }
         }
        }
     },"enrolledCourses": {
@@ -475,7 +533,7 @@
   "course": {
     "filterType": "course",
     "inPageredirectUrl": "/learn",
-    "searchPageredirectUrl": "/search/Courses/1"
+    "searchPageredirectUrl": "/search/catalog/1"
   },
   "library": {
     "filterType": "library",
@@ -493,7 +551,7 @@
     "filterType": "allmycontent",
     "inPageredirectUrl": "workspace/content/allcontent/1",
     "searchPageredirectUrl": "workspace/content/allcontent/1"
-   }, 
+   },
   "explore": {
     "filterType": "explore",
     "inPageredirectUrl": "/explore",

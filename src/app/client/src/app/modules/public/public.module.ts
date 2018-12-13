@@ -18,7 +18,6 @@ import { NgInviewModule } from 'angular-inport';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { BadgingModule } from '@sunbird/badge';
-import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   imports: [
@@ -33,9 +32,7 @@ import {MatCardModule} from '@angular/material/card';
     NgInviewModule,
     DeviceDetectorModule,
     BadgingModule,
-    MatCardModule
   ],
-  exports: [MatCardModule],
   declarations: [LandingPageComponent, SignupComponent, GetComponent, DialCodeComponent,
     PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent],
   providers: [SignupService, PublicPlayerService, DeviceDetectorService, SignupGuard, LandingpageGuard]
