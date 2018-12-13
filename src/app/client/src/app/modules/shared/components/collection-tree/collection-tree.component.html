@@ -13,19 +13,21 @@
 
 <div *ngFor="let child of nodeRoot.children">
   <mat-accordion>
-    <mat-expansion-panel *ngIf="child.children.length > 0" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+    <mat-expansion-panel *ngIf="child.children.length > 0" (opened)="panelOpenState = true" (closed)="panelOpenState = false" class="mat-expanded mat-expansion-panel-spacing">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <span [ngClass]="child.icon"></span> {{child.title}}
+          <span [ngClass]="child.icon"></span> {{child.title}}    1/{{child.children.length}}
         </mat-panel-title>
         <mat-panel-description>
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <app-collection-tree *ngIf="child.children.length > 0" [nodeRoot]="child"></app-collection-tree>      
+      <app-collection-tree *ngIf="child.children.length > 0" [nodeRoot]="child"></app-collection-tree>
     </mat-expansion-panel>
 
-    <mat-card *ngIf="child.children.length == 0" (click)="onItemSelect(child)" tabindex="0" style="margin-bottom: 4px">
-      <mat-checkbox (click)="onContentCheckBoxClick(child)" style="margin-right:3px" [checked]='child.completed' color="primary"></mat-checkbox> <span [ngClass]="child.icon" > </span> {{child.title}}
+    <mat-card class="card" *ngIf="child.children.length == 0" (click)="onItemSelect(child)" tabindex="0">
+      <mat-card-header>       <mat-checkbox class="round-box" (click)="onContentCheckBoxClick(child)" [checked]='child.completed' color="primary"></mat-checkbox> &nbsp;
+        <span [ngClass]="child.icon" ></span> &nbsp; {{child.title}}
+      </mat-card-header>
     </mat-card>
 
   </mat-accordion>

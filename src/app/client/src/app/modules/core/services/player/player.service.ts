@@ -142,7 +142,7 @@ export class PlayerService {
         } else if (content.batchId) {
           this.router.navigate(['/learn/course', content.courseId, 'batch', content.batchId]);
         } else {
-          this.router.navigate(['/learn/course', content.identifier]);
+          this.router.navigate(['/learn/preview', content.identifier]);
         }
       } else if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent) {
         this.router.navigate(['/resources/play/content', content.identifier]);

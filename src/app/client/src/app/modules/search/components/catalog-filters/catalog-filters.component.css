@@ -1,0 +1,5 @@
+@import "~bootstrap/dist/css/bootstrap.min.css";
+.filtersBody{
+    max-height: 200px;
+    overflow-y: scroll;
+}

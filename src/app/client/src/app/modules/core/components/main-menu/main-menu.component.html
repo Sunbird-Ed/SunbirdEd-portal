@@ -9,5 +9,20 @@
 		{{resourceService?.frmelmnts?.tab?.resources}}
 	</a>
 
+	<a class="item" mat-button [matMenuTriggerFor]="main_menu">
+		Catalog
+	</a>
+
 	<extension-point name="header-menu-item"></extension-point>
 </div>
+
+<mat-menu #main_menu="matMenu">
+	<button mat-menu-item routerLink="/search/catalog/1">View All Courses</button>
+	<ng-container *ngFor="let category of categoryMasterList">
+		<button mat-menu-item [matMenuTriggerFor]="sub_menu">{{ category?.code}}</button>
+		<mat-menu #sub_menu="matMenu">
+			<button *ngFor="let subItem of category?.terms" mat-menu-item (click)="filter(category?.code , subItem?.name)">{{
+				subItem?.name }}</button>
+		</mat-menu>
+	</ng-container>
+</mat-menu>

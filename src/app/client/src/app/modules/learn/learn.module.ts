@@ -21,7 +21,6 @@ import { MaterialUi } from '../../material';
   imports: [
     CommonModule,
     SharedModule,
-    MaterialUi,
     SuiModule,
     DashboardModule,
     SlickModule,
