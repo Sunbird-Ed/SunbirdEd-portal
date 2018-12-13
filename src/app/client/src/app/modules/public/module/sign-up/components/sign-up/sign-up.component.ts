@@ -64,7 +64,7 @@ export class SignUpComponent implements OnInit {
       if (this.signUpForm.status === 'VALID') {
         this.disableSubmitBtn = false;
       } else {
-        this.disableSubmitBtn = false;
+        this.disableSubmitBtn = true;
       }
     });
   }
