@@ -10,7 +10,7 @@ jobs:
           command: ./build.sh
   test-cases:
     docker:
-      - image: g33tha/node-8.11
+      - image: node:8.11-slim
     steps:
       - checkout
       - run: sh test.sh
