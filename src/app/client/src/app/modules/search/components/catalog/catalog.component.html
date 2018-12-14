@@ -6,7 +6,7 @@
         [ignoreQuery]="['key']" [filterEnv]="filterType" [isShowFilterLabel]=true></app-catalog-filters>
     </div>
     <div class="col-md-9">
-      <div class="alert alert-dismissible alert-primary" *ngIf="!showLoader && !noResult">
+      <div class="alert alert-dismissible alert-warning" *ngIf="!showLoader && !noResult">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <h5> {{totalCount }} Matching Result(s)
           <div class="float-right">
