@@ -21,6 +21,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   @Input() enrolledCourse: boolean;
   @Input() batchId: string;
   @Input() courseHierarchy: any;
+  @Input() courseProgressData: any;
   public courseInteractObject: IInteractEventObject;
   public updateBatchIntractEdata: IInteractEventEdata;
   public createBatchIntractEdata: IInteractEventEdata;

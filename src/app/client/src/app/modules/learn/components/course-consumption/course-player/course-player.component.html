@@ -1,10 +1,10 @@
 
-<mat-drawer-container class="example-container">
+<mat-drawer-container class="example-container" autosize>
     <mat-drawer #drawer class="example-sidenav" mode="side">
-      <!-- <h2>Course content</h2> -->
-        <app-collection-tree *ngIf="collectionTreeNodes; else dataCommingSoon" (contentSelect)="navigateToContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"
+        <app-collection-tree *ngIf="collectionTreeNodes" (contentSelect)="navigateToContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"
         [contentStatus]="contentStatus"></app-collection-tree>
     </mat-drawer>
+  
     <div class="example-sidenav-content">
       <a> <i mat-button (click)="drawer.toggle()" id="icon" class="material-icons">
             view_list
@@ -91,45 +91,32 @@
     </div>
     <div class="one wide column"></div>
 
-  </div>
-
+    </div>
+    
+  
   </mat-drawer-container>
 
-
-
-
-
-
-<!--
+<!-- 
 <div class="ui stackable grid margin-top-20" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
     <div class="one wide column"></div>
     <div class="ten wide column">
         <div *ngIf="!enableContentPlayer && !loader">
             <div class="content" [appTelemetryImpression]="telemetryCourseImpression">
                 <div class="ui stackable grid">
-                    <div class="twelve wide column">
-                        <div class="ui grid">
-                            <div class="row">
-                                <div class="twelve wide column">
-                                    <div class="ui grid" id="app-player-collection-renderer">
-                                        <div class="twelve wide column">
-                                            <span class="ui HomeAccordianHeading left floated header">{{contentTitle}}</span>
-                                            <h5 appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="contentInteractObject"
-                                            class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="closeContentPlayer()">
-                                                <i class="ui remove icon"></i>
-                                            </h5>
-                                        </div>
-                                    </div>
-                                    <div class="ui warning message click-notify-xurl" *ngIf="showExtContentMsg">
-                                        <div class="column twelve wide">
-                                            <p>{{resourceService.messages.imsg.m0036}}</p>
-                                        </div>
-                                    </div>
-                                    <div class="ui grid">
-                                        <div class="twelve wide column" [appTelemetryImpression]="telemetryContentImpression">
-                                            <app-player (contentProgressEvent)="contentProgressEvent($event)" class="content-player" [playerConfig]="playerConfig"></app-player>
-                                        </div>
-                                    </div>
+                    <div class="row">
+                        <div class='nine wide column'> -->
+                            <!-- <div class="ui header">
+                                <span class="content courseStructureHeading">
+                                    {{resourceService.frmelmnts.lbl.aboutthecourse}}
+                                </span>
+                                <div *ngIf="courseHierarchy.description" class="margin-top-10">
+                                    <p *ngIf="!readMore" class="courseStructureDesc"> {{ courseHierarchy.description | slice:0:200 }}&nbsp;
+                                        <span class="ui cardsKnowMore mouse-pointer" *ngIf="courseHierarchy.description && courseHierarchy.description.length > 200 && readMore === false"
+                                            (click)="readMore = !readMore;">{{resourceService.frmelmnts.lbl.readmore}}</span>
+                                    </p>
+                                    <p *ngIf="readMore" class="courseStructureDesc"> {{ courseHierarchy.description}}&nbsp;
+                                        <span class="ui cardsKnowMore mouse-pointer" (click)="readMore = false;">{{resourceService.frmelmnts.lbl.readless}}</span>
+                                    </p>
                                 </div>
                             </div>
                             <div class="ui header">
@@ -137,13 +124,13 @@
                                     {{resourceService.frmelmnts.lbl.coursestructure}}
                                 </b>
                             </div> -->
-
+                           
                             <!-- <ng-template #dataCommingSoon>
                                 <div class="placeholder margin-top-40" *ngIf="!collectionTreeNodes.data">
                                     <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl }}"/>
                                     <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0121}}</h5>
                                     <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>
-                                </div>
+                                </div> 
                             </ng-template>
                             <div class="ui fitted divider margin-bottom-20 margin-top-30"></div> -->
                         <!-- </div> -->
@@ -173,7 +160,7 @@
                                 <br>
                                 <b *ngIf="courseHierarchy.creator">{{resourceService.frmelmnts.lbl.courseCreatedBy}}: {{courseHierarchy.creator}}</b>
                                 <br>
-
+                               
                                 <br>
                             </div>
                         </div> -->

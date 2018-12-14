@@ -15,6 +15,7 @@ import { CourseConsumptionService, CourseBatchService, CourseProgressService } f
 import { CoreModule } from '@sunbird/core';
 import { NotesModule } from '@sunbird/notes';
 import { DashboardModule } from '@sunbird/dashboard';
+import { PlayContent } from '../shared';
 @NgModule({
   imports: [
     CommonModule,
@@ -30,7 +31,7 @@ import { DashboardModule } from '@sunbird/dashboard';
     TelemetryModule,
     NgInviewModule,
   ],
-  providers: [CourseConsumptionService, CourseBatchService, CourseProgressService],
+  providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, PlayContent],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
     UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent]
