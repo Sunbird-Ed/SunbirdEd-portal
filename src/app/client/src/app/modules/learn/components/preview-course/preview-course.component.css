@@ -20,9 +20,6 @@ body{
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
 } */
-.course-preview-nav{
-  z-index:5;
-}
 .bg-dark{
     background-color: black !important;
 }
