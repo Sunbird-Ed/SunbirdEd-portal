@@ -81,21 +81,21 @@ export class ResourceComponent implements OnInit, OnDestroy {
       }
       return value.length;
     });
-    // filters.channel = this.hashTagId;
-    // filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
+    const softConstraintFilter = {
+      channel: this.userService.hashTagId,
+      board: [this.dataDrivenFilters.board]
+    };
+    const manipulatedData = this.utilService.manipulateSoftConstraint(filters,
+      softConstraintFilter, _.get(this.activatedRoute.snapshot, 'data.softConstraints'));
     const option: any = {
       source: 'web',
       name: 'Resource',
-      filters: filters,
+      filters: manipulatedData.filters,
       mode: 'soft',
-      softConstraints: {},
+      softConstraints: manipulatedData.softConstraints,
       exists: [],
       params : this.configService.appConfig.Library.contentApiQueryParams
     };
-    if (_.isEmpty(this.queryParams)) {
-      option.board = this.dataDrivenFilters.board;
-      option.softConstraints = {board: 100 };
-    }
     if (this.queryParams.sort_by) {
       option.sort_by = {[this.queryParams.sort_by]: this.queryParams.sortType  };
     }

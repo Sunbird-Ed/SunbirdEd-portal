@@ -7,7 +7,8 @@ const routes: Routes = [
     path: '', component: ExploreComponent, data: {
       telemetry: {
         env: 'explore', pageid: 'explore', type: 'view', subtype: 'paginate'
-      }
+      },
+      softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 }
     }
   },
   {
@@ -24,7 +25,8 @@ const routes: Routes = [
       path: ':pageNumber', component: ExploreContentComponent, data: {
         telemetry: {
           env: 'explore', pageid: 'explore-search', type: 'view', subtype: 'paginate'
-        }
+        },
+        softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 }
       }
     }
   ];

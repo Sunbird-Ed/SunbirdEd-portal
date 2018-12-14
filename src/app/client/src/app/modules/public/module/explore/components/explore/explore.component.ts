@@ -51,10 +51,10 @@ export class ExploreComponent implements OnInit, OnDestroy {
         return this.dataDrivenFilterEvent;
       }), first()
     ).subscribe((filters: any) => {
-        this.dataDrivenFilters = filters;
-        this.fetchContentOnParamChange();
-        this.setNoResultMessage();
-      },
+      this.dataDrivenFilters = filters;
+      this.fetchContentOnParamChange();
+      this.setNoResultMessage();
+    },
       error => {
         this.router.navigate(['']);
       }
@@ -62,19 +62,19 @@ export class ExploreComponent implements OnInit, OnDestroy {
   }
   public getFilters(filters) {
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
-        if (element.code === 'board') {
-          collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
-        }
-        return collector;
-      }, {});
+      if (element.code === 'board') {
+        collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
+      }
+      return collector;
+    }, {});
     this.dataDrivenFilterEvent.emit(defaultFilters);
   }
   private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
-    .pipe(map((result) => ({params: result[0], queryParams: result[1]})),
-        filter(({queryParams}) => !_.isEqual(this.queryParams, queryParams)), // fetch data if queryParams changed
+      .pipe(map((result) => ({ params: result[0], queryParams: result[1] })),
+        filter(({ queryParams }) => !_.isEqual(this.queryParams, queryParams)), // fetch data if queryParams changed
         takeUntil(this.unsubscribe$))
-      .subscribe(({params, queryParams}) => {
+      .subscribe(({ params, queryParams }) => {
         this.showLoader = true;
         this.queryParams = { ...queryParams };
         this.carouselData = [];
@@ -83,16 +83,20 @@ export class ExploreComponent implements OnInit, OnDestroy {
   }
   private fetchPageData() {
     const filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value.length);
-    filters.channel = this.hashTagId;
-    filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
+    const softConstraintFilter = {
+      channel: this.hashTagId,
+      board: [this.dataDrivenFilters.board]
+    };
+    const manipulatedData = this.utilService.manipulateSoftConstraint(filters,
+      softConstraintFilter, _.get(this.activatedRoute.snapshot, 'data.softConstraints'));
     const option = {
       source: 'web',
       name: 'Explore',
-      filters: filters,
-      softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
+      filters: manipulatedData.filters,
+      softConstraints: manipulatedData.softConstraints,
       mode: 'soft',
       exists: [],
-      params : this.configService.appConfig.ExplorePage.contentApiQueryParams
+      params: this.configService.appConfig.ExplorePage.contentApiQueryParams
     };
     this.pageApiService.getPageData(option)
       .subscribe(data => {
@@ -102,7 +106,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
         this.showLoader = false;
         this.carouselData = [];
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-    });
+      });
   }
   private prepareCarouselData(sections = []) {
     const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.ExplorePage;
@@ -145,9 +149,9 @@ export class ExploreComponent implements OnInit, OnDestroy {
     searchQuery.request.filters.channel = this.hashTagId;
     searchQuery.request.filters.board = this.dataDrivenFilters.board;
     this.cacheService.set('viewAllQuery', searchQuery.request.filters, { maxAge: this.browserCacheTtlService.browserCacheTtl });
-    const queryParams = { ...searchQuery.request.filters, ...this.queryParams};
+    const queryParams = { ...searchQuery.request.filters, ...this.queryParams };
     const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
-    this.router.navigate([sectionUrl, 1], {queryParams: queryParams});
+    this.router.navigate([sectionUrl, 1], { queryParams: queryParams });
   }
   ngOnDestroy() {
     this.unsubscribe$.next();
