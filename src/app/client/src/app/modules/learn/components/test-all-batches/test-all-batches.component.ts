@@ -46,7 +46,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   ongoingBatches = [];
   upcomingBatches = [];
   mentorContactDetail;
-  disableSubmitBtn: boolean;
+  userId;
   showUnenroll;
   public unsubscribe = new Subject<void>();
   ngOnDestroy(): void {
@@ -63,7 +63,9 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     public userService: UserService,
     public toasterService: ToasterService,
     public resourceService: ResourceService
-  ) { }
+  ) {
+    this.userId = this.userService.userid;
+  }
   ngOnInit(): void {
     this.ongoingSearch = {
       filters: {
@@ -87,6 +89,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       });
   }
   openContactDetailsDialog(batch): void {
+    console.log('BATCH Details', batch);
     this.getUserDetails(batch.createdBy)
       .pipe(tap((data) => {
         this.mentorContactDetail = data;
@@ -118,15 +121,16 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       request: {
         courseId: batch.courseId,
         batchId: batch.id,
-        userId: this.userService.userid,
+        userId: this.userId,
       }
     };
-    this.disableSubmitBtn = true;
     this.courseBatchService.enrollToCourse(request).pipe(
       takeUntil(this.unsubscribe))
       .subscribe((data) => {
         console.log('data', data);
-        this.showUnenroll = data.result.response;
+        if (data.result.response === 'SUCCESS') {
+          this.showUnenroll = true;
+        }
         this.toasterService.success(this.resourceService.messages.smsg.m0036);
       }, (err) => {
 

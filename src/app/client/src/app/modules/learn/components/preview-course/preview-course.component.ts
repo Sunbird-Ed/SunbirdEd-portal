@@ -93,11 +93,11 @@ export class PreviewCourseComponent implements OnInit {
     for (const child of this.coursechapters) {
       console.log('child', child);
       this.youtubelink.push(child.children);
-      if (child.children.length > 0) {
-      this.checkChildrens(child.children);
-      } else {
-          console.log('previewurl', child.previewUrl);
-      }
+      // if (child.children.length > 0) {
+      // // this.checkChildrens(child.children);
+      // } else {
+      //     console.log('previewurl', child.previewUrl);
+      // }
     }
     for (const link of this.youtubelink) {
 
@@ -115,10 +115,10 @@ export class PreviewCourseComponent implements OnInit {
     this.router.navigate(['/learn/course', this.courseId]);
   }
 
-checkChildrens(child) {
-  if (child.children.length > 0) {
-    console.log('child values', child.children);
-  }
+// checkChildrens(child) {
+//   if (child.children.length > 0) {
+//     console.log('child values', child.children);
+//   }
 }
 
-}
+// }
