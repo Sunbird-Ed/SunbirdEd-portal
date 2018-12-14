@@ -30,7 +30,7 @@ For easy navigation of course preview -->
           <a class="nav-link" href="#instructors">Instructors</a>
         </li>
       </ul>
-      <!-- <button type="button" class="btn btn-dark btn-enroll ml-auto">Enroll Now </button> -->
+      <button type="button" (click)="redirect()" class="btn btn-dark btn-enroll ml-auto" style="background: black;">View Batches</button>
     </div>
   </div>
 </nav>
@@ -91,8 +91,8 @@ For easy navigation of course preview -->
         <div class="row">
           <span class="col-md-8"></span>
           <div class="col-sm-4 pl-5 pr-5 pt-2">
-            <button type="button" class="btn btn-info ml-4 mr-3">Preview</button>
-            <button type="button" class="btn btn-info ml-3 mr-4">Enroll Now</button>
+            <button type="button" class="btn btn-info ml-4 mr-1">Sample video</button>
+            <button type="button" (click)="redirect()"  class="btn btn-info ml-2 mr-4">View Batches</button>
           </div>
         </div>
       </div>
@@ -195,39 +195,38 @@ For easy navigation of course preview -->
 <section class="course-highlights-section containter-fluid bg-light" id="highlights">
   <section class="container inner-card" style="box-shadow:0px 10px 3px 3px gray; border-radius: 10px;">
     <mat-card>
-      <mat-list>
-        <h2 class="light-section-header">What you'll learn / Highlights</h2>
-        <mat-list-item>
+
+      <h2 class="light-section-header">What you'll learn / Highlights</h2>
+        <mat-list>
+          <h3 mat-subheader>Java OOPs Concepts</h3>
+
+        <mat-list-item >
           <mat-icon mat-list-icon>done</mat-icon>
-          <h4 mat-line>Java OOPs Concepts</h4>
+          <h4 mat-line >Java Inheritance</h4>
         </mat-list-item>
-        <mat-list-item>
-          <mat-icon mat-list-icon>done</mat-icon>
-          <h4 mat-line>Java Inheritance</h4>
-        </mat-list-item>
-        <mat-list-item>
+        <mat-list-item >
           <mat-icon mat-list-icon>done</mat-icon>
           <h4 mat-line>Java Polymorphism</h4>
         </mat-list-item>
         <mat-list-item>
           <mat-icon mat-list-icon>done</mat-icon>
-          <h4 mat-line>Java Abstraction</h4>
+          <h4 mat-line  >Java Abstraction</h4>
+        </mat-list-item>
+        <mat-list-item >
+          <mat-icon mat-list-icon>done</mat-icon>
+          <h4 mat-line >Java Encapsulation</h4>
         </mat-list-item>
         <mat-list-item>
           <mat-icon mat-list-icon>done</mat-icon>
-          <h4 mat-line>Java Encapsulation</h4>
-        </mat-list-item>
-        <mat-list-item>
-          <mat-icon mat-list-icon>done</mat-icon>
-          <h4 mat-line>Java Array</h4>
+          <h4 mat-line  >Java Array</h4>
         </mat-list-item>
         <mat-divider></mat-divider>
         <h3 mat-subheader>Collections</h3>
-        <mat-list-item>
+        <mat-list-item >
           <mat-icon mat-list-icon>done</mat-icon>
           <h4 mat-line> Collections in Java</h4>
         </mat-list-item>
-        <mat-list-item>
+        <mat-list-item >
           <mat-icon mat-list-icon>done</mat-icon>
           <h4 mat-line>What is a framework in Java</h4>
         </mat-list-item>
@@ -251,7 +250,6 @@ For easy navigation of course preview -->
       <iframe width="720" height="450" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS-ORUK9ChAFCMDw0zjPwYrxcgp1n47iTqCPnNSdfq5AKvhvJkHbWqmuSNb8qTuvaRdRxh3v9EbKBYO/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
     </mat-tab>
   </mat-tab-group>
-
 </section>
 <!-- Section #5
       This section is for milestones/roadmap -->
@@ -261,11 +259,11 @@ For easy navigation of course preview -->
     <div *ngFor="let chapter of coursechapters ; let i=index" class="col-sm-4">
       <div class="row">
         <div class="col-sm-6 text-center">
-          <div class="circle">
-              <a href="#">{{chapter.name}}</a>
+          <div class="circle pt-5 " >
+              <a href="#" style="color: orange;font-size: 17px;">{{chapter.name}}</a>
           </div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-6 mt-5 pt-4">
           <div *ngIf="i <coursechapters.length-1" class="divider"></div>
         </div>
       </div>
@@ -361,7 +359,7 @@ For easy navigation of course preview -->
                   alt="course title">
               </div>
               <div class="col-sm-8 rating-section">
-                <h5 class="recommended-card-header">Head First Java</h5>
+                <h5 class="recommended-card-header  text-secondary">Head First Java</h5>
                 <div class="row">
                   <div class="col-sm-6">
                     <span class="fa fa-star checked "></span>
@@ -387,7 +385,7 @@ For easy navigation of course preview -->
                   alt="course title">
               </div>
               <div class="col-sm-8 rating-section">
-                <h5 class="recommended-card-header">Head First Java</h5>
+                <h5 class="recommended-card-header  text-secondary">Head First Java</h5>
                 <div class="row">
                   <div class="col-sm-6">
                     <span class="fa fa-star checked "></span>
@@ -412,7 +410,7 @@ For easy navigation of course preview -->
                   alt="course title">
               </div>
               <div class="col-sm-8 rating-section ">
-                <h5 class="recommended-card-header">Head First Java</h5>
+                <h5 class="recommended-card-header  text-secondary">Head First Java</h5>
                 <div class="row">
                   <div class="col-sm-6">
                     <span class="fa fa-star checked "></span>
@@ -450,7 +448,7 @@ For easy navigation of course preview -->
                 alt="course title">
             </div>
             <div class="col-sm-8 rating-section">
-              <h5 class="recommended-card-header">Head First Java</h5>
+              <h5 class="recommended-card-header  text-secondary">Head First Java</h5>
               <div class="row">
                 <div class="col-sm-6">
                   <span class="fa fa-star checked "></span>
@@ -476,7 +474,7 @@ For easy navigation of course preview -->
                 alt="course title">
             </div>
             <div class="col-sm-8 rating-section">
-              <h5 class="recommended-card-header">Head First Java</h5>
+              <h5 class="recommended-card-header  text-secondary">Head First Java</h5>
               <div class="row">
                 <div class="col-sm-6">
                   <span class="fa fa-star checked "></span>
@@ -501,7 +499,7 @@ For easy navigation of course preview -->
                 alt="course title">
             </div>
             <div class="col-sm-8 rating-section ">
-              <h5 class="recommended-card-header">Head First Java</h5>
+              <h5 class="recommended-card-header  text-secondary">Head First Java</h5>
               <div class="row">
                 <div class="col-sm-6">
                   <span class="fa fa-star checked "></span>

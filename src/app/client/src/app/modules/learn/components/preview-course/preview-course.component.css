@@ -4,12 +4,16 @@
 html{
     scroll-behavior: smooth;
 }
-/* body{
+mat-list mat-list-item h4 {
+  color:black !important;
+}
+body{
     background-attachment: fixed;
     background-image: url('https://raw.githubusercontent.com/rheafernandes/rheafernandes.github.io/master/Itadakimasu/dist/4a5b0a776dbd2b9cd79681a8b0989724.jpg');
     background-repeat: repeat;
-} */
-/* .navbar-brand{
+}
+
+.navbar-brand{
     font-size: 1.5rem;
     font-family: 'Carter One', cursive;
      background: -webkit-linear-gradient(orange 50%, #920663 50% ) !important;
@@ -250,7 +254,7 @@ overflow-y: hidden;
 }
 .video-text {
  color: white !important;
- font-size: 30px;
+ font-size: 15px;
 }
 .list-header {
  font-family:'Cabin Sketch',cursive;
@@ -263,10 +267,6 @@ overflow-y: hidden;
     text-shadow: black;
 }
 
-.video-text {
-    color: white;
-    font-size: 15px;
-}
 
 .circle{
     background: black;

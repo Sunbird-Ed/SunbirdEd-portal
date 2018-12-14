@@ -11,6 +11,7 @@ import { FlagContentComponent, AuthGuard } from '@sunbird/core';
 import { CourseProgressComponent } from '@sunbird/dashboard';
 import { RedirectComponent } from './../shared/components/redirect/redirect.component';
 import { PreviewCourseComponent } from './components/preview-course/preview-course.component';
+import { TestAllBatchesComponent } from './components/test-all-batches/test-all-batches.component';
 const telemetryEnv = 'course';
 const objectType = 'course';
 const routes: Routes = [
@@ -35,8 +36,8 @@ const routes: Routes = [
     data: { telemetry: { env: telemetryEnv } },
     children: [
       {
-        path: ':courseId', component: CoursePlayerComponent,
-        // path: ':courseId', component: PreviewCourseComponent,
+        path: ':courseId', component: TestAllBatchesComponent,
+        // path: ':courseId', component: CoursePlayerComponent,
         data: {
           telemetry: {
             env: telemetryEnv, pageid: 'course-player', type: 'view', object: { ver: '1.0', type: 'batch' }
