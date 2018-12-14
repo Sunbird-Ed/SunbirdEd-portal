@@ -146,7 +146,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       request: {
         courseId: batch.courseId,
         batchId: batch.id,
-        userIds: [this.userId]
+        userId: this.userId
       }
     };
     this.courseBatchService.unEnrollToCourse(request).pipe(
