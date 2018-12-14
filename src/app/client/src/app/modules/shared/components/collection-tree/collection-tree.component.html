@@ -10,7 +10,7 @@
     </div>
   </sui-accordion-panel>
 </sui-accordion> -->
-
+<div *ngIf="nodeRoot!=undefined">
 <div *ngFor="let child of nodeRoot.children" class="expansion">
   <mat-accordion>
     <mat-expansion-panel
@@ -49,4 +49,5 @@
       </mat-card-header>
     </mat-card>
   </mat-accordion>
+</div>
 </div>

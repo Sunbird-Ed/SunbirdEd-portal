@@ -5,6 +5,7 @@ mat-card{
   text-overflow: ellipsis;
   border-radius: 2%;
   border-color: gray;
+  font-size: 15px;
 }
 
 mat-expansion-panel{
