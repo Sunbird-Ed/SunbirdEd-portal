@@ -8,7 +8,7 @@
     font-size: 1em;
     height: 2.8em;
     max-height: 2.8em;
-    overflow: hidden;   
+    overflow: hidden;
     overflow-wrap: break-word;
 }
 .ui.cards>.card.workspace-card {

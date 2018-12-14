@@ -1,5 +1,5 @@
 <div class="container-fluid bg-dark ">
-<div class="container">
+<!-- <div class="container"> -->
   <nav
     class="navbar navbar-expand-lg navbar-dark bg-dark "
     *ngIf="!showExploreHeader"
@@ -78,7 +78,7 @@
           </ul>
         </span>
 
-        <div class="ml-2" id="search-bar" *ngIf="userService.userid">
+        <div class="ml-5" id="search-bar" *ngIf="userService.userid">
           <app-search></app-search>
         </div>
         <div class="one wide column"></div>
@@ -189,7 +189,7 @@
       </div>
     </div>
   </nav>
-</div>
+<!-- </div> -->
 </div>
 <div class="container-fluid bg-dark">
 <div class="container">
@@ -287,7 +287,7 @@
         </div>
       </div>
     </div>
-    <div class="ui grid margin-top-0">
+    <!-- <div class="ui grid margin-top-0">
       <div
         class="center aligned twelve wide tablet computer only column anon-consumption-sec-menu padding-top-none"
       >
@@ -300,7 +300,7 @@
               (click)="showQrmodal = true"
             >
               <i class="qrcode icon"></i>
-              <!-- {{ resourceService.frmelmnts?.lbl?.enterQrCode }} -->
+              {{ resourceService.frmelmnts?.lbl?.enterQrCode }}
             </button>
           </div>
           <div class="three wide column"></div>
@@ -336,7 +336,7 @@
       <app-qr-code-modal
         (closeQrModal)="closeQrModalEvent($event)"
       ></app-qr-code-modal>
-    </div>
+    </div> -->
   </nav>
 </div>
 </div>
