@@ -220,6 +220,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     window.location.replace('/logoff');
     this.cacheService.removeAll();
   }
+  filter(node, child) {
+    console.log(node, '-', child);
+    const queryParams = {};
+    queryParams[node] = child;
+    this.router.navigate(['search/catalog/1', {cat: node}], {queryParams: queryParams});
+  }
 
   ngOnDestroy() {
     if (this.tenantDataSubscription) {

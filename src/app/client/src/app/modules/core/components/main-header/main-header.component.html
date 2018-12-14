@@ -18,10 +18,11 @@
         aria-controls="navbarColor01"
         aria-expanded="false"
         aria-label="Toggle navigation"
+        style="margin-left: 9em;"
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarColor01">
+      <div class="collapse navbar-collapse" id="navbarColor01" >
         <span
           *ngIf="!showExploreHeader && userService.userid"
           class="nav-align"
@@ -60,6 +61,12 @@
               >
             </li>
             <li class="nav-item active">
+              <a
+                class="nav-link"
+                 [matMenuTriggerFor]="main_menu"
+                >Catalog</a>
+            </li>
+            <li class="nav-item active">
               <a class="nav-link" id="profile-color" style="color: white;"
                 ><extension-point
                   id="profile-color"
@@ -71,7 +78,7 @@
           </ul>
         </span>
 
-        <div class="ml-3" id="search-bar" *ngIf="userService.userid">
+        <div class="ml-2" id="search-bar" *ngIf="userService.userid">
           <app-search></app-search>
         </div>
         <div class="one wide column"></div>
@@ -333,3 +340,19 @@
   </nav>
 </div>
 </div>
+
+
+<mat-menu #main_menu="matMenu">
+  <button mat-menu-item routerLink="/search/catalog/1">View All Courses</button>
+  <button mat-menu-item [matMenuTriggerFor]="sub_main_menu">Browse With</button>
+</mat-menu>
+
+<mat-menu #sub_main_menu="matMenu">
+  <ng-container *ngFor="let category of categoryMasterList">
+    <button mat-menu-item [matMenuTriggerFor]="sub_menu">{{ category?.code}}</button>
+    <mat-menu #sub_menu="matMenu">
+      <button *ngFor="let subItem of category?.terms" mat-menu-item (click)="filter(category?.code , subItem?.name)">{{
+        subItem?.name }}</button>
+    </mat-menu>
+  </ng-container>
+</mat-menu>

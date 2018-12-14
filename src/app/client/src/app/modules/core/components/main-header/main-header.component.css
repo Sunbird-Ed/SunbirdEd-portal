@@ -24,10 +24,13 @@
   margin-left: 60rem;
 }
 .icon-alignment{
-  margin-left: 7rem;
+  margin-left: 1rem;
+  margin-top: 0.5em;
+  display: inline-flex;
 }
 .nav-align{
   /* margin-left: 1.5rem; */
+  font-size: 1rem
 }
 .navbar-brand{
   display: inline-block;
@@ -67,9 +70,11 @@
   margin-left: 1rem;
 }
 #explore-align{
-margin-left: 52rem;
-margin-top: 0.4rem;
-font-size: 1em;
+  padding-left: rem;
+  margin-top: 0.4rem;
+  padding-right: 48rem;
+  font-size: 1em;
+  font-size: 1rem;
 }
 #signup{
   margin-top: 0.4rem;
