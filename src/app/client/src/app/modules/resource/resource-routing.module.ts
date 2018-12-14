@@ -21,7 +21,8 @@ const routes: Routes = [
       telemetry: {
         env: telemetryEnv, pageid: 'view-all', type: 'view', subtype: 'paginate'
       },
-      filterType: 'library'
+      filterType: 'library',
+      softConstraints: {badgeAssertions: 98, board: 99, channel: 100}
     }
   },
   {

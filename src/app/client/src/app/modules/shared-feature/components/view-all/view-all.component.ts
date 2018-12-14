@@ -232,7 +232,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   }
   private manipulateQueryParam(results) {
     this.filters = {};
-    const queryFilters = _.omit(results, ['key', 'sort_by', 'sortType', 'defaultSortBy', 'exists', 'dynamic']);
+    const queryFilters = _.omit(results, ['key', 'softConstraintsFilter', 'sort_by', 'sortType', 'defaultSortBy', 'exists', 'dynamic']);
     if (!_.isEmpty(queryFilters)) {
       _.forOwn(queryFilters, (queryValue, queryKey) => {
         this.filters[queryKey] = queryValue;
@@ -247,6 +247,21 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   }
 
   private getContentList(request) {
+    let softConstraints = {};
+    softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints');
+    if (_.get(request, 'queryParams.softConstraintsFilter')) {
+      _.forIn(this.filters, (value, key) => {
+        if (_.has(softConstraints, key)) {
+          softConstraints =  _.omit(softConstraints, [key]);
+        }
+      });
+      const softConstraintsFilter = JSON.parse(request.queryParams.softConstraintsFilter);
+      _.forIn(softConstraintsFilter, (value, key) => {
+        if (!_.has(this.filters, key)) {
+          this.filters[key] = value;
+        }
+      });
+    }
     const requestParams = {
       filters: this.filters,
       limit: this.pageLimit,
@@ -254,7 +269,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
       exists: request.queryParams.exists,
       sort_by: request.queryParams.sortType ?
         { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy),
-        softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
+      softConstraints: softConstraints,
       params : this.configService.appConfig.ViewAll.contentApiQueryParams
     };
     if (_.get(this.activatedRoute.snapshot, 'data.baseUrl') === 'learn') {
