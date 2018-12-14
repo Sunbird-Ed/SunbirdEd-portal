@@ -90,16 +90,20 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     }
     private fetchContents() {
         let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-        filters.channel = this.hashTagId;
-        filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
         filters = _.omit(filters, ['key', 'sort_by', 'sortType']);
         filters.contentType = filters.contentType || ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game'];
+        const softConstraintFilter = {
+            channel: this.hashTagId,
+            board: [this.dataDrivenFilters.board]
+          };
+          const manipulatedData = this.utilService.manipulateSoftConstraint(filters,
+            softConstraintFilter, _.get(this.activatedRoute.snapshot, 'data.softConstraints'));
         const option = {
-            filters: filters,
+            filters: manipulatedData.filters,
             limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
             pageNumber: this.paginationDetails.currentPage,
             query: this.queryParams.key,
-            softConstraints: { badgeAssertions: 98, board: 99, channel: 100 },
+            softConstraints: manipulatedData.softConstraints,
             facets: this.facets,
             params: this.configService.appConfig.ExplorePage.contentApiQueryParams
         };

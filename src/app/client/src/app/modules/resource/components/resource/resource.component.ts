@@ -83,15 +83,18 @@ export class ResourceComponent implements OnInit, OnDestroy {
       }
       return value.length;
     });
-    filters.channel = this.hashTagId;
-    filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
+    const softConstraintFilter = {
+      channel: this.userService.hashTagId,
+      board: [this.dataDrivenFilters.board]
+    };
+    const manipulatedData = this.utilService.manipulateSoftConstraint(filters,
+      softConstraintFilter, _.get(this.activatedRoute.snapshot, 'data.softConstraints'));
     const option: any = {
       source: 'web',
       name: 'Resource',
-      filters: filters,
+      filters: manipulatedData.filters,
       mode: 'soft',
-      softConstraints: this.queryParams.board ? { badgeAssertions: 98, channel: 100 } :
-      { badgeAssertions: 98, board: 99, channel: 100 },
+      softConstraints: manipulatedData.softConstraints,
       exists: [],
       params : this.configService.appConfig.Library.contentApiQueryParams
     };
@@ -140,11 +143,11 @@ export class ResourceComponent implements OnInit, OnDestroy {
   }
   public viewAll(event) {
     const searchQuery = JSON.parse(event.searchQuery);
-    const softConstraintsData = {
+    const softConstraintsFilter = {
       board : [this.dataDrivenFilters.board],
       channel: this.hashTagId,
     };
-    searchQuery.request.filters.softConstraintsData = JSON.stringify(softConstraintsData);
+    searchQuery.request.filters.softConstraintsFilter = JSON.stringify(softConstraintsFilter);
     searchQuery.request.filters.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
     searchQuery.request.filters.exists = searchQuery.request.exists;
     this.cacheService.set('viewAllQuery', searchQuery.request.filters, { maxAge: this.browserCacheTtlService.browserCacheTtl });
