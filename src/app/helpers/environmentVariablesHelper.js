@@ -52,7 +52,11 @@ let envVariables = {
   sunbird_explore_button_visibility: env.sunbird_explore_button_visibility || 'true',
   sunbird_enable_signup: env.sunbird_enable_signup || 'true',
   sunbird_extcont_whitelisted_domains: env.sunbird_extcont_whitelisted_domains || 'youtube.com,youtu.be',
-  sunbird_portal_user_upload_ref_link: env.sunbird_portal_user_upload_ref_link || 'http://www.sunbird.org/features-documentation/register_user'
+  sunbird_portal_user_upload_ref_link: env.sunbird_portal_user_upload_ref_link || 'http://www.sunbird.org/features-documentation/register_user',
+  GOOGLE_OAUTH_CONFIG: {
+    clientId: env.sunbird_google_oauth_clientId,
+    clientSecret: env.sunbird_google_oauth_clientSecret
+  }
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')

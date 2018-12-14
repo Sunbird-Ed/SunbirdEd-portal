@@ -23,6 +23,8 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public placeHolder: string;
 
+  public selectedNodes: any;
+
   constructor() {
   }
   ngOnInit() {
@@ -36,12 +38,13 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
     }, { formated: [], unformatted: [] });
     this.formatSelectedTopics(this.formTopic.range, selectedTopics.unformatted, selectedTopics.formated);
     this.selectedTopics =  selectedTopics.formated;
+    this.selectedNodes = {...selectedTopics.formated};
     this.topicChange.emit(this.selectedTopics);
     this.placeHolder = this.selectedTopics.length + ' topics selected';
   }
   private formatSelectedTopics(topics, unformatted, formated) {
     _.forEach(topics, (topic) => {
-      if (unformatted.includes(topic.identifier)) {
+      if (unformatted.includes(topic.name)) {
         formated.push({
           identifier: topic.identifier,
           name: topic.name
@@ -60,7 +63,7 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
       data: data,
       name: 'Topics',
       noDataMessage: 'No Topics/SubTopics found',
-      picked: _.map(this.selectedTopics, 'identifier'),
+      picked: _.map(this.selectedNodes, 'identifier'),
       onSubmit: (selectedNodes) => {
         this.selectedTopics = _.map(selectedNodes, node => ({
           identifier: node.id,

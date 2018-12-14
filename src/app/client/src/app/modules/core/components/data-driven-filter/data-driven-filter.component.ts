@@ -156,10 +156,10 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.formInputData = {};
       _.forIn(params, (value, key) => this.formInputData[key] = typeof value === 'string' && key !== 'key' ? [value] : value);
-       if (params.channel) {
+      if (params.channel) {
         this.modelChange(this.formInputData.channel);
-         this.channelInputLabel = this.orgDetailsService.getOrg();
-       }
+          this.channelInputLabel = this.orgDetailsService.getOrg();
+      }
       this.showFilters = true;
       this.hardRefreshFilter();
     });
@@ -193,7 +193,13 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
           queryParams[key] = formatedValue;
         }
     });
-    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
+    let redirectUrl; // if pageNumber exist then go to first page every time when filter changes, else go exact path
+    if (this.activatedRoute.snapshot.params.pageNumber) { // when using dataDriven filter should this should be verified
+      redirectUrl = this.router.url.split('?')[0].replace(/[^\/]+$/, '1');
+    } else {
+      redirectUrl = this.router.url.split('?')[0];
+    }
+    this.router.navigate([redirectUrl], { queryParams: queryParams });
   }
 
   public removeFilterSelection(field, item) {
@@ -221,7 +227,10 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
     this.hardRefreshFilter();
   }
   public handleTopicChange(topicsSelected) {
-    this.formInputData['topic'] = topicsSelected;
+    this.formInputData['topic'] = [];
+    _.forEach(topicsSelected, (value, index) => {
+      this.formInputData['topic'].push(value.name);
+    });
     this.cdr.detectChanges();
   }
 
@@ -232,7 +241,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
       _.forEach(data, (value, key) => {
         this.channelInputLabel.push(_.find(orgDetails['range'], {identifier: value}));
         this.orgDetailsService.setOrg(this.channelInputLabel);
-       });
+      });
     }
   }
   private setFilterInteractData() {
