@@ -232,7 +232,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   }
   private manipulateQueryParam(results) {
     this.filters = {};
-    const queryFilters = _.omit(results, ['key', 'defaultBoard', 'sort_by', 'sortType', 'defaultSortBy', 'exists', 'dynamic']);
+    const queryFilters = _.omit(results, ['key', 'softConstraintsFilter', 'sort_by', 'sortType', 'defaultSortBy', 'exists', 'dynamic']);
     if (!_.isEmpty(queryFilters)) {
       _.forOwn(queryFilters, (queryValue, queryKey) => {
         this.filters[queryKey] = queryValue;
@@ -248,9 +248,19 @@ export class ViewAllComponent implements OnInit, OnDestroy {
 
   private getContentList(request) {
     let softConstraints = {};
-    if (request.queryParams.defaultBoard && !this.filters.board) {
-     this.filters.board = request.queryParams.defaultBoard;
-     softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints');
+    softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints');
+    if (_.get(request, 'queryParams.softConstraintsFilter')) {
+      _.forIn(this.filters, (value, key) => {
+        if (_.has(softConstraints, key)) {
+          softConstraints =  _.omit(softConstraints, [key]);
+        }
+      });
+      const softConstraintsFilter = JSON.parse(request.queryParams.softConstraintsFilter);
+      _.forIn(softConstraintsFilter, (value, key) => {
+        if (!_.has(this.filters, key)) {
+          this.filters[key] = value;
+        }
+      });
     }
     const requestParams = {
       filters: this.filters,

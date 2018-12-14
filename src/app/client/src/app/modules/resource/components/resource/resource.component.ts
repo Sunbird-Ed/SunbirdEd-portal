@@ -20,6 +20,7 @@ export class ResourceComponent implements OnInit, OnDestroy {
   public noResultMessage: INoResultMessage;
   public carouselData: Array<ICaraouselData> = [];
   public filterType: string;
+  public hashTagId: string;
   public sortingOptions: Array<ISort>;
   public queryParams: any;
   public unsubscribe$ = new Subject<void>();
@@ -46,6 +47,7 @@ export class ResourceComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initFilters = true;
+    this.hashTagId = this.userService.hashTagId;
     this.dataDrivenFilterEvent.pipe(first()
     ).subscribe((filters: any) => {
         this.dataDrivenFilters = filters;
@@ -81,21 +83,18 @@ export class ResourceComponent implements OnInit, OnDestroy {
       }
       return value.length;
     });
-    // filters.channel = this.hashTagId;
-    // filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
+    filters.channel = this.hashTagId;
+    filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
     const option: any = {
       source: 'web',
       name: 'Resource',
       filters: filters,
       mode: 'soft',
-      softConstraints: {},
+      softConstraints: this.queryParams.board ? { badgeAssertions: 98, channel: 100 } :
+      { badgeAssertions: 98, board: 99, channel: 100 },
       exists: [],
       params : this.configService.appConfig.Library.contentApiQueryParams
     };
-    if (_.isEmpty(this.queryParams)) {
-      option.board = this.dataDrivenFilters.board;
-      option.softConstraints = {board: 100 };
-    }
     if (this.queryParams.sort_by) {
       option.sort_by = {[this.queryParams.sort_by]: this.queryParams.sortType  };
     }
@@ -137,12 +136,15 @@ export class ResourceComponent implements OnInit, OnDestroy {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   public playContent(event) {
-    this.playerService.playContent(event);
+    this.playerService.playContent(event.data.metaData);
   }
   public viewAll(event) {
     const searchQuery = JSON.parse(event.searchQuery);
-    // searchQuery.request.filters.channel = this.hashTagId;
-    // searchQuery.request.filters.board = this.dataDrivenFilters.board;
+    const softConstraintsData = {
+      board : [this.dataDrivenFilters.board],
+      channel: this.hashTagId,
+    };
+    searchQuery.request.filters.softConstraintsData = JSON.stringify(softConstraintsData);
     searchQuery.request.filters.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
     searchQuery.request.filters.exists = searchQuery.request.exists;
     this.cacheService.set('viewAllQuery', searchQuery.request.filters, { maxAge: this.browserCacheTtlService.browserCacheTtl });

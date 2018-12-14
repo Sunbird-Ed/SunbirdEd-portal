@@ -141,9 +141,12 @@ export class ExploreComponent implements OnInit, OnDestroy {
   }
   public viewAll(event) {
     const searchQuery = JSON.parse(event.searchQuery);
+    const softConstraintsFilter = {
+      board : [this.dataDrivenFilters.board],
+      channel: this.hashTagId,
+    };
     searchQuery.request.filters.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
-    searchQuery.request.filters.channel = this.hashTagId;
-    searchQuery.request.filters.defaultBoard = this.dataDrivenFilters.board;
+    searchQuery.request.filters.softConstraintsFilter = JSON.stringify(softConstraintsFilter);
     this.cacheService.set('viewAllQuery', searchQuery.request.filters, { maxAge: this.browserCacheTtlService.browserCacheTtl });
     const queryParams = { ...searchQuery.request.filters, ...this.queryParams};
     const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
