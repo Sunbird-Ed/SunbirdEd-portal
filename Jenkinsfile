@@ -19,7 +19,7 @@ node('build-slave') {
             sh("printenv")
             echo "Git Hash: "+commit_hash
             // Building image
-            sh("sudo ./build.sh ${commit_hash} ${branch_name}")
+            sh("sudo ./build.sh ${commit_hash} ${branch_name} ${env.NODE_NAME}")
        }
        stage('ArchiveArtifacts'){
            archiveArtifacts "metadata.json"
