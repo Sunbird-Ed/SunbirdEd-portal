@@ -4,9 +4,9 @@
     <!-- <img src="../../../../../assets/images/diksha-gov.svg" alt="diksha" height="60px" width="86px" class="mx-auto d-flex flex-jc-center mb-30"> -->
     <div class="width-300 mx-auto">
       
-      <div class="fs-1 font-weight-bold mb-20 text-ac">{{resourceService.frmelmnts.lbl.signup}}</div>
+      <div class="fs-1 font-weight-bold mb-20 text-ac">{{resourceService.frmelmnts.lbl.signUp}}</div>
         <form class="ui form borderd" [formGroup]="signUpForm" autocomplete="off" id="signUpForm">
-          <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors">{{resourceService.frmelmnts.lbl.fnameLname}}</label>
+          <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors">{{resourceService.frmelmnts.lbl.signUp}}</label>
           <div class="required field mb-20">
             <label class="mb-10" *ngIf="!(signUpForm.controls.name.touched && signUpForm.controls['name'].errors)">{{resourceService.frmelmnts.lbl.name}}</label>
             <input [ngClass]="{'orange-border': signUpForm.controls.name.touched && signUpForm.controls['name'].errors}" formControlName="name" type="text" name="name" placeholder="{{resourceService.frmelmnts.lbl.fullName}}">
@@ -59,7 +59,7 @@
             </div>
           </div>
         </form>
-      <button [ngClass]="{'grey':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}" class="ui button width-300 mt-10" tabindex="0" (click)="onSubmitSignUpForm()">{{resourceService?.frmelmnts?.scttl?.signup}}</button>
+      <button [ngClass]="{'grey':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}" class="ui button width-300 mt-10" tabindex="0" (click)="onSubmitSignUpForm()">{{resourceService.frmelmnts.lbl.signUp}}</button>
       
       
       
