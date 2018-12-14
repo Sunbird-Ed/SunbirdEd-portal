@@ -1,11 +1,13 @@
 
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CourseBatchService } from '../../services';
-import { ConfigService } from '@sunbird/shared';
-import { LearnerService } from '@sunbird/core';
-import { pluck } from 'rxjs/operators';
+import { ConfigService, ToasterService, ResourceService  } from '@sunbird/shared';
+import { LearnerService, UserService, } from '@sunbird/core';
+import { pluck, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+
 
 @Injectable()
 export class BatchShareService {
@@ -34,6 +36,7 @@ export class DialogOverviewExampleDialog implements OnInit {
     public batchShare: BatchShareService,
     public config: ConfigService,
     public learnerService: LearnerService,
+    public toasterService: ToasterService
   ) {
   }
   ngOnInit(): void {
@@ -75,6 +78,9 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   public upcomingSearch: any;
   ongoingBatches = [];
   upcomingBatches = [];
+  disableSubmitBtn: boolean;
+  showUnenroll;
+  public unsubscribe = new Subject<void>();
   ngOnDestroy(): void {
   }
 
@@ -83,17 +89,22 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     public courseBatchService: CourseBatchService,
     private route: ActivatedRoute,
     private batchshare: BatchShareService,
+    public router: Router,
+    public activatedRoute: ActivatedRoute,
+    public userService: UserService,
+    public toasterService: ToasterService,
+    public resourceService: ResourceService
   ) { }
   ngOnInit(): void {
     this.ongoingSearch = {
       filters: {
-        status: '1',
+        status: '0',
         courseId: this.courseId
       }
     };
     this.upcomingSearch = {
       filters: {
-        status: '0',
+        status: '1',
         courseId: this.courseId
       }
     };
@@ -122,5 +133,44 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       console.log('Dialog result', result);
     });
   }
+  openEnrollDetailsDialog(batch) {
+    this.courseBatchService.setEnrollToBatchDetails(batch);
+    this.router.navigate(['enroll/batch', batch.identifier], { relativeTo: this.activatedRoute });
+    this.enrollToCourse(batch);
+  }
+  enrollToCourse(batch) {
+    const request = {
+      request: {
+        courseId: batch.courseId,
+        batchId: batch.id,
+        userId: this.userService.userid,
+      }
+    };
+    this.disableSubmitBtn = true;
+    this.courseBatchService.enrollToCourse(request).pipe(
+      takeUntil(this.unsubscribe))
+      .subscribe((data) => {
+        console.log('data', data);
+        this.showUnenroll = data.result.response;
+        this.toasterService.success(this.resourceService.messages.smsg.m0036);
+      }, (err) => {
 
+      });
+  }
 }
+//   fetchEnrolledCourseData() {
+//     setTimeout(() => {
+//       this.coursesService.getEnrolledCourses().pipe(
+//         takeUntil(this.unsubscribe))
+//         .subscribe(() => {
+//           this.disableSubmitBtn = false;
+//           this.toasterService.success(this.resourceService.messages.smsg.m0036);
+//           this.router.navigate(['/learn/course', this.batchDetails.courseId, 'batch', this.batchDetails.identifier]);
+//           window.location.reload();
+//         }, (err) => {
+//           this.disableSubmitBtn = false;
+//           this.router.navigate(['/learn']);
+//         });
+//     }, 2000);
+//   }
+// }
