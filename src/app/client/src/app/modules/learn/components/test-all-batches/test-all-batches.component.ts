@@ -133,7 +133,29 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
         }
         this.toasterService.success(this.resourceService.messages.smsg.m0036);
       }, (err) => {
+        this.toasterService.error('Unsuccesful, try again later');
+      });
+  }
+  unEnroll(batch) {
+    this.courseBatchService.setEnrollToBatchDetails(batch);
+    this.unEnrollToCourse(batch);
 
+  }
+  unEnrollToCourse(batch) {
+    const request = {
+      request: {
+        courseId: batch.courseId,
+        batchId: batch.id,
+        userIds: [this.userId]
+      }
+    };
+    this.courseBatchService.unEnrollToCourse(request).pipe(
+      takeUntil(this.unsubscribe))
+      .subscribe((data) => {
+        console.log('data', data);
+        this.toasterService.success('You have successfully un-enrolled from this batch');
+      }, (err) => {
+        this.toasterService.error('Unsuccesful, try again later');
       });
   }
 }

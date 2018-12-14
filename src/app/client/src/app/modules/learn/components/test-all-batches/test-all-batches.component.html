@@ -26,7 +26,7 @@
                             <button mat-button *ngIf="upcoming.enrollmentType==='open' && !(upcoming?.participant.hasOwnProperty(userId))"
                                 (click)="openEnrollDetailsDialog(upcoming)">Enroll</button>
                             <button mat-button *ngIf="upcoming.enrollmentType==='invite-only'" (click)="openContactDetailsDialog(upcoming)">Contact</button>
-                            <button mat-button *ngIf="upcoming?.participant && upcoming?.participant.hasOwnProperty(userId)" (click)="unEnroll(upcoming?.id)">UnEnroll</button>
+                            <button mat-button *ngIf="upcoming?.participant && upcoming?.participant.hasOwnProperty(userId)" (click)="unEnroll(upcoming)">UnEnroll</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
@@ -59,7 +59,7 @@
                             <button class="btn" mat-button *ngIf="ongoing.enrollmentType==='open' && !(ongoing?.participant.hasOwnProperty(userId))"
                                 (click)="openEnrollDetailsDialog(ongoing)">Enroll</button>
                             <button class="btn" mat-button *ngIf="ongoing?.enrollmentType==='invite-only'" (click)="openContactDetailsDialog(ongoing)">Contact</button>
-                            <button mat-button *ngIf="ongoing?.participant && ongoing?.participant.hasOwnProperty(userId)" (click)="unEnroll(ongoing?.id)">UnEnroll</button>
+                            <button mat-button *ngIf="ongoing?.participant && ongoing?.participant.hasOwnProperty(userId)" (click)="unEnroll(ongoing)">UnEnroll</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
