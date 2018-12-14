@@ -2,7 +2,7 @@
 <section class="all-batches-section container-fluid">
     <mat-tab-group>
         <mat-tab label="Ongoing Batches">
-            <mat-grid-list cols="2" rowHeight="2:1">
+            <mat-grid-list cols="3">
                 <mat-grid-tile *ngFor="let upcoming of upcomingBatches">
                     <div class="wrapper">
                         <mat-card class="styleClass">
@@ -22,10 +22,10 @@
                                     End Date : {{upcoming?.endDate|date}}
                                 </p>
                             </mat-card-content>
-                            <mat-card-actions>
-                                <button mat-button *ngIf="upcoming.enrollmentType==='open'" (click)="openEnrollDetailsDialog()">Enroll
+                            <mat-card-actions class="align-content">
+                                <button  mat-button *ngIf="upcoming.enrollmentType==='open'" (click)="openEnrollDetailsDialog(upcoming)">Enroll
                                 </button>
-                                <button mat-button *ngIf="upcoming.enrollmentType==='invite-only'" (click)="openContactDetailsDialog(upcoming)">Contact</button>
+                                <button  mat-button *ngIf="upcoming.enrollmentType==='invite-only'" (click)="openContactDetailsDialog(upcoming)">Contact</button>
                             </mat-card-actions>
                         </mat-card>
                     </div>
@@ -54,10 +54,10 @@
                                     End Date : {{ongoing?.endDate|date}}
                                 </p>
                             </mat-card-content>
-                            <mat-card-actions>
-                                <button mat-button *ngIf="ongoing.enrollmentType==='open'" (click)="openEnrollDetailsDialog()">Enroll
+                            <mat-card-actions class="align-content">
+                                <button class="btn" mat-button *ngIf="ongoing.enrollmentType==='open'" (click)="openEnrollDetailsDialog(ongoing)">Enroll
                                 </button>
-                                <button mat-button *ngIf="ongoing.enrollmentType==='invite-only'" (click)="openContactDetailsDialog(ongoing)">Contact</button>
+                                <button class="btn" mat-button *ngIf="ongoing.enrollmentType==='invite-only'" (click)="openContactDetailsDialog(ongoing)">Contact</button>
                             </mat-card-actions>
                         </mat-card>
                     </div>

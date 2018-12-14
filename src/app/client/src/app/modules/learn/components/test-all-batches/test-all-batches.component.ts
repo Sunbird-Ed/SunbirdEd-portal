@@ -1,73 +1,53 @@
 
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, Injectable } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, Injectable, OnChanges, SimpleChanges } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { CourseBatchService } from '../../services';
 import { ConfigService } from '@sunbird/shared';
 import { LearnerService } from '@sunbird/core';
-import { pluck } from 'rxjs/operators';
+import { pluck, tap } from 'rxjs/operators';
+import {MAT_DIALOG_DATA} from '@angular/material';
+import { Inject } from '@angular/core';
+// @Injectable()
+// export class BatchShareService {
+//   batchDetail;
 
-@Injectable()
-export class BatchShareService {
-  batchDetail;
+//   setBatchDetail(batchDetail) {
+//     this.batchDetail = batchDetail;
+//   }
 
-  setBatchDetail(batchDetail) {
-    this.batchDetail = batchDetail;
-  }
-
-  getBatchDetail() {
-    return this.batchDetail;
-  }
-}
+//   getBatchDetail() {
+//     console.log('Bleh', this.batchDetail);
+//     return this.batchDetail;
+//   }
+// }
 
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example-dialog.html',
-  providers: [BatchShareService],
+  styleUrls: ['./test-all-batches.component.css'],
+  // providers: [BatchShareService],
 })
 // tslint:disable-next-line:component-class-suffix
 export class DialogOverviewExampleDialog implements OnInit {
-  batchDetail;
-  mentorContactDetail;
+  mentorDetail;
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-    public batchShare: BatchShareService,
-    public config: ConfigService,
-    public learnerService: LearnerService,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
   }
   ngOnInit(): void {
-    this.batchDetail = this.batchShare.getBatchDetail();
-    console.log(this.batchDetail);
-    this.getUserDetails(this.batchDetail.createdBy);
-  }
-  // ngOnChange(){
-
-  // }
-
+    this.mentorDetail = this.data.mentorDetail;
+ }
   onNoClick(): void {
     this.dialogRef.close();
   }
-
-  getUserDetails(userId) {
-    const option = {
-      url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${userId}`,
-      param: this.config.urlConFig.params.userReadParam
-    };
-    const response = this.learnerService.get(option).pipe(pluck('result', 'response'));
-    response.subscribe(data => {
-      console.log(data);
-      this.mentorContactDetail = data;
-    }
-    );
-  }
-
 }
 @Component({
   selector: 'app-test-all-batches',
   templateUrl: './test-all-batches.component.html',
   styleUrls: ['./test-all-batches.component.css'],
-  providers: [BatchShareService],
+  // providers: [BatchShareService],
 })
 export class TestAllBatchesComponent implements OnInit, OnDestroy {
   courseId = this.route.snapshot.paramMap.get('courseId');
@@ -75,6 +55,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   public upcomingSearch: any;
   ongoingBatches = [];
   upcomingBatches = [];
+  mentorContactDetail;
   ngOnDestroy(): void {
   }
 
@@ -82,7 +63,8 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public courseBatchService: CourseBatchService,
     private route: ActivatedRoute,
-    private batchshare: BatchShareService,
+    public config: ConfigService,
+    public learnerService: LearnerService,
   ) { }
   ngOnInit(): void {
     this.ongoingSearch = {
@@ -97,30 +79,36 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
         courseId: this.courseId
       }
     };
-    console.log('course id', this.courseId);
     this.courseBatchService.getAllBatchDetails(this.ongoingSearch)
       .subscribe((data: any) => {
-        console.log('this is batch deets', data);
         this.ongoingBatches = data.result.response.content;
-        console.log(this.ongoingBatches);
       });
     this.courseBatchService.getAllBatchDetails(this.upcomingSearch)
       .subscribe((resp: any) => {
-        console.log('this is batch deets', resp);
         this.upcomingBatches = resp.result.response.content;
-        console.log(this.ongoingBatches);
       });
   }
   openContactDetailsDialog(batch): void {
-    console.log('Output batch', batch);
-    this.batchshare.setBatchDetail(batch);
-    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      width: '500px',
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog result', result);
-    });
+    this.getUserDetails(batch.createdBy)
+      .pipe(tap((data) => {
+        this.mentorContactDetail = data;
+      }))
+      .subscribe((data) => {
+        const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+          width: '40vh',
+          data: {
+            mentorDetail: this.mentorContactDetail
+          }
+        });
+      });
+  }
+  getUserDetails(userId) {
+    const option = {
+      url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${userId}`,
+      param: this.config.urlConFig.params.userReadParam
+    };
+    const response = this.learnerService.get(option).pipe(pluck('result', 'response'));
+    return response;
   }
 
 }
