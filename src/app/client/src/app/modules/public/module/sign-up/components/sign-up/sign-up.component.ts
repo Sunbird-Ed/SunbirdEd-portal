@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm, FormArray, FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { takeUntil, map, filter } from 'rxjs/operators';
 import { Subscription, Observable, Subject } from 'rxjs';
+import { ResourceService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-sign-up',
@@ -16,7 +17,7 @@ export class SignUpComponent implements OnInit {
   disableSubmitBtn = true;
   showPassword = false;
 
-  constructor(formBuilder: FormBuilder) {
+  constructor(formBuilder: FormBuilder, public resourceService: ResourceService) {
     this.sbFormBuilder = formBuilder;
   }
 
