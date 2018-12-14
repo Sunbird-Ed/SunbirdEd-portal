@@ -128,4 +128,27 @@ describe('ExploreComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
+  it('should call inview method for visits data', () => {
+    spyOn(component, 'prepareVisits').and.callThrough();
+    component.prepareVisits(Response.event);
+    expect(component.prepareVisits).toHaveBeenCalled();
+    expect(component.inViewLogs).toBeDefined();
+  });
+  it('should call playcontent when user is not loggedIn and content type is course', () => {
+    const event = { data: { contentType : 'Course', metaData: { identifier: '0122838911932661768' } } };
+    userService._authenticated = false;
+    component.playContent(event);
+    expect(component.showLoginModal).toBeTruthy();
+    expect(component.baseUrl).toEqual('/learn/course/0122838911932661768');
+  });
+  it('should call playcontent when user is loggedIn', () => {
+    const playerService = TestBed.get(PublicPlayerService);
+    const event = { data: { metaData: { batchId: '0122838911932661768' } } };
+    spyOn(component, 'playContent').and.callThrough();
+    spyOn(playerService, 'playContent').and.callThrough();
+    component.playContent(event);
+    playerService.playContent(event);
+    expect(playerService.playContent).toHaveBeenCalled();
+    expect(component.showLoginModal).toBeFalsy();
+  });
 });
