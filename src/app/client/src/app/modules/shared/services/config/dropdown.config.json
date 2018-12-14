@@ -282,7 +282,9 @@
                 "home": "All",
                 "learn": "Courses",
                 "resources": "Library",
-                "profile": "Users"
+                "profile": "Users",
+                "catalog":"Courses",
+                "search":"Courses"
             },
             "searchEnabled": [
                 "home",

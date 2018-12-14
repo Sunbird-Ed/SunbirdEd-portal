@@ -202,14 +202,63 @@ public configService: ConfigService;
       data => {
         if (data && !data.err) {
           this.showLoader = false;
-          const constantData = this.configService.appConfig.Home.enrolledCourses.constantData;
+          // const constantData = this.configService.appConfig.Home.enrolledCourses.constantData;
+          let constantData;
+          const courses = [];
             const metaData = { metaData: this.configService.appConfig.Home.enrolledCourses.metaData };
             const dynamicFields = {
               'maxCount': this.configService.appConfig.Home.enrolledCourses.maxCount,
               'progress': this.configService.appConfig.Home.enrolledCourses.progress
             };
-            const courses = this.utilService.getDataForCard(data.enrolledCourses,
-              constantData, dynamicFields, metaData);
+            // const courses = this.utilService.getDataForCard(data.enrolledCourses,
+            //   constantData, dynamicFields, metaData);
+            for (const enrolledCourse of data.enrolledCourses) {
+              if (enrolledCourse.progress === 0 ) {
+                const newCourses = [];
+                newCourses.push(enrolledCourse);
+                constantData = this.configService.appConfig.Course
+                .enrolledCourses.startData;
+                const testCourses = this.utilService.getDataForCard(
+                  newCourses,
+                  constantData,
+                  dynamicFields,
+                  metaData
+                );
+                for (const course of testCourses) {
+                  courses.push (course);
+                }
+              } else
+              if ( enrolledCourse.progress > 0 && enrolledCourse.progress  < enrolledCourse.leafNodesCount) {
+                constantData = this.configService.appConfig.Course
+                .enrolledCourses.constantData;
+                const continueCourses = [];
+                continueCourses.push(enrolledCourse);
+                const testCourses = this.utilService.getDataForCard(
+                  continueCourses,
+                  constantData,
+                  dynamicFields,
+                  metaData
+                );
+                for (const course of testCourses) {
+                  courses.push (course);
+                }
+              } else
+              if ( enrolledCourse.progress === enrolledCourse.leafNodesCount ) {
+                constantData = this.configService.appConfig.Course
+                .enrolledCourses.viewData;
+                const endedCourses = [];
+                // endedCourses.push(enrolledCourse);
+                const testCourses = this.utilService.getDataForCard(
+                  endedCourses,
+                  constantData,
+                  dynamicFields,
+                  metaData
+                );
+                for (const course of testCourses) {
+                  courses.push (course);
+                }
+              }
+            }
           this.toDoList = this.toDoList.concat(courses);
         } else if (data && data.err) {
           this.showLoader = false;

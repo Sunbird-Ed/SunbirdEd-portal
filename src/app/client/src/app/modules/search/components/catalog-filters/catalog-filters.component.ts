@@ -80,6 +80,7 @@ export class CatalogFiltersComponent implements OnInit, OnDestroy, OnChanges {
   frameworkDataSubscription: Subscription;
   filterIntractEdata: IInteractEventEdata;
   submitIntractEdata: IInteractEventEdata;
+  browsingCategory: any;
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -117,6 +118,11 @@ export class CatalogFiltersComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit() {
     this.frameworkService.initialize(this.hashTagId);
     this.formInputData = {};
+    this.activatedRoute.paramMap.subscribe((paramMap: any) => {
+      if (paramMap.params.cat) {
+       this.browsingCategory = paramMap.params.cat;
+      }
+    });
     this.getQueryParams();
     this.fetchFilterMetaData();
     this.contentTypes = this.configService.dropDownConfig.FILTER.RESOURCES.contentTypes;

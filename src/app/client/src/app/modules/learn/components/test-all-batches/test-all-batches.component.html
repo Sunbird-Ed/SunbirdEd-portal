@@ -23,10 +23,11 @@
                                 </p>
                             </mat-card-content>
                             <mat-card-actions class="align-content">
-                                <button  mat-button *ngIf="upcoming.enrollmentType==='open'" (click)="openEnrollDetailsDialog(upcoming)">Enroll
-                                </button>
-                                <button  mat-button *ngIf="upcoming.enrollmentType==='invite-only'" (click)="openContactDetailsDialog(upcoming)">Contact</button>
-                            </mat-card-actions>
+                                    <button mat-button *ngIf="upcoming.enrollmentType==='open' && showUnenroll !== 'SUCCESS'" (click)="openEnrollDetailsDialog(upcoming)">Enroll
+                                        </button>
+                                        <button mat-button *ngIf="upcoming.enrollmentType==='invite-only'" (click)="openContactDetailsDialog(upcoming)">Contact</button>
+                                        <button mat-button *ngIf="showUnenroll === 'SUCCESS'" (click)="DJ()">UnEnroll
+                                        </button>
                         </mat-card>
                     </div>
                 </mat-grid-tile>

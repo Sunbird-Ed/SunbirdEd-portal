@@ -33,7 +33,7 @@ import {
 } from '@sunbird/telemetry';
 import { CourseBatchService } from '../../services';
 import { forEach } from '@angular/router/src/utils/collection';
-import {formatDate } from '@angular/common';
+import { formatDate } from '@angular/common';
 /**
  * This component contains 2 sub components
  * 1)PageSection: It displays carousal data.
@@ -109,8 +109,8 @@ export class LearnPageComponent implements OnInit, OnDestroy {
   content: any;
   public unsubscribe = new Subject<void>();
   courseDataSubscription: Subscription;
-   newarr = [];
-   unique = {};
+  newarr = [];
+  unique = {};
   currentDate = new Date().toJSON().slice(0, 10);
   /**
    * Constructor to create injected service(s) object
@@ -549,9 +549,8 @@ export class LearnPageComponent implements OnInit, OnDestroy {
       event.data.metaData.mimeType =
         'application/vnd.ekstep.content-collection';
       event.data.metaData.contentType = 'Course';
-
     }
-    // console.log('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[',event.data.metaData);
+    console.log('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[', event.data.metaData);
     this.playerService.playContent(event.data.metaData);
   }
   ngOnDestroy() {
