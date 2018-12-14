@@ -1,13 +1,90 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+@import url('https://fonts.googleapis.com/css?family=Carter+One%7CCabin+Sketch');
 .ui.secondary.pointing.menu .ui.item.text-upper-case {
     text-transform: uppercase;
-} 
+}
 
 .anon-consumption-sec-menu {
-    border-bottom: 2px solid rgba(34,36,38,.15);   
+    border-bottom: 2px solid rgba(34,36,38,.15);
 }
 
 .ui.grid>.header-height-before-login {
     height: 80px;
     justify-content: center;
     align-items: center;
+}
+
+.nav-link{
+  color: white;
+  margin-top:2rem;
+}
+#nav{
+  color: white;
+  margin-top:2rem;
+  margin-left: 60rem;
+}
+.icon-alignment{
+  margin-left: 5rem;
+  margin-top: 0.5em;
+  display: inline-flex;
+}
+.nav-align{
+  /* margin-left: 1.5rem; */
+  font-size: 1rem
+}
+.navbar-brand{
+  display: inline-block;
+  /* padding-top: 2.2rem; */
+  padding-bottom: 0.3125rem;
+  margin-right: 1rem;
+  line-height: inherit;
+  white-space: nowrap;
+  margin-left: 2rem;
+  font-size: 1.8rem;
+  padding: 2.2rem 0rem;
+   font-family: 'Carter One', cursive;
+    background: -webkit-linear-gradient(orange 50%, #920663 50% ) !important;
+   -webkit-background-clip: text !important;
+   -webkit-text-fill-color: transparent !important;
+}
+
+.navbar-brand1{
+  display: inline-block;
+  padding-top: 1.3rem;
+  padding-bottom: 0.3125rem;
+  margin-right: 1rem;
+  line-height: inherit;
+  white-space: nowrap;
+  margin-left: 2rem;
+  font-size: 1.8rem;
+   font-family: 'Carter One', cursive;
+    background: -webkit-linear-gradient(orange 60%, #920663 50% ) !important;
+   -webkit-background-clip: text !important;
+   -webkit-text-fill-color: transparent !important;
+}
+.navbar {
+  margin-bottom: 50px;
+  border-radius: 0;
+}
+#search-bar{
+  margin-left: 1rem;
+}
+#explore-align{
+  padding-left: rem;
+  margin-top: 0.4rem;
+  padding-right: 58rem;
+  font-size: 1em;
+  font-size: 1rem;
+}
+#signup{
+  margin-top: 0.4rem;
+  font-size: 1em;
+}
+#login{
+  margin-top: 0.4rem;
+  font-size: 1em;
+}
+#profile-color
+{
+  color: white;
 }

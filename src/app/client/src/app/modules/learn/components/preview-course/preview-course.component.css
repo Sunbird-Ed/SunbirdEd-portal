@@ -4,17 +4,20 @@
 html{
     scroll-behavior: smooth;
 }
-body{
+/* body{
     background-attachment: fixed;
     background-image: url('https://raw.githubusercontent.com/rheafernandes/rheafernandes.github.io/master/Itadakimasu/dist/4a5b0a776dbd2b9cd79681a8b0989724.jpg');
     background-repeat: repeat;
-}
-.navbar-brand{
+} */
+/* .navbar-brand{
     font-size: 1.5rem;
     font-family: 'Carter One', cursive;
      background: -webkit-linear-gradient(orange 50%, #920663 50% ) !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
+} */
+.course-preview-nav{
+  z-index:5;
 }
 .bg-dark{
     background-color: black !important;
@@ -183,7 +186,7 @@ li:hover{
     border-radius:50%;
     overflow:hidden;
   }
-  
+
   .box .review-img img {
     width:100%;
     height:100%;

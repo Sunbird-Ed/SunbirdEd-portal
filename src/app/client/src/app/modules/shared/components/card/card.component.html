@@ -1,4 +1,4 @@
-<div class="ui link cards  margin-top-15 margin-bottom-0" *ngIf="data" (click)="onAction(data,data.action.onImage)" 
+<div class="ui link cards  margin-top-15 margin-bottom-0" *ngIf="data" (click)="onAction(data,data.action.onImage)"
  appTelemetryInteract [telemetryInteractObject]="{id:data.metaData.identifier,type:data.telemetryObjectType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion.toString():'1.0'}" [telemetryInteractEdata]="data.telemetryInteractEdata" >
   <div class="ui fluid card margin-top-10" [ngClass]="customClass">
     <div class="top attached indicating active " *ngIf="data.maxCount && data.progress > 0">

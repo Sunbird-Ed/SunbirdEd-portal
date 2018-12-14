@@ -1,7 +1,7 @@
 
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { UserService, PermissionService, TenantService } from './../../services';
+import { UserService, PermissionService, TenantService, FrameworkService } from './../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
@@ -89,12 +89,13 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   */
   enableSignup = true;
   exploreRoutingUrl: string;
+  categoryMasterList: any;
   /*
   * constructor
   */
   constructor(config: ConfigService, resourceService: ResourceService, public router: Router,
     permissionService: PermissionService, userService: UserService, tenantService: TenantService,
-    public activatedRoute: ActivatedRoute, private cacheService: CacheService) {
+    public activatedRoute: ActivatedRoute, private frameworkService: FrameworkService, private cacheService: CacheService) {
     this.config = config;
     this.resourceService = resourceService;
     this.permissionService = permissionService;
@@ -103,6 +104,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.frameworkService.initialize('');
+    this.frameworkService.frameworkData$.subscribe((frameworkData) => {
+      if (frameworkData && !frameworkData.err) {
+        this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
+      }
+    });
     try {
       this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
     } catch (error) {
@@ -219,6 +226,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   logout() {
     window.location.replace('/logoff');
     this.cacheService.removeAll();
+  }
+  filter(node, child) {
+    console.log(node, '-', child);
+    const queryParams = {};
+    queryParams[node] = child;
+    this.router.navigate(['search/catalog/1', {cat: node}], {queryParams: queryParams});
   }
 
   ngOnDestroy() {
