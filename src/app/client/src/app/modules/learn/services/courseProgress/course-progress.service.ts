@@ -41,7 +41,6 @@ export class CourseProgressService {
   public getContentState(req) {
     const courseId_batchId = req.courseId + '_' + req.batchId;
     const courseProgress = this.courseProgress[courseId_batchId];
-    console.log('inside course progress service', this.courseProgress[courseId_batchId]);
     if (courseProgress) {
       this.courseProgressData.emit(courseProgress);
       return observableOf(courseProgress);
@@ -52,7 +51,8 @@ export class CourseProgressService {
           request: {
             userId: req.userId,
             courseId: req.courseId,
-            contentIds: req.contentIds
+            contentIds: req.contentIds,
+            batchId: req.batchId
           }
         }
       };
@@ -75,7 +75,6 @@ export class CourseProgressService {
       totalCount: req.contentIds.length,
       content: []
     };
-    console.log('response in process content -------', res);
     const resContentIds = [];
     if (res.result.contentList.length > 0) {
       _.forEach(res.result.contentList, (content) => {
@@ -109,7 +108,6 @@ export class CourseProgressService {
   private calculateProgress(courseId_batchId) {
     const lastAccessTimeOfContentId = [];
     let completedCount = 0;
-    console.log('8jdf****knfjnfefe', this.courseProgress);
     const contentList = this.courseProgress[courseId_batchId].content;
     _.forEach(contentList, (content) => {
       if (content.status === 2) {
@@ -130,7 +128,6 @@ export class CourseProgressService {
   public updateContentsState(req) {
     const courseId_batchId = req.courseId + '_' + req.batchId;
     const courseProgress = this.courseProgress[courseId_batchId];
-    console.log('update content state', req.status);
     if (courseProgress && req.contentId && req.status) {
       const index = _.findIndex(courseProgress.content, { 'contentId': req.contentId });
       if (index !== -1 && req.status >= courseProgress.content[index].status
@@ -139,6 +136,7 @@ export class CourseProgressService {
         return this.updateContentStateToServer(courseProgress.content[index]).pipe(
           map((res: any) => {
             this.courseProgress[courseId_batchId].content[index].status = req.status;
+            this.courseProgress[courseId_batchId].content[index].lastAccessTime = moment(new Date()).format('YYYY-MM-DD HH:mm:ss:SSSZZ');
             this.calculateProgress(courseId_batchId);
             this.courseProgressData.emit(this.courseProgress[courseId_batchId]);
             this.coursesService.updateCourseProgress(req.courseId, req.batchId, this.courseProgress[courseId_batchId].completedCount);

@@ -82,6 +82,9 @@ export class PlayerService {
     configuration.context.sid = this.userService.sessionId;
     configuration.context.uid = this.userService.userid;
     configuration.context.channel = this.userService.channel;
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    configuration.context.pdata.ver = buildNumber && buildNumber.value ?
+    buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     if (_.isUndefined(contentDetails.courseId)) {
       configuration.context.dims = this.userService.dims;
     } else {
@@ -139,7 +142,7 @@ export class PlayerService {
         } else if (content.batchId) {
           this.router.navigate(['/learn/course', content.courseId, 'batch', content.batchId]);
         } else {
-          this.router.navigate(['/learn/course', content.identifier]);
+          this.router.navigate(['/learn/preview', content.identifier]);
         }
       } else if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent) {
         this.router.navigate(['/resources/play/content', content.identifier]);

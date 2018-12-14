@@ -21,7 +21,7 @@
             </div>
           </div>
           <div class="three wide right floated column filter-button margin-top-30">
-            <a class="searchfilterbutton ui blue tiny  button" (click)="applyFilters()">{{resourceService.frmelmnts?.btn?.submit}}</a>
+            <a class="searchfilterbutton ui blue tiny  button" (click)="applyFilters()" appTelemetryInteract [telemetryInteractEdata]="submitIntractEdata">{{resourceService.frmelmnts?.btn?.submit}}</a>
             <a class="searchfilterbutton ui primary tiny basic button" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</a>
           </div>
         </div>

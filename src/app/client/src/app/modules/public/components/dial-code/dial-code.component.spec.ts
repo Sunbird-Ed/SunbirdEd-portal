@@ -93,17 +93,21 @@ describe('DialCodeComponent', () => {
   it('should navigate to content player page for resource content types', () => {
     const route = TestBed.get(Router);
     const item = Response.event;
+    component.searchKeyword = '61U24C';
     item.data.metaData.mimeType = 'application/vnd.ekstep.content';
     component.getEvent(item);
     fixture.detectChanges();
-    expect(route.navigate).toHaveBeenCalledWith(['play/content', item.data.metaData.identifier]);
+    expect(route.navigate).toHaveBeenCalledWith(['play/content', item.data.metaData.identifier],
+     { queryParams: { dialCode: '61U24C'}});
   });
   it('should navigate to collection player page for collection types', () => {
     const route = TestBed.get(Router);
     const item = Response.event;
+    component.searchKeyword = '61U24C';
     item.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
     component.getEvent(item);
-    expect(route.navigate).toHaveBeenCalledWith(['play/collection', item.data.metaData.identifier]);
+    expect(route.navigate).toHaveBeenCalledWith(['play/collection', item.data.metaData.identifier],
+    { queryParams: { dialCode: '61U24C'}});
   });
   it('should unsubscribe from all observable subscriptions', () => {
     component.ngOnInit();

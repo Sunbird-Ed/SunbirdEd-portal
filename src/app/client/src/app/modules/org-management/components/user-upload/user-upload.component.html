@@ -1,8 +1,11 @@
-<sui-modal [isClosable]="true" [mustScroll]="true" [size]="'large'" (dismissed)="redirect()" #modal>
+<sui-modal [isClosable]="false" [mustScroll]="true" [size]="'large'" (dismissed)="redirect()" #modal>
   <div class="header" [appTelemetryImpression]="telemetryImpression">
     <div class="ui grid">
       <div class="eleven wide column">
         <span class="ui header">{{resourceService?.frmelmnts?.instn?.t0016}}</span>
+      </div>
+      <div class="one wide column">
+          <i class="close icon" (click)="modal.deny()" tabindex="0"></i>
       </div>
     </div>
   </div>
@@ -65,6 +68,7 @@
           </ol>
         </li>
       </ol>
+      <div>{{resourceService?.frmelmnts?.instn?.t0076}} <a href={{uploadUserRefLink}} target="_blank">{{resourceService?.frmelmnts?.instn?.t0077}}</a></div>
     </div>
   </div>
   <div class="actions">
@@ -80,7 +84,7 @@
             {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
           </button>
         </div>
-        <input #inputbtn type="file" style='display:none' accept=".csv" class="content-input ui small" id="uploadUsrsCSV" (change)="uploadUsersCSV($event.target.files)"
+        <input #inputbtn type="file" style='display:none' accept=".csv" class="content-input ui small" id="uploadUsrsCSV" onclick="this.value = null" (change)="uploadUsersCSV($event.target.files)"
           required="" />
       </div>
     </div>

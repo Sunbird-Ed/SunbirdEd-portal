@@ -10,6 +10,7 @@ import {
   UserService, PermissionService, CoursesService, TenantService, ConceptPickerService, OrgDetailsService
 } from '@sunbird/core';
 import * as _ from 'lodash';
+import { Subscription } from 'rxjs';
 /**
  * main app component
  *
@@ -56,9 +57,14 @@ export class AppComponent implements OnInit {
     * To get url, app configs
   */
   public config: ConfigService;
+
   public initApp = false;
+
   private orgDetails: any;
+
   public version: string;
+
+  userDataUnsubscribe: Subscription;
   /**
    * constructor
    */
@@ -88,9 +94,8 @@ export class AppComponent implements OnInit {
     const fingerPrint2 = new Fingerprint2();
     this.resourceService.initialize();
     this.navigationHelperService.initialize();
-    this.version = (<HTMLInputElement>document.getElementById('buildNumber')) &&
-      (<HTMLInputElement>document.getElementById('buildNumber')).value ?
-      (<HTMLInputElement>document.getElementById('buildNumber')).value.slice(0, 5) : '1.0';
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    this.version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     if (this.userService.loggedIn) {
       fingerPrint2.get((deviceId) => {
         (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
@@ -112,16 +117,20 @@ export class AppComponent implements OnInit {
     this.userService.initialize(true);
     this.permissionService.initialize();
     this.courseService.initialize();
-    const userDataUnsubscribe = this.userService.userData$.subscribe((user: IUserData) => {
+    this.userDataUnsubscribe = this.userService.userData$.subscribe((user: IUserData) => {
       if (user && !user.err) {
-        userDataUnsubscribe.unsubscribe();
+        if (this.userDataUnsubscribe) {
+          this.userDataUnsubscribe.unsubscribe();
+        }
         this.initApp = true;
         this.userProfile = user.userProfile;
         const slug = _.get(user, 'userProfile.rootOrg.slug');
-        this.initTelemetryService();
+        this.initTelemetryService(true);
         this.initTenantService(slug);
       } else if (user && user.err) {
-        userDataUnsubscribe.unsubscribe();
+        if (this.userDataUnsubscribe) {
+          this.userDataUnsubscribe.unsubscribe();
+        }
         this.initApp = true;
         this.initTenantService();
       }
@@ -131,8 +140,8 @@ export class AppComponent implements OnInit {
     this.orgDetailsService.getOrgDetails(slug).pipe(
       first()).subscribe((data) => {
         this.orgDetails = data;
-        this.initTelemetryService();
-        this.initTenantService();
+        this.initTelemetryService(false);
+        this.initTenantService(slug);
         this.userService.initialize(false);
         this.initApp = true;
       }, (err) => {
@@ -140,9 +149,9 @@ export class AppComponent implements OnInit {
         console.log('unable to get organization details');
       });
   }
-  public initTelemetryService() {
+  public initTelemetryService(loggedIn) {
     let config: ITelemetryContext;
-    if (this.userService.loggedIn) {
+    if (loggedIn) {
       config = this.getLoggedInUserConfig();
       this.telemetryService.initialize(config);
     } else {
@@ -157,7 +166,7 @@ export class AppComponent implements OnInit {
         userId: this.userProfile.userId,
         rootOrgId: this.userProfile.rootOrgId,
         rootOrg: this.userProfile.rootOrg,
-        organisationIds: _.map(this.userProfile.organisations, (org) => org.organisationId)
+        organisationIds: this.userProfile.hashTagIds
       },
       config: {
         pdata: {
@@ -181,7 +190,7 @@ export class AppComponent implements OnInit {
       userOrgDetails: {
         userId: 'anonymous',
         rootOrgId: this.orgDetails.rootOrgId,
-        organisationIds: [this.orgDetails.rootOrgId]
+        organisationIds: [this.orgDetails.hashTagId]
       },
       config: {
         pdata: {

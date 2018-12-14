@@ -1,0 +1,618 @@
+<!-- Navbar #0
+For easy navigation of course preview -->
+<nav class="course-preview-nav navbar navbar-expand-lg navbar-dark bg-dark" id="navbar">
+  <!--navbar-light -->
+  <div class="container">
+    <a class="navbar-brand" href="#">STACKROUTE</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <!--the Ml and Mr are to align to left and right -->
+        <li class="nav-item active">
+          <a class="nav-link" href="#desc">Description<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#desc">Prerequisites</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#desc">Contents</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#highlights">Highlights</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#roadmap">Roadmap</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#instructors">Instructors</a>
+        </li>
+      </ul>
+      <button type="button" class="btn btn-dark btn-enroll ml-auto">Enroll Now </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Section #1 
+      This showcases the course details  -->
+<section class="showcase-section container-fluid bg-light">
+  <header class="showcase-header">
+    <div class="container bg-transparent">
+      <div class="jumbotron  inner-card ">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="container jumbotron-text">
+              <h2 class="light-section-header">{{courseDetails?.name}}</h2>
+              <h5 class="tagline">"Write Once, Debug anywhere"</h5>
+              <mat-icon class="checked">star_rate</mat-icon>
+              <mat-icon class="checked">star_rate</mat-icon>
+              <mat-icon class="checked">star_half</mat-icon>
+              <mat-icon class="checked">star_border</mat-icon>
+              <mat-icon class="checked">star_border</mat-icon><br />
+              <ul>
+                <li>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <mat-icon style="font-size: 30px;" data-toggle="tooltip" data-placement="top" title="Average time spent by Users">av_timer</mat-icon>
+                    </div>
+                    <div class="col-sm-9 jumbo-li-text"> 22:50 hours</div>
+                  </div>
+                </li>
+                <li>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <mat-icon style="font-size: 30px;" data-toggle="tooltip" data-placement="top" title="Organisation">school</mat-icon>
+                    </div>
+                    <div class="col-sm-9 jumbo-li-text">{{courseDetails?.organisation}}</div>
+                  </div>
+                </li>
+                <li>
+                  <div class="row">
+                    <div class="col-sm-3 jumbo-li-text">
+                      <mat-icon style="font-size: 30px;" data-toggle="tooltip" data-placement="top" title="Users">person</mat-icon>
+                      {{totalParticipants}}
+                    </div>
+                    <div class="col-sm-9 jumbo-li-text">
+                      <mat-icon style="font-size: 30px;" data-toggle="tooltip" data-placement="top" title="Language">language</mat-icon>
+                      {{courseDetails?.language[0]}}
+                    </div>
+                  </div>
+                </li>
+              </ul>
+
+            </div>
+          </div>
+          <div class="col-md-4">
+            <img class="image-jumbo ml-2 img-fluid max-width: 100%;" src='{{courseDetails?.appIcon}}' alt="Card image cap" />
+          </div>
+        </div>
+        <div class="row">
+          <span class="col-md-8"></span>
+          <div class="col-sm-4 pl-5 pr-5 pt-2">
+            <button type="button" class="btn btn-info ml-4 mr-3">Preview</button>
+            <button type="button" class="btn btn-info ml-3 mr-4">Enroll Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+</section>
+
+<!-- Section #2
+      This section is for detailed description
+      Has Two subsections 1. Prerequisites 2. Contents  -->
+<div class="container-fluid bg-dark text-white">
+  <section class="description-section container" id="desc">
+    <h2>Description</h2>
+    <p>{{courseDetails?.description}}</p>
+    <div class="row container">
+      <section class="prerequisites-section col-md-6">
+        <h2>Pre-requisites</h2>
+        <ul>
+          <li>
+            <i class="fa fa-thumb-tack fa-lg" aria-hidden="true"></i>
+            Sound knowledge about C and C++
+          </li>
+          <li>
+            <i class="fa fa-thumb-tack fa-lg" aria-hidden="true"></i>
+            Good Logic thinker
+          </li>
+          <li>
+            <i class="fa fa-thumb-tack fa-lg" aria-hidden="true"></i>
+            Should be willing to have sleepless nights
+          </li>
+          <li>
+            <i class="fa fa-thumb-tack fa-lg" aria-hidden="true"></i>
+            Must embrace frustration
+          </li>
+          <li>
+            <i class="fa fa-thumb-tack fa-lg" aria-hidden="true"></i>
+            Loads of Coffee and Caffeine Tolerance
+          </li>
+          <li>
+            <i class="fa fa-thumb-tack fa-lg" aria-hidden="true"></i>
+            Objects are everything
+          </li>
+        </ul>
+
+      </section>
+      <section class="content-section col-md-6 ">
+        <h2>Contents</h2>
+        <div class="row">
+          <ul class="col-sm-12">
+            <li>
+              <div class="row">
+                <div class="col-sm-6"><i class="fa fa-play-circle fa-lg" aria-hidden="true"></i></div>
+                <div class="col-sm-6">5</div>
+              </div>
+            </li>
+            <li>
+              <div class="row">
+                <div class="col-sm-6"><i class="fa fa-file-pdf-o fa-lg" aria-hidden="true"></i></div>
+                <div class="col-sm-6">10</div>
+              </div>
+            </li>
+            <li>
+              <div class="row">
+                <div class="col-sm-6"><i class="fa  fa-file-text fa-lg" aria-hidden="true"></i></div>
+                <div class="col-sm-6">9</div>
+              </div>
+
+            </li>
+            <li>
+              <div class="row">
+                <div class="col-sm-6"><i class="fa fa-code fa-lg" aria-hidden="true"></i></div>
+                <div class="col-sm-6">100</div>
+              </div>
+
+            </li>
+            <li>
+              <div class="row">
+                <div class="col-sm-6"><i class="fa fa-clock-o fa-lg" aria-hidden="true"></i></div>
+                <div class="col-sm-6">36 hrs</div>
+              </div>
+
+            </li>
+            <li>
+              <div class="row">
+                <div class="col-sm-6"><i class="fa fa-desktop fa-lg" aria-hidden="true"></i></div>
+                <div class="col-sm-6">Mobile/Desktop</div>
+              </div>
+
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </section>
+</div>
+
+
+<!-- Section #3
+      This section is for Course Highlights/What you'll learn -->
+<section class="course-highlights-section containter-fluid bg-light" id="highlights">
+  <section class="container inner-card" style="box-shadow:0px 10px 3px 3px gray; border-radius: 10px;">
+    <mat-card>
+      <mat-list>
+        <h2 class="light-section-header">What you'll learn / Highlights</h2>
+        <mat-list-item>
+          <mat-icon mat-list-icon>done</mat-icon>
+          <h4 mat-line>Java OOPs Concepts</h4>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon mat-list-icon>done</mat-icon>
+          <h4 mat-line>Java Inheritance</h4>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon mat-list-icon>done</mat-icon>
+          <h4 mat-line>Java Polymorphism</h4>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon mat-list-icon>done</mat-icon>
+          <h4 mat-line>Java Abstraction</h4>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon mat-list-icon>done</mat-icon>
+          <h4 mat-line>Java Encapsulation</h4>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon mat-list-icon>done</mat-icon>
+          <h4 mat-line>Java Array</h4>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <h3 mat-subheader>Collections</h3>
+        <mat-list-item>
+          <mat-icon mat-list-icon>done</mat-icon>
+          <h4 mat-line> Collections in Java</h4>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon mat-list-icon>done</mat-icon>
+          <h4 mat-line>What is a framework in Java</h4>
+        </mat-list-item>
+      </mat-list>
+    </mat-card>
+  </section>
+
+
+</section>
+
+<!-- Section #4
+      This section is for Preview/Sample video  -->
+<section class="course-preview-section container-fluid bg-dark" id="preview">
+  <h2>Sneak-Peak</h2>
+  <mat-tab-group class="video-text">
+    <mat-tab label="Sample Video ">
+      <iframe width="720" height="450" [src]='safeUrl' frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </mat-tab>
+    <mat-tab label="Sample Chapter">
+      <iframe width="720" height="450" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS-ORUK9ChAFCMDw0zjPwYrxcgp1n47iTqCPnNSdfq5AKvhvJkHbWqmuSNb8qTuvaRdRxh3v9EbKBYO/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+    </mat-tab>
+  </mat-tab-group>
+
+</section>
+<!-- Section #5
+      This section is for milestones/roadmap -->
+<section class="course-roadmap-section bg-light chapters-container">
+  <h2 class="light-section-header">Milestones</h2>
+  <div class="divided">
+    <div *ngFor="let chapter of coursechapters ; let i=index" class="col-sm-4">
+      <div class="row">
+        <div class="col-sm-6 text-center">
+          <div class="circle">
+              <a href="#">{{chapter.name}}</a>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div *ngIf="i <coursechapters.length-1" class="divider"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Section #6
+      This section is for Instructors/Mentors -->
+<section class="course-mentors-section container-fluid bg-dark" id="instructors">
+  <div class="container">
+    <h2>Our Instructors</h2>
+    <div class="row">
+      <div class="col-md-4" *ngFor="let mentor of mentorsDetails">
+        <div class="card">
+          <div class="box">
+            <div class="img">
+              <img src="http://www.michelledupont.com.au/blog/wp-content/uploads/2010/07/6081-web(pp_w900_h899).jpg">
+            </div>
+            <h2>{{mentor.firstName}} {{mentor.lastName}}<br><span>{{mentor?.jobProfile[0]}} FullStack Developer</span></h2>
+            <p> {{mentor.profileSummary|slice:1:100}}.</p>
+            <span>
+              <ul>
+                <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+              </ul>
+            </span>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-md-4">
+        <div class="card">
+          https://i.pinimg.com/originals/22/f8/53/22f8531a8b2f8c6c93332a9c5fc86813.png
+          <div class="box">
+            <div class="img">
+              <img src="http://www.michelledupont.com.au/blog/wp-content/uploads/2010/07/6081-web(pp_w900_h899).jpg">
+            </div>
+            <h2>Prakash Prajapati<br><span>Web Graphic Designer</span></h2>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore et.</p>
+            <span>
+              <ul>
+                <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+              </ul>
+            </span>
+          </div>
+        </div>
+      </div> -->
+      <div class="col-md-4">
+        <div class="card">
+          <div class="box">
+            <div class="img">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLrEROK1iELpkCXKXMjF5zfZJDIgFe2cnCkslZmpKr0ku7v3QGPw">
+            </div>
+            <h2>Prakash Prajapati<br><span>Web Graphic Designer</span></h2>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore et.</p>
+            <span>
+              <ul>
+                <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+              </ul>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+<!-- 
+      Section #7
+      This section is for Recommended COurses -->
+<section class="course-recommended-section">
+  <section class="course-similar-section bg-light container-fluid">
+    <div class="container">
+      <h2 class="light-section-header">Some recommendations</h2>
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="wrapper bg-white">
+            <div class="row">
+              <div class="col-sm-4">
+                <img class="recommended-image" src="https://www.xmple.com/wallpaper/blue-dual-pink-striped-gingham-512x512-c2-ff1493-87ceeb-l-200-a-135-f-13.svg"
+                  alt="course title">
+              </div>
+              <div class="col-sm-8 rating-section">
+                <h5 class="recommended-card-header">Head First Java</h5>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <span class="fa fa-star checked "></span>
+                    <span class="fa fa-star checked "></span>
+                    <span class="fa fa-star checked "></span>
+                    <span class="fa fa-star "></span>
+                    <span class="fa fa-star "></span>
+                  </div>
+                  <div class="col-sm-6">
+                    <span class="fa fa-users"> 5k+</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="wrapper bg-white">
+            <div class="row">
+              <div class="col-sm-4">
+                <img class="recommended-image" src="https://www.xmple.com/wallpaper/blue-dual-pink-striped-gingham-512x512-c2-ff1493-87ceeb-l-200-a-135-f-13.svg"
+                  alt="course title">
+              </div>
+              <div class="col-sm-8 rating-section">
+                <h5 class="recommended-card-header">Head First Java</h5>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <span class="fa fa-star checked "></span>
+                    <span class="fa fa-star checked "></span>
+                    <span class="fa fa-star checked "></span>
+                    <span class="fa fa-star "></span>
+                    <span class="fa fa-star "></span>
+                  </div>
+                  <div class="col-sm-6">
+                    <span class="fa fa-users"> 5k+</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="wrapper bg-white">
+            <div class="row">
+              <div class="col-sm-4">
+                <img class="recommended-image" src="https://www.xmple.com/wallpaper/blue-dual-pink-striped-gingham-512x512-c2-ff1493-87ceeb-l-200-a-135-f-13.svg"
+                  alt="course title">
+              </div>
+              <div class="col-sm-8 rating-section ">
+                <h5 class="recommended-card-header">Head First Java</h5>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <span class="fa fa-star checked "></span>
+                    <span class="fa fa-star checked "></span>
+                    <span class="fa fa-star checked "></span>
+                    <span class="fa fa-star "></span>
+                    <span class="fa fa-star "></span>
+                  </div>
+                  <div class="col-sm-6">
+                    <span class="fa fa-users"> 5k+</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+</section>
+
+<!-- Section #8
+      This section is for Similar COurses -->
+<section class="course-similar-section bg-light  container-fluid">
+  <div class="container">
+    <h2 class="light-section-header">You may like</h2>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="wrapper bg-white">
+          <div class="row">
+            <div class="col-sm-4">
+              <img class="recommended-image" src="https://www.xmple.com/wallpaper/blue-dual-pink-striped-gingham-512x512-c2-ff1493-87ceeb-l-200-a-135-f-13.svg"
+                alt="course title">
+            </div>
+            <div class="col-sm-8 rating-section">
+              <h5 class="recommended-card-header">Head First Java</h5>
+              <div class="row">
+                <div class="col-sm-6">
+                  <span class="fa fa-star checked "></span>
+                  <span class="fa fa-star checked "></span>
+                  <span class="fa fa-star checked "></span>
+                  <span class="fa fa-star "></span>
+                  <span class="fa fa-star "></span>
+                </div>
+                <div class="col-sm-6">
+                  <span class="fa fa-users"> 5k+</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="wrapper bg-white">
+          <div class="row">
+            <div class="col-sm-4">
+              <img class="recommended-image" src="https://www.xmple.com/wallpaper/blue-dual-pink-striped-gingham-512x512-c2-ff1493-87ceeb-l-200-a-135-f-13.svg"
+                alt="course title">
+            </div>
+            <div class="col-sm-8 rating-section">
+              <h5 class="recommended-card-header">Head First Java</h5>
+              <div class="row">
+                <div class="col-sm-6">
+                  <span class="fa fa-star checked "></span>
+                  <span class="fa fa-star checked "></span>
+                  <span class="fa fa-star checked "></span>
+                  <span class="fa fa-star "></span>
+                  <span class="fa fa-star "></span>
+                </div>
+                <div class="col-sm-6">
+                  <span class="fa fa-users"> 5k+</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="wrapper bg-white">
+          <div class="row">
+            <div class="col-sm-4">
+              <img class="recommended-image" src="https://www.xmple.com/wallpaper/blue-dual-pink-striped-gingham-512x512-c2-ff1493-87ceeb-l-200-a-135-f-13.svg"
+                alt="course title">
+            </div>
+            <div class="col-sm-8 rating-section ">
+              <h5 class="recommended-card-header">Head First Java</h5>
+              <div class="row">
+                <div class="col-sm-6">
+                  <span class="fa fa-star checked "></span>
+                  <span class="fa fa-star checked "></span>
+                  <span class="fa fa-star checked "></span>
+                  <span class="fa fa-star "></span>
+                  <span class="fa fa-star "></span>
+                </div>
+                <div class="col-sm-6">
+                  <span class="fa fa-users"> 5k+</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Section #9
+        This section is for Reviews/User Comments -->
+<section class="course-comments-section review-container pt-3 bg-dark">
+  <h2>Reviews</h2>
+  <div class="average_rating container">
+    <div class="row">
+      <div class="col-md-2 pl-5 reviews">
+        <h3 class="mt-2">2.5</h3>
+        <mat-icon class="checked">star_rate</mat-icon>
+        <mat-icon class="checked">star_rate</mat-icon>
+        <mat-icon class="checked">star_half</mat-icon>
+        <mat-icon class="checked">star_border</mat-icon>
+        <mat-icon class="checked">star_border</mat-icon>
+        <h4>Average Rating</h4>
+      </div>
+      <div class="col-md-6 pt-2 mt-2">
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+            aria-valuemax="100"></div>
+        </div><br>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+            aria-valuemax="100"></div>
+        </div><br>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+            aria-valuemax="100"></div>
+        </div><br>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+            aria-valuemax="100"></div>
+        </div>
+      </div>
+      <div class="col-md-4 pl-5">
+        <mat-icon class="checked">star_rate</mat-icon>
+        <mat-icon class="checked">star_rate</mat-icon>
+        <mat-icon class="checked">star_rate</mat-icon>
+        <mat-icon class="checked">star_rate</mat-icon>
+        <mat-icon class="checked">star_rate</mat-icon><br>
+        <mat-icon class="checked">star_rate</mat-icon>
+        <mat-icon class="checked">star_rate</mat-icon>
+        <mat-icon class="checked">star_rate</mat-icon>
+        <mat-icon class="checked">star_rate</mat-icon>
+        <mat-icon class="checked">star_border</mat-icon><br>
+        <mat-icon class="checked">star_rate</mat-icon>
+        <mat-icon class="checked">star_rate</mat-icon>
+        <mat-icon class="checked">star_rate</mat-icon>
+        <mat-icon class="checked">star_border</mat-icon>
+        <mat-icon class="checked">star_border</mat-icon><br>
+        <mat-icon class="checked">star_rate</mat-icon>
+        <mat-icon class="checked">star_rate</mat-icon>
+        <mat-icon class="checked">star_border</mat-icon>
+        <mat-icon class="checked">star_border</mat-icon>
+        <mat-icon class="checked">star_border</mat-icon><br>
+        <mat-icon class="checked">star_rate</mat-icon>
+        <mat-icon class="checked">star_border</mat-icon>
+        <mat-icon class="checked">star_border</mat-icon>
+        <mat-icon class="checked">star_border</mat-icon>
+        <mat-icon class="checked">star_border</mat-icon>
+      </div>
+    </div>
+  </div>
+  <br><br>
+  <div class="reviews container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="box">
+          <div class="review-img">
+            <img src="http://www.ishootshows.com/wp-content/uploads/2008/07/todd-owyoung-portrait-145238_COB8628-square-600px.jpg">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <h4> Raphael</h4>
+        <mat-icon class="checked">star_rate</mat-icon>
+        <mat-icon class="checked">star_rate</mat-icon>
+        <mat-icon class="checked">star_rate</mat-icon>
+        <mat-icon class="checked">star_rate</mat-icon>
+        <mat-icon class="checked">star_border</mat-icon><br>
+        Lorem Ipsum is simply dummy text of the printing and
+        typesetting industry. Lorem Ipsum has been the industry's
+        standard dummy text ever since the 1500s, when an unknown
+        printer took a galley of type and scrambled it to make a type
+        specimen book. It has survived not only five centuries,
+        but also the leap into electronic typesetting, remaining essentially
+        unchanged. It was popularised in the 1960s with the release of
+        Letraset sheets containing Lorem Ipsum passages, and more recently
+        with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+      </div>
+    </div>
+  </div>
+</section>
+<router-outlet></router-outlet>

@@ -11,6 +11,7 @@ var rmdir = require('rmdir');
 var deployAzureCdn = require('gulp-deploy-azure-cdn');
 var rename = require('gulp-rename');
 var htmlstringreplace = require('gulp-string-replace');
+var replace = require('gulp-string-replace');
 
 //credentials for cdn provider
 var cdnServiceCredentials = {
@@ -52,7 +53,7 @@ function recomputeStaticVariables (foldername) {
   paths = {
     src: sourceTenantFolderPath + '/**/*',
     dist: distBaseUrl,
-    distHTML: sourceTenantFolderPath + '/**/*.html',
+    sourceHtmlPath: sourceTenantFolderPath + '/**/*.html',
     distHtml: distBaseUrl + '/**/*.html',
     distCSS: distBaseUrl + '/**/*.css',
     // distAssets : distBaseUrl + '/**/*.{jpg,png,jpeg,gif,svg,eot,ttf,woff,woff2}'
@@ -68,12 +69,32 @@ gulp.task('copyFolder',function(){
   return gulp.src(paths.src).pipe(gulp.dest(paths.dist));
 })
 
+//check for paths and if tenant name already exists then send only base cdn url
+var getPathToCdn = function (pathname) {
+  var firstElement = pathname.split('/')[1]
+  if(firstElement === tenantName){
+    return cdnurl
+  }else{
+    return cdnTargetFolder
+  }
+}
+
 //reference html files changes
 gulp.task('prefixCdnUrlForHtmlFiles', function () {
-  return gulp.src(paths.distHTML)
+  return gulp.src(paths.sourceHtmlPath)
     .pipe(urlPrefixer.html({
-      prefix: cdnTargetFolder,
-      tags: ['script', 'link', 'img']
+      prefix: getPathToCdn,
+      tags: ['script', 'link','img','a','form'],
+      attrs: ['src','href','action']
+    }))
+    .pipe(gulp.dest(paths.dist));
+});
+
+//index page should not have href ref with cdn url
+gulp.task('removeHrefCdnUrlForIndexPage', function(){
+  return gulp.src(paths.dist + '/index.html')
+    .pipe(replace(cdnTargetFolder + '/index.html', function() {
+      return '/index.html';
     }))
     .pipe(gulp.dest(paths.dist));
 });
@@ -177,7 +198,7 @@ gulp.task('pushTenantsToCDN', () =>{
       async.eachSeries(files, function (foldername, next) {
         if(fs.existsSync(sourceFolderPath + '/' + foldername) && fs.lstatSync(sourceFolderPath + '/' + foldername).isDirectory()){
           recomputeStaticVariables(foldername)
-          runSequence('clean','copyFolder','prefixCdnUrlForHtmlFiles','prefixCdnUrlForCssFiles','fileVersioning','updateAssetsReferences','renameIndexFile','replaceindexPageText','deletIndexFile','deleteManifest','uploadAppToCdn', function(){
+          runSequence('clean','copyFolder','prefixCdnUrlForHtmlFiles','removeHrefCdnUrlForIndexPage','prefixCdnUrlForCssFiles','uploadAppToCdn', function(){
             next()
           }) 
         }else{
@@ -201,5 +222,3 @@ gulp.task('pushTenantsToCDN', () =>{
   })
 
 })
-
-

@@ -1,19 +1,16 @@
-import { Observable, BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule, UserService, PermissionService } from '@sunbird/core';
 import { INoteData } from '@sunbird/notes';
-import { async, ComponentFixture, TestBed, fakeAsync, tick, flush } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoursePlayerComponent } from './course-player.component';
 import { SharedModule, ResourceService, WindowScrollService, ToasterService } from '@sunbird/shared';
-import { } from 'jasmine';
 import { CourseConsumptionService, CourseProgressService, CourseBatchService } from '@sunbird/learn';
 import { CourseHierarchyGetMockResponse, CourseHierarchyGetMockResponseFlagged } from './course-player.component.mock.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { enrolledBatch } from './../../batch/batch-details/batch-details.component.data';
-import { mockUserData } from './../../../../core/services/user/user.mock.spec.data';
-import { mockPermissionRes } from './../../../../core/services/permission/permission.mock.spec.data';
 import { CoursesService } from './../../../../core/services/course/course.service';
 
 describe('CoursePlayerComponent', () => {
@@ -68,9 +65,7 @@ describe('CoursePlayerComponent', () => {
     createdDate: '2018-03-12 08:19:53:937+0000',
     updatedDate: '2018-03-12 08:25:53:937+0000'
   };
-  const mockCourseHierarchy = {
-    status: 'Live'
-  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CoursePlayerComponent],
@@ -202,6 +197,27 @@ describe('CoursePlayerComponent', () => {
     component.ngOnDestroy();
   });
 
+  it('should set status of the content to 2 on component destroy if content type is H5P and previous status is 1', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    const contentId = 'do_11247355685983027213';
+    activatedRouteStub.changeParams({ courseId: 'do_112568388630880256155', batchId: '0125700335291842568' });
+    activatedRouteStub.queryParams = of({contentId: contentId});
+    const courseProgressService = TestBed.get(CourseProgressService);
+    const windowScrollService = TestBed.get(WindowScrollService);
+    const courseBatchService = TestBed.get(CourseBatchService);
+    spyOn(courseBatchService, 'getEnrolledBatchDetails')
+    .and.returnValue(of(CourseHierarchyGetMockResponse.h5pContentTestData.enrolledBatchDetails));
+    spyOn(courseConsumptionService, 'getCourseHierarchy')
+    .and.returnValue(of(CourseHierarchyGetMockResponse.h5pContentTestData.courseHierarchy));
+    spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
+    component.courseProgressData = CourseHierarchyGetMockResponse.courseProgressData;
+    component.ngOnInit();
+    component.playerOnDestroy({contentId: contentId});
+    expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
+    component.ngOnDestroy();
+  });
+
   it('should not play content if course is not enrolled', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
@@ -281,7 +297,8 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
-    expect(component.permissionService.checkRolesPermissions).toHaveBeenCalledWith(['COURSE_MENTOR', 'CONTENT_REVIEWER']);
+    expect(component.permissionService.checkRolesPermissions)
+      .toHaveBeenCalledWith(['COURSE_MENTOR', 'CONTENT_REVIEWER', 'CONTENT_CREATOR', 'CONTENT_CREATION']);
     expect(component.contentId).toBeDefined();
     expect(component.playerConfig).toBeDefined();
     expect(component.enableContentPlayer).toBeTruthy();
@@ -304,7 +321,8 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
-    expect(component.permissionService.checkRolesPermissions).toHaveBeenCalledWith(['COURSE_MENTOR', 'CONTENT_REVIEWER']);
+    expect(component.permissionService.checkRolesPermissions)
+      .toHaveBeenCalledWith(['COURSE_MENTOR', 'CONTENT_REVIEWER', 'CONTENT_CREATOR', 'CONTENT_CREATION']);
     expect(component.contentId).toBeUndefined();
     expect(component.playerConfig).toBeUndefined();
     expect(component.enableContentPlayer).toBeFalsy();

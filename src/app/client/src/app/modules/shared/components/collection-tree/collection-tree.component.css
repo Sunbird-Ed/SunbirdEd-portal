@@ -1,17 +1,11 @@
 
-.round-box{
-  /* margin-right:3px; */
-  /* padding-inline-end: 10px;
-  padding-inline-start: 70px;
-  border-radius: 10px;
-  position: absolute;
-  padding-left: 3px; */
-  /* color: rgb(28, 53, 56); */
-}
-
-.card {
+mat-card{
   margin-bottom: 10px;
-  box-shadow: 10px 10px 5px grey;
+  box-shadow: 10px 10px 10px grey;
+  text-overflow: ellipsis;
+  border-radius: 2%;
+  border-color: gray;
+  font-size: 15px;
 }
 
 mat-expansion-panel{
@@ -19,20 +13,10 @@ mat-expansion-panel{
   margin-top: 10px;
   padding-top: 10px;
   padding-bottom: 10px;
-  padding-block-start: 10px;
-  padding-block-start: 10px;
-  margin-block-start: 10px;
-  margin-block-end: 10px;
-  /* background-color: aliceblue; */
-  /* box-shadow: 100px 10px 5px rgb(145, 143, 143); */
-  border-radius: 2px;
+  box-shadow: 100px 10px 5px rgb(218, 215, 215);
+  border-radius: 3%;
 }
-/* mat-accordion {
-  margin-bottom: 10px;
-  margin-top: 10px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-} */
+
 mat-card:hover{
  background-color: rgb(204, 200, 200);
  box-shadow: 5px 5px 5px grey;
@@ -45,3 +29,12 @@ mat-card-header{
   text-overflow: ellipsis;
   position: relative;
 }
+mat-checkbox{
+  color: green;
+}
+
+
+.expansion{
+  margin-bottom: 15px;
+}
+

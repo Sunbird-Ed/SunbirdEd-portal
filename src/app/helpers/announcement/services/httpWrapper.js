@@ -32,7 +32,7 @@ class HttpWrapper {
             console.log('Announcement - Httpwrapper - Call ErrorResponse', response)
 
             const msg = response && response.params ? response.params.errmsg : 'Internal Server Error'
-            const statusCode = response.statusCode ? response.statusCode : HttpStatus.INTERNAL_SERVER_ERROR
+            const statusCode = response && response.statusCode ? response.statusCode : HttpStatus.INTERNAL_SERVER_ERROR
             reject(new AppError({message: msg, status: statusCode}))
           } else {
             resolve({ response, body })

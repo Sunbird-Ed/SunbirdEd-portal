@@ -234,5 +234,71 @@ export const mockRes = {
         'status': 'Review',
         'resourceType': 'Learn',
         'node_id': 29215
+    }, ChecklistData: {
+        'value': {
+            'id': 'api.form.read',
+            'ver': '1.0',
+            'ts': '2018-08-16T07:31:16.416Z',
+            'params': {
+                'resmsgid': '5c4cb400-a126-11e8-a6ee-278d16284232',
+                'msgid': '5c4030e0-a126-11e8-9da1-75afb267f18b',
+                'status': 'successful',
+                'err': null,
+                'errmsg': null
+            },
+            'responseCode': 'OK',
+            'result': {
+                'form': {
+                    'type': 'content',
+                    'action': 'requestChangesChecklist',
+                    'subType': 'Resource',
+                    'rootOrgId': 'b00bc992ef25f1a9a8d63291e20efc8d',
+                    'data': {
+                        'templateName': 'defaultTemplate',
+                        'action': 'requestChangesChecklist',
+                        'fields': [
+                            {
+                                'title': 'Please tick the reasons for requesting changes and provide detailed comments:',
+                                'otherReason': '',
+                                'contents': [
+                                    {
+                                        'name': 'Appropriateness',
+                                        'checkList': [
+                                            'Has Hate speech, Abuse, Violence, Profanity',
+                                            'Has Sexual content, Nudity or Vulgarity',
+                                            'Has Discriminatory or Defamatory content',
+                                            'Is not suitable for children'
+                                        ]
+                                    },
+                                    {
+                                        'name': 'Content details',
+                                        'checkList': [
+                                            'Inappropriate Title or Description',
+                                            'Incorrect Board, Grade, Subject or Medium',
+                                            'Inappropriate tags such as Resource Type or Concepts',
+                                            'Irrelevant Keywords'
+                                        ]
+                                    },
+                                    {
+                                        'name': 'Usability',
+                                        'checkList': [
+                                            'Content is NOT playing correctly',
+                                            'CANNOT see the content clearly on Desktop and App',
+                                            'Audio is NOT clear or NOT easy to understand',
+                                            'Spelling mistakes found in text used',
+                                            'Language is NOT simple to understand'
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        'options': {
+            'expires': 1534405277659,
+            'maxAge': 600
+        }
     }
 };

@@ -17,7 +17,7 @@ export class PublicPlayerService {
   contentData: ContentData;
   /**
    * stores collection/course details
-   */
+  */
   collectionData: ContentData;
   constructor(public userService: UserService, private orgDetailsService: OrgDetailsService,
     public configService: ConfigService, public router: Router,
@@ -30,13 +30,13 @@ export class PublicPlayerService {
    * @param {string} id
    * @returns {Observable<{contentId: string, contentData: ContentData }>}
    */
-  getConfigByContent(id: string): Observable<PlayerConfig> {
+  getConfigByContent(id: string,  option: any = { }): Observable<PlayerConfig> {
     return this.getContent(id).pipe(
       mergeMap((contentDetails) => {
         return observableOf(this.getConfig({
           contentId: contentDetails.result.content.identifier,
           contentData: contentDetails.result.content
-        }));
+        }, option ));
       }));
   }
 
@@ -60,16 +60,25 @@ export class PublicPlayerService {
    * @param {ContentDetails} contentDetails
    * @memberof PlayerService
    */
-  getConfig(contentDetails: ContentDetails): PlayerConfig {
+  getConfig(contentDetails: ContentDetails,  option: any = { }): PlayerConfig {
     const configuration: any = this.configService.appConfig.PLAYER_CONFIG.playerConfig;
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = this.userService.anonymousSid;
     configuration.context.uid = 'anonymous';
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    configuration.context.pdata.ver = buildNumber && buildNumber.value ?
+    buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     configuration.context.channel = _.get(this.orgDetailsService.orgDetails, 'hashTagId');
     configuration.context.pdata.id = this.userService.appId;
     configuration.metadata = contentDetails.contentData;
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
       {} : contentDetails.contentData.body;
+    if (option.dialCode) {
+      configuration.context.cdata = [{
+        id: option.dialCode,
+        type: 'dialCode'
+      }];
+    }
     return configuration;
   }
   public getCollectionHierarchy(identifier: string): Observable<CollectionHierarchyAPI.Get> {

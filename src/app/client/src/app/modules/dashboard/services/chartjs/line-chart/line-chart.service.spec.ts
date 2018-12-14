@@ -72,9 +72,7 @@ describe('LineChartService', () => {
   it('should return chart color', inject([LineChartService],
     (service: LineChartService) => {
       spyOn(service, 'getChartColors').and.callThrough();
-      spyOn(service, 'getRandomColor').and.callThrough();
       const colors = service.getChartColors(1);
-      expect(service.getRandomColor).toHaveBeenCalled();
       expect(colors.length).toEqual(1);
   }));
 });

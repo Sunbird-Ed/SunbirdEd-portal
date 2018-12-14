@@ -11,36 +11,56 @@ const defaultTenant = envHelper.DEFAULT_CHANNEL
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
 telemtryEventConfig['pdata']['id'] = appId
 const successResponseStatusCode = 200
+const request = require('request');
 
 module.exports = {
 
   getImagePath: function (baseUrl, tenantId, image, callback) {
+    let cbLocalTenant = true;
     fs.stat(path.join(__dirname, '../tenant', tenantId, image), function (err, stat) {
       if (err) {
         if (envHelper.DEFAULT_CHANNEL && _.isString(envHelper.DEFAULT_CHANNEL)) {
           fs.stat(path.join(__dirname, '../tenant', envHelper.DEFAULT_CHANNEL, image), function (error, stat) {
             if (error) {
-              callback(null, null)
+              module.exports.checkTenantCdnUrl(baseUrl, tenantId, image, false, callback)
             } else {
               callback(null, baseUrl + '/tenant/' + envHelper.DEFAULT_CHANNEL + '/' + image)
             }
           })
         } else {
-          callback(null, null)
+          module.exports.checkTenantCdnUrl(baseUrl, tenantId, image, false, callback)
         }
       } else {
-        callback(null, baseUrl + '/tenant/' + tenantId + '/' + image)
+        module.exports.checkTenantCdnUrl(baseUrl, tenantId, image, cbLocalTenant, callback)
       }
     })
   },
+  checkTenantCdnUrl: function (baseUrl, tenantId, image, cbLocalTenant, callback) {
+    if (envHelper.TENANT_CDN_URL === '' || envHelper.TENANT_CDN_URL === null) {
+      if (cbLocalTenant) {
+        callback(null, baseUrl + '/tenant/' + tenantId + '/' + image)
+      } else {
+        callback(null, null)
+      }
+    } else {
+      const req = request
+        .get(envHelper.TENANT_CDN_URL + '/' + tenantId + '/' + image)
+        .on('response', function (res) {
+          if (res.statusCode === 200) {
+            callback(null, baseUrl + '/' + tenantId + '/' + image)
+          } else {
+            callback(null, null)
+          }
+        })
+    }
+  },      
   getInfo: function (req, res) {
     let tenantId = req.params.tenantId || envHelper.DEFAULT_CHANNEL
     let host = req.hostname
     let headerHost = req.headers.host.split(':')
     let port = headerHost[1] || ''
     let protocol = req.headers['x-forwarded-proto'] || req.protocol
-    let baseUrl = protocol + '://' + host + (port === '' ? '' : ':' + port)
-
+    let baseUrl = envHelper.TENANT_CDN_URL || protocol + '://' + host + (port === '' ? '' : ':' + port)
     let responseObj = {
       titleName: envHelper.PORTAL_TITLE_NAME
     }
@@ -59,7 +79,7 @@ module.exports = {
           module.exports.getImagePath(baseUrl, tenantId, 'appLogo.png', callback)
         }
       }, function (err, results) {
-        if (err) {}
+        if (err) { }
         responseObj.logo = results.logo
           ? results.logo : baseUrl + '/assets/images/sunbird_logo.png'
         responseObj.poster = results.poster
@@ -78,7 +98,8 @@ module.exports = {
     const userId = req.headers['x-consumer-id'] || telemtryEventConfig.default_userid
     const type = req.headers['x-consumer-username'] || telemtryEventConfig.default_username
 
-    const telemetryData = {reqObj: req,
+    const telemetryData = {
+      reqObj: req,
       statusCode: successResponseStatusCode,
       resp: result,
       uri: 'tenant/info',
@@ -104,21 +125,17 @@ module.exports = {
     })
     res.end()
   },
-  getDefaultTenantIndexState:  function() {
-    
-    if(!defaultTenant){
+  getDefaultTenantIndexState: function () {
+    if (!defaultTenant) {
       console.log('DEFAULT_CHANNEL env not set');
       return false;
     }
-
     try {
       var stats = fs.statSync(path.join(__dirname, '../tenant', defaultTenant, 'index.html'))
       return stats.isFile()
-    } catch(e) {
+    } catch (e) {
       console.log('DEFAULT_CHANNEL_index_file_stats_error ', e)
       return false;
     }
-    
   }
-
 }

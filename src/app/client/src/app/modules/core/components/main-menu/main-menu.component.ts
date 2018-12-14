@@ -1,8 +1,8 @@
 import { ResourceService } from '@sunbird/shared';
-import { Component } from '@angular/core';
-import { UserService } from '../../services';
+import { Component , OnInit} from '@angular/core';
+import { UserService, FrameworkService } from '../../services';
 import { Router, ActivatedRoute } from '@angular/router';
-
+import * as _ from 'lodash';
 /**
  * Main menu component
  */
@@ -11,7 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './main-menu.component.html',
   styleUrls: ['./main-menu.component.css']
 })
-export class MainMenuComponent {
+export class MainMenuComponent  implements OnInit {
   /**
    * reference of resourceService service.
    */
@@ -24,13 +24,31 @@ export class MainMenuComponent {
    * reference of Router.
    */
   private router: Router;
+  categoryMasterList;
   /*
   * constructor
+
   */
-  constructor(resourceService: ResourceService, userService: UserService, router: Router) {
+  constructor(resourceService: ResourceService, userService: UserService, router: Router, private frameworkService: FrameworkService) {
     this.resourceService = resourceService;
     this.userService = userService;
     this.router = router;
+  }
+
+  ngOnInit() {
+    this.frameworkService.initialize('');
+    this.frameworkService.frameworkData$.subscribe((frameworkData) => {
+      if (frameworkData && !frameworkData.err) {
+        this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
+      }
+    });
+  }
+
+  filter(node, child) {
+    console.log(node, '-', child);
+    const queryParams = {};
+    queryParams[node] = child;
+    this.router.navigate(['search/catalog/1'], {queryParams: queryParams});
   }
 
 }

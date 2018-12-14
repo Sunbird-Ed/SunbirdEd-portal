@@ -39,8 +39,7 @@ export class ConceptPickerComponent implements OnInit, OnDestroy {
   /**
    * emits selected concepts
    */
-  @Output('Concepts')
-Concepts = new EventEmitter();
+  @Output() Concepts = new EventEmitter();
   /**
     * Constructor to create injected service(s) object
     * Default method of Draft Component class

@@ -1,10 +1,9 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
-import {map} from 'rxjs/operators';
-import { Injectable, Input, EventEmitter } from '@angular/core';
+import { of as observableOf, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import { SearchService, SearchParam, LearnerService, UserService } from '@sunbird/core';
-import { Ibatch } from './../../interfaces';
+import { SearchParam, LearnerService, UserService, PlayerService } from '@sunbird/core';
 import * as _ from 'lodash';
 /**
  * Service for batch
@@ -32,6 +31,8 @@ export class BatchService {
 
   public updateEvent = new EventEmitter();
 
+  courseHierarchy: any;
+
   /**
    * Default method of OrganisationService class
    *
@@ -40,7 +41,7 @@ export class BatchService {
    * @param {ConfigService} configService configService service reference
    * @param {LearnerService} LearnerService learner service reference
    */
-  constructor(userService: UserService,
+  constructor(userService: UserService, public playerService: PlayerService,
     configService: ConfigService, learnerService: LearnerService) {
     this.userService = userService;
     this.configService = configService;
@@ -122,13 +123,23 @@ export class BatchService {
   */
   setBatchData(batchData): void {
     this.batchDetails = batchData;
-   }
-   getUpdateBatchDetails(bathId) {
+  }
+  getUpdateBatchDetails(bathId) {
     if (this.batchDetails && bathId === this.batchDetails.identifier) {
       return observableOf(this.batchDetails);
     } else {
       return this.getBatchDetails(bathId).pipe(map((date) => {
         return date.result.response;
+      }));
+    }
+  }
+  getCourseHierarchy(courseId) {
+    if (this.courseHierarchy && this.courseHierarchy.identifier === courseId) {
+      return observableOf(this.courseHierarchy);
+    } else {
+      return this.playerService.getCollectionHierarchy(courseId).pipe(map((response: ServerResponse) => {
+        this.courseHierarchy = response.result.content;
+        return response.result.content;
       }));
     }
   }

@@ -5,7 +5,7 @@
     <div class="ui grid margin-top-4rem courseStructureHeader">
         <!-- <div class="one wide column"></div>
         <div class="ten wide column padding-top-none">
-            <div class="ui grid">
+            <div class="ui stackable grid">
                 <div class="nine wide column padding-top-none">
                     <div class="courseStructureHeaderText courseStructureSectionHeading">{{courseHierarchy.name}}</div>
                     <br>
@@ -24,7 +24,7 @@
                 <!-- <div class="three wide column">
                     <div *ngIf="enrolledCourse" class="margin-top-Negative30">
                         <span>
-                            <p class="text-align-center">{{resourceService?.messages?.stmsg?.m0108}} {{ progress }}%</p>
+                            <p class="text-align-center m-responsive-cp-header">{{resourceService?.messages?.stmsg?.m0108}} {{ progress }}%</p>
                         </span>
                         <button appTelemetryInteract [telemetryInteractEdata]="resumeIntractEdata" [telemetryInteractObject]="courseInteractObject"
                             class="fluid blue right floated  ui button courseHeaderButton margin-top-0" [disabled]="showResumeCourse"

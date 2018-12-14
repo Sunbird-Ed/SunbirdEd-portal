@@ -87,7 +87,7 @@
             "plugins": [
                 {
                     "id": "org.ekstep.sunbirdcommonheader",
-                    "ver": "1.4",
+                    "ver": "1.5",
                     "type": "plugin"
                 },
                 {
@@ -102,7 +102,7 @@
                 },
                 {
                     "id": "org.ekstep.lessonbrowser",
-                    "ver": "1.3",
+                    "ver": "1.4",
                     "type": "plugin"
                 }
             ],
@@ -142,7 +142,7 @@
         "COLLECTION_PLUGINS": [
             {
                 "id": "org.ekstep.sunbirdcommonheader",
-                "ver": "1.4",
+                "ver": "1.5",
                 "type": "plugin"
             },
             {
@@ -157,7 +157,7 @@
             },
             {
                 "id": "org.ekstep.lessonbrowser",
-                "ver": "1.3",
+                "ver": "1.4",
                 "type": "plugin"
             },
             {
@@ -175,9 +175,7 @@
                 "childrenTypes": [
                     "CourseUnit",
                     "Collection",
-                    "Resource",
-                    "Story",
-                    "Worksheet"
+                    "Resource"
                 ],
                 "addType": "Editor",
                 "iconClass": "fa fa-book"
@@ -212,24 +210,6 @@
                 "childrenTypes": [],
                 "addType": "Browser",
                 "iconClass": "fa fa-file-o"
-            },
-            {
-                "type": "Story",
-                "label": "Story",
-                "isRoot": false,
-                "editable": false,
-                "childrenTypes": [],
-                "addType": "Browser",
-                "iconClass": "fa fa-file-o"
-            },
-            {
-                "type": "Worksheet",
-                "label": "Worksheet",
-                "isRoot": false,
-                "editable": false,
-                "childrenTypes": [],
-                "addType": "Browser",
-                "iconClass": "fa fa-file-o"
             }
         ],
         "COLLECTION_ARRAY": [
@@ -240,9 +220,7 @@
                 "editable": true,
                 "childrenTypes": [
                     "Collection",
-                    "Resource",
-                    "Story",
-                    "Worksheet"
+                    "Resource"
                 ],
                 "addType": "Editor",
                 "iconClass": "fa fa-folder-o"
@@ -264,24 +242,6 @@
                 "childrenTypes": [],
                 "addType": "Browser",
                 "iconClass": "fa fa-file-o"
-            },
-            {
-                "type": "Story",
-                "label": "Story",
-                "isRoot": false,
-                "editable": false,
-                "childrenTypes": [],
-                "addType": "Browser",
-                "iconClass": "fa fa-file-o"
-            },
-            {
-                "type": "Worksheet",
-                "label": "Worksheet",
-                "isRoot": false,
-                "editable": false,
-                "childrenTypes": [],
-                "addType": "Browser",
-                "iconClass": "fa fa-file-o"
             }
         ],
         "LESSON_PLAN": [
@@ -293,9 +253,7 @@
                 "childrenTypes": [
                     "LessonPlanUnit",
                     "Collection",
-                    "Resource",
-                    "Story",
-                    "Worksheet"
+                    "Resource"
                 ],
                 "addType": "Editor",
                 "iconClass": "fa fa-book"
@@ -330,24 +288,6 @@
                 "childrenTypes": [],
                 "addType": "Browser",
                 "iconClass": "fa fa-file-o"
-            },
-            {
-                "type": "Story",
-                "label": "Story",
-                "isRoot": false,
-                "editable": false,
-                "childrenTypes": [],
-                "addType": "Browser",
-                "iconClass": "fa fa-file-o"
-            },
-            {
-                "type": "Worksheet",
-                "label": "Worksheet",
-                "isRoot": false,
-                "editable": false,
-                "childrenTypes": [],
-                "addType": "Browser",
-                "iconClass": "fa fa-file-o"
             }
         ],
         "DEFAULT_CONFIG": [
@@ -359,9 +299,7 @@
                 "childrenTypes": [
                     "TextBookUnit",
                     "Collection",
-                    "Resource",
-                    "Story",
-                    "Worksheet"
+                    "Resource"
                 ],
                 "addType": "Editor",
                 "iconClass": "fa fa-book"
@@ -396,24 +334,6 @@
                 "childrenTypes": [],
                 "addType": "Browser",
                 "iconClass": "fa fa-file-o"
-            },
-            {
-                "type": "Story",
-                "label": "Story",
-                "isRoot": false,
-                "editable": false,
-                "childrenTypes": [],
-                "addType": "Browser",
-                "iconClass": "fa fa-file-o"
-            },
-            {
-                "type": "Worksheet",
-                "label": "Worksheet",
-                "isRoot": false,
-                "editable": false,
-                "childrenTypes": [],
-                "addType": "Browser",
-                "iconClass": "fa fa-file-o"
             }
         ],
         "collectionState": [
@@ -434,14 +354,14 @@
             "FlagReview"
         ],
         "mimeCollection": "application/vnd.ekstep.content-collection",
-        "editorQS": "createdBy,status,mimeType",
+        "editorQS": "createdBy,status,mimeType,contentType,resourceType",
         "MODE": "edit",
         "contentState": [
             "upForReview",
             "review",
             "published",
             "limitedPublish",
-             "flagreviewer"
+            "flagreviewer"
         ],
         "contentStatus": [
             "Review",
@@ -479,7 +399,7 @@
         },
         "TREE_NODE": {
             "COURSE": "Course",
-            "CHILDREN_TYPE": "['CourseUnit', 'Collection','Resource', 'Story', 'Worksheet' ]",
+            "CHILDREN_TYPE": "['CourseUnit', 'Collection','Resource' ]",
             "EDITOR": "Editor",
             "ICON_CLASS_BOOK": "fa fa-book",
             "COURSE_TYPE": "CourseUnit",
@@ -490,16 +410,16 @@
             "BROWSER": "Browser",
             "ICON_CLASS_FILE_O": "fa fa-file-o",
             "WORKSHEET": "Worksheet",
-            "COLL_CHILDREN_TYPE": "['Collection', 'Resource', 'Story','Worksheet' ]",
+            "COLL_CHILDREN_TYPE": "['Collection', 'Resource' ]",
             "RESOURCE": "Resource",
             "LESSON_PLAN": "LessonPlan",
-            "LP_CHILDREN_TYPE": "['LessonPlanUnit', 'Collection', 'Resource', 'Story', 'Worksheet' ]",
+            "LP_CHILDREN_TYPE": "['LessonPlanUnit', 'Collection', 'Resource']",
             "LESSON_PLAN_UNIT_TYPE": "LessonPlanUnit",
             "LESSON_PLAN_UNIT_LABEL": "LessonPlan Unit",
             "LPUNIT_CHILDREN_TYPE": "['LessonPlanUnit', 'Collection', 'Resource' ]",
             "STORY": "Story",
             "TEXTBOOK": "TextBook",
-            "TB_CHILDREN_TYPE": "['TextBookUnit', 'Collection', 'Resource', 'Story','Worksheet']",
+            "TB_CHILDREN_TYPE": "['TextBookUnit', 'Collection', 'Resource']",
             "TB_UNIT_TYPE": "TextBookUnit",
             "TB_UNIT_LABEL": "TextBook Unit",
             "TBUNIT_CHILDREN_TYPE": "['TextBookUnit', 'Collection', 'Resource']"
