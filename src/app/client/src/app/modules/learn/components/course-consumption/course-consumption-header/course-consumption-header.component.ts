@@ -87,12 +87,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.courseProgressService.courseProgressData.pipe(
       takeUntil(this.unsubscribe))
       .subscribe((courseProgressData) => {
-        console.log('course progress data', courseProgressData);
         this.enrolledCourse = true;
         this.progress = courseProgressData.progress ? Math.round(courseProgressData.progress) : 0;
-        console.log('progress data...........', this.progress);
         this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
-        console.log('this.lastplayed', this.lastPlayedContentId);
         if (!this.flaggedCourse && this.onPageLoadResume &&
           !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
           this.onPageLoadResume = false;

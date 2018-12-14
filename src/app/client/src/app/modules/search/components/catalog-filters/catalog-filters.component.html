@@ -5,7 +5,7 @@
         <div *ngIf="formFieldProperties">
           <div *ngFor="let field of filtersDetails">
             <div class="card text-white mb-3" *ngIf="field.inputType==='select' && field.code!==browsingCategory">
-              <div class="card-header bg-primary">
+              <div class="card-header bg-warning">
                  <i alt="Filter" class="icon filter"></i>  &nbsp;{{field.name}} 
                  <i class="far fa-times-circle float-right" (click)="resetFilters2(field.code)"></i>
               </div>

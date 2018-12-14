@@ -153,18 +153,10 @@ export class LearnPageComponent implements OnInit, OnDestroy {
         if (data && !data.err) {
           if (data.enrolledCourses.length > 0) {
             this.enrolledCourses = data.enrolledCourses;
-            console.log('enrolled courses', this.enrolledCourses);
             for (const enrolledCourses of this.enrolledCourses) {
               this.batchData
                 .getEnrolledBatchDetails(enrolledCourses.batchId)
                 .subscribe(batch => {
-                  console.log('batch deatails', batch);
-                  console.log('after subscribe ', batch.endDate, 'current date ' , this.currentDate,
-                    'batch',
-                    batch,
-                    'encoure',
-                    enrolledCourses
-                  );
                   let constantData;
                   const courses = [];
                   const metaData = {
@@ -178,14 +170,7 @@ export class LearnPageComponent implements OnInit, OnDestroy {
                       .enrolledCourses.progress
                   };
 
-                  console.log(
-                    ' (batch.countDecrementStatus === false )',
-                    batch.countDecrementStatus === false,
-                    ' batch.countIncrementStatus === true',
-                    batch.countIncrementStatus === true
-                  );
                   // This is View, Continue, Start part
-                  // for (const enrolledCourse of this.enrolledCourses) {
                   if (
                     enrolledCourses.progress === 0 && this.currentDate <= batch.endDate
                   ) {
@@ -202,7 +187,7 @@ export class LearnPageComponent implements OnInit, OnDestroy {
                     for (const course of testCourses) {
                       courses.push(course);
                       active.push(course);
-                      console.log('active', active);
+
                     }
                   }
                   // tslint:disable-next-line:max-line-length
@@ -226,7 +211,6 @@ export class LearnPageComponent implements OnInit, OnDestroy {
                     for (const course of testCourses) {
                       courses.push(course);
                       active.push(course);
-                      console.log('acive', active);
                     }
                   }
                   // tslint:disable-next-line:max-line-length
@@ -235,10 +219,6 @@ export class LearnPageComponent implements OnInit, OnDestroy {
                       enrolledCourses.leafNodesCount &&
                     this.currentDate <= batch.endDate
                   ) {
-                    console.log(
-                      'inside if',
-                      String(batch.endDate).localeCompare(this.currentDate)
-                    );
                     constantData = this.configService.appConfig.Course
                       .enrolledCourses.viewData;
                     const endedCourses = [];
@@ -252,15 +232,10 @@ export class LearnPageComponent implements OnInit, OnDestroy {
                     for (const course of testCourses) {
                       courses.push(course);
                       completed.push(course);
-                      console.log('com', completed);
-                    }
+                   }
                   }
                   // tslint:disable-next-line:max-line-length
                   if (this.currentDate > batch.endDate) {
-                    console.log(
-                      'inside if',
-                      String(batch.endDate).localeCompare(this.currentDate)
-                    );
                     constantData = this.configService.appConfig.Course
                       .enrolledCourses.viewData;
                     const endedCourses = [];
@@ -274,7 +249,6 @@ export class LearnPageComponent implements OnInit, OnDestroy {
                     for (const course of testCourses) {
                       courses.push(course);
                       inactive.push(course);
-                      console.log('com', completed);
                     }
                   }
                   if (batch.endDate === undefined && enrolledCourses.progress === 0) {
@@ -291,7 +265,6 @@ export class LearnPageComponent implements OnInit, OnDestroy {
                     for (const course of testCourses) {
                       courses.push(course);
                       active.push(course);
-                      console.log(' no end date active', active);
                     }
                   }
                   // tslint:disable-next-line:max-line-length
@@ -309,10 +282,8 @@ export class LearnPageComponent implements OnInit, OnDestroy {
                     for (const course of testCourses) {
                       courses.push(course);
                       active.push(course);
-                      console.log(' no end date active', active);
                     }
                   }
-                  console.log('courses', courses);
                 });
             }
             this.caraouselData.unshift({
@@ -330,7 +301,6 @@ export class LearnPageComponent implements OnInit, OnDestroy {
               length: active.length,
               contents: active
             });
-            console.log('active array', active);
           }
           this.populatePageData();
         } else if (data && data.err) {
@@ -368,13 +338,7 @@ export class LearnPageComponent implements OnInit, OnDestroy {
             this.caraouselData = this.caraouselData.concat(sections);
             if (this.caraouselData.length > 0) {
               _.forIn(this.caraouselData, (value, key) => {
-                console.log(
-                  'contents',
-                  this.caraouselData[key].contents,
-                  'name',
-                  this.caraouselData[key].name
-                );
-                if (
+                 if (
                   this.caraouselData[key].contents === null ||
                   this.caraouselData[key].contents === undefined ||
                   (this.caraouselData[key].name &&
@@ -550,7 +514,6 @@ export class LearnPageComponent implements OnInit, OnDestroy {
         'application/vnd.ekstep.content-collection';
       event.data.metaData.contentType = 'Course';
     }
-    console.log('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[', event.data.metaData);
     this.playerService.playContent(event.data.metaData);
   }
   ngOnDestroy() {

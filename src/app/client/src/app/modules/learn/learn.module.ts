@@ -17,8 +17,7 @@ import { CoreModule } from '@sunbird/core';
 import { NotesModule } from '@sunbird/notes';
 import { DashboardModule } from '@sunbird/dashboard';
 import { MaterialUi } from '../../material';
-
-
+import { PlayContent } from '../shared';
 @NgModule({
   imports: [
     CommonModule,
@@ -35,7 +34,7 @@ import { MaterialUi } from '../../material';
     NgInviewModule,
     MaterialUi
   ],
-  providers: [CourseConsumptionService, CourseBatchService, CourseProgressService],
+  providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, PlayContent],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
     UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent, TestAllBatchesComponent, DialogOverviewExampleDialog],

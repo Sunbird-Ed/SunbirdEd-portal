@@ -3,17 +3,43 @@ import { SlickModule } from 'ngx-slick';
 import { FormsModule } from '@angular/forms';
 import {
   AnnouncementInboxCardComponent,
-  PageSectionComponent, NoResultComponent, AppLoaderComponent, PlayerComponent,
-  CollectionTreeComponent, FancyTreeComponent, CardComponent, ShareLinkComponent, CollectionPlayerMetadataComponent,
-  BrowserCompatibilityComponent, QrCodeModalComponent, RedirectComponent, CustomMultiSelectComponent
+  PageSectionComponent,
+  NoResultComponent,
+  AppLoaderComponent,
+  PlayerComponent,
+  CollectionTreeComponent,
+  FancyTreeComponent,
+  CardComponent,
+  ShareLinkComponent,
+  CollectionPlayerMetadataComponent,
+  BrowserCompatibilityComponent,
+  QrCodeModalComponent,
+  RedirectComponent,
+  CustomMultiSelectComponent
 } from './components';
 import {
-  ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService, BrowserCacheTtlService,
-  PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService, ExternalUrlPreviewService
+  ConfigService,
+  ResourceService,
+  FileUploadService,
+  ToasterService,
+  WindowScrollService,
+  BrowserCacheTtlService,
+  PaginationService,
+  RouterNavigationService,
+  NavigationHelperService,
+  UtilService,
+  ContentUtilsServiceService,
+  ExternalUrlPreviewService,
+  PlayContent
 } from './services';
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { DateFormatPipe, DateFilterXtimeAgoPipe, FilterPipe, InterpolatePipe } from './pipes';
+import {
+  DateFormatPipe,
+  DateFilterXtimeAgoPipe,
+  FilterPipe,
+  InterpolatePipe
+} from './pipes';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { CacheService } from 'ng2-cache-service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
@@ -102,15 +128,48 @@ import {
     MatTreeModule,
     MatCardModule
   ],
-  declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
-    DateFormatPipe, PageSectionComponent, NoResultComponent, DateFilterXtimeAgoPipe,
-    CollectionTreeComponent, FancyTreeComponent, PlayerComponent, CardComponent, FilterPipe, InterpolatePipe,
-    ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe,
-    RedirectComponent, CustomMultiSelectComponent],
-  exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
-    PageSectionComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
-    PlayerComponent, CardComponent, FilterPipe, ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent,
-    QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent, CustomMultiSelectComponent,
+  providers: [PlayContent],
+  declarations: [
+    AppLoaderComponent,
+    AnnouncementInboxCardComponent,
+    DateFormatPipe,
+    PageSectionComponent,
+    NoResultComponent,
+    DateFilterXtimeAgoPipe,
+    CollectionTreeComponent,
+    FancyTreeComponent,
+    PlayerComponent,
+    CardComponent,
+    FilterPipe,
+    InterpolatePipe,
+    ShareLinkComponent,
+    CollectionPlayerMetadataComponent,
+    BrowserCompatibilityComponent,
+    QrCodeModalComponent,
+    CdnprefixPipe,
+    RedirectComponent,
+    CustomMultiSelectComponent
+  ],
+  exports: [
+    AppLoaderComponent,
+    AnnouncementInboxCardComponent,
+    DateFormatPipe,
+    DateFilterXtimeAgoPipe,
+    PageSectionComponent,
+    NoResultComponent,
+    CollectionTreeComponent,
+    FancyTreeComponent,
+    PlayerComponent,
+    CardComponent,
+    FilterPipe,
+    ShareLinkComponent,
+    CollectionPlayerMetadataComponent,
+    BrowserCompatibilityComponent,
+    QrCodeModalComponent,
+    CdnprefixPipe,
+    InterpolatePipe,
+    RedirectComponent,
+    CustomMultiSelectComponent,
     MatAutocompleteModule,
     MatBadgeModule,
     MatBottomSheetModule,
@@ -145,15 +204,31 @@ import {
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
-    MatCardModule]
+    MatCardModule
+  ]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedModule,
-      providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
-        RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, UtilService, ContentUtilsServiceService,
-        DeviceDetectorModule, DeviceDetectorService, BrowserCacheTtlService, ExternalUrlPreviewService]
+      providers: [
+        ResourceService,
+        ConfigService,
+        FileUploadService,
+        ToasterService,
+        Ng2IzitoastService,
+        PaginationService,
+        RouterNavigationService,
+        WindowScrollService,
+        NavigationHelperService,
+        CacheService,
+        UtilService,
+        ContentUtilsServiceService,
+        DeviceDetectorModule,
+        DeviceDetectorService,
+        BrowserCacheTtlService,
+        ExternalUrlPreviewService
+      ]
     };
   }
 }

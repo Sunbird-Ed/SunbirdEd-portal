@@ -21,6 +21,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
   @Input() nodeRoot: any;
   private rootNode: any;
   public rootChildrens: any;
+  public enrolledCourseDetailsRendered: boolean ;
   private iconColor = {
     '0': 'fancy-tree-grey',
     '1': 'fancy-tree-blue',
@@ -34,6 +35,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     this.subscription = this.player.subject;
     // this.subscription = this.contentService.subject;
     this.courseProgress = this.player.CourseProgressListner;
+    // this.enrolledCourseDetailsRendered = this.player.EnrolledCourseDetailsRendered;
   }
   ngOnInit() {
     this.initialize();
@@ -51,9 +53,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
   }
 
   public onItemSelect(item: any) {
-    console.log(item);
     if (!item.folder) {
-      console.log(typeof item.id, typeof item.title, 'this is the id  and titile node node node ');
       this.subscription.next({ id: item.id, title: item.title });
     }
   }
@@ -63,7 +63,6 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
 
 
   public onItemSelect2(child: any) {
-    console.log(child.id, child.title, '///////////*\\\\\\\\\\');
     this.contentSelect.emit({ id: child.id, title: child.title });
   }
 
@@ -73,7 +72,6 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     if (this.rootNode) {
       this.rootChildrens = this.rootNode.children;
       this.nodeRoot = this.rootNode;
-      console.log(this.rootNode, '***********this is my root node ******************//');
       this.addNodeMeta();
     }
   }
@@ -88,7 +86,6 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
   private addNodeMeta() {
     if (!this.rootNode) { return; }
     this.rootNode.walk((node) => {
-      // console.log(node , "***********this is the node we are waling on *******************");
       node.fileType = MimeTypeTofileType[node.model.mimeType];
       node.id = node.model.identifier;
       if (node.children && node.children.length) {

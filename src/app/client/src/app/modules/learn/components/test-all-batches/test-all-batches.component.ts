@@ -96,7 +96,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       }))
       .subscribe((data) => {
         const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-          width: '40vh',
+          width: '50vw',
           data: {
             mentorDetail: this.mentorContactDetail
           }
