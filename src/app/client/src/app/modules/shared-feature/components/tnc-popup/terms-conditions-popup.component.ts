@@ -2,7 +2,8 @@ import { Component, OnInit, Input, EventEmitter, Output, OnDestroy, ViewChild } 
 import { UserService,  TenantService} from '@sunbird/core';
 import { Subscription, Subject } from 'rxjs';
 import { ResourceService, ToasterService } from '@sunbird/shared';
-import { IUserProfile } from '@sunbird/shared';
+import { IUserProfile, ILoaderMessage } from '@sunbird/shared';
+import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import * as _ from 'lodash';
 
 @Component({
@@ -23,12 +24,17 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
   tenantDataSubscription: Subscription;
   userSubscription: Subscription;
   logo: string;
+  tncLatestVersionUrl: any;
   tncChecked = false;
   disableContinueBtn = false;
   showLoader = true;
+  loaderMessage: ILoaderMessage = {
+    'loaderMessage': this.resourceService.messages.stmsg.m0129
+  };
 
   constructor(public userService: UserService, public resourceService: ResourceService,
-    public toasterService: ToasterService, public tenantService: TenantService) {
+    public toasterService: ToasterService, public tenantService: TenantService,
+    public sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
@@ -36,6 +42,7 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
       (user: any) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
+          this.tncLatestVersionUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.userProfile.tncLatestVersionUrl );
         } else if (user.err) {
           this.toasterService.error(this.resourceService.messages.emsg.m0005);
         }
@@ -68,11 +75,7 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
   }
 
   public onClickCheckbox(tncChecked) {
-    if (tncChecked) {
-      this.disableContinueBtn = false;
-    } else {
-      this.disableContinueBtn = true;
-    }
+    this.disableContinueBtn = !tncChecked;
   }
 
   public onClose() {

@@ -276,10 +276,7 @@ export class UserService {
     };
     return this.learnerService.post(options).pipe(map(
       (res: ServerResponse) => {
-        setTimeout(() => {
-          this.getUserProfile();
-        }, this.config.appConfig.timeOutConfig.setTime);
-        return res;
+        this._userProfile.promptTnC = false;
       }
     ));
   }

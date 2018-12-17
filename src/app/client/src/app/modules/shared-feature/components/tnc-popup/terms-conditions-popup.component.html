@@ -6,7 +6,7 @@
     <div class="fs-1 font-weight-bold d-flex flex-jc-center mb-10">{{resourceService?.frmelmnts?.lbl?.termsAndCond}}&lrm;</div>
     <app-loader *ngIf="showLoader" [data]='loaderMessage'></app-loader>
     <form class="ui form d-flex flex-jc-center">
-      <iframe id="serviceFrameSend" src="{{userProfile.tncLatestVersionUrl}}" width="820" height="400"  frameborder="0" (load)="showLoader = false"></iframe>
+      <iframe id="serviceFrameSend" [src]="tncLatestVersionUrl" width="820" height="400"  frameborder="0" (load)="showLoader = false"></iframe>
     </form>
     <div>
     </div>
@@ -18,3 +18,4 @@
     <button class="width-310" [ngClass]="tncChecked ? 'ui light-sea-green button' : 'ui grey button'" [disabled]="!disableContinueBtn" tabindex="0" (click)="onSubmitTnc()">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
   </div>
 </sui-modal>
+
