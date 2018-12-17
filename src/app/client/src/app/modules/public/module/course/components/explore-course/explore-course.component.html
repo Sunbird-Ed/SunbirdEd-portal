@@ -3,7 +3,7 @@
     <div class="ten wide column">
         <div class="ui stackable grid pt-10">
             <div class="twelve wide column">
-                <app-data-driven-filter [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-search'"
+                <app-data-driven-filter  [enrichFilters]="facetsList" [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-search'"
                     *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']"
                     [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true
                     [hashTagId]="hashTagId" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>

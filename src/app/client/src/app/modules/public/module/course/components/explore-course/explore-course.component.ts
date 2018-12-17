@@ -131,9 +131,10 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
             pageNumber: this.paginationDetails.currentPage,
             query: this.queryParams.key,
             // softConstraints: { badgeAssertions: 98, board: 99, channel: 100 },
-            // facets: this.facets,
+            facets: this.facets,
             params: this.configService.appConfig.ExplorePage.contentApiQueryParams
         };
+        option.params.framework = this.frameWorkName;
         this.searchService.courseSearch(option)
         .subscribe(data => {
             this.showLoader = false;
@@ -202,6 +203,9 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
+    }
+    closeModal() {
+        this.showLoginModal = false;
     }
     private setNoResultMessage() {
         this.noResultMessage = {
