@@ -18,6 +18,10 @@ import { NotesModule } from '@sunbird/notes';
 import { DashboardModule } from '@sunbird/dashboard';
 import { MaterialUi } from '../../material';
 import { PlayContent } from '../shared';
+import {MatCardModule} from '@angular/material/card';
+import {MatSidenavModule, MatDrawerContainer} from '@angular/material/sidenav';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatDividerModule} from '@angular/material/divider';
 @NgModule({
   imports: [
     CommonModule,
@@ -35,6 +39,7 @@ import { PlayContent } from '../shared';
     MaterialUi
   ],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, PlayContent],
+  exports: [MatCardModule, MatDrawerContainer, MatExpansionModule, MatDividerModule],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
     UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent, TestAllBatchesComponent, DialogOverviewExampleDialog],
