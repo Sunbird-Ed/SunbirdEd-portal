@@ -4,7 +4,7 @@
         <div class=" ui grid">
             <div class="ten wide column" *ngIf ="showFilter">
                 <app-data-driven-filter [pageId]="'view-all'" *ngIf="filterType" [filterEnv]="filterType" [viewAllMode] = "true"
-         [accordionDefaultOpen]=false [isShowFilterLabel]=true [hashTagId]="hashTagId"></app-data-driven-filter>
+         [accordionDefaultOpen]=false [isShowFilterLabel]=true [hashTagId]="hashTagId" [formAction]="formAction" [frameworkName]="frameWorkName"></app-data-driven-filter>
             </div>
             <div class="two wide column">
                 <app-sort-by appTelemetryInteract [telemetryInteractEdata]="sortIntractEdata" [sortingOptions]="sortingOptions" ></app-sort-by>
@@ -56,7 +56,7 @@
         <div class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.signinenrollTitle}} </div>
         <br/>
         <div class="announcement-description">
-          {{resourceService?.frmelmnts?.lbl?.signinenrollHeader}}
+          <!-- {{resourceService?.frmelmnts?.lbl?.signinenrollHeader}} -->
         </div>
         <br/>
         <br/>

@@ -1,12 +1,12 @@
 <div *ngIf="playerLoaded" class="review-comments-box br-4 bs-2 p-8">
-  <div class="ui small comments scrolling" *ngIf="sortedComments[stageId] && sortedComments[stageId].length else emptyComments" >
+  <div class="ui small comments scrolling p-5" *ngIf="sortedComments[stageId] && sortedComments[stageId].length else emptyComments" >
     <div class="comment" *ngFor="let commentList of sortedComments[stageId] | orderBy: 'createdOn'">
       <span class="avatar">
         <img *ngIf="commentList.userInfo.logo" src="{{commentList.userInfo.logo | cdnprefixurl}}">
         <i *ngIf="!commentList.userInfo.logo" class="icon sb-icon-reviewer" aria-hidden="true"></i>
       </span>
       <div class="content pr-8">
-          <div class="d-flex flex-jc-space-between">
+          <div class="d-flex flex-jc-space-between mb-5">
             <span class="text-blue">{{commentList.userInfo.name}}</span>
             <span class="date ui metadata">{{commentList.createdOn | date: 'MMM d'}}</span>
           </div>
@@ -18,7 +18,7 @@
   </div>
   <ng-template #emptyComments>
     <div (click)="focusOnInput()" class="ui comments scrolling">
-      <div class="placeholder mt-90">
+      <div class="placeholder">
           <i class="sb-icon-comment"></i>
           <span class="">{{resourceService.frmelmnts.lbl.emptycomments}}</span>
       </div>

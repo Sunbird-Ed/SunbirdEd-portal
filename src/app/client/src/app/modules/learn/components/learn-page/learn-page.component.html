@@ -3,12 +3,22 @@
     <div class="twelve wide column">
       <div class="ui grid">
         <div class="ten wide column">
-          <app-data-driven-filter [pageId]="'course-page'" *ngIf="frameWorkName && filterType" [filterEnv]="filterType" 
-            [accordionDefaultOpen]=false [isShowFilterLabel]=true [formAction]="'filter'" [frameworkName]="frameWorkName"></app-data-driven-filter>
+          <app-data-driven-filter [pageId]="'course-page'" *ngIf="initFilters" [filterEnv]="filterType" 
+          [accordionDefaultOpen]=false [isShowFilterLabel]=true [formAction]="'filter'" [frameworkName]="frameWorkName" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
         </div>
         <div class="two wide column">
           <app-sort-by appTelemetryInteract [telemetryInteractEdata]="sortIntractEdata" [sortingOptions]="sortingOptions" [url]="redirectUrl"></app-sort-by>
         </div>
+      </div>
+      <app-page-section *ngIf="enrolledSection?.contents?.length" (visits)="prepareVisits($event)" [section]="enrolledSection" (playEvent)="playContent($event)" (viewAll)="viewAll($event)"></app-page-section>
+      <div *ngFor="let section of carouselData">
+        <app-page-section (visits)="prepareVisits($event)" [section]="section" (playEvent)="playContent($event)" (viewAll)="viewAll($event)"></app-page-section>
+      </div>
+      <div class="twelve wide column mt-30" *ngIf="showLoader">
+        <app-loader [data]='loaderMessage'></app-loader>
+      </div>
+      <div *ngIf="carouselData.length === 0 && !showLoader" class="mt-30">
+        <app-no-result [data]="noResultMessage"></app-no-result>
       </div>
     </div>
     <div class="twelve wide column mt-30" *ngFor="let section of caraouselData">

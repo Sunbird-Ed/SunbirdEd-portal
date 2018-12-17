@@ -3,30 +3,30 @@
   <div class="ten wide column">
     <div class="ui grid mb-0">
       <div class="twelve wide column mt-30">
-        <app-prominent-filter [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-page'" *ngIf="hashTagId && filterType && frameWorkName" [filterEnv]="filterType"  [ignoreQuery]="['key', 'language']" 
-       [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" ></app-prominent-filter>
+        <app-prominent-filter [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-page'" *ngIf="initFilters" [filterEnv]="filterType"  [ignoreQuery]="['key']" 
+        [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter>
       </div>
     </div>
-    <div *ngFor="let section of caraouselData">
+    <div *ngFor="let section of carouselData">
       <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section" (viewAll)="viewAll($event)"></app-page-section>
     </div>
     <div class="twelve wide column mt-30" *ngIf="showLoader">
       <app-loader [data]='loaderMessage'></app-loader>
     </div>
-    <div *ngIf="noResult && !showLoader" class="mt-30">
+    <div *ngIf="carouselData.length === 0 && !showLoader" class="mt-30">
       <app-no-result [data]="noResultMessage"></app-no-result>
     </div>
   </div>
   <div class="one wide column">
   </div>
 </div>
-<sui-modal [isClosable]="true" size="tiny" (dismissed)="closeModal()" #modal *ngIf="showLoginModal">
+<sui-modal [isClosable]="true" size="tiny" (dismissed)="showLoginModal = false" #modal *ngIf="showLoginModal">
   <div class="content">
     <div class="ui center aligned segment">
       <div class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.signinenrollTitle}} </div>
       <br/>
       <div class="announcement-description">
-        {{resourceService?.frmelmnts?.lbl?.signinenrollHeader}}
+        <!-- {{resourceService?.frmelmnts?.lbl?.signinenrollHeader}} -->
       </div>
       <a href={{baseUrl}} class ="ui button primary announcement-button close mt-20" >{{resourceService.frmelmnts?.btn?.signin}}</a> 
     </div>
