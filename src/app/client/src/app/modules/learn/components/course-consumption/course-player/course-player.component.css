@@ -60,3 +60,49 @@ a :hover{
    background-color: orange;
 
 }
+
+.schedule{
+   font-size: 15px;
+   margin-bottom: 10px;
+   /* justify-content: center; */
+   /* text-align: center; */
+       /* border: 5px solid; */
+   border-color: orange;
+   border-radius: 4%;
+}
+
+.schedule mat-card {
+  padding-top: 2px;
+}
+.schedule mat-card-title {
+  padding-top: 0px;
+  font-size: 20px;
+  text-align: left;
+}
+
+.schedule mat-card-header {
+  padding-left: 2px;
+  font-weight: bold;
+}
+
+.schedule mat-card-footer {
+ text-align: end
+}
+
+.schedule mat-card-content {
+  font-size: 15px;
+}
+
+.schedule mat-panel-title{
+  font-weight: bold;
+  font-size: 18px;
+}
+
+@media screen and (max-width: 750px) {
+  .example-sidenav{
+    width: 100%;
+  }
+  .example-sidenav-content{
+    width: 100%;
+  }
+}

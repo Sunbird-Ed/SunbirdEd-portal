@@ -1,6 +1,6 @@
 import { combineLatest, Subscription, Subject } from 'rxjs';
 import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, OnChanges } from '@angular/core';
 import {
   ContentService, UserService, BreadcrumbsService, PermissionService, CoursesService
 } from '@sunbird/core';
@@ -8,7 +8,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import {
   WindowScrollService, ILoaderMessage, ConfigService, ICollectionTreeOptions, NavigationHelperService,
-  ToasterService, ResourceService, ExternalUrlPreviewService
+  ToasterService, ResourceService, ExternalUrlPreviewService, PlayContent, ServerResponse
 } from '@sunbird/shared';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService } from './../../../services';
 import { INoteData } from '@sunbird/notes';
@@ -16,7 +16,7 @@ import {
   IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata
 } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { PlayContent } from '@sunbird/shared';
+// import { PlayContent } from '@sunbird/shared';
 import { checkNoChangesView } from '@angular/core/src/view/view';
 
 @Component({
@@ -25,7 +25,7 @@ import { checkNoChangesView } from '@angular/core/src/view/view';
   styleUrls: ['./course-player.component.css'],
   providers: [PlayContent]
 })
-export class CoursePlayerComponent implements OnInit, OnDestroy {
+export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
 
   public courseInteractObject: IInteractEventObject;
 
@@ -226,6 +226,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .subscribe((courseProgressData) => {
         this.courseProgressData = courseProgressData;
       });
+  }
+
+  ngOnChanges() {
+    this.getEnrolledCourseBatchDetails();
   }
   private parseChildContent() {
     const model = new TreeModel();
@@ -518,5 +522,26 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'course-consumption'
     };
+  }
+
+
+  getEnrolledCourseBatchDetails() {
+    this.courseBatchService.getEnrolledBatchDetails(this.batchId).pipe(
+      takeUntil(this.unsubscribe))
+      .subscribe((data: ServerResponse) => {
+        this.enrolledBatchInfo = data;
+        console.log('this enrolled batch info', this.enrolledBatchInfo);
+        if (this.enrolledBatchInfo.participant) {
+          const participant = [];
+          _.forIn(this.enrolledBatchInfo.participant, (value, key) => {
+            participant.push(key);
+          });
+          this.enrolledBatchInfo.participant = participant;
+        } else {
+          this.enrolledBatchInfo.participant = [];
+        }
+      }, () => {
+        // handle error
+      });
   }
 }
