@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, debounceTime } from 'rxjs/operators';
+import { CacheService } from 'ng2-cache-service';
 @Component({
     templateUrl: './library-search.component.html',
     styleUrls: ['./library-search.component.css']
@@ -42,7 +43,8 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
         public configService: ConfigService, public utilService: UtilService,
-        public navigationHelperService: NavigationHelperService, public userService: UserService) {
+        public navigationHelperService: NavigationHelperService, public userService: UserService,
+        public cacheService: CacheService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.library.filterType;
         this.redirectUrl = this.configService.appConfig.library.searchPageredirectUrl;
@@ -101,6 +103,10 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
             facets: this.facets,
             params: this.configService.appConfig.Library.contentApiQueryParams
         };
+        const framework = this.cacheService.get(this.userService.hashTagId);
+        if (framework) {
+            option.params.framework = framework.defaultFramework;
+        }
         this.searchService.contentSearch(option)
             .subscribe(data => {
                 this.showLoader = false;

@@ -105,6 +105,9 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
         // facets: this.facets,
         params: this.configService.appConfig.Course.contentApiQueryParams
     };
+    if (this.frameWorkName) {
+      option.params.framework = this.frameWorkName;
+    }
     this.searchService.courseSearch(option)
     .subscribe(data => {
         this.showLoader = false;
