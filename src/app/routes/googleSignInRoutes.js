@@ -41,8 +41,8 @@ module.exports = (app) => {
       token = await createSession(googleProfile.emailId, req, res)
       let redirect_uri;
       if (reqQuery.client_id === 'android') {
-        const query = Object.keys(token).map(key => key + '=' + token.key).join('&');
-        redirect_uri = redirect_uri + '?' + query
+        const query = Object.keys(token).map(key => key + '=' + token[key]).join('&');
+        redirect_uri = reqQuery.redirect_uri.split('?')[0] + '?' + query
       } else {
         redirect_uri = reqQuery.redirect_uri.split('?')[0] || '/resources'
       }
