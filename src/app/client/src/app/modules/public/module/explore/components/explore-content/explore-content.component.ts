@@ -109,10 +109,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
             facets: this.facets,
             params: this.configService.appConfig.ExplorePage.contentApiQueryParams
         };
-        const framework = this.cacheService.get(this.hashTagId);
-        if (framework) {
-            option.params.framework = framework.defaultFramework;
-        }
+        this.frameworkService.channelData$.subscribe((channelData) => {
+          if (!channelData.err) {
+            option.params.framework = _.get(channelData, 'channelData.defaultFramework');
+          }
+        });
         this.searchService.contentSearch(option)
         .subscribe(data => {
             this.showLoader = false;

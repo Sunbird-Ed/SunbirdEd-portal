@@ -2,7 +2,7 @@ import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
     ICard, ILoaderMessage, UtilService, NavigationHelperService
 } from '@sunbird/shared';
-import { SearchService, PlayerService, UserService } from '@sunbird/core';
+import { SearchService, PlayerService, UserService, FrameworkService } from '@sunbird/core';
 import { IPagination } from '@sunbird/announcement';
 import { combineLatest, Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
@@ -44,7 +44,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
         public resourceService: ResourceService, public toasterService: ToasterService,
         public configService: ConfigService, public utilService: UtilService,
         public navigationHelperService: NavigationHelperService, public userService: UserService,
-        public cacheService: CacheService) {
+        public cacheService: CacheService, public frameworkService: FrameworkService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.library.filterType;
         this.redirectUrl = this.configService.appConfig.library.searchPageredirectUrl;
@@ -103,10 +103,11 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
             facets: this.facets,
             params: this.configService.appConfig.Library.contentApiQueryParams
         };
-        const framework = this.cacheService.get(this.userService.hashTagId);
-        if (framework) {
-            option.params.framework = framework.defaultFramework;
-        }
+        this.frameworkService.channelData$.subscribe((channelData) => {
+            if (!channelData.err) {
+              option.params.framework = _.get(channelData, 'channelData.defaultFramework');
+            }
+        });
         this.searchService.contentSearch(option)
             .subscribe(data => {
                 this.showLoader = false;
