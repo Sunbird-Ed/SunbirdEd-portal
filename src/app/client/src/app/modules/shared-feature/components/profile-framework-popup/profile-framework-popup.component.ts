@@ -31,6 +31,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   public selectedOption: any = {};
   public showButton = false;
   public unsubscribe = new Subject<void>();
+  public frameWorkId: string;
   userSubscription: Subscription;
   constructor(public userService: UserService, public frameworkService: FrameworkService,
     public formService: FormService, public resourceService: ResourceService, private cdr: ChangeDetectorRef,
@@ -43,6 +44,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
           this.frameworkService.initialize();
           this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
             if (!frameworkData.err) {
+              this.frameWorkId  = frameworkData.frameworkdata['defaultFramework'].identifier;
               this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
               const formServiceInputParams = {
                 formType: this.formType,
@@ -99,6 +101,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
 
   onSubmitForm() {
     this.selectedOption.board = [this.selectedOption.board];
+    this.selectedOption['id'] = this.frameWorkId;
     this.submit.emit(this.selectedOption);
   }
 
