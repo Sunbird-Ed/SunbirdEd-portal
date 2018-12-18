@@ -49,7 +49,9 @@
     height: 38px !important;
 }
 .grey.text {
-    color: $signup-thankyou-text-color;
+    color: $signup-thankyou-text-color !important;
+    pointer-events: none !important;
+    cursor: not-allowed !important;
 }
 .orange.text {
     color: $label-color;
