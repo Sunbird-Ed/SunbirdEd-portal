@@ -13,7 +13,7 @@ jobs:
       - image: sunbird/build:player
     steps:
       - checkout
-      - /bin/bash test.sh
+      - sh test.sh
       - cp ~/cmd_full_output $CIRCLE_ARTIFACTS
  
           
