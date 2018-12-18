@@ -22,7 +22,7 @@ export class DateFormatPipe implements PipeTransform {
       const date = new Date(value.toString()).setHours(0, 0, 0, 0);
       return momentConstructor(value).format(format || 'Do MMMM YYYY');
     } else {
-      return momentConstructor(value).format(format || 'Do MMMM YYYY');
+      return '';
     }
   }
 
