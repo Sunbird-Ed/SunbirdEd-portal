@@ -24,7 +24,7 @@ module.exports = (app) => {
    * 6. userProfile not found, make create user api, get userName and do step 5
    * 7. If any error in the flow, redirect to error_callback with all query param.
    */
-  app.get(['/google/auth/callback', '/auth/google/callback'], async (req, res) => {
+  app.get('/google/auth/callback', async (req, res) => {
     const reqQuery = _.pick(JSON.parse(req.query.state), ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type'])
     let googleProfile, sunbirdProfile, token;
     try {

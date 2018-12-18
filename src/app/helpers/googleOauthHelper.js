@@ -78,8 +78,8 @@ class GoogleOauth {
   }
 }
 const googleOauth = new GoogleOauth()
-const createSession = async (id, req, res) => {
-  const grant = await keycloak.grantManager.obtainDirectly(id || 'sunil1as990');
+const createSession = async (emailId, req, res) => {
+  const grant = await keycloak.grantManager.obtainDirectly(emailId);
   keycloak.storeGrant(grant, req, res)
   req.kauth.grant = grant
   keycloak.authenticated(req)
