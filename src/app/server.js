@@ -1,7 +1,6 @@
 'use strict'
 const express = require('express')
 const proxy = require('express-http-proxy')
-const Keycloak = require('keycloak-connect')
 const session = require('express-session')
 const path = require('path')
 const bodyParser = require('body-parser')
@@ -16,6 +15,7 @@ const envHelper = require('./helpers/environmentVariablesHelper.js')
 const userHelper = require('./helpers/userHelper.js')
 const proxyUtils = require('./proxy/proxyUtils.js')
 const healthService = require('./helpers/healthCheckService.js')
+const { getKeyCloakClient, memoryStore} = require('./helpers/keyCloakHelper')
 const fs = require('fs')
 const request = require('request');
 const reqDataLimitOfContentEditor = '50mb'
@@ -25,23 +25,15 @@ const Telemetry = require('sb_telemetry_util')
 const telemetry = new Telemetry()
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-let memoryStore = null
 const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
 const frameworkConfig = require('./framework.config.js');
 const configHelper = require('./helpers/configServiceSDKHelper.js')
-const cassandraUtils = require('./helpers/cassandraUtil.js')
 
 
 
 const app = express()
 
-if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
-  memoryStore = new session.MemoryStore()
-} else {
-  memoryStore = cassandraUtils.getCassandraStoreInstance()
-}
-
-let keycloak = new Keycloak({ store: memoryStore }, {
+let keycloak = getKeyCloakClient({
   'realm': envHelper.PORTAL_REALM,
   'auth-server-url': envHelper.PORTAL_AUTH_SERVER_URL,
   'ssl-required': 'none',

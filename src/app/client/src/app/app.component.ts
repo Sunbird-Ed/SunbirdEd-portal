@@ -39,6 +39,12 @@ export class AppComponent implements OnInit {
    * this variable is used to show the FrameWorkPopUp
    */
   public showFrameWorkPopUp = false;
+
+  /**
+   * this variable is used to show the terms and conditions popup
+   */
+  public showTermsAndCondPopUp = false;
+
   /**
    * Used to fetch tenant details and org details for Anonymous user. Possible values
    * 1. url slug param will be slug for Anonymous user
@@ -94,19 +100,47 @@ export class AppComponent implements OnInit {
       this.setPortalTitleLogo();
       this.telemetryService.initialize(this.getTelemetryContext());
       this.deviceRegisterService.registerDevice(this.channel);
-      const frameWorkPopUp: boolean = this.cacheService.get('showFrameWorkPopUp');
-      if (frameWorkPopUp) {
-        this.showFrameWorkPopUp = false;
-      } else {
-        if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
-          this.showFrameWorkPopUp = true;
-        }
-      }
+      this.checkTncAndFrameWorkSelected();
       this.initApp = true;
     }, error => {
       this.initApp = true;
     });
   }
+
+  /**
+   * checks if user has accepted the tnc and show tnc popup.
+   */
+  public checkTncAndFrameWorkSelected () {
+    if ( _.has(this.userProfile, 'promptTnC') &&  _.has(this.userProfile, 'tncLatestVersion') &&
+      _.has(this.userProfile, 'tncLatestVersion')  &&  this.userProfile.promptTnC  === true) {
+      this.showTermsAndCondPopUp = true;
+    } else {
+      this.checkFrameworkSelected();
+    }
+  }
+
+  /**
+   * checks if user has selected the framework and shows popup if not selected.
+   */
+  public checkFrameworkSelected() {
+    const frameWorkPopUp: boolean = this.cacheService.get('showFrameWorkPopUp');
+    if (frameWorkPopUp) {
+      this.showFrameWorkPopUp = false;
+    } else {
+      if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
+        this.showFrameWorkPopUp = true;
+      }
+    }
+  }
+
+  /**
+   * once tnc is accpeted from tnc popup on submit this function is triggered
+   */
+  public onAcceptTnc () {
+    this.showTermsAndCondPopUp = false;
+    this.checkFrameworkSelected();
+  }
+
   /**
    * fetch device id using fingerPrint2 library.
    */
