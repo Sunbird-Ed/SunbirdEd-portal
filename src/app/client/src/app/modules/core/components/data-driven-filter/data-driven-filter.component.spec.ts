@@ -92,7 +92,7 @@ describe('DataDrivenFilterComponent', () => {
     });
   });
 
-  it('should get formated filter data by calling framework service and form service and set formated date in session', () => {
+   it('should get formated filter data by calling framework service and form service and set formated date in session', () => {
     mockHashTagId = undefined;
     mockFrameworkInput = undefined;
     mockFrameworkCategories = [];
