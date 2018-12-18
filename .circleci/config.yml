@@ -33,6 +33,9 @@ jobs:
       - run:
           name: Executing test cases
           command: 'npm run test-coverage | tee /tmp/logs/test_cases.log && cat ./coverage/lcov.info | codacy-coverage '
+      - store_test_results:
+          path: coverage
+
       - store_artifacts:
           path: /tmp/logs
           destination: logs
