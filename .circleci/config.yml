@@ -13,8 +13,8 @@ jobs:
       - image: sunbird/build:player
     steps:
       - checkout
-      - run: sh test.sh
-
+      - set -o pipefail && sh test.sh | tee ~/cmd_full_output
+      - cp ~/cmd_full_output $CIRCLE_ARTIFACTS
  
           
 workflows:
