@@ -127,7 +127,7 @@ export class SignUpComponent implements OnInit {
     this.signUpService.getUserByKey(request).subscribe(
       (data: ServerResponse) => {
         this.showUniqueError = this.signUpForm.controls.contactType.value === 'phone' ?
-        this.resourceService.frmelmnts.lbl.uniquePhone : this.resourceService.frmelmnts.lbl.uniqueEmail;
+          this.resourceService.frmelmnts.lbl.uniquePhone : this.resourceService.frmelmnts.lbl.uniqueEmail;
       },
       (err: ServerResponse) => {
         this.signUpForm.controls['uniqueContact'].setValue(true);
