@@ -16,6 +16,7 @@ jobs:
       - run: ./test.sh
       - store_artifacts:
           path: /tmp/logs
+          destination: logs
           
 workflows:
   version: 2
