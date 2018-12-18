@@ -15,7 +15,7 @@ jobs:
       - checkout
       - run: sh test.sh
       - store_artifacts:
-          path: test_cases.log
+          path: /tmp/logs
           
 workflows:
   version: 2
