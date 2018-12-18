@@ -92,18 +92,6 @@ describe('DataDrivenFilterComponent', () => {
     });
   });
 
-  it('should get formated filter data from session storage if data exist, set showFilter to true and emit filter data to parent', () => {
-    spyOn(cacheService, 'get').and.returnValue([]);
-    spyOn(component.dataDrivenFilter, 'emit').and.returnValue([]);
-    mockHashTagId = undefined;
-    mockFrameworkInput = undefined;
-    component.ngOnInit();
-    expect(component.formFieldProperties).toBeDefined();
-    expect(component.filtersDetails).toBeDefined();
-    expect(component.dataDrivenFilter.emit).toHaveBeenCalledWith([]);
-    expect(component.showFilters).toBeTruthy();
-  });
-
   it('should get formated filter data by calling framework service and form service and set formated date in session', () => {
     mockHashTagId = undefined;
     mockFrameworkInput = undefined;
