@@ -1,16 +1,14 @@
 const jwt = require('jsonwebtoken')
 const async = require('async')
 const request = require('request')
-const Keycloak = require('keycloak-connect')
-const session = require('express-session')
 const uuidv1 = require('uuid/v1')
 const dateFormat = require('dateformat')
-const CassandraStore = require('cassandra-session-store')
 const _ = require('lodash')
 const permissionsHelper = require('./permissionsHelper.js')
 const telemetryHelper = require('./telemetryHelper.js')
 const envHelper = require('./environmentVariablesHelper.js')
 const userHelper = require('./userHelper.js')
+const { getKeyCloakClient } = require('./keyCloakHelper')
 const echoAPI = envHelper.PORTAL_ECHO_API_URL
 const createUserFlag = envHelper.PORTAL_AUTOCREATE_TRAMPOLINE_USER
 const learnerURL = envHelper.LEARNER_URL
@@ -19,26 +17,8 @@ const trampolineServerUrl = envHelper.PORTAL_AUTH_SERVER_URL
 const trampolineRealm = envHelper.PORTAL_REALM
 const trampolineSecret = envHelper.PORTAL_TRAMPOLINE_SECRET
 const learnerAuthorization = envHelper.PORTAL_API_AUTH_TOKEN
-let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
-let memoryStore = null
 
-if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
-  memoryStore = new session.MemoryStore()
-} else {
-  memoryStore = new CassandraStore({
-    'table': 'sessions',
-    'client': null,
-    'clientOptions': {
-      'contactPoints': cassandraCP,
-      'keyspace': 'portal',
-      'queryOptions': {
-        'prepare': true
-      }
-    }
-  }, function () {})
-}
-
-let keycloak = new Keycloak({ store: memoryStore }, {
+let keycloak = getKeyCloakClient({
   clientId: trampolineClientId,
   bearerOnly: true,
   serverUrl: trampolineServerUrl,
