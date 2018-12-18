@@ -10,5 +10,6 @@ ng lint
 ng build --prod
 }
 
-build &> /tmp/logs/build.sh
+echo "Building codebase. If you want to see the complete build log, check artifacts"
+build | tee /tmp/logs/build.log
 npm run test-coverage | tee /tmp/logs/test_cases.log
