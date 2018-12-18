@@ -13,7 +13,7 @@ module.exports = (app) => {
     res.redirect(googleAuthUrl)
   });
   /**
-   * steps followed in callback url
+   * steps to be followed in callback url
    * 1. Parse 'state' query param and check mandatory field. If error redirect to '/library'.
    * 2. Fetch profile from access code.
    * 3. Fetch userProfile from sunbird middleware.
@@ -21,7 +21,7 @@ module.exports = (app) => {
    * 5. Redirect based on client_id obtained from req query.
    *    a. If portal, create session and redirect to redirect url, if not '/library'.
    *    b. If mobile, crete session redirect to redirect url obtained from query with jwt token and refresh token.
-   * 6. userProfile not found, make create user api, get userName and do step 5
+   * 6. userProfile not found, make create user api, then do step 5
    * 7. If any error in the flow, redirect to error_callback with all query param.
    */
   app.get('/google/auth/callback', async (req, res) => {
@@ -34,10 +34,9 @@ module.exports = (app) => {
       googleProfile = await googleOauth.getProfile(req);
       sunbirdProfile = await fetchUserById(googleProfile.emailId)
         .then(data => ({ userName: data.result.response.userName }))
-        .catch(result => ({}))
+        .catch(handleGetUserByIdError)
       if (!sunbirdProfile.userName) {
-        await createUserWithMailId(googleProfile)
-          .catch(handleLearnerServiceError)
+        await createUserWithMailId(googleProfile).catch(handleCreateUserError)
       }
       token = await createSession(googleProfile.emailId, req, res)
       let redirect_uri;
@@ -56,7 +55,7 @@ module.exports = (app) => {
         const query = Object.keys(queryObj).map(key => key + '=' + reqQuery[key]).join('&');
         redirect_uri = reqQuery.error_callback + '?' + query
       }
-      console.log('error while logging in-----------', error, googleProfile, sunbirdProfile, token); // log error
+      console.log('google sign in failed with', error, googleProfile, sunbirdProfile, token); // log error
       res.redirect(redirect_uri) // change it to error_callback with queryParams
     }
   });
@@ -68,7 +67,7 @@ const getErrorMessage = (error) => {
     return 'Your account could not be created on Diksha due to some internal error.'
   }
 }
-const handleLearnerServiceError = (error) => {
+const handleCreateUserError = (error) => {
   if (_.get(error, 'error.params')) {
     throw error.error.params
   } else if (error instanceof Error) {
@@ -76,4 +75,10 @@ const handleLearnerServiceError = (error) => {
   } else {
     throw 'unhandled exception while getting userDetails'
   }
+}
+const handleGetUserByIdError = (error) => {
+  if(_.get(error, 'error.params.err') === 'USER_NOT_FOUND' || _.get(error, 'error.params.status') === 'USER_NOT_FOUND'){
+    return {};
+  }
+  throw error.error || error.message || error
 }

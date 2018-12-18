@@ -3,12 +3,7 @@ const _ = require('lodash');
 const { GOOGLE_OAUTH_CONFIG } = require('./environmentVariablesHelper.js')
 const redirectPath = '/google/auth/callback';
 const defaultScope = ['https://www.googleapis.com/auth/plus.me', 'https://www.googleapis.com/auth/userinfo.email'];
-const jwt = require('jsonwebtoken')
-const async = require('async')
 const { getKeyCloakClient } = require('./keyCloakHelper')
-const permissionsHelper = require('./permissionsHelper.js')
-const telemetryHelper = require('./telemetryHelper.js')
-const userHelper = require('./userHelper.js')
 const envHelper = require('./environmentVariablesHelper.js')
 const request = require('request-promise'); //  'request' npm package with Promise support
 const uuid = require('uuid/v1')
@@ -23,25 +18,6 @@ let keycloak = getKeyCloakClient({
     secret: envHelper.PORTAL_TRAMPOLINE_SECRET
   }
 })
-
-keycloak.authenticated = function (request) {
-  permissionsHelper.getPermissions(request)
-  async.series({
-    getUserData: function (callback) {
-      permissionsHelper.getCurrentUserRoles(request, callback)
-    },
-    updateLoginTime: function (callback) {
-      userHelper.updateLoginTime(request, callback)
-    },
-    logSession: function (callback) {
-      telemetryHelper.logSessionStart(request, callback)
-    }
-  }, function (err, results) {
-    if (err) {
-      console.log('err', err)
-    }
-  })
-}
 class GoogleOauth {
   createConnection(req) {
     const  { clientId, clientSecret } = GOOGLE_OAUTH_CONFIG;
@@ -114,7 +90,7 @@ const fetchUserById = async (emailId) => {
 }
 const createUserWithMailId = async (accountDetails) => {
   if (!accountDetails.name || accountDetails.name === '') {
-    throw 'User name not present in request';
+    throw new Error('User name not present in request');
   }
   const options = {
     method: 'POST',
