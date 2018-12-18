@@ -111,8 +111,8 @@ export class AppComponent implements OnInit {
    * checks if user has accepted the tnc and show tnc popup.
    */
   public checkTncAndFrameWorkSelected () {
-    if (_.has(this.userProfile, ['promptTnC', 'tncLatestVersion', 'tncLatestVersionUrl']) &&
-      this.userProfile.promptTnC  === true) {
+    if ( _.has(this.userProfile, 'promptTnC') &&  _.has(this.userProfile, 'tncLatestVersion') &&
+      _.has(this.userProfile, 'tncLatestVersion')  &&  this.userProfile.promptTnC  === true) {
       this.showTermsAndCondPopUp = true;
     } else {
       this.checkFrameworkSelected();
@@ -266,7 +266,6 @@ export class AppComponent implements OnInit {
       this.showFrameWorkPopUp = false;
       this.utilService.toggleAppPopup();
       this.showAppPopUp = this.utilService.showAppPopUp;
-      console.log(this.showAppPopUp);
     }, err => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0085);
         this.frameWorkPopUp.modal.deny();
