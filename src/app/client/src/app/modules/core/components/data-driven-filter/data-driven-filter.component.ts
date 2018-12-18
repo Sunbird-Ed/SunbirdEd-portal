@@ -220,8 +220,10 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
   }
   private enrichFiltersOnInputChange() {
     this.filtersDetails = _.map(this.formFieldProperties, (eachFields) => {
-      eachFields.range = _.filter(this.enrichFilters[eachFields.code],
-        (field) => _.get(field, 'name') && field.name !== '');
+      if (!_.includes(['channel'], eachFields.code)) {
+        eachFields.range = _.filter(this.enrichFilters[eachFields.code],
+          (field) => _.get(field, 'name') && field.name !== '');
+      }
       return eachFields;
     });
     this.hardRefreshFilter();
