@@ -2393,15 +2393,6 @@ angular2-multiselect .list-area{
 .min-height-0 {
   height: 0 !important;
 }
-.mc-nonuser,
-.mc-user{
-  padding-top:90px !important;
-}
-@media screen and (max-width:768px){
-  .mc-user{
-    padding-top: 170px !important;
-  }
-}
 .selected-list .countplaceholder {
   visibility: hidden;
 }

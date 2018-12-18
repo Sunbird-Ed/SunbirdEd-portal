@@ -13,9 +13,11 @@
     font-weight: 500;
     height: 25px;
     box-shadow: none !important;
+    white-space: nowrap;
 }
 .pageSection-heading{
     font-size: 1.143rem !important;
+    display: inline;
     text-transform: lowercase;
     &::first-letter{
         text-transform: uppercase;
