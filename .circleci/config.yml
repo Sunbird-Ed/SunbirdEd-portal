@@ -32,7 +32,7 @@ jobs:
           command: 'mkdir -p /tmp/logs && ng lint && ng build --prod | tee /tmp/logs/build.log'
       - run:
           name: Executing test cases
-          command: 'set -o pipefail && npm run test-coverage | tee /tmp/logs/test_cases.log'
+          command: 'npm run test-coverage | tee /tmp/logs/test_cases.log'
       - store_artifacts:
           path: /tmp/logs
           destination: logs
