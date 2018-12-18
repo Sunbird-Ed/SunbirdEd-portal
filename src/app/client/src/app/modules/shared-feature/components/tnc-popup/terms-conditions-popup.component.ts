@@ -24,6 +24,7 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
   tenantDataSubscription: Subscription;
   userSubscription: Subscription;
   logo: string;
+  tenantName: string;
   tncLatestVersionUrl: any;
   tncChecked = false;
   disableContinueBtn = false;
@@ -51,6 +52,7 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
         data => {
           if (data && !data.err) {
             this.logo = data.tenantData.logo;
+            this.tenantName = data.tenantData.titleName;
           }
         }
       );
