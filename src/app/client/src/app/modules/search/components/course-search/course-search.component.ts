@@ -92,8 +92,6 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   }
   private fetchContents() {
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-    // filters.channel = this.hashTagId;
-    // filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
     filters = _.omit(filters, ['key', 'sort_by', 'sortType']);
     const option = {
         filters: filters,
@@ -101,10 +99,12 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
         pageNumber: this.paginationDetails.currentPage,
         query: this.queryParams.key,
         sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType},
-        // softConstraints: { badgeAssertions: 98, board: 99, channel: 100 },
-        // facets: this.facets,
+        facets: this.facets,
         params: this.configService.appConfig.Course.contentApiQueryParams
     };
+    if (this.frameWorkName) {
+      option.params.framework = this.frameWorkName;
+    }
     this.searchService.courseSearch(option)
     .subscribe(data => {
         this.showLoader = false;

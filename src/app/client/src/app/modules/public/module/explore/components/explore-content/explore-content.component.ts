@@ -2,7 +2,7 @@ import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
     ICard, ILoaderMessage, UtilService, NavigationHelperService
 } from '@sunbird/shared';
-import { SearchService, PlayerService, OrgDetailsService, UserService } from '@sunbird/core';
+import { SearchService, PlayerService, OrgDetailsService, UserService, FrameworkService } from '@sunbird/core';
 import { IPagination } from '@sunbird/announcement';
 import { PublicPlayerService } from '../../../../services';
 import { combineLatest, Subject } from 'rxjs';
@@ -11,6 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, debounceTime } from 'rxjs/operators';
+import { CacheService } from 'ng2-cache-service';
 @Component({
     templateUrl: './explore-content.component.html',
     styleUrls: ['./explore-content.component.css']
@@ -43,7 +44,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
         public resourceService: ResourceService, public toasterService: ToasterService,
         public configService: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
         public navigationHelperService: NavigationHelperService, private publicPlayerService: PublicPlayerService,
-        public userService: UserService) {
+        public userService: UserService, public frameworkService: FrameworkService,
+        public cacheService: CacheService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.explore.filterType;
         this.setTelemetryData();
@@ -107,6 +109,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
             facets: this.facets,
             params: this.configService.appConfig.ExplorePage.contentApiQueryParams
         };
+        this.frameworkService.channelData$.subscribe((channelData) => {
+          if (!channelData.err) {
+            option.params.framework = _.get(channelData, 'channelData.defaultFramework');
+          }
+        });
         this.searchService.contentSearch(option)
         .subscribe(data => {
             this.showLoader = false;

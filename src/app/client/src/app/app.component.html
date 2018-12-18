@@ -1,4 +1,5 @@
 <app-popup [showCloseIcon]="true" (close)="closeIcon()" #frameWorkPopUp *ngIf="showFrameWorkPopUp" [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateFrameWork($event)"></app-popup>
+<app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp"></app-tnc-popup>
 <app-header></app-header>
 <div  [ngClass]="{'mc-user': userService.loggedIn, 'mc-nonuser': !userService.loggedIn}"></div>
 <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn"></app-install-app>
