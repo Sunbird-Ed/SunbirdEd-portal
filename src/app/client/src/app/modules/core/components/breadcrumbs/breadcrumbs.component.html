@@ -1,7 +1,7 @@
 <div class="ui container" *ngIf="breadCrumbsData && breadCrumbsData.length">
-    <div class="ui grid stackable">
+    <div class="ui grid">
         <div class="twelve wide column">
-            <div class="ui padded breadcrumb">
+            <div class="ui breadcrumb">
                 <span *ngFor="let item of breadCrumbsData; last as isLast">
                     <a *ngIf="!isLast" (click)="openLink(item.url)" class="section">{{item.label}}</a>
                     <i *ngIf="!isLast" class="right chevron icon divider"></i>

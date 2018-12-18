@@ -1,6 +1,5 @@
-<div>
-  <div class="ui stackable grid">
-    <div *ngIf="showFilters" class="twelve wide column cursor-text">
+<div class="">
+    <div *ngIf="showFilters" class="cursor-text">
       <sui-accordion [closeOthers]="false">
         <sui-accordion-panel [isOpen]="accordionDefaultOpen" [isDisabled]="true">
           <div *ngIf="isShowFilterLabel" title class="cursor-text filter-title">
@@ -37,7 +36,7 @@
             <div *ngIf="refresh">
               <form *ngIf="filtersDetails" class="ui form">
                 <div class="ui stackable grid">
-                  <div *ngFor="let field of filtersDetails" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column">
+                  <div *ngFor="let field of filtersDetails" class="three wide column">
                     <div *ngIf="(field.inputType==='select' || field.inputType === 'multi-select') && field.code !== 'channel'" class="field">
                       <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
                         defaultSelectionText={{field.name}} zeroSelectionText="Select" class="selection filterFieldSearch"
@@ -58,7 +57,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="three wide column filter-button mt-10">
+                <div class="twelve wide column right aligned filter-button mt-10">
                   <a class="searchfilterbutton ui blue tiny  button" (click)="applyFilters()" appTelemetryInteract
                     [telemetryInteractEdata]="submitIntractEdata">{{resourceService.frmelmnts?.btn?.apply}}</a>
                   <a class="searchfilterbutton ui primary tiny basic button" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</a>
@@ -69,5 +68,4 @@
         </sui-accordion-panel>
       </sui-accordion>
     </div>
-  </div>
 </div>
