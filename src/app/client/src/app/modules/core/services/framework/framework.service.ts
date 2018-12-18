@@ -30,7 +30,7 @@ export class FrameworkService {
     const channelKey =  hashTagId ? hashTagId : this.userService.hashTagId;
     const  channelData = this.cacheService.get(channelKey);
     const frameWorkKey = framework ? framework : _.get(channelData, 'defaultFramework');
-    if (this.cacheService.get(frameWorkKey)) {
+    if ( frameWorkKey && this.cacheService.get(frameWorkKey)) {
       const data = this.cacheService.get(frameWorkKey);
       const frameWorkName = framework ? framework : 'defaultFramework';
       this._frameworkData[frameWorkName] = data;

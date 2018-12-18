@@ -266,7 +266,6 @@ export class AppComponent implements OnInit {
       this.showFrameWorkPopUp = false;
       this.utilService.toggleAppPopup();
       this.showAppPopUp = this.utilService.showAppPopUp;
-      console.log(this.showAppPopUp);
     }, err => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0085);
         this.frameWorkPopUp.modal.deny();
