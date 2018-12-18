@@ -14,7 +14,8 @@ jobs:
     steps:
       - checkout
       - run: sh test.sh
-      - run: cp player.log $CIRCLE_ARTIFACTS
+      - store_artifacts:
+          path: test_cases.log
           
 workflows:
   version: 2
