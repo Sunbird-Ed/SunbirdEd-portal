@@ -36,6 +36,7 @@ jobs:
       - run:
           name: Publishing report to Codacy
           command: 'npm install -g codacy-coverage && cat ./coverage/lcov.info | codacy-coverage '
+          when: always
       - store_artifacts:
           path: /tmp/logs
           destination: logs
