@@ -96,6 +96,7 @@ function getLocals (req, callback) {
   locals.cloudStorageUrls = envHelper.CLOUD_STORAGE_URLS
   locals.userUploadRefLink = configHelper.getConfig('sunbird_portal_user_upload_ref_link')
   locals.deviceRegisterApi = envHelper.DEVICE_REGISTER_API
+  locals.googleCaptchaSiteKey = envHelper.sunbird_google_captcha_site_key
   callback(null, locals)
 }
 

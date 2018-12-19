@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SignUpComponent } from './components';
+import { SignUpComponent, OtpComponent } from './components';
 import { SignUpRoutingModule } from './sign-up-routing.module';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RecaptchaModule } from 'ng-recaptcha';
+import { SignUpService } from './services';
 
 @NgModule({
   imports: [
@@ -11,8 +13,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SignUpRoutingModule,
     SuiModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RecaptchaModule
   ],
-  declarations: [SignUpComponent]
+  declarations: [SignUpComponent, OtpComponent],
+  providers: [SignUpService]
 })
 export class SignUpModule { }
