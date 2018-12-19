@@ -35,7 +35,7 @@ export class SignUpService {
 
   createUser(data) {
     const options = {
-      url: this.configService.urlConFig.URLS.USER.VTHREE_SIGNUP,
+      url: this.configService.urlConFig.URLS.USER.V_TWO_SIGNUP,
       data: data
     };
     return this.learnerService.post(options);
