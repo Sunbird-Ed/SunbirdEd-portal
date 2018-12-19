@@ -52,7 +52,7 @@ module.exports = (app) => {
       if (reqQuery.error_callback) {
         const queryObj = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type'])
         queryObj.error_message = getErrorMessage(error);
-        const query = Object.keys(queryObj).map(key => key + '=' + reqQuery[key]).join('&');
+        const query = Object.keys(queryObj).map(key => key + '=' + queryObj[key]).join('&');
         redirect_uri = reqQuery.error_callback + '?' + query
       }
       console.log('google sign in failed with', error, googleProfile, sunbirdProfile, token); // log error
