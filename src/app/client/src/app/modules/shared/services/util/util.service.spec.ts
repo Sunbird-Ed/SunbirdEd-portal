@@ -12,31 +12,37 @@ describe('UtilService', () => {
   it('should be created', inject([UtilService], (service: UtilService) => {
     expect(service).toBeTruthy();
   }));
-  it('should call manipulateSoftConstraint when filter matches with softConstraintFilter',
+  it('should call manipulateSoftConstraint when filter present',
     inject([UtilService], (service: UtilService) => {
-      const filters = { board: ['CBSE'] };
-      const softConstraintFilter = { board: ['NCERT'], channel: 'b00bc992ef25f1a9a8d63291e20efc8d' };
-      const softconstraints = { badgeAssertions: 98, board: 99, channel: 100 };
-      const expectedSoftconstraintsvalue = {
-        filters: { board: ['CBSE'], channel: 'b00bc992ef25f1a9a8d63291e20efc8d' },
-        softConstraints: { badgeAssertions: 98, channel: 100 }
+      const softConstraintData = {
+        filters: {channel: 'b00bc992ef25f1a9a8d63291e20efc8d',
+        board: ['NCERT']},
+        softConstraints: { badgeAssertions: 98, board: 99, channel: 100 },
+        mode: 'soft'
       };
-      const softconstraintsdata = service.manipulateSoftConstraint(filters, softConstraintFilter, softconstraints);
+      const userFrameworkData = {
+        board: ['CBSE']
+      };
+      const filter =  true;
+      const softconstraintsdata = service.manipulateSoftConstraint(filter, softConstraintData, userFrameworkData);
       expect(service.manipulateSoftConstraint).toBeDefined();
-      expect(softconstraintsdata).toEqual(expectedSoftconstraintsvalue);
+      expect(softconstraintsdata).toBeFalsy();
     }));
 
-  it('should call manipulateSoftConstraint when filters are not present',
+  it('should call manipulateSoftConstraint when filters are not present and userFrameworkData is present',
     inject([UtilService], (service: UtilService) => {
-      const filters = {};
-      const softConstraintFilter = { board: ['NCERT'], channel: 'b00bc992ef25f1a9a8d63291e20efc8d' };
-      const softconstraints = { badgeAssertions: 98, board: 99, channel: 100 };
-      const expectedSoftconstraintsvalue = {
-        filters: { board: ['NCERT'], channel: 'b00bc992ef25f1a9a8d63291e20efc8d' },
-        softConstraints: { badgeAssertions: 98, board: 99, channel: 100 }
+      const softConstraintData = {
+        filters: {channel: 'b00bc992ef25f1a9a8d63291e20efc8d',
+        board: ['NCERT']},
+        softConstraints: { badgeAssertions: 98, board: 99, channel: 100 },
+        mode: 'soft'
       };
-      const softconstraintsdata = service.manipulateSoftConstraint(filters, softConstraintFilter, softconstraints);
+      const userFrameworkData = {
+        board: ['CBSE']
+      };
+      const filter = undefined;
+      const softconstraintsdata = service.manipulateSoftConstraint(filter, softConstraintData, userFrameworkData);
       expect(service.manipulateSoftConstraint).toBeDefined();
-      expect(softconstraintsdata).toEqual(expectedSoftconstraintsvalue);
+      expect(softconstraintsdata).toEqual({mode: 'soft'});
     }));
 });

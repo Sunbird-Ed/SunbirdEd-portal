@@ -77,21 +77,15 @@ export class UtilService {
     this.showAppPopUp = !this.showAppPopUp;
   }
 
-  public manipulateSoftConstraint(filters, softConstraintFilter, softconstraints) {
-    let softConstraints = {};
-      softConstraints = softconstraints;
-   if (filters) {
-     _.forIn(filters, (value, key) => {
-       if (_.has(softConstraints, key)) {
-         softConstraints =  _.omit(softConstraints, [key]);
-       }
-     });
-      _.forIn(softConstraintFilter, (value, key) => {
-          if (!_.has(filters, key)) {
-            filters[key] = value;
-          }
-      });
-   }
-   return {filters: filters, softConstraints: softConstraints};
+
+
+  public manipulateSoftConstraint(filter, softConstraintData, frameWorkData?: any) {
+    if (frameWorkData && !filter) {
+      return {mode: 'soft'};
+    } else if (filter) {
+     return false;
+    } else {
+      return softConstraintData;
+    }
   }
 }
