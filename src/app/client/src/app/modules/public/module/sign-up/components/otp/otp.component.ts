@@ -20,6 +20,8 @@ export class OtpComponent implements OnInit {
   errorMessage: string;
   infoMessage: string;
   unabletoVerifyErrorMessage: string;
+  disableResendButton = false;
+  showSignUpLink = false;
 
   constructor(public resourceService: ResourceService, public signUpService: SignUpService,
     public activatedRoute: ActivatedRoute) { }
@@ -56,6 +58,9 @@ export class OtpComponent implements OnInit {
         this.infoMessage = '';
         this.errorMessage = err.error.params.status === 'ERROR_INVALID_OTP' ?
           wrongOTPMessage : this.resourceService.messages.fmsg.m0085;
+          if (this.disableResendButton) {
+            this.showSignUpLink = true;
+          }
         this.disableSubmitBtn = false;
       }
     );
