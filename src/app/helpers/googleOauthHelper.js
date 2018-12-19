@@ -86,7 +86,7 @@ const createUserWithMailId = async (accountDetails, req) => {
   }
   const options = {
     method: 'POST',
-    url: envHelper.LEARNER_URL + 'user/v3/create',
+    url: envHelper.LEARNER_URL + 'user/v2/create',
     headers: getHeaders(req),
     body: {
       request: {
