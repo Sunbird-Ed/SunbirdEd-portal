@@ -120,53 +120,40 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
 
   getFormatedFilterDetails() {
     const formAction = this.formAction ? this.formAction : 'search';
-    const cachedFormData = this._cacheService.get(this.filterEnv + formAction);
-    if (cachedFormData) {
-      return of(cachedFormData);
-    } else {
-      return this.fetchFrameWorkDetails().pipe(
-        mergeMap((frameworkDetails: any) => {
-          this.categoryMasterList = frameworkDetails.categoryMasterList;
-          this.framework = frameworkDetails.code;
-          return this.getFormDetails();
-        }),
-        mergeMap((formData: any) => {
-          if (_.find(formData, {code: 'channel'})) {
-            return this.getOrgSearch().pipe(map((channelData: any) => {
-              const data = _.filter(channelData, 'hashTagId');
-              return {formData: formData, channelData: data};
-            }));
+    return this.fetchFrameWorkDetails().pipe(
+      mergeMap((frameworkDetails: any) => {
+        this.categoryMasterList = frameworkDetails.categoryMasterList;
+        this.framework = frameworkDetails.code;
+        return this.getFormDetails();
+      }),
+      mergeMap((formData: any) => {
+        if (_.find(formData, {code: 'channel'})) {
+          return this.getOrgSearch().pipe(map((channelData: any) => {
+            const data = _.filter(channelData, 'hashTagId');
+            return {formData: formData, channelData: data};
+          }));
+        } else {
+          return of({formData: formData});
+        }
+      }),
+      map((formData: any) => {
+        let formFieldProperties = _.filter(formData.formData, (formFieldCategory) => {
+          if (formFieldCategory.code === 'channel') {
+            formFieldCategory.range = _.map(formData.channelData, (value) => {
+              return {category: 'channel',
+              identifier: value.hashTagId,
+              name: value.orgName,
+            };
+            });
           } else {
-            return of({formData: formData});
+          const frameworkTerms = _.get(_.find(this.categoryMasterList, { code : formFieldCategory.code}), 'terms');
+          formFieldCategory.range = _.union(formFieldCategory.range, frameworkTerms);
           }
-        }),
-        map((formData: any) => {
-          let formFieldProperties = _.filter(formData.formData, (formFieldCategory) => {
-            if (!_.isEmpty(formFieldCategory.allowedRoles)
-              && !this.permissionService.checkRolesPermissions(formFieldCategory.allowedRoles)) {
-                return false;
-            }
-            if (formFieldCategory.code === 'channel') {
-              formFieldCategory.range = _.map(formData.channelData, (value) => {
-                return {category: 'channel',
-                identifier: value.hashTagId,
-                name: value.orgName,
-              };
-              });
-            } else {
-            const frameworkTerms = _.get(_.find(this.categoryMasterList, { code : formFieldCategory.code}), 'terms');
-            formFieldCategory.range = _.union(formFieldCategory.range, frameworkTerms);
-            }
-            return true;
-          });
-          formFieldProperties = _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index');
-          return formFieldProperties;
-        }),
-        tap((formFieldProperties) => {
-          this._cacheService.set(this.filterEnv + formAction, formFieldProperties,
-            {maxAge: this.browserCacheTtlService.browserCacheTtl});
-        }));
-    }
+          return true;
+        });
+        formFieldProperties = _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index');
+        return formFieldProperties;
+      }));
   }
   private fetchFrameWorkDetails() {
     return this.frameworkService.frameworkData$.pipe(filter((frameworkDetails) => {
