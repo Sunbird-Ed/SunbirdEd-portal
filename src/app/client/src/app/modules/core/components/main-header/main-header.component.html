@@ -86,23 +86,18 @@
                     tabindex="0" routerLink="/explore">
                         {{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
                 </button>
-                <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="signUpInteractEdata"
-                    *ngIf="enableSignup && router.isActive('', true)" class="ui item border-right pr-15 pl-10 computer only"
-                    routerLink="/signup">
-                    {{resourceService.frmelmnts?.btn?.signup}}
-                </a>
                 <a href="/home" class="sunblogin item ml-10 font-weight-bold primary-color pl-5 computer only">
-                    {{resourceService.frmelmnts?.btn?.login}}
+                    {{resourceService.frmelmnts?.btn?.signin}}
                 </a>
                 <div class="ui secondary right pointing dropdown d-flex flex-as-center mt-10 mr-10 mobile only" suiDropdown>
                     <i class="large bars icon"></i>
                     <div class="menu" suiDropdownMenu>
                         <div class="item text-upper-case" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" routerLink="/explore">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</div>
                         <div class="item" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="signUpInteractEdata"
-                            *ngIf="router.isActive('', true) && enableSignup" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</div>
+                            *ngIf="router.isActive('', true)" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</div>
                         <div class="item">
                             <a href="/home" class="sunblogin ">
-                                <div class="item">{{resourceService.frmelmnts?.btn?.login}}</div>
+                                <div class="item">{{resourceService.frmelmnts?.btn?.signin}}</div>
                             </a>
                         </div>
                     </div>
@@ -132,7 +127,7 @@
                             <div class="eight wide column"></div>
                             <div class="four wide column d-flex flex-jc-flex-end flex-as-flex-end">
                                 <a href="/home" class="ui item right-float font-weight-bold primary-color">
-                                    {{resourceService.frmelmnts?.btn?.login}}
+                                    {{resourceService.frmelmnts?.btn?.signin}}
                                 </a>
                             </div>
                         </div>
@@ -175,7 +170,7 @@
                     </button>
                     <app-language-dropdown class="flex-as-center"></app-language-dropdown>
                     <a href="/home" class="sunblogin item ml-10 font-weight-bold primary-color pl-5 computer only">
-                        {{resourceService.frmelmnts?.btn?.login}}
+                        {{resourceService.frmelmnts?.btn?.signin}}
                     </a>
                 </div>
                 <!-- computer only view ends -->
