@@ -144,9 +144,6 @@ export class SignUpComponent implements OnInit {
     }
   }
 
-  /**
-   * This method gets called internally after google invisible captcha success
-   */
   resolved(captchaResponse: string) {
     if (captchaResponse) {
       this.onSubmitSignUpForm();
