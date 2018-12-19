@@ -1,0 +1,100 @@
+primary-navbar-bg {
+    background-color: #005DA2;
+}
+.ui.basic.button.qr-code-btn {
+    background: #fff !important;
+    color: #024f9d !important;
+    font-size: 0.86rem;
+    border-radius: 3px;
+    font-weight: bold;
+    border: 1px solid #CAE4F7;
+    box-shadow: none;
+    height:35px;
+    .qrcode {
+      color: #024f9d !important; 
+      font-size: 1.3em;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .primary-searchbar-alignment {
+        width: 100%;
+    }
+    .ui.basic.button.qr-code-btn {
+        padding-top: 11px;
+        padding-bottom: 9px;
+    }
+    .ui.mobile-view.container {
+        margin-left: 0!important;
+        margin-right: 0!important;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .primary-searchbar-alignment {
+        margin-right: auto;
+        margin-left: 40px;
+        width: calc(100% - 284px);
+        max-width: 490px;
+    }
+    .ui.basic.button.qr-code-btn {
+        height: 29px;
+        padding-top: 8px;
+    }
+}
+
+.primary-nav-item .item{
+    font-size: 0.86rem;
+}
+
+.ui.menu .primary-nav-item a.item:active,
+.ui.menu .primary-nav-item a.item:focus {
+    background: none;
+    color: #024F9D;
+    font-size: 0.86rem;
+    font-weight: bold;
+}
+.ui.menu a.item:hover {
+    background: none; 
+}
+
+.ui.menu .primary-nav-item a.item.divider {
+    top: 22px;
+    border-right: 0.5px solid #196D7F;
+    opacity: 0.4;
+    max-height: 8px;
+    padding: 8px;
+    border-width: 2px;
+    margin-right: 10px;
+}
+
+
+.ui.icon.button {
+    background: #edf4f9;;
+    padding-top: 1px;
+    padding-bottom: 4px;
+    padding-right: 7px;
+    padding-left: 7px;
+    .primary-search-icon {
+      font-size: 1.2em;       
+    }
+}
+
+::ng-deep {
+    .ui.fluid.action.input.primary-search-input {
+        height: 35px;
+        border: 1px solid #60D4EB;
+        opacity: 1;
+        border-radius: 5px;
+    }    
+}
+
+@media only screen and (min-width: 767px) {
+    ::ng-deep {
+        .ui.fluid.action.input.primary-search-input {
+            height: 29px;
+        }    
+    }
+}
+
+

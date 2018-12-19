@@ -13,7 +13,7 @@ import { CacheService } from 'ng2-cache-service';
 @Component({
   selector: 'app-header',
   templateUrl: './main-header.component.html',
-  styleUrls: ['./main-header.component.css']
+  styleUrls: ['./main-header.component.scss']
 })
 export class MainHeaderComponent implements OnInit, OnDestroy {
   /**

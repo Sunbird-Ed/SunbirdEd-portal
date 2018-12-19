@@ -11,16 +11,7 @@ import { ResourceService, ConfigService, IUserProfile } from '@sunbird/shared';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  styles: [ `
-  .disableIcon {
-    pointer-events: none;
-    opacity: 0.45;
-  }
-
-  ::ng-deep .ui.floating.main-header-search-dropdown.dropdown .menu {
-      top:25px;
-  }
-  `]
+  styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
   /**
