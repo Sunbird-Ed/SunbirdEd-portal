@@ -89,16 +89,6 @@ describe('ProminentFilterComponent', () => {
     });
   });
 
-  it('should get formated filter data from session storage if data exist, set showFilter to true and emit filter data to parent', () => {
-    spyOn(cacheService, 'get').and.returnValue([]);
-    spyOn(component.prominentFilter, 'emit').and.returnValue([]);
-    mockHashTagId = undefined;
-    mockFrameworkInput = undefined;
-    component.ngOnInit();
-    expect(component.formFieldProperties).toBeDefined();
-    expect(component.prominentFilter.emit).toHaveBeenCalledWith([]);
-  });
-
   it('should get formated filter data by calling framework service and form service and set formated date in session', () => {
     mockHashTagId = undefined;
     mockFrameworkInput = undefined;
