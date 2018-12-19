@@ -43,7 +43,9 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
     try {
       this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value;
-    } catch (error) { this.googleCaptchaSiteKey = ''; }
+    } catch (error) {
+      this.googleCaptchaSiteKey = '';
+    }
     this.initializeFormFields();
   }
 
