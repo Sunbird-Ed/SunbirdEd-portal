@@ -61,7 +61,7 @@ let envVariables = {
     clientId: env.sunbird_google_keycloak_client_id,
     secret: env.sunbird_google_keycloak_secret
   },
-  sunbird_google_captcha_site_key: env.sunbird_google_captcha_site_key || '6LcFfYEUAAAAAM4cjjh4gv3pv9bTYhy9baAXHjV-'
+  sunbird_google_captcha_site_key: env.sunbird_google_captcha_site_key
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
