@@ -32,11 +32,11 @@ module.exports = (app) => {
         throw 'some of the query params are missing'
       }
       googleProfile = await googleOauth.getProfile(req);
-      sunbirdProfile = await fetchUserById(googleProfile.emailId)
+      sunbirdProfile = await fetchUserById(googleProfile.emailId, req)
         .then(data => ({ userName: data.result.response.userName }))
         .catch(handleGetUserByIdError)
       if (!sunbirdProfile.userName) {
-        await createUserWithMailId(googleProfile).catch(handleCreateUserError)
+        await createUserWithMailId(googleProfile, req).catch(handleCreateUserError)
       }
       token = await createSession(googleProfile.emailId, req, res)
       let redirect_uri;
@@ -61,7 +61,7 @@ module.exports = (app) => {
   });
 }
 const getErrorMessage = (error) => {
-  if(error instanceof Error && error.message === 'User name not present in request') {
+  if(error instanceof Error && error.message === 'USER_NAME_NOT_PRESENT') {
     return 'Your account could not be created on Diksha due to your Google Security settings.';
   } else {
     return 'Your account could not be created on Diksha due to some internal error.'

@@ -64,19 +64,11 @@ const createSession = async (emailId, req, res) => {
     refresh_token: grant.refresh_token.token
   };
 }
-const fetchUserById = async (emailId) => {
+const fetchUserById = async (emailId, req) => {
   const options = {
     method: 'POST',
     url: envHelper.LEARNER_URL + 'user/v1/getByKey',
-    headers: {
-      'x-device-id': 'portal',
-      'x-msgid': uuid(),
-      'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
-      'x-consumer-id': envHelper.PORTAL_API_AUTH_TOKEN,
-      'content-type': 'application/json',
-      'accept': 'application/json',
-      'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
-    },
+    headers: getHeaders(),
     body: { request: { key: 'email', value: emailId } },
     json: true
   }
@@ -88,22 +80,14 @@ const fetchUserById = async (emailId) => {
     }
   })
 }
-const createUserWithMailId = async (accountDetails) => {
+const createUserWithMailId = async (accountDetails, req) => {
   if (!accountDetails.name || accountDetails.name === '') {
-    throw new Error('User name not present in request');
+    throw new Error('USER_NAME_NOT_PRESENT');
   }
   const options = {
     method: 'POST',
     url: envHelper.LEARNER_URL + 'user/v3/create',
-    headers: {
-      'x-device-id': 'trampoline',
-      'x-msgid': uuid(),
-      'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
-      'x-consumer-id': envHelper.PORTAL_API_AUTH_TOKEN,
-      'content-type': 'application/json',
-      'accept': 'application/json',
-      'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
-    },
+    headers: getHeaders(),
     body: {
       request: {
         firstName: accountDetails.name,
@@ -120,5 +104,15 @@ const createUserWithMailId = async (accountDetails) => {
       throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
     }
   })
+}
+const getHeaders = () => {
+  return {
+    'x-device-id': req.get('x-device-id'),
+    'x-msgid': uuid(),
+    'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
+    'content-type': 'application/json',
+    'accept': 'application/json',
+    'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
+  }
 }
 module.exports = { googleOauth,  keycloak, createSession, fetchUserById, createUserWithMailId };
