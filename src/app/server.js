@@ -141,26 +141,6 @@ frameworkAPI.bootstrap(frameworkConfig, subApp).then(data => runApp())
   runApp()   // if framework fails, do not stop the portal
 })
 
-// Method called after successful authentication and it will log the telemetry for CP_SESSION_START and updates the login time
-keycloak.authenticated = function (request) {
-  request.session.logSession = false
-  async.series({
-    getUserData: function (callback) {
-      permissionsHelper.getCurrentUserRoles(request, callback)
-    },
-    getPermissionData: function (callback) {
-      permissionsHelper.getPermissions(request)
-      callback()
-    },
-    updateLoginTime: function (callback) {
-      userHelper.updateLoginTime(request, callback)
-    }
-  }, function (err, results) {
-    if (err) {
-      console.log('err', err)
-    }
-  })
-}
 function endSession(request, response, next) {
   delete request.session['roles']
   delete request.session['rootOrgId']
@@ -173,19 +153,6 @@ function endSession(request, response, next) {
     delete request.session['deviceId']
   }
   next()
-}
-
-keycloak.deauthenticated = function (request) {
-  delete request.session['roles']
-  delete request.session['rootOrgId']
-  delete request.session['orgs']
-  req.session.logSession = true
-  if (request.session) {
-    telemetryHelper.logSessionEnd(request)
-    request.session.sessionEvents = request.session.sessionEvents || []
-    delete request.session.sessionEvents
-    delete request.session['deviceId']
-  }
 }
 
 if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
