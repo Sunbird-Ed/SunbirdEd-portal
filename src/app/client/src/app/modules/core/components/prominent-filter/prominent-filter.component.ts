@@ -138,10 +138,6 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
       }),
       map((formData: any) => {
         let formFieldProperties = _.filter(formData.formData, (formFieldCategory) => {
-          if (!_.isEmpty(formFieldCategory.allowedRoles)
-            && !this.permissionService.checkRolesPermissions(formFieldCategory.allowedRoles)) {
-              return false;
-          }
           if (formFieldCategory.code === 'channel') {
             formFieldCategory.range = _.map(formData.channelData, (value) => {
               return {category: 'channel',
