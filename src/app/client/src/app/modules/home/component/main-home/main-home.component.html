@@ -7,8 +7,11 @@
           <span class="ui red d-inline label small ml-5 py-3">{{toDoList.length}}</span>
           <span title="{{collapse==true?'Expand':'Collapse'}}"
             popupInverted>
-            <i [ngStyle]="{'transform': collapse === true ? 'rotate(0deg)' : 'rotate(180deg)'}" class="add large angle down icon pt-5 right-float"
-                (click)="collapse = !collapse"> </i>
+            <i 
+              class="large angle down icon pt-5 right-float link" 
+              [ngStyle]="{'transform': collapse === true ? 'rotate(0deg)' : 'rotate(180deg)'}"
+              (click)="collapse = !collapse">
+            </i>
           </span>
           <div class="ui active" [suiCollapse]="collapse" [appTelemetryImpression]="telemetryImpression">
             <ngx-slick in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="toDoList" class="carousel" #slickModal="slick-modal"

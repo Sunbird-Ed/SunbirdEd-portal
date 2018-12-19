@@ -1,6 +1,6 @@
 <div class="ui container" [appTelemetryImpression]="telemetryImpression" >
     <div class="ui grid">
-        <div class="twelve wide column">
+        <div class="twelve wide column mt-15">
             <div class="ui grid top aligned">
                 <div class="twelve wide column" *ngIf ="showFilter">
                     <app-data-driven-filter [pageId]="'view-all'" *ngIf="filterType" [filterEnv]="filterType" [viewAllMode] = "true"
