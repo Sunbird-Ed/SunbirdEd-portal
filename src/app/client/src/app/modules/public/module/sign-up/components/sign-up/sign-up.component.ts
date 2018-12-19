@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl, AbstractControl } from '@angular/forms';
-import { takeUntil, map, filter } from 'rxjs/operators';
-import { Subscription, Observable, Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { SignUpService } from './../../services';
+import { TenantService } from '@sunbird/core'
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss']
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();
   signUpForm: FormGroup;
   sbFormBuilder: FormBuilder;
@@ -21,13 +21,26 @@ export class SignUpComponent implements OnInit {
   googleCaptchaSiteKey: string;
   showSignUpForm = true;
   showUniqueError = '';
+  tenantDataSubscription: Subscription;
+  logo: string;
+  tenantName: string;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
-    public signUpService: SignUpService, public toasterService: ToasterService) {
+    public signUpService: SignUpService, public toasterService: ToasterService,
+  public tenantService: TenantService) {
     this.sbFormBuilder = formBuilder;
   }
 
   ngOnInit() {
+    this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
+      data => {
+        if (data && !data.err) {
+          this.logo = data.tenantData.logo;
+          this.tenantName = data.tenantData.titleName;
+        }
+      }
+    );
+
     try {
       this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value;
     } catch (error) { this.googleCaptchaSiteKey = ''; }
@@ -191,5 +204,13 @@ export class SignUpComponent implements OnInit {
       this.initializeFormFields();
       this.showSignUpForm = true;
     }
+  }
+
+  ngOnDestroy() {
+    if (this.tenantDataSubscription) {
+      this.tenantDataSubscription.unsubscribe();
+    }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

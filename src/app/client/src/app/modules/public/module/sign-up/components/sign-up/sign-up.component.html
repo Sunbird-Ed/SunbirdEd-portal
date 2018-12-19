@@ -1,6 +1,8 @@
 <sui-modal [isClosable]="false" class="fullpage" [size]="'fullscreen'" [isClosable]="'false'" #modal [mustScroll]="'true'">
   <div class="ui raised shadow container segment">
-    <!-- <img src="../../../../../assets/images/diksha-gov.svg" alt="diksha" height="60px" width="86px" class="mx-auto d-flex flex-jc-center mb-30"> -->
+    <div class="d-flex flex-jc-center mb-10">
+      <img class="image centered" alt={{tenantName}} height="45" src="{{logo}}">
+    </div>
     <div class="width-300 mx-auto">
       <div *ngIf="showSignUpForm">
         <div class="fs-1 font-weight-bold mb-20 text-ac">{{resourceService.frmelmnts.lbl.signUp}}</div>

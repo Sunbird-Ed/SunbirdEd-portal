@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SignUpService } from './../../services';
 import { ResourceService, ServerResponse } from '@sunbird/shared';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 
 @Component({
@@ -21,7 +21,7 @@ export class OtpComponent implements OnInit {
   infoMessage: string;
 
   constructor(public resourceService: ResourceService, public signUpService: SignUpService,
-    public route: Router, public activatedRoute: ActivatedRoute) { }
+    public activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.mode = this.signUpdata.controls.contactType.value;
