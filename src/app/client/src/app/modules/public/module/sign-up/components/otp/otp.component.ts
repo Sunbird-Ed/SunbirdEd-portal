@@ -69,8 +69,8 @@ export class OtpComponent implements OnInit {
   createUser() {
     const createRequest = {
       'request': {
-        'firstName': this.signUpdata.controls.name.value,
-        'password': this.signUpdata.controls.password.value,
+        'firstName': _.trim(this.signUpdata.controls.name.value),
+        'password': _.trim(this.signUpdata.controls.password.value),
       }
     };
     if (this.mode === 'phone') {

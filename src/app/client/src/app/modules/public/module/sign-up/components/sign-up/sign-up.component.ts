@@ -3,7 +3,8 @@ import { FormBuilder, Validators, FormGroup, FormControl, AbstractControl } from
 import { Subject, Subscription } from 'rxjs';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { SignUpService } from './../../services';
-import { TenantService } from '@sunbird/core'
+import { TenantService } from '@sunbird/core';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-sign-up',
@@ -62,6 +63,10 @@ export class SignUpComponent implements OnInit, OnDestroy {
         validator: (formControl) => {
           const passCtrl = formControl.controls.password;
           const conPassCtrl = formControl.controls.confirmPassword;
+          const nameCtrl = formControl.controls.name;
+          if (_.trim(nameCtrl.value) === '') { nameCtrl.setErrors({ required: true }); }
+          if (_.trim(passCtrl.value) === '') { passCtrl.setErrors({ required: true }); }
+          if (_.trim(conPassCtrl.value) === '') { conPassCtrl.setErrors({ required: true }); }
           if (passCtrl.value !== conPassCtrl.value) {
             conPassCtrl.setErrors({ validatePasswordConfirmation: true });
           } else { conPassCtrl.setErrors(null); }
