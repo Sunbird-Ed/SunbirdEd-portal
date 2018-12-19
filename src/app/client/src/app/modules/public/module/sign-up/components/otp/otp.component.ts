@@ -33,7 +33,7 @@ export class OtpComponent implements OnInit {
 
   verifyOTP() {
     const wrongOTPMessage = this.mode === 'phone' ? this.resourceService.frmelmnts.lbl.wrongPhoneOTP :
-    this.resourceService.frmelmnts.lbl.wrongEmailOTP;
+      this.resourceService.frmelmnts.lbl.wrongEmailOTP;
     this.disableSubmitBtn = true;
     const request = {
       'request': {
@@ -52,7 +52,7 @@ export class OtpComponent implements OnInit {
       (err) => {
         this.infoMessage = '';
         this.errorMessage = err.error.params.status === 'ERROR_INVALID_OTP' ?
-        wrongOTPMessage : this.resourceService.messages.fmsg.m0085;
+          wrongOTPMessage : this.resourceService.messages.fmsg.m0085;
         this.disableSubmitBtn = false;
       }
     );

@@ -27,7 +27,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signUpService: SignUpService, public toasterService: ToasterService,
-  public tenantService: TenantService) {
+    public tenantService: TenantService) {
     this.sbFormBuilder = formBuilder;
   }
 
