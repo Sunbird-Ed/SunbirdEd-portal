@@ -301,6 +301,23 @@ export class SearchService {
     return this.learnerService.post(option);
   }
 
+  /**
+   * getLockList.
+   *
+   * @param {SearchParam} requestParam api request data
+  */
+  getContentLockList(requestParam: SearchParam): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.CONTENT.LOCK_LIST,
+      data: {
+        request: {
+          filters: requestParam.filters
+        }
+      }
+    };
+    return this.publicDataService.post(option);
+  }
+
   processFilterData(facets) {
     const facetObj = {};
     _.forEach(facets, (value) => {

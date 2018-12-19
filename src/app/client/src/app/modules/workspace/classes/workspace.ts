@@ -2,6 +2,9 @@ import { WorkSpaceService } from './../services';
 import { SearchService } from '@sunbird/core';
 import { ResourceService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
+import { mergeMap, catchError } from 'rxjs/operators';
+import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+
 /**
  * Base class for workspace module
 */
@@ -31,6 +34,39 @@ export class WorkSpace {
     search(searchParams) {
         return this.searchService.compositeSearch(searchParams);
     }
+
+    /**
+    * Search Api call and returns contents with lock status of each one
+    */
+    searchContentWithLockStatus(searchParams) {
+        return this.search(searchParams).pipe(mergeMap((data: ServerResponse) => {
+            if (data.result.count > 0) {
+                const contents = data.result.content;
+                const inputParams = {
+                    filters: {
+                        'resourceId' : _.map(contents, 'identifier')
+                    }
+                };
+                return this.searchService.getContentLockList(inputParams).pipe(mergeMap((responseData: ServerResponse) => {
+                    if (responseData.result.count > 0) {
+                        const lockDataKeyByContentId = _.keyBy(responseData.result.data, 'resourceId');
+                        _.each(contents, (eachcontent, index) => {
+                            if (lockDataKeyByContentId[eachcontent.identifier]) {
+                                contents[index].lockInfo = lockDataKeyByContentId[eachcontent.identifier];
+                            }
+                        });
+                    }
+                    data.result.content = contents;
+                    return observableOf(data);
+                }));
+            } else {
+                return observableOf(data);
+            }
+        }), catchError((err) => {
+            return observableThrowError(err);
+        }));
+    }
+
     /**
     * Delete  Api call .
     */

@@ -40,3 +40,5 @@
     <button class="ui primary button" (click)="modal.approve('approved')" autofocus>Yes</button>
   </div>
 </ng-template>
+
+<app-popup-info [popupContent]="lockInfoPopupContent" (closeEvent)="onCloseLockInfoPopup($event)" *ngIf="showLockedContentModal"></app-popup-info>

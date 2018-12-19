@@ -155,6 +155,7 @@ export class WorkSpaceService {
     });
     return <ICard[]>list;
   }
+
   toggleWarning(type?: string) {
     this.showWarning = sessionStorage.getItem('inEditor');
     if (this.showWarning === 'true') {

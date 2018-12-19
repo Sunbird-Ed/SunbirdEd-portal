@@ -1,0 +1,15 @@
+<sui-modal [isClosable]="true" size="tiny" (dismissed)="closeModal()" #modal>
+    <div class="content">
+        <div class="ui center aligned segment">
+            <div class="header cardsHeading">{{popupContent.headerTitle}} 
+                <!-- {{resourceService.frmelmnts?.lbl?.signinenrollTitle}}  -->
+            </div>
+            <br />
+            <div class="announcement-description">
+            </div>
+            <a href={{baseUrl}} class="ui button primary announcement-button close mt-20">{{popupContent.actionButtonTitle}} 
+                <!-- {{resourceService.frmelmnts?.btn?.signin}} -->
+            </a>
+        </div>
+    </div>
+</sui-modal>

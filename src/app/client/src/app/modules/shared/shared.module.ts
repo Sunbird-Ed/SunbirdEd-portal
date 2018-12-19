@@ -6,7 +6,7 @@ import {
   PageSectionComponent, NoResultComponent, AppLoaderComponent, PlayerComponent,
   CollectionTreeComponent, FancyTreeComponent, CardComponent, CardCreationComponent, ShareLinkComponent, CollectionPlayerMetadataComponent,
   BrowserCompatibilityComponent, QrCodeModalComponent, RedirectComponent, CustomMultiSelectComponent,
-  InstallAppComponent
+  InstallAppComponent, InfoPopupComponent
 } from './components';
 import {
   ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService, BrowserCacheTtlService,
@@ -35,12 +35,12 @@ import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
     DateFormatPipe, PageSectionComponent, NoResultComponent, DateFilterXtimeAgoPipe,
     CollectionTreeComponent, FancyTreeComponent, PlayerComponent, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
     ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe,
-    RedirectComponent, CustomMultiSelectComponent, InstallAppComponent],
+    RedirectComponent, CustomMultiSelectComponent, InstallAppComponent, InfoPopupComponent],
   exports: [AppLoaderComponent, ContentCreditsComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
     PageSectionComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
     PlayerComponent, CardComponent, CardCreationComponent, FilterPipe, ShareLinkComponent, CollectionPlayerMetadataComponent,
     BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent, CustomMultiSelectComponent,
-    InstallAppComponent]
+    InstallAppComponent, InfoPopupComponent]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
