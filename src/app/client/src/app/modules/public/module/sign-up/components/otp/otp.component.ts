@@ -19,6 +19,7 @@ export class OtpComponent implements OnInit {
   mode: string;
   errorMessage: string;
   infoMessage: string;
+  unabletoVerifyErrorMessage: string;
 
   constructor(public resourceService: ResourceService, public signUpService: SignUpService,
     public activatedRoute: ActivatedRoute) { }
@@ -29,6 +30,8 @@ export class OtpComponent implements OnInit {
       otp: new FormControl('', [Validators.required])
     });
     this.enableSignUpSubmitButton();
+    this.unabletoVerifyErrorMessage = this.mode === 'phone' ? this.resourceService.frmelmnts.lbl.unableToVerifyPhone :
+      this.resourceService.frmelmnts.lbl.unableToVerifyEmail;
   }
 
   verifyOTP() {
