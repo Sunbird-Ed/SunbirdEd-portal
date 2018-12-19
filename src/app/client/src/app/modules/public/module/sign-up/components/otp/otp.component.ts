@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SignUpService } from './../../services';
 import { ResourceService, ServerResponse } from '@sunbird/shared';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
@@ -13,6 +13,7 @@ import * as _ from 'lodash';
 export class OtpComponent implements OnInit {
 
   @Input() signUpdata: any;
+  @Output() redirectToParent = new EventEmitter();
   otpForm: FormGroup;
   disableSubmitBtn = true;
   mode: string;
@@ -31,6 +32,8 @@ export class OtpComponent implements OnInit {
   }
 
   verifyOTP() {
+    const wrongOTPMessage = this.mode === 'phone' ? this.resourceService.frmelmnts.lbl.wrongPhoneOTP :
+    this.resourceService.frmelmnts.lbl.wrongEmailOTP;
     this.disableSubmitBtn = true;
     const request = {
       'request': {
@@ -49,7 +52,7 @@ export class OtpComponent implements OnInit {
       (err) => {
         this.infoMessage = '';
         this.errorMessage = err.error.params.status === 'ERROR_INVALID_OTP' ?
-          this.resourceService.frmelmnts.lbl.wrongPhoneOTP : this.resourceService.messages.fmsg.m0085;
+        wrongOTPMessage : this.resourceService.messages.fmsg.m0085;
         this.disableSubmitBtn = false;
       }
     );
@@ -119,4 +122,7 @@ export class OtpComponent implements OnInit {
     });
   }
 
+  redirectToSignUp() {
+    this.redirectToParent.emit('true');
+  }
 }

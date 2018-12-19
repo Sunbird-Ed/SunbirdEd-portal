@@ -32,9 +32,6 @@ export class SignUpComponent implements OnInit {
       this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value;
     } catch (error) { this.googleCaptchaSiteKey = ''; }
     this.initializeFormFields();
-    this.onContactTypeValueChanges();
-    this.enableSignUpSubmitButton();
-    this.onPhoneChange();
   }
 
   initializeFormFields() {
@@ -56,6 +53,9 @@ export class SignUpComponent implements OnInit {
           return null;
         }
       });
+    this.onContactTypeValueChanges();
+    this.enableSignUpSubmitButton();
+    this.onPhoneChange();
   }
 
   onContactTypeValueChanges(): void {
@@ -146,7 +146,6 @@ export class SignUpComponent implements OnInit {
 
   /**
    * This method gets called internally after google invisible captcha success
-   *
    */
   resolved(captchaResponse: string) {
     if (captchaResponse) {
@@ -159,7 +158,6 @@ export class SignUpComponent implements OnInit {
   }
 
   onSubmitSignUpForm() {
-    this.disableSubmitBtn = true;
     this.generateOTP();
   }
 
@@ -173,13 +171,13 @@ export class SignUpComponent implements OnInit {
     };
     this.signUpService.generateOTP(request).subscribe(
       (data: ServerResponse) => {
-        console.log('data--', data);
         this.showSignUpForm = false;
         this.disableSubmitBtn = false;
       },
-      (err: ServerResponse) => {
-        console.log('err----', err);
-        this.toasterService.error(this.resourceService.messages.fmsg.m0085);
+      (err) => {
+        const failedgenerateOTPMessage = (err.error.params.status === 'PHONE_ALREADY_IN_USE') ||
+          (err.error.params.status === 'EMAIL_IN_USE') ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0085;
+        this.toasterService.error(failedgenerateOTPMessage);
         this.resetGoogleCaptcha();
         this.disableSubmitBtn = false;
       }
@@ -191,5 +189,10 @@ export class SignUpComponent implements OnInit {
     element.click();
   }
 
-
+  showParentForm(event) {
+    if (event === 'true') {
+      this.initializeFormFields();
+      this.showSignUpForm = true;
+    }
+  }
 }
