@@ -10,12 +10,12 @@ const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
 
 let keycloak = getKeyCloakClient({
-  resource: envHelper.PORTAL_TRAMPOLINE_CLIENT_ID,
+  resource: envHelper.KEYCLOAK_GOOGLE_CLIENT.clientId,
   bearerOnly: true,
   serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
   realm: envHelper.PORTAL_REALM,
   credentials: {
-    secret: envHelper.PORTAL_TRAMPOLINE_SECRET
+    secret: envHelper.KEYCLOAK_GOOGLE_CLIENT.secret
   }
 })
 class GoogleOauth {
@@ -86,7 +86,7 @@ const createUserWithMailId = async (accountDetails, req) => {
   }
   const options = {
     method: 'POST',
-    url: envHelper.LEARNER_URL + 'user/v3/create',
+    url: envHelper.LEARNER_URL + 'user/v2/create',
     headers: getHeaders(req),
     body: {
       request: {
