@@ -61,10 +61,10 @@ module.exports = (app) => {
   });
 }
 const getErrorMessage = (error) => {
-  if(error instanceof Error && error.message === 'USER_NAME_NOT_PRESENT') {
+  if(error === 'USER_NAME_NOT_PRESENT' || _.get(error, 'message') === 'USER_NAME_NOT_PRESENT') {
     return 'Your account could not be created on Diksha due to your Google Security settings.';
   } else {
-    return 'Your account could not be created on Diksha due to some internal error.'
+    return 'Your account could not be created on Diksha due to internal error.'
   }
 }
 const handleCreateUserError = (error) => {
