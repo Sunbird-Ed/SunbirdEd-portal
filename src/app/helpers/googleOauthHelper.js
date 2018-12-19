@@ -68,7 +68,7 @@ const fetchUserById = async (emailId, req) => {
   const options = {
     method: 'POST',
     url: envHelper.LEARNER_URL + 'user/v1/getByKey',
-    headers: getHeaders(),
+    headers: getHeaders(req),
     body: { request: { key: 'email', value: emailId } },
     json: true
   }
@@ -87,7 +87,7 @@ const createUserWithMailId = async (accountDetails, req) => {
   const options = {
     method: 'POST',
     url: envHelper.LEARNER_URL + 'user/v3/create',
-    headers: getHeaders(),
+    headers: getHeaders(req),
     body: {
       request: {
         firstName: accountDetails.name,
@@ -105,7 +105,7 @@ const createUserWithMailId = async (accountDetails, req) => {
     }
   })
 }
-const getHeaders = () => {
+const getHeaders = (req) => {
   return {
     'x-device-id': req.get('x-device-id'),
     'x-msgid': uuid(),
