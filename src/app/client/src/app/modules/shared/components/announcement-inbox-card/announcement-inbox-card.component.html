@@ -18,7 +18,7 @@
     </span>
     <span *ngIf="announcement.description.length > 180">
       ...
-      <span class="blue-text-color-sunbird">
+      <span class="blue-text-color-sunbird expand-or-minimize">
         {{resourceService.frmelmnts?.lbl?.anncmntreadmore}}
       </span>
     </span>
@@ -47,7 +47,7 @@
       <div *ngIf="first">
         <i class="file text outline icon opacity04">
         </i>
-        <span class="ann-link-or-attachment">
+        <span class="announcement-link-or-attachment">
           {{attachment.name | slice:0:30}}
         </span>
         <span class="announcement-meta-data">
