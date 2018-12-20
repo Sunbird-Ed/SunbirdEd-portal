@@ -1,6 +1,6 @@
 <div class="ui raised segment cursor-pointer p-10 mb-20" [ngClass]="{'ann-segment-left-border':announcement.read  === false}">
   <div>
-    <p class="ui grey label py-4" *ngIf="announcement.type">
+    <p class="ui grey label py-4 announcement-type" *ngIf="announcement.type">
       {{announcement.type | uppercase}}
     </p>
   </div>
@@ -28,7 +28,7 @@
       <div *ngIf="first">
         <i class="linkify icon opacity04">
         </i>
-        <span class="ann-link-or-attachment">
+        <span class="announcement-link-or-attachment">
           {{links | slice:0:70}}
           <span *ngIf="links.length > 70">
             ...
