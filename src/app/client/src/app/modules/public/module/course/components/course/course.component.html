@@ -4,7 +4,7 @@
   <div class="ui container" >
     <div class="ui grid">
       <div class="twelve wide column mt-30" *ngFor="let section of carouselData">
-          <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section" (viewAll)="viewAll($event)"></app-page-section>
+        <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section" (viewAll)="viewAll($event)"></app-page-section>
       </div>
       <div class="twelve wide column mt-30" *ngIf="showLoader">
         <app-loader [data]='loaderMessage'></app-loader>
@@ -15,7 +15,6 @@
     </div>
   </div>
 </div>
-
 <sui-modal [isClosable]="true" size="tiny" (dismissed)="showLoginModal = false" #modal *ngIf="showLoginModal">
   <div class="content">
     <div class="ui center aligned segment">

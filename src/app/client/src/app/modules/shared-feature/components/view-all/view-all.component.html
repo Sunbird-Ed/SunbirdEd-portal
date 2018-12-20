@@ -49,12 +49,10 @@
 <sui-modal [isClosable]="true" size="tiny" (dismissed)="closeModal()" #modal *ngIf="showLoginModal">
     <div class="content">
       <div class="ui center aligned segment">
-        <div class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.signinenrollTitle}} </div>
-        <br/>
-        <div class="announcement-description">
-          <!-- {{resourceService?.frmelmnts?.lbl?.signinenrollHeader}} -->
+        <div class="ui header">
+            {{resourceService?.frmelmnts?.lbl?.signinenrollTitle}}
         </div>
-       <a href ={{baseUrl}} class ="ui button primary announcement-button close mt-20">{{resourceService.frmelmnts?.btn?.signin}}</a> 
+        <a href ={{baseUrl}} class ="ui button primary announcement-button close mt-20">{{resourceService.frmelmnts?.btn?.signin}}</a> 
       </div>
     </div>
 </sui-modal>
