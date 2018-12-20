@@ -85,7 +85,6 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     if (this.isEdit) {
       this.medium = _.find(this.formFieldProperties, { code: 'medium' });
       this.gradeLevel = _.find(this.formFieldProperties, { code: 'gradeLevel' });
-      console.log(this.gradeLevel);
       this.subject = _.find(this.formFieldProperties, { code: 'subject' });
     }
     this.selectedOption = _.cloneDeep(this.formInput);

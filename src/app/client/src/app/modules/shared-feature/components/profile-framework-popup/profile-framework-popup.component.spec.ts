@@ -100,8 +100,8 @@ describe('ProfileFrameworkPopupComponent', () => {
     component.ngOnInit();
     expect(component.board).toBeDefined();
     expect(component.medium).toBeDefined();
-    expect(component.class).toBeDefined();
     expect(component.gradeLevel).toBeDefined();
+    expect(component.subject).toBeDefined();
     expect(component.showButton).toBeTruthy();
   });
 });
