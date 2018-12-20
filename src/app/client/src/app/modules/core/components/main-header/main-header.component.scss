@@ -1,7 +1,6 @@
 .primary-navbar-bg {
     background-color: #005DA2;
 }
-
 .ui.basic.button.qr-code-btn {
   background: #fff !important;
   color: #024f9d !important;
@@ -16,7 +15,6 @@
       font-size: 1.3em;
     }
 }
-
 @media only screen and (max-width: 767px) {
     .primary-searchbar-alignment {
         width: 100%;
@@ -30,7 +28,6 @@
         margin-right: 0 !important;
     }
 }
-
 @media only screen and (min-width: 768px) {
     .primary-searchbar-alignment {
         margin-right: auto;
@@ -43,28 +40,23 @@
         padding-top: 8px;
     }
 }
-
 .primary-nav-item .item {
     font-size: 0.86rem;
 }
-
 .ui.menu .primary-nav-item a.item.active {
     background: none;
     color: #024F9D;
     font-size: 0.86rem;
     font-weight: bold;
 }
-
 .ui.text.menu .item.active {
     color: #024F9D;
     font-size: 0.86rem;
     font-weight: bold;
 }
-
 .ui.menu a.item:hover {
     background: none;
 }
-
 .ui.menu .primary-nav-item a.item.divider {
     top: 22px;
     border-right: 0.5px solid #196D7F;
@@ -74,19 +66,13 @@
     border-width: 2px;
     margin-right: 10px;
 }
-
 .ui.icon.button {
     background: #edf4f9;
-    ;
-    padding-top: 1px;
-    padding-bottom: 4px;
-    padding-right: 7px;
-    padding-left: 7px;
+    padding: 1px 7px 4px 7px;
     .primary-search-icon {
         font-size: 1.2em;
     }
 }
-
 ::ng-deep {
     .ui.fluid.action.input.primary-search-input {
         height: 35px;
@@ -103,20 +89,20 @@
         }
     }
 }
-
 .ui.menu .active.item {
     background: none;
 }
-
 .search-qrcode-divider {
     opacity: 0.08;
     border-right: 2px solid #FFFFFF;
     padding-left: 0;
 }
-
 .sidebar-hamburger-menu {
     position: absolute;
-    right: 0;
+    right: 10px;
     top: 20px;
     color: #005DA2;
+}
+.profile-avtar:hover{
+    opacity:1;
 }
