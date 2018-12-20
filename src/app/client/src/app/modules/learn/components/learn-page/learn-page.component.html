@@ -2,15 +2,13 @@
   <div class="ui grid stackable">
     <div class="twelve wide column">
       <div class="ui grid top aligned">
-        <div class="row">
-          <div class="twelve wide column">
-            <app-data-driven-filter [pageId]="'course-page'" *ngIf="initFilters" [filterEnv]="filterType" 
-            [accordionDefaultOpen]=false [isShowFilterLabel]=true [formAction]="'filter'" [frameworkName]="frameWorkName" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
-          </div>
-          <!--<div class="three wide mobile two wide tablet two wide computer column">
-            <app-sort-by appTelemetryInteract [telemetryInteractEdata]="sortIntractEdata" [sortingOptions]="sortingOptions" [url]="redirectUrl"></app-sort-by>
-          </div>-->
+        <div class="twelve wide column">
+          <app-data-driven-filter [pageId]="'course-page'" *ngIf="initFilters" [filterEnv]="filterType" 
+          [accordionDefaultOpen]=false [isShowFilterLabel]=true [formAction]="'filter'" [frameworkName]="frameWorkName" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
         </div>
+        <!--<div class="three wide mobile two wide tablet two wide computer column">
+          <app-sort-by appTelemetryInteract [telemetryInteractEdata]="sortIntractEdata" [sortingOptions]="sortingOptions" [url]="redirectUrl"></app-sort-by>
+        </div>-->
       </div>
     </div>
     <div class="twelve wide column" *ngIf="enrolledSection?.contents?.length">
