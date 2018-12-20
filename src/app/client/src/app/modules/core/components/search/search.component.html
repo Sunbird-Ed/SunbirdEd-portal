@@ -14,7 +14,7 @@
 </div> -->
 
 <div class="ui fluid small ui action input primary-search-input" id="search-input-container" [ngClass]="{ 'disabled': !showInput }">
-    <input type="text" id="keyword" name="filter_search" title="Search" placeholder=" Search in  {{selectedOption}}"
+    <input type="text" id="keyword" name="filter_search" title="Search" placeholder="Search in  {{selectedOption}}"
     class="searchinput" [(ngModel)]="key" (keyup.enter)="onEnter(key)" [disabled]="!showInput" />
     <button class="ui icon button">
         <i class="search large blue icon primary-search-icon" [ngClass]="{ 'disableIcon': !showInput }" (click)="onEnter(key)"></i>

@@ -1,17 +1,18 @@
-primary-navbar-bg {
+.primary-navbar-bg {
     background-color: #005DA2;
 }
+
 .ui.basic.button.qr-code-btn {
-    background: #fff !important;
-    color: #024f9d !important;
-    font-size: 0.86rem;
-    border-radius: 3px;
-    font-weight: bold;
-    border: 1px solid #CAE4F7;
-    box-shadow: none;
-    height:35px;
+  background: #fff !important;
+  color: #024f9d !important;
+  font-size: 0.86rem;
+  border-radius: 3px;
+  font-weight: bold;
+  border: 1px solid #CAE4F7;
+  box-shadow: none;
+  height: 35px;
     .qrcode {
-      color: #024f9d !important; 
+      color: #024f9d !important;
       font-size: 1.3em;
     }
 }
@@ -25,15 +26,15 @@ primary-navbar-bg {
         padding-bottom: 9px;
     }
     .ui.mobile-view.container {
-        margin-left: 0!important;
-        margin-right: 0!important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
     }
 }
 
 @media only screen and (min-width: 768px) {
     .primary-searchbar-alignment {
         margin-right: auto;
-        margin-left: 40px;
+        margin-left: 15px;
         width: calc(100% - 284px);
         max-width: 490px;
     }
@@ -43,19 +44,25 @@ primary-navbar-bg {
     }
 }
 
-.primary-nav-item .item{
+.primary-nav-item .item {
     font-size: 0.86rem;
 }
 
-.ui.menu .primary-nav-item a.item:active,
-.ui.menu .primary-nav-item a.item:focus {
+.ui.menu .primary-nav-item a.item.active {
     background: none;
     color: #024F9D;
     font-size: 0.86rem;
     font-weight: bold;
 }
+
+.ui.text.menu .item.active {
+    color: #024F9D;
+    font-size: 0.86rem;
+    font-weight: bold;
+}
+
 .ui.menu a.item:hover {
-    background: none; 
+    background: none;
 }
 
 .ui.menu .primary-nav-item a.item.divider {
@@ -68,15 +75,15 @@ primary-navbar-bg {
     margin-right: 10px;
 }
 
-
 .ui.icon.button {
-    background: #edf4f9;;
+    background: #edf4f9;
+    ;
     padding-top: 1px;
     padding-bottom: 4px;
     padding-right: 7px;
     padding-left: 7px;
     .primary-search-icon {
-      font-size: 1.2em;       
+        font-size: 1.2em;
     }
 }
 
@@ -86,15 +93,30 @@ primary-navbar-bg {
         border: 1px solid #60D4EB;
         opacity: 1;
         border-radius: 5px;
-    }    
+    }
 }
 
 @media only screen and (min-width: 767px) {
     ::ng-deep {
         .ui.fluid.action.input.primary-search-input {
             height: 29px;
-        }    
+        }
     }
 }
 
+.ui.menu .active.item {
+    background: none;
+}
 
+.search-qrcode-divider {
+    opacity: 0.08;
+    border-right: 2px solid #FFFFFF;
+    padding-left: 0;
+}
+
+.sidebar-hamburger-menu {
+    position: absolute;
+    right: 0;
+    top: 20px;
+    color: #005DA2;
+}
