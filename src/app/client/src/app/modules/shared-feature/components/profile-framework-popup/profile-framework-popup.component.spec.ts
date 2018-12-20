@@ -9,7 +9,7 @@ import { ConfigService, ResourceService, Framework, ToasterService, SharedModule
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 import { Response } from './profile-framework-popup.component.spec.data';
 
-describe('PopupComponent', () => {
+describe('ProfileFrameworkPopupComponent', () => {
   let component: ProfileFrameworkPopupComponent;
   let fixture: ComponentFixture<ProfileFrameworkPopupComponent>;
   const resourceBundle = {
@@ -44,6 +44,7 @@ describe('PopupComponent', () => {
     component = fixture.componentInstance;
   });
   it('Error message to be displayed when framework api returns error', () => {
+    spyOn(document, 'getElementById').and.returnValue('true');
     const userService = TestBed.get(UserService);
     const frameworkService = TestBed.get(FrameworkService);
     const formService = TestBed.get(FormService);
@@ -59,6 +60,7 @@ describe('PopupComponent', () => {
   });
 
   it('Error message to be displayed when form config service throws error', () => {
+    spyOn(document, 'getElementById').and.returnValue('true');
     const userService = TestBed.get(UserService); const frameworkService = TestBed.get(FrameworkService);
     const formService = TestBed.get(FormService);
     const toasterService = TestBed.get(ToasterService);
@@ -73,6 +75,7 @@ describe('PopupComponent', () => {
   });
 
   it('Error message to be displayed when org details API throws error', () => {
+    spyOn(document, 'getElementById').and.returnValue('true');
     const userService = TestBed.get(UserService);
     const frameworkService = TestBed.get(FrameworkService);
     const formService = TestBed.get(FormService);
@@ -93,11 +96,12 @@ describe('PopupComponent', () => {
     userService._userData$.next({ err: null, userProfile: Response.userData });
     frameworkService._frameworkData$.next({ frameworkdata: Response.frameworkData });
     spyOn(formService, 'getFormConfig').and.callFake(() => observableOf(Response.formData.result.form.data.fields));
+    spyOn(document, 'getElementById').and.returnValue('true');
     component.ngOnInit();
     expect(component.board).toBeDefined();
     expect(component.medium).toBeDefined();
     expect(component.class).toBeDefined();
-    expect(component.subject).toBeDefined();
+    expect(component.gradeLevel).toBeDefined();
     expect(component.showButton).toBeTruthy();
   });
 });

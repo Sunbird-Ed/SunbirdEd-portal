@@ -11,7 +11,7 @@
         <label>{{board.label}}</label>
         <div class="field">
             <sui-select id={{board.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[board.code]"
-              [options]="options" (ngModelChange)="onChange()" [ngModelOptions]="{standalone: true}">
+              [options]="options"  (ngModelChange)="onChange($event,2,'gradelevel')" [ngModelOptions]="{standalone: true}">
               <sui-select-option *ngFor="let option of board.range" [value]="option.name"></sui-select-option>
             </sui-select>
         </div>
@@ -23,7 +23,7 @@
         <label>{{medium.label}}</label>
         <div class="field">
           <sui-multi-select id={{medium.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[medium.code]"
-            [options]="options" (ngModelChange)="onChange()" [ngModelOptions]="{standalone: true}" #multiSelect>
+            [options]="options"  (ngModelChange)="onChange($event,3,medium.code)" [ngModelOptions]="{standalone: true}" #multiSelect>
             <sui-select-option *ngFor="let option of medium.range" [value]="option.name"></sui-select-option>
           </sui-multi-select>
         </div>
@@ -31,15 +31,15 @@
           {{resourceService?.messages?.stmsg?.m0127}}
         </div>
       </div>
-      <div class="required field" *ngIf="class">
-        <label>{{class.label}}</label>
+      <div class="required field" *ngIf="gradeLevel">
+        <label>{{gradeLevel.label}}</label>
         <div class="field">
-          <sui-multi-select id={{class.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[class.code]"
-            [options]="options" (ngModelChange)="onChange()" [ngModelOptions]="{standalone: true}" #multiSelect>
-            <sui-select-option *ngFor="let option of class.range" [value]="option.name"></sui-select-option>
+          <sui-multi-select id={{gradeLevel.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[gradeLevel.code]"
+            [options]="options"    (ngModelChange)="onChange($event,4,gradeLevel.code)" [ngModelOptions]="{standalone: true}" #multiSelect>
+            <sui-select-option *ngFor="let option of gradeLevel.range" [value]="option.name"></sui-select-option>
           </sui-multi-select>
         </div>
-        <div class="mt-0 ui pointing red basic label below" *ngIf="selectedOption && selectedOption[class.code] && selectedOption[class.code].length == 0">
+        <div class="mt-0 ui pointing red basic label below" *ngIf="selectedOption && selectedOption[gradeLevel.code] && selectedOption[gradeLevel.code].length == 0">
           {{resourceService?.messages?.stmsg?.m0128}}
         </div>
       </div>
