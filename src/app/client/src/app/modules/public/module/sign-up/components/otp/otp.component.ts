@@ -58,9 +58,9 @@ export class OtpComponent implements OnInit {
         this.infoMessage = '';
         this.errorMessage = err.error.params.status === 'ERROR_INVALID_OTP' ?
           wrongOTPMessage : this.resourceService.messages.fmsg.m0085;
-          if (this.disableResendButton) {
-            this.showSignUpLink = true;
-          }
+        if (this.disableResendButton) {
+          this.showSignUpLink = true;
+        }
         this.disableSubmitBtn = false;
       }
     );
@@ -88,7 +88,9 @@ export class OtpComponent implements OnInit {
           ['client_id', 'redirect_uri', 'scope', 'state', 'response_type']);
         queryObj['success_message'] = this.mode === 'phone' ? this.resourceService.frmelmnts.lbl.createUserSuccessWithPhone :
           this.resourceService.frmelmnts.lbl.createUserSuccessWithEmail;
-        const query = Object.keys(queryObj).map(key => key + '=' + queryObj[key]).join('&');
+        const query = Object.keys(queryObj).map((key) => {
+          return encodeURIComponent(key) + '=' + encodeURIComponent(queryObj[key]);
+        }).join('&');
         const redirect_uri = reqQuery.error_callback + '?' + query;
         window.location.href = redirect_uri;
       },
