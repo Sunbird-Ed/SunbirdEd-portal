@@ -27,7 +27,7 @@
             <sui-select-option *ngFor="let option of medium.range" [value]="option.name"></sui-select-option>
           </sui-multi-select>
         </div>
-        <div class="mt-0  ui pointing red basic label below" *ngIf="selectedOption && selectedOption[medium.code] && selectedOption[medium.code].length == 0">
+        <div class="mt-0  ui pointing red basic label below" *ngIf="!medium &&  selectedOption && selectedOption[medium.code] && selectedOption[medium.code].length == 0">
           {{resourceService?.messages?.stmsg?.m0127}}
         </div>
       </div>
@@ -39,7 +39,7 @@
             <sui-select-option *ngFor="let option of gradeLevel.range" [value]="option.name"></sui-select-option>
           </sui-multi-select>
         </div>
-        <div class="mt-0 ui pointing red basic label below" *ngIf="selectedOption && selectedOption[gradeLevel.code] && selectedOption[gradeLevel.code].length == 0">
+        <div class="mt-0 ui pointing red basic label below" *ngIf="!gradeLevel && selectedOption && selectedOption[gradeLevel.code] && selectedOption[gradeLevel.code].length == 0">
           {{resourceService?.messages?.stmsg?.m0128}}
         </div>
       </div>

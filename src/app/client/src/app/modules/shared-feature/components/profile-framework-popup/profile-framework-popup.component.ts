@@ -102,6 +102,10 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   }
 
   onChange(event?: any, nextIndex?: any, code?: any) {
+    if (event) {
+      this.getAssociations(event, nextIndex, code);
+      this.resetSelectedOption(nextIndex);
+    }
     if (this.selectedOption['board'] && this.selectedOption['medium'] && this.selectedOption['gradeLevel']) {
       if (this.selectedOption['board'].length > 0 && this.selectedOption['medium'].length > 0
         && this.selectedOption['gradeLevel'].length > 0) {
@@ -110,11 +114,19 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         this.showButton = false;
       }
     }
-    if (event) {
-      this.getAssociations(event, nextIndex, code);
+  }
+  resetSelectedOption(nextIndex) {
+    if (nextIndex === 2) {
+      this.selectedOption['medium'] = [];
+      this.selectedOption['gradeLevel'] = [];
+      this.selectedOption['subject'] = [];
+    } else if ( nextIndex === 3 ) {
+      this.selectedOption['gradeLevel'] = [];
+      this.selectedOption['subject'] = [];
+    } else {
+      this.selectedOption['subject'] = [];
     }
   }
-
   getChannel() {
     this.channelService.getFrameWork(this.userService.hashTagId)
       .subscribe(data => {
@@ -180,9 +192,10 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     }
   }
   onSubmitForm() {
-    this.selectedOption.board = [this.selectedOption.board];
-    this.selectedOption['id'] = this.frameWorkId;
-    this.submit.emit(this.selectedOption);
+    const selectedOption = _.cloneDeep(this.selectedOption);
+    selectedOption.board = [this.selectedOption.board];
+    selectedOption['id'] = this.frameWorkId;
+    this.submit.emit(selectedOption);
   }
 
   onClose(modal) {
