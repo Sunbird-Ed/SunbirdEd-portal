@@ -131,7 +131,6 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
           board.push(value);
         });
         this.board['range'] = board;
-        console.log(this.board['range']);
         this.board['label'] = 'Board';
         this.board['code'] = 'board';
         this.label['medium'] = { 'label': 'Medium', 'index': 2};
@@ -157,7 +156,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       });
   }
   getAssociations(event, nextIndex, code) {
-    if (this.isCustodianOrg && nextIndex === 1) {
+    if (this.isCustodianOrg && nextIndex === 2) {
       const identifier = _.find(this.channelData, {'name': event});
       this.frameWorkId = identifier['identifier'];
       this.frameworkService.getFrameworkCategories(this.frameWorkId)
