@@ -14,6 +14,7 @@ import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+
 @Component({
   selector: 'app-all-content',
   templateUrl: './all-content.component.html',

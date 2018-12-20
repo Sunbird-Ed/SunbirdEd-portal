@@ -4,7 +4,6 @@ import { ResourceService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { mergeMap, catchError } from 'rxjs/operators';
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
-
 /**
  * Base class for workspace module
 */
@@ -118,4 +117,20 @@ export class WorkSpace {
     UserList(searchParams) {
         return this.searchService.getUserList(searchParams);
     }
+
+    /**
+    * handle content lock api error
+    */
+    handleContentLockError (errObj) {
+        let errorMessage = '';
+        const customErrors = ['RESOURCE_ALREADY_LOCKED_SELF', 'RESOURCE_ALREADY_LOCKED', 'ERR_TOKEN_INVALID'];
+        if (errObj.error.params.err) {
+            if (customErrors.indexOf(errObj.error.params.err) !== -1) {
+                // api error message has resource in error text, need to replace it with content
+                errorMessage = _.replace(errObj.error.params.errmsg, 'resource', 'content');
+            }
+        }
+        return errorMessage;
+    }
+
 }

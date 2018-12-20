@@ -245,15 +245,26 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       document.getElementById('collectionEditor').remove();
     }
     const contentStatus = this.collectionDetails.status.toLowerCase();
-    // if(contentStatus === 'draft'){
-    // }
+    if (contentStatus === 'draft') {
+      this.retireLock();
+    } else {
+      this.redirectToWorkSpace();
+    }
+  }
+
+  retireLock () {
     const inputData = {'resourceId': this.routeParams.contentId, 'resourceType': 'Content'};
     this.workspaceService.retireLock(inputData).subscribe(
-        (data: ServerResponse) => {
-        },
-        (err: ServerResponse) => {
-        }
+      (data: ServerResponse) => {
+        this.redirectToWorkSpace();
+      },
+      (err: ServerResponse) => {
+        this.redirectToWorkSpace();
+      }
     );
+  }
+
+  redirectToWorkSpace () {
     this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
   }
 

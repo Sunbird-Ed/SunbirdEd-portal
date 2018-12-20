@@ -253,7 +253,8 @@ export class DraftComponent extends WorkSpace implements OnInit {
                         this.workSpaceService.navigateToContent(param.data.metaData, this.state);
                     },
                     (err: ServerResponse) => {
-                        this.toasterService.error(this.resourceService.messages.fmsg.m0006);
+                        const errMessage = this.handleContentLockError(err);
+                        this.toasterService.error(errMessage || this.resourceService.messages.fmsg.m0006);
                     }
                 );
             }
