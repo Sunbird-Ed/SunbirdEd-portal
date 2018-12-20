@@ -124,7 +124,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
         let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
         // filters.channel = this.hashTagId;
         // filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
-        filters = _.omit(filters, ['key', 'sort_by', 'sortType']);
+        filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
         const option = {
             filters: filters,
             limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,

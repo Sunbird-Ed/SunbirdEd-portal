@@ -243,6 +243,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
           queryParams[key] = this.populateChannelData(formatedValue);
         }
     });
+    queryParams['appliedFilters'] = true;
     this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
     }
   }

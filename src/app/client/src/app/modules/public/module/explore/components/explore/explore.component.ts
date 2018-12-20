@@ -82,22 +82,31 @@ export class ExploreComponent implements OnInit, OnDestroy {
       });
   }
   private fetchPageData() {
-    const filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value.length);
-    const softConstraintFilter = {
-      channel: this.hashTagId,
-      board: [this.dataDrivenFilters.board]
+    const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key)  => {
+      if (_.includes(['sort_by', 'sortType', 'appliedFilters'], key)) {
+        return false;
+      }
+      return value.length;
+    });
+    const softConstraintData = {
+      filters: {channel: this.hashTagId,
+      board: [this.dataDrivenFilters.board]},
+      softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
+      mode: 'soft'
     };
-    const manipulatedData = this.utilService.manipulateSoftConstraint(filters,
-      softConstraintFilter, _.get(this.activatedRoute.snapshot, 'data.softConstraints'));
+    const manipulatedData = this.utilService.manipulateSoftConstraint( _.get(this.queryParams, 'appliedFilters'),
+    softConstraintData);
     const option = {
       source: 'web',
       name: 'Explore',
-      filters: manipulatedData.filters,
-      softConstraints: manipulatedData.softConstraints,
-      mode: 'soft',
+      filters: _.get(this.queryParams, 'appliedFilters') ?  filters : _.get(manipulatedData, 'filters'),
+      mode: _.get(manipulatedData, 'mode'),
       exists: [],
       params: this.configService.appConfig.ExplorePage.contentApiQueryParams
     };
+    if (_.get(manipulatedData, 'filters')) {
+      option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
+    }
     this.pageApiService.getPageData(option)
       .subscribe(data => {
         this.showLoader = false;
