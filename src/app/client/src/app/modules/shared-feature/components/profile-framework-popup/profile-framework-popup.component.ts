@@ -51,11 +51,6 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
               if (user.userProfile.rootOrg.rootOrgId === data.result.response.value) {
               this.isCustodianOrg = true;
               this.getChannel();
-              if (this.channelData) {
-                this.board['range'] = _.find(this.channelData, 'name');
-                this.board['label'] = 'Board';
-                this.board['code'] = 'board';
-              }
               } else {
                 this.frameworkService.initialize();
                 this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
@@ -131,6 +126,17 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     this.channelService.getFrameWork(this.userService.hashTagId)
       .subscribe(data => {
         this.channelData = data.result.channel.frameworks;
+        const board = [];
+        _.forEach(this.channelData, (value, index) => {
+          board.push(value);
+        });
+        this.board['range'] = board;
+        console.log(this.board['range']);
+        this.board['label'] = 'Board';
+        this.board['code'] = 'board';
+        this.label['medium'] = { 'label': 'Medium', 'index': 2};
+        this.label['class'] = { 'label': 'Class', 'index': 3};
+        this.label['subject'] = { 'label': 'Subject', 'index': 4};
       }, err => {
         this.navigateTolibrary();
       });
@@ -151,7 +157,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       });
   }
   getAssociations(event, nextIndex, code) {
-    if (this.isCustodianOrg) {
+    if (this.isCustodianOrg && nextIndex === 1) {
       const identifier = _.find(this.channelData, {'name': event});
       this.frameWorkId = identifier['identifier'];
       this.frameworkService.getFrameworkCategories(this.frameWorkId)
@@ -159,6 +165,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
           this.categoryMasterList = data.result.framework.categories;
           this.getFormFields(data.result.framework.code);
           this.isCustodianOrg = false;
+          this.getFormatedData(event, nextIndex, code);
         }, err => {
           this.navigateTolibrary();
         });
@@ -215,6 +222,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   }
 
   navigateTolibrary() {
+    this.toasterService.warning(this.resourceService.messages.emsg.m0012);
     this.router.navigate(['/resources']);
   }
 }

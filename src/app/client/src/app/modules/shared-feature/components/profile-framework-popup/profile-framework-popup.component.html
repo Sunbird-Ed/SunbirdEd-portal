@@ -1,4 +1,4 @@
-<sui-modal [isClosable]="false" [size]="'normal'" #modal [mustScroll]="'true'" appBodyScroll *ngIf="formFieldProperties">
+<sui-modal [isClosable]="false" [size]="'normal'" #modal [mustScroll]="'true'" appBodyScroll *ngIf="board">
   <i *ngIf="showCloseIcon" class="close icon" (click)="onClose(modal)"></i>
   <div class="scrollable content">
     <div class="ui grid">
@@ -11,7 +11,7 @@
         <label>{{board.label}}</label>
         <div class="field">
             <sui-select id={{board.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[board.code]"
-              [options]="options"  (ngModelChange)="onChange($event,2,'gradelevel')" [ngModelOptions]="{standalone: true}">
+              [options]="options"  (ngModelChange)="onChange($event,label.medium.index,'gradelevel')" [ngModelOptions]="{standalone: true}">
               <sui-select-option *ngFor="let option of board.range" [value]="option.name"></sui-select-option>
             </sui-select>
         </div>
@@ -20,10 +20,10 @@
         </div>
       </div>
       <div class="required field" *ngIf="medium">
-        <label>{{label.medium.label}}</label>
+        <label *ngIf="label.medium">{{label.medium.label}}</label>
         <div class="field">
           <sui-multi-select id={{medium.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[medium.code]"
-            [options]="options"  (ngModelChange)="onChange($event,3,medium.code)" [ngModelOptions]="{standalone: true}" #multiSelect>
+            [options]="options"  (ngModelChange)="onChange($event,label.class.index,medium.code)" [ngModelOptions]="{standalone: true}" #multiSelect>
             <sui-select-option *ngFor="let option of medium.range" [value]="option.name"></sui-select-option>
           </sui-multi-select>
         </div>
@@ -32,10 +32,10 @@
         </div>
       </div>
       <div class="required field" *ngIf="gradeLevel">
-        <label>{{label.class.label}}</label>
+        <label  *ngIf="label.class">{{label.class.label}}</label>
         <div class="field">
           <sui-multi-select id={{gradeLevel.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[gradeLevel.code]"
-            [options]="options"    (ngModelChange)="onChange($event,4,gradeLevel.code)" [ngModelOptions]="{standalone: true}" #multiSelect>
+            [options]="options"    (ngModelChange)="onChange($event,label.subject.index,gradeLevel.code)" [ngModelOptions]="{standalone: true}" #multiSelect>
             <sui-select-option *ngFor="let option of gradeLevel.range" [value]="option.name"></sui-select-option>
           </sui-multi-select>
         </div>
@@ -44,7 +44,7 @@
         </div>
       </div>
       <div class="field" *ngIf="subject">
-        <label>{{label.subject.label}}</label>
+        <label  *ngIf="label.subject">{{label.subject.label}}</label>
         <div class="field">
           <sui-multi-select id={{subject.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[subject.code]"
             [options]="options" [ngModelOptions]="{standalone: true}" #multiSelect>
