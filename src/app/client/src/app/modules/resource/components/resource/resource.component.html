@@ -11,7 +11,7 @@
         </div>-->
       </div>
     </div>
-    <div class="twelve wide column" *ngFor="let section of carouselData">
+    <div class="twelve wide column" *ngFor="let section of carouselData;let last = last" [ngClass]="{'last mb-30':last}">
       <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section" (viewAll)="viewAll($event)"></app-page-section>
     </div>
     <div class="twelve wide column" *ngIf="showLoader">
