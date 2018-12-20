@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { SignUpService } from './../../services';
+import { SignupService } from './../../services';
 import { ResourceService, ServerResponse } from '@sunbird/shared';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -23,7 +23,7 @@ export class OtpComponent implements OnInit {
   disableResendButton = false;
   showSignUpLink = false;
 
-  constructor(public resourceService: ResourceService, public signUpService: SignUpService,
+  constructor(public resourceService: ResourceService, public signupService: SignupService,
     public activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
@@ -48,7 +48,7 @@ export class OtpComponent implements OnInit {
         'otp': this.otpForm.controls.otp.value
       }
     };
-    this.signUpService.verifyOTP(request).subscribe(
+    this.signupService.verifyOTP(request).subscribe(
       (data: ServerResponse) => {
         this.infoMessage = '';
         this.errorMessage = '';
@@ -81,7 +81,7 @@ export class OtpComponent implements OnInit {
       createRequest.request['emailVerified'] = true;
     }
 
-    this.signUpService.createUser(createRequest).subscribe(
+    this.signupService.createUser(createRequest).subscribe(
       (resp: ServerResponse) => {
         const reqQuery = this.activatedRoute.snapshot.queryParams;
         const queryObj = _.pick(reqQuery,
@@ -110,7 +110,7 @@ export class OtpComponent implements OnInit {
         'type': this.mode
       }
     };
-    this.signUpService.generateOTP(request).subscribe(
+    this.signupService.generateOTP(request).subscribe(
       (data: ServerResponse) => {
         this.errorMessage = '';
         this.infoMessage = this.resourceService.frmelmnts.lbl.resentOTP;
