@@ -13,7 +13,7 @@
             padding: 10px 5px;
         }
         .menu>.item{
-            padding: 7px !important;
+            padding: 9px 7px !important;
             color: #4A4A4A !important;
             font-size: 12px !important;
             line-height: 1.4;
@@ -29,6 +29,8 @@
         border-color: #E4E4E4 !important;
         .text{
             text-transform: lowercase;
+            text-overflow: ellipsis;
+            overflow: hidden;
             &::first-letter{
                 text-transform: uppercase;
             }
