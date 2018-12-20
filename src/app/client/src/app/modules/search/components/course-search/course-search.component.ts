@@ -92,7 +92,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   }
   private fetchContents() {
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-    filters = _.omit(filters, ['key', 'sort_by', 'sortType']);
+    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
     const option = {
         filters: filters,
         limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
