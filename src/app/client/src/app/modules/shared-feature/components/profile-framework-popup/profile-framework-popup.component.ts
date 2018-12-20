@@ -182,7 +182,9 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     }
     const formData = _.find(this.formFieldProperties, { 'code': code });
     const nextFormData = _.find(this.formFieldProperties, { 'index': nextIndex });
-    this[nextFormData['code']] = nextFormData;
+    if (nextFormData) {
+      this[nextFormData['code']] = nextFormData;
+    }
     if (formData) {
       const range = _.get(formData, 'range');
       _.forEach(this.selectedData, (selectedValue, selectedIndex) => {
@@ -222,7 +224,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   }
 
   navigateTolibrary() {
-    this.toasterService.warning(this.resourceService.messages.emsg.m0012);
+    this.toasterService.warning(this.resourceService.messages.emsg.m0012s);
     this.router.navigate(['/resources']);
   }
 }
