@@ -4,15 +4,14 @@ const proxy = require('express-http-proxy')
 const session = require('express-session')
 const path = require('path')
 const bodyParser = require('body-parser')
-const async = require('async')
 const helmet = require('helmet')
+const uuid = require('uuid/v1')
+const dateFormat = require('dateformat')
 const _ = require('lodash')
 const trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js')
 const telemetryHelper = require('./helpers/telemetryHelper.js')
-const permissionsHelper = require('./helpers/permissionsHelper.js')
 const tenantHelper = require('./helpers/tenantHelper.js')
 const envHelper = require('./helpers/environmentVariablesHelper.js')
-const userHelper = require('./helpers/userHelper.js')
 const proxyUtils = require('./proxy/proxyUtils.js')
 const healthService = require('./helpers/healthCheckService.js')
 const { getKeyCloakClient, memoryStore} = require('./helpers/keyCloakHelper')
@@ -164,26 +163,51 @@ function runApp () {
 
   // redirect to home if nothing found
   app.all('*', (req, res) => res.redirect('/'))
-  // start server after building the configuration data
+  // start server after building the configuration data and fetch default channel id
 
   configHelper.init().then(function (status) {
-    portal.server = app.listen(envHelper.PORTAL_PORT, () => {
-      if (envHelper.PORTAL_CDN_URL) {
-        const req = request
-          .get(envHelper.PORTAL_CDN_URL + 'index.' + packageObj.version + '.' + packageObj.buildHash + '.ejs')
-          .on('response', function (res) {
-            if (res.statusCode === 200) {
-              req.pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')))
-            } else {
-              console.log('Error while fetching '+envHelper.PORTAL_CDN_URL + 'index.' + packageObj.version + '.' + packageObj.buildHash + '.ejs file when CDN enabled');
-            }
-          })
-      }
-      console.log('app running on port ' + envHelper.PORTAL_PORT)
+    fetchDefaultChannelDetails((channelError, channelRes, channelData) => {
+      portal.server = app.listen(envHelper.PORTAL_PORT, () => {
+        let defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId')
+        envHelper.defaultChannelId = defaultChannelId; // needs to be added in envVariable file
+        console.log(defaultChannelId, 'is set as default channel id in evnHelper');
+        if (envHelper.PORTAL_CDN_URL) {
+          const req = request
+            .get(envHelper.PORTAL_CDN_URL + 'index.' + packageObj.version + '.' + packageObj.buildHash + '.ejs')
+            .on('response', function (res) {
+              if (res.statusCode === 200) {
+                req.pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')))
+              } else {
+                console.log('Error while fetching '+ envHelper.PORTAL_CDN_URL + 'index.' + packageObj.version + '.' + packageObj.buildHash + '.ejs file when CDN enabled');
+              }
+            })
+        }
+        console.log('app running on port ' + envHelper.PORTAL_PORT)
+      })
     })
   },function(error){
     console.log('Error in loading configs ' + error)
   })
+}
+const fetchDefaultChannelDetails = async (callback) => {
+  const options = {
+    method: 'POST',
+    url: envHelper.LEARNER_URL + '/org/v1/search',
+    headers: {
+      'x-msgid': uuid(),
+      'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
+      'content-type': 'application/json',
+      'accept': 'application/json',
+      'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
+    },
+    body: {
+        request: {
+          filters: { slug: envHelper.DEFAULT_CHANNEL }
+        }
+    },
+    json: true
+  }
+  return request(options, callback)
 }
 
 exports.close = () => portal.server.close()
