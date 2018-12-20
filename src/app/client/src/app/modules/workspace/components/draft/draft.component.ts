@@ -49,7 +49,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
     /**
      * Contains static data of popup like header label , submit button label etc
     */
-    lockInfoPopupContent: object = {headerTitle: 'header', actionButtonTitle: 'action'};
+    lockInfoPopupContent: object = {headerTitle: ''};
 
     /**
      * Contains list of published course(s) of logged-in user
@@ -60,6 +60,11 @@ export class DraftComponent extends WorkSpace implements OnInit {
      * To show / hide loader
     */
     showLoader = true;
+
+    /**
+     * lock popup data for locked contents
+    */
+    lockPopupData: object;
 
     /**
      * loader message
@@ -156,7 +161,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
         route: Router, userService: UserService,
         toasterService: ToasterService, resourceService: ResourceService,
         config: ConfigService) {
-        super(searchService, workSpaceService);
+        super(searchService, workSpaceService, userService);
         this.paginationService = paginationService;
         this.route = route;
         this.activatedRoute = activatedRoute;
@@ -235,13 +240,22 @@ export class DraftComponent extends WorkSpace implements OnInit {
      * This method launch the content editior
     */
     contentClick(param) {
-        if (_.size(param.data.metaData.lockInfo)) {
+        if (_.size(param.data.lockInfo)) {
+            this.lockPopupData = param.data;
             this.showLockedContentModal = true;
         } else {
             if (param.action.eventName === 'delete') {
                 this.deleteConfirmModal(param.data.metaData.identifier);
             } else {
-                this.workSpaceService.navigateToContent(param.data.metaData, this.state);
+                this.lockContent(param.data.metaData).subscribe(
+                    (data: ServerResponse) => {
+                        param.data.metaData.lock = data.result;
+                        this.workSpaceService.navigateToContent(param.data.metaData, this.state);
+                    },
+                    (err: ServerResponse) => {
+                        this.toasterService.error(this.resourceService.messages.fmsg.m0006);
+                    }
+                );
             }
         }
     }

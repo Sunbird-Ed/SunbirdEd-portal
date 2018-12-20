@@ -63,6 +63,16 @@ export class AllContentComponent extends WorkSpace implements OnInit {
   noResult = false;
 
   /**
+   * lock popup data for locked contents
+  */
+  lockPopupData: object;
+
+  /**
+   * To show content locked modal
+  */
+  showLockedContentModal = false;
+
+  /**
    * To show / hide error
   */
   showError = false;
@@ -171,7 +181,7 @@ export class AllContentComponent extends WorkSpace implements OnInit {
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
     config: ConfigService, public modalService: SuiModalService) {
-    super(searchService, workSpaceService);
+    super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -251,7 +261,7 @@ export class AllContentComponent extends WorkSpace implements OnInit {
       query: _.toString(bothParams.queryParams.query),
       sort_by: this.sort
     };
-    this.search(searchParams).subscribe(
+    this.searchContentWithLockStatus(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
           this.allContent = data.result.content;
@@ -322,10 +332,34 @@ export class AllContentComponent extends WorkSpace implements OnInit {
     this.pageNumber = page;
     this.route.navigate(['workspace/content/allcontent', this.pageNumber], { queryParams: this.queryParams });
   }
+
   contentClick(content) {
-    if (content.status.toLowerCase() !== 'processing') {
-      this.workSpaceService.navigateToContent(content, this.state);
+    if (_.size(content.lockInfo)) {
+        this.lockPopupData = content;
+        this.showLockedContentModal = true;
+    } else {
+      const status = content.status.toLowerCase();
+      if (status !== 'processing') {
+        // only draft state contents need to be locked
+        if (status === 'draft') {
+          this.lockContent(content).subscribe(
+            (data: ServerResponse) => {
+                content.lock = data.result;
+                this.workSpaceService.navigateToContent(content, this.state);
+            },
+            (err: ServerResponse) => {
+                this.toasterService.error(this.resourceService.messages.fmsg.m0006);
+            }
+          );
+        } else {
+          this.workSpaceService.navigateToContent(content, this.state);
+        }
+      }
     }
+  }
+
+  public onCloseLockInfoPopup () {
+    this.showLockedContentModal = false;
   }
 
   inview(event) {

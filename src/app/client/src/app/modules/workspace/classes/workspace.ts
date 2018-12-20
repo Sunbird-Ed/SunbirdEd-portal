@@ -1,5 +1,5 @@
 import { WorkSpaceService } from './../services';
-import { SearchService } from '@sunbird/core';
+import { SearchService, UserService } from '@sunbird/core';
 import { ResourceService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { mergeMap, catchError } from 'rxjs/operators';
@@ -17,6 +17,10 @@ export class WorkSpace {
      * Reference for WorkSpaceService
     */
     public workSpaceService: WorkSpaceService;
+    /**
+    * Reference of user service.
+    */
+    public user: UserService;
 
     /**
     * Constructor to create injected service(s) object
@@ -24,9 +28,10 @@ export class WorkSpace {
     * @param {SearchService} SearchService Reference of SearchService
       @param {WorkSpaceService} WorkSpaceService Reference of WorkSpaceService
     */
-    constructor(searchService: SearchService, workSpaceService: WorkSpaceService ) {
+    constructor( searchService: SearchService, workSpaceService: WorkSpaceService, user: UserService ) {
         this.searchService = searchService;
         this.workSpaceService = workSpaceService;
+        this.user = user;
     }
     /**
     * Search Api call
@@ -47,12 +52,14 @@ export class WorkSpace {
                         'resourceId' : _.map(contents, 'identifier')
                     }
                 };
-                return this.searchService.getContentLockList(inputParams).pipe(mergeMap((responseData: ServerResponse) => {
+                return this.workSpaceService.getContentLockList(inputParams).pipe(mergeMap((responseData: ServerResponse) => {
                     if (responseData.result.count > 0) {
                         const lockDataKeyByContentId = _.keyBy(responseData.result.data, 'resourceId');
                         _.each(contents, (eachcontent, index) => {
-                            if (lockDataKeyByContentId[eachcontent.identifier]) {
-                                contents[index].lockInfo = lockDataKeyByContentId[eachcontent.identifier];
+                            const lockInfo = lockDataKeyByContentId[eachcontent.identifier];
+                            if (lockInfo) {
+                                lockInfo.creatorInfo = JSON.parse(lockInfo.creatorInfo);
+                                contents[index].lockInfo = lockInfo;
                             }
                         });
                     }
@@ -65,6 +72,20 @@ export class WorkSpace {
         }), catchError((err) => {
             return observableThrowError(err);
         }));
+    }
+
+    /**
+    * this call will prepare reuest object and call lock api
+    */
+    lockContent (content) {
+        const input = {
+          resourceId : content.identifier,
+          resourceType : 'Content',
+          resourceInfo : JSON.stringify(content),
+          creatorInfo : JSON.stringify({'name': this.user.userProfile.firstName, 'id': this.user.userProfile.identifier}),
+          createdBy : this.user.userProfile.identifier
+        };
+        return this.workSpaceService.lockContent(input);
     }
 
     /**

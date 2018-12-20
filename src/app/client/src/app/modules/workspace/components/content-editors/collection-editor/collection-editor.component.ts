@@ -38,6 +38,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   private browserBackEventSub;
   public collectionDetails: any;
   public ownershipType: Array<string>;
+  public queryParams: object;
+
   /**
   * Default method of classs CollectionEditorComponent
   * @param {ResourceService} resourceService To get language constant
@@ -57,6 +59,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
     this.routeParams = this.activatedRoute.snapshot.params;
+    this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.disableBrowserBackButton();
     this.getDetails().pipe(
       tap(data => {
@@ -165,6 +168,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     window.config.headerLogo = this.logo;
     window.config.build_number = this.buildNumber;
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
+    window.config.lock = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     if (this.routeParams.type.toLowerCase() === 'textbook') {
       window.config.plugins.push({
         id: 'org.ekstep.suggestcontent',
@@ -240,8 +244,19 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('collectionEditor')) {
       document.getElementById('collectionEditor').remove();
     }
+    const contentStatus = this.collectionDetails.status.toLowerCase();
+    // if(contentStatus === 'draft'){
+    // }
+    const inputData = {'resourceId': this.routeParams.contentId, 'resourceType': 'Content'};
+    this.workspaceService.retireLock(inputData).subscribe(
+        (data: ServerResponse) => {
+        },
+        (err: ServerResponse) => {
+        }
+    );
     this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
   }
+
   ngOnDestroy() {
     if (document.getElementById('collectionEditor')) {
       document.getElementById('collectionEditor').remove();

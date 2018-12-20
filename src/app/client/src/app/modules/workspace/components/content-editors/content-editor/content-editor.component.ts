@@ -31,6 +31,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   private browserBackEventSub;
   public contentDetails: any;
   public ownershipType: Array<string>;
+  public queryParams: object;
   /**
   * Default method of class ContentEditorComponent
   */
@@ -47,6 +48,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
     this.routeParams = this.activatedRoute.snapshot.params;
+    this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.disableBrowserBackButton();
     this.getDetails().pipe(
       tap(data => {
@@ -158,6 +160,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.config.headerLogo = this.logo;
     window.config.aws_s3_urls = this.userService.cloudStorageUrls || [];
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
+    window.config.lock = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
   }
   /**
    * checks the permission using state, status and userId

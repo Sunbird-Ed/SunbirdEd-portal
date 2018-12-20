@@ -30,6 +30,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   private browserBackEventSub;
   public extContWhitelistedDomains: string;
   public ownershipType: Array<string>;
+  public queryParams: object;
 
   constructor(private userService: UserService, public _zone: NgZone, private activatedRoute: ActivatedRoute,
     private tenantService: TenantService, private telemetryService: TelemetryService,
@@ -44,7 +45,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
     this.routeParams = this.activatedRoute.snapshot.params;
-    this.disableBrowserBackButton();
+    this.queryParams = this.activatedRoute.snapshot.queryParams;    this.disableBrowserBackButton();
     this.getDetails().pipe(
       tap(data => {
         if (data.tenantDetails) {
@@ -117,6 +118,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config = _.cloneDeep(this.configService.editorConfig.GENERIC_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config
     window.config.build_number = this.buildNumber;
     window.config.headerLogo = this.logo;
+    window.config.lock = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     window.config.extContWhitelistedDomains = this.extContWhitelistedDomains;
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
   }

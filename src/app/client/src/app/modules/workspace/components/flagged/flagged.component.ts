@@ -138,7 +138,7 @@ export class FlaggedComponent extends WorkSpace implements OnInit {
     route: Router, userService: UserService,
     config: ConfigService, resourceService: ResourceService,
     toasterService: ToasterService) {
-    super(searchService, workSpaceService);
+    super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
     this.activatedRoute = activatedRoute;

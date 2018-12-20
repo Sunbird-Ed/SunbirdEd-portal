@@ -41,4 +41,4 @@
   </div>
 </ng-template>
 
-<app-popup-info [popupContent]="lockInfoPopupContent" (closeEvent)="onCloseLockInfoPopup($event)" *ngIf="showLockedContentModal"></app-popup-info>
+<app-contentlock-info-popup [content]="lockPopupData" (closeEvent)="onCloseLockInfoPopup($event)" *ngIf="showLockedContentModal"></app-contentlock-info-popup>

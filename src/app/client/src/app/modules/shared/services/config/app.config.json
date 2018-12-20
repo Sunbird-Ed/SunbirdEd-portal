@@ -582,8 +582,7 @@
           "mimeType",
           "framework",
           "contentType",
-          "pkgVersion",
-          "lockInfo"
+          "pkgVersion"
         ]
       },
       "dynamicFields": {
