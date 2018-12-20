@@ -21,7 +21,8 @@ export class DateFormatPipe implements PipeTransform {
     if (value) {
       return momentConstructor(value).format(format || 'Do MMMM YYYY');
     } else {
-      return '';
+      console.log('inside pipe else :value:', value);
+      return '-';
     }
   }
 
