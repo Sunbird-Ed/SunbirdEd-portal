@@ -143,7 +143,7 @@
                 <td class="ui red header text-font" *ngIf="(student.progress !== 100 && student.progress < 30)">{{student.progress}}%</td>
                 <td>{{student.userName}}
                   <br>
-                  <span *ngIf="student.lastAccessTime">{{resourceService?.frmelmnts?.lbl?.lastLogin}} {{student.lastAccessTime | dateFormat}}</span>
+                  <span *ngIf="student.lastAccessTime">{{resourceService?.frmelmnts?.lbl?.lastAccessed}} {{student.lastAccessTime | dateFormat}}</span>
                 </td>
                 <td>{{student.batchEndsOn | dateFormat}}</td>
                 <td>{{student.org}}</td>
