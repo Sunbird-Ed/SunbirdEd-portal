@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, ChangeDetectorRef, EventEmitter, Output, OnDestroy, ViewChild } from '@angular/core';
-import { FrameworkService, FormService, UserService, ChannelService } from '@sunbird/core';
+import { FrameworkService, FormService, UserService, ChannelService, OrgDetailsService } from '@sunbird/core';
 import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
 import { combineLatest, Subscription, Subject } from 'rxjs';
 import {
   ConfigService, ResourceService, Framework, ToasterService, ServerResponse
 } from '@sunbird/shared';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash';
 @Component({
   selector: 'app-popup',
@@ -23,6 +24,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   private formType = 'user';
   public formFieldProperties: any;
   public channelData: any;
+  public label: object = {};
   public board: object = {};
   public medium: object = {};
   public gradeLevel: object = {};
@@ -36,35 +38,39 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   userSubscription: Subscription;
   public selectedData = [];
   public isCustodianOrg = false;
-  constructor(public userService: UserService, public frameworkService: FrameworkService,
+  constructor(public router: Router, public userService: UserService, public frameworkService: FrameworkService,
     public formService: FormService, public resourceService: ResourceService, private cdr: ChangeDetectorRef,
-    public toasterService: ToasterService, public channelService: ChannelService) { }
+    public toasterService: ToasterService, public channelService: ChannelService , public orgDetailsService: OrgDetailsService) { }
 
   ngOnInit() {
-    const defaultTenant = (<HTMLInputElement>document.getElementById('defaultTenant')).value;
     this.userSubscription = this.userService.userData$.subscribe(
       (user: any) => {
         if (user && !user.err) {
-          if (user.userProfile.rootOrg.channel === defaultTenant) {
-            this.isCustodianOrg = true;
-            this.getChannel();
-            if (this.channelData) {
-              this.board['range'] = _.find(this.channelData, 'name');
-              this.board['label'] = 'Board';
-              this.board['code'] = 'board';
-            }
-          } else {
-            this.frameworkService.initialize();
-            this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
-              if (!frameworkData.err) {
-                this.frameWorkId = frameworkData.frameworkdata['defaultFramework'].identifier;
-                this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
-                this.getFormFields(frameworkData.frameworkdata['defaultFramework'].code);
-              } else if (frameworkData && frameworkData.err) {
-                this.toasterService.error(this.resourceService.messages.emsg.m0005);
+          this.orgDetailsService.getCustodianOrg()
+            .subscribe(data => {
+              if (user.userProfile.rootOrg.rootOrgId === data.result.response.value) {
+              this.isCustodianOrg = true;
+              this.getChannel();
+              if (this.channelData) {
+                this.board['range'] = _.find(this.channelData, 'name');
+                this.board['label'] = 'Board';
+                this.board['code'] = 'board';
               }
+              } else {
+                this.frameworkService.initialize();
+                this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
+                  if (!frameworkData.err) {
+                    this.frameWorkId = frameworkData.frameworkdata['defaultFramework'].identifier;
+                    this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
+                    this.getFormFields(frameworkData.frameworkdata['defaultFramework'].code);
+                  } else if (frameworkData && frameworkData.err) {
+                    this.navigateTolibrary();
+                  }
+                });
+              }
+            }, err => {
+              this.navigateTolibrary();
             });
-          }
         } else if (user.err) {
           this.toasterService.error(this.resourceService.messages.emsg.m0005);
         }
@@ -82,6 +88,9 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     });
     this.formFieldProperties = _.sortBy(_.uniqBy(this.formFieldProperties, 'code'), 'index');
     this.board = _.find(this.formFieldProperties, { code: 'board' });
+    this.label['medium'] =  _.find(this.formFieldProperties, { label: 'Medium' });
+    this.label['class'] =  _.find(this.formFieldProperties, { label: 'Class' });
+    this.label['subject'] =  _.find(this.formFieldProperties, { label: 'Subject' });
     if (this.isEdit) {
       this.medium = _.find(this.formFieldProperties, { code: 'medium' });
       this.gradeLevel = _.find(this.formFieldProperties, { code: 'gradeLevel' });
@@ -111,7 +120,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.channelData = data.result.channel.frameworks;
       }, err => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        this.navigateTolibrary();
       });
   }
   getFormFields(frameworkCode) {
@@ -126,7 +135,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         this.formFieldProperties = data;
         this.getFormConfig();
       }, (err: ServerResponse) => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        this.navigateTolibrary();
       });
   }
   getAssociations(event, nextIndex, code) {
@@ -137,8 +146,9 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         .subscribe(data => {
           this.categoryMasterList = data.result.framework.categories;
           this.getFormFields(data.result.framework.code);
+          this.isCustodianOrg = false;
         }, err => {
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+          this.navigateTolibrary();
         });
     } else {
       this.getFormatedData(event, nextIndex, code);
@@ -189,5 +199,9 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  navigateTolibrary() {
+    this.router.navigate(['/resources']);
   }
 }

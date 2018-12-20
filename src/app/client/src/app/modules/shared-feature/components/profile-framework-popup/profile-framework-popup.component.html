@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="required field" *ngIf="medium">
-        <label>{{medium.label}}</label>
+        <label>{{label.medium.label}}</label>
         <div class="field">
           <sui-multi-select id={{medium.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[medium.code]"
             [options]="options"  (ngModelChange)="onChange($event,3,medium.code)" [ngModelOptions]="{standalone: true}" #multiSelect>
@@ -32,7 +32,7 @@
         </div>
       </div>
       <div class="required field" *ngIf="gradeLevel">
-        <label>{{gradeLevel.label}}</label>
+        <label>{{label.class.label}}</label>
         <div class="field">
           <sui-multi-select id={{gradeLevel.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[gradeLevel.code]"
             [options]="options"    (ngModelChange)="onChange($event,4,gradeLevel.code)" [ngModelOptions]="{standalone: true}" #multiSelect>
@@ -44,7 +44,7 @@
         </div>
       </div>
       <div class="field" *ngIf="subject">
-        <label>{{subject.label}}</label>
+        <label>{{label.subject.label}}</label>
         <div class="field">
           <sui-multi-select id={{subject.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[subject.code]"
             [options]="options" [ngModelOptions]="{standalone: true}" #multiSelect>
