@@ -2,16 +2,16 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
-import { SignUpService } from './../../services';
+import { SignupService } from './../../services';
 import { TenantService } from '@sunbird/core';
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'app-sign-up',
-  templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.scss']
+  selector: 'app-signup',
+  templateUrl: './signup.component.html',
+  styleUrls: ['./signup.component.scss']
 })
-export class SignUpComponent implements OnInit, OnDestroy {
+export class SignupComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();
   signUpForm: FormGroup;
   sbFormBuilder: FormBuilder;
@@ -27,7 +27,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
   tenantName: string;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
-    public signUpService: SignUpService, public toasterService: ToasterService,
+    public signupService: SignupService, public toasterService: ToasterService,
     public tenantService: TenantService) {
     this.sbFormBuilder = formBuilder;
   }
@@ -144,7 +144,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
           this.signUpForm.controls.phone.value.toString() : this.signUpForm.controls.email.value
       }
     };
-    this.signUpService.getUserByKey(request).subscribe(
+    this.signupService.getUserByKey(request).subscribe(
       (data: ServerResponse) => {
         this.showUniqueError = this.signUpForm.controls.contactType.value === 'phone' ?
           this.resourceService.frmelmnts.lbl.uniquePhone : this.resourceService.frmelmnts.lbl.uniqueEmail;
@@ -186,7 +186,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
         'type': this.signUpForm.controls.contactType.value.toString()
       }
     };
-    this.signUpService.generateOTP(request).subscribe(
+    this.signupService.generateOTP(request).subscribe(
       (data: ServerResponse) => {
         this.showSignUpForm = false;
         this.disableSubmitBtn = false;

@@ -184,6 +184,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
           queryParams[key] = formatedValue;
         }
     });
+    queryParams['appliedFilters'] = true;
     let redirectUrl; // if pageNumber exist then go to first page every time when filter changes, else go exact path
     if (this.activatedRoute.snapshot.params.pageNumber) { // when using dataDriven filter should this should be verified
       redirectUrl = this.router.url.split('?')[0].replace(/[^\/]+$/, '1');

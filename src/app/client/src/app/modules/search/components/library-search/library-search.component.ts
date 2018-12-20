@@ -37,6 +37,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
     public loaderMessage: ILoaderMessage;
     public sortingOptions;
     public redirectUrl;
+    public frameworkData: object;
     public closeIntractEdata;
 
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
@@ -52,6 +53,11 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
         this.setTelemetryData();
     }
     ngOnInit() {
+        this.userService.userData$.subscribe(userData => {
+            if (userData && !userData.err) {
+                this.frameworkData = _.get(userData.userProfile, 'framework');
+            }
+          });
         this.initFilters = true;
         this.dataDrivenFilterEvent.pipe(first()).
             subscribe((filters: any) => {
@@ -85,27 +91,34 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
     }
     private fetchContents() {
         let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-        filters = _.omit(filters, ['key', 'sort_by', 'sortType']);
-        filters.contentType = filters.contentType || ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game'];
-        const softConstraintFilter = {
-            channel: this.userService.hashTagId,
-            board: [this.dataDrivenFilters.board]
+        filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
+        const softConstraintData = {
+            filters: {channel: this.userService.hashTagId,
+            board: [this.dataDrivenFilters.board]},
+            softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
+            mode: 'soft'
           };
-          const manipulatedData = this.utilService.manipulateSoftConstraint(filters,
-            softConstraintFilter, _.get(this.activatedRoute.snapshot, 'data.softConstraints'));
+          const manipulatedData = this.utilService.manipulateSoftConstraint( _.get(this.queryParams, 'appliedFilters'),
+          softConstraintData, this.frameworkData );
         const option = {
-            filters: manipulatedData.filters,
+            filters: _.get(this.queryParams, 'appliedFilters') ?  filters :
+            (_.get(manipulatedData, 'filters') ? _.get(manipulatedData, 'filters') : {}),
             limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
             pageNumber: this.paginationDetails.currentPage,
             query: this.queryParams.key,
             sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType },
-            softConstraints: manipulatedData.softConstraints,
+            mode: _.get(manipulatedData, 'mode'),
             facets: this.facets,
             params: this.configService.appConfig.Library.contentApiQueryParams
         };
+        option.filters.contentType = filters.contentType ||
+        ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+        if (_.get(manipulatedData, 'filters')) {
+            option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
+          }
         this.frameworkService.channelData$.subscribe((channelData) => {
             if (!channelData.err) {
-              option.params.framework = _.get(channelData, 'channelData.defaultFramework');
+               option.params.framework = _.get(channelData, 'channelData.defaultFramework');
             }
         });
         this.searchService.contentSearch(option)

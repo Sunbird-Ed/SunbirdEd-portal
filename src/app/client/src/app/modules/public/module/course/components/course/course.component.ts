@@ -113,8 +113,12 @@ export class CourseComponent implements OnInit, OnDestroy {
       });
   }
   private fetchPageData() {
-    const filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value.length);
-    // filters.channel = this.hashTagId;
+    const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
+      if ( key === 'appliedFilters') {
+        return false;
+      }
+      return value.length;
+    });
     // filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
     const option = {
       source: 'web',

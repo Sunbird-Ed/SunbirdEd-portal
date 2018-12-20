@@ -5,7 +5,7 @@ import { ConfigService } from '@sunbird/shared';
 @Injectable({
   providedIn: 'root'
 })
-export class SignUpService {
+export class SignupService {
 
   constructor(private learnerService: LearnerService, public configService: ConfigService) { }
 
@@ -35,7 +35,7 @@ export class SignUpService {
 
   createUser(data) {
     const options = {
-      url: this.configService.urlConFig.URLS.USER.VTHREE_SIGNUP,
+      url: this.configService.urlConFig.URLS.USER.CREATE_V2,
       data: data
     };
     return this.learnerService.post(options);
