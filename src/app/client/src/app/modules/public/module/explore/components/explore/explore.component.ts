@@ -83,7 +83,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
   }
   private fetchPageData() {
     const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key)  => {
-      if (key === 'sort_by' || key === 'sortType' || key === 'appliedFilters') {
+      if (_.includes(['sort_by', 'sortType', 'appliedFilters'], key)) {
         return false;
       }
       return value.length;

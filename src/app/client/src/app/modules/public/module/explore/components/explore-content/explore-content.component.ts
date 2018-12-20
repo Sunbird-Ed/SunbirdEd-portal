@@ -111,7 +111,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
             params: this.configService.appConfig.ExplorePage.contentApiQueryParams
         };
         option.filters.contentType = filters.contentType ||
-        ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game'];
+        ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
         if (manipulatedData.filters) {
             option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
           }
