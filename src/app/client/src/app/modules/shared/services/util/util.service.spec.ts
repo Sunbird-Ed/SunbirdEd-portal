@@ -43,6 +43,6 @@ describe('UtilService', () => {
       const filter = undefined;
       const softconstraintsdata = service.manipulateSoftConstraint(filter, softConstraintData, userFrameworkData);
       expect(service.manipulateSoftConstraint).toBeDefined();
-      expect(softconstraintsdata).toEqual({mode: 'soft'});
+      expect(softconstraintsdata).toEqual({filters: userFrameworkData , mode: 'soft'});
     }));
 });

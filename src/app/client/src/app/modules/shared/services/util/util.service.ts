@@ -80,8 +80,8 @@ export class UtilService {
 
 
   public manipulateSoftConstraint(filter, softConstraintData, frameWorkData?: any) {
-    if (frameWorkData && !filter) {
-      return {mode: 'soft'};
+    if (!_.isEmpty(frameWorkData) && !filter) {
+      return {filters: _.omit(frameWorkData, ['id']), mode: 'soft'};
     } else if (filter) {
      return false;
     } else {
