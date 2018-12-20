@@ -21,7 +21,7 @@ export class DateFormatPipe implements PipeTransform {
     if (value) {
       return momentConstructor(value).format(format || 'Do MMMM YYYY');
     } else {
-      return '';
+      return '-';
     }
   }
 
