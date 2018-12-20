@@ -50,7 +50,7 @@
     </div>
     <div class="content">
         <span>
-            <button class="ui right tiny floated blue basic button unenrollBtn" appTelemetryInteract [telemetryInteractEdata]="unenrollBatchIntractEdata"
+            <button class="ui right floated tiny blue basic button unenrollBtn" appTelemetryInteract [telemetryInteractEdata]="unenrollBatchIntractEdata"
                 [telemetryInteractObject]="{id:enrolledBatchInfo.identifier,type:'batch',ver:'1',rollup:{l1:courseId}}"
                 (click)="unenrollBatch(enrolledBatchInfo)" [disabled]="isUnenrollbtnDisabled">{{resourceService.frmelmnts.btn.unenroll}}</button>
         </span>

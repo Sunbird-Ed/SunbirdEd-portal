@@ -47,7 +47,10 @@
           {{data.orgDetails?.orgName}}
         </div>
     </div>
-    <div *ngIf="data.maxCount && data.progress > 0">
-    <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount" ></sui-progress>
-  </div>
+    <div *ngIf="data.maxCount && data.progress > 0 else blank">
+      <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount" ></sui-progress>
+    </div>
+    <ng-template #blank>
+      <div class="py-2"></div>
+    </ng-template>
 </div>

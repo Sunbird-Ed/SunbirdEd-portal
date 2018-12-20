@@ -94,6 +94,9 @@
 .py-0 {
   @include padding(0 null);
 }
+.py-2 {
+  @include padding(2px null);
+}
 .py-3 {
   @include padding(3px null);
 }
