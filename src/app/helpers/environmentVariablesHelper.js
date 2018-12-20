@@ -55,7 +55,7 @@ let envVariables = {
   sunbird_portal_user_upload_ref_link: env.sunbird_portal_user_upload_ref_link || 'http://www.sunbird.org/features-documentation/register_user',
   GOOGLE_OAUTH_CONFIG: {
     clientId: env.sunbird_google_oauth_clientId,
-    clientSecret: env.sunbird_google_oauth_clientSecret 
+    clientSecret: env.sunbird_google_oauth_clientSecret
   },
   KEYCLOAK_GOOGLE_CLIENT: {
     clientId: env.sunbird_google_keycloak_client_id,
