@@ -44,3 +44,10 @@
 .ui.menu.fixed{
     max-width: 100vw;
 }
+.ui.visible.right.sidebar ~ .fixed,
+.ui.visible.right.sidebar ~ .pusher{
+    transform: translate3d(0, 0, 0) !important;
+}
+.ui.visible.uncover.sidebar{
+    z-index: 4;
+}
