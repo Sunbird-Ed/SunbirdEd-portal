@@ -5,7 +5,7 @@ import { ConfigService } from '@sunbird/shared';
 @Injectable({
   providedIn: 'root'
 })
-export class SignUpService {
+export class SignupService {
 
   constructor(private learnerService: LearnerService, public configService: ConfigService) { }
 

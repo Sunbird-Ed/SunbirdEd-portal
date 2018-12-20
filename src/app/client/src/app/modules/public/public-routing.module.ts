@@ -61,10 +61,10 @@ const routes: Routes = [
     path: ':slug/explore-course', loadChildren: './module/course/course.module#CourseModule'
   },
   {
-    path: ':slug/sign-up', loadChildren: './module/sign-up/sign-up.module#SignUpModule'
+    path: ':slug/signup', loadChildren: './module/signup/signup.module#SignupModule'
   },
   {
-    path: 'sign-up', loadChildren: './module/sign-up/sign-up.module#SignUpModule'
+    path: 'signup', loadChildren: './module/signup/signup.module#SignupModule'
   }
 ];
 @NgModule({
