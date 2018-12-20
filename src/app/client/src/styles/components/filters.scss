@@ -1,0 +1,66 @@
+.data-driven-filter,
+.prominent-filter{
+    .filter-title{
+        color: $primary-color;
+    }
+    .field {
+        max-width: 180px;
+    }
+    .ui.selection.dropdown{
+        min-height: auto;
+        width:100%;
+        .dropdown.icon{
+            padding: 10px 5px;
+        }
+        .menu>.item{
+            padding: 7px !important;
+            color: #4A4A4A !important;
+            font-size: 12px !important;
+            line-height: 1.4;
+            &.active{
+                color: $primary-color !important;
+                font-weight: bold;
+            }
+        }
+    }
+    .ui.multiple.dropdown {
+        font-size: 14px !important;
+        color: #4A4A4A !important;
+        border-color: #E4E4E4 !important;
+        .text{
+            text-transform: lowercase;
+            &::first-letter{
+                text-transform: uppercase;
+            }
+        }
+        &.active.visible{
+            background: #fff;
+        }
+    }
+    .ui.button{
+        font-size: 14px;
+        text-transform: lowercase;
+        padding: 9px 15px;
+        &::first-letter{
+            text-transform: uppercase;
+        }
+    }
+    .topic-picker-selector{
+        font-size: 14px !important;
+        color: #4A4A4A !important;
+        border-color:#E4E4E4 !important; 
+    }
+    .ui.dropdown .menu>.header{
+        font-weight: 500 !important;
+        margin: 7px 0 7px 5px !important;
+        .blue-text-color-sunbird{
+            font-weight: 600;
+        }
+    }
+}
+.prominent-filter {
+    .topic-picker-selector{
+        border:1px solid #E4E4E4 !important; 
+        border-radius: 5px !important;
+    }
+}

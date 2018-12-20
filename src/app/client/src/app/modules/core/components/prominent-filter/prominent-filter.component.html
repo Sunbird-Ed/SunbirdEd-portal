@@ -1,4 +1,4 @@
-<div class="ui segment br-0 px-0" *ngIf="showFilters">
+<div class="ui segment br-0 px-0 prominent-filter" *ngIf="showFilters">
   <div class="ui container">
     <div class="ui grid stackable">
       <div class="twelve wide column" *ngIf="refresh">
@@ -29,7 +29,7 @@
                     </ng-container>
                     <ng-container *ngIf="formFieldProperties.length > 4">
                       <div class="six wide mobile four wide tablet four wide computer column" *ngFor="let field of formFieldProperties">
-                        <div class="field">
+                        <div class="field large">
                           <label class="mb-10">{{field.name}}</label>
                           <ng-container *ngIf="field.inputType==='select' || field.inputType==='multi-select'">
                             <app-custom-multi-select [inputData]="formInputData[field.code]" [field]="field" (selectedValue)="selectedValue($event, field.code)"></app-custom-multi-select>
