@@ -32,11 +32,11 @@ module.exports = (app) => {
         throw 'some of the query params are missing'
       }
       googleProfile = await googleOauth.getProfile(req);
-      sunbirdProfile = await fetchUserById(googleProfile.emailId)
+      sunbirdProfile = await fetchUserById(googleProfile.emailId, req)
         .then(data => ({ userName: data.result.response.userName }))
         .catch(handleGetUserByIdError)
       if (!sunbirdProfile.userName) {
-        await createUserWithMailId(googleProfile).catch(handleCreateUserError)
+        await createUserWithMailId(googleProfile, req).catch(handleCreateUserError)
       }
       token = await createSession(googleProfile.emailId, req, res)
       let redirect_uri;
@@ -52,7 +52,7 @@ module.exports = (app) => {
       if (reqQuery.error_callback) {
         const queryObj = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type'])
         queryObj.error_message = getErrorMessage(error);
-        const query = Object.keys(queryObj).map(key => key + '=' + reqQuery[key]).join('&');
+        const query = Object.keys(queryObj).map(key => key + '=' + queryObj[key]).join('&');
         redirect_uri = reqQuery.error_callback + '?' + query
       }
       console.log('google sign in failed with', error, googleProfile, sunbirdProfile, token); // log error
@@ -61,10 +61,10 @@ module.exports = (app) => {
   });
 }
 const getErrorMessage = (error) => {
-  if(error instanceof Error && error.message === 'User name not present in request') {
+  if(error === 'USER_NAME_NOT_PRESENT' || _.get(error, 'message') === 'USER_NAME_NOT_PRESENT') {
     return 'Your account could not be created on Diksha due to your Google Security settings.';
   } else {
-    return 'Your account could not be created on Diksha due to some internal error.'
+    return 'Your account could not be created on Diksha due to internal error.'
   }
 }
 const handleCreateUserError = (error) => {
