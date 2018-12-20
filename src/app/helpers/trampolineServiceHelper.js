@@ -4,10 +4,8 @@ const request = require('request')
 const uuidv1 = require('uuid/v1')
 const dateFormat = require('dateformat')
 const _ = require('lodash')
-const permissionsHelper = require('./permissionsHelper.js')
 const telemetryHelper = require('./telemetryHelper.js')
 const envHelper = require('./environmentVariablesHelper.js')
-const userHelper = require('./userHelper.js')
 const { getKeyCloakClient } = require('./keyCloakHelper')
 const echoAPI = envHelper.PORTAL_ECHO_API_URL
 const createUserFlag = envHelper.PORTAL_AUTOCREATE_TRAMPOLINE_USER
@@ -291,7 +289,7 @@ module.exports = {
 
       if (body.responseCode === 'OK') {
         req['headers']['X-Channel-Id'] = _.get(req, 'headers.X-Channel-Id') ||
-         _.get(body, 'result.response.rootOrg.hashTagId')
+        _.get(body, 'result.response.rootOrg.hashTagId')
         callback(null, _.get(body, 'result.response.rootOrg.hashTagId'))
       } else {
         callback(null, null)
@@ -300,33 +298,5 @@ module.exports = {
   }
 }
 
-// Method called after successful authentication and it will log the telemetry
-// for CP_SESSION_START
-keycloak.authenticated = function (request) {
-  permissionsHelper.getPermissions(request)
-  async.series({
-    getUserData: function (callback) {
-      permissionsHelper.getCurrentUserRoles(request, callback)
-    },
-    updateLoginTime: function (callback) {
-      userHelper.updateLoginTime(request, callback)
-    },
-    logSession: function (callback) {
-      telemetryHelper.logSessionStart(request, callback)
-    }
-  }, function (err, results) {
-    if (err) {
-      console.log('err', err)
-    }
-  })
-}
 
-keycloak.deauthenticated = function (request) {
-  delete request.session['roles']
-  delete request.session['rootOrgId']
-  if (request.session) {
-    request.session.sessionEvents = request.session.sessionEvents || []
-    telemetryHelper.logSessionEnd(request)
-    delete request.session.sessionEvents
-  }
-}
+

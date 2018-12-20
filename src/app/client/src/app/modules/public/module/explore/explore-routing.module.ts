@@ -18,7 +18,8 @@ const routes: Routes = [
         env: 'explore', pageid: 'view-all', type: 'view', subtype: 'paginate'
       },
       filterType: 'explore',
-      softConstraints: {badgeAssertions: 98, board: 99, channel: 100}
+      softConstraints: {badgeAssertions: 98, board: 99, channel: 100},
+      applyMode: true
     }
   },
     {

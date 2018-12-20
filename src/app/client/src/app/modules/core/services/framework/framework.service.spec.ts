@@ -87,7 +87,7 @@ describe('FrameworkService', () => {
     makeFrameworkReadSuc = false;
     frameworkService.initialize('NCF');
     frameworkService.frameworkData$.subscribe((data) => {
-      expect(data.frameworkdata).toBeNull();
+      expect(data.frameworkdata).toEqual({'NCF': {'code': 'NCF', 'categories': []}});
       expect(data.err).toBeDefined();
     });
   });

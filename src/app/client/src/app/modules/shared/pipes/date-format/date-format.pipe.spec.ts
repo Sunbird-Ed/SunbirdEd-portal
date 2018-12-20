@@ -22,7 +22,7 @@ describe('DateFormatPipe', () => {
     it('if date is blank', () => {
       const pipe = new DateFormatPipe();
       const result = pipe.transform('', 'Do MMMM YYYY');
-      expect(result).toBe('Invalid date');
+      expect(result).toBe('-');
     });
 
   });
