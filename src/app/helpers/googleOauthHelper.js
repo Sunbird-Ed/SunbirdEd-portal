@@ -64,7 +64,7 @@ const createSession = async (emailId, req, res) => {
     refresh_token: grant.refresh_token.token
   };
 }
-const fetchUserById = async (emailId, req) => {
+const fetchUserByEmailId = async (emailId, req) => {
   const options = {
     method: 'POST',
     url: envHelper.LEARNER_URL + 'user/v1/getByKey',
@@ -115,4 +115,4 @@ const getHeaders = (req) => {
     'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
   }
 }
-module.exports = { googleOauth,  keycloak, createSession, fetchUserById, createUserWithMailId };
+module.exports = { googleOauth,  keycloak, createSession, fetchUserByEmailId, createUserWithMailId };

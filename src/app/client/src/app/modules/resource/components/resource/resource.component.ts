@@ -1,6 +1,6 @@
 import { combineLatest, Subject } from 'rxjs';
 import { PageApiService, PlayerService, UserService, ISort } from '@sunbird/core';
-import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import {
   ResourceService, ToasterService, INoResultMessage, ConfigService, UtilService, ICaraouselData, BrowserCacheTtlService
 } from '@sunbird/shared';
@@ -28,12 +28,13 @@ export class ResourceComponent implements OnInit, OnDestroy {
   public inViewLogs = [];
   public sortIntractEdata: IInteractEventEdata;
   public dataDrivenFilters: any = {};
+  public frameworkData: object;
   public dataDrivenFilterEvent = new EventEmitter();
   public initFilters = false;
   public loaderMessage;
   public redirectUrl;
 
-  constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
+  constructor(private pageApiService: PageApiService, private toasterService: ToasterService, private cdr: ChangeDetectorRef,
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
     public router: Router, private utilService: UtilService,
     private playerService: PlayerService, private cacheService: CacheService,
@@ -46,6 +47,11 @@ export class ResourceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.userService.userData$.subscribe(userData => {
+      if (userData && !userData.err) {
+          this.frameworkData = _.get(userData.userProfile, 'framework');
+      }
+    });
     this.initFilters = true;
     this.hashTagId = this.userService.hashTagId;
     this.dataDrivenFilterEvent.pipe(first()
@@ -78,26 +84,30 @@ export class ResourceComponent implements OnInit, OnDestroy {
   }
   private fetchPageData() {
     const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
-      if (key === 'sort_by' || key === 'sortType') {
+      if (_.includes(['sort_by', 'sortType', 'appliedFilters'], key)) {
         return false;
       }
       return value.length;
     });
-    const softConstraintFilter = {
-      channel: this.userService.hashTagId,
-      board: [this.dataDrivenFilters.board]
+    const softConstraintData = {
+      filters: {channel: this.userService.hashTagId,
+      board: [this.dataDrivenFilters.board]},
+      softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
+      mode: 'soft'
     };
-    const manipulatedData = this.utilService.manipulateSoftConstraint(filters,
-      softConstraintFilter, _.get(this.activatedRoute.snapshot, 'data.softConstraints'));
+    const manipulatedData = this.utilService.manipulateSoftConstraint( _.get(this.queryParams, 'appliedFilters'),
+    softConstraintData, this.frameworkData );
     const option: any = {
       source: 'web',
       name: 'Resource',
-      filters: manipulatedData.filters,
-      mode: 'soft',
-      softConstraints: manipulatedData.softConstraints,
+      filters: _.get(this.queryParams, 'appliedFilters') ?  filters : _.get(manipulatedData, 'filters'),
+      mode: _.get(manipulatedData, 'mode'),
       exists: [],
       params : this.configService.appConfig.Library.contentApiQueryParams
     };
+    if (_.get(manipulatedData, 'filters')) {
+      option.softConstraints = _.get(manipulatedData, 'softConstraints');
+    }
     if (this.queryParams.sort_by) {
       option.sort_by = {[this.queryParams.sort_by]: this.queryParams.sortType  };
     }
@@ -105,6 +115,7 @@ export class ResourceComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.showLoader = false;
         this.carouselData = this.prepareCarouselData(_.get(data, 'sections'));
+        this.cdr.detectChanges();
       }, err => {
         this.showLoader = false;
         this.carouselData = [];
