@@ -34,6 +34,10 @@ class GoogleOauth {
   }
   async getProfile(req) {
     const client = this.createConnection(req);
+    console.log('query', req.query);
+    if(req.query.error === 'access_denied'){
+      throw new Error('GOOGLE_ACCESS_DENIED');
+    }
     const { tokens } = await client.getToken(req.query.code).catch(this.handleError)
     client.setCredentials(tokens)
     const plus = google.plus({ version: 'v1', auth: client})
