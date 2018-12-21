@@ -27,10 +27,9 @@ export class SignupService {
 
   getUserByKey(data) {
     const options = {
-      url: this.configService.urlConFig.URLS.USER.GET_USER_BY_KEY,
-      data: data
+      url: this.configService.urlConFig.URLS.USER.GET_USER_BY_KEY + '/' + data,
     };
-    return this.learnerService.post(options);
+    return this.learnerService.get(options);
   }
 
   createUser(data) {
