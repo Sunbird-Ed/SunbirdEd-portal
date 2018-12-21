@@ -137,14 +137,10 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   vaidateUserContact() {
-    const request = {
-      'request': {
-        'key': this.signUpForm.controls.contactType.value.toString(),
-        'value': this.signUpForm.controls.contactType.value === 'phone' ?
-          this.signUpForm.controls.phone.value.toString() : this.signUpForm.controls.email.value
-      }
-    };
-    this.signupService.getUserByKey(request).subscribe(
+    const value =  this.signUpForm.controls.contactType.value === 'phone' ?
+          this.signUpForm.controls.phone.value.toString() : this.signUpForm.controls.email.value;
+    const uri = this.signUpForm.controls.contactType.value.toString() + '/' + value;
+    this.signupService.getUserByKey(uri).subscribe(
       (data: ServerResponse) => {
         this.showUniqueError = this.signUpForm.controls.contactType.value === 'phone' ?
           this.resourceService.frmelmnts.lbl.uniquePhone : this.resourceService.frmelmnts.lbl.uniqueEmail;
