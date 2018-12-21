@@ -81,6 +81,8 @@ const getQueryParams = (queryObj) => {
 const getErrorMessage = (error) => {
   if (error === 'USER_NAME_NOT_PRESENT' || _.get(error, 'message') === 'USER_NAME_NOT_PRESENT') {
     return 'Your account could not be created on Diksha due to your Google Security settings';
+  } else if(error === 'GOOGLE_ACCESS_DENIED' || _.get(error, 'message') === 'GOOGLE_ACCESS_DENIED') {
+    return 'Your account could not be created on Diksha due to your Google Security settings';
   } else {
     return 'Your account could not be signed in to Diksah Due to technical issue. Please try again after some time';
   }
