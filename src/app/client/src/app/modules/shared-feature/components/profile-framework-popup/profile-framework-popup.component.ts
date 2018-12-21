@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, ChangeDetectorRef, EventEmitter, Output, OnDestroy, ViewChild } from '@angular/core';
-import { FrameworkService, FormService, UserService } from '@sunbird/core';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
-import { combineLatest, Subscription, Subject } from 'rxjs';
+import { FrameworkService, FormService, UserService, ChannelService, OrgDetailsService } from '@sunbird/core';
+import { takeUntil, first, mergeMap, map, tap } from 'rxjs/operators';
+import { combineLatest, Subscription, Subject, of, throwError } from 'rxjs';
 import {
   ConfigService, ResourceService, Framework, ToasterService, ServerResponse
 } from '@sunbird/shared';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash';
+import { ThrowStmt } from '@angular/compiler';
 @Component({
   selector: 'app-popup',
   templateUrl: './profile-framework-popup.component.html',
@@ -15,6 +16,7 @@ import * as _ from 'lodash';
 export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
   @Input() showCloseIcon: boolean;
+  @Input() isEdit: boolean;
   @Input() buttonLabel: string;
   @Input() formInput: any = {};
   @Output() submit = new EventEmitter<any>();
@@ -22,9 +24,11 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   private frameworkDataSubscription: Subscription;
   private formType = 'user';
   public formFieldProperties: any;
+  public channelData: any;
+  public label: object = {};
   public board: object = {};
   public medium: object = {};
-  public class: object = {};
+  public gradeLevel: object = {};
   public subject: object = {};
   public categoryMasterList: any = {};
   private formAction = 'update';
@@ -33,42 +37,68 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();
   public frameWorkId: string;
   userSubscription: Subscription;
-  constructor(public userService: UserService, public frameworkService: FrameworkService,
+  public selectedData = [];
+  public isCustodianOrg = false;
+  public initDropDown = false;
+  public CustodianOrgBoard: object = {};
+  constructor(public router: Router, public userService: UserService, public frameworkService: FrameworkService,
     public formService: FormService, public resourceService: ResourceService, private cdr: ChangeDetectorRef,
-    public toasterService: ToasterService, ) { }
+    public toasterService: ToasterService, public channelService: ChannelService, public orgDetailsService: OrgDetailsService) { }
 
   ngOnInit() {
-    this.userSubscription = this.userService.userData$.subscribe(
-      (user: any) => {
-        if (user && !user.err) {
+    this.orgDetailsService.getCustodianOrg().pipe(
+      mergeMap((custodianOrg: any) => {
+        if (this.userService.userProfile.rootOrg.rootOrgId === custodianOrg.result.response.value) {
+          this.isCustodianOrg = true;
+          return this.setCustodianOrgData();
+        } else {
           this.frameworkService.initialize();
-          this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
-            if (!frameworkData.err) {
-              this.frameWorkId  = frameworkData.frameworkdata['defaultFramework'].identifier;
-              this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
-              const formServiceInputParams = {
-                formType: this.formType,
-                formAction: this.formAction,
-                contentType: 'framework',
-                framework: frameworkData.frameworkdata['defaultFramework'].code
-              };
-              this.formService.getFormConfig(formServiceInputParams, user.userProfile.rootOrg.hashTagId).pipe(
-                takeUntil(this.unsubscribe)).subscribe((data: ServerResponse) => {
-                  this.formFieldProperties = data;
-                  this.getFormConfig();
-                }, (err: ServerResponse) => {
-                  this.toasterService.error(this.resourceService.messages.emsg.m0005);
-                });
-            } else if (frameworkData && frameworkData.err) {
-              this.toasterService.error(this.resourceService.messages.emsg.m0005);
-            }
-          });
-        } else if (user.err) {
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+          return this.setFrameWorkDetails();
         }
+      }), takeUntil(this.unsubscribe)).subscribe(data => {
+        if (this.isCustodianOrg) {
+          this.board = _.cloneDeep(this.CustodianOrgBoard);
+        }
+        this.initDropDown = true;
+      }, err => {
+        this.navigateTolibrary();
       });
   }
+  setCustodianOrgData() {
+    return this.channelService.getFrameWork(this.userService.hashTagId).pipe(map((channelData: any) => {
+      this.channelData = channelData.result.channel.frameworks;
+      const board = [];
+      _.forEach(this.channelData, (value, index) => {
+        board.push(value);
+      });
+      this.CustodianOrgBoard['range'] = board;
+      this.CustodianOrgBoard['label'] = 'Board';
+      this.CustodianOrgBoard['code'] = 'board';
+      this.label['medium'] = { 'label': 'Medium', 'index': 2 };
+      this.label['class'] = { 'label': 'Class', 'index': 3 };
+      this.label['subject'] = { 'label': 'Subject', 'index': 4 };
+      return this.CustodianOrgBoard;
+    }));
+  }
 
+  setFrameWorkDetails() {
+    return this.frameworkService.frameworkData$.pipe(mergeMap((frameworkDetails) => {
+      if (!frameworkDetails.err) {
+        const framework = this.frameWorkId ? this.frameWorkId : 'defaultFramework';
+        this.frameWorkId = this.frameWorkId ? this.frameWorkId : frameworkDetails.frameworkdata['defaultFramework'].identifier;
+        const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
+        this.categoryMasterList = _.cloneDeep(frameworkData.categories);
+        return this.getFormDetails();
+      } else if (frameworkDetails.err) {
+        return throwError(frameworkDetails.err);
+      }
+    }), map((formData) => {
+        this.formFieldProperties = formData;
+        if (!this.isCustodianOrg) {
+          this.getFormConfig();
+        }
+    }));
+  }
   getFormConfig() {
     _.forEach(this.categoryMasterList, (category) => {
       _.forEach(this.formFieldProperties, (formFieldCategory) => {
@@ -80,36 +110,117 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     });
     this.formFieldProperties = _.sortBy(_.uniqBy(this.formFieldProperties, 'code'), 'index');
     this.board = _.find(this.formFieldProperties, { code: 'board' });
-    this.medium = _.find(this.formFieldProperties, { code: 'medium' });
-    this.class = _.find(this.formFieldProperties, { code: 'gradeLevel' });
-    this.subject = _.find(this.formFieldProperties, { code: 'subject' });
+    this.label['medium'] =  _.find(this.formFieldProperties, { label: 'Medium' });
+    this.label['class'] =  _.find(this.formFieldProperties, { label: 'Class' });
+    this.label['subject'] =  _.find(this.formFieldProperties, { label: 'Subject' });
+    if (this.isEdit) {
+      this.medium = _.find(this.formFieldProperties, { code: 'medium' });
+      this.gradeLevel = _.find(this.formFieldProperties, { code: 'gradeLevel' });
+      this.subject = _.find(this.formFieldProperties, { code: 'subject' });
+    }
     this.selectedOption = _.cloneDeep(this.formInput);
     this.selectedOption.board = _.get(this.selectedOption, 'board[0]') ? _.get(this.selectedOption, 'board[0]') : undefined;
     this.onChange();
   }
+  getFormDetails() {
+    const formServiceInputParams = {
+      formType: this.formType,
+      formAction: this.formAction,
+      contentType: 'framework',
+      framework: this.frameWorkId
+    };
+    return this.formService.getFormConfig(formServiceInputParams, this.userService.hashTagId);
+  }
 
-  onChange() {
+  onChange(event?: any, nextIndex?: any, code?: any) {
+    if (event) {
+      this.getAssociations(event, nextIndex, code);
+      this.resetSelectedOption(nextIndex);
+    }
     if (this.selectedOption['board'] && this.selectedOption['medium'] && this.selectedOption['gradeLevel']) {
       if (this.selectedOption['board'].length > 0 && this.selectedOption['medium'].length > 0
-          && this.selectedOption['gradeLevel'].length > 0) {
+        && this.selectedOption['gradeLevel'].length > 0) {
         this.showButton = true;
       } else {
         this.showButton = false;
       }
     }
   }
-
-  onSubmitForm() {
-    this.selectedOption.board = [this.selectedOption.board];
-    this.selectedOption['id'] = this.frameWorkId;
-    this.submit.emit(this.selectedOption);
+  resetSelectedOption(nextIndex) {
+    if (nextIndex === 2) {
+      this.selectedOption['medium'] = [];
+      this.selectedOption['gradeLevel'] = [];
+      this.selectedOption['subject'] = [];
+    } else if (nextIndex === 3) {
+      this.selectedOption['gradeLevel'] = [];
+      this.selectedOption['subject'] = [];
+    } else {
+      this.selectedOption['subject'] = [];
+    }
   }
-
+  getAssociations(event, nextIndex, code) {
+    if (this.isCustodianOrg && nextIndex === 2) {
+      this.selectedOption['board'] = event;
+      const identifier = _.find(this.channelData, { 'name': event });
+      this.frameWorkId = identifier['identifier'];
+      this.frameworkService.initialize(this.frameWorkId);
+      this.setFrameWorkDetails().subscribe((data) => {
+      this.getFormatedData(event, nextIndex, code);
+      this.isCustodianOrg = false;
+      }, err => {
+        this.navigateTolibrary();
+      });
+    } else {
+      this.getFormatedData(event, nextIndex, code);
+    }
+  }
+  getFormatedData(event, nextIndex, code) {
+    _.forEach(this.categoryMasterList, (category) => {
+      _.forEach(this.formFieldProperties, (formFieldCategory) => {
+        if (category.code === formFieldCategory.code && category.terms) {
+          formFieldCategory.range = category.terms;
+        }
+        return formFieldCategory;
+      });
+    });
+    this.formFieldProperties = _.sortBy(_.uniqBy(this.formFieldProperties, 'code'), 'index');
+    this.board = _.find(this.formFieldProperties, { code: 'board' });
+    const rangeData = [];
+    if (_.isString(event)) {
+      this.selectedData = _.split(event);
+    } else {
+      this.selectedData = event;
+    }
+    const formData = _.find(this.formFieldProperties, { 'code': code });
+    const nextFormData = _.find(this.formFieldProperties, { 'index': nextIndex });
+    if (nextFormData) {
+      this[nextFormData['code']] = nextFormData;
+    }
+    if (formData) {
+      const range = _.get(formData, 'range');
+      _.forEach(this.selectedData, (selectedValue, selectedIndex) => {
+        const rangeValue = _.find(range, { 'name': selectedValue });
+        _.forEach(_.get(rangeValue, 'associations'), (value, index) => {
+          if (value.category === nextFormData['code']) {
+            rangeData.push(value);
+          }
+        });
+      });
+      if (rangeData.length > 0) {
+        this[nextFormData['code']].range = _.union(this[nextFormData['code']].range, rangeData);
+      }
+    }
+  }
+  onSubmitForm() {
+    const selectedOption = _.cloneDeep(this.selectedOption);
+    selectedOption.board = [this.selectedOption.board];
+    selectedOption['id'] = this.frameWorkId;
+    this.submit.emit(selectedOption);
+  }
   onClose(modal) {
     modal.deny();
     this.close.emit();
   }
-
   ngOnDestroy() {
     if (this.frameworkDataSubscription) {
       this.frameworkDataSubscription.unsubscribe();
@@ -120,5 +231,8 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
-
+  navigateTolibrary() {
+    this.toasterService.warning(this.resourceService.messages.emsg.m0012);
+    this.router.navigate(['/resources']);
+  }
 }

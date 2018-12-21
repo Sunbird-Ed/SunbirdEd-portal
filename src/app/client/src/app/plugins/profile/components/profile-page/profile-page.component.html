@@ -215,6 +215,6 @@
 </div>
 
 
-<app-popup *ngIf="showEdit" #profileModal [formInput]="inputData" [showCloseIcon]="true" [buttonLabel]="resourceService.frmelmnts.btn.submit"
+<app-popup *ngIf="showEdit" #profileModal [formInput]="inputData" [isEdit] ="true" [showCloseIcon]="true" [buttonLabel]="resourceService.frmelmnts.btn.submit"
   (submit)="updateProfile($event)" (close)="showEdit = !showEdit"></app-popup>
 <router-outlet></router-outlet>
