@@ -206,7 +206,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('contentEditor')) {
       document.getElementById('contentEditor').remove();
     }
-    if (this.contentDetails.status.toLowerCase() === 'draft') {
+    if (_.has(this.contentDetails, 'status') &&
+      this.contentDetails.status.toLowerCase() === 'draft') {
       this.retireLock();
     } else {
       this.redirectToWorkSpace();

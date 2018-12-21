@@ -123,7 +123,7 @@ export class WorkSpace {
     */
     handleContentLockError (errObj) {
         let errorMessage = '';
-        const customErrors = ['RESOURCE_ALREADY_LOCKED_SELF', 'RESOURCE_ALREADY_LOCKED', 'ERR_TOKEN_INVALID'];
+        const customErrors = ['RESOURCE_SELF_LOCKED', 'RESOURCE_LOCKED'];
         if (errObj.error.params.err) {
             if (customErrors.indexOf(errObj.error.params.err) !== -1) {
                 // api error message has resource in error text, need to replace it with content

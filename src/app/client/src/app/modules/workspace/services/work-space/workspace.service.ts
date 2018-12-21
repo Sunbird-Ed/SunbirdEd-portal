@@ -245,7 +245,7 @@ export class WorkSpaceService {
         request: inputParams
       }
     };
-    return this.publicDataService.post(option);
+    return this.publicDataService.delete(option);
   }
 
   setData(data, name) {

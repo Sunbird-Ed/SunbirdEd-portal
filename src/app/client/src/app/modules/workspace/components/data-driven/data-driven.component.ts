@@ -298,10 +298,10 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
       (data: ServerResponse) => {
           const lock = data.result;
           if (this.contentType === 'studymaterial') {
-            this.router.navigate(['/workspace/content/edit/content/', content.content_id, state, framework], {queryParams: lock});
+            this.router.navigate(['/workspace/content/edit/content/', content.identifier, state, framework], {queryParams: lock});
           } else {
             const type = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
-            this.router.navigate(['/workspace/content/edit/collection', content.content_id, type, state, framework], {queryParams: lock});
+            this.router.navigate(['/workspace/content/edit/collection', content.identifier, type, state, framework], {queryParams: lock});
           }
       },
       (err: ServerResponse) => {

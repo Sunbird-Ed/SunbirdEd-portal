@@ -31,6 +31,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public extContWhitelistedDomains: string;
   public ownershipType: Array<string>;
   public queryParams: object;
+  public contentDetails: any;
 
   constructor(private userService: UserService, public _zone: NgZone, private activatedRoute: ActivatedRoute,
     private tenantService: TenantService, private telemetryService: TelemetryService,
@@ -64,9 +65,15 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   }
   private getDetails() {
     return combineLatest(this.tenantService.tenantData$,
-    this.editorService.getOwnershipType()).
+    this.editorService.getOwnershipType(), this.getContentDetails()).
     pipe(map(data => ({ tenantDetails: data[0].tenantData,
       ownershipType: data[1] })));
+  }
+  private getContentDetails() {
+    return this.editorService.getContent(this.routeParams.contentId).
+      pipe(map((data) => {
+        this.contentDetails = data.result.content;
+      }));
   }
   /**
    *Launch Generic Editor in the modal
@@ -130,8 +137,30 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('genericEditor')) {
       document.getElementById('genericEditor').remove();
     }
+    if (_.has(this.contentDetails, 'status') &&
+      this.contentDetails.status.toLowerCase() === 'draft') {
+      this.retireLock();
+    } else {
+      this.redirectToWorkSpace();
+    }
+  }
+
+  retireLock () {
+    const inputData = {'resourceId': this.routeParams.contentId, 'resourceType': 'Content'};
+    this.workspaceService.retireLock(inputData).subscribe(
+      (data: ServerResponse) => {
+        this.redirectToWorkSpace();
+      },
+      (err: ServerResponse) => {
+        this.redirectToWorkSpace();
+      }
+    );
+  }
+
+  redirectToWorkSpace () {
     this.navigationHelperService.navigateToWorkSpace('workspace/content/uploaded/1');
   }
+
   private disableBrowserBackButton() {
     sessionStorage.setItem('inEditor', 'true');
     window.location.hash = 'no';
