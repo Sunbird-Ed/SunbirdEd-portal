@@ -43,6 +43,9 @@
     "COMPOSITE": {
       "SEARCH": "composite/v1/search"
     },
+    "SYSTEM_SETTING":{
+      "CUSTODIAN_ORG":"data/v1/system/settings/get/custodianOrgId"
+    },
     "COURSE": {
       "SEARCH": "course/v1/search",
       "HIERARCHY": "course/v1/hierarchy",
