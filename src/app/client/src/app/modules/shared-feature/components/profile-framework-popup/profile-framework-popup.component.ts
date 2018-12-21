@@ -55,7 +55,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
           this.frameworkService.initialize();
           return this.setFrameWorkDetails();
         }
-      })).subscribe(data => {
+      }), takeUntil(this.unsubscribe)).subscribe(data => {
         if (this.isCustodianOrg) {
           this.board = _.cloneDeep(this.CustodianOrgBoard);
         }
