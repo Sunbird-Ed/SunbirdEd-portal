@@ -1,11 +1,12 @@
 import { ConfigService, ResourceService, IUserData, IUserProfile } from '@sunbird/shared';
 import { Component, OnInit } from '@angular/core';
 import { UserService, PermissionService } from '../../services';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
+import { first, filter } from 'rxjs/operators';
+import * as _ from 'lodash';
 declare var jQuery: any;
-import { first } from 'rxjs/operators';
 
 /**
  * Main menu component
@@ -48,6 +49,9 @@ export class MainMenuComponent implements OnInit {
   learnMenuIntractEdata: IInteractEventEdata;
   libraryMenuIntractEdata: IInteractEventEdata;
   workspaceMenuIntractEdata: IInteractEventEdata;
+  exploreRoutingUrl: string;
+  showExploreHeader = false;
+
   /*
   * constructor
   */
@@ -63,6 +67,7 @@ export class MainMenuComponent implements OnInit {
 
   ngOnInit() {
     this.setInteractData();
+    this.getUrl();
     this.userService.userData$.pipe(first()).subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
@@ -100,6 +105,30 @@ export class MainMenuComponent implements OnInit {
 
   showSideBar() {
     jQuery('.ui.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
+  }
+
+  getUrl() {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
+      if (_.includes(urlAfterRedirects.url, '/explore')) {
+        this.showExploreHeader = true;
+        const url  = urlAfterRedirects.url.split('?')[0].split('/');
+        if (url.indexOf('explore') === 2) {
+          this.exploreRoutingUrl = url[1] + '/' + url[2];
+        } else {
+          this.exploreRoutingUrl = url[1];
+        }
+      } else if (_.includes(urlAfterRedirects.url, '/explore-course')) {
+        this.showExploreHeader = true;
+        const url  = urlAfterRedirects.url.split('?')[0].split('/');
+        if (url.indexOf('explore-course') === 2) {
+          this.exploreRoutingUrl = url[1] + '/' + url[2];
+        } else {
+          this.exploreRoutingUrl = url[1];
+        }
+      } else {
+        this.showExploreHeader = false;
+      }
+    });
   }
 
   navigateToWorkspace() {

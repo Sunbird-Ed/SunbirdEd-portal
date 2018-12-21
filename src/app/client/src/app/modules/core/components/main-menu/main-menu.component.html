@@ -1,5 +1,5 @@
 
-<div class="ui text menu m-0 flex-jc-center d-flex computer only" *ngIf="userService.loggedIn">
+<div class="ui text menu m-0 flex-jc-center d-flex computer only" *ngIf="userService.loggedIn && !showExploreHeader">
 	<!-- <a class="item" appTelemetryInteract [telemetryInteractEdata]="homeMenuIntractEdata" [class.active]="router.isActive('/search/All') || router.isActive('/home')" routerLink="/home">
 		{{resourceService?.frmelmnts?.tab?.home}}
 	</a> -->
@@ -29,9 +29,11 @@
 	</div>
 	<div class="ui sidebar right vertical menu" *ngIf="!userService.loggedIn">
 		<i class="close link icon side-bar-close-icon top-12" (click)="showSideBar()"></i>
-		<a href="/resources" class="item sign-in">
-			{{resourceService.frmelmnts?.btn?.signin}}
-		</a>
+		<div>
+			<a href="/resources" class="item sign-in">
+				{{resourceService.frmelmnts?.btn?.signin}}
+			</a>
+		</div>
 		<div class="ui divider mt-0"></div>
 		<div class="item text-upper-case" (click)="showSideBar()" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'"  routerLink="/explore">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</div>
 		<a class="item"  routerLink="explore" (click)="showSideBar()" [class.active]="router.isActive('/search/explore') || router.isActive('/explore')">{{resourceService?.frmelmnts?.tab?.resources}}</a>
