@@ -1,10 +1,47 @@
 .ui.text.menu .item{
-    font-size: 0.86rem;
-    padding: .35714286em .86em;
-    color:#666;
+  font-size: 1rem;
+  padding: .35714286em .86em;
+  color:#666;
 }
+
 .ui.text.menu .item.active {
-    font-size: 0.86rem;
-    font-weight: bold;
-    color:#024F9D;
+  font-size: 1rem;
+  font-weight: bold;
+  color:#024F9D;
+}
+
+.ui.vertical.menu .active.item,
+.ui.vertical.menu .sign-in.item {
+  color:#024F9D;
+  font-size: 1rem;
+  font-weight: bold;
+  background: none;   
+}
+
+.fixed-logout-btn {
+  font-size: 1rem;
+  font-weight: bold !important;
+  position: fixed !important;
+  bottom: 0;
+  color: #024F9D !important;
+  width: 100%;
+  border-top: 1px solid rgba(34,36,38,.15) !important;
+}
+
+.side-bar-close-icon {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  font-size: 1.2rem;
+  color: #005DA2;
+}
+
+.side-bar-close-icon.top-12 {
+    top: 12px;
+}
+
+.sign-in {
+  color: #005DA2;
+  font-weight: bold;
+  background: none;
 }

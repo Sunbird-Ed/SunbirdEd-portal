@@ -1,8 +1,11 @@
-import { ConfigService, ResourceService } from '@sunbird/shared';
+import { ConfigService, ResourceService, IUserData, IUserProfile } from '@sunbird/shared';
 import { Component, OnInit } from '@angular/core';
 import { UserService, PermissionService } from '../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { CacheService } from 'ng2-cache-service';
+declare var jQuery: any;
+import { first } from 'rxjs/operators';
 
 /**
  * Main menu component
@@ -33,6 +36,10 @@ export class MainMenuComponent implements OnInit {
    * reference of config service.
    */
   public config: ConfigService;
+    /**
+   * user profile details.
+   */
+  userProfile: IUserProfile;
   /**
    * reference of Router.
    */
@@ -45,7 +52,7 @@ export class MainMenuComponent implements OnInit {
   * constructor
   */
   constructor(resourceService: ResourceService, userService: UserService, router: Router,
-     permissionService: PermissionService, config: ConfigService) {
+     permissionService: PermissionService, config: ConfigService, private cacheService: CacheService) {
     this.resourceService = resourceService;
     this.userService = userService;
     this.permissionService = permissionService;
@@ -56,6 +63,12 @@ export class MainMenuComponent implements OnInit {
 
   ngOnInit() {
     this.setInteractData();
+    this.userService.userData$.pipe(first()).subscribe(
+      (user: IUserData) => {
+        if (user && !user.err) {
+          this.userProfile = user.userProfile;
+        }
+      });
   }
   setInteractData() {
     this.homeMenuIntractEdata = {
@@ -78,6 +91,15 @@ export class MainMenuComponent implements OnInit {
       type: 'click',
       pageid: 'workspace'
     };
+  }
+
+  logout() {
+    window.location.replace('/logoff');
+    this.cacheService.removeAll();
+  }
+
+  showSideBar() {
+    jQuery('.ui.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
   }
 
   navigateToWorkspace() {

@@ -8,8 +8,8 @@
                 <img class="image centered cursor-pointer" alt={{tenantName}} src="{{logo}}">
             </a>
         </div>
-        <i class="large bars icon link sidebar-hamburger-menu mobile only" *ngIf="userService.loggedIn" (click)="showSideBar()"></i>
-        <app-main-menu *ngIf="userService.loggedIn && !showExploreHeader" class="d-flex computer only ml-auto"></app-main-menu>
+        <i class="large bars icon link sidebar-hamburger-menu mobile only"  (click)="showSideBar()"></i>
+        <app-main-menu class="d-flex computer only ml-auto"></app-main-menu>
         <a class="profile-avtar item computer only pr-0" *ngIf="userService.loggedIn && !showExploreHeader; else showLoginBtn">
             <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing header-user-container" id="dropdown-menu-list-header">
                 <ngx-avatar *ngIf='userProfile' [style]="avtarDesktopStyle" [size]="38" initialsSize="1" name="{{userProfile?.firstName}}">
@@ -37,16 +37,15 @@
                 </a>
             </div>
             <div class="primary-nav-item d-flex ml-auto" *ngIf="showExploreHeader">
-                <a class="item computer only" *ngIf="showExploreHeader || userService.loggedIn" routerLink="explore" [class.active]="router.isActive('/search/explore') || router.isActive('/explore')">Library</a>
-                <a class="item computer only pr-0" *ngIf="showExploreHeader || userService.loggedIn" routerLink="explore-course" [class.active]="router.isActive('/search/explore-course') || router.isActive('/explore-course')">Courses</a>
-                <a class="item divider computer only" *ngIf="showExploreHeader || userService.loggedIn"></a>
+                <a class="item computer only"  routerLink="explore" [class.active]="router.isActive('/search/explore') || router.isActive('/explore')">{{resourceService?.frmelmnts?.tab?.resources}}</a>
+                <a class="item computer only pr-0" routerLink="explore-course" [class.active]="router.isActive('/search/explore-course') || router.isActive('/explore-course')">{{resourceService?.frmelmnts?.tab?.courses}}</a>
+                <a class="item divider computer only"></a>
                 <!--divider between courses and login-->
                 <a href="/resources" class="sunblogin item font-weight-bold primary-color pl-5 ml-auto pr-0 computer only">
                     {{resourceService.frmelmnts?.btn?.signin}}
                 </a>
             </div>
             <div class="ui secondary right pointing dropdown d-flex flex-as-center mt-10 mr-10 mobile only ml-auto" suiDropdown>
-                <i class="large bars icon"></i>
                 <div class="menu" suiDropdownMenu>
                     <div class="item text-upper-case" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" routerLink="/explore">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</div>
                     <div class="item">
@@ -63,7 +62,7 @@
         <div class="ui mobile-view container  d-flex flex-ai-center mx-0">
             <button class="ui basic button qr-code-btn d-flex computer only mr-0" (click)="showQrmodal = true;">
                 <i class="qrcode icon d-flex flex-ai-center"></i>
-                <span class="d-flex flex-ai-center">Enter QR code</span>
+                <span class="d-flex flex-ai-center">{{resourceService.frmelmnts?.lbl?.enterQrCode}}</span>
             </button>
             <a class="item divider computer only pl-0 search-qrcode-divider"></a>
             <app-search class="primary-searchbar-alignment " *ngIf="!showExploreHeader"></app-search>
@@ -83,7 +82,7 @@
         <div class="ui mobile-view container d-flex flex-jc-space-between mx-0">
             <button class="ui basic d-flex button qr-code-btn" (click)="showQrmodal = true;">
                 <i class="qrcode icon d-flex flex-ai-center"></i>
-                <span class="d-flex flex-ai-center">Enter QR code</span>
+                <span class="d-flex flex-ai-center">{{resourceService.frmelmnts?.lbl?.enterQrCode}}</span>
             </button>
             <app-language-dropdown></app-language-dropdown>
         </div>
