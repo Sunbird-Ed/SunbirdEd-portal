@@ -1,4 +1,4 @@
-<sui-modal [isClosable]="false" [size]="'normal'" #modal [mustScroll]="'true'" appBodyScroll *ngIf="board">
+<sui-modal [isClosable]="false" [size]="'normal'" #modal [mustScroll]="'true'" appBodyScroll *ngIf="initDropDown">
   <i *ngIf="showCloseIcon" class="close icon" (click)="onClose(modal)"></i>
   <div class="scrollable content">
     <div class="ui grid">
@@ -11,7 +11,7 @@
         <label>{{board.label}}</label>
         <div class="field">
             <sui-select id={{board.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[board.code]"
-              [options]="options"  (ngModelChange)="onChange($event,label.medium.index,'gradelevel')" [ngModelOptions]="{standalone: true}">
+              [options]="options"  (ngModelChange)="onChange($event,label.medium.index,board.code)" [ngModelOptions]="{standalone: true}">
               <sui-select-option *ngFor="let option of board.range" [value]="option.name"></sui-select-option>
             </sui-select>
         </div>

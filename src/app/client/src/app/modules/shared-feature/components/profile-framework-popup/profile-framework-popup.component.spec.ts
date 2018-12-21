@@ -15,7 +15,8 @@ describe('ProfileFrameworkPopupComponent', () => {
   const resourceBundle = {
     'messages': {
       'emsg': {
-        'm0005': 'Fetching data failed, please try again later...'
+        'm0005': 'Fetching data failed, please try again later...',
+        'm0012': 'Something went wrong while saving your preferences. Please go to your profile to save your preferences'
       }
     }
   };
@@ -57,7 +58,7 @@ describe('ProfileFrameworkPopupComponent', () => {
     spyOn(orgDetailsService, 'getCustodianOrg').and.callFake(() => observableOf(Response.custodianOrg));
     spyOn(formService, 'getFormConfig').and.callFake(() => observableOf(Response.formData.result.form.data.fields));
     component.ngOnInit();
-    expect(route.navigate).toHaveBeenCalledWith(['/resources']);
+    expect(component.isCustodianOrg).toBeFalsy();
   });
 
   it('Error message to be displayed when form config service throws error', () => {
@@ -76,21 +77,6 @@ describe('ProfileFrameworkPopupComponent', () => {
     expect(route.navigate).toHaveBeenCalledWith(['/resources']);
   });
 
-  it('Error message to be displayed when org details API throws error', () => {
-    const route = TestBed.get(Router);
-    const userService = TestBed.get(UserService);
-    const frameworkService = TestBed.get(FrameworkService);
-    const formService = TestBed.get(FormService);
-    const toasterService = TestBed.get(ToasterService);
-    const resourceService = TestBed.get(ResourceService);
-    const orgDetailsService = TestBed.get(OrgDetailsService);
-    resourceService.messages = resourceBundle.messages;
-    userService._userData$.next({ err: 'err', userProfile: null });
-    spyOn(toasterService, 'error').and.callThrough();
-    component.ngOnInit();
-    expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
-  });
-
   it('Form to successfully set input framework data sent', () => {
     const userService = TestBed.get(UserService);
     const frameworkService = TestBed.get(FrameworkService);
@@ -106,7 +92,7 @@ describe('ProfileFrameworkPopupComponent', () => {
     expect(component.medium).toBeDefined();
     expect(component.gradeLevel).toBeDefined();
     expect(component.subject).toBeDefined();
-    expect(component.showButton).toBeTruthy();
+    expect(component.showButton).toBeFalsy();
   });
 });
 

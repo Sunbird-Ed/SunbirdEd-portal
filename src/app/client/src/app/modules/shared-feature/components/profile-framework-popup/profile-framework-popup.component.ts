@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, ChangeDetectorRef, EventEmitter, Output, OnDestroy, ViewChild } from '@angular/core';
 import { FrameworkService, FormService, UserService, ChannelService, OrgDetailsService } from '@sunbird/core';
-import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
-import { combineLatest, Subscription, Subject } from 'rxjs';
+import { takeUntil, first, mergeMap, map, tap } from 'rxjs/operators';
+import { combineLatest, Subscription, Subject, of, throwError } from 'rxjs';
 import {
   ConfigService, ResourceService, Framework, ToasterService, ServerResponse
 } from '@sunbird/shared';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash';
+import { ThrowStmt } from '@angular/compiler';
 @Component({
   selector: 'app-popup',
   templateUrl: './profile-framework-popup.component.html',
@@ -38,40 +39,66 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   userSubscription: Subscription;
   public selectedData = [];
   public isCustodianOrg = false;
+  public initDropDown = false;
+  public CustodianOrgBoard: object = {};
   constructor(public router: Router, public userService: UserService, public frameworkService: FrameworkService,
     public formService: FormService, public resourceService: ResourceService, private cdr: ChangeDetectorRef,
-    public toasterService: ToasterService, public channelService: ChannelService , public orgDetailsService: OrgDetailsService) { }
+    public toasterService: ToasterService, public channelService: ChannelService, public orgDetailsService: OrgDetailsService) { }
 
   ngOnInit() {
-    this.userSubscription = this.userService.userData$.subscribe(
-      (user: any) => {
-        if (user && !user.err) {
-          this.orgDetailsService.getCustodianOrg()
-            .subscribe(data => {
-              if (user.userProfile.rootOrg.rootOrgId === data.result.response.value) {
-              this.isCustodianOrg = true;
-              this.getChannel();
-              } else {
-                this.frameworkService.initialize();
-                this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
-                  if (!frameworkData.err) {
-                    this.frameWorkId = frameworkData.frameworkdata['defaultFramework'].identifier;
-                    this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
-                    this.getFormFields(frameworkData.frameworkdata['defaultFramework'].code);
-                  } else if (frameworkData && frameworkData.err) {
-                    this.navigateTolibrary();
-                  }
-                });
-              }
-            }, err => {
-              this.navigateTolibrary();
-            });
-        } else if (user.err) {
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    this.orgDetailsService.getCustodianOrg().pipe(
+      mergeMap((custodianOrg: any) => {
+        if (this.userService.userProfile.rootOrg.rootOrgId === custodianOrg.result.response.value) {
+          this.isCustodianOrg = true;
+          return this.setCustodianOrgData();
+        } else {
+          this.frameworkService.initialize();
+          return this.setFrameWorkDetails();
         }
+      })).subscribe(data => {
+        if (this.isCustodianOrg) {
+          this.board = _.cloneDeep(this.CustodianOrgBoard);
+        }
+        this.initDropDown = true;
+      }, err => {
+        this.navigateTolibrary();
       });
   }
+  setCustodianOrgData() {
+    return this.channelService.getFrameWork(this.userService.hashTagId).pipe(map((channelData: any) => {
+      this.channelData = channelData.result.channel.frameworks;
+      const board = [];
+      _.forEach(this.channelData, (value, index) => {
+        board.push(value);
+      });
+      this.CustodianOrgBoard['range'] = board;
+      this.CustodianOrgBoard['label'] = 'Board';
+      this.CustodianOrgBoard['code'] = 'board';
+      this.label['medium'] = { 'label': 'Medium', 'index': 2 };
+      this.label['class'] = { 'label': 'Class', 'index': 3 };
+      this.label['subject'] = { 'label': 'Subject', 'index': 4 };
+      return this.CustodianOrgBoard;
+    }));
+  }
 
+  setFrameWorkDetails() {
+    return this.frameworkService.frameworkData$.pipe(mergeMap((frameworkDetails) => {
+      if (!frameworkDetails.err) {
+        const framework = this.frameWorkId ? this.frameWorkId : 'defaultFramework';
+        this.frameWorkId = this.frameWorkId ? this.frameWorkId : frameworkDetails.frameworkdata['defaultFramework'].identifier;
+        const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
+        this.categoryMasterList = _.cloneDeep(frameworkData.categories);
+        return this.getFormDetails();
+      } else if (frameworkDetails.err) {
+        return throwError(frameworkDetails.err);
+      }
+    }), map((formData) => {
+        this.formFieldProperties = formData;
+        if (!this.isCustodianOrg) {
+          this.getFormConfig();
+        }
+    }));
+  }
   getFormConfig() {
     _.forEach(this.categoryMasterList, (category) => {
       _.forEach(this.formFieldProperties, (formFieldCategory) => {
@@ -95,6 +122,15 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     this.selectedOption.board = _.get(this.selectedOption, 'board[0]') ? _.get(this.selectedOption, 'board[0]') : undefined;
     this.onChange();
   }
+  getFormDetails() {
+    const formServiceInputParams = {
+      formType: this.formType,
+      formAction: this.formAction,
+      contentType: 'framework',
+      framework: this.frameWorkId
+    };
+    return this.formService.getFormConfig(formServiceInputParams, this.userService.hashTagId);
+  }
 
   onChange(event?: any, nextIndex?: any, code?: any) {
     if (event) {
@@ -115,64 +151,40 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       this.selectedOption['medium'] = [];
       this.selectedOption['gradeLevel'] = [];
       this.selectedOption['subject'] = [];
-    } else if ( nextIndex === 3 ) {
+    } else if (nextIndex === 3) {
       this.selectedOption['gradeLevel'] = [];
       this.selectedOption['subject'] = [];
     } else {
       this.selectedOption['subject'] = [];
     }
   }
-  getChannel() {
-    this.channelService.getFrameWork(this.userService.hashTagId)
-      .subscribe(data => {
-        this.channelData = data.result.channel.frameworks;
-        const board = [];
-        _.forEach(this.channelData, (value, index) => {
-          board.push(value);
-        });
-        this.board['range'] = board;
-        this.board['label'] = 'Board';
-        this.board['code'] = 'board';
-        this.label['medium'] = { 'label': 'Medium', 'index': 2};
-        this.label['class'] = { 'label': 'Class', 'index': 3};
-        this.label['subject'] = { 'label': 'Subject', 'index': 4};
+  getAssociations(event, nextIndex, code) {
+    if (this.isCustodianOrg && nextIndex === 2) {
+      this.selectedOption['board'] = event;
+      const identifier = _.find(this.channelData, { 'name': event });
+      this.frameWorkId = identifier['identifier'];
+      this.frameworkService.initialize(this.frameWorkId);
+      this.setFrameWorkDetails().subscribe((data) => {
+      this.getFormatedData(event, nextIndex, code);
+      this.isCustodianOrg = false;
       }, err => {
         this.navigateTolibrary();
       });
-  }
-  getFormFields(frameworkCode) {
-    const formServiceInputParams = {
-      formType: this.formType,
-      formAction: this.formAction,
-      contentType: 'framework',
-      framework: frameworkCode
-    };
-    this.formService.getFormConfig(formServiceInputParams, this.userService.hashTagId).pipe(
-      takeUntil(this.unsubscribe)).subscribe((data: ServerResponse) => {
-        this.formFieldProperties = data;
-        this.getFormConfig();
-      }, (err: ServerResponse) => {
-        this.navigateTolibrary();
-      });
-  }
-  getAssociations(event, nextIndex, code) {
-    if (this.isCustodianOrg && nextIndex === 2) {
-      const identifier = _.find(this.channelData, {'name': event});
-      this.frameWorkId = identifier['identifier'];
-      this.frameworkService.getFrameworkCategories(this.frameWorkId)
-        .subscribe(data => {
-          this.categoryMasterList = data.result.framework.categories;
-          this.getFormFields(data.result.framework.code);
-          this.isCustodianOrg = false;
-          this.getFormatedData(event, nextIndex, code);
-        }, err => {
-          this.navigateTolibrary();
-        });
     } else {
       this.getFormatedData(event, nextIndex, code);
     }
   }
   getFormatedData(event, nextIndex, code) {
+    _.forEach(this.categoryMasterList, (category) => {
+      _.forEach(this.formFieldProperties, (formFieldCategory) => {
+        if (category.code === formFieldCategory.code && category.terms) {
+          formFieldCategory.range = category.terms;
+        }
+        return formFieldCategory;
+      });
+    });
+    this.formFieldProperties = _.sortBy(_.uniqBy(this.formFieldProperties, 'code'), 'index');
+    this.board = _.find(this.formFieldProperties, { code: 'board' });
     const rangeData = [];
     if (_.isString(event)) {
       this.selectedData = _.split(event);
@@ -195,7 +207,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         });
       });
       if (rangeData.length > 0) {
-        this[nextFormData['code']['range']] = rangeData;
+        this[nextFormData['code']].range = _.union(this[nextFormData['code']].range, rangeData);
       }
     }
   }
@@ -205,12 +217,10 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     selectedOption['id'] = this.frameWorkId;
     this.submit.emit(selectedOption);
   }
-
   onClose(modal) {
     modal.deny();
     this.close.emit();
   }
-
   ngOnDestroy() {
     if (this.frameworkDataSubscription) {
       this.frameworkDataSubscription.unsubscribe();
@@ -221,9 +231,8 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
-
   navigateTolibrary() {
-    this.toasterService.warning(this.resourceService.messages.emsg.m0012s);
+    this.toasterService.warning(this.resourceService.messages.emsg.m0012);
     this.router.navigate(['/resources']);
   }
 }
