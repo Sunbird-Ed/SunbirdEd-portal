@@ -170,7 +170,7 @@ module.exports = {
           if (self.payload['redirect_uri']) {
             res.redirect(self.payload['redirect_uri'])
           } else {
-            res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/private/index')
+            res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/home')
           }
         }
       })

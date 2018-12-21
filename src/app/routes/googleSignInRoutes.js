@@ -1,5 +1,6 @@
 const _ = require('lodash');
-const { googleOauth, createSession, fetchUserById, createUserWithMailId } = require('./../helpers/googleOauthHelper');
+const { googleOauth, createSession, fetchUserByEmailId, createUserWithMailId } = require('./../helpers/googleOauthHelper');
+const telemetryHelper = require('../helpers/telemetryHelper')
 
 module.exports = (app) => {
 
@@ -25,60 +26,77 @@ module.exports = (app) => {
    * 7. If any error in the flow, redirect to error_callback with all query param.
    */
   app.get('/google/auth/callback', async (req, res) => {
-    const reqQuery = _.pick(JSON.parse(req.query.state), ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type'])
-    let googleProfile, sunbirdProfile, token;
+    const reqQuery = _.pick(JSON.parse(req.query.state), ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type']);
+    let googleProfile, sunbirdProfile, newUserDetails, keyCloakToken, redirectUrl, errType;
     try {
       if (!reqQuery.client_id || !reqQuery.redirect_uri || !reqQuery.error_callback) {
-        throw 'some of the query params are missing'
+        errType = 'MISSING_QUERY_PARAMS';
+        throw 'some of the query params are missing';
       }
+      errType = 'GOOGLE_PROFILE_API';
       googleProfile = await googleOauth.getProfile(req);
-      sunbirdProfile = await fetchUserById(googleProfile.emailId, req)
-        .then(data => ({ userName: data.result.response.userName }))
-        .catch(handleGetUserByIdError)
-      if (!sunbirdProfile.userName) {
-        await createUserWithMailId(googleProfile, req).catch(handleCreateUserError)
+      errType = 'USER_FETCH_API';
+      sunbirdProfile = await fetchUserByEmailId(googleProfile.emailId, req).catch(handleGetUserByIdError);
+      if (!_.get(sunbirdProfile, 'result.response.userName')) {
+        errType = 'USER_CREATE_API';
+        newUserDetails = await createUserWithMailId(googleProfile, req).catch(handleCreateUserError);
       }
-      token = await createSession(googleProfile.emailId, req, res)
-      let redirect_uri;
+      errType = 'KEYCLOAK_SESSION_CREATE';
+      keyCloakToken = await createSession(googleProfile.emailId, req, res);
+      errType = 'UNHANDLED_ERROR';
+      redirectUrl = reqQuery.redirect_uri.split('?')[0];
       if (reqQuery.client_id === 'android') {
-        const query = Object.keys(token).map(key => key + '=' + token[key]).join('&');
-        redirect_uri = reqQuery.redirect_uri.split('?')[0] + '?' + query
-      } else {
-        redirect_uri = reqQuery.redirect_uri.split('?')[0] || '/resources'
+        redirectUrl = redirectUrl + getQueryParams(keyCloakToken);
       }
-      res.redirect(redirect_uri)
+      console.log('google sign in success', googleProfile, sunbirdProfile, newUserDetails, redirectUrl); // log error
     } catch (error) {
-      let redirect_uri = '/resources';
       if (reqQuery.error_callback) {
-        const queryObj = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type'])
+        const queryObj = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type']);
         queryObj.error_message = getErrorMessage(error);
-        const query = Object.keys(queryObj).map(key => key + '=' + queryObj[key]).join('&');
-        redirect_uri = reqQuery.error_callback + '?' + query
+        redirectUrl = reqQuery.error_callback + getQueryParams(queryObj);
       }
-      console.log('google sign in failed with', error, googleProfile, sunbirdProfile, token); // log error
-      res.redirect(redirect_uri) // change it to error_callback with queryParams
+      console.log('google sign in failed', error, googleProfile, sunbirdProfile, newUserDetails, redirectUrl); // log error
+      logErrorEvent(req, errType, error);
+    } finally {
+      res.redirect(redirectUrl || '/resources');
     }
   });
 }
+const logErrorEvent = (req, type, stacktrace) => {
+  const edata = {
+    err: 'GOOGLE_SIGN_IN_ERROR',
+    type,
+    stacktrace
+  }
+  const context = {
+    env: 'GOOGLE_SIGN_IN'
+  }
+  telemetryHelper.logApiErrorEventV2(req, {edata, context});
+}
+const getQueryParams = (queryObj) => {
+  return '?' + Object.keys(queryObj)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(queryObj[key])}`)
+    .join('&');
+}
 const getErrorMessage = (error) => {
-  if(error === 'USER_NAME_NOT_PRESENT' || _.get(error, 'message') === 'USER_NAME_NOT_PRESENT') {
-    return 'Your account could not be created on Diksha due to your Google Security settings.';
+  if (error === 'USER_NAME_NOT_PRESENT' || _.get(error, 'message') === 'USER_NAME_NOT_PRESENT') {
+    return 'Your account could not be created on Diksha due to your Google Security settings';
   } else {
-    return 'Your account could not be created on Diksha due to internal error.'
+    return 'Your account could not be signed in to Diksah Due to technical issue. Please try again after some time';
   }
 }
 const handleCreateUserError = (error) => {
   if (_.get(error, 'error.params')) {
-    throw error.error.params
+    throw error.error.params;
   } else if (error instanceof Error) {
-    throw error.message
+    throw error.message;
   } else {
-    throw 'unhandled exception while getting userDetails'
+    throw 'unhandled exception while getting userDetails';
   }
 }
 const handleGetUserByIdError = (error) => {
-  if(_.get(error, 'error.params.err') === 'USER_NOT_FOUND' || _.get(error, 'error.params.status') === 'USER_NOT_FOUND'){
+  if (_.get(error, 'error.params.err') === 'USER_NOT_FOUND' || _.get(error, 'error.params.status') === 'USER_NOT_FOUND') {
     return {};
   }
-  throw error.error || error.message || error
+  throw error.error || error.message || error;
 }
