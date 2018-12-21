@@ -45,13 +45,13 @@ h1, h2, h3, h4, h5,
 .ui.form input[type=url],
 .ui.menu,
 .ui.dropdown,
-.ui.category.search>.results .category>.name {
+.ui.category.search> .results .category> .name {
   font-family: inherit;
 }
 
 .ui.tiny.header .icon {
   line-height: 1;
-  font-size: .75em;
+  font-size: 0.75em;
 }
 
 .ui.pagination.menu {
