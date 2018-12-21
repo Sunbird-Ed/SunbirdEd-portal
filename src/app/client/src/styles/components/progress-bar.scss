@@ -3,18 +3,21 @@
     background: $progressbar-gradient;
     height: 4px !important;
     min-width: 0;
-    .progress{
-      display:none;
+    .progress {
+      display: none;
     }
   }
+  
   .label {
-    display:none;
+    display: none;
   }
+
   &.blue {
     .bar {
       background-color: $progressbar-color !important;
     }
   }
+
   &.success {
     .bar {
       background: $progressbar-gradient-success !important;
