@@ -4,6 +4,12 @@ import { ResourceService, ServerResponse } from '@sunbird/shared';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
+import {
+  IStartEventInput, IEndEventInput, IInteractEventInput,
+  IInteractEventObject, IInteractEventEdata
+} from '@sunbird/telemetry';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { TelemetryService } from '@sunbird/telemetry'
 
 @Component({
   selector: 'app-otp',
@@ -23,8 +29,17 @@ export class OtpComponent implements OnInit {
   disableResendButton = false;
   showSignUpLink = false;
 
+  telemetryEnd: IEndEventInput;
+  submitOtpInteractEdata: IInteractEventEdata;
+  submitResendOtpInteractEdata: IInteractEventEdata;
+  generateOTPErrorInteractEdata: any;
+  generateVerifyOtpErrorInteractEdata: any;
+  createUserErrorInteractEdata: any;
+  telemetryCdata: Array<{}>;
+
   constructor(public resourceService: ResourceService, public signupService: SignupService,
-    public activatedRoute: ActivatedRoute) { }
+    public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
+    public deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit() {
     this.mode = this.signUpdata.controls.contactType.value;
@@ -34,6 +49,8 @@ export class OtpComponent implements OnInit {
     this.enableSignUpSubmitButton();
     this.unabletoVerifyErrorMessage = this.mode === 'phone' ? this.resourceService.frmelmnts.lbl.unableToVerifyPhone :
       this.resourceService.frmelmnts.lbl.unableToVerifyEmail;
+    this.setInteractEvent();
+
   }
 
   verifyOTP() {
@@ -55,15 +72,35 @@ export class OtpComponent implements OnInit {
         this.createUser();
       },
       (err) => {
+        this.logVerifyOtpError(err.error.params.errmsg);
+        this.telemetryService.interact(this.generateVerifyOtpErrorInteractEdata);
         this.infoMessage = '';
         this.errorMessage = err.error.params.status === 'ERROR_INVALID_OTP' ?
           wrongOTPMessage : this.resourceService.messages.fmsg.m0085;
         if (this.disableResendButton) {
           this.showSignUpLink = true;
+          this.telemetryService.end(this.telemetryEnd);
         }
         this.disableSubmitBtn = false;
       }
     );
+  }
+
+  logVerifyOtpError(error) {
+    this.generateVerifyOtpErrorInteractEdata = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata,
+      },
+      edata: {
+        id: 'submit-otp',
+        type: 'click',
+        pageid: 'otp',
+        extra: {
+          'isError': 'true'
+        }
+      }
+    };
   }
 
   createUser() {
@@ -85,21 +122,41 @@ export class OtpComponent implements OnInit {
       (resp: ServerResponse) => {
         const reqQuery = this.activatedRoute.snapshot.queryParams;
         const queryObj = _.pick(reqQuery,
-          ['client_id', 'redirect_uri', 'scope', 'state', 'response_type']);
+          ['client_id', 'redirect_uri', 'scope', 'state', 'response_type', 'version']);
         queryObj['success_message'] = this.mode === 'phone' ? this.resourceService.frmelmnts.lbl.createUserSuccessWithPhone :
           this.resourceService.frmelmnts.lbl.createUserSuccessWithEmail;
         const query = Object.keys(queryObj).map((key) => {
           return encodeURIComponent(key) + '=' + encodeURIComponent(queryObj[key]);
         }).join('&');
         const redirect_uri = reqQuery.error_callback + '?' + query;
+        this.telemetryService.end(this.telemetryEnd);
         window.location.href = redirect_uri;
       },
       (err) => {
         this.infoMessage = '';
         this.errorMessage = this.resourceService.messages.fmsg.m0085;
         this.disableSubmitBtn = false;
+        this.logCreateUserError(err.error.params.errmsg);
+        this.telemetryService.interact(this.createUserErrorInteractEdata);
       }
     );
+  }
+
+  logCreateUserError(error) {
+    this.createUserErrorInteractEdata = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata,
+      },
+      edata: {
+        id: 'create-user',
+        type: 'click',
+        pageid: 'otp',
+        extra: {
+          'isError': 'true'
+        }
+      }
+    };
   }
 
   resendOTP() {
@@ -115,11 +172,30 @@ export class OtpComponent implements OnInit {
         this.errorMessage = '';
         this.infoMessage = this.resourceService.frmelmnts.lbl.resentOTP;
       },
-      (err: ServerResponse) => {
+      (err) => {
         this.infoMessage = '';
         this.errorMessage = this.resourceService.messages.fmsg.m0085;
+        this.logGenerateOtpError(err.error.params.errmsg);
+        this.telemetryService.interact(this.generateOTPErrorInteractEdata);
       }
     );
+  }
+
+  logGenerateOtpError(error) {
+    this.generateOTPErrorInteractEdata = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata,
+      },
+      edata: {
+        id: 'resend-otp',
+        type: 'click',
+        pageid: 'otp',
+        extra: {
+          'isError': 'true'
+        }
+      }
+    };
   }
 
   enableSignUpSubmitButton() {
@@ -134,5 +210,36 @@ export class OtpComponent implements OnInit {
 
   redirectToSignUp() {
     this.redirectToParent.emit('true');
+  }
+
+  setInteractEvent() {
+    this.telemetryCdata = [{ 'type': 'otp', 'id': this.activatedRoute.snapshot.data.telemetry.uuid }];
+
+    this.submitOtpInteractEdata = {
+      id: 'submit-otp',
+      type: 'click',
+      pageid: 'otp',
+      extra: {
+        'values': '/sign-up'
+      }
+    };
+
+    this.submitResendOtpInteractEdata = {
+      id: 'resend-otp',
+      type: 'click',
+      pageid: 'otp'
+    };
+
+    this.telemetryEnd = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata,
+      },
+      edata: {
+        type: 'signup',
+        pageid: 'signup',
+        mode: 'self'
+      }
+    };
   }
 }

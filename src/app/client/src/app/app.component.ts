@@ -231,6 +231,7 @@ export class AppComponent implements OnInit {
             ver: version,
             pid: this.configService.appConfig.TELEMETRY.PID
           },
+          batchsize: 2,
           endpoint: this.configService.urlConFig.URLS.TELEMETRY.SYNC,
           apislug: this.configService.urlConFig.URLS.CONTENT_PREFIX,
           host: '',
