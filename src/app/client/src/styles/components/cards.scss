@@ -1,13 +1,13 @@
 .sbCard,
 .profileCard {
-    .ui.progress,
-    &.blue{
-        margin: 0;
-        .bar{
-            border-radius: 0 4px 4px 4px;
-        }
+  .ui.progress,
+  &.blue{
+    margin: 0;
+    .bar {
+      border-radius: 0 4px 4px 4px;
     }
+  }
 }
-.last .pageSection-Divider{
-    display: none !important;
+.last .pageSection-Divider {
+  display: none !important;
 }
