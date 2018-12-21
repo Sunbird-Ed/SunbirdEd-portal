@@ -1,5 +1,5 @@
 .primary-navbar-bg {
-  background-color: #005DA2;
+  background-color: #005da2;
 }
 
 .ui.basic.button.qr-code-btn {
@@ -50,13 +50,13 @@
 
 .ui.menu .primary-nav-item a.item.active {
   background: none;
-  color: #024F9D;
+  color: #024f9d;
   font-size: 1rem;
   font-weight: bold;
 }
 
 .ui.text.menu .item.active {
-  color: #024F9D;
+  color: #024f9d;
   font-size: 1rem;
   font-weight: bold;
 }
@@ -67,7 +67,7 @@
 
 .ui.menu .primary-nav-item a.item.divider {
   top: 20px;
-  border-right: 0.5px solid #196D7F;
+  border-right: 0.5px solid #196d7f;
   opacity: 0.4;
   max-height: 8px;
   padding: 8px;
@@ -86,7 +86,7 @@
 ::ng-deep {
   .ui.fluid.action.input.primary-search-input {
     height: 35px;
-    border: 1px solid #60D4EB;
+    border: 1px solid #60d4eb;
     opacity: 1;
     border-radius: 5px;
   }
@@ -104,14 +104,14 @@
 }
 .search-qrcode-divider {
   opacity: 0.08;
-  border-right: 2px solid #FFFFFF;
+  border-right: 2px solid #fff;
   padding-left: 0;
 }
 .sidebar-hamburger-menu {
   position: absolute;
   right: 10px;
   top: 20px;
-  color: #005DA2;
+  color:#005da2;
 }
 .profile-avtar:hover{
   opacity:1;
