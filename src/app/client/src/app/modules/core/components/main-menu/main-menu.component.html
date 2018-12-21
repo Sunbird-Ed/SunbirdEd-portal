@@ -28,7 +28,7 @@
 		<a class="item fixed-logout-btn" (click)="logout()">{{resourceService.frmelmnts?.lnk?.logout}}</a>
 	</div>
 	<div class="ui sidebar right vertical menu" *ngIf="!userService.loggedIn">
-		<i class="close link icon side-bar-close-icon top-12" (click)="showSideBar()"></i>
+		<i class="close icon side-bar-close-icon top-12 cursor-pointer" (click)="showSideBar()"></i>
 		<div>
 			<a href="/resources" class="item sign-in">
 				{{resourceService.frmelmnts?.btn?.signin}}
