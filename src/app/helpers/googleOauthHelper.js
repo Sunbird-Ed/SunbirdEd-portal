@@ -70,10 +70,9 @@ const createSession = async (emailId, req, res) => {
 }
 const fetchUserByEmailId = async (emailId, req) => {
   const options = {
-    method: 'POST',
-    url: envHelper.LEARNER_URL + 'user/v1/getByKey',
+    method: 'GET',
+    url: envHelper.LEARNER_URL + 'user/v1/get/email/'+ emailId,
     headers: getHeaders(req),
-    body: { request: { key: 'email', value: emailId } },
     json: true
   }
   return request(options).then(data => {
