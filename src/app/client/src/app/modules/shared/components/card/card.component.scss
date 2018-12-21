@@ -46,24 +46,29 @@
     overflow: hidden;
     width: calc(100% - 70px);
   }
+
   &.course {
     justify-content: flex-start;
   }
+
   &.non-course {
     justify-content: flex-end;
   }
+
   .topic,
   .subtopic {
-    line-height:1.417em;
+    line-height: 1.417em;
     max-height: 2.84em;
     overflow: hidden;
   }
+
   .avatar {
     height: 31px;
     width: 31px;
     object-fit: cover;
     border-radius: 50%;
   }
+
   .ui.label {
     font-size: 0.7857rem;
     padding: 4px 10px;
@@ -75,9 +80,11 @@
     align-self: flex-start;
     background: transparent;
   }
+
   .sub-header {
     padding: 10px 15px;
   }
+
   .title {
     font-size: 1rem;
     line-height: 1.429em;
@@ -89,12 +96,14 @@
     font-weight: bold;
     color: $primary-color !important;
   }
+
   .creator {
     font-size: 1rem;
     height: 1.5em;
     margin-top: 0.5em;
     color: $text-gray;
   }
+  
   .description {
     font-size: 1rem;
     line-height: 1.25em;

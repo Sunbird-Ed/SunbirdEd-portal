@@ -3,15 +3,18 @@
   .filter-title {
     color: $primary-color;
   }
+
   .field {
     max-width: 180px;
   }
+
   .ui.selection.dropdown {
     min-height: auto;
     width:100%;
     .dropdown.icon {
       padding: 10px 7px;
     }
+
     .menu > .item {
       padding: 9px 7px !important;
       color: #4a4a4a !important;
@@ -42,6 +45,7 @@
       background: #fff;
     }
   }
+
   .ui.button {
     font-size: 14px;
     text-transform: lowercase;
@@ -50,11 +54,13 @@
       text-transform: uppercase;
     }
   }
+  
   .topic-picker-selector {
     font-size: 14px !important;
     color: #4a4a4a !important;
     border-color:#e4e4e4 !important; 
   }
+
   .ui.dropdown .menu > .header {
     font-weight: 500 !important;
     margin: 7px 0 7px 5px !important;
