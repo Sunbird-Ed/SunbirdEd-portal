@@ -1,4 +1,3 @@
-import { LearnerService } from './../learner/learner.service';
 import { throwError as observableThrowError, of as observableOf, Observable, BehaviorSubject } from 'rxjs';
 import { mergeMap, catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
@@ -8,7 +7,7 @@ import { ContentService } from './../content/content.service';
 import { PublicDataService } from './../public-data/public-data.service';
 import { CacheService } from 'ng2-cache-service';
 import { getOrCreateChangeDetectorRef } from '@angular/core/src/render3/di';
-
+import { LearnerService } from './../learner/learner.service';
 @Injectable()
 export class OrgDetailsService {
 
@@ -110,6 +109,13 @@ export class OrgDetailsService {
 
 public getOrg(): void {
     return this.orgInfo;
+}
+
+getCustodianOrg() {
+    const systemSetting = {
+      url: this.configService.urlConFig.URLS.SYSTEM_SETTING.CUSTODIAN_ORG,
+    };
+    return this.learnerService.get(systemSetting);
 }
 }
 

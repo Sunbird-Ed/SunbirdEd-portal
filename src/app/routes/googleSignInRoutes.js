@@ -26,7 +26,7 @@ module.exports = (app) => {
    * 7. If any error in the flow, redirect to error_callback with all query param.
    */
   app.get('/google/auth/callback', async (req, res) => {
-    const reqQuery = _.pick(JSON.parse(req.query.state), ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type']);
+    const reqQuery = _.pick(JSON.parse(req.query.state), ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version']);
     let googleProfile, sunbirdProfile, newUserDetails, keyCloakToken, redirectUrl, errType;
     try {
       if (!reqQuery.client_id || !reqQuery.redirect_uri || !reqQuery.error_callback) {
@@ -48,14 +48,14 @@ module.exports = (app) => {
       if (reqQuery.client_id === 'android') {
         redirectUrl = redirectUrl + getQueryParams(keyCloakToken);
       }
-      console.log('google sign in success', googleProfile, sunbirdProfile, newUserDetails, redirectUrl); // log error
+      console.log('google sign in success', googleProfile, sunbirdProfile, newUserDetails, redirectUrl);
     } catch (error) {
       if (reqQuery.error_callback) {
-        const queryObj = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type']);
+        const queryObj = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type', 'version']);
         queryObj.error_message = getErrorMessage(error);
         redirectUrl = reqQuery.error_callback + getQueryParams(queryObj);
       }
-      console.log('google sign in failed', error, googleProfile, sunbirdProfile, newUserDetails, redirectUrl); // log error
+      console.log('google sign in failed', error, googleProfile, sunbirdProfile, newUserDetails, redirectUrl);
       logErrorEvent(req, errType, error);
     } finally {
       res.redirect(redirectUrl || '/resources');
@@ -80,6 +80,8 @@ const getQueryParams = (queryObj) => {
 }
 const getErrorMessage = (error) => {
   if (error === 'USER_NAME_NOT_PRESENT' || _.get(error, 'message') === 'USER_NAME_NOT_PRESENT') {
+    return 'Your account could not be created on Diksha due to your Google Security settings';
+  } else if(error === 'GOOGLE_ACCESS_DENIED' || _.get(error, 'message') === 'GOOGLE_ACCESS_DENIED') {
     return 'Your account could not be created on Diksha due to your Google Security settings';
   } else {
     return 'Your account could not be signed in to Diksah Due to technical issue. Please try again after some time';

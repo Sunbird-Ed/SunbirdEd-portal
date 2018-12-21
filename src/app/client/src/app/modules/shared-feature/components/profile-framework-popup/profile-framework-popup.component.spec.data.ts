@@ -989,6 +989,26 @@ export const Response = {
     'ts': '2018-11-07T11:03:37.086Z',
     'ver': '1.0'
   },
+  custodianOrg: {
+    'id': 'api.system.settings.get.custodianOrgId',
+    'ver': 'v1',
+    'ts': '2018-12-20 07:56:30:422+0000',
+    'params': {
+      'resmsgid': null,
+      'msgid': '23bb95fc-229d-dc0b-7179-d79bb99e37f4',
+      'err': null,
+      'status': 'success',
+      'errmsg': null
+    },
+    'responseCode': 'OK',
+    'result': {
+      'response': {
+        'id': 'custodianOrgId',
+        'field': 'custodianOrgId',
+        'value': '01250894314817126443'
+      }
+    }
+  },
   data: [
     {
       'code': 'board',

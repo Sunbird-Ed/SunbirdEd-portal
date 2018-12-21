@@ -2,7 +2,7 @@ const { google } = require('googleapis');
 const _ = require('lodash');
 const { GOOGLE_OAUTH_CONFIG } = require('./environmentVariablesHelper.js')
 const redirectPath = '/google/auth/callback';
-const defaultScope = ['https://www.googleapis.com/auth/plus.me', 'https://www.googleapis.com/auth/userinfo.email'];
+const defaultScope = ['https://www.googleapis.com/auth/plus.me', 'https://www.googleapis.com/auth/userinfo.email', ' https://www.googleapis.com/auth/plus.login'];
 const { getKeyCloakClient } = require('./keyCloakHelper')
 const envHelper = require('./environmentVariablesHelper.js')
 const request = require('request-promise'); //  'request' npm package with Promise support
@@ -34,6 +34,10 @@ class GoogleOauth {
   }
   async getProfile(req) {
     const client = this.createConnection(req);
+    console.log('query', req.query);
+    if(req.query.error === 'access_denied'){
+      throw new Error('GOOGLE_ACCESS_DENIED');
+    }
     const { tokens } = await client.getToken(req.query.code).catch(this.handleError)
     client.setCredentials(tokens)
     const plus = google.plus({ version: 'v1', auth: client})
@@ -66,10 +70,9 @@ const createSession = async (emailId, req, res) => {
 }
 const fetchUserByEmailId = async (emailId, req) => {
   const options = {
-    method: 'POST',
-    url: envHelper.LEARNER_URL + 'user/v1/getByKey',
+    method: 'GET',
+    url: envHelper.LEARNER_URL + 'user/v1/get/email/'+ emailId,
     headers: getHeaders(req),
-    body: { request: { key: 'email', value: emailId } },
     json: true
   }
   return request(options).then(data => {
