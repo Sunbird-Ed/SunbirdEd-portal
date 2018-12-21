@@ -77,7 +77,7 @@ export class FrameworkService {
     };
     return this.publicDataService.get(channelOptions);
   }
-  private getFrameworkCategories(framework: string) {
+  public getFrameworkCategories(framework: string) {
     const frameworkOptions = {
       url: this.configService.urlConFig.URLS.FRAMEWORK.READ + '/' + framework
     };
