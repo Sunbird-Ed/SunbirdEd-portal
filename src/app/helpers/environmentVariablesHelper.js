@@ -50,9 +50,17 @@ let envVariables = {
   learner_Service_Local_BaseUrl: env.sunbird_learner_service_local_base_url || 'http://learner-service:9000',
   content_Service_Local_BaseUrl: env.sunbird_content_service_local_base_url || 'http://content-service:5000',
   sunbird_explore_button_visibility: env.sunbird_explore_button_visibility || 'true',
-  sunbird_enable_signup: env.sunbird_enable_signup || 'true',
   sunbird_extcont_whitelisted_domains: env.sunbird_extcont_whitelisted_domains || 'youtube.com,youtu.be',
-  sunbird_portal_user_upload_ref_link: env.sunbird_portal_user_upload_ref_link || 'http://www.sunbird.org/features-documentation/register_user'
+  sunbird_portal_user_upload_ref_link: env.sunbird_portal_user_upload_ref_link || 'http://www.sunbird.org/features-documentation/register_user',
+  GOOGLE_OAUTH_CONFIG: {
+    clientId: env.sunbird_google_oauth_clientId,
+    clientSecret: env.sunbird_google_oauth_clientSecret
+  },
+  KEYCLOAK_GOOGLE_CLIENT: {
+    clientId: env.sunbird_google_keycloak_client_id,
+    secret: env.sunbird_google_keycloak_secret
+  },
+  sunbird_google_captcha_site_key: env.sunbird_google_captcha_site_key
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')

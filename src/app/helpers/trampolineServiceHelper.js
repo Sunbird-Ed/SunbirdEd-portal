@@ -1,16 +1,12 @@
 const jwt = require('jsonwebtoken')
 const async = require('async')
 const request = require('request')
-const Keycloak = require('keycloak-connect')
-const session = require('express-session')
 const uuidv1 = require('uuid/v1')
 const dateFormat = require('dateformat')
-const CassandraStore = require('cassandra-session-store')
 const _ = require('lodash')
-const permissionsHelper = require('./permissionsHelper.js')
 const telemetryHelper = require('./telemetryHelper.js')
 const envHelper = require('./environmentVariablesHelper.js')
-const userHelper = require('./userHelper.js')
+const { getKeyCloakClient } = require('./keyCloakHelper')
 const echoAPI = envHelper.PORTAL_ECHO_API_URL
 const createUserFlag = envHelper.PORTAL_AUTOCREATE_TRAMPOLINE_USER
 const learnerURL = envHelper.LEARNER_URL
@@ -19,26 +15,8 @@ const trampolineServerUrl = envHelper.PORTAL_AUTH_SERVER_URL
 const trampolineRealm = envHelper.PORTAL_REALM
 const trampolineSecret = envHelper.PORTAL_TRAMPOLINE_SECRET
 const learnerAuthorization = envHelper.PORTAL_API_AUTH_TOKEN
-let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
-let memoryStore = null
 
-if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
-  memoryStore = new session.MemoryStore()
-} else {
-  memoryStore = new CassandraStore({
-    'table': 'sessions',
-    'client': null,
-    'clientOptions': {
-      'contactPoints': cassandraCP,
-      'keyspace': 'portal',
-      'queryOptions': {
-        'prepare': true
-      }
-    }
-  }, function () {})
-}
-
-let keycloak = new Keycloak({ store: memoryStore }, {
+let keycloak = getKeyCloakClient({
   clientId: trampolineClientId,
   bearerOnly: true,
   serverUrl: trampolineServerUrl,
@@ -192,7 +170,7 @@ module.exports = {
           if (self.payload['redirect_uri']) {
             res.redirect(self.payload['redirect_uri'])
           } else {
-            res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/private/index')
+            res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/home')
           }
         }
       })
@@ -311,7 +289,7 @@ module.exports = {
 
       if (body.responseCode === 'OK') {
         req['headers']['X-Channel-Id'] = _.get(req, 'headers.X-Channel-Id') ||
-         _.get(body, 'result.response.rootOrg.hashTagId')
+        _.get(body, 'result.response.rootOrg.hashTagId')
         callback(null, _.get(body, 'result.response.rootOrg.hashTagId'))
       } else {
         callback(null, null)
@@ -320,33 +298,5 @@ module.exports = {
   }
 }
 
-// Method called after successful authentication and it will log the telemetry
-// for CP_SESSION_START
-keycloak.authenticated = function (request) {
-  permissionsHelper.getPermissions(request)
-  async.series({
-    getUserData: function (callback) {
-      permissionsHelper.getCurrentUserRoles(request, callback)
-    },
-    updateLoginTime: function (callback) {
-      userHelper.updateLoginTime(request, callback)
-    },
-    logSession: function (callback) {
-      telemetryHelper.logSessionStart(request, callback)
-    }
-  }, function (err, results) {
-    if (err) {
-      console.log('err', err)
-    }
-  })
-}
 
-keycloak.deauthenticated = function (request) {
-  delete request.session['roles']
-  delete request.session['rootOrgId']
-  if (request.session) {
-    request.session.sessionEvents = request.session.sessionEvents || []
-    telemetryHelper.logSessionEnd(request)
-    delete request.session.sessionEvents
-  }
-}
+

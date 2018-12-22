@@ -76,4 +76,16 @@ export class UtilService {
   public toggleAppPopup() {
     this.showAppPopUp = !this.showAppPopUp;
   }
+
+
+
+  public manipulateSoftConstraint(filter, softConstraintData, frameWorkData?: any) {
+    if (!_.isEmpty(frameWorkData) && !filter) {
+      return {filters: _.omit(frameWorkData, ['id']), mode: 'soft'};
+    } else if (filter) {
+     return false;
+    } else {
+      return softConstraintData;
+    }
+  }
 }

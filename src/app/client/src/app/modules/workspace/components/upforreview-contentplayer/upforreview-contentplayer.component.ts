@@ -179,6 +179,7 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
             contentData: response.result.content
           };
           this.playerConfig = this.playerService.getConfig(contentDetails);
+          this.playerConfig.data = this.playerService.updateContentBodyForReviewer(this.playerConfig.data);
           this.contentData = response.result.content;
           this.setInteractEventData();
           this.showCommentBoxClass = this.contentData.mimeType ===
