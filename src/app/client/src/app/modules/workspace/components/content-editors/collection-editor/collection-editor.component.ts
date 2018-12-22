@@ -110,6 +110,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     const validState = _.indexOf(this.configService.editorConfig.COLLECTION_EDITOR.collectionState, this.routeParams.state) > -1;
     if (this.collectionDetails.mimeType === this.configService.editorConfig.COLLECTION_EDITOR.mimeCollection && validStatus) {
       if (validState && this.collectionDetails.createdBy !== this.userService.userid) {
+        return true; // we need to remove this case or validState should be changed
+      } else if (validState && _.includes(this.collectionDetails.collaborators, this.userService.userid)) {
         return true;
       } else if (validState && this.collectionDetails.createdBy === this.userService.userid) {
         return true;

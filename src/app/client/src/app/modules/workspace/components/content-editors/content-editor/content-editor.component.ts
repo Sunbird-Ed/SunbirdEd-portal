@@ -170,8 +170,10 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     const validState = _.indexOf(this.configService.editorConfig.CONTENT_EDITOR.contentState, this.routeParams.state) > -1;
     if (this.contentDetails.mimeType === this.configService.appConfig.CONTENT_CONST.CREATE_LESSON && validStatus) {
       if (validState && this.contentDetails.createdBy !== this.userService.userid) {
-        return true;
+        return true; // we need to remove this case or validState should be changed
       } else if (validState && this.contentDetails.createdBy === this.userService.userid) {
+        return true;
+      } else if (validState && _.includes(this.contentDetails.collaborators, this.userService.userid)) {
         return true;
       } else if (this.contentDetails.createdBy === this.userService.userid) {
         return true;

@@ -222,8 +222,7 @@ const routes: Routes = [
           }, roles: 'collaboratingRole',
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
         }
-      },
-      { path: '**', redirectTo: 'create' }
+      }
     ]
   },
   {

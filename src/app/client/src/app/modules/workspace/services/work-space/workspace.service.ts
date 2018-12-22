@@ -225,7 +225,7 @@ export class WorkSpaceService {
         }
       }
     };
-    return this.publicDataService.post(option);
+    return this.content.post(option);
   }
 
   lockContent(inputParams): Observable<ServerResponse> {
@@ -235,7 +235,7 @@ export class WorkSpaceService {
         request: inputParams
       }
     };
-    return this.publicDataService.post(option);
+    return this.content.post(option);
   }
 
   retireLock(inputParams): Observable<ServerResponse> {
@@ -245,7 +245,7 @@ export class WorkSpaceService {
         request: inputParams
       }
     };
-    return this.publicDataService.delete(option);
+    return this.content.delete(option);
   }
 
   setData(data, name) {

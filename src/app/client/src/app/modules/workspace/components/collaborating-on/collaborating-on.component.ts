@@ -289,22 +289,22 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
         this.lockPopupData = content;
         this.showLockedContentModal = true;
     } else {
-      if (status !== 'processing') {
-        // only draft state contents need to be locked
-        if (status === 'draft') {
-          this.lockContent(content).subscribe(
-            (data: ServerResponse) => {
-                content.lock = data.result;
-                this.workSpaceService.navigateToContent(content, this.state);
-            },
-            (err: ServerResponse) => {
-                this.toasterService.error(this.resourceService.messages.fmsg.m0006);
-            }
-          );
-        } else {
-          this.workSpaceService.navigateToContent(content, this.state);
-        }
+      // if (content.status.toLowerCase() !== 'processing') {
+      // only draft state contents need to be locked
+      if (content.status.toLowerCase() === 'draft') {
+        this.lockContent(content).subscribe(
+          (data: ServerResponse) => {
+              content.lock = data.result;
+              this.workSpaceService.navigateToContent(content, this.state);
+          },
+          (err: ServerResponse) => {
+              this.toasterService.error(this.resourceService.messages.fmsg.m0006);
+          }
+        );
+      } else {
+        this.workSpaceService.navigateToContent(content, this.state);
       }
+      // }
     }
   }
 
