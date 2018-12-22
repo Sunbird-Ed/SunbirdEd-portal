@@ -1,11 +1,11 @@
 .ui.dropdown>.text {
-    color: #005DA2;
+    color: #005da2;
   }
   .ui.selection.dropdown>.dropdown.icon {
-    color: #005DA2;
+    color: #005da2;
   }
   .ui.selection.dropdown.language-selector {
-    border: 1px solid #CAE4F7;
+    border: 1px solid #cae4f7;
     border-radius: 4px;
     min-height: 35px;
   }
@@ -16,10 +16,10 @@
        font-size: 1.2rem;
        right: 0.7em;
        top: 8px;
-       color:#005DA2;
+       color:#005da2;
      }
      .ui.dropdown>.text {
-       color:#005DA2;
+       color:#005da2;
        font-size: 0.86rem;
      }
    }
@@ -30,7 +30,7 @@
       font-size: 0.86rem;
       padding-bottom: 5px;
       padding-top: 8px;
-      color: #005DA2;
+      color: #005da2;
     }
     .ui.dropdown {
       ::ng-deep {
@@ -49,6 +49,7 @@
             font-size: 12px;
             font-weight: 400;
         }  
+
         .ui.inline.dropdown>.text {
             color: #fff;
             font-size: 0.86rem;
