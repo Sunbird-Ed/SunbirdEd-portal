@@ -301,7 +301,6 @@ export class SearchService {
     };
     return this.learnerService.post(option);
   }
-
   processFilterData(facets) {
     const facetObj = {};
     _.forEach(facets, (value) => {
