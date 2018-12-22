@@ -17,7 +17,7 @@
           <div class="ui active width-100" [suiCollapse]="collapse">
             <form class="ui form">
               <div class="ui grid stackable top aligned my-0">
-                <div class="twelve wide tablet ten wide computer column">
+                <div class="twelve wide tablet ten wide computer column mobile-p-0">
                   <div class="ui grid" *ngIf="formFieldProperties">
                     <ng-container *ngIf="formFieldProperties.length <= 4">
                       <div class="six wide mobile three wide tablet three wide computer column" *ngFor="let field of formFieldProperties">
@@ -47,8 +47,8 @@
                     </ng-container>
                   </div>
                 </div>
-                <div class="twelve wide tablet two wide computer right aligned top aligned column filter-button">
-                  <label class="computer only mb-5 d-block">&nbsp;</label>
+                <div class="twelve wide tablet two wide computer right aligned top aligned column filter-button mobile-p-0">
+                  <label class="computer-only mb-5">&nbsp;</label>
                   <a class="searchfilterbutton ui blue tiny button" (click)="applyFilters()" appTelemetryInteract [telemetryInteractEdata]="submitIntractEdata">
                     {{resourceService.frmelmnts?.btn?.submit}}
                   </a>
