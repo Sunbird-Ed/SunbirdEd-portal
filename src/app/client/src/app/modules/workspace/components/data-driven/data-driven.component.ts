@@ -277,8 +277,8 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
       content: this.generateData(_.pickBy(this.formData.formInputData))
     };
     if (this.contentType === 'studymaterial') {
-       this.editorService.create(requestData).subscribe(res => {
-         this.createLockAndNavigateToEditor({identifier: res.result.content_id});
+      this.editorService.create(requestData).subscribe(res => {
+        this.createLockAndNavigateToEditor({identifier: res.result.content_id});
       }, err => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0078);
       });
@@ -294,8 +294,10 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
   createLockAndNavigateToEditor (content) {
     const state = 'draft';
     const framework = this.framework;
+    console.log('-----------------------------------');
     this.lockContent(content).subscribe(
       (data: ServerResponse) => {
+        console.log('----------------inside createLockAndNavigateToEditor-------------------');
           const lock = data.result;
           if (this.contentType === 'studymaterial') {
             this.router.navigate(['/workspace/content/edit/content/', content.identifier, state, framework], {queryParams: lock});
@@ -315,6 +317,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
   */
   checkForPreviousRouteForRedirect() {
     const previousUrlObj = this.navigationHelperService.getPreviousUrl();
+    console.log('previousUrlObjpreviousUrlObjpreviousUrlObjpreviousUrlObj', previousUrlObj);
     if (previousUrlObj && previousUrlObj.url && (previousUrlObj.url !== '/workspace/content/create')) {
       this.redirect();
     }

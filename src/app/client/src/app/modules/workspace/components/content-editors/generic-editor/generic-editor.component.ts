@@ -46,7 +46,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
     this.routeParams = this.activatedRoute.snapshot.params;
-    this.queryParams = this.activatedRoute.snapshot.queryParams;    this.disableBrowserBackButton();
+    this.queryParams = this.activatedRoute.snapshot.queryParams;
+    this.disableBrowserBackButton();
     this.getDetails().pipe(
       tap(data => {
         if (data.tenantDetails) {
