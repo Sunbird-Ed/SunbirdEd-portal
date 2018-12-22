@@ -11,8 +11,7 @@ import { CacheService } from 'ng2-cache-service';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-data-driven-filter',
-  templateUrl: './data-driven-filter.component.html',
-  styleUrls: ['./data-driven-filter.component.scss']
+  templateUrl: './data-driven-filter.component.html'
 })
 export class DataDrivenFilterComponent implements OnInit, OnChanges {
   @Input() filterEnv: string;
