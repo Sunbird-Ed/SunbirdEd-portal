@@ -30,6 +30,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   private browserBackEventSub;
   public extContWhitelistedDomains: string;
   public ownershipType: Array<string>;
+  public queryParams: object;
+  public contentDetails: any;
 
   constructor(private userService: UserService, public _zone: NgZone, private activatedRoute: ActivatedRoute,
     private tenantService: TenantService, private telemetryService: TelemetryService,
@@ -44,6 +46,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
     this.routeParams = this.activatedRoute.snapshot.params;
+    this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.disableBrowserBackButton();
     this.getDetails().pipe(
       tap(data => {
@@ -63,9 +66,15 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   }
   private getDetails() {
     return combineLatest(this.tenantService.tenantData$,
-    this.editorService.getOwnershipType()).
+    this.editorService.getOwnershipType(), this.getContentDetails()).
     pipe(map(data => ({ tenantDetails: data[0].tenantData,
       ownershipType: data[1] })));
+  }
+  private getContentDetails() {
+    return this.editorService.getContent(this.routeParams.contentId).
+      pipe(map((data) => {
+        this.contentDetails = data.result.content;
+      }));
   }
   /**
    *Launch Generic Editor in the modal
@@ -117,6 +126,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config = _.cloneDeep(this.configService.editorConfig.GENERIC_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config
     window.config.build_number = this.buildNumber;
     window.config.headerLogo = this.logo;
+    window.config.lock = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     window.config.extContWhitelistedDomains = this.extContWhitelistedDomains;
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
   }
@@ -128,8 +138,30 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('genericEditor')) {
       document.getElementById('genericEditor').remove();
     }
+    if (_.has(this.contentDetails, 'status') &&
+      this.contentDetails.status.toLowerCase() === 'draft') {
+      this.retireLock();
+    } else {
+      this.redirectToWorkSpace();
+    }
+  }
+
+  retireLock () {
+    const inputData = {'resourceId': this.routeParams.contentId, 'resourceType': 'Content'};
+    this.workspaceService.retireLock(inputData).subscribe(
+      (data: ServerResponse) => {
+        this.redirectToWorkSpace();
+      },
+      (err: ServerResponse) => {
+        this.redirectToWorkSpace();
+      }
+    );
+  }
+
+  redirectToWorkSpace () {
     this.navigationHelperService.navigateToWorkSpace('workspace/content/uploaded/1');
   }
+
   private disableBrowserBackButton() {
     sessionStorage.setItem('inEditor', 'true');
     window.location.hash = 'no';

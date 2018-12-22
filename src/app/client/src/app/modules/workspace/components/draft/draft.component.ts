@@ -45,6 +45,12 @@ export class DraftComponent extends WorkSpace implements OnInit {
      * Contains unique contentIds id
     */
     contentIds: string;
+
+    /**
+     * Contains static data of popup like header label , submit button label etc
+    */
+    lockInfoPopupContent: object = {headerTitle: ''};
+
     /**
      * Contains list of published course(s) of logged-in user
     */
@@ -54,6 +60,11 @@ export class DraftComponent extends WorkSpace implements OnInit {
      * To show / hide loader
     */
     showLoader = true;
+
+    /**
+     * lock popup data for locked contents
+    */
+    lockPopupData: object;
 
     /**
      * loader message
@@ -69,6 +80,11 @@ export class DraftComponent extends WorkSpace implements OnInit {
      * To show / hide error
     */
     showError = false;
+
+    /**
+     * To show content locked modal
+    */
+    showLockedContentModal = false;
 
     /**
      * no result  message
@@ -145,7 +161,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
         route: Router, userService: UserService,
         toasterService: ToasterService, resourceService: ResourceService,
         config: ConfigService) {
-        super(searchService, workSpaceService);
+        super(searchService, workSpaceService, userService);
         this.paginationService = paginationService;
         this.route = route;
         this.activatedRoute = activatedRoute;
@@ -193,7 +209,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
             offset: (this.pageNumber - 1) * (this.pageLimit),
             sort_by: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
         };
-        this.search(searchParams).subscribe(
+        this.searchContentWithLockStatus(searchParams).subscribe(
             (data: ServerResponse) => {
                 if (data.result.count && data.result.content.length > 0) {
                     this.totalCount = data.result.count;
@@ -224,12 +240,31 @@ export class DraftComponent extends WorkSpace implements OnInit {
      * This method launch the content editior
     */
     contentClick(param) {
-        if (param.action.eventName === 'delete') {
-            this.deleteConfirmModal(param.data.metaData.identifier);
+        if (_.size(param.data.lockInfo)) {
+            this.lockPopupData = param.data;
+            this.showLockedContentModal = true;
         } else {
-            this.workSpaceService.navigateToContent(param.data.metaData, this.state);
+            if (param.action.eventName === 'delete') {
+                this.deleteConfirmModal(param.data.metaData.identifier);
+            } else {
+                this.lockContent(param.data.metaData).subscribe(
+                    (data: ServerResponse) => {
+                        param.data.metaData.lock = data.result;
+                        this.workSpaceService.navigateToContent(param.data.metaData, this.state);
+                    },
+                    (err: ServerResponse) => {
+                        const errMessage = this.handleContentLockError(err);
+                        this.toasterService.error(errMessage || this.resourceService.messages.fmsg.m0006);
+                    }
+                );
+            }
         }
     }
+
+    public onCloseLockInfoPopup () {
+        this.showLockedContentModal = false;
+    }
+
     public deleteConfirmModal(contentIds) {
         const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
         config.isClosable = true;

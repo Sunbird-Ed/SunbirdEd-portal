@@ -51,13 +51,14 @@ describe('GenericEditorComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should fetch tenant and content details and set logo and collection details if success',
-  inject([ ToasterService, TenantService, WorkSpaceService, EditorService],
+  it('should fetch tenant and content details and set logo and collection details if api return data',
+    inject([ ToasterService, TenantService, WorkSpaceService, EditorService],
     ( toasterService, tenantService, workspaceService, editorService) => {
       tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData });
       spyOn(workspaceService, 'toggleWarning').and.callFake(() => { });
       spyOn(jQuery.fn, 'iziModal').and.callFake(() => { });
       spyOn(toasterService, 'error').and.callFake(() => {});
+      spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.successResult));
       spyOn(editorService, 'getOwnershipType').and.returnValue(observableOf(['CreatedBy', 'CreatedFor']));
       component.ngOnInit();
       expect(component.logo).toBeDefined();

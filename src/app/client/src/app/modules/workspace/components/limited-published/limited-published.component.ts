@@ -163,7 +163,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
     config: ConfigService, contentUtilsServiceService: ContentUtilsServiceService) {
-    super(searchService, workSpaceService);
+    super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
     this.activatedRoute = activatedRoute;
