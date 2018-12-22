@@ -67,7 +67,10 @@
       "FLAG": "content/v1/flag",
       "ACCEPT_FLAG": "content/v1/flag/accept",
       "DISCARD_FLAG": "content/v1/flag/reject",
-      "COPY": "content/v1/copy"
+      "COPY": "content/v1/copy",
+      "LOCK_LIST": "lock/v1/list",
+      "LOCK_CREATE": "lock/v1/create",
+      "LOCK_RETIRE": "lock/v1/retire"
     },
     "DASHBOARD": {
       "ORG_CREATION": "dashboard/v1/creation/org",

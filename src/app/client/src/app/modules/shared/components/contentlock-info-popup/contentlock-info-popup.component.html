@@ -1,0 +1,15 @@
+<sui-modal [isClosable]="true" size="tiny" (dismissed)="closeModal()" #modal>
+    <div class="content">
+        <div class="ui center aligned segment">
+            <div class="header cardsHeading">
+                {{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':content.lockInfo.creatorInfo.name | interpolate:'{contentName}':content?.name}} 
+            </div>
+            <br />
+            <div class="announcement-description">
+            </div>
+            <a class="ui button primary announcement-button close mt-20" (click)="closeModal()">
+                {{resourceService.frmelmnts?.btn?.ok}}
+            </a>
+        </div>
+    </div>
+</sui-modal>
