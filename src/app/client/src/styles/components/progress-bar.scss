@@ -8,20 +8,16 @@
       display: none;
     }
   }
+}
 
-  .label {
-    display: none;
-  }
+.ui.progress.blue .bar {
+  background-color: $progressbar-gradient !important;
+}
 
-  &.blue {
-    .bar {
-      background-color: $progressbar-color !important;
-    }
-  }
+.ui.progress.success .bar {
+  background-color: $progressbar-gradient-success !important;
+}
 
-  &.success {
-    .bar {
-      background: $progressbar-gradient-success !important;
-    }
-  }
+.ui.progress .label {
+  display: none;
 }
