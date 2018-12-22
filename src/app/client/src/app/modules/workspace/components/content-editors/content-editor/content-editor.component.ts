@@ -31,6 +31,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   private browserBackEventSub;
   public contentDetails: any;
   public ownershipType: Array<string>;
+  public queryParams: object;
   /**
   * Default method of class ContentEditorComponent
   */
@@ -47,6 +48,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
     this.routeParams = this.activatedRoute.snapshot.params;
+    this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.disableBrowserBackButton();
     this.getDetails().pipe(
       tap(data => {
@@ -158,6 +160,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.config.headerLogo = this.logo;
     window.config.aws_s3_urls = this.userService.cloudStorageUrls || [];
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
+    window.config.lock = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
   }
   /**
    * checks the permission using state, status and userId
@@ -167,8 +170,10 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     const validState = _.indexOf(this.configService.editorConfig.CONTENT_EDITOR.contentState, this.routeParams.state) > -1;
     if (this.contentDetails.mimeType === this.configService.appConfig.CONTENT_CONST.CREATE_LESSON && validStatus) {
       if (validState && this.contentDetails.createdBy !== this.userService.userid) {
-        return true;
+        return true; // we need to remove this case or validState should be changed
       } else if (validState && this.contentDetails.createdBy === this.userService.userid) {
+        return true;
+      } else if (validState && _.includes(this.contentDetails.collaborators, this.userService.userid)) {
         return true;
       } else if (this.contentDetails.createdBy === this.userService.userid) {
         return true;
@@ -203,8 +208,30 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('contentEditor')) {
       document.getElementById('contentEditor').remove();
     }
+    if (_.has(this.contentDetails, 'status') &&
+      this.contentDetails.status.toLowerCase() === 'draft') {
+      this.retireLock();
+    } else {
+      this.redirectToWorkSpace();
+    }
+  }
+
+  retireLock () {
+    const inputData = {'resourceId': this.routeParams.contentId, 'resourceType': 'Content'};
+    this.workspaceService.retireLock(inputData).subscribe(
+      (data: ServerResponse) => {
+        this.redirectToWorkSpace();
+      },
+      (err: ServerResponse) => {
+        this.redirectToWorkSpace();
+      }
+    );
+  }
+
+  redirectToWorkSpace () {
     this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
   }
+
   ngOnDestroy() {
     if (document.getElementById('contentEditor')) {
       document.getElementById('contentEditor').remove();

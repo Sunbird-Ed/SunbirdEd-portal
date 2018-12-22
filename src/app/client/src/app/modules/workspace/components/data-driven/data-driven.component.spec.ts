@@ -60,8 +60,7 @@ describe('DataDrivenComponent', () => {
       imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot(),
         TelemetryModule.forRoot()],
       declarations: [DataDrivenComponent, DefaultTemplateComponent],
-      providers: [FrameworkService, FormService, UserService, ContentService,
-        CacheService, EditorService, NavigationHelperService, ToasterService, WorkSpaceService,
+      providers: [ CacheService, EditorService, WorkSpaceService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
@@ -75,12 +74,10 @@ describe('DataDrivenComponent', () => {
     componentParent = fixtureParent.componentInstance;
     fixtureChild = TestBed.createComponent(DefaultTemplateComponent);
     componentChild = fixtureChild.componentInstance;
+    // navigationHelperService = TestBed.get('NavigationHelperService');
     fixtureParent.detectChanges();
   });
 
-  it('should create', () => {
-    expect(componentParent).toBeTruthy();
-  });
   it('should fetch framework details', () => {
     const service = TestBed.get(FrameworkService);
     const cacheService = TestBed.get(CacheService);
@@ -114,25 +111,29 @@ describe('DataDrivenComponent', () => {
     componentParent.formFieldProperties = mockFrameworkData.formSuccess.fields;
     componentParent.fetchFrameworkMetaData();
   });
-  it('should router to collection editer ', () => {
+  it('should router to collection editor ', () => {
     const state = 'draft';
     const type = 'TextBook';
     const router = TestBed.get(Router);
     const userService = TestBed.get(UserService);
     const editorService = TestBed.get(EditorService);
+    const workSpaceService = TestBed.get(WorkSpaceService);
     componentChild.formInputData = { name: 'abcd', board: 'NCERT' };
     componentParent.formData = componentChild;
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'textbook';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
+    userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
+    spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
     componentParent.generateData(componentParent.formData.formInputData);
     spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
     componentParent.createContent();
     expect(router.navigate).toHaveBeenCalledWith(
-      ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'draft', componentParent.framework]);
+      ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'draft', componentParent.framework],
+      {queryParams: undefined});
   });
-  it('should not router to collection editer ', () => {
+  it('should not router to collection editor ', () => {
     const state = 'draft';
     const type = 'TextBook';
     const router = TestBed.get(Router);
@@ -143,14 +144,17 @@ describe('DataDrivenComponent', () => {
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'studymaterial';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
+    userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
     componentParent.generateData(componentParent.formData.formInputData);
     spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
     componentParent.createContent();
     expect(router.navigate).not.toHaveBeenCalledWith(
       ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'draft', componentParent.framework]);
   });
-  it('should router to contentEditor editer ', () => {
+  it('should router to contentEditor editor ', () => {
     const state = 'draft';
     const router = TestBed.get(Router);
     const userService = TestBed.get(UserService);
@@ -160,12 +164,14 @@ describe('DataDrivenComponent', () => {
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'studymaterial';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
-    spyOn(componentParent, 'createContent').and.callThrough();
-    componentParent.generateData(componentParent.formData.formInputData);
+    userService._userProfile = {};
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
     spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
     componentParent.createContent();
     expect(router.navigate).toHaveBeenCalledWith(
-      ['/workspace/content/edit/content/', 'do_2124708548063559681134', 'draft', componentParent.framework]);
+      ['/workspace/content/edit/content/', 'do_2124708548063559681134', 'draft', componentParent.framework],
+      {queryParams: undefined});
   });
   it('should not router to contentEditor editer ', () => {
     const state = 'draft';
@@ -177,7 +183,10 @@ describe('DataDrivenComponent', () => {
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'textbook';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
+    userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
     componentParent.generateData(componentParent.formData.formInputData);
     spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
     componentParent.createContent();
@@ -187,6 +196,8 @@ describe('DataDrivenComponent', () => {
   it('should call getFormConfig', () => {
     componentParent.formFieldProperties = mockFrameworkData.formSuccess;
     componentParent.categoryMasterList = mockFrameworkData.frameworkSuccess;
+    const userService = TestBed.get(UserService);
+    userService._userProfile = {};
     spyOn(componentParent, 'getFormConfig').and.callThrough();
     componentParent.getFormConfig();
     expect(componentParent.getFormConfig).toHaveBeenCalled();
@@ -234,7 +245,10 @@ describe('DataDrivenComponent', () => {
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'studymaterial';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
+    userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
     componentParent.generateData(componentParent.formData.formInputData);
     spyOn(editorService, 'create').and.callFake(() => observableThrowError({}));
     spyOn(toasterService, 'error').and.callThrough();
@@ -255,6 +269,9 @@ describe('DataDrivenComponent', () => {
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'textbook';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
+    userService._userProfile = {};
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
     spyOn(componentParent, 'createContent').and.callThrough();
     componentParent.generateData(componentParent.formData.formInputData);
     spyOn(editorService, 'create').and.callFake(() => observableThrowError({}));
@@ -263,7 +280,7 @@ describe('DataDrivenComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0010);
   });
   it('When contentType is present', () => {
-   expect(componentParent.name).toBe('Untitled Textbook');
-   expect(componentParent.description).toBe('Enter description for TextBook');
+    expect(componentParent.name).toBe('Untitled Textbook');
+    expect(componentParent.description).toBe('Enter description for TextBook');
   });
 });
