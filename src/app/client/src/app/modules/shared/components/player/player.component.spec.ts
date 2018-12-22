@@ -62,7 +62,7 @@ describe('PlayerComponent', () => {
     expect(contentProgressEvent).toBeDefined();
   });
 
-  it('should emit "END" event if content progress is 100', () => {
+  it('should emit "END" event', () => {
     let contentProgressEvent;
     component.contentProgressEvent.subscribe((data) => {
       contentProgressEvent = data;
@@ -70,15 +70,6 @@ describe('PlayerComponent', () => {
     component.playerConfig = playerConfig;
     component.generateContentReadEvent(endEventSuc);
     expect(contentProgressEvent).toBeDefined();
-  });
-  it('should not emit "END" event if content progress is not 100', () => {
-    let contentProgressEvent;
-    component.contentProgressEvent.subscribe((data) => {
-      contentProgressEvent = data;
-    });
-    component.playerConfig = playerConfig;
-    component.generateContentReadEvent(endEventErr);
-    expect(contentProgressEvent).toBeUndefined();
   });
 });
 

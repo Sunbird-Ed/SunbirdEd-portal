@@ -1,5 +1,5 @@
-<div class="ui grid">
-    <div class="ui twelve wide column" *ngIf="section.contents && section.contents.length > 0">
+<div class="ui grid mt-30" *ngIf="section.contents && section.contents.length > 0">
+    <div class="ui twelve wide column">
         <div class="d-flex flex-ai-center">
             <h4 class="ui header m-0 mr-5 pageSection-heading">{{section.name}}</h4>
             <span class="ui primary label pageSection-count">{{section.contents.length}}</span>
@@ -17,7 +17,7 @@
                 class="carousel" 
                 #slickModal="slick-modal" 
                 [config]="slideConfig">
-                <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of section.contents;let i = index" class="slide">    
+                <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of section.contents;let i = index; let last = last" class="slide">    
                     <app-card 
                         appTelemetryInteract 
                         [telemetryInteractEdata]="cardIntractEdata" 
@@ -25,7 +25,7 @@
                         (clickEvent)="playContent($event)"
                         [data]="content" 
                         [customClass]="'mr-20'"
-                        class="pr-20 d-block">
+                        class="pr-20 d-block" [class.last-card]="pr-0">
                     </app-card>
                 </div>
             </ngx-slick>

@@ -13,20 +13,20 @@
       </div>
 
       <!--Course-->
-      <div class="meta course" *ngIf="data.courseCard">
+      <div class="meta course" *ngIf="data.contentType && data.contentType.toLowerCase() === 'course'">
         <div class="topic mb-15" *ngIf="data.topic" title="{{data.topic}}">
-          {{resourceService.frmelmnts.lbl.topic}} : {{data.topic | slice:0:40}} 
+          {{data.topic | slice:0:40}} 
           <span *ngIf="data.topic && data.topic.length >= 30">...</span>
         </div>
-        <div class="subtopic" *ngIf="data.subtopic" title="{{data.subtopic}}">
-          {{resourceService.frmelmnts.lbl.subtopic}} : {{data.subtopic | slice:0:40}} 
-          <span *ngIf="data.subtopic && data.subtopic.length >= 30">...</span>
+        <div class="subtopic" *ngIf="data.subTopic" title="{{data.subTopic}}">
+          {{data.subTopic | slice:0:40}} 
+          <span *ngIf="data.subTopic && data.subTopic.length >= 30">...</span>
         </div>
       </div>
       <!--/Course-->
 
       <!--Non-Course-->
-      <div class="meta non-course" *ngIf="!data.courseCard">
+      <div class="meta non-course" *ngIf="!data.contentType || data.contentType.toLowerCase() !== 'course'">
         <div class="mb-auto d-flex">
           <div class="ui label tiny right" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">{{data.ribbon.right.name}}</div>
           <img src="{{data.ribbon.left.image}}" class="avatar ml-auto" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image" alt="{{data.ribbon.left.name}}">
@@ -43,9 +43,11 @@
           {{data.name | slice:0:40 }}
           <span *ngIf="data.name && data.name.length >= 40">...</span>
         </h4>
-        <div class="creator ellipsis" *ngIf="data.orgDetails && data.orgDetails.orgName">
-          {{data.orgDetails.orgName}}
+        <div class="creator ellipsis">
+          {{data.orgDetails?.orgName}}
         </div>
     </div>
+    <div *ngIf="data.maxCount && data.progress > 0">
     <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount" ></sui-progress>
+  </div>
 </div>

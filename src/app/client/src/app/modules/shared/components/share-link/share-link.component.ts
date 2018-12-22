@@ -9,16 +9,7 @@ import { ISharelink, ITelemetryShare } from './../../interfaces';
 @Component({
   selector: 'app-share-link',
   templateUrl: './share-link.component.html',
-  styles: [`::ng-deep .share-link-popup + sui-popup>.ui.popup {
-    background-color:#007AFF;
-  }
-  ::ng-deep .share-link-popup + sui-popup>.ui.popup .content {
-    color:#fff;
-  }
-  ::ng-deep .share-link-popup + sui-popup>.ui.popup sui-popup-arrow .dynamic.arrow {
-    background-color: #007AFF;
-  }`
-  ]
+  styleUrls: ['./share-link.component.scss']
 })
 export class ShareLinkComponent implements OnInit {
   /**

@@ -12,7 +12,15 @@
     padding: 4px 10px !important;
     font-weight: 500;
     height: 25px;
+    box-shadow: none !important;
 }
 .pageSection-heading{
     font-size: 1.143rem !important;
+    text-transform: lowercase;
+    &::first-letter{
+        text-transform: uppercase;
+    }
+}
+.ui.divider{
+    border-top: 2px solid rgba(34,36,38,.05) !important;
 }

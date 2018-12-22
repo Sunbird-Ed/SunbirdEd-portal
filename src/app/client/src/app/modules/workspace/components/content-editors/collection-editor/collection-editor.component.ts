@@ -170,6 +170,10 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         id: 'org.ekstep.suggestcontent',
         ver: '1.1',
         type: 'plugin'
+      }, {
+        id: 'org.ekstep.uploadfile',
+        ver: '1.0',
+        type: 'plugin'
       });
       window.config.nodeDisplayCriteria = {
         contentType: ['TextBookUnit']

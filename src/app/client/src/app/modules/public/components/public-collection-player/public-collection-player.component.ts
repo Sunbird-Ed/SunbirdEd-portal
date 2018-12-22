@@ -69,21 +69,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     loaderMessage: 'Fetching content details!'
   };
 
-  public collectionTreeOptions: ICollectionTreeOptions = {
-    fileIcon: 'fa fa-file-o fa-lg',
-    customFileIcon: {
-      'video': 'fa fa-file-video-o fa-lg',
-      'pdf': 'fa fa-file-pdf-o fa-lg',
-      'youtube': 'fa fa-youtube fa-lg',
-      'H5P': 'fa fa-html5 fa-lg',
-      'audio': 'fa fa-file-audio-o fa-lg',
-      'ECML': 'fa fa-file-code-o fa-lg',
-      'HTML': 'fa fa-html5-o fa-lg',
-      'collection': 'fa fa-file-archive-o fa-lg',
-      'epub': 'fa fa-file-text fa-lg',
-      'doc': 'fa fa-file-text fa-lg'
-    }
-  };
+  collectionTreeOptions: ICollectionTreeOptions;
   /**
 	 * dialCode
 	*/
@@ -98,6 +84,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     this.windowScrollService = windowScrollService;
     this.router = router;
     this.router.onSameUrlNavigation = 'ignore';
+    this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
   }
   ngOnInit() {
     this.getContent();
@@ -238,7 +225,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   }
 
   private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
-    return this.playerService.getCollectionHierarchy(collectionId).pipe(
+    const inputParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
+    return this.playerService.getCollectionHierarchy(collectionId, inputParams).pipe(
       map((response) => {
         this.collectionData = response.result.content;
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';

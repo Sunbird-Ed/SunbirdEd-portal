@@ -155,6 +155,11 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
       this.playerLoaded = true;
     }
   }
+  public contentProgressEvent(event) {
+    if (_.get(event, 'detail.telemetryData.eid') === 'END') {
+      this.stageId = undefined;
+    }
+  }
   public handleReviewCommentEvent(event) {
     this.commentList = event;
   }

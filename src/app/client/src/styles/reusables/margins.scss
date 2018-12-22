@@ -31,6 +31,12 @@
 .mt-10 {
   @include margin(10px null null null);
 }
+.mt-12 {
+  @include margin(12px null null null);
+}
+.mt-14 {
+  @include margin(14px null null null);
+}
 .mt-15 {
   @include margin(15px null null null);
 }
@@ -73,7 +79,7 @@
   @include margin(null null 20px null);
 }
 .mb-30 {
-  @include margin(null null 20px null);
+  @include margin(null null 30px null);
 }
 .mb-50 {
   @include margin(null null 50px null);
@@ -228,6 +234,8 @@
 }
 
 /* Negative margins */
-.mx--20{
-  margin: 0 -20px;
+@media screen and (min-width:768px){
+  .mx--20{
+    margin: 0 -20px;
+  }
 }

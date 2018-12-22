@@ -1,0 +1,25 @@
+version: 2.1
+jobs:
+  build:
+    machine:
+      image: circleci/classic:latest
+    steps:
+      - checkout
+      - run:
+          name: run build file
+          command: ./build.sh
+  test-cases:
+    docker:
+      - image: g33tha/node-8.11
+    steps:
+      - checkout
+      - run: sh test.sh
+          
+          
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      #- test-cases
+

@@ -383,6 +383,14 @@
                 {
                     "id": "contentType",
                     "name": "Content Types"
+                },
+                {
+                    "id": "resourceType",
+                    "name": "Resource Type"
+                },
+                {
+                    "id": "status",
+                    "name": "Status"
                 }
             ]
         }

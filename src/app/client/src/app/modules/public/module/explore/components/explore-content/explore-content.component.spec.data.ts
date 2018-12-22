@@ -162,7 +162,6 @@ export const Response = {
         'Worksheet',
         'Game'
       ],
-      'board': undefined ,
       'channel': '0123166367624478721'
     },
     'limit': 20,

@@ -1,4 +1,4 @@
-import { PermissionDirective } from './directives';
+import { PermissionDirective, BodyScrollDirective } from './directives';
 import { RouterModule } from '@angular/router';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -33,10 +33,10 @@ import { TelemetryModule } from '@sunbird/telemetry';
     TelemetryModule,
     AvatarModule
   ],
-  declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent,
+  declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, BodyScrollDirective, ConceptPickerComponent,
     DataDrivenFilterComponent, BreadcrumbsComponent, SortByComponent, ErrorPageComponent, FlagContentComponent,
     ContentPlayerMetadataComponent, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent],
-  exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent, DataDrivenFilterComponent,
+  exports: [MainHeaderComponent, PermissionDirective, BodyScrollDirective, ConceptPickerComponent, DataDrivenFilterComponent,
     SortByComponent, BreadcrumbsComponent, FlagContentComponent, ContentPlayerMetadataComponent,
     TelemetryModule, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent]
 })

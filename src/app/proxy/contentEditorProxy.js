@@ -5,9 +5,11 @@ const permissionsHelper = require('./../helpers/permissionsHelper.js')
 const envHelper = require('./../helpers/environmentVariablesHelper.js')
 const contentProxyUrl = envHelper.CONTENT_PROXY_URL
 const learnerServiceBaseUrl = envHelper.LEARNER_URL
+const learner_Service_Local_BaseUrl = envHelper.learner_Service_Local_BaseUrl
 const contentServiceBaseUrl = envHelper.CONTENT_URL
 const reqDataLimitOfContentUpload = '30mb'
 const telemetryHelper = require('../helpers/telemetryHelper')
+const learnerURL = envHelper.LEARNER_URL
 
 module.exports = function (app) {
 
@@ -102,6 +104,31 @@ module.exports = function (app) {
     proxyReqPathResolver: req => {
       return req.originalUrl.replace('/action', '/plugin')
     }
+  }))
+  app.use('/action/textbook/v1/toc/*', addCorsHeaders,
+  proxy(learner_Service_Local_BaseUrl, {
+    proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
+    proxyReqPathResolver: (req) => {
+      var originalUrl = req.originalUrl
+      originalUrl = originalUrl.replace('/action/textbook/v1/', '/v1/textbook/')
+      return require('url').parse(learner_Service_Local_BaseUrl + originalUrl).path
+    }
+  }))
+  app.post('/action/user/v1/search',
+    addCorsHeaders,
+    proxyHeaders.verifyToken(),
+    permissionsHelper.checkPermission(),
+    proxy(learnerURL, {
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
+      proxyReqPathResolver: function (req) {
+        let originalUrl = req.originalUrl.replace('/action/', '')
+        return require('url').parse(learnerURL + originalUrl).path
+      },
+      userResDecorator: (proxyRes, proxyResData, req, res) => {
+          if(req.method === 'GET' && proxyRes.statusCode === 404) res.redirect('/')
+          return proxyResData;
+      }
   }))
 
   app.use('/action/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
