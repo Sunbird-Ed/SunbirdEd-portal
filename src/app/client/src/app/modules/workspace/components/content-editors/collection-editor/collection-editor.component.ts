@@ -38,6 +38,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   private browserBackEventSub;
   public collectionDetails: any;
   public ownershipType: Array<string>;
+  public queryParams: object;
+
   /**
   * Default method of classs CollectionEditorComponent
   * @param {ResourceService} resourceService To get language constant
@@ -57,6 +59,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
     this.routeParams = this.activatedRoute.snapshot.params;
+    this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.disableBrowserBackButton();
     this.getDetails().pipe(
       tap(data => {
@@ -107,6 +110,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     const validState = _.indexOf(this.configService.editorConfig.COLLECTION_EDITOR.collectionState, this.routeParams.state) > -1;
     if (this.collectionDetails.mimeType === this.configService.editorConfig.COLLECTION_EDITOR.mimeCollection && validStatus) {
       if (validState && this.collectionDetails.createdBy !== this.userService.userid) {
+        return true; // we need to remove this case or validState should be changed
+      } else if (validState && _.includes(this.collectionDetails.collaborators, this.userService.userid)) {
         return true;
       } else if (validState && this.collectionDetails.createdBy === this.userService.userid) {
         return true;
@@ -165,6 +170,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     window.config.headerLogo = this.logo;
     window.config.build_number = this.buildNumber;
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
+    window.config.lock = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     if (this.routeParams.type.toLowerCase() === 'textbook') {
       window.config.plugins.push({
         id: 'org.ekstep.suggestcontent',
@@ -240,8 +246,30 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('collectionEditor')) {
       document.getElementById('collectionEditor').remove();
     }
+    if (_.has(this.collectionDetails, 'status') &&
+      this.collectionDetails.status.toLowerCase() === 'draft') {
+      this.retireLock();
+    } else {
+      this.redirectToWorkSpace();
+    }
+  }
+
+  retireLock () {
+    const inputData = {'resourceId': this.routeParams.contentId, 'resourceType': 'Content'};
+    this.workspaceService.retireLock(inputData).subscribe(
+      (data: ServerResponse) => {
+        this.redirectToWorkSpace();
+      },
+      (err: ServerResponse) => {
+        this.redirectToWorkSpace();
+      }
+    );
+  }
+
+  redirectToWorkSpace () {
     this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
   }
+
   ngOnDestroy() {
     if (document.getElementById('collectionEditor')) {
       document.getElementById('collectionEditor').remove();

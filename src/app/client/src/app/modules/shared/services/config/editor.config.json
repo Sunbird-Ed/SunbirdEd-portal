@@ -1,5 +1,5 @@
 {
-    "DEFAULT_PARAMS_FIELDS": "createdBy,status,mimeType,contentType,resourceType",
+    "DEFAULT_PARAMS_FIELDS": "createdBy,status,mimeType,contentType,resourceType,collaborators",
     "COLLECTION_EDITOR": {
         "WINDOW_CONFIG": {
             "editorConfig": {
@@ -233,7 +233,8 @@
             "published",
             "flagged",
             "limitedPublish",
-            "flagreviewer"
+            "flagreviewer",
+            "collaborating-on"
         ],
         "collectionStatus": [
             "Review",
@@ -252,7 +253,8 @@
             "review",
             "published",
             "limitedPublish",
-            "flagreviewer"
+            "flagreviewer",
+            "collaborating-on"
         ],
         "contentStatus": [
             "Review",
