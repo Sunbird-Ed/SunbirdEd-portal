@@ -1,14 +1,14 @@
 <div *ngIf="showQrmodal">
     <app-qr-code-modal (closeQrModal)="closeQrModalEvent($event)"></app-qr-code-modal>
 </div>
-<div class="ui fixed main menu bs-0 main-header d-block" [class.height-170]="userService.loggedIn">
-    <div class="ui container">
-        <div role="banner" class="ui primary-header logo d-flex flex-ai-center">
+<div class="ui fixed main menu bs-0 main-header d-block">
+    <div class="ui container primary-header">
+        <div role="banner" class="ui logo d-flex flex-ai-center">
             <a class="d-flex flex-ai-center" (click)="navigateToHome()">
                 <img class="image centered cursor-pointer" alt={{tenantName}} src="{{logo}}">
             </a>
         </div>
-        <i class="large bars icon link sidebar-hamburger-menu mobile only"  (click)="showSideBar()"></i>
+        <i class="large bars icon link sidebar-hamburger-menu mobile only" (click)="showSideBar()" tabindex="0"></i>
         <app-main-menu class="d-flex computer only ml-auto"></app-main-menu>
         <a class="profile-avtar item computer only pr-0" *ngIf="userService.loggedIn && !showExploreHeader; else showLoginBtn">
             <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing header-user-container" id="dropdown-menu-list-header">
