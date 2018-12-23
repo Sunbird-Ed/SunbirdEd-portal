@@ -1,6 +1,6 @@
-<div class="ui stackable grid mt-20" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
-    <div class="one wide column"></div>
-    <div class="ten wide column">
+<div class="ui container" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
+<div class="ui stackable grid mt-20">
+    <div class="twelve wide column">
         <div *ngIf="!enableContentPlayer && !loader">
             <div class="content" [appTelemetryImpression]="telemetryCourseImpression">
                 <div class="ui stackable grid">
@@ -56,24 +56,15 @@
                             <app-curriculum-card *ngIf="curriculum && curriculum.length > 0" [curriculum]="curriculum"></app-curriculum-card>
                             <br>
                             <div class="courseupdate">
-                                <b *ngIf="courseHierarchy.creator">{{resourceService.frmelmnts.lbl.courseCreatedBy}}: {{courseHierarchy.creator}}</b>
-                                <br>
-                                <b *ngIf="courseHierarchy.orgDetails?.orgName">{{courseHierarchy.orgDetails.orgName}}</b>
-                                <br>
-                                <b *ngIf="courseHierarchy.orgDetails?.email">
+                                <p class="mb-5" *ngIf="courseHierarchy.creator">{{resourceService.frmelmnts.lbl.courseCreatedBy}}: {{courseHierarchy.creator}}</p>
+                                <p class="mb-5" *ngIf="courseHierarchy.orgDetails?.orgName">{{courseHierarchy.orgDetails.orgName}}</p>
+                                <p class="mb-5"*ngIf="courseHierarchy.orgDetails?.email">
                                     <a href="mailto:{{courseHierarchy.orgDetails?.email}}?subject={{courseHierarchy.name}}">{{courseHierarchy.orgDetails?.email}}</a>
-                                </b>
-                                <br>
-
+                                </p>
                                 <div class="ui divider"></div>
-
-                                <b>{{resourceService.frmelmnts.lbl.coursecreatedon}}: {{courseHierarchy.createdOn | dateFormat}}</b>
-                                <br>
-                                <b>{{resourceService.frmelmnts.lbl.updatedon}}: {{courseHierarchy.lastUpdatedOn | dateFormat}}</b>
-                                <br>
-                                
+                                <p class="mb-5">{{resourceService.frmelmnts.lbl.coursecreatedon}}: {{courseHierarchy.createdOn | dateFormat}}</p>
+                                <p class="mb-5">{{resourceService.frmelmnts.lbl.updatedon}}: {{courseHierarchy.lastUpdatedOn | dateFormat}}</p>
                                 <!-- <a *ngIf="contributionsLength>0" popupTrigger="outsideClick" [popupPlacement]="'bottom left'" suiPopup popupText={{contributions}}>{{resourceService.frmelmnts.lbl.viewCredits}}</a> -->
-                                <br>
                             </div>
                         </div>
                     </div>
@@ -159,7 +150,7 @@
         </div>
         <div *ngIf="showError">
         </div>
-        <div class="one wide column"></div>
     </div>
+</div>
 </div>
 <router-outlet></router-outlet>
