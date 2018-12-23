@@ -1,7 +1,9 @@
+.sidebar-hamburger-menu {
+  color:#005da2;
+}
 .primary-navbar-bg {
   background-color: #005da2;
 }
-
 .ui.basic.button.qr-code-btn {
   background: #fff !important;
   color: #024f9d !important;
@@ -66,7 +68,7 @@
 }
 
 .ui.menu .primary-nav-item a.item.divider {
-  top: 20px;
+  top: 15px;
   border-right: 0.5px solid #196d7f;
   opacity: 0.4;
   max-height: 8px;
@@ -107,12 +109,7 @@
   border-right: 2px solid #fff;
   padding-left: 0;
 }
-.sidebar-hamburger-menu {
-  position: absolute;
-  right: 10px;
-  top: 20px;
-  color:#005da2;
-}
+
 .profile-avtar:hover{
   opacity:1;
 }
