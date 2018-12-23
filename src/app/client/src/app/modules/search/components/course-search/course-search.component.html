@@ -1,6 +1,6 @@
-<div [appTelemetryImpression]="telemetryImpression" class=" ui grid">
-    <div class="one wide column"></div>
-    <div class="ten wide column">
+<div class="ui container">
+<div [appTelemetryImpression]="telemetryImpression" class="ui grid">
+    <div class="twelve wide column">
         <div class=" ui grid">
             <div class="ten wide column">
                 <app-data-driven-filter [enrichFilters]="facetsList" [pageId]="'course-search'" *ngIf="initFilters" [ignoreQuery]="['key']" [filterEnv]="filterType" 
@@ -34,8 +34,7 @@
             <app-no-result [data]="noResultMessage"></app-no-result>
         </div>
         <div class="ui grid">
-            <div class="two wide column"></div>
-            <div class="ten wide column pt-0">
+            <div class="twelve wide column pt-0">
                 <div class="pb-10" *ngIf="paginationDetails.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader">
                     <div class="ui pagination menu mt-10 right-floated pt-0" *ngIf="paginationDetails.pages.length">
                             <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="item " (click)="navigateToPage(1) ">{{resourceService.frmelmnts?.lbl?.first}}</a>
@@ -51,5 +50,5 @@
             <app-loader [data]='loaderMessage'></app-loader>
         </div>
     </div>
-    <div class="one wide column"></div>
+</div>
 </div>
