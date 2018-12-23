@@ -1,6 +1,6 @@
-<div [appTelemetryImpression]="telemetryImpression" class=" ui grid">
-  <div class="one wide column"></div>
-  <div class="ten wide column">
+<div class="ui container">
+<div [appTelemetryImpression]="telemetryImpression" class="ui grid">
+  <div class="twelve wide column">
     <div>
       <app-user-filter appTelemetryInteract [telemetryInteractEdata]="filterIntractEdata" appTelemetryInteract [telemetryInteractEdata]="filterIntractEdata" ></app-user-filter>
       <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && !noResult">
@@ -32,9 +32,10 @@
                   <img [src]="user.avatar || 'assets/images/user_logo.png' | cdnprefixurl">
                 </div>
                 <div class="content ">
-                  <a appTelemetryInteract [telemetryInteractEdata]="userViewIntractEdata" 
+                  <!--<a appTelemetryInteract [telemetryInteractEdata]="userViewIntractEdata" 
                   [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}" 
-                  class="header " *ngIf="user.status===1" [queryParams]="queryParams" [routerLink]="['view/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">{{user.firstName}} &nbsp;{{user.lastName}}</a>
+                  class="header " *ngIf="user.status===1" [queryParams]="queryParams" [routerLink]="['view/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">{{user.firstName}} &nbsp;{{user.lastName}}</a>-->
+                  <span class="header " *ngIf="user.status===1">{{user.firstName}} &nbsp;{{user.lastName}}</span>
                   <span class="header" *ngIf="user.status!==1">{{user.firstName}} &nbsp;{{user.lastName}}</span>
 
                   <a *ngIf="user.status===1 && user.isEditableProfile" class="right-float">
@@ -89,8 +90,7 @@
       </div>
     </div>
     <div class="ui grid mt-20">
-      <div class="two wide column"></div>
-      <div class="ten wide column pt-0">
+      <div class="twelve wide column pt-0">
         <div class="pb-10" *ngIf="searchList && totalCount > config.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
           <div class="ui pagination menu mt-10 right-floated pt-0" *ngIf="pager.pages.length">
             <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
@@ -101,13 +101,11 @@
           </div>
         </div>
       </div>
-      <div class="one wide column"></div>
     </div>
     <div class="twelve wide column" *ngIf="showLoader">
       <app-loader [data]='loaderMessage'></app-loader>
     </div>
   </div>
-  <div class="one wide column"></div>
 </div>
-
+</div>
 <router-outlet></router-outlet>

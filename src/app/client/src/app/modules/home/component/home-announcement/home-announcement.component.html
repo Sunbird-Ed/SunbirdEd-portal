@@ -1,11 +1,11 @@
 <div>
   <div class="ui grid">
-    <div class="nine wide column" *ngIf="announcementlist && announcementlist.announcements.length > 0 && !showLoader">
+    <div class="eight wide column" *ngIf="announcementlist && announcementlist.announcements.length > 0 && !showLoader">
       <div class="ui">
         <div class="text dashBoardSectionHeading pt-10  mb-10">{{resourceService.frmelmnts?.lbl?.anncmntinboxannmsg}}</div>
       </div>
     </div>
-    <div class="three wide column" *ngIf="announcementlist && announcementlist.announcements.length > 0 && !showLoader">
+    <div class="four wide column" *ngIf="announcementlist && announcementlist.announcements.length > 0 && !showLoader">
       <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="seeAllInteractEdata" class="ui right floated announcement-list-see-all right-float" [routerLink]="['../announcement/inbox/1']">{{resourceService.frmelmnts?.lbl?.anncmntinboxseeall}}</a>
     </div>
     <div class="twelve wide column" *ngIf="showLoader">
@@ -22,5 +22,4 @@
     </div>
   </div>
 </div>
-
 <router-outlet></router-outlet>

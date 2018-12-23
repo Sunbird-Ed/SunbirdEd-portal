@@ -1,70 +1,72 @@
 <div *ngIf="showQrmodal">
     <app-qr-code-modal (closeQrModal)="closeQrModalEvent($event)"></app-qr-code-modal>
 </div>
-<div class="ui fixed main menu bs-0 main-header d-block" [class.height-170]="userService.loggedIn">
-    <div class="ui container">
-        <div role="banner" class="ui primary-header logo d-flex flex-ai-center">
+<div class="ui fixed main menu bs-0 main-header d-block">
+    <div class="ui container primary-header">
+        <div role="banner" class="ui logo d-flex flex-ai-center">
             <a class="d-flex flex-ai-center" (click)="navigateToHome()">
                 <img class="image centered cursor-pointer" alt={{tenantName}} src="{{logo}}">
             </a>
         </div>
-        <i class="large bars icon link sidebar-hamburger-menu mobile only"  (click)="showSideBar()"></i>
+        <i class="large bars icon link sidebar-hamburger-menu mobile only" (click)="showSideBar()" tabindex="0"></i>
         <app-main-menu class="d-flex computer only ml-auto"></app-main-menu>
-        <a class="profile-avtar item computer only pr-0" *ngIf="userService.loggedIn && !showExploreHeader; else showLoginBtn">
+        <a class="profile-avtar item computer only pr-0" *ngIf="userService.loggedIn; else showLoginBtn">
             <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing header-user-container" id="dropdown-menu-list-header">
                 <ngx-avatar *ngIf='userProfile' [style]="avtarDesktopStyle" [size]="38" initialsSize="1" name="{{userProfile?.firstName}}">
                 </ngx-avatar>
                 <div class="menu" suiDropdownMenu>
-                    <div *ngIf='userProfile' class="item headerDropdownProfile">{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}</div>
+                    <div *ngIf='userProfile' class="item headerDropdownProfile">
+                        {{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}
+                    </div>
                     <div *ngIf='userProfile' class="ui divider"></div>
-                    <a class="item" routerLink="profile">{{resourceService.frmelmnts?.lnk?.profile}}</a>
-                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='adminDashboard' routerLink="orgDashboard">{{resourceService.frmelmnts?.lnk?.dashboard}}</a>
-                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='announcementRole' routerLink="announcement/outbox/1">{{resourceService.frmelmnts?.lnk?.announcement}}</a>
-                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='myActivityRole' routerLink="myActivity">{{resourceService.frmelmnts?.lnk?.myactivity}}</a>
-                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='orgSetupRole' routerLink="orgType">{{resourceService.frmelmnts?.lbl?.orgtypes}}</a>
-                    <a class="item" (click)="logout()">{{resourceService.frmelmnts?.lnk?.logout}}</a>
+                    <a class="item" routerLink="profile">
+                        {{resourceService.frmelmnts?.lnk?.profile}}
+                    </a>
+                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='adminDashboard' routerLink="orgDashboard">
+                        {{resourceService.frmelmnts?.lnk?.dashboard}}
+                    </a>
+                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='announcementRole' routerLink="announcement/outbox/1">
+                        {{resourceService.frmelmnts?.lnk?.announcement}}
+                    </a>
+                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='myActivityRole' routerLink="myActivity">
+                        {{resourceService.frmelmnts?.lnk?.myactivity}}
+                    </a>
+                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='orgSetupRole' routerLink="orgType">
+                        {{resourceService.frmelmnts?.lbl?.orgtypes}}
+                    </a>
+                    <a class="item" (click)="logout()">
+                        {{resourceService.frmelmnts?.lnk?.logout}}
+                    </a>
                 </div>
             </div>
         </a>
         <ng-template #showLoginBtn>
-            <div class="primary-nav-item d-flex ml-auto" *ngIf="!showExploreHeader && !userService.loggedIn">
-                <button *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" aria-label="Explore Sunbird" class="ui explore blue button flex-as-center computer only mr-20"
+            <div class="primary-nav-item d-flex ml-auto computer only">
+                <button *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" 
+                    class="ui explore blue button flex-as-center mr-20"
                     tabindex="0" routerLink="/explore">
                     {{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
-                </button>               
-                <a href="/resources" class="sunblogin item font-weight-bold primary-color pl-5 ml-auto pr-0 computer only">
+                </button>
+                <a class="item" *ngIf="!router.isActive('', true)" routerLink="explore" [class.active]="router.isActive('/search/explore') || router.isActive('/explore')">
+                    {{resourceService?.frmelmnts?.tab?.resources}}
+                </a>
+                <a class="item pr-0" *ngIf="!router.isActive('', true)" routerLink="explore-course" [class.active]="router.isActive('/search/explore-course') || router.isActive('/explore-course')">
+                    {{resourceService?.frmelmnts?.tab?.courses}}
+                </a>
+                <a class="item divider"></a>
+                <a href="/resources" class="sunblogin item font-weight-bold primary-color pl-5 ml-auto pr-0">
                     {{resourceService.frmelmnts?.btn?.signin}}
                 </a>
-            </div>
-            <div class="primary-nav-item d-flex ml-auto" *ngIf="showExploreHeader">
-                <a class="item computer only"  routerLink="explore" [class.active]="router.isActive('/search/explore') || router.isActive('/explore')">{{resourceService?.frmelmnts?.tab?.resources}}</a>
-                <a class="item computer only pr-0" routerLink="explore-course" [class.active]="router.isActive('/search/explore-course') || router.isActive('/explore-course')">{{resourceService?.frmelmnts?.tab?.courses}}</a>
-                <a class="item divider computer only"></a>
-                <!--divider between courses and login-->
-                <a href="/resources" class="sunblogin item font-weight-bold primary-color pl-5 ml-auto pr-0 computer only">
-                    {{resourceService.frmelmnts?.btn?.signin}}
-                </a>
-            </div>
-            <div class="ui secondary right pointing dropdown d-flex flex-as-center mt-10 mr-10 mobile only ml-auto" suiDropdown>
-                <div class="menu" suiDropdownMenu>
-                    <div class="item text-upper-case" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" routerLink="/explore">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</div>
-                    <div class="item">
-                        <a href="/resources" class="sunblogin ">
-                            <div class="item">{{resourceService.frmelmnts?.btn?.signin}}</div>
-                        </a>
-                    </div>
-                </div>
             </div>
         </ng-template>
-
     </div>
     <div class="primary-navbar-bg p-10" *ngIf="showExploreHeader || userService.loggedIn">
-        <div class="ui mobile-view container  d-flex flex-ai-center mx-0">
-            <button class="ui basic button qr-code-btn d-flex computer only mr-0" (click)="showQrmodal = true;">
+        <div class="ui mobile-view container d-flex flex-ai-center mx-0">
+            <button class="ui basic button qr-code-btn d-flex computer only mr-0" (click)="showQrmodal = true;" [class.disabled]="userService.loggedIn">
                 <i class="qrcode icon d-flex flex-ai-center"></i>
                 <span class="d-flex flex-ai-center">{{resourceService.frmelmnts?.lbl?.enterQrCode}}</span>
             </button>
-            <a class="item divider computer only pl-0 search-qrcode-divider"></a>
+            <span class="item divider computer only pl-0 search-qrcode-divider"></span>
             <app-search class="primary-searchbar-alignment " *ngIf="!showExploreHeader"></app-search>
             <div *ngIf="showExploreHeader" class="primary-searchbar-alignment">
                 <div class="ui fluid small ui action input primary-search-input">
@@ -80,7 +82,7 @@
     </div>
     <div class="p-10 mobile only" *ngIf="showExploreHeader || userService.loggedIn">
         <div class="ui mobile-view container d-flex flex-jc-space-between mx-0">
-            <button class="ui basic d-flex button qr-code-btn" (click)="showQrmodal = true;">
+            <button class="ui basic d-flex button qr-code-btn" (click)="showQrmodal = true;" [class.disabled]="userService.loggedIn">
                 <i class="qrcode icon d-flex flex-ai-center"></i>
                 <span class="d-flex flex-ai-center">{{resourceService.frmelmnts?.lbl?.enterQrCode}}</span>
             </button>
