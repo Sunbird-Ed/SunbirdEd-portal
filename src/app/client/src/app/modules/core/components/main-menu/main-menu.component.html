@@ -14,7 +14,7 @@
 </div>
 <div class="mobile only">
 	<div class="ui sidebar right vertical menu" *ngIf="userService.loggedIn">
-		<div *ngIf='userProfile' class="item item py-20 fs-1 font-weight-bold">
+		<div *ngIf='userProfile' class="item item fs-1 font-weight-bold">
 			{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}
 		</div>
 		<i class="close link icon side-bar-close-icon" (click)="showSideBar()"></i>
@@ -33,20 +33,20 @@
 		</a>
 	</div>
 	<div class="ui sidebar right vertical menu" *ngIf="!userService.loggedIn">
-		<i class="close icon side-bar-close-icon top-12 cursor-pointer" (click)="showSideBar()"></i>
+		<i class="close icon side-bar-close-icon link" (click)="showSideBar()"></i>
 		<div>
 			<a href="/resources" class="item sign-in">
 				{{resourceService.frmelmnts?.btn?.signin}}
 			</a>
 		</div>
 		<div class="ui divider mt-0"></div>
-		<div class="item text-upper-case" (click)="showSideBar()" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'"  routerLink="/explore">
+		<div class="item" (click)="showSideBar()" *ngIf="router.isActive('', true)"  routerLink="/explore">
 			{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
 		</div>
-		<a class="item"  routerLink="explore" (click)="showSideBar()" [class.active]="router.isActive('/search/explore') || router.isActive('/explore')">
+		<a class="item" routerLink="explore" (click)="showSideBar()" *ngIf="!router.isActive('', true)" [class.active]="router.isActive('/search/explore') || router.isActive('/explore')">
 			{{resourceService?.frmelmnts?.tab?.resources}}
 		</a>
-		<a class="item" routerLink="explore-course" (click)="showSideBar()" [class.active]="router.isActive('/search/explore-course') || router.isActive('/explore-course')">
+		<a class="item" routerLink="explore-course" (click)="showSideBar()" *ngIf="!router.isActive('', true)" [class.active]="router.isActive('/search/explore-course') || router.isActive('/explore-course')">
 			{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
 	</div>

@@ -1,48 +1,49 @@
-.ui.text.menu .item{
-  font-size: 1rem;
+@import "variables";
+
+.ui.text.menu .item {
   padding: .35714286em .86em;
-  color:#666;
+}
+
+.ui.text.menu .item:hover {
+  color: $link-color;
 }
 
 .ui.text.menu .item.active {
-  font-size: 1rem;
   font-weight: bold;
-  color:#024F9D;
+  color: $link-color;
 }
 
 .ui.vertical.menu .active.item,
 .ui.vertical.menu .sign-in.item {
-  color:#024F9D;
-  font-size: 1rem;
+  color:$link-color;
   font-weight: bold;
-  background: none;   
-}
-
-.fixed-logout-btn {
-  font-size: 1rem;
-  font-weight: bold !important;
-  position: fixed !important;
-  bottom: 0;
-  color: #024F9D !important;
-  width: 100%;
-  border-top: 1px solid rgba(34,36,38, .15) !important;
+  background: none;
 }
 
 .side-bar-close-icon {
   position: absolute;
-  top: 15px;
-  right: 10px;
+  top: 6px;
+  right: 0;
   font-size: 1.2rem;
-  color: #005DA2;
-  z-index:888;
-}
-
-.side-bar-close-icon.top-12 {
-    top: 12px;
+  color: $link-color;
+  z-index: 888;
+  height: 35px;
+  width: 35px;
+  vertical-align: middle;
+  line-height: 35px;
 }
 
 .sign-in {
-  color: #005DA2;
+  color: $link-color;
   font-weight: bold;
   background: none;
+}
+
+.fixed-logout-btn {
+  position: fixed !important;
+  bottom: 0;
+  width: 100%;
+  font-weight: bold !important;
+  color: $link-color !important;
+  border-top: 1px solid rgba(34,36,38, .15) !important;
 }
