@@ -1,9 +1,45 @@
-<footer class="bg-blue">
+<footer class="footer mt-20" *ngIf="showFooter">
   <div class="ui container">
     <div class="ui grid stackable">
-      <div class="four wide column"></div>
-      <div class="four wide column"></div>
-      <div class="four wide column"></div>
+      <div class="four wide column footerMenu">
+        <ul class="p-0 m-0">
+          <li class="mb-15">
+            <a href="https://diksha.gov.in/verticals/profile-registry/">
+              DIKSHA Verticals
+            </a>
+          </li>
+          <li class="mb-15">
+            <a href="https://diksha.gov.in/help/getting-started/explore-diksha/index.html">
+              Help Center
+            </a>
+          </li>
+          <li class="mb-15">
+            <a href="https://diksha.gov.in/partners/">
+              Partners
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="four wide column center aligned playStore">
+        <label class="d-block mb-10">DIKSHA for Mobile</label>
+        <a class="d-block" href="https://play.google.com/store/apps/details?id=in.gov.diksha.app">
+          <img class="playStore-img" src="/assets/images/google_playstore.png" alt="Install App from Google Play Store">
+        </a>
+      </div>
+      <div class="four wide column contantDetails">
+        <label class="d-block mb-10">
+          Contact for queries:
+        </label>
+        <a class="d-block mb-30" href="mailto:diksha-support@ncte-India.org">
+          diksha-support@ncte-india.org
+        </a>
+        <label class="d-block">
+          <a href="https://diksha.gov.in/term-of-use.html">
+            Terms of Use
+          </a>
+          <span>| &copy; {{date | date:'yyyy'}}, DIKSHA</span>
+        </label>
+      </div>
     </div>
   </div>
 </footer>
