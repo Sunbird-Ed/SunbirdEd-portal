@@ -8,13 +8,13 @@
               <div *ngFor="let field of formFieldProperties" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column">
                 <div *ngIf="field.inputType==='select' || field.inputType==='multi-select'" class="field">
                   <div class="mb-10">
-                    <strong>{{field.name}}</strong>
+                    <strong>{{field.label}}</strong>
                   </div>
                   <app-custom-multi-select [inputData]="formInputData[field.code]" [field]="field" (selectedValue)="selectedValue($event, field.code)"></app-custom-multi-select>
                 </div>
                 <div *ngIf="field.code==='topic'" class="field width-160">
                     <div class="mb-10">
-                        <strong>{{field.name}}</strong>
+                        <strong>{{field.label}}</strong>
                       </div>
                     <app-topic-picker [selectedTopics]="formInputData[field.code]" [formTopic]="field" (topicChange)="handleTopicChange($event)"></app-topic-picker>
                   </div>
