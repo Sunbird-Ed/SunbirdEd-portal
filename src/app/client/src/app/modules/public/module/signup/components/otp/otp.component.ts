@@ -9,7 +9,7 @@ import {
   IInteractEventObject, IInteractEventEdata
 } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { TelemetryService } from '@sunbird/telemetry'
+import { TelemetryService } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-otp',

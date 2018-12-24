@@ -4,7 +4,7 @@ import { Subject, Subscription } from 'rxjs';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { SignupService } from './../../services';
 import { TenantService } from '@sunbird/core';
-import { TelemetryService } from '@sunbird/telemetry'
+import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 import { IStartEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
