@@ -22,7 +22,7 @@
                     <ng-container *ngIf="formFieldProperties.length <= 4">
                       <div class="six wide mobile three wide tablet three wide computer column" *ngFor="let field of formFieldProperties">
                         <div class="field">
-                          <label class="mb-10">{{field.name}}</label>
+                          <label class="mb-10">{{field.label}}</label>
                           <ng-container *ngIf="field.inputType==='select' || field.inputType==='multi-select'">
                               <app-custom-multi-select [inputData]="formInputData[field.code]" [field]="field" (selectedValue)="selectedValue($event, field.code)"></app-custom-multi-select>
                           </ng-container>
@@ -35,7 +35,7 @@
                     <ng-container *ngIf="formFieldProperties.length > 4">
                       <div class="six wide mobile four wide tablet four wide computer column" *ngFor="let field of formFieldProperties">
                         <div class="field large">
-                          <label class="mb-10">{{field.name}}</label>
+                          <label class="mb-10">{{field.label}}</label>
                           <ng-container *ngIf="field.inputType==='select' || field.inputType==='multi-select'">
                             <app-custom-multi-select [inputData]="formInputData[field.code]" [field]="field" (selectedValue)="selectedValue($event, field.code)"></app-custom-multi-select>
                           </ng-container>

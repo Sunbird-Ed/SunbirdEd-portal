@@ -12,7 +12,7 @@
             <div *ngIf="filtersDetails && formInputData && showSearchedParam" class="twelve wide column content mb-15">
               <span *ngFor="let field of filtersDetails">
                 <span class="padded chip mt-5 mr-10" *ngIf='formInputData[field.code] && formInputData[field.code].length > 0'>
-                  {{field.name}}:
+                  {{field.label}}:
                   <span *ngFor="let item of formInputData[field.code]">
                     <a class="ui label mt-5 mr-5" *ngIf='!item?.name && field.code !== "channel"'>
                       {{item}}
@@ -40,7 +40,7 @@
                         <div *ngFor="let field of filtersDetails" class="six wide mobile three wide tablet three wide computer column">
                           <div *ngIf="(field.inputType==='select' || field.inputType === 'multi-select') && field.code !== 'channel'" class="field large">
                             <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
-                              defaultSelectionText={{field.name}} zeroSelectionText="Select" class="selection filterFieldSearch"
+                              defaultSelectionText={{field.label}} zeroSelectionText="Select" class="selection filterFieldSearch"
                               [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" #multiSelect>
                               <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
                             </sui-multi-select>
