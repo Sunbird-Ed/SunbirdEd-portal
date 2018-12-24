@@ -240,7 +240,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
      * This method launch the content editior
     */
     contentClick(param) {
-        if (_.size(param.data.lockInfo)) {
+        if (_.size(param.data.lockInfo) && this.userService.userid !== param.data.lockInfo.createdBy) {
             this.lockPopupData = param.data;
             this.showLockedContentModal = true;
         } else {
