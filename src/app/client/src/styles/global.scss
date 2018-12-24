@@ -2,7 +2,8 @@ body {
   position: relative;
   background: $bg-body !important;
   font-family: inherit;
-  letter-spacing: 0.2px; 
+  letter-spacing: 0.2px;
+  height: auto;
 }
 
 button,input,textarea,optgroup,select,
