@@ -4,7 +4,11 @@ import { Subject, Subscription } from 'rxjs';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { SignupService } from './../../services';
 import { TenantService } from '@sunbird/core';
+import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash';
+import { IStartEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -26,9 +30,15 @@ export class SignupComponent implements OnInit, OnDestroy {
   logo: string;
   tenantName: string;
 
+  telemetryStart: IStartEventInput;
+  telemetryImpression: IImpressionEventInput;
+  submitInteractEdata: IInteractEventEdata;
+  telemetryCdata: Array<{}>;
+
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService,
-    public tenantService: TenantService) {
+    public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
+    public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService) {
     this.sbFormBuilder = formBuilder;
   }
 
@@ -48,6 +58,51 @@ export class SignupComponent implements OnInit, OnDestroy {
       this.googleCaptchaSiteKey = '';
     }
     this.initializeFormFields();
+    this.setInteractEventData();
+
+    // Telemetry Start
+    this.signUpTelemetryStart();
+
+    // Telemetry Impression
+    setTimeout(() => {
+      this.signUpTelemetryImpression();
+    }, 300);
+  }
+
+  signUpTelemetryStart() {
+    const deviceInfo = this.deviceDetectorService.getDeviceInfo();
+    this.telemetryStart = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata,
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        mode: this.activatedRoute.snapshot.data.telemetry.mode,
+        uaspec: {
+          agent: deviceInfo.browser,
+          ver: deviceInfo.browser_version,
+          system: deviceInfo.os_version,
+          platform: deviceInfo.os,
+          raw: deviceInfo.userAgent
+        }
+      }
+    };
+  }
+
+  signUpTelemetryImpression() {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata,
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.activatedRoute.snapshot.data.telemetry.uri
+      }
+    };
   }
 
   initializeFormFields() {
@@ -137,8 +192,8 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   vaidateUserContact() {
-    const value =  this.signUpForm.controls.contactType.value === 'phone' ?
-          this.signUpForm.controls.phone.value.toString() : this.signUpForm.controls.email.value;
+    const value = this.signUpForm.controls.contactType.value === 'phone' ?
+      this.signUpForm.controls.phone.value.toString() : this.signUpForm.controls.email.value;
     const uri = this.signUpForm.controls.contactType.value.toString() + '/' + value;
     this.signupService.getUserByKey(uri).subscribe(
       (data: ServerResponse) => {
@@ -215,5 +270,18 @@ export class SignupComponent implements OnInit, OnDestroy {
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  setInteractEventData() {
+    this.submitInteractEdata = {
+      id: 'submit-signup',
+      type: 'click',
+      pageid: 'signup',
+      extra: {
+        'contactType': this.signUpForm.controls.contactType.value.toString()
+      }
+    };
+
+    this.telemetryCdata = [{ 'type': 'signup', 'id': this.activatedRoute.snapshot.data.telemetry.uuid }];
   }
 }

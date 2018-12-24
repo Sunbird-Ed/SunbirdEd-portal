@@ -6,6 +6,7 @@ import { SuiModule } from 'ng2-semantic-ui/dist';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { SignupService } from './services';
+import { TelemetryModule } from '@sunbird/telemetry';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { SignupService } from './services';
     SuiModule,
     FormsModule,
     ReactiveFormsModule,
-    RecaptchaModule
+    RecaptchaModule,
+    TelemetryModule
   ],
   declarations: [SignupComponent, OtpComponent],
   providers: [SignupService]

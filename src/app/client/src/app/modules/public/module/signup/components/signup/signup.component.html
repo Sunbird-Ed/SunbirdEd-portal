@@ -5,8 +5,8 @@
         <img class="image centered" alt={{tenantName}} height="45" src="{{logo}}">
       </div>
       <div class="width-300 mx-auto">
-        <div *ngIf="showSignUpForm">
-          <div class="fs-1 font-weight-bold mb-20 text-ac">{{resourceService.frmelmnts.lbl.signUp}}</div>
+        <div *ngIf="showSignUpForm" [appTelemetryStart]="telemetryStart">
+          <div *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression" class="fs-1 font-weight-bold mb-20 text-ac">{{resourceService.frmelmnts.lbl.signUp}}</div>
           <form class="ui form borderd" [formGroup]="signUpForm" autocomplete="off" id="signUpForm">
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors">{{resourceService.frmelmnts.lbl.fnameLname}}</label>
             <div class="required field mb-20">
@@ -61,7 +61,7 @@
             <!-- Google invisible recaptcha -->
             <re-captcha #captchaRef="reCaptcha" (resolved)="resolved($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
           </form>
-          <button [ngClass]="{'grey':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}" class="ui button width-300 mt-10" tabindex="0"
+          <button appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"  [telemetryInteractCdata]="telemetryCdata" [ngClass]="{'grey':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}" class="ui button width-300 mt-10" tabindex="0"
             (click)="captchaRef.execute(); disableSubmitBtn = true;">{{resourceService.frmelmnts.lbl.signUp}}</button>
           <a (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
         </div>
