@@ -2,7 +2,7 @@
 set -euo pipefail
 
 commit_hash=$1
-org=sunbird
+org=sunbirded.azurecr.io/sunbird
 name=player
 version=$2
 node=$3
