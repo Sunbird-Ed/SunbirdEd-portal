@@ -60,9 +60,9 @@
             </div>
         </ng-template>
     </div>
-    <div class="primary-navbar-bg p-10" *ngIf="showExploreHeader || userService.loggedIn">
+    <div class="primary-navbar-bg p-10" *ngIf="!(router.isActive('', true) && !userService.loggedIn)">
         <div class="ui mobile-view container d-flex flex-ai-center mx-0">
-            <button class="ui basic button qr-code-btn d-flex computer only mr-0" (click)="showQrmodal = true;" [class.disabled]="userService.loggedIn">
+            <button class="ui basic button qr-code-btn d-flex computer only mr-0" (click)="showQrmodal = true;">
                 <i class="qrcode icon d-flex flex-ai-center"></i>
                 <span class="d-flex flex-ai-center">{{resourceService.frmelmnts?.lbl?.enterQrCode}}</span>
             </button>
@@ -80,9 +80,9 @@
             <app-language-dropdown class="computer only"></app-language-dropdown>
         </div>
     </div>
-    <div class="p-10 mobile only" *ngIf="showExploreHeader || userService.loggedIn">
+    <div class="p-10 mobile only" *ngIf="!(router.isActive('', true) && !userService.loggedIn)">
         <div class="ui mobile-view container d-flex flex-jc-space-between mx-0">
-            <button class="ui basic d-flex button qr-code-btn" (click)="showQrmodal = true;" [class.disabled]="userService.loggedIn">
+            <button class="ui basic d-flex button qr-code-btn" (click)="showQrmodal = true;">
                 <i class="qrcode icon d-flex flex-ai-center"></i>
                 <span class="d-flex flex-ai-center">{{resourceService.frmelmnts?.lbl?.enterQrCode}}</span>
             </button>
