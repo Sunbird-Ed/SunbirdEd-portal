@@ -1,3 +1,4 @@
+import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ResourceService, ConfigService } from '../../services';
@@ -6,14 +7,17 @@ import { By } from '@angular/platform-browser';
 import { Response } from './card-creation.component.spec.data';
 import { CardCreationComponent } from './card-creation.component';
 import { CdnprefixPipe } from '../../pipes/cdnprefix.pipe';
+import { SharedModule } from '@sunbird/shared';
+import { TelemetryModule } from '@sunbird/telemetry';
+
 describe('CardCreationComponent', () => {
   let component: CardCreationComponent;
   let fixture: ComponentFixture<CardCreationComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      declarations: [ CardCreationComponent, CdnprefixPipe ],
+      imports: [ RouterTestingModule, HttpClientTestingModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
+      declarations: [ ],
       providers: [ResourceService, ConfigService],
       schemas: [NO_ERRORS_SCHEMA]
     })

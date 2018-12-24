@@ -1,8 +1,9 @@
 body {
-    position: relative;
-    background: $bg-body !important;
-    font-family: inherit;
-    letter-spacing: 0.2px; 
+  position: relative;
+  background: $bg-body !important;
+  font-family: inherit;
+  letter-spacing: 0.2px;
+  height: auto;
 }
 
 button,input,textarea,optgroup,select,
@@ -45,7 +46,15 @@ h1, h2, h3, h4, h5,
 .ui.form input[type=url],
 .ui.menu,
 .ui.dropdown,
-.ui.category.search>.results .category>.name
-{
-    font-family: inherit;
+.ui.category.search> .results .category> .name {
+  font-family: inherit;
+}
+
+.ui.tiny.header .icon {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.ui.pagination.menu {
+  flex-wrap: wrap;
 }

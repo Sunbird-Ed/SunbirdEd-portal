@@ -49,6 +49,7 @@ module.exports = (app) => {
         redirectUrl = redirectUrl + getQueryParams(keyCloakToken);
       }
       console.log('google sign in success', googleProfile, sunbirdProfile, newUserDetails, redirectUrl);
+      logAuditEvent(req, googleProfile)
     } catch (error) {
       if (reqQuery.error_callback) {
         const queryObj = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type', 'version']);
@@ -72,6 +73,21 @@ const logErrorEvent = (req, type, stacktrace) => {
     env: 'GOOGLE_SIGN_IN'
   }
   telemetryHelper.logApiErrorEventV2(req, {edata, context});
+}
+const logAuditEvent = (req, profile) => {
+  const edata = {
+    props: {
+      firstName: profile.name,
+      email: profile.emailId,
+      emailVerified: true
+    },
+    state: 'LOGGED_IN_USER', 
+    prevstate: 'ANONYMOUS_USER'
+  }
+  const context = {
+    env: 'GOOGLE_SIGN_IN'
+  }
+  telemetryHelper.logAuditEvent(req, {edata, context});
 }
 const getQueryParams = (queryObj) => {
   return '?' + Object.keys(queryObj)
