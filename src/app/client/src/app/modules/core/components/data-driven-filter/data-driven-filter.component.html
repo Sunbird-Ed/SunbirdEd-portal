@@ -40,7 +40,7 @@
                         <div *ngFor="let field of filtersDetails" class="six wide mobile three wide tablet three wide computer column">
                           <div *ngIf="(field.inputType==='select' || field.inputType === 'multi-select') && field.code !== 'channel'" class="field large">
                             <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
-                              defaultSelectionText={{field.name}} zeroSelectionText="Select" class="selection filterFieldSearch"
+                              defaultSelectionText={{field.label}} zeroSelectionText="Select" class="selection filterFieldSearch"
                               [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" #multiSelect>
                               <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
                             </sui-multi-select>
