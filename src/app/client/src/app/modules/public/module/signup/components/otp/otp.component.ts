@@ -50,7 +50,6 @@ export class OtpComponent implements OnInit {
     this.unabletoVerifyErrorMessage = this.mode === 'phone' ? this.resourceService.frmelmnts.lbl.unableToVerifyPhone :
       this.resourceService.frmelmnts.lbl.unableToVerifyEmail;
     this.setInteractEvent();
-
   }
 
   verifyOTP() {
