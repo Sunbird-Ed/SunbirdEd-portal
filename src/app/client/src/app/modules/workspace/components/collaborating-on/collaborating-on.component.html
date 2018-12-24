@@ -26,6 +26,7 @@
       </th>
       <th class="two wide UpReviewTableHeader sorted bl-0">{{ resourceService?.frmelmnts?.lbl?.edit}}
       </th>
+      <th class="two wide UpReviewTableHeader sorted bl-0"></th>
     </tr>
   </thead>
   <tbody [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inview($event)" [throttle]="1000" [trigger]="collaboratingContent">
@@ -61,8 +62,13 @@
       </td>
       <td class="UpForReviewStatusOrange">{{content.status}}</td>
       <td class="cursor-pointer" (click)="contentClick(content)">
-        <i class="edit icon">
+        <i *ngIf= "content.status.toLowerCase() === 'draft'" class="edit icon">
         </i>
+      </td>
+      <td>
+        <span *ngIf="content.lockInfo" suiPopup popupText="{{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':content?.lockInfo?.creatorInfo?.name | interpolate:'{contentName}':content?.name}}" [popupPlacement]="'top left'">
+          <i class="lock icon large"  ></i>
+        </span>
       </td>
     </tr>
   </tbody>
