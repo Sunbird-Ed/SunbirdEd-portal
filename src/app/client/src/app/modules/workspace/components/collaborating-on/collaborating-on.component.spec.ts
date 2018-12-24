@@ -157,6 +157,5 @@ describe('CollaboratingOnComponent', () => {
       fixture.detectChanges();
       component.contentClick(Response.searchSuccessWithCountTwo.result.content[1]);
       expect(component.showLockedContentModal).toBeTruthy();
-      
   }));
 });
