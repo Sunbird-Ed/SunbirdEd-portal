@@ -1,8 +1,6 @@
-<br>
-<br>
+<div class="ui container">
 <div class=" ui grid">
-  <div class="one wide column"></div>
-  <div class="ten wide column">
+  <div class="twelve wide column">
     <div>
       <span id="dashoardFiltersHolder" *ngIf="batchlist && batchlist.length > 0">
         <div class="ui grid" [appTelemetryImpression]="telemetryImpression">
@@ -191,7 +189,7 @@
       </div>
     </div>
   </div>
-  <div class="one wide column"></div>
+</div>
 </div>
 
 <sui-modal [isClosable]="true" (dismissed)="modal.deny(); showDownloadModal = false;" #modal *ngIf="showDownloadModal">

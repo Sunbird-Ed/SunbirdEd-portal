@@ -12,7 +12,7 @@ import * as _ from 'lodash';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
-
+import { CacheService } from 'ng2-cache-service';
 @Component({
   selector: 'app-profile-page',
   templateUrl: './profile-page.component.html',
@@ -158,7 +158,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   telemetryImpression: IImpressionEventInput;
   myFrameworkEditEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
-  constructor(public resourceService: ResourceService, public coursesService: CoursesService,
+  constructor( private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
     public permissionService: PermissionService, public toasterService: ToasterService, public profileService: ProfileService,
     public userService: UserService, public configService: ConfigService, public router: Router, public utilService: UtilService,
     public searchService: SearchService, private playerService: PlayerService, private activatedRoute: ActivatedRoute) {
@@ -321,9 +321,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       this.showEdit = false;
     },
       err => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0085);
-        this.profileModal.modal.deny();
         this.showEdit = false;
+        this.toasterService.warning(this.resourceService.messages.emsg.m0012);
+        this.profileModal.modal.deny();
+        this.router.navigate(['/resources']);
+        this.cacheService.set('showFrameWorkPopUp', 'installApp' );
       });
   }
 

@@ -1,15 +1,16 @@
 @import "variables";
 
 .ui.raised.shadow.container.segment {
-    margin-left: auto !important;
-    margin-right: auto !important;
+    margin: 20px auto !important;
     padding: 0;
+    padding: 10px;
     width: calc(100% - 4%) !important;
+    min-height: 90vh;
 }
 
 @media only screen and (min-width: 1024px) {
     .ui.raised.shadow.container.segment {
-        margin: 50px auto !important;
+        margin: 35px auto !important;
         width: 944px !important;
         padding: 20px;
         box-shadow: 0 2px 16px 0 rgba(0,0,0,0.2);
@@ -158,4 +159,11 @@ input[type=number]::-webkit-inner-spin-button {
 }
 .ctct-inline-form .g-recaptcha {
     display: none !important
-  }
+}
+
+.signup-background {
+  background: url('/assets/images/bg.svg') no-repeat center center fixed;
+  background-size: cover;
+  width: 100%;
+  position: fixed;
+}  

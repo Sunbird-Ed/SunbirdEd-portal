@@ -1,6 +1,6 @@
+<div class="ui container">
 <div class="ui stackable grid">
-  <div class="one wide column"></div>
-  <div class="ten wide column">
+  <div class="twelve wide column">
     <div class="ui stackable grid mt-10">
       <div class="nine wide column">
         <div class="ui">
@@ -20,8 +20,7 @@
   </div>
 </div>
 <div class="ui stackable grid" *ngIf="outboxData && outboxData.announcements.length > 0 && !showLoader">
-  <div class="one wide column"></div>
-  <div class="ten wide column">
+  <div class="twelve wide column">
     <div class="ui grid">
       <div class="eight wide column">
         <div class="ui">
@@ -49,14 +48,12 @@
   </div>
 </div>
 <div class="ui grid" *ngIf="showLoader">
-  <div class="one wide column"></div>
-  <div class="ten wide column">
+  <div class="twelve wide column">
     <app-loader></app-loader>
   </div>
 </div>
 <div class="ui grid" *ngIf="(outboxData && outboxData.announcements.length === 0) || showWarningDiv && !showLoader">
-  <div class="one wide column"></div>
-  <div class="ten wide column">
+  <div class="twelve wide column">
     <div class="ui warning message">
       <div class="header">{{resourceService?.frmelmnts?.lbl?.anncmntnotfound}}</div>
       {{resourceService?.frmelmnts?.lbl?.anncmntplzcreate}}
@@ -65,9 +62,8 @@
 </div>
 <div class="mt-10" *ngIf="outboxData && outboxData.announcements.length > 0 && !showLoader">
   <div class="resource-padding ui grid" [appTelemetryImpression]="telemetryImpression">
-    <div class="one wide column"></div>
-    <div class="ten wide column">
-      <div class="ui tweleve wide column">
+    <div class="twelve wide column">
+      <div class="ui twelve wide column">
         <table class="ui padded table">
           <thead>
             <tr class="ann-table-heading">
@@ -103,7 +99,6 @@
   </div>
 </div>
 <div class="ui grid" *ngIf="outboxData && outboxData.announcements.length > 0 && !showLoader">
-  <div class="one wide column"></div>
   <div class="ui grid">
     <div class="twelve wide column">
       <div class="ui">
@@ -113,6 +108,6 @@
     </div>
   </div>
 </div>
-
+</div>
 <!-- Delete Popup -->
 <router-outlet></router-outlet>

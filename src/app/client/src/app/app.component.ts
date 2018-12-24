@@ -268,8 +268,10 @@ export class AppComponent implements OnInit {
       this.utilService.toggleAppPopup();
       this.showAppPopUp = this.utilService.showAppPopUp;
     }, err => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0085);
+        this.toasterService.warning(this.resourceService.messages.emsg.m0012);
         this.frameWorkPopUp.modal.deny();
+        this.router.navigate(['/resources']);
+        this.cacheService.set('showFrameWorkPopUp', 'installApp' );
     });
   }
   viewInBrowser() {

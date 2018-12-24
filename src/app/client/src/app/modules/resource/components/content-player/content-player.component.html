@@ -1,6 +1,6 @@
+<div class="ui container">
 <div id="content-player" class="ui grid">
-    <div class="one wide column"></div>
-    <div class="ten wide column">
+    <div class="twelve wide column">
         <div class='mt-5 videosegment ui segment'>
             <div class='content-player-body'>
                 <div *ngIf="showPlayer && contentData" class="videosegment  ui clearing segment">
@@ -120,7 +120,7 @@
             </div>
         </div>
     </div>
-    <div class="one wide column"></div>
+</div>
 </div>
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
 </app-share-link>

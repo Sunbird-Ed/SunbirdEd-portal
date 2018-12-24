@@ -60,21 +60,12 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.initializeFormFields();
     this.setInteractEventData();
 
-    // Telemetry Impression
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: this.telemetryCdata,
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri
-      }
-    };
     // Telemetry Start
+    this.signUpTelemetryStart();
+
+    // Telemetry Impression
     setTimeout(() => {
-      this.signUpTelemetryStart();
+      this.signUpTelemetryImpression();
     }, 300);
   }
 
@@ -96,6 +87,20 @@ export class SignupComponent implements OnInit, OnDestroy {
           platform: deviceInfo.os,
           raw: deviceInfo.userAgent
         }
+      }
+    };
+  }
+
+  signUpTelemetryImpression() {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata,
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.activatedRoute.snapshot.data.telemetry.uri
       }
     };
   }
@@ -187,8 +192,8 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   vaidateUserContact() {
-    const value =  this.signUpForm.controls.contactType.value === 'phone' ?
-          this.signUpForm.controls.phone.value.toString() : this.signUpForm.controls.email.value;
+    const value = this.signUpForm.controls.contactType.value === 'phone' ?
+      this.signUpForm.controls.phone.value.toString() : this.signUpForm.controls.email.value;
     const uri = this.signUpForm.controls.contactType.value.toString() + '/' + value;
     this.signupService.getUserByKey(uri).subscribe(
       (data: ServerResponse) => {
