@@ -14,5 +14,6 @@ rm -rf ./dist
 docker cp $containerid:/opt/player/app/player-dist.tar.gz .
 docker rm ${containerid}
 docker build -f ./Dockerfile --label commitHash=$(git rev-parse --short HEAD) -t ${name}:${version}_${commit_hash} .
+docker tag ${name}:${version}_${commit_hash} ${name}:latest
 #echo {\"image_name\" : \"${name}\", \"image_tag\" : \"${version}_${commit_hash}\", \"nodeName\" : \"$node\"} > metadata.json
 echo {\"image_name\" : \"${name}\", \"image_tag\" : \"${version}_${commit_hash}\", \"nodeName\" : \"$node\"} > metadata.json
