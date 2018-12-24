@@ -1,16 +1,21 @@
-<div class="ui container" [appTelemetryImpression]="telemetryImpression">
+<div [appTelemetryImpression]="telemetryImpression">
+
+<app-prominent-filter [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-page'" *ngIf="initFilters" [filterEnv]="filterType"  [ignoreQuery]="['key']" 
+  [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter>
+
+  <div class="ui container">
   <div class="ui grid stackable my-0">
-    <div class="twelve wide column">
+    <!--<div class="twelve wide column">
       <div class="ui grid top aligned">
         <div class="twelve wide column">
-          <app-data-driven-filter [pageId]="'course-page'" *ngIf="initFilters" [filterEnv]="filterType" 
+         <app-data-driven-filter [pageId]="'course-page'" *ngIf="initFilters" [filterEnv]="filterType" 
           [accordionDefaultOpen]=false [isShowFilterLabel]=true [formAction]="'filter'" [frameworkName]="frameWorkName" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
         </div>
-        <!--<div class="three wide mobile two wide tablet two wide computer column">
+        <div class="three wide mobile two wide tablet two wide computer column">
           <app-sort-by appTelemetryInteract [telemetryInteractEdata]="sortIntractEdata" [sortingOptions]="sortingOptions" [url]="redirectUrl"></app-sort-by>
-        </div>-->
+        </div>
       </div>
-    </div>
+    </div>-->
     <div class="twelve wide column" *ngIf="enrolledSection?.contents?.length">
       <app-page-section *ngIf="enrolledSection?.contents?.length" (visits)="prepareVisits($event)" [section]="enrolledSection" (playEvent)="playContent($event)" (viewAll)="viewAll($event)"></app-page-section>
     </div>
@@ -24,4 +29,5 @@
       <app-no-result [data]="noResultMessage"></app-no-result>
     </div>
   </div>
+</div>
 </div>
