@@ -285,11 +285,10 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
   }
 
   contentClick(content) {
-    if (_.size(content.lockInfo)) {
+    if (_.size(content.lockInfo) && this.userService.userid !== content.lockInfo.createdBy) {
         this.lockPopupData = content;
         this.showLockedContentModal = true;
     } else {
-      // if (content.status.toLowerCase() !== 'processing') {
       // only draft state contents need to be locked
       if (content.status.toLowerCase() === 'draft') {
         this.lockContent(content).subscribe(
@@ -301,10 +300,7 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
               this.toasterService.error(this.resourceService.messages.fmsg.m0006);
           }
         );
-      } else {
-        this.workSpaceService.navigateToContent(content, this.state);
       }
-      // }
     }
   }
 

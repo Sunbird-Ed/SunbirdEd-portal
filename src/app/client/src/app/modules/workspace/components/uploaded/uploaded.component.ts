@@ -125,6 +125,14 @@ export class UploadedComponent extends WorkSpace implements OnInit {
  * telemetryImpression
 */
   telemetryImpression: IImpressionEventInput;
+  /**
+     * lock popup data for locked contents
+    */
+   lockPopupData: object;
+   /**
+     * To show content locked modal
+    */
+   showLockedContentModal = false;
 
   /**
     * Constructor to create injected service(s) object
@@ -193,7 +201,7 @@ export class UploadedComponent extends WorkSpace implements OnInit {
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0023,
     };
-    this.search(searchParams).subscribe(
+    this.searchContentWithLockStatus(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
           this.totalCount = data.result.count;
@@ -225,10 +233,24 @@ export class UploadedComponent extends WorkSpace implements OnInit {
     * This method launch the content editior
   */
   contentClick(param) {
-    if (param.action.eventName === 'delete') {
-      this.deleteConfirmModal(param.data.metaData.identifier);
+    if (_.size(param.data.lockInfo) && this.userService.userid !== param.data.lockInfo.createdBy) {
+      this.lockPopupData = param.data;
+      this.showLockedContentModal = true;
     } else {
-      this.workSpaceService.navigateToContent(param.data.metaData, this.state);
+      if (param.action.eventName === 'delete') {
+        this.deleteConfirmModal(param.data.metaData.identifier);
+      } else {
+        this.lockContent(param.data.metaData).subscribe(
+          (data: ServerResponse) => {
+            param.data.metaData.lock = data.result;
+            this.workSpaceService.navigateToContent(param.data.metaData, this.state);
+          },
+          (err: ServerResponse) => {
+            const errMessage = this.handleContentLockError(err);
+            this.toasterService.error(errMessage || this.resourceService.messages.fmsg.m0006);
+          }
+        );
+      }
     }
   }
 
