@@ -71,10 +71,19 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       ownershipType: data[1] })));
   }
   private getContentDetails() {
+    if (this.routeParams.contentId) {
     return this.editorService.getContent(this.routeParams.contentId).
       pipe(map((data) => {
-        this.contentDetails = data.result.content;
+        if (data) {
+          this.contentDetails = data.result.content;
+          return of(data);
+        } else  {
+          return throwError(data);
+        }
       }));
+    } else {
+      return of({});
+    }
   }
   /**
    *Launch Generic Editor in the modal
@@ -138,12 +147,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('genericEditor')) {
       document.getElementById('genericEditor').remove();
     }
-    if (_.has(this.contentDetails, 'status') &&
-      this.contentDetails.status.toLowerCase() === 'draft') {
-      this.retireLock();
-    } else {
-      this.redirectToWorkSpace();
-    }
+    this.retireLock();
   }
 
   retireLock () {
