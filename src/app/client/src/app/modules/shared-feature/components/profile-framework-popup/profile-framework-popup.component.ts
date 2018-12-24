@@ -8,6 +8,7 @@ import {
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash';
 import { ThrowStmt } from '@angular/compiler';
+import { CacheService } from 'ng2-cache-service';
 @Component({
   selector: 'app-popup',
   templateUrl: './profile-framework-popup.component.html',
@@ -43,7 +44,8 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   public CustodianOrgBoard: object = {};
   constructor(public router: Router, public userService: UserService, public frameworkService: FrameworkService,
     public formService: FormService, public resourceService: ResourceService, private cdr: ChangeDetectorRef,
-    public toasterService: ToasterService, public channelService: ChannelService, public orgDetailsService: OrgDetailsService) { }
+    public toasterService: ToasterService, public channelService: ChannelService, public orgDetailsService: OrgDetailsService,
+    private cacheService: CacheService, ) { }
 
   ngOnInit() {
     this.orgDetailsService.getCustodianOrg().pipe(
@@ -58,6 +60,12 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       }), takeUntil(this.unsubscribe)).subscribe(data => {
         if (this.isCustodianOrg) {
           this.board = _.cloneDeep(this.CustodianOrgBoard);
+          if (this.isEdit) {
+            this.selectedOption = _.cloneDeep(this.formInput);
+            this.selectedOption.board = _.get(this.selectedOption, 'board[0]') ? _.get(this.selectedOption, 'board[0]') : undefined;
+            this.getAssociations(this.selectedOption.board, 2, this.board['code']);
+            this.onChange();
+          }
         }
         this.initDropDown = true;
       }, err => {
@@ -162,9 +170,11 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     if (this.isCustodianOrg && nextIndex === 2) {
       this.selectedOption['board'] = event;
       const identifier = _.find(this.channelData, { 'name': event });
-      this.frameWorkId = identifier['identifier'];
+      if (identifier) {
+        this.frameWorkId = identifier['identifier'];
+      }
       this.frameworkService.initialize(this.frameWorkId);
-      this.setFrameWorkDetails().subscribe((data) => {
+      this.setFrameWorkDetails().pipe(takeUntil(this.unsubscribe)).subscribe((data) => {
       this.getFormatedData(event, nextIndex, code);
       this.isCustodianOrg = false;
       }, err => {
@@ -210,6 +220,11 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         this[nextFormData['code']].range = _.union(this[nextFormData['code']].range, rangeData);
       }
     }
+    if (this.isEdit && this.isCustodianOrg) {
+      this.gradeLevel = _.find(this.formFieldProperties, { code: 'gradeLevel' });
+      this.subject = _.find(this.formFieldProperties, { code: 'subject' });
+      this.isEdit = false;
+    }
   }
   onSubmitForm() {
     const selectedOption = _.cloneDeep(this.selectedOption);
@@ -233,6 +248,10 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   }
   navigateTolibrary() {
     this.toasterService.warning(this.resourceService.messages.emsg.m0012);
+    if (this.modal) {
+      this.modal.deny();
+    }
     this.router.navigate(['/resources']);
+    this.cacheService.set('showFrameWorkPopUp', 'installApp' );
   }
 }
