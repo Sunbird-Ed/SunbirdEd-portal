@@ -112,7 +112,8 @@
   }
 }
 
-.popup-content .data-driven-filter {
+.popup-content .data-driven-filter,
+.workspacesegment {
   @media screen and (min-width: 992px) {
     .ten.wide.computer {
       width: 75% !important;
