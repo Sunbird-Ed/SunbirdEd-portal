@@ -67,7 +67,7 @@ const logErrorEvent = (req, type, stacktrace) => {
   const edata = {
     err: 'GOOGLE_SIGN_IN_ERROR',
     type,
-    stacktrace
+    stacktrace: JSON.stringify(stacktrace)
   }
   const context = {
     env: 'GOOGLE_SIGN_IN'
@@ -76,11 +76,7 @@ const logErrorEvent = (req, type, stacktrace) => {
 }
 const logAuditEvent = (req, profile) => {
   const edata = {
-    props: {
-      firstName: profile.name,
-      email: profile.emailId,
-      emailVerified: true
-    },
+    props: ['email'],
     state: 'LOGGED_IN_USER', 
     prevstate: 'ANONYMOUS_USER'
   }
