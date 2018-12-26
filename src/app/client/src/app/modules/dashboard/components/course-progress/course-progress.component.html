@@ -139,7 +139,8 @@
                 <td class="ui green header text-font" *ngIf="(student.progress !== 100 && student.progress > 90)">{{student.progress}}%</td>
                 <td class="ui orange header text-font" *ngIf="(student.progress !== 100 && student.progress > 30)">{{student.progress}}%</td>
                 <td class="ui red header text-font" *ngIf="(student.progress !== 100 && student.progress < 30)">{{student.progress}}%</td>
-                <td>{{student.userName}}
+                <td *ngIf="student.firstName">{{student.firstName}} {{student.lastName}}
+                <td *ngIf="!student.firstName">-
                   <br>
                   <span *ngIf="student.lastAccessTime">{{resourceService?.frmelmnts?.lbl?.lastAccessed}} {{student.lastAccessTime | dateFormat}}</span>
                 </td>
