@@ -174,7 +174,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
         };
     }
     public playContent(event) {
-        this.playerService.playContent(event);
+        this.playerService.playContent(event.data.metaData);
     }
     public inView(event) {
         _.forEach(event.inview, (elem, key) => {
