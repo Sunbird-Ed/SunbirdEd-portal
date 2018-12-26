@@ -1,10 +1,14 @@
 import { Component, OnInit, Input } from '@angular/core';
-
+import { ResourceService } from '@sunbird/shared';
 @Component({
   selector: 'app-footer',
   templateUrl: './main-footer.component.html'
 })
 export class MainFooterComponent implements OnInit {
+  /**
+   * reference of resourceService service.
+   */
+  public resourceService: ResourceService;
   /*
   Date to show copyright year
   */
@@ -14,7 +18,9 @@ export class MainFooterComponent implements OnInit {
   */
   showFooter = true;
 
-  constructor() { }
+  constructor(resourceService: ResourceService) {
+    this.resourceService = resourceService;
+  }
 
   ngOnInit() {
   }
