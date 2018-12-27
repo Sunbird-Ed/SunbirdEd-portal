@@ -254,7 +254,6 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
     const requestData = _.cloneDeep(data);
     requestData.name = data.name ? data.name : this.name,
       requestData.description = data.description ? data.description : this.description,
-      requestData.creator = this.userProfile.firstName + ' ' + this.userProfile.lastName,
       requestData.createdBy = this.userProfile.id,
       requestData.organisation = this.userProfile.organisationNames,
       requestData.createdFor = this.userProfile.organisationIds,
@@ -268,7 +267,11 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
     if (this.resourceType) {
       requestData.resourceType = this.resourceType;
     }
-
+    if (!_.isEmpty(this.userProfile.lastName)) {
+      requestData.creator = this.userProfile.firstName + ' ' + this.userProfile.lastName;
+    } else {
+      requestData.creator = this.userProfile.firstName;
+    }
     return requestData;
   }
 

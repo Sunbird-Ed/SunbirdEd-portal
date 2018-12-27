@@ -137,7 +137,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.context = {
       user: {
         id: this.userService.userid,
-        name: this.userProfile.firstName + ' ' + this.userProfile.lastName,
+        name : !_.isEmpty(this.userProfile.lastName) ? this.userProfile.firstName + ' ' + this.userProfile.lastName :
+        this.userProfile.firstName,
         orgIds: this.userProfile.organisationIds,
         organisations: this.userService.orgIdNameMap
       },
