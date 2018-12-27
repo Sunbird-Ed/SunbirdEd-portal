@@ -201,9 +201,13 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.showUniqueError = this.signUpForm.controls.contactType.value === 'phone' ?
           this.resourceService.frmelmnts.lbl.uniquePhone : this.resourceService.frmelmnts.lbl.uniqueEmail;
       },
-      (err: ServerResponse) => {
-        this.signUpForm.controls['uniqueContact'].setValue(true);
-        this.showUniqueError = '';
+      (err) => {
+        if (_.get(err, 'error.params.status') && err.error.params.status === 'USER_ACCOUNT_BLOCKED') {
+          this.showUniqueError = this.resourceService.frmelmnts.lbl.blockedUserError;
+        } else {
+          this.signUpForm.controls['uniqueContact'].setValue(true);
+          this.showUniqueError = '';
+        }
       }
     );
   }
