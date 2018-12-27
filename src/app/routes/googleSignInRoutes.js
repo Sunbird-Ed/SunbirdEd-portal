@@ -95,6 +95,8 @@ const getErrorMessage = (error) => {
     return 'Your account could not be created on DIKSHA due to your Google Security settings';
   } else if(error === 'GOOGLE_ACCESS_DENIED' || _.get(error, 'message') === 'GOOGLE_ACCESS_DENIED') {
     return 'Your account could not be created on DIKSHA due to your Google Security settings';
+  } else if(_.get(error, 'params.err') === 'USER_ACCOUNT_BLOCKED') {
+    return 'User account is blocked. Please contact admin';
   } else {
     return 'Your account could not be signed in to DIKSHA due to technical issue. Please try again after some time';
   }
