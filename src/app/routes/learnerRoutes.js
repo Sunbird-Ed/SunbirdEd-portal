@@ -67,8 +67,9 @@ module.exports = function (app) {
             }
           },
           userResDecorator: (proxyRes, proxyResData, req, res) => {
-              if(req.method === 'GET' && proxyRes.statusCode === 404) res.redirect('/')
-              return proxyResData;
+            const data = JSON.parse(proxyResData.toString('utf8'));
+            if(req.method === 'GET' && proxyRes.statusCode === 404 && data.message === 'API not found with these values') res.redirect('/')
+            return proxyResData;
           }
         }))
 }
