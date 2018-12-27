@@ -67,7 +67,7 @@ const logErrorEvent = (req, type, stacktrace) => {
   const edata = {
     err: 'GOOGLE_SIGN_IN_ERROR',
     type,
-    stacktrace
+    stacktrace: JSON.stringify(stacktrace)
   }
   const context = {
     env: 'GOOGLE_SIGN_IN'
@@ -76,11 +76,7 @@ const logErrorEvent = (req, type, stacktrace) => {
 }
 const logAuditEvent = (req, profile) => {
   const edata = {
-    props: {
-      firstName: profile.name,
-      email: profile.emailId,
-      emailVerified: true
-    },
+    props: ['email'],
     state: 'LOGGED_IN_USER', 
     prevstate: 'ANONYMOUS_USER'
   }
@@ -96,11 +92,11 @@ const getQueryParams = (queryObj) => {
 }
 const getErrorMessage = (error) => {
   if (error === 'USER_NAME_NOT_PRESENT' || _.get(error, 'message') === 'USER_NAME_NOT_PRESENT') {
-    return 'Your account could not be created on Diksha due to your Google Security settings';
+    return 'Your account could not be created on DIKSHA due to your Google Security settings';
   } else if(error === 'GOOGLE_ACCESS_DENIED' || _.get(error, 'message') === 'GOOGLE_ACCESS_DENIED') {
-    return 'Your account could not be created on Diksha due to your Google Security settings';
+    return 'Your account could not be created on DIKSHA due to your Google Security settings';
   } else {
-    return 'Your account could not be signed in to Diksah Due to technical issue. Please try again after some time';
+    return 'Your account could not be signed in to DIKSHA due to technical issue. Please try again after some time';
   }
 }
 const handleCreateUserError = (error) => {
