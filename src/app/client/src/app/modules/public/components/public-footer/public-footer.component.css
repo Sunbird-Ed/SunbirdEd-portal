@@ -1,7 +1,8 @@
 .ui.footer.segment {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: white;
-    z-index: 989898;
+  width: 100%;
+  background-color: #fff;
+}
+
+.closeBtn-dial-code {
+  color: #333;
 }
