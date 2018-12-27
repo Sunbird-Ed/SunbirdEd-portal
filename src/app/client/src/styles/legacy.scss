@@ -489,7 +489,8 @@ i.large.icon.limitedPublishingLinkIcon {
   border-color: #333;
 }
 .centered.grid.no-result-container {
-  margin-top: 12%;
+  margin-top: 5%;
+  margin-bottom: 5%;
 }
 .no-result-container .column img {
   display: block;
@@ -2485,4 +2486,12 @@ i.blue.icon{
     margin: 0 !important;
     max-width: 100vw;
   }
+}
+
+.click-notify-xurl {
+  position: absolute;
+  z-index: 12 !important;
+  top: 100px !important;
+  left: 50% !important;
+  transform: translate(-50%,-50%) !important;
 }
