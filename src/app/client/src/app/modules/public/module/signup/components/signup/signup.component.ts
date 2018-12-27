@@ -138,6 +138,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     const phoneControl = this.signUpForm.get('phone');
     this.signUpForm.get('contactType').valueChanges.subscribe(
       (mode: string) => {
+        this.setInteractEventData();
         this.signUpForm.controls['uniqueContact'].setValue('');
         if (mode === 'email') {
           this.signUpForm.controls['phone'].setValue('');
