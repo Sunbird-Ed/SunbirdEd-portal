@@ -34,7 +34,6 @@ class GoogleOauth {
   }
   async getProfile(req) {
     const client = this.createConnection(req);
-    console.log('query', req.query);
     if(req.query.error === 'access_denied'){
       throw new Error('GOOGLE_ACCESS_DENIED');
     }

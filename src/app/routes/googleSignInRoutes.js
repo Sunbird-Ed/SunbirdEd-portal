@@ -63,11 +63,20 @@ module.exports = (app) => {
     }
   });
 }
-const logErrorEvent = (req, type, stacktrace) => {
+const logErrorEvent = (req, type, error) => {
+  let stacktrace;
+  if(error instanceof Error){
+    stacktrace = error.message;
+  } else {
+    stacktrace = JSON.stringify(error)
+    if(stacktrace === '{}'){
+      stacktrace = 'STRINGIFY_FAILED'
+    }
+  }
   const edata = {
     err: 'GOOGLE_SIGN_IN_ERROR',
     type,
-    stacktrace: JSON.stringify(stacktrace)
+    stacktrace
   }
   const context = {
     env: 'GOOGLE_SIGN_IN'
