@@ -152,7 +152,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   }
 
   retireLock () {
-    const inputData = {'resourceId': this.routeParams.contentId, 'resourceType': 'Content'};
+    const inputData = {'resourceId': window.context.contentId || this.routeParams.contentId, 'resourceType': 'Content'};
     this.workspaceService.retireLock(inputData).subscribe(
       (data: ServerResponse) => {
         this.redirectToWorkSpace();

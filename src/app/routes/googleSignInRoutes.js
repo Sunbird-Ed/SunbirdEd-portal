@@ -63,11 +63,20 @@ module.exports = (app) => {
     }
   });
 }
-const logErrorEvent = (req, type, stacktrace) => {
+const logErrorEvent = (req, type, error) => {
+  let stacktrace;
+  if(error instanceof Error){
+    stacktrace = error.message;
+  } else {
+    stacktrace = JSON.stringify(error)
+    if(stacktrace === '{}'){
+      stacktrace = 'STRINGIFY_FAILED'
+    }
+  }
   const edata = {
     err: 'GOOGLE_SIGN_IN_ERROR',
     type,
-    stacktrace: JSON.stringify(stacktrace)
+    stacktrace
   }
   const context = {
     env: 'GOOGLE_SIGN_IN'
@@ -95,6 +104,8 @@ const getErrorMessage = (error) => {
     return 'Your account could not be created on DIKSHA due to your Google Security settings';
   } else if(error === 'GOOGLE_ACCESS_DENIED' || _.get(error, 'message') === 'GOOGLE_ACCESS_DENIED') {
     return 'Your account could not be created on DIKSHA due to your Google Security settings';
+  } else if(_.get(error, 'params.err') === 'USER_ACCOUNT_BLOCKED') {
+    return 'User account is blocked. Please contact admin';
   } else {
     return 'Your account could not be signed in to DIKSHA due to technical issue. Please try again after some time';
   }
