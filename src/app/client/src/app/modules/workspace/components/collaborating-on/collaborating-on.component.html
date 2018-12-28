@@ -60,13 +60,8 @@
         </h5>
       </td>
       <td class="UpForReviewStatusOrange">{{content.status}}</td>
-<<<<<<< HEAD
       <td *ngIf= "content.status.toLowerCase() === 'draft' && !content.lockInfo">
         <i (click)="contentClick(content)" class="edit icon cursor-pointer">
-=======
-      <td>
-        <i *ngIf= "content.status.toLowerCase() === 'draft' && !content.lockInfo" (click)="contentClick(content)" class="edit icon cursor-pointer">
->>>>>>> upstream/release-1.13
         </i>
       </td>
       <td *ngIf="content.lockInfo">
