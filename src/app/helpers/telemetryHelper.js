@@ -348,6 +348,43 @@ module.exports = {
       tags: _.concat([], dims)
     })
   },
+  logImpressionEvent: function (req, options) {
+    const apiConfig = telemtryEventConfig.URL[req.uri] || {}
+    let object = options.obj || {}
+    const edata =  {
+      type: options.edata.type,
+      subtype: options.edata.subtype, 
+      pageid: options.edata.pageid,
+      uri: options.edata.uri,
+      visits: options.edata.visits
+    }
+    let channel = req.session.rootOrghashTagId || req.get('x-channel-id') || envHelper.defaultChannelId
+    let dims = _.compact(_.concat(req.session.orgs, channel))
+    const context = {
+      channel: options.context.channel || channel,
+      env: options.context.env || apiConfig.env,
+      cdata: options.context.cdata,
+      rollup: options.context.rollup || telemetry.getRollUpData(dims),
+      did: options.context.did,
+      sid: req.sessionID || uuidv1()
+    }
+    const actor = {
+      id: req.userId ? req.userId.toString() : 'anonymous',
+      type: 'user'
+    }
+    if(!channel){
+      console.log('logAuditEvent failed due to no channel')
+      return;
+    }
+    console.log(edata, context, object, actor);
+    telemetry.impression({
+      edata: _.pickBy(edata, value => !_.isEmpty(value)),
+      context: _.pickBy(context, value => !_.isEmpty(value)),
+      object: _.pickBy(object, value => !_.isEmpty(value)),
+      actor: _.pickBy(actor, value => !_.isEmpty(value)),
+      tags: _.concat([], dims)
+    })
+  },
   logSessionEvents: function (req, res) {
     if (req.body && req.body.event) {
       req.session['sessionEvents'] = req.session['sessionEvents'] || []

@@ -26,8 +26,8 @@
         <h5 class="ui image header">
           <img src="{{content.appIcon || 'assets/images/default.png' | cdnprefixurl}}" class="ui tiny image UpReviewTinyImage">
           <div class="content ">
-            <div class="UpReviewHeader">{{content.name | slice:0:40}}
-              <i *ngIf="content.name.length > 40">...</i>
+            <div class="UpReviewHeader">{{content.name | slice:0:30}}
+              <i *ngIf="content.name.length > 30">...</i>
             </div>
             <div class="UpReviewSubHeader">{{content.contentType}}
             </div>
