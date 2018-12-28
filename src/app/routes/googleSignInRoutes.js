@@ -12,6 +12,7 @@ module.exports = (app) => {
     const state = JSON.stringify(req.query);
     let googleAuthUrl = googleOauth.generateAuthUrl(req) + '&state=' + state
     res.redirect(googleAuthUrl)
+    logImpressionEvent(req);
   });
   /**
    * steps to be followed in callback url
@@ -62,6 +63,17 @@ module.exports = (app) => {
       res.redirect(redirectUrl || '/resources');
     }
   });
+}
+const logImpressionEvent = (req) => {
+  const edata = {
+    type: 'view',
+    pageid: 'google-sign-in',
+    uri: '/google/auth',
+  }
+  const context = {
+    env: 'GOOGLE_SIGN_IN'
+  }
+  telemetryHelper.logImpressionEvent(req, {edata, context});
 }
 const logErrorEvent = (req, type, error) => {
   let stacktrace;
