@@ -113,7 +113,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.context = {
       user: {
         id: this.userService.userid,
-        name: this.userProfile.firstName + ' ' + this.userProfile.lastName,
+        name : !_.isEmpty(this.userProfile.lastName) ? this.userProfile.firstName + ' ' + this.userProfile.lastName :
+        this.userProfile.firstName,
         orgIds: this.userProfile.organisationIds,
         organisations: this.userService.orgIdNameMap
       },
@@ -151,7 +152,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   }
 
   retireLock () {
-    const inputData = {'resourceId': this.routeParams.contentId, 'resourceType': 'Content'};
+    const inputData = {'resourceId': window.context.contentId || this.routeParams.contentId, 'resourceType': 'Content'};
     this.workspaceService.retireLock(inputData).subscribe(
       (data: ServerResponse) => {
         this.redirectToWorkSpace();

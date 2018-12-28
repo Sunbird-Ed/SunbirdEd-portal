@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectorRef, EventEmitter, Output, OnDestroy, ViewChild } from '@angular/core';
 import { FrameworkService, FormService, UserService, ChannelService, OrgDetailsService } from '@sunbird/core';
-import { takeUntil, first, mergeMap, map, tap } from 'rxjs/operators';
+import { takeUntil, first, mergeMap, map, tap , filter} from 'rxjs/operators';
 import { combineLatest, Subscription, Subject, of, throwError } from 'rxjs';
 import {
   ConfigService, ResourceService, Framework, ToasterService, ServerResponse
@@ -63,7 +63,9 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
           if (this.isEdit) {
             this.selectedOption = _.cloneDeep(this.formInput);
             this.selectedOption.board = _.get(this.selectedOption, 'board[0]') ? _.get(this.selectedOption, 'board[0]') : undefined;
-            this.getAssociations(this.selectedOption.board, 2, this.board['code']);
+            if (this.selectedOption.board) {
+              this.getAssociations(this.selectedOption.board, 2, this.board['code']);
+            }
             this.onChange();
           }
         }
@@ -90,7 +92,20 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   }
 
   setFrameWorkDetails() {
-    return this.frameworkService.frameworkData$.pipe(mergeMap((frameworkDetails) => {
+    return this.frameworkService.frameworkData$.pipe(
+      filter((frameworkDetails) => { // wait to get the framework name if passed as input
+      if (!frameworkDetails.err) {
+        const framework = this.frameWorkId ? this.frameWorkId : 'defaultFramework';
+        const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
+        if (frameworkData) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+      return true;
+    }),
+     mergeMap((frameworkDetails) => {
       if (!frameworkDetails.err) {
         const framework = this.frameWorkId ? this.frameWorkId : 'defaultFramework';
         this.frameWorkId = this.frameWorkId ? this.frameWorkId : frameworkDetails.frameworkdata['defaultFramework'].identifier;
@@ -168,7 +183,6 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   }
   getAssociations(event, nextIndex, code) {
     if (this.isCustodianOrg && nextIndex === 2) {
-      this.selectedOption['board'] = event;
       const identifier = _.find(this.channelData, { 'name': event });
       if (identifier) {
         this.frameWorkId = identifier['identifier'];
@@ -178,7 +192,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       this.getFormatedData(event, nextIndex, code);
       this.isCustodianOrg = false;
       }, err => {
-        this.navigateTolibrary();
+       this.navigateTolibrary();
       });
     } else {
       this.getFormatedData(event, nextIndex, code);
@@ -195,6 +209,9 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     });
     this.formFieldProperties = _.sortBy(_.uniqBy(this.formFieldProperties, 'code'), 'index');
     this.board = _.find(this.formFieldProperties, { code: 'board' });
+    if (code === 'board') {
+      this.selectedOption['board'] = event;
+    }
     const rangeData = [];
     if (_.isString(event)) {
       this.selectedData = _.split(event);
