@@ -11,11 +11,7 @@
 	<a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='workSpaceRole' (click)="navigateToWorkspace()" appTelemetryInteract [telemetryInteractEdata]="workspaceMenuIntractEdata" [class.active]="router.isActive('/workspace')">
 		{{resourceService?.frmelmnts?.tab?.workspace}}
 	</a>
-<<<<<<< HEAD
-	<a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='workSpaceRole' href="https://diksha.gov.in/help/creator/content-lifecycle/index.html" target="_blank">
-=======
 	<a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='workSpaceRole' href="/help/creator/content-lifecycle/index.html" target="_blank">
->>>>>>> upstream/release-1.13
 		{{resourceService?.frmelmnts?.tab?.help}}
 	</a>
 </div>
