@@ -33,6 +33,10 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
   * participantList for mentorList
   */
   participantList = [];
+
+  public selectedParticipants: any = [];
+
+  public selectedMentors: any = [];
   /**
   * batchData for form
   */
@@ -169,6 +173,10 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
     const mentorList = [];
     if (res.result.response.content && res.result.response.content.length > 0) {
       _.forEach(res.result.response.content, (userData) => {
+        if ( _.includes(this.selectedMentors , userData.identifier) ||
+        _.includes(this.selectedParticipants , userData.identifier)) {
+          return;
+        }
         if (userData.identifier !== this.userService.userid) {
           const user = {
             id: userData.identifier,
@@ -306,6 +314,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
   *  api call to get user list
   */
   private getUserList(query: string = '', type) {
+    this.selectedParticipants = $('#participants').dropdown('get value') ? $('#participants').dropdown('get value').split(',') : [];
+    this.selectedMentors = $('#mentors').dropdown('get value') ? $('#mentors').dropdown('get value').split(',') : [];
     const requestBody = {
       filters: {},
       query: query
