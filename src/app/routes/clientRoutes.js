@@ -86,6 +86,7 @@ function getLocals (req, callback) {
   locals.appId = envHelper.APPID
   locals.defaultTenant = envHelper.DEFAULT_CHANNEL
   locals.exploreButtonVisibility = configHelper.getConfig('sunbird_explore_button_visibility')
+  locals.helpLinkVisibility = envHelper.sunbird_help_link_visibility
   locals.defaultTenantIndexStatus = defaultTenantIndexStatus
   locals.extContWhitelistedDomains = configHelper.getConfig('sunbird_extcont_whitelisted_domains')
   locals.buildNumber = envHelper.BUILD_NUMBER

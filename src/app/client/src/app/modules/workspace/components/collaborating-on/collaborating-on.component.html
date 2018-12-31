@@ -26,7 +26,6 @@
       </th>
       <th class="two wide UpReviewTableHeader sorted bl-0">{{ resourceService?.frmelmnts?.lbl?.edit}}
       </th>
-      <th class="two wide UpReviewTableHeader sorted bl-0"></th>
     </tr>
   </thead>
   <tbody [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inview($event)" [throttle]="1000" [trigger]="collaboratingContent">
@@ -61,12 +60,12 @@
         </h5>
       </td>
       <td class="UpForReviewStatusOrange">{{content.status}}</td>
-      <td>
-        <i *ngIf= "content.status.toLowerCase() === 'draft' && !content.lockInfo" (click)="contentClick(content)" class="edit icon cursor-pointer">
+      <td *ngIf= "content.status.toLowerCase() === 'draft' && !content.lockInfo">
+        <i (click)="contentClick(content)" class="edit icon cursor-pointer">
         </i>
       </td>
-      <td>
-        <span *ngIf="content.lockInfo" suiPopup popupText="{{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':content?.lockInfo?.creatorInfo?.name | interpolate:'{contentName}':content?.name}}" [popupPlacement]="'top left'">
+      <td *ngIf="content.lockInfo">
+        <span suiPopup popupText="{{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':content?.lockInfo?.creatorInfo?.name | interpolate:'{contentName}':content?.name}}" [popupPlacement]="'top left'">
           <i class="lock icon large"  ></i>
         </span>
       </td>

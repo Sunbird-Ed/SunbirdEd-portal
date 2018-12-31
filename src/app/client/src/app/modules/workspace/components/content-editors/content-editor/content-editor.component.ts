@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import * as iziModal from 'izimodal/js/iziModal';
 import { NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserProfile, ServerResponse } from '@sunbird/shared';
 import { UserService, TenantService } from '@sunbird/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService } from './../../../services/editors/editor.service';
 import { environment } from '@sunbird/environment';
 import { WorkSpaceService } from '../../../services';
@@ -38,7 +38,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   constructor(private resourceService: ResourceService, private toasterService: ToasterService,
     private editorService: EditorService, private activatedRoute: ActivatedRoute, private configService: ConfigService,
     private userService: UserService, private _zone: NgZone, private renderer: Renderer2,
-    private tenantService: TenantService, private telemetryService: TelemetryService,
+    private tenantService: TenantService, private telemetryService: TelemetryService, private router: Router,
     private navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService
   ) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
@@ -67,15 +67,49 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
         this.setRenderer();
       },
         (error) => {
-          this.toasterService.error(this.resourceService.messages.emsg.m0004);
+          if (error === 'NO_PERMISSION') {
+            this.toasterService.error(`You don't have permission to edit this content`);
+          } else if (['RESOURCE_SELF_LOCKED', 'RESOURCE_LOCKED'].includes(_.get(error, 'error.params.err'))) {
+            this.toasterService.error(_.replace(error.error.params.errmsg, 'resource', 'content'));
+          } else {
+            this.toasterService.error(this.resourceService.messages.emsg.m0004);
+          }
           this.closeModal();
         });
   }
   private getDetails() {
-    return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-    this.editorService.getOwnershipType()).
+    const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
+    const allowedState = ['draft', 'allcontent', 'collaborating-on', 'uploaded'].includes(this.routeParams.state);
+    if (_.isEmpty(lockInfo) && allowedState) {
+      return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
+      this.editorService.getOwnershipType(), this.lockContent()).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        contentDetails: data[1], ownershipType: data[2] })));
+        collectionDetails: data[1], ownershipType: data[2] })));
+    } else {
+      return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
+      this.editorService.getOwnershipType()).
+      pipe(map(data => ({ tenantDetails: data[0].tenantData,
+        collectionDetails: data[1], ownershipType: data[2] })));
+    }
+  }
+  lockContent () {
+    const contentInfo = {
+      contentType: this.routeParams.type,
+      framework: this.routeParams.framework,
+      identifier: this.routeParams.contentId,
+      mimeType: 'application/vnd.ekstep.ecml-archive'
+    };
+    const input = {
+      resourceId : contentInfo.identifier,
+      resourceType : 'Content',
+      resourceInfo : JSON.stringify(contentInfo),
+      creatorInfo : JSON.stringify({'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.identifier}),
+      createdBy : this.userService.userProfile.identifier
+    };
+    return this.workspaceService.lockContent(input).pipe(tap((data) => {
+      this.queryParams = data.result;
+      this.router.navigate([], {relativeTo: this.activatedRoute, queryParams: data.result});
+    }));
   }
   private getContentDetails() {
     const options: any = { params: { mode: 'edit' } };
@@ -85,7 +119,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
         if (this.validateRequest()) {
           return of(data);
         } else {
-          return throwError(data);
+          return throwError('NO_PERMISSION');
         }
       }));
   }
@@ -225,7 +259,11 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   }
 
   redirectToWorkSpace () {
-    this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
+    if (this.routeParams.state === 'collaborating-on') {
+      this.navigationHelperService.navigateToWorkSpace('/workspace/content/collaborating-on/1');
+    } else {
+      this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
+    }
   }
 
   ngOnDestroy() {

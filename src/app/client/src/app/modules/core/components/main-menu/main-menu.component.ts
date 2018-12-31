@@ -51,6 +51,7 @@ export class MainMenuComponent implements OnInit {
   workspaceMenuIntractEdata: IInteractEventEdata;
   exploreRoutingUrl: string;
   showExploreHeader = false;
+  helpLinkVisibility: string;
 
   /*
   * constructor
@@ -66,6 +67,11 @@ export class MainMenuComponent implements OnInit {
   }
 
   ngOnInit() {
+    try {
+      this.helpLinkVisibility = (<HTMLInputElement>document.getElementById('helpLinkVisibility')).value;
+    } catch (error) {
+      this.helpLinkVisibility = 'false';
+    }
     this.setInteractData();
     this.getUrl();
     this.userService.userData$.pipe(first()).subscribe(
