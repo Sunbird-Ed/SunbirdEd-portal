@@ -4,7 +4,7 @@ import { NavigationHelperService, ResourceService, ToasterService, ConfigService
 import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest, of, throwError } from 'rxjs';
 import { UserService, TenantService } from '@sunbird/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '@sunbird/environment';
 import { EditorService, WorkSpaceService } from '../../../services';
 import { tap, delay, map } from 'rxjs/operators';
@@ -34,9 +34,10 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public contentDetails: any;
 
   constructor(private userService: UserService, public _zone: NgZone, private activatedRoute: ActivatedRoute,
-    private tenantService: TenantService, private telemetryService: TelemetryService,
+    private tenantService: TenantService, private telemetryService: TelemetryService, private router: Router,
     private navigationHelperService: NavigationHelperService, public workspaceService: WorkSpaceService,
-    private configService: ConfigService, private editorService: EditorService) {
+    private configService: ConfigService, private editorService: EditorService, private toasterService: ToasterService,
+    private resourceService: ResourceService) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.buildNumber = buildNumber ? buildNumber.value : '1.0';
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
@@ -62,13 +63,51 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       delay(10)) // wait for iziModal lo load
       .subscribe((data) => {
         jQuery('#genericEditor').iziModal('open');
-      });
+      },
+        (error) => {
+          if (error === 'NO_PERMISSION') {
+            this.toasterService.error(`You don't have permission to edit this content`);
+          } else if (['RESOURCE_SELF_LOCKED', 'RESOURCE_LOCKED'].includes(_.get(error, 'error.params.err'))) {
+            this.toasterService.error(_.replace(error.error.params.errmsg, 'resource', 'content'));
+          } else {
+            this.toasterService.error(this.resourceService.messages.emsg.m0004);
+          }
+          this.closeModal();
+        }
+      );
   }
   private getDetails() {
-    return combineLatest(this.tenantService.tenantData$,
-    this.editorService.getOwnershipType(), this.getContentDetails()).
-    pipe(map(data => ({ tenantDetails: data[0].tenantData,
-      ownershipType: data[1] })));
+    const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
+    const allowedState = ['draft', 'allcontent', 'collaborating-on', 'uploaded'].includes(this.routeParams.state);
+    if (_.isEmpty(lockInfo) && allowedState && this.routeParams.identifier) {
+      return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
+      this.editorService.getOwnershipType(), this.lockContent()).
+      pipe(map(data => ({ tenantDetails: data[0].tenantData,
+        collectionDetails: data[1], ownershipType: data[2] })));
+    } else {
+      return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
+      this.editorService.getOwnershipType()).
+      pipe(map(data => ({ tenantDetails: data[0].tenantData,
+        collectionDetails: data[1], ownershipType: data[2] })));
+    }
+  }
+  private lockContent () {
+    const contentInfo = {
+      contentType: this.routeParams.type,
+      framework: this.routeParams.framework,
+      identifier: this.routeParams.contentId
+    };
+    const input = {
+      resourceId : contentInfo.identifier,
+      resourceType : 'Content',
+      resourceInfo : JSON.stringify(contentInfo),
+      creatorInfo : JSON.stringify({'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.identifier}),
+      createdBy : this.userService.userProfile.identifier
+    };
+    return this.workspaceService.lockContent(input).pipe(tap((data) => {
+      this.queryParams = data.result;
+      this.router.navigate([], {relativeTo: this.activatedRoute, queryParams: data.result});
+    }));
   }
   private getContentDetails() {
     if (this.routeParams.contentId) {
@@ -164,7 +203,11 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   }
 
   redirectToWorkSpace () {
-    this.navigationHelperService.navigateToWorkSpace('workspace/content/uploaded/1');
+    if (this.routeParams.state === 'collaborating-on') {
+      this.navigationHelperService.navigateToWorkSpace('/workspace/content/collaborating-on/1');
+    } else {
+      this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
+    }
   }
 
   private disableBrowserBackButton() {
