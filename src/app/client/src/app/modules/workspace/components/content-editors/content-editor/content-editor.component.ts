@@ -68,7 +68,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
       },
         (error) => {
           if (error === 'NO_PERMISSION') {
-            this.toasterService.error(`You don't have permission to edit this content`);
+            this.toasterService.error(this.resourceService.messages.emsg.m0013);
           } else if (['RESOURCE_SELF_LOCKED', 'RESOURCE_LOCKED'].includes(_.get(error, 'error.params.err'))) {
             this.toasterService.error(_.replace(error.error.params.errmsg, 'resource', 'content'));
           } else {
