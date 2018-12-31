@@ -3,6 +3,8 @@ node('build-slave') {
     currentBuild.result = "SUCCESS"
     try {
        stage('Checkout'){
+         if(!env.hub_org)
+            error 'Please set a Jenkins environment variable named hub_org with value as registery/sunbidrded'
           checkout scm
           // Getting commit short hash
           commit_hash = sh (
