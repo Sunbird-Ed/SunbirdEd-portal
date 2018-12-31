@@ -66,7 +66,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       },
         (error) => {
           if (error === 'NO_PERMISSION') {
-            this.toasterService.error(`You don't have permission to edit this content`);
+            this.toasterService.error(this.resourceService.messages.emsg.m0013);
           } else if (['RESOURCE_SELF_LOCKED', 'RESOURCE_LOCKED'].includes(_.get(error, 'error.params.err'))) {
             this.toasterService.error(_.replace(error.error.params.errmsg, 'resource', 'content'));
           } else {
@@ -79,7 +79,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   private getDetails() {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     const allowedState = ['draft', 'allcontent', 'collaborating-on', 'uploaded'].includes(this.routeParams.state);
-    if (_.isEmpty(lockInfo) && allowedState && this.routeParams.identifier) {
+    if (_.isEmpty(lockInfo) && allowedState && this.routeParams.contentId) {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
       this.editorService.getOwnershipType(), this.lockContent()).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
