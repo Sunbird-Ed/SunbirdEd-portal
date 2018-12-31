@@ -276,7 +276,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
   }
   public contentProgressEvent(event) {
-    if (!this.batchId && _.get(this.enrolledBatchInfo, 'status') !== 1) {
+    if (!this.batchId || _.get(this.enrolledBatchInfo, 'status') !== 1) {
       return;
     }
     const eid = event.detail.telemetryData.eid;
