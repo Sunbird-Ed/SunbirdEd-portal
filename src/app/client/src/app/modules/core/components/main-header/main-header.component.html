@@ -77,7 +77,7 @@
                     </button>
                 </div>
             </div>
-            <app-language-dropdown class="computer only"></app-language-dropdown>
+            <app-language-dropdown class="computer only" *ngIf="!router.isActive('workspace', false)"></app-language-dropdown>
         </div>
     </div>
     <div class="p-10 mobile only" *ngIf="showExploreHeader || userService.loggedIn">
@@ -86,7 +86,7 @@
                 <i class="qrcode icon d-flex flex-ai-center"></i>
                 <span class="d-flex flex-ai-center">{{resourceService.frmelmnts?.lbl?.enterQrCode}}</span>
             </button>
-            <app-language-dropdown></app-language-dropdown>
+            <app-language-dropdown *ngIf="!router.isActive('workspace', false)"></app-language-dropdown>
         </div>
     </div>
 </div>
