@@ -75,11 +75,6 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
   private paginationService: PaginationService;
 
   /**
-    * Refrence of UserService
-  */
-  private userService: UserService;
-
-  /**
     * To get url, app configs
   */
   public config: ConfigService;
@@ -142,7 +137,6 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
     this.paginationService = paginationService;
     this.route = route;
     this.activatedRoute = activatedRoute;
-    this.userService = userService;
     this.config = config;
     this.resourceService = resourceService;
     this.toasterService = toasterService;

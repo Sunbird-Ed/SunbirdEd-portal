@@ -89,11 +89,6 @@ export class AllContentComponent extends WorkSpace implements OnInit {
   private paginationService: PaginationService;
 
   /**
-    * Refrence of UserService
-  */
-  private userService: UserService;
-
-  /**
   * To get url, app configs
   */
   public config: ConfigService;
@@ -186,7 +181,6 @@ export class AllContentComponent extends WorkSpace implements OnInit {
     this.paginationService = paginationService;
     this.route = route;
     this.activatedRoute = activatedRoute;
-    this.userService = userService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.config = config;
@@ -340,21 +334,13 @@ export class AllContentComponent extends WorkSpace implements OnInit {
         this.showLockedContentModal = true;
     } else {
       const status = content.status.toLowerCase();
-      if (status !== 'processing') {
-        // only draft state contents need to be locked
-        if (status === 'draft') {
-          this.lockContent(content).subscribe(
-            (data: ServerResponse) => {
-                content.lock = data.result;
-                this.workSpaceService.navigateToContent(content, this.state);
-            },
-            (err: ServerResponse) => {
-                this.toasterService.error(this.resourceService.messages.fmsg.m0006);
-            }
-          );
-        } else {
-          this.workSpaceService.navigateToContent(content, this.state);
-        }
+      if (status === 'processing') {
+        return;
+      }
+      if (status === 'draft') { // only draft state contents need to be locked
+        this.workSpaceService.navigateToContent(content, this.state);
+      } else {
+        this.workSpaceService.navigateToContent(content, this.state);
       }
     }
   }

@@ -79,8 +79,9 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   }
   private getDetails() {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
-    const allowedState = ['draft', 'allcontent', 'collaborating-on', 'uploaded'].includes(this.routeParams.state);
-    if (_.isEmpty(lockInfo) && allowedState) {
+    const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded'].includes(this.routeParams.state);
+    const allowedEditStatus = this.routeParams.constStatus ? ['draft'].includes(this.routeParams.constStatus.toLowerCase()) : false;
+    if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
       this.editorService.getOwnershipType(), this.lockContent()).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,

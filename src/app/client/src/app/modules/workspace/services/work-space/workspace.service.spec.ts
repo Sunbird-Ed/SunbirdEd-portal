@@ -30,21 +30,21 @@ describe('WorkSpaceService', () => {
     inject([WorkSpaceService, Router], (workSpaceService, route) => {
       workSpaceService.navigateToContent(testData.sucessData.result.content[0], 'draft');
       expect(route.navigate).
-      toHaveBeenCalledWith(['/workspace/content/edit/content/', 'do_1124858179748904961134', 'draft', 'NCF'], {queryParams: {}});
+      toHaveBeenCalledWith(['/workspace/content/edit/content/', 'do_1124858179748904961134', 'draft', 'NCF', 'Draft']);
     }));
 
   it('should  launch  collection  editor when mime type is ecml-archive',
     inject([WorkSpaceService, Router], (workSpaceService, route) => {
       workSpaceService.navigateToContent(testData.sucessData.result.content[1], 'review');
       expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/collection',
-        'do_1124858179748904961134', 'Resource', 'review', 'NCF'], {queryParams: {}});
+        'do_1124858179748904961134', 'Resource', 'review', 'NCF', 'Draft']);
     }));
 
   it('should  launch  generic  editor when mime type is not matching ',
     inject([WorkSpaceService, Router], (workSpaceService, route) => {
       workSpaceService.navigateToContent(testData.sucessData.result.content[2], 'draft');
-      expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/generic/', 'do_1124858179748904961134', 'draft', 'NCF'],
-      {queryParams: {}});
+      expect(route.navigate)
+      .toHaveBeenCalledWith(['/workspace/content/edit/generic/', 'do_1124858179748904961134', 'draft', 'NCF', 'Draft']);
     }));
   it('should call delete api and get success response', inject([WorkSpaceService],
     (workSpaceService) => {
