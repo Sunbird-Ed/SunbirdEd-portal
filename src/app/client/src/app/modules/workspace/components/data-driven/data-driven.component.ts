@@ -298,10 +298,10 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
     const state = 'draft';
     const framework = this.framework;
     if (this.contentType === 'studymaterial') {
-      this.router.navigate(['/workspace/content/edit/content/', content.identifier, state, framework]);
+      this.router.navigate(['/workspace/content/edit/content/', content.identifier, state, framework, 'Draft']);
     } else {
       const type = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
-      this.router.navigate(['/workspace/content/edit/collection', content.identifier, type, state, framework]);
+      this.router.navigate(['/workspace/content/edit/collection', content.identifier, type, state, framework, 'Draft']);
     }
   }
 
