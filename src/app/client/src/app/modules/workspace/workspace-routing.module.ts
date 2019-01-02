@@ -100,7 +100,7 @@ const routes: Routes = [
         canActivate: [AuthGuard], data: { roles: 'workspace' }
       },
       {
-        path: 'edit/generic/:contentId/:state/:framework', component: GenericEditorComponent,
+        path: 'edit/generic/:contentId/:state/:framework/:contentStatus', component: GenericEditorComponent,
         canActivate: [AuthGuard], data: { roles: 'workspace' }
       },
       {
