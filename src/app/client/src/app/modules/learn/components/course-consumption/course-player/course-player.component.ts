@@ -299,7 +299,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     const contentMimeType = _.get(this.findContentById(this.contentId), 'model.mimeType');
     const validSummary = (summaryList: Array<any>) => (percentage: number) => _.find(summaryList, (requiredProgress =>
       summary => summary && summary.progress >= requiredProgress)(percentage));
-    if (validSummary(playerSummary)(20) && ['video/x-youtube', 'video/mp4'].includes(contentMimeType)) {
+    if (validSummary(playerSummary)(20) && ['video/x-youtube', 'video/mp4', 'video/webm'].includes(contentMimeType)) {
         return true;
     } else if (validSummary(playerSummary)(0) &&
         ['application/vnd.ekstep.h5p-archive', 'application/vnd.ekstep.html-archive'].includes(contentMimeType)) {
