@@ -88,9 +88,8 @@ describe('UpdateCourseBatchComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.
     returnValue(observableOf({createdBy: 'b2479136-8608-41c0-b3b1-283f38c338ed'}));
     fixture.detectChanges();
-    expect(component.participantList.length).toBe(3);
-    expect(component.mentorList.length).toBe(1);
-    expect(component.mentorList[0].id).toBe('b2479136-8608-41c0-b3b1-283f38c338ed');
+    expect(component.participantList.length).toBe(0);
+    expect(component.mentorList.length).toBe(0);
     expect(component.courseCreator).toBeDefined();
     expect(component.batchUpdateForm).toBeDefined();
     expect(component.showUpdateModal).toBeTruthy();

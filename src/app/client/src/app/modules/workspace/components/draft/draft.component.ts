@@ -97,11 +97,6 @@ export class DraftComponent extends WorkSpace implements OnInit {
     private paginationService: PaginationService;
 
     /**
-      * Refrence of UserService
-    */
-    private userService: UserService;
-
-    /**
     * To get url, app configs
     */
     public config: ConfigService;
@@ -165,7 +160,6 @@ export class DraftComponent extends WorkSpace implements OnInit {
         this.paginationService = paginationService;
         this.route = route;
         this.activatedRoute = activatedRoute;
-        this.userService = userService;
         this.toasterService = toasterService;
         this.resourceService = resourceService;
         this.config = config;
@@ -247,16 +241,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
             if (param.action.eventName === 'delete') {
                 this.deleteConfirmModal(param.data.metaData.identifier);
             } else {
-                this.lockContent(param.data.metaData).subscribe(
-                    (data: ServerResponse) => {
-                        param.data.metaData.lock = data.result;
-                        this.workSpaceService.navigateToContent(param.data.metaData, this.state);
-                    },
-                    (err: ServerResponse) => {
-                        const errMessage = this.handleContentLockError(err);
-                        this.toasterService.error(errMessage || this.resourceService.messages.fmsg.m0006);
-                    }
-                );
+                this.workSpaceService.navigateToContent(param.data.metaData, this.state);
             }
         }
     }
