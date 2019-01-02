@@ -35,7 +35,7 @@ jobs:
           command: 'npm run test-coverage | tee /tmp/logs/test_cases.log'
       - run:
           name: Publishing report to Codacy
-          command: 'npm install -g codacy-coverage && cat ./coverage/lcov.info | codacy-coverage '
+          command: 'npm install -g codacy-coverage && cat ./coverage/lcov.info | codacy-coverage -v'
           when: always
       - store_artifacts:
           path: /tmp/logs
