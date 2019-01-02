@@ -87,11 +87,12 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'edit/collection/:contentId/:type/:state/:framework', component: CollectionEditorComponent, canActivate: [AuthGuard],
+        path: 'edit/collection/:contentId/:type/:state/:framework/:contentStatus',
+          component: CollectionEditorComponent, canActivate: [AuthGuard],
         data: { roles: 'workspace' }
       },
       {
-        path: 'edit/content/:contentId/:state/:framework', component: ContentEditorComponent,
+        path: 'edit/content/:contentId/:state/:framework/:contentStatus', component: ContentEditorComponent,
         canActivate: [AuthGuard], data: { roles: 'workspace' }
       },
       {
@@ -99,7 +100,7 @@ const routes: Routes = [
         canActivate: [AuthGuard], data: { roles: 'workspace' }
       },
       {
-        path: 'edit/generic/:contentId/:state/:framework', component: GenericEditorComponent,
+        path: 'edit/generic/:contentId/:state/:framework/:contentStatus', component: GenericEditorComponent,
         canActivate: [AuthGuard], data: { roles: 'workspace' }
       },
       {

@@ -83,9 +83,11 @@ export class WorkSpaceService {
   * @param {string}  state - Present state
 */
   openCollectionEditor(content, state) {
-    const lockParams = content.lock || {};
-    this.route.navigate(['/workspace/content/edit/collection', content.identifier, content.contentType, state, content.framework]
-    , {queryParams: lockParams});
+    const navigationParams = ['/workspace/content/edit/collection', content.identifier, content.contentType, state, content.framework];
+    if (content.status) {
+      navigationParams.push(content.status);
+    }
+    this.route.navigate(navigationParams);
   }
 
   /**
@@ -95,9 +97,11 @@ export class WorkSpaceService {
   */
   openContent(content, state) {
     if (this.config.appConfig.WORKSPACE.states.includes(state)) {
-      const lockParams = content.lock || {};
-      this.route.navigate(['/workspace/content/edit/content/', content.identifier, state, content.framework],
-      { queryParams: lockParams});
+      const navigationParams = ['/workspace/content/edit/content/', content.identifier, state, content.framework];
+      if (content.status) {
+        navigationParams.push(content.status);
+      }
+      this.route.navigate(navigationParams);
     } else {
       if (state === 'upForReview') {
         this.route.navigate(['workspace/content/upForReview/content', content.identifier]);
@@ -118,9 +122,11 @@ export class WorkSpaceService {
   */
   openGenericEditor(content, state) {
     if (this.config.appConfig.WORKSPACE.states.includes(state)) {
-      const lockParams = content.lock || {};
-      this.route.navigate(['/workspace/content/edit/generic/', content.identifier, state, content.framework],
-      {queryParams: lockParams});
+      const navigationParams = ['/workspace/content/edit/generic/', content.identifier, state, content.framework];
+      if (content.status) {
+        navigationParams.push(content.status);
+      }
+      this.route.navigate(navigationParams);
     } else {
       if (state === 'review') {
         this.route.navigate(['workspace/content/review/content', content.identifier]);

@@ -130,8 +130,7 @@ describe('DataDrivenComponent', () => {
     spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
     componentParent.createContent();
     expect(router.navigate).toHaveBeenCalledWith(
-      ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'draft', componentParent.framework],
-      {queryParams: undefined});
+      ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'draft', componentParent.framework]);
   });
   it('should not router to collection editor ', () => {
     const state = 'draft';
@@ -170,8 +169,7 @@ describe('DataDrivenComponent', () => {
     spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
     componentParent.createContent();
     expect(router.navigate).toHaveBeenCalledWith(
-      ['/workspace/content/edit/content/', 'do_2124708548063559681134', 'draft', componentParent.framework],
-      {queryParams: undefined});
+      ['/workspace/content/edit/content/', 'do_2124708548063559681134', 'draft', componentParent.framework]);
   });
   it('should not router to contentEditor editer ', () => {
     const state = 'draft';

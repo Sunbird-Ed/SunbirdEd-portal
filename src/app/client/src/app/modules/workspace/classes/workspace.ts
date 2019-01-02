@@ -2,7 +2,7 @@ import { WorkSpaceService } from './../services';
 import { SearchService, UserService } from '@sunbird/core';
 import { ResourceService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
-import { mergeMap, catchError } from 'rxjs/operators';
+import { mergeMap, catchError, map } from 'rxjs/operators';
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 /**
  * Base class for workspace module
@@ -17,20 +17,14 @@ export class WorkSpace {
     */
     public workSpaceService: WorkSpaceService;
     /**
-    * Reference of user service.
-    */
-    public user: UserService;
-
-    /**
     * Constructor to create injected service(s) object
     * Default method of Draft Component class
     * @param {SearchService} SearchService Reference of SearchService
-      @param {WorkSpaceService} WorkSpaceService Reference of WorkSpaceService
+    * @param {WorkSpaceService} WorkSpaceService Reference of WorkSpaceService
     */
-    constructor( searchService: SearchService, workSpaceService: WorkSpaceService, user: UserService ) {
+    constructor(searchService: SearchService, workSpaceService: WorkSpaceService, public userService: UserService) {
         this.searchService = searchService;
         this.workSpaceService = workSpaceService;
-        this.user = user;
     }
     /**
     * Search Api call
@@ -43,46 +37,45 @@ export class WorkSpace {
     * Search Api call and returns contents with lock status of each one
     */
     searchContentWithLockStatus(searchParams) {
-        return this.search(searchParams).pipe(mergeMap((data: ServerResponse) => {
-            if (data.result.count > 0) {
-                const contents = data.result.content;
+        return this.search(searchParams).pipe(mergeMap((contentList: ServerResponse) => {
+            if (contentList.result.count) {
                 const inputParams = {
                     filters: {
-                        'resourceId' : _.map(contents, 'identifier')
+                        resourceId: _.map(contentList.result.content, 'identifier')
                     }
                 };
-                return this.workSpaceService.getContentLockList(inputParams).pipe(mergeMap((responseData: ServerResponse) => {
-                    if (responseData.result.count > 0) {
-                        const lockDataKeyByContentId = _.keyBy(responseData.result.data, 'resourceId');
-                        _.each(contents, (eachcontent, index) => {
-                            const lockInfo = lockDataKeyByContentId[eachcontent.identifier];
-                            if (lockInfo) {
-                                lockInfo.creatorInfo = JSON.parse(lockInfo.creatorInfo);
-                                contents[index].lockInfo = lockInfo;
-                            }
-                        });
-                    }
-                    data.result.content = contents;
-                    return observableOf(data);
-                }));
+                return this.workSpaceService.getContentLockList(inputParams)
+                    .pipe(map((lockList: ServerResponse) => ({contentList, lockList})));
             } else {
-                return observableOf(data);
+                return observableOf({contentList, lockList: undefined});
             }
-        }), catchError((err) => {
-            return observableThrowError(err);
+        }), map(({contentList, lockList}) => {
+            const contents = contentList.result.content;
+            if (_.get(lockList, 'result.count')) {
+                const lockDataKeyByContentId = _.keyBy(lockList.result.data, 'resourceId');
+                _.each(contents, (eachContent, index) => {
+                    const lockInfo = lockDataKeyByContentId[eachContent.identifier];
+                    if (lockInfo) {
+                        lockInfo.creatorInfo = JSON.parse(lockInfo.creatorInfo);
+                        contents[index].lockInfo = lockInfo;
+                    }
+                });
+            }
+            contentList.result.content = contents;
+            return contentList;
         }));
     }
 
     /**
     * this call will prepare reuest object and call lock api
     */
-    lockContent (content) {
+    lockContent(content) {
         const input = {
-          resourceId : content.identifier,
-          resourceType : 'Content',
-          resourceInfo : JSON.stringify(content),
-          creatorInfo : JSON.stringify({'name': this.user.userProfile.firstName, 'id': this.user.userProfile.identifier}),
-          createdBy : this.user.userProfile.identifier
+            resourceId: content.identifier,
+            resourceType: 'Content',
+            resourceInfo: JSON.stringify(content),
+            creatorInfo: JSON.stringify({ 'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.identifier }),
+            createdBy: this.userService.userProfile.identifier
         };
         return this.workSpaceService.lockContent(input);
     }
@@ -121,7 +114,7 @@ export class WorkSpace {
     /**
     * handle content lock api error
     */
-    handleContentLockError (errObj) {
+    handleContentLockError(errObj) {
         let errorMessage = '';
         const customErrors = ['RESOURCE_SELF_LOCKED', 'RESOURCE_LOCKED'];
         if (errObj.error.params.err) {
