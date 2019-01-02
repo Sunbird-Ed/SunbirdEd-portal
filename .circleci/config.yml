@@ -1,14 +1,5 @@
 version: 2.1
 jobs:
-  build:
-    machine:
-      image: circleci/classic:latest
-    steps:
-      - checkout
-      - run:
-          name: run build file
-          command: /bin/bash -x build.sh ${CIRCLE_SHA1} test
-
   test-cases:
     working_directory: ~/portal/src/app/client
     docker:
@@ -45,5 +36,4 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      #- build
       - test-cases
