@@ -9,7 +9,6 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash';
 import { ThrowStmt } from '@angular/compiler';
 import { CacheService } from 'ng2-cache-service';
-import { Response } from './profile-framework-popup.component.spec.data';
 @Component({
   selector: 'app-popup',
   templateUrl: './profile-framework-popup.component.html',
@@ -58,7 +57,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
           this.frameworkService.initialize();
           return this.setFrameWorkDetails();
         }
-      }), first(), takeUntil(this.unsubscribe)).subscribe(data => {
+      }), takeUntil(this.unsubscribe)).subscribe(data => {
         if (this.isCustodianOrg) {
           this.board = _.cloneDeep(this.CustodianOrgBoard);
           if (this.isEdit) {
@@ -189,7 +188,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         this.frameWorkId = identifier['identifier'];
       }
       this.frameworkService.initialize(this.frameWorkId);
-      this.setFrameWorkDetails().pipe( first(), takeUntil(this.unsubscribe)).subscribe((data) => {
+      this.setFrameWorkDetails().pipe( takeUntil(this.unsubscribe)).subscribe((data) => {
       this.getFormatedData(event, nextIndex, code);
       }, err => {
        this.navigateTolibrary();
@@ -237,7 +236,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
           }
         });
       });
-      if (rangeData.length) {
+      if (rangeData.length > 0) {
         this[nextFormData['code']].range = _.union(this[nextFormData['code']].range, rangeData);
       }
     }
