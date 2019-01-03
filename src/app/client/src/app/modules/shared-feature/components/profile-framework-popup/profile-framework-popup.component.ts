@@ -233,15 +233,12 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         const rangeValue = _.find(range, { 'name': selectedValue });
         _.forEach(_.get(rangeValue, 'associations'), (value, index) => {
           if (value.category === nextFormData['code']) {
-            const field = _.find(this[nextFormData['code']].range, { code: value.code });
-            if (field) {
-              rangeData.push(field);
-            }
+            rangeData.push(value);
           }
         });
       });
       if (rangeData.length) {
-        this[nextFormData['code']].range = rangeData;
+        this[nextFormData['code']].range = _.union(this[nextFormData['code']].range, rangeData);
       }
     }
     if (this.isEdit && this.isCustodianOrg) {
