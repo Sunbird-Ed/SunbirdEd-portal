@@ -1,4 +1,4 @@
-#!groovy
+@Library('deploy-conf') _
 node('build-slave') {
     currentBuild.result = "SUCCESS"
     try {
