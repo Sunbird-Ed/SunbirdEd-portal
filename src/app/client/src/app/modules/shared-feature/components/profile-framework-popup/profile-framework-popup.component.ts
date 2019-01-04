@@ -241,7 +241,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         });
       });
       if (rangeData.length) {
-        this[nextFormData['code']].range = rangeData;
+        this[nextFormData['code']].range = _.uniqBy(rangeData, 'identifier');
       }
     }
     if (this.isEdit && this.isCustodianOrg) {
