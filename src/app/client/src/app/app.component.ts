@@ -172,7 +172,7 @@ export class AppComponent implements OnInit {
           return throwError(user.err);
         }
         this.userProfile = user.userProfile;
-        this.slug = _.get(this.userProfile, 'userProfile.rootOrg.slug');
+        this.slug = _.get(this.userProfile, 'rootOrg.slug');
         this.channel = this.userService.hashTagId;
         return of(user.userProfile);
     }));

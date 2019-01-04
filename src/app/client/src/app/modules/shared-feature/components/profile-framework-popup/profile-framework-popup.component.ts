@@ -9,6 +9,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash';
 import { ThrowStmt } from '@angular/compiler';
 import { CacheService } from 'ng2-cache-service';
+import { Response } from './profile-framework-popup.component.spec.data';
 @Component({
   selector: 'app-popup',
   templateUrl: './profile-framework-popup.component.html',
@@ -57,7 +58,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
           this.frameworkService.initialize();
           return this.setFrameWorkDetails();
         }
-      }), takeUntil(this.unsubscribe)).subscribe(data => {
+      }), first(), takeUntil(this.unsubscribe)).subscribe(data => {
         if (this.isCustodianOrg) {
           this.board = _.cloneDeep(this.CustodianOrgBoard);
           if (this.isEdit) {
@@ -188,7 +189,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         this.frameWorkId = identifier['identifier'];
       }
       this.frameworkService.initialize(this.frameWorkId);
-      this.setFrameWorkDetails().pipe( takeUntil(this.unsubscribe)).subscribe((data) => {
+      this.setFrameWorkDetails().pipe( first(), takeUntil(this.unsubscribe)).subscribe((data) => {
       this.getFormatedData(event, nextIndex, code);
       }, err => {
        this.navigateTolibrary();
@@ -232,12 +233,15 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         const rangeValue = _.find(range, { 'name': selectedValue });
         _.forEach(_.get(rangeValue, 'associations'), (value, index) => {
           if (value.category === nextFormData['code']) {
-            rangeData.push(value);
+            const field = _.find(this[nextFormData['code']].range, { code: value.code });
+            if (field) {
+              rangeData.push(field);
+            }
           }
         });
       });
-      if (rangeData.length > 0) {
-        this[nextFormData['code']].range = _.union(this[nextFormData['code']].range, rangeData);
+      if (rangeData.length) {
+        this[nextFormData['code']].range = _.uniqBy(rangeData, 'identifier');
       }
     }
     if (this.isEdit && this.isCustodianOrg) {
