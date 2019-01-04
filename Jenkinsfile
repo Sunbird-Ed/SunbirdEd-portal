@@ -14,6 +14,7 @@ node('build-slave') {
            else
              println (ANSI_BOLD + ANSI_GREEN + "Found environment variable named hub_org with value as: " + hub_org + ANSI_NORMAL)
          }
+          cleanWs()
           checkout scm
           // Getting commit short hash
           commit_hash = sh (
