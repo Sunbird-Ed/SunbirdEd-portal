@@ -9,6 +9,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash';
 import { ThrowStmt } from '@angular/compiler';
 import { CacheService } from 'ng2-cache-service';
+import { Response } from './profile-framework-popup.component.spec.data';
 @Component({
   selector: 'app-popup',
   templateUrl: './profile-framework-popup.component.html',
@@ -57,7 +58,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
           this.frameworkService.initialize();
           return this.setFrameWorkDetails();
         }
-      }), takeUntil(this.unsubscribe)).subscribe(data => {
+      }), first(), takeUntil(this.unsubscribe)).subscribe(data => {
         if (this.isCustodianOrg) {
           this.board = _.cloneDeep(this.CustodianOrgBoard);
           if (this.isEdit) {
@@ -188,9 +189,8 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         this.frameWorkId = identifier['identifier'];
       }
       this.frameworkService.initialize(this.frameWorkId);
-      this.setFrameWorkDetails().pipe(takeUntil(this.unsubscribe)).subscribe((data) => {
+      this.setFrameWorkDetails().pipe( first(), takeUntil(this.unsubscribe)).subscribe((data) => {
       this.getFormatedData(event, nextIndex, code);
-      this.isCustodianOrg = false;
       }, err => {
        this.navigateTolibrary();
       });
@@ -199,7 +199,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     }
   }
   getFormatedData(event, nextIndex, code) {
-    _.forEach(this.categoryMasterList, (category) => {
+   _.forEach(this.categoryMasterList, (category) => {
       _.forEach(this.formFieldProperties, (formFieldCategory) => {
         if (category.code === formFieldCategory.code && category.terms) {
           formFieldCategory.range = category.terms;
@@ -208,7 +208,11 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       });
     });
     this.formFieldProperties = _.sortBy(_.uniqBy(this.formFieldProperties, 'code'), 'index');
-    this.board = _.find(this.formFieldProperties, { code: 'board' });
+    if (this.isCustodianOrg) {
+      this.board = {... _.find(this.formFieldProperties, { code: 'board' }), ...this.CustodianOrgBoard};
+    } else {
+      this.board =  _.find(this.formFieldProperties, { code: 'board' });
+    }
     if (code === 'board') {
       this.selectedOption['board'] = event;
     }
@@ -229,12 +233,15 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         const rangeValue = _.find(range, { 'name': selectedValue });
         _.forEach(_.get(rangeValue, 'associations'), (value, index) => {
           if (value.category === nextFormData['code']) {
-            rangeData.push(value);
+            const field = _.find(this[nextFormData['code']].range, { code: value.code });
+            if (field) {
+              rangeData.push(field);
+            }
           }
         });
       });
-      if (rangeData.length > 0) {
-        this[nextFormData['code']].range = _.union(this[nextFormData['code']].range, rangeData);
+      if (rangeData.length) {
+        this[nextFormData['code']].range = _.uniqBy(rangeData, 'identifier');
       }
     }
     if (this.isEdit && this.isCustodianOrg) {
