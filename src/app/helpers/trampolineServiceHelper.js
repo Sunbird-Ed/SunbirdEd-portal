@@ -53,10 +53,12 @@ module.exports = {
             }
           }
 
-          const telemetryData = {reqObj: req,
+          const telemetryData = {
+            reqObj: req,
             options: options,
             uri: 'test',
-            userId: jwt.decode(req.query['token']).sub || req.headers['x-consumer-userid']}
+            userId: jwt.decode(req.query['token']).sub || req.get('x-consumer-userid')
+          }
           // telemetryHelper.logAPICallEvent(telemetryData)
 
           request(options, function (error, response, body) {
@@ -98,15 +100,16 @@ module.exports = {
           }
         },
         verifyUser: function (callback) {
-        // check user exist
-          self.checkUserExists(req, self.payload, function (err, status) {
+          // check user exist
+          self.checkUserExists(req, self.payload, function (err, userData) {
             self.errorMsg = 'Failed to create/authenticate user. Please try again with valid user data'
+            self.userName = _.get(userData, 'result.response.userName')
             if (!err) {
               self.errorMsg = undefined
               console.log('user already exists')
-              callback(null, status)
+              callback(null, userName)
             } else {
-            // create User
+              // create User
               console.log('create User Flag', createUserFlag, 'type of', typeof createUserFlag)
               if (createUserFlag === 'true') {
                 self.createUser(req, self.payload, function (error, status) {
@@ -116,7 +119,8 @@ module.exports = {
                   } else if (status) {
                     self.errorMsg = undefined
                     console.log('create user successful')
-                    callback(null, status)
+                    self.userName = self.payload['sub'] + (self.payload['iss'] ? '@' + self.payload['iss'] : '')
+                    callback(null, userName)
                   } else {
                     console.log('unable to create user')
                     callback(new Error('unable to create user'), null)
@@ -129,8 +133,8 @@ module.exports = {
           })
         },
         getGrantFromUserName: function (callback) {
-          var userName = self.payload['sub'] + (self.payload['iss'] ? '@' + self.payload['iss'] : '')
           self.errorMsg = 'Request credentials verification failed. Please try with valid credentials.'
+          var userName = self.userName;
           keycloak.grantManager.obtainDirectly(userName)
             .then(function (grant) {
               keycloak.storeGrant(grant, req, res)
@@ -145,18 +149,20 @@ module.exports = {
               telemetryHelper.logGrantLogEvent({
                 reqObj: req,
                 userId: userName,
-                success: grant})
+                success: grant
+              })
               self.errorMsg = undefined
               callback(null, grant)
             },
-            function (err) {
-              telemetryHelper.logGrantLogEvent({
-                reqObj: req,
-                userId: userName,
-                err: err})
-              console.log('grant failed', err, userName)
-              callback(err, null)
-            })
+              function (err) {
+                telemetryHelper.logGrantLogEvent({
+                  reqObj: req,
+                  userId: userName,
+                  err: err
+                })
+                console.log('grant failed', err, userName)
+                callback(err, null)
+              })
         }
       },
       function (err, results) {
@@ -193,19 +199,21 @@ module.exports = {
       json: true
     }
 
-    const telemetryData = {reqObj: req,
+    const telemetryData = {
+      reqObj: req,
       options: options,
       uri: 'user/v1/profile/read',
       type: 'user',
       id: loginId,
-      userId: loginId}
+      userId: loginId
+    }
     // telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
       telemetryData.statusCode = _.get(response, 'statusCode')
       console.log('check user exists', response.statusCode, 'for Login Id :', loginId)
       if (body.responseCode === 'OK') {
-        callback(null, true)
+        callback(null, body)
       } else {
         telemetryData.resp = body
         telemetryHelper.logAPIErrorEvent(telemetryData)
@@ -242,12 +250,14 @@ module.exports = {
       },
       json: true
     }
-    const telemetryData = {reqObj: req,
+    const telemetryData = {
+      reqObj: req,
       options: options,
       uri: 'user/v1/create',
       type: 'user',
       id: options.headers['x-consumer-id'],
-      userId: options.headers['x-consumer-id']}
+      userId: options.headers['x-consumer-id']
+    }
     // telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
@@ -289,7 +299,7 @@ module.exports = {
 
       if (body.responseCode === 'OK') {
         req['headers']['X-Channel-Id'] = _.get(req, 'headers.X-Channel-Id') ||
-        _.get(body, 'result.response.rootOrg.hashTagId')
+          _.get(body, 'result.response.rootOrg.hashTagId')
         callback(null, _.get(body, 'result.response.rootOrg.hashTagId'))
       } else {
         callback(null, null)
