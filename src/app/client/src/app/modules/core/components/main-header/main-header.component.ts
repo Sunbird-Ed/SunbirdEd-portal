@@ -42,10 +42,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
    */
   isOpen: boolean;
   /**
-   * Workspace access roles
-   */
-  workSpaceRole: Array<string>;
-  /**
    * Admin Dashboard access roles
    */
   adminDashboard: Array<string>;
@@ -73,6 +69,28 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
    * reference of resourceService service.
    */
   public resourceService: ResourceService;
+  avtarMobileStyle = {
+    backgroundColor: 'transparent',
+    color: '#AAAAAA',
+    fontFamily: 'inherit',
+    fontSize: '17px',
+    lineHeight: '38px',
+    border: '1px solid #e8e8e8',
+    borderRadius: '50%',
+    height: '38px',
+    width: '38px'
+  };
+  avtarDesktopStyle = {
+    backgroundColor: 'transparent',
+    color: '#AAAAAA',
+    fontFamily: 'inherit',
+    fontSize: '17px',
+    lineHeight: '38px',
+    border: '1px solid #e8e8e8',
+    borderRadius: '50%',
+    height: '38px',
+    width: '38px'
+  };
   /**
    * reference of permissionService service.
    */
@@ -135,7 +153,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.queryParam = { ...queryParams };
       this.key = this.queryParam['key'];
     });
-    this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
     this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
     this.announcementRole = this.config.rolesConfig.headerDropdownRoles.announcementRole;
     this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
@@ -171,12 +188,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.resourceService.getResource(data);
     }
   }
-  navigateToWorkspace() {
-    const authroles = this.permissionService.getWorkspaceAuthRoles();
-    if (authroles) {
-      this.router.navigate([authroles.url]);
-    }
-  }
   navigateToHome() {
     if (this.userService.loggedIn) {
       this.router.navigate(['home']);
@@ -204,6 +215,14 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
         this.showExploreHeader = true;
         const url  = urlAfterRedirects.url.split('?')[0].split('/');
         if (url.indexOf('explore') === 2) {
+          this.exploreRoutingUrl = url[1] + '/' + url[2];
+        } else {
+          this.exploreRoutingUrl = url[1];
+        }
+      } else if (_.includes(urlAfterRedirects.url, '/explore-course')) {
+        this.showExploreHeader = true;
+        const url  = urlAfterRedirects.url.split('?')[0].split('/');
+        if (url.indexOf('explore-course') === 2) {
           this.exploreRoutingUrl = url[1] + '/' + url[2];
         } else {
           this.exploreRoutingUrl = url[1];

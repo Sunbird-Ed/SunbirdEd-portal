@@ -5,7 +5,7 @@ import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry'
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
-  styleUrls: ['./card.component.css']
+  styleUrls: ['./card.component.scss']
 })
 export class CardComponent {
   /**
@@ -14,6 +14,10 @@ export class CardComponent {
   @Input() data: ICard;
   @Input() customClass: string;
   @Output() clickEvent = new EventEmitter<any>();
+
+  constructor(public resourceService: ResourceService) {
+    this.resourceService = resourceService;
+  }
 
   public onAction(data, action) {
     this.clickEvent.emit({ 'action': action, 'data': data });

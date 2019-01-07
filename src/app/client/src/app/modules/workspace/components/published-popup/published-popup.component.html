@@ -36,9 +36,9 @@
     </div>
     <div class="actions footer">
         <div class="ui buttons">
-            <button class="ui orange button" type="button " (click)="redirect();modal.deny();">{{resourceService.frmelmnts.btn.checklistCancel}}</button>
+            <button class="ui orange button" type="button " (click)="redirect();modal.deny();">{{resourceService?.frmelmnts?.btn?.checklistCancel}}</button>
             <div class="or"></div>
-            <button class="ui blue button " type="button " [disabled]="isDisabled" (click)="submitPublishChanges()">{{resourceService.frmelmnts.btn.checkListPublish}}</button>
+            <button class="ui blue button " type="button " [disabled]="isDisabled" (click)="submitPublishChanges()">{{resourceService?.frmelmnts?.btn?.checklistPublish}}</button>
         </div>
     </div>
 </sui-modal>

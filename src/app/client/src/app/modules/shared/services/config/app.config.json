@@ -1,5 +1,6 @@
 {
   "Home": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "enrolledCourses": {
       "constantData": {
         "action": {
@@ -20,6 +21,7 @@
     }
   },
   "ViewAll": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "otherCourses": {
         "constantData":{
         "action": {
@@ -45,10 +47,14 @@
       "metaData": ["batchId", "courseId"]
       },
        "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"},
+     "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"},
      "PAGE_LIMIT": 20 
   },
+  "CourseConsumption" : {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"}
+  },
   "Course": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "otherCourse": {
       "constantData": {
         "action": {
@@ -75,6 +81,7 @@
     }
   },
   "Library": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "constantData":{
       "action": {
           "onImage": {"eventName": "onImage" }
@@ -83,9 +90,16 @@
         "left": {"class":  "ui circular label  card-badges-image"} }
        },
        "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-       "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
+       "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
+  },
+  "PublicPlayer": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"}
+  },
+  "ContentPlayer": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"}
   },
   "ExplorePage": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "constantData":{
       "action": {
           "onImage": {"eventName": "onImage" }
@@ -94,9 +108,21 @@
         "left": {"class":  "ui circular label  card-badges-image"} }
        },
        "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-       "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
+       "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
+  },
+  "CoursePage": {
+    "constantData":{
+      "action": {
+          "onImage": {"eventName": "onImage" }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"},
+        "left": {"class":  "ui circular label  card-badges-image"} }
+       },
+       "metaData": {"metaData": ["identifier", "mimeType", "framework","contentType"]},
+       "dynamicFields": {"ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
   },
   "GetPage":{
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "constantData":{
       "action": {
           "onImage": {"eventName": "onImage" }
@@ -107,9 +133,10 @@
         "telemetryObjectType":"public"
        },
      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
+     "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
   },
   "HomeSearch": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "constantData":{
       "action": {
           "onImage": {"eventName": "onImage" }
@@ -118,6 +145,7 @@
        "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]}
   },
   "CourseSearch": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "otherCourses":{
       "constantData":{
       "action": {
@@ -142,6 +170,7 @@
    "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]}
   },
   "LibrarySearch":{
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "constantData":{
       "action": {
           "onImage": {"eventName": "onImage" }
@@ -150,7 +179,7 @@
         "left": {"class":  "ui circular label  card-badges-image"} }
        },
      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
+     "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
   },
   "TELEMETRY": {
     "MAX_BATCH_SIZE": 10,
@@ -283,7 +312,8 @@
       "uploaded",
       "published",
       "limited-publish",
-      "allcontent"
+      "allcontent",
+      "collaborating-on"
     ],
     "Draft": {
       "constantData": {
@@ -494,6 +524,20 @@
     "studymaterial": "createlessontext",
     "lessonplan": "createlessonplan"
   },
+  "contentName": {
+    "textbook": "Untitled Textbook",
+    "course": "Untitled Course",
+    "collection": "Untitled Collection",
+    "studymaterial": "Untitled Resource",
+    "lessonplan": "Untitled Lessonplan"
+  },
+  "contentDescription": {
+    "textbook": "Enter description for TextBook",
+    "course": "Enter description for Course",
+    "collection": "Enter description for Collection",
+    "studymaterial": "Enter description for Resource",
+    "lessonplan": "Enter description for Lessonplan"
+  },
   "contentCreateTypeForEditors": {
     "textbook": "TextBook",
     "course": "Course",
@@ -505,6 +549,11 @@
     "filterType": "course",
     "inPageredirectUrl": "/learn",
     "searchPageredirectUrl": "/search/Courses/1"
+  },
+  "home": {
+    "filterType": "home",
+    "inPageredirectUrl": "/home",
+    "searchPageredirectUrl": "/search/All/1"
   },
   "library": {
     "filterType": "library",
@@ -522,13 +571,30 @@
     "filterType": "allmycontent",
     "inPageredirectUrl": "workspace/content/allcontent/1",
     "searchPageredirectUrl": "workspace/content/allcontent/1"
+   },
+   "collaboration": {
+    "filterType": "collaboration",
+    "inPageredirectUrl": "workspace/content/collaborating-on/1",
+    "searchPageredirectUrl": "workspace/content/collaborating-on/1"
    }, 
   "explore": {
     "filterType": "explore",
     "inPageredirectUrl": "/explore",
     "searchPageredirectUrl": "/explore/1"
   },
+
+  "exploreCourse": {
+    "filterType": "explore-course",
+    "inPageredirectUrl": "/explore-course",
+    "searchPageredirectUrl": "/explore-course/1"
+  },
+  "courses": {
+    "filterType": "courses",
+    "inPageredirectUrl": "/learn",
+    "searchPageredirectUrl": "/search/Courses/1"
+  },
   "formApiTypes": {
+    "home": "home",
     "textbook": "textbook",
     "course": "course",
     "collection": "collection",
@@ -538,7 +604,12 @@
     "allmycontent":"allmycontent",
     "explore": "explore",
     "resourcebundle": "resourcebundle",
-    "upforreview" :"upforreview"
+    "upforreview" :"upforreview",
+    "collaboration":"collaboration",
+    "framework": "framework",
+    "explore-course":"explore-course",
+    "framework-code":"framework-code",
+    "courses": "courses"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,
@@ -555,6 +626,7 @@
     "setTime": 1500
   },
   "PROFILE": {
+    "contentApiQueryParams": {"orgdetails":"orgName,email"},
     "profileField": {
       "profileSummary": "profile/summary/edit",
       "jobProfile": "profile/experience/add",
@@ -571,6 +643,7 @@
       "language": "profile/additionalInfo/edit"
     },
     "defaultViewMoreLimit": 3,
+    "defaultShowMoreLimit": 4,
     "options": [
       {
         "text": "Hide this from everyone",

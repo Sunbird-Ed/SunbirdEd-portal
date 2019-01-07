@@ -1,11 +1,11 @@
 import { PublicPlayerService } from '@sunbird/public';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { combineLatest, Subject } from 'rxjs';
 import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ILoaderMessage, UtilService, ICard
+  ILoaderMessage, UtilService, ICard, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { SearchService, CoursesService, ISort, PlayerService } from '@sunbird/core';
+import { SearchService, CoursesService, ISort, PlayerService, OrgDetailsService, UserService, FormService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
@@ -63,6 +63,10 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   */
   coursesService: CoursesService;
   /**
+  * Refrence of UserService
+  */
+   private userService: UserService;
+  /**
     * To show / hide no result message when no result found
    */
   noResult = false;
@@ -90,6 +94,10 @@ export class ViewAllComponent implements OnInit, OnDestroy {
    */
   showLoader = true;
   /**
+  *baseUrl;
+  */
+  public baseUrl: string;
+  /**
      * loader message
     */
   loaderMessage: ILoaderMessage;
@@ -106,19 +114,28 @@ export class ViewAllComponent implements OnInit, OnDestroy {
  *search filters
  */
   filters: any;
-
+  hashTagId: string;
+  formAction: string;
+  showFilter = false;
+  /**
+  * To show / hide login popup on click of content
+  */
+  showLoginModal = false;
+ /**
   /**
    * contains the search filter type
    */
   public filterType: string;
+  public frameWorkName: string;
   public sortingOptions: Array<ISort>;
   public closeUrl: string;
   public sectionName: string;
   public unsubscribe = new Subject<void>();
-  constructor(searchService: SearchService, router: Router, private playerService: PlayerService,
+  constructor(searchService: SearchService, router: Router, private playerService: PlayerService, private formService: FormService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService, private _cacheService: CacheService,
     resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
-    configService: ConfigService, coursesService: CoursesService, public utilService: UtilService) {
+    configService: ConfigService, coursesService: CoursesService, public utilService: UtilService,
+    private orgDetailsService: OrgDetailsService, userService: UserService,  private browserCacheTtlService: BrowserCacheTtlService) {
     this.searchService = searchService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -127,11 +144,18 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     this.toasterService = toasterService;
     this.configService = configService;
     this.coursesService = coursesService;
+    this.userService = userService;
     this.router.onSameUrlNavigation = 'reload';
     this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
   }
 
   ngOnInit() {
+    if (!this.userService.loggedIn) {
+      this.getChannelId();
+    } else  {
+      this.showFilter = true;
+    }
+    this.formAction = _.get(this.activatedRoute.snapshot, 'data.formAction');
     this.filterType = _.get(this.activatedRoute.snapshot, 'data.filterType');
     this.pageLimit = this.configService.appConfig.ViewAll.PAGE_LIMIT;
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
@@ -145,6 +169,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
         this.pageNumber = Number(res.params.pageNumber);
       }),
       mergeMap((data) => {
+        this.getframeWorkData();
         this.manipulateQueryParam(data.queryParams);
         this.setTelemetryImpressionData();
         this.setInteractEventData();
@@ -207,23 +232,30 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   }
   private manipulateQueryParam(results) {
     this.filters = {};
-    if (!_.isEmpty(results)) {
-      _.forOwn(results, (queryValue, queryKey) => {
+    const queryFilters = _.omit(results, ['key', 'sort_by', 'sortType', 'defaultSortBy', 'exists', 'dynamic']);
+    if (!_.isEmpty(queryFilters)) {
+      _.forOwn(queryFilters, (queryValue, queryKey) => {
         this.filters[queryKey] = queryValue;
       });
-      this.filters = _.omit(results, ['key', 'sort_by', 'sortType', 'defaultSortBy', 'exists']);
+    }
+    if (results && results.dynamic) {
+      const fields = JSON.parse(results.dynamic);
+      _.forIn(fields, (value, key) => {
+        this.filters[key] = value;
+      });
     }
   }
 
   private getContentList(request) {
     const requestParams = {
-      filters: _.pickBy(this.filters, value => value.length > 0),
+      filters: this.filters,
       limit: this.pageLimit,
       pageNumber: Number(request.params.pageNumber),
       exists: request.queryParams.exists,
       sort_by: request.queryParams.sortType ?
         { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy),
-        softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints')
+        softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
+      params : this.configService.appConfig.ViewAll.contentApiQueryParams
     };
     if (_.get(this.activatedRoute.snapshot, 'data.baseUrl') === 'learn') {
       return combineLatest(
@@ -280,20 +312,64 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   }
 
   playContent(event) {
-    const url = this.router.url.split('/');
-    if (url[1] === 'learn' || url[1] === 'resources') {
-      if (event.data.metaData.batchId) {
-        event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
-        event.data.metaData.contentType = 'Course';
-      }
-      this.playerService.playContent(event.data.metaData);
+    if (!this.userService.loggedIn && event.data.contentType === 'Course') {
+      this.showLoginModal = true;
+      this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
     } else {
-      this.publicPlayerService.playContent(event);
+      const url = this.router.url.split('/');
+      if (url[1] === 'learn' || url[1] === 'resources') {
+        if (event.data.metaData.batchId) {
+          event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
+          event.data.metaData.contentType = 'Course';
+        }
+        this.playerService.playContent(event.data.metaData);
+      } else {
+        this.publicPlayerService.playContent(event);
+      }
     }
   }
 
+  getChannelId() {
+    this.orgDetailsService.getOrgDetails()
+      .subscribe(
+        (apiResponse: any) => {
+          this.hashTagId = apiResponse.hashTagId;
+          this.showFilter = true;
+        },
+        err => {
+
+        }
+      );
+  }
+  private getframeWorkData() {
+    if (_.get(this.activatedRoute.snapshot, 'data.frameworkName')) {
+      const framework = this._cacheService.get('framework' + 'search');
+      if (framework) {
+        this.frameWorkName = framework;
+      } else {
+        const formServiceInputParams = {
+          formType: 'framework',
+          formAction: 'search',
+          contentType: 'framework-code',
+        };
+        this.formService.getFormConfig(formServiceInputParams).subscribe(
+          (data: ServerResponse) => {
+            this.frameWorkName = _.find(data, 'framework').framework;
+            this._cacheService.set('framework' + 'search', this.frameWorkName ,
+              {maxAge: this.browserCacheTtlService.browserCacheTtl});
+          },
+          (err: ServerResponse) => {
+          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+          }
+        );
+      }
+    }
+  }
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+  closeModal() {
+    this.showLoginModal = false;
   }
 }

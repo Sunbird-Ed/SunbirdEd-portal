@@ -1,16 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   ResourceService, ILoaderMessage, PlayerConfig, ContentData,
   WindowScrollService, ToasterService, NavigationHelperService
 } from '@sunbird/shared';
 import { PlayerService, PermissionService, UserService } from '@sunbird/core';
+import * as _ from 'lodash';
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-upforreview-contentplayer',
   templateUrl: './upforreview-contentplayer.component.html',
   styleUrls: ['./upforreview-contentplayer.component.css']
 })
-export class UpforreviewContentplayerComponent implements OnInit {
+export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
+  public requestForChangesInteractEdata: IInteractEventEdata;
+  public publishInteractEdata: IInteractEventEdata;
+  public reviewCommentsWarningYesInteractEdata: IInteractEventEdata;
+  public reviewCommentsWarningNoInteractEdata: IInteractEventEdata;
+  public telemetryInteractObject: IInteractEventObject;
+
   /**
    * To navigate to other pages
    */
@@ -43,7 +51,12 @@ export class UpforreviewContentplayerComponent implements OnInit {
   * contain error message
   */
   errorMessage: string;
-  /**
+    /**
+    * This variable is used to increase/decrease the player width
+    * according to content mime type
+    */
+  showCommentBoxClass = 'twelve wide column';
+ /**
   * To call resource service which helps to use language constant
   */
  public resourceService: ResourceService;
@@ -77,6 +90,16 @@ export class UpforreviewContentplayerComponent implements OnInit {
   */
   private toasterService: ToasterService;
 
+  public stageId: string;
+
+  public commentList: any;
+
+  public playerLoaded = false;
+
+  @ViewChild('publishWarningModal') publishWarningModal;
+
+  showPublishWarningModal = false;
+
   /**
   * Constructor to create injected service(s) object
   Default method of Draft Component class
@@ -97,7 +120,16 @@ export class UpforreviewContentplayerComponent implements OnInit {
       'loaderMessage': this.resourceService.messages.stmsg.m0025,
     };
   }
-
+  goToPublish() {
+    this.router.navigate(['publish'], {relativeTo: this.activatedRoute});
+  }
+  checkComments() {
+    if (!_.isEmpty(this.commentList)) {
+      this.showPublishWarningModal = true;
+    } else {
+      this.goToPublish();
+    }
+  }
   ngOnInit() {
     this.userService.userData$.subscribe(userdata => {
       if (userdata && !userdata.err) {
@@ -109,6 +141,27 @@ export class UpforreviewContentplayerComponent implements OnInit {
       }
       this.closeUrl = this.navigationHelperService.getPreviousUrl();
     });
+  }
+  ngOnDestroy() {
+    if (this.publishWarningModal) {
+      this.publishWarningModal.deny();
+    }
+  }
+  public handleSceneChangeEvent(data) {
+    if (this.stageId !== data.stageId) {
+      this.stageId = data.stageId;
+    }
+    if (!this.playerLoaded) {
+      this.playerLoaded = true;
+    }
+  }
+  public contentProgressEvent(event) {
+    if (_.get(event, 'detail.telemetryData.eid') === 'END') {
+      this.stageId = undefined;
+    }
+  }
+  public handleReviewCommentEvent(event) {
+    this.commentList = event;
   }
   /**
    * used to fetch content details and player config. On success launches player.
@@ -127,6 +180,9 @@ export class UpforreviewContentplayerComponent implements OnInit {
           };
           this.playerConfig = this.playerService.getConfig(contentDetails);
           this.contentData = response.result.content;
+          this.setInteractEventData();
+          this.showCommentBoxClass = this.contentData.mimeType ===
+          'application/vnd.ekstep.ecml-archive' ? 'eight wide column' : 'twelve wide column';
           this.showLoader = false;
         } else {
           this.toasterService.warning(this.resourceService.messages.imsg.m0027);
@@ -151,6 +207,34 @@ export class UpforreviewContentplayerComponent implements OnInit {
   * @memberof ContentPlayerComponent
   */
   close() {
-   this.navigationHelperService.navigateToWorkSpace('/workspace/content/upForReview/1');
+    this.navigationHelperService.navigateToWorkSpace('/workspace/content/upForReview/1');
+  }
+
+  setInteractEventData() {
+    this.requestForChangesInteractEdata = {
+      id: 'request-for-changes',
+      type: 'click',
+      pageid: 'upForReview-content-player'
+    };
+    this.publishInteractEdata = {
+      id: 'publish',
+      type: 'click',
+      pageid: 'upForReview-content-player'
+    };
+    this.reviewCommentsWarningYesInteractEdata = {
+      id: 'review-comments-warning-yes',
+      type: 'click',
+      pageid: 'upForReview-content-player'
+    };
+    this.reviewCommentsWarningNoInteractEdata = {
+      id: 'review-comments-warning-no',
+      type: 'click',
+      pageid: 'upForReview-content-player'
+    };
+    this.telemetryInteractObject = {
+      id: this.contentId,
+      type: 'up-for-review',
+      ver: this.contentData.pkgVersion ? this.contentData.pkgVersion.toString() : '1.0'
+    };
   }
 }

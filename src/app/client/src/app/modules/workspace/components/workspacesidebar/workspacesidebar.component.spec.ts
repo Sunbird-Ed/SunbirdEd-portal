@@ -35,6 +35,7 @@ describe('WorkspacesidebarComponent', () => {
     component.coursebacthesRole = configService.rolesConfig.workSpaceRole.coursebacthesRole;
     component.createRole =  configService.rolesConfig.workSpaceRole.createRole;
     component.allContentRole = configService.rolesConfig.workSpaceRole.allContentRole;
+    component.collaboratingRole = configService.rolesConfig.workSpaceRole.collaboratingRole;
     component.ngOnInit();
     expect(component.draftRole).toBeDefined();
     expect(component.inreviewRole).toBeDefined();
@@ -45,6 +46,6 @@ describe('WorkspacesidebarComponent', () => {
     expect(component.coursebacthesRole).toBeDefined();
     expect(component.createRole).toBeDefined();
     expect(component.allContentRole).toBeDefined();
-    fixture.detectChanges();
+    expect(component.collaboratingRole).toBeDefined();
   });
 });

@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 @Component({
   selector: 'app-custom-multi-select',
   templateUrl: './custom-multi-select.component.html',
-  styleUrls: ['./custom-multi-select.component.css']
+  styleUrls: ['./custom-multi-select.component.scss']
 })
 export class CustomMultiSelectComponent implements OnInit {
   @Input() inputData: Array<string>;

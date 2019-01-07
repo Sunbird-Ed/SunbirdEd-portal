@@ -5,7 +5,7 @@
       <app-loader [data]="loaderMessage"></app-loader>
     </div>
 
-    <div class="row margin-top-10" *ngIf="!showLoader && contentData">
+    <div class="row mt-10" *ngIf="!showLoader && contentData">
 
       <div class="videosegment  ui clearing segment">
         <div class="ten wide column">
@@ -14,23 +14,33 @@
           </span>
         </div>
         <div class="two wide column">
-          <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="close()">
+          <h5 class="ui right floated basic icon circular button  mouse-pointer" (click)="close()">
             <i class="ui remove icon" (click)="close()"></i>
           </h5>
         </div>
       </div>
 
-      <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
+      <div class="ui grid">
+        <div [ngClass]="showCommentBoxClass" >
+          <app-player class="content-player" [playerConfig]="playerConfig" (contentProgressEvent)="contentProgressEvent($event)" (sceneChangeEvent)="handleSceneChangeEvent($event)"></app-player>
+        </div>
+        <div class="four wide column" *ngIf="contentData.mimeType === 'application/vnd.ekstep.ecml-archive' && stageId">
+          <app-review-comments [contentData]="contentData" [playerLoaded]="playerLoaded" [stageId]="stageId" (reviewCommentEvent)="handleReviewCommentEvent($event)"></app-review-comments>
+        </div>
+      </div>
     </div>
 
-    <div class="row margin-top-10" *ngIf="!showLoader">
-      <div class="margin-top--5 videosegment ui clearing segment">
+    <div class="row mt-10" *ngIf="!showLoader">
+      <div class="mt-20 videosegment ui clearing segment">
         <div *ngIf="permissionService.permissionAvailable && contentData && 
-          (contentData.status === 'Review' || contentData.status === 'FlagReview') && userId !== contentData.createdBy" appPermission [permission]="['CONTENT_REVIEWER', 'CONTENT_REVIEW','BOOK_REVIEWER','FLAG_REVIEWER']">
-          <button [routerLink]="['publish']" class="ui right floated primary button mouse-pointer">
+          (contentData.status === 'Review' || contentData.status === 'FlagReview') && userId !== contentData.createdBy"
+          appPermission [permission]="['CONTENT_REVIEWER', 'CONTENT_REVIEW','BOOK_REVIEWER','FLAG_REVIEWER']">
+          <button (click)="checkComments()" class="ui right floated primary button mouse-pointer"
+          appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="publishInteractEdata">
             {{resourceService?.frmelmnts?.btn?.publish}}
           </button>
-          <button [routerLink]="['requestchanges']" class="ui right floated primary button mouse-pointer">
+          <button [routerLink]="['requestchanges']" class="ui right floated primary button mouse-pointer"
+          appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="requestForChangesInteractEdata">
             {{resourceService?.frmelmnts?.btn?.requestChanges}}
           </button>
         </div>
@@ -63,4 +73,32 @@
     </div>
   </div>
 </div>
+<!-- publish warning modal -->
+<sui-modal [isClosable]="false" [size]="'small'" *ngIf="showPublishWarningModal" #publishWarningModal>
+  <div class="scrolling content">
+    <div class="ui centered grid">
+      <div class="row">
+        <div class="ui basic icon circular button cursor-pointer">
+          <i class="ui huge help outline icon"></i>
+        </div>
+      </div>
+      <div class="row">
+        <div class="ui small header">
+          <h4>{{resourceService?.frmelmnts?.lbl?.publhwarng}}</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="actions footer">
+    <div class="ui buttons">
+      <button class="ui orange button" type="button " (click)="showPublishWarningModal = false"
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="reviewCommentsWarningNoInteractEdata"
+      >{{resourceService?.frmelmnts?.btn?.no}}</button>
+      <div class="or"></div>
+      <button class="ui blue button " type="button " (click)="showPublishWarningModal = false; goToPublish();"
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="reviewCommentsWarningYesInteractEdata"
+      >{{resourceService?.frmelmnts?.btn?.yes}}</button>
+    </div>
+  </div>
+</sui-modal>
 <router-outlet></router-outlet>

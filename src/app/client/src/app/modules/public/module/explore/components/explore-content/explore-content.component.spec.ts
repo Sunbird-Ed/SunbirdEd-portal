@@ -92,7 +92,9 @@ describe('ExploreContentComponent', () => {
     };
     component.dataDrivenFilter = {};
     component.dataDrivenFilter['board'] = ['CBSE'];
+    const config = TestBed.get(ConfigService);
     const requestParams = Response.requestParam;
+    requestParams['params'] = config.appConfig.ExplorePage.contentApiQueryParams;
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgDetailsService);
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
@@ -126,58 +128,6 @@ describe('ExploreContentComponent', () => {
     component.queryParams = mockQueryParma;
     component.populateContentSearch();
     expect(component.showLoader).toBeFalsy();
-  });
-  it('should call filterData method', () => {
-    const facetArray = ['subject', 'medium', 'board'];
-    component.filterData(facetArray);
-    expect(component.facetArray).toEqual(facetArray);
-  });
-  it('should call processFilterData method', () => {
-    const obj = {
-      'gradeLevel': [
-        {
-          'name': 'grade 7',
-          'count': 8
-        },
-        {
-          'name': 'class 2',
-          'count': 85
-        }
-      ],
-      'subject': [
-        {
-          'name': 'chemistry',
-          'count': 2
-        },
-        {
-          'name': 'marathi',
-          'count': 9
-        }
-      ],
-      'medium': [
-        {
-          'name': 'nepali',
-          'count': 1
-        },
-        {
-          'name': 'odia',
-          'count': 12
-        }
-      ],
-      'board': [
-        {
-          'name': 'state (uttar pradesh)',
-          'count': 7
-        },
-        {
-          'name': 'state (tamil nadu)',
-          'count': 5
-        }
-      ]
-    };
-    component.facets = Response.facetData;
-    component.processFilterData();
-    expect(component.facets).toEqual(obj);
   });
   it('should call compareObjects method', () => {
     const objA = {
@@ -263,11 +213,14 @@ describe('ExploreContentComponent', () => {
     const searchService = TestBed.get(SearchService);
     const filters = Response.filters;
     const requestParams = Response.requestParam2;
+    const config = TestBed.get(ConfigService);
+    requestParams['params'] = config.appConfig.ExplorePage.contentApiQueryParams;
     component.dataDrivenFilter = {};
     component.hashTagId =   '0123166367624478721';
     spyOn(component, 'populateContentSearch').and.callThrough();
     spyOn(searchService, 'contentSearch').and.callThrough();
     component.getFilters(filters);
+    expect(component.facetArray).toEqual([ 'board', 'medium', 'subject', 'gradeLevel' ]);
     expect(component.dataDrivenFilter['board']).toBe('CBSE');
     expect(component.populateContentSearch).toHaveBeenCalled();
     expect(searchService.contentSearch).toHaveBeenCalledWith(requestParams);
@@ -275,7 +228,9 @@ describe('ExploreContentComponent', () => {
   it('should call getFilters with no data', () => {
     const searchService = TestBed.get(SearchService);
     const filters = [];
+    const config = TestBed.get(ConfigService);
     const requestParams = Response.requestParam3;
+    requestParams['params'] = config.appConfig.ExplorePage.contentApiQueryParams;
     component.dataDrivenFilter = {};
     component.hashTagId =   '0123166367624478721';
     spyOn(component, 'populateContentSearch').and.callThrough();

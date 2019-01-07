@@ -21,7 +21,7 @@
             "loadingImage": "",
             "plugins": [{
                     "id": "org.ekstep.sunbirdcommonheader",
-                    "ver": "1.6",
+                    "ver": "1.7",
                     "type": "plugin"
                 },
                 {
@@ -272,7 +272,7 @@
             "aws_s3_urls": [],
             "plugins": [{
                 "id": "org.ekstep.sunbirdcommonheader",
-                "ver": "1.6",
+                "ver": "1.7",
                 "type": "plugin"
             },
             {
@@ -292,10 +292,14 @@
             },
             {
                 "id": "org.ekstep.video",
-                "ver": "1.1",
+                "ver": "1.2",
                 "type": "plugin"
-            }
-            ],
+            },	
+            {	
+                "id": "org.ekstep.reviewercomments",	
+                "ver": "1.0",	
+                "type": "plugin"	
+            }],
             "dispatcher": "local",
             "localDispatcherEndpoint": "/content-editor/telemetry",
             "showHelp": false,
@@ -331,7 +335,7 @@
             "loadingImage": "",
             "plugins": [{
                     "id": "org.ekstep.sunbirdcommonheader",
-                    "ver": "1.6",
+                    "ver": "1.7",
                     "type": "plugin"
                     }, {
                     "id": "org.ekstep.sunbirdmetadata",

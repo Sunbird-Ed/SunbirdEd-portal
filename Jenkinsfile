@@ -46,6 +46,7 @@ node('build-slave') {
             // Building image
         sh("./build.sh ${build_tag} ${env.NODE_NAME} ${hub_org}")
        }
+
         stage('ArchiveArtifacts'){
            archiveArtifacts "metadata.json"
         }

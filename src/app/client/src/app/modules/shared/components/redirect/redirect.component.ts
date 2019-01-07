@@ -43,11 +43,13 @@ export class RedirectComponent implements OnInit {
       }
     };
     this.toasterService.warning(this.resourceService.messages.imsg.m0034);
+    this.openWindow();
+  }
+  openWindow() {
     setTimeout(() => {
       window.open(window.redirectUrl, '_self');
     }, 1500);
   }
-
   /**
    * Close the window on click of goBack button
    */

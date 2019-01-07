@@ -1,14 +1,13 @@
 version: 2.1
 jobs:
   build:
-    parallelism: 1
     machine:
       image: circleci/classic:latest
     steps:
       - checkout
       - run:
           name: run build file
-          command: /bin/bash -x build.sh ${CIRCLE_SHA1} test
+          command: ./build.sh
   test-cases:
     docker:
       - image: g33tha/node-8.11
@@ -16,22 +15,6 @@ jobs:
       - checkout
       - run: sh test.sh
           
-      - run:
-          name: Add comment on PR
-          command: |
-            CIRCLE_PR_NUMBER=$(echo $CI_PULL_REQUEST |rev| cut -d '/' -f 1 | rev)
-            prdata=$(curl -X GET -u $GITHUB_USER_TOKEN:x-oauth-basic https://api.github.com/repos/G33tha/sunbird-portal/pulls/$CIRCLE_PR_NUMBER)
-            branchname=$(echo "${prdata}" | jq '.base.ref')
-            branch=${branchname//\"/}
-            username=$(echo "${prdata}" | jq '.user.login')
-            contributor=${username//\"/}
-         
-            curl \
-             -X POST \
-             -u $GITHUB_USER_TOKEN:x-oauth-basic \
-             -d '{"body": "Hello @'"$contributor"'<br/><br/> This is a auto-generated response. <br/><br/>"}' \
-             https://api.github.com/repos/G33tha/sunbird-portal/issues/$CIRCLE_PR_NUMBER/comments
- 
           
 workflows:
   version: 2
@@ -39,8 +22,4 @@ workflows:
     jobs:
       - build
       #- test-cases
-   
-            
-      
-
 

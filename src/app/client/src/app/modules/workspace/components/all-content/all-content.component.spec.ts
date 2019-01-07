@@ -25,7 +25,7 @@ describe('AllContentComponent', () => {
       'stmsg': {
         'm0110': 'We are fetching all contnet',
         'm0008': 'no-results',
-        'm0033': 'Looks like there is nothing to show here. Please go to “Create” to start creating content'
+        'm0125': 'No content to display. Start Creating Now'
       },
       'smsg': {
         'm0006': 'Content deleted successfully...'
@@ -160,11 +160,4 @@ describe('AllContentComponent', () => {
         }
       );
     }));
-  it('should set lastUpdated Date by calling the filter', inject([SearchService], (searchService) => {
-    spyOn(searchService , 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountTwo));
-    fixture.detectChanges();
-    component.fecthAllContent(9, 1, bothParams);
-    const  fromnow = new DateFilterXtimeAgoPipe();
-    expect(fromnow.transform(Response.searchSuccessWithCountTwo.result.content[0].lastSubmittedOn, null)).toEqual('6 months ago');
-  }));
 });

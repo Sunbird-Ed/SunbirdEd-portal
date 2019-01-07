@@ -3,6 +3,12 @@ export interface ICard {
     image?: string;
     imageVisibility?: boolean;
     description?: string;
+    subject?: string;
+    medium?: string;
+    creator?: string;
+    orgDetails?: { orgName: string, email: string};
+    gradeLevel?: any;
+    resourceType?: string;
     maxCount?: number;
     progress?: number;
     ribbon?: {

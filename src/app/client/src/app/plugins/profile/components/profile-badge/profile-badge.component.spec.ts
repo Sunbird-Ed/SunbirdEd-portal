@@ -35,7 +35,7 @@ describe('ProfileBadgeComponent', () => {
     component.ngOnInit();
     expect(component.badgeArray[0]).toEqual(mockRes.badgeList);
   });
-  it('should call toggle method with limit greater than 3', () => {
+  it('should call toggle method with limit greater than 4', () => {
     const badgeService = TestBed.get(BadgesService);
     const limit = true;
     component.badgeArray = [];
@@ -43,12 +43,12 @@ describe('ProfileBadgeComponent', () => {
     component.limit = component.badgeArray.length;
     component.toggle(limit);
     expect(component.viewMore).toBe(false);
-    expect(component.limit).toBeGreaterThan(3);
+    expect(component.limit).toBeGreaterThan(4);
   });
-  it('should call toggle method with limit lesser than 3', () => {
+  it('should call toggle method with limit lesser than 4', () => {
     const limit = false;
     component.toggle(limit);
     expect(component.viewMore).toBe(true);
-    expect(component.limit).toBeLessThanOrEqual(3);
+    expect(component.limit).toBeLessThanOrEqual(4);
   });
 });

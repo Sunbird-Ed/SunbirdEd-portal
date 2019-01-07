@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { SearchParam } from './../../interfaces/search';
 import { LearnerService } from './../learner/learner.service';
 import { PublicDataService } from './../public-data/public-data.service';
+import * as _ from 'lodash';
 /**
  * Service to search content
  */
@@ -63,9 +64,10 @@ export class SearchService {
    *
    * @param {SearchParam} requestParam api request data
    */
-  searchContentByUserId(requestParam: SearchParam): Observable<ServerResponse> {
+  searchContentByUserId(requestParam: SearchParam, options: any = { params: {} }): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.COMPOSITE.SEARCH,
+      param: options.params,
       data: {
         request: {
           filters: {
@@ -155,13 +157,15 @@ export class SearchService {
   compositeSearch(requestParam: SearchParam): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.COMPOSITE.SEARCH,
+      param: { ...requestParam.params },
       data: {
         request: {
           filters: requestParam.filters,
           offset: requestParam.offset,
           limit: requestParam.limit,
           query: requestParam.query,
-          sort_by: requestParam.sort_by
+          sort_by: requestParam.sort_by,
+          facets: requestParam.facets
         }
       }
     };
@@ -184,7 +188,7 @@ export class SearchService {
         }
       }
     };
-    return this.content.post(option);
+    return this.learnerService.post(option);
   }
   /**
    * User Search.
@@ -211,13 +215,15 @@ export class SearchService {
   courseSearch(requestParam: SearchParam): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.COURSE.SEARCH,
+      param: { ...requestParam.params },
       data: {
         request: {
           filters: requestParam.filters,
           offset: (requestParam.pageNumber - 1) * requestParam.limit,
           limit: requestParam.limit,
           query: requestParam.query,
-          sort_by: requestParam.sort_by
+          sort_by: requestParam.sort_by,
+          facets: requestParam.facets
         }
       }
     };
@@ -232,6 +238,7 @@ export class SearchService {
     Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.CONTENT.SEARCH,
+      param: { ...requestParam.params },
       data: {
         request: {
           filters: requestParam.filters,
@@ -292,6 +299,18 @@ export class SearchService {
       }
     };
     return this.learnerService.post(option);
+  }
+
+  processFilterData(facets) {
+    const facetObj = {};
+    _.forEach(facets, (value) => {
+        if (value) {
+            let data = {};
+            data = value.values;
+            facetObj[value.name] = data;
+        }
+    });
+    return facetObj;
   }
 }
 

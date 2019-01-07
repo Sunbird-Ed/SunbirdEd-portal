@@ -1,0 +1,241 @@
+/* Margin in all direction */
+.m-0 {
+  @include margin(0);
+}
+.m-5 {
+  @include margin(5px);
+}
+.m-10 {
+  @include margin(10px);
+}
+.m-15 {
+  @include margin(15px);
+}
+.m-20 {
+  @include margin(20px);
+}
+
+/* Margin in top direction */
+.mt-auto {
+  @include margin(auto null null null);
+}
+.mt-0 {
+  @include margin(0 null null null);
+}
+.mt-3 {
+  @include margin(3px null null null);
+}
+.mt-5 {
+  @include margin(5px null null null);
+}
+.mt-10 {
+  @include margin(10px null null null);
+}
+.mt-12 {
+  @include margin(12px null null null);
+}
+.mt-14 {
+  @include margin(14px null null null);
+}
+.mt-15 {
+  @include margin(15px null null null);
+}
+.mt-20 {
+  @include margin(20px null null null);
+}
+.mt-30 {
+  @include margin(30px null null null);
+}
+.mt-40 {
+  @include margin(40px null null null);
+}
+.mt-60 {
+  @include margin(60px null null null);
+}
+.mt-90 {
+  @include margin(90px null null null);
+}
+.mt-190 {
+  @include margin(190px null null null);
+}
+
+/* Margin in bottom direction */
+.mb-auto {
+  @include margin(null null auto null);
+}
+.mb-0 {
+  @include margin(null null 0 null);
+}
+.mb-5 {
+  @include margin(null null 5px null);
+}
+.mb-10 {
+  @include margin(null null 10px null);
+}
+.mb-15 {
+  @include margin(null null 15px null);
+}
+.mb-20 {
+  @include margin(null null 20px null);
+}
+.mb-30 {
+  @include margin(null null 30px null);
+}
+.mb-50 {
+  @include margin(null null 50px null);
+}
+
+/* Margin in horizontal direction */
+.mx-auto {
+  @include margin(null auto);
+}
+.mx-0 {
+  @include margin(null 0);
+}
+.mx-5 {
+  @include margin(null 5px);
+}
+.mx-10 {
+  @include margin(null 10px);
+}
+.mx-15 {
+  @include margin(null 15px);
+}
+.mx-20 {
+  @include margin(null 20px);
+}
+
+/* Margin in vertical direction */
+.my-auto {
+  @include margin(auto null);
+}
+.my-0 {
+  @include margin(0 null);
+}
+.my-5 {
+  @include margin(5px null);
+}
+.my-10 {
+  @include margin(10px null);
+}
+.my-15 {
+  @include margin(15px null);
+}
+.my-20 {
+  @include margin(20px null);
+}
+
+/* Margin in left direction if ltr but will be right in rtl */
+*[dir="ltr"]{
+  .ml-auto {
+    @include margin(null null null auto);
+  }
+  .ml-0 {
+    @include margin(null null null 0);
+  }
+  .ml-5 {
+    @include margin(null null null 5px);
+  }
+  .ml-10 {
+    @include margin(null null null 10px);
+  }
+  .ml-15 {
+    @include margin(null null null 15px);
+  }
+  .ml-20 {
+    @include margin(null null null 20px);
+  }
+}
+*[dir="rtl"]{
+  .ml-auto {
+    @include margin(null auto null null);
+  }
+  .ml-0 {
+    @include margin(null 0 null null);
+  }
+  .ml-5 {
+    @include margin(null 5px null null);
+  }
+  .ml-10 {
+    @include margin(null 10px null null);
+  }
+  .ml-15 {
+    @include margin(null 15px null null);
+  }
+  .ml-20 {
+    @include margin(null 20px null null);
+  }
+}
+
+/* Margin in right direction if ltr but will be left in rtl */
+*[dir="ltr"]{
+  .mr-auto {
+    @include margin(null auto null null);
+  }
+  .mr-0 {
+    @include margin(null 0 null null);
+  }
+  .mr-5 {
+    @include margin(null 5px null null);
+  }
+  .mr-10 {
+    @include margin(null 10px null null);
+  }
+  .mr-12 {
+    @include margin(null 12px null null);
+  }
+  .mr-15 {
+    @include margin(null 15px null null);
+  }
+  .mr-20 {
+    @include margin(null 20px null null);
+  }
+  .mr-30 {
+    @include margin(null 30px null null);
+  }
+  .mr-40 {
+    @include margin(null 40px null null);
+  }
+  .mr-100 {
+    @include margin(null 100px null null);
+  }
+}
+*[dir="rtl"]{
+  .mr-auto {
+    @include margin(null null null auto);
+  }
+  .mr-0 {
+    @include margin(null null null 0);
+  }
+  .mr-5 {
+    @include margin(null null null 5px);
+  }
+  .mr-10 {
+    @include margin(null null null 10px);
+  }
+  .mr-12 {
+    @include margin(null null null 12px);
+  }
+  .mr-15 {
+    @include margin(null null null 15px);
+  }
+  .mr-20 {
+    @include margin(null null null 20px);
+  }
+  .mr-30 {
+    @include margin(null null null 30px);
+  }
+  .mr-40 {
+    @include margin(null null null 40px);
+  }
+  .mr-100 {
+    @include margin(null null null 100px);
+  }
+}
+
+/* Negative margins */
+@media screen and (min-width:768px){
+  .mx--20{
+    margin: 0 -20px;
+  }
+}

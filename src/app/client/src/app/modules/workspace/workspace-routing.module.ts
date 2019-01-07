@@ -6,7 +6,7 @@ import {
   GenericEditorComponent, UploadedComponent, DataDrivenComponent, FlaggedComponent, UpForReviewComponent,
   BatchListComponent, UpdateBatchComponent, UpforreviewContentplayerComponent, ReviewsubmissionsContentplayerComponent,
   FlagConentplayerComponent, PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
-  AllContentComponent, FlagReviewerComponent} from './components';
+  AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent} from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const telemetryEnv = 'workspace';
 const objectType = 'workspace';
@@ -212,6 +212,17 @@ const routes: Routes = [
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
         }
       },
+      // {
+      //   path: 'collaborating-on/:pageNumber', component: CollaboratingOnComponent, canActivate: [AuthGuard],
+      //   data: {
+      //     telemetry: {
+      //       env: telemetryEnv, pageid: 'workspace-content-collaborating-on',
+      // subtype:'paginate', uri: 'workspace/content/collaborating-on',
+      //       type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
+      //     }, roles: 'collaboratingRole',
+      //     breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+      //   }
+      // },
       // { path: '**', redirectTo: 'create' }
     ]
   },

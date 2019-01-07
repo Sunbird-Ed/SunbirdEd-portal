@@ -7,7 +7,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import {
   WindowScrollService, ILoaderMessage, PlayerConfig, ICollectionTreeOptions, NavigationHelperService,
-  ToasterService, ResourceService, ContentData, ContentUtilsServiceService, ITelemetryShare
+  ToasterService, ResourceService, ContentData, ContentUtilsServiceService, ITelemetryShare, ConfigService
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
@@ -48,6 +48,11 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
 
   private router: Router;
 
+  /**
+   * Reference of config service
+   */
+  public config: ConfigService;
+
   public loader: Boolean = true;
 
   public triggerContentImpression = false;
@@ -85,21 +90,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
 
   public collectionData: any;
 
-  public collectionTreeOptions: ICollectionTreeOptions = {
-    fileIcon: 'fa fa-file-o fa-lg',
-    customFileIcon: {
-      'video': 'fa fa-file-video-o fa-lg',
-      'pdf': 'fa fa-file-pdf-o fa-lg',
-      'youtube': 'fa fa-youtube fa-lg fancy_tree_red',
-      'H5P': 'fa fa-html5 fa-lg',
-      'audio': 'fa fa-file-audio-o fa-lg',
-      'ECML': 'fa fa-file-code-o fa-lg',
-      'HTML': 'fa fa-html5 fa-lg',
-      'collection': 'fa fa-file-archive-o fa-lg',
-      'epub': 'fa fa-file-text fa-lg',
-      'doc': 'fa fa-file-text fa-lg'
-    }
-  };
+  collectionTreeOptions: ICollectionTreeOptions;
   /**
    * contains link that can be shared
    */
@@ -113,12 +104,14 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     private toasterService: ToasterService, private resourceService: ResourceService,
     public permissionService: PermissionService, public copyContentService: CopyContentService,
-    public contentUtilsServiceService: ContentUtilsServiceService) {
+    public contentUtilsServiceService: ContentUtilsServiceService, config: ConfigService, private configService: ConfigService) {
     this.route = route;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
     this.router = router;
+    this.config = config;
     this.router.onSameUrlNavigation = 'ignore';
+    this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
   }
   ngOnInit() {
     this.getContent();
@@ -288,9 +281,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   }
 
   private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
-    const option: any = {};
+    const option: any = { params: {} };
+    option.params = this.config.appConfig.PublicPlayer.contentApiQueryParams;
     if (this.collectionStatus && this.collectionStatus === 'Unlisted') {
-      option.params = { mode: 'edit' };
+      option.params['mode'] = 'edit';
     }
     return this.playerService.getCollectionHierarchy(collectionId, option).pipe(
       map((response) => {

@@ -33,7 +33,7 @@
                 </div>
             </h5>
             <h5 class="ui small header" *ngIf="!showDefaultConfig">{{resourceService.frmelmnts.btn.checkListComment}}</h5>
-            <div class="ui form margin-top-10" *ngIf="!showDefaultConfig">
+            <div class="ui form mt-10" *ngIf="!showDefaultConfig">
                 <div class="field">
                     <textarea rows="3" [(ngModel)]="comment" (keyup)="validateModal()"></textarea>
                 </div>
@@ -41,7 +41,7 @@
         </div>
         <div *ngIf="showDefaultConfig">
             <h5 *ngIf="showDefaultConfig && !rejectCheckListData" class="ui small header ">  {{checkListData.reject.comments}}</h5>
-            <div class="ui form margin-top-10">
+            <div class="ui form mt-10">
                 <div class="field">
                     <textarea rows="3" [(ngModel)]="comment" (keyup)="validateModal()"></textarea>
                 </div>
