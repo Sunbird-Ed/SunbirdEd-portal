@@ -11,7 +11,6 @@ import {
   ExternalUrlPreviewService
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import * as moment from 'moment';
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
