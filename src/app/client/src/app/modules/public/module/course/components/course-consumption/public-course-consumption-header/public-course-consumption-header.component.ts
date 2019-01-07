@@ -36,10 +36,10 @@ export class PublicCourseConsumptionHeaderComponent implements OnInit, OnDestroy
   }
 
   ngOnInit() {
-    // get course id from params, used to share
   }
+
   onShareLink() {
-    this.shareLink = this.contentUtilsServiceService.getCoursePublicShareUrl(this.courseId);
+    this.shareLink = this.contentUtilsServiceService.getCoursePublicShareUrl(this.courseHierarchy.identifier);
     this.setTelemetryShareData(this.courseHierarchy);
   }
   setTelemetryShareData(param) {

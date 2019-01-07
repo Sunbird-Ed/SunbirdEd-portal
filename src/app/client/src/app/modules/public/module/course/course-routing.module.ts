@@ -31,13 +31,13 @@ const routes: Routes = [
     },
     {
       path: 'course', component: PublicCourseConsumptionPageComponent,
-      data: { telemetry: { env: '' } },
+      data: { telemetry: { env: 'explore', pageid: 'explore-course-toc', type: 'view'} },
       children: [
         {
           path: ':courseId', component: PublicCoursePlayerComponent,
           data: {
             telemetry: {
-              env: '', pageid: 'course-player', type: 'view', object: { ver: '1.0', type: 'batch' }
+              env: '', pageid: 'explore-course-player', type: 'view', object: { ver: '1.0', type: 'batch' }
             },
             breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
           },

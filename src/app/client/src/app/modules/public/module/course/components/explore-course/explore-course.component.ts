@@ -173,7 +173,6 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
         };
     }
     public playContent(event) {
-
         // if user is logged in take user to toc restricted login page
         // if anonymous redirect to explore-course
     }

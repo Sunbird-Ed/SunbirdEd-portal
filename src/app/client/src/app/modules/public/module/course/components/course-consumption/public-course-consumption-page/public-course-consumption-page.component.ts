@@ -24,9 +24,13 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.showLoader = false;
-    const routeParams: any = { ...this.activatedRoute.snapshot.params, ...this.activatedRoute.snapshot.firstChild.params };
+    const routeParams: any = this.activatedRoute.snapshot.firstChild.params;
     this.courseId = routeParams.courseId;
-    // get course herierachy here and send it to course-consumption-header and other child components
+    if (this.courseId) {
+      // get course herierachy here and send it to course-consumption-header and other child components
+    } else {
+      this.router.navigate(['/explore-course']);
+    }
   }
 
   private checkCourseStatus(courseHierarchy) {
