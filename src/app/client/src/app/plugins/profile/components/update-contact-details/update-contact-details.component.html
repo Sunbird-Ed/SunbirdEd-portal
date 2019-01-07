@@ -1,0 +1,31 @@
+<sui-modal [isClosable]="true" (dismissed)="closeModal(contactTypeModal);" #contactTypeModal>
+
+  <div class="scrollable content">
+    <div class="ui grid">
+      <div class="ten wide column mb-30">
+        <span *ngIf="contactType==='email'" class="ui header">{{resourceService.frmelmnts.lbl.updateEmailId}}</span>
+        <span *ngIf="contactType==='phone'" class="ui header">{{resourceService.frmelmnts.lbl.updatePhoneNo}}</span>
+      </div>
+    </div>
+  </div>
+
+  <form class="ui form borderd mb-20" [formGroup]="contactTypeForm">
+    <div class="field" *ngIf="contactType==='email'">
+      <label>{{resourceService.frmelmnts.prmpt.enteremailID}}</label>
+      <div class="field">
+        <input formControlName="email" type="text" name="email">
+      </div>
+    </div>
+
+    <div class="field" *ngIf="contactType==='phone'">
+      <label>{{resourceService.frmelmnts.prmpt.enterphoneno}}</label>
+      <div class="field">
+        <input formControlName="phone" type="number" name="phone">
+      </div>
+    </div>
+  </form>
+
+  <div class="actions text-ac">
+    <button (click)="onSubmitForm()" class="ui primary button">{{resourceService.frmelmnts.btn.submitbtn}}</button>
+  </div>
+</sui-modal>
