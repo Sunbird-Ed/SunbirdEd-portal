@@ -341,4 +341,14 @@ export class UserService {
       this.http.get(url).subscribe();
     });
   }
+
+  /**
+   * method to check uniqueness of filed, eg- phone, email
+   */
+  getUserByKey(data) {
+    const options = {
+      url: this.config.urlConFig.URLS.USER.GET_USER_BY_KEY + '/' + data,
+    };
+    return this.learnerService.get(options);
+  }
 }
