@@ -11,11 +11,11 @@ import {
   ExternalUrlPreviewService
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-
+import * as moment from 'moment';
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
-  styleUrls: ['./course-consumption-header.component.css']
+  styleUrls: ['./course-consumption-header.component.scss']
 })
 export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -89,6 +89,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       .subscribe((courseProgressData) => {
         this.enrolledCourse = true;
         this.progress = courseProgressData.progress ? Math.round(courseProgressData.progress) : 0;
+        // this.progress = 50 ;
+        // console.log(this.progress);
         this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
         if (!this.flaggedCourse && this.onPageLoadResume &&
           !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
@@ -152,5 +154,10 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+  checkExpiredBatch() {
+    if (this.enrolledBatchInfo.status === 2 && this.progress < 100) {
+      return true;
+    }
   }
 }

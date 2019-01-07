@@ -120,4 +120,11 @@ describe('CourseConsumptionHeaderComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
+  it('should call  checkExpiredBatch and return true if batch status is  "2" and course is not completed', () => {
+    component.enrolledBatchInfo = {status: 2};
+    component.progress = 50;
+    spyOn(component, 'checkExpiredBatch').and.returnValue(true);
+    component.checkExpiredBatch();
+    expect(component.checkExpiredBatch).toHaveBeenCalled();
+  });
 });
