@@ -33,7 +33,7 @@ export class UpdateContactDetailsComponent implements OnInit {
     this.close.emit();
   }
 
-  enableSignUpSubmitButton() {
+  enableSubmitButton() {
     // subscribe value changes and enable/disable submit button
   }
 
