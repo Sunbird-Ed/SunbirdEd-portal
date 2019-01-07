@@ -1,0 +1,76 @@
+<div class="ui container" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
+<div class="ui stackable grid mt-20">
+    <div class="twelve wide column">
+        <div *ngIf="!loader">
+            <div class="content" [appTelemetryImpression]="telemetryCourseImpression">
+                <div class="ui stackable grid">
+                    <div class="row">
+                        <div class='nine wide column'>
+                            <div class="ui header">
+                                <span class="content courseStructureHeading">
+                                    {{resourceService.frmelmnts.lbl.aboutthecourse}}
+                                </span>
+                                <div *ngIf="courseHierarchy.description" class="mt-10">
+                                    <p *ngIf="!readMore" class="courseStructureDesc"> {{ courseHierarchy.description | slice:0:200 }}&nbsp;
+                                        <span class="ui cardsKnowMore mouse-pointer" *ngIf="courseHierarchy.description && courseHierarchy.description.length > 200 && readMore === false"
+                                            (click)="readMore = !readMore;">{{resourceService.frmelmnts.lbl.readmore}}</span>
+                                    </p>
+                                    <p *ngIf="readMore" class="courseStructureDesc"> {{ courseHierarchy.description}}&nbsp;
+                                        <span class="ui cardsKnowMore mouse-pointer" (click)="readMore = false;">{{resourceService.frmelmnts.lbl.readless}}</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="ui header">
+                                <b class="content courseStructureHeading">
+                                    {{resourceService.frmelmnts.lbl.coursestructure}}
+                                </b>
+                            </div>
+                            <app-collection-tree *ngIf="collectionTreeNodes.data && collectionTreeNodes.data.children && collectionTreeNodes.data.children.length >0 ; else dataCommingSoon" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"
+                                    [contentStatus]="contentStatus"></app-collection-tree>
+                            <ng-template #dataCommingSoon>
+                                <div class="placeholder mt-40">
+                                    <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl }}"/>
+                                    <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0121}}</h5>
+                                    <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>
+                                </div> 
+                            </ng-template>
+                            <div class="ui fitted divider mb-20 mt-30"></div>
+                        </div>
+                        <div class='three wide column'>
+                            <app-batch-details *ngIf="courseStatus !== 'Unlisted'" [courseId]="courseId"
+                                [courseHierarchy]="courseHierarchy"></app-batch-details>
+                            <br>
+                            <app-curriculum-card *ngIf="curriculum && curriculum.length > 0" [curriculum]="curriculum"></app-curriculum-card>
+                            <br>
+                            <div class="courseupdate">
+                                <p class="mb-5" *ngIf="courseHierarchy.creator">{{resourceService.frmelmnts.lbl.courseCreatedBy}}: {{courseHierarchy.creator}}</p>
+                                <p class="mb-5" *ngIf="courseHierarchy.orgDetails?.orgName">{{courseHierarchy.orgDetails.orgName}}</p>
+                                <p class="mb-5"*ngIf="courseHierarchy.orgDetails?.email">
+                                    <a href="mailto:{{courseHierarchy.orgDetails?.email}}?subject={{courseHierarchy.name}}">{{courseHierarchy.orgDetails?.email}}</a>
+                                </p>
+                                <div class="ui divider"></div>
+                                <p class="mb-5">{{resourceService.frmelmnts.lbl.coursecreatedon}}: {{courseHierarchy.createdOn | dateFormat}}</p>
+                                <p class="mb-5">{{resourceService.frmelmnts.lbl.updatedon}}: {{courseHierarchy.lastUpdatedOn | dateFormat}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="loader">
+            <app-loader [data]="loaderMessage"></app-loader>
+        </div>
+        <div *ngIf="showError">
+        </div>
+    </div>
+</div>
+</div>
+<router-outlet></router-outlet>
+<sui-modal [isClosable]="true" size="tiny" (dismissed)="closeModal()" #modal *ngIf="showLoginModal">
+    <div class="content">
+        <div class="ui center aligned segment">
+            <div class="ui header">{{resourceService.frmelmnts?.lbl?.signinenrollTitle}} </div>
+            <a href={{baseUrl}} class="ui button primary announcement-button close mt-20">{{resourceService.frmelmnts?.btn?.signin}}</a>
+        </div>
+    </div>
+</sui-modal>

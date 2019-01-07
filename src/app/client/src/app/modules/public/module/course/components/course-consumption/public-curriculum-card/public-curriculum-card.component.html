@@ -1,0 +1,53 @@
+<div class="rightSideSectionCards ui card">
+    <div class="content">
+        <div class="header">{{resourceService?.frmelmnts?.lbl?.curriculum}}</div>
+        <div class="description">
+            <div class="ui list">
+                <div class="item" *ngFor="let data of curriculum">
+                    <div *ngIf="data.mimeType=='application/pdf'">
+                        <div class="content curriculum-content">
+                            <i class="file pdf outline icon"></i>
+                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.pdfcontents}}</span>
+                        </div>
+                    </div>
+                    <div *ngIf="data.mimeType.indexOf('video')!=-1">
+                        <div class="content curriculum-content">
+                            <i class="file video outline icon"></i>
+                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.videos}}</span>
+                        </div>
+                    </div>
+                    <div *ngIf="data.mimeType.indexOf('image')!=-1">
+                        <div class="content curriculum-content">
+                            <i class="file image outline icon"></i>
+                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.imagecontents}}</span>
+                        </div>
+                    </div>
+                    <div *ngIf="data.mimeType=='application/vnd.ekstep.html-archive'">
+                        <div class="content curriculum-content">
+                            <i class="html5 icon"></i>
+                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.htmlarchives}}</span>
+                        </div>
+                    </div>
+                    <div *ngIf="data.mimeType=='application/vnd.ekstep.ecml-archive'">
+                        <div class="content curriculum-content">
+                            <i class="file archive outline icon"></i>
+                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.ecmlarchives}}</span>
+                        </div>
+                    </div>
+                    <div *ngIf="data.mimeType=='application/epub'">
+                        <div class="content curriculum-content">
+                            <i class="file archive outline icon"></i>
+                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.epubarchives}}</span>
+                        </div>
+                    </div>
+                    <div *ngIf="data.mimeType=='application/vnd.ekstep.h5p-archive'">
+                        <div class="content curriculum-content">
+                            <i class="file archive outline icon"></i>
+                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.h5parchives}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
