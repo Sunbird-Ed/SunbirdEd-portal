@@ -41,9 +41,6 @@ node('build-slave') {
        }
       
        stage('Build'){
-            sh("printenv")
-            echo "Git Hash: "+commit_hash
-            // Building image
         sh("./build.sh ${build_tag} ${env.NODE_NAME} ${hub_org}")
        }
         stage('ArchiveArtifacts'){
