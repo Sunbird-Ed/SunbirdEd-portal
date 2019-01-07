@@ -1,13 +1,10 @@
-import { Component, OnInit, Input, ChangeDetectorRef, EventEmitter, Output, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnDestroy, ViewChild } from '@angular/core';
 import { FrameworkService, FormService, UserService, ChannelService, OrgDetailsService } from '@sunbird/core';
-import { takeUntil, first, mergeMap, map, tap , filter} from 'rxjs/operators';
-import { combineLatest, Subscription, Subject, of, throwError } from 'rxjs';
-import {
-  ConfigService, ResourceService, Framework, ToasterService, ServerResponse
-} from '@sunbird/shared';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { first, mergeMap, map , filter} from 'rxjs/operators';
+import { Subject, of, throwError } from 'rxjs';
+import { ResourceService, ToasterService } from '@sunbird/shared';
+import { Router } from '@angular/router';
 import * as _ from 'lodash';
-import { ThrowStmt } from '@angular/compiler';
 import { CacheService } from 'ng2-cache-service';
 
 @Component({
@@ -18,15 +15,14 @@ import { CacheService } from 'ng2-cache-service';
 export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
   @Input() showCloseIcon: boolean;
-  @Input() isEdit: boolean;
   @Input() buttonLabel: string;
   @Input() formInput: any = {};
   @Output() submit = new EventEmitter<any>();
   @Output() close = new EventEmitter<any>();
   public allowedFields = ['board', 'medium', 'gradeLevel', 'subject'];
-  public formFieldProperties: any;
-  public filterOptions = [];
-  public channelData: any;
+  public _formFieldProperties: any;
+  public formFieldOptions = [];
+  public custOrgFrameworks: any;
   public categoryMasterList: any = {};
   public selectedOption: any = {};
   public showButton = false;
@@ -36,7 +32,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   public initDropDown = false;
   public custodianOrgBoard: any = {};
   constructor(public router: Router, public userService: UserService, public frameworkService: FrameworkService,
-    public formService: FormService, public resourceService: ResourceService, private cdr: ChangeDetectorRef,
+    public formService: FormService, public resourceService: ResourceService,
     public toasterService: ToasterService, public channelService: ChannelService, public orgDetailsService: OrgDetailsService,
     private cacheService: CacheService, ) { }
 
@@ -46,29 +42,28 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       mergeMap((custodianOrgUser: boolean) => {
         this.custodianOrg = custodianOrgUser;
         if (custodianOrgUser) {
-          return this.getFiltersForCustodianOrg();
+          return this.getFieldOptionsForCustodianOrg();
         } else {
-          return []; // this.setFrameWorkDetails();
+          return this.getFieldOptionsForOnboardedUser();
         }
       }), first()).subscribe(data => {
-        this.filterOptions = data;
+        this.formFieldOptions = data;
         this.initDropDown = true;
       }, err => {
         this.navigateToLibrary();
       });
   }
-  private getFiltersForCustodianOrg() {
+  private getFieldOptionsForCustodianOrg() {
     return this.getCustodianOrgData().pipe(mergeMap((data) => {
       this.custodianOrgBoard = data;
       const board = _.cloneDeep(this.custodianOrgBoard);
       if (_.get(this.selectedOption, 'board[0]')) {
         this.selectedOption.board = _.get(this.selectedOption, 'board[0]');
-        this.enableSubmitButton();
-        this.frameWorkId = _.get(_.find(this.channelData, { 'name': event }), 'identifier');
+        this.frameWorkId = _.get(_.find(this.custOrgFrameworks, { 'name': event }), 'identifier');
         return this.getFormatedFilterDetails().pipe(map((formFieldProperties) => {
-          this.formFieldProperties = formFieldProperties;
+          this._formFieldProperties = formFieldProperties;
           this.mergeBoard(); // will merge board from custodian org and board from selected framework data
-          return this.getUpdateFilters(board, true);
+          return this.getUpdatedFilters(board, true);
         }));
       } else {
         const filterOptions = [ board,
@@ -79,16 +74,24 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       }
     }));
   }
+  private getFieldOptionsForOnboardedUser() {
+    return this.getFormatedFilterDetails().pipe(map((formFieldProperties) => {
+      this._formFieldProperties = formFieldProperties;
+      let editMode = false;
+      if (_.get(this.selectedOption, 'board[0]')) {
+        this.selectedOption.board = _.get(this.selectedOption, 'board[0]');
+        editMode = true;
+      }
+      return this.getUpdatedFilters({index: 0}, editMode); // get filters for first field i.e index 0 incase of init
+    }));
+  }
   private getFormatedFilterDetails() {
     this.frameworkService.initialize(this.frameWorkId);
     return this.frameworkService.frameworkData$.pipe(
       filter((frameworkDetails) => { // wait to get the framework name if passed as input
       if (!frameworkDetails.err) {
         const framework = this.frameWorkId ? this.frameWorkId : 'defaultFramework';
-        const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
-        if (frameworkData) {
-          return true;
-        } else {
+        if (!_.get(frameworkDetails.frameworkdata, framework)) {
           return false;
         }
       }
@@ -101,21 +104,20 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         this.frameWorkId = frameworkData.identifier;
         this.categoryMasterList = _.cloneDeep(frameworkData.categories);
         return this.getFormDetails();
-      } else if (frameworkDetails.err) {
+      } else {
         return throwError(frameworkDetails.err);
       }
     }), map((formData: any) => {
-      let formFieldProperties = _.filter(formData, (formFieldCategory) => {
+      const formFieldProperties = _.filter(formData, (formFieldCategory) => {
         formFieldCategory.range = _.get(_.find(this.categoryMasterList, { code : formFieldCategory.code}), 'terms') || [];
         return true;
       });
-      formFieldProperties = _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index');
-      return formFieldProperties;
+      return _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index');
     }), first());
   }
-  public handleFieldChange(field) {
+  public handleFieldChange(event, field) {
     if (!this.custodianOrg || field.index !== 1) { // no need to fetch data, just rearrange fields
-      this.filterOptions = this.getUpdateFilters(field);
+      this.formFieldOptions = this.getUpdatedFilters(field);
       this.enableSubmitButton();
       return;
     }
@@ -125,70 +127,65 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         if (!formFieldProperties.length) {
           console.log('no data');
         } else {
-          this.formFieldProperties = formFieldProperties;
+          this._formFieldProperties = formFieldProperties;
           this.mergeBoard();
-          this.filterOptions = this.getUpdateFilters(field);
+          this.formFieldOptions = this.getUpdatedFilters(field);
           this.enableSubmitButton();
         }
       }, (error) => {
-        console.log('got error', error);
-    });
+        this.navigateToLibrary();
+      });
   }
   private mergeBoard() {
-    _.forEach(this.formFieldProperties, (field) => {
+    _.forEach(this._formFieldProperties, (field) => {
       if (field.code === 'board') {
         field.range = _.unionBy(_.concat(this.custodianOrgBoard.range, field.range), 'name');
       }
     });
   }
-  private getUpdateFilters(field, editMode = false) {
-    const targetIndex = field.index + 1;
-    const formFieldProperties = _.cloneDeep(this.formFieldProperties);
-    const filters = _.reduce(formFieldProperties, (acc, cur) => {
-      if (cur.index === targetIndex || editMode) {
-        const parentField: any = _.find(formFieldProperties, { index: cur.index - 1 });
-        const parentAssociations = _.reduce(parentField.range, (associations, term) => {
+  private getUpdatedFilters(field, editMode = false) {
+    const targetIndex = field.index + 1; // only update next field if not editMode
+    const formFields = _.reduce(this.formFieldProperties, (accumulator, current) => {
+      if (current.index === targetIndex || editMode) {
+        const parentField: any = _.find(this.formFieldProperties, { index: current.index - 1 }) || {};
+        const parentAssociations = _.reduce(parentField.range, (collector, term) => {
           const selectedFields = this.selectedOption[parentField.code] || [];
           if ((selectedFields.includes(term.name) || selectedFields.includes(term.code))) {
-            const selectedAssociations = _.filter(term.associations, {category: cur.code}) || [];
-            associations = _.concat(associations, selectedAssociations);
+            const selectedAssociations = _.filter(term.associations, { category: current.code }) || [];
+            collector = _.concat(collector, selectedAssociations);
           }
-          return associations;
+          return collector;
         }, []);
-        const updateRange = _.filter(cur.range, (range) => {
-          return _.find(parentAssociations, {code: range.code});
-        });
-        cur.range = updateRange.length ? updateRange : cur.range;
-        cur.range = _.unionBy(cur.range, 'code');
-        this.selectedOption[cur.code] = [];
-        acc.push(cur);
+        const updatedRange = _.filter(current.range, range => _.find(parentAssociations, {code: range.code}));
+        current.range = updatedRange.length ? updatedRange : current.range;
+        current.range = _.unionBy(current.range, 'code');
+        if (!editMode) {
+          this.selectedOption[current.code] = [];
+        }
+        accumulator.push(current);
       } else {
-        if (cur.index <= field.index) {
-          acc.push(_.find(this.filterOptions, { index: cur.index}));
-        } else {
-          cur.range = [];
-          this.selectedOption[cur.code] = [];
-          acc.push(cur);
+        if (current.index <= field.index) { // retain options for already selected fields
+          const updateField = current.code === 'board' ? current : _.find(this.formFieldOptions, { index: current.index});
+          accumulator.push(updateField);
+        } else { // empty filters and selection
+          current.range = [];
+          this.selectedOption[current.code] = [];
+          accumulator.push(current);
         }
       }
-      return acc;
+      return accumulator;
     }, []);
-    return filters;
+    return formFields;
   }
   private getCustodianOrgData() {
     return this.channelService.getFrameWork(this.userService.hashTagId).pipe(map((channelData: any) => {
-      this.channelData =  channelData.result.channel.frameworks;
-      const board = [];
-      _.forEach(this.channelData, (value, index) => {
-        board.push(value);
-      });
-      const custodianOrgBoard = {
-        range: board,
-        label: 'Board',
-        code: 'board',
-        index: 1
-      };
-      return custodianOrgBoard;
+      this.custOrgFrameworks =  _.get(channelData, 'result.channel.frameworks') || [];
+      return {
+          range: this.custOrgFrameworks,
+          label: 'Board',
+          code: 'board',
+          index: 1
+        };
     }));
   }
   private getFormDetails() {
@@ -203,24 +200,21 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   onSubmitForm() {
     const selectedOption = _.cloneDeep(this.selectedOption);
     selectedOption.board = [this.selectedOption.board];
-    selectedOption['id'] = this.frameWorkId;
+    selectedOption.id = this.frameWorkId;
     this.submit.emit(selectedOption);
   }
-  onClose(modal) {
-    modal.deny();
-    this.close.emit();
-  }
   private enableSubmitButton() {
-    if (this.selectedOption['board'] && this.selectedOption['medium'] && this.selectedOption['gradeLevel']) {
-      if (this.selectedOption['board'].length > 0 && this.selectedOption['medium'].length > 0
-        && this.selectedOption['gradeLevel'].length > 0) {
-        this.showButton = true;
-      } else {
-        this.showButton = false;
-      }
+    if (_.get(this.selectedOption, 'board.length') && _.get(this.selectedOption, 'medium.length')
+      && _.get(this.selectedOption, 'gradeLevel.length')) {
+      this.showButton = true;
+    } else {
+      this.showButton = false;
     }
   }
   ngOnDestroy() {
+    if (this.modal) {
+      this.modal.deny();
+    }
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
@@ -232,11 +226,11 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       return false;
     }));
   }
+  get formFieldProperties() {
+    return _.cloneDeep(this._formFieldProperties);
+  }
   private navigateToLibrary() {
     this.toasterService.warning(this.resourceService.messages.emsg.m0012);
-    if (this.modal) {
-      this.modal.deny();
-    }
     this.router.navigate(['/resources']);
     this.cacheService.set('showFrameWorkPopUp', 'installApp' );
   }
