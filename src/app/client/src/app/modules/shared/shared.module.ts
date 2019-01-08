@@ -1,12 +1,13 @@
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SlickModule } from 'ngx-slick';
+import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   AnnouncementInboxCardComponent, ContentCreditsComponent,
   PageSectionComponent, NoResultComponent, AppLoaderComponent, PlayerComponent,
   CollectionTreeComponent, FancyTreeComponent, CardComponent, CardCreationComponent, ShareLinkComponent, CollectionPlayerMetadataComponent,
   BrowserCompatibilityComponent, QrCodeModalComponent, RedirectComponent, CustomMultiSelectComponent,
-  InstallAppComponent, LockInfoPopupComponent
+  InstallAppComponent, LockInfoPopupComponent, DataTableComponent, ChartComponent
 } from './components';
 import {
   ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService, BrowserCacheTtlService,
@@ -22,6 +23,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -29,18 +31,19 @@ import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
     SlickModule,
     FormsModule,
     TelemetryModule,
-    NgInviewModule
+    NgInviewModule,
+    ChartsModule
   ],
   declarations: [AppLoaderComponent, ContentCreditsComponent, AnnouncementInboxCardComponent,
     DateFormatPipe, PageSectionComponent, NoResultComponent, DateFilterXtimeAgoPipe,
     CollectionTreeComponent, FancyTreeComponent, PlayerComponent, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
     ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe,
-    RedirectComponent, CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent],
+    RedirectComponent, CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, DataTableComponent, ChartComponent],
   exports: [AppLoaderComponent, ContentCreditsComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
     PageSectionComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
     PlayerComponent, CardComponent, CardCreationComponent, FilterPipe, ShareLinkComponent, CollectionPlayerMetadataComponent,
     BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent, CustomMultiSelectComponent,
-    InstallAppComponent, LockInfoPopupComponent]
+    InstallAppComponent, LockInfoPopupComponent, DataTableComponent]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
