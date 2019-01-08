@@ -38,8 +38,7 @@ const routes: Routes = [
           data: {
             telemetry: {
               env: '', pageid: 'explore-course-player', type: 'view', object: { ver: '1.0', type: 'batch' }
-            },
-            breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
+            }
           },
         },
       ]
