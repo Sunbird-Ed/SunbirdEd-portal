@@ -88,7 +88,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       .subscribe((courseProgressData) => {
         this.enrolledCourse = true;
         this.progress = courseProgressData.progress ? Math.round(courseProgressData.progress) : 0;
-        this.progress = 50 ;
         this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
         if (!this.flaggedCourse && this.onPageLoadResume &&
           !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
