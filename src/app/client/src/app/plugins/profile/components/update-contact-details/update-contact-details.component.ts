@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash';
 import { UserService, OtpService } from '@sunbird/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { Subject } from 'rxjs';
+import { ProfileService } from './../../services';
 
 @Component({
   selector: 'app-update-contact-details',
@@ -13,16 +14,23 @@ import { Subject } from 'rxjs';
 export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();
   @Input() contactType: string;
-  @Output() redirectToParent = new EventEmitter();
   @Output() close = new EventEmitter<any>();
   contactTypeForm: FormGroup;
   disableSubmitBtn = true;
   showUniqueError = '';
+  showForm = true;
+  @ViewChild('contactTypeModal') contactTypeModal;
+  otpData: any;
 
   constructor(public resourceService: ResourceService, public userService: UserService,
-  public otpService: OtpService, public toasterService: ToasterService) { }
+    public otpService: OtpService, public toasterService: ToasterService,
+    public profileService: ProfileService) { }
 
   ngOnInit() {
+    this.initializeFormFields();
+  }
+
+  initializeFormFields() {
     if (this.contactType === 'phone') {
       this.contactTypeForm = new FormGroup({
         phone: new FormControl('', [Validators.required, Validators.pattern('^\\d{10}$')]),
@@ -39,8 +47,8 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
     this.enableSubmitButton();
   }
 
-  closeModal(contactTypeModal) {
-    contactTypeModal.deny();
+  closeModal() {
+    this.contactTypeModal.deny();
     this.close.emit();
   }
 
@@ -54,6 +62,27 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  showParentForm(event) {
+    if (event === 'true') {
+      this.initializeFormFields();
+      this.showForm = true;
+    }
+  }
+
+  prepareOtpData() {
+    this.otpData = {
+      'type': this.contactType.toString(),
+      'value': this.contactType === 'phone' ?
+        this.contactTypeForm.controls.phone.value.toString() : this.contactTypeForm.controls.email.value,
+      'instructions': this.contactType === 'phone' ?
+        this.resourceService.frmelmnts.instn.t0083 : this.resourceService.frmelmnts.instn.t0084,
+      'retryMessage': this.contactType === 'phone' ?
+        this.resourceService.frmelmnts.lbl.unableToUpdateMobile : this.resourceService.frmelmnts.lbl.unableToUpdateEmail,
+      'wrongOtpMessage': this.contactType === 'phone' ? this.resourceService.frmelmnts.lbl.wrongPhoneOTP :
+        this.resourceService.frmelmnts.lbl.wrongEmailOTP
+    };
+  }
+
   vaidateUserContact() {
     const value = this.contactType === 'phone' ?
       this.contactTypeForm.controls.phone.value.toString() : this.contactTypeForm.controls.email.value;
@@ -62,10 +91,10 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
       (data: ServerResponse) => {
         if (this.userService.userid === data.result.response.id) {
           this.showUniqueError = this.contactType === 'phone' ?
-          this.resourceService.frmelmnts.lbl.samePhoneNo : this.resourceService.frmelmnts.lbl.sameEmailId;
+            this.resourceService.frmelmnts.lbl.samePhoneNo : this.resourceService.frmelmnts.lbl.sameEmailId;
         } else {
           this.showUniqueError = this.contactType === 'phone' ?
-          this.resourceService.frmelmnts.lbl.uniquePhone : this.resourceService.frmelmnts.lbl.uniqueEmail;
+            this.resourceService.frmelmnts.lbl.uniquePhone : this.resourceService.frmelmnts.lbl.uniqueEmail;
         }
       },
       (err) => {
@@ -81,7 +110,7 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
 
   onContactValueChange() {
     const contactTypeControl = this.contactType === 'phone' ?
-    this.contactTypeForm.get('phone') : this.contactTypeForm.get('email');
+      this.contactTypeForm.get('phone') : this.contactTypeForm.get('email');
     let contactValue = '';
     contactTypeControl.valueChanges.subscribe(
       (data: string) => {
@@ -108,8 +137,8 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
     };
     this.otpService.generateOTP(request).subscribe(
       (data: ServerResponse) => {
-        // this.showSignUpForm = false; generate OTP will come
-        this.disableSubmitBtn = true;
+        this.prepareOtpData();
+        this.showForm = false;
       },
       (err) => {
         const failedgenerateOTPMessage = (err.error.params.status === 'PHONE_ALREADY_IN_USE') ||
@@ -123,5 +152,19 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  updateProfile(data) {
+    this.profileService.updateProfile(data).subscribe(res => {
+      this.closeModal();
+      const sMessage = this.contactType === 'phone' ?
+        this.resourceService.messages.smsg.m0047 : this.resourceService.messages.smsg.m0048;
+      this.toasterService.success(sMessage);
+    }, err => {
+      this.closeModal();
+      const fMessage = this.contactType === 'phone' ?
+        this.resourceService.messages.emsg.m0014 : this.resourceService.messages.emsg.m0015;
+      this.toasterService.error(fMessage);
+    });
   }
 }
