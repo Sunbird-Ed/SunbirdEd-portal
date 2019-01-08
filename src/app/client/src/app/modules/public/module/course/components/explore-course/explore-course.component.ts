@@ -173,10 +173,15 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
         };
     }
     public playContent(event) {
+        if (!this.userService.loggedIn && event.data.contentType === 'Course') {
+            this.showLoginModal = true;
+            this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
+        } else {
+            this.publicPlayerService.playContent(event);
+        }
         // if user is logged in take user to toc restricted login page
         // if anonymous redirect to explore-course
     }
-
     public inView(event) {
         _.forEach(event.inview, (elem, key) => {
             const obj = _.find(this.inViewLogs, { objid: elem.data.metaData.identifier});
