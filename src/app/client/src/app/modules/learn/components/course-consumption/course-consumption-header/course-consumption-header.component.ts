@@ -88,8 +88,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       .subscribe((courseProgressData) => {
         this.enrolledCourse = true;
         this.progress = courseProgressData.progress ? Math.round(courseProgressData.progress) : 0;
-        // this.progress = 50 ;
-        // console.log(this.progress);
+        this.progress = 50 ;
         this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
         if (!this.flaggedCourse && this.onPageLoadResume &&
           !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
@@ -154,9 +153,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
-  checkExpiredBatch() {
-    if (this.enrolledBatchInfo.status === 2 && this.progress < 100) {
-      return true;
-    }
+  getBatchStatus() {
+   return this.enrolledBatchInfo.status === 2 && this.progress < 100;
   }
 }

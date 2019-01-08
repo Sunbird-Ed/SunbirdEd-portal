@@ -52,11 +52,11 @@
 </div>
 <div  *ngIf="enrolledCourse">
   <div class="ui container">
-    <div class="ui stackable padded grid m-responsive-cp-nmt-50" *ngIf="checkExpiredBatch()">
+    <div class="ui stackable padded grid m-responsive-cp-nmt-50" *ngIf="getBatchStatus()">
       <div class="nine wide column pl-0 pt-5">
         <div class="ui negative message">
           <div class="header">
-            {{resourceService?.frmelmnts?.btn?.expiredBatchWarning}}
+            {{resourceService?.frmelmnts?.lbl?.expiredBatchWarning}}
           </div>
         </div>
       </div>
@@ -65,7 +65,7 @@
     </div>
   </div>
   <div class="twelve wide column p-0">
-    <sui-progress class="ui tiny progress blue status" [ngClass]="{'expired':checkExpiredBatch()}" [value]="progress" [maximum]="100"></sui-progress>
+    <sui-progress class="ui tiny progress blue status" [ngClass]="{'expired':getBatchStatus()}" [value]="progress" [maximum]="100"></sui-progress>
   </div>
 </div>
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
