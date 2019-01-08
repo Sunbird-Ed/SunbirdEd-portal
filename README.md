@@ -23,4 +23,3 @@ You can also install the Sunbird portal locally on your laptop, please follow th
 
 ## Reporting Issues
 We have an open and active [issue tracker](https://github.com/project-sunbird/sunbird-commons/issues). Please report any issues.
-
