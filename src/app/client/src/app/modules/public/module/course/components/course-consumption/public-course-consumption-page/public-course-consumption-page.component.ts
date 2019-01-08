@@ -41,14 +41,6 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
       this.router.navigate(['/explore-course']);
     }
   }
-
-  private checkCourseStatus(courseHierarchy) {
-    if (!['Live', 'Unlisted', 'Flagged'].includes(courseHierarchy.status)) {
-      this.toasterService.warning(this.resourceService.messages.imsg.m0026);
-      this.router.navigate(['/explore-course']);
-    }
-  }
-
   onShareLink() {
     this.shareLink = this.contentUtilsServiceService.getCoursePublicShareUrl(this.courseHierarchy.identifier);
     this.setTelemetryShareData(this.courseHierarchy);
@@ -59,13 +51,6 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
       type: param.contentType,
       ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
     }];
-  }
-
-  private updateBreadCrumbs() {
-    this.breadcrumbsService.setBreadcrumbs([{
-      label: this.courseHierarchy.name,
-      url: '/explore-course'
-    }]);
   }
 
   ngOnDestroy() {

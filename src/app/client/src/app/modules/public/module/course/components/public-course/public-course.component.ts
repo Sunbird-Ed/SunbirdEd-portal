@@ -170,12 +170,12 @@ export class PublicCourseComponent implements OnInit, OnDestroy {
     // if user is logged in take user to toc restricted login page
     // if anonymous redirect to explore-course
 
-    // if (!this.userService.loggedIn && event.data.contentType === 'Course') {
-    //   this.showLoginModal = true;
-    //   this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
-    // } else {
-    //   this.publicPlayerService.playContent(event);
-    // }
+    if (!this.userService.loggedIn && event.data.contentType === 'Course') {
+      this.showLoginModal = true;
+      this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
+    } else {
+      this.publicPlayerService.playContent(event);
+    }
   }
   public viewAll(event) {
     const searchQuery = JSON.parse(event.searchQuery);

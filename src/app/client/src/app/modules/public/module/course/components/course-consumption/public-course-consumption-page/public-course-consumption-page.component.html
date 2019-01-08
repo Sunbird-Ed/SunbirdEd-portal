@@ -8,13 +8,12 @@
                         <h1 class="ui header small">
                             {{courseHierarchy.name}}
                         </h1>
-                        <sui-rating *ngIf="courseHierarchy.status !== 'Unlisted'" class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true"
+                        <sui-rating class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true"
                             [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
                         &nbsp;&nbsp;
                         <a (click)="onShareLink();sharelinkModal=true;">
                             <i class="cursor-pointer large blue share alternate icon"></i>
                         </a>
-                        <h6 class="ui small negative message" *ngIf="courseHierarchy.status === 'Flagged'">{{resourceService?.messages?.imsg?.m0001}}</h6>
                     </div>
                 </div>
             </div>

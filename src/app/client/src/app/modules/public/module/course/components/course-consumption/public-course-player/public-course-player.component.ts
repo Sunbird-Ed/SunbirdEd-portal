@@ -21,8 +21,6 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy {
 
   private courseId: string;
 
-  public courseStatus: string;
-
   public collectionTreeNodes: any;
 
   public loader = true;
@@ -36,8 +34,6 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy {
   public curriculum = [];
 
   public telemetryCourseImpression: IImpressionEventInput;
-
-  public contentStatus: any;
 
   public treeModel: any;
 
@@ -87,7 +83,6 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
-
   private setTelemetryCourseImpression() {
     this.telemetryCourseImpression = {
       context: {
