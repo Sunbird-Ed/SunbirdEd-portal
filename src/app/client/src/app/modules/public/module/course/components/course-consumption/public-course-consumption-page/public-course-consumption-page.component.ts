@@ -1,6 +1,6 @@
 import { combineLatest, Subject, throwError } from 'rxjs';
 import { map, mergeMap, first, takeUntil } from 'rxjs/operators';
-import { ResourceService, ToasterService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ContentUtilsServiceService, ITelemetryShare } from '@sunbird/shared';
 import { CourseConsumptionService, CourseBatchService } from '@sunbird/learn';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,10 +16,19 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
   public showLoader = true;
   public showError = false;
   public courseHierarchy: any;
+  sharelinkModal: boolean;
+  shareLink: string;
+
+  /**
+   * telemetryShareData
+  */
+  telemetryShareData: Array<ITelemetryShare>;
+
   public unsubscribe$ = new Subject<void>();
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     private coursesService: CoursesService, public toasterService: ToasterService, public courseBatchService: CourseBatchService,
-    private resourceService: ResourceService, public router: Router, public breadcrumbsService: BreadcrumbsService) {
+    private resourceService: ResourceService, public router: Router, public breadcrumbsService: BreadcrumbsService,
+    public contentUtilsServiceService: ContentUtilsServiceService) {
   }
 
   ngOnInit() {
@@ -38,6 +47,18 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
       this.toasterService.warning(this.resourceService.messages.imsg.m0026);
       this.router.navigate(['/explore-course']);
     }
+  }
+
+  onShareLink() {
+    this.shareLink = this.contentUtilsServiceService.getCoursePublicShareUrl(this.courseHierarchy.identifier);
+    this.setTelemetryShareData(this.courseHierarchy);
+  }
+  setTelemetryShareData(param) {
+    this.telemetryShareData = [{
+      id: param.identifier,
+      type: param.contentType,
+      ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
+    }];
   }
 
   private updateBreadCrumbs() {
