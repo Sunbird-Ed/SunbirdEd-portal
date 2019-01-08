@@ -21,7 +21,7 @@
                 <div class="ui bottom attached segment" suiTabContent="graph">
                     <div *ngFor="let chart of chartData">
                         <canvas baseChart [datasets]="chart.datasets" [labels]="chart.labels" [options]="chart.options" [chartType]="chart.chartType"
-                            [colors]="chart.colors"></canvas>
+                            [colors]="chart.colors" [legend]="true"></canvas>
                     </div>
                 </div>
                 <div class="ui bottom attached small segment" suiTabContent="tableMenu">
