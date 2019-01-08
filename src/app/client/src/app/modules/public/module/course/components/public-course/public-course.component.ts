@@ -167,9 +167,6 @@ export class PublicCourseComponent implements OnInit, OnDestroy {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   public playContent(event) {
-    // if user is logged in take user to toc restricted login page
-    // if anonymous redirect to explore-course
-
     if (!this.userService.loggedIn && event.data.contentType === 'Course') {
       this.showLoginModal = true;
       this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
