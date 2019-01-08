@@ -342,13 +342,7 @@ export class UserService {
     });
   }
 
-  /**
-   * method to check uniqueness of filed, eg- phone, email
-   */
-  getUserByKey(data) {
-    const options = {
-      url: this.config.urlConFig.URLS.USER.GET_USER_BY_KEY + '/' + data,
-    };
-    return this.learnerService.get(options);
+  getUserByKey(key) {
+    return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_BY_KEY + '/' + key});
   }
 }
