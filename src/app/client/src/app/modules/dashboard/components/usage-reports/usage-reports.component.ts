@@ -16,6 +16,7 @@ export class UsageReportsComponent implements OnInit {
   description: string;
   isTableDataLoaded = false;
   downloadUrl: string;
+  currentReport: any;
   constructor(private usageService: UsageService) {
 
   }
@@ -26,6 +27,7 @@ export class UsageReportsComponent implements OnInit {
     });
   }
   renderReport(report: any) {
+    this.currentReport = report;
     this.isTableDataLoaded = false;
     this.downloadUrl = _.get(report, 'downloadUrl');
     const url = report.dataSource;

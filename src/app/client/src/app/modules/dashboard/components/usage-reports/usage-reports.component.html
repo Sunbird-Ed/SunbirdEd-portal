@@ -2,7 +2,8 @@
     <div class="ui stackable grid mt-30">
         <div class="three wide column pt-0">
             <div class="publicmenusection ui secondary vertical menu">
-                <a *ngFor="let report of reportMetaData" (click)="renderReport(report)" class="item"> {{report.title || report.label}}</a>
+                <a *ngFor="let report of reportMetaData" (click)="renderReport(report)" class="item" [ngClass]="{'active': currentReport.id === report.id}">
+                    {{report.title || report.label}}</a>
             </div>
         </div>
         <div class="nine wide column workspacesegment">
@@ -19,9 +20,10 @@
                     </div>
                 </div>
                 <div class="ui bottom attached segment" suiTabContent="graph">
-                    <div *ngFor="let chart of chartData">
+                    <div *ngFor="let chart of chartData; let i = index; let l = last;">
                         <canvas baseChart [datasets]="chart.datasets" [labels]="chart.labels" [options]="chart.options" [chartType]="chart.chartType"
                             [colors]="chart.colors" [legend]="true"></canvas>
+                        <div class="ui divider" *ngIf="i != l"></div>
                     </div>
                 </div>
                 <div class="ui bottom attached small segment" suiTabContent="tableMenu">
