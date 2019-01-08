@@ -107,7 +107,7 @@ module.exports = {
             if (!err) {
               self.errorMsg = undefined
               console.log('user already exists')
-              callback(null, userName)
+              callback(null, self.userName)
             } else {
               // create User
               console.log('create User Flag', createUserFlag, 'type of', typeof createUserFlag)
@@ -120,7 +120,7 @@ module.exports = {
                     self.errorMsg = undefined
                     console.log('create user successful')
                     self.userName = self.payload['sub'] + (self.payload['iss'] ? '@' + self.payload['iss'] : '')
-                    callback(null, userName)
+                    callback(null, self.userName)
                   } else {
                     console.log('unable to create user')
                     callback(new Error('unable to create user'), null)
