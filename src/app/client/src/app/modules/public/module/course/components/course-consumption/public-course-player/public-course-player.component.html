@@ -1,4 +1,4 @@
-<div class="ui container" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
+<div class="ui container">
 <div class="ui stackable grid mt-20">
     <div class="twelve wide column">
         <div *ngIf="!loader">
@@ -37,7 +37,7 @@
                             <div class="ui fitted divider mb-20 mt-30"></div>
                         </div>
                         <div class='three wide column'>
-                           <!--  <app-batch-details *ngIf="courseStatus !== 'Unlisted'" [courseId]="courseId"
+                            <!-- <app-batch-details *ngIf="courseStatus !== 'Unlisted'" [courseId]="courseId"
                                 [courseHierarchy]="courseHierarchy"></app-batch-details> -->
                             <br>
                             <div class="rightSideSectionCards ui card" *ngIf="curriculum && curriculum.length > 0">
@@ -118,11 +118,3 @@
 </div>
 </div>
 <router-outlet></router-outlet>
-<sui-modal [isClosable]="true" size="tiny" (dismissed)="closeModal()" #modal *ngIf="showLoginModal">
-    <div class="content">
-        <div class="ui center aligned segment">
-            <div class="ui header">{{resourceService.frmelmnts?.lbl?.signinenrollTitle}} </div>
-            <a href={{baseUrl}} class="ui button primary announcement-button close mt-20">{{resourceService.frmelmnts?.btn?.signin}}</a>
-        </div>
-    </div>
-</sui-modal>

@@ -9,7 +9,7 @@ import {
   ToasterService, ResourceService
 } from '@sunbird/shared';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService } from '@sunbird/learn';
-import { IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { IImpressionEventInput, IEndEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-public-course-player',
   templateUrl: './public-course-player.component.html',
