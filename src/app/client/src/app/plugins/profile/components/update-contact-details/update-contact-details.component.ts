@@ -1,16 +1,17 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash';
 import { UserService, OtpService } from '@sunbird/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-update-contact-details',
   templateUrl: './update-contact-details.component.html',
   styleUrls: ['./update-contact-details.component.scss']
 })
-export class UpdateContactDetailsComponent implements OnInit {
-
+export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
+  public unsubscribe = new Subject<void>();
   @Input() contactType: string;
   @Output() redirectToParent = new EventEmitter();
   @Output() close = new EventEmitter<any>();
@@ -117,5 +118,10 @@ export class UpdateContactDetailsComponent implements OnInit {
         this.disableSubmitBtn = false;
       }
     );
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }
