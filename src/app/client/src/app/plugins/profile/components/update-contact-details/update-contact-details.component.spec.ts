@@ -7,6 +7,7 @@ import { CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ProfileService } from './../../services';
 
 describe('UpdateContactDetailsComponent', () => {
   let component: UpdateContactDetailsComponent;
@@ -17,7 +18,7 @@ describe('UpdateContactDetailsComponent', () => {
       imports: [SharedModule.forRoot(), CoreModule.forRoot(), FormsModule, ReactiveFormsModule,
         HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [UpdateContactDetailsComponent],
-      providers: [ResourceService],
+      providers: [ResourceService, ProfileService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
