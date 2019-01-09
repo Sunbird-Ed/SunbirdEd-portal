@@ -427,9 +427,8 @@ i.large.icon.limitedPublishingLinkIcon {
 .ui.form input[type=text]:focus,
 .ui.form input[type=email],
 .ui.form input[type=number],
+.ui.form input[type=number]:focus,
 .ui.form input[type=password],
-.ui.form input[type=tel],
-.ui.form input[type=tel]:focus,
 .ui.form input[type=url],
 .ui.form input:not([type]),
 .ui.form input:not([type]):focus
