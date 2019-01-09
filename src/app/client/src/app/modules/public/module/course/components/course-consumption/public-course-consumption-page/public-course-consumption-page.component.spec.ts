@@ -68,7 +68,7 @@ describe('PublicCourseConsumptionPageComponent', () => {
     spyOn(toasterService, 'error').and.returnValue('');
   });
 
-  fit('should fetch course details on page load', () => {
+  it('should fetch course details on page load', () => {
     activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_212347136096788480178'};
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     courseService.initialize();
@@ -77,7 +77,7 @@ describe('PublicCourseConsumptionPageComponent', () => {
     expect(component.showLoader).toBe(false);
   });
 
-  fit('should redirect to explore course page if course id not exists', () => {
+  it('should redirect to explore course page if course id not exists', () => {
     activatedRouteStub.snapshot.firstChild.params = {};
     spyOn(component, 'redirectToExplore').and.callThrough();
     component.ngOnInit();
@@ -85,7 +85,7 @@ describe('PublicCourseConsumptionPageComponent', () => {
     expect(component.router.navigate).toHaveBeenCalledWith(['explore-course']);
   });
 
-  fit('should open share link popup and share url should be of anonymous explore course page', () => {
+  it('should open share link popup and share url should be of anonymous explore course page', () => {
     activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_212347136096788480178'};
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(component, 'onShareLink').and.callThrough();

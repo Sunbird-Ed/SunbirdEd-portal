@@ -62,9 +62,8 @@ describe('PublicBatchDetailsComponent', () => {
     component.ngOnInit();
     const searchParams: any = {
       filters: {
-        status: 'this.batchStatus.toString()',
-        courseId: component.courseId,
-        enrollmentType: 'open'
+        status: component.batchStatus.toString(),
+        courseId: component.courseId
       },
       offset: 0,
       sort_by: { createdDate: 'desc' }
