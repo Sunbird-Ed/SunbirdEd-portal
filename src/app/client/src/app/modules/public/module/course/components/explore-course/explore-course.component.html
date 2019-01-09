@@ -47,12 +47,3 @@
         </div>
     </div>
 </div>
-<!-- // need to remove below modal and send it to course player component -->
-<sui-modal [isClosable]="true" size="tiny" (dismissed)="closeModal()" #modal *ngIf="showLoginModal">
-    <div class="content">
-        <div class="ui center aligned segment">
-            <div class="ui header">{{resourceService.frmelmnts?.lbl?.signinenrollTitle}} </div>
-            <a href={{baseUrl}} class="ui button primary announcement-button close mt-20">{{resourceService.frmelmnts?.btn?.signin}}</a>
-        </div>
-    </div>
-</sui-modal>

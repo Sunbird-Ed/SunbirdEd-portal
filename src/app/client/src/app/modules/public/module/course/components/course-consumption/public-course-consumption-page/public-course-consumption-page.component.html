@@ -11,7 +11,7 @@
                         <sui-rating class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true"
                             [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
                         &nbsp;&nbsp;
-                        <a (click)="onShareLink();sharelinkModal=true;">
+                        <a (click)="onShareLink()">
                             <i class="cursor-pointer large blue share alternate icon"></i>
                         </a>
                     </div>
@@ -29,3 +29,5 @@
         </div>
     </div>
 </div>
+<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
+</app-share-link>

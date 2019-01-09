@@ -37,8 +37,8 @@
                             <div class="ui fitted divider mb-20 mt-30"></div>
                         </div>
                         <div class='three wide column'>
-                            <!-- <app-batch-details  [courseId]="courseId"
-                                [courseHierarchy]="courseHierarchy"></app-batch-details> -->
+                            <app-public-batch-details  [courseId]="courseId"
+                                [courseHierarchy]="courseHierarchy"></app-public-batch-details>
                             <br>
                             <div class="rightSideSectionCards ui card" *ngIf="curriculum && curriculum.length > 0">
                                 <div class="content">
@@ -111,8 +111,6 @@
         </div>
         <div *ngIf="loader">
             <app-loader [data]="loaderMessage"></app-loader>
-        </div>
-        <div *ngIf="showError">
         </div>
     </div>
 </div>

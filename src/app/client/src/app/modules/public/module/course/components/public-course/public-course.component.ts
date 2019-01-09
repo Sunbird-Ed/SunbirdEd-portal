@@ -167,12 +167,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   public playContent(event) {
-    if (!this.userService.loggedIn && event.data.contentType === 'Course') {
-      this.showLoginModal = true;
-      this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
-    } else {
-      this.publicPlayerService.playContent(event);
-    }
+    this.publicPlayerService.playExporeCourse(event.data.metaData.identifier);
   }
   public viewAll(event) {
     const searchQuery = JSON.parse(event.searchQuery);

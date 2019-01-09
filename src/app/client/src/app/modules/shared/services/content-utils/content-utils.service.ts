@@ -43,8 +43,7 @@ export class ContentUtilsServiceService {
   }
 
   getCoursePublicShareUrl (courseid) {
-    // return anaonymous course toc url
-    return '';
+    return `${this.baseUrl}explore-course/course/${courseid}`;
   }
 
   /**

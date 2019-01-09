@@ -333,10 +333,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
 
   playContent(event) {
     if (!this.userService.loggedIn && event.data.contentType === 'Course') {
-      this.showLoginModal = true;
-      this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
-      // if user is logged in take user to toc restricted login page
-      // if anonymous redirect to explore-course
+      this.publicPlayerService.playExporeCourse(event.data.metaData.identifier);
     } else {
       const url = this.router.url.split('/');
       if (url[1] === 'learn' || url[1] === 'resources') {

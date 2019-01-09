@@ -37,7 +37,7 @@ const routes: Routes = [
           path: ':courseId', component: PublicCoursePlayerComponent,
           data: {
             telemetry: {
-              env: '', pageid: 'explore-course-player', type: 'view', object: { ver: '1.0', type: 'batch' }
+              env: 'explore', pageid: 'explore-course-toc', type: 'view'
             }
           },
         },

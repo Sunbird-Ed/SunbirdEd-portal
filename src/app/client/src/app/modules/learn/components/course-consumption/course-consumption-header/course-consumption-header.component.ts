@@ -139,7 +139,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         });
   }
   onShareLink() {
-    this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.courseId, this.courseHierarchy.mimeType);
+    this.shareLink = this.contentUtilsServiceService.getCoursePublicShareUrl(this.courseId);
     this.setTelemetryShareData(this.courseHierarchy);
   }
   setTelemetryShareData(param) {

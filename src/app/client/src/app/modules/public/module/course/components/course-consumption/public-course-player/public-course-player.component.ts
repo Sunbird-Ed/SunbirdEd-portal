@@ -27,7 +27,7 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy {
 
   public showError = false;
 
-  @Input() courseHierarchy: any;
+  public courseHierarchy: any;
 
   public readMore = false;
 
@@ -56,9 +56,18 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.courseId = params.courseId;
-    // set telemetry impression object
-    // process course herirarchy
+    const routeParams: any = { ...this.activatedRoute.snapshot.params };
+    this.courseId = routeParams.courseId;
+    const inputParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
+    this.courseConsumptionService.getCourseHierarchy(routeParams.courseId, inputParams).pipe(
+      takeUntil(this.unsubscribe))
+      .subscribe(courseHierarchy => {
+        this.loader = false;
+        this.courseHierarchy = courseHierarchy;
+        this.parseChildContent();
+        this.setTelemetryCourseImpression();
+        this.collectionTreeNodes = { data: this.courseHierarchy };
+      });
   }
 
   private parseChildContent() {
@@ -72,7 +81,6 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy {
         } else {
           mimeTypeCount[node.model.mimeType] = 1;
         }
-        // this.contentDetails.push({ id: node.model.identifier, title: node.model.name });
       }
     });
     _.forEach(mimeTypeCount, (value, key) => {
