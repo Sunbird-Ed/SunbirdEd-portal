@@ -1,12 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { ResourceService, ServerResponse } from '@sunbird/shared';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Subscription, Subject } from 'rxjs';
-import { TenantService } from '@sunbird/core';
-import { OtpService } from '@sunbird/core';
+import { TenantService, OtpService } from '@sunbird/core';
 
 @Component({
   selector: 'app-otp-popup',
@@ -24,14 +22,12 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
   errorMessage: string;
   infoMessage: string;
   disableResendButton = false;
-  showSignUpLink = false;
   tenantDataSubscription: Subscription;
   logo: string;
   tenantName: string;
 
-  constructor(public resourceService: ResourceService, public activatedRoute: ActivatedRoute,
-    public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
-    public otpService: OtpService) { }
+  constructor(public resourceService: ResourceService, public tenantService: TenantService,
+    public deviceDetectorService: DeviceDetectorService, public otpService: OtpService) { }
 
   ngOnInit() {
     this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
@@ -80,13 +76,10 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
         this.verificationSuccess.emit(emitData);
       },
       (err) => {
+        this.disableSubmitBtn = false;
         this.infoMessage = '';
         this.errorMessage = err.error.params.status === 'ERROR_INVALID_OTP' ?
           wrongOTPMessage : this.resourceService.messages.fmsg.m0085;
-        if (this.disableResendButton) {
-          this.showSignUpLink = true;
-        }
-        this.disableSubmitBtn = false;
       }
     );
   }
@@ -124,4 +117,3 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
     this.redirectToParent.emit('true');
   }
 }
-

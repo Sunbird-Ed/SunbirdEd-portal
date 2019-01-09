@@ -37,9 +37,9 @@
 .ui.form.borderd input:focus {
     border-color: $form-input-border-active-color !important;
 }
-.ui.light-sea-green.button {
-    background: $signup-btn-bg-active-color;
-    color: $signup-button-text-color;
+.ui.dodger-blue.button {
+    background: $profile-edit-btn;
+    color: $profile-edit-btn-text-color;
     height: 38px !important;
 }
 .ui.grey.button {
@@ -50,7 +50,7 @@
     height: 38px !important;
 }
 .grey.text {
-    color: $signup-thankyou-text-color;
+    color: $signup-thankyou-text-color!important;
 }
 .orange.text {
     color: $label-color;
