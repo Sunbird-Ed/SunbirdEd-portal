@@ -56,7 +56,7 @@
       <div class="nine wide column pl-0 pt-5">
         <div class="ui negative message">
           <div class="header">
-            {{resourceService?.frmelmnts?.lbl?.expiredBatchWarning}}
+            {{resourceService?.frmelmnts?.lbl?.expiredBatchWarning | interpolate:'{EndDate}':enrolledBatchInfo.endDate}}
           </div>
         </div>
       </div>
