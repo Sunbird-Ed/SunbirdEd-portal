@@ -8,13 +8,10 @@
     </div>
     <div class="fs-2-5 font-w-bold mb-15 text-ac">{{userProfile.firstName | titlecase}} {{userProfile.lastName |
       titlecase}}</div>
-
       <div class="mb-10 d-flex mb-5 flex-jc-center">
         <div class="fs-1-16">{{resourceService?.frmelmnts?.lbl?.userId}} :</div>
         <div class="fs-1-16 ml-5">{{userProfile.userName}}</div>
       </div>
-
-
     <div class="mb-15 text-ac profile-label-container" *ngIf="roles && roles.length > 0">
       <span class="ui dodger-blue basic label mr-15 mt-5" *ngFor="let role of roles | slice:0:showMoreRolesLimit">{{role}}</span>
     </div>
