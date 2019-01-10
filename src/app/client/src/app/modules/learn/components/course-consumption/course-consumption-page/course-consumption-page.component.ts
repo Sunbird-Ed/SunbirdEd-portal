@@ -29,7 +29,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
       mergeMap(({ enrolledCourses }) => {
         const routeParams: any = { ...this.activatedRoute.snapshot.params, ...this.activatedRoute.snapshot.firstChild.params };
         this.courseId = routeParams.courseId;
-        const inputParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
+        const queryParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
         const enrollCourses: any = this.getBatchDetailsFromEnrollList(enrolledCourses, routeParams);
         if (routeParams.batchId && !enrollCourses) { // batch not found in enrolled Batch list
           return throwError('ENROLL_BATCH_NOT_EXIST');
@@ -40,7 +40,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
             this.router.navigate([`learn/course/${this.courseId}/batch/${this.batchId}`]); // but course was found in enroll list
           }
         }
-        return this.getDetails(inputParams);
+        return this.getDetails(queryParams);
       }), takeUntil(this.unsubscribe$))
       .subscribe(({ courseHierarchy, enrolledBatchDetails }: any) => {
         this.enrolledBatchInfo = enrolledBatchDetails;
@@ -65,14 +65,14 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
     }
     return; // no batch found
   }
-  private getDetails(inputParams) {
+  private getDetails(queryParams) {
     if (this.batchId) {
       return combineLatest(
-        this.courseConsumptionService.getCourseHierarchy(this.courseId, inputParams),
+        this.courseConsumptionService.getCourseHierarchy(this.courseId, queryParams),
         this.courseBatchService.getEnrolledBatchDetails(this.batchId)
       ).pipe(map(result => ({ courseHierarchy: result[0], enrolledBatchDetails: result[1] })));
     } else {
-      return this.courseConsumptionService.getCourseHierarchy(this.courseId, inputParams)
+      return this.courseConsumptionService.getCourseHierarchy(this.courseId, queryParams)
         .pipe(map(courseHierarchy => ({ courseHierarchy })));
     }
   }
