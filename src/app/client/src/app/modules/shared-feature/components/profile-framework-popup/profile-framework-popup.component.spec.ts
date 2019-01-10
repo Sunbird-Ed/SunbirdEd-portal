@@ -3,8 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ProfileFrameworkPopupComponent } from './profile-framework-popup.component';
 import { Router } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  FormService, ChannelService, CoreModule, UserService, OrgDetailsService, PublicDataService } from '@sunbird/core';
+import { ChannelService, CoreModule, UserService, OrgDetailsService, PublicDataService } from '@sunbird/core';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { throwError, of } from 'rxjs';
 import { Response } from './profile-framework-popup.component.spec.data';
@@ -13,7 +12,7 @@ import { CacheService } from 'ng2-cache-service';
 describe('ProfileFrameworkPopupComponent', () => {
   let component: ProfileFrameworkPopupComponent;
   let fixture: ComponentFixture<ProfileFrameworkPopupComponent>;
-  let channelService, formService, cacheService, userService, publicDataService, orgDetailsService, toasterService, router;
+  let channelService, userService, publicDataService, orgDetailsService, toasterService, router;
   let mockFormFields, mockCustodianOrg, mockFrameworkCategories, mockHashTagId, mockFrameworkId, mockCustOrgFrameWorks;
   let makeChannelReadSuc, makeFrameworkReadSuc, makeFormReadSuc, makeCustOrgSuc, makeCustOrgFrameWorkSuc;
   const resourceBundle = {
@@ -38,8 +37,6 @@ describe('ProfileFrameworkPopupComponent', () => {
     fixture = TestBed.createComponent(ProfileFrameworkPopupComponent);
     component = fixture.componentInstance;
     channelService = TestBed.get(ChannelService);
-    formService = TestBed.get(FormService);
-    cacheService = TestBed.get(CacheService);
     userService = TestBed.get(UserService);
     publicDataService = TestBed.get(PublicDataService);
     orgDetailsService = TestBed.get(OrgDetailsService);

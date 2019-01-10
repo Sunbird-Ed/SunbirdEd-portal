@@ -86,7 +86,7 @@ export class UserUploadComponent implements OnInit, OnDestroy {
   downloadCSVInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   public unsubscribe$ = new Subject<void>();
-  private uploadUserRefLink: string;
+  private uploadUserRefLink: string; // tslint:disable-line
   /**
 * Constructor to create injected service(s) object
 *

@@ -5,7 +5,6 @@ import { ResourceService, ConfigService } from '../../services';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './card-creation.component.spec.data';
 import { CardCreationComponent } from './card-creation.component';
-import { CdnprefixPipe } from '../../pipes/cdnprefix.pipe';
 import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 

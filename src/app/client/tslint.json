@@ -3,6 +3,7 @@
     "node_modules/codelyzer"
   ],
   "rules": {
+    "no-unused-variable": true,
     "arrow-return-shorthand": true,
     "ban-types": [true, ["Object", "Use {} instead."], ["String", "use string instead"]],
     "only-arrow-functions": true,

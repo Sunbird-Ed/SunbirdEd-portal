@@ -24,7 +24,7 @@ export class TelemetryInteractDirective {
   @Input() telemetryInteractCdata: Array<{}>;
 
   @HostListener('click', ['$event'])
-  private onClick(e) {
+  private onClick(e) {  // tslint:disable-line
     if (this.telemetryInteractEdata) {
       this.appTelemetryInteractData = {
       context: {
