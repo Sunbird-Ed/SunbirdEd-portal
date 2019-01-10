@@ -1,0 +1,59 @@
+.footer {
+  background: $primary-color;
+  color: #fff !important;
+  padding: 4.57rem 0;
+  font-size: 14px;
+
+  a {
+    color: #fff !important;
+
+    &:hover,
+    &:active,
+    &:focus {
+      color: #fff !important;
+      text-decoration: underline;
+      opacity: 1;
+    }
+  }
+
+  .playStore-img {
+    width: 124px;
+    border-radius: 5px;
+
+    &:hover {
+      width: 126px;
+    }
+  }
+}
+
+.contantDetails,
+.footerMenu {
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+  *[dir="ltr"] {
+    .footerMenu {
+      text-align: left;
+    }
+    
+    .contantDetails {
+      text-align: right;
+    }
+  }
+  
+  *[dir="rtl"] {
+    .footerMenu {
+      text-align: right;
+    }
+    
+    .contantDetails {
+      text-align: left;
+    }
+  }
+}
+
+.footer-fix {
+  min-height: 90vh;
+}
+

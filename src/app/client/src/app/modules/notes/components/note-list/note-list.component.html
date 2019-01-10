@@ -1,6 +1,6 @@
+<div class="ui container">
 <div class="ui grid mt-30">
-  <div class="one wide column"></div>
-  <div class="ten wide column">
+  <div class="twelve wide column">
     <div class="ui segments">
       <div class="ui segment p-0">
         <div class="ui grid m-0 height-100" id="notesList">
@@ -22,10 +22,8 @@
               <div *ngIf="showCreateEditor === true" class="pt-20">
                 <app-inline-editor [ids]="{contentId:contentId, courseId:courseId}" [mode]="'create'" (updateEventEmitter)="updateEventEmitter($event)" (createEventEmitter)="createEventEmitter($event)"></app-inline-editor>
               </div>
-
             </div>
           </div>
-
         </div>
       </div>
       <div class="noteListSegment ui secondary segment" *ngIf="notesList.length > 0">
@@ -90,6 +88,6 @@
       <app-loader></app-loader>
     </div>
   </div>
-  <div class="one wide column"></div>
+</div>
 </div>
 <router-outlet></router-outlet>

@@ -2,16 +2,16 @@
 import { takeUntil, first } from 'rxjs/operators';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormService, FrameworkService, OrgDetailsService } from './../../services';
-import { ConfigService, ResourceService, ToasterService, ServerResponse, Framework } from '@sunbird/shared';
+import { FormService, FrameworkService, OrgDetailsService, UserService } from './../../services';
+import { ConfigService, ResourceService, ToasterService, ServerResponse, Framework} from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 
-import { Subject, Subscription } from 'rxjs';
+import { Subject, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-language-dropdown',
   templateUrl: './language-dropdown.component.html',
-  styleUrls: ['./language-dropdown.component.css']
+  styleUrls: ['./language-dropdown.component.scss']
 })
 export class LanguageDropdownComponent implements OnInit, OnDestroy {
   @Input() redirectUrl: string;
@@ -30,7 +30,7 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
     public orgDetailsService: OrgDetailsService,
     public formService: FormService, public toasterService: ToasterService,
     private _cacheService: CacheService, public frameworkService: FrameworkService,
-    public configService: ConfigService, public resourceService: ResourceService) { }
+    public configService: ConfigService, public resourceService: ResourceService,   public userService: UserService) { }
 
   ngOnInit() {
     this.getChannelId();
@@ -45,14 +45,21 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
   }
 
   getChannelId() {
-    this.orgDetailsUnsubscribe = this.orgDetailsService.orgDetails$.subscribe(((data) => {
-      if (data && !data.err) {
-        this.channelId = data.orgDetails.hashTagId;
+    if (this.userService.loggedIn) {
+      this.userService.userData$.pipe(first()).subscribe((user) => {
+        if (user && !user.err ) {
+        this.channelId = this.userService.channel,
         this.getLanguage();
-      } else if (data && data.err) {
-        // error
-      }
-    }));
+        }
+      });
+    } else {
+      this.orgDetailsUnsubscribe = this.orgDetailsService.orgDetails$.subscribe(((data) => {
+        if (data && !data.err) {
+          this.channelId = data.orgDetails.hashTagId;
+          this.getLanguage();
+        }
+      }));
+    }
   }
 
   getLanguage() {

@@ -78,11 +78,6 @@ export class UploadedComponent extends WorkSpace implements OnInit {
   private paginationService: PaginationService;
 
   /**
-    * Refrence of UserService
-  */
-  private userService: UserService;
-
-  /**
   * To get url, app configs
   */
   public config: ConfigService;
@@ -125,6 +120,14 @@ export class UploadedComponent extends WorkSpace implements OnInit {
  * telemetryImpression
 */
   telemetryImpression: IImpressionEventInput;
+  /**
+     * lock popup data for locked contents
+    */
+   lockPopupData: object;
+   /**
+     * To show content locked modal
+    */
+   showLockedContentModal = false;
 
   /**
     * Constructor to create injected service(s) object
@@ -143,11 +146,10 @@ export class UploadedComponent extends WorkSpace implements OnInit {
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
     config: ConfigService) {
-    super(searchService, workSpaceService);
+    super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
     this.activatedRoute = activatedRoute;
-    this.userService = userService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.config = config;
@@ -193,7 +195,7 @@ export class UploadedComponent extends WorkSpace implements OnInit {
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0023,
     };
-    this.search(searchParams).subscribe(
+    this.searchContentWithLockStatus(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
           this.totalCount = data.result.count;
@@ -225,10 +227,15 @@ export class UploadedComponent extends WorkSpace implements OnInit {
     * This method launch the content editior
   */
   contentClick(param) {
-    if (param.action.eventName === 'delete') {
-      this.deleteConfirmModal(param.data.metaData.identifier);
+    if (_.size(param.data.lockInfo) && this.userService.userid !== param.data.lockInfo.createdBy) {
+      this.lockPopupData = param.data;
+      this.showLockedContentModal = true;
     } else {
-      this.workSpaceService.navigateToContent(param.data.metaData, this.state);
+      if (param.action.eventName === 'delete') {
+        this.deleteConfirmModal(param.data.metaData.identifier);
+      } else {
+        this.workSpaceService.navigateToContent(param.data.metaData, this.state);
+      }
     }
   }
 

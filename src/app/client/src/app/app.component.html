@@ -1,8 +1,9 @@
-<app-popup [showCloseIcon]="true" (close)="closeIcon()" #frameWorkPopUp *ngIf="showFrameWorkPopUp" [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateFrameWork($event)"></app-popup>
-<app-header></app-header>
-<div  [ngClass]="{'mc-user': userService.loggedIn, 'mc-nonuser': !userService.loggedIn}"></div>
-<app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn"></app-install-app>
-<div class="mx--20">
-    <app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>
-    <router-outlet *ngIf="initApp"></router-outlet>
+<div class="footer-fix" [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}">
+  <app-popup #frameWorkPopUp *ngIf="showFrameWorkPopUp" [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateFrameWork($event)"></app-popup>
+  <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp"></app-tnc-popup>
+  <app-header></app-header>
+  <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn"></app-install-app>
+  <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
+  <router-outlet *ngIf="initApp"></router-outlet>
 </div>
+<app-footer></app-footer>

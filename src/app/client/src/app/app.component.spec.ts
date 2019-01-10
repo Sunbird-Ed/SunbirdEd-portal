@@ -150,6 +150,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
           ver: '1.1.12',
           pid: configService.appConfig.TELEMETRY.PID
         },
+        batchsize: 2,
         endpoint: configService.urlConFig.URLS.TELEMETRY.SYNC,
         apislug: configService.urlConFig.URLS.CONTENT_PREFIX,
         host: '',

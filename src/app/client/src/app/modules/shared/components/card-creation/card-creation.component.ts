@@ -9,11 +9,14 @@ import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry'
 })
 export class CardCreationComponent {
   /**
-* content is used to render IContents value on the view
-*/
+  * content is used to render IContents value on the view
+  */
   @Input() data: ICard;
   @Input() customClass: string;
   @Output() clickEvent = new EventEmitter<any>();
+
+  constructor(public resourceService: ResourceService) {
+  }
 
   public onAction(data, action) {
     this.clickEvent.emit({ 'action': action, 'data': data });

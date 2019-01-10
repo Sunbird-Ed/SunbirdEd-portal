@@ -1,5 +1,5 @@
 {
-    "DEFAULT_PARAMS_FIELDS": "createdBy,status,mimeType,contentType,resourceType",
+    "DEFAULT_PARAMS_FIELDS": "createdBy,status,mimeType,contentType,resourceType,collaborators",
     "COLLECTION_EDITOR": {
         "WINDOW_CONFIG": {
             "editorConfig": {
@@ -21,7 +21,7 @@
             "loadingImage": "",
             "plugins": [{
                     "id": "org.ekstep.sunbirdcommonheader",
-                    "ver": "1.7",
+                    "ver": "1.8",
                     "type": "plugin"
                 },
                 {
@@ -233,7 +233,8 @@
             "published",
             "flagged",
             "limitedPublish",
-            "flagreviewer"
+            "flagreviewer",
+            "collaborating-on"
         ],
         "collectionStatus": [
             "Review",
@@ -252,7 +253,8 @@
             "review",
             "published",
             "limitedPublish",
-            "flagreviewer"
+            "flagreviewer",
+            "collaborating-on"
         ],
         "contentStatus": [
             "Review",
@@ -272,7 +274,7 @@
             "aws_s3_urls": [],
             "plugins": [{
                 "id": "org.ekstep.sunbirdcommonheader",
-                "ver": "1.7",
+                "ver": "1.8",
                 "type": "plugin"
             },
             {
@@ -292,7 +294,7 @@
             },
             {
                 "id": "org.ekstep.video",
-                "ver": "1.2",
+                "ver": "1.3",
                 "type": "plugin"
             },	
             {	
@@ -335,7 +337,7 @@
             "loadingImage": "",
             "plugins": [{
                     "id": "org.ekstep.sunbirdcommonheader",
-                    "ver": "1.7",
+                    "ver": "1.8",
                     "type": "plugin"
                     }, {
                     "id": "org.ekstep.sunbirdmetadata",

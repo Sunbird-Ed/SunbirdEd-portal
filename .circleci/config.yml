@@ -1,0 +1,49 @@
+version: 2.1
+jobs:
+  build:
+    machine:
+      image: circleci/classic:latest
+    steps:
+      - checkout
+      - run:
+          name: run build file
+          command: /bin/bash -x build.sh ${CIRCLE_SHA1} test
+
+  test-cases:
+    working_directory: ~/portal/src/app/client
+    docker:
+      - image: sunbird/build:player
+    steps:
+      - checkout:
+          path: ~/portal
+      - run:
+          name: Installing angular cli
+          command: 'npm install -g @angular/cli'
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Installing npm deps
+          command: 'npm install'
+      - save_cache: # special step to save the dependency cache
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths: ./node_modules
+      - run:
+          name: ng lint and building
+          command: 'mkdir -p /tmp/logs && ng lint && ng build --prod | tee /tmp/logs/build.log'
+      - run:
+          name: Executing test cases
+          command: 'npm run test-coverage | tee /tmp/logs/test_cases.log'
+      - run:
+          name: Publishing report to Codacy
+          command: 'npm install -g codacy-coverage && cat ./coverage/lcov.info | codacy-coverage '
+          when: always
+      - store_artifacts:
+          path: /tmp/logs
+          destination: logs
+          
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      #- build
+      - test-cases

@@ -274,22 +274,9 @@
             ],
             "collaboratingOnSortingOptions": [
                 {
-                    "field": "lastUpdatedOn",
-                    "name": "Updated On"
-                },
-                {
-                    "field": "type",
-                    "name": "Type"
+                    "field": "contentType",
+                    "name": "Content Type"
 
-                },
-                {
-                    "field": "status",
-                    "name": "Status"
-
-                },
-                {
-                    "field": "name",
-                    "name": "Name A-Z"
                 },
                 {
                     "field": "createdOn",
@@ -297,7 +284,20 @@
                 },
                 {
                     "field": "creator",
-                    "name": "Creator’s name "
+                    "name": "Creator"
+                },
+                {
+                    "field": "lastUpdatedOn",
+                    "name": "Last Updated"
+                },
+                {
+                    "field": "name",
+                    "name": "Name A-Z"
+                },
+                {
+                    "field": "status",
+                    "name": "Status"
+
                 }
             ]
         },
@@ -366,7 +366,7 @@
             "label": [
                 {
                     "id": "board",
-                    "name": "Curriculum"
+                    "name": "Board/Syllabus"
                 },
                 {
                     "id": "gradeLevel",
