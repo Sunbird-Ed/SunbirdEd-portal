@@ -95,7 +95,7 @@ ul.fancytree-container li.fancytree-lastsib {
   background-color: silver;
 }
 ul.fancytree-connectors.fancytree-container li {
-  background-image: url("../../node_modules/jquery.fancytree/dist/skin-awesome/vline.gif");
+  background-image: url("../../../node_modules/jquery.fancytree/dist/skin-awesome/vline.gif");
   background-position: 0 0;
 }
 ul.fancytree-container li.fancytree-lastsib,
@@ -305,7 +305,7 @@ ul.fancytree-container.fancytree-rtl ul {
 }
 ul.fancytree-container.fancytree-rtl.fancytree-connectors li {
   background-position: right 0;
-  background-image: url("../../node_modules/jquery.fancytree/dist/skin-awesome/vline-rtl.gif");
+  background-image: url("../../../node_modules/jquery.fancytree/dist/skin-awesome/vline-rtl.gif");
 }
 ul.fancytree-container.fancytree-rtl li.fancytree-lastsib,
 ul.fancytree-container.fancytree-rtl.fancytree-no-connector > li {
