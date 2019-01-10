@@ -42,9 +42,10 @@ module.exports = (app, keycloak) => {
     next()
   })
 
-  app.all(['/', '/signup', '/get', '/get/dial/:dialCode', '/explore',
+  app.all(['/', '/get', '/get/dial/:dialCode', '/explore',
     '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*','/explore-course',
-    '/explore-course/*', '/:slug/explore-course', '/:slug/explore-course/*'], indexPage)
+    '/explore-course/*', '/:slug/explore-course', '/:slug/explore-course/*',
+    '/:slug/signup', '/signup'], indexPage)
 
   app.all('/:slug/get', (req, res) => res.redirect('/get'))
 
@@ -75,8 +76,6 @@ module.exports = (app, keycloak) => {
 }
 
 function getLocals (req, callback) {
-  let config_key_allow_signup = 'sunbird_enable_signup'
-  let allow_signup = configHelper.getConfig(config_key_allow_signup)
   var locals = {}
   locals.userId = _.get(req, 'kauth.grant.access_token.content.sub') ? req.kauth.grant.access_token.content.sub : null
   locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'kauth.grant.access_token.content.sub') ? req.sessionID : null
@@ -87,14 +86,15 @@ function getLocals (req, callback) {
   locals.appId = envHelper.APPID
   locals.defaultTenant = envHelper.DEFAULT_CHANNEL
   locals.exploreButtonVisibility = configHelper.getConfig('sunbird_explore_button_visibility')
+  locals.helpLinkVisibility = envHelper.sunbird_help_link_visibility
   locals.defaultTenantIndexStatus = defaultTenantIndexStatus
-  locals.enableSignup = allow_signup
   locals.extContWhitelistedDomains = configHelper.getConfig('sunbird_extcont_whitelisted_domains')
   locals.buildNumber = envHelper.BUILD_NUMBER
   locals.apiCacheTtl = envHelper.PORTAL_API_CACHE_TTL
   locals.cloudStorageUrls = envHelper.CLOUD_STORAGE_URLS
   locals.userUploadRefLink = configHelper.getConfig('sunbird_portal_user_upload_ref_link')
   locals.deviceRegisterApi = envHelper.DEVICE_REGISTER_API
+  locals.googleCaptchaSiteKey = envHelper.sunbird_google_captcha_site_key
   callback(null, locals)
 }
 

@@ -27,7 +27,7 @@ describe('DataDrivenFilterComponent', () => {
   let makeChannelReadSuc, makeFrameworkReadSuc, makeFormReadSuc  = true;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
-    url = jasmine.createSpy('url');
+    url = '/explore/1?';
   }
   const resourceBundle = {
     'messages': {
@@ -43,6 +43,9 @@ describe('DataDrivenFilterComponent', () => {
   };
   class FakeActivatedRoute {
     queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
+    snapshot = {
+      params: {pageNumber: '1'},
+    };
     get queryParams() {
       return this.queryParamsMock.asObservable();
     }
@@ -89,19 +92,7 @@ describe('DataDrivenFilterComponent', () => {
     });
   });
 
-  it('should get formated filter data from session storage if data exist, set showFilter to true and emit filter data to parent', () => {
-    spyOn(cacheService, 'get').and.returnValue([]);
-    spyOn(component.dataDrivenFilter, 'emit').and.returnValue([]);
-    mockHashTagId = undefined;
-    mockFrameworkInput = undefined;
-    component.ngOnInit();
-    expect(component.formFieldProperties).toBeDefined();
-    expect(component.filtersDetails).toBeDefined();
-    expect(component.dataDrivenFilter.emit).toHaveBeenCalledWith([]);
-    expect(component.showFilters).toBeTruthy();
-  });
-
-  it('should get formated filter data by calling framework service and form service and set formated date in session', () => {
+   it('should get formated filter data by calling framework service and form service and set formated date in session', () => {
     mockHashTagId = undefined;
     mockFrameworkInput = undefined;
     mockFrameworkCategories = [];

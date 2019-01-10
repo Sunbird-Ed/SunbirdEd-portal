@@ -184,6 +184,9 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
       this.batchService.getUserList(request).pipe(takeUntil(this.unsubscribe))
         .subscribe((res) => {
           this.processParticipantDetails(res);
+          const userList = this.sortUsers(res);
+          this.participantList = userList.participantList;
+          this.mentorList = userList.mentorList;
         }, (err) => {
           if (err.error && err.error.params.errmsg) {
             this.toasterService.error(err.error.params.errmsg);
@@ -218,6 +221,10 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
     const mentorList = [];
     if (res.result.response.content && res.result.response.content.length > 0) {
       _.forEach(res.result.response.content, (userData) => {
+        if ( _.find(this.selectedMentors , {'id': userData.identifier }) ||
+        _.find(this.selectedParticipants , {'id': userData.identifier })) {
+          return;
+        }
         if (userData.identifier !== this.userService.userid) {
           const user = {
             id: userData.identifier,

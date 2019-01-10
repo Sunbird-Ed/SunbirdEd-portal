@@ -1,14 +1,59 @@
-<div class="ui text menu m-0 flex-jc-center d-flex" *ngIf="userService.loggedIn">
-	<a class="item" appTelemetryInteract [telemetryInteractEdata]="homeMenuIntractEdata" [class.active]="router.isActive('/search/All') || router.isActive('/home')" routerLink="/home">
+<div class="ui text menu m-0 flex-jc-center d-flex computer only" *ngIf="userService.loggedIn">
+	<!-- <a class="item" appTelemetryInteract [telemetryInteractEdata]="homeMenuIntractEdata" [class.active]="router.isActive('/search/All') || router.isActive('/home')" routerLink="/home">
 		{{resourceService?.frmelmnts?.tab?.home}}
+	</a> -->
+	<a class="item" appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')" routerLink="/resources">
+		{{resourceService?.frmelmnts?.tab?.resources}}
 	</a>
 	<a class="item" appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')" routerLink="/learn">
 		{{resourceService?.frmelmnts?.tab?.courses}}
 	</a>
-	<a class="item" appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')" routerLink="/resources">
-		{{resourceService?.frmelmnts?.tab?.resources}}
-	</a>
 	<a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='workSpaceRole' (click)="navigateToWorkspace()" appTelemetryInteract [telemetryInteractEdata]="workspaceMenuIntractEdata" [class.active]="router.isActive('/workspace')">
 		{{resourceService?.frmelmnts?.tab?.workspace}}
 	</a>
+	<a class="item" *ngIf='permissionService.permissionAvailable && helpLinkVisibility.toLowerCase() === "true"' appPermission [permission]='workSpaceRole' href="/help/creator/content-lifecycle/index.html" target="_blank">
+		{{resourceService?.frmelmnts?.tab?.help}}
+	</a>
+</div>
+<div class="mobile only">
+	<div class="ui sidebar right vertical menu" *ngIf="userService.loggedIn">
+		<div *ngIf='userProfile' class="item item fs-1 font-weight-bold">
+			{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}
+		</div>
+		<i class="close link icon side-bar-close-icon" (click)="showSideBar()"></i>
+		<div *ngIf='userProfile' class="ui divider mt-0"></div>
+		<a class="item" (click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')" routerLink="/resources">
+			{{resourceService?.frmelmnts?.tab?.resources}}
+		</a>
+		<a class="item" (click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')" routerLink="/learn">
+			{{resourceService?.frmelmnts?.tab?.courses}}
+		</a>
+		<a class="item" (click)="showSideBar()" routerLink="profile"  [class.active]="router.isActive('/search/profile') || router.isActive('/profile')" routerLink="/profile">
+			{{resourceService.frmelmnts?.lnk?.profile}}
+		</a>
+		<a class="item fixed-logout-btn" (click)="logout()">
+			{{resourceService.frmelmnts?.lnk?.logout}}
+		</a>
+	</div>
+	<div class="ui sidebar right vertical menu" *ngIf="!userService.loggedIn">
+		<i class="close icon side-bar-close-icon link" (click)="showSideBar()"></i>
+		<div>
+			<a href="/resources" class="item sign-in">
+				{{resourceService.frmelmnts?.btn?.signin}}
+			</a>
+		</div>
+		<div class="ui divider mt-0"></div>
+		<div class="item" (click)="showSideBar()" *ngIf="router.isActive('', true)"  routerLink="/explore">
+			{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
+		</div>
+		<a class="item" routerLink="explore" (click)="showSideBar()" *ngIf="!router.isActive('', true)" [class.active]="router.isActive('/search/explore') || router.isActive('/explore')">
+			{{resourceService?.frmelmnts?.tab?.resources}}
+		</a>
+		<a class="item" routerLink="explore-course" (click)="showSideBar()" *ngIf="!router.isActive('', true)" [class.active]="router.isActive('/search/explore-course') || router.isActive('/explore-course')">
+			{{resourceService?.frmelmnts?.tab?.courses}}
+		</a>
+	</div>
+	<div class="pusher dimmer">
+		<!-- Site content !-->
+	</div>
 </div>

@@ -88,6 +88,7 @@ export interface ITelemetryEvent {
 export interface IEndEventInput {
   'context': {
     'env': string;
+    'cdata'?: Array<object>;
   };
   'object'?: {
     'id': string;
@@ -128,6 +129,7 @@ export interface IImpressionEventInput {
 export interface IInteractEventInput {
   'context': {
     'env': string;
+    'cdata': Array<object>
   };
   'object'?: IInteractEventObject;
   'edata': IInteractEventEdata;

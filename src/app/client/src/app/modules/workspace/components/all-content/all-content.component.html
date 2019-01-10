@@ -17,6 +17,8 @@
         </th>
         <th class="two wide UpReviewTableHeader">
         </th>
+        <th class="two wide UpReviewTableHeader">
+        </th>
       </tr>
     </thead>
     <tbody [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="allContent">
@@ -27,8 +29,8 @@
           <h5 class="ui image header">
             <img src="{{content.appIcon || 'assets/images/default.png' | cdnprefixurl}}" class="ui tiny image UpReviewTinyImage">
             <div class="content ">
-              <div class="UpReviewHeader">{{content.name | slice:0:40}}
-                <i *ngIf="content.name.length > 40">...</i>
+              <div class="UpReviewHeader">{{content.name | slice:0:30}}
+                <i *ngIf="content.name.length > 30">...</i>
               </div>
               <div class="UpReviewSubHeader">{{content.contentType}}
               </div>
@@ -47,6 +49,11 @@
         <td>
           <i class="trash large icon" (click)="deleteConfirmModal(content.identifier); $event.stopPropagation()">
           </i>
+        </td>
+        <td>
+          <span *ngIf="content.lockInfo" suiPopup popupText="{{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':content?.lockInfo?.creatorInfo?.name | interpolate:'{contentName}':content?.name}}" [popupPlacement]="'top left'">
+            <i class="lock icon large"  ></i>
+          </span>
         </td>
       </tr>
     </tbody>
@@ -76,4 +83,7 @@
       <button class="ui primary button" (click)="modal.approve('approved')" autofocus>Yes</button>
     </div>
   </ng-template>
+
+  <app-contentlock-info-popup [content]="lockPopupData" (closeEvent)="onCloseLockInfoPopup($event)" *ngIf="showLockedContentModal"></app-contentlock-info-popup>
+
   

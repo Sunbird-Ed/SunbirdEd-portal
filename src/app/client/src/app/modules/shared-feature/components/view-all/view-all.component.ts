@@ -125,6 +125,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   /**
    * contains the search filter type
    */
+  public frameworkData: object;
   public filterType: string;
   public frameWorkName: string;
   public sortingOptions: Array<ISort>;
@@ -154,6 +155,11 @@ export class ViewAllComponent implements OnInit, OnDestroy {
       this.getChannelId();
     } else  {
       this.showFilter = true;
+      this.userService.userData$.subscribe(userData => {
+        if (userData && !userData.err) {
+            this.frameworkData = _.get(userData.userProfile, 'framework');
+        }
+      });
     }
     this.formAction = _.get(this.activatedRoute.snapshot, 'data.formAction');
     this.filterType = _.get(this.activatedRoute.snapshot, 'data.filterType');
@@ -232,7 +238,8 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   }
   private manipulateQueryParam(results) {
     this.filters = {};
-    const queryFilters = _.omit(results, ['key', 'sort_by', 'sortType', 'defaultSortBy', 'exists', 'dynamic']);
+    const queryFilters = _.omit(results, ['key', 'softConstraintsFilter', 'appliedFilters',
+    'sort_by', 'sortType', 'defaultSortBy', 'exists', 'dynamic']);
     if (!_.isEmpty(queryFilters)) {
       _.forOwn(queryFilters, (queryValue, queryKey) => {
         this.filters[queryKey] = queryValue;
@@ -247,16 +254,29 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   }
 
   private getContentList(request) {
+    const softConstraintData = {
+      filters: _.get(request.queryParams, 'softConstraintsFilter') ? JSON.parse(request.queryParams.softConstraintsFilter) : {},
+      softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
+      mode: 'soft'
+    };
+    let manipulatedData = {};
+    if (_.get(this.activatedRoute.snapshot, 'data.applyMode')) {
+       manipulatedData = this.utilService.manipulateSoftConstraint( _.get(this.queryParams, 'appliedFilters'),
+      softConstraintData, this.frameworkData);
+    }
     const requestParams = {
-      filters: this.filters,
+      filters: _.get(this.queryParams, 'appliedFilters') ? this.filters :  {..._.get(manipulatedData, 'filters'), ...this.filters},
       limit: this.pageLimit,
       pageNumber: Number(request.params.pageNumber),
       exists: request.queryParams.exists,
       sort_by: request.queryParams.sortType ?
         { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy),
-        softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
+      mode: _.get(manipulatedData, 'mode'),
       params : this.configService.appConfig.ViewAll.contentApiQueryParams
     };
+    if (_.get(manipulatedData, 'filters')) {
+      requestParams['softConstraints'] = _.get(manipulatedData, 'softConstraints');
+    }
     if (_.get(this.activatedRoute.snapshot, 'data.baseUrl') === 'learn') {
       return combineLatest(
         this.searchService.contentSearch(requestParams),

@@ -31,17 +31,7 @@ module.exports = function (app) {
         }))
 
   app.post('/learner/user/v1/create', function (req, res, next) {
-   let config_key_allow_signup = 'sunbird_enable_signup'
-   let allow_signup = configHelper.getConfig(config_key_allow_signup)
-      if (allow_signup !== undefined) {
-        if (allow_signup === 'false') {
-          res.sendStatus(403)
-        } else {
-          next()
-        }
-      } else {
-        res.sendStatus(403)
-      }
+    next()
   })
 
   app.all('/learner/data/v1/role/read',
@@ -77,8 +67,9 @@ module.exports = function (app) {
             }
           },
           userResDecorator: (proxyRes, proxyResData, req, res) => {
-              if(req.method === 'GET' && proxyRes.statusCode === 404) res.redirect('/')
-              return proxyResData;
+            const data = JSON.parse(proxyResData.toString('utf8'));
+            if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+            return proxyResData;
           }
         }))
 }

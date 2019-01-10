@@ -11,8 +11,7 @@ import { CacheService } from 'ng2-cache-service';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-data-driven-filter',
-  templateUrl: './data-driven-filter.component.html',
-  styleUrls: ['./data-driven-filter.component.css']
+  templateUrl: './data-driven-filter.component.html'
 })
 export class DataDrivenFilterComponent implements OnInit, OnChanges {
   @Input() filterEnv: string;
@@ -71,59 +70,50 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
   }
   getFormatedFilterDetails() {
     const formAction = this.formAction ? this.formAction : 'search';
-    const cachedFormData = this.cacheService.get(this.filterEnv + formAction);
-    if (cachedFormData) {
-      return of(cachedFormData);
-    } else {
-      return this.fetchFrameWorkDetails().pipe(
-        mergeMap((frameworkDetails: any) => {
-          this.categoryMasterList = frameworkDetails.categoryMasterList;
-          this.framework = frameworkDetails.code;
-          return this.getFormDetails();
-        }),
-        mergeMap((formData: any) => {
-          if (_.find(formData, {code: 'channel'})) {
-            return this.getOrgSearch().pipe(map((channelData: any) => {
-              const data = _.filter(channelData, 'hashTagId');
-              return {formData: formData, channelData: data};
-            }));
-          } else {
-            return of({formData: formData});
+    return this.fetchFrameWorkDetails().pipe(
+      mergeMap((frameworkDetails: any) => {
+        this.categoryMasterList = frameworkDetails.categoryMasterList;
+        this.framework = frameworkDetails.code;
+        return this.getFormDetails();
+      }),
+      mergeMap((formData: any) => {
+        if (_.find(formData, {code: 'channel'})) {
+          return this.getOrgSearch().pipe(map((channelData: any) => {
+            const data = _.filter(channelData, 'hashTagId');
+            return {formData: formData, channelData: data};
+          }));
+        } else {
+          return of({formData: formData});
+        }
+      }),
+      map((formData: any) => {
+        let formFieldProperties = _.filter(formData.formData, (formFieldCategory) => {
+          if (!_.isEmpty(formFieldCategory.allowedRoles)
+            && !this.permissionService.checkRolesPermissions(formFieldCategory.allowedRoles)) {
+              return false;
           }
-        }),
-        map((formData: any) => {
-          let formFieldProperties = _.filter(formData.formData, (formFieldCategory) => {
-            if (!_.isEmpty(formFieldCategory.allowedRoles)
-              && !this.permissionService.checkRolesPermissions(formFieldCategory.allowedRoles)) {
-                return false;
-            }
-            if (formFieldCategory.code === 'channel') {
-              formFieldCategory.range = _.map(formData.channelData, (value) => {
-                return {category: 'channel',
-                identifier: value.hashTagId,
-                name: value.orgName,
-              };
-              });
-            } else {
-              const loggedInUserRoles = _.get(this.userService, 'userProfile.userRoles');
-            const frameworkTerms = _.get(_.find(this.categoryMasterList, { code : formFieldCategory.code}), 'terms');
-            formFieldCategory.range = _.union(formFieldCategory.range, frameworkTerms);
-            if (this.filterEnv === 'upforreview' && formFieldCategory.code === 'contentType' &&
-            (_.includes(loggedInUserRoles, 'CONTENT_REVIEWER') && _.includes(loggedInUserRoles, 'BOOK_REVIEWER') &&
-            !_.find(formFieldCategory.range, { name: 'TextBook' }))) {
-                  formFieldCategory.range.push({ name: 'TextBook' });
-            }
-            }
-            return true;
-          });
-          formFieldProperties = _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index');
-          return formFieldProperties;
-        }),
-        tap((formFieldProperties) => {
-          this.cacheService.set(this.filterEnv + formAction, formFieldProperties,
-            {maxAge: this.browserCacheTtlService.browserCacheTtl});
-        }));
-    }
+          if (formFieldCategory.code === 'channel') {
+            formFieldCategory.range = _.map(formData.channelData, (value) => {
+              return {category: 'channel',
+              identifier: value.hashTagId,
+              name: value.orgName,
+            };
+            });
+          } else {
+            const loggedInUserRoles = _.get(this.userService, 'userProfile.userRoles');
+          const frameworkTerms = _.get(_.find(this.categoryMasterList, { code : formFieldCategory.code}), 'terms');
+          formFieldCategory.range = _.union(formFieldCategory.range, frameworkTerms);
+          if (this.filterEnv === 'upforreview' && formFieldCategory.code === 'contentType' &&
+          (_.includes(loggedInUserRoles, 'CONTENT_REVIEWER') && _.includes(loggedInUserRoles, 'BOOK_REVIEWER') &&
+          !_.find(formFieldCategory.range, { name: 'TextBook' }))) {
+                formFieldCategory.range.push({ name: 'TextBook' });
+          }
+          }
+          return true;
+        });
+        formFieldProperties = _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index');
+        return formFieldProperties;
+      }));
   }
   private fetchFrameWorkDetails() {
     return this.frameworkService.frameworkData$.pipe(filter((frameworkDetails) => { // wait to get the framework name if passed as input
@@ -156,10 +146,10 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.formInputData = {};
       _.forIn(params, (value, key) => this.formInputData[key] = typeof value === 'string' && key !== 'key' ? [value] : value);
-       if (params.channel) {
+      if (params.channel) {
         this.modelChange(this.formInputData.channel);
-         this.channelInputLabel = this.orgDetailsService.getOrg();
-       }
+          this.channelInputLabel = this.orgDetailsService.getOrg();
+      }
       this.showFilters = true;
       this.hardRefreshFilter();
     });
@@ -193,7 +183,14 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
           queryParams[key] = formatedValue;
         }
     });
-    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
+    queryParams['appliedFilters'] = true;
+    let redirectUrl; // if pageNumber exist then go to first page every time when filter changes, else go exact path
+    if (this.activatedRoute.snapshot.params.pageNumber) { // when using dataDriven filter should this should be verified
+      redirectUrl = this.router.url.split('?')[0].replace(/[^\/]+$/, '1');
+    } else {
+      redirectUrl = this.router.url.split('?')[0];
+    }
+    this.router.navigate([redirectUrl], { queryParams: queryParams });
   }
 
   public removeFilterSelection(field, item) {
@@ -214,14 +211,19 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
   }
   private enrichFiltersOnInputChange() {
     this.filtersDetails = _.map(this.formFieldProperties, (eachFields) => {
-      eachFields.range = _.filter(this.enrichFilters[eachFields.code],
-        (field) => _.get(field, 'name') && field.name !== '');
+      if (!_.includes(['channel'], eachFields.code)) {
+        eachFields.range = _.filter(this.enrichFilters[eachFields.code],
+          (field) => _.get(field, 'name') && field.name !== '');
+      }
       return eachFields;
     });
     this.hardRefreshFilter();
   }
   public handleTopicChange(topicsSelected) {
-    this.formInputData['topic'] = topicsSelected;
+    this.formInputData['topic'] = [];
+    _.forEach(topicsSelected, (value, index) => {
+      this.formInputData['topic'].push(value.name);
+    });
     this.cdr.detectChanges();
   }
 
@@ -232,7 +234,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
       _.forEach(data, (value, key) => {
         this.channelInputLabel.push(_.find(orgDetails['range'], {identifier: value}));
         this.orgDetailsService.setOrg(this.channelInputLabel);
-       });
+      });
     }
   }
   private setFilterInteractData() {

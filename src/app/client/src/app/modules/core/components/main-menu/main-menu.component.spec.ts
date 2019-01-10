@@ -25,7 +25,6 @@ describe('MainMenuComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MainMenuComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

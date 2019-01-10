@@ -264,7 +264,7 @@ export const updateBatchDetails = {
       '6d4da241-a31b-4041-bbdb-dd3a898b3f85',
       '874ed8a5-782e-4f6c-8f36-e0288455901e',
       '80736bb1-9c64-488f-9902-d6fbfcd3e7ed',
-      '97255811-5486-4f01-bad1-36138d0f5b8a'
+      '97255811-5486-4f01-bad1-36138d0f5b8a7'
     ],
     'name': 'Test 2 batch',
     'countDecrementStatus': false,

@@ -68,6 +68,9 @@
 .px-3 {
   @include padding(null 3px);
 }
+.px-4 {
+  @include padding(null 4px);
+}
 .px-5 {
   @include padding(null 5px);
 }
@@ -91,8 +94,14 @@
 .py-0 {
   @include padding(0 null);
 }
+.py-2 {
+  @include padding(2px null);
+}
 .py-3 {
   @include padding(3px null);
+}
+.py-4 {
+  @include padding(4px null);
 }
 .py-5 {
   @include padding(5px null);

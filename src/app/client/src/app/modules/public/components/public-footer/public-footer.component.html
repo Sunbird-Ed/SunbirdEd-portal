@@ -1,6 +1,7 @@
  <!-- footer -->
   
- <div *ngIf="appFooter" class="ui footer basic segment">
+ <div *ngIf="appFooter" class="ui footer basic segment mt-20">
+   <div class="ui container">
     <div class="ui grid">
       <div class="ten wide mobile eleven wide tablet eleven wide column">
         <a href='app'>
@@ -19,10 +20,8 @@
         </a>
       </div>
       <div class="two wide mobile one wide tablet one wide computer column">
-        <i class="close icon closeBtn-dial-code" (click)="appFooter=false"></i>
-      </div>
-      <div class="column computer only">
-        <img class="ui tiny centered image" src="">
+        <i class="close icon closeBtn-dial-code link" (click)="appFooter=false"></i>
       </div>
     </div>
+  </div>
   </div>

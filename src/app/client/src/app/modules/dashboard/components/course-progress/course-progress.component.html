@@ -1,8 +1,6 @@
-<br>
-<br>
+<div class="ui container">
 <div class=" ui grid">
-  <div class="one wide column"></div>
-  <div class="ten wide column">
+  <div class="twelve wide column">
     <div>
       <span id="dashoardFiltersHolder" *ngIf="batchlist && batchlist.length > 0">
         <div class="ui grid" [appTelemetryImpression]="telemetryImpression">
@@ -141,9 +139,10 @@
                 <td class="ui green header text-font" *ngIf="(student.progress !== 100 && student.progress > 90)">{{student.progress}}%</td>
                 <td class="ui orange header text-font" *ngIf="(student.progress !== 100 && student.progress > 30)">{{student.progress}}%</td>
                 <td class="ui red header text-font" *ngIf="(student.progress !== 100 && student.progress < 30)">{{student.progress}}%</td>
-                <td>{{student.userName}}
+                <td><span *ngIf="student.firstName">{{student.firstName}} </span><span *ngIf="student.lastName">{{student.lastName}}</span>
+                  <span *ngIf="!(student.firstName && student.lastName)">-</span>
                   <br>
-                  <span *ngIf="student.lastAccessTime">Last login: {{student.lastAccessTime | dateFormat}}</span>
+                  <span *ngIf="student.lastAccessTime">{{resourceService?.frmelmnts?.lbl?.lastAccessed}} {{student.lastAccessTime | dateFormat}}</span>
                 </td>
                 <td>{{student.batchEndsOn | dateFormat}}</td>
                 <td>{{student.org}}</td>
@@ -191,7 +190,7 @@
       </div>
     </div>
   </div>
-  <div class="one wide column"></div>
+</div>
 </div>
 
 <sui-modal [isClosable]="true" (dismissed)="modal.deny(); showDownloadModal = false;" #modal *ngIf="showDownloadModal">

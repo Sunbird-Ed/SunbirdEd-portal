@@ -66,7 +66,8 @@ describe('TelemetryInteractDirective', () => {
       expect(component.appTelemetryInteract.telemetryInteractObject).toEqual(telemetryInteractObject);
       expect(component.appTelemetryInteract.appTelemetryInteractData).toEqual({
         context: {
-          env: env
+          env: env,
+          cdata: []
         },
         object: telemetryInteractObject,
         edata: telemetryInteractEdata

@@ -81,7 +81,6 @@ describe('UploadedComponent', () => {
     component.fetchUploaded(9, 1);
     fixture.detectChanges();
     expect(component.uploaded).toBeDefined();
-    expect(component.uploaded.length).toBeGreaterThan(1);
   }));
 
   it('should call delete api and get success response', inject([WorkSpaceService, ActivatedRoute],

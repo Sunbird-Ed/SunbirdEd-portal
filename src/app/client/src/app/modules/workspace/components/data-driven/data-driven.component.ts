@@ -6,18 +6,20 @@ import {
 } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService } from './../../services';
-import { UserService, FrameworkService, FormService } from '@sunbird/core';
+import { SearchService, UserService, FrameworkService, FormService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { WorkSpace } from '../../classes/workspace';
+import { WorkSpaceService } from '../../services';
 
 @Component({
   selector: 'app-data-driven',
   templateUrl: './data-driven.component.html',
   styleUrls: ['./data-driven.component.css']
 })
-export class DataDrivenComponent implements OnInit, OnDestroy {
+export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy {
   @ViewChild('formData') formData: DefaultTemplateComponent;
   @ViewChild('modal') modal;
 
@@ -108,6 +110,8 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
 
 
   constructor(
+    public searchService: SearchService,
+    public workSpaceService: WorkSpaceService,
     activatedRoute: ActivatedRoute,
     frameworkService: FrameworkService,
     private router: Router,
@@ -120,6 +124,7 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
     private _cacheService: CacheService,
     public navigationHelperService: NavigationHelperService
   ) {
+    super(searchService, workSpaceService, userService);
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
@@ -249,7 +254,6 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
     const requestData = _.cloneDeep(data);
     requestData.name = data.name ? data.name : this.name,
       requestData.description = data.description ? data.description : this.description,
-      requestData.creator = this.userProfile.firstName + ' ' + this.userProfile.lastName,
       requestData.createdBy = this.userProfile.id,
       requestData.organisation = this.userProfile.organisationNames,
       requestData.createdFor = this.userProfile.organisationIds,
@@ -263,29 +267,41 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
     if (this.resourceType) {
       requestData.resourceType = this.resourceType;
     }
-
+    if (!_.isEmpty(this.userProfile.lastName)) {
+      requestData.creator = this.userProfile.firstName + ' ' + this.userProfile.lastName;
+    } else {
+      requestData.creator = this.userProfile.firstName;
+    }
     return requestData;
   }
 
   createContent() {
-    const state = 'draft';
-    const framework = this.framework;
     const requestData = {
       content: this.generateData(_.pickBy(this.formData.formInputData))
     };
     if (this.contentType === 'studymaterial') {
       this.editorService.create(requestData).subscribe(res => {
-        this.router.navigate(['/workspace/content/edit/content/', res.result.content_id, state, framework]);
+        this.createLockAndNavigateToEditor({identifier: res.result.content_id});
       }, err => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0078);
       });
     } else {
       this.editorService.create(requestData).subscribe(res => {
-        const type = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
-        this.router.navigate(['/workspace/content/edit/collection', res.result.content_id, type, state, framework]);
+        this.createLockAndNavigateToEditor({identifier: res.result.content_id});
       }, err => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0010);
       });
+    }
+  }
+
+  createLockAndNavigateToEditor (content) {
+    const state = 'draft';
+    const framework = this.framework;
+    if (this.contentType === 'studymaterial') {
+      this.router.navigate(['/workspace/content/edit/content/', content.identifier, state, framework, 'Draft']);
+    } else {
+      const type = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
+      this.router.navigate(['/workspace/content/edit/collection', content.identifier, type, state, framework, 'Draft']);
     }
   }
 

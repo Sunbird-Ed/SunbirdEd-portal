@@ -69,6 +69,18 @@ telemetryService.prototype.audit = function (data) {
     runningEnv: 'server'
   })
 }
+/**
+ * for impression event
+ * data object have these properties {'edata', context', 'object', 'tags'}
+ */
+telemetryService.prototype.impression = function (data) {
+  Telemetry.impression(data.edata, {
+    context: data.context,
+    actor: data.actor,
+    object: data.object,
+    tags: data.tags
+  })
+}
 
 /**
  * for error event

@@ -14,7 +14,7 @@
         {{ resourceService?.frmelmnts?.lbl?.content}}
       </th>
       <th (click)="sortColumns('creator')" class="four wide UpReviewTableHeader sorted bl-0" [ngClass]="{'ascending':sortDirection === 'asc' && 
-      column === 'creator','descending':sortDirection === 'desc' && column === 'creator'}">{{ resourceService?.frmelmnts?.lbl?.author}}
+      column === 'creator','descending':sortDirection === 'desc' && column === 'creator'}">{{ resourceService?.frmelmnts?.lbl?.creator}}
       </th>
       <th (click)="sortColumns('lastUpdatedOn')" class="four wide UpReviewTableHeader sorted bl-0" [ngClass]="{'ascending':sortDirection === 'asc' && 
       column === 'lastUpdatedOn','descending':sortDirection === 'desc' && column === 'lastUpdatedOn'}">
@@ -36,8 +36,8 @@
         <h5 class="ui image header">
           <img src="{{content.appIcon || 'assets/images/default.png' | cdnprefixurl}}" class="ui tiny image UpReviewTinyImage">
           <div class="content ">
-            <div class="UpReviewHeader">{{content.name | slice:0:40}}
-              <i *ngIf="content.name.length > 40">...</i>
+            <div class="UpReviewHeader">{{content.name | slice:0:25}}
+              <i *ngIf="content.name.length > 25">...</i>
             </div>
             <div class="UpReviewSubHeader">{{content.contentType}}
             </div>
@@ -60,9 +60,14 @@
         </h5>
       </td>
       <td class="UpForReviewStatusOrange">{{content.status}}</td>
-      <td class="cursor-pointer" (click)="contentClick(content)">
-        <i class="edit icon">
+      <td *ngIf= "content.status.toLowerCase() === 'draft' && !content.lockInfo">
+        <i (click)="contentClick(content)" class="edit icon cursor-pointer">
         </i>
+      </td>
+      <td *ngIf="content.lockInfo">
+        <span suiPopup popupText="{{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':content?.lockInfo?.creatorInfo?.name | interpolate:'{contentName}':content?.name}}" [popupPlacement]="'top left'">
+          <i class="lock icon large"  ></i>
+        </span>
       </td>
     </tr>
   </tbody>
@@ -92,3 +97,5 @@
     <button class="ui primary button" (click)="modal.approve('approved')" autofocus>Yes</button>
   </div>
 </ng-template>
+
+<app-contentlock-info-popup [content]="lockPopupData" (closeEvent)="onCloseLockInfoPopup($event)" *ngIf="showLockedContentModal"></app-contentlock-info-popup>
