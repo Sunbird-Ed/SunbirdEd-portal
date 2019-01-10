@@ -48,6 +48,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       }), first()).subscribe(data => {
         this.formFieldOptions = data;
       }, err => {
+        this.toasterService.warning(this.resourceService.messages.emsg.m0012);
         this.navigateToLibrary();
       });
   }
@@ -134,6 +135,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
           this.enableSubmitButton();
         }
       }, (error) => {
+        this.toasterService.warning(this.resourceService.messages.emsg.m0012);
         this.navigateToLibrary();
       });
   }
@@ -232,7 +234,6 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     if (this.modal) {
       this.modal.deny();
     }
-    this.toasterService.warning(this.resourceService.messages.emsg.m0012);
     if (_.isEmpty(this.formInput)) {
       this.router.navigate(['/resources']);
       this.cacheService.set('showFrameWorkPopUp', 'installApp' );
