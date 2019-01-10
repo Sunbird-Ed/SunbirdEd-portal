@@ -12,8 +12,7 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
 
 @Component({
   selector: 'app-user-search',
-  templateUrl: './user-search.component.html',
-  styleUrls: ['./user-search.component.scss']
+  templateUrl: './user-search.component.html'
 })
 export class UserSearchComponent implements OnInit {
   private searchService: SearchService;

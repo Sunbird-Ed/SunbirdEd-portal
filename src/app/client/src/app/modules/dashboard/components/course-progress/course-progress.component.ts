@@ -16,8 +16,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
  */
 @Component({
   selector: 'app-course-progress',
-  templateUrl: './course-progress.component.html',
-  styleUrls: ['./course-progress.component.scss']
+  templateUrl: './course-progress.component.html'
 })
 export class CourseProgressComponent implements OnInit, OnDestroy {
   /**
