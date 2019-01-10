@@ -73,7 +73,7 @@ describe('PublicCoursePlayerComponent', () => {
     courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(toasterService, 'error').and.returnValue('');
   });
-  fit('should fetch course details on page load', () => {
+  it('should fetch course details on page load', () => {
     activatedRouteStub.snapshot.params = {courseId: 'do_212347136096788480178'};
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     courseService.initialize();

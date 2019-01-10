@@ -1,23 +1,20 @@
-import { combineLatest, Subject } from 'rxjs';
-import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil, first } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { BreadcrumbsService, CoursesService } from '@sunbird/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import {
   ILoaderMessage, ConfigService, ICollectionTreeOptions,
   ToasterService, ResourceService
 } from '@sunbird/shared';
-import { CourseConsumptionService, CourseBatchService, CourseProgressService } from '@sunbird/learn';
-import { IImpressionEventInput, IEndEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { CourseConsumptionService } from '@sunbird/learn';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-public-course-player',
   templateUrl: './public-course-player.component.html',
   styleUrls: ['./public-course-player.component.css']
 })
 export class PublicCoursePlayerComponent implements OnInit, OnDestroy {
-
-  public courseInteractObject: IInteractEventObject;
 
   private courseId: string;
 
@@ -49,9 +46,7 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy {
   constructor(public activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService,
     public router: Router,
-    private toasterService: ToasterService, private resourceService: ResourceService, public breadcrumbsService: BreadcrumbsService,
-    public courseBatchService: CourseBatchService,
-    public coursesService: CoursesService) {
+    private toasterService: ToasterService, private resourceService: ResourceService) {
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
   }
 

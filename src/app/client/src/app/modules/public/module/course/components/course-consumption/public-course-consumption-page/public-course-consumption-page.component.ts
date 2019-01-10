@@ -1,7 +1,7 @@
 import { combineLatest, Subject, throwError } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { ResourceService, ToasterService, ConfigService, ContentUtilsServiceService, ITelemetryShare } from '@sunbird/shared';
-import { CourseConsumptionService, CourseBatchService } from '@sunbird/learn';
+import { CourseConsumptionService } from '@sunbird/learn';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -28,8 +28,7 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
 
   public unsubscribe = new Subject<void>();
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
-    public toasterService: ToasterService, public courseBatchService: CourseBatchService,
-    private resourceService: ResourceService, public router: Router,
+    public toasterService: ToasterService, private resourceService: ResourceService, public router: Router,
     public contentUtilsServiceService: ContentUtilsServiceService, private configService: ConfigService) {
   }
 

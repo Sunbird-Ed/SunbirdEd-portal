@@ -1,12 +1,10 @@
 
-import { takeUntil, map } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { CourseBatchService } from '@sunbird/learn';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash';
-import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { Subject } from 'rxjs';
 import * as moment from 'moment';
 import { UserService } from '@sunbird/core';
@@ -24,8 +22,6 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
 
   public baseUrl = '';
   public showLoginModal = false;
-  public courseInteractObject: IInteractEventObject;
-  public enrollBatchIntractEdata: IInteractEventEdata;
   batchList = [];
   showError = false;
   showBatchList = false;
@@ -35,21 +31,11 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
   ];
   todayDate = moment(new Date()).format('YYYY-MM-DD');
   constructor(public resourceService: ResourceService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
-    public router: Router, public activatedRoute: ActivatedRoute, public userService: UserService) {
+    public router: Router, public userService: UserService) {
     this.batchStatus = this.statusOptions[0].value;
   }
 
   ngOnInit() {
-    this.courseInteractObject = {
-      id: this.courseHierarchy.identifier,
-      type: 'Course',
-      ver: this.courseHierarchy.pkgVersion ? this.courseHierarchy.pkgVersion.toString() : '1.0'
-    };
-    this.enrollBatchIntractEdata = {
-      id: 'enroll-batch',
-      type: 'click',
-      pageid: 'course-consumption'
-    };
     this.getAllBatchDetails();
   }
 
