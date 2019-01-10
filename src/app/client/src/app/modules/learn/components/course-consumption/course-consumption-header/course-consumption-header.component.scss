@@ -1,0 +1,11 @@
+::ng-deep {
+    .ui.tiny.progress .bar{
+        min-width: 0
+    }
+    .ui.progress.status.expired .bar {
+        background-color: #bdbdbd !important;
+    }
+    .ui.progress .bar{
+        height: 6px !important; 
+    }
+} 
