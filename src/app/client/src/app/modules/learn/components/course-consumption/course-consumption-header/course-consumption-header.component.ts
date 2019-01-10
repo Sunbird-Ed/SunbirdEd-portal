@@ -153,6 +153,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.unsubscribe.complete();
   }
   getBatchStatus() {
-   return this.enrolledBatchInfo.status === 2 && this.progress < 100;
+   return (this.enrolledBatchInfo.status === 2 && this.progress < 100);
   }
 }
