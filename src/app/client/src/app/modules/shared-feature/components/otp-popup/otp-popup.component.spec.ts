@@ -31,10 +31,10 @@ describe('OtpPopupComponent', () => {
   });
 
   it('should show validation error message for form', () => {
-    spyOn(component, 'enableSignUpSubmitButton');
+    spyOn(component, 'enableSubmitButton');
     component.ngOnInit();
     expect(component.otpForm.valid).toBeFalsy();
-    expect(component.enableSignUpSubmitButton).toHaveBeenCalled();
+    expect(component.enableSubmitButton).toHaveBeenCalled();
     expect(component.disableSubmitBtn).toBeTruthy();
   });
 

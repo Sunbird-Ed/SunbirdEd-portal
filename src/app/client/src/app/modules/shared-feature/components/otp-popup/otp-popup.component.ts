@@ -42,7 +42,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
     this.otpForm = new FormGroup({
       otp: new FormControl('', [Validators.required])
     });
-    this.enableSignUpSubmitButton();
+    this.enableSubmitButton();
   }
 
   ngOnDestroy() {
@@ -103,7 +103,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
     );
   }
 
-  enableSignUpSubmitButton() {
+  enableSubmitButton() {
     this.otpForm.valueChanges.subscribe(val => {
       if (this.otpForm.status === 'VALID') {
         this.disableSubmitBtn = false;
