@@ -35,7 +35,7 @@ describe('OtpPopupComponent', () => {
     component.ngOnInit();
     expect(component.otpForm.valid).toBeFalsy();
     expect(component.enableSubmitButton).toHaveBeenCalled();
-    expect(component.disableSubmitBtn).toBeTruthy();
+    expect(component.enableSubmitBtn).toBeFalsy();
   });
 
   it('should unsubscribe from all observable subscriptions', () => {
@@ -48,7 +48,7 @@ describe('OtpPopupComponent', () => {
     component.ngOnInit();
     const email = component.otpForm.controls['otp'];
     email.setValue('784758');
-    expect(component.disableSubmitBtn).toBeFalsy();
+    expect(component.enableSubmitBtn).toBeTruthy();
   });
 
   it('call verifyOTP and get success', () => {
@@ -67,7 +67,7 @@ describe('OtpPopupComponent', () => {
     const otpService = TestBed.get(OtpService);
     spyOn(otpService, 'verifyOTP').and.returnValue(observableThrowError(testData.verifyOtpError));
     component.verifyOTP();
-    expect(component.disableSubmitBtn).toEqual(false);
+    expect(component.enableSubmitBtn).toBeTruthy();
   });
 
   it('call resendOTP and get success', () => {

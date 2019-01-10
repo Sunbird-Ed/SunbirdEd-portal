@@ -18,7 +18,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
   @Output() verificationSuccess = new EventEmitter();
   public unsubscribe = new Subject<void>();
   otpForm: FormGroup;
-  disableSubmitBtn = true;
+  enableSubmitBtn = false;
   errorMessage: string;
   infoMessage: string;
   disableResendButton = false;
@@ -55,7 +55,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
 
   verifyOTP() {
     const wrongOTPMessage = this.otpData.wrongOtpMessage;
-    this.disableSubmitBtn = true;
+    this.enableSubmitBtn = false;
     const request = {
       'request': {
         'key': this.otpData.value,
@@ -76,7 +76,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
         this.verificationSuccess.emit(emitData);
       },
       (err) => {
-        this.disableSubmitBtn = false;
+        this.enableSubmitBtn = true;
         this.infoMessage = '';
         this.errorMessage = err.error.params.status === 'ERROR_INVALID_OTP' ?
           wrongOTPMessage : this.resourceService.messages.fmsg.m0085;
@@ -105,11 +105,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
 
   enableSubmitButton() {
     this.otpForm.valueChanges.subscribe(val => {
-      if (this.otpForm.status === 'VALID') {
-        this.disableSubmitBtn = false;
-      } else {
-        this.disableSubmitBtn = true;
-      }
+      this.enableSubmitBtn = (this.otpForm.status === 'VALID');
     });
   }
 

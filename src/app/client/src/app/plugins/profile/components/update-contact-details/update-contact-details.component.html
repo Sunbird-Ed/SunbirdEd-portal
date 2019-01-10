@@ -31,7 +31,7 @@
     </form>
   </div>
   <div class="actions text-ac" *ngIf="showForm">
-    <button [ngClass]="{'grey':disableSubmitBtn, 'dodger-blue':!disableSubmitBtn}" (click)="onSubmitForm()" class="ui button">{{resourceService?.frmelmnts?.btn?.submitbtn}}</button>
+    <button [ngClass]="{'grey':!enableSubmitBtn, 'dodger-blue':enableSubmitBtn}" (click)="onSubmitForm()" class="ui button">{{resourceService?.frmelmnts?.btn?.submitbtn}}</button>
   </div>
 
   <app-otp-popup  *ngIf="!showForm" [otpData]="otpData" (verificationSuccess)="updateProfile($event)" (redirectToParent)="showParentForm($event)" ></app-otp-popup>

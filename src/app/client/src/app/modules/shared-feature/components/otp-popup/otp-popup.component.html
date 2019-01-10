@@ -19,7 +19,7 @@
         </form>
         <div [ngClass]="{'grey cursor-pointerText': disableResendButton}" (click)="resendOTP(); disableResendButton = true;" class="fs-1 text-ac blue text mb-50 cursor-pointer"
           role="button" tabindex="0">{{resourceService?.frmelmnts?.lbl?.resendOTP}}</div>
-        <button [ngClass]="{'grey':disableSubmitBtn, 'dodger-blue':!disableSubmitBtn}" class="ui button width-300" tabindex="0"
+        <button [ngClass]="{'grey':!enableSubmitBtn, 'dodger-blue':enableSubmitBtn}" class="ui button width-300" tabindex="0"
           (click)="verifyOTP()">{{resourceService?.frmelmnts?.lbl?.submitOTP}}</button>
       </div>
     </div>

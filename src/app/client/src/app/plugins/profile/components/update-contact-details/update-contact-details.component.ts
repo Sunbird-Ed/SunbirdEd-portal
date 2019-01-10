@@ -16,7 +16,7 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
   @Input() contactType: string;
   @Output() close = new EventEmitter<any>();
   contactTypeForm: FormGroup;
-  disableSubmitBtn = true;
+  enableSubmitBtn = false;
   showUniqueError = '';
   showForm = true;
   @ViewChild('contactTypeModal') contactTypeModal;
@@ -54,11 +54,7 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
 
   enableSubmitButton() {
     this.contactTypeForm.valueChanges.subscribe(val => {
-      if (this.contactTypeForm.status === 'VALID') {
-        this.disableSubmitBtn = false;
-      } else {
-        this.disableSubmitBtn = true;
-      }
+      this.enableSubmitBtn = (this.contactTypeForm.status === 'VALID');
     });
   }
 
@@ -123,7 +119,7 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
   }
 
   onSubmitForm() {
-    this.disableSubmitBtn = true;
+    this.enableSubmitBtn = false;
     this.generateOTP();
   }
 
@@ -144,7 +140,7 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
         const failedgenerateOTPMessage = (err.error.params.status === 'PHONE_ALREADY_IN_USE') ||
           (err.error.params.status === 'EMAIL_IN_USE') ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0085;
         this.toasterService.error(failedgenerateOTPMessage);
-        this.disableSubmitBtn = false;
+        this.enableSubmitBtn = true;
       }
     );
   }

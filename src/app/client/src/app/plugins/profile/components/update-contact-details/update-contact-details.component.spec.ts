@@ -37,7 +37,7 @@ describe('UpdateContactDetailsComponent', () => {
     expect(component.contactTypeForm.valid).toBeFalsy();
     expect(component.onContactValueChange).toHaveBeenCalled();
     expect(component.enableSubmitButton).toHaveBeenCalled();
-    expect(component.disableSubmitBtn).toBeTruthy();
+    expect(component.enableSubmitBtn).toBeFalsy();
   });
   it('should show validation error message for email', () => {
     component.contactType = 'email';
@@ -51,7 +51,7 @@ describe('UpdateContactDetailsComponent', () => {
     expect(errors['required']).toBeTruthy();
     expect(component.onContactValueChange).toHaveBeenCalled();
     expect(component.enableSubmitButton).toHaveBeenCalled();
-    expect(component.disableSubmitBtn).toBeTruthy();
+    expect(component.enableSubmitBtn).toBeFalsy();
   });
   it('should show validation error message for phone', () => {
     component.contactType = 'phone';
@@ -65,7 +65,7 @@ describe('UpdateContactDetailsComponent', () => {
     expect(errors['required']).toBeTruthy();
     expect(component.onContactValueChange).toHaveBeenCalled();
     expect(component.enableSubmitButton).toHaveBeenCalled();
-    expect(component.disableSubmitBtn).toBeTruthy();
+    expect(component.enableSubmitBtn).toBeFalsy();
   });
   it('should show pattern match error message for phone', () => {
     component.contactType = 'phone';
@@ -79,7 +79,7 @@ describe('UpdateContactDetailsComponent', () => {
     expect(errors['pattern']).toBeTruthy();
     expect(component.onContactValueChange).toHaveBeenCalled();
     expect(component.enableSubmitButton).toHaveBeenCalled();
-    expect(component.disableSubmitBtn).toBeTruthy();
+    expect(component.enableSubmitBtn).toBeFalsy();
   });
   it('should call onContactValueChange method', () => {
     component.contactType = 'email';
@@ -87,7 +87,7 @@ describe('UpdateContactDetailsComponent', () => {
     spyOn(component, 'enableSubmitButton');
     component.ngOnInit();
     expect(component.onContactValueChange).toHaveBeenCalled();
-    expect(component.disableSubmitBtn).toBeTruthy();
+    expect(component.enableSubmitBtn).toBeFalsy();
     expect(component.enableSubmitButton).toHaveBeenCalled();
   });
   it('set values with enabling the submit button ', () => {
@@ -97,7 +97,7 @@ describe('UpdateContactDetailsComponent', () => {
     email.setValue('abc@gmail.com');
     const uniqueContact = component.contactTypeForm.controls['uniqueContact'];
     uniqueContact.setValue(true);
-    expect(component.disableSubmitBtn).toBeFalsy();
+    expect(component.enableSubmitBtn).toBeTruthy();
   });
 
   it('should unsubscribe from all observable subscriptions', () => {
