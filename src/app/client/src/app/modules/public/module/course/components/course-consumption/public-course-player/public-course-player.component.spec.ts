@@ -29,6 +29,11 @@ const resourceServiceMockData = {
 };
 class ActivatedRouteStub {
   snapshot = {
+    data: {
+      telemetry: {
+        env: 'explore', pageid: 'explore-course-toc', type: 'view'
+      }
+    },
     params: {},
     firstChild: { params : {}}
   };
@@ -68,7 +73,7 @@ describe('PublicCoursePlayerComponent', () => {
     courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(toasterService, 'error').and.returnValue('');
   });
-  it('should fetch course details on page load', () => {
+  fit('should fetch course details on page load', () => {
     activatedRouteStub.snapshot.params = {courseId: 'do_212347136096788480178'};
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     courseService.initialize();
