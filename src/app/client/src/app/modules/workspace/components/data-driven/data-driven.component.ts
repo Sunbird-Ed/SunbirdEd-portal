@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import {
   ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile, Framework,
   ILoaderMessage, NavigationHelperService
-} from '@sunbird/shared';
+, BrowserCacheTtlService} from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService } from './../../services';
 import { SearchService, UserService, FrameworkService, FormService } from '@sunbird/core';
@@ -13,7 +13,8 @@ import { DefaultTemplateComponent } from '../content-creation-default-template/c
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import { WorkSpace } from '../../classes/workspace';
 import { WorkSpaceService } from '../../services';
-
+import { combineLatest, Subject, of, throwError } from 'rxjs';
+import { takeUntil, map, mergeMap, first, filter, debounceTime, catchError } from 'rxjs/operators';
 @Component({
   selector: 'app-data-driven',
   templateUrl: './data-driven.component.html',
@@ -107,8 +108,8 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
 	* telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
-
-
+  public unsubscribe = new Subject<void>();
+  public frameWorkName: string;
   constructor(
     public searchService: SearchService,
     public workSpaceService: WorkSpaceService,
@@ -122,7 +123,8 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
     configService: ConfigService,
     formService: FormService,
     private _cacheService: CacheService,
-    public navigationHelperService: NavigationHelperService
+    public navigationHelperService: NavigationHelperService,
+    public browserCacheTtlService: BrowserCacheTtlService
   ) {
     super(searchService, workSpaceService, userService);
     this.activatedRoute = activatedRoute;
@@ -146,13 +148,23 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
 
 
   ngOnInit() {
-
+     if (this.contentType === 'course') {
+      this.getFrameWork().pipe(takeUntil(this.unsubscribe)).subscribe(data => {
+        this.frameWorkName = data;
+        this.frameworkService.initialize(this.frameWorkName);
+        this.fetchFrameworkMetaData();
+      }, err => {
+       this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      });
+     } else {
+      this.fetchFrameworkMetaData();
+     }
      this.checkForPreviousRouteForRedirect();
 
     /**
      * fetchFrameworkMetaData is called to config the form data and framework data
      */
-    this.fetchFrameworkMetaData();
+    // this.fetchFrameworkMetaData();
     /***
  * Call User service to get user data
  */
@@ -183,40 +195,88 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
   * fetchFrameworkMetaData is gives form config data
   */
   fetchFrameworkMetaData() {
-
-    this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
-      if (!frameworkData.err) {
-        this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
-        this.framework = frameworkData.frameworkdata['defaultFramework'].code;
-        /**
-  * isCachedDataExists will check data is exists in cache or not. If exists should not call
-  * form api otherwise call form api and get form data
-  */
-        this.isCachedDataExists = this._cacheService.exists(this.contentType + this.formAction);
-        if (this.isCachedDataExists) {
-          const data: any | null = this._cacheService.get(this.contentType + this.formAction);
-          this.formFieldProperties = data;
-        } else {
-          const formServiceInputParams = {
-            formType: this.formType,
-            formAction: this.formAction,
-            contentType: this.contentType,
-            framework: this.framework
-          };
-          this.formService.getFormConfig(formServiceInputParams).subscribe(
-            (data: ServerResponse) => {
-              this.formFieldProperties = data;
-              this.getFormConfig();
-            },
-            (err: ServerResponse) => {
-              this.toasterService.error(this.resourceService.messages.emsg.m0005);
-            }
-          );
-        }
-      } else if (frameworkData && frameworkData.err) {
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
-      }
+    this.getFrameWorkDetails().pipe( first(), takeUntil(this.unsubscribe)).subscribe((data) => {
+     }, err => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
+
+  //   this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
+  //     if (!frameworkData.err) {
+  //       const framework = this.frameWorkName ? this.frameWorkName : 'defaultFramework';
+  //       const frameworkDetails = _.get(frameworkData.frameworkdata, framework);
+  //       this.categoryMasterList = _.cloneDeep(frameworkDetails.categories);
+  //       this.framework =  frameworkDetails.code;
+  //       //this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
+  //       //this.framework = frameworkData.frameworkdata['defaultFramework'].code;
+  //       /**
+  // * isCachedDataExists will check data is exists in cache or not. If exists should not call
+  // * form api otherwise call form api and get form data
+  // */
+  //       this.isCachedDataExists = this._cacheService.exists(this.contentType + this.formAction);
+  //       if (this.isCachedDataExists) {
+  //         const data: any | null = this._cacheService.get(this.contentType + this.formAction);
+  //         this.formFieldProperties = data;
+  //       } else {
+  //         const formServiceInputParams = {
+  //           formType: this.formType,
+  //           formAction: this.formAction,
+  //           contentType: this.contentType,
+  //           framework: this.framework
+  //         };
+  //         this.formService.getFormConfig(formServiceInputParams).subscribe(
+  //           (data: ServerResponse) => {
+  //             this.formFieldProperties = data;
+  //             this.getFormConfig();
+  //           },
+  //           (err: ServerResponse) => {
+  //             this.toasterService.error(this.resourceService.messages.emsg.m0005);
+  //           }
+  //         );
+  //       }
+  //     } else if (frameworkData && frameworkData.err) {
+  //       this.toasterService.error(this.resourceService.messages.emsg.m0005);
+  //     }
+  //   });
+  }
+
+  getFrameWorkDetails() {
+    return this.frameworkService.frameworkData$.pipe(
+      filter((frameworkDetails) => { // wait to get the framework name if passed as input
+      if (!frameworkDetails.err) {
+        const framework = this.frameWorkName ? this.frameWorkName : 'defaultFramework';
+        const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
+        if (frameworkData) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+      return true;
+    }),
+     mergeMap((frameworkDetails: any) => {
+      if (!frameworkDetails.err) {
+        const framework = this.frameWorkName ? this.frameWorkName : 'defaultFramework';
+        const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
+        this.categoryMasterList = _.cloneDeep(frameworkData.categories);
+        this.framework =  frameworkData.code;
+        return this.getFormDetails();
+      } else if (frameworkDetails.err) {
+        return throwError(frameworkDetails.err);
+      }
+    }), map((formData) => {
+        this.formFieldProperties = formData;
+        this.getFormConfig();
+    }));
+  }
+    /** this will call form read  */
+  getFormDetails() {
+    const formServiceInputParams = {
+      formType: this.formType,
+      formAction: this.formAction,
+      contentType: this.contentType,
+      framework: this.framework
+    };
+    return this.formService.getFormConfig(formServiceInputParams);
   }
 
   /**
@@ -317,5 +377,25 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
 
   redirect() {
     this.router.navigate(['/workspace/content/create']);
+  }
+  private getFrameWork() {
+    const framework = this._cacheService.get('framework' + 'search');
+    if (framework) {
+      return of(framework);
+    } else {
+      const formServiceInputParams = {
+        formType: 'framework',
+        formAction: 'search',
+        contentType: 'framework-code',
+      };
+      return this.formService.getFormConfig(formServiceInputParams)
+        .pipe(map((data) => {
+          const frameWork = _.find(data, 'framework').framework;
+          this._cacheService.set('framework' + 'search', frameWork, { maxAge: this.browserCacheTtlService.browserCacheTtl });
+          return frameWork;
+        }), catchError((error) => {
+          return of(false);
+        }));
+    }
   }
 }

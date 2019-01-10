@@ -5,7 +5,7 @@ import * as  iziModal from 'izimodal/js/iziModal';
 import {
   NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserProfile, ServerResponse
 } from '@sunbird/shared';
-import { UserService, TenantService } from '@sunbird/core';
+import { UserService, TenantService, FrameworkService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService, WorkSpaceService } from './../../../services';
 import { environment } from '@sunbird/environment';
@@ -39,7 +39,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   public collectionDetails: any;
   public ownershipType: Array<string>;
   public queryParams: object;
-
+  resource_framework: string;
   /**
   * Default method of classs CollectionEditorComponent
   * @param {ResourceService} resourceService To get language constant
@@ -51,7 +51,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   constructor(private resourceService: ResourceService, private toasterService: ToasterService, private editorService: EditorService,
     private activatedRoute: ActivatedRoute, private userService: UserService, private _zone: NgZone, private router: Router,
     private configService: ConfigService, private tenantService: TenantService, private telemetryService: TelemetryService,
-    private navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService) {
+    private navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService,
+    private frameworkService: FrameworkService) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.buildNumber = buildNumber ? buildNumber.value : '1.0';
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
@@ -93,15 +94,26 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
       return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
-      this.editorService.getOwnershipType(), this.lockContent()).
+      this.editorService.getOwnershipType(), this.lockContent(), this.getDefaultFrameWork()).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2] })));
+        collectionDetails: data[1], ownershipType: data[2], resource_framework: data[4] })));
     } else {
       return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
-      this.editorService.getOwnershipType()).
+      this.editorService.getOwnershipType(), this.getDefaultFrameWork()).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2] })));
+        collectionDetails: data[1], ownershipType: data[2], resource_framework: data[3] })));
     }
+  }
+  getDefaultFrameWork() {
+    return this.frameworkService.frameworkData$.pipe(
+      mergeMap((frameworkDetails) => {
+      if (!frameworkDetails.err) {
+        this.resource_framework = frameworkDetails.frameworkdata['defaultFramework'].code;
+        return of(frameworkDetails);
+      } else  {
+        return throwError(frameworkDetails.err);
+      }
+    }));
   }
   lockContent () {
     const contentInfo = {
@@ -199,6 +211,9 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       env: this.routeParams.type.toLowerCase(),
       ownershipType: this.ownershipType
     };
+    if (this.routeParams.type.toLowerCase() === 'course') {
+      // window.context.resource_framework = this.resource_framework;
+    }
   }
   private setWindowConfig() {
     window.config = _.cloneDeep(this.configService.editorConfig.COLLECTION_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config

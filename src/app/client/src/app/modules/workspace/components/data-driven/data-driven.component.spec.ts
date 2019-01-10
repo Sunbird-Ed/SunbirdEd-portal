@@ -281,4 +281,17 @@ describe('DataDrivenComponent', () => {
     expect(componentParent.name).toBe('Untitled Textbook');
     expect(componentParent.description).toBe('Enter description for TextBook');
   });
+  it('should call form service and and set the framework name', () => {
+    const service = TestBed.get(FrameworkService);
+    componentParent.contentType = 'course';
+    const formService = TestBed.get(FormService);
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockFrameworkData.tpdformSuccess));
+    service._frameWorkData$ = mockFrameworkData.tpdframeworkData;
+    service._frameworkData$.next({
+      err: null, frameworkdata:  mockFrameworkData.tpdframeworkData
+    });
+    componentParent.ngOnInit();
+    expect(componentParent.frameWorkName).toEqual('TPD');
+    expect(componentParent.framework).toEqual('TPD');
+  });
 });
