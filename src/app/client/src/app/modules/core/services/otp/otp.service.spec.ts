@@ -21,7 +21,8 @@ describe('OtpService', () => {
       const params = { 'request': { 'key': '7088283838', 'type': 'phone' } };
       spyOn(learnerService, 'post').and.returnValue(observableOf(testData.generateOtpData));
       otpService.generateOTP(params);
-      expect(learnerService.post).toHaveBeenCalled();
+      const options = { url: 'otp/v1/generate', data: params };
+      expect(learnerService.post).toHaveBeenCalledWith(options);
     }));
 
   it('should call verifyOTP API', inject([],
@@ -31,6 +32,7 @@ describe('OtpService', () => {
       const params = { 'request': { 'key': '7088283838', 'type': 'phone', 'otp': '238798' } };
       spyOn(learnerService, 'post').and.returnValue(observableOf(testData.verifyOtpData));
       otpService.verifyOTP(params);
-      expect(learnerService.post).toHaveBeenCalled();
+      const options = { url: 'otp/v1/verify', data: params };
+      expect(learnerService.post).toHaveBeenCalledWith(options);
     }));
 });
