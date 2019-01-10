@@ -7,8 +7,7 @@ import { UserService, BadgesService } from '@sunbird/core';
 import { ContentBadgeService } from './../../services';
 @Component({
   selector: 'app-content-badge',
-  templateUrl: './content-badge.component.html',
-  styleUrls: ['./content-badge.component.css']
+  templateUrl: './content-badge.component.html'
 })
 export class ContentBadgeComponent implements OnInit, OnDestroy {
   @Input() data: Array<object>;

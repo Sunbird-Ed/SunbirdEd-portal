@@ -16,8 +16,7 @@ import { WorkSpaceService } from '../../services';
 
 @Component({
   selector: 'app-data-driven',
-  templateUrl: './data-driven.component.html',
-  styleUrls: ['./data-driven.component.css']
+  templateUrl: './data-driven.component.html'
 })
 export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy {
   @ViewChild('formData') formData: DefaultTemplateComponent;

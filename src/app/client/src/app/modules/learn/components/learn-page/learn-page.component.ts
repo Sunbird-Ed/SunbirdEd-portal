@@ -12,8 +12,7 @@ import { CacheService } from 'ng2-cache-service';
 import { takeUntil, map, mergeMap, first, filter, catchError } from 'rxjs/operators';
 
 @Component({
-  templateUrl: './learn-page.component.html',
-  styleUrls: ['./learn-page.component.css']
+  templateUrl: './learn-page.component.html'
 })
 export class LearnPageComponent implements OnInit, OnDestroy {
 

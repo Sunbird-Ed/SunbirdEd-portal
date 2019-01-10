@@ -5,8 +5,7 @@ import { Component, OnInit, Output, Input, EventEmitter, OnDestroy } from '@angu
 import * as _ from 'lodash';
 @Component({
   selector: 'app-concept-picker',
-  templateUrl: './concept-picker.component.html',
-  styleUrls: ['./concept-picker.component.css']
+  templateUrl: './concept-picker.component.html'
 })
 export class ConceptPickerComponent implements OnInit, OnDestroy {
   private conceptPickerService: ConceptPickerService;

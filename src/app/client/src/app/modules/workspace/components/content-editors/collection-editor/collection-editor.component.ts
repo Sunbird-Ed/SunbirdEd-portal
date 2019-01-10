@@ -24,8 +24,7 @@ enum state {
  */
 @Component({
   selector: 'app-collection-editor',
-  templateUrl: './collection-editor.component.html',
-  styleUrls: ['./collection-editor.component.css']
+  templateUrl: './collection-editor.component.html'
 })
 export class CollectionEditorComponent implements OnInit, OnDestroy {
 

@@ -10,8 +10,7 @@ import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 @Component({
-  templateUrl: './resource.component.html',
-  styleUrls: ['./resource.component.css']
+  templateUrl: './resource.component.html'
 })
 export class ResourceComponent implements OnInit, OnDestroy {
 

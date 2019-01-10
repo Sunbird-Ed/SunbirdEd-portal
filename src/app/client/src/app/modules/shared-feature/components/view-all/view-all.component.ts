@@ -14,8 +14,7 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
 import { CacheService } from 'ng2-cache-service';
 @Component({
   selector: 'app-view-all',
-  templateUrl: './view-all.component.html',
-  styleUrls: ['./view-all.component.css']
+  templateUrl: './view-all.component.html'
 })
 export class ViewAllComponent implements OnInit, OnDestroy {
   /**

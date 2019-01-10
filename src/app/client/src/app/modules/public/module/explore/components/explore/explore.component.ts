@@ -11,8 +11,7 @@ import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 @Component({
-  templateUrl: './explore.component.html',
-  styleUrls: ['./explore.component.css']
+  templateUrl: './explore.component.html'
 })
 export class ExploreComponent implements OnInit, OnDestroy {
 

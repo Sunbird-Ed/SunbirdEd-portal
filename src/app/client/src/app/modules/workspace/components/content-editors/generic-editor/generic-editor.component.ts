@@ -16,8 +16,7 @@ jQuery.fn.iziModal = iziModal;
  * Component Launches the Generic Editor in a IFrame Modal
  */@Component({
   selector: 'app-generic-editor',
-  templateUrl: './generic-editor.component.html',
-  styleUrls: ['./generic-editor.component.css']
+  templateUrl: './generic-editor.component.html'
 })
 export class GenericEditorComponent implements OnInit, OnDestroy {
 
