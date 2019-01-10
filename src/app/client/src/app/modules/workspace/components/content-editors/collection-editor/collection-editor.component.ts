@@ -62,11 +62,13 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     this.routeParams = this.activatedRoute.snapshot.params;
     this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.disableBrowserBackButton();
+    this.frameworkService.initialize();
     this.getDetails().pipe(
       tap(data => {
         if (data.tenantDetails) {
           this.logo = data.tenantDetails.logo;
         }
+        this.resource_framework = data.resource_framework['defaultFramework'].code;
         this.ownershipType = data.ownershipType;
         this.showLoader = false;
         this.initEditor();
@@ -94,26 +96,15 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
       return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
-      this.editorService.getOwnershipType(), this.lockContent(), this.getDefaultFrameWork()).
+      this.editorService.getOwnershipType(), this.lockContent(), this.frameworkService.frameworkData$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2], resource_framework: data[4] })));
+        collectionDetails: data[1], ownershipType: data[2], resource_framework: data[4].frameworkdata })));
     } else {
       return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
-      this.editorService.getOwnershipType(), this.getDefaultFrameWork()).
+      this.editorService.getOwnershipType(), this.frameworkService.frameworkData$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2], resource_framework: data[3] })));
+        collectionDetails: data[1], ownershipType: data[2], resource_framework: data[3].frameworkdata })));
     }
-  }
-  getDefaultFrameWork() {
-    return this.frameworkService.frameworkData$.pipe(
-      mergeMap((frameworkDetails) => {
-      if (!frameworkDetails.err) {
-        this.resource_framework = frameworkDetails.frameworkdata['defaultFramework'].code;
-        return of(frameworkDetails);
-      } else  {
-        return throwError(frameworkDetails.err);
-      }
-    }));
   }
   lockContent () {
     const contentInfo = {
@@ -208,12 +199,10 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       tags: this.userService.dims,
       channel: this.userService.channel,
       framework: this.routeParams.framework,
+      resource_framework: this.resource_framework,
       env: this.routeParams.type.toLowerCase(),
       ownershipType: this.ownershipType
     };
-    if (this.routeParams.type.toLowerCase() === 'course') {
-      // window.context.resource_framework = this.resource_framework;
-    }
   }
   private setWindowConfig() {
     window.config = _.cloneDeep(this.configService.editorConfig.COLLECTION_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config
