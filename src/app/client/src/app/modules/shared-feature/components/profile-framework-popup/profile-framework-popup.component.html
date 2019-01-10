@@ -1,4 +1,4 @@
-<sui-modal [isClosable]="false" [size]="'normal'" #modal [mustScroll]="'true'" appBodyScroll *ngIf="initDropDown">
+<sui-modal [isClosable]="false" [size]="'normal'" #modal [mustScroll]="'true'" appBodyScroll *ngIf="formFieldOptions.length">
   <i *ngIf="showCloseIcon" class="close icon" (click)="modal.deny(); close.emit()"></i>
   <div class="scrollable content">
     <div class="ui grid">

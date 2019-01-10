@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output, OnDestroy, ViewChild } from '@angular/core';
 import { FrameworkService, FormService, UserService, ChannelService, OrgDetailsService } from '@sunbird/core';
-import { first, mergeMap, map , filter} from 'rxjs/operators';
-import { Subject, of, throwError } from 'rxjs';
+import { first, mergeMap, map , filter } from 'rxjs/operators';
+import { of, throwError, Subscription } from 'rxjs';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -20,44 +20,42 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   @Output() submit = new EventEmitter<any>();
   @Output() close = new EventEmitter<any>();
   public allowedFields = ['board', 'medium', 'gradeLevel', 'subject'];
-  public _formFieldProperties: any;
+  private _formFieldProperties: any;
   public formFieldOptions = [];
-  public custOrgFrameworks: any;
-  public categoryMasterList: any = {};
+  private custOrgFrameworks: any;
+  private categoryMasterList: any = {};
   public selectedOption: any = {};
   public showButton = false;
-  public unsubscribe = new Subject<void>();
-  public frameWorkId: string;
-  public custodianOrg = false;
-  public initDropDown = false;
-  public custodianOrgBoard: any = {};
-  constructor(public router: Router, public userService: UserService, public frameworkService: FrameworkService,
-    public formService: FormService, public resourceService: ResourceService,
-    public toasterService: ToasterService, public channelService: ChannelService, public orgDetailsService: OrgDetailsService,
-    private cacheService: CacheService, ) { }
+  private unsubscribe: Subscription;
+  private frameWorkId: string;
+  private custodianOrg = false;
+  private custodianOrgBoard: any = {};
+  constructor(private router: Router, private userService: UserService, private frameworkService: FrameworkService,
+    private formService: FormService, public resourceService: ResourceService, private cacheService: CacheService,
+    private toasterService: ToasterService, private channelService: ChannelService, private orgDetailsService: OrgDetailsService
+  ) { }
 
   ngOnInit() {
     this.selectedOption = _.cloneDeep(this.formInput) || {}; // clone selected field inputs from parent
-    this.isCustodianOrgUser().pipe(
+    this.unsubscribe = this.isCustodianOrgUser().pipe(
       mergeMap((custodianOrgUser: boolean) => {
         this.custodianOrg = custodianOrgUser;
         if (custodianOrgUser) {
-          return this.getFieldOptionsForCustodianOrg();
+          return this.getFormOptionsForCustodianOrg();
         } else {
-          return this.getFieldOptionsForOnboardedUser();
+          return this.getFormOptionsForOnboardedUser();
         }
       }), first()).subscribe(data => {
         this.formFieldOptions = data;
-        this.initDropDown = true;
       }, err => {
         this.navigateToLibrary();
       });
   }
-  private getFieldOptionsForCustodianOrg() {
+  private getFormOptionsForCustodianOrg() {
     return this.getCustodianOrgData().pipe(mergeMap((data) => {
       this.custodianOrgBoard = data;
       const board = _.cloneDeep(this.custodianOrgBoard);
-      if (_.get(this.selectedOption, 'board[0]')) {
+      if (_.get(this.selectedOption, 'board[0]')) { // update mode, get 1st board framework and update all fields
         this.selectedOption.board = _.get(this.selectedOption, 'board[0]');
         this.frameWorkId = _.get(_.find(this.custOrgFrameworks, { 'name': event }), 'identifier');
         return this.getFormatedFilterDetails().pipe(map((formFieldProperties) => {
@@ -66,15 +64,15 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
           return this.getUpdatedFilters(board, true);
         }));
       } else {
-        const filterOptions = [ board,
+        const fieldOptions = [ board,
           { code: 'medium', label: 'Medium', index: 2 },
           { code: 'gradeLevel', label: 'Class', index: 3 },
           { code: 'subject', label: 'Subject', index: 4 } ];
-        return of(filterOptions);
+        return of(fieldOptions);
       }
     }));
   }
-  private getFieldOptionsForOnboardedUser() {
+  private getFormOptionsForOnboardedUser() {
     return this.getFormatedFilterDetails().pipe(map((formFieldProperties) => {
       this._formFieldProperties = formFieldProperties;
       let editMode = false;
@@ -102,14 +100,14 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         const framework = this.frameWorkId ? this.frameWorkId : 'defaultFramework';
         const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
         this.frameWorkId = frameworkData.identifier;
-        this.categoryMasterList = _.cloneDeep(frameworkData.categories);
+        this.categoryMasterList = frameworkData.categories;
         return this.getFormDetails();
       } else {
         return throwError(frameworkDetails.err);
       }
     }), map((formData: any) => {
       const formFieldProperties = _.filter(formData, (formFieldCategory) => {
-        formFieldCategory.range = _.get(_.find(this.categoryMasterList, { code : formFieldCategory.code}), 'terms') || [];
+        formFieldCategory.range = _.get(_.find(this.categoryMasterList, { code : formFieldCategory.code }), 'terms') || [];
         return true;
       });
       return _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index');
@@ -122,7 +120,10 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       return;
     }
     this.frameWorkId = _.get(_.find(field.range, { name: _.get(this.selectedOption, field.code)}), 'identifier');
-    this.getFormatedFilterDetails().subscribe(
+    if (this.unsubscribe) { // cancel if any previous api call in progress
+      this.unsubscribe.unsubscribe();
+    }
+    this.unsubscribe = this.getFormatedFilterDetails().pipe().subscribe(
       (formFieldProperties) => {
         if (!formFieldProperties.length) {
           console.log('no data');
@@ -212,11 +213,9 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     }
   }
   ngOnDestroy() {
-    if (this.modal) {
-      this.modal.deny();
+    if (this.unsubscribe) {
+      this.unsubscribe.unsubscribe();
     }
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
   }
   private isCustodianOrgUser() {
     return this.orgDetailsService.getCustodianOrg().pipe(map((custodianOrg) => {
@@ -230,8 +229,13 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     return _.cloneDeep(this._formFieldProperties);
   }
   private navigateToLibrary() {
+    if (this.modal) {
+      this.modal.deny();
+    }
     this.toasterService.warning(this.resourceService.messages.emsg.m0012);
-    this.router.navigate(['/resources']);
-    this.cacheService.set('showFrameWorkPopUp', 'installApp' );
+    if (_.isEmpty(this.formInput)) {
+      this.router.navigate(['/resources']);
+      this.cacheService.set('showFrameWorkPopUp', 'installApp' );
+    }
   }
 }
