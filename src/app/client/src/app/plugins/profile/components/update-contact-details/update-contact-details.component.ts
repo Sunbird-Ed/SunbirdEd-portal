@@ -145,11 +145,6 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
-  }
-
   updateProfile(data) {
     this.profileService.updateProfile(data).subscribe(res => {
       this.closeModal();
@@ -162,5 +157,10 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
         this.resourceService.messages.emsg.m0014 : this.resourceService.messages.emsg.m0015;
       this.toasterService.error(fMessage);
     });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

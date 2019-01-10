@@ -45,14 +45,6 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
     this.enableSubmitButton();
   }
 
-  ngOnDestroy() {
-    if (this.tenantDataSubscription) {
-      this.tenantDataSubscription.unsubscribe();
-    }
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
-  }
-
   verifyOTP() {
     const wrongOTPMessage = this.otpData.wrongOtpMessage;
     this.enableSubmitBtn = false;
@@ -113,5 +105,13 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
 
   redirectToParentComponent() {
     this.redirectToParent.emit('true');
+  }
+
+  ngOnDestroy() {
+    if (this.tenantDataSubscription) {
+      this.tenantDataSubscription.unsubscribe();
+    }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }
