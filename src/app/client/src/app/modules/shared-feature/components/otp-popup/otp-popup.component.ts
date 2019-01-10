@@ -76,6 +76,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
         this.verificationSuccess.emit(emitData);
       },
       (err) => {
+        this.otpForm.controls['otp'].setValue('');
         this.enableSubmitBtn = true;
         this.infoMessage = '';
         this.errorMessage = err.error.params.status === 'ERROR_INVALID_OTP' ?
@@ -85,6 +86,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
   }
 
   resendOTP() {
+    this.otpForm.controls['otp'].setValue('');
     const request = {
       'request': {
         'key': this.otpData.value,
