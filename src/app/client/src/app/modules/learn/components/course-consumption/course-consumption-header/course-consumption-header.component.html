@@ -54,7 +54,7 @@
   <div class="ui container">
     <div class="ui stackable padded grid m-responsive-cp-nmt-50" *ngIf="getBatchStatus()">
       <div class="nine wide column pl-0 pt-5">
-        <div class="ui negative message">
+        <div class="ui info message compact">
           <div class="header">
             {{resourceService?.frmelmnts?.lbl?.expiredBatchWarning | interpolate:'{EndDate}':enrolledBatchInfo.endDate}}
           </div>
