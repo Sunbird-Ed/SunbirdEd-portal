@@ -8,6 +8,10 @@
     </div>
     <div class="fs-2-5 font-w-bold mb-15 text-ac">{{userProfile.firstName | titlecase}} {{userProfile.lastName |
       titlecase}}</div>
+      <div class="mb-10 d-flex mb-5 flex-jc-center">
+        <div class="fs-1-16">{{resourceService?.frmelmnts?.lbl?.userId}} :</div>
+        <div class="fs-1-16 ml-5">{{userProfile.userName}}</div>
+      </div>
     <div class="mb-15 text-ac profile-label-container" *ngIf="roles && roles.length > 0">
       <span class="ui dodger-blue basic label mr-15 mt-5" *ngFor="let role of roles | slice:0:showMoreRolesLimit">{{role}}</span>
     </div>
@@ -45,46 +49,48 @@
     </div>
   </section>
 
-
-
   <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3" *ngIf="userProfile.email || userProfile.phone">
     <div class="d-flex flex-dc">
       <div class="d-flex flex-jc-center">
-        <div class="ui semi-circular dodger-blue basic label mb-15" *ngIf="userProfile.phone">
+        <div (click)="showContactPopup=true;contactType='phone'" class="ui semi-circular dodger-blue basic label mb-15 cursor-pointer" *ngIf="userProfile.phone">
           <i class="phone blue icon mr-5"></i> &#x200E;+91 {{userProfile.phone}}
         </div>
+        <div (click)="showContactPopup=true;contactType='phone'" class="ui semi-circular update basic label mb-15 cursor-pointer" *ngIf="!userProfile.phone">
+          <i class="phone icon mr-5 pr-30"></i> {{resourceService?.frmelmnts?.lbl?.addPhoneNo}}
+        </div>
       </div>
-      <div class="ui semi-circular dodger-blue basic label" *ngIf="userProfile.email">
+      <div (click)="showContactPopup=true;contactType='email'" class="ui semi-circular dodger-blue basic label cursor-pointer" *ngIf="userProfile.email">
         <i class="mail icon mr-5"></i> {{userProfile.email}}
+      </div>
+      <div (click)="showContactPopup=true;contactType='email'" class="ui semi-circular update basic label mb-15 cursor-pointer" *ngIf="!userProfile.email">
+        <i class="mail icon mr-5 pr-30"></i> {{resourceService?.frmelmnts?.lbl?.addEmailID}}
       </div>
     </div>
   </section>
-
-
 
   <section class="d-flex flex-ai-center flex-dc pt-30 pb-30 profile-bg-c-4">
     <!-- User info computer view starts-->
     <div class="ui container">
       <div class="d-flex flex-jc-center relative">
         <div class="max-w-400 computer only">
-          <div class="mb-15 d-flex">
-            <span class="fs-1-16 min-w-90">{{resourceService.frmelmnts.lbl.boards}} :</span>
-            <span class="fs-1-16 font-w-bold" *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board)}}</span>
+          <div class="mb-15 d-flex flex-jc-center">
+            <span class="fs-1-16">{{resourceService.frmelmnts.lbl.boards}} :</span>
+            <span class="fs-1-16 font-w-bold pl-5" *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board)}}</span>
           </div>
-          <div class="mb-15 d-flex">
-            <span class="fs-1-16 min-w-90">{{resourceService.frmelmnts.lbl.medium}} :</span>
-            <span class="fs-1-16 font-w-bold" *ngIf="userProfile.framework">{{convertToString(userProfile.framework.medium)}}</span>
+          <div class="mb-15 d-flex flex-jc-center">
+            <span class="fs-1-16">{{resourceService.frmelmnts.lbl.medium}} :</span>
+            <span class="fs-1-16 font-w-bold pl-5" *ngIf="userProfile.framework">{{convertToString(userProfile.framework.medium)}}</span>
           </div>
-          <div class="mb-15 d-flex">
-            <span class="fs-1-16 min-w-90">{{resourceService.frmelmnts.lbl.classes}} :</span>
-            <span class="fs-1-16 font-w-bold" *ngIf="userProfile.framework">{{convertToString(userProfile.framework.gradeLevel)}}</span>
+          <div class="mb-15 d-flex flex-jc-center">
+            <span class="fs-1-16">{{resourceService.frmelmnts.lbl.classes}} :</span>
+            <span class="fs-1-16 font-w-bold pl-5" *ngIf="userProfile.framework">{{convertToString(userProfile.framework.gradeLevel)}}</span>
           </div>
-          <div class="d-flex">
-            <span class="fs-1-16 min-w-90">{{resourceService.frmelmnts.lbl.subjects}} :</span>
-            <span class="fs-1-16 font-w-bold" *ngIf="userProfile.framework">{{convertToString(userProfile.framework.subject)}}</span>
+          <div class="d-flex flex-jc-center">
+            <span class="fs-1-16">{{resourceService.frmelmnts.lbl.subjects}} :</span>
+            <span class="fs-1-16 font-w-bold pl-5" *ngIf="userProfile.framework">{{convertToString(userProfile.framework.subject)}}</span>
           </div>
         </div>
-        <button class="ui semi-circular dodger-blue button right-aligned-button  top-50 right-0 absolute computer only"
+        <button class="ui semi-circular dodger-blue button right-aligned-button bottom-0 right-0 absolute computer only"
           appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="myFrameworkEditEdata"
           (click)="showEdit = !showEdit">{{resourceService.frmelmnts.lbl.edit}}</button>
       </div>
@@ -217,4 +223,7 @@
 
 <app-popup *ngIf="showEdit" #profileModal [formInput]="inputData" [isEdit] ="true" [showCloseIcon]="true" [buttonLabel]="resourceService.frmelmnts.btn.submit"
   (submit)="updateProfile($event)" (close)="showEdit = !showEdit"></app-popup>
+
+<app-update-contact-details *ngIf="showContactPopup" (close)="showContactPopup = !showContactPopup" [contactType]="contactType"></app-update-contact-details>
+
 <router-outlet></router-outlet>
