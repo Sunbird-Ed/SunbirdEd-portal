@@ -11,11 +11,10 @@ import {
   ExternalUrlPreviewService
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
-  styleUrls: ['./course-consumption-header.component.css']
+  styleUrls: ['./course-consumption-header.component.scss']
 })
 export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -152,5 +151,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+  getBatchStatus() {
+   return (this.enrolledBatchInfo.status === 2 && this.progress < 100);
   }
 }
