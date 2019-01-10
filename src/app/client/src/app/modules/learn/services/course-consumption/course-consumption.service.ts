@@ -15,7 +15,6 @@ export class CourseConsumptionService {
   constructor(private playerService: PlayerService, private courseProgressService: CourseProgressService) { }
 
   getCourseHierarchy(courseId, option: any = { params: {} }) {
-    // fetch from api always if params exists
     if (this.courseHierarchy && this.courseHierarchy.identifier === courseId) {
       return observableOf(this.courseHierarchy);
     } else {
