@@ -3,8 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import { UserSearchService } from './../../services';
 import * as _ from 'lodash';
-import { SearchService, UserService, PermissionService, RolesAndPermissions } from '@sunbird/core';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { SearchService, PermissionService, RolesAndPermissions } from '@sunbird/core';
+import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  * The delete component deletes the announcement

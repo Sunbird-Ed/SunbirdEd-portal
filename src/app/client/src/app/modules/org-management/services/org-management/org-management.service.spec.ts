@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import * as testData from './org-management.service.data';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -29,7 +29,6 @@ describe('OrgManagementService', () => {
     const orgManagementService = TestBed.get(OrgManagementService);
     const formData = new FormData();
     formData.append('org', testData.mockRes.request[0]);
-    const fd = formData;
     spyOn(learnerService, 'post').and.callFake(() => observableOf(testData.mockRes.successBulkStatusResponse));
     orgManagementService.bulkOrgUpload(testData.mockRes.request).subscribe(
       apiResponse => {

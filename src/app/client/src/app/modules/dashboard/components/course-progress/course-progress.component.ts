@@ -1,7 +1,7 @@
 
-import { combineLatest,  Subscription ,  Observable ,  Subject } from 'rxjs';
+import { combineLatest,  Subscription ,  Subject } from 'rxjs';
 
-import {first, takeUntil, map} from 'rxjs/operators';
+import {first, takeUntil} from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -9,7 +9,7 @@ import { UserService } from '@sunbird/core';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { CourseProgressService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  * This component shows the course progress dashboard

@@ -1,11 +1,9 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import * as testData from './inbox.component.spec.data';
-import { Component, OnInit } from '@angular/core';
-import * as _ from 'lodash';
 import { HttpClient } from '@angular/common/http';
-import { IAnnouncementListData, IPagination, IAnnouncementDetails, InboxComponent } from '@sunbird/announcement';
+import { InboxComponent } from '@sunbird/announcement';
 import { TelemetryModule } from '@sunbird/telemetry';
 
 // Modules
@@ -20,7 +18,7 @@ import { AnnouncementService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import {
     SharedModule, ResourceService, PaginationService, ToasterService,
-    ConfigService, DateFormatPipe, ServerResponse
+    ConfigService, DateFormatPipe
 } from '@sunbird/shared';
 
 describe('InboxComponent', () => {

@@ -1,16 +1,15 @@
 
-import {of as observableOf, throwError as observableThrowError,  Observable } from 'rxjs';
+import {of as observableOf, throwError as observableThrowError } from 'rxjs';
 import { UpForReviewComponent } from './up-for-review.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Response } from './up-for-review.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 
@@ -147,7 +146,6 @@ describe('UpForReviewComponent', () => {
       spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
       userService._userProfile = mockroleOrgMap;
       userService._userData$.next({ err: null, userProfile: mockUserRoles });
-      const sortByOption = 'Created On';
       const queryParams = {subject: [ 'english', 'odia' ], sortType: 'asc', sort_by: 'Created On'};
       component.queryParams = queryParams;
       component.pager = Response.pager;
@@ -159,7 +157,7 @@ describe('UpForReviewComponent', () => {
 
   it('should call setpage method and page number should be default, i,e 1', inject([ConfigService, Router],
     (configService, route) => {
-       const userService = TestBed.get(UserService);
+      const userService = TestBed.get(UserService);
       const learnerService = TestBed.get(LearnerService);
       spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
       userService._userProfile = mockroleOrgMap;
@@ -213,7 +211,6 @@ describe('UpForReviewComponent', () => {
     expect(returnContentType).toEqual(ContentType);
   }));
   it('should check contentType is passing when send it from query param', inject([SearchService], (searchService) => {
-    const configservice  = TestBed.get(ConfigService);
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     const BookReviewer = {

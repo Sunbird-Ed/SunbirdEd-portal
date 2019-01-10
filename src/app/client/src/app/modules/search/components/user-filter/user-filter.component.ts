@@ -1,7 +1,6 @@
 import { ConfigService, ResourceService } from '@sunbird/shared';
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SearchService } from '@sunbird/core';
 import * as _ from 'lodash';
 @Component({
   selector: 'app-user-filter',
@@ -16,7 +15,6 @@ export class UserFilterComponent implements OnInit {
    */
   public config: ConfigService;
   public resourceService: ResourceService;
-  private searchService: SearchService;
   private activatedRoute: ActivatedRoute;
   /**
    * To navigate to other pages

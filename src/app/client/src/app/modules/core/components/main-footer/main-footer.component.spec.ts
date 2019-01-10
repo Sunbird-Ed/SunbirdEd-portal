@@ -19,6 +19,7 @@ describe('MainFooterComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MainFooterComponent);
     component = fixture.componentInstance;
+    component.ngOnInit();
     fixture.detectChanges();
   });
 });

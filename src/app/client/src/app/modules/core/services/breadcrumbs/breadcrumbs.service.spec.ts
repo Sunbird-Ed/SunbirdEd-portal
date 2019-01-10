@@ -1,6 +1,6 @@
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { BreadcrumbsComponent } from '@sunbird/core';
-import { TestBed, inject, ComponentFixture, async } from '@angular/core/testing';
+import { TestBed, inject, async } from '@angular/core/testing';
 import { Observable } from 'rxjs';
 import { } from 'jasmine';
 import { BreadcrumbsService } from './breadcrumbs.service';
@@ -18,16 +18,12 @@ class MockRouter {
 }
 
 describe('BreadcrumbsService', () => {
-  let component: BreadcrumbsComponent;
-  let fixture: ComponentFixture<BreadcrumbsComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       providers: [BreadcrumbsService, { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: MockRouter }],
       declarations: [BreadcrumbsComponent]
     });
-    fixture = TestBed.createComponent(BreadcrumbsComponent);
-    component = fixture.componentInstance;
   }));
 
   it('should emit the data passed from a component', inject([BreadcrumbsService], (service: BreadcrumbsService) => {

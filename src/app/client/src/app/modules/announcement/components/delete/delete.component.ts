@@ -1,7 +1,7 @@
 
 import {takeUntil} from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 

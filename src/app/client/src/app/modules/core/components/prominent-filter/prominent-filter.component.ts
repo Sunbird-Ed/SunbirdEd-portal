@@ -1,13 +1,12 @@
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { of, throwError } from 'rxjs';
-import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse, BrowserCacheTtlService } from '@sunbird/shared';
-import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnDestroy, OnChanges } from '@angular/core';
+import { ConfigService, ResourceService, Framework, ToasterService } from '@sunbird/shared';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, PermissionService, OrgDetailsService } from './../../services';
 import * as _ from 'lodash';
-import { CacheService } from 'ng2-cache-service';
 import { IInteractEventEdata } from '@sunbird/telemetry';
-import { first, mergeMap, map, tap , catchError, filter} from 'rxjs/operators';
+import { first, mergeMap, map , catchError, filter} from 'rxjs/operators';
 @Component({
   selector: 'app-prominent-filter',
   templateUrl: './prominent-filter.component.html'
@@ -85,13 +84,11 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     resourceService: ResourceService,
     router: Router,
     private activatedRoute: ActivatedRoute,
-    private _cacheService: CacheService,
     private cdr: ChangeDetectorRef,
     frameworkService: FrameworkService,
     formService: FormService,
     toasterService: ToasterService,
     permissionService: PermissionService,
-    private browserCacheTtlService: BrowserCacheTtlService,
     private orgDetailsService: OrgDetailsService
 
   ) {
@@ -118,7 +115,6 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   }
 
   getFormatedFilterDetails() {
-    const formAction = this.formAction ? this.formAction : 'search';
     return this.fetchFrameWorkDetails().pipe(
       mergeMap((frameworkDetails: any) => {
         this.categoryMasterList = frameworkDetails.categoryMasterList;

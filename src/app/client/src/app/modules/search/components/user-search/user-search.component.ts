@@ -1,14 +1,14 @@
 
-import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
+import {combineLatest as observableCombineLatest } from 'rxjs';
 import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage } from '@sunbird/shared';
 import { SearchService, UserService } from '@sunbird/core';
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { UserSearchService } from './../../services';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-user-search',
@@ -111,7 +111,7 @@ export class UserSearchComponent implements OnInit {
      * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
      * @param {ConfigService} config Reference of ConfigService
    */
-  constructor(searchService: SearchService, route: Router, private ngZone: NgZone,
+  constructor(searchService: SearchService, route: Router,
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
     resourceService: ResourceService, toasterService: ToasterService,
     config: ConfigService, user: UserService, userSearchService: UserSearchService) {

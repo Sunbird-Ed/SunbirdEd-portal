@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { CoreModule, ContentService } from '@sunbird/core';
@@ -7,7 +7,6 @@ import { OrgDetailsService } from './org-details.service';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { serverRes } from './org-details.service.spec.data';
-import { RouterTestingModule } from '@angular/router/testing';
 
 describe('OrgDetailsService', () => {
   class RouterStub {

@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { OrgManagementService } from '../../services';
 import { IUserUploadStatusResponse, IOrgUploadStatusResponse } from '../../interfaces';
-import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { UserService } from '@sunbird/core';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';

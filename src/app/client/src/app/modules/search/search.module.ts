@@ -4,7 +4,7 @@ import { SearchRoutingModule } from './search-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SuiModule } from 'ng2-semantic-ui';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { UserSearchService } from './services';
 import { OrderModule } from 'ngx-order-pipe';
 import { CourseSearchComponent, UserFilterComponent, UserEditComponent, UserDeleteComponent, HomeSearchComponent,

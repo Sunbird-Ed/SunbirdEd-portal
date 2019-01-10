@@ -1,12 +1,10 @@
 import { LibrarySearchComponent } from './library-search.component';
-
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { SearchService, CoreModule, UserService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
-import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './library-search.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,7 +13,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 describe('LibrarySearchComponent', () => {
   let component: LibrarySearchComponent;
   let fixture: ComponentFixture<LibrarySearchComponent>;
-  let toasterService, userService, searchService, activatedRoute;
+  let toasterService, searchService, activatedRoute;
   const mockSearchData: any = Response.successData;
   let sendSearchResult = true;
   class RouterStub {

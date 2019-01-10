@@ -1,7 +1,6 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { mockPermissionRes } from './permission.mock.spec.data';
-import { mockUserData } from './../user/user.mock.spec.data';
 import { TestBed } from '@angular/core/testing';
 import { ConfigService, ToasterService, ResourceService, BrowserCacheTtlService } from '@sunbird/shared';
 import { PermissionService } from './permission.service';
@@ -13,8 +12,8 @@ const mockUserRoles = {
 };
 const mockResource = {
   'emsg': {
-   'm0005': 'Something went wrong, please try again later...'
- }
+    'm0005': 'Something went wrong, please try again later...'
+  }
 };
 describe('PermissionService', () => {
   beforeEach(() => {
@@ -51,11 +50,8 @@ describe('PermissionService', () => {
     userService._userData$.next({ err: null, userProfile: mockUserRoles });
     expect(permissionService.permissionAvailable).toBeTruthy();
   });
-
-
   it('should throw toaster error message when permission api fails', () => {
     const permissionService = TestBed.get(PermissionService);
-    const userService = TestBed.get(UserService);
     const toasterService = TestBed.get(ToasterService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableThrowError(mockPermissionRes.error));
@@ -74,7 +70,7 @@ describe('PermissionService', () => {
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockPermissionRes.success));
     spyOn(toasterService, 'error').and.returnValue(true);
     permissionService.initialize();
-    userService._userData$.next({ err: {responseCode: 'CLIENT_ERROR'}, userProfile: mockUserRoles });
+    userService._userData$.next({ err: { responseCode: 'CLIENT_ERROR' }, userProfile: mockUserRoles });
     expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, please try again later...');
   });
 

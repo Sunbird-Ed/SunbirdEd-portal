@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { ResourceService, ServerResponse } from '@sunbird/shared';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-import * as _ from 'lodash';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Subscription, Subject } from 'rxjs';
 import { TenantService, OtpService } from '@sunbird/core';

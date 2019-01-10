@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import {
   ResourceService, ILoaderMessage, PlayerConfig, ContentData,
   WindowScrollService, ToasterService, NavigationHelperService,
   ConfigService, RouterNavigationService
 } from '@sunbird/shared';
-import { PlayerService, ContentService, PermissionService, UserService } from '@sunbird/core';
+import { PlayerService, ContentService, PermissionService } from '@sunbird/core';
 @Component({
   selector: 'app-flag-conentplayer',
   templateUrl: './flag-conentplayer.component.html',
@@ -74,11 +74,6 @@ export class FlagConentplayerComponent implements OnInit {
    */
   public contentService: ContentService;
   /**
-    * Refrence of UserService
-  */
-  private userService: UserService;
-
-  /**
    * To navigate back to parent component
    */
   public routerNavigationService: RouterNavigationService;
@@ -95,15 +90,13 @@ export class FlagConentplayerComponent implements OnInit {
   * @param {ContentService} contentService Reference of contentService
   * @param {configService} configService Reference of configService
   * @param {PermissionService} permissionService Reference of PermissionService
-  * @param {UserService} UserService Reference of UserService
   */
   constructor(resourceService: ResourceService, public activatedRoute: ActivatedRoute,
     playerService: PlayerService, windowScrollService: WindowScrollService,
     toasterService: ToasterService, public navigationHelperService: NavigationHelperService,
     configService: ConfigService, contentService: ContentService,
     routerNavigationService: RouterNavigationService,
-    permissionService: PermissionService,
-    userService: UserService) {
+    permissionService: PermissionService) {
     this.resourceService = resourceService;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
@@ -112,7 +105,6 @@ export class FlagConentplayerComponent implements OnInit {
     this.contentService = contentService;
     this.routerNavigationService = routerNavigationService;
     this.permissionService = permissionService;
-    this.userService = userService;
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0025,
     };

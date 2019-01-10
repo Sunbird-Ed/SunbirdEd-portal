@@ -1,6 +1,6 @@
-import { Subscription, Observable, of as observableOf, throwError as observableThrowError } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
-import { FormsModule, NgForm, FormBuilder, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { of as observableOf } from 'rxjs';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
@@ -12,7 +12,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedModule, ResourceService, ToasterService, FileUploadService, ConfigService } from '@sunbird/shared';
 import {
   DetailsComponent, GeoExplorerComponent, CreateComponent, GeoExplorerService,
-  CreateService, IGeoLocationDetails, FileUploaderComponent
+  CreateService, FileUploaderComponent
 } from '@sunbird/announcement';
 import { mockRes } from './create.component.spec.data';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -20,9 +20,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 describe('CreateComponent', () => {
   let component: CreateComponent;
   let fixture: ComponentFixture<CreateComponent>;
-  let geoComponent: GeoExplorerComponent;
   let geoFixture: ComponentFixture<GeoExplorerComponent>;
-  let router: Router;
   const fakeActivatedRoute = {
     snapshot: {
       params: [
@@ -65,9 +63,7 @@ describe('CreateComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     geoFixture = TestBed.createComponent(GeoExplorerComponent);
-    geoComponent = geoFixture.componentInstance;
     geoFixture.detectChanges();
-    router = TestBed.get(Router);
   });
 
   it('should get already searched announcement types', inject([CreateService],
@@ -153,7 +149,6 @@ describe('CreateComponent', () => {
       component.announcementForm = component.sbFormBuilder.group({
         title: [''], from: ['test user'], type: ['News'], description: ['test']
       });
-      const data = component.announcementForm.value;
       spyOn(component, 'enableSelectRecipientsBtn').and.callThrough();
       expect(component.formErrorFlag).toEqual(true);
     }));

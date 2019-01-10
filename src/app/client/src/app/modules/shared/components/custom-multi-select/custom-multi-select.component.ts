@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, Input,  EventEmitter, Output, OnChanges } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Input,  EventEmitter, Output } from '@angular/core';
 import * as _ from 'lodash';
 @Component({
   selector: 'app-custom-multi-select',

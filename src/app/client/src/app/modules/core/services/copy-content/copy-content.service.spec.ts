@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 import { CopyContentService } from './copy-content.service';
 import { SharedModule } from '@sunbird/shared';

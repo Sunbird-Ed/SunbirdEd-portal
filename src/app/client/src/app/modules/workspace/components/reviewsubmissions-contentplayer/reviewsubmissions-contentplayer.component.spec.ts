@@ -1,12 +1,12 @@
 
-import {of as observableOf, throwError as observableThrowError,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import {of as observableOf, throwError as observableThrowError } from 'rxjs';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReviewsubmissionsContentplayerComponent } from './reviewsubmissions-contentplayer.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { SharedModule,  ToasterService, ResourceService, NavigationHelperService } from '@sunbird/shared';
-import { PlayerService, UserService, LearnerService, ContentService, CoreModule } from '@sunbird/core';
+import { PlayerService, UserService, CoreModule } from '@sunbird/core';
 import * as mockData from './reviewsubmissions-contentplayer.component.spec.data';
 const testData = mockData.mockRes;
 describe('ReviewsubmissionsContentplayerComponent', () => {

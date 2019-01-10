@@ -1,13 +1,12 @@
 import { CourseComponent } from './course.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
+import { ResourceService, ToasterService, SharedModule
 } from '@sunbird/shared';
-import { PageApiService, OrgDetailsService, CoreModule, UserService, FormService} from '@sunbird/core';
+import { PageApiService, OrgDetailsService, CoreModule, FormService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicPlayerService } from './../../../../services';
 import { SuiModule } from 'ng2-semantic-ui';
-import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './course.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';

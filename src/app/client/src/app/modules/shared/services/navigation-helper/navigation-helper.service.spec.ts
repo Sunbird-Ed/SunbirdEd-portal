@@ -2,8 +2,8 @@ import { SharedModule } from '@sunbird/shared';
 import { TestBed, inject } from '@angular/core/testing';
 import { NavigationHelperService } from './navigation-helper.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable, of as observableOf } from 'rxjs';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { of as observableOf } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');

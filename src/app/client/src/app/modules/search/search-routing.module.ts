@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import {
   UserSearchComponent, UserEditComponent, UserProfileComponent, HomeSearchComponent,
-  UserDeleteComponent, OrgSearchComponent, CourseSearchComponent, LibrarySearchComponent
+  UserDeleteComponent, CourseSearchComponent, LibrarySearchComponent
 } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 

@@ -1,16 +1,14 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import * as testData from './delete.component.spec.data';
-import { Component, OnInit } from '@angular/core';
-import * as _ from 'lodash';
 import { HttpClient } from '@angular/common/http';
 
 // Modules
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { AnnouncementService } from '@sunbird/core';
 import { SharedModule, ResourceService, ToasterService, ConfigService, RouterNavigationService } from '@sunbird/shared';
@@ -54,7 +52,6 @@ describe('DeleteComponent', () => {
       spyOn(announcementService, 'deleteAnnouncement').and.callFake(() => observableOf(testData.mockRes.deleteSuccess));
       spyOn(component, 'deleteAnnouncement').and.callThrough();
       const params = { data: { 'request': { 'announcementId': 'fa355310-0b09-11e8-93d1-2970a259a0ba' } } };
-      const modal = fixture.componentInstance.modal;
       spyOn(resourceService, 'getResource').and.callThrough();
       spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
       spyOn(toasterService, 'success').and.callThrough();

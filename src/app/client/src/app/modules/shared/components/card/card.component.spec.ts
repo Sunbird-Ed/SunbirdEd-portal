@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from '../../services';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { By } from '@angular/platform-browser';
 import { Response } from './card.component.spec.data';
 import { CardComponent } from './card.component';
 import { CacheService } from 'ng2-cache-service';
@@ -27,14 +26,12 @@ describe('CardComponent', () => {
   });
 
   it('should show TEST INPUT for all data', () => {
-    const cdnprefixPipe = new CdnprefixPipe();
     component.data = Response.cardData;
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('div .title').innerText).toContain('B1 Test');
     expect(fixture.nativeElement.querySelector('div .right').innerText).toEqual('Worksheet');
   });
   it('should show badgeClassImage while passing badgesData', () => {
-    const cdnprefixPipe = new CdnprefixPipe();
     component.data = Response.librarySearchData;
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('div .title').innerText).toContain('Official Textbook');

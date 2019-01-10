@@ -3,7 +3,7 @@ import { environment } from '@sunbird/environment';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TelemetryService, ITelemetryContext } from '@sunbird/telemetry';
 import { UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
-NavigationHelperService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
+  NavigationHelperService, ConfigService } from '@sunbird/shared';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService } from '@sunbird/core';
 import * as _ from 'lodash';
@@ -65,7 +65,7 @@ export class AppComponent implements OnInit {
   */
   showAppPopUp = false;
   viewinBrowser = false;
-  constructor(  private cacheService: CacheService,  private browserCacheTtlService: BrowserCacheTtlService,
+  constructor(  private cacheService: CacheService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
     private deviceRegisterService: DeviceRegisterService, private courseService: CoursesService, private tenantService: TenantService,

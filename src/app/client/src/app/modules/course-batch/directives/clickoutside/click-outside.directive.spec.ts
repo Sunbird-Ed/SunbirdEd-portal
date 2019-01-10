@@ -21,9 +21,7 @@ describe('ClickOutsideDirective', () => {
     inputEl = fixture.debugElement.query(By.css('input'));
   });
   it('click outside the  elements', () => {
-    const directive = new ClickOutsideDirective(inputEl);
     fixture.detectChanges();
-    const event = new Event('window:mouseup', {});
     inputEl.triggerEventHandler('mouseup', null);
     spyOn(component.directive, 'onClick').and.callThrough();
     expect(component.directive.onClick).toBeDefined();

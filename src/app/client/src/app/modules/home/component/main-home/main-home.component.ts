@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { CoursesService, UserService, PlayerService } from '@sunbird/core';
-import { ResourceService, ToasterService, ServerResponse, ConfigService, UtilService } from '@sunbird/shared';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { ResourceService, ToasterService, ConfigService, UtilService } from '@sunbird/shared';
+import { IInteractEventObject, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 /**
  * This component contains 3 sub components

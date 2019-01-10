@@ -4,7 +4,7 @@ import { ResourceService, ToasterService, ServerResponse, ConfigService } from '
 import { Angular2Csv } from 'angular2-csv';
 import { OrgManagementService } from '../../services/org-management/org-management.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { UserService } from '@sunbird/core';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -171,7 +171,7 @@ export class UserUploadComponent implements OnInit, OnDestroy {
       showLabels: true,
       useBom: false
     };
-    const csv = new Angular2Csv(this.config.appConfig.ADMIN_UPLOAD.SAMPLE_USER_CSV, 'Sample_Users', options);
+    return new Angular2Csv(this.config.appConfig.ADMIN_UPLOAD.SAMPLE_USER_CSV, 'Sample_Users', options);
   }
   /**
   * This method helps to call uploadOrg method to upload a csv file

@@ -18,6 +18,7 @@ describe('FileUploaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(FileUploaderComponent);
     component = fixture.componentInstance;
+    component.ngOnInit();
     fixture.detectChanges();
   });
 });

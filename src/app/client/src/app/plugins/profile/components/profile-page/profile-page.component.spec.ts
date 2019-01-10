@@ -1,6 +1,6 @@
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedModule, ResourceService } from '@sunbird/shared';
-import { CoreModule, UserService, SearchService, PlayerService , LearnerService, CoursesService} from '@sunbird/core';
+import { CoreModule, UserService, SearchService, PlayerService, CoursesService } from '@sunbird/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgInviewModule } from 'angular-inport';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -9,7 +9,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SlickModule } from 'ngx-slick';
 import { Response } from './profile-page.spec.data';
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 
 describe('ProfilePageComponent', () => {
   let component: ProfilePageComponent;
@@ -28,9 +28,9 @@ describe('ProfilePageComponent', () => {
   const env = 'profile';
   class ActivatedRouteStub {
     snapshot = {
-      root: { firstChild : {data: { telemetry: { env: env} } } },
-      data : {
-         telemetry: { env: env }
+      root: { firstChild: { data: { telemetry: { env: env } } } },
+      data: {
+        telemetry: { env: env }
       }
     };
   }
@@ -40,7 +40,7 @@ describe('ProfilePageComponent', () => {
         't0015': 'Upload Organization',
         't0016': 'Upload User'
       },
-      'lbl' : {
+      'lbl': {
         'chkuploadsts': 'Check Status'
       },
     },
@@ -54,16 +54,16 @@ describe('ProfilePageComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule,  SharedModule.forRoot(), CoreModule.forRoot(),
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(),
         TelemetryModule, NgInviewModule, SlickModule],
-      declarations: [ ProfilePageComponent ],
+      declarations: [ProfilePageComponent],
       providers: [ProfileService, UserService, SearchService,
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: Router, useClass: RouterStub },
         { provide: ResourceService, useValue: resourceBundle }],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -97,9 +97,9 @@ describe('ProfilePageComponent', () => {
 
   it('should not call user search service when my contributions data count is zero', () => {
     const searchService = TestBed.get(SearchService);
-   searchService._searchedContentList = Response.zeroData.result;
+    searchService._searchedContentList = Response.zeroData.result;
     const response = searchService.searchedContentList;
-   component.getMyContent();
+    component.getMyContent();
     expect(response.count).toEqual(0);
     expect(component.contributions).toBeDefined();
     expect(component.contributions).toEqual([]);
@@ -115,8 +115,7 @@ describe('ProfilePageComponent', () => {
 
   it('should call course service to get attended training data', () => {
     const courseService = TestBed.get(CoursesService);
-    const learnerService = TestBed.get(LearnerService);
-    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses});
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses });
     courseService.initialize();
     component.getAttendedTraining();
     expect(component.attendedTraining).toBeDefined();

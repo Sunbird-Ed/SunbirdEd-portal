@@ -1,4 +1,4 @@
-import { combineLatest, Subject, of, Observable } from 'rxjs';
+import { combineLatest, Subject, of } from 'rxjs';
 import { PageApiService, OrgDetailsService, FormService, UserService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import {

@@ -1,9 +1,9 @@
 import { WorkSpaceService } from './../services';
 import { SearchService, UserService } from '@sunbird/core';
-import { ResourceService, ServerResponse } from '@sunbird/shared';
+import { ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
-import { mergeMap, catchError, map } from 'rxjs/operators';
-import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import { mergeMap, map } from 'rxjs/operators';
+import { of as observableOf } from 'rxjs';
 /**
  * Base class for workspace module
 */

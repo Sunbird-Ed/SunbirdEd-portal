@@ -1,12 +1,11 @@
-import { Component, OnInit, Input, ViewChild, HostListener, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription, Subject, combineLatest, of } from 'rxjs';
-import { takeUntil, first, map, debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operators';
-import { ResourceService, ServerResponse, ToasterService, FilterPipe } from '@sunbird/shared';
+import { Subscription, Subject, of } from 'rxjs';
+import { takeUntil, first, debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operators';
+import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { UserService, SearchService } from '@sunbird/core';
 import { CourseBatchService } from './../../services';
 import * as _ from 'lodash';
-import { AngularMultiSelect } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 @Component({
   selector: 'app-add-batch-members',
   templateUrl: './add-batch-members.component.html',
@@ -155,10 +154,10 @@ export class AddBatchMembersComponent implements OnInit {
     this.router = route;
     this.subOrgDropDownSettings = {
       text: this.resourceService.frmelmnts.lbl.selectSubOrganisation,
-      selectAllText:  this.resourceService.frmelmnts.lbl.selectAll,
-      unSelectAllText:  this.resourceService.frmelmnts.lbl.unselectAll,
+      selectAllText: this.resourceService.frmelmnts.lbl.selectAll,
+      unSelectAllText: this.resourceService.frmelmnts.lbl.unselectAll,
       badgeShowLimit: 1,
-      labelKey:  this.resourceService.frmelmnts.lbl.orgName,
+      labelKey: this.resourceService.frmelmnts.lbl.orgName,
     };
     this.mentorsDropDownSettings = {
       text: this.resourceService.frmelmnts.lbl.SelectMentors,
@@ -200,7 +199,6 @@ export class AddBatchMembersComponent implements OnInit {
       .subscribe(
         (data: ServerResponse) => {
           if (data.result.response.content) {
-            const subOrganization = [];
             if (data.result.response.content && data.result.response.content.length > 0) {
               this.subOrganizations = data.result.response.content;
             }
@@ -225,7 +223,7 @@ export class AddBatchMembersComponent implements OnInit {
           }
         },
         (err: ServerResponse) => {
-         this.toasterService.error(this.resourceService.messages.emsg.m0005);
+          this.toasterService.error(this.resourceService.messages.emsg.m0005);
         }
       );
   }
@@ -270,11 +268,11 @@ export class AddBatchMembersComponent implements OnInit {
       .subscribe((res) => {
         const list = this.sortUsers(res);
         if (type === 'participant') {
-          this.participantList =  _.filter(list.participantList, (participant) =>
-           _.indexOf(_.map(this.selectedParticipantList, 'id'), participant.id) === -1);
+          this.participantList = _.filter(list.participantList, (participant) =>
+            _.indexOf(_.map(this.selectedParticipantList, 'id'), participant.id) === -1);
         } else {
-          this.mentorList =  _.filter(list.mentorList, (mentor) =>
-          _.indexOf(_.map(this.selectedMentorList, 'id'), mentor.id) === -1);
+          this.mentorList = _.filter(list.mentorList, (mentor) =>
+            _.indexOf(_.map(this.selectedMentorList, 'id'), mentor.id) === -1);
         }
       },
         (err) => {

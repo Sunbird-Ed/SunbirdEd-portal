@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, ConfigService, UtilService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SearchService, SearchParam } from '@sunbird/core';
+import { SearchService } from '@sunbird/core';
 import * as _ from 'lodash';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 @Component({

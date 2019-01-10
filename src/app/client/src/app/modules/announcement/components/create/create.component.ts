@@ -1,12 +1,11 @@
 
 import {first, takeUntil, map, filter} from 'rxjs/operators';
-import { Subscription ,  Observable ,  Subject } from 'rxjs';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { Subscription ,  Subject } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, FileUploadService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, ElementRef, ViewChildren, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { NgForm, FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { GeoExplorerComponent } from './../geo-explorer/geo-explorer.component';
-import { FileUploaderComponent } from './../file-uploader/file-uploader.component';
 import { CreateService } from './../../services';
 import { UserService } from '@sunbird/core';
 import { IGeoLocationDetails, IAnnouncementDetails, IAttachementType } from './../../interfaces';
@@ -176,7 +175,7 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   constructor(resource: ResourceService, fileUpload: FileUploadService, activatedRoute: ActivatedRoute, route: Router,
     toasterService: ToasterService, formBuilder: FormBuilder, createService: CreateService, user: UserService,
-    private elRef: ElementRef, config: ConfigService, private cdr: ChangeDetectorRef, private userService: UserService,
+    config: ConfigService, private cdr: ChangeDetectorRef,
     private deviceDetectorService: DeviceDetectorService) {
     this.resource = resource;
     this.fileUpload = fileUpload;

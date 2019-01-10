@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserService, CoreModule, BadgesService } from '@sunbird/core';
 import { ProfileBadgeComponent } from './profile-badge.component';
@@ -36,7 +36,6 @@ describe('ProfileBadgeComponent', () => {
     expect(component.badgeArray[0]).toEqual(mockRes.badgeList);
   });
   it('should call toggle method with limit greater than 4', () => {
-    const badgeService = TestBed.get(BadgesService);
     const limit = true;
     component.badgeArray = [];
     component.badgeArray.length = 5;

@@ -1,18 +1,15 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { UserFilterComponent } from './../user-filter/user-filter.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
-  SharedModule, ServerResponse, PaginationService, ResourceService,
-  ConfigService, ToasterService, INoResultMessage
+  SharedModule, PaginationService, ResourceService,
+  ConfigService, ToasterService
 } from '@sunbird/shared';
 import { SearchService, UserService, LearnerService, ContentService } from '@sunbird/core';
 import { UserSearchService } from './../../services';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserSearchComponent } from './user-search.component';
@@ -76,7 +73,6 @@ describe('UserSearchComponent', () => {
 
   it('should call search api for populateUserSearch', () => {
     const searchService = TestBed.get(SearchService);
-    const learnerService = TestBed.get(LearnerService);
     component.queryParams = mockQueryParma;
     spyOn(searchService, 'userSearch').and.callFake(() => observableOf(Response.successData));
     component.populateUserSearch();
@@ -88,7 +84,6 @@ describe('UserSearchComponent', () => {
 
   it('should call search api for populateUserSearch and get empty result', () => {
     const searchService = TestBed.get(SearchService);
-    const learnerService = TestBed.get(LearnerService);
     component.queryParams = mockQueryParma;
     spyOn(searchService, 'userSearch').and.callFake(() => observableOf(Response.emptySuccessData));
     fixture.detectChanges();
@@ -99,7 +94,6 @@ describe('UserSearchComponent', () => {
 
   it('should throw error when searchService api is not called', () => {
     const searchService = TestBed.get(SearchService);
-    const learnerService = TestBed.get(LearnerService);
     component.queryParams = mockQueryParma;
     component.searchList = Response.successData.result.response.content;
     component.userProfile = {orgRoleMap: [], rootOrgAdmin: true};
@@ -130,7 +124,6 @@ describe('UserSearchComponent', () => {
       component.navigateToPage(1);
       expect(component.pageNumber).toEqual(1);
       expect(component.pageLimit).toEqual(configService.appConfig.SEARCH.PAGE_LIMIT);
-      const queryParams = {};
       fixture.detectChanges();
     }));
 

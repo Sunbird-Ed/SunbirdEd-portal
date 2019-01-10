@@ -167,7 +167,7 @@ export class LearnPageComponent implements OnInit, OnDestroy {
         // show toaster message this.resourceService.messages.fmsg.m0001
         return enrolledSection;
       }
-      const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.CoursePageSection.enrolledCourses;
+      const { constantData, metaData, dynamicFields } = this.configService.appConfig.CoursePageSection.enrolledCourses;
       enrolledSection.contents = this.utilService.getDataForCard(enrolledCourses, constantData, dynamicFields, metaData);
       return enrolledSection;
     }));

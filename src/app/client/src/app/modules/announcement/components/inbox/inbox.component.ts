@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ConfigService, PaginationService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
-import { IEndEventInput, IStartEventInput, IImpressionEventInput, IInteractEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventInput } from '@sunbird/telemetry';
 
 import { Subject } from 'rxjs';
 /**

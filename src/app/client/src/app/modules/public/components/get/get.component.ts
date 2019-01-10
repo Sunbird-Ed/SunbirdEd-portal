@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-get',
   templateUrl: './get.component.html',

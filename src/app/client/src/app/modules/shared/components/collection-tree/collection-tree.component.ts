@@ -5,8 +5,7 @@
 */
 
 import {
-  Component, OnInit, Input, ElementRef,
-  ViewChild, AfterViewInit, OnChanges, Output, EventEmitter
+  Component, OnInit, Input, OnChanges, Output, EventEmitter
 } from '@angular/core';
 import * as _ from 'lodash';
 import { ICollectionTreeNodes, ICollectionTreeOptions, MimeTypeTofileType } from '../../interfaces';
@@ -81,7 +80,6 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
         if ( node.fileType === MimeTypeTofileType['application/vnd.ekstep.content-collection']) {
           node.folder = true;
         } else {
-          const indexOf = _.findIndex(this.contentStatus, { });
           if (this.contentStatus) {
             const content: any = _.find(this.contentStatus, { 'contentId': node.model.identifier});
             const status = (content && content.status) ? content.status.toString() : 0;

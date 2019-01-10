@@ -2,7 +2,7 @@ import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
     ICard, ILoaderMessage, UtilService, NavigationHelperService
 } from '@sunbird/shared';
-import { SearchService, PlayerService, OrgDetailsService, UserService, FrameworkService } from '@sunbird/core';
+import { SearchService, OrgDetailsService, UserService, FrameworkService } from '@sunbird/core';
 import { IPagination } from '@sunbird/announcement';
 import { PublicPlayerService } from '../../../../services';
 import { combineLatest, Subject } from 'rxjs';
@@ -10,7 +10,7 @@ import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, mergeMap, first, filter, debounceTime } from 'rxjs/operators';
+import { takeUntil, map, mergeMap, first, debounceTime } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 @Component({
     templateUrl: './explore-content.component.html',

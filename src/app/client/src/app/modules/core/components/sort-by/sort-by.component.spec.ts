@@ -1,11 +1,11 @@
 
-import {from as observableFrom,  Observable } from 'rxjs';
+import {from as observableFrom } from 'rxjs';
 import { SortByComponent } from './sort-by.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, ConfigService } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 describe('SortByComponent', () => {

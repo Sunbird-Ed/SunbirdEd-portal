@@ -1,6 +1,6 @@
 
-import {of as observableOf, throwError as observableThrowError,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import {of as observableOf, throwError as observableThrowError } from 'rxjs';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FlagConentplayerComponent } from './flag-conentplayer.component';
 
 // Import NG testing module(s)
@@ -8,7 +8,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { SharedModule,  ToasterService, ResourceService, NavigationHelperService } from '@sunbird/shared';
-import { PlayerService, UserService, LearnerService, ContentService, CoreModule } from '@sunbird/core';
+import { PlayerService, UserService, ContentService, CoreModule } from '@sunbird/core';
 import * as mockData from './flag-contentplayer.componemt.spec.data';
 const testData = mockData.mockRes;
 describe('FlagConentplayerComponent', () => {
@@ -78,14 +78,9 @@ describe('FlagConentplayerComponent', () => {
   });
 
   it('should call discardContentFlag api', () => {
-    const playerService = TestBed.get(PlayerService);
     const contentService = TestBed.get(ContentService);
     const resourceService = TestBed.get(ResourceService);
-    const toasterService = TestBed.get(ToasterService);
     resourceService.messages = resourceBundle.messages;
-    const requestData = {
-      'request': { }
-    };
   spyOn(contentService, 'post').and.callFake(() => observableOf(testData.sucessRes));
   component.discardContentFlag();
   fixture.detectChanges();

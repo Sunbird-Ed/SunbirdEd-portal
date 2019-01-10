@@ -2,14 +2,14 @@ import {
   PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ICard, ILoaderMessage, UtilService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { SearchService, PlayerService, CoursesService, UserService, FormService, ISort, ICourses } from '@sunbird/core';
+import { SearchService, PlayerService, CoursesService, UserService, FormService, ISort } from '@sunbird/core';
 import { IPagination } from '@sunbird/announcement';
 import { combineLatest, Subject, of } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, mergeMap, first, filter, debounceTime, catchError } from 'rxjs/operators';
+import { takeUntil, map, mergeMap, first, debounceTime, catchError } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 
 @Component({
@@ -168,7 +168,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
         // show toaster message this.resourceService.messages.fmsg.m0001
         return enrolledSection;
       }
-      const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.CoursePageSection.enrolledCourses;
+      const { constantData, metaData, dynamicFields } = this.configService.appConfig.CoursePageSection.enrolledCourses;
       enrolledSection.contents = this.utilService.getDataForCard(enrolledCourses, constantData, dynamicFields, metaData);
       return enrolledSection;
     }));

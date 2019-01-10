@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import * as moment from 'moment';
-const momentConstructor: (value?: any) => moment.Moment = (<any>moment).default || moment;
 
 /**
  * Pipe for date format

@@ -1,26 +1,20 @@
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import * as _ from 'lodash';
 import { ProminentFilterComponent } from './prominent-filter.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SharedModule, ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
-import {
-  CoreModule, FrameworkService, FormService, ContentService, UserService, LearnerService,
-  ConceptPickerService, SearchService, PermissionService, PublicDataService
-} from '@sunbird/core';
+import { SharedModule, ResourceService, ConfigService } from '@sunbird/shared';
+import { CoreModule, PublicDataService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 // import * as mockData from ./prominent-filter.component.spec.data';
-import { Response } from './prominent-filter.component.spec.data';
 
 describe('ProminentFilterComponent', () => {
   let component: ProminentFilterComponent;
   let fixture: ComponentFixture<ProminentFilterComponent>;
-  let frameworkService, formService, cacheService, userService, publicDataService;
+  let cacheService, publicDataService;
   let mockHashTagId: string, mockFrameworkInput: string;
   let mockFrameworkCategories: Array<any> = [];
   let mockFormFields: Array<any> = [];
@@ -50,9 +44,7 @@ describe('ProminentFilterComponent', () => {
       this.queryParamsMock.next(queryParams);
     }
   }
-  const mockUserRoles = {
-    userRoles: ['PUBLIC', 'CONTENT_REVIEWER']
-  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
@@ -68,11 +60,8 @@ describe('ProminentFilterComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProminentFilterComponent);
     component = fixture.componentInstance;
-    frameworkService = TestBed.get(FrameworkService);
-    formService = TestBed.get(FormService);
-    cacheService = TestBed.get(CacheService);
-    userService = TestBed.get(UserService);
     publicDataService = TestBed.get(PublicDataService);
+    cacheService = TestBed.get(CacheService);
     spyOn(publicDataService, 'get').and.callFake((options) => {
       if (options.url === 'channel/v1/read/' + mockHashTagId && makeChannelReadSuc) {
         return of({result: {channel: {defaultFramework: mockFrameworkInput}}});

@@ -5,7 +5,6 @@ import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { PageApiService, CoreModule, UserService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
-import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './resource.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,7 +13,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 describe('ResourceComponent', () => {
   let component: ResourceComponent;
   let fixture: ComponentFixture<ResourceComponent>;
-  let toasterService, userService, pageApiService;
+  let toasterService, pageApiService;
   const mockPageSection: Array<any> = Response.successData.result.response.sections;
   let sendPageApi = true;
   class RouterStub {

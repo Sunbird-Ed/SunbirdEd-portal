@@ -5,11 +5,10 @@ import {
   ToasterService } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { RedirectComponent } from './redirect.component';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { Observable } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CacheService } from 'ng2-cache-service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';

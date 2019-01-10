@@ -1,5 +1,4 @@
-import { FormsModule } from '@angular/forms';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
@@ -14,7 +13,7 @@ import * as _ from 'lodash';
 import {
   SuiModalService, TemplateModalConfig, ModalTemplate
 } from 'ng2-semantic-ui';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  * The limited publish component to search limited published content

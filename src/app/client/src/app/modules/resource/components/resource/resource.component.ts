@@ -7,7 +7,7 @@ import {
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, mergeMap, first, filter } from 'rxjs/operators';
+import { takeUntil, map, first, filter } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 @Component({
   templateUrl: './resource.component.html',

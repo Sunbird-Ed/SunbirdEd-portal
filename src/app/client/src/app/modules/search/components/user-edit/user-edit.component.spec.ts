@@ -1,16 +1,15 @@
 
-import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { UserSearchService } from './../../services';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
-  SharedModule, ServerResponse, PaginationService, ResourceService,
+  SharedModule, PaginationService, ResourceService,
   ConfigService, ToasterService, RouterNavigationService
 } from '@sunbird/shared';
-import { SearchService, UserService, LearnerService, ContentService, PermissionService, RolesAndPermissions } from '@sunbird/core';
-import { ActivatedRoute, Router, Params } from '@angular/router';
+import { SearchService, UserService, LearnerService, ContentService, PermissionService } from '@sunbird/core';
+import { ActivatedRoute, Params } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import * as _ from 'lodash';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { UserEditComponent } from './user-edit.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';

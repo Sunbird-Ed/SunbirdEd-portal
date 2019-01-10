@@ -6,10 +6,10 @@ import { Observable ,  Subscription } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {
-  WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
+  WindowScrollService, ILoaderMessage, PlayerConfig,
   ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService
 } from '@sunbird/shared';
-import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
+import { CollectionHierarchyAPI } from '@sunbird/core';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
@@ -33,12 +33,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   private collectionId: string;
 
   private contentId: string;
-  /**
-   * Refrence of Content service
-   * @private
-   * @type {ContentService}
-   */
-  private contentService: ContentService;
 
   public collectionTreeNodes: any;
 
@@ -74,11 +68,10 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
 	 * dialCode
 	*/
   public dialCode: string;
-  constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
+  constructor(route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
     public externalUrlPreviewService: ExternalUrlPreviewService, private configService: ConfigService) {
-    this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;

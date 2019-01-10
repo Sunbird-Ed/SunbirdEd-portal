@@ -1,10 +1,9 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnDestroy, ViewChild } from '@angular/core';
 import { UserService,  TenantService} from '@sunbird/core';
 import { Subscription, Subject } from 'rxjs';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { IUserProfile, ILoaderMessage } from '@sunbird/shared';
-import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
-import * as _ from 'lodash';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-tnc-popup',

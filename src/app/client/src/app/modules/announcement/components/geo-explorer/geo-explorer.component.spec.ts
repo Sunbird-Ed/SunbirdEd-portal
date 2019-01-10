@@ -1,11 +1,10 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SharedModule, ToasterService } from '@sunbird/shared';
 
 // NG core testing module
-import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 // SB scomponent(s) and service(s)
@@ -99,7 +98,6 @@ describe('GeoExplorerComponent', () => {
   });
 
   it('should populate selected items', () => {
-    const data = testData.locationSuccessData.result.response[0];
     component.selectedItems = [];
     component.locationList = testData.locationSuccessData.result.response;
     spyOn(component, 'populateItems').and.callThrough();
@@ -107,7 +105,6 @@ describe('GeoExplorerComponent', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
     expect(component.populateItems).toHaveBeenCalledWith();
-   // expect(component.selectedItems[0].selected).toEqual(true);
   });
 
   it('should throw error - adaptor config not found', () => {

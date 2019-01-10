@@ -1,11 +1,10 @@
-import { IShareEventData, IShareEventInput } from '@sunbird/telemetry';
+import { IShareEventData } from '@sunbird/telemetry';
 import {
-  Component, OnInit, Input, EventEmitter,
-  ElementRef, ViewChild, Renderer, Output
+  Component, OnInit, Input, EventEmitter, ElementRef, ViewChild, Output
 } from '@angular/core';
 import { ResourceService } from '../../services/index';
 import { IPopup } from 'ng2-semantic-ui';
-import { ISharelink, ITelemetryShare } from './../../interfaces';
+import { ITelemetryShare } from './../../interfaces';
 @Component({
   selector: 'app-share-link',
   templateUrl: './share-link.component.html',
@@ -58,7 +57,7 @@ export class ShareLinkComponent implements OnInit {
   *@param {ResourceService} SearchService Reference of SearchService
   *@param {WorkSpaceService} WorkSpaceService Reference of SearchService
   */
-  constructor(resourceService: ResourceService, private _renderer: Renderer) {
+  constructor(resourceService: ResourceService) {
     this.resourceService = resourceService;
     this.position = 'top center';
     this.baseUrl = document.location.origin + '/';

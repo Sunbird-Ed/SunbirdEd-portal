@@ -1,8 +1,6 @@
 import { of, throwError } from 'rxjs';
-import { first, mergeMap, map, tap , catchError, filter} from 'rxjs/operators';
-import {
-  ConfigService, ResourceService, Framework, BrowserCacheTtlService
-} from '@sunbird/shared';
+import { first, mergeMap, map , catchError, filter} from 'rxjs/operators';
+import { ConfigService, ResourceService, Framework } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, PermissionService, UserService, OrgDetailsService  } from './../../services';
@@ -51,8 +49,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
   constructor(public configService: ConfigService, public resourceService: ResourceService, public router: Router,
     private activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
     public frameworkService: FrameworkService, public formService: FormService,
-    public userService: UserService, public permissionService: PermissionService,
-    private browserCacheTtlService: BrowserCacheTtlService, private orgDetailsService: OrgDetailsService ) {
+    public userService: UserService, public permissionService: PermissionService, private orgDetailsService: OrgDetailsService ) {
     this.router.onSameUrlNavigation = 'reload';
   }
 
@@ -69,7 +66,6 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
     this.setFilterInteractData();
   }
   getFormatedFilterDetails() {
-    const formAction = this.formAction ? this.formAction : 'search';
     return this.fetchFrameWorkDetails().pipe(
       mergeMap((frameworkDetails: any) => {
         this.categoryMasterList = frameworkDetails.categoryMasterList;

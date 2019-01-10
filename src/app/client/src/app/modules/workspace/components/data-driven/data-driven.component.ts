@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import {
   ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile, Framework,
   ILoaderMessage, NavigationHelperService
@@ -10,7 +10,7 @@ import { SearchService, UserService, FrameworkService, FormService } from '@sunb
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 import { WorkSpace } from '../../classes/workspace';
 import { WorkSpaceService } from '../../services';
 
@@ -34,11 +34,6 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
 * To show toaster(error, success etc) after any API calls
 */
   private toasterService: ToasterService;
-
-  /**
-* urlString for get url details
-*/
-  private urlString;
   /**
 * contentType is creation type, fected from url
 */
@@ -139,15 +134,15 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
     this.resourceType = this.configService.appConfig.resourceType[this.contentType];
     this.creationFormLable = this.configService.appConfig.contentCreateTypeLable[this.contentType];
     this.name = this.configService.appConfig.contentName[this.contentType] ?
-                this.configService.appConfig.contentName[this.contentType] : 'Untitled';
-   this.description = this.configService.appConfig.contentDescription[this.contentType] ?
-   this.configService.appConfig.contentDescription[this.contentType] : 'Untitled';
+      this.configService.appConfig.contentName[this.contentType] : 'Untitled';
+    this.description = this.configService.appConfig.contentDescription[this.contentType] ?
+      this.configService.appConfig.contentDescription[this.contentType] : 'Untitled';
   }
 
 
   ngOnInit() {
 
-     this.checkForPreviousRouteForRedirect();
+    this.checkForPreviousRouteForRedirect();
 
     /**
      * fetchFrameworkMetaData is called to config the form data and framework data
@@ -281,20 +276,20 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
     };
     if (this.contentType === 'studymaterial') {
       this.editorService.create(requestData).subscribe(res => {
-        this.createLockAndNavigateToEditor({identifier: res.result.content_id});
+        this.createLockAndNavigateToEditor({ identifier: res.result.content_id });
       }, err => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0078);
       });
     } else {
       this.editorService.create(requestData).subscribe(res => {
-        this.createLockAndNavigateToEditor({identifier: res.result.content_id});
+        this.createLockAndNavigateToEditor({ identifier: res.result.content_id });
       }, err => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0010);
       });
     }
   }
 
-  createLockAndNavigateToEditor (content) {
+  createLockAndNavigateToEditor(content) {
     const state = 'draft';
     const framework = this.framework;
     if (this.contentType === 'studymaterial') {

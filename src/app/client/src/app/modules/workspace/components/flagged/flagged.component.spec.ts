@@ -1,15 +1,14 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { FlaggedComponent } from './flagged.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
+import { SharedModule, PaginationService, ToasterService, ResourceService } from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Response } from './flagged.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
@@ -54,7 +53,6 @@ describe('FlaggedComponent', () => {
     }
   };
 
-  const bothParams = { 'params': { 'pageNumber': '1' }, 'queryParams': { 'sort_by': 'Updated On' } };
   const mockroleOrgMap = {
     'ORG_MODERATOR': ['01232002070124134414'],
     'COURSE_MENTOR': ['01232002070124134414'],

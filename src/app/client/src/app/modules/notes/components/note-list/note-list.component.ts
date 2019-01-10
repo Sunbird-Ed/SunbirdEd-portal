@@ -1,16 +1,14 @@
 
 import { takeUntil } from 'rxjs/operators';
-import { ResourceService, ToasterService, FilterPipe, ServerResponse, RouterNavigationService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse, RouterNavigationService } from '@sunbird/shared';
 import { NotesService } from '../../services';
 import { UserService, ContentService } from '@sunbird/core';
-import { Component, OnInit, Pipe, PipeTransform, Input, OnDestroy } from '@angular/core';
-import { InlineEditorComponent } from '../inline-editor/inline-editor.component';
-import { DatePipe } from '@angular/common';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
+import { SuiModalService } from 'ng2-semantic-ui';
 import { INoteData, IdDetails } from '@sunbird/notes';
 import * as _ from 'lodash';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 
 import { Subject } from 'rxjs';
 /**

@@ -1,5 +1,5 @@
 
-import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
+import {combineLatest as observableCombineLatest } from 'rxjs';
 import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage } from '@sunbird/shared';
 import { SearchService, UserService } from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import * as _ from 'lodash';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-org-search',

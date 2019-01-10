@@ -1,6 +1,6 @@
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
-import { NgModule , ModuleWithProviders} from '@angular/core';
+import { NgModule} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
   OtpPopupComponent } from './components';

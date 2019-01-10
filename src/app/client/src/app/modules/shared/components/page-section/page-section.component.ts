@@ -4,7 +4,7 @@ import { Component,  Input, EventEmitter, Output } from '@angular/core';
 import {ICaraouselData} from '../../interfaces/caraouselData';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import * as _ from 'lodash';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventEdata } from '@sunbird/telemetry';
 
 /**
  * This display a a section
@@ -136,7 +136,6 @@ export class PageSectionComponent implements OnInit {
    * get inview  Data
   */
   inview(event) {
-    const visitsLength = this.inviewLogs.length;
     const visits = [];
     _.forEach(event.inview, (inview, key) => {
       const content = _.find(this.inviewLogs, (eachContent) => {

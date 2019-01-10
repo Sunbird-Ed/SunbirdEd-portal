@@ -1,5 +1,5 @@
 
-import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DataDrivenComponent } from './data-driven.component';
@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
 import { EditorService, WorkSpaceService } from './../../services';
 import { ResourceService, SharedModule, NavigationHelperService, ToasterService } from '@sunbird/shared';
-import { FrameworkService, FormService, ContentService, UserService, CoreModule } from '@sunbird/core';
+import { FrameworkService, FormService, UserService, CoreModule } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { mockFrameworkData } from './data-driven.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -74,14 +74,11 @@ describe('DataDrivenComponent', () => {
     componentParent = fixtureParent.componentInstance;
     fixtureChild = TestBed.createComponent(DefaultTemplateComponent);
     componentChild = fixtureChild.componentInstance;
-    // navigationHelperService = TestBed.get('NavigationHelperService');
     fixtureParent.detectChanges();
   });
 
   it('should fetch framework details', () => {
     const service = TestBed.get(FrameworkService);
-    const cacheService = TestBed.get(CacheService);
-    const contentService = TestBed.get(ContentService);
     const formService = TestBed.get(FormService);
     const formServiceInputParams = {
       formType: 'textbook',
@@ -101,8 +98,6 @@ describe('DataDrivenComponent', () => {
   });
   it('should throw error', () => {
     const service = TestBed.get(FrameworkService);
-    const cacheService = TestBed.get(CacheService);
-    const contentService = TestBed.get(ContentService);
     service._frameWorkData$ = mockFrameworkData.frameworkError;
     service._frameworkData$.next({
       err: mockFrameworkData.frameworkError.err,
@@ -112,8 +107,6 @@ describe('DataDrivenComponent', () => {
     componentParent.fetchFrameworkMetaData();
   });
   it('should router to collection editor ', () => {
-    const state = 'draft';
-    const type = 'TextBook';
     const router = TestBed.get(Router);
     const userService = TestBed.get(UserService);
     const editorService = TestBed.get(EditorService);
@@ -133,8 +126,6 @@ describe('DataDrivenComponent', () => {
       ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'draft', componentParent.framework, 'Draft']);
   });
   it('should not router to collection editor ', () => {
-    const state = 'draft';
-    const type = 'TextBook';
     const router = TestBed.get(Router);
     const userService = TestBed.get(UserService);
     const editorService = TestBed.get(EditorService);
@@ -154,7 +145,6 @@ describe('DataDrivenComponent', () => {
       ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'draft', componentParent.framework]);
   });
   it('should router to contentEditor editor ', () => {
-    const state = 'draft';
     const router = TestBed.get(Router);
     const userService = TestBed.get(UserService);
     const editorService = TestBed.get(EditorService);
@@ -172,7 +162,6 @@ describe('DataDrivenComponent', () => {
       ['/workspace/content/edit/content/', 'do_2124708548063559681134', 'draft', componentParent.framework, 'Draft']);
   });
   it('should not router to contentEditor editer ', () => {
-    const state = 'draft';
     const router = TestBed.get(Router);
     const userService = TestBed.get(UserService);
     const editorService = TestBed.get(EditorService);
@@ -216,7 +205,6 @@ describe('DataDrivenComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/workspace/content/create']);
   });
   it('test to not to navigate to content create page if previous url is from content create page', () => {
-    const router = TestBed.get(Router);
     const navigationHelperService = TestBed.get(NavigationHelperService);
     spyOn(navigationHelperService, 'getPreviousUrl').and.returnValue(mockFrameworkData.redirectUrlFalseCase);
     spyOn(componentParent, 'redirect');
@@ -232,8 +220,6 @@ describe('DataDrivenComponent', () => {
   });
 
   it('should thow  editor service api error when contentType is studymaterial  ', () => {
-    const state = 'draft';
-    const router = TestBed.get(Router);
     const userService = TestBed.get(UserService);
     const editorService = TestBed.get(EditorService);
     const toasterService = TestBed.get(ToasterService);
@@ -255,9 +241,6 @@ describe('DataDrivenComponent', () => {
   });
 
   it('should thow  editor service api error when contentType is not studymaterial  ', () => {
-    const state = 'draft';
-    const type = 'TextBook';
-    const router = TestBed.get(Router);
     const userService = TestBed.get(UserService);
     const editorService = TestBed.get(EditorService);
     const toasterService = TestBed.get(ToasterService);

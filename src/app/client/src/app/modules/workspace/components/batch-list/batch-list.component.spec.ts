@@ -15,15 +15,12 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as mockData from './batch-list.component.spec.data';
 const testData = mockData.mockRes;
-import * as _ from 'lodash';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 
 describe('BatchListComponent', () => {
   let component: BatchListComponent;
   let fixture: ComponentFixture<BatchListComponent>;
-  let childcomponent: BatchCardComponent;
-  let childfixture: ComponentFixture<BatchCardComponent>;
   const resourceBundle = {
     'messages': {
       'fmsg': {
@@ -89,7 +86,6 @@ describe('BatchListComponent', () => {
     fixture = TestBed.createComponent(BatchListComponent);
     childfixture = TestBed.createComponent(BatchCardComponent);
     component = fixture.componentInstance;
-    childcomponent = childfixture.componentInstance;
   });
   it('should call  batch search api and returns result count more than 1', inject([SearchService], (searchService) => {
     const userService = TestBed.get(UserService);

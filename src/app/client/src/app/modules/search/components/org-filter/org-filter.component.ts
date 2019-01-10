@@ -1,10 +1,8 @@
 import { ConfigService, ResourceService } from '@sunbird/shared';
-import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SearchService } from '@sunbird/core';
 import { OrgTypeService } from '@sunbird/org-management';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs';
 @Component({
   selector: 'app-org-filter',
   templateUrl: './org-filter.component.html',
@@ -15,7 +13,6 @@ export class OrgFilterComponent implements OnInit {
 
   public config: ConfigService;
   public resourceService: ResourceService;
-  private searchService: SearchService;
   private orgTypeService: OrgTypeService;
   private cdr: ChangeDetectorRef;
   private router: Router;

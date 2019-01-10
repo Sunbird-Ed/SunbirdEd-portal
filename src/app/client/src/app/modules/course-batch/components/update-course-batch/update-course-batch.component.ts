@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil, mergeMap } from 'rxjs/operators';
-import { RouterNavigationService, ResourceService, ToasterService, ServerResponse, ILoaderMessage } from '@sunbird/shared';
+import { RouterNavigationService, ResourceService, ToasterService, ILoaderMessage } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { AddBatchMembersComponent } from '../add-batch-members/add-batch-members.component';
@@ -10,7 +10,7 @@ import { CourseBatchService } from '../../services';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import {
-  IEndEventInput, IStartEventInput, IInteractEventInput,
+  IEndEventInput, IStartEventInput,
   IImpressionEventInput, IInteractEventObject, IInteractEventEdata
 } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';

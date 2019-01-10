@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, OnChanges, HostListener } from '@angular/core';
+import { Directive, Input, HostListener } from '@angular/core';
 import { IInteractEventInput, IInteractEventObject, IInteractEventEdata } from '../../interfaces';
 import { TelemetryService } from '../../services';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -24,12 +24,10 @@ export class TelemetryInteractDirective {
   @Input() telemetryInteractCdata: Array<{}>;
 
   @HostListener('click', ['$event'])
-
   private onClick(e) {
-
     if (this.telemetryInteractEdata) {
       this.appTelemetryInteractData = {
-       context: {
+      context: {
           env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
           _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
           _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env') ,

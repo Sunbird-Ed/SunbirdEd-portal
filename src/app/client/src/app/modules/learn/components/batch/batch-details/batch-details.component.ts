@@ -1,5 +1,5 @@
 
-import { takeUntil, map } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { CourseBatchService } from './../../../services';
 import { Router, ActivatedRoute } from '@angular/router';

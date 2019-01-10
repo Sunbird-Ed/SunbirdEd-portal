@@ -1,15 +1,14 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 
 import {map} from 'rxjs/operators';
 import { DataService } from '../../../core/services/data/data.service';
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import {  IAnnouncementSericeParam } from '@sunbird/announcement';
 import { ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
-import * as _ from 'lodash';
 
 @Injectable()
 export class HomeAnnouncementService  extends DataService {

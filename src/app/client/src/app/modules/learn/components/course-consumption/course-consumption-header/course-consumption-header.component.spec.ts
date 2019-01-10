@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { CourseHierarchyGetMockResponse,
   CourseHierarchyGetMockResponseFlagged } from './../course-player/course-player.component.mock.data';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {CourseConsumptionService, CourseProgressService} from '../../../services';
 import {CoreModule} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule, ResourceService, WindowScrollService } from '@sunbird/shared';
+import { SharedModule, ResourceService } from '@sunbird/shared';
 
 const resourceServiceMockData = {
   messages : {
@@ -69,7 +69,6 @@ describe('CourseConsumptionHeaderComponent', () => {
 
   it(`should enable resume button if course is not flagged, batch status is not "0" and
   courseProgressData obtained from courseProgressService`, () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const courseProgressService = TestBed.get(CourseProgressService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -85,8 +84,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     expect(component.showResumeCourse).toBeFalsy();
   });
 
-   it('should not enable resume button if course is flagged and courseProgressData obtained from courseProgressService', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+  it('should not enable resume button if course is flagged and courseProgressData obtained from courseProgressService', () => {
     const courseProgressService = TestBed.get(CourseProgressService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -101,9 +99,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     expect(component.showResumeCourse).toBeTruthy();
   });
 
-   it('should not enable resume button if batchId is not present', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const courseProgressService = TestBed.get(CourseProgressService);
+  it('should not enable resume button if batchId is not present', () => {
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
     activatedRouteStub.changeFirstChildParams({courseId: 'do_212347136096788480178'});

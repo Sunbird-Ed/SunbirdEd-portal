@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
-import * as _ from 'lodash';
 @Component({
   selector: 'app-sort-by',
   templateUrl: './sort-by.component.html',

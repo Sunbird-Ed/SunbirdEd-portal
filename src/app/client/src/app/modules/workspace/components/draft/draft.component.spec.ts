@@ -1,12 +1,11 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { DeleteComponent } from './../../../announcement/components/delete/delete.component';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 // Import NG testing module(s)
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+import { SuiModalService } from 'ng2-semantic-ui';
 // Import services
 import { DraftComponent } from './draft.component';
 import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
@@ -14,7 +13,7 @@ import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
 // Import Module
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 // Test data
 import * as mockData from './draft.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';

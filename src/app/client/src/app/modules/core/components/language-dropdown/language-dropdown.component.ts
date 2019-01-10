@@ -3,7 +3,7 @@ import { takeUntil, first } from 'rxjs/operators';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormService, FrameworkService, OrgDetailsService, UserService } from './../../services';
-import { ConfigService, ResourceService, ToasterService, ServerResponse, Framework} from '@sunbird/shared';
+import { ConfigService, ResourceService, ToasterService, ServerResponse} from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 
 import { Subject, Subscription} from 'rxjs';

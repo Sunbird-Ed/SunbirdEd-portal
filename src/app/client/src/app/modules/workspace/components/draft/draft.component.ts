@@ -4,13 +4,13 @@ import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
 import {
     ServerResponse, PaginationService, ConfigService, ToasterService,
-    ResourceService, IContents, ILoaderMessage, INoResultMessage, ICard
+    ResourceService, ILoaderMessage, INoResultMessage, ICard
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  * The draft component search for all the drafts

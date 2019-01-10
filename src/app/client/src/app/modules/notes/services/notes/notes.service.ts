@@ -1,9 +1,8 @@
 
 import {map} from 'rxjs/operators';
 import { LearnerService } from '@sunbird/core';
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ConfigService } from '@sunbird/shared';
-import { INoteData } from '@sunbird/notes';
 
 @Injectable()
 

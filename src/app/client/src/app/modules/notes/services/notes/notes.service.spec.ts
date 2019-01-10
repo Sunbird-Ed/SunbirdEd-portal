@@ -1,8 +1,8 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
-import { TestBed, inject } from '@angular/core/testing';
+import {of as observableOf } from 'rxjs';
+import { TestBed } from '@angular/core/testing';
 import { response } from './notes-service.spec.data';
-import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
+import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NotesService } from './notes.service';
 import { UserService, LearnerService, CoreModule } from '@sunbird/core';
@@ -18,10 +18,7 @@ describe('NotesService', () => {
 
   it('Should make search API call', () => {
     const learnerService = TestBed.get(LearnerService);
-    const service = TestBed.get(NotesService);
-    const param = { request: { userid: 'd5efd1ab-3cad-4034-8143-32c480f5cc9e', courseid: 'do_2123229899264573441612' } };
     spyOn(learnerService, 'post').and.callFake(() => observableOf(response.userSuccess));
-    const apiRes = service.search(param);
     expect(learnerService.post).toHaveBeenCalled();
   });
 
@@ -49,26 +46,13 @@ describe('NotesService', () => {
 
   it('Should make update API call', () => {
     const learnerService = TestBed.get(LearnerService);
-    const service = TestBed.get(NotesService);
-    const param = {
-    noteId: '/012455264743841792211',
-    request: {
-      note: 'Mock note',
-      title: 'Mock',
-      updatedBy: 'd5efd1ab-3cad-4034-8143-32c480f5cc9e',
-      updatedDate: 'd5efd1ab-3cad-4034-8143-32c480f5cc9e'
-    } };
     spyOn(learnerService, 'patch').and.callFake(() => observableOf(response.userSuccess));
-    const apiRes = service.update(param);
     expect(learnerService.patch).toHaveBeenCalled();
   });
 
   it('Should make remove API call', () => {
     const learnerService = TestBed.get(LearnerService);
-    const service = TestBed.get(NotesService);
-    const param = { noteId: '012455264743841792211' };
     spyOn(learnerService, 'delete').and.callFake(() => observableOf(response.userSuccess));
-    const apiRes = service.remove(param);
     expect(learnerService.delete).toHaveBeenCalled();
   });
 });

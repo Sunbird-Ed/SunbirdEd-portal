@@ -1,10 +1,7 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClientModule } from '@angular/common/http';
 // Modules
-import { FormsModule } from '@angular/forms';
-import { SuiModule } from 'ng2-semantic-ui';
 
 
 // SB service(s) and module(s)

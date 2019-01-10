@@ -1,11 +1,8 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import * as testData from './outbox.component.spec.data';
-import { Component, OnInit } from '@angular/core';
-import * as _ from 'lodash';
 import { HttpClient } from '@angular/common/http';
-import { IAnnouncementListData, IPagination, IAnnouncementDetails } from '@sunbird/announcement';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 // Modules
@@ -20,7 +17,7 @@ import { OutboxComponent } from '../index';
 import { AnnouncementService } from '@sunbird/core';
 import {
     SharedModule, ResourceService, PaginationService, ToasterService,
-    ConfigService, DateFormatPipe, ServerResponse
+    ConfigService, DateFormatPipe
 } from '@sunbird/shared';
 
 describe('OutboxComponent', () => {

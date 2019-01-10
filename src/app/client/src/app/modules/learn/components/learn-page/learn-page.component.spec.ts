@@ -1,12 +1,10 @@
 import { LearnPageComponent } from './learn-page.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
-} from '@sunbird/shared';
-import { PageApiService, CoursesService, CoreModule, PlayerService, FormService, LearnerService} from '@sunbird/core';
+import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
+import { PageApiService, CoursesService, CoreModule, FormService, LearnerService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
-import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './learn-page.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';

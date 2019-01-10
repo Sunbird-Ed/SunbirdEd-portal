@@ -4,7 +4,7 @@ import { CoreModule } from '@sunbird/core';
 import { WorkspacesidebarComponent } from './workspacesidebar.component';
 import {RouterTestingModule} from '@angular/router/testing';
 import { SharedModule, ConfigService} from '@sunbird/shared';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 describe('WorkspacesidebarComponent', () => {
   let component: WorkspacesidebarComponent;
   let fixture: ComponentFixture<WorkspacesidebarComponent>;

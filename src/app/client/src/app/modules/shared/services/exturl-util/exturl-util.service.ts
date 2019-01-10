@@ -1,6 +1,4 @@
 import { ConfigService } from './../config/config.service';
-import { ResourceService } from './../resource/resource.service';
-import { ToasterService } from './../toaster/toaster.service';
 import { Injectable } from '@angular/core';
 
 @Injectable()

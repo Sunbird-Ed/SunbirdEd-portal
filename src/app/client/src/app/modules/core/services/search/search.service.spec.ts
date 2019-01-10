@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError,  Observable } from 'rxjs';
+import {throwError as observableThrowError } from 'rxjs';
 // Import NG testing module(s)
 import { HttpClientModule } from '@angular/common/http';
 // Import services

@@ -1,6 +1,5 @@
 import { ResourceComponent, CollectionPlayerComponent, ContentPlayerComponent } from './components';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { FlagContentComponent } from '@sunbird/core';
 import { NoteListComponent } from '@sunbird/notes';

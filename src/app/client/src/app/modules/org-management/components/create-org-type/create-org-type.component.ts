@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
-import { AnnouncementService } from '@sunbird/core';
+import { ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import { OrgTypeService } from './../../services/';
 import { FormControl } from '@angular/forms';
 import * as _ from 'lodash';
-import { IInteractEventInput, IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

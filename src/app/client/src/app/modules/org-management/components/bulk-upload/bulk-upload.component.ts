@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
+import { ResourceService, ConfigService } from '@sunbird/shared';
 import { PermissionService } from '@sunbird/core';
 /**
 * This component displays the upload links and status check link which is used to upload csv file

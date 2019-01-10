@@ -2,15 +2,14 @@ import { ProfileService } from '../../services';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { UserService, PermissionService, SearchService, PlayerService, CoursesService } from '@sunbird/core';
 import {
-  ResourceService, ConfigService, ServerResponse, IUserProfile, IUserData, ToasterService,
+  ResourceService, ConfigService, ServerResponse, IUserData, ToasterService,
   UtilService
 } from '../../../../modules/shared';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { MyContributions } from '../../interfaces';
 import * as _ from 'lodash';
 import { SubscriptionLike as ISubscription } from 'rxjs';
-import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
 @Component({

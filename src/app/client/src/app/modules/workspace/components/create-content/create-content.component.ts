@@ -1,10 +1,8 @@
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { ResourceService, ConfigService } from '@sunbird/shared';
-import { SuiModule } from 'ng2-semantic-ui/dist';
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { FrameworkService, PermissionService } from '@sunbird/core';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 import { ConceptPickerService } from '@sunbird/core';
 @Component({
   selector: 'app-create-content',

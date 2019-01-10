@@ -1,12 +1,11 @@
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as testData from './details.component.spec.data';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { By } from '@angular/platform-browser';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceService, ConfigService, DateFormatPipe, BrowserCacheTtlService } from '@sunbird/shared';
-import { DetailsComponent, IAnnouncementDetails } from '@sunbird/announcement';
+import { DetailsComponent } from '@sunbird/announcement';
 import { CacheService } from 'ng2-cache-service';
 describe('AnnouncementInboxCardComponent', () => {
   let component: DetailsComponent;

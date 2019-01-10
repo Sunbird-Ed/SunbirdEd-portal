@@ -1,13 +1,13 @@
 
-import {of as observableOf,  Observable, throwError as observableThrowError } from 'rxjs';
+import {of as observableOf, throwError as observableThrowError } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
-import { LearnerService, CoreModule } from '@sunbird/core';
+import { CoreModule } from '@sunbird/core';
 import { OrgManagementService } from '@sunbird/org-management';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ResourceService, ToasterService, ConfigService, SharedModule } from '@sunbird/shared';
+import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { FormBuilder } from '@angular/forms';
 import { UserUploadComponent } from './user-upload.component';
@@ -143,7 +143,6 @@ describe('UserUploadComponent', () => {
     component.uploadUsersCSV(mockRes.errorfile);
   });
   it('should recognize viewchild', () => {
-    const modal = fixture.componentInstance.modal;
     component.ngOnDestroy();
     expect(component.modal).toBeDefined();
   });

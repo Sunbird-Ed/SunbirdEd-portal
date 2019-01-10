@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { DeviceDetectorService } from 'ngx-device-detector';

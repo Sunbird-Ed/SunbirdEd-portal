@@ -3,7 +3,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ResourceService, ConfigService } from '../../services';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { By } from '@angular/platform-browser';
 import { Response } from './card-creation.component.spec.data';
 import { CardCreationComponent } from './card-creation.component';
 import { CdnprefixPipe } from '../../pipes/cdnprefix.pipe';
@@ -30,7 +29,6 @@ describe('CardCreationComponent', () => {
   });
 
   it('should show TEST INPUT for all data', () => {
-    const cdnprefixPipe = new CdnprefixPipe();
     component.data = Response.cardData;
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('div .card-component-description').innerText).toContain('Untitled Collection');
@@ -48,7 +46,6 @@ describe('CardCreationComponent', () => {
     expect(component.clickEvent.emit).toHaveBeenCalledWith(Response.emitData);
   });
   it('should show badgeClassImage while passing badgesData', () => {
-    const cdnprefixPipe = new CdnprefixPipe();
     component.data = Response.librarySearchData;
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('div .card-component-description').innerText).toContain('');

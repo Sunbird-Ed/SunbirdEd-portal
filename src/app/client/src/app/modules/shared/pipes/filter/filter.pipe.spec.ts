@@ -19,7 +19,6 @@ describe('FilterPipe', () => {
       const searchData = '';
       const items = testData.mockRes.userSuccess.result.response.note;
       const result = pipe.transform(items , searchData, ['note']);
-      const filteredArray = testData.mockRes.filteredArray;
       expect(result).toBe(items);
       expect(FilterPipe).toBeTruthy();
     });

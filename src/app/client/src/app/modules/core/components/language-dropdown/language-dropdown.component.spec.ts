@@ -1,12 +1,11 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed , inject} from '@angular/core/testing';
 import { SharedModule, ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
-import { CoreModule, OrgDetailsService, ContentService, PublicDataService } from '@sunbird/core';
+import { CoreModule, OrgDetailsService, PublicDataService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
-import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { LanguageDropdownComponent } from './language-dropdown.component';
 import { Response } from './language-dropdown.component.spec.data';
@@ -27,9 +26,6 @@ describe('LanguageDropdownComponent', () => {
       }
     },
     getResource: () => ({})
-  };
-  const mockQueryParma = {
-    'query': 'hello'
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
@@ -80,7 +76,6 @@ describe('LanguageDropdownComponent', () => {
   }));
 
   it('On getting channel id', () => {
-    const orgDetailsService = TestBed.get(OrgDetailsService);
     const publicDataService = TestBed.get(PublicDataService);
     const resourceService = TestBed.get(ResourceService);
     spyOn(resourceService, 'getResource');

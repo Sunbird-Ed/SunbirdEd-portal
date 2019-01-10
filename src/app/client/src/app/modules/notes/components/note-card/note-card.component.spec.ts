@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { IdDetails } from '@sunbird/notes';
 import { Router, ActivatedRoute } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -9,12 +9,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UserService, LearnerService, CoreModule } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { OrderModule } from 'ngx-order-pipe';
-import { SuiModal } from 'ng2-semantic-ui';
 import { response } from './note-card-component.spec.data';
 import { mockUserData } from './../../../core/services/user/user.mock.spec.data';
 import { NoteCardComponent } from './note-card.component';
 import { TimeAgoPipe } from 'time-ago-pipe';
-import * as _ from 'lodash';
 
 const mockResourceBundle = {
   'messages': {

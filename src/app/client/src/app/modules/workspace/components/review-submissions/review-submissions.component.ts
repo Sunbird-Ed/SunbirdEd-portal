@@ -9,7 +9,7 @@ import {
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  * The Review submission  component

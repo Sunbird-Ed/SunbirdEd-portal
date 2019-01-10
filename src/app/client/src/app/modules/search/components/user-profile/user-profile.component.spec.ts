@@ -1,18 +1,16 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { UserSearchService } from './../../services/user-search/user-search.service';
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
-    SharedModule, ServerResponse, PaginationService, ResourceService,
-    ConfigService, ToasterService, INoResultMessage, RouterNavigationService
+    SharedModule, PaginationService, ResourceService,
+    ConfigService, ToasterService, RouterNavigationService
 } from '@sunbird/shared';
 import { SearchService, UserService, LearnerService, ContentService, BadgesService, BreadcrumbsService } from '@sunbird/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { UserProfileComponent } from './user-profile.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -71,8 +69,6 @@ describe('UserProfileComponent', () => {
 
     it('should call search api and get success', () => {
         const searchService = TestBed.get(UserSearchService);
-        const learnerService = TestBed.get(LearnerService);
-        const resourceService = TestBed.get(ResourceService);
         spyOn(searchService, 'getUserById').and.callFake(() => observableOf(Response.successData));
         component.populateUserProfile();
         fixture.detectChanges();

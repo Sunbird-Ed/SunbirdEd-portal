@@ -1,8 +1,6 @@
 import { Announcement } from '../../interfaces/index';
 import { ResourceService } from '../../services/index';
 import { Component, Input } from '@angular/core';
-import * as _ from 'lodash';
-import * as moment from 'moment';
 /**
  * AnnouncementInboxCard is a shared component contains announcement inbox card
  */

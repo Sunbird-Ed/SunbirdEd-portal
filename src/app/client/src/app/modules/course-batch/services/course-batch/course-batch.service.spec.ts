@@ -1,12 +1,11 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { CourseBatchService } from './course-batch.service';
-import { ContentService, PlayerService, UserService, LearnerService, CoreModule } from '@sunbird/core';
+import { PlayerService, LearnerService, CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  of as observableOf,
-  throwError as observableThrowError, Observable
+  of as observableOf
 } from 'rxjs';
 import { Response } from './course-batch.spec.data';
 class RouterStub {

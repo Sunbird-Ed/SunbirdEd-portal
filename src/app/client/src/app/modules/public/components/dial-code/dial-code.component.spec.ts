@@ -1,10 +1,9 @@
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, UtilService, ConfigService } from '@sunbird/shared';
 import { SearchService } from '@sunbird/core';
 import { CoreModule } from '@sunbird/core';
-import { FormsModule } from '@angular/forms';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DialCodeComponent } from './dial-code.component';

@@ -1,12 +1,12 @@
 import { SuiModule } from 'ng2-semantic-ui';
-import { async, ComponentFixture, TestBed, tick , fakeAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CreateCourseBatchComponent } from './create-course-batch.component';
-import { FormsModule, NgForm, FormBuilder, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of as observableOf,
-  throwError as observableThrowError,  Observable } from 'rxjs';
+  throwError as observableThrowError } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {SharedModule, ResourceService, ToasterService} from '@sunbird/shared';
 import {CoreModule} from '@sunbird/core';
@@ -85,7 +85,6 @@ describe('CreateCourseBatchComponent', () => {
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     resourceService.messages = mockResponse.resourceBundle.messages;
-    const userService = TestBed.get(UserService);
     spyOn(courseBatchService, 'getCourseHierarchy').and.
     returnValue(observableOf({createdBy: 'b2479136-8608-41c0-b3b1-283f38c338ed'}));
     spyOn(toasterService, 'success').and.callThrough();

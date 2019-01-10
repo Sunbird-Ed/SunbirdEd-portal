@@ -9,8 +9,8 @@ import { SearchService, CoursesService, ISort, PlayerService, OrgDetailsService,
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { takeUntil, mergeMap, map, tap, filter } from 'rxjs/operators';
+import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 @Component({
   selector: 'app-view-all',

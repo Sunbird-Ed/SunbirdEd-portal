@@ -1,7 +1,7 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 // NG core testing module(s)
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 // Modules
@@ -21,7 +21,6 @@ const testData = mockData.mockRes;
 describe('CourseConsumptionComponent', () => {
   let component: CourseConsumptionComponent;
   let fixture: ComponentFixture<CourseConsumptionComponent>;
-  let router: Router;
 
   const fakeActivatedRoute = {
     'params': observableOf({ 'id': 1, 'timePeriod': '7d' }),
@@ -133,7 +132,6 @@ describe('CourseConsumptionComponent', () => {
     component.identifier = 'do_2124319530479697921602';
     const courseDetails = { 'identifier': 'do_2124319530479697921602123' };
     spyOn(component, 'onAfterCourseChange').and.callThrough();
-    const response = component.onAfterCourseChange(courseDetails);
     fixture.detectChanges();
     expect(component.isMultipleCourses).toBeFalsy();
     expect(route.navigate).toHaveBeenCalledWith(['activity/course/consumption', courseDetails.identifier, '7d']);

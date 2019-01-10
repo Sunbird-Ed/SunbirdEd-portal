@@ -1,13 +1,11 @@
 
 import {takeUntil} from 'rxjs/operators';
-import { PopupEditorComponent } from './../popup-editor/popup-editor.component';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { NotesService } from '../../services';
 import { UserService, ContentService } from '@sunbird/core';
-import { Component, OnInit, Pipe, PipeTransform, Input, OnChanges, OnDestroy } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
+import { SuiModalService } from 'ng2-semantic-ui';
 import { INoteData, IdDetails } from '@sunbird/notes';
 import * as _ from 'lodash';
 

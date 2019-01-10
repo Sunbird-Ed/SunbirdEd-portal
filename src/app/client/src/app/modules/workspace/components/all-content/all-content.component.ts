@@ -1,5 +1,5 @@
 
-import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
+import {combineLatest as observableCombineLatest } from 'rxjs';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
@@ -8,7 +8,6 @@ import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
   ResourceService, ILoaderMessage, INoResultMessage, IContents
 } from '@sunbird/shared';
-import { Ibatch, IStatusOption } from './../../interfaces/';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';

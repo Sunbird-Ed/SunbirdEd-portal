@@ -1,13 +1,13 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
-import { LearnerService, CoreModule } from '@sunbird/core';
+import { CoreModule } from '@sunbird/core';
 import { OrgManagementService } from '@sunbird/org-management';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ResourceService, ToasterService, ConfigService, SharedModule } from '@sunbird/shared';
+import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { StatusComponent } from './status.component';
 import { FormBuilder } from '@angular/forms';
@@ -98,7 +98,6 @@ describe('StatusComponent', () => {
     fixture.detectChanges();
   });
   it('should recognize viewchild', () => {
-    const modal = fixture.componentInstance.modal;
     component.ngOnDestroy();
     expect(component.modal).toBeDefined();
   });

@@ -2,9 +2,9 @@ import { Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
-import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ToasterService } from '@sunbird/shared';
 import { OrgTypeService } from './../../services';
-import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 
 /**
  * The component helps to display all the organisation types

@@ -1,11 +1,8 @@
-import { Component, Input, OnInit, AfterViewInit, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile, Framework } from '@sunbird/shared';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { ResourceService, ConfigService, IUserData, IUserProfile } from '@sunbird/shared';
 import { FormService, FrameworkService, UserService } from '@sunbird/core';
 import * as _ from 'lodash';
-import { CacheService } from 'ng2-cache-service';
-import { Router } from '@angular/router';
-import { EditorService } from './../../services';
 
 @Component({
   selector: 'app-content-creation-default-template',
@@ -14,13 +11,13 @@ import { EditorService } from './../../services';
     * It is recommended to use ng-deep for dynamically added classes update
     * ng-deep as angular upgrades the property
     */
-   styles: [`
-   ::ng-deep @media only screen and (min-width: 992px) {
-       .modals.dimmer .ui.tree-picker.content-creation-concept-picker.scrolling.modal {
-         top: 60px !important;
-         position: relative !important;
-         margin: 0 0 0 -373px !important;
-       }
+  styles: [`
+    ::ng-deep @media only screen and (min-width: 992px) {
+        .modals.dimmer .ui.tree-picker.content-creation-concept-picker.scrolling.modal {
+          top: 60px !important;
+          position: relative !important;
+          margin: 0 0 0 -373px !important;
+        }
       }
     `]
 })
@@ -35,19 +32,6 @@ export class DefaultTemplateComponent implements OnInit {
     * any data
     */
   showLoader = true;
-
-  /**
-* To show toaster(error, success etc) after any API calls
-*/
-  private toasterService: ToasterService;
-  /**
-* urlString for get url details
-*/
-  private urlString;
-  /**
-* contentType is creation type, fected from url
-*/
-  private contentType;
   /**
  * userForm name creation
  */
@@ -92,33 +76,20 @@ export class DefaultTemplateComponent implements OnInit {
    * years is used to get years from getYearsForCreateTextBook
    */
   public years: any;
-  /**
- * To make content editor service API calls
- */
-  private editorService: EditorService;
-
-
-
 
   constructor(
     formService: FormService,
-    private _cacheService: CacheService,
-    private router: Router,
     resourceService: ResourceService,
     frameworkService: FrameworkService,
-    toasterService: ToasterService,
     userService: UserService,
-    configService: ConfigService,
-    editorService: EditorService
+    configService: ConfigService
   ) {
     this.formService = formService;
     this.resourceService = resourceService;
     this.frameworkService = frameworkService;
-    this.toasterService = toasterService;
     this.categoryList = {};
     this.userService = userService;
     this.configService = configService;
-    this.editorService = editorService;
   }
 
   setFormConfig() {

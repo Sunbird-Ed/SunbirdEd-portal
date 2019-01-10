@@ -10,7 +10,7 @@ import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  * The uploaded component search for all the uploaded

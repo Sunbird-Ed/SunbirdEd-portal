@@ -4,9 +4,7 @@ import {
   EnrollBatchComponent, UnEnrollBatchComponent, CreateBatchComponent, UpdateCourseBatchComponent
 } from './components';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
-import { ResourceService } from '@sunbird/shared';
 import { FlagContentComponent, AuthGuard } from '@sunbird/core';
 import { CourseProgressComponent } from '@sunbird/dashboard';
 import { RedirectComponent } from './../shared/components/redirect/redirect.component';

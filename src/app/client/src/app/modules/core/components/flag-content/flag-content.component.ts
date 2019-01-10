@@ -4,8 +4,7 @@ import { ContentService, PlayerService, UserService } from './../../services';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import {
-  ResourceService, ToasterService, ServerResponse, ConfigService, ContentData,
-  IUserProfile, ILoaderMessage
+  ResourceService, ToasterService, ConfigService, ContentData, ILoaderMessage
 } from '@sunbird/shared';
 import { IFlagReason, IFlagData, IRequestData, CollectionHierarchyAPI } from './../../interfaces';
 

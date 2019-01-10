@@ -1,13 +1,12 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { response } from './tenant.service.spec.data';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { LearnerService } from '../learner/learner.service';
 import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { TenantService } from './tenant.service';
-import { } from 'jasmine';
 import { UserService } from '../user/user.service';
 
 describe('TenantService', () => {

@@ -1,10 +1,9 @@
 
 import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { CourseConsumptionService, CourseProgressService } from './../../../services';
+import { Component, OnInit, Input, AfterViewInit, OnDestroy } from '@angular/core';
+import { CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
-import * as _ from 'lodash';
 import { CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
@@ -47,9 +46,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   progress = 0;
   courseStatus: string;
   public unsubscribe = new Subject<void>();
-  constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
+  constructor(private activatedRoute: ActivatedRoute,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
-    public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
+    public toasterService: ToasterService, public copyContentService: CopyContentService,
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService) {
 

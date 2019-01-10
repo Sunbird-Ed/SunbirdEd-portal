@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError,  Observable } from 'rxjs';
+import {throwError as observableThrowError } from 'rxjs';
 
 import {catchError, map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';

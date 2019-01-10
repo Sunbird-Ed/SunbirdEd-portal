@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { ConfigService, ServerResponse } from '@sunbird/shared';
+import { ConfigService } from '@sunbird/shared';
 import { LearnerService } from '@sunbird/core';
 @Injectable()
 export class ContentBadgeService {

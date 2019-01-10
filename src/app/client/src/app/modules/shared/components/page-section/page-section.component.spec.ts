@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import {ICaraouselData} from '../../interfaces/caraouselData';
 import { PageSectionComponent } from './page-section.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -11,8 +10,7 @@ import {Response} from './page-section.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
+import { ActivatedRoute } from '@angular/router';
 
 const fakeActivatedRoute = {
   snapshot: {

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {
-  OutboxComponent, DeleteComponent, DetailsComponent, DetailsPopupComponent,
+  OutboxComponent, DeleteComponent, DetailsPopupComponent,
   InboxComponent, CreateComponent
 } from './components';
 import { AuthGuard } from './../core/guard/auth-gard.service';

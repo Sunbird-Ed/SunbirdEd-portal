@@ -1,4 +1,3 @@
-import { ServerResponse } from '@sunbird/shared';
 export interface IUserUploadStatusResponse {
     objectType: string;
     processId: string;

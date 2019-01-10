@@ -1,23 +1,18 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { DashboardModule } from '@sunbird/dashboard';
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClientModule } from '@angular/common/http';
-import { RouterTestingModule } from '@angular/router/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CourseProgressComponent } from './course-progress.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
-import { ContentService, UserService, LearnerService, CoreModule } from '@sunbird/core';
+import { UserService, CoreModule } from '@sunbird/core';
 
 import {
-  SharedModule, ResourceService, ConfigService, PaginationService,
-  ToasterService, ServerResponse
+  SharedModule, ResourceService,
+  ToasterService
 } from '@sunbird/shared';
-import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
 import { CourseProgressService } from './../../services';
 import { FormsModule } from '@angular/forms';
 import * as testData from './course-progress.component.spec.data';

@@ -1,15 +1,14 @@
 
 import {takeUntil} from 'rxjs/operators';
 import { Component, OnDestroy } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 // Custom service(s)
 import { RendererService, CourseConsumptionService } from './../../services';
-import { UserService, SearchService } from '@sunbird/core';
+import { SearchService } from '@sunbird/core';
 import { ResourceService, ServerResponse } from '@sunbird/shared';
 // Interface
 import { DashboardData } from './../../interfaces';
-import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 
 import { Subject } from 'rxjs';

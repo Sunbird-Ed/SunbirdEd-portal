@@ -1,7 +1,7 @@
 
 import {filter} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute, RouterStateSnapshot } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash';
 interface UrlHistory {

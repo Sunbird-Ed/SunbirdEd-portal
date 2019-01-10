@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {combineLatest, Subject } from 'rxjs';
 import {takeUntil,  mergeMap } from 'rxjs/operators';
-import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { RouterNavigationService, ResourceService, ToasterService } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';

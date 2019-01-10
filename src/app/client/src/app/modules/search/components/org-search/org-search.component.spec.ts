@@ -1,16 +1,14 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
-  SharedModule, ServerResponse, PaginationService, ResourceService,
-  ConfigService, ToasterService, INoResultMessage
+  SharedModule, PaginationService, ResourceService,
+  ConfigService, ToasterService
 } from '@sunbird/shared';
 import { SearchService, UserService, LearnerService, ContentService } from '@sunbird/core';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './org-search.component.spec.data';
@@ -46,9 +44,6 @@ describe('OrgSearchComponent', () => {
       }
     }
   };
-  class RouterStub {
-    navigate = jasmine.createSpy('navigate');
-  }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), Ng2IziToastModule, RouterTestingModule],
@@ -70,7 +65,6 @@ describe('OrgSearchComponent', () => {
 
   it('should call search api and get success', () => {
     const searchService = TestBed.get(SearchService);
-    const learnerService = TestBed.get(LearnerService);
     spyOn(searchService, 'orgSearch').and.callFake(() => observableOf(Response.successData));
     component.populateOrgSearch();
     fixture.detectChanges();
@@ -82,7 +76,6 @@ describe('OrgSearchComponent', () => {
 
   it('should call search api and get success with empty result', () => {
     const searchService = TestBed.get(SearchService);
-    const learnerService = TestBed.get(LearnerService);
     spyOn(searchService, 'orgSearch').and.callFake(() => observableOf(Response.emptySuccessData));
     component.populateOrgSearch();
     fixture.detectChanges();

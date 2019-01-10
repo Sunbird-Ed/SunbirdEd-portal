@@ -1,12 +1,11 @@
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Observable } from 'rxjs';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { AnnouncementService, UserService, CoursesService, LearnerService, FrameworkService, ContentService,
   PlayerService } from '@sunbird/core';
-import { SharedModule, ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { MainHomeComponent } from './main-home.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import * as mockData from './main-home-component.spec.data';
@@ -39,7 +38,7 @@ class ActivatedRouteStub {
     snapshot = {
       root: { firstChild : {data: { telemetry: { env: env} } } },
       data : {
-         telemetry: { env: env }
+          telemetry: { env: env }
       }
     };
   }
@@ -71,7 +70,6 @@ class ActivatedRouteStub {
   }));
   it('should subscribe to course service', () => {
     const courseService = TestBed.get(CoursesService);
-    const learnerService = TestBed.get(LearnerService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => 'error');
     courseService._enrolledCourseData$.next({ err: null, enrolledCourses: testData.courseSuccess});
@@ -82,7 +80,6 @@ class ActivatedRouteStub {
   });
   it('should subscribe to course service throw error', () => {
     const courseService = TestBed.get(CoursesService);
-    const learnerService = TestBed.get(LearnerService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => 'error');
     courseService._enrolledCourseData$.next({ err: testData.courseError, enrolledCourses: null});

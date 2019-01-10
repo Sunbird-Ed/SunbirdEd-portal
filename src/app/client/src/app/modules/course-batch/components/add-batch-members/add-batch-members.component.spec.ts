@@ -1,16 +1,11 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject, fakeAsync } from '@angular/core/testing';
+import {of as observableOf } from 'rxjs';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-// Modules
-import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { SuiModule } from 'ng2-semantic-ui';
-import { SharedModule, ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
-// Services
-import {} from './../../services';
+import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { UserService , SearchService} from '@sunbird/core';
 import {CoreModule} from '@sunbird/core';
 import {CourseBatchService} from '../../services';
@@ -19,7 +14,6 @@ import { AddBatchMembersComponent } from './add-batch-members.component';
 import * as mockData from './add-batch-memebers.component.spec.data';
 const testData = mockData.mockRes;
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
-import { By } from '@angular/platform-browser';
 import { OrderModule } from 'ngx-order-pipe';
 const resourceServiceMockData = {
   messages: {
@@ -35,9 +29,6 @@ const resourceServiceMockData = {
       createnewbatch: ''
     }
   }
-};
-const mockroleOrgMap = {
-  'COURSE_MENTOR': ['01232002070124134414'],
 };
 describe('AddBatchMembersComponent', () => {
   let component: AddBatchMembersComponent;

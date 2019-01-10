@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ViewCourseBatchComponent } from './view-course-batch.component';
-import { FormsModule, NgForm, FormBuilder, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
 describe('ViewCourseBatchComponent', () => {
   let component: ViewCourseBatchComponent;

@@ -5,8 +5,7 @@ import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import {
-  IStartEventInput, IEndEventInput, IInteractEventInput,
-  IInteractEventObject, IInteractEventEdata
+  IEndEventInput, IInteractEventEdata
 } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { TelemetryService } from '@sunbird/telemetry';

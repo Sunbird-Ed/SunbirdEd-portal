@@ -30,7 +30,6 @@ describe('DeviceRegisterService', () => {
         inject([DeviceRegisterService, HttpClient], (deviceRegisterService: DeviceRegisterService, http: HttpClient) => {
             spyOn(http, 'post').and.callFake(() => of({}));
             deviceRegisterService.registerDevice('channel');
-            const url = 'deviceRegisterApideviceId';
             expect(http.post).toHaveBeenCalled();
     }));
 });

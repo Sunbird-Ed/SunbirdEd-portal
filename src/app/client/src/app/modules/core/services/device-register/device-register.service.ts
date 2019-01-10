@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PublicDataService } from './../public-data/public-data.service';
-import { ConfigService, RequestParam,  HttpOptions} from '@sunbird/shared';
+import { HttpOptions } from '@sunbird/shared';
 import * as moment from 'moment';
 import { UUID } from 'angular2-uuid';
 import { HttpClient } from '@angular/common/http';
@@ -13,8 +13,7 @@ export class DeviceRegisterService {
   private appId: string;
   private deviceId: string;
   private deviceRegisterApi: string;
-  constructor(public publicDataService: PublicDataService,
-    private configService: ConfigService, private http: HttpClient) {
+  constructor(public publicDataService: PublicDataService, private http: HttpClient) {
 
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
 

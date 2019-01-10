@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule, ResourceService, WindowScrollService, ToasterService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { ReviewCommentsComponent } from './review-comments.component';
-import { CoreModule, UserService, PermissionService } from '@sunbird/core';
+import { CoreModule, UserService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -127,8 +127,6 @@ describe('ReviewCommentsComponent', () => {
   });
 
   it('should fetch comments list on ngOnInit and sort it if api returns data', () => {
-    const userService = TestBed.get(UserService);
-    const resourceService = TestBed.get(ResourceService);
     const reviewCommentsService = TestBed.get(ReviewCommentsService);
     component.contentData = contentData;
     spyOn(reviewCommentsService, 'getComments').and.returnValue(of(commentList));

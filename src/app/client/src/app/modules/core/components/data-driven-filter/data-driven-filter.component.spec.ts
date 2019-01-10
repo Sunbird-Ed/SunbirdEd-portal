@@ -1,25 +1,20 @@
 
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import * as _ from 'lodash';
 import { DataDrivenFilterComponent } from './data-driven-filter.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SharedModule, ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
-import {
-  CoreModule, FrameworkService, FormService, ContentService, UserService, LearnerService,
-  ConceptPickerService, SearchService, PermissionService, PublicDataService
-} from '@sunbird/core';
+import { SharedModule, ResourceService, ConfigService } from '@sunbird/shared';
+import { CoreModule, PublicDataService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 
 describe('DataDrivenFilterComponent', () => {
   let component: DataDrivenFilterComponent;
   let fixture: ComponentFixture<DataDrivenFilterComponent>;
-  let frameworkService, formService, cacheService, userService, publicDataService;
+  let cacheService, publicDataService;
   let mockHashTagId: string, mockFrameworkInput: string;
   let mockFrameworkCategories: Array<any> = [];
   let mockFormFields: Array<any> = [];
@@ -52,9 +47,6 @@ describe('DataDrivenFilterComponent', () => {
       this.queryParamsMock.next(queryParams);
     }
   }
-  const mockUserRoles = {
-    userRoles: ['PUBLIC', 'CONTENT_REVIEWER']
-  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
@@ -70,10 +62,7 @@ describe('DataDrivenFilterComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DataDrivenFilterComponent);
     component = fixture.componentInstance;
-    frameworkService = TestBed.get(FrameworkService);
-    formService = TestBed.get(FormService);
     cacheService = TestBed.get(CacheService);
-    userService = TestBed.get(UserService);
     publicDataService = TestBed.get(PublicDataService);
     spyOn(publicDataService, 'get').and.callFake((options) => {
       if (options.url === 'channel/v1/read/' + mockHashTagId && makeChannelReadSuc) {
@@ -91,7 +80,7 @@ describe('DataDrivenFilterComponent', () => {
     });
   });
 
-   it('should get formated filter data by calling framework service and form service and set formated date in session', () => {
+  it('should get formated filter data by calling framework service and form service and set formated date in session', () => {
     mockHashTagId = undefined;
     mockFrameworkInput = undefined;
     mockFrameworkCategories = [];

@@ -1,8 +1,8 @@
 import { ConfigService, ResourceService, IUserData, IUserProfile } from '@sunbird/shared';
 import { Component, OnInit } from '@angular/core';
 import { UserService, PermissionService } from '../../services';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { Router, NavigationEnd } from '@angular/router';
+import { IInteractEventEdata } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { first, filter } from 'rxjs/operators';
 import * as _ from 'lodash';

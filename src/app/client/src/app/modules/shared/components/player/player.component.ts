@@ -1,6 +1,5 @@
 import { ConfigService } from './../../services';
 import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import * as _ from 'lodash';
 import * as $ from 'jquery';
 import {PlayerConfig} from './../../interfaces';
 

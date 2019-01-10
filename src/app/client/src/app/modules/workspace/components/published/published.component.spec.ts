@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 // Import NG testing module(s)
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -12,7 +12,7 @@ import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
 // Import Module
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 // Test data
 import * as mockData from './published.component.spec.data';
 const testData = mockData.mockRes;

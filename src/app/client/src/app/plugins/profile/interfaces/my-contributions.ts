@@ -1,4 +1,3 @@
-import { ServerResponse } from '@sunbird/shared';
 export interface MyContributions {
     name: string;
     posterImage: string;

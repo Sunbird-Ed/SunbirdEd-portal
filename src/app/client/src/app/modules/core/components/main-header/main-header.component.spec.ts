@@ -1,8 +1,7 @@
 
-import { of as observableOf, Observable } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockUserData } from './../../services/user/user.mock.spec.data';
-import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MainHeaderComponent } from './main-header.component';

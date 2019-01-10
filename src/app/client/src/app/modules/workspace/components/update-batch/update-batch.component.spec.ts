@@ -1,21 +1,16 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { Ibatch } from './../../interfaces';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { WorkspaceModule } from '@sunbird/workspace';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SuiModule } from 'ng2-semantic-ui';
-import { SearchService, ContentService } from '@sunbird/core';
-import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-import { TelemetryModule } from '@sunbird/telemetry';
-import { async, ComponentFixture, TestBed, tick , fakeAsync } from '@angular/core/testing';
+import { UserService } from '@sunbird/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {SharedModule, ResourceService, ToasterService} from '@sunbird/shared';
 import {CoreModule} from '@sunbird/core';
-import { By } from '@angular/platform-browser';
 import { TelemetryService } from '@sunbird/telemetry';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {getUserList, updateBatchDetails, getUserDetails} from './update-batch.component.spec.data';
 import { BatchService } from '../../services';
 import { UpdateBatchComponent } from './update-batch.component';
@@ -103,7 +98,6 @@ describe('UpdateBatchComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
     const userService = TestBed.get(UserService);
-    const activatedRoute = TestBed.get(ActivatedRoute);
     userService._userid = 'b2479136-8608-41c0-b3b1-283f38c338d';
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
@@ -118,7 +112,6 @@ describe('UpdateBatchComponent', () => {
     const batchService = TestBed.get(BatchService);
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
-    const activatedRoute = TestBed.get(ActivatedRoute);
     const userService = TestBed.get(UserService);
     userService._userid = 'b2479136-8608-41c0-b3b1-283f38c338d';
     resourceService.messages = resourceServiceMockData.messages;

@@ -1,18 +1,15 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-
+import {throwError as observableThrowError } from 'rxjs';
 import { UserSearchService } from './../../services/user-search/user-search.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
-  SharedModule, ServerResponse, PaginationService, ResourceService,
-  ConfigService, ToasterService, INoResultMessage, RouterNavigationService
+  SharedModule, PaginationService, ResourceService,
+  ConfigService, ToasterService, RouterNavigationService
 } from '@sunbird/shared';
 import { SearchService, UserService, LearnerService, ContentService } from '@sunbird/core';
-import { ActivatedRoute, Router, Params } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { UserDeleteComponent } from './user-delete.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -37,11 +34,6 @@ describe('UserDeleteComponent', () => {
       }
     }
   };
-  const fakeActivatedRoute = {
-    'url': observableOf({ 'path': 'search/Users/1' }),
-    'params': observableOf({ 'userId': '6d4da241-a31b-4041-bbdb-dd3a898b3f85' })
-  };
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), Ng2IziToastModule, RouterTestingModule],
@@ -94,7 +86,6 @@ describe('UserDeleteComponent', () => {
   });
   it('should call UserSearchService api for deleteUser', () => {
     const searchService = TestBed.get(UserSearchService);
-    const learnerService = TestBed.get(LearnerService);
     const option = { userId: '6d4da241-a31b-4041-bbdb-dd3a898b3f85'};
     component.deleteUser();
     searchService.deleteUser(option.userId).subscribe(

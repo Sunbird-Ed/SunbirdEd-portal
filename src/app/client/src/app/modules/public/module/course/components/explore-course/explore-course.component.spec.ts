@@ -6,7 +6,6 @@ import { SearchService, OrgDetailsService, CoreModule, FormService} from '@sunbi
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicPlayerService } from './../../../../services';
 import { SuiModule } from 'ng2-semantic-ui';
-import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './explore-course.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';

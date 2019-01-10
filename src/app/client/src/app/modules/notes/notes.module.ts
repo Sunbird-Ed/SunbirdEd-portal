@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NotesService } from './services';
 import { NotesRoutingModule } from './notes-routing.module';
-import { BrowserModule } from '@angular/platform-browser';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
 import { OrderModule } from 'ngx-order-pipe';

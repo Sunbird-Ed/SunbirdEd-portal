@@ -2,8 +2,6 @@ import { ConfigService } from '@sunbird/shared';
 import { DataService } from './../data/data.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { CollectionHierarchyAPI } from '../../interfaces';
 
 /**
  * Service to provides CRUD methods to make content api request by extending DataService.

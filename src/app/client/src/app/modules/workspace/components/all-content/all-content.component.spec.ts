@@ -1,18 +1,17 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { AllContentComponent } from './all-content.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService , DateFilterXtimeAgoPipe} from '@sunbird/shared';
+import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService} from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Response } from './all-content.component.spec.data';
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+import { SuiModalService } from 'ng2-semantic-ui';
 describe('AllContentComponent', () => {
   let component: AllContentComponent;
   let fixture: ComponentFixture<AllContentComponent>;
@@ -97,7 +96,6 @@ describe('AllContentComponent', () => {
   it('should call fetchall content method and change the route  ', inject([ConfigService, Router],
     (configService, route) => {
       component.queryParams = { subject: ['english'] };
-      const queryParams = { subject: [] };
       spyOn(component, 'fecthAllContent').and.callThrough();
       component.fecthAllContent(9, 1, bothParams);
       fixture.detectChanges();
@@ -116,7 +114,6 @@ describe('AllContentComponent', () => {
       component.pager = Response.pager;
       component.pager.totalPages = 8;
       component.navigateToPage(1);
-      const sortByOption = 'Created On';
       component.queryParams = { subject: ['english'] };
       fixture.detectChanges();
       expect(route.navigate).toHaveBeenCalledWith(['workspace/content/allcontent', 1], { queryParams: undefined });

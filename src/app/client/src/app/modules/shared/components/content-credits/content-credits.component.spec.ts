@@ -5,7 +5,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Response } from './content-credits.component.spec.data';
-import { By } from '@angular/platform-browser';
 import { CacheService } from 'ng2-cache-service';
 describe('ContentCreditsComponent', () => {
   let component: ContentCreditsComponent;

@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { mockUserData } from './../../../core/services/user/user.mock.spec.data';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -8,7 +8,7 @@ import { CoreModule, UserService, PlayerService } from '@sunbird/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ContentPlayerComponent } from './content-player.component';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 const serverRes = {
   id : 'api.content.read',
   ver: '1.0',
@@ -116,7 +116,6 @@ describe('ContentPlayerComponent', () => {
     const navigationHelperService = TestBed.get(NavigationHelperService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    const router = TestBed.get(Router);
     serverRes.result.content.status = 'Draft';
     const windowScrollService = TestBed.get(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');

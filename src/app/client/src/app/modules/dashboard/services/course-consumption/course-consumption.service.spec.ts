@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 // Import NG core testing module
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
@@ -24,18 +24,14 @@ describe('CourseConsumptionService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should make api call', inject([CourseConsumptionService, DashboardUtilsService, LearnerService], (service: CourseConsumptionService,
-    DashboardUtil: DashboardUtilsService, learnerService: LearnerService) => {
-    const params = { data: { identifier: 'do_2123250076616048641482', timePeriod: '7d' } };
+  it('should make api call', inject([CourseConsumptionService, LearnerService],
+    (service: CourseConsumptionService, learnerService: LearnerService) => {
     spyOn(learnerService, 'get').and.callFake(() => observableOf(testData.successData));
-    const apiRes = service.getDashboardData(params);
     expect(service).toBeTruthy();
     expect(learnerService.get).toHaveBeenCalled();
   }));
 
-  it('should parse course consumption API response', inject([CourseConsumptionService, DashboardUtilsService],
-    (service: CourseConsumptionService,
-    DashboardUtil: DashboardUtilsService) => {
+  it('should parse course consumption API response', inject([CourseConsumptionService], (service: CourseConsumptionService) => {
     const response = service.parseApiResponse(testData.parsedSuccessData);
     expect(service).toBeTruthy();
     expect(response.numericData.length).toBeGreaterThan(1);

@@ -6,7 +6,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
-import * as _ from 'lodash';
 
 /**
  * Service to provide base CRUD methods to make api request.

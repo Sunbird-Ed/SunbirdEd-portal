@@ -1,11 +1,10 @@
 
 import {takeUntil, filter} from 'rxjs/operators';
-import { Subscription ,  Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { BreadcrumbsService } from '../../services';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { Component, OnInit, Input, AfterViewInit, OnDestroy, OnChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { IBreadcrumb } from '../../interfaces';
-import * as _ from 'lodash';
 
 /**
  * This component returns breadcrumbs in each relevant pages when provided
@@ -73,10 +72,8 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
                 let currentRoute = this.activatedRoute.root;
                 while (currentRoute.children.length > 0) {
                     const child: ActivatedRoute[] = currentRoute.children;
-                    let breadCrumbLabel: any = [];
                     child.forEach(route => {
                         currentRoute = route;
-                        breadCrumbLabel = route.snapshot.data;
                         if (route.snapshot.data.breadcrumbs) {
                             this.breadCrumbsData = [...route.snapshot.data.breadcrumbs];
                         }

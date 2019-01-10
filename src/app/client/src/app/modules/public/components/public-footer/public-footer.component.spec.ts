@@ -4,7 +4,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { PublicFooterComponent } from './public-footer.component';
 import { CacheService } from 'ng2-cache-service';
 describe('PublicFooterComponent', () => {
-  let component: PublicFooterComponent;
   let fixture: ComponentFixture<PublicFooterComponent>;
 
   beforeEach(async(() => {
@@ -18,7 +17,6 @@ describe('PublicFooterComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PublicFooterComponent);
-    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 });

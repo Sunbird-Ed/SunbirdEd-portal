@@ -108,7 +108,6 @@ describe('CoursePlayerComponent', () => {
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     const windowScrollService = TestBed.get(WindowScrollService);
     const courseBatchService = TestBed.get(CourseBatchService);
-    const activatedRouteStub = TestBed.get(ActivatedRoute);
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch.result.response));
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
@@ -265,7 +264,6 @@ describe('CoursePlayerComponent', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
-    const userService = TestBed.get(UserService);
     const permissionService = TestBed.get(PermissionService);
     activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
@@ -289,7 +287,6 @@ describe('CoursePlayerComponent', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
-    const userService = TestBed.get(UserService);
     const permissionService = TestBed.get(PermissionService);
     activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
@@ -442,7 +439,6 @@ describe('CoursePlayerComponent', () => {
   it('should make update contentState api call if the the content is not(html,h5p,video/youtub) and progress is equal to 100', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const contentData = {model: { mimeType: 'application/vnd.ekstep.eclm-archive'}};
-    const playerDestroyData = { contentId: '123'};
     const telemetryEvent = { detail: {
       telemetryData: { eid: 'END',
         edata: {summary: [{progress: 100}]}
@@ -458,7 +454,6 @@ describe('CoursePlayerComponent', () => {
   it('should not make update contentState api call if the the content is not(html,h5p,video/youtub) and progress is equal to 100', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const contentData = {model: { mimeType: 'application/vnd.ekstep.eclm-archive'}};
-    const playerDestroyData = { contentId: '123'};
     const telemetryEvent = { detail: {
       telemetryData: { eid: 'END',
         edata: {summary: [{progress: 20}]}

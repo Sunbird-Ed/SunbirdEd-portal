@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { SharedModule, ResourceService, ConfigService, IAction, ToasterService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
 import { CoreModule, LearnerService, CoursesService, SearchService, PlayerService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ViewAllComponent } from './view-all.component';
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './view-all.component.spec.data';
 import { PublicPlayerService } from '@sunbird/public';
@@ -29,9 +29,11 @@ describe('ViewAllComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': observableOf({ section: 'Latest-Courses' , pageNumber: 1 }),
-    'queryParams': observableOf({ contentType: ['Course'], objectType: ['Content'], status: ['Live'],
-    defaultSortBy: JSON.stringify({'lastPublishedOn': 'desc'}) }),
+    'params': observableOf({ section: 'Latest-Courses', pageNumber: 1 }),
+    'queryParams': observableOf({
+      contentType: ['Course'], objectType: ['Content'], status: ['Live'],
+      defaultSortBy: JSON.stringify({ 'lastPublishedOn': 'desc' })
+    }),
     snapshot: {
       data: {
         telemetry: {
@@ -43,14 +45,14 @@ describe('ViewAllComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
-      declarations: [ ViewAllComponent ],
+      declarations: [ViewAllComponent],
       providers: [ConfigService, CoursesService, SearchService, LearnerService, PublicPlayerService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -60,23 +62,25 @@ describe('ViewAllComponent', () => {
 
   it('should call ngOninit when content is present', () => {
     const courseService = TestBed.get(CoursesService);
-    const learnerService = TestBed.get(LearnerService);
     const searchService = TestBed.get(SearchService);
     const route = TestBed.get(Router);
     route.url = 'learn/view-all/LatestCourses/1?contentType: course';
-    const queryParams = { contentType: ['Course'], objectType: ['Content'], status: ['Live'],
-    defaultSortBy: JSON.stringify({lastPublishedOn: 'desc'})};
-    const filters = {contentType: ['Course'], objectType: ['Content'], status: ['Live']};
-    const telemetryImpression = { context: { env: 'course' },
+    const queryParams = {
+      contentType: ['Course'], objectType: ['Content'], status: ['Live'],
+      defaultSortBy: JSON.stringify({ lastPublishedOn: 'desc' })
+    };
+    const filters = { contentType: ['Course'], objectType: ['Content'], status: ['Live'] };
+    const telemetryImpression = {
+      context: { env: 'course' },
       edata: { type: 'view', pageid: 'course', uri: route.url, subtype: 'paginate' }
     };
-    const closeIntractEdata = { id: 'close', type: 'click', pageid: 'course'};
-    const cardIntractEdata = {  id: 'content-card',  type: 'click', pageid: 'course' };
+    const closeIntractEdata = { id: 'close', type: 'click', pageid: 'course' };
+    const cardIntractEdata = { id: 'content-card', type: 'click', pageid: 'course' };
     const sortIntractEdata = { id: 'sort', type: 'click', pageid: 'course' };
-    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses});
-     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
-     spyOn(component, 'setTelemetryImpressionData').and.callThrough();
-     spyOn(component, 'setInteractEventData').and.callThrough();
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses });
+    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
+    spyOn(component, 'setTelemetryImpressionData').and.callThrough();
+    spyOn(component, 'setInteractEventData').and.callThrough();
     spyOn(document, 'getElementById').and.returnValue('true');
     component.ngOnInit();
     component.setTelemetryImpressionData();
@@ -100,28 +104,30 @@ describe('ViewAllComponent', () => {
   });
   it('should call ngOninit when error', () => {
     const courseService = TestBed.get(CoursesService);
-    const learnerService = TestBed.get(LearnerService);
     const searchService = TestBed.get(SearchService);
     const toasterService = TestBed.get(ToasterService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceBundle.messages;
     const route = TestBed.get(Router);
     route.url = 'learn/view-all/LatestCourses/1?contentType: course';
-    const queryParams = { contentType: ['Course'], objectType: ['Content'], status: ['Live'],
-    defaultSortBy: JSON.stringify({lastPublishedOn: 'desc'})};
-    const filters = {contentType: ['Course'], objectType: ['Content'], status: ['Live']};
-    const telemetryImpression = { context: { env: 'course' },
+    const queryParams = {
+      contentType: ['Course'], objectType: ['Content'], status: ['Live'],
+      defaultSortBy: JSON.stringify({ lastPublishedOn: 'desc' })
+    };
+    const filters = { contentType: ['Course'], objectType: ['Content'], status: ['Live'] };
+    const telemetryImpression = {
+      context: { env: 'course' },
       edata: { type: 'view', pageid: 'course', uri: route.url, subtype: 'paginate' }
     };
-    const closeIntractEdata = { id: 'close', type: 'click', pageid: 'course'};
-    const cardIntractEdata = {  id: 'content-card',  type: 'click', pageid: 'course' };
+    const closeIntractEdata = { id: 'close', type: 'click', pageid: 'course' };
+    const cardIntractEdata = { id: 'content-card', type: 'click', pageid: 'course' };
     const sortIntractEdata = { id: 'sort', type: 'click', pageid: 'course' };
-    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses});
-     spyOn(searchService, 'contentSearch').and.callFake(() => observableThrowError({}));
-     spyOn(component, 'setTelemetryImpressionData').and.callThrough();
-     spyOn(component, 'setInteractEventData').and.callThrough();
-     spyOn(toasterService, 'error').and.callThrough();
-     spyOn(document, 'getElementById').and.returnValue('true');
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses });
+    spyOn(searchService, 'contentSearch').and.callFake(() => observableThrowError({}));
+    spyOn(component, 'setTelemetryImpressionData').and.callThrough();
+    spyOn(component, 'setInteractEventData').and.callThrough();
+    spyOn(toasterService, 'error').and.callThrough();
+    spyOn(document, 'getElementById').and.returnValue('true');
     component.ngOnInit();
     component.setTelemetryImpressionData();
     component.setInteractEventData();
@@ -132,7 +138,7 @@ describe('ViewAllComponent', () => {
     expect(component.closeIntractEdata).toEqual(closeIntractEdata);
     expect(component.cardIntractEdata).toEqual(cardIntractEdata);
     expect(component.sortIntractEdata).toEqual(sortIntractEdata);
-   expect(component.queryParams).toEqual(queryParams);
+    expect(component.queryParams).toEqual(queryParams);
     expect(component.filters).toEqual(filters);
     expect(searchService.contentSearch).toHaveBeenCalled();
     expect(component.closeUrl).toEqual('/learn');
@@ -164,8 +170,10 @@ describe('ViewAllComponent', () => {
     const configService = TestBed.get(ConfigService);
     const route = TestBed.get(Router);
     route.url = 'learn/view-all/LatestCourses/1?contentType: course';
-    component.queryParams = { contentType: ['Course'], objectType: ['Content'], status: ['Live'],
-    defaultSortBy: JSON.stringify({lastPublishedOn: 'desc'})};
+    component.queryParams = {
+      contentType: ['Course'], objectType: ['Content'], status: ['Live'],
+      defaultSortBy: JSON.stringify({ lastPublishedOn: 'desc' })
+    };
     component.pageNumber = 1;
     component.pager = Response.pager;
     component.pageLimit = 20;
@@ -173,7 +181,9 @@ describe('ViewAllComponent', () => {
     component.navigateToPage(1);
     expect(component.pageNumber).toEqual(1);
     expect(component.pageLimit).toEqual(configService.appConfig.SEARCH.PAGE_LIMIT);
-    expect(route.navigate).toHaveBeenCalledWith(['learn/view-all/LatestCourses', 1], { queryParams: component.queryParams,
-       relativeTo: fakeActivatedRoute});
+    expect(route.navigate).toHaveBeenCalledWith(['learn/view-all/LatestCourses', 1], {
+      queryParams: component.queryParams,
+      relativeTo: fakeActivatedRoute
+    });
   });
 });

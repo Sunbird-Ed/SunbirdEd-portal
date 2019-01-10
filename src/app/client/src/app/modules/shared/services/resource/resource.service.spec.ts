@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { ResourceService } from './resource.service';

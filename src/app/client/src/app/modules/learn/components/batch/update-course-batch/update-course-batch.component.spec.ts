@@ -1,18 +1,16 @@
 
-import {of as observableOf, throwError as observableThrowError,  Observable } from 'rxjs';
+import {of as observableOf, throwError as observableThrowError } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LearnModule, UpdateCourseBatchComponent, CourseBatchService, CourseConsumptionService} from '@sunbird/learn';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SuiModule } from 'ng2-semantic-ui';
-import { async, ComponentFixture, TestBed, tick , fakeAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {SharedModule, ResourceService, ToasterService} from '@sunbird/shared';
 import {CoreModule} from '@sunbird/core';
-import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {getUserList, updateBatchDetails, getUserDetails} from './update-course-batch.component.data';
 
 class RouterStub {

@@ -1,6 +1,6 @@
 import { of as observableOf, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Injectable, Input, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { SearchParam, LearnerService, UserService, ContentService, SearchService } from '@sunbird/core';
 import * as _ from 'lodash';
@@ -35,7 +35,6 @@ export class CourseBatchService {
     if (_.isEmpty(requestParam) && this.defaultUserList) {
       return observableOf(this.defaultUserList);
     } else {
-      const request = _.cloneDeep(requestParam);
       const option = {
         url: this.configService.urlConFig.URLS.ADMIN.USER_SEARCH,
         data: {

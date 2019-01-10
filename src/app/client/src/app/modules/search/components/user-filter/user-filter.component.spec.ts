@@ -1,17 +1,13 @@
-import { UserSearchComponent } from './../user-search/user-search.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
- SharedModule, ServerResponse, PaginationService, ResourceService,
- ConfigService, ToasterService, INoResultMessage
+ SharedModule, PaginationService, ResourceService,
+ ConfigService, ToasterService
 } from '@sunbird/shared';
 import { SearchService, UserService, LearnerService, ContentService } from '@sunbird/core';
-import { OrgTypeService } from '@sunbird/org-management';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { Observable, of as observableOf } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserFilterComponent } from './user-filter.component';
 

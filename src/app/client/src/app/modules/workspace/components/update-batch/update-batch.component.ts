@@ -2,7 +2,7 @@ import { takeUntil, mergeMap } from 'rxjs/operators';
 import { Subject, combineLatest } from 'rxjs';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ToasterService } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { BatchService } from '../../services';

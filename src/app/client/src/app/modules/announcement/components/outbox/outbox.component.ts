@@ -1,10 +1,10 @@
 
 import {takeUntil} from 'rxjs/operators';
-import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
-import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ConfigService, PaginationService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 
@@ -130,7 +130,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
     resourceService: ResourceService,
     paginationService: PaginationService,
     toasterService: ToasterService,
-    config: ConfigService, private cdr: ChangeDetectorRef) {
+    config: ConfigService) {
     this.announcementService = announcementService;
     this.route = route;
     this.activatedRoute = activatedRoute;

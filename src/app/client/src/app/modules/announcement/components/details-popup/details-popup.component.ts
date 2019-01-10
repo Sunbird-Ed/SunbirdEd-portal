@@ -4,7 +4,6 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
-import * as _ from 'lodash';
 import { IAnnouncementDetails } from '@sunbird/announcement';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 

@@ -49,7 +49,6 @@ describe('WorkSpaceService', () => {
   it('should call delete api and get success response', inject([WorkSpaceService],
     (workSpaceService) => {
       spyOn(workSpaceService, 'deleteContent').and.callFake(() => observableOf(testData.deleteSuccess));
-      const params = { type: 'delete', contentId: 'do_2124645735080755201259' };
       const DeleteParam = {
         contentIds: ['do_2124645735080755201259']
       };
@@ -61,9 +60,6 @@ describe('WorkSpaceService', () => {
     (workSpaceService) => {
       spyOn(workSpaceService, 'deleteContent').and.callFake(() => observableThrowError(testData.deleteError));
       const params = { type: 'delete', contentId: '' };
-      const DeleteParam = {
-        contentIds: ['do_2124645735080755201259']
-      };
       workSpaceService.deleteContent(params).subscribe(
         apiResponse => { },
         err => {

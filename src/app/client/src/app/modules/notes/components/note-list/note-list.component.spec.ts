@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { IdDetails } from './../../interfaces/notes';
 import { Router, ActivatedRoute } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';

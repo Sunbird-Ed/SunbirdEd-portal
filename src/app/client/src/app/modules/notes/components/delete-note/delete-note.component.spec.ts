@@ -1,9 +1,9 @@
 
-import {of as observableOf, throwError as observableThrowError,  Observable } from 'rxjs';
+import {of as observableOf, throwError as observableThrowError } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { NotesService } from '../../services';
-import { UserService, ContentService, LearnerService, CoreModule } from '@sunbird/core';
+import { UserService, LearnerService, CoreModule } from '@sunbird/core';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +11,6 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { response } from './delete-note-component.spec.data';
 import { mockUserData } from './../../../core/services/user/user.mock.spec.data';
 import { DeleteNoteComponent } from './delete-note.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('DeleteNoteComponent', () => {
   let component: DeleteNoteComponent;
@@ -36,7 +35,6 @@ describe('DeleteNoteComponent', () => {
     const notesService = TestBed.get(NotesService);
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    const resourceService = TestBed.get(ResourceService);
     component.deleteNote.id = '01250042257192550484';
     spyOn(component.deleteEventEmitter, 'emit');
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
@@ -76,8 +74,6 @@ describe('DeleteNoteComponent', () => {
     const notesService = TestBed.get(NotesService);
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    const resourceService = TestBed.get(ResourceService);
-    const modal = fixture.componentInstance.modal;
     component.deleteNote.id = '01250042257192550484';
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
     spyOn(notesService, 'remove').and.returnValue(observableOf(response.deleteSuccess));

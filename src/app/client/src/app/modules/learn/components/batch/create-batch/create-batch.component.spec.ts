@@ -1,22 +1,19 @@
 
 import { of as observableOf,
-  throwError as observableThrowError,  Observable } from 'rxjs';
-import { getUserList, updateBatchDetails, getUserDetails } from './../update-course-batch/update-course-batch.component.data';
+  throwError as observableThrowError } from 'rxjs';
+import { getUserList, updateBatchDetails } from './../update-course-batch/update-course-batch.component.data';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { async, ComponentFixture, TestBed, tick , fakeAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SuiModule } from 'ng2-semantic-ui';
 import {SharedModule, ResourceService, ToasterService} from '@sunbird/shared';
 import {CoreModule} from '@sunbird/core';
 import { CreateBatchComponent } from './create-batch.component';
-import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { mockResponse } from './create-batch.component.data';
-import { LearnModule, UpdateCourseBatchComponent, CourseBatchService,
+import { LearnModule, CourseBatchService,
   CourseProgressService, CourseConsumptionService} from '@sunbird/learn';
 
 

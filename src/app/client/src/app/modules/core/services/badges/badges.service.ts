@@ -1,8 +1,7 @@
-import { ConfigService, ServerResponse } from '@sunbird/shared';
+import { ConfigService } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { Injectable } from '@angular/core';
 import { Observable ,  BehaviorSubject } from 'rxjs';
-import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';
 /**
  * Service to fetch badges
@@ -17,10 +16,6 @@ export class BadgesService {
    * Read only observable Containing badges.
    */
   public readonly badges$: Observable<any> = this._badges$.asObservable();
-  /**
-   * local variable Containing badges.
-   */
-  private badges: any;
   /**
    * reference of config service.
    */

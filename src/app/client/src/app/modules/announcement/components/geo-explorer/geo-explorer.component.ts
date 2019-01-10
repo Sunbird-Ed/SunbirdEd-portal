@@ -1,8 +1,8 @@
 
 import {takeUntil} from 'rxjs/operators';
-import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { GeoExplorerService } from './../../services';
-import { LearnerService, UserService } from '@sunbird/core';
+import { UserService } from '@sunbird/core';
 import { ServerResponse } from '@sunbird/shared';
 import { IGeoLocationDetails } from './../../interfaces/geoLocationDetails';
 import * as _ from 'lodash';

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
@@ -10,8 +10,8 @@ import { Ibatch, IStatusOption } from './../../interfaces/';
 import { WorkSpaceService, BatchService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { SuiModalService } from 'ng2-semantic-ui';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  * The batch list component

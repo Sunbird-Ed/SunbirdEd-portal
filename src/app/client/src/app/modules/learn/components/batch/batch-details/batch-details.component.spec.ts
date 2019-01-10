@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BatchDetailsComponent } from './batch-details.component';
@@ -96,15 +96,6 @@ describe('BatchDetailsComponent', () => {
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableThrowError(allBatchDetails));
     component.ngOnInit();
-    const searchParams: any = {
-      filters: {
-        status: component.batchStatus.toString(),
-        courseId: component.courseId,
-        enrollmentType: 'open'
-      },
-      offset: 0,
-      sort_by: { createdDate: 'desc' }
-    };
     expect(component.showError).toBeTruthy();
   });
   it('should fetch all batch of course if course is not enrolled and user is mentor', () => {
@@ -147,7 +138,6 @@ describe('BatchDetailsComponent', () => {
     expect(route.navigate).toHaveBeenCalledWith(['enroll/batch', '123'], {relativeTo: component.activatedRoute});
   });
   it('should navigate to create batch', () => {
-    const courseBatchService = TestBed.get(CourseBatchService);
     const route = TestBed.get(Router);
     component.createBatch();
     expect(route.navigate).toHaveBeenCalledWith(['create/batch'], {relativeTo: component.activatedRoute});

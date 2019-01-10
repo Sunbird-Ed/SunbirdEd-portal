@@ -17,14 +17,7 @@ const endEventSuc = {
     }
   }
 };
-const endEventErr = {
-  detail: {
-    telemetryData: {
-      eid: 'END',
-      edata: { summary: [{progress: 50}]}
-    }
-  }
-};
+
 const playerConfig = {
   config: {},
   context: {},
