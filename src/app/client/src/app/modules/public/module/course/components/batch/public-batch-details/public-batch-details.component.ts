@@ -3,11 +3,13 @@ import { takeUntil } from 'rxjs/operators';
 import { CourseBatchService } from '@sunbird/learn';
 import { Router } from '@angular/router';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
 import * as moment from 'moment';
 import { UserService } from '@sunbird/core';
+import { CacheService } from 'ng2-cache-service';
+
 
 @Component({
   selector: 'app-public-batch-details',
@@ -21,6 +23,7 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
   @Input() courseHierarchy: any;
 
   public baseUrl = '';
+  public enrollClickedId = '';
   public showLoginModal = false;
   batchList = [];
   showError = false;
@@ -30,7 +33,8 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
     { name: 'Upcoming', value: 0 }
   ];
   todayDate = moment(new Date()).format('YYYY-MM-DD');
-  constructor(public resourceService: ResourceService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
+  constructor(private browserCacheTtlService: BrowserCacheTtlService, private cacheService: CacheService,
+    public resourceService: ResourceService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
     public router: Router, public userService: UserService) {
     this.batchStatus = this.statusOptions[0].value;
   }
@@ -70,13 +74,19 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
-  enrollBatch() {
+  enrollBatch(batch) {
     this.baseUrl = '/learn/course/' + this.courseId;
+    this.enrollClickedId = batch.identifier;
     if (!this.userService.loggedIn) {
         this.showLoginModal = true;
     } else {
-        this.router.navigate([this.baseUrl]);
+      this.router.navigate([this.baseUrl], { queryParams: { batch: this.enrollClickedId }});
     }
+  }
+
+  onLoginClick () {
+    this.cacheService.set('postLoginRedirectUrl', {redirectUrl: this.baseUrl, queryParams: {batch: this.enrollClickedId}} ,
+      { maxAge: this.browserCacheTtlService.browserCacheTtl});
   }
 
   ngOnDestroy() {

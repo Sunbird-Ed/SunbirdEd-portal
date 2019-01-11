@@ -7,7 +7,7 @@ const routes: Routes = [
     {
       path: '', component: PublicCourseComponent, data: {
         telemetry: {
-          env: 'explore', pageid: 'explore-course', type: 'view', subtype: 'paginate'
+          env: 'explore-course', pageid: 'explore-course', type: 'view', subtype: 'paginate'
         }
       }
     },
@@ -15,7 +15,7 @@ const routes: Routes = [
       path: 'view-all/:section/:pageNumber', component: ViewAllComponent,
       data: {
         telemetry: {
-          env: 'explore', pageid: 'explore-view-all', type: 'view', subtype: 'paginate'
+          env: 'explore-course', pageid: 'explore-view-all', type: 'view', subtype: 'paginate'
         },
         filterType: 'explore-course',
         frameworkName: true,
@@ -25,7 +25,7 @@ const routes: Routes = [
     {
       path: ':pageNumber', component: ExploreCourseComponent, data: {
         telemetry: {
-          env: 'explore', pageid: 'explore-course-search', type: 'view', subtype: 'paginate'
+          env: 'explore-course', pageid: 'explore-course-search', type: 'view', subtype: 'paginate'
         }
       }
     },
@@ -37,7 +37,7 @@ const routes: Routes = [
           path: ':courseId', component: PublicCoursePlayerComponent,
           data: {
             telemetry: {
-              env: 'explore', pageid: 'explore-course-toc', type: 'view'
+              env: 'explore-course', pageid: 'explore-course-toc', type: 'view'
             }
           },
         },
