@@ -3,7 +3,7 @@
         <div class="three wide column pt-0">
             <div class="publicmenusection ui secondary vertical menu">
                 <a *ngFor="let report of reportMetaData" (click)="renderReport(report)" class="item" [ngClass]="{'active': currentReport.id === report.id}">
-                    {{report.title || report.label}}</a>
+                    {{report.label || report.title}}</a>
             </div>
         </div>
         <div class="nine wide column workspacesegment">
@@ -25,9 +25,15 @@
                             [colors]="chart.colors" [legend]="true"></canvas>
                         <div class="ui divider" *ngIf="i != l"></div>
                     </div>
+                    <div class="ui warning message" *ngIf="!chartData.length">
+                        Graphs are not available for this report
+                    </div>
                 </div>
                 <div class="ui bottom attached small segment" suiTabContent="tableMenu">
                     <app-data-table *ngIf="isTableDataLoaded" [headerData]="table.header" [rowsData]="table.data"></app-data-table>
+                    <div class="ui warning message" *ngIf="!isTableDataLoaded">
+                        Table is not available for this Report
+                    </div>
                 </div>
             </sui-tabset>
         </div>

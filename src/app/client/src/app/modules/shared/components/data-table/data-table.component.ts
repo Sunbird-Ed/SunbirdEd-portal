@@ -11,10 +11,13 @@ export class DataTableComponent implements AfterViewInit {
   @Input() headerData: string[];
 
   ngAfterViewInit() {
-    $('#table').DataTable({
-      'data': this.rowsData,
-      'scrollX': true
-    });
+    setTimeout(() => {
+      $('#table').DataTable({
+        'data': this.rowsData,
+        'scrollX': true,
+        'searching': false,
+      });
+    }, 1000);
   }
 
 }

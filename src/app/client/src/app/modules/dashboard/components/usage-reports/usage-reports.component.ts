@@ -34,13 +34,15 @@ export class UsageReportsComponent implements OnInit {
     this.title = _.get(report, 'title') || _.get(report, 'label');
     this.description = _.get(report, 'description');
     this.usageService.getData(url).subscribe((data) => {
+      this.table = {};
+      this.chartData = [];
       if (_.get(report, 'chart')) { this.createChartData(_.get(report, 'chart'), data); }
       if (_.get(report, 'table')) { this.createTableData(_.get(report, 'table'), data); }
     });
   }
 
   createChartData(charts, data) {
-    this.chartData = [];
+
     _.forEach(charts, chart => {
       const chartObj: any = {};
       chartObj.options = _.get(chart, 'options') || { responsive: true };
@@ -60,7 +62,7 @@ export class UsageReportsComponent implements OnInit {
   }
 
   createTableData(table, data) {
-    this.table = {};
+
     this.table.header = _.get(data, _.get(table, 'columnsExpr'));
     this.table.data = _.get(data, _.get(table, 'valuesExpr'));
     this.isTableDataLoaded = true;
