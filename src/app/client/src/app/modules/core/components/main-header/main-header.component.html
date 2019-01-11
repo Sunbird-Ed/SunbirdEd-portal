@@ -62,7 +62,7 @@
     </div>
     <div class="primary-navbar-bg p-10" *ngIf="showExploreHeader || userService.loggedIn">
         <div class="ui mobile-view container d-flex flex-ai-center mx-0">
-            <button class="ui basic button qr-code-btn d-flex computer only mr-0" (click)="showQrmodal = true;">
+            <button class="ui basic button qr-code-btn d-flex computer only mr-0" appTelemetryInteract [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;">
                 <i class="qrcode icon d-flex flex-ai-center"></i>
                 <span class="d-flex flex-ai-center">{{resourceService.frmelmnts?.lbl?.enterQrCode}}</span>
             </button>
@@ -82,7 +82,7 @@
     </div>
     <div class="p-10 mobile only" *ngIf="showExploreHeader || userService.loggedIn">
         <div class="ui mobile-view container d-flex flex-jc-space-between mx-0">
-            <button class="ui basic d-flex button qr-code-btn" (click)="showQrmodal = true;">
+            <button class="ui basic d-flex button qr-code-btn" appTelemetryInteract [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;">
                 <i class="qrcode icon d-flex flex-ai-center"></i>
                 <span class="d-flex flex-ai-center">{{resourceService.frmelmnts?.lbl?.enterQrCode}}</span>
             </button>
