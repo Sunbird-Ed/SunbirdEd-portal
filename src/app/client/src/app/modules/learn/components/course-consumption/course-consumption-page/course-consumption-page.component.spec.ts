@@ -46,6 +46,7 @@ const resourceServiceMockData = {
 };
 class ActivatedRouteStub {
   snapshot = {
+    queryParams: {},
     params: {},
     firstChild: { params : {}}
   };
@@ -116,7 +117,7 @@ describe('CourseConsumptionPageComponent', () => {
     expect(component.toasterService.error).toHaveBeenCalled();
     expect(component.router.navigate).toHaveBeenCalledWith(['/learn']);
   });
-  it('should fetch course details if it not enrolled course and should not fetch enrolled batch details', () => {
+  fit('should fetch course details if it not enrolled course and should not fetch enrolled batch details', () => {
     activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_123'};
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
