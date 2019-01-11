@@ -150,7 +150,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
   ngOnInit() {
 
     this.checkForPreviousRouteForRedirect();
-    if (this.contentType === 'course') {
+    if (_.lowerCase(this.contentType) === 'course') {
       this.getCourseFrameworkId().pipe(takeUntil(this.unsubscribe)).subscribe(data => {
         this.framework = data;
         this.fetchFrameworkMetaData();
@@ -197,7 +197,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
     this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
       if (!frameworkData.err) {
         this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
-        if (this.contentType !== 'course') {
+        if (_.lowerCase(this.contentType) !== 'course') {
           this.framework = frameworkData.frameworkdata['defaultFramework'].code;
         }
         /**
