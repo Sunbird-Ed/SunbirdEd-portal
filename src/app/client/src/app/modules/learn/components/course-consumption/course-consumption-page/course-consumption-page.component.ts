@@ -1,6 +1,6 @@
 import { combineLatest, Subject, throwError } from 'rxjs';
 import { map, mergeMap, first, takeUntil } from 'rxjs/operators';
-import { ResourceService, ToasterService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,8 +19,9 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   public courseHierarchy: any;
   public unsubscribe$ = new Subject<void>();
   public enrolledBatchInfo: any;
-  constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
-    private coursesService: CoursesService, public toasterService: ToasterService, public courseBatchService: CourseBatchService,
+  constructor(private activatedRoute: ActivatedRoute, private configService: ConfigService,
+    private courseConsumptionService: CourseConsumptionService, private coursesService: CoursesService,
+    public toasterService: ToasterService, public courseBatchService: CourseBatchService,
     private resourceService: ResourceService, public router: Router, public breadcrumbsService: BreadcrumbsService) {
   }
   ngOnInit() {
@@ -29,6 +30,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         const routeParams: any = { ...this.activatedRoute.snapshot.params, ...this.activatedRoute.snapshot.firstChild.params };
         const queryParams = this.activatedRoute.snapshot.queryParams;
         this.courseId = routeParams.courseId;
+        const queryParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
         const enrollCourses: any = this.getBatchDetailsFromEnrollList(enrolledCourses, routeParams);
         if (routeParams.batchId && !enrollCourses) { // batch not found in enrolled Batch list
           return throwError('ENROLL_BATCH_NOT_EXIST');
@@ -44,7 +46,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
             this.router.navigate([`learn/course/${this.courseId}/enroll/batch/${queryParams.batch}`]);
           }
         }
-        return this.getDetails();
+        return this.getDetails(queryParams);
       }), takeUntil(this.unsubscribe$))
       .subscribe(({ courseHierarchy, enrolledBatchDetails }: any) => {
         this.enrolledBatchInfo = enrolledBatchDetails;
@@ -69,14 +71,14 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
     }
     return; // no batch found
   }
-  private getDetails() {
+  private getDetails(queryParams) {
     if (this.batchId) {
       return combineLatest(
-        this.courseConsumptionService.getCourseHierarchy(this.courseId),
+        this.courseConsumptionService.getCourseHierarchy(this.courseId, queryParams),
         this.courseBatchService.getEnrolledBatchDetails(this.batchId)
       ).pipe(map(result => ({ courseHierarchy: result[0], enrolledBatchDetails: result[1] })));
     } else {
-      return this.courseConsumptionService.getCourseHierarchy(this.courseId)
+      return this.courseConsumptionService.getCourseHierarchy(this.courseId, queryParams)
         .pipe(map(courseHierarchy => ({ courseHierarchy })));
     }
   }

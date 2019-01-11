@@ -52,7 +52,7 @@ export class FormService {
       }
     };
     const formKey = `${channelOptions.data.request.type}${channelOptions.data.request.action}
-    ${channelOptions.data.request.subType}${channelOptions.data.request.rootOrgId}`;
+    ${channelOptions.data.request.subType}${channelOptions.data.request.rootOrgId}${formInputParams.framework}`;
      const key = btoa(formKey);
     if (this.cacheService.get(key)) {
       const data = this.cacheService.get(key);
