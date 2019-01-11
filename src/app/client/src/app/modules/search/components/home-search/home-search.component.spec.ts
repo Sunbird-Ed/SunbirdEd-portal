@@ -66,7 +66,6 @@ describe('HomeSearchComponent', () => {
     coursesService = TestBed.get(CoursesService);
     sendEnrolledCourses = true;
     sendSearchResult = true;
-    sendFormApi = true;
     toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => {});
     spyOn(learnerService, 'get').and.callFake((options) => {

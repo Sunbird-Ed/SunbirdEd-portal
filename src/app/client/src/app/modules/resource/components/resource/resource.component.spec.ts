@@ -2,7 +2,7 @@ import { ResourceComponent } from './resource.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
-import { PageApiService, CoreModule, UserService} from '@sunbird/core';
+import { PageApiService, CoreModule } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -54,7 +54,6 @@ describe('ResourceComponent', () => {
     fixture = TestBed.createComponent(ResourceComponent);
     component = fixture.componentInstance;
     toasterService = TestBed.get(ToasterService);
-    userService = TestBed.get(UserService);
     pageApiService = TestBed.get(PageApiService);
     sendPageApi = true;
     spyOn(pageApiService, 'getPageData').and.callFake((options) => {

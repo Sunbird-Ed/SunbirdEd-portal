@@ -84,7 +84,6 @@ describe('BatchListComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BatchListComponent);
-    childfixture = TestBed.createComponent(BatchCardComponent);
     component = fixture.componentInstance;
   });
   it('should call  batch search api and returns result count more than 1', inject([SearchService], (searchService) => {

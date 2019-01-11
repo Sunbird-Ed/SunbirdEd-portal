@@ -2,7 +2,7 @@ import { LibrarySearchComponent } from './library-search.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
-import { SearchService, CoreModule, UserService} from '@sunbird/core';
+import { SearchService, CoreModule } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -56,7 +56,6 @@ describe('LibrarySearchComponent', () => {
     fixture = TestBed.createComponent(LibrarySearchComponent);
     component = fixture.componentInstance;
     toasterService = TestBed.get(ToasterService);
-    userService = TestBed.get(UserService);
     searchService = TestBed.get(SearchService);
     activatedRoute = TestBed.get(ActivatedRoute);
     sendSearchResult = true;

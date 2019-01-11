@@ -41,7 +41,6 @@ describe('OrgFilterComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(OrgFilterComponent);
     component = fixture.componentInstance;
-    parentfixture = TestBed.createComponent(OrgSearchComponent);
   });
 
   it('should call resetFilters method ', inject([Router], (route) => {

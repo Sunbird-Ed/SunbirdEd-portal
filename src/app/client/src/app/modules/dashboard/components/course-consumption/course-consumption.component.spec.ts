@@ -63,7 +63,6 @@ describe('CourseConsumptionComponent', () => {
     fixture = TestBed.createComponent(CourseConsumptionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    router = TestBed.get(Router);
   });
 
   it('should call search api and returns result count 1', inject([SearchService], (searchService) => {
