@@ -15,7 +15,6 @@ import {
 } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
-import * as mockData from './data-driven-filter.component.spec.data';
 
 describe('DataDrivenFilterComponent', () => {
   let component: DataDrivenFilterComponent;
