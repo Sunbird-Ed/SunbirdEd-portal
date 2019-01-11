@@ -30,7 +30,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         const routeParams: any = { ...this.activatedRoute.snapshot.params, ...this.activatedRoute.snapshot.firstChild.params };
         const queryParams = this.activatedRoute.snapshot.queryParams;
         this.courseId = routeParams.courseId;
-        const queryParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
+        const paramsObj = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
         const enrollCourses: any = this.getBatchDetailsFromEnrollList(enrolledCourses, routeParams);
         if (routeParams.batchId && !enrollCourses) { // batch not found in enrolled Batch list
           return throwError('ENROLL_BATCH_NOT_EXIST');
@@ -46,7 +46,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
             this.router.navigate([`learn/course/${this.courseId}/enroll/batch/${queryParams.batch}`]);
           }
         }
-        return this.getDetails(queryParams);
+        return this.getDetails(paramsObj);
       }), takeUntil(this.unsubscribe$))
       .subscribe(({ courseHierarchy, enrolledBatchDetails }: any) => {
         this.enrolledBatchInfo = enrolledBatchDetails;
