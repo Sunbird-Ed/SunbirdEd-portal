@@ -16,6 +16,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { RouterTestingModule } from '@angular/router/testing';
 import * as _ from 'lodash';
 import { ProfileService } from '@sunbird/profile';
+import { CacheService } from 'ng2-cache-service';
 
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 
@@ -49,7 +50,7 @@ describe('AppComponent', () => {
       providers: [
         { provide: Router, useClass: RouterStub},
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        ToasterService, TenantService,
+        ToasterService, TenantService, CacheService,
         UserService, ConfigService, LearnerService, BrowserCacheTtlService,
         PermissionService, ResourceService, CoursesService, OrgDetailsService, ProfileService,
         TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, ConceptPickerService, SearchService, ContentService],
@@ -210,5 +211,11 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.ngOnInit();
     expect(component.showFrameWorkPopUp).toBeTruthy();
   }));
+  it('on call of checkForRedirectUrl if cache exists then redirect should happen to the url that is set in cache', () => {
+    const cacheService = TestBed.get(CacheService);
+    cacheService.set('postLoginRedirectUrl', {redirectUrl: '/course'} , { maxAge: 10 * 60});
+    component.checkForRedirectUrl();
+    expect(component.router.navigate).toHaveBeenCalledWith(['/course'], {queryParams: {}});
+  });
 
 });
