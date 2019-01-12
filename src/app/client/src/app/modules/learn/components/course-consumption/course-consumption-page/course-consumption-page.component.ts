@@ -28,8 +28,9 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
     this.coursesService.enrolledCourseData$.pipe(first(),
       mergeMap(({ enrolledCourses }) => {
         const routeParams: any = { ...this.activatedRoute.snapshot.params, ...this.activatedRoute.snapshot.firstChild.params };
+        const queryParams = this.activatedRoute.snapshot.queryParams;
         this.courseId = routeParams.courseId;
-        const queryParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
+        const paramsObj = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
         const enrollCourses: any = this.getBatchDetailsFromEnrollList(enrolledCourses, routeParams);
         if (routeParams.batchId && !enrollCourses) { // batch not found in enrolled Batch list
           return throwError('ENROLL_BATCH_NOT_EXIST');
@@ -39,8 +40,13 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
           if (enrollCourses.batchId !== routeParams.batchId) { // if batch from route dint match or not present
             this.router.navigate([`learn/course/${this.courseId}/batch/${this.batchId}`]); // but course was found in enroll list
           }
+        } else {
+          // if query params has batch then open enroll popup for that batch
+          if (queryParams.batch) {
+            this.router.navigate([`learn/course/${this.courseId}/enroll/batch/${queryParams.batch}`]);
+          }
         }
-        return this.getDetails(queryParams);
+        return this.getDetails(paramsObj);
       }), takeUntil(this.unsubscribe$))
       .subscribe(({ courseHierarchy, enrolledBatchDetails }: any) => {
         this.enrolledBatchInfo = enrolledBatchDetails;

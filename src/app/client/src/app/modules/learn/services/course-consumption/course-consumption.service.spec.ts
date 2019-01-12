@@ -49,7 +49,6 @@ describe('CourseConsumptionService', () => {
         { provide: ActivatedRoute, useValue: fakeActivatedRoute}]
     });
   });
-
   it('should be created', inject([CourseConsumptionService], (service: CourseConsumptionService) => {
     expect(service).toBeTruthy();
   }));
