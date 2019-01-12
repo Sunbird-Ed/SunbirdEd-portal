@@ -71,6 +71,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     fontFamily: 'inherit'
   };
   showContactPopup = false;
+  showEditUserDetailsPopup = false;
    /**
   /**
     * Slider setting to display number of cards on the slider.
