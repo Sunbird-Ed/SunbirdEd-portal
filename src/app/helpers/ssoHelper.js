@@ -52,7 +52,10 @@ const createSession = async (loginId, req, res) => {
     refresh_token: ''
   };
 }
-const updatePhone = () => {
+const updatePhone = (accountDetails) => {
   return Promise.resolve({});
 }
-module.exports = { keycloak, verifySignature, verifyToken, getChannel, fetchUserLoginId, createUserWithPhone, createSession, updatePhone };
+const updateRoles = (accountDetails) => {
+  return Promise.resolve({});
+}
+module.exports = { keycloak, verifySignature, verifyToken, getChannel, fetchUserLoginId, createUserWithPhone, createSession, updatePhone, updateRoles };
