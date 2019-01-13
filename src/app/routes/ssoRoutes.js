@@ -1,7 +1,10 @@
 const _ = require('lodash');
 const { verifySignature, verifyToken, getChannel, fetchUserWithLoginId, createUserWithPhone, createSession, updatePhone, updateRoles } = require('./../helpers/ssoHelper');
-const telemetryHelper = require('../helpers/telemetryHelper')
+const telemetryHelper = require('../helpers/telemetryHelper');
 
+const successUrl = '/sso/sign-in/success';
+const updatePhoneUrl = '/sign-in/sso/update-phone';
+const errorUrl = '/sso/sign-in/error';
 module.exports = (app) => {
 
   app.get('/v2/user/session/create', async (req, res) => { // updating api version to 2
@@ -18,29 +21,29 @@ module.exports = (app) => {
       if(userDetails.phoneVerified) {
         errType = 'USER_CHANNEL_API';
         userChannel = await getChannel(loginId);
-        redirectUrl = '/sso/signin/success?loginId=' + loginId + '&redirect_url=' + jwtDecodedToken.redirect_url;
+        redirectUrl = `${successUrl}?id=${loginId}&redirect_url=${jwtDecodedToken.redirect_url}`;
       } else {
-        redirectUrl = '/sso/update/phone?loginId=' + loginId + '&redirect_url=' + jwtDecodedToken.redirect_url + '&roles=' + jwtDecodedToken.roles;
+        redirectUrl = `${updatePhoneUrl}?id=${loginId}&redirect_url=${jwtDecodedToken.redirect_url}&roles=${jwtDecodedToken.roles}`;
       }
       console.log('sso session creation successfully redirected', jwtDecodedToken, req.query, userDetails, redirectUrl);
     } catch (error) {
-      redirectUrl = '/sso/signin/error?error_message=' + 'SSO failed';
+      redirectUrl = `${errorUrl}?error_message=SSO failed`;
       console.log('sso session creation failed', error, jwtDecodedToken, req.query, userDetails, redirectUrl, errType);
       logErrorEvent(req, errType, error);
     } finally {
-      res.redirect(redirectUrl || '/sso/signin/error');
+      res.redirect(redirectUrl || '/sso/sign-in/error');
     }
   });
 
   app.get('/v1/sso/phone/verified', (req, res) => {
     let loginId, phone, userDetails, userChannel, redirectUrl, errType;
     try {
-      if (!req.query.phone || !req.query.loginId) {
+      if (!req.query.phone || !req.query.id) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
       }
       errType = 'USER_FETCH_API';
-      loginId = req.query.loginId;
+      loginId = req.query.id;
       phone = req.query.phone;
       userDetails = fetchUserWithLoginId(loginId);
       if(userDetails.userName) {
@@ -63,21 +66,21 @@ module.exports = (app) => {
         }
         logAuditEvent(req, googleProfile)
       }
-      redirectUrl = '/sso/signin/success?loginId=' + loginId + '&redirect_url=' + req.query.redirect_url;
+      redirectUrl = `${successUrl}?id=${loginId}&redirect_url=${req.query.redirect_url}`;
       console.log('sso phone updated successfully', req.query, userDetails, redirectUrl);
     } catch (error) {
-      redirectUrl = '/sso/signin/error?error_message=' + 'SSO failed';
+      redirectUrl = `${errorUrl}?error_message=SSO failed`;
       console.log('sso phone updating failed', error, req.query, userDetails, redirectUrl, errType);
       logErrorEvent(req, errType, error);
     } finally {
-      res.redirect(redirectUrl || '/sso/signin/error');
+      res.redirect(redirectUrl || '/sso/sign-in/error');
     }
   })
 
-  app.get('/sso/signin/success', async (req, res) => {
+  app.get(successUrl, async (req, res) => {
     let loginId, phone, userDetails, userChannel, redirectUrl, errType;
     try {
-      if (!req.query.loginId) {
+      if (!req.query.id) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
       }
@@ -85,28 +88,28 @@ module.exports = (app) => {
       errType = 'CREATE_SESSION';
       await createSession(loginId);
       redirectUrl = req.query.redirect_url ? req.query.redirect_url : '/resources';
-      console.log('sso signin success callback redirected', req.query, redirectUrl, errType);
+      console.log('sso sign-in success callback redirected', req.query, redirectUrl, errType);
     } catch (error) {
-      redirectUrl = '/sso/signin/error?error_message=' + 'SSO failed';
-      console.log('sso signin success callback error', error, req.query, redirectUrl, errType);
+      redirectUrl = `${errorUrl}?error_message=SSO failed`;
+      console.log('sso sign-in success callback error', error, req.query, redirectUrl, errType);
       logErrorEvent(req, errType, error);
     } finally {
-      res.redirect(redirectUrl || '/sso/signin/error');
+      res.redirect(redirectUrl || '/sso/sign-in/error');
     }
   })
 
   app.get('/v1/get/access/token', async (req, res) => { // needs to onboard to kong
     let loginId, accessTokens, userDetails, userChannel, response, errType;
     try {
-      if (!req.query.loginId) {
+      if (!req.query.id) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
       }
-      loginId = req.query.loginId;
+      loginId = req.query.id;
       errType = 'CREATE_SESSION';
       accessTokens = await createSession(loginId);
       response = accessTokens;
-      console.log('sso sign in get access success', loginId, req.query, response, accessTokens);
+      console.log('sso sign in get access success', req.query, response, accessTokens);
     } catch (error) {
       response = { error: 'session creation failed' };
       console.log('sso sign in get access token failed', error, req.query, redirectUrl, errType);
@@ -116,7 +119,7 @@ module.exports = (app) => {
     }
   })
 
-  app.get('/sso/signin/error', (req, res) => {
+  app.get(errorUrl, (req, res) => {
     res.redirect('/resources'); // should go to error page
   })
 }
@@ -142,7 +145,7 @@ const logErrorEvent = (req, type, error) => {
 }
 const logAuditEvent = (req, profile) => {
   const edata = {
-    props: ['email'],
+    props: ['phone'],
     state: 'LOGGED_IN_USER', 
     prevstate: 'ANONYMOUS_USER'
   }
@@ -151,4 +154,3 @@ const logAuditEvent = (req, profile) => {
   }
   telemetryHelper.logAuditEvent(req, {edata, context});
 }
-

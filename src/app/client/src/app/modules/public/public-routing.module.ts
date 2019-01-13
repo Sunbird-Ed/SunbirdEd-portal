@@ -65,6 +65,12 @@ const routes: Routes = [
   },
   {
     path: 'signup', loadChildren: './module/signup/signup.module#SignupModule'
+  },
+  {
+    path: ':slug/sign-in/sso', loadChildren: './module/sign-in/sso/sso.module#SsoModule'
+  },
+  {
+    path: 'sign-in/sso', loadChildren: './module/sign-in/sso/sso.module#SsoModule'
   }
 ];
 @NgModule({
