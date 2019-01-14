@@ -1,22 +1,5 @@
-.ui.menu.fixed{
-  position: -webkit-sticky;
-  position: -moz-sticky;
-  position: -ms-sticky;
-  position: -o-sticky;
-  position: sticky;
-  z-index: 999;
-  border:0;
-  border-bottom: .5px solid #ddd !important;
-  margin-bottom: -1px;
-
-  .logo img {
-    height: 56px;
-    max-height:56px;
-  }
-}
-
 .ui.visible.sidebar {
-  &.right{
+  &.right {
     &~.fixed,
     &~.pusher {
       transform: translate3d(0, 0, 0) !important;
@@ -27,5 +10,11 @@
     z-index: 4;
     border: 0;
   }
-  
+}
+.language-selector {
+  .ui.dropdown {
+    border: 1px solid #cae4f7;
+    color: #cae4f7;
+    border-radius: 4px;
+  }
 }

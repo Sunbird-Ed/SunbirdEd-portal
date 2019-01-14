@@ -2424,18 +2424,6 @@ angular2-multiselect .list-area{
  .min-height-80 {
   min-height: 80px !important;
 }
- .ui.selection.dropdown.language-selector {
-  border: 1px solid rgba(51, 51, 51, 0.13);
-  border-radius: 4px;
-  max-height: 36px;
-  min-height: 36px;
-  min-width: 10em;
-}
-@media only screen and (max-width: 767px) {
-  .ui.selection.dropdown.language-selector {
-    min-width: 8em;
-  };
-}
  .ui.basic.button.dial-code {
     box-shadow: none;
     border: 1px solid rgba(51, 51, 51, 0.33);
@@ -2489,10 +2477,4 @@ i.blue.icon{
   top: 100px !important;
   left: 50% !important;
   transform: translate(-50%,-50%) !important;
-}
-@media screen and (max-width: 768px) {
-  app-page-section .twelve.wide.column {
-    margin-left: -15px !important;
-    margin-right: -15px !important;
-  }
 }

@@ -10,8 +10,7 @@ import { Subject, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-language-dropdown',
-  templateUrl: './language-dropdown.component.html',
-  styleUrls: ['./language-dropdown.component.scss']
+  templateUrl: './language-dropdown.component.html'
 })
 export class LanguageDropdownComponent implements OnInit, OnDestroy {
   @Input() redirectUrl: string;
