@@ -124,7 +124,7 @@ export class PageSectionComponent implements OnInit {
   ngOnInit() {
     // subscribe this.resourceService.languageSelected$
     // check the section name should not be My Courses
-    // call selectedLanguage method
+    // call selectedLanguageTranslation method
     const id = _.get(this.activatedRoute, 'snapshot.data.telemetry.env');
     this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
     if (id && this.pageid) {
@@ -135,7 +135,7 @@ export class PageSectionComponent implements OnInit {
       };
     }
   }
-  selectedLanguage(data) {
+  selectedLanguageTranslation(data) {
    // data will give language selected
   // check translated language details exists or not in this.section
   // if exists with any value replace it with the name

@@ -181,7 +181,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
   }
 
   public applyFilters() {
-    // call method to convert selected option to english
+    // call convertSelectedOption method to convert selected option to english
     const queryParams: any = {};
     _.forIn(this.formInputData, (eachInputs: Array<any | object>, key) => {
         const formatedValue = typeof eachInputs === 'string' ? eachInputs :
@@ -267,5 +267,14 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
     catchError(err => {
       return [];
     }));
+  }
+  translateValues(range) {
+ // range will contain all the data for specific category
+ // loop through the data and check if selected language translation exists or not.
+ // if exists change the name and check en translation exists or not if not exists add it.
+  }
+  convertSelectedOption(data) {
+ // data will have all the selected values
+ // loop through formFieldProperties and translate the values to english.
   }
 }
