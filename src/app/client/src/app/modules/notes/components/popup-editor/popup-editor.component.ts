@@ -17,7 +17,7 @@ import { Subject } from 'rxjs';
 @Component({
   selector: 'app-popup-editor',
   templateUrl: './popup-editor.component.html',
-  styleUrls: ['./popup-editor.component.css'],
+  styleUrls: ['./popup-editor.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 

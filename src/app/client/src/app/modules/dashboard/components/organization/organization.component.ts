@@ -18,7 +18,7 @@ import * as _ from 'lodash';
 @Component({
   selector: 'app-organization',
   templateUrl: './organization.component.html',
-  styleUrls: ['./organization.component.css']
+  styleUrls: ['./organization.component.scss']
 })
 
 /**
