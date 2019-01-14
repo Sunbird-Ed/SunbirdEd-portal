@@ -1,8 +1,5 @@
 @import "variables";
 
-.sidebar-hamburger-menu {
-  color:$primary-color;
-}
 .primary-navbar-bg {
   background-color: $primary-color;
 }
@@ -72,16 +69,6 @@
 
 .ui.menu a.item:hover {
   background: none;
-}
-
-.ui.menu .primary-nav-item a.item.divider {
-  top: 15px;
-  border-right: 0.5px solid #196d7f;
-  opacity: 0.4;
-  max-height: 8px;
-  padding: 8px;
-  border-width: 2px;
-  margin-right: 10px;
 }
 
 .ui.icon.button {
