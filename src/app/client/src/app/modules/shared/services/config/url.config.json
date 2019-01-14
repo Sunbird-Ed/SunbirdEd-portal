@@ -46,6 +46,9 @@
     "SYSTEM_SETTING":{
       "CUSTODIAN_ORG":"data/v1/system/settings/get/custodianOrgId"
     },
+    "COURSE_FRAMEWORK":{
+      "COURSE_FRAMEWORKID":"data/v1/system/settings/get/courseFrameworkId"
+    },
     "COURSE": {
       "SEARCH": "course/v1/search",
       "HIERARCHY": "course/v1/hierarchy",

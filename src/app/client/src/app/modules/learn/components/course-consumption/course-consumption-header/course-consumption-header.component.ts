@@ -11,6 +11,7 @@ import {
   ExternalUrlPreviewService
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import * as moment from 'moment';
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
@@ -47,6 +48,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   progress = 0;
   courseStatus: string;
   public unsubscribe = new Subject<void>();
+  batchEndDate: any;
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
@@ -138,7 +140,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         });
   }
   onShareLink() {
-    this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.courseId, this.courseHierarchy.mimeType);
+    this.shareLink = this.contentUtilsServiceService.getCoursePublicShareUrl(this.courseId);
     this.setTelemetryShareData(this.courseHierarchy);
   }
   setTelemetryShareData(param) {
@@ -153,6 +155,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.unsubscribe.complete();
   }
   getBatchStatus() {
+   if (this.enrolledBatchInfo.endDate) {
+    this.batchEndDate = moment(this.enrolledBatchInfo.endDate).format('YYYY-MM-DD');
+   }
    return (this.enrolledBatchInfo.status === 2 && this.progress < 100);
   }
 }

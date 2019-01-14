@@ -15,8 +15,7 @@ import { Subject } from 'rxjs';
  */
 @Component({
   selector: 'app-request-changes-popup',
-  templateUrl: './request-changes-popup.component.html',
-  styleUrls: ['./request-changes-popup.component.css']
+  templateUrl: './request-changes-popup.component.html'
 })
 export class RequestChangesPopupComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;

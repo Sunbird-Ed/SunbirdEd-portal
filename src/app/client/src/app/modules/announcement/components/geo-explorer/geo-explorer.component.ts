@@ -17,7 +17,7 @@ import { Subject } from 'rxjs';
 @Component({
   selector: 'app-geo-explorer',
   templateUrl: './geo-explorer.component.html',
-  styleUrls: ['./geo-explorer.component.css']
+  styleUrls: ['./geo-explorer.component.scss']
 })
 /**
  * @class GeoExplorerComponent

@@ -23,8 +23,7 @@ import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semanti
 
 @Component({
   selector: 'app-published',
-  templateUrl: './published.component.html',
-  styleUrls: ['./published.component.css']
+  templateUrl: './published.component.html'
 })
 export class PublishedComponent extends WorkSpace implements OnInit {
   @ViewChild('modalTemplate')
