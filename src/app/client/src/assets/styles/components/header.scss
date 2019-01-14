@@ -46,13 +46,13 @@
 .qr-code-btn {
   background: #fff !important;
   color: $primary-color !important;
-  font-size: 0.86rem;
-  border-radius: 3px;
+  font-size: 0.86rem !important;
+  border-radius: 3px !important;
   font-weight: bold;
-  border: 1px solid $dull-color;
-  box-shadow: none;
-  height: 30px;
-  padding: 8px 15px;
+  border: 1px solid $dull-color !important;
+  box-shadow: none !important;
+  height: 30px !important;
+  padding: 8px 15px !important;
   
   .qrcode {
     color: $primary-color !important;
