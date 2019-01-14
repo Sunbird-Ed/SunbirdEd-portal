@@ -3,7 +3,7 @@
         "id": "usage",
         "label": "Diksha Usage Report",
         "title": "Diksha Usage Report",
-        "description": "The report provides a quick summary of the data analysed by the analytics team to track progess of Diksha across states. This report will be used to consolidate insights using various metrics on which Diksha is currently being mapped and will be shared on a weekly basis. The first section of the report will provide a snapshot of the overall health of the Diksha App. This will be followed by individual state sections that provide state-wise status of Diksha",
+        "description": "The report <b>provides</b> a quick <em>summary of the data</em> analysed by the analytics team to track progess of Diksha across states. This report will be used to consolidate insights using various metrics on which Diksha is currently being mapped and will be shared on a weekly basis. The first section of the report will provide a snapshot of the overall health of the Diksha App. This will be followed by individual state sections that provide state-wise status of Diksha",
         "dataSource": "reports/usage/andhrapradesh/report.json",
         "chart": [
             {

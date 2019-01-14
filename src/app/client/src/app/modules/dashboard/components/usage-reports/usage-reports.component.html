@@ -8,21 +8,21 @@
         </div>
         <div class="nine wide column workspacesegment">
             <h2 class="ui small header">
-                {{title}}
+                {{currentReport?.title || currentReport?.label}}
             </h2>
-            <p *ngIf="description"> {{description}} </p>
+            <p *ngIf="currentReport?.description" [innerHTML]="transformHTML(currentReport.description)"></p>
             <sui-tabset>
                 <div class="ui top attached tabular menu">
                     <a class="item" suiTabHeader="graph">Graph</a>
                     <a class="item" suiTabHeader="tableMenu">Table</a>
                     <div class="right menu">
-                        <a *ngIf="downloadUrl" class="ui item" (click)="downloadCSV()">Download CSV</a>
+                        <a *ngIf="currentReport?.downloadUrl" class="ui item" (click)="downloadCSV(currentReport.downloadUrl)">Download CSV</a>
                     </div>
                 </div>
                 <div class="ui bottom attached segment" suiTabContent="graph">
                     <div *ngFor="let chart of chartData; let i = index; let l = last;">
                         <canvas baseChart [datasets]="chart.datasets" [labels]="chart.labels" [options]="chart.options" [chartType]="chart.chartType"
-                            [colors]="chart.colors" [legend]="true"></canvas>
+                            [colors]="chart.colors" [legend]="chart.legend"></canvas>
                         <div class="ui divider" *ngIf="i != l"></div>
                     </div>
                     <div class="ui warning message" *ngIf="!chartData.length">

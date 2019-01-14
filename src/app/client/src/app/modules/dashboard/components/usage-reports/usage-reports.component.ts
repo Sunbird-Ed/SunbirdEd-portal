@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UsageService } from './../../services';
 import * as _ from 'lodash';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-usage-reports',
@@ -12,14 +13,10 @@ export class UsageReportsComponent implements OnInit {
   reportMetaData: any;
   chartData: Array<object> = [];
   table: any;
-  title: string;
-  description: string;
   isTableDataLoaded = false;
-  downloadUrl: string;
   currentReport: any;
-  constructor(private usageService: UsageService) {
+  constructor(private usageService: UsageService, private sanitizer: DomSanitizer) { }
 
-  }
   ngOnInit() {
     this.usageService.getData('/reports/meta.json').subscribe(data => {
       this.reportMetaData = data;
@@ -29,10 +26,7 @@ export class UsageReportsComponent implements OnInit {
   renderReport(report: any) {
     this.currentReport = report;
     this.isTableDataLoaded = false;
-    this.downloadUrl = _.get(report, 'downloadUrl');
     const url = report.dataSource;
-    this.title = _.get(report, 'title') || _.get(report, 'label');
-    this.description = _.get(report, 'description');
     this.usageService.getData(url).subscribe((data) => {
       this.table = {};
       this.chartData = [];
@@ -42,18 +36,18 @@ export class UsageReportsComponent implements OnInit {
   }
 
   createChartData(charts, data) {
-
     _.forEach(charts, chart => {
       const chartObj: any = {};
       chartObj.options = _.get(chart, 'options') || { responsive: true };
       chartObj.colors = _.get(chart, 'colors') || ['#024F9D'];
       chartObj.chartType = _.get(chart, 'chartType') || 'line';
       chartObj.labels = _.get(chart, 'labels') || _.get(data, _.get(chart, 'labelsExpr'));
+      chartObj.legend = (_.get(chart, 'legend') === false) ? false : true;
       chartObj.datasets = [];
       _.forEach(chart.datasets, dataset => {
         chartObj.datasets.push({
           label: dataset.label,
-          data: _.get(data, _.get(dataset, 'dataExpr'))
+          data: _.get(dataset, 'data') || _.get(data, _.get(dataset, 'dataExpr'))
         });
       });
       this.chartData.push(chartObj);
@@ -62,14 +56,16 @@ export class UsageReportsComponent implements OnInit {
   }
 
   createTableData(table, data) {
-
-    this.table.header = _.get(data, _.get(table, 'columnsExpr'));
-    this.table.data = _.get(data, _.get(table, 'valuesExpr'));
+    this.table.header = _.get(table, 'columns') || _.get(data, _.get(table, 'columnsExpr'));
+    this.table.data = _.get(table, 'values') || _.get(data, _.get(table, 'valuesExpr'));
     this.isTableDataLoaded = true;
   }
 
-  downloadCSV() {
-    window.open(this.downloadUrl, '_blank');
+  downloadCSV(url) {
+    window.open(url, '_blank');
   }
 
+  transformHTML(data: any) {
+    return this.sanitizer.bypassSecurityTrustHtml(data);
+  }
 }
