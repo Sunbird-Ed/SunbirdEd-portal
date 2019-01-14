@@ -12,9 +12,40 @@
   }
 }
 .language-selector {
+  font-size: 0.86rem;
+
+  @media screen and (min-width: 992px) {
+    color: #fff;
+  }
+
   .ui.dropdown {
     border: 1px solid #cae4f7;
-    color: #cae4f7;
-    border-radius: 4px;
+    color: $primary-color;
+    font-size: 0.86rem;
+    border-radius: 3px;
+    font-weight: bold;
+    height: 30px;
+    padding: 7px 15px;
+
+    @media screen and (min-width: 1100px) {
+      color: #fff;
+      border: 0;
+      font-weight: 500;
+    }
+
+    &.active.visible {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    .menu {
+      width: 100%;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+
+      &>.active.item {
+        color: $primary-color !important;
+      }
+    }
   }
 }
