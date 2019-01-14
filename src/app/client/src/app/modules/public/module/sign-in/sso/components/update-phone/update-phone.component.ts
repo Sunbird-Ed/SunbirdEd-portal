@@ -97,8 +97,14 @@ export class UpdatePhoneComponent implements OnInit {
     this.enableSubmitBtn = false;
     this.initializeForm();
   }
+  getQueryParams(queryObj) {
+    return '?' + Object.keys(queryObj).filter(key => queryObj[key])
+      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(queryObj[key])}`)
+      .join('&');
+  }
   public handleOtpValidationSuccess() {
-    window.location.href = `/v1/sso/phone/verified?phone=${this.phoneNumber}&id=${this.activatedRoute.snapshot.queryParams.id}`;
+    window.location.href = `/v1/sso/phone/verified` +
+    this.getQueryParams({ ...this.activatedRoute.snapshot.queryParams, ...{phone: this.phoneNumber}});
   }
   private setTelemetryData() {
     this.telemetryImpression = {

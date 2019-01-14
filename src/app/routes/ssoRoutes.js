@@ -9,27 +9,27 @@ const errorUrl = '/sso/sign-in/error';
 module.exports = (app) => {
 
   app.get('/v2/user/session/create', async (req, res) => { // updating api version to 2
-    let jwtDecodedToken, loginId, userDetails, userChannel, redirectUrl, errType;
+    let requestBody, loginId, userDetails, userChannel, redirectUrl, errType;
     try {
       errType = 'VERIFY_SIGNATURE';
       await verifySignature(req.query.token);
-      jwtDecodedToken = jwt.decode(req.query.token);
+      requestBody = jwt.decode(req.query.token);
       errType = 'VERIFY_TOKEN';
-      verifyToken(jwtDecodedToken);
-      loginId = jwtDecodedToken.sub + (jwtDecodedToken.iss ? '@' + jwtDecodedToken.iss : '')
+      verifyToken(requestBody);
+      loginId = requestBody.sub + (requestBody.iss ? '@' + requestBody.iss : '')
       errType = 'USER_FETCH_API';
-      userDetails = fetchUserWithLoginId(loginId);
+      userDetails = fetchUserWithLoginId(loginId, req);
       if(userDetails.phoneVerified) {
         errType = 'USER_CHANNEL_API';
         userChannel = await getChannel(loginId);
-        redirectUrl = successUrl + getQueryParams({ id: loginId, redirect_url: jwtDecodedToken.redirect_url});
+        redirectUrl = successUrl + getQueryParams({ id: loginId, redirect_url: requestBody.redirect_url});
       } else {
-        redirectUrl = updatePhoneUrl + getQueryParams({id: loginId, redirect_url: jwtDecodedToken.redirect_url, roles: jwtDecodedToken.roles});
+        redirectUrl = updatePhoneUrl + getQueryParams({id: loginId, redirect_url: requestBody.redirect_url, roles: requestBody.roles, name : requestBody.name});
       }
-      console.log('sso session creation successfully redirected', jwtDecodedToken, req.query, userDetails, redirectUrl);
+      console.log('sso session creation successfully redirected', requestBody, req.query, userDetails, redirectUrl);
     } catch (error) {
       redirectUrl = `${errorUrl}?error_message=SSO failed`;
-      console.log('sso session creation failed', error, jwtDecodedToken, req.query, userDetails, redirectUrl, errType);
+      console.log('sso session creation failed', error, requestBody, req.query, userDetails, redirectUrl, errType);
       logErrorEvent(req, errType, error);
     } finally {
       res.redirect(redirectUrl || errorUrl);
@@ -39,14 +39,14 @@ module.exports = (app) => {
   app.get('/v1/sso/phone/verified', async (req, res) => {
     let loginId, phone, userDetails, userChannel, redirectUrl, errType, newUseDetails;
     try {
-      if (!req.query.phone || !req.query.id) {
+      if (!req.query.phone || !req.query.id || !req.query.name) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
       }
       errType = 'USER_FETCH_API';
       loginId = req.query.id;
       phone = req.query.phone;
-      userDetails = fetchUserWithLoginId(loginId);
+      userDetails = fetchUserWithLoginId(loginId, req);
       if(userDetails.userName) {
         errType = 'USER_CHANNEL_API';
         userChannel = await getChannel(loginId);
@@ -54,6 +54,7 @@ module.exports = (app) => {
         await updatePhone({phone, loginId}); // api need to be verified
       } else {
         newUseDetails = {
+          name: req.query.name,
           userName: loginId,
           phone,
           phoneVerified: true

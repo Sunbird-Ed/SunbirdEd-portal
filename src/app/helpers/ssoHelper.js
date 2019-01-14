@@ -9,6 +9,7 @@ const trampolineClientId = envHelper.PORTAL_TRAMPOLINE_CLIENT_ID
 const trampolineServerUrl = envHelper.PORTAL_AUTH_SERVER_URL
 const trampolineRealm = envHelper.PORTAL_REALM
 const trampolineSecret = envHelper.PORTAL_TRAMPOLINE_SECRET
+const echoAPI = envHelper.PORTAL_ECHO_API_URL
 const learnerAuthorization = envHelper.PORTAL_API_AUTH_TOKEN
 
 let keycloak = getKeyCloakClient({
@@ -21,17 +22,30 @@ let keycloak = getKeyCloakClient({
   }
 })
 const verifySignature = async (token) => {
-  const validToken = await Promise.resolve({validToken: true});
-  if(!validToken){
+  let options = {
+    method: 'GET',
+    url: echoAPI + '/test',
+    'rejectUnauthorized': false,
+    headers: {
+      'cache-control': 'no-cache',
+      authorization: 'Bearer ' + token
+    }
+  }
+  const echoRes = await request(options);
+  if(echoRes !== '/test'){
     throw new Error('INVALID_SIGNATURE');
   }
   return true
 }
 const verifyToken = (token) => {
-  const validToken = true;
-  if (!validToken) {
-    throw new Error('INVALID_TOKEN');
-  }
+  let timeInSeconds = parseInt(Date.now() / 1000)
+  if (!(token.iat < timeInSeconds)) {
+    throw new Error('TOKEN_IAT_FUTURE');
+  } else if (!(token.exp > timeInSeconds)) {
+    throw new Error('TOKEN_EXPIRED');
+  } else if (!token.sub) {
+    throw new Error('USER_ID_NOT_PRESENT');
+  } 
   return true;
 }
 const getChannel = (req, channelData) => {
@@ -39,12 +53,46 @@ const getChannel = (req, channelData) => {
   return Promise.resolve(channelInfo);
 }
 const fetchUserWithLoginId = async (loginId, req) => {
-  let userInfo = {};
-  return Promise.resolve(userInfo);
+  const options = {
+    method: 'GET',
+    url: envHelper.LEARNER_URL + 'user/v1/get/loginId/'+ loginId,
+    headers: getHeaders(req),
+    json: true
+  }
+  return request(options).then(data => {
+    if (data.responseCode === 'OK') {
+      return data;
+    } else {
+      throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
+    }
+  })
 }
 const createUserWithPhone = async (accountDetails, req) => {
-  let userInfo = {};
-  return Promise.resolve(userInfo);
+  if (!accountDetails.name || accountDetails.name === '') {
+    throw new Error('USER_NAME_NOT_PRESENT');
+  }
+  const options = {
+    method: 'POST',
+    url: envHelper.LEARNER_URL + 'user/v2/create',
+    headers: getHeaders(req),
+    body: {
+      request: {
+        firstName: accountDetails.name,
+        phone: accountDetails.phone,
+        phoneVerified: true,
+        userName: accountDetails.userName.split('@')[0], // need to be verified
+        provider: accountDetails.userName.split('@')[1]
+      }
+    },
+    json: true
+  }
+  return request(options).then(data => {
+    if (data.responseCode === 'OK') {
+      return data;
+    } else {
+      throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
+    }
+  })
 }
 const createSession = async (loginId, req, res) => {
   const grant = await keycloak.grantManager.obtainDirectly(loginId);
@@ -61,5 +109,15 @@ const updatePhone = (accountDetails) => {
 }
 const updateRoles = (accountDetails) => {
   return Promise.resolve({});
+}
+const getHeaders = (req) => {
+  return {
+    'x-device-id': req.get('x-device-id'),
+    'x-msgid': uuid(),
+    'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
+    'content-type': 'application/json',
+    'accept': 'application/json',
+    'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
+  }
 }
 module.exports = { keycloak, verifySignature, verifyToken, getChannel, fetchUserWithLoginId, createUserWithPhone, createSession, updatePhone, updateRoles };
