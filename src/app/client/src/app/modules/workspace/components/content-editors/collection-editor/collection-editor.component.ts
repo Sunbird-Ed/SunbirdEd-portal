@@ -5,7 +5,7 @@ import * as  iziModal from 'izimodal/js/iziModal';
 import {
   NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserProfile, ServerResponse
 } from '@sunbird/shared';
-import { UserService, TenantService } from '@sunbird/core';
+import { UserService, TenantService, FrameworkService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService, WorkSpaceService } from './../../../services';
 import { environment } from '@sunbird/environment';
@@ -38,7 +38,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   public collectionDetails: any;
   public ownershipType: Array<string>;
   public queryParams: object;
-
+  resource_framework: string;
   /**
   * Default method of classs CollectionEditorComponent
   * @param {ResourceService} resourceService To get language constant
@@ -50,7 +50,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   constructor(private resourceService: ResourceService, private toasterService: ToasterService, private editorService: EditorService,
     private activatedRoute: ActivatedRoute, private userService: UserService, private _zone: NgZone, private router: Router,
     private configService: ConfigService, private tenantService: TenantService, private telemetryService: TelemetryService,
-    private navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService) {
+    private navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService,
+    private frameworkService: FrameworkService) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.buildNumber = buildNumber ? buildNumber.value : '1.0';
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
@@ -60,11 +61,13 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     this.routeParams = this.activatedRoute.snapshot.params;
     this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.disableBrowserBackButton();
+    this.frameworkService.initialize();
     this.getDetails().pipe(
       tap(data => {
         if (data.tenantDetails) {
           this.logo = data.tenantDetails.logo;
         }
+        this.resource_framework = data.resource_framework['defaultFramework'].code;
         this.ownershipType = data.ownershipType;
         this.showLoader = false;
         this.initEditor();
@@ -92,14 +95,14 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
       return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
-      this.editorService.getOwnershipType(), this.lockContent()).
+      this.editorService.getOwnershipType(), this.lockContent(), this.frameworkService.frameworkData$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2] })));
+        collectionDetails: data[1], ownershipType: data[2], resource_framework: data[4].frameworkdata })));
     } else {
       return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
-      this.editorService.getOwnershipType()).
+      this.editorService.getOwnershipType(), this.frameworkService.frameworkData$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2] })));
+        collectionDetails: data[1], ownershipType: data[2], resource_framework: data[3].frameworkdata })));
     }
   }
   lockContent () {
@@ -195,6 +198,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       tags: this.userService.dims,
       channel: this.userService.channel,
       framework: this.routeParams.framework,
+      resource_framework: this.resource_framework,
       env: this.routeParams.type.toLowerCase(),
       ownershipType: this.ownershipType
     };

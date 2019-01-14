@@ -1,4 +1,4 @@
-import { CourseComponent } from './course.component';
+import { PublicCourseComponent } from './public-course.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
@@ -9,15 +9,15 @@ import { PublicPlayerService } from './../../../../services';
 import { SuiModule } from 'ng2-semantic-ui';
 import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Response } from './course.component.spec.data';
+import { Response } from './public-course.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 
 
-describe('CourseComponent', () => {
-  let component: CourseComponent;
-  let fixture: ComponentFixture<CourseComponent>;
+describe('PublicCourseComponent', () => {
+  let component: PublicCourseComponent;
+  let fixture: ComponentFixture<PublicCourseComponent>;
   let toasterService, formService, pageApiService, orgDetailsService, cacheService;
   const mockPageSection: Array<any> = Response.successData.result.response.sections;
   let sendOrgDetails = true;
@@ -49,7 +49,7 @@ describe('CourseComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
-      declarations: [CourseComponent],
+      declarations: [PublicCourseComponent],
       providers: [PublicPlayerService, { provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
@@ -58,7 +58,7 @@ describe('CourseComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CourseComponent);
+    fixture = TestBed.createComponent(PublicCourseComponent);
     component = fixture.componentInstance;
     toasterService = TestBed.get(ToasterService);
     formService = TestBed.get(FormService);

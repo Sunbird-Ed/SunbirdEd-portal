@@ -46,6 +46,7 @@ const resourceServiceMockData = {
 };
 class ActivatedRouteStub {
   snapshot = {
+    queryParams: {},
     params: {},
     firstChild: { params : {}}
   };
