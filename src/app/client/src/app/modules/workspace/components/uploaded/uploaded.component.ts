@@ -17,8 +17,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 */
 @Component({
   selector: 'app-uploaded',
-  templateUrl: './uploaded.component.html',
-  styleUrls: ['./uploaded.component.css']
+  templateUrl: './uploaded.component.html'
 })
 export class UploadedComponent extends WorkSpace implements OnInit {
   @ViewChild('modalTemplate')
