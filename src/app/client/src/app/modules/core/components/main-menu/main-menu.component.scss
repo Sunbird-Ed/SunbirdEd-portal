@@ -17,6 +17,7 @@
   &.text {
     .item {
       padding: .35714286em .86em;
+      color: $menuitem-color;
 
       &:hover {
         color: $primary-color;
