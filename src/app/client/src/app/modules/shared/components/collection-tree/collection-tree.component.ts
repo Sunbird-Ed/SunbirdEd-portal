@@ -14,8 +14,7 @@ import { ResourceService } from '../../services/index';
 
 @Component({
   selector: 'app-collection-tree',
-  templateUrl: './collection-tree.component.html',
-  styleUrls: ['./collection-tree.component.css']
+  templateUrl: './collection-tree.component.html'
 })
 export class CollectionTreeComponent implements OnInit, OnChanges {
 

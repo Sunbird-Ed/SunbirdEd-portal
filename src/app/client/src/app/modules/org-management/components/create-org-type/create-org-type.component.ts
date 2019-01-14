@@ -16,8 +16,7 @@ import { takeUntil } from 'rxjs/operators';
  */
 @Component({
   selector: 'app-create-org-type',
-  templateUrl: './create-org-type.component.html',
-  styleUrls: ['./create-org-type.component.css']
+  templateUrl: './create-org-type.component.html'
 })
 export class CreateOrgTypeComponent implements OnInit, OnDestroy {
   public addOrganizationType: IInteractEventEdata;

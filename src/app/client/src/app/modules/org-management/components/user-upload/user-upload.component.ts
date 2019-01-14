@@ -16,8 +16,7 @@ import * as _ from 'lodash';
  */
 @Component({
   selector: 'app-user',
-  templateUrl: './user-upload.component.html',
-  styleUrls: ['./user-upload.component.css']
+  templateUrl: './user-upload.component.html'
 })
 export class UserUploadComponent implements OnInit, OnDestroy {
   @ViewChild('inputbtn') inputbtn: ElementRef;

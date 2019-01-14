@@ -4,8 +4,7 @@ import { Component } from '@angular/core';
  */
 @Component({
   selector: 'app-home-calendar-card',
-  templateUrl: './home-calendar-card.component.html',
-  styleUrls: ['./home-calendar-card.component.css']
+  templateUrl: './home-calendar-card.component.html'
 })
 /**
  *  HomeCalendarCardComponent

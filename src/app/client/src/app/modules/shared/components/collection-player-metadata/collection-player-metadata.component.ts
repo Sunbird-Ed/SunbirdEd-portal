@@ -6,8 +6,7 @@ import { ContentData } from '@sunbird/shared';
 
 @Component({
   selector: 'app-collection-player-metadata',
-  templateUrl: './collection-player-metadata.component.html',
-  styleUrls: ['./collection-player-metadata.component.css']
+  templateUrl: './collection-player-metadata.component.html'
 })
 export class CollectionPlayerMetadataComponent implements OnInit {
   @Input() metaData: ContentData;

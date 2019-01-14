@@ -12,8 +12,7 @@ import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, debounceTime } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 @Component({
-    templateUrl: './library-search.component.html',
-    styleUrls: ['./library-search.component.css']
+    templateUrl: './library-search.component.html'
 })
 export class LibrarySearchComponent implements OnInit, OnDestroy {
 
