@@ -5,7 +5,7 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
 @Component({
   selector: 'app-get',
   templateUrl: './get.component.html',
-  styleUrls: ['./get.component.css']
+  styleUrls: ['./get.component.scss']
 })
 export class GetComponent implements OnInit {
   /**

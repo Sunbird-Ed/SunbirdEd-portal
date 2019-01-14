@@ -52,11 +52,11 @@
 </div>
 <div  *ngIf="enrolledCourse">
   <div class="ui container">
-    <div class="ui stackable padded grid m-responsive-cp-nmt-50" *ngIf="getBatchStatus()">
+    <div class="ui stackable padded grid m-responsive-cp-nmt-50" *ngIf="getBatchStatus() && batchEndDate">
       <div class="nine wide column pl-0 pt-5">
         <div class="ui info message compact">
           <div class="header">
-            {{resourceService?.frmelmnts?.lbl?.expiredBatchWarning | interpolate:'{EndDate}':enrolledBatchInfo.endDate}}
+            {{resourceService?.frmelmnts?.lbl?.expiredBatchWarning | interpolate:'{EndDate}':batchEndDate}}
           </div>
         </div>
       </div>

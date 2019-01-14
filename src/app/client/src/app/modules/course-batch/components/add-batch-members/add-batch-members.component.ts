@@ -9,8 +9,7 @@ import * as _ from 'lodash';
 import { AngularMultiSelect } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 @Component({
   selector: 'app-add-batch-members',
-  templateUrl: './add-batch-members.component.html',
-  styleUrls: ['./add-batch-members.component.css'],
+  templateUrl: './add-batch-members.component.html'
 })
 export class AddBatchMembersComponent implements OnInit {
   @ViewChild('mentorDropDown') mentorDropDown;

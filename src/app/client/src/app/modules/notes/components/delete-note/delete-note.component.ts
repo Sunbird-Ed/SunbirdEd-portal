@@ -14,8 +14,7 @@ import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-delete-note',
-  templateUrl: './delete-note.component.html',
-  styleUrls: ['./delete-note.component.css']
+  templateUrl: './delete-note.component.html'
 })
 
 export class DeleteNoteComponent implements OnInit, OnDestroy {
