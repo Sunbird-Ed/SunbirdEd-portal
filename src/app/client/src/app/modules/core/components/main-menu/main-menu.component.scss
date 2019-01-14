@@ -1,16 +1,16 @@
 @import "variables";
 
 .divider {
-  color: #999;
+  color: $text-gray;
 
   &:hover {
-    color: #999;
+    color: $text-gray;
   }
 }
 
 .close {
   font-size: 1.2rem;
-  color: $link-color;
+  color: $primary-color;
 }
 
 .ui.menu {
@@ -19,18 +19,18 @@
       padding: .35714286em .86em;
 
       &:hover {
-        color: $link-color;
+        color: $primary-color;
       }
 
       &.active {
         font-weight: bold;
-        color: $link-color;
+        color: $primary-color;
       }
     }
   }
   &.vertical {
     .active.item {
-      color:$link-color;
+      color: $primary-color;
       font-weight: bold;
       background: none;
     }
@@ -42,7 +42,7 @@
   bottom: 0;
   width: 100%;
   font-weight: bold !important;
-  color: $link-color !important;
+  color: $primary-color !important;
   background-color: #fff; 
   border-top: 1px solid rgba(34,36,38, .15) !important;
 }

@@ -1,4 +1,4 @@
-.ui.visible.sidebar {
+.ui.sidebar.visible {
   &.right {
     &~.fixed,
     &~.pusher {
@@ -6,12 +6,14 @@
       height: 100vh;
     }
   }
+  
   &.uncover {
     z-index: 4;
     border: 0;
   }
 }
-.language-selector {
+
+.ui.menu .language-selector {
   font-size: 0.86rem;
 
   @media screen and (min-width: 992px) {
@@ -19,7 +21,7 @@
   }
 
   .ui.dropdown {
-    border: 1px solid #cae4f7;
+    border: 1px solid $dull-color;
     color: $primary-color;
     font-size: 0.86rem;
     border-radius: 3px;
@@ -33,15 +35,12 @@
       font-weight: 500;
     }
 
-    &.active.visible {
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-
     .menu {
       width: 100%;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
+
+      &>.item {
+        font-size: 0.86rem !important;
+      }
 
       &>.active.item {
         color: $primary-color !important;

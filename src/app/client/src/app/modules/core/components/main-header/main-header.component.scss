@@ -27,13 +27,13 @@
   }
 
   .ui.icon.button {
-    background: #edf4f9;
+    background: $qr-btn;
     padding: 4px 7px;
   }
 
   .searchbox-inner {
     height: 30px;
-    border: 1px solid #60d4eb;
+    border: 1px solid $dull-color;
     opacity: 1;
     border-radius: 5px;
   }
@@ -51,12 +51,13 @@
   font-size: 0.86rem;
   border-radius: 3px;
   font-weight: bold;
-  border: 1px solid #CAE4F7;
+  border: 1px solid $dull-color;
   box-shadow: none;
   height: 30px;
   padding: 8px 15px;
+  
   .qrcode {
-    color: $link-color !important;
+    color: $primary-color !important;
     font-size: 1.3em;
   }
 }
