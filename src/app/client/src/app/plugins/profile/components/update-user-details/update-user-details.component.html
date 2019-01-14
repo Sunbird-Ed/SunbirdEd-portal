@@ -1,4 +1,5 @@
-<sui-modal (dismissed)="closeModal();" #userDetailsModal>
+<sui-modal [isClosable]="false" (dismissed)="closeModal();" #userDetailsModal>
+    <i class="close icon" (click)="closeModal();"></i>
   <div class="scrollable content">
     <div class="ui grid">
       <div class="ten wide column mb-30">
@@ -16,9 +17,9 @@
       <div class="field">
         <label>{{resourceService?.frmelmnts?.lbl?.state}}:</label>
         <div class="field">
-          <sui-select [isSearchable]="false" class="selection" formControlName="state" [options]="options" labelField="name" valueField="id"
-            name="state" placeholder="{{resourceService?.frmelmnts?.lbl?.selectState}}">
-            <sui-select-option *ngFor="let state of allStates" [value]="state"></sui-select-option>
+          <sui-select [isSearchable]="true" class="selection" formControlName="state" [options]="allStates" labelField="name" valueField="code"
+            name="state" placeholder="{{resourceService?.frmelmnts?.lbl?.selectState}}" #stateDiv>
+            <sui-select-option *ngFor="let state of stateDiv.filteredOptions" [value]="state"></sui-select-option>
           </sui-select>
         </div>
       </div>
@@ -26,9 +27,9 @@
         <label>{{resourceService?.frmelmnts?.lbl?.district}}:</label>
         <app-loader [data]='districtLoaderMessage' *ngIf="showDistricDivLoader"></app-loader>
         <div class="field" *ngIf="!showDistricDivLoader">
-          <sui-select [isSearchable]="false" class="selection" formControlName="district" [options]="options" labelField="name" valueField="id"
-            name="district" placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}">
-            <sui-select-option *ngFor="let district of allDistricts" [value]="district"></sui-select-option>
+          <sui-select [isSearchable]="true" class="selection" formControlName="district" [options]="allDistricts" labelField="name" valueField="code"
+            name="district" placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}" #districtDiv>
+            <sui-select-option *ngFor="let district of districtDiv.filteredOptions" [value]="district"></sui-select-option>
           </sui-select>
         </div>
       </div>

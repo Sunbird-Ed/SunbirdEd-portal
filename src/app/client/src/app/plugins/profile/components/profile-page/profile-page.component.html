@@ -25,43 +25,23 @@
       </span>
     </div>
     <div class="fs-1-5 font-w-bold mb-10 text-ac" *ngIf=" orgDetails && orgDetails.orgName">{{orgDetails.orgName}}</div>
-
-
-    <!-- <div class="ui container relative">
+  
+    <!-- add state and district -->
+    <div class="ui container relative" *ngIf="isCustodianOrgUser">
       <div>
-          <div class="mb-0 d-flex mb-5 flex-jc-center">
-              <div class="fs-1-16">District :</div>
-              <div class="fs-1-16 font-w-bold ml-5">MUNGER</div>
-          </div>
-          <div class="mb-0 d-flex flex-jc-center">
-              <div class="fs-1-16">State :</div>
-              <div class="fs-1-16 font-w-bold ml-5">Bihar</div>
-          </div>    
+        <div class="mb-0 d-flex flex-jc-center">
+          <div class="fs-1-16">{{resourceService.frmelmnts.lbl.district}} :</div>
+          <div class="fs-1-16 ml-5" [ngClass]="{'text-warm-grey': !district}">{{district || resourceService.frmelmnts.lbl.addDistrict}} </div>
+        </div>
+        <div class="mb-0 d-flex mb-5 flex-jc-center">
+          <div class="fs-1-16">{{resourceService.frmelmnts.lbl.state}} :</div>
+          <div class="fs-1-16 ml-5" [ngClass]="{'text-warm-grey': !state}">{{state || resourceService.frmelmnts.lbl.addState}}</div>
+        </div>
       </div>
-      <button class="ui semi-circular dodger-blue button right-aligned-button right-0 bottom-5 absolute computer only" >Edit</button>  
-  </div> -->
-  
-  
-  
-  <!-- add state and district -->
-  <div class="ui container relative">
-      <div>
-          <div class="mb-0 d-flex flex-jc-center">
-              <div class="fs-1-16">District :</div>
-              <div class="fs-1-16 ml-5 text-warm-grey">Add District </div>
-          </div> 
-          <div class="mb-0 d-flex mb-5 flex-jc-center">
-              <div class="fs-1-16">State :</div>
-              <div class="fs-1-16 ml-5 text-warm-grey">Add State</div>
-          </div>
-             
-      </div>
-      <button class="ui semi-circular dodger-blue button right-aligned-button right-0 bottom-5 absolute computer only" (click)="showEditUserDetailsPopup=true">Edit</button>  
-  </div>
+      <button class="ui semi-circular dodger-blue button right-aligned-button right-0 bottom-5 absolute computer only" (click)="showEditUserDetailsPopup=true">Edit</button>
+    </div>
 
-
-
-    <!-- <div class="m-0 pl-0 computer only" *ngIf=" orgDetails && orgDetails.locations">
+    <div class="m-0 pl-0 computer only" *ngIf="orgDetails && orgDetails.locations && !isCustodianOrgUser">
       <div class="mb-0 d-flex mb-5 flex-jc-center" *ngIf="getLocationDetails(orgDetails.locations, 'block')">
         <div class="fs-1-16">{{resourceService.frmelmnts.lbl.block}} :</div>
         <div class="fs-1-16 font-w-bold ml-5">{{getLocationDetails(orgDetails.locations, 'block')}}</div>
@@ -74,7 +54,9 @@
         <div class="fs-1-16">{{resourceService.frmelmnts.lbl.state}} :</div>
         <div class="fs-1-16 font-w-bold ml-5">{{getLocationDetails(orgDetails.locations, 'state')}}</div>
       </div>
-    </div> -->
+    </div>
+
+
     <div class="m-0 pl-0 mobile only" *ngIf=" orgDetails && orgDetails.locations">
       <div class="mb-0 d-flex  m-responsive-flex-dc mt-15" *ngIf="getLocationDetails(orgDetails.locations, 'block')">
         <span class="fs-1-16 min-w-90 text-ac ">{{resourceService.frmelmnts.lbl.block}} :</span>

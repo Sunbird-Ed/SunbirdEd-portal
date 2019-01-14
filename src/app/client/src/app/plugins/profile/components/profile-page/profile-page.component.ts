@@ -1,11 +1,12 @@
 import { ProfileService } from '../../services';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { UserService, PermissionService, SearchService, PlayerService, CoursesService } from '@sunbird/core';
+import { UserService, PermissionService, SearchService, PlayerService, CoursesService, OrgDetailsService } from '@sunbird/core';
 import {
   ResourceService, ConfigService, ServerResponse, IUserProfile, IUserData, ToasterService,
   UtilService
 } from '../../../../modules/shared';
 import { Subscription } from 'rxjs';
+import { mergeMap, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { MyContributions } from '../../interfaces';
 import * as _ from 'lodash';
@@ -37,6 +38,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   roles: Array<string>;
   showMoreRoles = true;
   showMoreTrainings = true;
+  isCustodianOrgUser = false;
   /**
    * Contains default limit to show awards
    */
@@ -72,6 +74,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   };
   showContactPopup = false;
   showEditUserDetailsPopup = false;
+  state: string;
+  district: string;
    /**
   /**
     * Slider setting to display number of cards on the slider.
@@ -163,15 +167,34 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   constructor( private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
     public permissionService: PermissionService, public toasterService: ToasterService, public profileService: ProfileService,
     public userService: UserService, public configService: ConfigService, public router: Router, public utilService: UtilService,
-    public searchService: SearchService, private playerService: PlayerService, private activatedRoute: ActivatedRoute) {
+    public searchService: SearchService, private playerService: PlayerService, private activatedRoute: ActivatedRoute,
+  public orgDetailsService: OrgDetailsService) {
     this.btnArrow = 'prev-button';
   }
 
   ngOnInit() {
+    this.getCustodianOrgUser().subscribe(custodianOrgUser => {
+      this.isCustodianOrgUser = custodianOrgUser;
+    },
+    err => {
+      this.toasterService.warning(this.resourceService.messages.emsg.m0012);
+    });
+
     this.userSubscription = this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
+
+          const state = _.find(this.userProfile.userLocations, (locations) => {
+            return locations.type === 'state';
+          });
+          this.state = state ? state.name : '';
+
+          const district = _.find(this.userProfile.userLocations, (locations) => {
+            return locations.type === 'district';
+          });
+          this.district = district ? district.name : '';
+
           this.inputData =  _.get(this.userProfile, 'framework') ? _.cloneDeep(_.get(this.userProfile, 'framework')) : {};
           this.getOrgDetails();
           this.getMyContent();
@@ -368,6 +391,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     } else if (event.currentSlide > event.nextSlide) {
       this.btnArrow = 'prev-button';
     }
+  }
+
+  private getCustodianOrgUser() {
+    return this.orgDetailsService.getCustodianOrg().pipe(map((custodianOrg) => {
+      if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
+        return true;
+      }
+      return false;
+    }));
   }
 
   setInteractEventData() {
