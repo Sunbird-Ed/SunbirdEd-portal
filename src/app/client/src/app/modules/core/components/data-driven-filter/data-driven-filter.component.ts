@@ -47,6 +47,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
   public filterIntractEdata: IInteractEventEdata;
 
   public submitIntractEdata: IInteractEventEdata;
+  // add langauge default value en
 
   constructor(public configService: ConfigService, public resourceService: ResourceService, public router: Router,
     private activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
@@ -57,6 +58,8 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    // subscribe this.resourceService.languageSelected$
+    // check if formFieldProperties length is greater than 0 and check formInput data have value then call a function to change values
     this.frameworkService.initialize(this.frameworkName, this.hashTagId);
     this.getFormatedFilterDetails().subscribe((formFieldProperties) => {
       this.formFieldProperties = formFieldProperties;
@@ -109,6 +112,9 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
                 formFieldCategory.range.push({ name: 'TextBook' });
           }
           }
+          // change the field name
+          // if translation does not exist add for en
+          // change the range names call translateValues function and if translation does not exist add for en
           return true;
         });
         formFieldProperties = _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index');
@@ -175,6 +181,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
   }
 
   public applyFilters() {
+    // call method to convert selected option to english
     const queryParams: any = {};
     _.forIn(this.formInputData, (eachInputs: Array<any | object>, key) => {
         const formatedValue = typeof eachInputs === 'string' ? eachInputs :

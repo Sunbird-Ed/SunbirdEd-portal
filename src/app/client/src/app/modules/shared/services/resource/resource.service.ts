@@ -1,11 +1,11 @@
 
-import {of as observableOf, throwError as observableThrowError,  Observable } from 'rxjs';
+import {of as observableOf, throwError as observableThrowError,  Observable, BehaviorSubject } from 'rxjs';
 
 import {mergeMap} from 'rxjs/operators';
 import { BrowserCacheTtlService } from './../browser-cache-ttl/browser-cache-ttl.service';
 import { HttpOptions, RequestParam, ServerResponse } from './../../interfaces';
 import { ConfigService } from './../config/config.service';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
@@ -38,6 +38,10 @@ export class ResourceService {
    * Contains instance name
    */
   private _instance: string;
+  // Observable navItem source
+  private _languageSelected = new BehaviorSubject<string>('en');
+  // Observable navItem stream
+  languageSelected$ = this._languageSelected.asObservable();
 
   /**
    * constructor
@@ -119,5 +123,12 @@ export class ResourceService {
  */
   get instance(): string {
     return this._instance;
+  }
+
+  // service command
+  getlanguageChange(language) {
+   // assign the value to _languageSelected behaviour subject so it will affect in
+   // each place where it is subscribed
+   // this._languageSelected.next(language);
   }
 }

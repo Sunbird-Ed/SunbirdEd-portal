@@ -99,7 +99,9 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
       maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
         this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
     });
-    this.resourceService.getResource(event);
+   this.resourceService.getResource(event);
+   // call resourceService.getlanguageChange(event) to display language change
+  //  this.resourceService.getlanguageChange(event);
   }
 
   ngOnDestroy() {
