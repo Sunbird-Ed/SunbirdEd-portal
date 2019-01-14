@@ -47,10 +47,14 @@ const createUserWithPhone = async (accountDetails, req) => {
   return Promise.resolve(userInfo);
 }
 const createSession = async (loginId, req, res) => {
+  const grant = await keycloak.grantManager.obtainDirectly(loginId);
+  keycloak.storeGrant(grant, req, res)
+  req.kauth.grant = grant
+  keycloak.authenticated(req)
   return {
-    access_token: '',
-    refresh_token: ''
-  };
+    access_token: grant.access_token.token,
+    refresh_token: grant.refresh_token.token
+  }
 }
 const updatePhone = (accountDetails) => {
   return Promise.resolve({});
@@ -58,4 +62,4 @@ const updatePhone = (accountDetails) => {
 const updateRoles = (accountDetails) => {
   return Promise.resolve({});
 }
-module.exports = { keycloak, verifySignature, verifyToken, getChannel, fetchUserLoginId, createUserWithPhone, createSession, updatePhone, updateRoles };
+module.exports = { keycloak, verifySignature, verifyToken, getChannel, fetchUserWithLoginId, createUserWithPhone, createSession, updatePhone, updateRoles };

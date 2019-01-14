@@ -30,6 +30,7 @@ export class UpdatePhoneComponent implements OnInit {
     this.setTelemetryData();
   }
   private initializeForm() {
+    this.phoneNumber = undefined;
     this.phoneForm = new FormGroup({
       'phone': new FormControl(null, [ Validators.required, Validators.pattern('^\\d{10}$')]),
       'uniquePhone': new FormControl(null, [Validators.required])
@@ -75,8 +76,8 @@ export class UpdatePhoneComponent implements OnInit {
         this.showOtpComp = true;
       },
       (err) => {
-        const errorMessage = (err.error.params.status === 'PHONE_ALREADY_IN_USE') || (err.error.params.status === 'EMAIL_IN_USE') ?
-            err.error.params.errmsg : this.resourceService.messages.fmsg.m0085;
+        const errorMessage = (err.error.params.status === 'PHONE_ALREADY_IN_USE') || (err.error.params.status === 'EMAIL_IN_USE') ||
+          (err.error.params.status === 'ERROR_RATE_LIMIT_EXCEEDED') ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0085;
         this.toasterService.error(errorMessage);
       }
     );
@@ -92,6 +93,7 @@ export class UpdatePhoneComponent implements OnInit {
   }
   public handleOtpValidationFailed() {
     this.showOtpComp = false;
+    this.phoneNumber = undefined;
     this.enableSubmitBtn = false;
     this.initializeForm();
   }
