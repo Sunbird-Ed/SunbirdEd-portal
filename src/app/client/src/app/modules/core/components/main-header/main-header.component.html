@@ -4,13 +4,13 @@
 <div class="ui fixed main menu bs-0 main-header d-block">
     <div class="ui container primary-header p-10">
         <div role="banner" class="ui logo d-flex flex-ai-center">
-            <a class="d-flex flex-ai-center" (click)="navigateToHome()">
+            <a class="d-flex flex-ai-center" (click)="navigateToHome()" tabindex="0" title="{{tenantName}}">
                 <img class="image centered cursor-pointer" alt={{tenantName}} src="{{logo}}">
             </a>
         </div>
         <i class="large bars icon link sidebar-hamburger-menu mobile only" (click)="showSideBar()" tabindex="0"></i>
         <app-main-menu class="d-flex computer only ml-auto"></app-main-menu>
-        <a class="profile-avtar item computer only pr-0" *ngIf="userService.loggedIn; else showLoginBtn">
+        <a class="profile-avtar item computer only pr-0" *ngIf="userService.loggedIn; else showLoginBtn" tabindex="0">
             <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing header-user-container" id="dropdown-menu-list-header">
                 <ngx-avatar *ngIf='userProfile' [style]="avtarDesktopStyle" [size]="38" initialsSize="1" name="{{userProfile?.firstName}}">
                 </ngx-avatar>

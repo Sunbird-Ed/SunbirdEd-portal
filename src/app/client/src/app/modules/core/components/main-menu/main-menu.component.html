@@ -1,17 +1,14 @@
 <div class="ui text menu m-0 flex-jc-center d-flex computer only" *ngIf="userService.loggedIn">
-	<!-- <a class="item" appTelemetryInteract [telemetryInteractEdata]="homeMenuIntractEdata" [class.active]="router.isActive('/search/All') || router.isActive('/home')" routerLink="/home">
-		{{resourceService?.frmelmnts?.tab?.home}}
-	</a> -->
 	<a class="item" appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')" routerLink="/resources">
 		{{resourceService?.frmelmnts?.tab?.resources}}
 	</a>
 	<a class="item" appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')" routerLink="/learn">
 		{{resourceService?.frmelmnts?.tab?.courses}}
 	</a>
-	<a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='workSpaceRole' (click)="navigateToWorkspace()" appTelemetryInteract [telemetryInteractEdata]="workspaceMenuIntractEdata" [class.active]="router.isActive('/workspace')">
+	<a class="item" appTelemetryInteract [telemetryInteractEdata]="workspaceMenuIntractEdata" [class.active]="router.isActive('/workspace')" *ngIf='permissionService.permissionAvailable' appPermission [permission]='workSpaceRole' (click)="navigateToWorkspace()" tabindex="0">
 		{{resourceService?.frmelmnts?.tab?.workspace}}
 	</a>
-	<a class="item" *ngIf='permissionService.permissionAvailable && helpLinkVisibility.toLowerCase() === "true"' appPermission [permission]='workSpaceRole' href="/help/creator/content-lifecycle/index.html" target="_blank">
+	<a class="item" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata" *ngIf='permissionService.permissionAvailable && helpLinkVisibility.toLowerCase() === "true"' appPermission [permission]='workSpaceRole' href="/help/creator/content-lifecycle/index.html" target="_blank">
 		{{resourceService?.frmelmnts?.tab?.help}}
 	</a>
 </div>
