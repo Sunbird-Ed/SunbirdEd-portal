@@ -281,4 +281,12 @@ describe('DataDrivenComponent', () => {
     expect(componentParent.name).toBe('Untitled Textbook');
     expect(componentParent.description).toBe('Enter description for TextBook');
   });
+  it('should call system get api and return the course framework Id ', () => {
+    const frameworkService = TestBed.get(FrameworkService);
+    componentParent.contentType = 'course';
+    const formService = TestBed.get(FormService);
+    spyOn(frameworkService, 'getCourseFramework').and.returnValue(observableOf(mockFrameworkData.courseFramework));
+    componentParent.ngOnInit();
+    expect(componentParent.framework).toEqual('TPD');
+  });
 });
