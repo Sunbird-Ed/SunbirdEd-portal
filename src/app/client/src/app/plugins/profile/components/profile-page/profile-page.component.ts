@@ -163,6 +163,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   */
   telemetryImpression: IImpressionEventInput;
   myFrameworkEditEdata: IInteractEventEdata;
+  editProfileInteractEdata: IInteractEventEdata;
+  editMobileInteractEdata: IInteractEventEdata;
+  editEmailInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   constructor( private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
     public permissionService: PermissionService, public toasterService: ToasterService, public profileService: ProfileService,
@@ -405,6 +408,21 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   setInteractEventData() {
     this.myFrameworkEditEdata = {
       id: 'profile-edit-framework',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.editProfileInteractEdata = {
+      id: 'profile-edit-address',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.editMobileInteractEdata = {
+      id: 'edit-mobile',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.editEmailInteractEdata = {
+      id: 'edit-emailId',
       type: 'click',
       pageid: 'profile-read'
     };

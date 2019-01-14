@@ -38,7 +38,7 @@
           <div class="fs-1-16 ml-5" [ngClass]="{'text-warm-grey': !state}">{{state || resourceService.frmelmnts.lbl.addState}}</div>
         </div>
       </div>
-      <button class="ui semi-circular dodger-blue button right-aligned-button right-0 bottom-5 absolute computer only" (click)="showEditUserDetailsPopup=true">Edit</button>
+      <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editProfileInteractEdata" class="ui semi-circular dodger-blue button right-aligned-button right-0 bottom-5 absolute computer only" (click)="showEditUserDetailsPopup=true">Edit</button>
     </div>
 
     <div class="m-0 pl-0 computer only" *ngIf="orgDetails && orgDetails.locations && !isCustodianOrgUser">
@@ -74,16 +74,16 @@
     <div class="d-flex flex-dc">
       <div class="d-flex flex-jc-center">
         <div (click)="showContactPopup=true;contactType='phone'" class="ui semi-circular dodger-blue basic label mb-15 cursor-pointer" *ngIf="userProfile.phone">
-          <i class="phone blue icon mr-5"></i> &#x200E;+91 {{userProfile.phone}}
+          <i class="phone blue icon mr-5" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editMobileInteractEdata"></i> &#x200E;+91 {{userProfile.phone}}
         </div>
-        <div (click)="showContactPopup=true;contactType='phone'" class="ui semi-circular update basic label mb-15 cursor-pointer" *ngIf="!userProfile.phone">
+        <div (click)="showContactPopup=true;contactType='phone'" class="ui semi-circular update basic label mb-15 cursor-pointer" *ngIf="!userProfile.phone" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editMobileInteractEdata">
           <i class="phone icon mr-5 pr-30"></i> {{resourceService?.frmelmnts?.lbl?.addPhoneNo}}
         </div>
       </div>
-      <div (click)="showContactPopup=true;contactType='email'" class="ui semi-circular dodger-blue basic label cursor-pointer" *ngIf="userProfile.email">
+      <div (click)="showContactPopup=true;contactType='email'" class="ui semi-circular dodger-blue basic label cursor-pointer" *ngIf="userProfile.email" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editEmailInteractEdata">
         <i class="mail icon mr-5"></i> {{userProfile.email}}
       </div>
-      <div (click)="showContactPopup=true;contactType='email'" class="ui semi-circular update basic label mb-15 cursor-pointer" *ngIf="!userProfile.email">
+      <div (click)="showContactPopup=true;contactType='email'" class="ui semi-circular update basic label mb-15 cursor-pointer" *ngIf="!userProfile.email" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editEmailInteractEdata">
         <i class="mail icon mr-5 pr-30"></i> {{resourceService?.frmelmnts?.lbl?.addEmailID}}
       </div>
     </div>
