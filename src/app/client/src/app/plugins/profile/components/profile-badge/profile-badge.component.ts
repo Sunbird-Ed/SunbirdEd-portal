@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 @Component({
   selector: 'app-profile-badge',
   templateUrl: './profile-badge.component.html',
-  styleUrls: ['./profile-badge.component.css']
+  styleUrls: ['./profile-badge.component.scss']
 })
 export class ProfileBadgeComponent implements OnInit {
   /**

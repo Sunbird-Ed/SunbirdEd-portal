@@ -6,8 +6,7 @@ import {PlayerConfig} from './../../interfaces';
 
 @Component({
   selector: 'app-player',
-  templateUrl: './player.component.html',
-  styleUrls: ['./player.component.css']
+  templateUrl: './player.component.html'
 })
 export class PlayerComponent implements OnInit, OnChanges {
   @Input() playerConfig: PlayerConfig;

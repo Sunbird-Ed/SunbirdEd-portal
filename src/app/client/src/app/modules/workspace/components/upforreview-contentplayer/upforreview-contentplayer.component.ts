@@ -9,8 +9,7 @@ import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-upforreview-contentplayer',
-  templateUrl: './upforreview-contentplayer.component.html',
-  styleUrls: ['./upforreview-contentplayer.component.css']
+  templateUrl: './upforreview-contentplayer.component.html'
 })
 export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
   public requestForChangesInteractEdata: IInteractEventEdata;

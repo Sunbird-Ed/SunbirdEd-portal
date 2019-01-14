@@ -3,7 +3,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 @Component({
   selector: 'app-browser-compatibility',
   templateUrl: './browser-compatibility.component.html',
-  styleUrls: ['./browser-compatibility.component.css']
+  styleUrls: ['./browser-compatibility.component.scss']
 })
 export class BrowserCompatibilityComponent implements OnInit {
   @ViewChild('modal') modal;

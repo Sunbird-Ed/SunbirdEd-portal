@@ -12,7 +12,7 @@ import * as moment from 'moment';
 @Component({
   selector: 'app-update-batch',
   templateUrl: './update-batch.component.html',
-  styleUrls: ['./update-batch.component.css']
+  styleUrls: ['./update-batch.component.scss']
 })
 export class UpdateBatchComponent implements OnInit, OnDestroy {
 
