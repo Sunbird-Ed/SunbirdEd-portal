@@ -16,8 +16,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 */
 @Component({
   selector: 'app-flagged',
-  templateUrl: './flagged.component.html',
-  styleUrls: ['./flagged.component.css']
+  templateUrl: './flagged.component.html'
 })
 export class FlaggedComponent extends WorkSpace implements OnInit {
   /**

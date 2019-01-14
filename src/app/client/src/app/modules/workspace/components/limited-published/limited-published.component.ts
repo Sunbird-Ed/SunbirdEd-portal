@@ -22,7 +22,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-limited-published',
   templateUrl: './limited-published.component.html',
-  styleUrls: ['./limited-published.component.css']
+  styleUrls: ['./limited-published.component.scss']
 })
 export class LimitedPublishedComponent extends WorkSpace implements OnInit {
 

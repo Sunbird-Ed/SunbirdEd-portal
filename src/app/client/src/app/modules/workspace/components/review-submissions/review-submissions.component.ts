@@ -17,8 +17,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-review-submissions',
-  templateUrl: './review-submissions.component.html',
-  styleUrls: ['./review-submissions.component.css']
+  templateUrl: './review-submissions.component.html'
 })
 export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
   /**

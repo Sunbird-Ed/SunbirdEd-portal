@@ -18,8 +18,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
     selector: 'app-draft',
-    templateUrl: './draft.component.html',
-    styleUrls: ['./draft.component.css']
+    templateUrl: './draft.component.html'
 })
 export class DraftComponent extends WorkSpace implements OnInit {
 

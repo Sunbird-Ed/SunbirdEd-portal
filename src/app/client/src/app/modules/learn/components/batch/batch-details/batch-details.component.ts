@@ -12,8 +12,7 @@ import { Subject } from 'rxjs';
 import * as moment from 'moment';
 @Component({
   selector: 'app-batch-details',
-  templateUrl: './batch-details.component.html',
-  styleUrls: ['./batch-details.component.scss']
+  templateUrl: './batch-details.component.html'
 })
 export class BatchDetailsComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();

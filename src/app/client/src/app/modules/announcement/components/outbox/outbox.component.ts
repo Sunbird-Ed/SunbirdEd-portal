@@ -17,8 +17,7 @@ import { Subject } from 'rxjs';
  */
 @Component({
   selector: 'app-outbox',
-  templateUrl: './outbox.component.html',
-  styleUrls: ['./outbox.component.css']
+  templateUrl: './outbox.component.html'
 })
 export class OutboxComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();

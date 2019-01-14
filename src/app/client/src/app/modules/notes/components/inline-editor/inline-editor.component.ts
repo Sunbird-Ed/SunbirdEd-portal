@@ -17,7 +17,7 @@ import { Subject } from 'rxjs';
 @Component({
   selector: 'app-inline-editor',
   templateUrl: './inline-editor.component.html',
-  styleUrls: ['./inline-editor.component.css'],
+  styleUrls: ['./inline-editor.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 

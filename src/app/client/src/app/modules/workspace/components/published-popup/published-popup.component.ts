@@ -12,8 +12,7 @@ import { WorkSpaceService, ReviewCommentsService } from './../../services';
  */
 @Component({
   selector: 'app-published-popup',
-  templateUrl: './published-popup.component.html',
-  styleUrls: ['./published-popup.component.css']
+  templateUrl: './published-popup.component.html'
 })
 export class PublishedPopupComponent implements OnInit {
   @ViewChild('modal') modal;

@@ -8,8 +8,7 @@ import * as _ from 'lodash';
 import { CoursesService, BreadcrumbsService } from '@sunbird/core';
 import * as moment from 'moment';
 @Component({
-  templateUrl: './course-consumption-page.component.html',
-  styleUrls: ['./course-consumption-page.component.css']
+  templateUrl: './course-consumption-page.component.html'
 })
 export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   public courseId: string;

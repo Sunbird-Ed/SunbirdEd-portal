@@ -17,8 +17,7 @@ import { combineLatest, Subscription, Subject, of, throwError } from 'rxjs';
 import { takeUntil, first, mergeMap, map, tap , filter, catchError} from 'rxjs/operators';
 @Component({
   selector: 'app-data-driven',
-  templateUrl: './data-driven.component.html',
-  styleUrls: ['./data-driven.component.css']
+  templateUrl: './data-driven.component.html'
 })
 export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy {
   @ViewChild('formData') formData: DefaultTemplateComponent;
