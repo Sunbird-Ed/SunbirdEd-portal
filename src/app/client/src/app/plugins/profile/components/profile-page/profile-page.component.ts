@@ -417,12 +417,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       pageid: 'profile-read'
     };
     this.editMobileInteractEdata = {
-      id: 'edit-mobile',
+      id: 'profile-edit-mobile',
       type: 'click',
       pageid: 'profile-read'
     };
     this.editEmailInteractEdata = {
-      id: 'edit-emailId',
+      id: 'profile-edit-emailId',
       type: 'click',
       pageid: 'profile-read'
     };
