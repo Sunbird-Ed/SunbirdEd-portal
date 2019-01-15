@@ -34,7 +34,7 @@
 .cardsSubHeading {
   font-weight:500;
   font-size: 1.125em;
-  color: $link-color;
+  color: $primary-color;
 }
 .cardsDescription {
   font-weight:500;
@@ -48,7 +48,7 @@
 .cardsKnowMore {
   font-weight: bold;
   font-size: 1em;
-  color: $link-color;
+  color: $primary-color;
 }
 /* cards used in slider fonts*/
 .sliderCardHeading {
@@ -142,7 +142,7 @@
 .dashBoardMenuItem {
   font-weight:500;
   font-size: 0.9375em;
-  color: $link-color;
+  color: $primary-color;
 }
 .ui.cards > .card .meta.dashBoardCardText {
   font-weight:500;
@@ -269,7 +269,7 @@
 }
 .courseHeader-rating.ui.star.rating .active.icon {
   background: 0 0!important;
-  color: $link-color !important;
+  color: $primary-color !important;
   text-shadow: none !important;
 }
 h4.ui.header.sectionHeading {
@@ -298,7 +298,7 @@ h4.ui.header.sectionHeading {
   padding-top: 1.5rem;
 }
 .ui.secondary.pointing.menu .active.item {
-  border-color: $link-color;
+  border-color: $primary-color;
   color: #333333;
   font-weight:400;
 }
@@ -522,14 +522,14 @@ i.large.icon.limitedPublishingLinkIcon {
   max-height: 100px;
 }
 .blue-text-color-sunbird {
-  color: $link-color;
+  color: $primary-color;
 }
 .red-text-color-sunbird {
   color: #fc002e;
 }
 .ui.segment.ann-segment-left-border {
   border-radius: 10px;
-  border-left-color: $link-color;
+  border-left-color: $primary-color;
   border-left-width: 11px;
 }
 .announcement-description {
@@ -542,7 +542,7 @@ i.large.icon.limitedPublishingLinkIcon {
   color: #7c7b7b;
 }
 .ann-link-or-attachment {
-  color: $link-color;
+  color: $primary-color;
   cursor: pointer;
   font-weight:500;
   font-size: 0.9em;
@@ -576,25 +576,25 @@ i.large.icon.limitedPublishingLinkIcon {
   line-height: 19px;
 }
 ui.primary.basic.button.announcement-button {
-  border: 1px solid $link-color;
+  border: 1px solid $primary-color;
   border-radius: 4px;
 }
 .announcement-button-text {
-  color: $link-color;
+  color: $primary-color;
   font-weight: bold;
   font-size: 1em;
   line-height: 17px;
 }
 ui.primary.basic.button.ann-upload-attachment {
-  border: 1px solid $link-color;
+  border: 1px solid $primary-color;
   border-radius: 4px;
-  color: $link-color;
+  color: $primary-color;
   font-weight: bold;
   font-size: 1em;
   line-height: 17px;
 }
 .ann-upload-attachment-text {
-  color: $link-color;
+  color: $primary-color;
   font-weight: bold;
   font-size: 1em;
   line-height: 17px; 
@@ -972,7 +972,7 @@ ul.fancytree-container li {
   font-weight: 600;
 }
 .take-note-card {
-  color: $link-color;
+  color: $primary-color;
   vertical-align: top;
   display: inline-block;
   text-align: center;
@@ -1261,10 +1261,10 @@ ul.fancytree-container li {
   color: #ffffff;
 }
 .ui.popup.contentSharing {
-  background: $link-color;
+  background: $primary-color;
 }
 .ui.top.popup.contentSharing:before {
-  background: $link-color;
+  background: $primary-color;
 }
 .dash-heading-border {
   border-bottom: 1px dashed #333333;
@@ -1304,7 +1304,7 @@ ul.fancytree-container li {
   border-top: transparent !important;
 }
 .dynamic-section-card .slider .card .extra .card-rating .active {
-  color: $link-color !important;
+  color: $primary-color !important;
   text-shadow: none !important;
   padding-top: 0!important;
 }
@@ -1444,7 +1444,7 @@ ul.fancytree-container li {
   border: 1px solid #fdfdfd !important;
 }
 .ui.basic.label:hover {
-  border-color: $link-color !important;
+  border-color: $primary-color !important;
 }
 .ui.bottom.attached.tabular.menu.expand-or-minimize-btn {
   -webkit-box-pack: center;
@@ -1847,7 +1847,7 @@ i.edit.icon.editIcon-fontSize {
   color: rgba(0, 0, 0, 0.7) !important;
 }
 span.dashBoardMenuItem.active {
-  color: $link-color;
+  color: $primary-color;
   font-weight: bold;
 }
 .adminCanvasPadding {
@@ -1867,7 +1867,7 @@ span.dashBoardMenuItem.active {
   width: 330px;
 }
 .table-headerDashboard {
-  color: $link-color;
+  color: $primary-color;
   font-weight: bold;
 }
 .dashboard-label {
@@ -1956,7 +1956,7 @@ iframe.iziModal-iframe {
 .expand-or-minimize {
   font-weight: bold;
   font-size: 1em;
-  color: $link-color;
+  color: $primary-color;
   cursor: pointer;
 }
 .ui.fluid.search.dropdown .menu > .item > img {
