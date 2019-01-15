@@ -5,6 +5,7 @@
   font-family: 'Noto Sans Gurmukhi';
   font-style: normal;
   font-weight: 400;
+  font-display: swap;
   src: url(./NotoSansGurmukhi-Regular.eot);
   src: url(./NotoSansGurmukhi-Regular.eot?#iefix) format('embedded-opentype'),
        url(./NotoSansGurmukhi-Regular.woff2) format('woff2'),
@@ -15,6 +16,7 @@
   font-family: 'Noto Sans Gurmukhi';
   font-style: normal;
   font-weight: 700;
+  font-display: swap;
   src: url(./NotoSansGurmukhi-Bold.eot);
   src: url(./NotoSansGurmukhi-Bold.eot?#iefix) format('embedded-opentype'),
        url(./NotoSansGurmukhi-Bold.woff2) format('woff2'),

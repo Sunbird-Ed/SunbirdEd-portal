@@ -5,6 +5,7 @@
   font-family: 'Noto Sans Tamil';
   font-style: normal;
   font-weight: 400;
+  font-display: swap;
   src: url(./NotoSansTamil-Regular.eot);
   src: url(./NotoSansTamil-Regular.eot?#iefix) format('embedded-opentype'),
        url(./NotoSansTamil-Regular.woff2) format('woff2'),
@@ -15,6 +16,7 @@
   font-family: 'Noto Sans Tamil';
   font-style: normal;
   font-weight: 700;
+  font-display: swap;
   src: url(./NotoSansTamil-Bold.eot);
   src: url(./NotoSansTamil-Bold.eot?#iefix) format('embedded-opentype'),
        url(./NotoSansTamil-Bold.woff2) format('woff2'),

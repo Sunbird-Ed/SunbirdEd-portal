@@ -5,6 +5,7 @@
   font-family: 'Noto Sans Gujarati';
   font-style: normal;
   font-weight: 400;
+  font-display: swap;
   src: url(./NotoSansGujarati-Regular.eot);
   src: url(./NotoSansGujarati-Regular.eot?#iefix) format('embedded-opentype'),
        url(./NotoSansGujarati-Regular.woff2) format('woff2'),
@@ -15,6 +16,7 @@
   font-family: 'Noto Sans Gujarati';
   font-style: normal;
   font-weight: 700;
+  font-display: swap;
   src: url(./NotoSansGujarati-Bold.eot);
   src: url(./NotoSansGujarati-Bold.eot?#iefix) format('embedded-opentype'),
        url(./NotoSansGujarati-Bold.woff2) format('woff2'),
