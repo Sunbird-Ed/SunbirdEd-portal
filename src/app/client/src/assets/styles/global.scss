@@ -1,7 +1,7 @@
 body {
   position: relative;
   background: $bg-body !important;
-  font-family: inherit;
+  font-family: $font-stack;
   letter-spacing: 0.2px;
   height: auto;
 }
