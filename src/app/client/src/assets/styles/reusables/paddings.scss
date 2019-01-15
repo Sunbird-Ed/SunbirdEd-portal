@@ -109,6 +109,9 @@
 .py-6 {
   @include padding(6px null);
 }
+.py-8 {
+  @include padding(8px null);
+}
 .py-10 {
   @include padding(10px null);
 }
