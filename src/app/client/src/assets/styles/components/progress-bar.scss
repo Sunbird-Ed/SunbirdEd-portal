@@ -1,6 +1,6 @@
 .ui.progress {
   .bar {
-    background: $progressbar-gradient;
+    background: $primary-color;
     height: 4px !important;
     min-width: 0;
 
@@ -11,11 +11,11 @@
 }
 
 .ui.progress.blue .bar {
-  background-color: $progressbar-gradient !important;
+  background-color: $primary-color!important;
 }
 
 .ui.progress.success .bar {
-  background-color: $progressbar-gradient-success !important;
+  background-color: $success-color !important;
 }
 
 .ui.progress .label {
