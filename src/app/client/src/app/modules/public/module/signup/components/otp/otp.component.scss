@@ -38,12 +38,12 @@
 }
 .ui.light-sea-green.button {
     background: $signup-btn-bg-active-color;
-    color: $signup-button-text-color;
+    color: $white-color;
     height: 38px !important;
 }
 .ui.grey.button {
     background: $signup-btn-bg-not-active-color;
-    color: $signup-button-text-color;
+    color: $white-color;
     pointer-events: none !important;
     cursor: not-allowed !important; 
     height: 38px !important;
@@ -54,16 +54,16 @@
     cursor: not-allowed !important;
 }
 .orange.text {
-    color: $label-color;
+    color: $danger-color;
 }
 .orange-border {
-    border-color: $signup-border-error-color !important;
+    border-color: $danger-color !important;
 }
 .blue.text {
     color: $primary-color;
 }
 .ui.basic.blue.navigation.label {
-    background: $white-bg-color !important;
+    background: $white-color !important;
     color: $primary-color !important;
     border: 0  !important;
     padding-left: 0;
@@ -72,8 +72,8 @@
     padding:10px 0;
 }
 .ui.basic.error.label {
-    background: $white-bg-color !important;
-    color: $label-color !important;
+    background: $white-color !important;
+    color: $danger-color !important;
     border: 0 !important;
     padding-left: 0;
     font-size: 1rem;
@@ -116,7 +116,7 @@ input[type=number]::-webkit-inner-spin-button {
     height: 16px;
     border: 2px solid $form-input-border-color !important;
     border-radius: 100%;
-    background: $white-bg-color;
+    background: $white-color;
 }
 .ui.form.borderd [type="radio"]:checked + label:before {
     border: 2px solid $form-input-border-active-color !important;

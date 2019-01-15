@@ -30,11 +30,11 @@
 }
 
 a{
-  color: $link-color;
+  color: $primary-color;
 
   &:hover {
     opacity:0.8;
-    color: $link-color;
+    color: $primary-color;
   }
 }
 
