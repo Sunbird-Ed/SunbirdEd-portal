@@ -73,12 +73,12 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
-  enrollBatch(batch) {
-    this.baseUrl = '/learn/course/' + this.courseId + '?batch=' + batch.identifier;
+  enrollBatch() {
+    this.baseUrl = '/learn/course/' + this.courseId;
     if (!this.userService.loggedIn) {
         this.showLoginModal = true;
     } else {
-      this.router.navigate([this.baseUrl], { queryParams: { batch: batch.identifier }});
+      this.router.navigate([this.baseUrl]);
     }
   }
 

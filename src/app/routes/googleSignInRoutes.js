@@ -9,7 +9,7 @@ module.exports = (app) => {
       res.redirect('/library')
       return
     }
-    const state =  Buffer.from(JSON.stringify(req.query)).toString('base64');
+    const state = JSON.stringify(req.query);
     let googleAuthUrl = googleOauth.generateAuthUrl(req) + '&state=' + state
     res.redirect(googleAuthUrl)
     logImpressionEvent(req);
@@ -27,7 +27,7 @@ module.exports = (app) => {
    * 7. If any error in the flow, redirect to error_callback with all query param.
    */
   app.get('/google/auth/callback', async (req, res) => {
-    const reqQuery = _.pick(JSON.parse(Buffer.from(req.query.state, 'base64').toString()), ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version']);
+    const reqQuery = _.pick(JSON.parse(req.query.state), ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version']);
     let googleProfile, sunbirdProfile, newUserDetails, keyCloakToken, redirectUrl, errType;
     try {
       if (!reqQuery.client_id || !reqQuery.redirect_uri || !reqQuery.error_callback) {
@@ -45,7 +45,7 @@ module.exports = (app) => {
       errType = 'KEYCLOAK_SESSION_CREATE';
       keyCloakToken = await createSession(googleProfile.emailId, req, res);
       errType = 'UNHANDLED_ERROR';
-      redirectUrl = reqQuery.redirect_uri.replace('&auth_callback=1','');
+      redirectUrl = reqQuery.redirect_uri.split('?')[0];
       if (reqQuery.client_id === 'android') {
         redirectUrl = redirectUrl + getQueryParams(keyCloakToken);
       }
