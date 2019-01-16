@@ -217,5 +217,12 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.checkForRedirectUrl();
     expect(component.router.navigate).toHaveBeenCalledWith(['/course'], {queryParams: {}});
   });
+  it('Should  call changeLanguageAttribute and set the lang and dir in document ', () => {
+    const resourceService = TestBed.get(ResourceService);
+    component.ngOnInit();
+    spyOn(component , 'changeLanguageAttribute').and.callThrough();
+    expect(document.documentElement.lang).toBe('en');
+    expect(document.documentElement.dir).toBe('ltr');
+  });
 
 });
