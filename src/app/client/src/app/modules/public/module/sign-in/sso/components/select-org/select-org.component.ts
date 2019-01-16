@@ -14,7 +14,7 @@ export class SelectOrgComponent implements OnInit {
   public orgList: Array<any>;
   public errorUrl = '/sso/sign-in/error';
   public telemetryImpression;
-  public tenantInfo = {};
+  public tenantInfo: any = {};
   public disableSubmitBtn = true;
   public submitOrgInteractEdata;
   constructor(private formService: FormService, public activatedRoute: ActivatedRoute, private tenantService: TenantService,
