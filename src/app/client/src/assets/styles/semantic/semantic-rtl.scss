@@ -75,4 +75,16 @@
     .ui.form input:not([type]):focus {
       padding: 0.8em 1em;
     }
+    .ui.top.right.pointing.dropdown>.menu {
+      right: auto;
+      left: 0;
+    }
+    .ui.top.pointing.dropdown>.left.menu:after,
+    .ui.top.right.pointing.dropdown>.menu:after{
+      left: 1em!important;
+      right: auto!important;
+    }
+    .ui.dropdown>.dropdown.icon{
+      margin: 0 1em 0 0;
+    }
 } 
