@@ -16,7 +16,7 @@
 .ui.menu {
   &.text {
     .item {
-      padding: .35714286em .86em;
+      padding: 0.35714286em 0.86em;
       color: $menuitem-color;
 
       &:hover,
@@ -51,6 +51,6 @@
   width: 100%;
   font-weight: bold !important;
   color: $primary-color !important;
-  background-color: $white-color; 
-  border-top: 1px solid rgba(34,36,38, .15) !important;
+  background-color: $white-color;
+  border-top: 1px solid rgba(34,36,38, 0.15) !important;
 }
