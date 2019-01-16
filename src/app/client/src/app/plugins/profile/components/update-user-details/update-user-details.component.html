@@ -1,5 +1,5 @@
 <sui-modal [isClosable]="false" (dismissed)="closeModal();" #userDetailsModal>
-    <i class="close icon" (click)="closeModal();"></i>
+  <i class="close icon" (click)="closeModal();"></i>
   <div class="scrollable content">
     <div class="ui grid">
       <div class="ten wide column mb-30">
@@ -7,9 +7,9 @@
       </div>
     </div>
     <form class="ui form" [formGroup]="userDetailsForm">
-        <label class="ui basic blue error label pt-0" *ngIf="userDetailsForm.controls.name.touched && userDetailsForm.controls['name'].errors">{{resourceService?.frmelmnts?.lbl?.nameRequired}}</label>
       <div class="required field">
-        <label>{{resourceService?.frmelmnts?.lbl?.name}}:</label>
+        <label class="ui basic blue error label p-0" *ngIf="userDetailsForm.controls.name.touched && userDetailsForm.controls['name'].errors">{{resourceService?.frmelmnts?.lbl?.nameRequired}}</label>
+        <label *ngIf="!(userDetailsForm.controls.name.touched && userDetailsForm.controls['name'].errors)">{{resourceService?.frmelmnts?.lbl?.name}}:</label>
         <div class="field">
           <input formControlName="name" type="text" name="name" placeholder="{{resourceService.frmelmnts.lbl.fullName}}">
         </div>
@@ -25,10 +25,15 @@
       </div>
       <div class="field">
         <label>{{resourceService?.frmelmnts?.lbl?.district}}:</label>
-        <app-loader [data]='districtLoaderMessage' *ngIf="showDistricDivLoader"></app-loader>
-        <div class="field" *ngIf="!showDistricDivLoader">
-          <sui-select [isSearchable]="true" class="selection" formControlName="district" [options]="allDistricts" labelField="name" valueField="code"
-            name="district" placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}" #districtDiv>
+        <div class="field">
+          <div class="ui segment" *ngIf="showDistrictDivLoader">
+            <div class="ui active inverted dimmer">
+              <div class="ui mini text loader">{{resourceService?.messages?.stmsg?.m0130}}</div>
+            </div>
+          </div>
+          <sui-select *ngIf="!showDistrictDivLoader" [isSearchable]="true" class="selection" formControlName="district" [options]="allDistricts"
+            labelField="name" valueField="code" name="district" placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}"
+            #districtDiv>
             <sui-select-option *ngFor="let district of districtDiv.filteredOptions" [value]="district"></sui-select-option>
           </sui-select>
         </div>

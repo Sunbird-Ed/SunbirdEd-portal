@@ -19,10 +19,7 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
   userDetailsForm: FormGroup;
   sbFormBuilder: FormBuilder;
   enableSubmitBtn = false;
-  showDistricDivLoader = false;
-  districtLoaderMessage = {
-    'loaderMessage': this.resourceService.messages.stmsg.m0130,
-  };
+  showDistrictDivLoader = false;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public profileService: ProfileService, formBuilder: FormBuilder) {
@@ -95,11 +92,11 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
   }
 
   getDistrict(stateId) {
-    this.showDistricDivLoader = true;
+    this.showDistrictDivLoader = true;
     const requestData = { 'filters': { 'type': 'district', parentId: stateId } };
     this.profileService.getUserLocation(requestData).subscribe(res => {
       this.allDistricts = res.result.response;
-      this.showDistricDivLoader = false;
+      this.showDistrictDivLoader = false;
       const location = _.find(this.userProfile.userLocations, (locations) => {
         return locations.type === 'district';
       });
