@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { ProfileService } from './../../services';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
@@ -9,7 +9,7 @@ import * as _ from 'lodash';
   templateUrl: './update-user-details.component.html',
   styleUrls: ['./update-user-details.component.scss']
 })
-export class UpdateUserDetailsComponent implements OnInit {
+export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
 
   @Output() close = new EventEmitter<any>();
   @Input() userProfile: any;
@@ -19,10 +19,7 @@ export class UpdateUserDetailsComponent implements OnInit {
   userDetailsForm: FormGroup;
   sbFormBuilder: FormBuilder;
   enableSubmitBtn = false;
-  showDistricDivLoader = false;
-  districtLoaderMessage = {
-    'loaderMessage': this.resourceService.messages.stmsg.m0130,
-  };
+  showDistrictDivLoader = false;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public profileService: ProfileService, formBuilder: FormBuilder) {
@@ -95,11 +92,11 @@ export class UpdateUserDetailsComponent implements OnInit {
   }
 
   getDistrict(stateId) {
-    this.showDistricDivLoader = true;
+    this.showDistrictDivLoader = true;
     const requestData = { 'filters': { 'type': 'district', parentId: stateId } };
     this.profileService.getUserLocation(requestData).subscribe(res => {
       this.allDistricts = res.result.response;
-      this.showDistricDivLoader = false;
+      this.showDistrictDivLoader = false;
       const location = _.find(this.userProfile.userLocations, (locations) => {
         return locations.type === 'district';
       });
@@ -123,7 +120,7 @@ export class UpdateUserDetailsComponent implements OnInit {
     const locationCodes = [];
     if (this.userDetailsForm.value.state) { locationCodes.push(this.userDetailsForm.value.state); }
     if (this.userDetailsForm.value.district) { locationCodes.push(this.userDetailsForm.value.district); }
-    const data = { firstName: this.userDetailsForm.value.name, locationCodes: locationCodes };
+    const data = { firstName: _.trim(this.userDetailsForm.value.name), locationCodes: locationCodes };
     this.updateProfile(data);
   }
 
@@ -140,5 +137,9 @@ export class UpdateUserDetailsComponent implements OnInit {
   closeModal() {
     this.userDetailsModal.deny();
     this.close.emit();
+  }
+
+  ngOnDestroy() {
+    this.userDetailsModal.deny();
   }
 }

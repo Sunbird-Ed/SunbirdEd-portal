@@ -13,7 +13,7 @@
             <input formControlName="phone" type="number" class="form-control" placeholder="{{ resourceService?.frmelmnts?.lbl?.tenDigitPhone }}">
             <i class=" icon">+91-</i>
           </div>
-          <button appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata" appTelemetryInteract
+          <button appTelemetryInteract [telemetryInteractEdata]="submitPhoneInteractEdata" appTelemetryInteract
             [telemetryInteractEdata]="submitPhoneInteractEdata" [ngClass]="{'grey':!enableSubmitBtn, 'light-sea-green':enableSubmitBtn}"
             class="ui button width-300 mt-60" tabindex="0" (click)="handlePhoneSubmitEvent()">Submit</button>
         </div>
