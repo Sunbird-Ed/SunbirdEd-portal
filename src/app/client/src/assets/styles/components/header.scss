@@ -37,7 +37,6 @@
   @media only screen and (min-width: 1100px) {
     width: calc(100% - 284px);
     max-width: 490px;
-    margin: 0 auto 0 15px;
   }
 
   .ui.icon.button {
@@ -50,14 +49,10 @@
     border: 1px solid $dull-color;
     opacity: 1;
     border-radius: 5px;
+    overflow: hidden;
   }
 }
 
-*[dir="rtl"] .searchbox {
-  @media only screen and (min-width: 768px) {
-    margin: 0 15px 0 auto;
-  }
-}
 
 .qr-code-btn {
   background: $white-color !important;
@@ -78,7 +73,8 @@
 
 .search-qrcode-divider {
   opacity: 0.4;
-  border-right: 2px solid $white-color;
+  color: $white-color;
+  font-size: 28px;
 }
 
 .ui.sidebar.visible {
@@ -93,6 +89,16 @@
   &.uncover {
     z-index: 4;
     border: 0;
+  }
+}
+
+*[dir="rtl"] {
+  .ui.right.sidebar {
+    right: auto!important;
+    left: 0!important;
+  }
+  .ui.vertical.menu .item>i.icon {
+    float: left;
   }
 }
 

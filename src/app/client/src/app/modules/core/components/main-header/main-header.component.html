@@ -107,22 +107,22 @@
             <!--/QR Button-->
 
             <!--Divider-->
-            <span class="item divider computer only pl-0 search-qrcode-divider"></span>
+            <span class="computer only mx-10 search-qrcode-divider">|</span>
             <!--/Divider-->
 
             <!--Search Box-->
             <!--Logged in Pages-->
-            <app-search class="searchbox" *ngIf="!showExploreHeader"></app-search>
+            <app-search class="searchbox ml-0 mr-auto my-0" *ngIf="!showExploreHeader"></app-search>
             <!--/Logged in Pages-->
 
             <!--Explore Pages-->
-            <div class="searchbox" *ngIf="showExploreHeader">
-                <div class="ui fluid ui action input searchbox-inner">
+            <div class="searchbox ml-0 mr-auto my-0" *ngIf="showExploreHeader">
+                <div class="ui fluid ui left action input searchbox-inner">
                     <input 
                         type="text" 
                         id="keyword" 
                         name="filter_search"
-                        class="searchinput" 
+                        class="searchinput br-0" 
                         title="{{resourceService?.frmelmnts?.prmpt?.search}}" 
                         placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}"
                         [(ngModel)]="key" 
@@ -130,7 +130,7 @@
                     />
                     <button class="ui icon button">
                         <i 
-                            class="search blue icon" 
+                            class="search blue icon br-0" 
                             (click)="onEnter(key)"
                             title="{{resourceService?.frmelmnts?.prmpt?.search}}"
                             tabindex="0"

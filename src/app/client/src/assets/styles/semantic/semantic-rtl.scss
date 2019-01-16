@@ -14,10 +14,6 @@
     .searchicon.ui.icon.input input{
       border-radius: .28571429rem 0 0 .28571429rem;
     }
-    /*.slick-slider .slick-track,
-    .slick-slider .slick-list {
-      transform: translate3d(0, 0, 0) !important;
-    }*/
     .ui.dropdown{
       text-align: right;
     }
@@ -67,5 +63,16 @@
     
     .ui.multiple.dropdown {
       padding: .22619048em .35714286em .22619048em 2.1em;
+    }
+    .ui.form input[type=text],
+    .ui.form input[type=text]:focus, 
+    .ui.form input[type=email], 
+    .ui.form input[type=number], 
+    .ui.form input[type=number]:focus, 
+    .ui.form input[type=password], 
+    .ui.form input[type=url], 
+    .ui.form input:not([type]), 
+    .ui.form input:not([type]):focus {
+      padding: 0.8em 1em;
     }
 } 

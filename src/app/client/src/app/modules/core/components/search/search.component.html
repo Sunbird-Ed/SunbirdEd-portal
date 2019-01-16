@@ -1,12 +1,12 @@
 <div 
-    class="ui fluid ui action input searchbox-inner" 
+    class="ui fluid ui left action input searchbox-inner" 
     id="search-input-container"
     >
     <input 
         type="text" 
         id="keyword" 
         name="filter_search"
-        class="searchinput"
+        class="searchinput br-0"
         title="{{resourceService.frmelmnts?.lbl?.SearchIn}} {{selectedOption}}" 
         placeholder="{{resourceService.frmelmnts?.lbl?.SearchIn}} {{selectedOption}}"
         [(ngModel)]="key" 
@@ -16,7 +16,7 @@
     />
     <button class="ui icon button" [ngClass]="{'disabled': !showInput }" >
         <i 
-            class="search blue icon"
+            class="search blue icon br-0"
             (click)="onEnter(key)"
             title="{{resourceService.frmelmnts?.lbl?.SearchIn}} {{selectedOption}}"
             tabindex="0"
