@@ -3,7 +3,7 @@
   <sui-select 
     [(ngModel)]="selectedLanguage" 
     (ngModelChange)="onLanguageChange($event)"
-    labelField="name"
+    labelField="label"
     valueField="value">
     <sui-select-option 
       *ngFor="let option of languages" 

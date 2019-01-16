@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormService, FrameworkService, OrgDetailsService, UserService } from './../../services';
 import { ConfigService, ResourceService, ToasterService, ServerResponse, Framework} from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
-
+import * as _ from 'lodash';
 import { Subject, Subscription} from 'rxjs';
 
 @Component({
@@ -85,7 +85,7 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
               });
           },
           (err: ServerResponse) => {
-            this.languages = [{ 'value': 'en', 'name': 'English' }];
+            this.languages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr' }];
             this.onLanguageChange('en');
           }
         );
@@ -99,10 +99,14 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
         this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
     });
     this.resourceService.getResource(event);
+    const language = _.find(this.languages, ['value', event]);
+    this.resourceService.getLanguageChange(language);
   }
 
   ngOnDestroy() {
-    this.orgDetailsUnsubscribe.unsubscribe();
+    if (this.orgDetailsUnsubscribe) {
+      this.orgDetailsUnsubscribe.unsubscribe();
+    }
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
