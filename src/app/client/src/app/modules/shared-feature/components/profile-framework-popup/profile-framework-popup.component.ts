@@ -218,6 +218,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     if (this.unsubscribe) {
       this.unsubscribe.unsubscribe();
     }
+    this.modal.deny();
   }
   private isCustodianOrgUser() {
     return this.orgDetailsService.getCustodianOrg().pipe(map((custodianOrg) => {

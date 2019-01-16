@@ -1,4 +1,5 @@
-<sui-modal [isClosable]="true" (dismissed)="closeModal();" #contactTypeModal>
+<sui-modal [mustScroll]="true" [isClosable]="false" appBodyScroll (dismissed)="closeModal();" #contactTypeModal>
+    <i class="close icon" (click)="closeModal();"></i>
   <div class="scrollable content height-200" *ngIf="showForm">
     <div class="ui grid">
       <div class="ten wide column mb-30" [ngSwitch]="contactType">
@@ -20,7 +21,7 @@
           <label class="fs-1">{{resourceService?.frmelmnts?.prmpt?.enterphoneno}}</label>
           <div class="field">
             <div class="ui left icon input">
-              <input formControlName="phone" type="number"  name="phone">
+              <input formControlName="phone" type="number" name="phone">
               <i class=" icon">{{resourceService?.frmelmnts?.lbl?.indPhoneCode}}-</i>
             </div>
           </div>
