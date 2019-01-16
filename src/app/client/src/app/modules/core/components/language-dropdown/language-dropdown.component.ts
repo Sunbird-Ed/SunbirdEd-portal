@@ -86,7 +86,7 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
               });
           },
           (err: ServerResponse) => {
-            this.languages = [{ 'value': 'en', 'name': 'English' }];
+            this.languages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr' }];
             this.onLanguageChange('en');
           }
         );
@@ -105,7 +105,9 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.orgDetailsUnsubscribe.unsubscribe();
+    if (this.orgDetailsUnsubscribe) {
+      this.orgDetailsUnsubscribe.unsubscribe();
+    }
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
