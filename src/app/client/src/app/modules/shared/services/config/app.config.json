@@ -957,7 +957,8 @@
     "framework": "framework",
     "explore-course": "explore-course",
     "framework-code": "framework-code",
-    "courses": "courses"
+    "courses": "courses",
+    "organization": "organization"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,
