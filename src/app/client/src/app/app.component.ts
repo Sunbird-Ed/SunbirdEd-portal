@@ -125,25 +125,10 @@ export class AppComponent implements OnInit {
     const frameWorkPopUp: boolean = this.cacheService.get('showFrameWorkPopUp');
     if (frameWorkPopUp) {
       this.showFrameWorkPopUp = false;
-      this.checkForRedirectUrl();
     } else {
       if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
         this.showFrameWorkPopUp = true;
-      } else {
-        this.checkForRedirectUrl();
       }
-    }
-  }
-
-  /**
-   * checks for redirect url if any and navigates if exists
-   */
-  public checkForRedirectUrl () {
-    const urlData = this.cacheService.get('postLoginRedirectUrl');
-    if (urlData && urlData.redirectUrl) {
-      this.cacheService.remove('postLoginRedirectUrl');
-      const queryParams = urlData.queryParams || {};
-      this.router.navigate([urlData.redirectUrl], {queryParams: queryParams});
     }
   }
 
@@ -281,7 +266,6 @@ export class AppComponent implements OnInit {
       this.showFrameWorkPopUp = false;
       this.utilService.toggleAppPopup();
       this.showAppPopUp = this.utilService.showAppPopUp;
-      this.checkForRedirectUrl();
     }, err => {
       this.toasterService.warning(this.resourceService.messages.emsg.m0012);
       this.frameWorkPopUp.modal.deny();
@@ -295,6 +279,5 @@ export class AppComponent implements OnInit {
   closeIcon() {
     this.showFrameWorkPopUp = false;
     this.cacheService.set('showFrameWorkPopUp', 'installApp' );
-    this.checkForRedirectUrl();
   }
 }

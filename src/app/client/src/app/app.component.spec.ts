@@ -211,11 +211,5 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.ngOnInit();
     expect(component.showFrameWorkPopUp).toBeTruthy();
   }));
-  it('on call of checkForRedirectUrl if cache exists then redirect should happen to the url that is set in cache', () => {
-    const cacheService = TestBed.get(CacheService);
-    cacheService.set('postLoginRedirectUrl', {redirectUrl: '/course'} , { maxAge: 10 * 60});
-    component.checkForRedirectUrl();
-    expect(component.router.navigate).toHaveBeenCalledWith(['/course'], {queryParams: {}});
-  });
 
 });
