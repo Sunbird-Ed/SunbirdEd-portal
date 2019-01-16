@@ -53,7 +53,6 @@ node('build-slave') {
     }
     catch (err) {
         currentBuild.result = "FAILURE"
-        currentBuild.description = "${build_tag}"
         throw err
     }
 }
