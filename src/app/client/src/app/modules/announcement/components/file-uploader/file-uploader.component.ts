@@ -6,8 +6,7 @@ import { FileUploadService, ResourceService } from '@sunbird/shared';
  */
 @Component({
   selector: 'app-file-uploader',
-  templateUrl: './file-uploader.component.html',
-  styleUrls: ['./file-uploader.component.css']
+  templateUrl: './file-uploader.component.html'
 })
 export class FileUploaderComponent implements OnInit {
 

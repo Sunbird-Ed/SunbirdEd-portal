@@ -5,8 +5,7 @@ import {INoResultMessage} from '../../interfaces/noresult';
  */
 @Component({
   selector: 'app-no-result',
-  templateUrl: './no-result.component.html',
-  styleUrls: ['./no-result.component.css']
+  templateUrl: './no-result.component.html'
 })
 export class NoResultComponent implements OnInit {
   /**
