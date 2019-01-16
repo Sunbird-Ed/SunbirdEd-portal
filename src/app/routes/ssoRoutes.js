@@ -46,7 +46,7 @@ module.exports = (app) => {
       errType = 'USER_FETCH_API';
       loginId = req.query.id;
       phone = req.query.phone;
-      userDetails = fetchUserWithLoginId(loginId, req);
+      userDetails = await fetchUserWithLoginId(loginId, req);
       if(userDetails.userName) {
         errType = 'USER_CHANNEL_API';
         userChannel = await getChannel(loginId);
@@ -100,7 +100,7 @@ module.exports = (app) => {
     }
   })
 
-  app.get('/v1/get/access/token', async (req, res) => { // needs to onboard to kong
+  app.get('/v1/sso/create/session', async (req, res) => { // needs to onboard to kong
     let loginId, accessTokens, userDetails, userChannel, response, errType;
     try {
       if (!req.query.id) {
@@ -129,9 +129,9 @@ module.exports = (app) => {
   app.get('/mock/v2/user/session/create', (req,res) => {
     let redirectUrl;
     if(req.query.phone) {
-      redirectUrl = `${successUrl}?id=sunil1as990&redirect_url=/home`;
+      redirectUrl = `${successUrl}?id=sunil1as990&redirect_url=/resources`;
     } else {
-      redirectUrl = `${updatePhoneUrl}?id=sunil1as990&redirect_url=/home`;
+      redirectUrl = `${updatePhoneUrl}?id=sunil1as990&redirect_url=/resources`;
     }
     res.redirect(redirectUrl);
   })
