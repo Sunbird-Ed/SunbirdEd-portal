@@ -129,9 +129,9 @@ module.exports = (app) => {
   app.get('/mock/v2/user/session/create', (req,res) => {
     let redirectUrl;
     if(req.query.phone) {
-      redirectUrl = `${successUrl}?id=sunil1as990&redirect_url=/home`;
+      redirectUrl = `${successUrl}?id=sunil1as990&redirect_url=/resources`;
     } else {
-      redirectUrl = `${updatePhoneUrl}?id=sunil1as990&redirect_url=/home`;
+      redirectUrl = `${updatePhoneUrl}?id=sunil1as990&redirect_url=/resources`;
     }
     res.redirect(redirectUrl);
   })
