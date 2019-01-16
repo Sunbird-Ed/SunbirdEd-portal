@@ -137,7 +137,13 @@
     }
   }
 }
+*[dir="rtl"] {
+  .ui.menu .language-selector .ui.dropdown>.dropdown.icon{
+    margin: 0 1em 0 0;
+  }
+}
 
 .profile-avtar:hover {
   opacity: 1;
 }
+
