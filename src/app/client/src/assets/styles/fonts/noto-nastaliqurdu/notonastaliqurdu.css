@@ -1,13 +1,12 @@
+/* Fonts are 0.75% scaled version of original
+ * scale.py 0.75 noto-nastaliqurdu/NotoNastaliqUrdu-Regular.woff scaled/NotoNastaliqUrdu-Regular.woff
+   scale.py 0.75 noto-nastaliqurdu/NotoNastaliqUrdu-Regular.ttf scaled/NotoNastaliqUrdu-Regular.ttf */
 @font-face {
    font-family: 'Noto Nastaliq Urdu';
    font-style: normal;
    font-weight: 400;
    font-display: swap;
-   src: url(./NotoNastaliqUrdu-Regular.eot);
    src:
-     url(./NotoNastaliqUrdu-Regular.eot?#iefix) format('embedded-opentype'),
-     url(./NotoNastaliqUrdu-Regular.woff2) format('woff2'),
      url(./NotoNastaliqUrdu-Regular.woff) format('woff'),
      url(./NotoNastaliqUrdu-Regular.ttf) format('truetype');
- }
- 
+} 
