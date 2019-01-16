@@ -9,10 +9,19 @@
   border-bottom: .5px solid #ddd !important;
   margin-bottom: -1px;
 
-  .logo img {
+  .logo {
+    img {
     height: 56px;
     max-height:56px;
+    }
+
+    &:hover,
+    &:focus {
+      outline: none;
+      opacity: 0.90;
+    }
   }
+
   .header-white {
     padding: 10px;
 
