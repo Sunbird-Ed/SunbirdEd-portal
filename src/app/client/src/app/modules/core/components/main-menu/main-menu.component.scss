@@ -19,13 +19,20 @@
       padding: .35714286em .86em;
       color: $menuitem-color;
 
-      &:hover {
+      &:hover,
+      &:focus {
         color: $primary-color;
+        outline: none;
       }
 
       &.active {
         font-weight: bold;
         color: $primary-color;
+
+        &:hover,
+        &:focus {
+          opacity: 0.9;
+        }
       }
     }
   }

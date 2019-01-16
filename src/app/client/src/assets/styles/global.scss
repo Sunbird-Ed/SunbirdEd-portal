@@ -65,3 +65,13 @@ input[type=number]::-webkit-outer-spin-button {
    -moz-appearance: none;
    appearance: none;
 }
+
+//Sui model background dimmer changes
+
+.ui.dimmer {
+  background-color: rgba(0, 0, 0, .35);
+}
+
+.ui.modal>.close {
+  opacity: 1;
+}
