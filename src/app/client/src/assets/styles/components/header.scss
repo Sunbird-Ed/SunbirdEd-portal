@@ -1,24 +1,24 @@
-.ui.menu.fixed{
+.ui.menu.fixed {
   position: -webkit-sticky;
   position: -moz-sticky;
   position: -ms-sticky;
   position: -o-sticky;
   position: sticky;
   z-index: 999;
-  border:0;
-  border-bottom: .5px solid #ddd !important;
+  border: 0;
+  border-bottom: 0.5px solid #ddd !important;
   margin-bottom: -1px;
 
   .logo {
     img {
       height: 56px;
-      max-height:56px;
+      max-height: 56px;
     }
 
     &:hover,
     &:focus {
       outline: none;
-      opacity: 0.90;
+      opacity: 0.9;
     }
   }
 
@@ -32,7 +32,7 @@
 }
 
 .searchbox {
-  width: 100%; 
+  width: 100%;
 
   @media only screen and (min-width: 1100px) {
     width: calc(100% - 284px);
@@ -83,13 +83,13 @@
 
 .ui.sidebar.visible {
   &.right {
-    &~.fixed,
-    &~.pusher {
+    & ~ .fixed,
+    & ~ .pusher {
       transform: translate3d(0, 0, 0) !important;
       height: 100vh;
     }
   }
-  
+
   &.uncover {
     z-index: 4;
     border: 0;
@@ -121,11 +121,11 @@
     .menu {
       width: 100%;
 
-      &>.item {
+      & > .item {
         font-size: 0.86rem !important;
       }
 
-      &>.active.item {
+      & > .active.item {
         color: $primary-color !important;
       }
     }
