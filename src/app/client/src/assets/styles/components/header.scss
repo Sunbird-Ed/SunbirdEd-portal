@@ -13,6 +13,13 @@
     height: 56px;
     max-height:56px;
   }
+  .header-white {
+    padding: 10px;
+
+    @media only screen and (min-width: 768px) {
+      padding: 10px 0;
+    }
+  }
 }
 
 .searchbox {
