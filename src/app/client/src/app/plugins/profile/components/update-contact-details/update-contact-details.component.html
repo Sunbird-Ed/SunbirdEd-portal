@@ -1,4 +1,5 @@
-<sui-modal [isClosable]="true" (dismissed)="closeModal();" #contactTypeModal>
+<sui-modal [isClosable]="false" (dismissed)="closeModal();" #contactTypeModal>
+    <i class="close icon" (click)="closeModal();"></i>
   <div class="scrollable content height-200" *ngIf="showForm">
     <div class="ui grid">
       <div class="ten wide column mb-30" [ngSwitch]="contactType">
