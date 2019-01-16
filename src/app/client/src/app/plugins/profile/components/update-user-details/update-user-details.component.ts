@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
-=======
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
->>>>>>> upstream/release-1.14
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { ProfileService } from './../../services';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
@@ -13,11 +9,7 @@ import * as _ from 'lodash';
   templateUrl: './update-user-details.component.html',
   styleUrls: ['./update-user-details.component.scss']
 })
-<<<<<<< HEAD
 export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
-=======
-export class UpdateUserDetailsComponent implements OnInit {
->>>>>>> upstream/release-1.14
 
   @Output() close = new EventEmitter<any>();
   @Input() userProfile: any;
@@ -149,11 +141,8 @@ export class UpdateUserDetailsComponent implements OnInit {
     this.userDetailsModal.deny();
     this.close.emit();
   }
-<<<<<<< HEAD
 
   ngOnDestroy() {
     this.userDetailsModal.deny();
   }
-=======
->>>>>>> upstream/release-1.14
 }
