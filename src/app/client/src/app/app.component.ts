@@ -1,16 +1,16 @@
-
 import { environment } from '@sunbird/environment';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TelemetryService, ITelemetryContext } from '@sunbird/telemetry';
 import { UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
 NavigationHelperService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, Inject} from '@angular/core';
 import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { ProfileService } from '@sunbird/profile';
 import { Observable, of, throwError, combineLatest } from 'rxjs';
 import { first, filter, mergeMap, tap, map } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
+import { DOCUMENT } from '@angular/platform-browser';
 const fingerPrint2 = new Fingerprint2();
 
 /**
@@ -71,7 +71,8 @@ export class AppComponent implements OnInit {
     private deviceRegisterService: DeviceRegisterService, private courseService: CoursesService, private tenantService: TenantService,
     private telemetryService: TelemetryService, public router: Router, private configService: ConfigService,
     private orgDetailsService: OrgDetailsService, private activatedRoute: ActivatedRoute,
-    private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService) {
+    private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
+    @Inject(DOCUMENT) private _document: any) {
   }
   /**
    * dispatch telemetry window unload event before browser closes
@@ -105,6 +106,7 @@ export class AppComponent implements OnInit {
     }, error => {
       this.initApp = true;
     });
+    this.changeLanguageAttribute();
   }
 
   /**
@@ -297,5 +299,12 @@ export class AppComponent implements OnInit {
     this.showFrameWorkPopUp = false;
     this.cacheService.set('showFrameWorkPopUp', 'installApp' );
     this.checkForRedirectUrl();
+  }
+  changeLanguageAttribute() {
+    this.resourceService.languageSelected$
+      .subscribe(item => {
+        this._document.documentElement.lang = item.value;
+        this._document.documentElement.dir =  item.dir;
+      });
   }
 }
