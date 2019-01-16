@@ -191,12 +191,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
           const state = _.find(this.userProfile.userLocations, (locations) => {
             return locations.type === 'state';
           });
-          this.state = state ? state.name : '';
+          this.state = _.get(state, 'name') || '';
 
           const district = _.find(this.userProfile.userLocations, (locations) => {
             return locations.type === 'district';
           });
-          this.district = district ? district.name : '';
+          this.district = _.get(district, 'name') || '';
 
           this.inputData =  _.get(this.userProfile, 'framework') ? _.cloneDeep(_.get(this.userProfile, 'framework')) : {};
           this.getOrgDetails();
