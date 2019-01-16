@@ -1,8 +1,8 @@
 @import "variables";
 
 .ui.basic.error.label {
-    background: $white-bg-color !important;
-    color: $label-color !important;
+    background: $white-color !important;
+    color: $danger-color !important;
     border: 0 !important;
     padding-left: 0;
     font-size: 1rem;
