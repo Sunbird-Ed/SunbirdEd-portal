@@ -72,6 +72,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   isShowFilterPlaceholder = true;
   contentTypes: any;
   frameworkDataSubscription: Subscription;
+  resourceDataSubscription: Subscription;
   isFiltered = true;
   submitIntractEdata: IInteractEventEdata;
   private selectedLanguage: string;
@@ -110,7 +111,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.resourceService.languageSelected$
+    this.resourceDataSubscription = this.resourceService.languageSelected$
       .subscribe(item => {
         this.selectedLanguage = item.value;
         if (this.formFieldProperties && this.formFieldProperties.length > 0) {
@@ -303,6 +304,9 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.frameworkDataSubscription) {
       this.frameworkDataSubscription.unsubscribe();
+    }
+    if (this.resourceDataSubscription) {
+      this.resourceDataSubscription.unsubscribe();
     }
   }
 }

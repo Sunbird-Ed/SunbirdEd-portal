@@ -1,9 +1,9 @@
-import { of, throwError } from 'rxjs';
+import { of, throwError, Subscription } from 'rxjs';
 import { first, mergeMap, map, tap , catchError, filter} from 'rxjs/operators';
 import {
   ConfigService, ResourceService, Framework, BrowserCacheTtlService, UtilService
 } from '@sunbird/shared';
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnChanges, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, PermissionService, UserService, OrgDetailsService  } from './../../services';
 import * as _ from 'lodash';
@@ -13,7 +13,7 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
   selector: 'app-data-driven-filter',
   templateUrl: './data-driven-filter.component.html'
 })
-export class DataDrivenFilterComponent implements OnInit, OnChanges {
+export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
   @Input() filterEnv: string;
   @Input() accordionDefaultOpen: boolean;
   @Input() isShowFilterLabel: boolean;
@@ -48,6 +48,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
 
   public submitIntractEdata: IInteractEventEdata;
   private selectedLanguage: string;
+  resourceDataSubscription: Subscription;
   // add langauge default value en
 
   constructor(public configService: ConfigService, public resourceService: ResourceService, public router: Router,
@@ -59,7 +60,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.resourceService.languageSelected$
+    this.resourceDataSubscription = this.resourceService.languageSelected$
       .subscribe(item => {
         this.selectedLanguage = item.value;
         if (this.formFieldProperties && this.formFieldProperties.length > 0) {
@@ -285,5 +286,10 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
     catchError(err => {
       return [];
     }));
+  }
+  ngOnDestroy() {
+    if (this.resourceDataSubscription) {
+      this.resourceDataSubscription.unsubscribe();
+    }
   }
 }

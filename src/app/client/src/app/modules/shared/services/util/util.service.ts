@@ -100,8 +100,7 @@ export class UtilService {
         this.convert(value, lang);
       }
     });
-    const translate = data;
-    return translate;
+    return data;
   }
 
   convert(value, lang) {
