@@ -54,6 +54,7 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
       });
     } else {
       this.orgDetailsUnsubscribe = this.orgDetailsService.orgDetails$.subscribe(((data) => {
+        console.log(data);
         if (data && !data.err) {
           this.channelId = data.orgDetails.hashTagId;
           this.getLanguage();
@@ -84,6 +85,8 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
                 maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
                   this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
               });
+              this.languages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr' }];
+            this.onLanguageChange('en');
           },
           (err: ServerResponse) => {
             this.languages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr' }];
