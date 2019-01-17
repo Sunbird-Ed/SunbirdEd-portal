@@ -98,7 +98,7 @@ describe('PublicBatchDetailsComponent', () => {
       const userService = TestBed.get(UserService);
       component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
       component.ngOnInit();
-      component.enrollBatch({identifier: '01250836461212343'});
+      component.enrollBatch();
       expect(component.showLoginModal).toBeTruthy();
   });
 });
