@@ -83,6 +83,7 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
                 maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
                   this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
               });
+            this.onLanguageChange('en');
           },
           (err: ServerResponse) => {
             this.languages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr' }];
