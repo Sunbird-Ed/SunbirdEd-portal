@@ -211,5 +211,4 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.ngOnInit();
     expect(component.showFrameWorkPopUp).toBeTruthy();
   }));
-
 });
