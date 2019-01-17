@@ -10,8 +10,7 @@ import { Subject, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-language-dropdown',
-  templateUrl: './language-dropdown.component.html',
-  styleUrls: ['./language-dropdown.component.scss']
+  templateUrl: './language-dropdown.component.html'
 })
 export class LanguageDropdownComponent implements OnInit, OnDestroy {
   @Input() redirectUrl: string;
@@ -84,6 +83,7 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
                 maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
                   this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
               });
+            this.onLanguageChange('en');
           },
           (err: ServerResponse) => {
             this.languages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr' }];

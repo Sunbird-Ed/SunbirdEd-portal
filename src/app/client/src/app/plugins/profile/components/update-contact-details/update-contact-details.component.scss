@@ -1,7 +1,7 @@
 @import "variables";
 .ui.grey.button {
     background: $signup-btn-bg-not-active-color;
-    color: $signup-button-text-color;
+    color: $white-color;
     pointer-events: none !important;
     cursor: not-allowed !important; 
     height: 38px !important;
@@ -9,15 +9,15 @@
 }
 
 .ui.dodger-blue.button {
-    background: $profile-edit-btn;
-    color: $profile-edit-btn-text-color;
+    background: $primary-color;
+    color: $white-color;
     font-size: 1rem;
     height: 38px !important;
 }
 
 .ui.basic.error.label {
-    background: $white-bg-color !important;
-    color: $label-color !important;
+    background: $white-color !important;
+    color: $danger-color !important;
     border: 0 !important;
     padding-left: 0;
     font-size: 1rem;
