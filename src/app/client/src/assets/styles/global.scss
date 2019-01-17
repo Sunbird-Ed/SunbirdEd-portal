@@ -1,13 +1,21 @@
 body {
   position: relative;
   background: $bg-body !important;
-  font-family: inherit;
+  font-family: $font-stack;
   letter-spacing: 0.2px;
   height: auto;
 }
 
-button,input,textarea,optgroup,select,
-h1, h2, h3, h4, h5,
+button,
+input,
+textarea,
+optgroup,
+select,
+h1,
+h2,
+h3,
+h4,
+h5,
 .ui.header,
 .ui.text.container,
 .ui.input input,
@@ -61,15 +69,13 @@ h1, h2, h3, h4, h5,
 
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
-   -webkit-appearance: none;
-   -moz-appearance: none;
-   appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
-//Sui model background dimmer changes
-
 .ui.dimmer {
-  background-color: rgba(0, 0, 0, .35);
+  background-color: rgba(0, 0, 0, 0.35);
 }
 
 .ui.modal>.close {

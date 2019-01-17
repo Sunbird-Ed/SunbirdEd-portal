@@ -1,12 +1,12 @@
 @import "variables";
 
 .ui.label {
-  background: $label-color !important;
+  background: $danger-color !important;
   color: #fff;
   padding: 3px 6px !important;
 }
 .ui.button {
-  background: $view-all-button !important;
+  background: $secondary-color !important;
   color: #fff;
   font-size: 0.8571rem;
   padding: 4px 10px !important;
@@ -26,4 +26,11 @@
 .ui.divider {
   border-top: 1px solid #e4e4e4 !important;
   border-bottom: 0 !important;
+}
+
+@media screen and (max-width: 768px) {
+  .twelve.wide.column {
+    margin-left: -15px !important;
+    margin-right: -15px !important;
+  }
 }
