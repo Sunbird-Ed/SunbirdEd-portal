@@ -65,6 +65,9 @@ app.get('/health', healthService.createAndValidateRequestBody, healthService.che
 // client app routes
 require('./routes/googleSignInRoutes.js')(app, keycloak)
 
+// sso routes
+require('./routes/ssoRoutes.js')(app, keycloak)
+
 // client app routes
 require('./routes/clientRoutes.js')(app, keycloak)
 

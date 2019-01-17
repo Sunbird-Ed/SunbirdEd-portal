@@ -9,7 +9,7 @@ interface TopicTreeNode {
 @Component({
   selector: 'app-topic-picker',
   templateUrl: './topic-picker.component.html',
-  styleUrls: ['./topic-picker.component.css']
+  styleUrls: ['./topic-picker.component.scss']
 })
 export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
 

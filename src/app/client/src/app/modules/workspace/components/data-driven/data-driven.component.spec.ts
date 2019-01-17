@@ -1,6 +1,6 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DataDrivenComponent } from './data-driven.component';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
@@ -60,7 +60,7 @@ describe('DataDrivenComponent', () => {
       imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot(),
         TelemetryModule.forRoot()],
       declarations: [DataDrivenComponent, DefaultTemplateComponent],
-      providers: [ CacheService, EditorService, WorkSpaceService,
+      providers: [CacheService, EditorService, WorkSpaceService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
@@ -84,10 +84,10 @@ describe('DataDrivenComponent', () => {
     const contentService = TestBed.get(ContentService);
     const formService = TestBed.get(FormService);
     const formServiceInputParams = {
-            formType: 'textbook',
-            formAction: 'textbook',
-            contentType: 'textbook',
-            framework: 'textbook'
+      formType: 'textbook',
+      formAction: 'textbook',
+      contentType: 'textbook',
+      framework: 'textbook'
     };
     service._frameWorkData$ = mockFrameworkData.frameworkData;
     service._frameworkData$.next({
@@ -130,7 +130,7 @@ describe('DataDrivenComponent', () => {
     spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
     componentParent.createContent();
     expect(router.navigate).toHaveBeenCalledWith(
-      ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'draft', componentParent.framework]);
+      ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'draft', componentParent.framework, 'Draft']);
   });
   it('should not router to collection editor ', () => {
     const state = 'draft';
@@ -169,7 +169,7 @@ describe('DataDrivenComponent', () => {
     spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
     componentParent.createContent();
     expect(router.navigate).toHaveBeenCalledWith(
-      ['/workspace/content/edit/content/', 'do_2124708548063559681134', 'draft', componentParent.framework]);
+      ['/workspace/content/edit/content/', 'do_2124708548063559681134', 'draft', componentParent.framework, 'Draft']);
   });
   it('should not router to contentEditor editer ', () => {
     const state = 'draft';
@@ -226,7 +226,7 @@ describe('DataDrivenComponent', () => {
 
   it('test to navigate to create ', () => {
     const router = TestBed.get(Router);
-    spyOn(componentParent , 'goToCreate').and.callThrough();
+    spyOn(componentParent, 'goToCreate').and.callThrough();
     componentParent.goToCreate();
     expect(router.navigate).toHaveBeenCalledWith(['/workspace/content/create']);
   });
@@ -280,5 +280,13 @@ describe('DataDrivenComponent', () => {
   it('When contentType is present', () => {
     expect(componentParent.name).toBe('Untitled Textbook');
     expect(componentParent.description).toBe('Enter description for TextBook');
+  });
+  it('should call system get api and return the course framework Id ', () => {
+    const frameworkService = TestBed.get(FrameworkService);
+    componentParent.contentType = 'course';
+    const formService = TestBed.get(FormService);
+    spyOn(frameworkService, 'getCourseFramework').and.returnValue(observableOf(mockFrameworkData.courseFramework));
+    componentParent.ngOnInit();
+    expect(componentParent.framework).toEqual('TPD');
   });
 });

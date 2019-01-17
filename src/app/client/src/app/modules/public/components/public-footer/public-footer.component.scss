@@ -1,0 +1,15 @@
+.ui.footer.segment {
+  width: 100%;
+  background-color: #fff;
+}
+
+.closeBtn-dial-code {
+  right: 10px;
+  top: 14px;
+}
+
+@media only screen and (max-width: 768px) {
+  .closeBtn-dial-code {
+    right: 0;
+  }
+}

@@ -17,8 +17,7 @@ jQuery.fn.iziModal = iziModal;
  */
 @Component({
   selector: 'app-content-editor',
-  templateUrl: './content-editor.component.html',
-  styleUrls: ['./content-editor.component.css']
+  templateUrl: './content-editor.component.html'
 })
 export class ContentEditorComponent implements OnInit, OnDestroy {
 

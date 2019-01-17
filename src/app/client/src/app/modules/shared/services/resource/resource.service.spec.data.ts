@@ -2498,5 +2498,53 @@ export const mockRes = {
             'expires': 1530167319922,
             'maxAge': 600
         }
-    }
+    },
+    cachedResourcebundleSearch: {
+        'value': [
+         {
+          'code': 'portalLanguage',
+          'dataType': 'text',
+          'name': 'Portal Language',
+          'label': 'Portal Language',
+          'description': 'Language that should be displayed on portal (Like English, Hindi etc)',
+          'editable': true,
+          'inputType': 'select',
+          'required': false,
+          'displayProperty': 'Editable',
+          'visible': true,
+          'renderingHints': {
+           'semanticColumnWidth': 'four'
+          },
+          'range': [
+           {
+            'value': 'en',
+            'name': 'English',
+            'dir': 'ltr'
+           },
+           {
+            'value': 'hi',
+            'name': 'हिंदी',
+            'dir': 'ltr'
+           },
+           {
+            'value': 'ur',
+            'name': 'Urdu',
+            'dir': 'rtl'
+           }
+          ],
+          'index': 1
+         }
+        ],
+        'options': {
+         'expires': 1547624219448,
+         'maxAge': 600
+        }
+    },
+    cachedPortalLanguage: {
+        'value': 'ur',
+        'options': {
+         'expires': 1547624226995,
+         'maxAge': 600
+        }
+       }
 };

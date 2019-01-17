@@ -2,7 +2,8 @@ import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { NgModule , ModuleWithProviders} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent } from './components';
+import { ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
+  OtpPopupComponent } from './components';
 import { SlickModule } from 'ngx-slick';
 import { SuiModule } from 'ng2-semantic-ui';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -23,7 +24,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule
   ],
-  declarations: [ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent],
-  exports: [ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent]
+  declarations: [ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent, OtpPopupComponent],
+  exports: [ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent, OtpPopupComponent]
 })
 export class SharedFeatureModule { }

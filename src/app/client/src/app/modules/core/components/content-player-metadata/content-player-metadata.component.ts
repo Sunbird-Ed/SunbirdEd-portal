@@ -7,7 +7,7 @@ import { ContentData, ResourceService } from '@sunbird/shared';
 @Component({
   selector: 'app-content-player-metadata',
   templateUrl: './content-player-metadata.component.html',
-  styleUrls: ['./content-player-metadata.component.css']
+  styleUrls: ['./content-player-metadata.component.scss']
 })
 export class ContentPlayerMetadataComponent implements OnInit, OnDestroy {
   readMore = false;

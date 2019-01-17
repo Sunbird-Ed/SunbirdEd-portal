@@ -30,7 +30,13 @@
                     </div>
                 </div>
                 <div class="ui bottom attached small segment" suiTabContent="tableMenu">
-                    <app-data-table *ngIf="isTableDataLoaded" [headerData]="table.header" [rowsData]="table.data"></app-data-table>
+                    <table [id]="currentReport.id" class="ui celled table" style="width:100%" *ngIf="isTableDataLoaded">
+                        <thead>
+                            <tr>
+                                <th *ngFor="let header of table.header">{{header}}</th>
+                            </tr>
+                        </thead>
+                    </table>
                     <div class="ui warning message" *ngIf="!isTableDataLoaded">
                         Table is not available for this Report
                     </div>

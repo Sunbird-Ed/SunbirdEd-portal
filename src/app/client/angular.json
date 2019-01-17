@@ -23,13 +23,13 @@
             ],
             "styles": [
               "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
-              "src/styles/semantic/semantic.min.css",
+              "src/assets/styles/semantic/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
-              "src/styles/styles.scss"
+              "src/assets/styles/styles.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "src/styles/"
+                "src/assets/styles/"
               ]
             },
             "scripts": [
@@ -130,13 +130,13 @@
               "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js"
             ],
             "styles": [
-              "src/styles/semantic/semantic.min.css",
+              "src/assets/styles/semantic/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
-              "src/styles/styles.scss"
+              "src/assets/styles/styles.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "src/styles/"
+                "src/assets/styles/"
               ]
             },
             "assets": [

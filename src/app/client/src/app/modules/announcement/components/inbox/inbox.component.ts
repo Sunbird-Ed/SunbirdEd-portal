@@ -15,8 +15,7 @@ import { Subject } from 'rxjs';
  */
 @Component({
   selector: 'app-inbox',
-  templateUrl: './inbox.component.html',
-  styleUrls: ['./inbox.component.css']
+  templateUrl: './inbox.component.html'
 })
 export class InboxComponent implements OnInit, OnDestroy {
 
