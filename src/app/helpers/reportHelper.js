@@ -3,6 +3,7 @@ const _ = require('lodash')
 var azure = require('azure-storage')
 const dateFormat = require('dateformat')
 const uuidv1 = require('uuid/v1')
+const blobService = azure.createBlobService(envHelper.sunbird_azure_account_name, envHelper.sunbird_azure_account_key);
 
 function isValidSlug() {
     return function (req, res, next) {
@@ -30,8 +31,7 @@ function isValidSlug() {
 
 function azureBlobStream() {
     return function (req, res, next) {
-        var blobService = azure.createBlobService(envHelper.sunbird_azure_account_name, envHelper.sunbird_azure_account_key);
-        blobService.getBlobToText(envHelper.sunbird_azure_report_container_name, req.params.slug + '/' +req.params.filename, function (error, text) {
+        blobService.getBlobToText(envHelper.sunbird_azure_report_container_name, req.params.slug + '/' + req.params.filename, function (error, text) {
             if (error && error.statusCode === 404) {
                 res.status(404).send({
                     'id': 'api.report',
