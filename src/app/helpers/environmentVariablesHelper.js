@@ -63,8 +63,8 @@ let envVariables = {
   },
   sunbird_google_captcha_site_key: env.sunbird_google_captcha_site_key,
   sunbird_azure_report_container_name: env.sunbird_azure_report_container_name || 'report',
-  sunbird_azure_account_name: env.sunbird_azure_account_name || 'sunbirddev',
-  sunbird_azure_account_key: env.sunbird_azure_account_key || 'hVZeCECRUwsIZEL2h+GqF3bRo5Iz365G+zhrOZlYYYXBmrjuv4NyBv47xsmcvyQvAQPnnLG9r9iGil9TLgeyeA=='
+  sunbird_azure_account_name: env.sunbird_azure_account_name,
+  sunbird_azure_account_key: env.sunbird_azure_account_key
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')

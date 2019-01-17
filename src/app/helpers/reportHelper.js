@@ -31,7 +31,7 @@ function isValidSlug() {
 function azureBlobStream() {
     return function (req, res, next) {
         var blobService = azure.createBlobService(envHelper.sunbird_azure_account_name, envHelper.sunbird_azure_account_key);
-        blobService.getBlobToText(envHelper.sunbird_azure_report_container_name, req.params.slug + '/config1.json', function (error, text) {
+        blobService.getBlobToText(envHelper.sunbird_azure_report_container_name, req.params.slug + '/' +req.params.filename, function (error, text) {
             if (error) {
                 console.error(error);
                 res.status(500).send({
