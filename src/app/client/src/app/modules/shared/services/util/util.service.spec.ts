@@ -57,11 +57,4 @@ describe('UtilService', () => {
       const data = service.translateValues(servicemockRes.formData.range, 'hi');
       expect(service.translateValues).toBeDefined();
     }));
-  it('should call convertSelectedOption',
-    inject([UtilService], (service: UtilService) => {
-      const selectedOption = { board: ['CBSE'] };
-      const data = service.convertSelectedOption(selectedOption, servicemockRes.formData, 'en', 'hi');
-      expect(service.convertSelectedOption).toBeDefined();
-      expect(data).toEqual({board: ['CBSE']});
-    }));
 });
