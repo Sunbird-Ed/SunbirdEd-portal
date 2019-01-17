@@ -54,7 +54,6 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
       });
     } else {
       this.orgDetailsUnsubscribe = this.orgDetailsService.orgDetails$.subscribe(((data) => {
-        console.log(data);
         if (data && !data.err) {
           this.channelId = data.orgDetails.hashTagId;
           this.getLanguage();
