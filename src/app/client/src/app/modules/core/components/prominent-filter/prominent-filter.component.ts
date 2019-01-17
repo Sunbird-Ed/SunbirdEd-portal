@@ -115,6 +115,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
         this.selectedLanguage = item.value;
         if (this.formFieldProperties && this.formFieldProperties.length > 0) {
              _.forEach(this.formFieldProperties, (data, index) => {
+              this.formFieldProperties[index] = this.utilService.translateLabel(data, this.selectedLanguage );
               this.formFieldProperties[index].range  = this.utilService.translateValues(data.range, this.selectedLanguage);
              });
              this.filtersDetails = _.cloneDeep(this.formFieldProperties);
@@ -165,6 +166,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
           formFieldCategory.range = _.union(formFieldCategory.range, frameworkTerms);
           }
           if (this.selectedLanguage !== 'en') {
+            formFieldCategory = this.utilService.translateLabel(formFieldCategory, this.selectedLanguage );
             formFieldCategory.range =  this.utilService.translateValues(formFieldCategory.range, this.selectedLanguage);
           }
           return true;

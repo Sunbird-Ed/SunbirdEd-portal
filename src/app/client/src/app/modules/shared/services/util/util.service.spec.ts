@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-
+import {servicemockRes} from './util.service.spec.data';
 import { UtilService } from './util.service';
 
 describe('UtilService', () => {
@@ -44,5 +44,24 @@ describe('UtilService', () => {
       const softconstraintsdata = service.manipulateSoftConstraint(filter, softConstraintData, userFrameworkData);
       expect(service.manipulateSoftConstraint).toBeDefined();
       expect(softconstraintsdata).toEqual({filters: userFrameworkData , mode: 'soft'});
+    }));
+
+  it('should call translateLabels ',
+    inject([UtilService], (service: UtilService) => {
+      const data = service.translateLabel(servicemockRes.formData, 'hi');
+      expect(service.translateLabel).toBeDefined();
+      expect(data.label).toEqual('Board/Syllabus');
+    }));
+  it('should call translateValues',
+    inject([UtilService], (service: UtilService) => {
+      const data = service.translateValues(servicemockRes.formData.range, 'hi');
+      expect(service.translateValues).toBeDefined();
+    }));
+  it('should call convertSelectedOption',
+    inject([UtilService], (service: UtilService) => {
+      const selectedOption = { board: ['CBSE'] };
+      const data = service.convertSelectedOption(selectedOption, servicemockRes.formData, 'en', 'hi');
+      expect(service.convertSelectedOption).toBeDefined();
+      expect(data).toEqual({board: ['CBSE']});
     }));
 });

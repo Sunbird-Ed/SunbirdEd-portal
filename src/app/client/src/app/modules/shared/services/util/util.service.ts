@@ -120,10 +120,15 @@ export class UtilService {
   }
   translateLabel(formFieldCategory, selectedLanguage) {
     const translation = JSON.parse(formFieldCategory.translations);
+    if (translation && !translation.en) {
+      translation.en = formFieldCategory.label;
+      formFieldCategory.translations = JSON.stringify(translation);
+    }
     if (translation && translation[selectedLanguage]) {
-      return translation[selectedLanguage];
+      formFieldCategory.label = translation[selectedLanguage];
+      return formFieldCategory;
     } else {
-      return formFieldCategory.label;
+      return formFieldCategory;
     }
   }
   convertSelectedOption(selectedData, formFieldProperties, selectedLanguage, convertLanguage) {
