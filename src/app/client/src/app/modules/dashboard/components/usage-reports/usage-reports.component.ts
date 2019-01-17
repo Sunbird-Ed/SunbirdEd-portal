@@ -3,7 +3,7 @@ import { UsageService } from './../../services';
 import * as _ from 'lodash';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from '@sunbird/core';
-import { ToasterService, } from '@sunbird/shared';
+import { ToasterService, ResourceService, INoResultMessage } from '@sunbird/shared';
 @Component({
   selector: 'app-usage-reports',
   templateUrl: './usage-reports.component.html',
@@ -17,27 +17,43 @@ export class UsageReportsComponent implements OnInit {
   isTableDataLoaded = false;
   currentReport: any;
   slug: string;
+  noResult: boolean;
+  noResultMessage: INoResultMessage;
+
   constructor(private usageService: UsageService, private sanitizer: DomSanitizer,
-    public userService: UserService, public toasterService: ToasterService) { }
+    public userService: UserService, public toasterService: ToasterService,
+    public resourceService: ResourceService) { }
 
   ngOnInit() {
+
     this.slug = _.get(this.userService, 'userProfile.rootOrg.slug');
     this.usageService.getData(`/reports/${this.slug}/config.json`).subscribe(data => {
-      this.reportMetaData = data;
-      if (data[0]) { this.renderReport(data[0]); }
+      if (_.get(data, 'responseCode') === 'OK') {
+        this.noResult = false;
+        this.reportMetaData = _.get(data, 'result');
+        if (this.reportMetaData[0]) { this.renderReport(this.reportMetaData[0]); }
+      }
     }, (err) => {
       console.log(err);
+      this.noResultMessage = {
+        'messageText': this.resourceService.messages.stmsg.m0131
+      };
+      this.noResult = true;
     });
   }
   renderReport(report: any) {
     this.currentReport = report;
     this.isTableDataLoaded = false;
     const url = report.dataSource;
-    this.usageService.getData(url).subscribe((data) => {
+    this.usageService.getData(url).subscribe((response) => {
       this.table = {};
       this.chartData = [];
-      if (_.get(report, 'chart')) { this.createChartData(_.get(report, 'chart'), data); }
-      if (_.get(report, 'table')) { this.renderTable(_.get(report, 'table'), data); }
+      if (_.get(response, 'responseCode') === 'OK') {
+        const data = _.get(response, 'result');
+        if (_.get(report, 'chart')) { this.createChartData(_.get(report, 'chart'), data); }
+        if (_.get(report, 'table')) { this.renderTable(_.get(report, 'table'), data); }
+      }
+
     });
   }
 

@@ -31,6 +31,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public ownershipType: Array<string>;
   public queryParams: object;
   public contentDetails: any;
+  public videoMaxSize: any;
 
   constructor(private userService: UserService, public _zone: NgZone, private activatedRoute: ActivatedRoute,
     private tenantService: TenantService, private telemetryService: TelemetryService, private router: Router,
@@ -42,6 +43,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     this.extContWhitelistedDomains = (<HTMLInputElement>document.getElementById('extContWhitelistedDomains')) ?
       (<HTMLInputElement>document.getElementById('extContWhitelistedDomains')).value : 'youtube.com,youtu.be';
+    this.videoMaxSize = (<HTMLInputElement>document.getElementById('videoMaxSize')) ?
+      (<HTMLInputElement>document.getElementById('videoMaxSize')).value : '100';
   }
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
@@ -178,6 +181,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.lock = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     window.config.extContWhitelistedDomains = this.extContWhitelistedDomains;
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
+    window.config.videoMaxSize = this.videoMaxSize;
   }
   /**
   * Re directed to the workspace on close of modal
