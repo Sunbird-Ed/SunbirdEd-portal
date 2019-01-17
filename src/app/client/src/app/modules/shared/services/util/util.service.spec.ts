@@ -1,5 +1,4 @@
 import { TestBed, inject } from '@angular/core/testing';
-import {servicemockRes} from './util.service.spec.data';
 import { UtilService } from './util.service';
 
 describe('UtilService', () => {
