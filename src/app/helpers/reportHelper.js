@@ -9,7 +9,7 @@ function isValidSlug() {
         if (_.get(req, 'session.rootOrg.slug') !== req.params.slug) {
             res.status(403)
             res.send({
-                'id': 'api.error',
+                'id': 'api.report',
                 'ver': '1.0',
                 'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
                 'params': {
@@ -32,9 +32,9 @@ function azureBlobStream() {
     return function (req, res, next) {
         var blobService = azure.createBlobService(envHelper.sunbird_azure_account_name, envHelper.sunbird_azure_account_key);
         blobService.getBlobToText(envHelper.sunbird_azure_report_container_name, req.params.slug + '/' +req.params.filename, function (error, text) {
-            if (error) {
-                res.status(500).send({
-                    'id': 'api.error',
+            if (error && error.statusCode === 404) {
+                res.status(404).send({
+                    'id': 'api.report',
                     'ver': '1.0',
                     'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
                     'params': {
@@ -42,9 +42,24 @@ function azureBlobStream() {
                         'msgid': null,
                         'status': 'failed',
                         'err': 'CLIENT_ERROR',
-                        'errmsg': 'Failed to stream blob'
+                        'errmsg': 'Blob not found'
                     },
                     'responseCode': 'CLIENT_ERROR',
+                    'result': {}
+                });
+            } else if (error) {
+                res.status(500).send({
+                    'id': 'api.report',
+                    'ver': '1.0',
+                    'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
+                    'params': {
+                        'resmsgid': uuidv1(),
+                        'msgid': null,
+                        'status': 'failed',
+                        'err': 'SERVER_ERROR',
+                        'errmsg': 'Failed to display blob'
+                    },
+                    'responseCode': 'SERVER_ERROR',
                     'result': {}
                 });
             } else {
