@@ -1,7 +1,7 @@
 import { of, throwError } from 'rxjs';
 import { first, mergeMap, map, tap , catchError, filter} from 'rxjs/operators';
 import {
-  ConfigService, ResourceService, Framework, BrowserCacheTtlService
+  ConfigService, ResourceService, Framework, BrowserCacheTtlService, UtilService
 } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -47,19 +47,32 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
   public filterIntractEdata: IInteractEventEdata;
 
   public submitIntractEdata: IInteractEventEdata;
+  private selectedLanguage: string;
   // add langauge default value en
 
   constructor(public configService: ConfigService, public resourceService: ResourceService, public router: Router,
     private activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
     public frameworkService: FrameworkService, public formService: FormService,
-    public userService: UserService, public permissionService: PermissionService,
+    public userService: UserService, public permissionService: PermissionService, private utilService: UtilService,
     private browserCacheTtlService: BrowserCacheTtlService, private orgDetailsService: OrgDetailsService ) {
     this.router.onSameUrlNavigation = 'reload';
   }
 
   ngOnInit() {
-    // subscribe this.resourceService.languageSelected$
-    // check if formFieldProperties length is greater than 0 and check formInput data have value then call a function to change values
+    this.resourceService.languageSelected$
+      .subscribe(item => {
+        this.selectedLanguage = item.value;
+        if (this.formFieldProperties && this.formFieldProperties.length > 0) {
+             _.forEach(this.formFieldProperties, (data, index) => {
+              this.formFieldProperties[index].label = this.utilService.translateLabel(data, this.selectedLanguage );
+              this.formFieldProperties[index].range  = this.utilService.translateValues(data.range, this.selectedLanguage);
+             });
+             this.filtersDetails = _.cloneDeep(this.formFieldProperties);
+             this.formInputData = this.utilService.convertSelectedOption(this.formInputData,
+              this.formFieldProperties, 'en', this.selectedLanguage);
+        }
+      }
+        );
     this.frameworkService.initialize(this.frameworkName, this.hashTagId);
     this.getFormatedFilterDetails().subscribe((formFieldProperties) => {
       this.formFieldProperties = formFieldProperties;
@@ -112,9 +125,11 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
                 formFieldCategory.range.push({ name: 'TextBook' });
           }
           }
-          // change the field name
-          // if translation does not exist add for en
-          // change the range names call translateValues function and if translation does not exist add for en
+            if (this.selectedLanguage !== 'en') {
+              formFieldCategory.label = this.utilService.translateLabel(formFieldCategory, this.selectedLanguage );
+            formFieldCategory.range =  this.utilService.translateValues(formFieldCategory.range, this.selectedLanguage);
+
+            }
           return true;
         });
         formFieldProperties = _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index');
@@ -152,6 +167,9 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.formInputData = {};
       _.forIn(params, (value, key) => this.formInputData[key] = typeof value === 'string' && key !== 'key' ? [value] : value);
+      this.formInputData = this.utilService.convertSelectedOption(this.formInputData,
+        this.formFieldProperties, 'en', this.selectedLanguage);
+
       if (params.channel) {
         this.modelChange(this.formInputData.channel);
           this.channelInputLabel = this.orgDetailsService.getOrg();
@@ -181,7 +199,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
   }
 
   public applyFilters() {
-    // call convertSelectedOption method to convert selected option to english
+    this.formInputData = this.utilService.convertSelectedOption(this.formInputData, this.formFieldProperties, this.selectedLanguage, 'en');
     const queryParams: any = {};
     _.forIn(this.formInputData, (eachInputs: Array<any | object>, key) => {
         const formatedValue = typeof eachInputs === 'string' ? eachInputs :
@@ -267,14 +285,5 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
     catchError(err => {
       return [];
     }));
-  }
-  translateValues(range) {
- // range will contain all the data for specific category
- // loop through the data and check if selected language translation exists or not.
- // if exists change the name and check en translation exists or not if not exists add it.
-  }
-  convertSelectedOption(data) {
- // data will have all the selected values
- // loop through formFieldProperties and translate the values to english.
   }
 }

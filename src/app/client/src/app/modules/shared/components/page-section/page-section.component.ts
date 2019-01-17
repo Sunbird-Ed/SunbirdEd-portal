@@ -122,9 +122,13 @@ export class PageSectionComponent implements OnInit {
     this.playEvent.emit(event);
   }
   ngOnInit() {
-    // subscribe this.resourceService.languageSelected$
-    // check the section name should not be My Courses
-    // call selectedLanguageTranslation method
+    this.resourceService.languageSelected$
+      .subscribe(item => {
+        if (this.section.name !== 'My Courses' && item.value !== 'en') {
+          this.selectedLanguageTranslation(item.value);
+        }
+      }
+      );
     const id = _.get(this.activatedRoute, 'snapshot.data.telemetry.env');
     this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
     if (id && this.pageid) {
@@ -136,9 +140,12 @@ export class PageSectionComponent implements OnInit {
     }
   }
   selectedLanguageTranslation(data) {
-   // data will give language selected
-  // check translated language details exists or not in this.section
-  // if exists with any value replace it with the name
+  const display = JSON.parse(this.section['display']);
+  if (_.has(display.name, data) && !_.isEmpty(display.name[data])) {
+    this.section.name = display.name[data];
+  } else {
+    this.section.name = display.name['en'];
+  }
   }
   /**
    * get inview  Data
