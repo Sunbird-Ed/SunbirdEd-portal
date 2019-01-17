@@ -95,6 +95,7 @@ function getLocals (req, callback) {
   locals.userUploadRefLink = configHelper.getConfig('sunbird_portal_user_upload_ref_link')
   locals.deviceRegisterApi = envHelper.DEVICE_REGISTER_API
   locals.googleCaptchaSiteKey = envHelper.sunbird_google_captcha_site_key
+  locals.videoMaxSize = envHelper.sunbird_portal_video_max_size
   callback(null, locals)
 }
 
