@@ -28,16 +28,14 @@
   
     <!-- add state and district -->
     <div class="ui container relative" *ngIf="isCustodianOrgUser">
-      <div>
-        <div class="mb-0 d-flex flex-jc-center">
-          <div class="fs-1-16">{{resourceService.frmelmnts.lbl.district}} :</div>
-          <div class="fs-1-16 ml-5" [ngClass]="{'text-warm-grey': !district}">{{district || resourceService.frmelmnts.lbl.addDistrict}} </div>
+        <div class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+          <div class="fs-1-16 text-ac">{{resourceService.frmelmnts.lbl.district}} :</div>
+          <div class="fs-1-16 ml-5 font-w-bold text-ac" [ngClass]="{'text-warm-grey': !district}">{{district || resourceService.frmelmnts.lbl.addDistrict}} </div>
         </div>
-        <div class="mb-0 d-flex mb-5 flex-jc-center">
-          <div class="fs-1-16">{{resourceService.frmelmnts.lbl.state}} :</div>
-          <div class="fs-1-16 ml-5" [ngClass]="{'text-warm-grey': !state}">{{state || resourceService.frmelmnts.lbl.addState}}</div>
+        <div class="d-flex mb-5 flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+          <div class="fs-1-16 text-ac">{{resourceService.frmelmnts.lbl.state}} :</div>
+          <div class="fs-1-16 ml-5 font-w-bold text-ac" [ngClass]="{'text-warm-grey': !state}">{{state || resourceService.frmelmnts.lbl.addState}}</div>
         </div>
-      </div>
       <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editProfileInteractEdata" class="ui semi-circular dodger-blue button right-aligned-button right-0 bottom-5 absolute computer only" (click)="showEditUserDetailsPopup=true">Edit</button>
     </div>
 
@@ -57,15 +55,18 @@
     </div>
 
 
-    <div class="m-0 pl-0 mobile only" *ngIf=" orgDetails && orgDetails.locations">
-      <div class="mb-0 d-flex  m-responsive-flex-dc mt-15" *ngIf="getLocationDetails(orgDetails.locations, 'block')">
-        <span class="fs-1-16 min-w-90 text-ac ">{{resourceService.frmelmnts.lbl.block}} :</span>
+    <div class="m-0 pl-0 mobile only" *ngIf="orgDetails && orgDetails.locations && !isCustodianOrgUser">
+      <div class="mb-0 d-flex m-responsive-flex-dc mt-15" *ngIf="getLocationDetails(orgDetails.locations, 'block')">
+        <span class="fs-1-16 text-ac">{{resourceService.frmelmnts.lbl.block}} :</span>
         <span class="fs-1-16 font-w-bold text-ac">{{getLocationDetails(orgDetails.locations, 'block')}}</span>
       </div>
-      <div class="mb-0 d-flex  m-responsive-flex-dc mt-15" *ngIf="getLocationDetails(orgDetails.locations, 'district') && getLocationDetails(orgDetails.locations, 'state') ">
-        <span class="fs-1-16 min-w-90 text-ac">{{resourceService.frmelmnts.lbl.district}} :</span>
-        <span class="fs-1-16 font-w-bold text-ac">{{getLocationDetails(orgDetails.locations, 'district')}},
-          {{getLocationDetails(orgDetails.locations, 'state')}}</span>
+      <div class="mb-0 d-flex m-responsive-flex-dc mt-15" *ngIf="getLocationDetails(orgDetails.locations, 'district')">
+        <span class="fs-1-16 text-ac">{{resourceService.frmelmnts.lbl.district}} :</span>
+        <span class="fs-1-16 font-w-bold text-ac">{{getLocationDetails(orgDetails.locations, 'district')}}</span>
+      </div>
+      <div class="mb-0 d-flex m-responsive-flex-dc mt-15" *ngIf="getLocationDetails(orgDetails.locations, 'state')">
+        <span class="fs-1-16 text-ac text-ac">{{resourceService.frmelmnts.lbl.state}} :</span>
+        <span class="fs-1-16 font-w-bold text-ac">{{getLocationDetails(orgDetails.locations, 'state')}}</span>
       </div>
     </div>
   </section>
@@ -76,14 +77,14 @@
         <div (click)="showContactPopup=true;contactType='phone'" class="ui semi-circular dodger-blue basic label mb-15 cursor-pointer" *ngIf="userProfile.phone">
           <i class="phone blue icon mr-5" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editMobileInteractEdata"></i> &#x200E;+91 {{userProfile.phone}}
         </div>
-        <div (click)="showContactPopup=true;contactType='phone'" class="ui semi-circular update basic label mb-15 cursor-pointer" *ngIf="!userProfile.phone" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editMobileInteractEdata">
+        <div (click)="showContactPopup=true;contactType='phone'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.phone" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editMobileInteractEdata">
           <i class="phone icon mr-5 pr-30"></i> {{resourceService?.frmelmnts?.lbl?.addPhoneNo}}
         </div>
       </div>
       <div (click)="showContactPopup=true;contactType='email'" class="ui semi-circular dodger-blue basic label cursor-pointer" *ngIf="userProfile.email" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editEmailInteractEdata">
         <i class="mail icon mr-5"></i> {{userProfile.email}}
       </div>
-      <div (click)="showContactPopup=true;contactType='email'" class="ui semi-circular update basic label mb-15 cursor-pointer" *ngIf="!userProfile.email" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editEmailInteractEdata">
+      <div (click)="showContactPopup=true;contactType='email'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.email" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editEmailInteractEdata">
         <i class="mail icon mr-5 pr-30"></i> {{resourceService?.frmelmnts?.lbl?.addEmailID}}
       </div>
     </div>

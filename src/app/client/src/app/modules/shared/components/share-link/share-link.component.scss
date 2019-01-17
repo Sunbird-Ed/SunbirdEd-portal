@@ -1,14 +1,14 @@
 @import "variables";
 
 .ui.popup::after {
-   background-color: $link-color !important;
-   background:$link-color !important
+   background-color: $primary-color !important;
+   background: $primary-color !important
 }::ng-deep .share-link-popup + sui-popup>.ui.popup {
-   background-color:$link-color;
+   background-color: $primary-color;
  }
  ::ng-deep .share-link-popup + sui-popup>.ui.popup .content {
    color:#fff;
  }
  ::ng-deep .share-link-popup + sui-popup>.ui.popup sui-popup-arrow .dynamic.arrow {
-   background-color: $link-color;
+   background-color: $primary-color;
  }

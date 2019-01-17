@@ -1,49 +1,56 @@
 @import "variables";
 
-.ui.text.menu .item {
-  padding: .35714286em .86em;
+.divider {
+  color: $text-gray;
+
+  &:hover {
+    color: $text-gray;
+  }
 }
 
-.ui.text.menu .item:hover {
-  color: $link-color;
-}
-
-.ui.text.menu .item.active {
-  font-weight: bold;
-  color: $link-color;
-}
-
-.ui.vertical.menu .active.item,
-.ui.vertical.menu .sign-in.item {
-  color:$link-color;
-  font-weight: bold;
-  background: none;
-}
-
-.side-bar-close-icon {
-  position: absolute;
-  top: 6px;
-  right: 0;
+.close {
   font-size: 1.2rem;
-  color: $link-color;
-  z-index: 888;
-  height: 35px;
-  width: 35px;
-  vertical-align: middle;
-  line-height: 35px;
+  color: $primary-color;
 }
 
-.sign-in {
-  color: $link-color;
-  font-weight: bold;
-  background: none;
+.ui.menu {
+  &.text {
+    .item {
+      padding: 0.35714286em 0.86em;
+      color: $menuitem-color;
+
+      &:hover,
+      &:focus {
+        color: $primary-color;
+        outline: none;
+      }
+
+      &.active {
+        font-weight: bold;
+        color: $primary-color;
+
+        &:hover,
+        &:focus {
+          opacity: 0.9;
+        }
+      }
+    }
+  }
+  &.vertical {
+    .active.item {
+      color: $primary-color;
+      font-weight: bold;
+      background: none;
+    }
+  }
 }
 
-.fixed-logout-btn {
+.logout-btn {
   position: fixed !important;
   bottom: 0;
   width: 100%;
   font-weight: bold !important;
-  color: $link-color !important;
-  border-top: 1px solid rgba(34,36,38, .15) !important;
+  color: $primary-color !important;
+  background-color: $white-color;
+  border-top: 1px solid rgba(34,36,38, 0.15) !important;
 }

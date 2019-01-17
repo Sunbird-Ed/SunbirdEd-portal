@@ -1032,5 +1032,20 @@
       "epub": "fa fa-file-text fa-lg",
       "doc": "fa fa-file-text fa-lg"
     }
-  }
+  },
+  "mediumCode":{
+    "english": "en",
+    "hindi": "hi",
+    "telugu": "te",
+    "kannada": "kn",
+    "tamil": "ta",
+    "marathi": "mr",
+    "urdu": "ur",
+    "malayalam": "ml",
+    "bengali": "bn",
+    "assamese": "as",
+    "gujarati": "gu",
+    "punjabi": "pa",
+    "oriya": "or"
+   }
 }

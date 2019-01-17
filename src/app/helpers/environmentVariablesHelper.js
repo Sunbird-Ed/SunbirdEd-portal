@@ -61,7 +61,10 @@ let envVariables = {
     clientId: env.sunbird_google_keycloak_client_id || 'google-auth',
     secret: env.sunbird_google_keycloak_secret || '8486df4b-2ec0-4249-92d8-5f3a7064cd07'
   },
-  sunbird_google_captcha_site_key: env.sunbird_google_captcha_site_key
+  sunbird_google_captcha_site_key: env.sunbird_google_captcha_site_key,
+  sunbird_azure_report_container_name: env.sunbird_azure_report_container_name || 'reports',
+  sunbird_azure_account_name: env.sunbird_azure_account_name,
+  sunbird_azure_account_key: env.sunbird_azure_account_key
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')

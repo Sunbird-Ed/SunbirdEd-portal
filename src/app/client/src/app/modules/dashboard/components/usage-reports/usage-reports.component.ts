@@ -3,9 +3,7 @@ import { UsageService } from './../../services';
 import * as _ from 'lodash';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from '@sunbird/core';
-import { first, map } from 'rxjs/operators';
-import { ToasterService, IUserData } from '@sunbird/@sunbird/shared';
-
+import { ToasterService, } from '@sunbird/shared';
 @Component({
   selector: 'app-usage-reports',
   templateUrl: './usage-reports.component.html',
@@ -23,20 +21,13 @@ export class UsageReportsComponent implements OnInit {
     public userService: UserService, public toasterService: ToasterService) { }
 
   ngOnInit() {
-    this.userService.userData$.pipe(first(),
-      map((user: IUserData) => {
-        if (user.err || !_.get(user, 'userProfile.rootOrg.slug')) {
-          this.toasterService.error('Unable fetch data for dashboards');
-        } else {
-          this.slug = _.get(user, 'userProfile.rootOrg.slug');
-          this.usageService.getData(`/reports/${this.slug}/meta.json`).subscribe(data => {
-            this.reportMetaData = data;
-            if (data[0]) { this.renderReport(data[0]); }
-          });
-        }
-
-      }));
-
+    this.slug = _.get(this.userService, 'userProfile.rootOrg.slug');
+    this.usageService.getData(`/reports/${this.slug}/config.json`).subscribe(data => {
+      this.reportMetaData = data;
+      if (data[0]) { this.renderReport(data[0]); }
+    }, (err) => {
+      console.log(err);
+    });
   }
   renderReport(report: any) {
     this.currentReport = report;
@@ -74,11 +65,6 @@ export class UsageReportsComponent implements OnInit {
     this.table.header = _.get(table, 'columns') || _.get(data, _.get(table, 'columnsExpr'));
     this.table.data = _.get(table, 'values') || _.get(data, _.get(table, 'valuesExpr'));
     this.isTableDataLoaded = true;
-    $('#' + this.currentReport.id).DataTable({
-      'data': this.table.data,
-      'scrollX': true,
-      'searching': false,
-    });
   }
 
   downloadCSV(url) {
