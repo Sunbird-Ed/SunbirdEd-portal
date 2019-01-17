@@ -23,7 +23,6 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
   @Input() courseHierarchy: any;
 
   public baseUrl = '';
-  public enrollClickedId = '';
   public showLoginModal = false;
   batchList = [];
   showError = false;
@@ -74,19 +73,13 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
-  enrollBatch(batch) {
+  enrollBatch() {
     this.baseUrl = '/learn/course/' + this.courseId;
-    this.enrollClickedId = batch.identifier;
     if (!this.userService.loggedIn) {
         this.showLoginModal = true;
     } else {
-      this.router.navigate([this.baseUrl], { queryParams: { batch: this.enrollClickedId }});
+      this.router.navigate([this.baseUrl]);
     }
-  }
-
-  onLoginClick () {
-    this.cacheService.set('postLoginRedirectUrl', {redirectUrl: this.baseUrl, queryParams: {batch: this.enrollClickedId}} ,
-      { maxAge: this.browserCacheTtlService.browserCacheTtl});
   }
 
   ngOnDestroy() {
