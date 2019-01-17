@@ -1,4 +1,4 @@
-import { map, filter } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { ConfigService, ServerResponse, ContentData } from '@sunbird/shared';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
