@@ -95,7 +95,7 @@ describe('UpdateUserDetailsComponent', () => {
     spyOn(component, 'getDistrict').and.callThrough();
     spyOn(profileService, 'getUserLocation').and.returnValue(observableOf(testData.getDistrictSuccess));
     component.ngOnInit();
-    expect(component.showDistricDivLoader).toBeFalsy();
+    expect(component.showDistrictDivLoader).toBeFalsy();
   });
 
   it('should call get district and get error', () => {
