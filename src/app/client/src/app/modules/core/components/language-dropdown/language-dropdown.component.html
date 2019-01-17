@@ -6,7 +6,7 @@
 </div>
 
 <div class="d-flex flex-ai-center computer only language-selection-dropdown">
-  <div class="text"> Select language : </div>
+  <div class="text"> {{resourceService?.frmelmnts?.lbl?.selectLanguage}} </div>
 <sui-select class="inline"  [(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" valueField="value" labelField="label">
   <sui-select-option *ngFor="let option of languages" [value]="option"></sui-select-option> 
 </sui-select>

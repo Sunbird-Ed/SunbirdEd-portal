@@ -124,7 +124,7 @@ export class PageSectionComponent implements OnInit {
   ngOnInit() {
     this.resourceService.languageSelected$
       .subscribe(item => {
-        if (this.section.name !== 'My Courses' && item.value !== 'en') {
+        if (this.section.name !== 'My Courses') {
           this.selectedLanguageTranslation(item.value);
         }
       }
