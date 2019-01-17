@@ -13,7 +13,8 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
  */
 @Component({
   selector: 'app-user-edit',
-  templateUrl: './user-edit.component.html'
+  templateUrl: './user-edit.component.html',
+  styleUrls: ['./user-edit-component.scss']
 })
 export class UserEditComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
@@ -29,6 +30,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
   selectedOrgUserRoles: Array<string>;
   selectedOrgUserRolesNew: any = [];
 
+  userNames =  [ { 'name': 'Test' }, { 'name': 'No' }, { 'name': 'Benefit' }, { 'name': 'Oranges' }, { 'name': 'Artemis' } ];
   /**
 	 * Contains announcement details returned from API or object called from
    * announcement service
@@ -242,3 +244,4 @@ export class UserEditComponent implements OnInit, OnDestroy {
     this.modal.deny();
   }
 }
+

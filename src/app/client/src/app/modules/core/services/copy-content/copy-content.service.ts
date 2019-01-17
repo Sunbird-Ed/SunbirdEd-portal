@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user/user.service';
 import { ContentService } from './../content/content.service';
+import { FrameworkService } from './../framework/framework.service';
 
 /**
  * Service to copy content
@@ -32,6 +33,8 @@ export class CopyContentService {
    */
   public contentService: ContentService;
 
+  public frameworkService: FrameworkService;
+
   /**
    * constructor
    * @param {ConfigService} config ConfigService reference
@@ -39,11 +42,14 @@ export class CopyContentService {
    * @param {UserService} userService UserService reference
    * @param {ContentService} contentService ContentService reference
    */
-  constructor(config: ConfigService, router: Router, userService: UserService, contentService: ContentService) {
+  constructor(config: ConfigService, router: Router, userService: UserService, contentService: ContentService,
+    frameworkService: FrameworkService ) {
     this.config = config;
     this.router = router;
     this.userService = userService;
     this.contentService = contentService;
+    this.frameworkService = frameworkService;
+    this.frameworkService.initialize();
   }
 
   /**
@@ -82,10 +88,20 @@ export class CopyContentService {
           creator: userData.firstName + ' ' + userData.lastName,
           createdFor: userData.organisationIds,
           createdBy: userData.userId,
-          organization: userData.organisationNames
+          organization: userData.organisationNames,
+          framework: ''
         }
       }
     };
+    if (_.lowerCase(contentData.contentType) === 'course') {
+      req.request.content.framework = contentData.framework;
+    } else {
+      this.frameworkService.frameworkData$.subscribe((frameworkData: any) => {
+        if (!frameworkData.err) {
+          req.request.content.framework = frameworkData.frameworkdata['defaultFramework'].code;
+        }
+      });
+    }
     return req;
   }
 
