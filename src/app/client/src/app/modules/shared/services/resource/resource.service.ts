@@ -39,7 +39,7 @@ export class ResourceService {
    */
   private _instance: string;
   // Observable navItem source
-  private _languageSelected = new BehaviorSubject<string>('en');
+  private _languageSelected = new BehaviorSubject<any>({});
   // Observable navItem stream
   languageSelected$ = this._languageSelected.asObservable();
 
@@ -64,6 +64,13 @@ export class ResourceService {
   }
   public initialize() {
     this.getResource();
+    if (this.cacheService.get('resourcebundlesearch')) {
+      const data = this.cacheService.get('resourcebundlesearch');
+      const language = this.cacheService.get('portalLanguage');
+      this.getLanguageChange(_.find(data[0].range, ['value', language]));
+    } else {
+      this.getLanguageChange({ 'value': 'en', 'name': 'English', 'dir': 'ltr' });
+    }
   }
   /**
    * method to fetch resource bundle
@@ -125,10 +132,7 @@ export class ResourceService {
     return this._instance;
   }
 
-  // service command
-  getlanguageChange(language) {
-   // assign the value to _languageSelected behaviour subject so it will affect in
-   // each place where it is subscribed
-   // this._languageSelected.next(language);
+  getLanguageChange(language) {
+    this._languageSelected.next(language);
   }
 }

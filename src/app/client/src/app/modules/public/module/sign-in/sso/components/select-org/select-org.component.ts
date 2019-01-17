@@ -1,6 +1,9 @@
+import { first } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { FormService } from '@sunbird/core';
 import { ActivatedRoute } from '@angular/router';
+import { TenantService } from '@sunbird/core';
+import { ResourceService } from '@sunbird/shared';
 
 @Component({
   templateUrl: './select-org.component.html',
@@ -11,28 +14,43 @@ export class SelectOrgComponent implements OnInit {
   public orgList: Array<any>;
   public errorUrl = '/sso/sign-in/error';
   public telemetryImpression;
-  constructor(private formService: FormService, public activatedRoute: ActivatedRoute) { }
+  public tenantInfo: any = {};
+  public disableSubmitBtn = true;
+  public submitOrgInteractEdata;
+  constructor(private formService: FormService, public activatedRoute: ActivatedRoute, private tenantService: TenantService,
+    public resourceService: ResourceService) { }
 
   ngOnInit() {
-    this.setTelemetryImpression();
-    this.getSsoOrg().subscribe((formData) => {
-      this.orgList = formData;
-    }, err => {
-      window.location.href = `${this.errorUrl}?error_message=fetch Org list failed`;
+    this.setTenantInfo();
+    this.setTelemetryData();
+    this.getSsoOrgList().subscribe(formData => this.orgList = formData,
+    error => console.log('no org configured in form')); // show toaster message
+  }
+  private setTenantInfo() {
+    this.tenantService.tenantData$.pipe(first()).subscribe(data => {
+      if (!data.err) {
+        this.tenantInfo = {
+          logo: data.tenantData.logo,
+          tenantName: data.tenantData.titleName
+        };
+      }
     });
   }
-  private getSsoOrg() {
+  public handleOrgChange(event) {
+    this.disableSubmitBtn = false;
+  }
+  private getSsoOrgList() {
     const formServiceInputParams = {
       formType: 'organization',
       formAction: 'sign-in',
-      contentType: 'sso-organization'
+      contentType: 'organization'
     };
     return this.formService.getFormConfig(formServiceInputParams);
   }
-  handleOrgSelection(event) {
-    window.location.href = this.selectedOrg.loginUrl;
+  public handleOrgSelection(event) {
+    window.location.href = this.selectedOrg;
   }
-  setTelemetryImpression() {
+  private setTelemetryData() {
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
@@ -42,6 +60,11 @@ export class SelectOrgComponent implements OnInit {
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         uri: this.activatedRoute.snapshot.data.telemetry.uri
       }
+    };
+    this.submitOrgInteractEdata = {
+      id: 'submit-org',
+      type: 'click',
+      pageid: 'sso-sign-in',
     };
   }
 }
