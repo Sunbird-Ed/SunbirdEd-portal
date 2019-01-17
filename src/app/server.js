@@ -71,6 +71,9 @@ require('./routes/ssoRoutes.js')(app, keycloak)
 // client app routes
 require('./routes/clientRoutes.js')(app, keycloak)
 
+// report routes
+require('./routes/reportRoutes.js')(app, keycloak)
+
 app.all(['/content-editor/telemetry', '/collection-editor/telemetry'], bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)
 
