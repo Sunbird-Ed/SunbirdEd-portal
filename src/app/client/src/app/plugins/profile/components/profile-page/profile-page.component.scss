@@ -45,10 +45,13 @@
 
   @media only screen and (max-width: 767px) {
     .profile-label-container {
-        max-width: 200px !important;
+      max-width: 200px !important;
     }
     .m-responsive-flex-dc {
-        flex-direction: column;
+      flex-direction: column;
+    }
+    .m-responsive-mt-15 {
+      margin-top: 15px;
     }
   }
 
