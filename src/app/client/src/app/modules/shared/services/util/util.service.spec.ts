@@ -45,16 +45,4 @@ describe('UtilService', () => {
       expect(service.manipulateSoftConstraint).toBeDefined();
       expect(softconstraintsdata).toEqual({filters: userFrameworkData , mode: 'soft'});
     }));
-
-  it('should call translateLabels ',
-    inject([UtilService], (service: UtilService) => {
-      const data = service.translateLabel(servicemockRes.formData, 'hi');
-      expect(service.translateLabel).toBeDefined();
-      expect(data.label).toEqual('Board/Syllabus');
-    }));
-  it('should call translateValues',
-    inject([UtilService], (service: UtilService) => {
-      const data = service.translateValues(servicemockRes.formData.range, 'hi');
-      expect(service.translateValues).toBeDefined();
-    }));
 });
