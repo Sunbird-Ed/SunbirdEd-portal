@@ -30,11 +30,11 @@
 }
 
 a{
-  color: $link-color;
+  color: $primary-color;
 
   &:hover {
     opacity:0.8;
-    color: $link-color;
+    color: $primary-color;
   }
 }
 
@@ -68,4 +68,8 @@ a{
 
 .text-uppercase {
   text-transform: uppercase !important;
+}
+
+.font-weight-normal {
+  font-weight: normal !important;;
 }

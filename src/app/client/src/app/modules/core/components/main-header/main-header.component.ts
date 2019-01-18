@@ -1,7 +1,7 @@
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { UserService, PermissionService, TenantService } from './../../services';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash';
@@ -13,8 +13,7 @@ declare var jQuery: any;
  */
 @Component({
   selector: 'app-header',
-  templateUrl: './main-header.component.html',
-  styleUrls: ['./main-header.component.scss']
+  templateUrl: './main-header.component.html'
 })
 export class MainHeaderComponent implements OnInit, OnDestroy {
   /**
@@ -108,7 +107,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   */
   constructor(config: ConfigService, resourceService: ResourceService, public router: Router,
     permissionService: PermissionService, userService: UserService, tenantService: TenantService,
-    public activatedRoute: ActivatedRoute, private cacheService: CacheService) {
+    public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef) {
     this.config = config;
     this.resourceService = resourceService;
     this.permissionService = permissionService;
@@ -168,6 +167,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
         }
       });
     this.setInteractEventData();
+    this.cdr.detectChanges();
   }
 
   getCacheLanguage() {

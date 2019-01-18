@@ -8,9 +8,12 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { TelemetryModule } from '@sunbird/telemetry';
 // Custome component(s) and services
-import { CourseConsumptionService, DashboardUtilsService, OrganisationService,
-  RendererService, LineChartService, DownloadService, CourseProgressService } from './services';
-import { OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent } from './components';
+import {
+  CourseConsumptionService, DashboardUtilsService, OrganisationService,
+  RendererService, LineChartService, DownloadService, CourseProgressService,
+  UsageService
+} from './services';
+import { OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent } from './components';
 // SB core and shared services
 import { SearchService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
@@ -27,7 +30,7 @@ import { OrderModule } from 'ngx-order-pipe';
     OrderModule,
     TelemetryModule
   ],
-  declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent],
+  declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent],
   exports: [CourseProgressComponent],
   providers: [
     RendererService,
@@ -35,6 +38,6 @@ import { OrderModule } from 'ngx-order-pipe';
     SearchService,
     LineChartService,
     CourseConsumptionService,
-    OrganisationService, DownloadService, CourseProgressService]
+    OrganisationService, DownloadService, CourseProgressService, UsageService]
 })
 export class DashboardModule { }

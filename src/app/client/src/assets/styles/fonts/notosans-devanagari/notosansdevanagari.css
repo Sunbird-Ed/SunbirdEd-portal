@@ -1,0 +1,25 @@
+@font-face {
+  font-family: 'Noto Sans Devanagari';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./NotoSansDevanagari-Regular.eot);
+  src:
+    url(./NotoSansDevanagari-Regular.eot?#iefix) format('embedded-opentype'),
+    url(./NotoSansDevanagari-Regular.woff2) format('woff2'),
+    url(./NotoSansDevanagari-Regular.woff) format('woff'),
+    url(./NotoSansDevanagari-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Noto Sans Devanagari';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(./NotoSansDevanagari-Bold.eot);
+  src:
+    url(./NotoSansDevanagari-Bold.eot?#iefix) format('embedded-opentype'),
+    url(./NotoSansDevanagari-Bold.woff2) format('woff2'),
+    url(./NotoSansDevanagari-Bold.woff) format('woff'),
+    url(./NotoSansDevanagari-Bold.ttf) format('truetype');
+}

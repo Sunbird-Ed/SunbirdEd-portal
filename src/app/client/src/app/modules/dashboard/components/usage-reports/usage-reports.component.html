@@ -1,0 +1,44 @@
+<div class="ui container">
+    <div class="ui stackable grid mt-30" *ngIf="!noResult">
+        <div class="three wide column pt-0">
+            <div class="publicmenusection ui secondary vertical menu">
+                <a *ngFor="let report of reportMetaData" (click)="renderReport(report)" class="item" [ngClass]="{'active': currentReport.id === report.id}">
+                    {{report.label || report.title}}</a>
+            </div>
+        </div>
+        <div class="nine wide column workspacesegment">
+            <h2 class="ui small header">
+                {{currentReport?.title || currentReport?.label}}
+            </h2>
+            <p *ngIf="currentReport?.description" [innerHTML]="transformHTML(currentReport.description)"></p>
+            <sui-tabset>
+                <div class="ui top attached tabular menu">
+                    <a class="item" suiTabHeader="graph">Graph</a>
+                    <a class="item" suiTabHeader="tableMenu">Table</a>
+                    <div class="right menu">
+                        <a *ngIf="currentReport?.downloadUrl" class="ui item" (click)="downloadCSV(currentReport.downloadUrl)">Download CSV</a>
+                    </div>
+                </div>
+                <div class="ui bottom attached segment" suiTabContent="graph">
+                    <div *ngFor="let chart of chartData; let i = index; let l = last;">
+                        <canvas baseChart [datasets]="chart.datasets" [labels]="chart.labels" [options]="chart.options" [chartType]="chart.chartType"
+                            [colors]="chart.colors" [legend]="chart.legend"></canvas>
+                        <div class="ui divider" *ngIf="i != l"></div>
+                    </div>
+                    <div class="ui warning message" *ngIf="!chartData.length">
+                        Graphs are not available for this report
+                    </div>
+                </div>
+                <div class="ui bottom attached small segment" suiTabContent="tableMenu">
+                    <app-data-table *ngIf="isTableDataLoaded" [headerData]="table.header" [rowsData]="table.data"></app-data-table>
+                    <div class="ui warning message" *ngIf="!isTableDataLoaded">
+                        Table is not available for this Report
+                    </div>
+                </div>
+            </sui-tabset>
+        </div>
+    </div>
+    <div *ngIf="noResult">
+        <app-no-result [data]="noResultMessage"></app-no-result>
+    </div>
+</div>

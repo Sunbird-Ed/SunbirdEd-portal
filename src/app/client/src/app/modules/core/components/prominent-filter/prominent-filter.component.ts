@@ -1,6 +1,7 @@
 import { Subscription, Observable } from 'rxjs';
 import { of, throwError } from 'rxjs';
-import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse, BrowserCacheTtlService } from '@sunbird/shared';
+import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse, UtilService,
+   BrowserCacheTtlService } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnDestroy, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, PermissionService, OrgDetailsService } from './../../services';
@@ -71,8 +72,10 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   isShowFilterPlaceholder = true;
   contentTypes: any;
   frameworkDataSubscription: Subscription;
+  resourceDataSubscription: Subscription;
   isFiltered = true;
   submitIntractEdata: IInteractEventEdata;
+  private selectedLanguage: string;
   /**
    *
     * Constructor to create injected service(s) object
@@ -92,7 +95,8 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     toasterService: ToasterService,
     permissionService: PermissionService,
     private browserCacheTtlService: BrowserCacheTtlService,
-    private orgDetailsService: OrgDetailsService
+    private utilService: UtilService,
+    private orgDetailsService: OrgDetailsService,
 
   ) {
     this.configService = configService;
@@ -107,6 +111,20 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.resourceDataSubscription = this.resourceService.languageSelected$
+      .subscribe(item => {
+        this.selectedLanguage = item.value;
+        if (this.formFieldProperties && this.formFieldProperties.length > 0) {
+             _.forEach(this.formFieldProperties, (data, index) => {
+              this.formFieldProperties[index] = this.utilService.translateLabel(data, this.selectedLanguage );
+              this.formFieldProperties[index].range  = this.utilService.translateValues(data.range, this.selectedLanguage);
+             });
+             this.filtersDetails = _.cloneDeep(this.formFieldProperties);
+             this.formInputData = this.utilService.convertSelectedOption(this.formInputData,
+              this.formFieldProperties, 'en', this.selectedLanguage);
+        }
+      }
+   );
     this.frameworkService.initialize(this.frameworkName, this.hashTagId);
     this.getFormatedFilterDetails().subscribe((formFieldProperties) => {
       this.formFieldProperties = formFieldProperties;
@@ -148,6 +166,10 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
           const frameworkTerms = _.get(_.find(this.categoryMasterList, { code : formFieldCategory.code}), 'terms');
           formFieldCategory.range = _.union(formFieldCategory.range, frameworkTerms);
           }
+          if (this.selectedLanguage !== 'en') {
+            formFieldCategory = this.utilService.translateLabel(formFieldCategory, this.selectedLanguage );
+            formFieldCategory.range =  this.utilService.translateValues(formFieldCategory.range, this.selectedLanguage);
+          }
           return true;
         });
         formFieldProperties = _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index');
@@ -185,6 +207,8 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.formInputData = {};
       _.forIn(params, (value, key) => this.formInputData[key] = typeof value === 'string' && key !== 'key' ? [value] : value);
+      this.formInputData = this.utilService.convertSelectedOption(this.formInputData,
+        this.formFieldProperties, 'en', this.selectedLanguage);
       if (this.formInputData.channel && this.formFieldProperties) { // To manuplulate channel data from identifier to name
         const channel = [];
          _.forEach(this.formInputData.channel, (value, key) => {
@@ -227,6 +251,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   isObject(val) { return typeof val === 'object'; }
 
   applyFilters() {
+    this.formInputData = this.utilService.convertSelectedOption(this.formInputData, this.formFieldProperties, this.selectedLanguage, 'en');
     if (_.isEqual(this.formInputData, this.queryParams)) {
       this.isFiltered = true;
     } else {
@@ -279,6 +304,9 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.frameworkDataSubscription) {
       this.frameworkDataSubscription.unsubscribe();
+    }
+    if (this.resourceDataSubscription) {
+      this.resourceDataSubscription.unsubscribe();
     }
   }
 }

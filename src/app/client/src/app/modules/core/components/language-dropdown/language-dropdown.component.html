@@ -1,13 +1,13 @@
-<div class="ui dropdown width-100 mobile only">
-  <sui-select [(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" class="selection width-100 language-selector" labelField="name"
+<div class="d-flex flex-ai-center language-selector">
+  <div class="computer only">{{resourceService.frmelmnts?.btn?.selectLanguage}} :&nbsp;</div>
+  <sui-select 
+    [(ngModel)]="selectedLanguage" 
+    (ngModelChange)="onLanguageChange($event)"
+    labelField="label"
     valueField="value">
-    <sui-select-option *ngFor="let option of languages" [value]="option"></sui-select-option>
+    <sui-select-option 
+      *ngFor="let option of languages" 
+      [value]="option">
+    </sui-select-option> 
   </sui-select>
-</div>
-
-<div class="d-flex flex-ai-center computer only language-selection-dropdown">
-  <div class="text"> Select language : </div>
-<sui-select class="inline"  [(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" valueField="value" labelField="name">
-  <sui-select-option *ngFor="let option of languages" [value]="option"></sui-select-option> 
-</sui-select>
 </div>

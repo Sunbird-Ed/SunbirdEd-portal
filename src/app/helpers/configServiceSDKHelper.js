@@ -5,7 +5,7 @@ const configUtil = configClientJsSdk.configUtil
 const configAdapters = configClientJsSdk.Adapters
 const configKeys = ['sunbird_instance_name', 'sunbird_theme', 'sunbird_default_language',
   'sunbird_primary_bundle_language', 'sunbird_explore_button_visibility', 'sunbird_enable_signup',
-  'sunbird_extcont_whitelisted_domains', 'sunbird_portal_user_upload_ref_link']
+  'sunbird_extcont_whitelisted_domains', 'sunbird_portal_user_upload_ref_link','sunbird_portal_video_max_size']
 const authBearer = 'Bearer '
 const configPRefix = 'portal.'
 
