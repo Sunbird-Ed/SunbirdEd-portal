@@ -5,6 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from '@sunbird/core';
 import { ToasterService, ResourceService, INoResultMessage } from '@sunbird/shared';
 import { UUID } from 'angular2-uuid';
+
 @Component({
   selector: 'app-usage-reports',
   templateUrl: './usage-reports.component.html',
