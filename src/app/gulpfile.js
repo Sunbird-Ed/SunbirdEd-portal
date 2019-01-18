@@ -50,7 +50,7 @@ gulp.task('clean:client:install', (done) => {
 })
 
 gulp.task('client:install', (cb) => {
-    exec('npm install  --prefix ./client', { maxBuffer: Infinity }, function(err, stdout, stderr) {
+    exec('npm install  --prefix ./client', { maxBuffer: Infinity }, function (err, stdout, stderr) {
         console.log(stdout)
         console.log(stderr)
         cb(err)
@@ -60,7 +60,7 @@ gulp.task('client:install', (cb) => {
 // To build angular code and rename index file
 
 gulp.task('client:dist', (cb) => {
-    exec('npm run build --prefix ./client ', { maxBuffer: Infinity }, function(err, stdout, stderr) {
+    exec('npm run build --prefix ./client ', { maxBuffer: Infinity }, function (err, stdout, stderr) {
         console.log(stdout)
         console.log(stderr)
         cb(err)
@@ -106,7 +106,7 @@ gulp.task('clean:app:dist', () => {
 })
 
 gulp.task('build-resource-bundles', (cb) => {
-    exec('node helpers/resourceBundles/build.js', function(err, stdout, stderr) {
+    exec('node helpers/resourceBundles/build.js', function (err, stdout, stderr) {
         console.log(stdout)
         console.log(stderr)
         cb(err)
@@ -125,5 +125,7 @@ gulp.task('deploy',
         'client:install',
         'client:dist',
         'client:gzip',
+        'update:index:file',
+        'clean:index:file',
         'prepare:app:dist')
 )
