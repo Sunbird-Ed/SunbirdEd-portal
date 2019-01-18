@@ -1,9 +1,21 @@
 body {
   position: relative;
   background: $bg-body !important;
-  font-family: $font-stack;
+  font-family: $font-stack-en;
   letter-spacing: 0.2px;
   height: auto;
+}
+
+*[lang="en"] body {
+  font-family: $font-stack-en;
+}
+
+*[lang="hi"] body {
+  font-family: $font-stack-hi;
+}
+
+*[lang="ur"] body {
+  font-family: $font-stack-ur;
 }
 
 button,
