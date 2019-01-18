@@ -27,9 +27,9 @@ export class UsageReportsComponent implements OnInit {
     public resourceService: ResourceService) { }
 
   ngOnInit() {
-
+    const reportsLocation = (<HTMLInputElement>document.getElementById('reportsLocation')).value;
     this.slug = _.get(this.userService, 'userProfile.rootOrg.slug');
-    this.usageService.getData(`/reports/${this.slug}/config.json`).subscribe(data => {
+    this.usageService.getData(`/${reportsLocation}/${this.slug}/config.json`).subscribe(data => {
       if (_.get(data, 'responseCode') === 'OK') {
         this.noResult = false;
         this.reportMetaData = _.get(data, 'result');
