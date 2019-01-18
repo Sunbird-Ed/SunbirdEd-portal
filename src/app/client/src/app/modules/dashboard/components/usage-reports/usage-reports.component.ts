@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from '@sunbird/core';
 import { ToasterService, ResourceService, INoResultMessage } from '@sunbird/shared';
+import { UUID } from 'angular2-uuid';
 @Component({
   selector: 'app-usage-reports',
   templateUrl: './usage-reports.component.html',
@@ -21,7 +22,7 @@ export class UsageReportsComponent implements OnInit {
   noResultMessage: INoResultMessage;
 
   constructor(private usageService: UsageService, private sanitizer: DomSanitizer,
-    public userService: UserService, public toasterService: ToasterService,
+    public userService: UserService, private toasterService: ToasterService,
     public resourceService: ResourceService) { }
 
   ngOnInit() {
@@ -45,16 +46,17 @@ export class UsageReportsComponent implements OnInit {
     this.currentReport = report;
     this.isTableDataLoaded = false;
     const url = report.dataSource;
+    this.table = {};
+    this.chartData = [];
     this.usageService.getData(url).subscribe((response) => {
-      this.table = {};
-      this.chartData = [];
       if (_.get(response, 'responseCode') === 'OK') {
         const data = _.get(response, 'result');
         if (_.get(report, 'chart')) { this.createChartData(_.get(report, 'chart'), data); }
         if (_.get(report, 'table')) { this.renderTable(_.get(report, 'table'), data); }
+      } else {
+        console.log(response);
       }
-
-    });
+    }, err => { console.log(err); });
   }
 
   createChartData(charts, data) {
@@ -84,7 +86,30 @@ export class UsageReportsComponent implements OnInit {
   }
 
   downloadCSV(url) {
-    window.open(url, '_blank');
+    this.usageService.getData(url).subscribe((response) => {
+      if (_.get(response, 'responseCode') === 'OK') {
+        const data = _.get(response, 'result');
+        const blob = new Blob(
+          [data],
+          {
+            type: 'text/csv;charset=utf-8'
+          }
+        );
+        const downloadUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        document.body.appendChild(a);
+        //        a.style = 'display: none';
+        a.href = downloadUrl;
+        a.download = UUID.UUID() + '.csv';
+        a.click();
+        document.body.removeChild(a);
+      } else {
+        this.toasterService.error(this.resourceService.messages.emsg.m0019);
+      }
+    }, (err) => {
+      console.log(err);
+      this.toasterService.error(this.resourceService.messages.emsg.m0019);
+    });
   }
 
   transformHTML(data: any) {
