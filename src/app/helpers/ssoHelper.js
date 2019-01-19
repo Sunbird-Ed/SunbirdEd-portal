@@ -49,7 +49,7 @@ const verifyToken = (token) => {
 const fetchUserWithExternalId = async (payload, req) => { // will be called from player docker to learner docker
   const options = {
     method: 'GET',
-    url: `${envHelper.learner_Service_Local_BaseUrl}/private/user/v1/read/${payload.sub}?provider=${payload.state_id}?&idType=${payload.state_id}`, // id type shouldnt be state_id
+    url: `${envHelper.learner_Service_Local_BaseUrl}/private/user/v1/read/${payload.sub}?provider=${payload.state_id}&idType=${payload.state_id}`,
     headers: getHeaders(req),
     json: true
   }
@@ -136,7 +136,7 @@ const getHeaders = (req) => {
   }
 }
 const handleGetUserByIdError = (error) => {
-  if (_.get(error, 'error.params.err') === 'USER_NOT_FOUND' || _.get(error, 'error.params.status') === 'USER_NOT_FOUND') {
+  if (['USER_NOT_FOUND', 'EXTERNALID_NOT_FOUND'].includes(_.get(error, 'error.params.err')) || ['USER_NOT_FOUND', 'EXTERNALID_NOT_FOUND'].includes(_.get(error, 'error.params.status'))) {
     return {};
   }
   throw error.error || error.message || error;
