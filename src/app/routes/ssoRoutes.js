@@ -27,8 +27,9 @@ module.exports = (app) => {
       req.session.userDetails = userDetails;
       if(!_.isEmpty(userDetails) && userDetails.phone) {
         redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
+      } else {
+        redirectUrl = updatePhoneUrl; // verify phone then create user
       }
-      redirectUrl = updatePhoneUrl; // verify phone then create user
       console.log('sso session creation successfully redirected', jwtPayload, req.query, userDetails, redirectUrl);
     } catch (error) {
       redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error);
@@ -139,7 +140,7 @@ module.exports = (app) => {
   })
 
   app.get(errorUrl, (req, res) => {
-    const redirect_uri = encodeURIComponent(`${req.protocol}://${req.get('host')}/resources?auth_callback=1`);
+    const redirect_uri = encodeURIComponent(`https://${req.get('host')}/resources?auth_callback=1`);
     const redirectUrl = `/auth/realms/sunbird/protocol/openid-connect/auth?client_id=portal&redirect_uri=${redirect_uri}&scope=openid&response_type=code&version=1&error_message=` + req.query.error_message;
     res.redirect(redirectUrl); // should go to error page
   })
