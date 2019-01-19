@@ -107,7 +107,7 @@ const updatePhone = (requestBody, req) => { // will be called from player docker
     }
   })
 }
-const updateRoles = (requestBody) => { // will be called from player docker to learner docker
+const updateRoles = (requestBody, req) => { // will be called from player docker to learner docker
   const options = {
     method: 'POST',
     url: envHelper.learner_Service_Local_BaseUrl + '/private/user/v1/role/assign',
