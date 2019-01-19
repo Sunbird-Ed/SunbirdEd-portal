@@ -82,7 +82,7 @@ module.exports = (app) => {
             provider: jwtPayload.state_id,
             roles: jwtPayload.roles
           }
-          await updateRoles(updateRolesReq).catch(handleProfileUpdateError);
+          await updateRoles(updateRolesReq, req).catch(handleProfileUpdateError);
         }
         logAuditEvent(req, createUserReq)
       }
