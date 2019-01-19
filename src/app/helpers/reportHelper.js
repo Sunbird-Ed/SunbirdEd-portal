@@ -7,7 +7,8 @@ const blobService = azure.createBlobService(envHelper.sunbird_azure_account_name
 
 function isValidSlug() {
     return function (req, res, next) {
-        if (_.get(req, 'session.rootOrg.slug') !== req.params.slug) {
+        const roles = _.get(req, 'session.roles');
+        if (_.get(req, 'session.rootOrg.slug') !== req.params.slug && _.indexOf(roles, "ORG_ADMIN") === -1) {
             res.status(403)
             res.send({
                 'id': 'api.report',
