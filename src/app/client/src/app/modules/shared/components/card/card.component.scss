@@ -63,10 +63,9 @@
   }
 
   .avatar {
-    height: 31px;
-    width: 31px;
+    height: 30px;
+    width: 30px;
     object-fit: cover;
-    border-radius: 50%;
   }
 
   .ui.label {
@@ -113,4 +112,8 @@
     overflow: hidden;
     word-break: break-word;
   }
+}
+
+*[lang="hi"] .sbCard .meta {
+  line-height: 1.6em;
 }

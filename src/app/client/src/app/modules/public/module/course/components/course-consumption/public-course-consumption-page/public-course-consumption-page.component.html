@@ -8,7 +8,7 @@
                         <h1 class="ui header small">
                             {{courseHierarchy.name}}
                         </h1>
-                        <sui-rating class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true"
+                        <sui-rating class="courseHeader-rating ui star rating black-divider pr-15" [isReadonly]="true"
                             [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
                         &nbsp;&nbsp;
                         <a (click)="onShareLink()">
