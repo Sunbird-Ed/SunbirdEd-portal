@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { Observable, of as observableOf, of } from 'rxjs';
+import { Observable, of as observableOf } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
   ConfigService, ServerResponse, ICard, NavigationHelperService, ResourceService, BrowserCacheTtlService
@@ -231,7 +231,7 @@ export class WorkSpaceService {
         }
       }
     };
-    return of({}); // lock api fix
+    return observableOf({}); // lock api fix
     // return this.content.post(option); // lock api fix
   }
 
