@@ -80,7 +80,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded'].includes(this.routeParams.state);
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
-    if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
+    const disableLock = false; // lock api issue hot fix
+    if (disableLock && (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus)) {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
       this.editorService.getOwnershipType(), this.lockContent()).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
@@ -188,7 +189,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('genericEditor')) {
       document.getElementById('genericEditor').remove();
     }
-    this.retireLock();
+    // this.retireLock(); // lock api hot fix
+    this.redirectToWorkSpace(); // lock api hot fix
   }
 
   retireLock () {
