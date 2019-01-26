@@ -144,16 +144,6 @@ module.exports = (app) => {
     const redirectUrl = `/auth/realms/sunbird/protocol/openid-connect/auth?client_id=portal&redirect_uri=${redirect_uri}&scope=openid&response_type=code&version=1&error_message=` + req.query.error_message;
     res.redirect(redirectUrl); // should go to error page
   })
-
-  app.get('/mock/v2/user/session/create', (req,res) => {
-    let redirectUrl;
-    if(req.query.phone) {
-      redirectUrl = `${successUrl}?id=sunil1as990&redirect_url=/resources`;
-    } else {
-      redirectUrl = `${updatePhoneUrl}?id=sunil1as990&redirect_url=/resources`;
-    }
-    res.redirect(redirectUrl);
-  })
 }
 const handleProfileUpdateError = (error) => {
   if (_.get(error, 'error.params')) {
@@ -208,5 +198,3 @@ const getQueryParams = (queryObj) => {
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(queryObj[key])}`)
     .join('&');
 }
-
-
