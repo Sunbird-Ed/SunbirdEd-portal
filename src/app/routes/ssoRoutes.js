@@ -17,7 +17,7 @@ module.exports = (app) => {
       jwtPayload = jwt.decode(req.query.token);
       if (!jwtPayload.state_id || !jwtPayload.school_id || !jwtPayload.name || !jwtPayload.sub) {
         errType = 'PAYLOAD_DATA_MISSING';
-        throw 'some of the query params are missing';
+        throw 'some of the JWT payload is missing';
       }
       req.session.jwtPayload = jwtPayload;
       errType = 'VERIFY_TOKEN';
@@ -90,7 +90,7 @@ module.exports = (app) => {
       console.log('sso phone updated successfully', req.query.phone, jwtPayload, userDetails, createUserReq, updatePhoneReq, updateRolesReq, redirectUrl, errType);
     } catch (error) {
       redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error);
-      console.log('sso phone updating failed', req.query.phone, errType, error, userDetails, jwtPayload, redirectUrl, createUserReq, updatePhoneReq, updateRolesReq);
+      console.log('sso phone updating failed', errType, req.query.phone, error, userDetails, jwtPayload, redirectUrl, createUserReq, updatePhoneReq, updateRolesReq);
       logErrorEvent(req, errType, error);
     } finally {
       res.redirect(redirectUrl || errorUrl);
@@ -132,7 +132,7 @@ module.exports = (app) => {
       console.log('sso sign in create session success', req.query, response);
     } catch (error) {
       response = { error: getErrorMessage(error) };
-      console.log('sso sign in get access token failed', error, req.query, redirectUrl, errType);
+      console.log('sso sign in get access token failed', errType, error, req.query, redirectUrl);
       logErrorEvent(req, errType, error);
     } finally {
       res.json(response);
