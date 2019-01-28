@@ -31,6 +31,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   public contentDetails: any;
   public ownershipType: Array<string>;
   public queryParams: object;
+  public videoMaxSize: any;
+
   /**
   * Default method of class ContentEditorComponent
   */
@@ -43,6 +45,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.buildNumber = buildNumber ? buildNumber.value : '1.0';
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+    this.videoMaxSize = (<HTMLInputElement>document.getElementById('videoMaxSize')) ?
+      (<HTMLInputElement>document.getElementById('videoMaxSize')).value : '100';
   }
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
@@ -80,7 +84,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded'].includes(this.routeParams.state);
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
-    if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
+    const disableLock = false; // lock api issue hot fix
+    if (disableLock && (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus)) {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
       this.editorService.getOwnershipType(), this.lockContent()).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
@@ -196,6 +201,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.config.aws_s3_urls = this.userService.cloudStorageUrls || [];
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
     window.config.lock = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
+    window.config.videoMaxSize = this.videoMaxSize;
   }
   /**
    * checks the permission using state, status and userId
@@ -243,7 +249,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('contentEditor')) {
       document.getElementById('contentEditor').remove();
     }
-    this.retireLock();
+    // this.retireLock(); // lock api hot fix
+    this.redirectToWorkSpace(); // lock api hot fix
   }
 
   retireLock () {

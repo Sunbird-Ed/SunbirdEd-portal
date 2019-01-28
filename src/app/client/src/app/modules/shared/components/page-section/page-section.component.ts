@@ -1,10 +1,11 @@
 import { ActivatedRoute } from '@angular/router';
 import { ResourceService } from '../../services/index';
-import { Component,  Input, EventEmitter, Output } from '@angular/core';
+import { Component,  Input, EventEmitter, Output , OnDestroy} from '@angular/core';
 import {ICaraouselData} from '../../interfaces/caraouselData';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { Subscription } from 'rxjs';
 
 /**
  * This display a a section
@@ -14,7 +15,7 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
   templateUrl: './page-section.component.html',
   styleUrls: ['./page-section.component.scss']
 })
-export class PageSectionComponent implements OnInit {
+export class PageSectionComponent implements OnInit, OnDestroy {
   inviewLogs = [];
   cardIntractEdata: IInteractEventEdata;
   /**
@@ -31,6 +32,8 @@ export class PageSectionComponent implements OnInit {
   @Output() visits = new EventEmitter<any>();
 
   @Output() viewAll = new EventEmitter<any>();
+  private resourceDataSubscription: Subscription;
+
   /**
   * This is slider setting
   */
@@ -122,6 +125,13 @@ export class PageSectionComponent implements OnInit {
     this.playEvent.emit(event);
   }
   ngOnInit() {
+    this.resourceDataSubscription = this.resourceService.languageSelected$
+      .subscribe(item => {
+        if (this.section.name !== 'My Courses') {
+          this.selectedLanguageTranslation(item.value);
+        }
+      }
+      );
     const id = _.get(this.activatedRoute, 'snapshot.data.telemetry.env');
     this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
     if (id && this.pageid) {
@@ -131,6 +141,14 @@ export class PageSectionComponent implements OnInit {
         pageid: this.pageid
       };
     }
+  }
+  selectedLanguageTranslation(data) {
+  const display = JSON.parse(this.section['display']);
+  if (_.has(display.name, data) && !_.isEmpty(display.name[data])) {
+    this.section.name = display.name[data];
+  } else {
+    this.section.name = display.name['en'];
+  }
   }
   /**
    * get inview  Data
@@ -189,5 +207,10 @@ export class PageSectionComponent implements OnInit {
   }
   navigateToViewAll(section) {
     this.viewAll.emit(section);
+  }
+  ngOnDestroy() {
+    if (this.resourceDataSubscription) {
+      this.resourceDataSubscription.unsubscribe();
+    }
   }
 }

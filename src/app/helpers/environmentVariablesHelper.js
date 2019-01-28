@@ -53,6 +53,7 @@ let envVariables = {
   sunbird_help_link_visibility: env.sunbird_help_link_visibility || 'false',
   sunbird_extcont_whitelisted_domains: env.sunbird_extcont_whitelisted_domains || 'youtube.com,youtu.be',
   sunbird_portal_user_upload_ref_link: env.sunbird_portal_user_upload_ref_link || 'http://www.sunbird.org/features-documentation/register_user',
+  sunbird_portal_video_max_size: env.sunbird_portal_video_max_size || '50',
   GOOGLE_OAUTH_CONFIG: {
     clientId: env.sunbird_google_oauth_clientId,
     clientSecret: env.sunbird_google_oauth_clientSecret

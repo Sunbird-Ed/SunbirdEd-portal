@@ -582,7 +582,8 @@
           "mimeType",
           "framework",
           "contentType",
-          "pkgVersion"
+          "pkgVersion",
+          "status"
         ]
       },
       "dynamicFields": {
@@ -619,7 +620,8 @@
           "mimeType",
           "framework",
           "contentType",
-          "pkgVersion"
+          "pkgVersion",
+          "status"
         ]
       },
       "dynamicFields": {
@@ -656,7 +658,8 @@
           "mimeType",
           "framework",
           "contentType",
-          "pkgVersion"
+          "pkgVersion",
+          "status"
         ]
       },
       "dynamicFields": {
@@ -688,7 +691,8 @@
           "mimeType",
           "framework",
           "contentType",
-          "pkgVersion"
+          "pkgVersion",
+          "status"
         ]
       },
       "dynamicFields": {
@@ -720,7 +724,8 @@
           "mimeType",
           "framework",
           "contentType",
-          "pkgVersion"
+          "pkgVersion",
+          "status"
         ]
       },
       "dynamicFields": {
@@ -762,7 +767,8 @@
           "mimeType",
           "framework",
           "contentType",
-          "pkgVersion"
+          "pkgVersion",
+          "status"
         ]
       },
       "dynamicFields": {
