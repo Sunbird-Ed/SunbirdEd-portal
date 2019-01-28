@@ -128,11 +128,11 @@ module.exports = (app) => {
       }
       userName = req.query.id;
       errType = 'CREATE_SESSION';
-      response = await createSession(userName);
+      response = await createSession(userName, req, res);
       console.log('sso sign in create session success', req.query, response);
     } catch (error) {
       response = { error: getErrorMessage(error) };
-      console.log('sso sign in get access token failed', errType, error, req.query, redirectUrl);
+      console.log('sso sign in get access token failed', errType, error, req.query);
       logErrorEvent(req, errType, error);
     } finally {
       res.json(response);
