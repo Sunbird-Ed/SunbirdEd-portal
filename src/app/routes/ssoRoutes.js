@@ -78,7 +78,7 @@ module.exports = (app) => {
           errType = 'UPDATE_USER_ROLES';
           updateRolesReq = {
             userId: userDetails.id,
-            externalId: jwtPayload.school_id, // need to be verified
+            orgExternalId: jwtPayload.school_id, // need to be verified
             provider: jwtPayload.state_id,
             roles: jwtPayload.roles
           }
