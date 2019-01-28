@@ -25,6 +25,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   @Input() frameworkName: string;
   @Input() formAction: string;
   @Output() prominentFilter = new EventEmitter();
+  public filterIntractEdata;
   /**
  * To get url, app configs
  */
@@ -133,6 +134,20 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     }, (err) => {
       this.prominentFilter.emit([]);
     });
+    this.setFilterInteractData();
+  }
+  private setFilterInteractData() {
+    this.submitIntractEdata = {
+      id: 'submit',
+      type: 'click',
+      pageid: this.pageId,
+      extra: { filter: this.formInputData }
+    };
+    this.filterIntractEdata = {
+      id: 'filter',
+      type: 'click',
+      pageid: this.pageId
+    };
   }
 
   getFormatedFilterDetails() {
