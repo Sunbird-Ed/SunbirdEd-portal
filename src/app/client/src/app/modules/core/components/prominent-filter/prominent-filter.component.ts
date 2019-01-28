@@ -25,7 +25,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   @Input() frameworkName: string;
   @Input() formAction: string;
   @Output() prominentFilter = new EventEmitter();
-  public filterIntractEdata;
+  public filterInteractEdata;
   /**
  * To get url, app configs
  */
