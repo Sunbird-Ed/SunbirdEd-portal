@@ -4,25 +4,20 @@ const envHelper = require('./environmentVariablesHelper.js')
 const request = require('request-promise'); //  'request' npm package with Promise support
 const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
-const trampolineClientId = envHelper.PORTAL_TRAMPOLINE_CLIENT_ID
-const trampolineServerUrl = envHelper.PORTAL_AUTH_SERVER_URL
-const trampolineRealm = envHelper.PORTAL_REALM
-const trampolineSecret = envHelper.PORTAL_TRAMPOLINE_SECRET
-const echoAPI = envHelper.PORTAL_ECHO_API_URL
 
 let keycloak = getKeyCloakClient({
-  clientId: trampolineClientId,
+  clientId: envHelper.PORTAL_TRAMPOLINE_CLIENT_ID,
   bearerOnly: true,
-  serverUrl: trampolineServerUrl,
-  realm: trampolineRealm,
+  serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
+  realm: envHelper.PORTAL_REALM,
   credentials: {
-    secret: trampolineSecret
+    secret: envHelper.PORTAL_TRAMPOLINE_SECRET
   }
 })
 const verifySignature = async (token) => {
   let options = {
     method: 'GET',
-    url: echoAPI + 'test',
+    url: envHelper.PORTAL_ECHO_API_URL + 'test',
     'rejectUnauthorized': false,
     headers: {
       'cache-control': 'no-cache',
@@ -107,7 +102,7 @@ const updatePhone = (requestBody, req) => { // will be called from player docker
     }
   })
 }
-const updateRoles = (requestBody) => { // will be called from player docker to learner docker
+const updateRoles = (requestBody, req) => { // will be called from player docker to learner docker
   const options = {
     method: 'POST',
     url: envHelper.learner_Service_Local_BaseUrl + '/private/user/v1/role/assign',
