@@ -79,7 +79,7 @@ module.exports = (app) => {
           updateRolesReq = {
             userId: userDetails.id,
             orgExternalId: jwtPayload.school_id, // need to be verified
-            provider: jwtPayload.state_id,
+            orgProvider: jwtPayload.state_id,
             roles: jwtPayload.roles
           }
           await updateRoles(updateRolesReq, req).catch(handleProfileUpdateError);
