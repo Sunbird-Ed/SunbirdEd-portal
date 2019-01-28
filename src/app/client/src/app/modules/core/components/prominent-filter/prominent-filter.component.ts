@@ -75,7 +75,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   frameworkDataSubscription: Subscription;
   resourceDataSubscription: Subscription;
   isFiltered = true;
-  submitIntractEdata: IInteractEventEdata;
+  submitInteractEdata: IInteractEventEdata;
   private selectedLanguage: string;
   /**
    *
@@ -137,7 +137,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     this.setFilterInteractData();
   }
   private setFilterInteractData() {
-    this.submitIntractEdata = {
+    this.submitInteractEdata = {
       id: 'submit',
       type: 'click',
       pageid: this.pageId,
