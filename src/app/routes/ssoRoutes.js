@@ -71,9 +71,11 @@ module.exports = (app) => {
             idType: jwtPayload.state_id
           }]
         }
-        await createUser(createUserReq, req).catch(handleProfileUpdateError);
+        const newUserID = await createUser(createUserReq, req).catch(handleProfileUpdateError);
+        console.log('new user details', newUserID);
         errType = 'FETCH_USER_AFTER_CREATE';
         userDetails = await fetchUserWithExternalId(jwtPayload, req); // to get userName
+        console.log('fetching user details', userDetails);
         if (jwtPayload.roles && jwtPayload.roles.length) {
           errType = 'UPDATE_USER_ROLES';
           updateRolesReq = {

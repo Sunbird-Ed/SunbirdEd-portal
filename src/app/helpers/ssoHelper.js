@@ -50,6 +50,7 @@ const fetchUserWithExternalId = async (payload, req) => { // will be called from
   }
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
+      console.log('fetching user with external id', data);
       return _.get(data, 'result.response');
     } else {
       throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
