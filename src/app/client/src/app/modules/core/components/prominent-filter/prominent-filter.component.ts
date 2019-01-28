@@ -143,7 +143,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
       pageid: this.pageId,
       extra: { filter: this.formInputData }
     };
-    this.filterIntractEdata = {
+    this.filterInteractEdata = {
       id: 'filter',
       type: 'click',
       pageid: this.pageId
