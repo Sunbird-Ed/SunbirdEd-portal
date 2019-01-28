@@ -33,6 +33,7 @@ function azureBlobStream() {
         var blobService = azure.createBlobService(envHelper.sunbird_azure_account_name, envHelper.sunbird_azure_account_key);
         blobService.getBlobToText(envHelper.sunbird_azure_report_container_name, req.params.slug + '/' +req.params.filename, function (error, text) {
             if (error && error.statusCode === 404) {
+                console.log('Error with status code 404 - ', error);
                 res.status(404).send({
                     'id': 'api.report',
                     'ver': '1.0',
@@ -48,6 +49,7 @@ function azureBlobStream() {
                     'result': {}
                 });
             } else if (error) {
+                console.log('Error without status code 404 - ', error);
                 res.status(500).send({
                     'id': 'api.report',
                     'ver': '1.0',
