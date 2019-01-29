@@ -1,0 +1,48 @@
+@import "variables";
+
+.ui.modal {
+
+  margin: 0 !important;
+  transform: translate(-50%,0) !important;
+  top: 100px !important;
+  width: 100% !important;
+  border-radius: 0.5rem;
+
+  &.small{
+    max-width: 300px;
+    max-height: 250px;
+  }
+
+  &.normal{
+    max-width: 720px;
+    max-height: 480px;
+  }
+  &.large{
+    max-width: 100%;
+  }
+
+  .header {
+    background-color: $primary-color;
+    color: $white-color;
+    font-weight: 600 !important;
+    font-size: 1.231rem !important;
+    line-height: 1.846em !important;
+    padding: 0.5em 1.846rem;
+  }
+
+  .close {
+    color: $white-color;
+    top: 0.5rem !important;
+    right: 0.5rem !important;
+    font-size: 1.231rem;
+    line-height: 1.846em;
+    padding: 0;
+    margin: 0;
+  }
+
+  .actions {
+    padding: 0.5em 1.846rem;
+    background: transparent;
+    border-top: 1px solid #d8d8d8;
+  }
+}
