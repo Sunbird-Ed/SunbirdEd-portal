@@ -30,18 +30,18 @@
             name="search" 
             #dialCodeVal 
             placeholder="{{resourceService.frmelmnts?.lbl?.enterDialCode}}" 
-            title="Search" 
+            title="{{resourceService.frmelmnts?.lbl?.enterDialCode}}"
             type="text">
           <i class="search icon"></i>
         </div>
-        <p>
-          <small>{{resourceService.frmelmnts?.lbl?.dialCodeDescription}}</small>
+        <p class="small mt-15">
+          {{resourceService.frmelmnts?.lbl?.dialCodeDescription}}
         </p>
       </div>
     </div>
   </div>
   <!--/Content-->
-  
+
   <!--Actions-->
   <div class="actions">
     <button 

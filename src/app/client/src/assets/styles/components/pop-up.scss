@@ -1,25 +1,11 @@
 @import "variables";
 
 .ui.modal {
-
   margin: 0 !important;
-  transform: translate(-50%,0) !important;
-  top: 100px !important;
+  transform: translate(-50%, 0) !important;
+  top: 80px !important;
   width: 100% !important;
   border-radius: 0.5rem;
-
-  &.small{
-    max-width: 300px;
-    max-height: 250px;
-  }
-
-  &.normal{
-    max-width: 720px;
-    max-height: 480px;
-  }
-  &.large{
-    max-width: 100%;
-  }
 
   .header {
     background-color: $primary-color;
@@ -27,13 +13,17 @@
     font-weight: 600 !important;
     font-size: 1.231rem !important;
     line-height: 1.846em !important;
-    padding: 0.5em 1.846rem;
+    padding: 0.5em 1.846rem 0.5em 3.7rem;
+  }
+
+  .content {
+    min-height: 100px;
   }
 
   .close {
     color: $white-color;
-    top: 0.5rem !important;
-    right: 0.5rem !important;
+    top: 0.67rem !important;
+    right: 1.846rem !important;
     font-size: 1.231rem;
     line-height: 1.846em;
     padding: 0;
@@ -42,7 +32,35 @@
 
   .actions {
     padding: 0.5em 1.846rem;
-    background: transparent;
-    border-top: 1px solid #d8d8d8;
+    background: $white-color;
+    border-top: 1px solid $primary-background;
+  }
+
+  .small {
+    color: $text-lightDark;
+    font-size: 0.857rem;
+    line-height: 1.538em;
+  }
+
+  &.scroll {
+    margin: 0 !important;
+  }
+
+  &.small {
+    max-width: 300px;
+  }
+
+  &.normal {
+    max-width: 720px;
+    max-height: 480px;
+  }
+
+  &.large {
+    max-width: 100%;
+    top: 0 !important;
+
+    .content {
+      height: calc(100vh - 100px);
+    }
   }
 }
