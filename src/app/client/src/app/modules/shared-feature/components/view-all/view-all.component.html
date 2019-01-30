@@ -43,7 +43,14 @@
         </div>
     </div>
 </div>
-<sui-modal [isClosable]="true" size="tiny" (dismissed)="closeModal()" #modal *ngIf="showLoginModal">
+<sui-modal 
+    [isClosable]="true" 
+    [size]="'small'" 
+    (dismissed)="closeModal()" 
+    #modal 
+    *ngIf="showLoginModal"
+    [transitionDuration]="0">
+
     <div class="content">
       <div class="ui center aligned segment">
         <div class="ui header">
@@ -52,4 +59,5 @@
         <a href ={{baseUrl}} class ="ui button primary announcement-button close mt-20">{{resourceService.frmelmnts?.btn?.signin}}</a> 
       </div>
     </div>
+
 </sui-modal>

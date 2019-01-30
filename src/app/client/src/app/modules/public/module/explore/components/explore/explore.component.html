@@ -15,7 +15,14 @@
     </div>
   </div>
 </div>
-<sui-modal [isClosable]="true" size="tiny" (dismissed)="showLoginModal = false" #modal *ngIf="showLoginModal">
+<sui-modal 
+  [isClosable]="true" 
+  [size]="'small'" 
+  (dismissed)="showLoginModal = false" 
+  #modal 
+  *ngIf="showLoginModal"
+  [transitionDuration]="0">
+
   <div class="content">
     <div class="ui center aligned segment">
       <div class="ui header">
@@ -26,4 +33,5 @@
       </a> 
     </div>
   </div>
+
 </sui-modal>

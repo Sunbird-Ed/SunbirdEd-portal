@@ -35,7 +35,13 @@
         </div>
     </div>
 </div>
-<sui-modal [isClosable]="true" size="tiny" (dismissed)="closeLoginModal()" #modal *ngIf="showLoginModal">
+<sui-modal 
+    [isClosable]="true" 
+    [size]="'small'"
+    [transitionDuration]="0"
+    (dismissed)="closeLoginModal()" 
+    #modal 
+    *ngIf="showLoginModal">
     <div class="content">
         <div class="ui center aligned segment">
             <div class="ui header">{{resourceService.frmelmnts?.lbl?.signinenrollTitle}} </div>

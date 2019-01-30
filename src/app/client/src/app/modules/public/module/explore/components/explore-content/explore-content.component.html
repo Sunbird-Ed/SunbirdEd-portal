@@ -41,15 +41,23 @@
         </div>
     </div>
 </div>
-<sui-modal [isClosable]="true" size="tiny" (dismissed)="showLoginModal = false" #modal *ngIf="showLoginModal">
-    <div class="content">
-        <div class="ui center aligned segment">
-            <div class="ui header">{{resourceService.frmelmnts?.lbl?.signinenrollTitle}} </div>
-            <br />
-            <div class="announcement-description">
-                {{resourceService.frmelmnts?.lbl?.signinenrollHeader}}
-            </div>
-            <a href={{baseUrl}} class="ui button primary announcement-button close mt-20">{{resourceService.frmelmnts?.btn?.signin}}</a>
-        </div>
+<sui-modal 
+  [isClosable]="true" 
+  [size]="'small'" 
+  (dismissed)="showLoginModal = false" 
+  #modal 
+  *ngIf="showLoginModal"
+  [transitionDuration]="0">
+
+  <div class="content">
+    <div class="ui center aligned segment">
+      <div class="ui header">
+        {{resourceService.frmelmnts?.lbl?.signinenrollTitle}}
+      </div>
+      <a href={{baseUrl}} class="ui button primary announcement-button close mt-20">
+        {{resourceService.frmelmnts?.btn?.signin}}
+      </a> 
     </div>
+  </div>
+
 </sui-modal>
