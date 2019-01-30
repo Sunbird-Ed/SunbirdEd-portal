@@ -90,7 +90,7 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
             this.resourceService.frmelmnts.lbl.samePhoneNo : this.resourceService.frmelmnts.lbl.sameEmailId;
         } else {
           this.showUniqueError = this.contactType === 'phone' ?
-            this.resourceService.frmelmnts.lbl.uniquePhone : this.resourceService.frmelmnts.lbl.uniqueEmail;
+            this.resourceService.frmelmnts.lbl.uniqueMobile : this.resourceService.frmelmnts.lbl.uniqueEmailId;
         }
       },
       (err) => {

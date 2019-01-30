@@ -52,7 +52,7 @@ export class UsageReportsComponent implements OnInit {
     this.usageService.getData(url).subscribe((response) => {
       if (_.get(response, 'responseCode') === 'OK') {
         const data = _.get(response, 'result');
-        if (_.get(report, 'chart')) { this.createChartData(_.get(report, 'chart'), data); }
+        if (_.get(report, 'charts')) { this.createChartData(_.get(report, 'charts'), data); }
         if (_.get(report, 'table')) { this.renderTable(_.get(report, 'table'), data); }
       } else {
         console.log(response);
