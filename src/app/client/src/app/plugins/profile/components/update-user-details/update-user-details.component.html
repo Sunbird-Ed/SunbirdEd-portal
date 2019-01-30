@@ -8,7 +8,8 @@
     </div>
     <form class="ui form" [formGroup]="userDetailsForm">
       <div class="required field">
-        <label class="ui basic blue error label p-0" *ngIf="userDetailsForm.controls.name.touched && userDetailsForm.controls['name'].errors">{{resourceService?.frmelmnts?.lbl?.nameRequired}}</label>
+        <label class="ui basic blue error label p-0" *ngIf="userDetailsForm.controls.name.touched && userDetailsForm.controls['name'].errors && userDetailsForm.controls['name'].errors.required">{{resourceService?.frmelmnts?.lbl?.nameRequired}}</label>
+        <label class="ui basic blue error label p-0" *ngIf="userDetailsForm.controls.name.touched && userDetailsForm.controls['name'].errors && userDetailsForm.controls['name'].errors.pattern">{{resourceService?.frmelmnts?.lbl?.enterValidName}}</label>
         <label *ngIf="!(userDetailsForm.controls.name.touched && userDetailsForm.controls['name'].errors)">{{resourceService?.frmelmnts?.lbl?.name}}:</label>
         <div class="field">
           <input formControlName="name" type="text" name="name" placeholder="{{resourceService.frmelmnts.lbl.fullName}}">
