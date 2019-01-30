@@ -2,6 +2,7 @@ const _ = require('lodash');
 const jwt = require('jsonwebtoken')
 const { verifySignature, verifyToken, fetchUserWithExternalId, createUser, createSession, updatePhone, updateRoles } = require('./../helpers/ssoHelper');
 const telemetryHelper = require('../helpers/telemetryHelper');
+const fs = require('fs');
 
 const successUrl = '/sso/sign-in/success';
 const updatePhoneUrl = '/sign-in/sso/update-phone';
@@ -17,7 +18,7 @@ module.exports = (app) => {
       jwtPayload = jwt.decode(req.query.token);
       if (!jwtPayload.state_id || !jwtPayload.school_id || !jwtPayload.name || !jwtPayload.sub) {
         errType = 'PAYLOAD_DATA_MISSING';
-        throw 'some of the query params are missing';
+        throw 'some of the JWT payload is missing';
       }
       req.session.jwtPayload = jwtPayload;
       errType = 'VERIFY_TOKEN';
@@ -71,43 +72,50 @@ module.exports = (app) => {
             idType: jwtPayload.state_id
           }]
         }
-        await createUser(createUserReq, req).catch(handleProfileUpdateError);
+        const newUserID = await createUser(createUserReq, req).catch(handleProfileUpdateError);
+        console.log('sso new user create response', newUserID);
         errType = 'FETCH_USER_AFTER_CREATE';
         userDetails = await fetchUserWithExternalId(jwtPayload, req); // to get userName
+        console.log('sso new user read details', userDetails);
         if (jwtPayload.roles && jwtPayload.roles.length) {
           errType = 'UPDATE_USER_ROLES';
           updateRolesReq = {
             userId: userDetails.id,
-            orgExternalId: jwtPayload.school_id, // need to be verified
+            externalId: jwtPayload.school_id, // need to be verified
             provider: jwtPayload.state_id,
             roles: jwtPayload.roles
           }
           await updateRoles(updateRolesReq, req).catch(handleProfileUpdateError);
         }
+        req.session.userDetails = userDetails;
         logAuditEvent(req, createUserReq)
       }
       redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
       console.log('sso phone updated successfully', req.query.phone, jwtPayload, userDetails, createUserReq, updatePhoneReq, updateRolesReq, redirectUrl, errType);
     } catch (error) {
       redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error);
-      console.log('sso phone updating failed', req.query.phone, errType, error, userDetails, jwtPayload, redirectUrl, createUserReq, updatePhoneReq, updateRolesReq);
+      console.log('sso phone updating failed', errType, req.query.phone, error, userDetails, jwtPayload, redirectUrl, createUserReq, updatePhoneReq, updateRolesReq);
       logErrorEvent(req, errType, error);
     } finally {
       res.redirect(redirectUrl || errorUrl);
     }
   })
 
-  app.get(successUrl, async (req, res) => {
-    let userName, jwtPayload, redirectUrl, errType;
+  app.get(successUrl, async (req, res) => { // to support mobile sso flow
+    res.status(200).sendFile('./success_loader.html', {root: __dirname })
+  })
+
+  app.get('/v1/sso/redirect', async (req, res) => {
+    let userDetails, jwtPayload, redirectUrl, errType;
     jwtPayload = req.session.jwtPayload;
+    userDetails = req.session.userDetails;
     try {
-      if (!req.query.id) {
+      if (_.isEmpty(jwtPayload) || _.isEmpty(userDetails)) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
       }
-      userName = req.query.id;
       errType = 'CREATE_SESSION';
-      await createSession(userName, req, res);
+      await createSession(userDetails.userName, req, res);
       redirectUrl = jwtPayload.redirect_url ? jwtPayload.redirect_url : '/resources';
       console.log('sso sign-in success callback success', req.query, redirectUrl, errType);
     } catch (error) {
@@ -128,11 +136,11 @@ module.exports = (app) => {
       }
       userName = req.query.id;
       errType = 'CREATE_SESSION';
-      response = await createSession(userName);
+      response = await createSession(userName, req, res);
       console.log('sso sign in create session success', req.query, response);
     } catch (error) {
       response = { error: getErrorMessage(error) };
-      console.log('sso sign in get access token failed', error, req.query, redirectUrl, errType);
+      console.log('sso sign in get access token failed', errType, error, req.query);
       logErrorEvent(req, errType, error);
     } finally {
       res.json(response);
@@ -143,16 +151,6 @@ module.exports = (app) => {
     const redirect_uri = encodeURIComponent(`https://${req.get('host')}/resources?auth_callback=1`);
     const redirectUrl = `/auth/realms/sunbird/protocol/openid-connect/auth?client_id=portal&redirect_uri=${redirect_uri}&scope=openid&response_type=code&version=1&error_message=` + req.query.error_message;
     res.redirect(redirectUrl); // should go to error page
-  })
-
-  app.get('/mock/v2/user/session/create', (req,res) => {
-    let redirectUrl;
-    if(req.query.phone) {
-      redirectUrl = `${successUrl}?id=sunil1as990&redirect_url=/resources`;
-    } else {
-      redirectUrl = `${updatePhoneUrl}?id=sunil1as990&redirect_url=/resources`;
-    }
-    res.redirect(redirectUrl);
   })
 }
 const handleProfileUpdateError = (error) => {
@@ -208,5 +206,3 @@ const getQueryParams = (queryObj) => {
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(queryObj[key])}`)
     .join('&');
 }
-
-
