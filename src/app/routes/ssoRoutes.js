@@ -73,6 +73,7 @@ module.exports = (app) => {
           }]
         }
         const newUserID = await createUser(createUserReq, req).catch(handleProfileUpdateError);
+        await delay();
         console.log('sso new user create response', newUserID);
         if (jwtPayload.roles && jwtPayload.roles.length) {
           errType = 'UPDATE_USER_ROLES';
@@ -166,6 +167,13 @@ const handleProfileUpdateError = (error) => {
   } else {
     throw 'unhandled exception while getting userDetails';
   }
+}
+const delay = (duration = 200) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, duration)
+  });
 }
 
 const getErrorMessage = (error) => {
