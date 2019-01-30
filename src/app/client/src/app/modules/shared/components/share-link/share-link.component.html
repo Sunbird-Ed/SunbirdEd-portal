@@ -2,6 +2,7 @@
   [isClosable]="true"
   [size]="'normal'"
   [transitionDuration]="0"
+  (dismissed)="closeModal(contentShareModal);popDeny(popup);sharelinkModal=false;"
   #contentShareModal>
 
 <!--Header-->
