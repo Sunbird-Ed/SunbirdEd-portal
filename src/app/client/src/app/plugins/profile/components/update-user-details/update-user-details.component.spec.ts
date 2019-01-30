@@ -67,6 +67,18 @@ describe('UpdateUserDetailsComponent', () => {
     expect(component.enableSubmitBtn).toBeTruthy();
   });
 
+  it('should show validation error for name', () => {
+    component.userProfile = testData.userData;
+    const profileService = TestBed.get(ProfileService);
+    spyOn(component, 'getState');
+    spyOn(component, 'onStateChange');
+    spyOn(component, 'enableSubmitButton');
+    component.ngOnInit();
+    const name = component.userDetailsForm.controls['name'];
+    name.setValue('@@11');
+    expect(name.errors.pattern).toBeTruthy();
+  });
+
   it('should call get state and get success', () => {
     component.userProfile = testData.userData;
     const profileService = TestBed.get(ProfileService);
