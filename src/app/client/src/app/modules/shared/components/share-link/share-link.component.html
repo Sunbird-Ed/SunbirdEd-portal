@@ -1,25 +1,48 @@
-<sui-modal [isClosable]="false" #contentShareModal class="share-link-popup">
-  <div class="header" appTelemetryShare [TelemetryShareEdata]="telemetryShare">
-    <div class="ui grid">
-      <div class="eleven wide column">
-        <span class="ui header">{{resourceService?.frmelmnts?.lbl?.share}}</span>
-      </div>
-      <div class="one wide column actions">
-        <h5 class="ui basic icon circular button deny" (click)="closeModal(contentShareModal);popDeny(popup);sharelinkModal=false ">
-          <i class="ui remove icon"></i>
-        </h5>
-      </div>
-    </div>
+<sui-modal 
+  [isClosable]="true"
+  [size]="'normal'"
+  [transitionDuration]="0"
+  #contentShareModal>
+
+<!--Header-->
+<div class="header" appTelemetryShare [TelemetryShareEdata]="telemetryShare">
+  {{resourceService?.frmelmnts?.lbl?.share}}
+</div>
+<!--/Header-->
+
+<!--Content-->
+<div class="content">
+  <p>
+    {{resourceService?.frmelmnts?.lbl?.sharelink}}
+  </p>
+  <div 
+    class="ui input fluid" 
+    id="buttonPopUp" 
+    suiPopup [popupPlacement]="position" 
+    popupTrigger="manual" 
+    popupText="{{resourceService?.frmelmnts?.lbl?.linkCopied}}" 
+    #popup="suiPopup">
+      <input 
+        type="text" 
+        id="copyLinkData"
+        name="title" 
+        readonly 
+        [(ngModel)]="shareLink"
+      />
   </div>
-  <div class="content">
-    <p class="meta">{{resourceService?.frmelmnts?.lbl?.sharelink}}</p>
-    <div class="ui action input shareContent width-100" id="buttonPopUp" suiPopup [popupPlacement]="position" popupTrigger="manual" popupText="Link copied to clipboard" #popup="suiPopup">
-      <input type="text" id="copyLinkData"   name="title" readonly [(ngModel)]="shareLink" />
-      <button class="ui basic primary button" (click)="copyLink(popup)"  #copyLinkButton >
-        COPY LINK
-      </button>
-    </div>
-  </div>
-  <div class="actions mt-20"><div></div></div>
-  
+</div>
+<!--/Content-->
+
+<!--Actions-->
+<div class="actions">
+  <button 
+    class="ui primary button"
+    (click)="copyLink(popup)"
+    #copyLinkButton >
+    {{resourceService?.frmelmnts?.btn?.copyLink}}
+  </button>
+</div>
+<!--/Actions-->
+
+
 </sui-modal>
