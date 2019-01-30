@@ -8,7 +8,7 @@
   border-radius: 0.5rem;
   animation-duration: 0s !important;
 
-  .header {
+  &>.header {
     background-color: $primary-color;
     color: $white-color;
     font-weight: 600 !important;
@@ -17,12 +17,11 @@
     padding: 0.5em 3.7rem 0.5em 1.846rem ;
   }
 
-  .content {
+  &>.content {
     min-height: 100px;
-    overflow-y: auto; 
   }
 
-  .close {
+  &>.close {
     color: $white-color;
     top: 0.67rem !important;
     right: 1.846rem !important;
@@ -32,7 +31,7 @@
     margin: 0;
   }
 
-  .actions {
+  &>.actions {
     padding: 0.5em 1.846rem;
     background: $white-color;
     border-top: 1px solid $primary-background;

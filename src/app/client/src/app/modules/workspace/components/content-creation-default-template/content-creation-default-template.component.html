@@ -1,3 +1,4 @@
+<div class="ui form">
 <div class="ui grid">
   <div *ngFor="let field of formFieldProperties;let i = index" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column">
     <div *ngIf="field.inputType==='text' || field.inputType==='number'" class="field" [ngClass]="{ 'disabled':!field.editable}">
@@ -40,4 +41,5 @@
         </form>
       </div>
   </div>
+</div>
 </div>
