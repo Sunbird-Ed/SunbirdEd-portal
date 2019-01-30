@@ -33,7 +33,7 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
 
   initializeFormFields() {
     this.userDetailsForm = this.sbFormBuilder.group({
-      name: new FormControl(this.userProfile.firstName, [Validators.required]),
+      name: new FormControl(this.userProfile.firstName, [Validators.required, Validators.pattern(/^[a-zA-Z ]*$/)]),
       state: new FormControl(null),
       district: new FormControl(null)
     }, {
