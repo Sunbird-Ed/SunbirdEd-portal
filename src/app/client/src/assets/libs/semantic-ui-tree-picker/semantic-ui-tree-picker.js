@@ -8,7 +8,7 @@ var conceptModal;
     tabs = {};
     options.noDataMessage = options.noDataMessage ? options.noDataMessage : 'no results';
     $("#" + options.nodeName).length == 0 ? '' : $("#" + options.nodeName).remove();
-    modal = $("<div id=" + options.nodeName + " class=\"ui tree-picker normal modal\">\n <i class=\"close icon\"></i>  <div class=\"header\">\n    " + options.name + "\n\n </div> <div class=\"content\">\n <div class=\"ui grid padded stackable\"> <div class=\"right floated four wide column p-0\"><div class=\"ui mini menu\">\n      <a class=\"active tree item\">\n        <i class=\"list icon\"></i> " + options.name + "\n      </a>\n      <a class=\"picked item\">\n        <i class=\"checkmark icon\"></i> Selected " + options.name + "&nbsp<span class=\"count\"></span>\n      </a>\n    </div></div></div>\n \n  <div class=\"ui search form\">\n    <div class=\"field\">\n      <div class=\"ui icon input\">\n        <input type=\"text\" placeholder=\"Search\">\n        <i class=\"search icon\"></i>\n      </div>\n    </div>\n  </div>\n   <div class=\"ui warning hidden message\"><div class=\"header\">" + options.noDataMessage + "</div></div> <div class=\"ui active inverted dimmer\"><div class=\"ui text loader\">Loading data</div></div>\n    <div class=\"tree-tab p-15\">\n      <div style=\"height: 200px\"></div>\n    </div>\n\n    <div class=\"search-tab p-15\">\n    </div>\n\n    <div class=\"picked-tab p-15\">\n    </div>\n  </div>\n  <div class=\"actions\">\n    <a class=\"pick-search\"><i class=\"checkmark icon\"></i> Choose All</a>\n    <a class=\"unpick-search\"><i class=\"remove icon\"></i> Remove All</a>\n    <a class=\"unpick-picked\"><i class=\"remove icon\"></i> Remove All</a>\n  <a class=\"ui secondary button\">Cancel</a>\n  <a class=\"ui primary button accept\">Done</a>\n      </div>\n</div>").modal({
+    modal = $("<div id=" + options.nodeName + " class=\"ui tree-picker normal modal\">\n <i class=\"close icon\"></i>  <div class=\"header\">\n    " + options.name + "\n\n </div> <div class=\"content\">\n <div class=\"ui grid padded stackable\"> <div class=\"right floated four wide column p-0\"><div class=\"ui mini menu d-inline-flex\">\n      <a class=\"active tree item\">\n        <i class=\"list icon\"></i> " + options.name + "\n      </a>\n      <a class=\"picked item\">\n        <i class=\"checkmark icon\"></i> Selected " + options.name + "&nbsp<span class=\"count\"></span>\n      </a>\n    </div></div></div>\n \n  <div class=\"ui search form\">\n    <div class=\"field\">\n      <div class=\"ui icon input\">\n        <input type=\"text\" placeholder=\"Search\">\n        <i class=\"search icon\"></i>\n      </div>\n    </div>\n  </div>\n   <div class=\"ui warning hidden message\"><div class=\"header\">" + options.noDataMessage + "</div></div> <div class=\"ui active inverted dimmer\"><div class=\"ui text loader\">Loading data</div></div>\n    <div class=\"tree-tab p-15\">\n      <div style=\"height: 200px\"></div>\n    </div>\n\n    <div class=\"search-tab px-20 py-15\">\n    </div>\n\n    <div class=\"picked-tab px-20 py-15\">\n    </div>\n  </div>\n  <div class=\"actions\">\n    <a class=\"pick-search\"><i class=\"checkmark icon\"></i> Choose All</a>\n    <a class=\"unpick-search\"><i class=\"remove icon\"></i> Remove All</a>\n    <a class=\"unpick-picked\"><i class=\"remove icon\"></i> Remove All</a>\n  <a class=\"ui secondary button\">Cancel</a>\n  <a class=\"ui primary button accept\">Done</a>\n      </div>\n</div>").modal({
       duration: 200,
       allowMultiple: true
     });
@@ -177,7 +177,7 @@ var conceptModal;
         });
         foundNodes = formatedNodes;
         list = renderList(foundNodes, {
-          height: '400px',
+          height: '200px',
           overflowY: 'auto'
         });
         $('.menu .item', modal).removeClass('active');
@@ -200,7 +200,7 @@ var conceptModal;
     showPicked = function () {
       var list;
       list = renderList(picked, {
-        height: '400px',
+        height: '200px',
         overflowY: 'auto'
       });
       $('.menu .item', modal).removeClass('active');
