@@ -1,7 +1,17 @@
-<sui-modal [isClosable]="true" (dismissed)="redirect()" #modal>
-  <div class="header cardsHeading" *ngIf="mode === 'create'">
-    <span class="ui header">{{resourceService?.frmelmnts?.pgttl?.takeanote}}</span>
+<sui-modal 
+  [isClosable]="true"
+  [size]="'normal'" 
+  [transitionDuration]="0"
+  (dismissed)="redirect()"
+  #modal>
+
+  <!--Header-->
+  <div class="header" *ngIf="mode === 'create'">
+    {{resourceService?.frmelmnts?.pgttl?.takeanote}}
   </div>
+  <!--/Header-->
+
+  <!--Content-->
   <div class="content" *ngIf="mode === 'create'">
     <div class="ui fluid icon input">
       <input type="text" [(ngModel)]="noteData.title" placeholder={{resourceService?.frmelmnts?.lbl?.title}} name="title">
@@ -21,15 +31,37 @@
       <textarea class="wmd-input" [(ngModel)]="updateData.note" id="wmd-input" placeholder={{resourceService?.frmelmnts?.lbl?.description}}></textarea>
     </div>
   </div>
+  <!--/Content-->
 
-
+  <!--Actions-->
   <div class="actions">
-    <button *ngIf="mode === 'create'" class="ui primary right floated button mb-15 mt-10 ng-binding" type="submit" (click)="modal.approve('done'); createNote();"
-      [disabled]="!noteData.title || !noteData.note" tabindex="3">{{resourceService?.frmelmnts?.btn?.save}}</button>
-    <button *ngIf="mode === 'create'" class="ui secondary right floated button mb-15 mt-10 ng-binding" type="submit" (click)="clearNote()"
-      tabindex="4">{{resourceService?.frmelmnts?.btn?.clear}}</button>
-
-    <button [disabled]="!updateData.title || !updateData.note" *ngIf="mode === 'update'" class="ui primary right floated button mb-15 mt-10 ng-binding" type="submit"
-      (click)="modal.approve('done'); updateNote()" tabindex="4">{{resourceService?.frmelmnts?.btn?.update}} </button>
+    <button 
+      *ngIf="mode === 'create'" 
+      class="ui secondary button" 
+      type="submit" 
+      (click)="clearNote()"
+    >
+      {{resourceService?.frmelmnts?.btn?.clear}}
+    </button>
+    <button 
+      *ngIf="mode === 'create'" 
+      class="ui primary button" 
+      type="submit" 
+      (click)="modal.approve('done'); createNote();"
+      [disabled]="!noteData.title || !noteData.note" 
+    >
+      {{resourceService?.frmelmnts?.btn?.save}}
+    </button>
+    <button 
+      [disabled]="!updateData.title || !updateData.note" 
+      *ngIf="mode === 'update'" 
+      class="ui primary button" 
+      type="submit"
+      (click)="modal.approve('done'); updateNote()" 
+    >
+      {{resourceService?.frmelmnts?.btn?.update}}
+    </button>
   </div>
+  <!--/Actions-->
+
 </sui-modal>
