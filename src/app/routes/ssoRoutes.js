@@ -2,6 +2,7 @@ const _ = require('lodash');
 const jwt = require('jsonwebtoken')
 const { verifySignature, verifyToken, fetchUserWithExternalId, createUser, createSession, updatePhone, updateRoles } = require('./../helpers/ssoHelper');
 const telemetryHelper = require('../helpers/telemetryHelper');
+const fs = require('fs');
 
 const successUrl = '/sso/sign-in/success';
 const updatePhoneUrl = '/sign-in/sso/update-phone';
@@ -75,7 +76,6 @@ module.exports = (app) => {
         console.log('new user details', newUserID);
         errType = 'FETCH_USER_AFTER_CREATE';
         userDetails = await fetchUserWithExternalId(jwtPayload, req); // to get userName
-        console.log('fetching user details', userDetails);
         if (jwtPayload.roles && jwtPayload.roles.length) {
           errType = 'UPDATE_USER_ROLES';
           updateRolesReq = {
@@ -86,6 +86,7 @@ module.exports = (app) => {
           }
           await updateRoles(updateRolesReq, req).catch(handleProfileUpdateError);
         }
+        req.session.userDetails = userDetails;
         logAuditEvent(req, createUserReq)
       }
       redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
@@ -99,17 +100,21 @@ module.exports = (app) => {
     }
   })
 
-  app.get(successUrl, async (req, res) => {
-    let userName, jwtPayload, redirectUrl, errType;
+  app.get(successUrl, async (req, res) => { // to support mobile sso flow
+    res.status(200).sendFile('./success_loader.html', {root: __dirname })
+  })
+
+  app.get('/v1/sso/redirect', async (req, res) => {
+    let userDetails, jwtPayload, redirectUrl, errType;
     jwtPayload = req.session.jwtPayload;
+    userDetails = req.session.userDetails;
     try {
-      if (!req.query.id) {
+      if (_.isEmpty(jwtPayload) || _.isEmpty(userDetails)) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
       }
-      userName = req.query.id;
       errType = 'CREATE_SESSION';
-      await createSession(userName, req, res);
+      await createSession(userDetails.userName, req, res);
       redirectUrl = jwtPayload.redirect_url ? jwtPayload.redirect_url : '/resources';
       console.log('sso sign-in success callback success', req.query, redirectUrl, errType);
     } catch (error) {
