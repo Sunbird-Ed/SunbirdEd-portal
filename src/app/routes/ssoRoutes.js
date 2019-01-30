@@ -111,7 +111,7 @@ module.exports = (app) => {
     res.status(200).sendFile('./success_loader.html', {root: __dirname })
   })
 
-  app.get('/v1/sso/redirect', async (req, res) => {
+  app.get('/v1/sso/success/redirect', async (req, res) => {
     let userDetails, jwtPayload, redirectUrl, errType;
     jwtPayload = req.session.jwtPayload;
     userDetails = req.session.userDetails;
@@ -154,6 +154,9 @@ module.exports = (app) => {
   })
 
   app.get(errorUrl, (req, res) => {
+    res.status(200).sendFile('./error_loader.html', {root: __dirname })
+  })
+  app.get('/v1/sso/error/redirect', async (req, res) => {
     const redirect_uri = encodeURIComponent(`https://${req.get('host')}/resources?auth_callback=1`);
     const redirectUrl = `/auth/realms/sunbird/protocol/openid-connect/auth?client_id=portal&redirect_uri=${redirect_uri}&scope=openid&response_type=code&version=1&error_message=` + req.query.error_message;
     res.redirect(redirectUrl); // should go to error page
@@ -168,7 +171,7 @@ const handleProfileUpdateError = (error) => {
     throw 'unhandled exception while getting userDetails';
   }
 }
-const delay = (duration = 200) => {
+const delay = (duration = 1000) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve();
