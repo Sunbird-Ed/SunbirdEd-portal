@@ -18,6 +18,7 @@
 
   .content {
     min-height: 100px;
+    overflow-y: auto; 
   }
 
   .close {
@@ -52,7 +53,9 @@
 
   &.normal {
     max-width: 720px;
-    max-height: 480px;
+    .content {
+      max-height: calc(380px);
+    }
   }
 
   &.large {
