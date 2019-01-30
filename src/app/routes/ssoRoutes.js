@@ -74,19 +74,24 @@ module.exports = (app) => {
         }
         const newUserID = await createUser(createUserReq, req).catch(handleProfileUpdateError);
         console.log('sso new user create response', newUserID);
-        errType = 'FETCH_USER_AFTER_CREATE';
-        userDetails = await fetchUserWithExternalId(jwtPayload, req); // to get userName
-        console.log('sso new user read details', userDetails);
         if (jwtPayload.roles && jwtPayload.roles.length) {
           errType = 'UPDATE_USER_ROLES';
           updateRolesReq = {
-            userId: userDetails.id,
+            userId: newUserID.result.userId,
+            // userId: userDetails.id,
             externalId: jwtPayload.school_id, // need to be verified
             provider: jwtPayload.state_id,
             roles: jwtPayload.roles
           }
           await updateRoles(updateRolesReq, req).catch(handleProfileUpdateError);
         }
+        errType = 'FETCH_USER_AFTER_CREATE';
+        userDetails = await fetchUserWithExternalId(jwtPayload, req); // to get userName
+        if(_.isEmpty(userDetails)){
+          errType = 'USER_DETAILS_EMPTY';
+          throw 'USER_DETAILS_IS_EMPTY';
+        }
+        console.log('sso new user read details', userDetails);
         req.session.userDetails = userDetails;
         logAuditEvent(req, createUserReq)
       }
