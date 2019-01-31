@@ -131,8 +131,7 @@ export class RequestChangesPopupComponent implements OnInit, OnDestroy {
    * If both the validation is passed it enables the request changes button
    */
   validateModal() {
-    if (this.reasons && this.reasons.length > 0 && this.comment && _.trim(this.comment).length > 0 ||
-    this.comment && _.trim(this.comment).length > 0 && this.showDefaultConfig) {
+    if (this.reasons && this.reasons.length > 0 && this.comment && _.trim(this.comment).length > 0 && this.showDefaultConfig) {
       this.isDisabled = false;
     } else {
       this.isDisabled = true;

@@ -30,3 +30,11 @@
 @import "./components/header";
 @import "./components/footer";
 @import "./global";
+
+// base structure
+@import "./base/base";
+@import "./component/component";
+@import "./helpers/helpers";
+@import "./layout/layout";
+@import "./pages/pages";
+@import "./vendors/vendors";

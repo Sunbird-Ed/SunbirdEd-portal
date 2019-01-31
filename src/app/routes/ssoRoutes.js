@@ -73,20 +73,26 @@ module.exports = (app) => {
           }]
         }
         const newUserID = await createUser(createUserReq, req).catch(handleProfileUpdateError);
-        console.log('new user details', newUserID);
-        errType = 'FETCH_USER_AFTER_CREATE';
-        userDetails = await fetchUserWithExternalId(jwtPayload, req); // to get userName
-        console.log('fetching user details', userDetails);
+        await delay();
+        console.log('sso new user create response', newUserID);
         if (jwtPayload.roles && jwtPayload.roles.length) {
           errType = 'UPDATE_USER_ROLES';
           updateRolesReq = {
-            userId: userDetails.id,
+            userId: newUserID.result.userId,
+            // userId: userDetails.id,
             externalId: jwtPayload.school_id, // need to be verified
             provider: jwtPayload.state_id,
             roles: jwtPayload.roles
           }
           await updateRoles(updateRolesReq, req).catch(handleProfileUpdateError);
         }
+        errType = 'FETCH_USER_AFTER_CREATE';
+        userDetails = await fetchUserWithExternalId(jwtPayload, req); // to get userName
+        if(_.isEmpty(userDetails)){
+          errType = 'USER_DETAILS_EMPTY';
+          throw 'USER_DETAILS_IS_EMPTY';
+        }
+        console.log('sso new user read details', userDetails);
         req.session.userDetails = userDetails;
         logAuditEvent(req, createUserReq)
       }
@@ -105,7 +111,7 @@ module.exports = (app) => {
     res.status(200).sendFile('./success_loader.html', {root: __dirname })
   })
 
-  app.get('/v1/sso/redirect', async (req, res) => {
+  app.get('/v1/sso/success/redirect', async (req, res) => {
     let userDetails, jwtPayload, redirectUrl, errType;
     jwtPayload = req.session.jwtPayload;
     userDetails = req.session.userDetails;
@@ -148,8 +154,11 @@ module.exports = (app) => {
   })
 
   app.get(errorUrl, (req, res) => {
+    res.status(200).sendFile('./error_loader.html', {root: __dirname })
+  })
+  app.get('/v1/sso/error/redirect', async (req, res) => {
     const redirect_uri = encodeURIComponent(`https://${req.get('host')}/resources?auth_callback=1`);
-    const redirectUrl = `/auth/realms/sunbird/protocol/openid-connect/auth?client_id=portal&redirect_uri=${redirect_uri}&scope=openid&response_type=code&version=1&error_message=` + req.query.error_message;
+    const redirectUrl = `/auth/realms/sunbird/protocol/openid-connect/auth?client_id=portal&redirect_uri=${redirect_uri}&scope=openid&response_type=code&version=2&error_message=` + req.query.error_message;
     res.redirect(redirectUrl); // should go to error page
   })
 }
@@ -161,6 +170,13 @@ const handleProfileUpdateError = (error) => {
   } else {
     throw 'unhandled exception while getting userDetails';
   }
+}
+const delay = (duration = 1000) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, duration)
+  });
 }
 
 const getErrorMessage = (error) => {
