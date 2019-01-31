@@ -1,6 +1,8 @@
 <sui-modal 
     [isClosable]="true" 
-    (dismissed)="redirect();" 
+    (dismissed)="redirect();"
+    [size]="'normal'" 
+    [transitionDuration]="0" 
     #modal 
     [appTelemetryImpression]="telemetryImpression"
     >
