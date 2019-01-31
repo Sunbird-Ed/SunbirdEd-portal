@@ -48,9 +48,10 @@ const fetchUserWithExternalId = async (payload, req) => { // will be called from
     headers: getHeaders(req),
     json: true
   }
+  console.log('sso fetching user with', options.url);
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
-      console.log('fetching user with external id', data);
+      console.log('sso fetching user', data.result);
       return _.get(data, 'result.response');
     } else {
       throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
