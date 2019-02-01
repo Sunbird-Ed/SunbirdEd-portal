@@ -257,9 +257,11 @@
 .content-font {
   font-size: 1.1em !important;
 }
-.course-header-divider {
-  padding-right: 15px !important;
+*[dir="ltr"] .black-divider {
   border-right: 1px solid black !important;
+}
+*[dir="rtl"] .black-divider {
+  border-left: 1px solid black !important;
 }
 .capitalizeTextInfo {
   text-transform: capitalize;
