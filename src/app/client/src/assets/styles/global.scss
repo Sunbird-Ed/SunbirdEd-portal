@@ -1,10 +1,19 @@
-body {
-  position: relative;
-  background: $bg-body !important;
-  font-family: $font-stack-en;
-  letter-spacing: 0.2px;
-  height: auto;
+// global styles
+
+*{
+  transition: all 300ms ease-in-out
+  }
+html, body {
+  height:100%;
+  font-size:$font-size-base;
 }
+  body {
+      background:$bg-body;
+      position: relative;
+font-family: $font-stack-en;
+letter-spacing: 0.2px;
+height: auto;
+  }
 
 *[lang="en"] body {
   font-family: $font-stack-en;
@@ -16,6 +25,9 @@ body {
 
 *[lang="ur"] body {
   font-family: $font-stack-ur;
+}
+*[lang="ur"] {
+  font-size: ($font-size-base * .525);
 }
 
 button,
