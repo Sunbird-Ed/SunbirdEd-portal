@@ -34,18 +34,21 @@
 
 <!-- Delete confirm Modal-->
 <ng-template let-context let-modal="modal" #modalTemplate>
+
   <!--Header-->
-  <div class="header">
+  <div class="sb-modal-header">
     {{resourceService?.frmelmnts?.lbl?.deletepublishedcontent}}
   </div>
   <!--/Header-->
+
   <!--Content-->
-  <div class="content">
+  <div class="sb-modal-content">
     <p>{{resourceService?.frmelmnts?.lbl?.deletepublishedconfirm}}</p>
   </div>
   <!--/Content-->
+
   <!--Actions-->
-  <div class="actions">
+  <div class="sb-modal-actions">
     <button 
       class="ui secondary button" 
       (click)="modal.deny('denied')"
@@ -61,4 +64,5 @@
     </button>
   </div>
   <!--/Actions-->
+
 </ng-template>

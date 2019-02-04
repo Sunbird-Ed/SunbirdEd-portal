@@ -74,18 +74,21 @@
   </div>
   
   <ng-template let-context let-modal="modal" #modalTemplate>
+    
     <!--Header-->
-    <div class="header">
+    <div class="sb-modal-header">
       {{resourceService?.frmelmnts?.lbl?.deletecontent}}
     </div>
     <!--/Header-->
+
     <!--Content-->
-    <div class="content">
+    <div class="sb-modal-content">
       <p>{{resourceService?.frmelmnts?.lbl?.deleteconfirm}}</p>
     </div>
     <!--/Content-->
+
     <!--Actions-->
-    <div class="actions">
+    <div class="sb-modal-actions">
       <button 
         class="ui secondary button" 
         (click)="modal.deny('denied')"
@@ -97,10 +100,11 @@
         (click)="modal.approve('approved')" 
         autofocus
       >
-      {{resourceService?.frmelmnts?.btn?.yes}}
+        {{resourceService?.frmelmnts?.btn?.yes}}
       </button>
     </div>
     <!--/Actions-->
+
   </ng-template>
 
   <app-contentlock-info-popup [content]="lockPopupData" (closeEvent)="onCloseLockInfoPopup($event)" *ngIf="showLockedContentModal"></app-contentlock-info-popup>

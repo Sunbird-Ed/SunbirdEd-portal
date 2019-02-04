@@ -10,19 +10,19 @@
     <!--Header-->
     <div 
         *ngIf="createForm" 
-        class="header"
+        class="sb-modal-header"
     >
         {{resourceService?.frmelmnts?.lbl?.addorgtype}}
     </div>
     <div 
         *ngIf="!createForm" 
-        class="header">
+        class="sb-modal-header">
             {{resourceService?.frmelmnts?.lbl?.updateorgtype}}
     </div>
     <!--/Header-->
 
     <!--Content-->
-    <div class="content">
+    <div class="sb-modal-content">
         <div class="ui fluid icon input">
             <input *ngIf="createForm" class="form-control" [formControl]="orgName" type="text" placeholder="{{resourceService?.frmelmnts?.lbl?.addorgtype}}">
             <input *ngIf="!createForm" class="form-control" [formControl]="orgName" type="text" placeholder="{{resourceService?.frmelmnts?.lbl?.updateorgtype}}">
@@ -31,7 +31,7 @@
     <!--/Content-->
 
     <!--Actions-->
-    <div class="actions">
+    <div class="sb-modal-actions">
         <button
             class="ui secondary button" 
             (click)="modal.deny()"
@@ -50,7 +50,7 @@
             [telemetryInteractObject]="{id:'addOrgType',type:'create-org-type',ver:'1.0'}" 
             [telemetryInteractEdata]="addOrganizationType"
         >
-                {{resourceService?.frmelmnts?.btn?.add}}
+            {{resourceService?.frmelmnts?.btn?.add}}
         </button>
         <button
             class="ui primary button"
@@ -61,7 +61,7 @@
             [telemetryInteractObject]="{id:'updateOrgType',type:'update-org-type',ver:'1.0'}" 
             [telemetryInteractEdata]="updateOrganizationType"
         >
-         {{resourceService?.frmelmnts?.btn?.update}}
+            {{resourceService?.frmelmnts?.btn?.update}}
         </button>
     </div>
     <!--/Actions-->
