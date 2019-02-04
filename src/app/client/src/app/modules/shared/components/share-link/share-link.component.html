@@ -17,7 +17,7 @@
     {{resourceService?.frmelmnts?.lbl?.sharelink}}
   </p>
   <div 
-    class="ui input fluid" 
+    class="ui action input fluid" 
     id="buttonPopUp" 
     suiPopup [popupPlacement]="position" 
     popupTrigger="manual" 
@@ -30,20 +30,18 @@
         readonly 
         [(ngModel)]="shareLink"
       />
+      <button 
+        class="ui basic primary button"
+        (click)="copyLink(popup)"
+        #copyLinkButton >
+          {{resourceService?.frmelmnts?.btn?.copyLink}}
+      </button>
   </div>
 </div>
 <!--/Content-->
-
 <!--Actions-->
 <div class="actions">
-  <button 
-    class="ui primary button"
-    (click)="copyLink(popup)"
-    #copyLinkButton >
-    {{resourceService?.frmelmnts?.btn?.copyLink}}
-  </button>
 </div>
 <!--/Actions-->
-
 
 </sui-modal>

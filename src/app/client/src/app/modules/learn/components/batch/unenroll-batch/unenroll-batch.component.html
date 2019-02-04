@@ -14,18 +14,18 @@
     <!--Actions-->
     <div class="actions">
         <button 
-            class="ui secondary button"
+            class="ui secondary button" 
+            (click)="unenrollBatch.deny();"
+        >
+        {{resourceService.frmelmnts.btn.Cancel}}
+        </button>
+        <button 
+            class="ui primary button"
             [disabled]="disableSubmitBtn"
             id="unenrollFromCourse" 
             (click)="unenrollFromCourse()"
         >
             {{resourceService.frmelmnts.btn.unenroll}}
-        </button>
-        <button 
-            class="ui primary button" 
-            (click)="unenrollBatch.deny();"
-        >
-        {{resourceService.frmelmnts.btn.Cancel}}
         </button>
     </div>
     <!--/Actions-->
