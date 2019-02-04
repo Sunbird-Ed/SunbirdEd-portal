@@ -1,14 +1,15 @@
 <sui-modal 
   [isClosable]="false" 
   [mustScroll]="true" 
-  [size]="'large'" 
+  [size]="'large'"
+  [transitionDuration]="0"
   (dismissed)="redirect();modal.deny();" 
   #modal
   >
 
   <!--Header-->
   <div class="sb-modal-header" [appTelemetryImpression]="telemetryImpression">
-    {{resourceService?.frmelmnts?.instn?.t0016}}</span>
+    {{resourceService?.frmelmnts?.instn?.t0016}}
   </div>
   <!--/Header-->
 
