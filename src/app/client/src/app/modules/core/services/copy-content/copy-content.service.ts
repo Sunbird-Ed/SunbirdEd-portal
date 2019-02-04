@@ -64,7 +64,7 @@ export class CopyContentService {
     };
     return this.contentService.post(option).pipe(map((response: ServerResponse) => {
       _.forEach(response.result.node_id, (value) => {
-        this.redirectToEditor(contentData, value);
+        this.redirectToEditor(param.request.content, value);
       });
       return response;
     }));
@@ -89,7 +89,9 @@ export class CopyContentService {
           createdFor: userData.organisationIds,
           createdBy: userData.userId,
           organization: userData.organisationNames,
-          framework: ''
+          framework: '',
+          mimeType: contentData.mimeType,
+          contentType: contentData.contentType
         }
       }
     };

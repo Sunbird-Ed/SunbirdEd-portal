@@ -6,7 +6,7 @@ export interface ContentDetails {
 }
 
 export interface ContentData {
-    body: any;
+    body?: any;
     mimeType: string;
     contentType: string;
     identifier: string;
