@@ -127,12 +127,41 @@
     </div>
 </div>
 
-<sui-modal [isClosable]="false" *ngIf="removeModalFlag" [size]="mini" #removeModal>
-    <div class="header"> {{ resourceService?.frmelmnts?.btn?.removeMembers}}</div>
-    <div class="actions">
-        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="stopCreatingYesInteractEdata"
-            class="ui primary  button announcement-button" (click)="removeModalFlag = !removeModalFlag" [appTelemetryEnd]="telemetryEnd">{{ resourceService?.frmelmnts?.btn?.cancel}}</button>
-        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="stopCreatingNoInteractEdata"
-            class="ui gray button announcement-button" (click)="removeModal.deny(); remove()">Remove</button>
+<sui-modal 
+    [isClosable]="false" 
+    *ngIf="removeModalFlag" 
+    [size]="'small'"
+    [transitionDuration]="0"
+    (dismissed)="removeModal.deny();remove()"
+    #removeModal >
+
+    <!--Header-->
+    <div class="header">
+        {{ resourceService?.frmelmnts?.btn?.removeMembers}}
     </div>
+    <!--/Header-->
+
+    <!--Actions-->
+    <div class="actions">
+        <button 
+            appTelemetryInteract 
+            [telemetryInteractObject]="telemetryInteractObject" 
+            [telemetryInteractEdata]="stopCreatingYesInteractEdata"
+            class="ui secondary button" 
+            (click)="removeModalFlag = !removeModalFlag" 
+            [appTelemetryEnd]="telemetryEnd"
+        >
+            {{resourceService?.frmelmnts?.btn?.cancel}}
+        </button>
+        <button 
+            appTelemetryInteract 
+            [telemetryInteractObject]="telemetryInteractObject" 
+            [telemetryInteractEdata]="stopCreatingNoInteractEdata"
+            class="ui primary button" 
+            (click)="removeModal.deny();remove()"
+        >
+            {{resourceService?.frmelmnts?.btn?.remove}}
+        </button>
+    </div>
+    <!--/Actions-->
 </sui-modal>
