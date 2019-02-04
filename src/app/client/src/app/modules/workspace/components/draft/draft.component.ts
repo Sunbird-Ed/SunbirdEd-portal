@@ -190,7 +190,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
     fetchDrafts(limit: number, pageNumber: number) {
         this.showLoader = true;
         this.pageNumber = pageNumber;
-        this.pageLimit = limit;
+        this.pageLimit = 1;
         const searchParams = {
             filters: {
                 status: ['Draft', 'FlagDraft'],
