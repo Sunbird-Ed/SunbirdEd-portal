@@ -112,7 +112,7 @@ export class CopyContentService {
    * @param {contentData} ContentData Content data which will be copied
    * @param {copiedIdentifier} string New identifier of the copy content
    */
-  redirectToEditor(contentData: ContentData, copiedIdentifier: string) {
+  redirectToEditor(contentData, copiedIdentifier: string) {
     let url = '';
     if (contentData.mimeType === 'application/vnd.ekstep.content-collection') {
       url = `/workspace/content/edit/collection/${copiedIdentifier}/${contentData.contentType}/draft/${contentData.framework}`;
