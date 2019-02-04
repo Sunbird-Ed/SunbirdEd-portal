@@ -32,6 +32,7 @@
 @import "./global";
 
 // base structure
+@import "./mixins/mixins";
 @import "./base/base";
 @import "./component/component";
 @import "./helpers/helpers";
