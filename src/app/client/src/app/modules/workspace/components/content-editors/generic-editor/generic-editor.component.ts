@@ -7,7 +7,7 @@ import { UserService, TenantService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '@sunbird/environment';
 import { EditorService, WorkSpaceService } from '../../../services';
-import { tap, delay, map } from 'rxjs/operators';
+import { tap, delay, map, first } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 jQuery.fn.iziModal = iziModal;
@@ -51,7 +51,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     this.routeParams = this.activatedRoute.snapshot.params;
     this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.disableBrowserBackButton();
-    this.getDetails().pipe(
+    this.getDetails().pipe(first(),
       tap(data => {
         if (data.tenantDetails) {
           this.logo = data.tenantDetails.logo;

@@ -54,7 +54,11 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         this.updateBreadCrumbs();
         this.showLoader = false;
       }, (err) => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0003); // fmsg.m0001 for enrolled issue
+        if (_.get(err, 'error.responseCode') && err.error.responseCode === 'RESOURCE_NOT_FOUND') {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0086);
+        } else {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0003); // fmsg.m0001 for enrolled issue
+        }
         this.router.navigate([`/learn`]);
       });
   }
