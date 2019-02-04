@@ -115,11 +115,11 @@ export class CopyContentService {
   redirectToEditor(contentData, copiedIdentifier: string) {
     let url = '';
     if (contentData.mimeType === 'application/vnd.ekstep.content-collection') {
-      url = `/workspace/content/edit/collection/${copiedIdentifier}/${contentData.contentType}/draft/${contentData.framework}`;
+      url = `/workspace/content/edit/collection/${copiedIdentifier}/${contentData.contentType}/draft/${contentData.framework}/Draft`;
     } else if (contentData.mimeType === 'application/vnd.ekstep.ecml-archive') {
-      url = `/workspace/content/edit/content/${copiedIdentifier}/draft/${contentData.framework}`;
+      url = `/workspace/content/edit/content/${copiedIdentifier}/draft/${contentData.framework}/Draft`;
     } else {
-      url = `/workspace/content/edit/generic/${copiedIdentifier}/uploaded/${contentData.framework}`;
+      url = `/workspace/content/edit/generic/${copiedIdentifier}/uploaded/${contentData.framework}/Draft`;
     }
     this.router.navigate([url]);
   }
