@@ -76,19 +76,19 @@
   <ng-template let-context let-modal="modal" #modalTemplate>
     
     <!--Header-->
-    <div class="sb-modal-header">
+    <div class="header sb-modal-header">
       {{resourceService?.frmelmnts?.lbl?.deletecontent}}
     </div>
     <!--/Header-->
 
     <!--Content-->
-    <div class="sb-modal-content">
+    <div class="content sb-modal-content">
       <p>{{resourceService?.frmelmnts?.lbl?.deleteconfirm}}</p>
     </div>
     <!--/Content-->
 
     <!--Actions-->
-    <div class="sb-modal-actions">
+    <div class="actions sb-modal-actions">
       <button 
         class="ui secondary button" 
         (click)="modal.deny('denied')"

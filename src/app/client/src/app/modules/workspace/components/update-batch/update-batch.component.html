@@ -1,13 +1,16 @@
-<sui-modal *ngIf='showUpdateModal' (dismissed)="redirect()" [isClosable]="true" #updateBatchModal>
-  <div class="header">
-    <div class="ui grid">
-      <div class="eleven wide column">
-        <span class="ui header">{{resourceService?.frmelmnts?.intxt?.t0007}}</span>
-      </div>
-    </div>
+<sui-modal 
+  *ngIf='showUpdateModal' 
+  (dismissed)="redirect()" 
+  [isClosable]="true" 
+  #updateBatchModal
+  >
+  <!--Header-->
+  <div class="header sb-modal-header">
+    {{resourceService?.frmelmnts?.intxt?.t0007}}
   </div>
-
-  <div class="scrolling content" [appTelemetryImpression]="telemetryImpression">
+  <!--/Header-->
+  <!--Content-->
+  <div class="content sb-modal-content" [appTelemetryImpression]="telemetryImpression">
     <form [formGroup]="batchUpdateForm" class="ui form batchUpdateForm">
       <div class="one field" [ngClass]="batchUpdateForm.controls['name'].invalid && batchUpdateForm.controls['name'].errors.required && !batchUpdateForm.controls['name'].pristine ? 'error': ''">
         <div class="required field">
@@ -113,9 +116,12 @@
 
     </form>
   </div>
-  <div class="actions">
+  <!--/Content-->
+  <!--Actions-->
+  <div class="actions sb-modal-actions">
     <button class="ui secondary button" [ngClass]="{ 'disabled': batchDetails.status === 2 }" (click)="batchUpdateForm.reset()">Clear</button>
     <button class="ui primary button" [ngClass]="{ 'disabled': batchDetails.status === 2 }" [disabled]="disableSubmitBtn"
       (click)="updateBatch()">Update</button>
   </div>
+  <!--/Actions-->
 </sui-modal>

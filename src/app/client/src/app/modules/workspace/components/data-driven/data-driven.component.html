@@ -8,23 +8,23 @@
     [appTelemetryImpression]="telemetryImpression">
 
     <!--Header-->
-    <div class="header">
+    <div class="header sb-modal-header">
         {{resourceService?.frmelmnts?.lbl[creationFormLable]}}
     </div>
     <!--/Header-->
 
     <!--Content-->
-    <div class="content" *ngIf="formFieldProperties && categoryMasterList">
+    <div class="content sb-modal-content" *ngIf="formFieldProperties && categoryMasterList">
         <app-content-creation-default-template 
             #formData 
             [formFieldProperties]="formFieldProperties" 
             [categoryMasterList]="categoryMasterList">
-            </app-content-creation-default-template>
+        </app-content-creation-default-template>
     </div>
     <!--/Content-->
 
     <!--Actions-->
-    <div class="actions">
+    <div class="actions sb-modal-actions">
         <button class="ui primary button" (click)="createContent();modal.deny()">
             {{resourceService?.frmelmnts?.btn?.startcreating}}
         </button>

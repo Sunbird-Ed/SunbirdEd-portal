@@ -74,8 +74,19 @@
   </div>
 </div>
 <!-- publish warning modal -->
-<sui-modal [isClosable]="false" [size]="'small'" *ngIf="showPublishWarningModal" #publishWarningModal>
-  <div class="scrolling content">
+<sui-modal 
+  [isClosable]="true" 
+  [size]="'small'" 
+  *ngIf="showPublishWarningModal" 
+  #publishWarningModal
+  [transitionDuration]="0"
+  >
+  <!--Header-->
+  <div class="header sb-modal-header">
+  </div>
+  <!--/Header-->
+  <!--Content-->
+  <div class="content sb-modal-content">
     <div class="ui centered grid">
       <div class="row">
         <div class="ui basic icon circular button cursor-pointer">
@@ -89,16 +100,30 @@
       </div>
     </div>
   </div>
-  <div class="actions footer">
-    <div class="ui buttons">
-      <button class="ui orange button" type="button " (click)="showPublishWarningModal = false"
-      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="reviewCommentsWarningNoInteractEdata"
-      >{{resourceService?.frmelmnts?.btn?.no}}</button>
-      <div class="or"></div>
-      <button class="ui blue button " type="button " (click)="showPublishWarningModal = false; goToPublish();"
-      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="reviewCommentsWarningYesInteractEdata"
-      >{{resourceService?.frmelmnts?.btn?.yes}}</button>
-    </div>
+  <!--/Content-->
+  <!--Actions-->
+  <div class="actions sb-modal-actions">
+    <button 
+      class="ui secondary button" 
+      type="button " 
+      (click)="showPublishWarningModal = false"
+      appTelemetryInteract 
+      [telemetryInteractObject]="telemetryInteractObject" 
+      [telemetryInteractEdata]="reviewCommentsWarningNoInteractEdata"
+      >
+        {{resourceService?.frmelmnts?.btn?.no}}
+      </button>
+      <button 
+        class="ui primary button" 
+        type="button " 
+        (click)="showPublishWarningModal = false; goToPublish();"
+        appTelemetryInteract 
+        [telemetryInteractObject]="telemetryInteractObject" 
+        [telemetryInteractEdata]="reviewCommentsWarningYesInteractEdata"
+      >
+        {{resourceService?.frmelmnts?.btn?.yes}}
+      </button>
   </div>
+  <!--Actions-->
 </sui-modal>
 <router-outlet></router-outlet>
