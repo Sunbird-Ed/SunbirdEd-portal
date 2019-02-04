@@ -1,4 +1,17 @@
-<sui-modal [isClosable]="false" [size]="'normal'" #modal [mustScroll]="'true'" appBodyScroll>
+<sui-modal 
+  [isClosable]="false" 
+  [size]="'normal'" 
+  #modal 
+  [mustScroll]="'true'" 
+  [transitionDuration]="0"
+  appBodyScroll>
+
+  <!--Header-->
+  <div class="header sb-modal-header">
+  </div>
+  <!--/Header-->
+
+  <!--Content-->
   <div class="scrollable content">
     <div class="d-flex flex-jc-center mb-10">
         <img class="image centered" alt={{tenantName}} height="45" src="{{logo}}">
@@ -14,6 +27,7 @@
   <div class="d-flex flex-jc-center flex-ai-center mt-10">
       <input type="checkbox" aria-labelledby="terms and agreement" role="checkbox" [(ngModel)]="tncChecked" value="true" (click)="onClickCheckbox(tncChecked)" class="mr-10 cursor-pointer"><span> {{resourceService?.frmelmnts?.lbl?.termsAndCondAgree}}</span>
   </div>
+  <!--/Content-->
   <div class="d-flex flex-jc-center my-20">
     <button class="width-310" [ngClass]="tncChecked ? 'ui light-sea-green button' : 'ui grey button'" [disabled]="!disableContinueBtn" tabindex="0" (click)="onSubmitTnc()">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
   </div>

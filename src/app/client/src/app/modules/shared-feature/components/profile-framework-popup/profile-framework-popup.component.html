@@ -9,13 +9,13 @@
   *ngIf="formFieldOptions.length">
 
   <!--Header-->
-  <div class="header">
+  <div class="header sb-modal-header">
     {{resourceService?.frmelmnts?.lbl?.profilePopup}}&lrm;
   </div>
   <!--/Header-->
 
   <!--Content-->
-  <div class="content">
+  <div class="content sb-modal-content">
     <form class="ui form">
       <div *ngFor="let field of formFieldOptions">
         <div class="required field" *ngIf="field.code === 'board' && allowedFields.includes(field.code)">
@@ -42,7 +42,7 @@
   <!--/Content-->
 
   <!--Actions-->
-  <div class="actions">
+  <div class="actions sb-modal-actions">
     <button 
       class="ui primary button" 
       [disabled]="!showButton" 
