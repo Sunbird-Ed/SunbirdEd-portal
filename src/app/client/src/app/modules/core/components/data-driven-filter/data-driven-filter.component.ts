@@ -272,10 +272,9 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
   }
   private setFilterInteractData() {
     setTimeout(() => { // wait for model to change
-      const filters = _.pickBy(this.formInputData, (val, key) => {
-        return (!_.isEmpty(val) || typeof val === 'number')
-          && _.map(this.formFieldProperties, field => field.code).includes(key);
-      });
+      const filters = _.pickBy(this.formInputData, (val, key) =>
+        (!_.isEmpty(val) || typeof val === 'number')
+          && _.map(this.formFieldProperties, field => field.code).includes(key));
       this.applyFilterInteractEdata = {
         id: 'apply-filter',
         type: 'click',

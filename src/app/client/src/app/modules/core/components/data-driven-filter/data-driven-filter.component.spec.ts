@@ -1,4 +1,5 @@
 
+
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as _ from 'lodash';
@@ -104,6 +105,8 @@ describe('DataDrivenFilterComponent', () => {
     expect(component.router.navigate).toHaveBeenCalled();
   });
   it('should apply filters', () => {
+    component.formFieldProperties = [{code: 'subject'}];
+    component.formInputData = {subject: 'Math'};
     component.applyFilters();
     expect(component.router.navigate).toHaveBeenCalled();
   });
