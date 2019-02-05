@@ -11,7 +11,7 @@ import { EditorService, WorkSpaceService } from './../../../services';
 import { environment } from '@sunbird/environment';
 import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest, of, throwError } from 'rxjs';
-import { skipWhile, map, mergeMap, tap, delay } from 'rxjs/operators';
+import { skipWhile, map, mergeMap, tap, delay, first } from 'rxjs/operators';
 jQuery.fn.iziModal = iziModal;
 enum state {
   UP_FOR_REVIEW = 'upForReview',
@@ -63,6 +63,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     this.disableBrowserBackButton();
     this.frameworkService.initialize();
     this.getDetails().pipe(
+      first(),
       tap(data => {
         if (data.tenantDetails) {
           this.logo = data.tenantDetails.logo;

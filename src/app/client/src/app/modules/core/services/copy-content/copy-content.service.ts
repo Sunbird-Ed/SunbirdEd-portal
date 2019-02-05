@@ -64,7 +64,7 @@ export class CopyContentService {
     };
     return this.contentService.post(option).pipe(map((response: ServerResponse) => {
       _.forEach(response.result.node_id, (value) => {
-        this.redirectToEditor(contentData, value);
+        this.redirectToEditor(param.request.content, value);
       });
       return response;
     }));
@@ -89,7 +89,9 @@ export class CopyContentService {
           createdFor: userData.organisationIds,
           createdBy: userData.userId,
           organization: userData.organisationNames,
-          framework: ''
+          framework: '',
+          mimeType: contentData.mimeType,
+          contentType: contentData.contentType
         }
       }
     };
@@ -110,14 +112,14 @@ export class CopyContentService {
    * @param {contentData} ContentData Content data which will be copied
    * @param {copiedIdentifier} string New identifier of the copy content
    */
-  redirectToEditor(contentData: ContentData, copiedIdentifier: string) {
+  redirectToEditor(contentData, copiedIdentifier: string) {
     let url = '';
     if (contentData.mimeType === 'application/vnd.ekstep.content-collection') {
-      url = `/workspace/content/edit/collection/${copiedIdentifier}/${contentData.contentType}/draft/${contentData.framework}`;
+      url = `/workspace/content/edit/collection/${copiedIdentifier}/${contentData.contentType}/draft/${contentData.framework}/Draft`;
     } else if (contentData.mimeType === 'application/vnd.ekstep.ecml-archive') {
-      url = `/workspace/content/edit/content/${copiedIdentifier}/draft/${contentData.framework}`;
+      url = `/workspace/content/edit/content/${copiedIdentifier}/draft/${contentData.framework}/Draft`;
     } else {
-      url = `/workspace/content/edit/generic/${copiedIdentifier}/uploaded/${contentData.framework}`;
+      url = `/workspace/content/edit/generic/${copiedIdentifier}/uploaded/${contentData.framework}/Draft`;
     }
     this.router.navigate([url]);
   }

@@ -7,8 +7,8 @@
         id="keyword" 
         name="filter_search"
         class="searchinput br-0"
-        title="{{resourceService.frmelmnts?.lbl?.SearchIn}} {{selectedOption}}" 
-        placeholder="{{resourceService.frmelmnts?.lbl?.SearchIn}} {{selectedOption}}"
+        title="{{resourceService.frmelmnts?.lbl?.SearchIn}} {{getSearchPlaceHolderValue()}}" 
+        placeholder="{{resourceService.frmelmnts?.lbl?.SearchIn}} {{getSearchPlaceHolderValue()}}"
         [(ngModel)]="key" 
         (keyup.enter)="onEnter(key)" 
         [disabled]="!showInput"
@@ -18,7 +18,7 @@
         <i 
             class="search blue icon br-0"
             (click)="onEnter(key)"
-            title="{{resourceService.frmelmnts?.lbl?.SearchIn}} {{selectedOption}}"
+            title="{{resourceService.frmelmnts?.lbl?.SearchIn}} {{getSearchPlaceHolderValue()}}"
             tabindex="0"
             ></i>
     </button>

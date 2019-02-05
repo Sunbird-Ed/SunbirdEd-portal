@@ -5,11 +5,11 @@
       [isShowFilterLabel]=true *ngIf="initFilters" [filterEnv]="filterType"></app-data-driven-filter>
     <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && contentList.length">
       <div class="ui left floated header  ">
-        <p class="serch-allresult">Showing results
+        <p class="serch-allresult">{{resourceService.frmelmnts?.lbl?.showingResults}}
           <span class="lower-case" *ngIf="this.queryParams.key">
-            for {{this.queryParams.key}}
+            {{resourceService.frmelmnts?.lbl?.forSearch  | interpolate:'{searchString}':this.queryParams?.key}}
           </span>
-          in "all"
+          {{resourceService.frmelmnts?.lbl?.inAll}}
         </p>
       </div>
       <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="ui right floated basic icon circular button "
