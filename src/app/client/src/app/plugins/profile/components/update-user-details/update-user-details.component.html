@@ -1,19 +1,21 @@
 <sui-modal 
-  appBodyScroll 
+  [mustScroll]="true" 
   [isClosable]="true"
-  [size]="'normal'"
   [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll
   (dismissed)="closeModal();" 
   #userDetailsModal>
 
   <!--Header-->
-  <div class="header">
+  <div class="sb-modal-header">
     {{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}&lrm;
   </div>
   <!--/Header-->
 
   <!--Content-->
-  <div class="content">
+  <div class="sb-modal-content">
     <form class="ui form" [formGroup]="userDetailsForm">
       <div class="required field">
         <label class="ui basic blue error label p-0" *ngIf="userDetailsForm.controls.name.touched && userDetailsForm.controls['name'].errors && userDetailsForm.controls['name'].errors.required">{{resourceService?.frmelmnts?.lbl?.nameRequired}}</label>
@@ -52,13 +54,13 @@
   <!--/Content-->
 
   <!--Actions-->
-  <div class="actions">
+  <div class="sb-modal-actions">
     <button 
       class="ui primary button" 
       [disabled]="!enableSubmitBtn" 
       (click)="onSubmitForm()"
     >
-        {{resourceService?.frmelmnts?.btn?.submitbtn}}
+      {{resourceService?.frmelmnts?.btn?.submitbtn}}
     </button>
   </div>
   <!--/Actions-->

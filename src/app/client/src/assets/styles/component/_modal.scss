@@ -1,47 +1,47 @@
 // modal
+.sb-modal{
+
   .ui.modal {
     margin: 0 auto;
-    left:0px;
-    right:0px;
+    left: 0;
+    right: 0;
     @include size(100%,auto); //bourbon
   
-    &>.sb-modal-header {
+    .sb-modal-header {
       background-color: $primary-color;
       color: $white-color;
       font-weight: $font-weight-bold;
       font-size: $h6-font-size;
-      padding:$block-padding-x-y;
-      border-bottom:0px solid $gray-100;
+      padding: $block-padding-x-y;
+      border-bottom: 0 solid $gray-100;
       @include size(auto,2.5rem); //bourbon
     }
   
-    &>.sb-modal-content {
+    .sb-modal-content {
       min-height: 100px;
-      padding:$block-padding-xy;
+      padding: $block-padding-xy;
+    }
+
+    .sb-modal-actions {
+      padding: $block-padding-x-y;
+      background: $white-color;
+      border-top: 1px solid $gray-100;
+      text-align: right;
     }
   
     &>.close {
       color: $white-color;
-    top: 10px;
-    right: 0px;
-    font-size: $font-size-base;
-    padding: 0;
-    margin: 0;
+      top: 10px;
+      right: 0;
+      font-size: $font-size-base;
+      padding: 0;
+      margin: 0;
     }
-  
-    &>.sb-modal-actions {
-      padding:$block-padding-x-y;
-      background: $white-color;
-      border-top: 1px solid $gray-100;
-    }
-  
+
     .small {
       color: $text-lightDark;
     }
   
-    &.scroll {
-      margin: 0 !important;
-    }
   
     &.small {
       max-width: 300px;
@@ -63,6 +63,7 @@
       }
     }
   }
+}
 
 .modals.dimmer .ui.scrolling.modal {
   position: absolute!important;

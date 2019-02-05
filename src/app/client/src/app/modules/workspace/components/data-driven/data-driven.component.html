@@ -1,20 +1,22 @@
 <sui-modal 
-    [isClosable]="true"
-    [size]="'normal'"
-    [transitionDuration]="0"
-    (dismissed)="goToCreate();" 
     [mustScroll]="true" 
+    [isClosable]="true"
+    [transitionDuration]="0"
+    [size]="'normal'"
+    class="sb-modal"
+    appBodyScroll
+    (dismissed)="goToCreate();" 
     #modal
     [appTelemetryImpression]="telemetryImpression">
 
     <!--Header-->
-    <div class="header sb-modal-header">
+    <div class="sb-modal-header">
         {{resourceService?.frmelmnts?.lbl[creationFormLable]}}
     </div>
     <!--/Header-->
 
     <!--Content-->
-    <div class="content sb-modal-content" *ngIf="formFieldProperties && categoryMasterList">
+    <div class="sb-modal-content" *ngIf="formFieldProperties && categoryMasterList">
         <app-content-creation-default-template 
             #formData 
             [formFieldProperties]="formFieldProperties" 
@@ -24,7 +26,7 @@
     <!--/Content-->
 
     <!--Actions-->
-    <div class="actions sb-modal-actions">
+    <div class="sb-modal-actions">
         <button class="ui primary button" (click)="createContent();modal.deny()">
             {{resourceService?.frmelmnts?.btn?.startcreating}}
         </button>

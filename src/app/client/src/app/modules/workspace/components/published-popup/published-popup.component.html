@@ -1,20 +1,23 @@
-<sui-modal 
-    [isClosable]="true" 
-    (dismissed)="redirect()" 
-    [size]="'normal'"
+<sui-modal
+    [mustScroll]="true" 
+    [isClosable]="true"
     [transitionDuration]="0"
+    [size]="'normal'"
+    class="sb-modal"
+    appBodyScroll
+    (dismissed)="redirect()" 
     #modal 
     *ngIf="showModal"
     >
 
     <!--Header-->
-    <div class="header sb-modal-header">
+    <div class="sb-modal-header">
         {{resourceService.frmelmnts.btn.checkListPublish}}
     </div>
     <!--/Header-->
 
     <!--Content-->
-    <div class="content sb-modal-content">
+    <div class="sb-modal-content">
         <div *ngIf="publishCheckListData">
             <div class="ui small header">
                 <h4>{{publishCheckListData.title}}</h4>
@@ -43,12 +46,22 @@
     <!--/Content-->
 
     <!--Actions-->
-    <div class="actions sb-modal-actions">
-        <div class="ui buttons">
-            <button class="ui orange button" type="button " (click)="redirect();modal.deny();">{{resourceService?.frmelmnts?.btn?.checklistCancel}}</button>
-            <div class="or"></div>
-            <button class="ui blue button" type="button " [disabled]="isDisabled" (click)="submitPublishChanges()">{{resourceService?.frmelmnts?.btn?.checklistPublish}}</button>
-        </div>
+    <div class="sb-modal-actions">
+        <button 
+            class="ui secondary button" 
+            type="button" 
+            (click)="redirect();modal.deny();"
+        >
+            {{resourceService?.frmelmnts?.btn?.checklistCancel}}
+        </button>
+        <button 
+            class="ui primary button" 
+            type="button" 
+            [disabled]="isDisabled" 
+            (click)="submitPublishChanges()"
+        >
+            {{resourceService?.frmelmnts?.btn?.checklistPublish}}
+        </button>
     </div>
     <!--/Actions-->
 </sui-modal>

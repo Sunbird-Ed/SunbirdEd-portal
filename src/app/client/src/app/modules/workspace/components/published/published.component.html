@@ -34,35 +34,39 @@
 
 <!-- Delete confirm Modal-->
 <ng-template let-context let-modal="modal" #modalTemplate>
+  <div class="sb-modal">
+    <div class="ui modal visible active small">
+      <i class="icon close" (click)="modal.deny('denied')" tabindex="0"></i>
 
-  <!--Header-->
-  <div class="header sb-modal-header">
-    {{resourceService?.frmelmnts?.lbl?.deletepublishedcontent}}
+      <!--Header-->
+      <div class="sb-modal-header">
+        {{resourceService?.frmelmnts?.lbl?.deletepublishedcontent}}
+      </div>
+      <!--/Header-->
+
+      <!--Content-->
+      <div class="sb-modal-content">
+        <p>{{resourceService?.frmelmnts?.lbl?.deletepublishedconfirm}}</p>
+      </div>
+      <!--/Content-->
+
+      <!--Actions-->
+      <div class="sb-modal-actions">
+        <button 
+          class="ui secondary button" 
+          (click)="modal.deny('denied')"
+        >
+          {{resourceService?.frmelmnts?.btn?.no}}
+        </button>
+        <button 
+          class="ui primary button" 
+          (click)="modal.approve('approved')" 
+          autofocus
+        >
+        {{resourceService?.frmelmnts?.btn?.yes}}
+        </button>
+      </div>
+      <!--/Actions-->
+    </div>
   </div>
-  <!--/Header-->
-
-  <!--Content-->
-  <div class="content sb-modal-content">
-    <p>{{resourceService?.frmelmnts?.lbl?.deletepublishedconfirm}}</p>
-  </div>
-  <!--/Content-->
-
-  <!--Actions-->
-  <div class="actions sb-modal-actions">
-    <button 
-      class="ui secondary button" 
-      (click)="modal.deny('denied')"
-    >
-      {{resourceService?.frmelmnts?.btn?.no}}
-    </button>
-    <button 
-      class="ui primary button" 
-      (click)="modal.approve('approved')" 
-      autofocus
-    >
-    {{resourceService?.frmelmnts?.btn?.yes}}
-    </button>
-  </div>
-  <!--/Actions-->
-
 </ng-template>

@@ -74,19 +74,25 @@
   </div>
 </div>
 <!-- publish warning modal -->
-<sui-modal 
-  [isClosable]="true" 
-  [size]="'small'" 
+
+<sui-modal
+  [mustScroll]="true" 
+  [isClosable]="true"
+  [transitionDuration]="0"
+  [size]="'small'"
+  class="sb-modal"
+  appBodyScroll
   *ngIf="showPublishWarningModal" 
   #publishWarningModal
-  [transitionDuration]="0"
   >
   <!--Header-->
-  <div class="header sb-modal-header">
+  <div class="sb-modal-header">
+    &nbsp;
   </div>
   <!--/Header-->
+
   <!--Content-->
-  <div class="content sb-modal-content">
+  <div class="sb-modal-content">
     <div class="ui centered grid">
       <div class="row">
         <div class="ui basic icon circular button cursor-pointer">
@@ -101,8 +107,9 @@
     </div>
   </div>
   <!--/Content-->
+
   <!--Actions-->
-  <div class="actions sb-modal-actions">
+  <div class="sb-modal-actions">
     <button 
       class="ui secondary button" 
       type="button " 
@@ -125,5 +132,6 @@
       </button>
   </div>
   <!--Actions-->
+
 </sui-modal>
 <router-outlet></router-outlet>
