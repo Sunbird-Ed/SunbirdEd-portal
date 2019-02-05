@@ -196,6 +196,17 @@ describe('DraftComponent', () => {
       fixture.detectChanges();
       expect(route.navigate).toHaveBeenCalledWith(['workspace/content/draft', component.pageNumber]);
     }));
+  xit('should fetch drafts list freshly if all contents are deleted from single page',
+    inject([SuiModalService, ConfigService, Router, SearchService],
+    (modalService, configService, route) => {
+      spyOn(component, 'fetchDrafts').and.callThrough();
+      spyOn(component, 'delete').and.callFake(() => observableOf({}));
+      spyOn(modalService, 'open').and.callFake(() => observableOf({}));
+      spyOn(modalService, 'approve').and.callFake(() => observableOf({}));
+      component.draftList = testData.localSingleContentData;
+      component.deleteConfirmModal('do_112523105235623936168');
+      expect(component.fetchDrafts).toHaveBeenCalled();
+    }));
 });
 
 
