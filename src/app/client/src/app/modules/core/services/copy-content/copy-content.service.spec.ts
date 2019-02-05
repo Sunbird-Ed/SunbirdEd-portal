@@ -56,7 +56,6 @@ describe('CopyContentService', () => {
       expect(router.navigate).toHaveBeenCalledWith(
           ['/workspace/content/edit/content/do_1125006439303577601155/draft/NCF/Draft']);
     }));
-
   it('copy course should take framework value same as the course framework which is used to copy',
     inject([CopyContentService, ContentService, PublicDataService, FrameworkService, CacheService],
     (dataservice: PublicDataService) => {
