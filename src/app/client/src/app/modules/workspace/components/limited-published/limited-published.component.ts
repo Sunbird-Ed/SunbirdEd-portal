@@ -263,6 +263,9 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
           (data: ServerResponse) => {
             this.showLoader = false;
             this.limitedPublishList = this.removeContent(this.limitedPublishList, contentIds);
+            if (this.limitedPublishList.length === 0) {
+              this.fetchLimitedPublished(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
+            }
             this.toasterService.success(this.resourceService.messages.smsg.m0006);
           },
           (err: ServerResponse) => {
