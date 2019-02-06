@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { InstallAppComponent } from './install-app.component';
+import { ResourceService } from '../../services/index';
 
 describe('InstallAppComponent', () => {
     let comp: InstallAppComponent;
@@ -9,7 +10,8 @@ describe('InstallAppComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [ InstallAppComponent ],
-            schemas: [ NO_ERRORS_SCHEMA ]
+            schemas: [ NO_ERRORS_SCHEMA ],
+            providers: [ResourceService]
         });
         fixture = TestBed.createComponent(InstallAppComponent);
         comp = fixture.componentInstance;

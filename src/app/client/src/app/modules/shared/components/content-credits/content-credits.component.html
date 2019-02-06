@@ -1,17 +1,21 @@
 <sui-modal 
-  [isClosable]="true" 
-  [size]="'normal'"
+  [mustScroll]="true" 
+  [isClosable]="true"
   [transitionDuration]="0"
-  #contentCreditsModal>
+  [size]="'small'"
+  class="sb-modal"
+  appBodyScroll
+  #contentCreditsModal
+>
 
   <!--Header-->
-  <div class="header">
+  <div class="sb-modal-header">
     {{resourceService?.frmelmnts?.lbl?.credits}}
   </div>
   <!--/Header-->
 
   <!--Content-->
-  <div class="content">
+  <div class="sb-modal-content">
     <div class="ui list">
       <div class="item">
         <div class="header text-gray">{{resourceService?.frmelmnts?.lbl?.creators}}</div>

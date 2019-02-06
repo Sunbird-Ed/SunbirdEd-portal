@@ -1,18 +1,21 @@
 <sui-modal 
+  [mustScroll]="true" 
   [isClosable]="true"
-  [size]="'normal'"
   [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll
   (dismissed)="closeModal(contentShareModal);popDeny(popup);sharelinkModal=false;"
   #contentShareModal>
 
 <!--Header-->
-<div class="header" appTelemetryShare [TelemetryShareEdata]="telemetryShare">
+<div class="sb-modal-header" appTelemetryShare [TelemetryShareEdata]="telemetryShare">
   {{resourceService?.frmelmnts?.lbl?.share}}
 </div>
 <!--/Header-->
 
 <!--Content-->
-<div class="content">
+<div class="sb-modal-content">
   <p>
     {{resourceService?.frmelmnts?.lbl?.sharelink}}
   </p>
@@ -40,7 +43,7 @@
 </div>
 <!--/Content-->
 <!--Actions-->
-<div class="actions">
+<div class="sb-modal-actions">
 </div>
 <!--/Actions-->
 
