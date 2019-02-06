@@ -1,0 +1,41 @@
+<sui-modal class="sb-modal" [isClosable]="true" [size]="'normal'" [transitionDuration]="0" (dismissed)="whateverFunction();" 
+#modal>
+  <div class="header sb-modal-header">
+    {{resourceService.frmelmnts?.lbl?.batchExpired}}
+  </div>
+  <div class="sb-modal-content">
+    <div class="batch-row">
+      <div class="batch-name font-weight-bold d-block mb-5">{{resourceService.frmelmnts?.lbl?.batchName}}</div>
+      <div class="d-flex flex-ai-center">
+        <div class="column">
+          <div class="date batch-date fs-0-92">Ended on 17th Jan 2019</div>
+        </div>
+        <div class="column ml-auto">
+          <button class="sb-btn sb-btn-normal sb-btn-outline-primary">{{resourceService.frmelmnts?.btn?.resume}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="ui divider"></div>
+    <div class="h4-title font-weight-bold mb-15">{{resourceService.frmelmnts?.lbl?.batchOpenforEnrollment}}</div>
+    <div class="scrolling content">
+      <div class="batch-row mb-15">
+        <div class="batch-name font-weight-bold d-block mb-15">{{resourceService.frmelmnts?.lbl?.batchName}}</div>
+        <div class="d-flex flex-ai-center">
+          <div class="column p-10"><i class="calendar outline icon"></i></div>
+          <div class="column">
+            <div class="date batch-date">
+              <span class="d-block mb-10"><b class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.startdate}}</b>
+                20th January 2019</span>
+              <span class="d-block mb-10"><b class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.enddate}}</b>
+                31st January 2019</span>
+              <span class="d-block">{{resourceService.frmelmnts?.lbl?.createdByDikshaCreator}}</span>
+            </div>
+          </div>
+          <div class="column ml-auto">
+            <button class="sb-btn sb-btn-normal sb-btn-outline-primary">{{resourceService.frmelmnts?.btn?.enroll}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</sui-modal>
