@@ -14,7 +14,7 @@ export class BrowserCompatibilityComponent implements OnInit {
   deviceInfo: any;
   hideFooter = true;
 
-  constructor(public resourceService: ResourceService, private _deviceDetectorService: DeviceDetectorService) { 
+  constructor(public resourceService: ResourceService, private _deviceDetectorService: DeviceDetectorService) {
     this.resourceService = resourceService;
   }
 

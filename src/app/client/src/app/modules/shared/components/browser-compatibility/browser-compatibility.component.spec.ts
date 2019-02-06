@@ -17,7 +17,7 @@ xdescribe('BrowserCompatibilityComponent', () => {
     TestBed.configureTestingModule({
       imports: [SuiModule],
       declarations: [ BrowserCompatibilityComponent ],
-      providers: [ResourceService,DeviceDetectorService],
+      providers: [ ResourceService, DeviceDetectorService ]
     })
     .compileComponents();
   }));
