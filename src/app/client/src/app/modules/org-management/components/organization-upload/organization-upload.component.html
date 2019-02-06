@@ -1,9 +1,10 @@
-<sui-modal 
-  class="custom-sui-modal" 
-  [isClosable]="false" 
+<sui-modal
   [mustScroll]="true" 
-  [size]="'large'" 
+  [isClosable]="false"
   [transitionDuration]="0"
+  [size]="'large'"
+  class="sb-modal custom-sui-modal"
+  appBodyScroll
   (dismissed)="redirect();modal.deny();" 
   #modal
   >

@@ -1,8 +1,11 @@
-<sui-modal 
-    [isClosable]="true" 
+<sui-modal
+    [mustScroll]="true" 
+    [isClosable]="true"
+    [transitionDuration]="0"
+    [size]="'normal'"
+    class="sb-modal"
+    appBodyScroll  
     (dismissed)="redirect();"
-    [size]="'normal'" 
-    [transitionDuration]="0" 
     #modal 
     [appTelemetryImpression]="telemetryImpression"
     >

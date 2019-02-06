@@ -1,8 +1,10 @@
 <sui-modal 
-  [isClosable]="false" 
   [mustScroll]="true" 
-  [size]="'large'" 
+  [isClosable]="false"
   [transitionDuration]="0"
+  [size]="'large'"
+  class="sb-modal"
+  appBodyScroll
   (dismissed)="redirect();modal.deny()" 
   #modal>
 
@@ -139,4 +141,5 @@
       </button>
   </div>
   <!--/Actions-->
+
 </sui-modal>
