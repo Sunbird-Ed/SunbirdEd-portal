@@ -2,7 +2,7 @@
     [mustScroll]="true" 
     [isClosable]="true"
     [transitionDuration]="0"
-    [size]="'normal'"
+    [size]="'small'"
     class="sb-modal"
     appBodyScroll
     #unenrollBatch 
@@ -34,7 +34,7 @@
             class="sb-btn sb-btn-normal sb-btn-outline-primary" 
             (click)="unenrollBatch.deny();"
         >
-        {{resourceService.frmelmnts.btn.Cancel}}
+            {{resourceService.frmelmnts.btn.cancel}}
         </button>
         
     </div>
