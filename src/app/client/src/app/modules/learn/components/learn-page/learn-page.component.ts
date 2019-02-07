@@ -192,7 +192,6 @@ export class LearnPageComponent implements OnInit, OnDestroy {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   public playContent({ section, data }) {
-    console.log(data.metaData);
     const { metaData } = data;
     if (section === 'My Courses') { // play course if course is in My course section
       return this.playerService.playContent(metaData);
@@ -218,7 +217,7 @@ export class LearnPageComponent implements OnInit, OnDestroy {
       }
       if (cur.batch.enrollmentType === 'invite-only') { // invite-only batch
         if (cur.batch.status === 2) { // && (!acc.invite.ended || latestCourse(acc.invite.ended.enrolledDate, cur.enrolledDate))
-          acc.inviteOnlyBatch.ended.push(cur);
+          acc.inviteOnlyBatch.expired.push(cur);
           acc.expiredBatchCount = acc.expiredBatchCount + 1;
         } else {
           acc.onGoingBatchCount = acc.onGoingBatchCount + 1;
@@ -227,21 +226,19 @@ export class LearnPageComponent implements OnInit, OnDestroy {
       } else {
         if (cur.batch.status === 2) {
           acc.expiredBatchCount = acc.expiredBatchCount + 1;
-          acc.openBatch.ended.push(cur);
+          acc.openBatch.expired.push(cur);
         } else {
           acc.onGoingBatchCount = acc.onGoingBatchCount + 1;
           acc.openBatch.ongoing.push(cur);
         }
       }
       return acc;
-    }, { onGoingBatchCount: 0, expiredBatchCount: 0, openBatch: { ongoing: [], ended: []}, inviteOnlyBatch: { ongoing: [], ended: [] }});
-    console.log(enrInfo);
+    }, { onGoingBatchCount: 0, expiredBatchCount: 0,
+      openBatch: { ongoing: [], expired: []}, inviteOnlyBatch: { ongoing: [], expired: [] }});
     return enrInfo;
   }
   public viewAll(event) {
     const searchQuery = JSON.parse(event.searchQuery);
-    // searchQuery.request.filters.channel = this.hashTagId;
-    // searchQuery.request.filters.board = this.prominentFilters.board;
     const searchQueryParams: any = {};
     _.forIn(searchQuery.request.filters, (value, key) => {
       if (_.isPlainObject(value)) {

@@ -1,127 +1,55 @@
-<sui-modal class="sb-modal" [isClosable]="true" [size]="'normal'" [transitionDuration]="0" (dismissed)="handleModelClose();"
+<sui-modal class="sb-modal" [isClosable]="true" [size]="'normal'" [transitionDuration]="0" (dismissed)="modelClose.emit()"
   #modal>
-  <div class="header sb-modal-header">{{resourceService.frmelmnts?.lbl?.batchExpired || "Please select a batch to
-    proceed"}}</div>
+  <div class="header sb-modal-header">{{resourceService.frmelmnts?.lbl?.sltBtch}}</div>
   <div class="scrolling content sb-modal-content">
-    <div class="h4-title font-weight-bold mb-15">{{resourceService.frmelmnts?.lbl?.batchOpenforEnrollment || "Expired
-      Batches"}}</div>
+    <div *ngIf="!hasOngoingBatches" class="h4-title font-weight-bold mb-15">{{resourceService.frmelmnts?.lbl?.exprdbtch}}</div>
     <div class="scrolling content">
-      <div class="batch-row mb-15">
-        <div class="batch-name font-weight-bold d-block mb-15">{{"Batch Name"}}</div>
+      <div *ngFor="let batchDetails of enrolledBatches" class="batch-row mb-15">
+        <div class="batch-name font-weight-bold d-block mb-15">{{batchDetails.batch.name}}</div>
         <div class="d-flex flex-ai-center">
           <div class="column p-10"><i class="calendar outline icon"></i></div>
           <div class="column">
             <div class="date batch-date">
-              <span class="d-block mb-10"><b class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.startdate}}</b>
-                20th January 2019</span>
-              <span class="d-block mb-10"><b class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.enddate}}</b>
-                31st January 2019</span>
-              <span class="d-block">{{resourceService.frmelmnts?.lbl?.createdByDikshaCreator || "Created By"}}</span>
+              <span class="d-block mb-10"><b class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.startdate}} :
+                </b>
+                {{batchDetails.batch.startDate | dateFormat}}</span>
+              <span *ngIf="batchDetails.batch.endDate" class="d-block mb-10"><b class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.enddate}}
+                  : </b>
+                {{batchDetails.batch.endDate | dateFormat}}</span>
+              <span *ngIf="userDetails[batchDetails.batch.createdBy] && userDetails[batchDetails.batch.createdBy].firstName"
+                class="d-block">{{resourceService.frmelmnts?.lbl?.courseCreatedBy}}: {{
+                userDetails[batchDetails.batch.createdBy].firstName}}</span>
             </div>
           </div>
           <div class="column ml-auto">
-            <button class="sb-btn sb-btn-normal sb-btn-outline-primary">{{resourceService.frmelmnts?.btn?.resume ||
-              "Resume"}}</button>
+            <button (click)="handleResumeEvent(batchDetails)" class="sb-btn sb-btn-normal sb-btn-outline-primary">{{resourceService.frmelmnts?.btn?.resume}}</button>
           </div>
         </div>
       </div>
-      <div class="batch-row mb-15">
-          <div class="batch-name font-weight-bold d-block mb-15">{{"Batch Name"}}</div>
-          <div class="d-flex flex-ai-center">
-            <div class="column p-10"><i class="calendar outline icon"></i></div>
-            <div class="column">
-              <div class="date batch-date">
-                <span class="d-block mb-10"><b class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.startdate}}</b>
-                  20th January 2019</span>
-                <span class="d-block mb-10"><b class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.enddate}}</b>
-                  31st January 2019</span>
-                <span class="d-block">{{resourceService.frmelmnts?.lbl?.createdByDikshaCreator || "Created By"}}</span>
-              </div>
-            </div>
-            <div class="column ml-auto">
-              <button class="sb-btn sb-btn-normal sb-btn-outline-primary">{{resourceService.frmelmnts?.btn?.resume ||
-                "Resume"}}</button>
-            </div>
-          </div>
-        </div>
-        <div class="batch-row mb-15">
-            <div class="batch-name font-weight-bold d-block mb-15">{{"Batch Name"}}</div>
-            <div class="d-flex flex-ai-center">
-              <div class="column p-10"><i class="calendar outline icon"></i></div>
-              <div class="column">
-                <div class="date batch-date">
-                  <span class="d-block mb-10"><b class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.startdate}}</b>
-                    20th January 2019</span>
-                  <span class="d-block mb-10"><b class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.enddate}}</b>
-                    31st January 2019</span>
-                  <span class="d-block">{{resourceService.frmelmnts?.lbl?.createdByDikshaCreator || "Created By"}}</span>
-                </div>
-              </div>
-              <div class="column ml-auto">
-                <button class="sb-btn sb-btn-normal sb-btn-outline-primary">{{resourceService.frmelmnts?.btn?.resume ||
-                  "Resume"}}</button>
-              </div>
-            </div>
-          </div>
     </div>
-    <div class="ui divider"></div>
-    <div class="h4-title font-weight-bold mb-15">{{resourceService.frmelmnts?.lbl?.batchOpenforEnrollment || "Open
-      Batches"}}</div>
-    <div class="scrolling content">
-      <div class="batch-row mb-15">
-        <div class="batch-name font-weight-bold d-block mb-15">{{"Batch Name"}}</div>
+    <div *ngIf="hasOngoingBatches && openForEnrollBatches.length" class="ui divider"></div>
+    <div *ngIf="hasOngoingBatches && openForEnrollBatches.length" class="h4-title font-weight-bold mb-15">{{resourceService.frmelmnts?.lbl?.opndbtch}}</div>
+    <div *ngIf="hasOngoingBatches && openForEnrollBatches.length" class="scrolling content">
+      <div *ngFor="let batchDetails of openForEnrollBatches" class="batch-row mb-15">
+        <div class="batch-name font-weight-bold d-block mb-15">{{batchDetails.name}}</div>
         <div class="d-flex flex-ai-center">
           <div class="column p-10"><i class="calendar outline icon"></i></div>
           <div class="column">
             <div class="date batch-date">
-              <span class="d-block mb-10"><b class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.startdate}}</b>
-                20th January 2019</span>
-              <span class="d-block mb-10"><b class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.enddate}}</b>
-                31st January 2019</span>
-              <span class="d-block">{{resourceService.frmelmnts?.lbl?.createdByDikshaCreator || "Created By"}}</span>
+              <span class="d-block mb-10"><b class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.startdate}} :
+                </b>
+                {{batchDetails.startDate | dateFormat}}</span>
+              <span class="d-block mb-10"><b class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.enddate}} : </b>
+                {{batchDetails.endDate | dateFormat}}</span>
+              <span *ngIf="userDetails[batchDetails.createdBy] && userDetails[batchDetails.createdBy].firstName" class="d-block">{{resourceService.frmelmnts?.lbl?.courseCreatedBy}}:
+                {{ userDetails[batchDetails.createdBy].firstName}}</span>
             </div>
           </div>
           <div class="column ml-auto">
-            <button class="sb-btn sb-btn-normal sb-btn-outline-primary">{{resourceService.frmelmnts?.btn?.enroll}}</button>
+            <button [disabled]="disableEnrollBtn" (click)="handleEnrollEvent(batchDetails)" class="sb-btn sb-btn-normal sb-btn-outline-primary">{{resourceService.frmelmnts?.btn?.enroll}}</button>
           </div>
         </div>
       </div>
-      <div class="batch-row mb-15">
-          <div class="batch-name font-weight-bold d-block mb-15">{{"Batch Name"}}</div>
-          <div class="d-flex flex-ai-center">
-            <div class="column p-10"><i class="calendar outline icon"></i></div>
-            <div class="column">
-              <div class="date batch-date">
-                <span class="d-block mb-10"><b class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.startdate}}</b>
-                  20th January 2019</span>
-                <span class="d-block mb-10"><b class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.enddate}}</b>
-                  31st January 2019</span>
-                <span class="d-block">{{resourceService.frmelmnts?.lbl?.createdByDikshaCreator || "Created By"}}</span>
-              </div>
-            </div>
-            <div class="column ml-auto">
-              <button class="sb-btn sb-btn-normal sb-btn-outline-primary">{{resourceService.frmelmnts?.btn?.enroll}}</button>
-            </div>
-          </div>
-        </div>
-        <div class="batch-row mb-15">
-            <div class="batch-name font-weight-bold d-block mb-15">{{"Batch Name"}}</div>
-            <div class="d-flex flex-ai-center">
-              <div class="column p-10"><i class="calendar outline icon"></i></div>
-              <div class="column">
-                <div class="date batch-date">
-                  <span class="d-block mb-10"><b class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.startdate}}</b>
-                    20th January 2019</span>
-                  <span class="d-block mb-10"><b class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.enddate}}</b>
-                    31st January 2019</span>
-                  <span class="d-block">{{resourceService.frmelmnts?.lbl?.createdByDikshaCreator || "Created By"}}</span>
-                </div>
-              </div>
-              <div class="column ml-auto">
-                <button class="sb-btn sb-btn-normal sb-btn-outline-primary">{{resourceService.frmelmnts?.btn?.enroll}}</button>
-              </div>
-            </div>
-          </div>
     </div>
   </div>
 </sui-modal>
