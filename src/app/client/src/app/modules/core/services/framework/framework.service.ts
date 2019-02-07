@@ -12,7 +12,6 @@ import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 @Injectable()
 export class FrameworkService {
-  private allFramework: any = {};
   private _frameworkData: FrameworkData = {};
   private _channelData: any = {};
   private _frameworkData$ = new BehaviorSubject<Framework>(undefined);
