@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter , Output } from '@angular/core';
+import { ResourceService } from '../../services/index';
 @Component({
   selector: 'app-install-app',
   templateUrl: './install-app.component.html',
@@ -7,7 +8,12 @@ import { Component, OnInit, EventEmitter , Output } from '@angular/core';
 export class InstallAppComponent implements OnInit {
   showPopUp = true;
   @Output() viewInBrowser = new EventEmitter<any>();
-  constructor( ) {
+  /**
+  * To call resource service which helps to use language constant
+  */
+ public resourceService: ResourceService;
+  constructor( resourceService: ResourceService ) {
+    this.resourceService = resourceService;
   }
 
   ngOnInit() {
