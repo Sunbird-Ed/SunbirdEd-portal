@@ -1,18 +1,21 @@
 <sui-modal 
-  [isClosable]="true"
-  [size]="'normal'" 
-  [transitionDuration]="0"
+  [mustScroll]="true" 
+	[isClosable]="true"
+	[transitionDuration]="0"
+	[size]="'normal'"
+	class="sb-modal"
+	appBodyScroll
   (dismissed)="redirect()"
   #modal>
 
   <!--Header-->
-  <div class="header" *ngIf="mode === 'create'">
+  <div class="sb-modal-header">
     {{resourceService?.frmelmnts?.pgttl?.takeanote}}
   </div>
   <!--/Header-->
 
   <!--Content-->
-  <div class="content" *ngIf="mode === 'create'">
+  <div class="sb-modal-content" *ngIf="mode === 'create'">
     <div class="ui fluid icon input">
       <input type="text" [(ngModel)]="noteData.title" placeholder={{resourceService?.frmelmnts?.lbl?.title}} name="title">
     </div>
@@ -34,18 +37,19 @@
   <!--/Content-->
 
   <!--Actions-->
-  <div class="actions">
+  <div class="sb-modal-actions">
     <button 
-      *ngIf="mode === 'create'" 
-      class="ui secondary button" 
-      type="submit" 
-      (click)="clearNote()"
+      [disabled]="!updateData.title || !updateData.note" 
+      *ngIf="mode === 'update'" 
+      class="sb-btn sb-btn-normal sb-btn-primary ng-binding" 
+      type="submit"
+      (click)="modal.approve('done'); updateNote()" 
     >
-      {{resourceService?.frmelmnts?.btn?.clear}}
+      {{resourceService?.frmelmnts?.btn?.update}}
     </button>
     <button 
       *ngIf="mode === 'create'" 
-      class="ui primary button" 
+      class="sb-btn sb-btn-normal sb-btn-primary ng-binding" 
       type="submit" 
       (click)="modal.approve('done'); createNote();"
       [disabled]="!noteData.title || !noteData.note" 
@@ -53,13 +57,12 @@
       {{resourceService?.frmelmnts?.btn?.save}}
     </button>
     <button 
-      [disabled]="!updateData.title || !updateData.note" 
-      *ngIf="mode === 'update'" 
-      class="ui primary button" 
-      type="submit"
-      (click)="modal.approve('done'); updateNote()" 
+      *ngIf="mode === 'create'" 
+      class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+      type="submit" 
+      (click)="clearNote()"
     >
-      {{resourceService?.frmelmnts?.btn?.update}}
+      {{resourceService?.frmelmnts?.btn?.clear}}
     </button>
   </div>
   <!--/Actions-->
