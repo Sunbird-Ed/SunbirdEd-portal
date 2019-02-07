@@ -1,19 +1,21 @@
 // global styles
 
-*{
-  transition: all 300ms ease-in-out
-  }
-html, body {
-  height:100%;
+// *{
+//   transition: all 300ms ease-in-out
+//   }
+html,
+body {
+  height: 100%;
   font-size:$font-size-base;
 }
-  body {
-      background:$bg-body;
-      position: relative;
-font-family: $font-stack-en;
-letter-spacing: 0.2px;
-height: auto;
-  }
+
+body {
+  // background:$bg-body;
+  position: relative;
+  font-family: $font-stack-en;
+  letter-spacing: 0.2px;
+  height: auto;
+}
 
 *[lang="en"] body {
   font-family: $font-stack-en;
@@ -26,9 +28,7 @@ height: auto;
 *[lang="ur"] body {
   font-family: $font-stack-ur;
 }
-*[lang="ur"] {
-  font-size: ($font-size-base * .525);
-}
+
 
 button,
 input,
@@ -78,7 +78,7 @@ h5,
 .ui.form input[type=url],
 .ui.menu,
 .ui.dropdown,
-.ui.category.search> .results .category> .name {
+.ui.category.search>.results .category>.name {
   font-family: inherit;
 }
 

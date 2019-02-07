@@ -5,6 +5,7 @@ import { UserService, OtpService } from '@sunbird/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { Subject } from 'rxjs';
 import { ProfileService } from './../../services';
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-update-contact-details',
@@ -21,6 +22,8 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
   showForm = true;
   @ViewChild('contactTypeModal') contactTypeModal;
   otpData: any;
+  submitInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
 
   constructor(public resourceService: ResourceService, public userService: UserService,
     public otpService: OtpService, public toasterService: ToasterService,
@@ -45,6 +48,7 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
       this.onContactValueChange();
     }
     this.enableSubmitButton();
+    this.setInteractEventData();
   }
 
   closeModal() {
@@ -157,6 +161,22 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
         this.resourceService.messages.emsg.m0014 : this.resourceService.messages.emsg.m0015;
       this.toasterService.error(fMessage);
     });
+  }
+
+  setInteractEventData() {
+    const id = this.contactType === 'phone' ?
+    'submit-mobile' : 'submit-emailId';
+    this.submitInteractEdata = {
+      id: id,
+      type: 'click',
+      pageid: 'profile-read'
+    };
+
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
   }
 
   ngOnDestroy() {

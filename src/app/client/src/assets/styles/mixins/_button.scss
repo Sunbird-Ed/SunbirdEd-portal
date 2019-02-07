@@ -1,0 +1,29 @@
+@mixin btn-theme($btn-color) {
+	border-color:($btn-color);
+	background-color: $btn-color;
+	&:hover {
+		background-color: darken($btn-color, 6%);
+	}
+	&:active {
+		background-color: darken($btn-color, 15%);
+	}
+}
+
+@mixin btn-theme-bgwhite($btn-color) {
+	border-color: darken($btn-color, 2%);
+	background-color: $white;
+  color:($btn-color);
+	&:hover {
+		font-weight: bold;
+    border-color: darken($btn-color, 2%);
+	}
+	&:active {
+		border-color: darken($btn-color, 8%);
+	}
+}
+@mixin trans($val...) {
+	-webkit-transition: $val;
+	-moz-transition: $val; 
+	-o-transition: $val; 
+	transition: $val; 
+}
