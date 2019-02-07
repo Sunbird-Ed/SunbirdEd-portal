@@ -5,13 +5,14 @@ import {
   ConfigService, ToasterService, ResourceService, ServerResponse, Framework, FrameworkData,
   BrowserCacheTtlService
 } from '@sunbird/shared';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, of, forkJoin } from 'rxjs';
 import { skipWhile, mergeMap } from 'rxjs/operators';
 import { PublicDataService } from './../public-data/public-data.service';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 @Injectable()
 export class FrameworkService {
+  private allFramework: any = {};
   private _frameworkData: FrameworkData = {};
   private _channelData: any = {};
   private _frameworkData$ = new BehaviorSubject<Framework>(undefined);
@@ -70,6 +71,53 @@ export class FrameworkService {
               });
         }
       }
+    }
+  }
+  public getAllFrameworkForChannel(hashTagId: string) {
+    const parellalFunction = [];
+    let frameworkName = '';
+    return this.getDefaultFrameWork(hashTagId).pipe(mergeMap(data => {
+      frameworkName = data.result.channel.defaultFramework;
+      _.forEach(data.result.channel.frameworks, (obj) => {
+        parellalFunction.push(this.getFrameworkByName(obj.identifier));
+      });
+      return forkJoin(parellalFunction).pipe(mergeMap(obj => {
+        return this.mergedframeworkData(obj, frameworkName);
+      }));
+    }));
+  }
+  private mergedframeworkData(frameworkList: any, frameworkName: string) {
+    const mergedFramework = {};
+    _.forEach(frameworkList, (framework) => {
+      if (_.isEmpty(mergedFramework)) {
+        mergedFramework['categoryMasterList'] = framework.categories;
+      } else {
+        _.forEach(framework.categories, (obj) => {
+          let isCategoryUpdated = false;
+          _.forEach(mergedFramework['categoryMasterList'], (data) => {
+            if (data.code === obj.code) {
+              isCategoryUpdated = true;
+              data.terms = _.unionBy(_.concat(data.terms, obj.terms), 'code');
+            }
+          });
+          if (!isCategoryUpdated) {
+            mergedFramework['categoryMasterList'].push(obj);
+          }
+        });
+      }
+    });
+    mergedFramework['code'] = frameworkName;
+    return of(mergedFramework);
+  }
+  private getFrameworkByName(frameworkName: string): Observable<any> {
+    if (this.cacheService.get(frameworkName)) {
+      return of(this.cacheService.get(frameworkName));
+    } else {
+      return this.getFrameworkCategories(frameworkName).pipe(mergeMap(obj => {
+        this.setFrameWorkData(obj);
+        this._frameworkData[frameworkName] = obj.result.framework;
+        return of(obj.result.framework);
+      }));
     }
   }
   private getDefaultFrameWork(hashTagId) {

@@ -127,8 +127,8 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
             this.formFieldProperties, 'en', this.selectedLanguage);
         }
       }
-      );
-    this.frameworkService.initialize(this.frameworkName, this.hashTagId);
+   );
+  // this.frameworkService.initialize(this.frameworkName, this.hashTagId);
     this.getFormatedFilterDetails().subscribe((formFieldProperties) => {
       this.formFieldProperties = formFieldProperties;
       this.prominentFilter.emit(formFieldProperties);
@@ -201,6 +201,17 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
       }));
   }
   private fetchFrameWorkDetails() {
+    if (this.frameworkName) {
+      this.frameworkService.initialize(this.frameworkName, this.hashTagId);
+      return this.getFrameworkByName();
+    } else {
+      return this.getAllFrameworkOfChannel();
+    }
+  }
+  private getAllFrameworkOfChannel() {
+    return this.frameworkService.getAllFrameworkForChannel(this.hashTagId);
+  }
+  private getFrameworkByName() {
     return this.frameworkService.frameworkData$.pipe(filter((frameworkDetails) => {
       if (!frameworkDetails.err) {
         const framework = this.frameworkName ? this.frameworkName : 'defaultFramework';
