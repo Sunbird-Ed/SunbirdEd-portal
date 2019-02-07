@@ -229,8 +229,9 @@ export class PublishedComponent extends WorkSpace implements OnInit {
 
   public deleteConfirmModal(contentIds) {
     const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
-    config.isClosable = true;
-    config.size = 'mini';
+    config.isClosable = false;
+    config.size = 'small';
+    config.transitionDuration = 0;
     this.modalService
       .open(config)
       .onApprove(result => {
