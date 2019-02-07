@@ -6,7 +6,7 @@
     right: 0;
     @include size(100%,auto); //bourbon
 
-    &>.sb-modal-header {
+    .sb-modal-header {
       background-color: $primary-color;
       color: $white-color;
       font-weight: $font-weight-bold;
@@ -18,7 +18,7 @@
       line-height: ($h5-font-size + 8);
     }
   
-    &>.sb-modal-content {
+    .sb-modal-content {
       min-height: 100px;
       padding:$block-padding-xy;
     }
@@ -36,7 +36,7 @@
     justify-content: center;
     }
   
-    &>.sb-modal-actions {
+    .sb-modal-actions {
       padding:$block-padding-y-x;
       background: $white-color;
       border-top: 1px solid $gray-100;
