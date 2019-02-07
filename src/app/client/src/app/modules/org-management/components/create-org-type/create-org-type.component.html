@@ -35,17 +35,8 @@
 
     <!--Actions-->
     <div class="sb-modal-actions">
-        <button
-            class="ui secondary button" 
-            (click)="modal.deny()"
-            appTelemetryInteract 
-            [telemetryInteractObject]="{id:'cancel',type:'org-type',ver:'1.0'}" 
-            [telemetryInteractEdata]="cancelModal"
-        >
-            {{resourceService?.frmelmnts?.btn?.cancel}}
-        </button>
         <button 
-            class="ui primary button"
+            class="sb-btn sb-btn-normal sb-btn-primary"
             *ngIf="createForm"
             (click)="disableApproveBtn=true; addOrgType()" 
             [class.disabled]="disabled"
@@ -56,7 +47,7 @@
             {{resourceService?.frmelmnts?.btn?.add}}
         </button>
         <button
-            class="ui primary button"
+            class="sb-btn sb-btn-normal sb-btn-primary"
             *ngIf="!createForm" 
             (click)="disableApproveBtn=true; updateOrgType()" 
             [class.disabled]="disabled"
@@ -65,6 +56,15 @@
             [telemetryInteractEdata]="updateOrganizationType"
         >
             {{resourceService?.frmelmnts?.btn?.update}}
+        </button>
+        <button
+            class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+            (click)="modal.deny()"
+            appTelemetryInteract 
+            [telemetryInteractObject]="{id:'cancel',type:'org-type',ver:'1.0'}" 
+            [telemetryInteractEdata]="cancelModal"
+        >
+            {{resourceService?.frmelmnts?.btn?.cancel}}
         </button>
     </div>
     <!--/Actions-->

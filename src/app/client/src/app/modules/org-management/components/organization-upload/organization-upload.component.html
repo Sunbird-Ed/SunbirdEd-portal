@@ -47,21 +47,21 @@
     <button 
       appTelemetryInteract 
       [telemetryInteractObject]="telemetryInteractObject" 
-      [telemetryInteractEdata]="downloadSampleOrgCSVInteractEdata" 
-      class="ui secondary button" 
-      (click)="downloadSample()"
+      [telemetryInteractEdata]="orgUploadInteractEdata" 
+      [disabled]="processId" 
+      class="sb-btn sb-btn-normal sb-btn-primary" 
+      (click)="openImageBrowser(inputbtn)"
     >
-      {{resourceService?.frmelmnts?.btn?.smplcsv}}
+      {{resourceService?.frmelmnts?.btn?.uploadorgscsv}}
     </button>
     <button 
       appTelemetryInteract 
       [telemetryInteractObject]="telemetryInteractObject" 
-      [telemetryInteractEdata]="orgUploadInteractEdata" 
-      [disabled]="processId" 
-      class="ui primary button" 
-      (click)="openImageBrowser(inputbtn)"
+      [telemetryInteractEdata]="downloadSampleOrgCSVInteractEdata" 
+      class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+      (click)="downloadSample()"
     >
-      {{resourceService?.frmelmnts?.btn?.uploadorgscsv}}
+      {{resourceService?.frmelmnts?.btn?.smplcsv}}
     </button>
     <input #inputbtn type="file" style='display:none' accept=".csv" id="uploadorgscsv" onclick="this.value = null" (change)="uploadOrg($event.target.files)" autofocus required=""
       />

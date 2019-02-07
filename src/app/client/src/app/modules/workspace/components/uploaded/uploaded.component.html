@@ -50,18 +50,19 @@
     <!--Actions-->
     <div class="sb-modal-actions">
       <button 
-        class="ui secondary button" 
-        (click)="modal.deny('denied')"
-      >
-        {{resourceService?.frmelmnts?.btn?.no}}
-      </button>
-      <button 
-        class="ui primary button" 
+        class="sb-btn sb-btn-normal sb-btn-primary" 
         (click)="modal.approve('approved')" 
         autofocus
       >
         {{resourceService?.frmelmnts?.btn?.yes}}
       </button>
+      <button 
+        class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+        (click)="modal.deny('denied')"
+      >
+        {{resourceService?.frmelmnts?.btn?.no}}
+      </button>
+      
     </div>
     <!--/Actions-->
 

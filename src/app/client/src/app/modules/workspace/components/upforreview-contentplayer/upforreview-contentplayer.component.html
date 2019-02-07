@@ -111,7 +111,17 @@
   <!--Actions-->
   <div class="sb-modal-actions">
     <button 
-      class="ui secondary button" 
+      class="sb-btn sb-btn-normal sb-btn-primary" 
+      type="button " 
+      (click)="showPublishWarningModal = false; goToPublish();"
+      appTelemetryInteract 
+      [telemetryInteractObject]="telemetryInteractObject" 
+      [telemetryInteractEdata]="reviewCommentsWarningYesInteractEdata"
+    >
+      {{resourceService?.frmelmnts?.btn?.yes}}
+    </button>
+    <button 
+      class="sb-btn sb-btn-normal sb-btn-outline-primary" 
       type="button " 
       (click)="showPublishWarningModal = false"
       appTelemetryInteract 
@@ -119,16 +129,6 @@
       [telemetryInteractEdata]="reviewCommentsWarningNoInteractEdata"
       >
         {{resourceService?.frmelmnts?.btn?.no}}
-      </button>
-      <button 
-        class="ui primary button" 
-        type="button " 
-        (click)="showPublishWarningModal = false; goToPublish();"
-        appTelemetryInteract 
-        [telemetryInteractObject]="telemetryInteractObject" 
-        [telemetryInteractEdata]="reviewCommentsWarningYesInteractEdata"
-      >
-        {{resourceService?.frmelmnts?.btn?.yes}}
       </button>
   </div>
   <!--Actions-->

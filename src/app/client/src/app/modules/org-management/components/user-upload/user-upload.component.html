@@ -85,21 +85,21 @@
     <button 
       appTelemetryInteract 
       [telemetryInteractObject]="telemetryInteractObject" 
-      [telemetryInteractEdata]="downloadCSVInteractEdata" 
-      class="ui secondary button" 
-      (click)="downloadSampleCSV()"
+      [telemetryInteractEdata]="userUploadInteractEdata" 
+      [disabled]="processId" 
+      class="sb-btn sb-btn-normal sb-btn-primary" 
+      (click)="openImageBrowser(inputbtn)"
     >
-      {{resourceService?.frmelmnts?.btn?.smplcsv}}
+      {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
     </button>
     <button 
       appTelemetryInteract 
       [telemetryInteractObject]="telemetryInteractObject" 
-      [telemetryInteractEdata]="userUploadInteractEdata" 
-      [disabled]="processId" 
-      class="ui primary button" 
-      (click)="openImageBrowser(inputbtn)"
+      [telemetryInteractEdata]="downloadCSVInteractEdata" 
+      class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+      (click)="downloadSampleCSV()"
     >
-      {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
+      {{resourceService?.frmelmnts?.btn?.smplcsv}}
     </button>
     <input #inputbtn type="file" style='display:none' accept=".csv" class="content-input ui small" id="uploadUsrsCSV" onclick="this.value = null" (change)="uploadUsersCSV($event.target.files)"
       required="" />

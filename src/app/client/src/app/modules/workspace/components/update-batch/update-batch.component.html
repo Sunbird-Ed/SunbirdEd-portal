@@ -127,19 +127,19 @@
   <!--Actions-->
   <div class="sb-modal-actions">
     <button 
-      class="ui secondary button" 
-      [ngClass]="{ 'disabled': batchDetails.status === 2 }" 
-      (click)="batchUpdateForm.reset()"
-    >
-      {{resourceService?.frmelmnts?.btn?.clear}}
-    </button>
-    <button 
-      class="ui primary button" 
+      class="sb-btn sb-btn-normal sb-btn-primary" 
       [ngClass]="{ 'disabled': batchDetails.status === 2 }" 
       [disabled]="disableSubmitBtn"
       (click)="updateBatch()"
     >
       {{resourceService?.frmelmnts?.btn?.update}}
+    </button>
+    <button 
+      class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+      [ngClass]="{ 'disabled': batchDetails.status === 2 }" 
+      (click)="batchUpdateForm.reset()"
+    >
+      {{resourceService?.frmelmnts?.btn?.clear}}
     </button>
   </div>
   <!--/Actions-->

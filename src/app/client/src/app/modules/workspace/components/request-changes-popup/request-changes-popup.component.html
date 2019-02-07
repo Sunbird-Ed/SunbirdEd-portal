@@ -63,19 +63,19 @@
     <!--Actions-->
     <div class="sb-modal-actions">
         <button 
-            class="ui secondary button" 
-            type="button" 
-            (click)="redirect();modal.deny();"
-        >
-            {{resourceService.frmelmnts.btn.checklistCancel}}
-        </button>
-        <button 
-            class="ui primary button" 
+            class="sb-btn sb-btn-normal sb-btn-primary" 
             type="button" 
             [disabled]="isDisabled" 
             (click)="submitRequestChanges()"
         >
             {{resourceService.frmelmnts.btn.checkListRequestChanges}}
+        </button>
+        <button 
+            class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+            type="button" 
+            (click)="redirect();modal.deny();"
+        >
+            {{resourceService.frmelmnts.btn.checklistCancel}}
         </button>
     </div>
     <!--/Actions-->

@@ -11,7 +11,7 @@ describe('InstallAppComponent', () => {
         TestBed.configureTestingModule({
             declarations: [ InstallAppComponent ],
             schemas: [ NO_ERRORS_SCHEMA ],
-            providers: [ResourceService]
+            providers: [ ResourceService ]
         });
         fixture = TestBed.createComponent(InstallAppComponent);
         comp = fixture.componentInstance;
