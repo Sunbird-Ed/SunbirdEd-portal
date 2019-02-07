@@ -12,7 +12,7 @@ describe('InstallAppComponent', () => {
             declarations: [ InstallAppComponent ],
             schemas: [ NO_ERRORS_SCHEMA ],
             providers: [ ResourceService ]
-        });
+        }).compileComponents();
         fixture = TestBed.createComponent(InstallAppComponent);
         comp = fixture.componentInstance;
     });
