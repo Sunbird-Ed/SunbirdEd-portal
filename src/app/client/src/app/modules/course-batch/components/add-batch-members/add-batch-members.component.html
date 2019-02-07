@@ -127,41 +127,45 @@
     </div>
 </div>
 
-<sui-modal 
-    [isClosable]="false" 
-    *ngIf="removeModalFlag" 
-    [size]="'small'"
+<sui-modal
+    [mustScroll]="true" 
+    [isClosable]="false"
     [transitionDuration]="0"
+    [size]="'small'"
+    class="sb-modal"
+    appBodyScroll
+    *ngIf="removeModalFlag" 
     (dismissed)="removeModal.deny();remove()"
     #removeModal >
 
     <!--Header-->
-    <div class="header">
+    <div class="sb-modal-header">
         {{ resourceService?.frmelmnts?.btn?.removeMembers}}
     </div>
     <!--/Header-->
 
     <!--Actions-->
-    <div class="actions">
+    <div class="sb-modal-actions">
+        <button 
+            appTelemetryInteract 
+            [telemetryInteractObject]="telemetryInteractObject" 
+            [telemetryInteractEdata]="stopCreatingNoInteractEdata"
+            class="sb-btn sb-btn-normal sb-btn-primary" 
+            (click)="removeModal.deny();remove()"
+        >
+            {{resourceService?.frmelmnts?.btn?.remove}}
+        </button>
         <button 
             appTelemetryInteract 
             [telemetryInteractObject]="telemetryInteractObject" 
             [telemetryInteractEdata]="stopCreatingYesInteractEdata"
-            class="ui secondary button" 
+            class="sb-btn sb-btn-normal sb-btn-outline-primary" 
             (click)="removeModalFlag = !removeModalFlag" 
             [appTelemetryEnd]="telemetryEnd"
         >
             {{resourceService?.frmelmnts?.btn?.cancel}}
         </button>
-        <button 
-            appTelemetryInteract 
-            [telemetryInteractObject]="telemetryInteractObject" 
-            [telemetryInteractEdata]="stopCreatingNoInteractEdata"
-            class="ui primary button" 
-            (click)="removeModal.deny();remove()"
-        >
-            {{resourceService?.frmelmnts?.btn?.remove}}
-        </button>
+        
     </div>
     <!--/Actions-->
 </sui-modal>

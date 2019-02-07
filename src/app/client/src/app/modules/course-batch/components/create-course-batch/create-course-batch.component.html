@@ -1,20 +1,23 @@
-<sui-modal 
-  [ngSwitch]="batchStep" 
-  [isClosable]="false" 
-  [size]="'large'" 
+<sui-modal
+  [mustScroll]="true" 
+  [isClosable]="false"
   [transitionDuration]="0"
+  [size]="'large'"
+  class="sb-modal"
+  appBodyScroll
+  [ngSwitch]="batchStep" 
   #createBatchModel 
   (dismissed)="discardModalFlag = !discardModalFlag"
   >
 
   <!--Header-->
-  <div class="header uppercase">
+  <div class="sb-modal-header">
     {{resourceService?.frmelmnts.lbl.createnewbatch}}
   </div>
   <!--/Header-->
 
   <!--Content-->
-  <div class="content">
+  <div class="sb-modal-content">
   <div class="ui grid" *ngIf="showLoader">
     <div class="twelve wide column">
       <app-loader [data]="loaderMessage"></app-loader>
@@ -95,26 +98,64 @@
   <!--/Content-->
 
   <!--Actions-->
-  <div *ngIf="!showLoader" class="actions">
+  <div class="sb-modal-actions" *ngIf="!showLoader">
+
     <div *ngIf="createBatchForm.value.enrollmentType !== 'open'">
-      <button *ngSwitchCase="'create'" (click)="createBatch()" class="ui primary button" [disabled]="disableSubmitBtn"
-        appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="saveBatchInteractEdata">{{resourceService?.frmelmnts?.btn?.save}}</button>
-      <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="addmembersInteractEdata"
-        *ngSwitchCase="'create'" class="ui primary button" id="submitbutton" [disabled]="disableSubmitBtn || createBatchForm.value.enrollmentType === 'open'? true:false"
-        tabindex="0" (click)="navigateToStep('addmember')">
+      <button 
+        *ngSwitchCase="'create'" 
+        (click)="createBatch()" 
+        class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+        [disabled]="disableSubmitBtn"
+        appTelemetryInteract 
+        [telemetryInteractObject]="telemetryInteractObject" 
+        [telemetryInteractEdata]="saveBatchInteractEdata"
+      >
+        {{resourceService?.frmelmnts?.btn?.save}}
+      </button>
+      <button 
+        appTelemetryInteract 
+        [telemetryInteractObject]="telemetryInteractObject" 
+        [telemetryInteractEdata]="addmembersInteractEdata"
+        *ngSwitchCase="'create'" 
+        class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+        id="submitbutton" 
+        [disabled]="disableSubmitBtn || createBatchForm.value.enrollmentType === 'open'? true:false"
+        tabindex="0" 
+        (click)="navigateToStep('addmember')"
+      >
         {{resourceService?.frmelmnts?.btn?.addMembers}}
       </button>
-      <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="backBtnInteractEdata"
-        *ngSwitchCase="'addmember'" (click)="navigateToStep('create')" class="ui primary button">
+      <button 
+        appTelemetryInteract 
+        [telemetryInteractObject]="telemetryInteractObject" 
+        [telemetryInteractEdata]="backBtnInteractEdata"
+        *ngSwitchCase="'addmember'" 
+        (click)="navigateToStep('create')" 
+        class="sb-btn sb-btn-normal sb-btn-outline-primary"
+      >
         {{resourceService?.frmelmnts?.btn?.back}}
       </button>
-      <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="createInteractEdata"
-        *ngSwitchCase="'addmember'" class="ui primary button" id="submitbutton" (click)="createBatch()">
+      <button 
+        appTelemetryInteract 
+        [telemetryInteractObject]="telemetryInteractObject" 
+        [telemetryInteractEdata]="createInteractEdata"
+        *ngSwitchCase="'addmember'" 
+        class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+        id="submitbutton" 
+        (click)="createBatch()"
+      >
         {{resourceService?.frmelmnts?.btn?.createbatch}}
       </button>
     </div>
-    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="createInteractEdata"
-        class="ui primary button" id="submitbutton" (click)="createBatch()" *ngIf="createBatchForm.value.enrollmentType === 'open'">
+    <button 
+      appTelemetryInteract 
+      [telemetryInteractObject]="telemetryInteractObject" 
+      [telemetryInteractEdata]="createInteractEdata"
+      class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+      id="submitbutton" 
+      (click)="createBatch()" 
+      *ngIf="createBatchForm.value.enrollmentType === 'open'"
+    >
       {{resourceService?.frmelmnts?.btn?.createbatch}}
     </button>
   </div>
@@ -122,27 +163,42 @@
 
 </sui-modal>
 
-<sui-modal 
-  [isClosable]="false" 
-  *ngIf="discardModalFlag" 
-  [size]="'small'"
+<sui-modal
+  [mustScroll]="true" 
+  [isClosable]="true"
   [transitionDuration]="0"
+  [size]="'small'"
+  class="sb-modal"
+  appBodyScroll
+  *ngIf="discardModalFlag" 
   (dismissed)="discardModalFlag = !discardModalFlag"
   #discardModal>
 
   <!--Header-->
-  <div class="header">
+  <div class="sb-modal-header">
     {{resourceService?.frmelmnts?.lbl?.discardChange}}
   </div>
   <!--/Header-->
 
   <!--Actions-->
-  <div class="actions">
-    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="discardInteractEdata"
-      class="ui secondary button" (click)="discardModal.deny(); redirect()">{{resourceService?.frmelmnts?.btn?.discard}}
+  <div class="sb-modal-actions">
+    <button 
+      appTelemetryInteract 
+      [telemetryInteractObject]="telemetryInteractObject" 
+      [telemetryInteractEdata]="discardInteractEdata"
+      class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+      (click)="discardModal.deny(); redirect()"
+    >
+      {{resourceService?.frmelmnts?.btn?.discard}}
     </button>
-    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="cancelInteractEdata"
-      class="ui primary  button" (click)="discardModalFlag = !discardModalFlag">{{resourceService?.frmelmnts?.btn?.cancel}}
+    <button 
+      appTelemetryInteract 
+      [telemetryInteractObject]="telemetryInteractObject" 
+      [telemetryInteractEdata]="cancelInteractEdata"
+      class="sb-btn sb-btn-normal sb-btn-primary" 
+      (click)="discardModalFlag = !discardModalFlag"
+    >
+      {{resourceService?.frmelmnts?.btn?.cancel}}
     </button>
   </div>
   <!--/Actions-->
