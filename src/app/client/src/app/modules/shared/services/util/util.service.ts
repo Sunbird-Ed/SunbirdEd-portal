@@ -23,7 +23,7 @@ export class UtilService {
 
   processContent(data, staticData, dynamicFields, metaData) {
     let fieldValue: any;
-    const content = {
+    const content: any = {
       name: data.name || data.courseName,
       image: data.appIcon || data.courseLogoUrl,
       description: data.description,
