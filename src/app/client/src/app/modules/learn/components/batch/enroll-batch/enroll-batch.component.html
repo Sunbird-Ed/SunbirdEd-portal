@@ -1,12 +1,23 @@
-<sui-modal *ngIf='showEnrollDetails && batchDetails' (dismissed)="redirect()" [isClosable]="true" #enrollBatch>
-    <div class="header" [appTelemetryImpression]="telemetryImpression">
-        <div class="ui grid">
-            <div class="eleven wide column">
-                <span class="ui header">{{batchDetails.name}}</span>
-            </div>
-        </div>
+<sui-modal
+    [mustScroll]="true" 
+    [isClosable]="true"
+    [transitionDuration]="0"
+    [size]="'normal'"
+    class="sb-modal"
+    appBodyScroll
+    *ngIf='showEnrollDetails && batchDetails' 
+    (dismissed)="redirect()" 
+    #enrollBatch
+    >
+
+    <!--Header-->
+    <div class="sb-modal-header" [appTelemetryImpression]="telemetryImpression">
+        {{batchDetails.name}}
     </div>
-    <div class="scrolling content">
+    <!--/Header-->
+
+    <!--Content-->
+    <div class="sb-modal-content">
         <div class="ui grid">
             <div class="twelve wide column">
                 <div class="content">
@@ -54,4 +65,5 @@
             </div>
         </div>
     </div>
+    <!--/Content-->
 </sui-modal>

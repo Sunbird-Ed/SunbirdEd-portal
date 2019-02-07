@@ -1,7 +1,43 @@
-<sui-modal [isClosable]="true" #unenrollBatch (dismissed)="redirect()">
-    <div class="header">{{resourceService.frmelmnts.lbl.unenrollMsg}}</div>
-    <div class="actions">
-        <button class="ui primary  button announcement-button" (click)="unenrollBatch.deny();">{{resourceService.frmelmnts.btn.cancel}}</button>
-        <button class="ui primary basic button announcement-button" [disabled]="disableSubmitBtn" id="unenrollFromCourse" (click)="unenrollFromCourse()">{{resourceService.frmelmnts.btn.unenroll}}</button>
+<sui-modal
+    [mustScroll]="true" 
+    [isClosable]="true"
+    [transitionDuration]="0"
+    [size]="'normal'"
+    class="sb-modal"
+    appBodyScroll
+    #unenrollBatch 
+    (dismissed)="redirect()">
+
+    <!--Header-->
+    <div class="sb-modal-header">
+        {{resourceService.frmelmnts.lbl.unenrollMsg}}
     </div>
+    <!--/Header-->
+
+    <!--Content-->
+    <div class="sb-modal-content">
+        {{resourceService.frmelmnts.lbl.unenrollMsg}}
+    </div>
+    <!--/Content-->
+
+    <!--Actions-->
+    <div class="sb-modal-actions">
+        <button 
+            class="sb-btn sb-btn-normal sb-btn-primary"
+            [disabled]="disableSubmitBtn"
+            id="unenrollFromCourse" 
+            (click)="unenrollFromCourse()"
+        >
+            {{resourceService.frmelmnts.btn.unenroll}}
+        </button>
+        <button 
+            class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+            (click)="unenrollBatch.deny();"
+        >
+        {{resourceService.frmelmnts.btn.Cancel}}
+        </button>
+        
+    </div>
+    <!--/Actions-->
+
  </sui-modal>
