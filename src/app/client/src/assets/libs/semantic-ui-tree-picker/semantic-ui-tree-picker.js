@@ -87,7 +87,7 @@ var conceptModal;
         }
         return widget.html(config.displayFormat(picked));
       });
-      $('.sb-modal-actions .secondary', modal).on('click', function (e) {
+      $('.sb-modal-actions .sb-btn-outline-primary', modal).on('click', function (e) {
         modal.modal('hide');
         if (config.onClose) {
           config.onClose();
