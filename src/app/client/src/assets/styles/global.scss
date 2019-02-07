@@ -6,7 +6,7 @@
 html,
 body {
   height: 100%;
-  // font-size:$font-size-base;
+  font-size:$font-size-base;
 }
 
 body {
@@ -29,9 +29,6 @@ body {
   font-family: $font-stack-ur;
 }
 
-*[lang="ur"] {
-  font-size: ($font-size-base * .525);
-}
 
 button,
 input,
