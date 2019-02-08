@@ -336,17 +336,19 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     } else {
       const url = this.router.url.split('/');
       if (url[1] === 'learn' || url[1] === 'resources') {
-        if (event.data.metaData.batchId) {
-          event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
-          event.data.metaData.contentType = 'Course';
-        }
-        this.playerService.playContent(event.data.metaData);
+        this.handleCourseRedirection(event);
       } else {
         this.publicPlayerService.playContent(event);
       }
     }
   }
-
+  handleCourseRedirection(event) {
+    if (event.data.metaData.batchId) {
+      event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
+      event.data.metaData.contentType = 'Course';
+    }
+    this.playerService.playContent(event.data.metaData);
+  }
   getChannelId() {
     this.orgDetailsService.getOrgDetails()
       .subscribe(
