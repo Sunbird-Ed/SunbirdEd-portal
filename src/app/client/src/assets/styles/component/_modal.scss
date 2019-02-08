@@ -69,10 +69,10 @@
         height: calc(100vh - 120px);
       }    
     }
+
     .small {
       color: $text-lightDark;
     }
-  
   
     &.small {
       max-width: 300px;
@@ -133,3 +133,13 @@
  }
     }
  }
+.ui.tree-picker.modal{
+  top: 3.5rem !important;
+}
+.ui.tree-picker.modal .sb-modal-actions {
+  .pick-search,
+  .unpick-search,
+  .unpick-picked {
+    display: none;
+  }
+}
