@@ -100,6 +100,8 @@ describe('ProminentFilterComponent', () => {
     expect(component.router.navigate).toHaveBeenCalled();
   });
   it('should apply filters', () => {
+    component.formFieldProperties = [{code: 'subject'}];
+    component.formInputData = {subject: 'Math'};
     component.applyFilters();
     expect(component.router.navigate).toHaveBeenCalled();
   });

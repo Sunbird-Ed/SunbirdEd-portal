@@ -42,11 +42,11 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
 
   public refresh = true;
 
-  public isShowFilterPlaceholder = true;
-
   public filterIntractEdata: IInteractEventEdata;
-
+  public applyFilterInteractEdata: IInteractEventEdata;
+  public resetFilterInteractEdata: IInteractEventEdata;
   public submitIntractEdata: IInteractEventEdata;
+  public filterInteractEdata;
   private selectedLanguage: string;
   resourceDataSubscription: Subscription;
   // add langauge default value en
@@ -197,6 +197,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
     }
     this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
     this.hardRefreshFilter();
+    this.setFilterInteractData();
   }
 
   public applyFilters() {
@@ -209,14 +210,17 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
           queryParams[key] = formatedValue;
         }
     });
-    queryParams['appliedFilters'] = true;
     let redirectUrl; // if pageNumber exist then go to first page every time when filter changes, else go exact path
     if (this.activatedRoute.snapshot.params.pageNumber) { // when using dataDriven filter should this should be verified
       redirectUrl = this.router.url.split('?')[0].replace(/[^\/]+$/, '1');
     } else {
       redirectUrl = this.router.url.split('?')[0];
     }
-    this.router.navigate([redirectUrl], { queryParams: queryParams });
+    if (!_.isEmpty(queryParams)) {
+      queryParams['appliedFilters'] = true;
+      this.router.navigate([redirectUrl], { queryParams: queryParams });
+    }
+    this.setFilterInteractData();
   }
 
   public removeFilterSelection(field, item) {
@@ -264,17 +268,28 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   private setFilterInteractData() {
-    this.submitIntractEdata = {
-      id: 'submit',
-      type: 'click',
-      pageid: this.pageId,
-      extra: { filter: this.formInputData }
-    };
-    this.filterIntractEdata = {
-      id: 'filter',
-      type: 'click',
-      pageid: this.pageId
-    };
+    setTimeout(() => { // wait for model to change
+      const filters = _.pickBy(this.formInputData, (val, key) =>
+        (!_.isEmpty(val) || typeof val === 'number')
+          && _.map(this.formFieldProperties, field => field.code).includes(key));
+      this.applyFilterInteractEdata = {
+        id: 'apply-filter',
+        type: 'click',
+        pageid: this.pageId,
+        extra: {filters: filters}
+      };
+      this.resetFilterInteractEdata = {
+        id: 'reset-filter',
+        type: 'click',
+        pageid: this.pageId,
+        extra: {filters: filters}
+      };
+      this.filterInteractEdata = {
+        id: 'filter-accordion',
+        type: 'click',
+        pageid: this.pageId
+      };
+    }, 5);
   }
   private hardRefreshFilter() {
     this.refresh = false;
