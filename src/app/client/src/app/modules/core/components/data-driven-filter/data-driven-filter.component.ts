@@ -48,6 +48,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
   public applyFilterInteractEdata: IInteractEventEdata;
   public resetFilterInteractEdata: IInteractEventEdata;
   public submitIntractEdata: IInteractEventEdata;
+  public filterInteractEdata;
   private selectedLanguage: string;
   resourceDataSubscription: Subscription;
   // add langauge default value en
