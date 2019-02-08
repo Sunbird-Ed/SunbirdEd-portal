@@ -4,13 +4,14 @@ import { enrolledBatch } from './../../batch/batch-details/batch-details.compone
 import { CourseHierarchyGetMockResponse } from './../course-player/course-player.component.mock.data';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CourseConsumptionPageComponent } from './course-consumption-page.component';
-import {SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
+import {SharedModule, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { CoreModule, CoursesService, LearnerService } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '../../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
+import { RouterTestingModule } from '@angular/router/testing';
 
 const enrolledCourse = {
   courseSuccessEnroll: {
@@ -63,11 +64,12 @@ class MockRouter {
 describe('CourseConsumptionPageComponent', () => {
   let component: CourseConsumptionPageComponent;
   let fixture: ComponentFixture<CourseConsumptionPageComponent>;
-  let activatedRouteStub, courseService, toasterService, courseConsumptionService, courseBatchService, learnerService;
+  let activatedRouteStub, courseService, toasterService, courseConsumptionService, courseBatchService, learnerService,
+  navigationHelperService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), Ng2IziToastModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), Ng2IziToastModule, RouterTestingModule],
       declarations: [ CourseConsumptionPageComponent ],
       providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: ResourceService, useValue: resourceServiceMockData },
@@ -86,6 +88,8 @@ describe('CourseConsumptionPageComponent', () => {
     courseConsumptionService = TestBed.get(CourseConsumptionService);
     courseBatchService = TestBed.get(CourseBatchService);
     learnerService = TestBed.get(LearnerService);
+    navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'navigateToResource').and.returnValue('');
     spyOn(toasterService, 'error').and.returnValue('');
     activatedRouteStub.snapshot.firstChild.params = { courseId: 'do_212347136096788480178', batchId: 'do_112498388508524544160'};
   });
@@ -115,7 +119,7 @@ describe('CourseConsumptionPageComponent', () => {
     courseService.initialize();
     component.ngOnInit();
     expect(component.toasterService.error).toHaveBeenCalled();
-    expect(component.router.navigate).toHaveBeenCalledWith(['/learn']);
+    expect(component.navigationHelperService.navigateToResource).toHaveBeenCalledWith('/learn');
   });
   it('should fetch course details if it not enrolled course and should not fetch enrolled batch details', () => {
     activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_123'};
@@ -130,7 +134,7 @@ describe('CourseConsumptionPageComponent', () => {
     spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
     courseService.initialize();
     component.ngOnInit();
-    expect(component.router.navigate).toHaveBeenCalledWith(['/learn']);
+    expect(component.navigationHelperService.navigateToResource).toHaveBeenCalledWith('/learn');
   });
   it('should navigate to course consumption page if batch from route dint match but course found in enroll list', () => {
     activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_212347136096788480178',  batchId: '123'};

@@ -46,3 +46,4 @@
   </div>
 </div>
 </div>
+<app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches" (modelClose)="showBatchInfo = false"></app-batch-info>

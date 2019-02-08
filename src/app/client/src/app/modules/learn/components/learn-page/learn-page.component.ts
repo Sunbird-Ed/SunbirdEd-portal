@@ -197,7 +197,7 @@ export class LearnPageComponent implements OnInit, OnDestroy {
       return this.playerService.playContent(metaData);
     }
 
-    const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } = this.findEnrolledCourses(metaData.identifier);
+    const {onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch} = this.coursesService.findEnrolledCourses(metaData.identifier);
 
     if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
       return this.playerService.playContent(metaData);
@@ -210,33 +210,7 @@ export class LearnPageComponent implements OnInit, OnDestroy {
     this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
     this.showBatchInfo = true;
   }
-  findEnrolledCourses(courseId) {
-    const enrInfo = _.reduce(this.enrolledCourses, (acc, cur) => {
-      if (cur.courseId !== courseId) { // course donst match return
-        return acc;
-      }
-      if (cur.batch.enrollmentType === 'invite-only') { // invite-only batch
-        if (cur.batch.status === 2) { // && (!acc.invite.ended || latestCourse(acc.invite.ended.enrolledDate, cur.enrolledDate))
-          acc.inviteOnlyBatch.expired.push(cur);
-          acc.expiredBatchCount = acc.expiredBatchCount + 1;
-        } else {
-          acc.onGoingBatchCount = acc.onGoingBatchCount + 1;
-          acc.inviteOnlyBatch.ongoing.push(cur);
-        }
-      } else {
-        if (cur.batch.status === 2) {
-          acc.expiredBatchCount = acc.expiredBatchCount + 1;
-          acc.openBatch.expired.push(cur);
-        } else {
-          acc.onGoingBatchCount = acc.onGoingBatchCount + 1;
-          acc.openBatch.ongoing.push(cur);
-        }
-      }
-      return acc;
-    }, { onGoingBatchCount: 0, expiredBatchCount: 0,
-      openBatch: { ongoing: [], expired: []}, inviteOnlyBatch: { ongoing: [], expired: [] }});
-    return enrInfo;
-  }
+
   public viewAll(event) {
     const searchQuery = JSON.parse(event.searchQuery);
     const searchQueryParams: any = {};

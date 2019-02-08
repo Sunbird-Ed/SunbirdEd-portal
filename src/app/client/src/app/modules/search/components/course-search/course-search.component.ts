@@ -40,7 +40,8 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   public frameWorkName: string;
   public closeIntractEdata;
   public enrolledSection;
-
+  public showBatchInfo = false;
+  public selectedCourseBatches: any;
   sortingOptions: Array<ISort>;
 
   constructor(public searchService: SearchService, public router: Router,
@@ -111,12 +112,8 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
             this.configService.appConfig.SEARCH.PAGE_LIMIT);
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.CoursePageSection.course;
-        this.contentList = _.map(data.result.course, (content: any) => {
-          const enrolledContent = _.find(this.enrolledSection.contents,
-            (enrolledCourse) => (enrolledCourse.metaData.courseId === content.identifier));
-          return enrolledContent ||
-            this.utilService.processContent(content, constantData, dynamicFields, metaData);
-        });
+        this.contentList = _.map(data.result.course, (content: any) =>
+          this.utilService.processContent(content, constantData, dynamicFields, metaData));
     }, err => {
         this.showLoader = false;
         this.contentList = [];
@@ -178,13 +175,21 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     }
     this.router.navigate(['search/Courses', page], { queryParams: this.queryParams });
   }
-  public playContent(event) {
-    if (event.data.metaData.batchId) {
-      event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
-      event.data.metaData.contentType = 'Course';
-    }
+  public playContent({ data }) {
+    const { metaData } = data;
     this.changeDetectorRef.detectChanges();
-    this.playerService.playContent(event.data.metaData);
+    const {onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch} = this.coursesService.findEnrolledCourses(metaData.identifier);
+
+    if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
+      return this.playerService.playContent(metaData);
+    }
+
+    if (onGoingBatchCount === 1) { // play course if only one open batch is present
+      metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
+      return this.playerService.playContent(metaData);
+    }
+    this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
+    this.showBatchInfo = true;
   }
   public inView(event) {
     _.forEach(event.inview, (elem, key) => {
