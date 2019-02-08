@@ -25,7 +25,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   @Input() frameworkName: string;
   @Input() formAction: string;
   @Output() prominentFilter = new EventEmitter();
-  public filterInteractEdata;
+  public resetFilterInteractEdata: IInteractEventEdata;
   /**
  * To get url, app configs
  */
@@ -75,7 +75,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   frameworkDataSubscription: Subscription;
   resourceDataSubscription: Subscription;
   isFiltered = true;
-  submitInteractEdata: IInteractEventEdata;
+  applyFilterInteractEdata: IInteractEventEdata;
   private selectedLanguage: string;
   /**
    *
@@ -137,17 +137,23 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     this.setFilterInteractData();
   }
   private setFilterInteractData() {
-    this.submitInteractEdata = {
-      id: 'submit',
-      type: 'click',
-      pageid: this.pageId,
-      extra: { filter: this.formInputData }
-    };
-    this.filterInteractEdata = {
-      id: 'filter',
-      type: 'click',
-      pageid: this.pageId
-    };
+    setTimeout(() => { // wait for model to change
+      const filters = _.pickBy(this.formInputData, (val, key) =>
+        (!_.isEmpty(val) || typeof val === 'number')
+          && _.map(this.formFieldProperties, field => field.code).includes(key));
+      this.applyFilterInteractEdata = {
+        id: 'apply-filter',
+        type: 'click',
+        pageid: this.pageId,
+        extra: {filters: filters}
+      };
+      this.resetFilterInteractEdata = {
+        id: 'reset-filter',
+        type: 'click',
+        pageid: this.pageId,
+        extra: {filters: filters}
+      };
+    }, 5);
   }
 
   getFormatedFilterDetails() {
@@ -255,6 +261,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     }
     this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
     this.hardRefreshFilter();
+    this.setFilterInteractData();
   }
   selectedValue(event, code) {
     this.formInputData[code] = event;
@@ -270,21 +277,24 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     if (_.isEqual(this.formInputData, this.queryParams)) {
       this.isFiltered = true;
     } else {
-      this.isFiltered = false;
-      const queryParams: any = {};
-    _.forIn(this.formInputData, (eachInputs: Array<any | object>, key) => {
-        const formatedValue = typeof eachInputs === 'string' ? eachInputs :
-        _.compact(_.map(eachInputs, value => typeof value === 'string' ? value : _.get(value, 'identifier')));
-        if (formatedValue.length) {
-          queryParams[key] = formatedValue;
-        }
-        if (key === 'channel') {
-          queryParams[key] = this.populateChannelData(formatedValue);
-        }
-    });
-    queryParams['appliedFilters'] = true;
-    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
+        this.isFiltered = false;
+        const queryParams: any = {};
+      _.forIn(this.formInputData, (eachInputs: Array<any | object>, key) => {
+          const formatedValue = typeof eachInputs === 'string' ? eachInputs :
+          _.compact(_.map(eachInputs, value => typeof value === 'string' ? value : _.get(value, 'identifier')));
+          if (formatedValue.length) {
+            queryParams[key] = formatedValue;
+          }
+          if (key === 'channel') {
+            queryParams[key] = this.populateChannelData(formatedValue);
+          }
+      });
+      if (!_.isEmpty(queryParams)) {
+        queryParams['appliedFilters'] = true;
+        this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
+      }
     }
+    this.setFilterInteractData();
   }
 
   private populateChannelData(data) {
