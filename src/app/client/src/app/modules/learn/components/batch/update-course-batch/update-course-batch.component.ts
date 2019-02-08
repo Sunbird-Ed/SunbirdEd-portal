@@ -334,9 +334,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     const selectedParticipants = [];
     const selectedMentors = [];
     let mentors = [];
+    mentors = $('#mentors').dropdown('get value') ? $('#mentors').dropdown('get value').split(',') : [];
     if (this.batchUpdateForm.value.enrollmentType !== 'open') {
       participants = $('#participant').dropdown('get value') ? $('#participant').dropdown('get value').split(',') : [];
-      mentors = $('#mentors').dropdown('get value') ? $('#mentors').dropdown('get value').split(',') : [];
     }
     if ((this.selectedParticipants).length > 0) {
       _.forEach(this.selectedParticipants, (obj) => {
@@ -363,13 +363,11 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       mentors: _.compact(mentors),
       participants: _.compact(participants)
     };
-    if (this.batchUpdateForm.value.enrollmentType !== 'open') {
-      const selected = [];
-      _.forEach(this.selectedMentors, (value) => {
-        selected.push(value.id);
-      });
-      requestBody['mentors'] = _.concat(_.compact(requestBody['mentors']), selected);
-    }
+    const selected = [];
+    _.forEach(this.selectedMentors, (value) => {
+      selected.push(value.id);
+    });
+    requestBody['mentors'] = _.concat(_.compact(requestBody['mentors']), selected);
     this.courseBatchService.updateBatch(requestBody).pipe(takeUntil(this.unsubscribe))
       .subscribe((response) => {
         this.disableSubmitBtn = false;
