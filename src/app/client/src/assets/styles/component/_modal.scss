@@ -80,6 +80,7 @@
   
     &.normal {
       max-width: 720px;
+
       .content {
         max-height: 380px;
       }
@@ -107,39 +108,42 @@
 }
 @include respond-below(sm) {
   .sb-modal {
-  .ui.modal {
-    position: absolute;
-    width: 95%;
-    margin: 0 auto !important;
-    top:50%;
-    transform: translate(0, -50%);
-    height:inherit;
-    &>.close {
-      top: 0 !important;
-      right: 0 !important;
+    .ui.modal {
+      position: absolute;
+      width: 95%;
+      margin: 0 auto !important;
+      top:50%;
+      transform: translate(0, -50%);
+      height:inherit;
+      &>.close {
+        top: 0 !important;
+        right: 0 !important;
+      }
+      &>.sb-modal-actions{
+        padding:$block-padding-y-x;
+      }
     }
-    &>.sb-modal-actions{
-      padding:$block-padding-y-x;
+    .ui.modal .scrolling.content {
+      max-height: calc(100vh - 10rem);
+      overflow: auto;
     }
- }
- .ui.modal .scrolling.content {
-  max-height: calc(100vh - 10rem);
-  overflow: auto;
- }
- .ui.page.dimmer {
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
- }
+    .ui.page.dimmer {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
     }
+  }
  }
-.ui.tree-picker.modal{
+
+.ui.tree-picker.modal {
+
   top: 3.5rem !important;
-}
-.ui.tree-picker.modal .sb-modal-actions {
-  .pick-search,
-  .unpick-search,
-  .unpick-picked {
-    display: none;
+  
+  .sb-modal-actions {
+    .pick-search,
+    .unpick-search,
+    .unpick-picked {
+      display: none;
+    }
   }
 }

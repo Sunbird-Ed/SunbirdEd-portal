@@ -244,6 +244,7 @@ export class UploadedComponent extends WorkSpace implements OnInit {
     config.isClosable = false;
     config.size = 'small';
     config.transitionDuration = 0;
+    config.mustScroll = true;
     this.modalService
       .open(config)
       .onApprove(result => {
