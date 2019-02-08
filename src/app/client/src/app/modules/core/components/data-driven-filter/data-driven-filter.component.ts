@@ -42,8 +42,6 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
 
   public refresh = true;
 
-  public isShowFilterPlaceholder = true;
-
   public filterIntractEdata: IInteractEventEdata;
   public applyFilterInteractEdata: IInteractEventEdata;
   public resetFilterInteractEdata: IInteractEventEdata;
