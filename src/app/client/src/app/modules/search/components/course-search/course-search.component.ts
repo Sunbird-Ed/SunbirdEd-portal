@@ -9,7 +9,7 @@ import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef } from '@
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, mergeMap, first, filter, debounceTime, catchError } from 'rxjs/operators';
+import { takeUntil, map, mergeMap, first, tap, debounceTime, catchError, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 
 @Component({
@@ -54,7 +54,6 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     this.filterType = this.configService.appConfig.courses.filterType;
     this.redirectUrl = this.configService.appConfig.courses.searchPageredirectUrl;
     this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
-    this.setTelemetryData();
   }
   ngOnInit() {
     combineLatest(this.fetchEnrolledCoursesSection(), this.getFrameWork()).pipe(first(),
@@ -79,11 +78,15 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   }
   private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
-    .pipe(debounceTime(5),
-        map((result) => ({params: { pageNumber: Number(result[0].pageNumber)}, queryParams: result[1]})),
-        takeUntil(this.unsubscribe$))
-      .subscribe(({params, queryParams}) => {
+    .pipe(debounceTime(5), // to sync params and queryParams events
+      tap(data => {
         this.showLoader = true;
+        this.setTelemetryData();
+      }),
+      delay(10), // to show loader
+      map((result) => ({params: { pageNumber: Number(result[0].pageNumber)}, queryParams: result[1]})),
+      takeUntil(this.unsubscribe$))
+      .subscribe(({params, queryParams}) => {
         this.queryParams = { ...queryParams };
         this.paginationDetails.currentPage = params.pageNumber;
         this.contentList = [];
@@ -192,6 +195,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     this.showBatchInfo = true;
   }
   public inView(event) {
+    console.log('triggered inview');
     _.forEach(event.inview, (elem, key) => {
         const obj = _.find(this.inViewLogs, { objid: elem.data.metaData.identifier});
         if (!obj) {
@@ -202,9 +206,11 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
             });
         }
     });
-    this.telemetryImpression.edata.visits = this.inViewLogs;
-    this.telemetryImpression.edata.subtype = 'pageexit';
-    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    if (this.telemetryImpression) {
+      this.telemetryImpression.edata.visits = this.inViewLogs;
+      this.telemetryImpression.edata.subtype = 'pageexit';
+      this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    }
   }
   private setTelemetryData() {
     this.closeIntractEdata = {
