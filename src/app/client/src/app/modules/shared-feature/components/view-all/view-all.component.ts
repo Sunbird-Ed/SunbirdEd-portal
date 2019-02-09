@@ -324,7 +324,6 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   }
   handleCourseRedirection({ data }) {
     const { metaData } = data;
-    console.log(metaData);
     const {onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch} = this.coursesService.findEnrolledCourses(metaData.identifier);
 
     if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
