@@ -2,7 +2,7 @@ import {
   PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ICard, ILoaderMessage, UtilService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { SearchService, PlayerService, CoursesService, UserService, FormService, ISort, ICourses } from '@sunbird/core';
+import { SearchService, PlayerService, CoursesService, UserService, FormService, ISort } from '@sunbird/core';
 import { IPagination } from '@sunbird/announcement';
 import { combineLatest, Subject, of } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef } from '@angular/core';
@@ -79,11 +79,12 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
     .pipe(debounceTime(5), // to sync params and queryParams events
+      tap(data => this.inView({inview: []})), // trigger pageexit if last filter resulted 0 contents
+      delay(10), // to trigger pageexit telemetry event
       tap(data => {
         this.showLoader = true;
         this.setTelemetryData();
       }),
-      delay(10), // to show loader
       map((result) => ({params: { pageNumber: Number(result[0].pageNumber)}, queryParams: result[1]})),
       takeUntil(this.unsubscribe$))
       .subscribe(({params, queryParams}) => {
@@ -195,7 +196,6 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     this.showBatchInfo = true;
   }
   public inView(event) {
-    console.log('triggered inview');
     _.forEach(event.inview, (elem, key) => {
         const obj = _.find(this.inViewLogs, { objid: elem.data.metaData.identifier});
         if (!obj) {
@@ -213,6 +213,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     }
   }
   private setTelemetryData() {
+    this.inViewLogs = []; // set to empty every time filter or page changes
     this.closeIntractEdata = {
       id: 'search-close',
       type: 'click',

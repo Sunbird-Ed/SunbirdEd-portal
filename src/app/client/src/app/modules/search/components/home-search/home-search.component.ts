@@ -2,14 +2,14 @@ import {
   PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ICard, ILoaderMessage, UtilService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { SearchService, PlayerService, CoursesService, UserService, FormService, ISort, ICourses } from '@sunbird/core';
+import { SearchService, PlayerService, CoursesService, UserService, FormService, ISort } from '@sunbird/core';
 import { IPagination } from '@sunbird/announcement';
-import { combineLatest, Subject, of } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, mergeMap, first, filter, debounceTime, catchError } from 'rxjs/operators';
+import { takeUntil, map, delay, first, debounceTime, tap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 
 @Component({
@@ -71,10 +71,15 @@ export class HomeSearchComponent implements OnInit, OnDestroy {
   private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
     .pipe(debounceTime(5),
+        tap(data => this.inView({inview: []})), // trigger pageexit if last filter resulted 0 contents
+        delay(10), // to trigger pageexit telemetry event
+        tap(data => {
+          this.showLoader = true;
+          this.setTelemetryData();
+        }),
         map((result) => ({params: { pageNumber: Number(result[0].pageNumber)}, queryParams: result[1]})),
         takeUntil(this.unsubscribe$))
       .subscribe(({params, queryParams}) => {
-        this.showLoader = true;
         this.queryParams = { ...queryParams };
         this.paginationDetails.currentPage = params.pageNumber;
         this.contentList = [];
@@ -83,8 +88,6 @@ export class HomeSearchComponent implements OnInit, OnDestroy {
   }
   private fetchContents() {
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-    // filters.channel = this.hashTagId;
-    // filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
     filters = _.omit(filters, ['key', 'sort_by', 'sortType']);
     filters.contentType = filters.contentType || ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Course'];
     const option = {
@@ -93,7 +96,6 @@ export class HomeSearchComponent implements OnInit, OnDestroy {
         offset: (this.paginationDetails.currentPage - 1 ) * (this.configService.appConfig.SEARCH.PAGE_LIMIT),
         query: this.queryParams.key,
         sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType},
-        // softConstraints: { badgeAssertions: 98, board: 99, channel: 100 },
         facets: this.facets,
         params: this.configService.appConfig.Course.contentApiQueryParams
     };
@@ -174,11 +176,14 @@ export class HomeSearchComponent implements OnInit, OnDestroy {
             });
         }
     });
-    this.telemetryImpression.edata.visits = this.inViewLogs;
-    this.telemetryImpression.edata.subtype = 'pageexit';
-    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    if (this.telemetryImpression) {
+      this.telemetryImpression.edata.visits = this.inViewLogs;
+      this.telemetryImpression.edata.subtype = 'pageexit';
+      this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    }
   }
   private setTelemetryData() {
+    this.inViewLogs = []; // set to empty every time filter or page changes
     this.closeIntractEdata = {
       id: 'search-close',
       type: 'click',
