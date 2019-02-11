@@ -345,7 +345,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     }
     if ((this.selectedMentors).length > 0) {
       _.forEach(this.selectedMentors, (obj) => {
-        selectedParticipants.push(obj.id);
+        selectedMentors.push(obj.id);
       });
     }
     mentors = _.concat(mentors, selectedMentors);
