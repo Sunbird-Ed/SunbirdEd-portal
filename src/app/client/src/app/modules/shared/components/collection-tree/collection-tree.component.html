@@ -9,28 +9,26 @@
     [isDisabled]="(!child.children.length) || (!child.folder)"
     >
     <div title class="accordian-left-text">
-      <span 
-        class="d-inline-block mt-5 vertical-align-middle"
-        >
-        <i 
+      <i 
         *ngIf="child.folder" 
         class="mr-10" 
         [class.sb-icon-folder]="child.togglePanelIcon" 
         [class.sb-icon-collection]="!child.togglePanelIcon"
-        ></i>
-        <i 
+      ></i>
+      <i 
           *ngIf="!child.folder" 
           class="mr-10" 
           [ngClass]="child.icon"
-          ></i>
-          {{child.title}}
+      ></i>
+      <span>
+        {{child.title}}
       </span>
       <i 
         *ngIf="child.folder && child.children.length" 
         class="icon right-float accordion-content-right" 
         [class.plus]="!child.togglePanelIcon" 
         [class.minus]="child.togglePanelIcon"
-        ></i>
+      ></i>
     </div>
     <div 
       *ngIf="child.folder" 

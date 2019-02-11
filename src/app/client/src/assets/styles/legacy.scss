@@ -18,11 +18,6 @@
   opacity:0.6;
 }
 
-.disabled .title,
-.disabled.fancytree-node {
-  pointer-events: none;
-  opacity: 0.6;
-}
 .disabled .title span{
   font-weight: 500;
 }
@@ -776,19 +771,7 @@ ul li {
 ul li span.text {
   margin-right: 43%;
 }
-/* fancytree-container border remove */
-ul.fancytree-container {
-  border: none !important;
-}
-ul.fancytree-container li {
-  padding-bottom: 0.8em;
-}
-.fancytree-lastsib ul li {
-  padding-bottom: 0.8em !important;
-}
-.fancytree-treefocus {
-  outline: none !important;
-}
+
 .title-padding-left {
   padding-left: 8%;
 }
@@ -852,9 +835,6 @@ ul.subList-padding {
 /* margin removed for progress bar*/
 .progressBar-margin {
   margin: 0px !important;
-}
-span.fancytree-title {
-  margin: 0px 0px 10px 0px;
 }
 .noselect {
   user-select: none;
@@ -942,27 +922,7 @@ span.fancytree-title {
   cursor: pointer;
   margin-left: 5px;
 }
-.fancytree-plain span.fancytree-node span.fancytree-title {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-.fancytree-plain span.fancytree-node span.fancytree-title .padded i.icon {
-  margin: 0px 0.3em 0.24em 0!important;
-}
-.fancytree-plain span.fancytree-node:hover span.fancytree-title {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-.fancytree-plain span.fancytree-node:hover span.fancytree-title .padded i.icon {
-  margin: 0px 0.3em 0.24em 0!important;
-}
-span.fancytree-node {
-  display: inherit;
-  width: 98%!important;
-}
-ul.fancytree-container li {
-  padding-bottom: 0.8em;
-}
+
 .curriculum-content {
   font-size: 15px;
   padding-top: 10px;
@@ -1993,15 +1953,6 @@ iframe.iziModal-iframe {
   font-weight: bold;
   font-size: 1.4em;
 }
-.fancy-tree-grey {
-  color:#929292;
-}
-.fancy-tree-blue {
-  color:$primary-color;
-}
-.fancy-tree-green {
-  color:$success-color;
-}
 
 /*adding outline none because router link of angular is adding extra outline, */
 .remove-outline {
@@ -2052,14 +2003,6 @@ iframe.iziModal-iframe {
 
     .accordion-content {
       width: 250px;
-    }  
-
-    .fancytree-plain span.fancytree-node span.fancytree-title {
-      overflow: hidden;
-      overflow-wrap: break-word;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      width:210px;
     }
   /* content player y0ur progress section margin here !important is added to address specificity issue*/
     p.m-responsive-cp-header {
