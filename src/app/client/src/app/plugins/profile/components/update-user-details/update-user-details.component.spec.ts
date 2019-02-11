@@ -4,16 +4,38 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProfileService } from './../../services';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { testData } from './update-user-details.component.spec.data';
+import { Router, ActivatedRoute } from '@angular/router';
 
 describe('UpdateUserDetailsComponent', () => {
   let component: UpdateUserDetailsComponent;
   let fixture: ComponentFixture<UpdateUserDetailsComponent>;
+
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'profile', pageid: 'profile', subtype: 'paginate', type: 'view',
+          object: { type: '', ver: '1.0' }
+        }
+      }
+    };
+  }
+  const env = 'profile';
+  class ActivatedRouteStub {
+    snapshot = {
+      root: { firstChild : {data: { telemetry: { env: env} } } },
+      data : {
+         telemetry: { env: env }
+      }
+    };
+  }
 
   const resourceBundle = {
     'messages': {
@@ -41,9 +63,10 @@ describe('UpdateUserDetailsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule.forRoot(), FormsModule, ReactiveFormsModule,
-        HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
+        HttpClientTestingModule, SuiModule, TelemetryModule],
       declarations: [UpdateUserDetailsComponent],
-      providers: [{ provide: ResourceService, useValue: resourceBundle }, ProfileService, ToasterService],
+      providers: [{ provide: ResourceService, useValue: resourceBundle }, { provide: ActivatedRoute, useClass: ActivatedRouteStub },
+        { provide: Router, useClass: RouterStub }, ProfileService, ToasterService, TelemetryService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -65,6 +88,18 @@ describe('UpdateUserDetailsComponent', () => {
     expect(component.getState).toHaveBeenCalled();
     expect(component.enableSubmitButton).toHaveBeenCalled();
     expect(component.enableSubmitBtn).toBeTruthy();
+  });
+
+  it('should show validation error for name', () => {
+    component.userProfile = testData.userData;
+    const profileService = TestBed.get(ProfileService);
+    spyOn(component, 'getState');
+    spyOn(component, 'onStateChange');
+    spyOn(component, 'enableSubmitButton');
+    component.ngOnInit();
+    const name = component.userDetailsForm.controls['name'];
+    name.setValue('@@11');
+    expect(name.errors.pattern).toBeTruthy();
   });
 
   it('should call get state and get success', () => {

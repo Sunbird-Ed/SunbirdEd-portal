@@ -222,7 +222,7 @@ export class WorkSpaceService {
    *
    * @param {SearchParam} requestParam api request data
   */
-  getContentLockList(requestParam): Observable<ServerResponse> {
+  getContentLockList(requestParam): Observable<any> {
     const option = {
       url: this.config.urlConFig.URLS.CONTENT.LOCK_LIST,
       data: {
@@ -231,7 +231,8 @@ export class WorkSpaceService {
         }
       }
     };
-    return this.content.post(option);
+    return observableOf({}); // lock api fix
+    // return this.content.post(option); // lock api fix
   }
 
   lockContent(inputParams): Observable<ServerResponse> {

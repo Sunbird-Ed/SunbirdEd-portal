@@ -67,7 +67,7 @@
           </div>
         </div>
       </div>
-      <div class="one field " *ngIf="batchUpdateForm.value.enrollmentType !== 'open'">
+      <div class="one field ">
         <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors" [ngClass]="{ 'disabled': batchDetails.status === 2 }">
           <input id="mentorSelList">
@@ -81,7 +81,7 @@
           </div>
         </div>
       </div>
-      <div class="one field" *ngIf="batchUpdateForm.value.enrollmentType !== 'open' && selectedMentors.length > 0">
+      <div class="one field" *ngIf="selectedMentors.length > 0">
         <label>{{resourceService?.frmelmnts?.lbl?.batchselmentors}}</label>
         <a class="ui label mt-5" *ngFor="let selectmentor of selectedMentors">
           <img class="ui right spaced avatar image" src="{{selectmentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}">

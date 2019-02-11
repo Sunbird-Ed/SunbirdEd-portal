@@ -7,8 +7,9 @@
       </div>
     </div>
     <form class="ui form" [formGroup]="userDetailsForm">
+        <label class="ui basic blue error label p-0" *ngIf="userDetailsForm.controls.name.touched && userDetailsForm.controls['name'].errors && userDetailsForm.controls['name'].errors.required">{{resourceService?.frmelmnts?.lbl?.nameRequired}}</label>
+        <label class="ui basic blue error label p-0" *ngIf="userDetailsForm.controls.name.touched && userDetailsForm.controls['name'].errors && userDetailsForm.controls['name'].errors.pattern">{{resourceService?.frmelmnts?.lbl?.enterValidName}}</label>
       <div class="required field">
-        <label class="ui basic blue error label p-0" *ngIf="userDetailsForm.controls.name.touched && userDetailsForm.controls['name'].errors">{{resourceService?.frmelmnts?.lbl?.nameRequired}}</label>
         <label *ngIf="!(userDetailsForm.controls.name.touched && userDetailsForm.controls['name'].errors)">{{resourceService?.frmelmnts?.lbl?.name}}:</label>
         <div class="field">
           <input formControlName="name" type="text" name="name" placeholder="{{resourceService.frmelmnts.lbl.fullName}}">
@@ -43,6 +44,6 @@
     </div>
   </div>
   <div class="actions text-ac">
-    <button class="ui primary button" [disabled]="!enableSubmitBtn" (click)="onSubmitForm()">{{resourceService?.frmelmnts?.btn?.submitbtn}}</button>
+    <button class="ui primary button" [disabled]="!enableSubmitBtn" (click)="onSubmitForm()" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata">{{resourceService?.frmelmnts?.btn?.submitbtn}}</button>
   </div>
 </sui-modal>

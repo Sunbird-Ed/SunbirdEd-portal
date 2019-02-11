@@ -1,0 +1,118 @@
+// buttons
+// Specificity overrides
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+  &.btn-block {
+    width: 100%;
+  }
+}
+
+// base button styles
+.sb-btn {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-appearance: button;
+    user-select: none;
+    outline: 0;
+    display: inline-block;
+    margin-left: 0.25rem;
+    border: 1px solid;
+    color:#fff;
+    cursor:pointer;
+    margin:0px 0px 0px 8px;
+    min-width:($base-block-space * 8);
+    text: {
+        transform: capitalize;
+        decoration: none;
+    }
+}
+// button lin
+.sb-btn-link {
+    background:none;
+    border:0;
+    text-decoration: underline;
+    &:hover {
+        font-weight:$font-weight-bold;
+    }
+    
+}
+// button sizes
+.sb-btn-small {
+    height:$base-btn-small-height;
+    padding: ($base-block-space * .5) ($base-block-space * 2);
+    font-size:$font-size-xs;
+    @include border-radius(2px);
+}
+.sb-btn-normal {
+    height:$base-btn-normal-height;
+    padding: $block-padding-y-x;
+    font-size:$font-size-sm;
+    @include border-radius(4px);
+}
+.sb-btn-big {
+  height:$base-btn-big-height;
+  padding: $block-padding-y-x;
+  font-size:$font-size-normal;
+  @include border-radius(6px);
+}
+// disabled button
+.sb-btn-disabled {
+    background-color: $gray-100;
+    color:$gray-200;
+    border:1px solid $gray-100;
+    cursor: not-allowed;
+}
+.sb-btn-outline-disabled {
+    background-color: $white-color;
+    color:$gray-100;
+    border:1px solid $gray-100;
+    cursor: not-allowed;
+}
+// default outline colored btns
+.sb-btn-outline-primary{
+    @include btn-theme-bgwhite($primary-color);
+} 
+.sb-btn-outline-secondary{
+    @include btn-theme-bgwhite($secondary-color);
+} 
+.sb-btn-outline-tertiary{
+    @include btn-theme-bgwhite($tertiary-color);
+}
+// status outline buttons
+.sb-btn-outline-info{
+    @include btn-theme-bgwhite($primary-color);
+} 
+.sb-btn-outline-success{
+    @include btn-theme-bgwhite($secondary-color);
+} 
+.sb-btn-outline-warning{
+    @include btn-theme-bgwhite($tertiary-color);
+}
+.sb-btn-outline-error{
+    @include btn-theme-bgwhite($red);
+} 
+.sb-btn-outline-gray{
+    @include btn-theme-bgwhite($gray-800);
+} 
+// default colored btns
+.sb-btn-primary{
+    @include btn-theme($primary-color);
+} 
+.sb-btn-secondary{
+    @include btn-theme($secondary-color);
+}
+.sb-btn-tertiary{
+    @include btn-theme($tertiary-color);
+}
+.sb-btn-success{
+    @include btn-theme($success-color);
+} 
+.sb-btn-info{
+    @include btn-theme($info-color);
+}
+.sb-btn-warning{
+    @include btn-theme($warning-color);
+} 
+.sb-btn-error{
+    @include btn-theme($danger-color);
+}

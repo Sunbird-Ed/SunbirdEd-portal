@@ -1,13 +1,45 @@
+// global styles
+
+// *{
+//   transition: all 300ms ease-in-out
+//   }
+html,
 body {
+  height: 100%;
+  font-size:$font-size-base;
+}
+
+body {
+  // background:$bg-body;
   position: relative;
-  background: $bg-body !important;
-  font-family: inherit;
+  font-family: $font-stack-en;
   letter-spacing: 0.2px;
   height: auto;
 }
 
-button,input,textarea,optgroup,select,
-h1, h2, h3, h4, h5,
+*[lang="en"] body {
+  font-family: $font-stack-en;
+}
+
+*[lang="hi"] body {
+  font-family: $font-stack-hi;
+}
+
+*[lang="ur"] body {
+  font-family: $font-stack-ur;
+}
+
+
+button,
+input,
+textarea,
+optgroup,
+select,
+h1,
+h2,
+h3,
+h4,
+h5,
 .ui.header,
 .ui.text.container,
 .ui.input input,
@@ -46,7 +78,7 @@ h1, h2, h3, h4, h5,
 .ui.form input[type=url],
 .ui.menu,
 .ui.dropdown,
-.ui.category.search> .results .category> .name {
+.ui.category.search>.results .category>.name {
   font-family: inherit;
 }
 
@@ -61,17 +93,19 @@ h1, h2, h3, h4, h5,
 
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
-   -webkit-appearance: none;
-   -moz-appearance: none;
-   appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
-//Sui model background dimmer changes
-
 .ui.dimmer {
-  background-color: rgba(0, 0, 0, .35);
+  background-color: rgba(0, 0, 0, 0.35);
 }
 
 .ui.modal>.close {
   opacity: 1;
+}
+
+.ui.dimmer:not(.inverted)::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 1);
 }

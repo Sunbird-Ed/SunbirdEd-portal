@@ -1,0 +1,25 @@
+@font-face {
+  font-family: 'Noto Sans Oriya';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./NotoSansOriya-Regular.eot);
+  src:
+    url(./NotoSansOriya-Regular.eot?#iefix) format('embedded-opentype'),
+    url(./NotoSansOriya-Regular.woff2) format('woff2'),
+    url(./NotoSansOriya-Regular.woff) format('woff'),
+    url(./NotoSansOriya-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Noto Sans Oriya';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(./NotoSansOriya-Bold.eot);
+  src:
+    url(./NotoSansOriya-Bold.eot?#iefix) format('embedded-opentype'),
+    url(./NotoSansOriya-Bold.woff2) format('woff2'),
+    url(./NotoSansOriya-Bold.woff) format('woff'),
+    url(./NotoSansOriya-Bold.ttf) format('truetype');
+}
