@@ -4,8 +4,7 @@ import { IFancytreeOptions } from '../../interfaces';
 
 @Component({
   selector: 'app-fancy-tree',
-  templateUrl: './fancy-tree.component.html',
-  styleUrls: ['./fancy-tree.component.scss']
+  templateUrl: './fancy-tree.component.html'
 })
 export class FancyTreeComponent implements AfterViewInit {
   @ViewChild('fancyTree') public tree: ElementRef;
