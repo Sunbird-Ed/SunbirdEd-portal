@@ -1,6 +1,6 @@
 import { LearnPageComponent } from './learn-page.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
 } from '@sunbird/shared';
 import { PageApiService, CoursesService, CoreModule, PlayerService, FormService, LearnerService} from '@sunbird/core';
@@ -117,39 +117,39 @@ describe('LearnPageComponent', () => {
     expect(toasterService.error).not.toHaveBeenCalled();
     expect(component.enrolledSection.contents.length).toEqual(0);
   });
-  it('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', () => {
+  it('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', fakeAsync(() => {
     coursesService.initialize();
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
     expect(component.enrolledSection.contents.length).toEqual(1);
     expect(component.frameWorkName).toEqual('TPD');
-    // expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
     expect(component.carouselData.length).toEqual(1);
-  });
-  it('should not throw error if fetching frameWork from form service fails', () => {
+  }));
+  it('should not throw error if fetching frameWork from form service fails', fakeAsync(() => {
     coursesService.initialize();
     sendFormApi = false;
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
     expect(component.enrolledSection.contents.length).toEqual(1);
     expect(component.frameWorkName).toEqual(undefined);
-    // expect(component.dataDrivenFilters).toEqual({});
     expect(component.showLoader).toBeFalsy();
     expect(component.carouselData.length).toEqual(1);
-  });
-  it('should fetch content after getting hashTagId and filter data and throw error if page api fails', () => {
+  }));
+  it('should fetch content after getting hashTagId and filter data and throw error if page api fails', fakeAsync(() => {
     sendPageApi = false;
     coursesService.initialize();
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
     expect(component.enrolledSection.contents.length).toEqual(1);
     expect(component.frameWorkName).toEqual('TPD');
-    // expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
     expect(component.carouselData.length).toEqual(0);
     expect(toasterService.error).toHaveBeenCalled();
-  });
+  }));
   it('should unsubscribe from all observable subscriptions', () => {
     coursesService.initialize();
     component.ngOnInit();
