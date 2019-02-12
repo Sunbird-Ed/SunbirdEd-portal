@@ -35,6 +35,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   public selectedMentors: any = [];
 
   private userSearchTime: any;
+
   /**
   * courseCreator
   */
@@ -81,8 +82,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   */
   private toasterService: ToasterService;
   /**
-	 * telemetryImpression object for update batch page
-	*/
+   * telemetryImpression object for update batch page
+  */
   public telemetryImpression: IImpressionEventInput;
 
   public pickerMinDate = new Date(new Date().setHours(0, 0, 0, 0));
@@ -93,8 +94,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
 
   public unsubscribe = new Subject<void>();
   /**
-	 * Constructor to create injected service(s) object
-	 * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
+   * Constructor to create injected service(s) object
+   * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
    * @param {Router} router Reference of Router
    * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
    * @param {UserService} UserService Reference of UserService
@@ -315,14 +316,40 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       });
   }
 
+  public removeMentor(mentor: any) {
+   _.remove(this.selectedMentors, (data) => {
+      return data === mentor;
+    });
+  }
+
+  public removeParticipant(user: any) {
+    _.remove(this.selectedParticipants, (data) => {
+      return data === user;
+    });
+  }
+
   public updateBatch() {
     this.disableSubmitBtn = true;
     let participants = [];
+    const selectedParticipants = [];
+    const selectedMentors = [];
     let mentors = [];
     mentors = $('#mentors').dropdown('get value') ? $('#mentors').dropdown('get value').split(',') : [];
     if (this.batchUpdateForm.value.enrollmentType !== 'open') {
       participants = $('#participant').dropdown('get value') ? $('#participant').dropdown('get value').split(',') : [];
     }
+    if ((this.selectedParticipants).length > 0) {
+      _.forEach(this.selectedParticipants, (obj) => {
+        selectedParticipants.push(obj.id);
+      });
+    }
+    if ((this.selectedMentors).length > 0) {
+      _.forEach(this.selectedMentors, (obj) => {
+        selectedMentors.push(obj.id);
+      });
+    }
+    mentors = _.concat(mentors, selectedMentors);
+    participants = _.concat(participants, selectedParticipants);
     const startDate = moment(this.batchUpdateForm.value.startDate).format('YYYY-MM-DD');
     const endDate = this.batchUpdateForm.value.endDate && moment(this.batchUpdateForm.value.endDate).format('YYYY-MM-DD');
     const requestBody = {
@@ -333,7 +360,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       startDate: startDate,
       endDate: endDate || null,
       createdFor: this.userService.userProfile.organisationIds,
-      mentors: _.compact(mentors)
+      mentors: _.compact(mentors),
+      participants: _.compact(participants)
     };
     const selected = [];
     _.forEach(this.selectedMentors, (value) => {
@@ -342,13 +370,16 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     requestBody['mentors'] = _.concat(_.compact(requestBody['mentors']), selected);
     this.courseBatchService.updateBatch(requestBody).pipe(takeUntil(this.unsubscribe))
       .subscribe((response) => {
-        if (participants && participants.length > 0) {
+        this.disableSubmitBtn = false;
+        this.toasterService.success(this.resourceService.messages.smsg.m0034);
+        this.reload();
+        /*if (participants && participants.length > 0) {
           this.updateParticipantsToBatch(this.batchId, participants);
         } else {
           this.disableSubmitBtn = false;
           this.toasterService.success(this.resourceService.messages.smsg.m0034);
           this.reload();
-        }
+        }*/
       },
       (err) => {
         this.disableSubmitBtn = false;
