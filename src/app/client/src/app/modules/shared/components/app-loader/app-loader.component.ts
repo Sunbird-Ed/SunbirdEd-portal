@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Input } from '@angular/core';
 import {ILoaderMessage} from '../../interfaces';
+import { ResourceService } from '../../services/index';
 
 /**
  * loader component
@@ -17,18 +18,20 @@ export class AppLoaderComponent implements OnInit {
   /**
    * header message
   */
-  headerMessage = 'Please wait.';
+  headerMessage = this.resourceService.messages.fmsg.m0087;
   /**
    * loader message
   */
-  loaderMessage = 'We are fetching details';
+  loaderMessage = this.resourceService.messages.fmsg.m0088;
 
-  constructor() { }
+  constructor(public resourceService: ResourceService) {
+    this.resourceService = resourceService;
+  }
 
   ngOnInit() {
     if (this.data) {
-      this.headerMessage = this.data.headerMessage || 'Please wait.';
-      this.loaderMessage = this.data.loaderMessage || 'We are fetching details';
+      this.headerMessage = this.data.headerMessage || this.headerMessage;
+      this.loaderMessage = this.data.loaderMessage || this.loaderMessage;
     }
   }
 }
