@@ -1,0 +1,27 @@
+.ui-fancytree {
+  margin: 0;
+  padding: 0;
+
+  &:focus {
+    outline: none;
+  }
+
+  li {
+    margin: 10px 0;
+    padding: 0;
+    cursor: pointer;
+
+    .fancytree-title {
+      padding: 0 10px;
+    }
+  }
+
+  .fancytree-folder {
+    margin-bottom: 10px;
+  }
+
+  .fa-caret-right,
+  .fa-caret-down {
+    margin: 0 10px 0 0;
+  }
+}
