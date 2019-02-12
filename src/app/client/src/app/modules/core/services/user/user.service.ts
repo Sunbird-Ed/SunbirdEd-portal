@@ -9,6 +9,8 @@ import * as _ from 'lodash';
 import { HttpClient } from '@angular/common/http';
 import { PublicDataService } from './../public-data/public-data.service';
 import { skipWhile } from 'rxjs/operators';
+import * as UAParser from 'ua-parser-js';
+
 /**
  * Service to fetch user details from server
  *
@@ -335,8 +337,8 @@ export class UserService {
    * method to log session start
    */
   public startSession(): void {
-    const fingerPrint2 = new Fingerprint2();
-    fingerPrint2.get((result, components) => {
+    const options = this.getFingerPrintOptions();
+    Fingerprint2.getV18(options, (result) => {
       const url = `/v1/user/session/start/${result}`;
       this.http.get(url).subscribe();
     });
@@ -344,5 +346,57 @@ export class UserService {
 
   getUserByKey(key) {
     return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_BY_KEY + '/' + key});
+  }
+  public getFingerPrintOptions(): object {
+    return ({
+      preprocessor: (key, value) => {
+        if (key === 'userAgent') {
+          const parser = new UAParser(value); // https://github.com/faisalman/ua-parser-js
+          const userAgentMinusVersion = parser.getOS().name + ' ' + parser.getBrowser().name;
+          return userAgentMinusVersion;
+        }
+        return value;
+      },
+      audio: {
+        timeout: 1000,
+        excludeIOS11: true
+      },
+      fonts: {
+        swfContainerId: 'fingerprintjs2',
+        swfPath: 'flash/compiled/FontList.swf',
+        userDefinedFonts: [],
+        extendedJsFonts: false
+      },
+      screen: {
+        detectScreenOrientation: true
+      },
+      plugins: {
+        sortPluginsFor: [/palemoon/i],
+        excludeIE: false
+      },
+      extraComponents: [],
+      excludes: {
+        // Unreliable on Windows, see https://github.com/Valve/fingerprintjs2/issues/375
+        'enumerateDevices': true,
+        // devicePixelRatio depends on browser zoom, and it's impossible to detect browser zoom
+        'pixelRatio': true,
+        // DNT depends on incognito mode for some browsers (Chrome) and it's impossible to detect incognito mode
+        'doNotTrack': true,
+        // uses js fonts already
+        'fontsFlash': true,
+        'canvas': true,
+        'screenResolution': true,
+        'availableScreenResolution': true,
+        'touchSupport': true,
+        'plugins': true,
+        'webgl': true,
+        'audio': true,
+        'language': true,
+        'deviceMemory': true
+      },
+      NOT_AVAILABLE: 'not available',
+      ERROR: 'error',
+      EXCLUDED: 'excluded'
+    });
   }
 }

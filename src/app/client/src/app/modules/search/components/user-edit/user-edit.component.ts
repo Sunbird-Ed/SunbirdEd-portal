@@ -241,7 +241,9 @@ export class UserEditComponent implements OnInit, OnDestroy {
     };
   }
   ngOnDestroy() {
-    this.modal.deny();
+    if (this.modal && this.modal.deny) {
+      this.modal.deny();
+    }
   }
 }
 
