@@ -186,7 +186,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     }
   }
   /**
-  * fetch mentors and participant details of current batch 
+  * fetch mentors and participant details of current batch
   */
   private fetchParticipantDetails() {
     if (this.batchDetails.participant || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
