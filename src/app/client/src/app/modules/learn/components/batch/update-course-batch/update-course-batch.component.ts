@@ -186,7 +186,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     }
   }
   /**
-  * fetch mentors and participant details
+  * fetch mentors and participant details of current batch 
   */
   private fetchParticipantDetails() {
     if (this.batchDetails.participant || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
@@ -198,9 +198,6 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       this.courseBatchService.getUserList(request).pipe(takeUntil(this.unsubscribe))
         .subscribe((res) => {
           this.processParticipantDetails(res);
-          const userList = this.sortUsers(res);
-          this.participantList = userList.participantList;
-          this.mentorList = userList.mentorList;
         }, (err) => {
           if (err.error && err.error.params.errmsg) {
             this.toasterService.error(err.error.params.errmsg);
@@ -373,13 +370,6 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
         this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0034);
         this.reload();
-        /*if (participants && participants.length > 0) {
-          this.updateParticipantsToBatch(this.batchId, participants);
-        } else {
-          this.disableSubmitBtn = false;
-          this.toasterService.success(this.resourceService.messages.smsg.m0034);
-          this.reload();
-        }*/
       },
       (err) => {
         this.disableSubmitBtn = false;
@@ -387,25 +377,6 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
           this.toasterService.error(err.error.params.errmsg);
         } else {
           this.toasterService.error(this.resourceService.messages.fmsg.m0052);
-        }
-      });
-  }
-  private updateParticipantsToBatch(batchId, participants) {
-    const userRequest = {
-      userIds: _.compact(participants)
-    };
-    this.courseBatchService.addUsersToBatch(userRequest, batchId).pipe(takeUntil(this.unsubscribe))
-      .subscribe((res) => {
-        this.disableSubmitBtn = false;
-        this.toasterService.success(this.resourceService.messages.smsg.m0034);
-        this.reload();
-      },
-      (err) => {
-        this.disableSubmitBtn = false;
-        if (err.params && err.error.params.errmsg) {
-          this.toasterService.error(err.error.params.errmsg);
-        } else {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0053);
         }
       });
   }
