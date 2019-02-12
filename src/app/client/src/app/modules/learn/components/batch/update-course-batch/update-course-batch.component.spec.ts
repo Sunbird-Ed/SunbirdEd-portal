@@ -13,7 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import {getUserList, updateBatchDetails, getUserDetails} from './update-course-batch.component.data';
+import {getUserList, updateBatchDetails, getUserDetails, selectedMentors, selectedParticipants} from './update-course-batch.component.data';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
@@ -193,5 +193,19 @@ describe('UpdateCourseBatchComponent', () => {
     fixture.detectChanges();
     component.updateBatch();
     expect(toasterService.error).toHaveBeenCalledWith('error');
+  });
+  it('should call removeMentor method  and remove the selected mentors', () => {
+    component.selectedMentors = [selectedMentors] ;
+    const mentor = {'id': '8b79899c-573f-44ed-a0a2-e39d9299bf20', 'name': 'User eight', 'avatar': null};
+    spyOn(component, 'removeMentor').and.callThrough();
+    component.removeMentor(mentor);
+    expect(component.selectedMentors.length).toBe(1);
+  });
+  it('should call removeParticipant method  and remove the  selectedParticipants', () => {
+    component.selectedParticipants = [selectedParticipants] ;
+    const mentor = {'id': '8b79899c-573f-44ed-a0a2-e39d9299bf20', 'name': 'User one', 'avatar': null};
+    spyOn(component, 'removeMentor').and.callThrough();
+    component.removeMentor(mentor);
+    expect(component.selectedParticipants.length).toBe(1);
   });
 });

@@ -1600,3 +1600,7 @@ export const getUserDetails = {
     }
   };
 
+export const selectedMentors = [{'id': '9d76c081-fbf6-45e0-adb7-64013fe41a64',
+'name': 'Mohan Gupta', 'avatar': null}, {'id': '8b79899c-573f-44ed-a0a2-e39d9299bf20', 'name': 'User eight', 'avatar': null}];
+export const selectedParticipants = [{'id': '9d76c081-fbf6-45e0-adb7-64013fe41a64',
+'name': 'Amit ', 'avatar': null}, {'id': '8b79899c-573f-44ed-a0a2-e39d9299bf20', 'name': 'User one', 'avatar': null}];
