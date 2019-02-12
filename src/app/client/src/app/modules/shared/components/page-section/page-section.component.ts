@@ -122,6 +122,7 @@ export class PageSectionComponent implements OnInit, OnDestroy {
     this.resourceService = resourceService;
   }
   playContent(event) {
+    event.section = this.section.name;
     this.playEvent.emit(event);
   }
   ngOnInit() {

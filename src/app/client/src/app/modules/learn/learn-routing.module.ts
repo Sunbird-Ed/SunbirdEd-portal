@@ -18,7 +18,7 @@ const routes: Routes = [
     path: '', component: LearnPageComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }],
-      telemetry: { env: telemetryEnv, pageid: 'learn', type: 'view' },
+      telemetry: { env: telemetryEnv, pageid: 'learn', type: 'view', subtype: 'paginate' },
       baseUrl: 'learn'
     }
   },

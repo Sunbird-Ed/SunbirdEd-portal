@@ -1,6 +1,6 @@
 import { combineLatest, Subject, throwError } from 'rxjs';
 import { map, mergeMap, first, takeUntil } from 'rxjs/operators';
-import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,7 +21,8 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   constructor(private activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, private coursesService: CoursesService,
     public toasterService: ToasterService, public courseBatchService: CourseBatchService,
-    private resourceService: ResourceService, public router: Router, public breadcrumbsService: BreadcrumbsService) {
+    private resourceService: ResourceService, public router: Router, public breadcrumbsService: BreadcrumbsService,
+    public navigationHelperService: NavigationHelperService) {
   }
   ngOnInit() {
     this.coursesService.enrolledCourseData$.pipe(first(),
@@ -59,7 +60,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         } else {
           this.toasterService.error(this.resourceService.messages.fmsg.m0003); // fmsg.m0001 for enrolled issue
         }
-        this.router.navigate([`/learn`]);
+        this.navigationHelperService.navigateToResource('/learn');
       });
   }
   private getBatchDetailsFromEnrollList(enrolledCourses = [], { courseId, batchId }) {

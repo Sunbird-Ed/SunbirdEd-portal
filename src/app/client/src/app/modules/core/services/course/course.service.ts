@@ -93,4 +93,31 @@ export class CoursesService {
   public setExtContentMsg(isExtContent: boolean) {
     this.showExtContentMsg = isExtContent ? isExtContent : false;
   }
+  findEnrolledCourses(courseId) {
+    const enrInfo = _.reduce(this.enrolledCourses, (acc, cur) => {
+      if (cur.courseId !== courseId) { // course donst match return
+        return acc;
+      }
+      if (cur.batch.enrollmentType === 'invite-only') { // invite-only batch
+        if (cur.batch.status === 2) { // && (!acc.invite.ended || latestCourse(acc.invite.ended.enrolledDate, cur.enrolledDate))
+          acc.inviteOnlyBatch.expired.push(cur);
+          acc.expiredBatchCount = acc.expiredBatchCount + 1;
+        } else {
+          acc.onGoingBatchCount = acc.onGoingBatchCount + 1;
+          acc.inviteOnlyBatch.ongoing.push(cur);
+        }
+      } else {
+        if (cur.batch.status === 2) {
+          acc.expiredBatchCount = acc.expiredBatchCount + 1;
+          acc.openBatch.expired.push(cur);
+        } else {
+          acc.onGoingBatchCount = acc.onGoingBatchCount + 1;
+          acc.openBatch.ongoing.push(cur);
+        }
+      }
+      return acc;
+    }, { onGoingBatchCount: 0, expiredBatchCount: 0,
+      openBatch: { ongoing: [], expired: []}, inviteOnlyBatch: { ongoing: [], expired: [] }});
+    return enrInfo;
+  }
 }

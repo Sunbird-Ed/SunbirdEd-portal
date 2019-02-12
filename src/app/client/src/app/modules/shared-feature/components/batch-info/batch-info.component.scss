@@ -1,0 +1,29 @@
+@import 'variables';
+@import 'mixins/mixins';
+
+.batch-row {
+  max-height: 200px;
+
+  .batch-name {
+    color: $gray-400;
+  }
+  .batch-date{
+      span {
+          font-size:$font-size-md;
+      }
+  }
+
+}
+
+.ui {
+  &.divider {
+    margin-left: $block-margin-xl-minus;
+    margin-right: $block-margin-xr-minus;
+  }
+}
+
+.h4-title {
+  color: $primary-color;
+}
+
+
