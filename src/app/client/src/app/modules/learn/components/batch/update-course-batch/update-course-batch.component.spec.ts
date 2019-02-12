@@ -203,9 +203,9 @@ describe('UpdateCourseBatchComponent', () => {
   });
   it('should call removeParticipant method  and remove the  selectedParticipants', () => {
     component.selectedParticipants = [selectedParticipants] ;
-    const mentor = {'id': '8b79899c-573f-44ed-a0a2-e39d9299bf20', 'name': 'User one', 'avatar': null};
-    spyOn(component, 'removeMentor').and.callThrough();
-    component.removeMentor(mentor);
+    const user = {'id': '8b79899c-573f-44ed-a0a2-e39d9299bf20', 'name': 'User one', 'avatar': null};
+    spyOn(component, 'removeParticipant').and.callThrough();
+    component.removeParticipant(user);
     expect(component.selectedParticipants.length).toBe(1);
   });
 });
