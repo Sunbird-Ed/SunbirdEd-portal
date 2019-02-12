@@ -11,24 +11,17 @@ import { ResourceService } from '../../services/index';
   templateUrl: './app-loader.component.html'
 })
 export class AppLoaderComponent implements OnInit {
-  /**
-   * loader message
-  */
   @Input() data: ILoaderMessage;
-  /**
-   * header message
-  */
-  headerMessage = this.resourceService.messages.fmsg.m0087;
-  /**
-   * loader message
-  */
-  loaderMessage = this.resourceService.messages.fmsg.m0088;
+  headerMessage: string;
+  loaderMessage: string;
 
   constructor(public resourceService: ResourceService) {
     this.resourceService = resourceService;
   }
 
   ngOnInit() {
+    this.headerMessage = this.resourceService.messages.fmsg.m0087;
+    this.loaderMessage = this.resourceService.messages.fmsg.m0088;
     if (this.data) {
       this.headerMessage = this.data.headerMessage || this.headerMessage;
       this.loaderMessage = this.data.loaderMessage || this.loaderMessage;

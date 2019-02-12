@@ -1,5 +1,7 @@
 import { Component, OnInit, Output, Input, EventEmitter, OnDestroy, AfterViewInit } from '@angular/core';
 import * as _ from 'lodash';
+import { ResourceService } from '@sunbird/shared';
+
 interface TopicTreeNode {
   id: string;
   name: string;
@@ -25,7 +27,8 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public selectedNodes: any;
 
-  constructor() {
+  constructor(public resourceService: ResourceService) {
+    this.resourceService = resourceService;
   }
   ngOnInit() {
     const selectedTopics = _.reduce(this.selectedTopics, (collector, element) => {
@@ -61,8 +64,14 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
   private initTopicPicker(data: Array<TopicTreeNode>) {
     $('.topic-picker-selector').treePicker({
       data: data,
-      name: 'Topics',
-      noDataMessage: 'No Topics/SubTopics found',
+      name: this.resourceService.frmelmnts.lbl.topics,
+      noDataMessage: this.resourceService.messages.fmsg.m0089,
+      submitButtonText: this.resourceService.frmelmnts.lbl.done,
+      cancelButtonText: this.resourceService.frmelmnts.btn.cancelCapitalize,
+      removeAllText: this.resourceService.frmelmnts.lbl.removeAll,
+      chooseAllText: this.resourceService.frmelmnts.lbl.chooseAll,
+      searchText: this.resourceService.frmelmnts.prmpt.search,
+      selectedText: this.resourceService.frmelmnts.lbl.selected,
       picked: _.map(this.selectedNodes, 'identifier'),
       onSubmit: (selectedNodes) => {
         this.selectedTopics = _.map(selectedNodes, node => ({
