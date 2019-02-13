@@ -101,7 +101,7 @@
         <label>{{resourceService?.frmelmnts?.lbl?.batchselmentors}}</label>
         <a class="ui label mt-5" *ngFor="let selectmentor of selectedMentors">
           <img class="ui right spaced avatar image" src="{{selectmentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{selectmentor.name}}{{selectmentor.otherDetail}}
-          <i class="delete icon" *ngIf="batchDetails.status === 0 ? true : null" (click)="removeMentor(selectmentor)"></i>
+          <i class="delete icon" *ngIf="batchDetails.status === 0" (click)="removeMentor(selectmentor)"></i>
         </a>
       </div>
 
@@ -135,7 +135,7 @@
         <label>{{resourceService?.frmelmnts?.lbl?.batchparticipants}}</label>
           <a class="ui label mt-5" *ngFor="let user of selectedParticipants">
             <img class="ui right spaced avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{user.name}}{{user.otherDetail}}
-            <i class="delete icon" *ngIf="batchDetails.status === 0 ? true : null" (click)="removeParticipant(user)"></i>
+            <i class="delete icon" *ngIf="batchDetails.status === 0" (click)="removeParticipant(user)"></i>
           </a>
       </div>
 
