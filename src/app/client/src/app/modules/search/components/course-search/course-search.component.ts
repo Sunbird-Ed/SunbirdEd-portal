@@ -67,27 +67,27 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
         } else {
           return of({});
         }
-    })).subscribe((filters: any) => {
+      })).subscribe((filters: any) => {
         this.dataDrivenFilters = filters;
         this.fetchContentOnParamChange();
         this.setNoResultMessage();
       },
-      error => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0002);
-    });
+        error => {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0002);
+        });
   }
   private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
-    .pipe(debounceTime(5), // to sync params and queryParams events
-      tap(data => this.inView({inview: []})), // trigger pageexit if last filter resulted 0 contents
-      delay(10), // to trigger pageexit telemetry event
-      tap(data => {
-        this.showLoader = true;
-        this.setTelemetryData();
-      }),
-      map((result) => ({params: { pageNumber: Number(result[0].pageNumber)}, queryParams: result[1]})),
-      takeUntil(this.unsubscribe$))
-      .subscribe(({params, queryParams}) => {
+      .pipe(debounceTime(5), // to sync params and queryParams events
+        tap(data => this.inView({ inview: [] })), // trigger pageexit if last filter resulted 0 contents
+        delay(10), // to trigger pageexit telemetry event
+        tap(data => {
+          this.showLoader = true;
+          this.setTelemetryData();
+        }),
+        map((result) => ({ params: { pageNumber: Number(result[0].pageNumber) }, queryParams: result[1] })),
+        takeUntil(this.unsubscribe$))
+      .subscribe(({ params, queryParams }) => {
         this.queryParams = { ...queryParams };
         this.paginationDetails.currentPage = params.pageNumber;
         this.contentList = [];
@@ -98,43 +98,43 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
     const option = {
-        filters: filters,
-        limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
-        pageNumber: this.paginationDetails.currentPage,
-        query: this.queryParams.key,
-        sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType},
-        facets: this.facets,
-        params: this.configService.appConfig.Course.contentApiQueryParams
+      filters: filters,
+      limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
+      pageNumber: this.paginationDetails.currentPage,
+      query: this.queryParams.key,
+      sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType },
+      facets: this.facets,
+      params: this.configService.appConfig.Course.contentApiQueryParams
     };
     if (this.frameWorkName) {
       option.params.framework = this.frameWorkName;
     }
     this.searchService.courseSearch(option)
-    .subscribe(data => {
+      .subscribe(data => {
         this.showLoader = false;
         this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
-            this.configService.appConfig.SEARCH.PAGE_LIMIT);
+          this.configService.appConfig.SEARCH.PAGE_LIMIT);
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.CoursePageSection.course;
         this.contentList = _.map(data.result.course, (content: any) =>
           this.utilService.processContent(content, constantData, dynamicFields, metaData));
-    }, err => {
+      }, err => {
         this.showLoader = false;
         this.contentList = [];
         this.facetsList = [];
         this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
-            this.configService.appConfig.SEARCH.PAGE_LIMIT);
+          this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-    });
+      });
   }
   public getFilters(filters) {
     this.facets = filters.map(element => element.code);
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
-        if (element.code === 'board') {
-          collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
-        }
-        return collector;
-      }, {});
+      if (element.code === 'board') {
+        collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
+      }
+      return collector;
+    }, {});
     this.dataDrivenFilterEvent.emit(defaultFilters);
   }
   private getFrameWork() {
@@ -149,16 +149,16 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
       };
       return this.formService.getFormConfig(formServiceInputParams)
         .pipe(map((data) => {
-            const frameWork = _.find(data, 'framework').framework;
-            this.cacheService.set('framework' + 'search', frameWork, { maxAge: this.browserCacheTtlService.browserCacheTtl});
-            return frameWork;
+          const frameWork = _.find(data, 'framework').framework;
+          this.cacheService.set('framework' + 'search', frameWork, { maxAge: this.browserCacheTtlService.browserCacheTtl });
+          return frameWork;
         }), catchError((error) => {
           return of(false);
         }));
     }
   }
   private fetchEnrolledCoursesSection() {
-    return this.coursesService.enrolledCourseData$.pipe(map(({enrolledCourses, err}) => {
+    return this.coursesService.enrolledCourseData$.pipe(map(({ enrolledCourses, err }) => {
       const enrolledSection = {
         name: 'My Courses',
         length: 0,
@@ -175,14 +175,14 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   }
   public navigateToPage(page: number): void {
     if (page < 1 || page > this.paginationDetails.totalPages) {
-        return;
+      return;
     }
     this.router.navigate(['search/Courses', page], { queryParams: this.queryParams });
   }
   public playContent({ data }) {
     const { metaData } = data;
     this.changeDetectorRef.detectChanges();
-    const {onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch} = this.coursesService.findEnrolledCourses(metaData.identifier);
+    const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } = this.coursesService.findEnrolledCourses(metaData.identifier);
 
     if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
       return this.playerService.playContent(metaData);
@@ -197,14 +197,14 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   }
   public inView(event) {
     _.forEach(event.inview, (elem, key) => {
-        const obj = _.find(this.inViewLogs, { objid: elem.data.metaData.identifier});
-        if (!obj) {
-            this.inViewLogs.push({
-                objid: elem.data.metaData.identifier,
-                objtype: elem.data.metaData.contentType || 'content',
-                index: elem.id
-            });
-        }
+      const obj = _.find(this.inViewLogs, { objid: elem.data.metaData.identifier });
+      if (!obj) {
+        this.inViewLogs.push({
+          objid: elem.data.metaData.identifier,
+          objtype: elem.data.metaData.contentType || 'content',
+          index: elem.id
+        });
+      }
     });
     if (this.telemetryImpression) {
       this.telemetryImpression.edata.visits = this.inViewLogs;
