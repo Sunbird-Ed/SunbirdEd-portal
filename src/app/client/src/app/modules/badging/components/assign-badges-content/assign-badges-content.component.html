@@ -36,7 +36,7 @@
       appTelemetryInteract 
       [telemetryInteractObject]="{id:badge.badgeId,type:'badge',ver:'1.0'}" 
       [telemetryInteractEdata]="assignBadgeInteractEdata" 
-      class="ui small primary compact button " 
+      class="sb-btn sb-btn-normal sb-btn-primary" 
       (click)="assignBadge(badge)"
     >
       {{resourceService?.frmelmnts?.btn?.yesiamsure}}
@@ -45,7 +45,7 @@
       appTelemetryInteract 
       [telemetryInteractObject]="{id:badge.badgeId,type:'badge',ver:'1.0'}" 
       [telemetryInteractEdata]="cancelBadgeInteractEdata" 
-      class="ui basic blue small compact button left floated" 
+      class="sb-btn sb-btn-normal sb-btn-outline-primary" 
       (click)="showBadgeAssingModel=false;"
     >
       {{resourceService?.frmelmnts?.btn?.cancel}}
