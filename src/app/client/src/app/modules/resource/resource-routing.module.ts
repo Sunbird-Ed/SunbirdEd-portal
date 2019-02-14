@@ -11,7 +11,7 @@ const routes: Routes = [
     path: '', component: ResourceComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }],
-      telemetry: { env: telemetryEnv, pageid: 'library', type: 'view' },
+      telemetry: { env: telemetryEnv, pageid: 'library', type: 'view', subtype: 'paginate' },
       softConstraints: {badgeAssertions: 98, board: 99, channel: 100}
     }
   }, {

@@ -1,9 +1,9 @@
 
 import { takeUntil, map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
-import { CourseBatchService } from './../../../services';
+import { CourseBatchService, CourseProgressService } from './../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, OnChanges } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { PermissionService, UserService } from '@sunbird/core';
 import * as _ from 'lodash';
@@ -44,7 +44,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   isUnenrollbtnDisabled = true;
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
-    public router: Router, public activatedRoute: ActivatedRoute) {
+    public router: Router, public activatedRoute: ActivatedRoute, public courseProgressService: CourseProgressService) {
     this.batchStatus = this.statusOptions[0].value;
   }
   isUnenrollDisabled() {
@@ -167,6 +167,12 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
           this.enrolledBatchInfo.participant = [];
         }
         this.isUnenrollDisabled();
+        this.courseProgressService.courseProgressData.pipe(
+          takeUntil(this.unsubscribe))
+          .subscribe(courseProgressData => {
+            this.courseProgressData = courseProgressData;
+            this.isUnenrollDisabled();
+          });
       }, () => {
         // handle error
       });
