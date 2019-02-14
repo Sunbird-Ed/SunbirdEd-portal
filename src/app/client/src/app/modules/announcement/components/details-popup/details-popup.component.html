@@ -26,7 +26,7 @@
   </div>
   <!--/Content-->
   <!--Action-->
-  <div class="sb-modal-actions flex-dr" *ngIf="announcementDetails.createdDate && !announcementDetails.hideDate">
+  <div class="sb-modal-actions flex-dr" *ngIf="announcementDetails.createdDate">
     {{resourceService?.frmelmnts?.lbl?.anncmntdtlssenton}} {{announcementDetails.createdDate | dateFormat}}
   </div>
   <!--/Action-->
