@@ -17,7 +17,12 @@ export class DataTableComponent implements AfterViewInit {
                 'scrollX': true,
                 'searching': false,
             });
+            // $('#CourseStatsTable').DataTable({
+            //     language: {
+            //         search: '_INPUT_',
+            //         searchPlaceholder: 'Search User Name',
+            //     }
+            // });
         }, 100);
     }
-
 }
