@@ -60,7 +60,6 @@ export class LearnPageComponent implements OnInit, OnDestroy {
           return of({});
         }
     })).subscribe((filters: any) => {
-      console.log('got enrolled coures');
         this.dataDrivenFilters = filters;
         this.fetchContentOnParamChange();
         this.setNoResultMessage();
@@ -80,7 +79,6 @@ export class LearnPageComponent implements OnInit, OnDestroy {
         filter(({queryParams}) => !_.isEqual(this.queryParams, queryParams)), // fetch data if queryParams changed
         takeUntil(this.unsubscribe$))
       .subscribe(({params, queryParams}) => {
-        console.log('--------------------------------------------query params');
         this.queryParams = { ...queryParams };
         this.carouselData = [];
         this.fetchPageData();
@@ -104,7 +102,6 @@ export class LearnPageComponent implements OnInit, OnDestroy {
     }
     this.pageApiService.getPageData(option).pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
-        console.log('--------------------------------------------query params');
         this.showLoader = false;
         this.carouselData = this.prepareCarouselData(_.get(data, 'sections'));
       }, err => {
