@@ -10,7 +10,7 @@
 >
   <!--Header-->
   <div class="sb-modal-header">
-      {{announcementDetails.type}}
+    {{announcementDetails.type}}
   </div>
   <!--/Header-->
 
@@ -25,10 +25,9 @@
     <app-details [announcementDetails]="announcementDetails"></app-details>
   </div>
   <!--/Content-->
-  <!--Action-->
-  <div class="sb-modal-actions flex-dr" *ngIf="announcementDetails.createdDate">
+  <!--Actions-->
+  <div class="sb-modal-actions flex-dr">
     {{resourceService?.frmelmnts?.lbl?.anncmntdtlssenton}} {{announcementDetails.createdDate | dateFormat}}
   </div>
-  <!--/Action-->
-
+  <!--/Actions-->
 </sui-modal>
