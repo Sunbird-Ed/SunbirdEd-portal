@@ -353,7 +353,6 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   cancelCreation(): void {
     this.modalName = 'cancel';
-    //this.redirectToOutbox();
   }
 
   /**
