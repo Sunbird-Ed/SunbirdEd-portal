@@ -347,6 +347,16 @@ export class CreateComponent implements OnInit, OnDestroy {
     this.route.navigate(['announcement/outbox/1']);
   }
   /**
+   * Used to close the creation modal.
+   *
+   * Function gets executed when user click close icon of announcement form
+   */
+  cancelCreation(): void {
+    this.modalName = 'cancel';
+    //this.redirectToOutbox();
+  }
+
+  /**
    * Function used to detect form input value changes.
    * Set meta data modified flag to true when user enter new value
    */

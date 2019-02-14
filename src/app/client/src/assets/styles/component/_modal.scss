@@ -20,6 +20,8 @@
   
     .sb-modal-content {
       min-height: 100px;
+      max-height: 360px;
+      overflow-y: auto;
       padding:$block-padding-xy;
     }
   

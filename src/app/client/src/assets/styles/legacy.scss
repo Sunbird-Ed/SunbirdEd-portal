@@ -720,7 +720,6 @@ h5.ui.header {
   text-align: center;
   color: #7c7b7b;
   font-size: 0.9em;
-  padding-top: 50px;
 }
 .ann-fileupload-meta-data>.description{
   font-size: 1.2em;
@@ -746,8 +745,9 @@ h5.ui.header {
   border-radius: 5px;
 }
 .qq-upload-list li.qq-upload-success.qq-upload-success {
-  background-color: #ffffff;
-  padding: 15px;
+  background-color: $white-color;
+  padding: 5px;
+  margin-bottom: 5px;
 }
 .qq-uploader {
   border: 2px dashed #cccccc;
@@ -760,7 +760,7 @@ body ::-webkit-scrollbar {
   width: 6px;
 }
 .qq-upload-file {
-  width: 200px;
+  width: calc(100% - 40px);
 }
 .qq-upload-list {
   overflow-y: hidden;
