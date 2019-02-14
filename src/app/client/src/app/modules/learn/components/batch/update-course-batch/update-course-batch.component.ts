@@ -428,4 +428,14 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
+  resetForm() {
+    if (this.batchDetails.status === 1) {
+      this.batchUpdateForm.controls['name'].reset();
+      this.batchUpdateForm.controls['description'].reset();
+      this.batchUpdateForm.controls['enrollmentType'].reset();
+      this.batchUpdateForm.controls['endDate'].reset();
+    } else {
+     this.batchUpdateForm.reset();
+    }
+  }
 }

@@ -140,7 +140,7 @@
     </form>
   </div>
   <div class="actions">
-    <button class="ui secondary button" (click)="batchUpdateForm.reset()" [disabled]="showFormInViewMode">{{resourceService?.frmelmnts?.btn?.clear}}</button>
+    <button class="ui secondary button" (click)="resetForm()" [disabled]="showFormInViewMode">{{resourceService?.frmelmnts?.btn?.clear}}</button>
     <button class="ui primary button" [disabled]="disableSubmitBtn || showFormInViewMode" (click)="updateBatch()">{{resourceService?.frmelmnts?.btn?.update}}</button>
   </div>
 </sui-modal>
