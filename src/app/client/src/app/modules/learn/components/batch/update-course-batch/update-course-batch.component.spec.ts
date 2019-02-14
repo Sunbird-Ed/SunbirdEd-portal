@@ -226,7 +226,6 @@ describe('UpdateCourseBatchComponent', () => {
     component.resetForm();
     expect(component.batchUpdateForm.controls['name'].value).toBeNull();
     expect(component.batchUpdateForm.controls['description'].value).toBeNull();
-    expect(component.batchUpdateForm.controls['enrollmentType'].value).toBeNull();
     expect(component.batchUpdateForm.controls['endDate'].value).toBeNull();
   });
 });
