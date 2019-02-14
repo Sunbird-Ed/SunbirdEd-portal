@@ -1,6 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TopicPickerComponent } from './topic-picker.component';
 import { FormsModule } from '@angular/forms';
+import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CacheService } from 'ng2-cache-service';
+
 
 describe('TopicPickerComponent', () => {
     let component: TopicPickerComponent;
@@ -8,9 +12,9 @@ describe('TopicPickerComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [FormsModule],
+            imports: [FormsModule, HttpClientTestingModule],
             declarations: [ TopicPickerComponent ],
-            providers: []
+            providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService]
         })
         .compileComponents();
     }));
