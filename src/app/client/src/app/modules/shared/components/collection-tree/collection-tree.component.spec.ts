@@ -45,7 +45,7 @@ describe('CollectionTreeComponent', () => {
 
     component.options = {
       folderIcon: 'sb-icon-folder',
-      fileIcon: 'sb-icon-doc',
+      fileIcon: 'sb-icon-content',
       customFileIcon: {
         'video': 'sb-icon-video',
         'pdf': 'sb-icon-doc',
