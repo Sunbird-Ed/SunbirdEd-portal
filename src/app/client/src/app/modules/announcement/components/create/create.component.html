@@ -39,27 +39,29 @@
   <div class="sb-modal-content">
       <div class="ui stackable grid mb-15">
         <div class="ten wide column small text-gray">
-          <!--Step 1-->
-          <ng-container *ngIf="stepNumber === 1">
-            {{ identifier ? resource?.frmelmnts?.lbl?.resendanncmntdesc : resource?.frmelmnts?.lbl?.createnewanncmntdesc}} 
-            {{resource?.frmelmnts?.instn?.t0054}}
-          </ng-container>
-          <!--/Step 1-->
-          <!--Step 2-->
-          <ng-container *ngIf="stepNumber === 2">
-            {{ identifier ? resource?.frmelmnts?.lbl?.editrecipientdesc : resource?.frmelmnts?.lbl?.selectrecipientdesc}}
-          </ng-container>
-          <!--/Step 2-->
-          <!--Step 3-->
-          <ng-container *ngIf="stepNumber === 3">
-            {{identifier ? resource?.frmelmnts?.lbl?.editrecipientdesc : resource?.frmelmnts?.lbl?.confirmrecipientdesc}}
-          </ng-container>
-          <!--/Step 3-->
-          <!--Step 4-->
-          <ng-container *ngIf="stepNumber === 4">
-            {{resource?.frmelmnts?.lbl?.previewanncmntdesc}}
-          </ng-container>
-          <!--/Step 4-->
+          <p>
+            <!--Step 1-->
+            <ng-container *ngIf="stepNumber === 1">
+              {{ identifier ? resource?.frmelmnts?.lbl?.resendanncmntdesc : resource?.frmelmnts?.lbl?.createnewanncmntdesc}} 
+              {{resource?.frmelmnts?.instn?.t0054}}
+            </ng-container>
+            <!--/Step 1-->
+            <!--Step 2-->
+            <ng-container *ngIf="stepNumber === 2">
+              {{ identifier ? resource?.frmelmnts?.lbl?.editrecipientdesc : resource?.frmelmnts?.lbl?.selectrecipientdesc}}
+            </ng-container>
+            <!--/Step 2-->
+            <!--Step 3-->
+            <ng-container *ngIf="stepNumber === 3">
+              {{identifier ? resource?.frmelmnts?.lbl?.editrecipientdesc : resource?.frmelmnts?.lbl?.confirmrecipientdesc}}
+            </ng-container>
+            <!--/Step 3-->
+            <!--Step 4-->
+            <ng-container *ngIf="stepNumber === 4">
+              {{resource?.frmelmnts?.lbl?.previewanncmntdesc}}
+            </ng-container>
+            <!--/Step 4-->
+          </p>
         </div>
         <div class="two wide column right aligned">
           <div class="ui label text-center">
