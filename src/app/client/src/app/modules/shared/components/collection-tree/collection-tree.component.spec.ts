@@ -44,8 +44,8 @@ describe('CollectionTreeComponent', () => {
     };
 
     component.options = {
-      folderIcon: 'fa fa-folder-o fa-lg',
-      fileIcon: 'fa fa-file-o fa-lg',
+      folderIcon: 'sb-icon-folder',
+      fileIcon: 'sb-icon-doc',
       customFileIcon: {
         'video': 'sb-icon-video',
         'pdf': 'sb-icon-doc',
