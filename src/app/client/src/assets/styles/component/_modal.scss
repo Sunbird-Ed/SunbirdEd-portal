@@ -101,10 +101,6 @@
   left: 0;
 }
 
-.modals.dimmer .ui.scrolling.modal {
-  position: absolute!important;
-  margin: 0 !important;
-}
 @include respond-below(sm) {
   .sb-modal {
   .ui.modal {
