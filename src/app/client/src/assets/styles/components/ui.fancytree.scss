@@ -18,8 +18,11 @@
   pointer-events: none;
   opacity: .6;
 }
-.ui-fancytree {
-  margin: 0;
+.ui-fancytree,
+.ui-fancytree ul {
+  margin: 0 0 0 (3 * $base-block-space);
+  padding: 0 $base-block-space;
+  border-left: 1px dotted $gray-800;
 
   &:focus {
     outline: none;
@@ -45,8 +48,12 @@
     margin-bottom: $base-block-space;
   }
 
+  .fancytree-has-children {
+    margin-left: -(2.5 * $base-block-space);
+  }
+
   .fa-caret-right,
   .fa-caret-down {
-    margin: 0 $base-block-space 0 0;
+    margin: 0 (2 * $base-block-space) 0 0;
   }
 }
