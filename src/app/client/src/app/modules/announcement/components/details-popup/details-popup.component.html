@@ -10,7 +10,6 @@
 >
   <!--Header-->
   <div class="sb-modal-header">
-    {{announcementDetails.type}}
   </div>
   <!--/Header-->
 
@@ -25,9 +24,4 @@
     <app-details [announcementDetails]="announcementDetails"></app-details>
   </div>
   <!--/Content-->
-  <!--Actions-->
-  <div class="sb-modal-actions flex-dr">
-    {{resourceService?.frmelmnts?.lbl?.anncmntdtlssenton}} {{announcementDetails.createdDate | dateFormat}}
-  </div>
-  <!--/Actions-->
 </sui-modal>

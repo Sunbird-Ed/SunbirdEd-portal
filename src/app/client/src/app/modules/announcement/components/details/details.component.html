@@ -77,7 +77,7 @@
           </div>
         </div>
       </div>
-      <div class="ann-details-sent-date-bg" *ngIf="announcementDetails.createdDate && !announcementDetails.hideDate && announcementDetails && !announcementDetails.title">
+      <div class="ann-details-sent-date-bg" *ngIf="announcementDetails.createdDate && !announcementDetails.hideDate">
         <span class="ng-binding announcement-description">
           {{resourceService?.frmelmnts?.lbl?.anncmntdtlssenton}} {{announcementDetails.createdDate | dateFormat}}
         </span>
