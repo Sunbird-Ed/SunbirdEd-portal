@@ -208,4 +208,24 @@ describe('UpdateCourseBatchComponent', () => {
     component.removeParticipant(user);
     expect(component.selectedParticipants.length).toBe(1);
   });
+  it('should call resetForm method  and reset the form except start date', () => {
+    const courseBatchService = TestBed.get(CourseBatchService);
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    spyOn(courseBatchService, 'getUserList').and.callFake((request) => {
+      if (request) {
+        return observableOf(getUserDetails);
+      } else {
+        return observableOf(getUserList);
+      }
+    });
+    spyOn(courseBatchService, 'getUpdateBatchDetails').and.returnValue(observableOf(updateBatchDetails));
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.
+    returnValue(observableOf({createdBy: 'b2479136-8608-41c0-b3b1-283f38c338ed'}));
+    component.ngOnInit();
+    spyOn(component, 'resetForm').and.callThrough();
+    component.resetForm();
+    expect(component.batchUpdateForm.controls['name'].value).toBeNull();
+    expect(component.batchUpdateForm.controls['description'].value).toBeNull();
+    expect(component.batchUpdateForm.controls['endDate'].value).toBeNull();
+  });
 });
