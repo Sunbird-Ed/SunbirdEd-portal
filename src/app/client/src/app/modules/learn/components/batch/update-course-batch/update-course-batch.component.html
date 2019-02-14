@@ -133,10 +133,10 @@
     </button>
     <button 
       class="sb-btn sb-btn-normal sb-btn-outline-primary" 
-      (click)="batchUpdateForm.reset()" 
+      (click)="resetForm()" 
       [disabled]="showFormInViewMode"
     >
-    {{resourceService?.frmelmnts?.btn?.create}}
+      {{resourceService?.frmelmnts?.btn?.clear}}
     </button>
     
   </div>
