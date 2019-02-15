@@ -9,14 +9,13 @@ input[type="button"] {
 }
 
 // base button styles
-a.sb-btn,
 .sb-btn {
     -webkit-tap-highlight-color: transparent;
     user-select: none;
     outline: 0;
     display: inline-block;
     border: 1px solid;
-    color:#fff;
+    color:$white-color;
     cursor:pointer;
     min-width:($base-block-space * 8);
     text: {
@@ -67,13 +66,12 @@ a.sb-btn,
     @include border-radius(4px);
 }
 .sb-btn-big {
-  height:$base-btn-big-height;
-  padding: $block-padding-y-x;
-  font-size:$font-size-normal;
-  @include border-radius(6px);
+    height:$base-btn-big-height;
+    padding: $block-padding-y-x;
+    font-size:$font-size-normal;
+    @include border-radius(6px);
 }
 // disabled button
-a.sb-btn-disabled,
 .sb-btn-disabled {
     background-color: $gray-100;
     color:$gray-200;
@@ -81,7 +79,6 @@ a.sb-btn-disabled,
     cursor: not-allowed;
 }
 
-a.sb-btn-outline-disabled,
 .sb-btn-outline-disabled {
     background-color: $white-color;
     color:$gray-100;
@@ -90,73 +87,71 @@ a.sb-btn-outline-disabled,
 }
 // default outline colored btns
 
-a.sb-btn-outline-primary,
 .sb-btn-outline-primary {
     @include btn-theme-bgwhite($primary-color);
 }
 
-a.sb-btn-outline-secondary,
 .sb-btn-outline-secondary {
     @include btn-theme-bgwhite($secondary-color);
 }
 
-a.sb-btn-outline-tertiary,
+
 .sb-btn-outline-tertiary {
     @include btn-theme-bgwhite($tertiary-color);
 }
 // status outline buttons
 
-a.sb-btn-outline-info,
+
 .sb-btn-outline-info {
     @include btn-theme-bgwhite($primary-color);
 }
 
-a.sb-btn-outline-success,
+
 .sb-btn-outline-success {
     @include btn-theme-bgwhite($secondary-color);
 }
 
-a.sb-btn-outline-warning,
+
 .sb-btn-outline-warning {
     @include btn-theme-bgwhite($tertiary-color);
 }
 
-a.sb-btn-outline-error,
+
 .sb-btn-outline-error {
     @include btn-theme-bgwhite($red);
 }
 
-a.sb-btn-outline-gray,
+
 .sb-btn-outline-gray {
     @include btn-theme-bgwhite($gray-800);
 } 
 // default colored btns
-a.sb-btn-primary,
+
 .sb-btn-primary {
     @include btn-theme($primary-color);
 }
 
-a.sb-btn-secondary,
+
 .sb-btn-secondary {
     @include btn-theme($secondary-color);
 }
 
-a.sb-btn-tertiary,
+
 .sb-btn-tertiary {
     @include btn-theme($tertiary-color);
 }
 
-a.sb-btn-success,
+
 .sb-btn-success {
     @include btn-theme($success-color);
 } 
 
-a.sb-btn-info,
+
 .sb-btn-info {
     @include btn-theme($info-color);
 }
 
-a.sb-btn-warning,
+
 .sb-btn-warning {
     @include btn-theme($warning-color);
 }
