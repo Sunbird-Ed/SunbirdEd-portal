@@ -160,8 +160,8 @@ $font-size-xs:                ($font-size-base * 0.7143); // 10px
 $p-font-size:                 $font-size-md;            
 // spaces
 $base-block-space: 8px;
-$block-padding-y-x: ($base-block-space * 1) ($base-block-space * 3); // any block default spacing
-$block-padding-xy: ($base-block-space * 3);  // top right bottom left spacing
+$block-padding-y-x: ($base-block-space * 1) ($base-block-space * 2); // any block default spacing
+$block-padding-xy: ($base-block-space * 2);  // top right bottom left spacing
 $block-padding-x: ($base-block-space * 3);  // left right spacing
 $block-padding-y: ($base-block-space * 1);  // top bottom spacing
 $block-margin-xl-minus: -($base-block-space * 3); // minus margin 24px left

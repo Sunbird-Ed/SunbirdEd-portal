@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { InstallAppComponent } from './install-app.component';
 import { ResourceService } from '../../services/index';
 
-xdescribe('InstallAppComponent', () => {
+describe('InstallAppComponent', () => {
     let comp: InstallAppComponent;
     let fixture: ComponentFixture<InstallAppComponent>;
 
