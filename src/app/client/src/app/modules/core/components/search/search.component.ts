@@ -170,8 +170,8 @@ export class SearchComponent implements OnInit {
     } else if (this.value[1] === 'search' && searchEnabledStates.includes(this.value[1])) {
       this.setDropdownSelectedOption(this.value[2]);
     } else {
-      this.setSearchPlaceHolderValue();
       this.selectedOption = 'All';
+      this.setSearchPlaceHolderValue();
       this.showInput = false;
     }
   }
