@@ -4,6 +4,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { UserService } from './../../services';
 import { ResourceService, ConfigService, IUserProfile } from '@sunbird/shared';
+import { Subscription } from 'rxjs';
 
 /**
  * Main menu component
@@ -34,6 +35,8 @@ export class SearchComponent implements OnInit {
    */
   key: string;
   resourceService: ResourceService;
+  resourceDataSubscription: Subscription;
+
 
   /**
    * option selected on dropdown
@@ -55,6 +58,8 @@ export class SearchComponent implements OnInit {
   userProfile: IUserProfile;
 
   searchDropdownValues: Array<string> = ['All', 'Courses', 'Library'];
+
+  searchPlaceHolderValue: string;
 
   searchDisplayValueMappers: object;
 
@@ -113,7 +118,13 @@ export class SearchComponent implements OnInit {
         });
     });
     this.showSuiSelectDropdown = true;
+    this.resourceDataSubscription = this.resourceService.languageSelected$
+      .subscribe(item => {
+        this.setSearchPlaceHolderValue();
+      }
+    );
   }
+
   /**
    * on changing dropdown option
    * it navigate
@@ -122,10 +133,12 @@ export class SearchComponent implements OnInit {
     this.route.navigate([this.search[this.selectedOption], 1]);
   }
 
-
-  getSearchPlaceHolderValue () {
+  /**
+   * search input box placeholder value
+   */
+  setSearchPlaceHolderValue () {
     const keyName = this.searchDisplayValueMappers[this.selectedOption];
-    return this.resourceService.frmelmnts.tab[keyName];
+    this.searchPlaceHolderValue = this.resourceService.frmelmnts['tab'] ? this.resourceService.frmelmnts.tab[keyName]  : '';
   }
 
   /**
@@ -157,6 +170,7 @@ export class SearchComponent implements OnInit {
     } else if (this.value[1] === 'search' && searchEnabledStates.includes(this.value[1])) {
       this.setDropdownSelectedOption(this.value[2]);
     } else {
+      this.setSearchPlaceHolderValue();
       this.selectedOption = 'All';
       this.showInput = false;
     }
@@ -175,6 +189,7 @@ export class SearchComponent implements OnInit {
     } else {
       this.selectedOption = value;
     }
+    this.setSearchPlaceHolderValue();
     this.showInput = true;
   }
 }
