@@ -36,6 +36,26 @@ export class ProfileService {
       }
     ));
   }
+
+  /**
+   * This method invokes learner service to update user profile with private url
+   */
+  public updatePrivateProfile(request) {
+    const data = this.formatRequest(request);
+    const options = {
+      url: 'user/private/v1/update',
+      data: data
+    };
+    return this.learnerService.patch(options).pipe(map(
+      (res: ServerResponse) => {
+        setTimeout(() => {
+          this.userService.getUserProfile();
+        }, this.configService.appConfig.timeOutConfig.setTime);
+        return res;
+      }
+    ));
+  }
+
   /**
    * This method is used to update user profile visibility
    */
@@ -61,7 +81,7 @@ export class ProfileService {
    * This method is used to format the request
    */
   private formatRequest(request) {
-    request.userId = this.userService.userid;
+    request.userId = request.userId ? request.userId : this.userService.userid;
     return {
       params: {},
       request: request
