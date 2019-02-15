@@ -12,20 +12,36 @@ input[type="button"] {
 a.sb-btn,
 .sb-btn {
     -webkit-tap-highlight-color: transparent;
-    -webkit-appearance: button;
     user-select: none;
     outline: 0;
     display: inline-block;
-    margin-left: 0.25rem;
     border: 1px solid;
     color:#fff;
     cursor:pointer;
-    margin:0 0 0 8px;
     min-width:($base-block-space * 8);
     text: {
         transform: capitalize;
         decoration: none;
     }
+    &:hover {
+        opacity: 1;
+    }
+    &.disabled,
+    &.disabled:hover,
+    &:disabled,
+    &:disabled:hover {
+        background-color: $gray-100;
+        color:$gray-200;
+        border:1px solid $gray-100;
+        cursor: not-allowed;
+    }
+    &+.sb-btn {
+        margin:0 $base-block-space 0 0;
+    }
+}
+
+[dir="rtl"] .sb-btn+.sb-btn {
+    margin:0 0 0 $base-block-space;
 }
 // button link
 .sb-btn-link {
