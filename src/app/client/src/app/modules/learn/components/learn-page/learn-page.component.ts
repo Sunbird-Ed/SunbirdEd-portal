@@ -71,7 +71,10 @@ export class LearnPageComponent implements OnInit, OnDestroy {
   }
   private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
-    .pipe(tap(data => {
+    .pipe(
+      tap(data => this.prepareVisits([])), // trigger pageexit if last filter resulted 0 contents
+      delay(5), // to trigger telemetry
+      tap(data => {
         this.showLoader = true;
         this.setTelemetryData();
       }),
@@ -80,7 +83,6 @@ export class LearnPageComponent implements OnInit, OnDestroy {
         filter(({queryParams}) => !_.isEqual(this.queryParams, queryParams)), // fetch data if queryParams changed
         takeUntil(this.unsubscribe$))
       .subscribe(({params, queryParams}) => {
-        console.log('--------------------------------------------query params');
         this.queryParams = { ...queryParams };
         this.carouselData = [];
         this.fetchPageData();
@@ -104,7 +106,6 @@ export class LearnPageComponent implements OnInit, OnDestroy {
     }
     this.pageApiService.getPageData(option).pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
-        console.log('--------------------------------------------query params');
         this.showLoader = false;
         this.carouselData = this.prepareCarouselData(_.get(data, 'sections'));
       }, err => {
@@ -241,6 +242,7 @@ export class LearnPageComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
   private setTelemetryData() {
+    this.inViewLogs = [];
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env

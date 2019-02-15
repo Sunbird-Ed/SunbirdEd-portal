@@ -23,7 +23,7 @@ import { LearnModule, UpdateCourseBatchComponent, CourseBatchService,
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
 }
-
+let originalTimeout;
 const resourceServiceMockData = {
   messages: {
     imsg: { m0027: 'Something went wrong' },
@@ -63,6 +63,8 @@ describe('CreateBatchComponent', () => {
   let fixture: ComponentFixture<CreateBatchComponent>;
 
   beforeEach(async(() => {
+    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     TestBed.configureTestingModule({
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
@@ -78,6 +80,9 @@ describe('CreateBatchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateBatchComponent);
     component = fixture.componentInstance;
+  });
+  afterEach(() => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
   });
   it('should fetch batch details and show update Form model', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
