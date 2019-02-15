@@ -1,104 +1,74 @@
-<sui-modal [appTelemetryImpression]="telemetryImpression" [isClosable]="true" (dismissed)="redirect()" [mustScroll]="true"
-  #modal>
-  <div class="header">
-        <div class="ui grid">
-            <div class="eleven wide column">
-                <span class="ui header">{{resourceService.frmelmnts?.lbl?.selrole}}</span>
-            </div>
-            <!-- <div class="one wide column actions">
-                <h5 class="ui basic icon circular button deny">
-                    <i class="ui remove icon"></i>
-                </h5>
-            </div> -->
-        </div>
+<sui-modal [isClosable]="false" [appTelemetryImpression]="telemetryImpression" [isClosable]="true" (dismissed)="redirect()"
+  [mustScroll]="true" #modal>
+  <i class="close icon" (click)="redirect();"></i>
+  <div class="scrollable content" *ngIf="showMainLoader">
+    <div class="ui grid">
+      <div class="twelve wide column">
+        <app-loader></app-loader>
+      </div>
     </div>
-
-    <div class="scrolling content">
-        <div appTelemetryInteract [telemetryInteractEdata]="organizationIntractEdata" [telemetryInteractObject]="{id:userId,type:'user',ver:'1.0'}"
-            class="ui selection dropdown ml-10" suiDropdown *ngIf="userDetails && userDetails.organisations.length > 0">
-            <i class="dropdown icon"></i>
-            <div>{{selectedOrgName || userDetails.organisations[0].orgName || selectedOrgId}}</div>
-
-            <div class="menu" suiDropdownMenu [menuAutoSelectFirst]="true">
-                <div class="item" [ngClass]="{'active': selectedOrgId === org.organisationId }" *ngFor="let org of userDetails.organisations"
-                    (click)="selectedOrgName = org.orgName; selectedOrgUserRoles=org.roles; selectedOrgId=org.organisationId">{{org.orgName || org.organisationId}}</div>
-            </div>
-        </div>
-        <div class="ui form mt-40" *ngIf="selectedOrgUserRoles">
-            <ul class="selectOrgRoles">
-
-                <li class="orgRolesListView" *ngFor="let role of allRoles">
-                    <div class="ui checkbox">
-                        <input appTelemetryInteract [telemetryInteractEdata]="roleIntractEdata" [telemetryInteractObject]="{id:userId,type:'user',ver:'1.0'}"
-                            type="checkbox" value='{{role.role}}' (click)="editRoles(role.role, selectedOrgUserRoles, $event)"
-                            [checked]="selectedOrgUserRoles.includes(role.role)">
-                        <label>{{role.roleName || role.role}}</label>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="actions">
-        <button appTelemetryInteract [telemetryInteractEdata]="updateIntractEdata" [telemetryInteractObject]="{id:userId,type:'user',ver:'1.0'}"
-            [disabled]="!selectedOrgUserRoles" class="ui primary button" type="submit" (click)="updateRoles(selectedOrgUserRoles); modal.deny();">
-            {{resourceService.frmelmnts?.btn?.update}}</button>
-    </div>
-
-  <!-- <div class="scrollable content">
+  </div>
+  <div class="scrollable content" *ngIf="!showMainLoader">
     <div class="ui grid">
       <div class="ten wide column mb-30">
-        <span class="ui header">Edit details of the User</span>
+        <span class="ui header">{{resourceService.frmelmnts?.lbl?.editUserDetails}}</span>
       </div>
     </div>
 
-    <form class="ui form">
-      <div class="required field">
-        <label>Role</label>
+    <form class="ui form" [formGroup]="userDetailsForm" *ngIf="userDetails">
+      <div class="field">
+        <label>{{resourceService.frmelmnts?.lbl?.role}}</label>
       </div>
       <div class="field">
-        <sui-multi-select [isSearchable]="false" class="selection" [options]="userNames" #multiSelect>
-          <sui-select-option [value]="userNames[0].name"></sui-select-option>
-          <sui-select-option [value]="userNames[1].name"></sui-select-option>
-          <sui-select-option [value]="userNames[2].name"></sui-select-option>
+        <sui-multi-select [isSearchable]="false" class="selection" (selectedOptionsChange)="enableSubmitBtn = true;" formControlName="role" [options]="allRoles" labelField="roleName"
+          valueField="role" name="role" placeholder="{{resourceService?.frmelmnts?.btn?.selrole}}" #allroles>
+          <sui-select-option *ngFor="let role of allroles.filteredOptions" [value]="role"></sui-select-option>
         </sui-multi-select>
       </div>
 
-      <div class="required field">
+      <div class="field">
         <label>{{resourceService.frmelmnts?.lbl?.district}}</label>
       </div>
       <div class="field">
-        <sui-select [isSearchable]="false" class="selection" [options]="userNames" #multiSelect>
-          <sui-select-option [value]="userNames[0].name"></sui-select-option>
-          <sui-select-option [value]="userNames[1].name"></sui-select-option>
-          <sui-select-option [value]="userNames[2].name"></sui-select-option>
+        <sui-select [isSearchable]="true" class="selection" (selectedOptionChange)="enableSubmitBtn = true;" formControlName="district" [options]="allDistricts" labelField="name"
+          valueField="code" name="district" placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}" #districtDiv>
+          <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100" [value]="district"></sui-select-option>
         </sui-select>
       </div>
 
-      <div class="required field">
+      <div class="field">
         <label>{{resourceService.frmelmnts?.lbl?.block}}</label>
       </div>
       <div class="field">
-        <sui-select [isSearchable]="false" class="selection" [options]="userNames" #multiSelect>
-          <sui-select-option [value]="userNames[0].name"></sui-select-option>
-          <sui-select-option [value]="userNames[1].name"></sui-select-option>
-          <sui-select-option [value]="userNames[2].name"></sui-select-option>
+        <div class="ui segment" *ngIf="blockLoader">
+          <div class="ui active inverted dimmer">
+            <div class="ui mini text loader">{{resourceService.frmelmnts?.lbl?.fetchingBlocks}}</div>
+          </div>
+        </div>
+        <sui-select *ngIf="!blockLoader" [isSearchable]="true" class="selection" (selectedOptionChange)="enableSubmitBtn = true;" formControlName="block" [options]="allBlocks" labelField="name"
+          valueField="code" name="block" placeholder="{{resourceService.frmelmnts?.lbl?.selectBlock}}" #blockDiv>
+          <sui-select-option *ngFor="let block of blockDiv.filteredOptions | slice:0:100" [value]="block"></sui-select-option>
         </sui-select>
       </div>
 
       <div class="field">
-        <label>School</label>
+        <label>{{resourceService.frmelmnts?.lbl?.school}}</label>
       </div>
       <div class="field">
-        <sui-select [isSearchable]="false" class="selection" [options]="userNames" #multiSelect>
-          <sui-select-option [value]="userNames[0].name"></sui-select-option>
-          <sui-select-option [value]="userNames[1].name"></sui-select-option>
-          <sui-select-option [value]="userNames[2].name"></sui-select-option>
+        <div class="ui segment" *ngIf="schoolLoader">
+          <div class="ui active inverted dimmer">
+            <div class="ui mini text loader">{{resourceService.frmelmnts?.lbl?.fetchingSchools}}</div>
+          </div>
+        </div>
+        <sui-select *ngIf="!schoolLoader" [isSearchable]="true" class="selection" (selectedOptionChange)="enableSubmitBtn = true;" formControlName="school" [options]="allSchools"
+          labelField="orgName" valueField="identifier" name="school" placeholder="{{resourceService.frmelmnts?.lbl?.selectSchool}}" #schoolDiv>
+          <sui-select-option *ngFor="let school of schoolDiv.filteredOptions | slice:0:100" [value]="school"></sui-select-option>
         </sui-select>
       </div>
     </form>
     <div class="ui center aligned grid save-btn">
-      <button class="ui primary button wide-btn px-20 mt-20">{{resourceService.frmelmnts?.btn?.save}}</button>
+      <button [disabled]="!enableSubmitBtn" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata" (click)="onSubmitForm()" class="ui primary button wide-btn px-20 mt-20">{{resourceService.frmelmnts?.btn?.save}}</button>
     </div>
-  </div> -->
+  </div>
 
 </sui-modal>
