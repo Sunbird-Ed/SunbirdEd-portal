@@ -604,10 +604,8 @@ ui.primary.basic.button.ann-upload-attachment {
 .linkify.icon.opacity04 {
   opacity: 0.4;
 }
-.ann-details-sent-date-bg {
-  background-color: #F5F5F5;
-  padding: 15px 20px;
-  margin: 10px -25px -25px -25px;
+.announcement-footer {
+  margin: -($base-block-space*2.5);
 }
 .ui.items > .item.box {
   box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.15);
