@@ -36,7 +36,7 @@
     [routerLink]="['flagreviewer',1]" appPermission [permission]='flagReviewer'>
     {{resourceService?.frmelmnts?.snav?.flagReviewer}}
   </a>
-  <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='coursebacthesRole' [routerLink]="['batches',1]"
+  <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='coursebacthesRole' [routerLink]="['batches','assigned']"
     [class.active]="router.isActive('/workspace/content/batches')">
     {{resourceService?.frmelmnts?.lnk?.coursebacthes}}
   </a>
