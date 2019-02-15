@@ -138,7 +138,6 @@
  }
 
 .ui.tree-picker.modal {
-  
   top: 3.5rem !important;
 
   .sb-modal-actions {
@@ -148,4 +147,8 @@
       display: none;
     }
   }
+}
+
+.ui.modal .ui.header {
+  font-size: 20px;
 }
