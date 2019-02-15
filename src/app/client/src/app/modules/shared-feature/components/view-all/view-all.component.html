@@ -49,7 +49,7 @@
         </div>
     </div>
 </div>
-<sui-modal
+<sui-modal 
     [mustScroll]="true" 
     [isClosable]="true"
     [transitionDuration]="0"
@@ -58,20 +58,27 @@
     appBodyScroll
     (dismissed)="closeModal()" 
     #modal 
-    *ngIf="showLoginModal"
->
+    *ngIf="showLoginModal">
+
+    <!--Header-->
+    <div class="sb-modal-header">
+        {{resourceService?.frmelmnts?.lbl?.signinenrollTitle}}
+    </div>
+    <!--/Header-->
     <!--Content-->
     <div class="sb-modal-content">
-      <div class="ui center aligned segment">
-        <div class="ui header">
-            {{resourceService?.frmelmnts?.lbl?.signinenrollTitle}}
+        <div class="ui center aligned segment">
+            <p>{{resourceService?.frmelmnts?.lbl?.signinenrollTitle}}</p>
         </div>
-        <a href={{baseUrl}} class ="sb-btn sb-btn-normal sb-btn-primary mt-10">
-            {{resourceService.frmelmnts?.btn?.signin}}
-        </a> 
-      </div>
     </div>
     <!--/Content-->
 
+    <!--Actions-->
+    <div class="sb-modal-actions">
+        <a href={{baseUrl}} class="sb-btn sb-btn-normal sb-btn-primary">
+            {{resourceService.frmelmnts?.btn?.signin}}
+        </a> 
+    </div>
+    <!--/Actions-->
 </sui-modal>
 <app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches" (modelClose)="showBatchInfo = false"></app-batch-info>
