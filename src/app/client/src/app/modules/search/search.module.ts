@@ -27,7 +27,8 @@ import {SharedFeatureModule} from '@sunbird/shared-feature';
     TelemetryModule,
     NgInviewModule,
     AvatarModule,
-    SharedFeatureModule
+    SharedFeatureModule,
+    ReactiveFormsModule
   ],
   declarations: [ UserSearchComponent, CourseSearchComponent, LibrarySearchComponent,
   UserFilterComponent, UserEditComponent, UserDeleteComponent, OrgSearchComponent, OrgFilterComponent,
