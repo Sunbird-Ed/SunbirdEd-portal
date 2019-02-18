@@ -36,7 +36,6 @@
                   <sui-multi-select class="selection ui filtersearch" [(ngModel)]="queryParams.Medium" [options]="options" [hasLabels]=false
                     defaultSelectionText="Medium" zeroSelectionText="Select" #multiSelect>
                     <sui-select-option *ngFor="let medium of searchMediums" [value]="medium"> </sui-select-option>
-                    <i class="dropdown icon"></i>
                   </sui-multi-select>
                 </div>
                 <div class="two wide column">
