@@ -71,16 +71,26 @@ describe('SearchComponent', () => {
   });
   it('should hide users search from dropdown if loggedin user is not rootorgadmin', ( ) => {
     const userService = TestBed.get(UserService);
+    const resourceService = TestBed.get(ResourceService);
     const route = TestBed.get(Router);
     userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile });
+    resourceService._languageSelected.next({ 'value': 'en', 'name': 'English', 'dir': 'ltr' });
     component.searchDropdownValues = ['All', 'Courses', 'Library'];
     component.ngOnInit();
     expect(component.searchDropdownValues).not.toContain('Users');
   });
   it('should show users search from dropdown if loggedin user is rootorgadmin', ( ) => {
     const userService = TestBed.get(UserService);
+    const resourceService = TestBed.get(ResourceService);
     mockResponse.userMockData.userProfile.rootOrgAdmin = true;
     userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile });
+    resourceService._languageSelected.next({ 'value': 'en', 'name': 'English', 'dir': 'ltr' });
+    component.searchDisplayValueMappers = {
+      'All': 'all',
+      'Library': 'resources',
+      'Courses': 'courses',
+      'Users': 'users'
+    };
     component.searchDropdownValues = ['All', 'Courses', 'Library'];
     component.ngOnInit();
     expect(component.searchDropdownValues).toContain('Users');
