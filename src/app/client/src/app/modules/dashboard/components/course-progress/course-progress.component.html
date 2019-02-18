@@ -198,55 +198,6 @@
   </div>
 </div>
 
-<!-- Updated code as per new design for semantic datatable-->
-
-<!-- <div class="ui container">
-  <div class=" ui grid">
-    <div class="twelve wide column">
-      <div>
-        <div id="dashoardFiltersHolder" *ngIf="batchlist && batchlist.length > 0">
-          <div class="d-flex flex-jc-space-between flex-ai-center" [appTelemetryImpression]="telemetryImpression">
-
-            <div class="d-flex w-300">
-              <sui-select class="selection fluid bordered ellipsis" placeholder="Select batch to see dashboard" [(ngModel)]="selectedOption"
-                [options]="batchlist" labelField="name" valueField="id" [isSearchable]="true" #select>
-                <sui-select-option *ngFor="let course of select.filteredOptions" [value]="course" (click)="setBatchId(course.id);"
-                  appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:course.id,type:'click',pageid:'course-progress-dashboard'}">
-                </sui-select-option>
-              </sui-select>
-            </div>
-            <div class="d-flex">
-              <a class="ui item basic icon circular float-ContentRight" data-tooltip="Close the dashboard"
-                appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'closeDashboard',type:'click',pageid:'course-progress-dashboard'}">
-                <i (click)='redirect()' class="ui remove icon CloseButtonFont"></i>
-              </a>
-            </div>
-          </div>
-          <div>
-            <div class="d-flex my-15">
-              <span class="course-start-dt black-divider pr-10"><b>Start Date:</b> dd/mm/yyyy</span>
-              <span class="course-end-dt black-divider px-10"><b>End Date:</b> dd/mm/yyyy</span>
-              <span class="course-participants black-divider px-10"><b>Participants:</b> 500</span>
-              <span class="course-completed pl-10"><b>Completed the course:</b> 200</span>
-            </div>
-          </div>
-          
-        </div>
-
-        <app-data-table></app-data-table>
-        <div class="table-data-holder my-10" *ngIf="batchlist && batchlist.length > 0 && queryParams.batchIdentifier && !showLoader && !showWarningDiv">
-          
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-
-
-<!-- This is the updated code for semantic datatable -->
-
-
 <sui-modal [isClosable]="true" (dismissed)="modal.deny(); showDownloadModal = false;" #modal *ngIf="showDownloadModal">
   <!-- Download report popup-->
   <div class="header">
@@ -263,3 +214,79 @@
     <div></div>
   </div>
 </sui-modal>
+
+
+<!-- Updated code as per new design for semantic datatable-->
+
+<!-- <div class="ui container">
+  <div class=" ui grid">
+    <div class="twelve wide column">
+      <div>
+        <div class="ui divider"></div>
+        <div id="dashoardFiltersHolder" *ngIf="batchlist && batchlist.length > 0">
+          <div class="d-flex flex-jc-space-between flex-ai-center" [appTelemetryImpression]="telemetryImpression">
+            <div class="d-flex w-300">
+              <sui-select class="selection fluid bordered ellipsis" placeholder="Select batch to see dashboard"
+                [(ngModel)]="selectedOption" [options]="batchlist" labelField="name" valueField="id" [isSearchable]="true"
+                #select>
+                <sui-select-option *ngFor="let course of select.filteredOptions" [value]="course" (click)="setBatchId(course.id);"
+                  appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:course.id,type:'click',pageid:'course-progress-dashboard'}">
+                </sui-select-option>
+              </sui-select>
+              <div class="tweleve wide column" *ngIf="showLoader">
+                <app-loader></app-loader>
+              </div>
+            </div>
+            <div class="d-flex">
+              <a class="ui item basic icon circular float-ContentRight" data-tooltip="Close the dashboard"
+                appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'closeDashboard',type:'click',pageid:'course-progress-dashboard'}">
+                <i (click)='redirect()' class="ui remove icon CloseButtonFont"></i>
+              </a>
+            </div>
+          </div>
+          <div class="d-flex my-15">
+            <span class="course-start-dt black-divider pr-10"><b>Start Date:</b> dd/mm/yyyy</span>
+            <span class="course-end-dt black-divider px-10"><b>End Date:</b> dd/mm/yyyy</span>
+            <span class="course-participants black-divider px-10"><b>Participants:</b> 500</span>
+            <span class="course-completed pl-10"><b>Completed the course:</b> 200</span>
+          </div>
+        </div>
+        <div class="d-flex flex-jc-space-between flex-ai-center download-file-container mt-15 mb-0 mx-0">
+          <div class="d-flex">
+          </div>
+          <div class="d-flex">
+            <a href="#" class="ui download-file right floated">Download File</a>
+          </div>
+        </div>
+        <div class="sb-data-table-container">
+          <table id="CourseStatsTable" class="ui celled table selectable sb-data-table" cellspacing="0">
+            <thead class="sb-data-table-header">
+              <tr>
+                <th suiPopup popupText="Name" [popupPlacement]="'top left'">Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+              </tr>
+            </thead>
+            <tbody class="sb-data-table-body">
+              <tr>
+                <td>Tiger Nixon</td>
+                <td>System Architect</td>
+                <td>Edinburgh</td>
+                <td>61</td>
+                <td>2011/04/25</td>
+                <td>$320,800</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+
+<!-- This is the updated code for semantic datatable -->
