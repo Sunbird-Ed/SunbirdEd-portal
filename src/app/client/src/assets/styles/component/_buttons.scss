@@ -1,4 +1,4 @@
-// buttons
+/* buttons sytle guide */
 // Specificity overrides
 input[type="submit"],
 input[type="reset"],
@@ -11,16 +11,17 @@ input[type="button"] {
 // base button styles
 .sb-btn {
     -webkit-tap-highlight-color: transparent;
-    -webkit-appearance: button;
     user-select: none;
     outline: 0;
     display: inline-block;
     margin-left: 0.25rem;
     border: 1px solid;
-    color:#fff;
     cursor:pointer;
-    margin:0px 0px 0px 8px;
+    color: $white-color;
+    @include margin(0px 0px 0px 8px);
     min-width:($base-block-space * 8);
+    line-height: normal;
+    @include border-radius(3px);
     text: {
         transform: capitalize;
         decoration: none;
@@ -37,11 +38,13 @@ input[type="button"] {
     
 }
 // button sizes
-.sb-btn-small {
-    height:$base-btn-small-height;
-    padding: ($base-block-space * .5) ($base-block-space * 2);
-    font-size:$font-size-xs;
-    @include border-radius(2px);
+.sb-btn-xs, .sb-btn-normal, .sb-btn-sm,.sb-btn-md {
+    padding: ($base-block-space * 1) ($base-block-space * 2);
+}
+.sb-btn-xs {
+    height:($base-block-space * 3);
+    padding: ($base-block-space * 1);
+    font-size:$font-size-sm;
 }
 .sb-btn-normal {
     height:$base-btn-normal-height;
@@ -49,11 +52,18 @@ input[type="button"] {
     font-size:$font-size-sm;
     @include border-radius(4px);
 }
-.sb-btn-big {
-  height:$base-btn-big-height;
-  padding: $block-padding-y-x;
-  font-size:$font-size-normal;
-  @include border-radius(6px);
+.sb-btn-sm {
+    height:($base-block-space * 5);
+    font-size:$font-size-normal;
+}
+.sb-btn-md {
+    height:($base-block-space * 6);
+    font-size:$font-size-md;
+}
+.sb-btn-lg {
+  height:($base-block-space * 7);
+  padding: ($base-block-space * 3);
+  font-size:$font-size-lg;
 }
 // disabled button
 .sb-btn-disabled {
@@ -73,7 +83,7 @@ input[type="button"] {
     @include btn-theme-bgwhite($primary-color);
 } 
 .sb-btn-outline-secondary{
-    @include btn-theme-bgwhite($secondary-color);
+    @include btn-theme-bgwhite($secondary-200);
 } 
 .sb-btn-outline-tertiary{
     @include btn-theme-bgwhite($tertiary-color);
@@ -83,7 +93,7 @@ input[type="button"] {
     @include btn-theme-bgwhite($primary-color);
 } 
 .sb-btn-outline-success{
-    @include btn-theme-bgwhite($secondary-color);
+    @include btn-theme-bgwhite($secondary-200);
 } 
 .sb-btn-outline-warning{
     @include btn-theme-bgwhite($tertiary-color);
@@ -95,31 +105,50 @@ input[type="button"] {
     @include btn-theme-bgwhite($gray-800);
 } 
 // default colored btns
-.sb-btn-primary{
+.sb-btn-primary,.sb-btn-info{
     @include btn-theme($primary-color);
+    &:hover,&:active {
+        background: $primary-800;
+    }
 } 
-.sb-btn-secondary{
-    @include btn-theme($secondary-color);
+.sb-btn-secondary,.sb-btn-success{
+    @include btn-theme($secondary-200);
+    &:hover,&:active {
+        background: $secondary-400;
+    }
 }
-.sb-btn-tertiary{
+.sb-btn-tertiary,.sb-btn-warning{
     @include btn-theme($tertiary-color);
+    &:hover,&:active {
+        background: $tertiary-400;
+    }
 }
 .sb-btn-success{
     @include btn-theme($success-color);
+    &:hover,&:active {
+        background: $secondary-400;
+    }
 } 
 .sb-btn-info{
     @include btn-theme($info-color);
+    &:hover,&:active {
+        background: $primary-800;
+    }
 }
 .sb-btn-warning{
     @include btn-theme($warning-color);
+    &:hover,&:active {
+        background: $tertiary-400;
+    }
 } 
 .sb-btn-error{
     @include btn-theme($danger-color);
+    &:hover,&:active {
+        background: $red-400;
+    }
 }
 
-
-// To cleanup 
-
+// to cleanup
 .ui.dodger-blue.basic.label {
     border: 1px solid $primary-color !important;	
     border-radius: 4px;

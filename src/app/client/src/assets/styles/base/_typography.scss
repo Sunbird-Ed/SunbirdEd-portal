@@ -1,0 +1,30 @@
+/* typography styles */
+
+h1 {
+    font-size: $h1-font-size;
+    line-height: ($h1-font-size + 8);
+}
+h2 {
+    font-size: $h2-font-size;
+    line-height: ($h2-font-size + 8);
+}
+h3 {
+    font-size: $h3-font-size;
+    line-height: ($h3-font-size * 1.42857);
+}
+h4 {
+    font-size: $h4-font-size;
+    line-height: ($h4-font-size * 1.42857);
+}
+h5 {
+    font-size: $h5-font-size;
+    line-height: ($h5-font-size * 1.42857);
+}
+h6 {
+    font-size: $h6-font-size;
+    line-height: ($h6-font-size * 1.42857);
+}
+p {
+    font-size: $p-font-size;
+    line-height: ($p-font-size * 1.42857); //1.618
+}
