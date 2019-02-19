@@ -1,17 +1,21 @@
-<sui-modal [isClosable]="true" (dismissed)="redirect()" #modal>
-    <div class="header" *ngIf="!showLoader">
-        <div class="ui grid">
-            <div class="eleven wide column">
-                <span class="ui header">{{resourceService?.frmelmnts?.lbl?.whatwentwrong}}</span>
-            </div>
-            <div class="one wide column actions" (click)="redirect(); modal.deny()">
-                <h5 class="ui basic icon circular button deny">
-                    <i class="ui remove icon"></i>
-                </h5>
-            </div>
-        </div>
+<sui-modal
+    [mustScroll]="true" 
+    [isClosable]="true"
+    [transitionDuration]="0"
+    [size]="'normal'"
+    class="sb-modal"
+    appBodyScroll
+    (dismissed)="redirect(); modal.deny()" 
+    #modal
+>
+    <!--Header-->
+    <div class="sb-modal-header">
+        {{resourceService?.frmelmnts?.lbl?.whatwentwrong}}
     </div>
-    <div class="content" *ngIf="!showLoader">
+    <!--/Header-->
+
+    <!--Content-->
+    <div class="sb-modal-content" *ngIf="!showLoader">
         <div class="row">
             <span class="ui tiny header flag-description">{{resourceService?.frmelmnts?.lbl?.whatwentwrongdesc}}</span>
         </div>
@@ -41,12 +45,21 @@
             </div>
         </form>
     </div>
-    <div class="actions" *ngIf="!showLoader">
-        <button class="ui primary button " (click)="saveMetaData(modal)" [disabled]="!flagData.flagReasons">
+    <div class="sb-modal-content" *ngIf="showLoader">
+        <div class="ui segment mt-10">
+            <app-loader [data]="loaderMessage"></app-loader>
+        </div>
+    </div>
+    <!--/Content-->
+    <!--Actions-->
+    <div class="sb-modal-actions">
+        <button 
+            class="sb-btn sb-btn-normal sb-btn-primary"
+            (click)="saveMetaData()" 
+            [disabled]="!flagData.flagReasons"
+        >
             {{resourceService?.frmelmnts?.btn?.submit}}
         </button>
     </div>
-    <div class=" ui segment mt-10 " *ngIf="showLoader">
-        <app-loader [data]="loaderMessage"></app-loader>
-    </div>
+    <!--/Actions-->
 </sui-modal>

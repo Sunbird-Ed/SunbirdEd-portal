@@ -1,12 +1,23 @@
-<sui-modal *ngIf='showEnrollDetails && batchDetails' (dismissed)="redirect()" [isClosable]="true" #enrollBatch>
-    <div class="header" [appTelemetryImpression]="telemetryImpression">
-        <div class="ui grid">
-            <div class="eleven wide column">
-                <span class="ui header">{{batchDetails.name}}</span>
-            </div>
-        </div>
+<sui-modal
+    [mustScroll]="true" 
+    [isClosable]="true"
+    [transitionDuration]="0"
+    [size]="'normal'"
+    class="sb-modal"
+    appBodyScroll
+    *ngIf='showEnrollDetails && batchDetails' 
+    (dismissed)="redirect()" 
+    #enrollBatch
+    >
+
+    <!--Header-->
+    <div class="sb-modal-header" [appTelemetryImpression]="telemetryImpression">
+        {{batchDetails.name}}
     </div>
-    <div class="scrolling content">
+    <!--/Header-->
+
+    <!--Content-->
+    <div class="sb-modal-content">
         <div class="ui grid">
             <div class="twelve wide column">
                 <div class="content">
@@ -18,11 +29,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="ten wide column pl-25">
+                        <div class="ten wide column">
                             <div class="ui grid">
-                                <div class="eight wide column batch-des">
+                                <div class="twelve wide column batch-des" *ngIf="batchDetails.description">
                                     <label>{{resourceService.frmelmnts.lbl.batchdescription}}</label>
-                                    <div *ngIf="batchDetails.description" class="des-content">
+                                    <div class="des-content">
                                         <p *ngIf="!readMore"> {{ batchDetails.description | slice:0:120}}&nbsp;
                                             <span class="ui cardsKnowMore mouse-pointer" *ngIf="batchDetails.description && batchDetails.description.length > 120 && readMore === false"
                                                 (click)="readMore = !readMore;">{{resourceService.frmelmnts.lbl.readmore}}</span>
@@ -31,11 +42,6 @@
                                             <span class="ui cardsKnowMore mouse-pointer" (click)="readMore = false;">{{resourceService.frmelmnts.lbl.readless}}</span>
                                         </p>
                                     </div>
-                                </div>
-                                <div class="four wide column">
-                                    <button [disabled]="disableSubmitBtn" class="ui fluid blue right floated  ui button mt-0" id="enrollToCourse" (click)="enrollToCourse()">
-                                        <span class="text">{{resourceService.frmelmnts.lbl.enrollcourse}}</span>
-                                    </button>
                                 </div>
                             </div>
                             <div class="ui grid batch-date">
@@ -54,4 +60,17 @@
             </div>
         </div>
     </div>
+    <!--/Content-->
+    <!--Actions-->
+    <div class="sb-modal-actions">
+        <button 
+            [disabled]="disableSubmitBtn" 
+            class="sb-btn sb-btn-normal sb-btn-primary" 
+            id="enrollToCourse" 
+            (click)="enrollToCourse()"
+        >
+            {{resourceService.frmelmnts.lbl.enrollcourse}}
+        </button>
+    </div>
+    <!--/Actions-->
 </sui-modal>

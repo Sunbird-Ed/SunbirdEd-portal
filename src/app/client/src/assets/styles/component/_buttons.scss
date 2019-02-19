@@ -7,17 +7,15 @@ input[type="button"] {
     width: 100%;
   }
 }
-
 // base button styles
 .sb-btn {
     -webkit-tap-highlight-color: transparent;
     user-select: none;
     outline: 0;
     display: inline-block;
-    margin-left: 0.25rem;
     border: 1px solid;
-    cursor:pointer;
     color: $white-color;
+    cursor: pointer;
     @include margin(0px 0px 0px 8px);
     min-width:($base-block-space * 8);
     line-height: inherit;
@@ -26,11 +24,27 @@ input[type="button"] {
         transform: capitalize;
         decoration: none;
     }
+    &:hover {
+        opacity: 1;
+    }
+    &.disabled,
+    &.disabled:hover,
+    &:disabled,
+    &:disabled:hover {
+        background-color: $gray-100;
+        color:$gray-200;
+        border:1px solid $gray-100;
+        cursor: not-allowed;
+    }
+    &+.sb-btn {
+        margin:0 $base-block-space 0 0;
+    }
 }
-// button lin
+// button link
 .sb-btn-link {
     background:none;
     border:0;
+    color:$primary-color;
     text-decoration: underline;
     &:hover {
         font-weight:$font-weight-bold;
@@ -46,11 +60,10 @@ input[type="button"] {
     padding: ($base-block-space * 1);
     font-size:$font-size-sm;
 }
+//primary button style
 .sb-btn-normal {
-    height:$base-btn-normal-height;
-    padding: $block-padding-y-x;
+    height:($base-block-space * 4);
     font-size:$font-size-sm;
-    @include border-radius(4px);
 }
 .sb-btn-sm {
     height:($base-block-space * 5);
@@ -74,7 +87,7 @@ input[type="button"] {
 }
 .sb-btn-outline-disabled {
     background-color: $white-color;
-    color:$gray-100;
+    color: $gray-100;
     border:1px solid $gray-100;
     cursor: not-allowed;
 }

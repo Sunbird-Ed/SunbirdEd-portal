@@ -1,15 +1,21 @@
-<sui-modal [isClosable]="false" [mustScroll]="true" [size]="'large'" (dismissed)="redirect()" #modal>
-  <div class="header" [appTelemetryImpression]="telemetryImpression">
-    <div class="ui grid">
-      <div class="eleven wide column">
-        <span class="ui header">{{resourceService?.frmelmnts?.lbl?.chkuploadsts}}</span>
-      </div>
-      <div class="one wide column">
-          <i class="close icon" (click)="modal.deny()" tabindex="0"></i>
-      </div>
-    </div>
+<sui-modal 
+  [mustScroll]="true" 
+  [isClosable]="false"
+  [transitionDuration]="0"
+  [size]="'large'"
+  class="sb-modal"
+  appBodyScroll
+  (dismissed)="redirect();modal.deny()" 
+  #modal>
+
+  <!--Header-->
+  <div class="sb-modal-header" [appTelemetryImpression]="telemetryImpression">
+    {{resourceService?.frmelmnts?.lbl?.chkuploadsts}}
   </div>
-  <div class="content">
+  <!--/Header-->
+
+  <!--Content-->
+  <div class="sb-modal-content">
     <div *ngIf="showLoader">
       <app-loader></app-loader>
     </div>
@@ -118,13 +124,22 @@
       </div>
     </div>
   </div>
-  <div class="actions">
-    <div class="ui grid">
-      <div *ngIf="!isProcessCompleted" class="twelve wide column">
-        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="checkStatusInteractEdata" [disabled]="!statusForm.value.processId"  class="ui primary left floated button"
-          (click)="getBulkUploadStatus(statusForm.value)">
-          {{resourceService?.frmelmnts?.btn?.chksts}}</button>
-      </div>
-    </div>
+  <!--/Content-->
+
+  <!--Actions-->
+  <div class="sb-modal-actions">
+    <button 
+      *ngIf="!isProcessCompleted" 
+      appTelemetryInteract 
+      [telemetryInteractObject]="telemetryInteractObject" 
+      [telemetryInteractEdata]="checkStatusInteractEdata" 
+      [disabled]="!statusForm.value.processId"  
+      class="sb-btn sb-btn-normal sb-btn-primary"
+      (click)="getBulkUploadStatus(statusForm.value)"
+      >
+        {{resourceService?.frmelmnts?.btn?.chksts}}
+      </button>
   </div>
+  <!--/Actions-->
+
 </sui-modal>
