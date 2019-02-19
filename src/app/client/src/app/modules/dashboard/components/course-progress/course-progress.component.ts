@@ -1,4 +1,3 @@
-
 import { combineLatest,  Subscription ,  Observable ,  Subject } from 'rxjs';
 
 import {first, takeUntil, map} from 'rxjs/operators';
@@ -6,11 +5,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { UserService } from '@sunbird/core';
-import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse, PaginationService } from '@sunbird/shared';
 import { CourseProgressService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-
+import { IPagination } from '@sunbird/announcement';
 /**
  * This component shows the course progress dashboard
  */
@@ -89,6 +88,26 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
    * To navigate to other pages
    */
   route: Router;
+   /**
+       * Contains page limit of inbox list
+    */
+   pageLimit: number;
+
+   /**
+     * Current page number of inbox list
+   */
+   pageNumber = 1;
+
+   /**
+     * totalCount of the list
+   */
+   totalCount: Number;
+
+   /**
+     * Contains returned object of the pagination service
+   * which is needed to show the pagination on inbox view
+     */
+   pager: IPagination;
   /**
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to parent component
@@ -111,6 +130,10 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   */
   public courseProgressService: CourseProgressService;
   /**
+  * For showing pagination on draft list
+  */
+   private paginationService: PaginationService;
+  /**
 	 * telemetryImpression object for course progress page
 	*/
   telemetryImpression: IImpressionEventInput;
@@ -132,13 +155,14 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
     toasterService: ToasterService,
-    courseProgressService: CourseProgressService) {
+    courseProgressService: CourseProgressService,  paginationService: PaginationService) {
     this.user = user;
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.courseProgressService = courseProgressService;
+    this.paginationService = paginationService;
     this.route.onSameUrlNavigation = 'ignore';
   }
 
@@ -192,6 +216,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   */
   setBatchId(batchId: string): void {
     this.queryParams.batchIdentifier = batchId;
+    this.queryParams.pageNumber = this.pageNumber;
     this.populateCourseDashboardData();
   }
 
@@ -233,20 +258,22 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   populateCourseDashboardData(): void {
     this.showWarningDiv = false;
     this.navigate();
-    this.setFilterDescription();
     this.showLoader = true;
     const option = {
-      batchIdentifier: this.queryParams.batchIdentifier,
-      timePeriod: this.queryParams.timePeriod
+      batchIdentifier: this.queryParams.batchIdentifier
     };
-    this.telemetryImpression.edata.uri = '/learn/course/' + this.courseId + '/dashboard?timePeriod='
-      + this.queryParams.timePeriod + '&batchIdentifier=' + this.queryParams.batchIdentifier;
+    this.telemetryImpression.edata.uri = '/learn/course/' + this.courseId +
+    '/dashboard&batchIdentifier=' + this.queryParams.batchIdentifier;
     this.courseProgressService.getDashboardData(option).pipe(
     takeUntil(this.unsubscribe))
     .subscribe(
       (apiResponse: ServerResponse) => {
-        this.dashboarData = this.courseProgressService.parseDasboardResponse(apiResponse.result);
+
+        // this.dashboarData = this.courseProgressService.parseDasboardResponse(apiResponse.result);
         this.showLoader = false;
+        this.dashboarData = apiResponse.result;
+        this.totalCount = apiResponse.result.count;
+        this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, 200);
       },
       err => {
         this.toasterService.error(err.error.params.errmsg);
@@ -271,7 +298,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   downloadReport(): void {
     const option = {
       batchIdentifier: this.queryParams.batchIdentifier,
-      timePeriod: this.queryParams.timePeriod
     };
     this.courseProgressService.downloadDashboardData(option).pipe(
     takeUntil(this.unsubscribe))
@@ -285,6 +311,13 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     );
   }
 
+  navigateToPage(page: number): undefined | void {
+    if (page < 1 || page > this.pager.totalPages) {
+        return;
+    }
+    this.pageNumber = page;
+    this.navigate();
+  }
   /**
   * To method subscribes the user data to get the user id.
   * It also subscribes the activated route params to get the
@@ -305,8 +338,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
             this.courseId = bothParams.params.courseId;
             this.batchId = bothParams.params.batchId;
             this.queryParams = { ...bothParams.queryParams };
-            this.queryParams.timePeriod = this.queryParams.timePeriod || '7d';
-
             // Create the telemetry impression event for course stats page
             this.telemetryImpression = {
               context: {

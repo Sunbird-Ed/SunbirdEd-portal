@@ -9,7 +9,7 @@ export interface RequestParam {
     /**
      * http params
     */
-  param?: {[key: string]: string | string[]};
+  param?: any;
     /**
      * http header
     */

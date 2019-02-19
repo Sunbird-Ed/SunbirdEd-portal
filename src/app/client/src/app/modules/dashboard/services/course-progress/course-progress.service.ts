@@ -55,9 +55,10 @@ export class CourseProgressService {
    */
   getDashboardData(requestParam) {
     const option = {
-      url: this.config.urlConFig.URLS.DASHBOARD.COURSE_PROGRESS + '/' + requestParam.batchIdentifier,
+      url: this.config.urlConFig.URLS.DASHBOARD.COURSE_PROGRESS_V2 + '/' + requestParam.batchIdentifier,
       param: {
-        period: requestParam.timePeriod
+        limit: 200,
+        offset: 0
       }
     };
     return this.learnerService.get(option);
@@ -69,10 +70,6 @@ export class CourseProgressService {
   downloadDashboardData(requestParam) {
     const option = {
       url: this.config.urlConFig.URLS.DASHBOARD.COURSE_PROGRESS + '/' + requestParam.batchIdentifier + '/export',
-      param: {
-        period: requestParam.timePeriod,
-        format: 'csv'
-      }
     };
     return this.learnerService.get(option);
   }
