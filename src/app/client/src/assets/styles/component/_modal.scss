@@ -1,96 +1,95 @@
 /* modal styles */
 .sb-modal {
-    .ui.modal {
-        @include margin(3.5rem auto 0 auto);
-        @include position(null, 0 0 null 0); //bourbon
-        @include size(100%, auto); //bourbon
-        .sb-modal-header {
-            background-color: $sb-modal-header-bg;
-            color: $white-color;
-            font-weight: $font-weight-bold;
-            font-size: $sb-modal-header-fsize;
-            padding: $block-padding-y-x;
-            border-bottom: 0 solid $gray-100; //@include size(auto,($base-block-space * 5)); //bourbon
-            min-height: ($base-block-space * 5);
-            line-height: ($h5-font-size + 8);
-        }
-        .sb-modal-content {
-            min-height: 100px;
-            padding: $block-padding-xy;
-        }
-        &>.close {
-            color: $white-color;
-            font-size: $font-size-base;
-            @include padding(0 0); //bourbon
-            @include margin(0 0);
-            @include size(($base-block-space * 5), ($base-block-space * 5)); //bourbon
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            @include position(absolute, 0 0 null null); //bourbon
-        }
-        .sb-modal-actions {
-            padding: $block-padding-y-x;
-            background: $sb-modal-actions-bg;
-            border-top: 1px solid $gray-100;
-            min-height: ($base-block-space * 7);
-            display: flex;
-            flex-direction: row-reverse;
-            align-items: center;
-        }
-        .sb-modal-fullscreen {
-            @include position(fixed, 0 0 0 0); //bourbon
-            width: 100%;
-            margin: 0;
-            overflow-y: auto;
-            overflow-x: hidden;
-            .sb-modal-header {
-                height: 4rem;
-                width: auto;
-                border-radius: 0px;
-                display: flex;
-                justify-content: space-between;
-            }
-            .sb-modal-content {
-                height: calc(100vh - 120px);
-            }
-        }
-        .small {
-            color: $text-lightDark;
-        }
-        &.small {
-            max-width: 480px;
-        }
-        &.normal {
-            max-width: 720px;
-            .content {
-                max-height: 380px;
-            }
-        }
-        &.large {
-            max-width: 900px;
-            .content {
-                height: calc(100vh - 100px);
-            }
-        }
-    } 
-    // sb modal confirmation/alert styles 
-    &.sb-warning .ui.modal{
-        .sb-modal-header {
-          background-color: $sb-modal-header-bg-warning;
-        }
-    }
-    &.sb-success .ui.modal{
-        .sb-modal-header {
-          background-color: $sb-modal-header-bg-success;
-        }
-    }
-    &.sb-error .ui.modal{
-        .sb-modal-header {
-          background-color: $sb-modal-header-bg-error;
-        }
-    }
+  .ui.modal {
+      @include margin(3.5rem auto 0 auto);
+      @include position(null, 0 0 null 0); //bourbon
+      @include size(100%, auto); //bourbon
+      .sb-modal-header {
+          background-color: $sb-modal-header-bg;
+          color: $white-color;
+          font-weight: $font-weight-bold;
+          font-size: $sb-modal-header-fsize;
+          padding: $block-padding-y-x;
+          border-bottom: 0 solid $gray-100; //@include size(auto,($base-block-space * 5)); //bourbon
+          min-height: ($base-block-space * 5);
+          line-height: ($h5-font-size + 8);
+      }
+      .sb-modal-content {
+          min-height: 100px;
+          padding: $block-padding-xy;
+      }
+      .close {
+          color: $white-color;
+          font-size: $font-size-base;
+          @include padding(0 0); //bourbon
+          @include margin(0 0);
+          @include size(($base-block-space * 5), ($base-block-space * 5)); //bourbon
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          @include position(absolute, 0 0 null null); //bourbon
+      }
+      .sb-modal-actions {
+          padding: $block-padding-y-x;
+          background: $sb-modal-actions-bg;
+          border-top: 1px solid $gray-100;
+          min-height: ($base-block-space * 7);
+          display: flex;
+          flex-direction: row-reverse;
+          align-items: center;
+      }
+      .sb-modal-fullscreen {
+          @include position(fixed, 0 0 0 0); //bourbon
+          width: 100%;
+          margin: 0;
+          overflow-y: auto;
+          overflow-x: hidden;
+          .sb-modal-header {
+              height: 4rem;
+              width: auto;
+              border-radius: 0px;
+              display: flex;
+              justify-content: space-between;
+          }
+          .sb-modal-content {
+              height: calc(100vh - 120px);
+          }
+      }
+      .small {
+          color: $text-lightDark;
+      }
+      &.small {
+          max-width: 480px;
+      }
+      &.normal {
+          max-width: 720px;
+          .content {
+              max-height: 380px;
+          }
+      }
+      &.large {
+          max-width: 900px;
+          .content {
+              height: calc(100vh - 100px);
+          }
+      }
+  } 
+  // sb modal confirmation/alert styles 
+  &.sb-warning .ui.modal{
+      .sb-modal-header {
+        background-color: $sb-modal-header-bg-warning;
+      }
+  }
+  &.sb-success .ui.modal{
+      .sb-modal-header {
+        background-color: $sb-modal-header-bg-success;
+      }
+  }
+  &.sb-error .ui.modal{
+      .sb-modal-header {
+        background-color: $sb-modal-header-bg-error;
+      }
   }
   [dir="rtl"] .sb-modal .ui.modal>.close {
     right: auto;
@@ -125,6 +124,38 @@
     }
 }
 
+[dir="rtl"] .sb-modal .ui.modal>.close {
+  right: auto;
+  left: 0;
+}
+@include respond-below(sm) {
+  .sb-modal {
+      .ui.modal {
+          position: absolute;
+          width: 95%;
+          margin: 0 auto !important;
+          top: 50%;
+          transform: translate(0, -50%);
+          height: inherit;
+          &>.close {
+              top: 0 !important;
+              right: 0 !important;
+          }
+          &>.sb-modal-actions {
+              padding: $block-padding-y-x;
+          }
+      }
+      .ui.modal .scrolling.content {
+          max-height: calc(100vh - 10rem);
+          overflow: auto;
+      }
+      .ui.page.dimmer {
+          display: flex !important;
+          align-items: center;
+          justify-content: center;
+      }
+  }
+}
 .ui.tree-picker.modal {
     top: 3.5rem !important;
 

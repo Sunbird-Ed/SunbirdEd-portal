@@ -128,14 +128,16 @@ $red-0:   lighten($red,50%); // toast bg
 $red-100: lighten($red,15%); // buttong bg, toast
 $red-400: $red; // icon color, lable, notification bg
 */
+
 $red-0: #FBCCD1; // toast bg
 $red-100: #FF6979; // buttong bg, toast
 $red-400: $red; // icon color, lable, notification bg
+
 // Status Colors
-$info-color: $blue;
+$info-color: $primary-400;
 $success-color: $secondary-200;
-$warning-color: $orange;
-$danger-color: $red-400;
+$warning-color: $tertiary-100;
+$danger-color: $red-100;
 // Settings for the `<body>` element.
 $bg-body: $primary-0;
 $body-color: $gray-800;
