@@ -42,7 +42,7 @@
       </div>
       <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
         [telemetryInteractEdata]="editProfileInteractEdata"
-        class="ui semi-circular dodger-blue button right-aligned-button right-0 bottom-5 absolute computer only"
+        class="sb-btn sb-btn-primary sb-btn-xs right-aligned-button right-0 bottom-5 absolute computer only"
         (click)="showEditUserDetailsPopup=true">Edit</button>
     </div>
 
@@ -133,7 +133,7 @@
               *ngIf="userProfile.framework">{{convertToString(userProfile.framework.subject)}}</span>
           </div>
         </div>
-        <button class="ui semi-circular dodger-blue button right-aligned-button bottom-0 right-0 absolute computer only"
+        <button class="sb-btn sb-btn-primary sb-btn-xs right-aligned-button bottom-0 right-0 absolute computer only"
           appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
           [telemetryInteractEdata]="myFrameworkEditEdata"
           (click)="showEdit = !showEdit">{{resourceService.frmelmnts.lbl.edit}}</button>
@@ -167,7 +167,7 @@
       <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
         [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="myFrameworkEditEdata"
         (click)="showEdit = !showEdit">
-        <button class="ui semi-circular dodger-blue button mt-30">{{resourceService.frmelmnts.lbl.edit}}</button>
+        <button class="sb-btn sb-btn-primary sb-btn-xs mt-30">{{resourceService.frmelmnts.lbl.edit}}</button>
       </div>
     </div>
     <!-- User info mobile view ends-->
