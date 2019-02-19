@@ -19,7 +19,7 @@
             min-height: 100px;
             padding: $sb-modal-content-padding;
         }
-        .close {
+        &>.close {
             color: $white-color;
             font-size: $font-size-base;
             @include padding(0 0); //bourbon
@@ -130,7 +130,7 @@
     }
 }
 .ui.tree-picker.modal {
-    top: 50%;
+    top: 3.5rem;
     .sb-modal-actions {
         .pick-search,
         .unpick-search,
