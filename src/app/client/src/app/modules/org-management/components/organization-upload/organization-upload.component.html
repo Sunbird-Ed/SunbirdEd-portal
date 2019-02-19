@@ -63,7 +63,7 @@
     >
       {{resourceService?.frmelmnts?.btn?.smplcsv}}
     </button>
-    <input #inputbtn type="file" style='display:none' accept=".csv" id="uploadorgscsv" onclick="this.value = null" (change)="uploadOrg($event.target.files)" autofocus required=""
+    <input #inputbtn type="file" class="d-none" accept=".csv" id="uploadorgscsv" onclick="this.value = null" (change)="uploadOrg($event.target.files)" autofocus required=""
       />
   </div>
   <!--/Actions-->
