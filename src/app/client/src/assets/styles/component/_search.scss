@@ -4,6 +4,7 @@
 .sb-search-bar {
     position: relative;
     display: flex;
+    margin-right: 8px;
     &.large {
         width: ($base-block-space * 56);
     }
@@ -42,7 +43,7 @@
             background-color: $white-color;
             padding: 8px 32px;
             font-size: 12px;
-            color: black;
+            color: $body-color;
             font-weight: normal;
             border: 0.5px solid #7AB4EE;
             min-height: 32px;
