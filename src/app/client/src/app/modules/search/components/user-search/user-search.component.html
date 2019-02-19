@@ -1,8 +1,8 @@
-<div class="ui container">
+<app-user-filter></app-user-filter>
+<div class="ui container mt-20">
     <div [appTelemetryImpression]="telemetryImpression" class="ui grid">
       <div class="twelve wide column">
         <div>
-          <app-user-filter appTelemetryInteract [telemetryInteractEdata]="filterIntractEdata" appTelemetryInteract [telemetryInteractEdata]="filterIntractEdata" ></app-user-filter>
           <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && !noResult">
             <div class="ui left floated header  ">
               <p class="serch-allresult">Showing results
@@ -12,9 +12,9 @@
                 in "users"
               </p>
             </div>
-            <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="ui right floated basic icon circular button " [routerLink]="['/profile']">
+            <!-- <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="ui right floated basic icon circular button " [routerLink]="['/profile']">
               <i class="ui remove icon "></i>
-            </h5>
+            </h5> -->
           </div>
     
           <div class=" ui clearing segment" *ngIf="!showLoader && !noResult && config.appConfig.SEARCH.USER.DOWNLOAD_BUTTON_VISIBILITY === 'TRUE'">

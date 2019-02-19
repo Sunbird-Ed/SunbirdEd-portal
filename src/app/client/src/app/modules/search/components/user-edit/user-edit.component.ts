@@ -95,7 +95,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
         const rootOrgDetails = _.filter(this.userDetails.organisations, (org) => {
           return org.organisationId === this.userDetails.rootOrgId;
         });
-        this.selectedOrgUserRoles = rootOrgDetails[0].roles;
+        if (!_.isEmpty(rootOrgDetails)) {this.selectedOrgUserRoles = rootOrgDetails[0].roles; }
         this.initializeFormFields();
       },
       err => {

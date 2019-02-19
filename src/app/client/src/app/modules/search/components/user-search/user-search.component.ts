@@ -145,9 +145,9 @@ export class UserSearchComponent implements OnInit {
       filters: {
         'objectType': ['user'],
         'rootOrgId': this.rootOrgId,
-        'grade': this.queryParams.Grades,
-        'language': this.queryParams.Medium,
-        'subject': this.queryParams.Subjects,
+        'grade': this.queryParams.gradeLevel,
+        'language': this.queryParams.medium,
+        'subject': this.queryParams.subject,
         'location': this.queryParams.Location,
         'organisations.roles': this.queryParams.Roles
       },

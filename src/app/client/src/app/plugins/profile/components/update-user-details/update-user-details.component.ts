@@ -97,6 +97,10 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
+  test(e) {
+    console.log('eee', e)
+  }
+
   getDistrict(stateId) {
     this.showDistrictDivLoader = true;
     const requestData = { 'filters': { 'type': 'district', parentId: stateId } };
