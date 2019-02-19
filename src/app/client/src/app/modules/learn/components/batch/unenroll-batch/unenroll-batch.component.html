@@ -2,8 +2,8 @@
     [mustScroll]="true" 
     [isClosable]="true"
     [transitionDuration]="0"
-    [size]="'normal'"
-    class="sb-modal"
+    [size]="'small'"
+    class="sb-modal sb-warning"
     appBodyScroll
     #unenrollBatch 
     (dismissed)="redirect()">
@@ -23,7 +23,7 @@
     <!--Actions-->
     <div class="sb-modal-actions">
         <button 
-            class="sb-btn sb-btn-normal sb-btn-primary"
+            class="sb-btn sb-btn-normal sb-btn-tertiary"
             [disabled]="disableSubmitBtn"
             id="unenrollFromCourse" 
             (click)="unenrollFromCourse()"
@@ -39,5 +39,4 @@
         
     </div>
     <!--/Actions-->
-
  </sui-modal>
