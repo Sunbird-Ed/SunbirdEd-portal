@@ -17,8 +17,8 @@ input[type="button"] {
     color: $white-color;
     cursor: pointer;
     @include margin(0px 0px 0px 8px);
-    min-width: ($base-block-space * 8);
-    line-height: normal;
+    min-width:($base-block-space * 8);
+    line-height: inherit;
     @include border-radius(3px);
     text: {
         transform: capitalize;
@@ -79,7 +79,7 @@ input[type="button"] {
   font-size:$font-size-lg;
 }
 // disabled button
-.sb-btn-disabled {
+.sb-btn-disabled,button[disabled] {
     background-color: $gray-100;
     color:$gray-200;
     border:1px solid $gray-100;
