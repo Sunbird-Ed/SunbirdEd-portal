@@ -20,7 +20,7 @@ input[type="button"] {
     color: $white-color;
     @include margin(0px 0px 0px 8px);
     min-width:($base-block-space * 8);
-    line-height: normal;
+    line-height: inherit;
     @include border-radius(3px);
     text: {
         transform: capitalize;
@@ -65,7 +65,6 @@ input[type="button"] {
   padding: ($base-block-space * 3);
   font-size:$font-size-lg;
 }
-
 // default outline colored btns
 .sb-btn-outline-primary{
     @include btn-theme-bgwhite($primary-color);
