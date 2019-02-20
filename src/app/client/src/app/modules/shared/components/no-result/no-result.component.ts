@@ -22,7 +22,7 @@ export class NoResultComponent implements OnInit {
   */
   messageText: string;
   /**
-   * no result messageText for component
+   * no result emptyImage for component
   */
  emptyImage: string;
 
