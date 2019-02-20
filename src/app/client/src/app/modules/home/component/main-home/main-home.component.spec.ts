@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
 import { Ng2IziToastModule } from 'ng2-izitoast';
@@ -60,7 +60,8 @@ class ActivatedRouteStub {
          ToasterService, FrameworkService, CacheService, ContentService, PlayerService,
          { provide: Router, useClass: RouterStub },
          { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-         { provide: ResourceService, useValue: resourceBundle }],
+        //  { provide: ResourceService, useValue: resourceBundle }
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents()
@@ -73,8 +74,10 @@ class ActivatedRouteStub {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
     const toasterService = TestBed.get(ToasterService);
+    const resourceService = TestBed.get(ResourceService);
     spyOn(toasterService, 'error').and.callFake(() => 'error');
     courseService._enrolledCourseData$.next({ err: null, enrolledCourses: testData.courseSuccess});
+    resourceService.initialize();
     courseService.initialize();
     component.populateEnrolledCourse();
     expect(component.showLoader).toBeFalsy();
@@ -84,8 +87,10 @@ class ActivatedRouteStub {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
     const toasterService = TestBed.get(ToasterService);
+    const resourceService = TestBed.get(ResourceService);
     spyOn(toasterService, 'error').and.callFake(() => 'error');
     courseService._enrolledCourseData$.next({ err: testData.courseError, enrolledCourses: null});
+    resourceService.initialize();
     courseService.initialize();
     component.ngOnInit();
     component.populateEnrolledCourse();
@@ -94,6 +99,8 @@ class ActivatedRouteStub {
   it('should call playcontent', () => {
     const playerService = TestBed.get(PlayerService);
     const toasterService = TestBed.get(ToasterService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.initialize();
     spyOn(toasterService, 'error').and.callFake(() => 'error');
     spyOn(playerService, 'playContent').and.callFake(() => {
       return;
@@ -104,6 +111,8 @@ class ActivatedRouteStub {
   it('should call playcontent', () => {
     const playerService = TestBed.get(PlayerService);
     const toasterService = TestBed.get(ToasterService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.initialize();
     spyOn(toasterService, 'error').and.callFake(() => 'error');
     spyOn(playerService, 'playContent').and.callThrough();
     component.playContent(testData.metaData);
