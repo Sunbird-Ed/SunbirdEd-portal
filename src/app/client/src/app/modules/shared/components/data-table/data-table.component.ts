@@ -12,9 +12,9 @@ export class DataTableComponent implements AfterViewInit {
 
     ngAfterViewInit() {
         setTimeout(() => {
-            $('#table').DataTable({
+            $('#table').removeAttr('width').DataTable({
                 'data': this.rowsData,
-                'scrollX': true,
+                // 'scrollX': true,
                 'searching': false,
             });
             // $('#CourseStatsTable').DataTable({
