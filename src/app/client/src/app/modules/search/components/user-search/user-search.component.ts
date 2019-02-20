@@ -1,7 +1,7 @@
 
 import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage } from '@sunbird/shared';
-import { SearchService, UserService } from '@sunbird/core';
+import { SearchService, UserService, PermissionService } from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
@@ -102,6 +102,7 @@ export class UserSearchComponent implements OnInit {
   rootOrgId: string;
   userProfile: any;
   inviewLogs: any = [];
+  selectedRoles: Array<string>;
 
   customStyle = {
     backgroundColor: '#ffffff',
@@ -124,7 +125,7 @@ export class UserSearchComponent implements OnInit {
   constructor(searchService: SearchService, route: Router, private ngZone: NgZone,
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
     resourceService: ResourceService, toasterService: ToasterService,
-    config: ConfigService, user: UserService, userSearchService: UserSearchService) {
+    config: ConfigService, user: UserService, userSearchService: UserSearchService, public permissionService: PermissionService) {
     this.searchService = searchService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -143,18 +144,29 @@ export class UserSearchComponent implements OnInit {
     this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
     const searchParams = {
       filters: {
-        'objectType': ['user'],
         'rootOrgId': this.rootOrgId,
-        'grade': this.queryParams.gradeLevel,
-        'language': this.queryParams.medium,
-        'subject': this.queryParams.subject,
-        'location': this.queryParams.Location,
-        'organisations.roles': this.queryParams.Roles
+        'userType': this.queryParams.Usertype,
+        'framework.medium': this.queryParams.medium,
+        'framework.gradeLevel': this.queryParams.gradeLevel,
+        'framework.subject': this.queryParams.subject,
+        'organisations.roles': this.selectedRoles
       },
       limit: this.pageLimit,
       pageNumber: this.pageNumber,
       query: this.queryParams.key
     };
+    if (this.queryParams.School) {
+      searchParams.filters['organisations.organisationId'] = [this.queryParams.School];
+    } else {
+      const locationArray = [];
+      if (this.queryParams.District) {
+        locationArray.push(this.queryParams.District);
+      }
+      if (this.queryParams.Block) {
+        locationArray.push(this.queryParams.Block);
+      }
+      if (!_.isEmpty(locationArray)) { searchParams.filters['locationIds'] = locationArray; }
+    }
     this.searchService.userSearch(searchParams).subscribe(
       (apiResponse: ServerResponse) => {
         if (apiResponse.result.response.count && apiResponse.result.response.content.length > 0) {
@@ -283,7 +295,19 @@ export class UserSearchComponent implements OnInit {
               this.pageNumber = Number(bothParams.params.pageNumber);
             }
             this.queryParams = { ...bothParams.queryParams };
-            this.populateUserSearch();
+            if (this.queryParams.Roles) {
+              this.permissionService.permissionAvailable$.subscribe(params => {
+                if (params === 'success') {
+                  this.selectedRoles = [];
+                  _.forEach(this.permissionService.allRoles, (role) => {
+                    if (this.queryParams.Roles.includes(role.roleName)) { this.selectedRoles.push(role.role); }
+                  });
+                  this.populateUserSearch();
+                }
+              });
+            } else {
+              this.populateUserSearch();
+            }
           });
       }
     });

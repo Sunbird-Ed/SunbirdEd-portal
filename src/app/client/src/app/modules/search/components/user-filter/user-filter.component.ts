@@ -1,11 +1,11 @@
-import { ConfigService, ResourceService, IUserData, ToasterService } from '@sunbird/shared';
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { ResourceService, IUserData, ToasterService } from '@sunbird/shared';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService, OrgDetailsService, RolesAndPermissions, PermissionService, FrameworkService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { ProfileService } from '@sunbird/profile';
 import { map, catchError } from 'rxjs/operators';
-import { of, Subscription, combineLatest } from 'rxjs';
+import { of, combineLatest } from 'rxjs';
 import { UserSearchService } from './../../services';
 
 @Component({
@@ -14,7 +14,7 @@ import { UserSearchService } from './../../services';
   styleUrls: ['./user-filter-component.scss']
 })
 
-export class UserFilterComponent implements OnInit, OnDestroy {
+export class UserFilterComponent implements OnInit {
   queryParams: any;
   refresh = true;
   userProfile: any;
@@ -24,12 +24,14 @@ export class UserFilterComponent implements OnInit, OnDestroy {
   allSchools: any;
   allRoles: Array<RolesAndPermissions>;
   allUserType: object = {};
-  private frameworkDataSubscription: Subscription;
   medium: object = {};
   class: object = {};
   subject: object = {};
-  formInputData: any = {};
+  inputData: any = {};
   showFilters = false;
+  selectedDistrict: string;
+  selectedBlock: string;
+  selectedSchool: string;
 
   constructor(private cdr: ChangeDetectorRef, public resourceService: ResourceService,
     private router: Router, private activatedRoute: ActivatedRoute,
@@ -38,46 +40,6 @@ export class UserFilterComponent implements OnInit, OnDestroy {
     public permissionService: PermissionService, public frameworkService: FrameworkService,
     public userSearchService: UserSearchService) {
     this.router.onSameUrlNavigation = 'reload';
-  }
-
-  removeFilterSelection(filterType, value) {
-    const itemIndex = this.queryParams[filterType].indexOf(value);
-    if (itemIndex !== -1) {
-      this.queryParams[filterType].splice(itemIndex, 1);
-    }
-    this.hardRefreshFilter();
-  }
-
-  applyFilters() {
-    const queryParams: any = {};
-    _.forIn(this.formInputData, (eachInputs: Array<any | object>, key) => {
-      const formatedValue = typeof eachInputs === 'string' ? eachInputs :
-        _.compact(_.map(eachInputs, value => typeof value === 'string' ? value : _.get(value, 'identifier')));
-      if (formatedValue.length) {
-        queryParams[key] = formatedValue;
-      }
-    });
-    console.log('queryparan', queryParams);
-    if (!_.isEmpty(queryParams)) {
-      queryParams['appliedFilters'] = true;
-      this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
-    }
-  }
-
-  resetFilters() {
-    this.queryParams = {};
-    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.queryParams });
-    this.hardRefreshFilter();
-  }
-
-  private subscribeToQueryParams() {
-    this.activatedRoute.queryParams.subscribe((params) => {
-      this.formInputData = {};
-      _.forIn(params, (value, key) => this.formInputData[key] = typeof value === 'string' && key !== 'key' ? [value] : value);
-      console.log('this.formInputData', this.formInputData);
-      this.showFilters = true;
-      this.hardRefreshFilter();
-    });
   }
 
   ngOnInit() {
@@ -90,14 +52,24 @@ export class UserFilterComponent implements OnInit, OnDestroy {
           });
           this.stateId = _.get(rootOrgDetails[0], 'locationIds[0]');
           this.subscribeToQueryParams();
-          this.callAllApis();
+          this.combineAllApis();
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0005);
         }
       });
   }
 
-  callAllApis() {
+  private subscribeToQueryParams() {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParams = params;
+      this.inputData = {};
+      _.forIn(params, (value, key) => this.inputData[key] = typeof value === 'string' && key !== 'key' ? [value] : value);
+      this.showFilters = true;
+      this.hardRefreshFilter();
+    });
+  }
+
+  combineAllApis() {
     const userType = this.getUserType();
     const frameworkDetails = this.getFormatedFilterDetails();
     const district = this.getDistrict();
@@ -151,6 +123,7 @@ export class UserFilterComponent implements OnInit, OnDestroy {
         this.allDistricts = res.result.response;
         // Get Blocks API call
         const districtIds = _.map(this.allDistricts, 'id');
+        this.selectedDistrict = this.queryParams.District;
         this.getBlock(districtIds);
         return 'District API success';
       }), catchError(e => of('District API error')));
@@ -162,7 +135,8 @@ export class UserFilterComponent implements OnInit, OnDestroy {
       const requestData = { 'filters': { 'type': 'block', parentId: districtIds } };
       this.profileService.getUserLocation(requestData).subscribe(res => {
         this.allBlocks = res.result.response;
-        console.log('blocks', this.allBlocks);
+        this.selectedBlock = this.queryParams.Block;
+        this.hardRefreshFilter();
         // Get school API call
         const blockIds = _.map(this.allBlocks, 'id');
         this.getSchool(blockIds);
@@ -175,7 +149,8 @@ export class UserFilterComponent implements OnInit, OnDestroy {
       const requestData = { 'filters': { locationIds: blockIds } };
       this.orgDetailsService.fetchOrgs(requestData).subscribe(res => {
         this.allSchools = res.result.response.content;
-        console.log('this.allSchools', this.allSchools);
+        this.selectedSchool = this.queryParams.School;
+        this.hardRefreshFilter();
       });
     }
   }
@@ -201,6 +176,30 @@ export class UserFilterComponent implements OnInit, OnDestroy {
     }), catchError(e => of('Roles API error')));
   }
 
+  applyFilters() {
+    const queryParams: any = {};
+    _.forIn(this.inputData, (eachInputs: Array<any | object>, key) => {
+      const formatedValue = typeof eachInputs === 'string' ? eachInputs :
+        _.compact(_.map(eachInputs, value => typeof value === 'string' ? value : _.get(value, 'identifier')));
+      if (formatedValue.length) {
+        queryParams[key] = formatedValue;
+      }
+    });
+    if (!_.isEmpty(queryParams)) {
+      queryParams['appliedFilters'] = true;
+      this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
+    }
+  }
+
+  resetFilters() {
+    this.queryParams = {};
+    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.queryParams });
+    this.selectedDistrict = '';
+    this.selectedBlock = '';
+    this.selectedSchool = '';
+    this.hardRefreshFilter();
+  }
+
   private hardRefreshFilter() {
     this.refresh = false;
     this.cdr.detectChanges();
@@ -208,26 +207,24 @@ export class UserFilterComponent implements OnInit, OnDestroy {
   }
 
   selectedValue(event, code) {
-    this.formInputData[code] = event;
+    this.inputData[code] = event;
   }
 
   onDistrictChange(districtId) {
-    const districtObj = _.find(this.allDistricts, (district) => {
-      return district.code === districtId;
-    });
-    this.getBlock([districtObj.id]);
+    this.selectedValue(districtId, 'District');
+    this.selectedValue('', 'Block');
+    this.selectedValue('', 'School');
+    this.getBlock([districtId]);
   }
 
   onBlockChange(blockId) {
-    const blockObj = _.find(this.allBlocks, (block) => {
-      return block.code === blockId;
-    });
-    this.getSchool([blockObj.id]);
+    this.selectedValue(blockId, 'Block');
+    this.selectedValue('', 'School');
+    this.getSchool([blockId]);
   }
 
-  ngOnDestroy() {
-    if (this.frameworkDataSubscription) {
-      this.frameworkDataSubscription.unsubscribe();
-    }
+  onSchoolChange(schoolId) {
+    this.selectedValue(schoolId, 'School');
   }
+
 }
