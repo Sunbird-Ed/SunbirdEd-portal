@@ -130,7 +130,7 @@
         [telemetryInteractEdata]="updateInteractEdata"
         *ngSwitchCase="'update'" 
         (click)="updateBatch()" 
-        class="sb-btn sb-btn-normal sb-btn-outline-primary mr-auto"  
+        class="sb-btn sb-btn-normal sb-btn-outline-primary"  
         [disabled]="disableSubmitBtn"
       >
         {{resourceService?.frmelmnts?.btn?.update}}
@@ -141,7 +141,7 @@
         [telemetryInteractEdata]="backInteractEdata"
         *ngSwitchCase="'addmember'" 
         (click)="navigateToStep('update')" 
-        class="sb-btn sb-btn-normal sb-btn-outline-primary mr-auto" 
+        class="sb-btn sb-btn-normal sb-btn-outline-gray mr-auto" 
       >
         {{resourceService?.frmelmnts?.btn?.back}}
       </button>
@@ -187,23 +187,23 @@
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button 
+      <button 
       appTelemetryInteract 
       [telemetryInteractObject]="telemetryInteractObject" 
-      [telemetryInteractEdata]="cancelInteractEdata"
+      [telemetryInteractEdata]="discardInteractEdata"
       class="sb-btn sb-btn-normal sb-btn-error" 
-      (click)="discardModalFlag = !discardModalFlag"
+      (click)="discardModal.deny(); redirect()"
     >
-      {{resourceService?.frmelmnts?.btn?.cancel}}
+      {{resourceService?.frmelmnts?.btn?.discard}}
     </button>
     <button 
       appTelemetryInteract 
       [telemetryInteractObject]="telemetryInteractObject" 
-      [telemetryInteractEdata]="discardInteractEdata"
+      [telemetryInteractEdata]="cancelInteractEdata"
       class="sb-btn sb-btn-normal sb-btn-outline-error" 
-      (click)="discardModal.deny(); redirect()"
+      (click)="discardModalFlag = !discardModalFlag"
     >
-      {{resourceService?.frmelmnts?.btn?.discard}}
+      {{resourceService?.frmelmnts?.btn?.cancel}}
     </button>
   </div>
   <!--/Actions-->
