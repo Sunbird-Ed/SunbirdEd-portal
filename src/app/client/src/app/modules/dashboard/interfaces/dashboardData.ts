@@ -28,7 +28,7 @@ export interface ICourseProgressData {
     progress: number;
     user: string;
     userName: string;
-    data: any;
+    data?: Array<any>;
 }
 
 export interface IBatchListData {
