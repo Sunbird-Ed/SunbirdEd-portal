@@ -29,7 +29,7 @@
                         {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}} 
                     </div>
                 </div>
-                <div class="ui bottom attached small segment" suiTabContent="tableMenu" id="tableScroll">
+                <div class="ui bottom attached small segment" suiTabContent="tableMenu">
                     <app-data-table *ngIf="isTableDataLoaded" [headerData]="table.header" [rowsData]="table.data"></app-data-table>
                     <div class="ui warning message" *ngIf="!isTableDataLoaded">
                         {{resourceService?.frmelmnts?.lbl?.tableNotAvailable}}
