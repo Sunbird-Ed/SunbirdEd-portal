@@ -156,7 +156,7 @@ export class UserSearchComponent implements OnInit {
     };
     if (!_.isEmpty(this.selectedRoles)) { searchParams.filters['organisations.roles'] = this.selectedRoles; }
     if (this.queryParams.School) {
-      searchParams.filters['organisations.organisationId'] = [this.queryParams.School];
+      searchParams.filters['organisations.organisationId'] = this.queryParams.School;
     } else {
       const locationArray = [];
       if (this.queryParams.District) {
