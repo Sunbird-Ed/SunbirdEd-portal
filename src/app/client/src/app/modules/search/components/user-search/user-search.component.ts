@@ -210,10 +210,10 @@ export class UserSearchComponent implements OnInit {
     this.searchService.getOrganisationDetails({ orgid: orgArray }).subscribe(
       (orgApiResponse: any) => {
         _.each(this.searchList, (user) => {
+          if (this.userProfile.rootOrgAdmin === true) {
+            user.isEditableProfile = true;
+          }
           _.each(user.organisations, (org) => {
-            if (this.userProfile.rootOrgAdmin === true) {
-              user.isEditableProfile = true;
-            }
             const orgNameAndId = _.find(orgApiResponse.result.response.content, (organisation) => {
               return organisation.id === org.organisationId;
             });

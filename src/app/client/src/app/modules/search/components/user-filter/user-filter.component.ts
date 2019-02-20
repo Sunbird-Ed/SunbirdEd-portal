@@ -83,7 +83,7 @@ export class UserFilterComponent implements OnInit {
   getUserType() {
     return this.userSearchService.getUserType().pipe(map((res: any) => {
       this.allUserType['code'] = 'Usertype';
-      this.allUserType['label'] = 'User Type';
+      this.allUserType['label'] = this.resourceService.frmelmnts.lbl.userType;
       const userTypeArray = [];
       _.forEach(res.result.response, (type) => {
         userTypeArray.push({ code: type.name, name: type.name });
@@ -166,7 +166,7 @@ export class UserFilterComponent implements OnInit {
       _.remove(this.allRoles, { role: 'PUBLIC' });
       // Preparing data for multi-select filter
       this.allRoles['code'] = 'Roles';
-      this.allRoles['label'] = 'Roles';
+      this.allRoles['label'] = this.resourceService.frmelmnts.lbl.role;
       const roleArray = [];
       _.forEach(this.allRoles, (role) => {
         roleArray.push({ code: role.role, name: role.roleName });

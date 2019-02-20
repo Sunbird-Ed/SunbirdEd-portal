@@ -14,4 +14,12 @@
     border: none;
     box-shadow: none;
   }
+  &.selection.bordered.dropdown {
+    border: 1px solid rgba(34, 36, 38, 0.15);
+    border-radius: 5px;
+  }
+}
+
+.ui.dropdown:not(.button)>.default.text {
+  color: #4a4a4a;
 }
