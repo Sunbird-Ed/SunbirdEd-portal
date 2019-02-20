@@ -112,7 +112,7 @@ describe('UpdateBatchComponent', () => {
     spyOn(toasterService, 'error');
     fixture.detectChanges();
     expect(toasterService.error).toHaveBeenCalledWith('error');
-    expect(component.router.navigate).toHaveBeenCalledWith(['workspace/content/batches/1']);
+    expect(component.router.navigate).toHaveBeenCalled();
   });
   it('should navigate to parent page if fetching user details fails', () => {
     const batchService = TestBed.get(BatchService);
@@ -137,7 +137,7 @@ describe('UpdateBatchComponent', () => {
     expect(component.mentorList.length).toBe(1);
     expect(component.mentorList[0].id).toBe('b2479136-8608-41c0-b3b1-283f38c338ed');
     expect(toasterService.error).toHaveBeenCalledWith('error');
-    expect(component.router.navigate).toHaveBeenCalledWith(['workspace/content/batches/1']);
+    expect(component.router.navigate).toHaveBeenCalled();
   });
   it('should update batch and show success message if api return success', () => {
     const batchService = TestBed.get(BatchService);

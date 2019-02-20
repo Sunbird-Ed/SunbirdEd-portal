@@ -11,7 +11,7 @@ import { WorkSpaceService, BatchService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 
 /**
  * The batch list component
@@ -34,6 +34,8 @@ export class BatchListComponent extends WorkSpace implements OnInit {
   */
   private activatedRoute: ActivatedRoute;
 
+  public closeIntractEdata: IInteractEventEdata;
+
   /**
    * Status option
   */
@@ -46,6 +48,16 @@ export class BatchListComponent extends WorkSpace implements OnInit {
     status for preselection;
   */
   status: number;
+
+  /**
+    on click of close icon in the list page
+  */
+  closeUrl: string;
+
+  /**
+    category of the list 'assigned' or 'created';
+  */
+  category: string;
 
   /**
    * To show / hide loader
@@ -158,9 +170,13 @@ export class BatchListComponent extends WorkSpace implements OnInit {
   }
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
+      console.log('params', params);
+      this.category = params.category;
+      this.status = params.status;
       this.pageNumber = Number(params.pageNumber);
       this.fetchBatchList();
     });
+    this.closeUrl = '/workspace/content/batches/pagesection/' + this.category;
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
@@ -173,16 +189,12 @@ export class BatchListComponent extends WorkSpace implements OnInit {
         visits: this.inviewLogs
       }
     };
+    this.setInteractEventData();
     this.batchService.updateEvent
       .subscribe((data) => {
         console.log('update event in list');
         this.fetchBatchList();
     });
-  }
-  changeBatchStatus() {
-    this.pageNumber = 1;
-    this.route.navigate(['workspace/content/batches', 1]);
-    this.fetchBatchList();
   }
   /**
     * This method sets the make an api call to get all batch with page No and offset
@@ -193,13 +205,17 @@ export class BatchListComponent extends WorkSpace implements OnInit {
     const searchParams = {
       filters: {
         status: this.status.toString(),
-        createdFor: this.userService.RoleOrgMap['COURSE_MENTOR'],
-        createdBy: this.userService.userid
+        createdFor: this.userService.RoleOrgMap['COURSE_MENTOR']
       },
       limit: this.pageLimit,
       pageNumber: this.pageNumber,
       sort_by: { createdDate: this.config.appConfig.WORKSPACE.createdDate }
     };
+    if (this.category === 'assigned') {
+      searchParams.filters['mentors'] = [this.userService.userid];
+    } else {
+      searchParams.filters['createdBy'] = this.userService.userid;
+    }
     this.getBatches(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.response.count && data.result.response.content.length > 0) {
@@ -237,7 +253,7 @@ export class BatchListComponent extends WorkSpace implements OnInit {
       return;
     }
     this.pageNumber = page;
-    this.route.navigate(['workspace/content/batches', this.pageNumber]);
+    this.route.navigate(['workspace/content/batches/viewall/', this.status, this.category, this.pageNumber]);
   }
 
   /**
@@ -278,6 +294,15 @@ export class BatchListComponent extends WorkSpace implements OnInit {
     );
     this.showLoader = false;
   }
+
+  setInteractEventData() {
+    this.closeIntractEdata = {
+      id: 'close',
+      type: 'click',
+      pageid: _.get(this.activatedRoute.snapshot, 'data.telemetry.pageid'),
+    };
+  }
+
   /**
   * get inview  Data
   */

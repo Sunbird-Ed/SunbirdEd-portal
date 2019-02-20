@@ -75,6 +75,11 @@ export class PageApiService {
       }));
     }
   }
+
+  getPageDataMock(requestParam: IPageSection) {
+    return observableOf( {sections: []} );
+  }
+
   setData(data, requestParam) {
     const sort_by = _.has(requestParam.sort_by, 'lastUpdatedOn') || _.has(requestParam.sort_by, 'createdOn');
     if (_.isEmpty(requestParam.filters) && !sort_by) {

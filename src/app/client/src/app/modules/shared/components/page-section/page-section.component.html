@@ -18,7 +18,8 @@
                 #slickModal="slick-modal" 
                 [config]="slideConfig">
                 <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of section.contents;let i = index; let last = last" class="slide">    
-                    <app-card  appContentDirection [data]="content"
+                    <app-batch-card [batch]="content" (clickEvent)="playContent($event)"></app-batch-card>
+                    <!-- <app-card  appContentDirection [data]="content"
                         appTelemetryInteract 
                         [telemetryInteractEdata]="cardIntractEdata" 
                         [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:'1.0'}"
@@ -26,7 +27,7 @@
                         [data]="content" 
                         [customClass]="'mr-20'"
                         class="pr-20 d-block" [class.last-card]="pr-0">
-                    </app-card>
+                    </app-card> -->
                 </div>
             </ngx-slick>
         </div>

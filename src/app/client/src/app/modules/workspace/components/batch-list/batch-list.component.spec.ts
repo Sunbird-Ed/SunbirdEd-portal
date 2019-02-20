@@ -1,6 +1,6 @@
 
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
-import { BatchCardComponent } from './../batch-card/batch-card.component';
+import { BatchCardComponent } from '@sunbird/shared';
 import { BatchListComponent } from './batch-list.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

@@ -1,4 +1,3 @@
-import { UpdateBatchComponent } from './../update-batch/update-batch.component';
 import { BatchCardComponent } from './batch-card.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -8,7 +7,6 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SharedModule, PaginationService, ToasterService, ResourceService } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
-import { WorkSpaceService, BatchService } from '../../services';
 import { of } from 'rxjs';
 import { Response } from './batch-card.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -39,11 +37,11 @@ describe('BatchCardComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BatchCardComponent, UpdateBatchComponent],
+      declarations: [BatchCardComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SuiModule, FormsModule, ReactiveFormsModule,
         HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), TelemetryModule.forRoot(), CoreModule.forRoot()],
-      providers: [PaginationService, WorkSpaceService, ResourceService, ToasterService, BatchService,
+      providers: [PaginationService, ResourceService, ToasterService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
@@ -68,11 +66,6 @@ describe('BatchCardComponent', () => {
       spyOn(component, 'onAction').and.callThrough();
       component.onAction(Response.successData);
       component.batch = Response.successData;
-      const batchService = TestBed.get(BatchService);
-      batchService.batchDetails = Response.successData;
-      spyOn(batchService, 'setBatchData').and.callThrough();
-      batchService.setBatchData(Response.successData);
-      expect(batchService.setBatchData).toHaveBeenCalledWith(Response.successData);
       expect(route.navigate).toHaveBeenCalledWith(['update/batch', Response.successData.identifier],
         { relativeTo: component.activatedRoute });
     }));

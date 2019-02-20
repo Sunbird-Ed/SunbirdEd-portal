@@ -2,7 +2,7 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Ibatch } from './../../interfaces';
-import { WorkSpaceService, BatchService } from '../../services';
+
 /**
 * This display a batch card
 */
@@ -23,14 +23,6 @@ export class BatchCardComponent {
   */
   public activatedRoute: ActivatedRoute;
   /**
-    * Reference for WorkSpaceService
-  */
-  public workSpaceService: WorkSpaceService;
-  /**
-    * Reference for BatchService
-  */
-  public batchService: BatchService;
-  /**
    * batch is used to render Ibatch value on the view
   */
   @Input() batch: Ibatch;
@@ -45,16 +37,15 @@ export class BatchCardComponent {
   * @param {Router} route Reference of Router
   * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
   */
-  constructor(workSpaceService: WorkSpaceService,
-    batchService: BatchService,
+  constructor(
     activatedRoute: ActivatedRoute,
     route: Router) {
-    this.batchService = batchService;
     this.route = route;
     this.activatedRoute = activatedRoute;
+    console.log('this.batch---', this.batch);
   }
   public onAction(batchdata) {
-    this.batchService.setBatchData(batchdata);
+    // this.batchService.setBatchData(batchdata);
     this.route.navigate(['update/batch', batchdata.identifier], {relativeTo: this.activatedRoute});
   }
 

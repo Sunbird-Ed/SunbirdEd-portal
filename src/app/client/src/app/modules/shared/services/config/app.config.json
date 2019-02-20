@@ -133,6 +133,9 @@
       "progress": "progress"
     }
   },
+  "CourseBatchPageSection":{
+    "slickSize": 10
+  },
   "CoursePageSection": {
     "contentApiQueryParams": {
       "orgdetails": "orgName,email"

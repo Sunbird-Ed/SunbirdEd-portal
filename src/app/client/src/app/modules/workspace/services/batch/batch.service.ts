@@ -118,21 +118,12 @@ export class BatchService {
     };
     return this.learnerService.post(option);
   }
-  /**
-  * method setBatchData
-  */
-  setBatchData(batchData): void {
-    this.batchDetails = batchData;
-  }
   getUpdateBatchDetails(bathId) {
-    if (this.batchDetails && bathId === this.batchDetails.identifier) {
-      return observableOf(this.batchDetails);
-    } else {
-      return this.getBatchDetails(bathId).pipe(map((date) => {
-        return date.result.response;
-      }));
-    }
+    return this.getBatchDetails(bathId).pipe(map((data) => {
+      return data;
+    }));
   }
+
   getCourseHierarchy(courseId) {
     if (this.courseHierarchy && this.courseHierarchy.identifier === courseId) {
       return observableOf(this.courseHierarchy);
