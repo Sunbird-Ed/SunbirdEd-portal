@@ -338,12 +338,14 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   }
   keyup(event) {
     this.searchText = event;
-    this.modelChanged.next(this.searchText);
+    if (!_.isEmpty(_.trim(this.searchText))) {
+      this.modelChanged.next(this.searchText);
+    }
   }
   searchBatch() {
     this.modelChanged.pipe(debounceTime(1000),
     distinctUntilChanged(),
-    flatMap(search => of(search).pipe(delay(500)))
+    flatMap(search => of(search).pipe(delay(250)))
     ).
     subscribe(query => {
       this.searchText = query;

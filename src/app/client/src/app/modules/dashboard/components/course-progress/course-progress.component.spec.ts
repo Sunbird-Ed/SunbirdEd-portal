@@ -12,7 +12,7 @@ import { CourseProgressComponent } from './course-progress.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
 import { ContentService, UserService, LearnerService, CoreModule } from '@sunbird/core';
-
+import { By } from '@angular/platform-browser';
 import {
   SharedModule, ResourceService, ConfigService, PaginationService,
   ToasterService, ServerResponse
@@ -27,7 +27,6 @@ import { TelemetryModule } from '@sunbird/telemetry';
 describe('CourseProgressComponent', () => {
   let component: CourseProgressComponent;
   let fixture: ComponentFixture<CourseProgressComponent>;
-
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -59,7 +58,7 @@ describe('CourseProgressComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule.forRoot(), OrderModule,
-        CoreModule.forRoot(), DashboardModule, TelemetryModule],
+        CoreModule.forRoot(), DashboardModule,  TelemetryModule.forRoot()],
       declarations: [],
       providers: [CourseProgressService,
         { provide: Router, useClass: RouterStub },
@@ -183,4 +182,12 @@ describe('CourseProgressComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
+  it('should call setpage method and set proper page number', inject([Router],
+    (route) => {
+      component.pager = testData.mockUserData.pager;
+      component.pager.totalPages = 8;
+      component.navigateToPage(1);
+      fixture.detectChanges();
+      expect(route.navigate).toHaveBeenCalledWith([], { queryParams: component.queryParams });
+    }));
 });
