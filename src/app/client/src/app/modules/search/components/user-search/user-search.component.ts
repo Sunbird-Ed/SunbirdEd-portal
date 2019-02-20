@@ -148,13 +148,13 @@ export class UserSearchComponent implements OnInit {
         'userType': this.queryParams.Usertype,
         'framework.medium': this.queryParams.medium,
         'framework.gradeLevel': this.queryParams.gradeLevel,
-        'framework.subject': this.queryParams.subject,
-        'organisations.roles': this.selectedRoles
+        'framework.subject': this.queryParams.subject
       },
       limit: this.pageLimit,
       pageNumber: this.pageNumber,
       query: this.queryParams.key
     };
+    if (!_.isEmpty(this.selectedRoles)) { searchParams.filters['organisations.roles'] = this.selectedRoles; }
     if (this.queryParams.School) {
       searchParams.filters['organisations.organisationId'] = [this.queryParams.School];
     } else {
@@ -295,10 +295,10 @@ export class UserSearchComponent implements OnInit {
               this.pageNumber = Number(bothParams.params.pageNumber);
             }
             this.queryParams = { ...bothParams.queryParams };
+            this.selectedRoles = [];
             if (this.queryParams.Roles) {
               this.permissionService.permissionAvailable$.subscribe(params => {
                 if (params === 'success') {
-                  this.selectedRoles = [];
                   _.forEach(this.permissionService.allRoles, (role) => {
                     if (this.queryParams.Roles.includes(role.roleName)) { this.selectedRoles.push(role.role); }
                   });

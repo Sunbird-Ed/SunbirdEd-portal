@@ -1,3 +1,4 @@
+import { userSearch } from './../../../learn/components/batch/batch-details/batch-details.component.data';
 import { ResourceService, IUserData, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -7,6 +8,7 @@ import { ProfileService } from '@sunbird/profile';
 import { map, catchError } from 'rxjs/operators';
 import { of, combineLatest } from 'rxjs';
 import { UserSearchService } from './../../services';
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-user-filter',
@@ -32,6 +34,9 @@ export class UserFilterComponent implements OnInit {
   selectedDistrict: string;
   selectedBlock: string;
   selectedSchool: string;
+  submitInteractEdata: IInteractEventEdata;
+  resetInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
 
   constructor(private cdr: ChangeDetectorRef, public resourceService: ResourceService,
     private router: Router, private activatedRoute: ActivatedRoute,
@@ -53,6 +58,7 @@ export class UserFilterComponent implements OnInit {
           this.stateId = _.get(rootOrgDetails[0], 'locationIds[0]');
           this.subscribeToQueryParams();
           this.combineAllApis();
+          this.settelemetryData();
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0005);
         }
@@ -64,7 +70,6 @@ export class UserFilterComponent implements OnInit {
       this.queryParams = params;
       this.inputData = {};
       _.forIn(params, (value, key) => this.inputData[key] = typeof value === 'string' && key !== 'key' ? [value] : value);
-      this.showFilters = true;
       this.hardRefreshFilter();
     });
   }
@@ -77,6 +82,7 @@ export class UserFilterComponent implements OnInit {
     combineLatest(userType, district, roles, frameworkDetails)
       .subscribe(val => {
         console.log('Final response: ', val);
+        this.showFilters = true;
       });
   }
 
@@ -225,6 +231,26 @@ export class UserFilterComponent implements OnInit {
 
   onSchoolChange(schoolId) {
     this.selectedValue(schoolId, 'School');
+  }
+
+  settelemetryData() {
+    this.submitInteractEdata = {
+      id: 'submit-user-search',
+      type: 'click',
+      pageid: 'user-search'
+    };
+
+    this.resetInteractEdata = {
+      id: 'reset-user-search',
+      type: 'click',
+      pageid: 'user-search'
+    };
+
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
   }
 
 }
