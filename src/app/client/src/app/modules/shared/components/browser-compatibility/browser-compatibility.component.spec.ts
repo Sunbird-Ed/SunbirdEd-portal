@@ -1,8 +1,8 @@
-
 import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ResourceService } from '../../services/index';
 
 import { BrowserCompatibilityComponent } from './browser-compatibility.component';
 
@@ -17,7 +17,7 @@ xdescribe('BrowserCompatibilityComponent', () => {
     TestBed.configureTestingModule({
       imports: [SuiModule],
       declarations: [ BrowserCompatibilityComponent ],
-      providers: [DeviceDetectorService],
+      providers: [ ResourceService, DeviceDetectorService ]
     })
     .compileComponents();
   }));
