@@ -7,4 +7,8 @@ export interface INoResultMessage {
    *  message text
   */
   messageText?: string;
+  /**
+   *  Image url
+  */
+ emptyImage?: string;
 }
