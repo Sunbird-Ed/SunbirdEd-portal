@@ -1,14 +1,23 @@
-<sui-modal [isClosable]="true" (dismissed)="redirect()" #modal *ngIf="showModal">
-    <div class="header">
-        <div class="ui two column grid">
-            <div class="row">
-                <div class="column">
-                    <span>{{resourceService.frmelmnts.btn.checkListPublish}}</span>
-                </div>
-            </div>
-        </div>
+<sui-modal
+    [mustScroll]="true" 
+    [isClosable]="true"
+    [transitionDuration]="0"
+    [size]="'normal'"
+    class="sb-modal"
+    appBodyScroll
+    (dismissed)="redirect()" 
+    #modal 
+    *ngIf="showModal"
+    >
+
+    <!--Header-->
+    <div class="sb-modal-header">
+        {{resourceService.frmelmnts.btn.checkListPublish}}
     </div>
-    <div class="scrolling content">
+    <!--/Header-->
+
+    <!--Content-->
+    <div class="sb-modal-content">
         <div *ngIf="publishCheckListData">
             <div class="ui small header">
                 <h4>{{publishCheckListData.title}}</h4>
@@ -34,11 +43,25 @@
             <app-loader></app-loader>
         </div>
     </div>
-    <div class="actions footer">
-        <div class="ui buttons">
-            <button class="ui orange button" type="button " (click)="redirect();modal.deny();">{{resourceService?.frmelmnts?.btn?.checklistCancel}}</button>
-            <div class="or"></div>
-            <button class="ui blue button " type="button " [disabled]="isDisabled" (click)="submitPublishChanges()">{{resourceService?.frmelmnts?.btn?.checklistPublish}}</button>
-        </div>
+    <!--/Content-->
+
+    <!--Actions-->
+    <div class="sb-modal-actions">
+        <button 
+            class="sb-btn sb-btn-normal sb-btn-primary" 
+            type="button" 
+            [disabled]="isDisabled" 
+            (click)="submitPublishChanges()"
+        >
+            {{resourceService?.frmelmnts?.btn?.checklistPublish}}
+        </button>
+        <button 
+            class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+            type="button" 
+            (click)="redirect();modal.deny();"
+        >
+            {{resourceService?.frmelmnts?.btn?.checklistCancel}}
+        </button>
     </div>
+    <!--/Actions-->
 </sui-modal>

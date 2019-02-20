@@ -12,9 +12,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-
+import { CacheService } from 'ng2-cache-service';
 import { AnnouncementService } from '@sunbird/core';
-import { SharedModule, ResourceService, ToasterService, ConfigService, RouterNavigationService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService, ConfigService, BrowserCacheTtlService,
+  RouterNavigationService } from '@sunbird/shared';
 import { DetailsPopupComponent } from './details-popup.component';
 
 describe('DetailsPopupComponent', () => {
@@ -39,8 +40,8 @@ describe('DetailsPopupComponent', () => {
       imports: [HttpClientTestingModule, Ng2IziToastModule,
         SuiModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
       providers: [HttpClientModule, AnnouncementService, RouterNavigationService,
-        ResourceService, ToasterService, ConfigService, HttpClient,
-        { provide: Router, useClass: RouterStub },
+        ResourceService, ToasterService, ConfigService, CacheService, BrowserCacheTtlService,
+         HttpClient, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ],
       schemas: [NO_ERRORS_SCHEMA]

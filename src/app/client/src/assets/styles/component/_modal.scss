@@ -19,7 +19,7 @@
             min-height: 100px;
             padding: $sb-modal-content-padding;
         }
-        .close {
+        &>.close {
             color: $white-color;
             font-size: $font-size-base;
             @include padding(0 0); //bourbon
@@ -126,6 +126,16 @@
             display: flex !important;
             align-items: center;
             justify-content: center;
+        }
+    }
+}
+.ui.tree-picker.modal {
+    top: 3.5rem;
+    .sb-modal-actions {
+        .pick-search,
+        .unpick-search,
+        .unpick-picked {
+            display: none;
         }
     }
 }

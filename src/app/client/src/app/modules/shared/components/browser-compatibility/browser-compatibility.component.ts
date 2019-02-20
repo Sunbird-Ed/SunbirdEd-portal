@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ResourceService } from '../../services/index';
 @Component({
   selector: 'app-browser-compatibility',
   templateUrl: './browser-compatibility.component.html',
@@ -13,7 +14,9 @@ export class BrowserCompatibilityComponent implements OnInit {
   deviceInfo: any;
   hideFooter = true;
 
-  constructor(private _deviceDetectorService: DeviceDetectorService) { }
+  constructor(public resourceService: ResourceService, private _deviceDetectorService: DeviceDetectorService) {
+    this.resourceService = resourceService;
+  }
 
   ngOnInit() {
     this.showCompatibilityModal();
