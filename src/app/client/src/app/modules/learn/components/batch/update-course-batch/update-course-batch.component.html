@@ -1,19 +1,23 @@
-<sui-modal *ngIf='showUpdateModal' (dismissed)="redirect()" [isClosable]="true" appBodyScroll  #updateBatchModal>
-  <div class="header">
-    <div class="ui grid">
-      <div class="eleven wide column">
-        <span *ngIf="!showFormInViewMode" class="ui header">{{resourceService?.frmelmnts?.intxt?.t0007}}</span>
-        <span *ngIf="showFormInViewMode" class="ui header">{{resourceService?.frmelmnts?.intxt?.t0015}}</span>
-      </div>
-      <!-- <div class="one wide column actions">
-          <h5 class="ui basic icon circular button deny" (click)="redirect();">
-            <i class="ui remove icon"></i>
-          </h5>
-        </div> -->
-    </div>
-  </div>
+<sui-modal
+  [mustScroll]="true" 
+  [isClosable]="true"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll
+  *ngIf='showUpdateModal' 
+  (dismissed)="redirect()" 
+  #updateBatchModal>
 
-  <div class="scrolling content" [appTelemetryImpression]="telemetryImpression">
+  <!--Header-->
+  <div class="sb-modal-header">
+    <span *ngIf="!showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0007}}</span>
+    <span *ngIf="showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0015}}</span>
+  </div>
+  <!--/Header-->
+
+  <!--Content-->
+  <div class="sb-modal-content" [appTelemetryImpression]="telemetryImpression">
     <form [formGroup]="batchUpdateForm" class="ui form batchUpdateForm">
       <div class="one field" [ngClass]="batchUpdateForm.controls['name'].invalid && batchUpdateForm.controls['name'].errors.required && !batchUpdateForm.controls['name'].pristine ? 'error': ''">
         <div class="required field">
@@ -71,19 +75,7 @@
           </div>
         </div>
       </div>
-
-      <!-- <div *ngIf="batchUpdateForm.value.enrollmentType !== 'open'" class="one field">
-          <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
-          <ng-template let-mentor #optionTemplate>
-            <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png'}}"> {{mentor.name}}{{mentor.otherDetail}}
-          </ng-template>
-          <sui-multi-select [isSearchable]="true" formControlName="mentors" labelField="name" valueField="id" [optionTemplate]="optionTemplate"
-            [options]="mentorList" #templated class="selection ">
-            <sui-select-option *ngFor="let mentor of templated.filteredOptions" [value]="mentor">
-            </sui-select-option>
-          </sui-multi-select>
-        </div> -->
-      <div class="one field ">
+      <div class="one field">
         <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors"
         [ngClass]="{ 'disabled' : showFormInViewMode }">
@@ -104,18 +96,6 @@
           <i class="delete icon" *ngIf="batchDetails.status === 0" (click)="removeMentor(selectmentor)"></i>
         </a>
       </div>
-
-      <!-- <div *ngIf="batchUpdateForm.value.enrollmentType !== 'open'" class="one field">
-          <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
-          <ng-template let-user #useroptionTemplate>
-            <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
-          </ng-template>
-          <sui-multi-select [isSearchable]="true" formControlName="users" labelField="name" valueField="id" [optionTemplate]="useroptionTemplate"
-            [options]="participantList" #userselect class="selection ">
-            <sui-select-option *ngFor="let user of userselect.filteredOptions " [value]="user">
-            </sui-select-option>
-          </sui-multi-select>
-        </div> -->
       <div class="one field " *ngIf="batchUpdateForm.value.enrollmentType !== 'open'">
         <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="participant"
@@ -138,11 +118,27 @@
             <i class="delete icon" *ngIf="batchDetails.status === 0" (click)="removeParticipant(user)"></i>
           </a>
       </div>
-
     </form>
   </div>
-  <div class="actions">
-    <button class="ui secondary button" (click)="resetForm()" [disabled]="showFormInViewMode">{{resourceService?.frmelmnts?.btn?.clear}}</button>
-    <button class="ui primary button" [disabled]="disableSubmitBtn || showFormInViewMode" (click)="updateBatch()">{{resourceService?.frmelmnts?.btn?.update}}</button>
+  <!--/Content-->
+
+  <!--Actions-->
+  <div class="sb-modal-actions">
+    <button 
+      class="sb-btn sb-btn-normal sb-btn-primary" 
+      [disabled]="disableSubmitBtn || showFormInViewMode" 
+      (click)="updateBatch()"
+    >
+      {{resourceService?.frmelmnts?.btn?.update}}
+    </button>
+    <button 
+      class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+      (click)="resetForm()" 
+      [disabled]="showFormInViewMode"
+    >
+      {{resourceService?.frmelmnts?.btn?.clear}}
+    </button>
+    
   </div>
+  <!--/Actions-->
 </sui-modal>
