@@ -79,7 +79,11 @@
             <a href="javascript:void(0);" class="ui download-file right floated text-decoration-underline pl-10"
               (click)="downloadReport();" appTelemetryInteract [telemetryInteractObject]="interactObject"
               [telemetryInteractEdata]="{id:'download',type:'click',pageid:'course-progress-dashboard'}">
+<<<<<<< HEAD
               {{resourceService?.frmelmnts?.instn?.t0065}}</a>
+=======
+              {{resourceService?.frmelmnts?.instn?.t0064}}</a>
+>>>>>>> 2bdbcda4290a6b59e1a27000f885507b7cb790f9
           </div>
         </div>
         <div class="sb-data-table-container" *ngIf="batchlist && batchlist.length > 0 && queryParams.batchIdentifier && !showLoader && !showWarningDiv">
@@ -164,9 +168,15 @@
             </tbody>
           </table>
         </div>
+<<<<<<< HEAD
         <div class="d-flex flex-ai-center flex-jc-space-between mt-10">
           <div   *ngIf="dashboarData && dashboarData.data.length >0 && !showLoader " >showing  {{pager.startIndex+1}} - {{pager.endIndex+1}} of {{dashboarData.data.count}}  users</div>
           <div class="pb-10" *ngIf="dashboarData && dashboarData.data.length >0 && totalCount > config.appConfig.DASHBOARD.PAGE_LIMIT && !showLoader ">
+=======
+        <div class="d-flex flex-ai-center flex-jc-space-between">
+          <div   *ngIf="dashboarData && dashboarData.data.length >0 && !showLoader " >showing 200-400 of 500 users</div>
+          <div class="pb-10" *ngIf="dashboarData && dashboarData.data.length >0   && !showLoader ">
+>>>>>>> 2bdbcda4290a6b59e1a27000f885507b7cb790f9
             <div class="ui pagination menu mt-10 right-floated pt-0" *ngIf="pager.pages.length ">
              <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
               <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)"
