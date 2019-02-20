@@ -1,0 +1,12 @@
+@import 'variables';
+
+.publicmenusection.ui.secondary {
+    &.vertical.menu > .item {
+      text-transform: capitalize;
+      font-weight: inherit;
+    }
+    &.menu .active.item {
+      font-weight: $font-weight-bold;
+      color: $primary-color;
+    }
+  }

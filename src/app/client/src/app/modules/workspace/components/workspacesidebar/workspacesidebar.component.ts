@@ -7,7 +7,8 @@ import {Router, ActivatedRoute} from '@angular/router';
  */
 @Component({
   selector: 'app-workspacesidebar',
-  templateUrl: './workspacesidebar.component.html'
+  templateUrl: './workspacesidebar.component.html',
+  styleUrls: ['./workspacesidebar.component.scss']
 })
 export class WorkspacesidebarComponent implements OnInit {
 
