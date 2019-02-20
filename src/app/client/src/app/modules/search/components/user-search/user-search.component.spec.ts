@@ -17,7 +17,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserSearchComponent } from './user-search.component';
 import { Response } from './user-search.component.spec.data';
-import { ProfileModule } from '@sunbird/profile';;
+import { ProfileModule } from '@sunbird/profile';
 import { TelemetryService } from '@sunbird/telemetry';
 
 describe('UserSearchComponent', () => {
