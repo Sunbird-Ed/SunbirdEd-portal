@@ -20,7 +20,7 @@ input[type="button"] {
     color: $white-color;
     @include margin(0px 0px 0px 8px);
     min-width:($base-block-space * 8);
-    line-height: normal;
+    line-height: inherit;
     @include border-radius(3px);
     text: {
         transform: capitalize;
@@ -43,7 +43,7 @@ input[type="button"] {
 }
 .sb-btn-xs {
     height:($base-block-space * 3);
-    padding: ($base-block-space * 1);
+    padding: ($base-block-space * 0) ($base-block-space * 1);
     font-size:$font-size-sm;
 }
 .sb-btn-normal {
@@ -65,19 +65,6 @@ input[type="button"] {
   padding: ($base-block-space * 3);
   font-size:$font-size-lg;
 }
-// disabled button
-.sb-btn-disabled {
-    background-color: $gray-100;
-    color:$gray-200;
-    border:1px solid $gray-100;
-    cursor: not-allowed;
-}
-.sb-btn-outline-disabled {
-    background-color: $white-color;
-    color:$gray-100;
-    border:1px solid $gray-100;
-    cursor: not-allowed;
-}
 // default outline colored btns
 .sb-btn-outline-primary{
     @include btn-theme-bgwhite($primary-color);
@@ -97,7 +84,7 @@ input[type="button"] {
 } 
 .sb-btn-outline-warning{
     @include btn-theme-bgwhite($tertiary-color);
-}
+}   
 .sb-btn-outline-error{
     @include btn-theme-bgwhite($red);
 } 
@@ -236,4 +223,34 @@ input[type="button"] {
 .ui.red.labels .label{
     background: $danger-color !important;
     border-color: $danger-color !important;
+}
+
+// disabled button
+.sb-btn-disabled,
+.sb-btn-primary[disabled],
+.sb-btn-secondary[disabled],
+.sb-btn-tertiary[disabled],
+.sb-btn-info[disabled],
+.sb-btn-success[disabled],
+.sb-btn-warning[disabled],
+.sb-btn-error[disabled] {
+    background-color: $gray-100;
+    border:1px solid $gray-100;
+    color:$gray-200;
+    cursor: not-allowed;
+}
+.sb-btn-outline-disabled,
+.sb-btn-outline-primary[disabled],
+.sb-btn-outline-secondary[disabled],
+.sb-btn-outline-tertiary[disabled],
+.sb-btn-outline-info[disabled],
+.sb-btn-outline-success[disabled],
+.sb-btn-outline-warning[disabled],
+.sb-btn-outline-error[disabled],
+.sb-btn-outline-gray[disabled] {
+    background-color: $white-color;
+    border:1px solid $gray-100;
+    color:$gray-100;
+    cursor: not-allowed;
+    font-weight: normal;
 }
