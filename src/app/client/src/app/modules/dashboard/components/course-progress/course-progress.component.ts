@@ -1,21 +1,11 @@
-<<<<<<< HEAD
 import { combineLatest,  Subscription ,  Observable ,  Subject, of } from 'rxjs';
 
 import {first, takeUntil, map, debounceTime, distinctUntilChanged, flatMap, delay} from 'rxjs/operators';
-=======
-import { combineLatest,  Subscription ,  Observable ,  Subject } from 'rxjs';
-
-import {first, takeUntil, map} from 'rxjs/operators';
->>>>>>> 2bdbcda4290a6b59e1a27000f885507b7cb790f9
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { UserService } from '@sunbird/core';
-<<<<<<< HEAD
 import { ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService } from '@sunbird/shared';
-=======
-import { ResourceService, ToasterService, ServerResponse, PaginationService } from '@sunbird/shared';
->>>>>>> 2bdbcda4290a6b59e1a27000f885507b7cb790f9
 import { CourseProgressService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
@@ -149,13 +139,10 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   */
    private paginationService: PaginationService;
   /**
-<<<<<<< HEAD
     * To get url, app configs
     */
   public config: ConfigService;
   /**
-=======
->>>>>>> 2bdbcda4290a6b59e1a27000f885507b7cb790f9
 	 * telemetryImpression object for course progress page
 	*/
   telemetryImpression: IImpressionEventInput;
@@ -177,12 +164,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
     toasterService: ToasterService,
-<<<<<<< HEAD
     courseProgressService: CourseProgressService,  paginationService: PaginationService,
     config: ConfigService) {
-=======
-    courseProgressService: CourseProgressService,  paginationService: PaginationService) {
->>>>>>> 2bdbcda4290a6b59e1a27000f885507b7cb790f9
     this.user = user;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -190,10 +173,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     this.toasterService = toasterService;
     this.courseProgressService = courseProgressService;
     this.paginationService = paginationService;
-<<<<<<< HEAD
     this.config = config;
-=======
->>>>>>> 2bdbcda4290a6b59e1a27000f885507b7cb790f9
     this.route.onSameUrlNavigation = 'ignore';
     this.pageLimit = this.config.appConfig.DASHBOARD.PAGE_LIMIT;
   }
@@ -292,7 +272,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     this.showWarningDiv = false;
     this.navigate();
     this.showLoader = true;
-<<<<<<< HEAD
     const option: any = {
       batchIdentifier: this.queryParams.batchIdentifier,
       limit: this.pageLimit,
@@ -302,30 +281,16 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
       option.sortBy = this.order;
       option.sortOrder = this.reverse ? 'desc' : 'asc';
     }
-=======
-    const option = {
-      batchIdentifier: this.queryParams.batchIdentifier
-    };
->>>>>>> 2bdbcda4290a6b59e1a27000f885507b7cb790f9
     this.telemetryImpression.edata.uri = '/learn/course/' + this.courseId +
     '/dashboard&batchIdentifier=' + this.queryParams.batchIdentifier;
     this.courseProgressService.getDashboardData(option).pipe(
     takeUntil(this.unsubscribe))
     .subscribe(
       (apiResponse: ServerResponse) => {
-<<<<<<< HEAD
         this.showLoader = false;
         this.dashboarData = apiResponse.result;
         this.totalCount = apiResponse.result.count;
         this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
-=======
-
-        // this.dashboarData = this.courseProgressService.parseDasboardResponse(apiResponse.result);
-        this.showLoader = false;
-        this.dashboarData = apiResponse.result;
-        this.totalCount = apiResponse.result.count;
-        this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, 200);
->>>>>>> 2bdbcda4290a6b59e1a27000f885507b7cb790f9
       },
       err => {
         this.toasterService.error(err.error.params.errmsg);
