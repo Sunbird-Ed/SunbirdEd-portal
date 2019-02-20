@@ -51,7 +51,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   /**
 	 * This variable sets the dashboard result related to the given batch
 	 */
-  dashboarData: Array<ICourseProgressData>;
+  dashboarData: ICourseProgressData;
   /**
 	 * This variable is set to true when the length of batch is 0.
    * It helps to show a message div on html
@@ -289,6 +289,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
         this.dashboarData = apiResponse.result;
+        console.log(this.dashboarData);
         this.totalCount = apiResponse.result.count;
         this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
       },
