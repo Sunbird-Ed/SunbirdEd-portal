@@ -1,4 +1,3 @@
-import { userSearch } from './../../../learn/components/batch/batch-details/batch-details.component.data';
 import { ResourceService, IUserData, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
