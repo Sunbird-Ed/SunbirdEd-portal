@@ -160,10 +160,10 @@ export class UserSearchComponent implements OnInit {
     } else {
       const locationArray = [];
       if (this.queryParams.District) {
-        locationArray.push(this.queryParams.District);
+        locationArray.push(typeof this.queryParams.District === 'string' ? this.queryParams.District : this.queryParams.District[0]);
       }
       if (this.queryParams.Block) {
-        locationArray.push(this.queryParams.Block);
+        locationArray.push(typeof this.queryParams.Block === 'string' ? this.queryParams.Block : this.queryParams.Block[0]);
       }
       if (!_.isEmpty(locationArray)) { searchParams.filters['locationIds'] = locationArray; }
     }

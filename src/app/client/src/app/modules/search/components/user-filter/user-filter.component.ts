@@ -36,6 +36,8 @@ export class UserFilterComponent implements OnInit {
   submitInteractEdata: IInteractEventEdata;
   resetInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
+  districtIds: any;
+  blockIds: any;
 
   constructor(private cdr: ChangeDetectorRef, public resourceService: ResourceService,
     private router: Router, private activatedRoute: ActivatedRoute,
@@ -127,9 +129,9 @@ export class UserFilterComponent implements OnInit {
       return this.profileService.getUserLocation(requestData).pipe(map((res: any) => {
         this.allDistricts = res.result.response;
         // Get Blocks API call
-        const districtIds = _.map(this.allDistricts, 'id');
+        this.districtIds = _.map(this.allDistricts, 'id');
         this.selectedDistrict = this.queryParams.District;
-        this.getBlock(districtIds);
+        this.getBlock(this.districtIds);
         return 'District API success';
       }), catchError(e => of('District API error')));
     }
@@ -143,8 +145,8 @@ export class UserFilterComponent implements OnInit {
         this.selectedBlock = this.queryParams.Block;
         this.hardRefreshFilter();
         // Get school API call
-        const blockIds = _.map(this.allBlocks, 'id');
-        this.getSchool(blockIds);
+        this.blockIds = _.map(this.allBlocks, 'id');
+        this.getSchool(this.blockIds);
       });
     }
   }
@@ -202,6 +204,7 @@ export class UserFilterComponent implements OnInit {
     this.selectedDistrict = '';
     this.selectedBlock = '';
     this.selectedSchool = '';
+    this.getBlock(this.districtIds);
     this.hardRefreshFilter();
   }
 
@@ -216,20 +219,20 @@ export class UserFilterComponent implements OnInit {
   }
 
   onDistrictChange(districtId) {
-    this.selectedValue(districtId, 'District');
+    this.selectedValue([districtId], 'District');
     this.selectedValue('', 'Block');
     this.selectedValue('', 'School');
     this.getBlock([districtId]);
   }
 
   onBlockChange(blockId) {
-    this.selectedValue(blockId, 'Block');
+    this.selectedValue([blockId], 'Block');
     this.selectedValue('', 'School');
     this.getSchool([blockId]);
   }
 
   onSchoolChange(schoolId) {
-    this.selectedValue(schoolId, 'School');
+    this.selectedValue([schoolId], 'School');
   }
 
   settelemetryData() {
