@@ -1,34 +1,60 @@
-<sui-modal [isClosable]="false"  (dismissed)="modal.deny();closeModal();" [isInverted]="true" #modal>
-<div class="content qr-code-modal-content">
-  <div class="twelve wide column ">
-    <div class="ui grid">
-      <div class="twelve wide column" appTelemetryInteract [telemetryInteractEdata]="closeDialCodeInteractEdata" ><i class="close large icon right-float" (click)="modal.deny();"></i></div>
-    </div>
-    <div class="ui container stackable two column grid">
-      <div class="column center aligned text-container">
-        <h1 class="qr-code-modal-header pt-10"> {{resourceService.frmelmnts?.lbl?.exploreContentOn  | interpolate:'{instance}':resourceService.instance.charAt(0).toUpperCase() + resourceService.instance.slice(1)}}
-          <div class="qr-code-modal-sub-header pt-10">
-            {{resourceService.frmelmnts?.lbl?.startExploringContent}}
-          </div>
-        </h1>
-        <div class="ui fluid icon input dial-section-input mt-30">
-          <input name="search" #dialCodeVal placeholder="{{resourceService.frmelmnts?.lbl?.enterDialCode}}" title="Search" type="text" ng-reflect-name="search" class="ng-untouched ng-pristine ng-valid">
+<sui-modal
+  [mustScroll]="true" 
+  [isClosable]="true"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll
+  (dismissed)="modal.deny();closeModal();"
+   #modal>
+
+  <!--Header-->
+  <div class="sb-modal-header">
+      {{resourceService.frmelmnts?.lbl?.exploreContentOn  | interpolate:'{instance}':resourceService.instance.charAt(0).toUpperCase() + resourceService.instance.slice(1)}}
+  </div>
+  <!--/Header-->
+
+  <!--Content-->
+  <div class="sb-modal-content">
+    <div class="ui grid stackable middle aligned">
+      <div class="six wide column">
+          <img
+            class="ui image"
+            src="{{'assets/images/Dialcode.png' | cdnprefixurl}}"
+            alt="Dial code image"
+            >
+      </div>
+      <div class="six wide column">
+        <p class="mb-10">
+          {{resourceService.frmelmnts?.lbl?.startExploringContent}}
+        </p>
+        <div class="ui fluid left icon input">
+          <input 
+            name="search" 
+            #dialCodeVal 
+            placeholder="{{resourceService.frmelmnts?.lbl?.enterDialCode}}" 
+            title="{{resourceService.frmelmnts?.lbl?.enterDialCode}}"
+            type="text">
           <i class="search icon"></i>
         </div>
-        <div appTelemetryInteract [telemetryInteractEdata]="setsubmitDialCodeInteractEdata(dialCodeVal.value)" class="ui primary button qr-code-modal-btn" (click)="onSubmit(dialCodeVal.value)">{{resourceService.frmelmnts?.btn?.submit}}
-        </div>
-      </div>
-      <div class="column right floated right aligned">
-        <div class="ui basic segment">
-          <div class="ui large image">
-            <img src="{{'assets/images/Dialcode.png' | cdnprefixurl}}">
-          </div>
-          <div class="qr-code-modal-meta">
-            <p>{{resourceService.frmelmnts?.lbl?.dialCodeDescription}}</p>
-          </div>
-        </div>
+        <p class="small mt-15">
+          {{resourceService.frmelmnts?.lbl?.dialCodeDescription}}
+        </p>
       </div>
     </div>
   </div>
-</div>
+  <!--/Content-->
+
+  <!--Actions-->
+  <div class="sb-modal-actions">
+    <button 
+      class="sb-btn sb-btn-normal sb-btn-primary" 
+      appTelemetryInteract [telemetryInteractEdata]="setsubmitDialCodeInteractEdata(dialCodeVal.value)"
+      (click)="onSubmit(dialCodeVal.value)" 
+      autofocus>
+      {{resourceService.frmelmnts?.btn?.submit}}
+    </button>
+  </div>
+  <!--/Actions-->
+
 </sui-modal>

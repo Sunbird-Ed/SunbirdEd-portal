@@ -10,12 +10,13 @@ body {
 }
 
 body {
-  // background:$bg-body;
+  background:$bg-body;
   position: relative;
   font-family: $font-stack-en;
   letter-spacing: 0.2px;
   height: auto;
   background: $white-color;
+  color: $body-color;
 }
 
 *[lang="en"] body {
