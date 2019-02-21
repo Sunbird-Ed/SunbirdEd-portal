@@ -38,7 +38,7 @@
                 </button>
               </div>
               <div *ngIf="permissionService.permissionAvailable && !enrolledCourse" appPermission [permission]="dashboardPermission">
-                <button class="sb-btn sb-btn-primary sb-btn-normal width-100 mt-10" (click)="showDashboard()">{{resourceService?.frmelmnts?.btn?.viewcoursestats}}</button>
+                <button class="sb-btn sb-btn-primary sb-btn-normal width-100 mt-10" (click)="showDashboard()">{{resourceService?.frmelmnts?.btn?.viewCourseStatsDashboard}}</button>
               </div>
             </div>
             <!-- course ended Error message starts -->
