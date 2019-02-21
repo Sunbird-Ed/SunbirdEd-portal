@@ -16,7 +16,6 @@ input[type="button"] {
     border: 1px solid;
     color: $white-color;
     cursor: pointer;
-    @include margin(0px 0px 0px 8px);
     min-width:($base-block-space * 8);
     line-height: inherit;
     @include border-radius(3px);
@@ -266,4 +265,10 @@ input[type="button"] {
     color:$gray-100;
     cursor: not-allowed;
     font-weight: normal;
+}
+
+.ui[class*="right floated"].sb-btn {
+    float: right;
+    margin-right: 0;
+    margin-left: 8px;
 }
