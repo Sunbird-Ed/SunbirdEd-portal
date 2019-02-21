@@ -161,6 +161,7 @@ export class LearnPageComponent implements OnInit, OnDestroy {
       const enrolledSection = {
         name: 'My Courses',
         length: 0,
+        count: 0,
         contents: []
       };
       if (err) {
@@ -173,6 +174,7 @@ export class LearnPageComponent implements OnInit, OnDestroy {
         formatedContent.metaData.contentType = 'Course'; // to route to course page
         return formatedContent;
       });
+      enrolledSection.count = enrolledSection.contents.length;
       return enrolledSection;
     }));
   }

@@ -38,7 +38,6 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
    * service for redirection to draft  component
   */
   private activatedRoute: ActivatedRoute;
-
   public carouselData: Array<ICaraouselData> = [];
 
   /**
@@ -95,6 +94,8 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
   * which is needed to show the pagination on inbox view
   */
   pager: IPagination;
+
+  filters: object;
 
   /**
   * To show toaster(error, success etc) after any API calls
@@ -157,16 +158,17 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
     * This method sets the make an api call to get all batch with page No and offset
   */
   private fetchPageData() {
-    const filters = {createdFor: this.userService.RoleOrgMap['COURSE_MENTOR']};
+    this.showLoader = true;
+    this.filters = {createdFor: this.userService.RoleOrgMap['COURSE_MENTOR']};
     if (this.category === 'created') {
-      filters['createdBy'] = this.userService.userid;
+      this.filters['createdBy'] = this.userService.userid;
     } else {
-      filters['mentors'] = this.userService.userid;
+      this.filters['mentors'] = this.userService.userid;
     }
     const option: any = {
       source: 'web',
       name: 'User Courses',
-      filters: filters,
+      filters: this.filters,
       sort_by: { createdDate: this.config.appConfig.WORKSPACE.createdDate },
     };
     this.pageApiService.getBatchPageData(option).pipe(takeUntil(this.unsubscribe$))
@@ -248,7 +250,7 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
     });
     searchQueryParams.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
     searchQueryParams.exists = searchQuery.request.exists;
-    const queryParams = { ...searchQueryParams };
+    const queryParams = { ...searchQueryParams, ...this.filters };
     const sectionUrl = '/workspace/content/batches/view-all/' + event.name.replace(/\s/g, '-');
     this.route.navigate([sectionUrl, 1], {queryParams: queryParams});
   }

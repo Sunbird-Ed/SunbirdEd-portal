@@ -1,6 +1,5 @@
 
 // import { throwError as observableThrowError, of as observableOf } from 'rxjs';
-// import { BatchCardComponent } from './../batch-card/batch-card.component';
 // import { BatchListComponent } from './batch-list.component';
 // import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 // import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -8,7 +7,7 @@
 // import { Ng2IziToastModule } from 'ng2-izitoast';
 // import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { SuiModule } from 'ng2-semantic-ui';
-// import { SharedModule, PaginationService, ToasterService, ResourceService } from '@sunbird/shared';
+// import { SharedModule, PaginationService, ToasterService, ResourceService, BatchCardComponent } from '@sunbird/shared';
 // import { UserService, LearnerService, SearchService, CoreModule } from '@sunbird/core';
 // import { WorkSpaceService, BatchService } from '../../services';
 // import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -91,7 +90,7 @@
 //     component = fixture.componentInstance;
 //     childcomponent = childfixture.componentInstance;
 //   });
-//   it('should call  batch search api and returns result count more than 1', inject([SearchService], (searchService) => {
+//   xit('should call  batch search api and returns result count more than 1', inject([SearchService], (searchService) => {
 //     const userService = TestBed.get(UserService);
 //     const learnerService = TestBed.get(LearnerService);
 //     spyOn(learnerService, 'get').and.returnValue(observableOf(testData.userSuccess.success));

@@ -13,12 +13,12 @@
       </div>
     </div>
     <div *ngIf="batch.userName" class="content batch-content-meta">
-      By {{batch.userName}}<br/> {{batch.startDate | date: "dd MMM"}} - {{batch.endDate | date: "dd MMM"}}
+      By {{batch.userName}}<br/>
       <i class="right floated large unlock alternate icon" *ngIf="batch.enrollmentType === 'open'">
       </i><br>
       <span *ngIf="batch.courseAdditionalInfo && batch.courseAdditionalInfo.courseName">
       {{resourceService.frmelmnts.lbl.courseName}}: {{batch.courseAdditionalInfo.courseName}}
-    </span>
+      </span>
     </div>
   </div>
 </div>

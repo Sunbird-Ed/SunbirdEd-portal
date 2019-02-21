@@ -5,7 +5,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { SharedModule, PaginationService, ToasterService, ResourceService } from '../../services/index';
+import { PaginationService, ToasterService, ResourceService } from '../../services/index';
 import { CoreModule } from '@sunbird/core';
 import { of } from 'rxjs';
 import { Response } from './batch-card.component.spec.data';
@@ -37,10 +37,10 @@ describe('BatchCardComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BatchCardComponent],
+      declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SuiModule, FormsModule, ReactiveFormsModule,
-        HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), TelemetryModule.forRoot(), CoreModule.forRoot()],
+        HttpClientTestingModule, Ng2IziToastModule, TelemetryModule.forRoot(), CoreModule.forRoot()],
       providers: [PaginationService, ResourceService, ToasterService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
@@ -67,7 +67,7 @@ describe('BatchCardComponent', () => {
       component.onAction(Response.successData);
       component.batch = Response.successData;
       expect(route.navigate).toHaveBeenCalledWith(['update/batch', Response.successData.identifier],
-        { relativeTo: component.activatedRoute });
+        {queryParamsHandling: 'merge', relativeTo: component.activatedRoute});
     }));
 });
 

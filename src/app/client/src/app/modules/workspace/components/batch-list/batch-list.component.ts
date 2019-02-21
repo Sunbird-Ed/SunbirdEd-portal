@@ -7,8 +7,8 @@ import {
   ResourceService, ILoaderMessage, INoResultMessage
 } from '@sunbird/shared';
 import { combineLatest, Subject } from 'rxjs';
-import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
-import { Ibatch, IStatusOption } from './../../interfaces/';
+import { takeUntil, map, tap } from 'rxjs/operators';
+import { Ibatch } from './../../interfaces/';
 import { WorkSpaceService, BatchService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
@@ -39,7 +39,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to draft  component
   */
-  private activatedRoute: ActivatedRoute;
+  public activatedRoute: ActivatedRoute;
 
   public closeIntractEdata: IInteractEventEdata;
 
@@ -181,16 +181,14 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
   ngOnInit() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
       map(results => ({ params: results[0], queryParams: results[1] })),
-      tap(res => {
-        this.queryParams = res.queryParams;
-        this.manipulateQueryParam();
-        const route = this.route.url.split('/view-all');
-        this.closeUrl = '/workspace/content/batches/pagesection/' + (this.queryParams.mentors ? 'assigned' : 'created');
-        this.sectionName = res.params.section.replace(/\-/g, ' ');
-        this.pageNumber = Number(res.params.pageNumber);
-      }),
       takeUntil(this.unsubscribe)
-    ).subscribe((response: any) => {
+    ).subscribe((res: any) => {
+      this.queryParams = res.queryParams;
+      this.manipulateQueryParam();
+      const route = this.route.url.split('/view-all');
+      this.closeUrl = '/workspace/content/batches/pagesection/' + (this.queryParams.mentors ? 'assigned' : 'created');
+      this.sectionName = res.params.section.replace(/\-/g, ' ');
+      this.pageNumber = Number(res.params.pageNumber);
       this.setTelemetryImpressionData();
       this.fetchBatchList();
       this.setInteractEventData();
@@ -201,9 +199,6 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
     }, (error) => {
       this.showLoader = false;
       this.noResult = true;
-      this.noResultMessage = {
-        'messageText': this.resourceService.messages.fmsg.m0077
-      };
       this.toasterService.error(this.resourceService.messages.fmsg.m0051);
     });
   }
@@ -212,7 +207,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
     * This method sets the make an api call to get all batch with page No and offset
   */
   manipulateQueryParam() {
-    this.filters = {createdFor: this.userService.RoleOrgMap['COURSE_MENTOR']};
+    this.filters = {};
     const queryFilters = _.omit(this.queryParams, ['key', 'softConstraintsFilter', 'appliedFilters',
       'sort_by', 'sortType', 'defaultSortBy', 'exists', 'dynamic']);
     if (!_.isEmpty(queryFilters)) {
