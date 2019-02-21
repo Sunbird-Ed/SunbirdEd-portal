@@ -3,7 +3,7 @@
   [isClosable]="true"
   [transitionDuration]="0"
   [size]="'small'"
-  class="sb-modal"
+  class="sb-modal sb-error"
   appBodyScroll
   (dismissed)="redirect()"
   #modal
@@ -26,13 +26,13 @@
   <!--Actions-->
   <div class="sb-modal-actions" *ngIf="!showLoader">
     <button 
-      class="sb-btn sb-btn-normal sb-btn-primary" 
+      class="sb-btn sb-btn-normal sb-btn-error" 
       (click)="removeNote();"
     >
       {{resourceService?.frmelmnts?.btn?.yes}}
     </button>
     <button 
-      class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+      class="sb-btn sb-btn-normal sb-btn-outline-error" 
       (click)="modal.deny();"
     >
       {{resourceService?.frmelmnts?.btn?.no}}
