@@ -5,6 +5,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from '@sunbird/core';
 import { ToasterService, ResourceService, INoResultMessage } from '@sunbird/shared';
 import { UUID } from 'angular2-uuid';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-usage-reports',
@@ -21,10 +23,14 @@ export class UsageReportsComponent implements OnInit {
   slug: string;
   noResult: boolean;
   noResultMessage: INoResultMessage;
+  private activatedRoute: ActivatedRoute;
+
 
   constructor(private usageService: UsageService, private sanitizer: DomSanitizer,
     public userService: UserService, private toasterService: ToasterService,
-    public resourceService: ResourceService) { }
+    public resourceService: ResourceService ,   activatedRoute: ActivatedRoute
+    ) {
+      this.activatedRoute =  activatedRoute;  }
 
   ngOnInit() {
     const reportsLocation = (<HTMLInputElement>document.getElementById('reportsLocation')).value;
