@@ -1,12 +1,12 @@
 import { ActivatedRoute } from '@angular/router';
 import { ResourceService } from '../../services/index';
-import { Component,  Input, EventEmitter, Output , OnDestroy} from '@angular/core';
+import { Component,  Input, EventEmitter, Output , OnDestroy, Inject, ViewChild} from '@angular/core';
 import {ICaraouselData} from '../../interfaces/caraouselData';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { Subscription } from 'rxjs';
-
+import { DOCUMENT } from '@angular/platform-browser';
 /**
  * This display a a section
  */
@@ -18,6 +18,8 @@ import { Subscription } from 'rxjs';
 export class PageSectionComponent implements OnInit, OnDestroy {
   inviewLogs = [];
   cardIntractEdata: IInteractEventEdata;
+
+  @ViewChild('slickModal') slickModal;
   /**
   * section is used to render ICaraouselData value on the view
   */
@@ -112,13 +114,15 @@ export class PageSectionComponent implements OnInit, OnDestroy {
       }
     }
   ],
-  infinite: false
+  infinite: false,
+  rtl: false
 };
   /**The previous or next value of the button clicked
    * to generate interact telemetry data */
   btnArrow: string;
   pageid: string;
-  constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService) {
+  constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService,
+    @Inject(DOCUMENT) private _document: any) {
     this.resourceService = resourceService;
   }
   playContent(event) {
@@ -142,14 +146,16 @@ export class PageSectionComponent implements OnInit, OnDestroy {
         pageid: this.pageid
       };
     }
+    this.addSlideConfig();
   }
   selectedLanguageTranslation(data) {
-  const display = JSON.parse(this.section['display']);
-  if (_.has(display.name, data) && !_.isEmpty(display.name[data])) {
-    this.section.name = display.name[data];
-  } else {
-    this.section.name = display.name['en'];
-  }
+    const display = JSON.parse(this.section['display']);
+    if (_.has(display.name, data) && !_.isEmpty(display.name[data])) {
+      this.section.name = display.name[data];
+    } else {
+      this.section.name = display.name['en'];
+    }
+    this.addSlideConfig();
   }
   /**
    * get inview  Data
@@ -205,6 +211,20 @@ export class PageSectionComponent implements OnInit, OnDestroy {
     } else if (event.currentSlide > event.nextSlide) {
       this.btnArrow = 'prev-button';
     }
+  }
+  addSlideConfig() {
+    this.resourceService.languageSelected$
+        .subscribe(item => {
+          if (item.value === 'ur') {
+            this.slideConfig['rtl'] = true;
+          } else {
+            this.slideConfig['rtl'] = false;
+          }
+          if (this.slickModal) {
+            this.slickModal.unslick();
+            this.slickModal.initSlick(this.slideConfig);
+          }
+    });
   }
   navigateToViewAll(section) {
     this.viewAll.emit(section);

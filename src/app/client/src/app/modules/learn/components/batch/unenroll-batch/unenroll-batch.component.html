@@ -3,7 +3,7 @@
     [isClosable]="true"
     [transitionDuration]="0"
     [size]="'small'"
-    class="sb-modal sb-warning"
+    class="sb-modal sb-error"
     appBodyScroll
     #unenrollBatch 
     (dismissed)="redirect()">
@@ -23,7 +23,7 @@
     <!--Actions-->
     <div class="sb-modal-actions">
         <button 
-            class="sb-btn sb-btn-normal sb-btn-tertiary"
+            class="sb-btn sb-btn-normal sb-btn-error"
             [disabled]="disableSubmitBtn"
             id="unenrollFromCourse" 
             (click)="unenrollFromCourse()"
@@ -31,7 +31,7 @@
             {{resourceService.frmelmnts.btn.unenroll}}
         </button>
         <button 
-            class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+            class="sb-btn sb-btn-normal sb-btn-outline-error" 
             (click)="unenrollBatch.deny();"
         >
             {{resourceService.frmelmnts.btn.cancel}}
