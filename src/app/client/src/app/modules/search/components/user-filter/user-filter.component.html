@@ -80,9 +80,9 @@
                 </div>
                 <div class="twelve wide tablet two wide computer right aligned top aligned column filter-button">
                   <label class="computer-only mb-5">&nbsp;</label>
-                  <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata" class="searchfilterbutton ui blue tiny button" (click)="applyFilters()">{{resourceService.frmelmnts?.btn?.submit}}
+                  <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata" class="sb-btn sb-btn-normal sb-btn-primary" (click)="applyFilters()">{{resourceService.frmelmnts?.btn?.submit}}
                   </a>
-                  <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="resetInteractEdata" class="ml-10 searchfilterbutton ui primary tiny basic button" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</a>
+                  <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="resetInteractEdata" class="ml-10 sb-btn sb-btn-normal sb-btn-outline-primary" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</a>
                 </div>
               </div>
             </form>
