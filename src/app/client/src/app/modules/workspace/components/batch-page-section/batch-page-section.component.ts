@@ -11,7 +11,7 @@ import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, mergeMap, first, filter, catchError, tap, delay } from 'rxjs/operators';
+import { takeUntil, map, first, filter, tap } from 'rxjs/operators';
 import { Subscription, Subject, of } from 'rxjs';
 
 
@@ -19,14 +19,10 @@ import { Subscription, Subject, of } from 'rxjs';
   selector: 'app-batch-page-section',
   templateUrl: './batch-page-section.component.html'
 })
-export class BatchPageSectionComponent extends WorkSpace implements OnInit OnDestroy {
+export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDestroy {
 
  public unsubscribe$ = new Subject<void>();
 
-  /**
-  * section is used to render ICaraouselData value on the view
-  */
-  section: ICaraouselData;
 
   pageid: string;
 
@@ -49,10 +45,6 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit OnDes
    * Contains list of batchList  of logged-in user
   */
   batchList = [];
-  /**
-    status for preselection;
-  */
-  status: number;
 
   /**
    * To show / hide loader
@@ -147,26 +139,16 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit OnDes
       'messageText': this.resourceService.messages.stmsg.m0008
     };
   }
+
   ngOnInit() {
-    this.activatedRoute.params.subscribe(params => {
+    this.activatedRoute.params.pipe(takeUntil(this.unsubscribe$))
+    .subscribe(params => {
       this.category = params.category;
       this.fetchPageData();
     });
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.category,
-        visits: this.inviewLogs
-      }
-    };
+    this.setTelemetryImpression();
     this.batchService.updateEvent
       .subscribe((data) => {
-        console.log('update event in list');
         this.fetchPageData();
     });
   }
@@ -179,25 +161,29 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit OnDes
     if (this.category === 'created') {
       filters['createdBy'] = this.userService.userid;
     } else {
-      filters['mentors'] = [this.userService.userid];
+      filters['mentors'] = this.userService.userid;
     }
     const option: any = {
       source: 'web',
-      name: 'Batch',
+      name: 'User Courses',
       filters: filters,
       sort_by: { createdDate: this.config.appConfig.WORKSPACE.createdDate },
-      limit: 10
     };
-    this.pageApiService.getPageDataMock(option).pipe(takeUntil(this.unsubscribe$))
+    this.pageApiService.getBatchPageData(option).pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
         this.prepareCarouselData(_.get(data, 'sections'));
       }, err => {
         this.showLoader = false;
         this.carouselData = [];
-        this.toasterService.error(this.resourceService.messages.fmsg.m0002);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
     });
   }
 
+  /**
+    This method prepares batch card data with count of partipants,
+    adds userName and prepares data structure to reuse exising page section component used in
+    consumption pages for content cars
+  */
   private prepareCarouselData(sections = []) {
     this.batchList = _.flatten(_.map(sections, 'contents'));
     const userList = _.compact(_.uniq(_.map(this.batchList, 'createdBy')));
@@ -205,7 +191,8 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit OnDes
     const req = {
       filters: { identifier: userList }
     };
-    this.UserList(req).subscribe((res: ServerResponse) => {
+    this.UserList(req).pipe(takeUntil(this.unsubscribe$))
+    .subscribe((res: ServerResponse) => {
       if (res.result.response.count && res.result.response.content.length > 0) {
         const userNamesKeyById = _.keyBy(res.result.response.content, 'identifier');
         _.forEach(sections, (section, sectionIndex) => {
@@ -236,7 +223,7 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit OnDes
       if (inView.metaData.identifier) {
         this.inviewLogs.push({
           objid: inView.metaData.identifier,
-          objtype: 'course',
+          objtype: 'batch',
           index: index,
           section: inView.section,
         });
@@ -249,21 +236,41 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit OnDes
     }
   }
 
-  navigateToViewAll(section) {
-    // this.viewAll.emit(section);
+  public viewAll(event) {
+    const searchQuery = JSON.parse(event.searchQuery);
+    const searchQueryParams: any = {};
+    _.forIn(searchQuery.request.filters, (value, key) => {
+      if (_.isPlainObject(value)) {
+        searchQueryParams.dynamic = JSON.stringify({[key]: value});
+      } else {
+        searchQueryParams[key] = value;
+      }
+    });
+    searchQueryParams.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
+    searchQueryParams.exists = searchQuery.request.exists;
+    const queryParams = { ...searchQueryParams };
+    const sectionUrl = '/workspace/content/batches/view-all/' + event.name.replace(/\s/g, '-');
+    this.route.navigate([sectionUrl, 1], {queryParams: queryParams});
   }
 
-  onCardClick (event) {
-    console.log('card clicked', event);
+  public setTelemetryImpression () {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.category,
+        visits: this.inviewLogs
+      }
+    };
   }
 
   ngOnDestroy() {
-    // if (this.resourceDataSubscription) {
-      // this.resourceDataSubscription.unsubscribe();
-    // }
+   this.unsubscribe$.next();
+   this.unsubscribe$.complete();
   }
 }
-
-
-
 

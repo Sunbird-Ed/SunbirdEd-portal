@@ -76,8 +76,27 @@ export class PageApiService {
     }
   }
 
-  getPageDataMock(requestParam: IPageSection) {
-    return observableOf( {sections: []} );
+  getBatchPageData(requestParam: IPageSection) {
+    const option: any = {
+      url: this.config.urlConFig.URLS.PAGE_PREFIX,
+      param: { ...requestParam.params },
+      data: {
+        request: {
+          source: requestParam.source,
+          name: requestParam.name,
+          filters: requestParam.filters,
+          sort_by: requestParam.sort_by,
+          softConstraints: requestParam.softConstraints,
+          mode: requestParam.mode
+        }
+      }
+    };
+    if (!_.isEmpty(requestParam.exists)) {
+      option.data['exists'] = requestParam.exists;
+    }
+    return this.publicDataService.post(option).pipe(map((data) => {
+      return { sections : data.result.response.sections };
+    }));
   }
 
   setData(data, requestParam) {

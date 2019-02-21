@@ -2,20 +2,13 @@
   <div class="twelve wide column">
       <div class=" ui clearing segment content-player-header search-content-header">
           <div class="ui left floated header">
-              <p class="serch-allresult" > 
-                <span *ngIf="status === '1'">On Going Batches </span>
-                <span *ngIf="status === '0'">Upcoming Batches </span>
-                <span *ngIf="status === '2'">Expired Batches </span>
-              </p>
+              <p class="serch-allresult" > {{sectionName}}</p>
           </div>
           <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="ui right floated basic icon circular button" [routerLink]="[closeUrl]">
               <i class="ui remove icon"></i>
           </h5>
       </div>
   </div>
- <!--  <div class="four wide column pt-30">
-    Batch list page
-  </div> -->
 </div>
 <div class="ui grid" >
   <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression">
@@ -29,7 +22,6 @@
     </div>
   </div>
 </div>
-
 <div class="ui grid">
   <div class="two wide column"></div>
   <div class="ten wide column pt-0">

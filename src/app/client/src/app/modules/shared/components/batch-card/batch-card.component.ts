@@ -2,6 +2,7 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Ibatch } from './../../interfaces';
+import { ResourceService } from '../../services/index';
 
 /**
 * This display a batch card
@@ -26,8 +27,6 @@ export class BatchCardComponent {
    * batch is used to render Ibatch value on the view
   */
   @Input() batch: Ibatch;
-  // @Output('clickEvent')
-  // clickEvent = new EventEmitter<any>();
 
   /**
   * Constructor to create injected service(s) object
@@ -37,16 +36,15 @@ export class BatchCardComponent {
   * @param {Router} route Reference of Router
   * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
   */
-  constructor(
+  constructor(public resourceService: ResourceService,
     activatedRoute: ActivatedRoute,
     route: Router) {
     this.route = route;
     this.activatedRoute = activatedRoute;
-    console.log('this.batch---', this.batch);
   }
+
   public onAction(batchdata) {
-    // this.batchService.setBatchData(batchdata);
-    this.route.navigate(['update/batch', batchdata.identifier], {relativeTo: this.activatedRoute});
+    this.route.navigate(['update/batch', batchdata.identifier], {queryParamsHandling: 'merge', relativeTo: this.activatedRoute});
   }
 
 }

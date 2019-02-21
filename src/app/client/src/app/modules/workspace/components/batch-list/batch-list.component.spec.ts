@@ -1,4 +1,3 @@
-
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { BatchCardComponent } from '@sunbird/shared';
 import { BatchListComponent } from './batch-list.component';
@@ -91,6 +90,7 @@ describe('BatchListComponent', () => {
     component = fixture.componentInstance;
     childcomponent = childfixture.componentInstance;
   });
+
   it('should call  batch search api and returns result count more than 1', inject([SearchService], (searchService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);

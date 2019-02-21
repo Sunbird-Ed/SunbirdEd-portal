@@ -22,6 +22,9 @@ export class PageSectionComponent implements OnInit, OnDestroy {
   * section is used to render ICaraouselData value on the view
   */
   @Input() section: ICaraouselData;
+
+  @Input() cardType: string;
+
   /**
   * section is used to render ICaraouselData value on the view
   */
@@ -137,7 +140,7 @@ export class PageSectionComponent implements OnInit, OnDestroy {
     this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
     if (id && this.pageid) {
       this.cardIntractEdata = {
-        id: 'content-card',
+        id: this.cardType === 'batch-card' ? 'batch-card' : 'content-card',
         type: 'click',
         pageid: this.pageid
       };

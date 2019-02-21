@@ -5,7 +5,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { SharedModule, PaginationService, ToasterService, ResourceService } from '@sunbird/shared';
+import { SharedModule, PaginationService, ToasterService, ResourceService } from '../../services/index';
 import { CoreModule } from '@sunbird/core';
 import { of } from 'rxjs';
 import { Response } from './batch-card.component.spec.data';
