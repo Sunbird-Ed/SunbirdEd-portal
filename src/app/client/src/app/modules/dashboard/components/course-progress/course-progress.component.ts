@@ -72,7 +72,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   /**
 	 * This variable sets the order to true or false
 	 */
-  reverse: boolean;
+  reverse = true;
   /**
 	 * This variable sets the queryparams on url
 	 */
@@ -341,7 +341,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
         return;
     }
     this.pageNumber = page;
+    this.queryParams.pageNumber = this.pageNumber;
     this.navigate();
+    this.populateCourseDashboardData();
   }
   keyup(event) {
     if (!_.isEmpty(_.trim(event))) {
