@@ -333,6 +333,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
       }
     );
+    this.setInteractEventData();
   }
 
   navigateToPage(page: number): undefined | void {
