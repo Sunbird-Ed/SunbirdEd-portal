@@ -7,7 +7,7 @@ import {
   SharedModule, ServerResponse, PaginationService, ResourceService,
   ConfigService, ToasterService, INoResultMessage
 } from '@sunbird/shared';
-import { SearchService, UserService, LearnerService, ContentService } from '@sunbird/core';
+import { SearchService, UserService, LearnerService, ContentService, CoreModule, OrgDetailsService, FrameworkService } from '@sunbird/core';
 import { UserSearchService } from './../../services';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -17,6 +17,9 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserSearchComponent } from './user-search.component';
 import { Response } from './user-search.component.spec.data';
+import { ProfileModule } from '@sunbird/profile';
+import { TelemetryService } from '@sunbird/telemetry';
+
 describe('UserSearchComponent', () => {
   let component: UserSearchComponent;
   let fixture: ComponentFixture<UserSearchComponent>;
@@ -57,9 +60,9 @@ describe('UserSearchComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), Ng2IziToastModule],
+      imports: [HttpClientTestingModule, ProfileModule, CoreModule, SharedModule.forRoot(), Ng2IziToastModule],
       declarations: [UserSearchComponent, UserFilterComponent],
-      providers: [ResourceService, SearchService, PaginationService, UserService,
+      providers: [OrgDetailsService, FrameworkService, TelemetryService, ResourceService, SearchService, PaginationService, UserService,
         LearnerService, ContentService, ConfigService, ToasterService, UserSearchService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
