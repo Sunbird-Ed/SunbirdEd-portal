@@ -112,7 +112,8 @@ export class UserSearchComponent implements OnInit {
     borderRadius: '50%',
     color: '#024F9D',
     fontWeight: 'bold',
-    fontFamily: 'inherit'
+    fontFamily: 'inherit',
+    fontSize: '48px'
   };
   /**
      * Constructor to create injected service(s) object

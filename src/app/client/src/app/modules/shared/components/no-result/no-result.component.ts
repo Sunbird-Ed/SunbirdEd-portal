@@ -21,10 +21,6 @@ export class NoResultComponent implements OnInit {
    * no result messageText for component
   */
   messageText: string;
-  /**
-   * no result emptyImage for component
-  */
- emptyImage: string;
 
   constructor() { }
 
@@ -32,7 +28,6 @@ export class NoResultComponent implements OnInit {
     if (this.data) {
       this.message = this.data.message;
       this.messageText = this.data.messageText;
-      this.emptyImage = this.data.emptyImage;
     }
   }
 }
