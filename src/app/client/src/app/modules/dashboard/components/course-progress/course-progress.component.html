@@ -1,4 +1,5 @@
-<sui-modal [isClosable]="true" (dismissed)="modal.deny(); showDownloadModal = false;" #modal *ngIf="showDownloadModal">
+<sui-modal  class="sb-modal sb-success"
+(dismissed)="modal.deny(); showDownloadModal = false;" #modal *ngIf="showDownloadModal">
   <!-- Download report popup-->
   <div class="header">
     <div class="ui grid">
@@ -10,7 +11,7 @@
   <!--/Header-->
   <!--Content-->
   <div class="sb-modal-content">
-    <p class="meta">{{resourceService?.messages?.stmsg?.m0095}}</p>
+    <p class="meta">{{resourceService?.messages?.stmsg?.m0132}}</p>
   </div>
   <!--/Content-->
 </sui-modal>
@@ -34,7 +35,7 @@
 
             </div>
             <div class="d-flex">
-              <a class="ui item basic icon circular float-ContentRight" data-tooltip="Close the dashboard"
+              <a class="ui item basic icon circular float-ContentRight" data-tooltip="Close  Dashboard"
                 appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'closeDashboard',type:'click',pageid:'course-progress-dashboard'}">
                 <i (click)='redirect()' class="ui remove icon CloseButtonFont"></i>
               </a>
@@ -43,23 +44,25 @@
           <div class="d-flex my-20" *ngIf="dashboarData">
             <span class="course-start-dt black-divider pr-10">
               <b *ngIf="dashboarData.startDate">
-                {{resourceService?.frmelmnts?.lbl?.startdate}}:
+                {{resourceService?.frmelmnts?.lbl?.batchstartdate}}&nbsp;:
               </b>
-              {{dashboarData.startDate}}
+              &nbsp;&nbsp;{{dashboarData.startDate | dateFormat :'DD/MM/YYYY' }}
             </span>
-            <span *ngIf="dashboarData.endDate" class="course-end-dt black-divider px-10">
-              <b>{{resourceService?.frmelmnts?.lbl?.enddate}}:
+            <span  class="course-end-dt black-divider px-10">
+              <b>{{resourceService?.frmelmnts?.lbl?.batchenddate}}&nbsp;:
               </b>
-              {{dashboarData.endDate}}
+            &nbsp;&nbsp;{{dashboarData.endDate | dateFormat :'DD/MM/YYYY'}}
+              <span  *ngIf="!dashboarData.endDate" >-</span>
             </span>
+           
             <span *ngIf="dashboarData.count" class="course-participants black-divider px-10">
-              <b>{{resourceService?.frmelmnts?.lbl?.participants}}:
-              </b> {{dashboarData.count}}
+              <b>{{resourceService?.frmelmnts?.lbl?.participants}}&nbsp;:
+              </b>  &nbsp;&nbsp; {{dashboarData.count}}
             </span>
             <span *ngIf="dashboarData.completedCount" class="course-completed pl-10">
-              <b>{{resourceService?.frmelmnts?.lbl?.completedCourse}}:
+              <b>{{resourceService?.frmelmnts?.lbl?.completedCourse}}&nbsp;:
               </b>
-              {{dashboarData.completedCount}}
+              &nbsp;&nbsp;{{dashboarData.completedCount}}
             </span>
           </div>
         </div>
@@ -69,7 +72,7 @@
               <div class="ui category search float-ContentRight">
                 <div class="ui icon input">
                   <input (keyup)="keyup(searchText)" class="search-course-data" type="text" title="Search" class="" [(ngModel)]="searchText"
-                    placeholder="Search" autocomplete="off" />
+                    placeholder="{{resourceService?.frmelmnts?.lbl?.searchUserName}} " autocomplete="off" />
                   <i class="search icon"></i>
                 </div>
               </div>
@@ -91,10 +94,10 @@
                     appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByUsername',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
                     {{resourceService?.frmelmnts?.lbl?.dashboardsortbyusername}}
                     <span class="primary-color" [hidden]="reverse" style="float:right">
-                      <i class="sort down icon" *ngIf="order === 'username'"></i>
+                      <i class="sort down icon" ></i>
                     </span>
                     <span class="primary-color" [hidden]="!reverse" style="float:right">
-                      <i class="sort up icon" *ngIf="order === 'username'"></i>
+                      <i class="sort up icon" ></i>
                     </span>
                   </div>
                 </th>
@@ -103,10 +106,10 @@
                     appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByOrganization',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
                     {{resourceService?.frmelmnts?.lbl?.orgname}}
                     <span class="primary-color" [hidden]="reverse" style="float:right">
-                      <i class="sort down icon" *ngIf="order === 'orgName'"></i>
+                      <i class="sort down icon" ></i>
                     </span>
                     <span class="primary-color" [hidden]="!reverse" style="float:right">
-                      <i class="sort up icon" *ngIf="order === 'orgName'"></i>
+                      <i class="sort up icon" ></i>
                     </span>
                   </div>
                 </th>
@@ -120,10 +123,10 @@
                     appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByEnrolledOn',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
                     {{resourceService?.frmelmnts?.lbl?.dashboardsortbyenrolledon}}
                     <span class="primary-color" [hidden]="reverse" style="float:right">
-                      <i class="sort down icon" *ngIf="order === 'enrolledOn'"></i>
+                      <i class="sort down icon" ></i>
                     </span>
                     <span class="primary-color" [hidden]="!reverse" style="float:right">
-                      <i class="sort up icon" *ngIf="order === 'enrolledOn'"></i>
+                      <i class="sort up icon" ></i>
                     </span>
                   </div>
                 </th>
@@ -132,10 +135,10 @@
                     appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByStatus',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
                     {{resourceService?.frmelmnts?.lbl?.dashboardsortbystatus}}
                     <span class="primary-color" [hidden]="reverse" style="float:right">
-                      <i class="sort down icon" *ngIf="order === 'progress'"></i>
+                      <i class="sort down icon" ></i>
                     </span>
                     <span  class="primary-color" [hidden]="!reverse" style="float:right">
-                      <i class="sort up icon" *ngIf="order === 'progress'"></i>
+                      <i class="sort up icon" ></i>
                     </span>
                   </div>
                 </th>
@@ -151,12 +154,12 @@
                 <td><span *ngIf="student.phone">{{student.phone}} </span>
                   <span *ngIf="!student.phone">-</span>
                 </td>
-                <td>{{student.enrolledOn | dateFormat}}</td>
+                <td>{{student.enrolledOn | dateFormat :'DD/MM/YYYY'}}</td>
 
-                <td *ngIf="student.progress === 100">{{resourceService?.frmelmnts?.lbl?.done}}</td>
-                <td class="ui green header text-font" *ngIf="(student.progress !== 100 && student.progress > 90)">{{student.progress}}%</td>
-                <td class="ui orange header text-font" *ngIf="(student.progress !== 100 && student.progress > 30)">{{student.progress}}%</td>
-                <td class="ui red header text-font" *ngIf="(student.progress !== 100 && student.progress < 30)">{{student.progress}}%</td>
+                <td *ngIf="student.progress === 100">{{resourceService?.frmelmnts?.lbl?.completed}}</td>
+                <td class="ui  header text-font" *ngIf="(student.progress !== 100 && student.progress > 90)">{{student.progress}}%</td>
+                <td class="ui  header text-font" *ngIf="(student.progress !== 100 && student.progress > 30)">{{student.progress}}%</td>
+                <td class="ui  header text-font" *ngIf="(student.progress !== 100 && student.progress < 30)">{{student.progress}}%</td>
               </tr>
               <tr *ngIf="dashboarData && dashboarData.data.length === 0">
                 <td id="noRecordsFound">{{resourceService?.frmelmnts?.lbl?.noMatchingRecordFound}}</td>
@@ -167,7 +170,7 @@
         <div class="d-flex flex-ai-center flex-jc-space-between mt-10">
           <div   *ngIf="dashboarData && dashboarData.data.length >0 && !showLoader " >showing  {{pager.startIndex+1}} - {{pager.endIndex+1}} of {{dashboarData.data.count}}  users</div>
           <div class="pb-10" *ngIf="dashboarData && dashboarData.data.length >0 && totalCount > config.appConfig.DASHBOARD.PAGE_LIMIT && !showLoader ">
-            <div class="ui pagination menu mt-10 right-floated pt-0" *ngIf="pager.pages.length ">
+            <div class="ui pagination menu mt-10 right-floated pt-0 mini" *ngIf="pager.pages.length ">
              <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
               <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)"
                 class="item">{{page}}</a>
