@@ -198,6 +198,7 @@ export class UserFilterComponent implements OnInit {
   }
 
   resetFilters() {
+    this.inputData = {};
     this.queryParams = {};
     this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.queryParams });
     this.selectedDistrict = '';
@@ -215,6 +216,7 @@ export class UserFilterComponent implements OnInit {
 
   selectedValue(event, code) {
     this.inputData[code] = event;
+    this.settelemetryData();
   }
 
   onDistrictChange(districtId) {
@@ -235,14 +237,19 @@ export class UserFilterComponent implements OnInit {
   }
 
   settelemetryData() {
-    this.submitInteractEdata = {
-      id: 'submit-user-search',
-      type: 'click',
-      pageid: 'user-search'
-    };
+    setTimeout(() => { // wait for model to change
+      const filters = _.pickBy(this.inputData, (val, key) =>
+        (!_.isEmpty(val)));
+      this.submitInteractEdata = {
+        id: 'submit-user-filter',
+        type: 'click',
+        pageid: 'user-search',
+        extra: { filters: filters }
+      };
+    }, 5);
 
     this.resetInteractEdata = {
-      id: 'reset-user-search',
+      id: 'reset-user-filter',
       type: 'click',
       pageid: 'user-search'
     };
