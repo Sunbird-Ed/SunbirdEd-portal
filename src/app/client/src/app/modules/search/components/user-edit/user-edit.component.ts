@@ -39,6 +39,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
   locationCodes: Array<string>;
   queryParams: any;
   selectedSchoolId: any;
+  enableSubmitBtn: boolean;
 
   constructor(private userSearchService: UserSearchService, public activatedRoute: ActivatedRoute,
     private permissionService: PermissionService, public resourceService: ResourceService,
