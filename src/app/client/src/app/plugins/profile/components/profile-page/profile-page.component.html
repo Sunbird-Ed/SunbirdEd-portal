@@ -113,22 +113,22 @@
       <div class="d-flex flex-jc-center relative">
         <div class="max-w-400 computer only">
           <div class="mb-15 d-flex flex-jc-center">
-            <span class="fs-1-16">{{resourceService.frmelmnts.lbl.boards}} :</span>
+            <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.boards}} :</span>
             <span class="fs-1-16 font-w-bold pl-5"
               *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board)}}</span>
           </div>
           <div class="mb-15 d-flex flex-jc-center">
-            <span class="fs-1-16">{{resourceService.frmelmnts.lbl.medium}} :</span>
+            <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.medium}} :</span>
             <span class="fs-1-16 font-w-bold pl-5"
               *ngIf="userProfile.framework">{{convertToString(userProfile.framework.medium)}}</span>
           </div>
           <div class="mb-15 d-flex flex-jc-center">
-            <span class="fs-1-16">{{resourceService.frmelmnts.lbl.classes}} :</span>
+            <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.classes}} :</span>
             <span class="fs-1-16 font-w-bold pl-5"
               *ngIf="userProfile.framework">{{convertToString(userProfile.framework.gradeLevel)}}</span>
           </div>
           <div class="d-flex flex-jc-center">
-            <span class="fs-1-16">{{resourceService.frmelmnts.lbl.subjects}} :</span>
+            <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.subjects}} :</span>
             <span class="fs-1-16 font-w-bold pl-5"
               *ngIf="userProfile.framework">{{convertToString(userProfile.framework.subject)}}</span>
           </div>
@@ -145,22 +145,22 @@
     <!-- User info mobile view starts-->
     <div class="max-w-300 mobile only">
       <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fs-1-16">{{resourceService.frmelmnts.lbl.boards}}:</span>
+        <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.boards}}:</span>
         <span class="fs-1-16 font-w-bold text-ac"
           *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board)}}</span>
       </div>
       <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fs-1-16">{{resourceService.frmelmnts.lbl.medium}} :</span>
+        <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.medium}} :</span>
         <span class="fs-1-16 font-w-bold text-ac"
           *ngIf="userProfile.framework">{{convertToString(userProfile.framework.medium)}}</span>
       </div>
       <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fs-1-16">{{resourceService.frmelmnts.lbl.subjects}} :</span>
+        <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.subjects}} :</span>
         <span class="fs-1-16 font-w-bold text-ac"
           *ngIf="userProfile.framework">{{convertToString(userProfile.framework.subject)}}</span>
       </div>
       <div class="d-flex flex-ai-center flex-dc">
-        <span class="fs-1-16">{{resourceService.frmelmnts.lbl.classes}} :</span>
+        <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.classes}} :</span>
         <span class="fs-1-16 font-w-bold text-ac"
           *ngIf="userProfile.framework">{{convertToString(userProfile.framework.gradeLevel)}}</span>
       </div>
@@ -176,7 +176,8 @@
 
 
   <!-- my badges section starts -->
-  <!-- <extension-point *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0" [name]="'profile-widget'"></extension-point> -->
+  <extension-point *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"
+    [name]="'profile-widget'"></extension-point>
   <!-- my badges section ends -->
 
 
@@ -224,17 +225,25 @@
           </tr>
         </thead>
         <tbody>
-          <div class="ui middle aligned selection list">
-            <div class="item" *ngFor="let data of attendedTraining">
-              <img class="ui avatar image" src="{{'assets/images/badge.png' | cdnprefixurl}}">
-              <div class="content">
-                <div class="header">{{data.courseName}}</div>
+          <tr>
+            <ul class="pl-30 pr-30">
+              <li class="d-flex flex-jc-space-between mb-20"
+                *ngFor="let data of attendedTraining | slice:0:courseLimit">
+                <span class="fs-1-16 color-3">{{data.courseName}}</span>
+                <span class="fs-1 color-4" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy' }}</span>
+              </li>
+              <div class=" mb-15 d-flex flex-jc-center relative" *ngIf="attendedTraining.length > 3">
+                <button class="ui semi-circular dodger-blue button" *ngIf="showMoreTrainings"
+                  (click)="toggleCourse(true)">{{resourceService.frmelmnts.lbl.viewmore}}
+                  <i class="chevron down icon pl-10"></i>
+                </button>
+                <button class="ui semi-circular dodger-blue button" (click)="toggleCourse(false)"
+                  *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}
+                  <i class="chevron up icon pl-10"></i>
+                </button>
               </div>
-              <div class="right floated content bottom aligned">
-                <div *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy' }}</div>
-              </div>
-            </div>
-          </div>
+            </ul>
+          </tr>
         </tbody>
       </table>
       <!-- tarainings attended computer view ends-->
@@ -246,17 +255,22 @@
     {{resourceService.frmelmnts.lbl.trainingAttended}} ({{attendedTraining.length}})&#x200E;</div>
   <div class="ui divider my-5 mobile only"></div>
   <div class="profile-bg-c-1 mobile only" *ngIf="attendedTraining && attendedTraining.length > 0">
-    <div class="ui middle aligned selection list">
-      <div class="item" *ngFor="let data of attendedTraining">
-        <img class="ui avatar image" src="{{'assets/images/badge.png' | cdnprefixurl}}">
-        <div class="content">
-          <div class="header">{{data.courseName}}</div>
-        </div>
-        <div class="right floated content bottom aligned">
-          <div *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy' }}</div>
-        </div>
+    <ul class="px-20">
+      <li class="d-flex flex-dc mb-20" *ngFor="let data of attendedTraining | slice:0:courseLimit">
+        <span class="fs-1-16 color-3">{{data.courseName}}</span>
+        <span class="fs-1 color-4" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy'}}</span>
+      </li>
+      <div class=" mb-15 d-flex flex-jc-center relative" *ngIf="attendedTraining.length > 3">
+        <button class="ui semi-circular dodger-blue button center-aligned" *ngIf="showMoreTrainings"
+          (click)="toggleCourse(true)">{{resourceService.frmelmnts.lbl.viewmore}}
+          <i class="chevron down icon pl-10"></i>
+        </button>
+        <button class="ui semi-circular dodger-blue button center-aligned" (click)="toggleCourse(false)"
+          *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}
+          <i class="chevron up icon pl-10"></i>
+        </button>
       </div>
-    </div>
+    </ul>
   </div>
   <!-- tarainings attended mobile view ends-->
 </div>

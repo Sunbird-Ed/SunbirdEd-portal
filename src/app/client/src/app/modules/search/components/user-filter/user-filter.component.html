@@ -41,7 +41,7 @@
                       </div>
                     </div>
                     <div class="six wide mobile three wide tablet three wide computer column">
-                      <div class="field large">
+                      <div class="field large user-search-select">
                         <label class="mb-10">{{resourceService.frmelmnts?.lbl?.district}}</label>
                         <sui-select [(ngModel)]="selectedDistrict" (ngModelChange)="onDistrictChange($event)" [isSearchable]="true" class="selection bordered"
                           [options]="allDistricts" labelField="name" valueField="id" name="district" placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}"
@@ -51,7 +51,7 @@
                       </div>
                     </div>
                     <div class="six wide mobile three wide tablet three wide computer column">
-                      <div class="field large">
+                      <div class="field large user-search-select">
                         <label class="mb-10">{{resourceService.frmelmnts?.lbl?.block}}</label>
                         <sui-select [(ngModel)]="selectedBlock" (ngModelChange)="onBlockChange($event)" [isSearchable]="true" class="selection bordered" [options]="allBlocks"
                           labelField="name" valueField="id" name="block" placeholder="{{resourceService.frmelmnts?.lbl?.selectBlock}}"
@@ -61,7 +61,7 @@
                       </div>
                     </div>
                     <div class="six wide mobile three wide tablet three wide computer column">
-                      <div class="field large">
+                      <div class="field large user-search-select">
                         <label class="mb-10">{{resourceService.frmelmnts?.lbl?.school}}</label>
                         <sui-select [(ngModel)]="selectedSchool" (ngModelChange)="onSchoolChange($event)" [isSearchable]="true" class="selection bordered"
                           [options]="allSchools" labelField="orgName" valueField="identifier" name="school" placeholder="{{resourceService.frmelmnts?.lbl?.selectSchool}}"
@@ -78,11 +78,11 @@
                     </div>
                   </div>
                 </div>
-                <div class="twelve wide tablet two wide computer right aligned bottom aligned column filter-button">
+                <div class="twelve wide tablet two wide computer right aligned top aligned column filter-button">
                   <label class="computer-only mb-5">&nbsp;</label>
-                  <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata" class="searchfilterbutton ui blue tiny button" (click)="applyFilters()">{{resourceService.frmelmnts?.btn?.submit}}
+                  <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata" class="sb-btn sb-btn-normal sb-btn-primary" (click)="applyFilters()">{{resourceService.frmelmnts?.btn?.submit}}
                   </a>
-                  <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="resetInteractEdata" class="ml-10 searchfilterbutton ui primary tiny basic button" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</a>
+                  <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="resetInteractEdata" class="ml-10 sb-btn sb-btn-normal sb-btn-outline-primary" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</a>
                 </div>
               </div>
             </form>
