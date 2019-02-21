@@ -109,7 +109,6 @@ describe('UserSearchComponent', () => {
     spyOn(searchService, 'getOrganisationDetails').and.callFake(() => observableOf(Response.orgDetailsSearch));
     component.queryParams = mockQueryParma;
     spyOn(searchService, 'userSearch').and.callFake(() => observableThrowError({}));
-    component.populateOrgNameAndSetRoles();
     component.populateUserSearch();
     fixture.detectChanges();
     expect(component.searchList.length).toBeLessThanOrEqual(1);

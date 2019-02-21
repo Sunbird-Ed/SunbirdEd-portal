@@ -43,7 +43,7 @@ export class ProfileService {
   public updatePrivateProfile(request) {
     const data = this.formatRequest(request);
     const options = {
-      url: 'user/private/v1/update',
+      url: 'user/update',
       data: data
     };
     return this.learnerService.patch(options).pipe(map(

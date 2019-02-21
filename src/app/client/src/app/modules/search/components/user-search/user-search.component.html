@@ -71,8 +71,8 @@
                       <!-- updated code as per new design -->
 
                       <div class="ui horizontal bulleted list">
-                        <span class="item">Veerapanchatantram</span>
-                        <span class="item">Kancheepuram</span>
+                        <span class="item" *ngIf="user.block">{{user.block.name}}</span>
+                        <span class="item" *ngIf="user.district">{{user.district.name}}</span>
                       </div>
                     </div>
                   </div>
