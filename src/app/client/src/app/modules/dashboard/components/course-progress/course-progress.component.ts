@@ -380,7 +380,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
             // Create the telemetry impression event for course stats page
             this.telemetryImpression = {
               context: {
-                env: this.activatedRoute.snapshot.data.telemetry.env
+                env: this.activatedRoute.snapshot.data.telemetry.env,
+                cdata: [{ id: this.courseId, type: 'course' }]
               },
               edata: {
                 type: this.activatedRoute.snapshot.data.telemetry.type,
@@ -409,7 +410,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
   setInteractEventData() {
-    if (this.queryParams.batchIdentifier) {
+    if (_.get(this.queryParams, 'batchIdentifier')) {
       this.telemetryCdata = [{ 'type': 'batch', 'id': this.queryParams.batchIdentifier}];
     }
   }

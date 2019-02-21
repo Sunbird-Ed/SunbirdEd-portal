@@ -170,6 +170,7 @@ describe('CourseProgressComponent', () => {
     }));
 
   it('should unsubscribe to userData observable', () => {
+    component.queryParams = {};
     component.ngOnInit();
     spyOn(component.userDataSubscription, 'unsubscribe');
     component.ngOnDestroy();
@@ -177,6 +178,7 @@ describe('CourseProgressComponent', () => {
   });
 
   it('should unsubscribe from all observable subscriptions', () => {
+    component.queryParams = { batchIdentifier: '0124963192947507200'};
     component.ngOnInit();
     spyOn(component.unsubscribe, 'complete');
     component.ngOnDestroy();
@@ -184,6 +186,7 @@ describe('CourseProgressComponent', () => {
   });
   it('should call setpage method and set proper page number', inject([Router],
     (route) => {
+      component.queryParams = { batchIdentifier: '0124963192947507200'};
       component.pager = testData.mockUserData.pager;
       component.pager.totalPages = 8;
       component.navigateToPage(1);
