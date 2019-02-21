@@ -82,7 +82,8 @@
       "ORG_CREATION": "dashboard/v1/creation/org",
       "ORG_CONSUMPTION": "dashboard/v1/consumption/org",
       "COURSE_PROGRESS": "dashboard/v1/progress/course",
-      "COURSE_CONSUMPTION": "dashboard/v1/consumption/course"
+      "COURSE_CONSUMPTION": "dashboard/v1/consumption/course",
+      "COURSE_PROGRESS_V2":"dashboard/v2/progress/course"
     },
     "NOTES": {
       "SEARCH": "notes/v1/search",
