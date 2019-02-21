@@ -184,11 +184,15 @@ describe('CourseProgressComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
-  it('should call setpage method and set proper page number', inject([Router],
-    (route) => {
+  it('should call setpage method and set proper page number', inject([Router, UserService, CourseProgressService],
+    (route, userService, courseService) => {
       component.queryParams = { batchIdentifier: '0124963192947507200'};
       component.pager = testData.mockUserData.pager;
       component.pager.totalPages = 8;
+      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
+      fixture.detectChanges();
+      spyOn(courseService, 'getBatches').and.returnValue(observableOf(testData.mockUserData.getBatchRes));
+      component.populateBatchData();
       component.navigateToPage(1);
       fixture.detectChanges();
       expect(route.navigate).toHaveBeenCalledWith([], { queryParams: component.queryParams });
