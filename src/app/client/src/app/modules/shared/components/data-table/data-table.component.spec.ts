@@ -19,9 +19,7 @@ describe('DataTableComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
-    // component.ngAfterViewInit();
-    component.ngAfterViewChecked();
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });
