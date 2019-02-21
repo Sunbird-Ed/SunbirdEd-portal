@@ -1,6 +1,6 @@
 import { combineLatest,  Subscription ,  Observable ,  Subject, of } from 'rxjs';
 
-import {first, takeUntil, map, debounceTime, distinctUntilChanged, flatMap, delay} from 'rxjs/operators';
+import {first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, delay} from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -230,6 +230,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   setBatchId(batchId: string): void {
     this.queryParams.batchIdentifier = batchId;
     this.queryParams.pageNumber = this.pageNumber;
+    this.searchText = '';
     this.populateCourseDashboardData();
   }
 
@@ -289,7 +290,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
         this.dashboarData = apiResponse.result;
-        console.log(this.dashboarData);
         this.totalCount = apiResponse.result.count;
         this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
       },
@@ -338,18 +338,16 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     this.navigate();
   }
   keyup(event) {
-    this.searchText = event;
-    if (!_.isEmpty(_.trim(this.searchText))) {
-      this.modelChanged.next(this.searchText);
+    if (!_.isEmpty(_.trim(event))) {
+      this.modelChanged.next(event);
     }
   }
   searchBatch() {
     this.modelChanged.pipe(debounceTime(1000),
     distinctUntilChanged(),
-    flatMap(search => of(search).pipe(delay(250)))
+    switchMap(search => of(search))
     ).
     subscribe(query => {
-      this.searchText = query;
       this.populateCourseDashboardData();
     });
   }
