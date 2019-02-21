@@ -146,6 +146,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
 	 * telemetryImpression object for course progress page
 	*/
   telemetryImpression: IImpressionEventInput;
+  telemetryCdata: Array<{}>;
   subscription: Subscription;
   /**
 	 * Constructor to create injected service(s) object
@@ -231,6 +232,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     this.queryParams.batchIdentifier = batchId;
     this.queryParams.pageNumber = this.pageNumber;
     this.searchText = '';
+    this.setInteractEventData();
     this.populateCourseDashboardData();
   }
 
@@ -396,6 +398,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
       }
     });
     this.searchBatch();
+    this.setInteractEventData();
   }
   ngOnDestroy() {
     if (this.userDataSubscription) {
@@ -404,5 +407,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
-
+  setInteractEventData() {
+    this.telemetryCdata = [{ 'type': 'batch', 'id': this.queryParams.batchIdentifier  }];
+  }
 }

@@ -28,7 +28,7 @@
               <sui-select class="selection fluid bordered" placeholder="Select batch to see dashboard" [(ngModel)]="selectedOption"
                 [options]="batchlist" labelField="name" valueField="id" [isSearchable]="true" #select>
                 <sui-select-option *ngFor="let course of select.filteredOptions" [value]="course" (click)="setBatchId(course.id);"
-                  appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:course.id,type:'click',pageid:'course-progress-dashboard'}">
+                  appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'batchSelection',type:'click',pageid:'course-progress-dashboard'}" [telemetryInteractCdata]="telemetryCdata">
                 </sui-select-option>
               </sui-select>
 
@@ -88,7 +88,7 @@
               <tr>
                 <th>
                   <div class="cursor-pointer" (click)="setOrder('username')"
-                    appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByUsername',type:'click',pageid:'course-progress-dashboard'}">
+                    appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByUsername',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
                     {{resourceService?.frmelmnts?.lbl?.dashboardsortbyusername}}
                     <span class="primary-color" [hidden]="reverse" style="float:right">
                       <i class="sort down icon" *ngIf="order === 'username'"></i>
@@ -100,7 +100,7 @@
                 </th>
                 <th>
                   <div  class="cursor-pointer" (click)="setOrder('orgName')"
-                    appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByOrganization',type:'click',pageid:'course-progress-dashboard'}">
+                    appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByOrganization',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
                     {{resourceService?.frmelmnts?.lbl?.orgname}}
                     <span class="primary-color" [hidden]="reverse" style="float:right">
                       <i class="sort down icon" *ngIf="order === 'orgName'"></i>
@@ -117,7 +117,7 @@
                 </th>
                 <th>
                   <div  class="cursor-pointer" (click)="setOrder('enrolledOn')"
-                    appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByEnrolledOn',type:'click',pageid:'course-progress-dashboard'}">
+                    appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByEnrolledOn',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
                     {{resourceService?.frmelmnts?.lbl?.dashboardsortbyenrolledon}}
                     <span class="primary-color" [hidden]="reverse" style="float:right">
                       <i class="sort down icon" *ngIf="order === 'enrolledOn'"></i>
@@ -129,7 +129,7 @@
                 </th>
                 <th class="table-headerDashboard">
                   <div class="cursor-pointer"  (click)="setOrder('progress')"
-                    appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByStatus',type:'click',pageid:'course-progress-dashboard'}">
+                    appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByStatus',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
                     {{resourceService?.frmelmnts?.lbl?.dashboardsortbystatus}}
                     <span class="primary-color" [hidden]="reverse" style="float:right">
                       <i class="sort down icon" *ngIf="order === 'progress'"></i>
