@@ -46,17 +46,17 @@
                         <i class="edit large icon remove-outline"></i>
                       </span>
                       <!-- delete user -->
-                      <span appTelemetryInteract [telemetryInteractEdata]="userDeleteIntractEdata" [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}"
+                      <!-- <span appTelemetryInteract [telemetryInteractEdata]="userDeleteIntractEdata" [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}"
                         class="remove-outline mx-5">
                         <i class="trash outline large icon remove-outline" [queryParams]="queryParams" [routerLink]="['delete/' + user.id]" (click)="userSearchService.userDetailsObject=user"></i>
-                      </span>
+                      </span> -->
                     </a>
 
                     <!-- organization Name -->
                     <div class="meta">
                       <span class="cinema ">
                         <span *ngFor="let org of user.organisations; let last = last;">
-                          <span *ngIf="org.orgName">{{org.orgName}}</span>
+                          <span *ngIf="org.orgName">{{org.orgName | titlecase}}</span>
                           <span *ngIf="!last && org.orgName">,</span>
                         </span>
                       </span>
@@ -71,8 +71,8 @@
                       <!-- updated code as per new design -->
 
                       <div class="ui horizontal bulleted list">
-                        <span class="item" *ngIf="user.block">{{user.block.name}}</span>
-                        <span class="item" *ngIf="user.district">{{user.district.name}}</span>
+                        <span class="item" *ngIf="user.block">{{user.block.name | titlecase}}</span>
+                        <span class="item" *ngIf="user.district">{{user.district.name | titlecase}}</span>
                       </div>
                     </div>
                   </div>

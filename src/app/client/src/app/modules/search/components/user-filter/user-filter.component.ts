@@ -106,17 +106,17 @@ export class UserFilterComponent implements OnInit {
       // Preparing data for multi-select filter
       const medium: any = _.find(categoryMasterList, { code: 'medium' });
       medium['label'] = medium.name;
-      medium['range'] = medium.terms;
+      medium['range'] = this.sortFilters(medium.terms);
       this.medium = medium;
 
       const gradeLevel: any = _.find(categoryMasterList, { code: 'gradeLevel' });
       gradeLevel['label'] = gradeLevel.name;
-      gradeLevel['range'] = gradeLevel.terms;
+      gradeLevel['range'] = this.sortFilters(gradeLevel.terms);
       this.class = gradeLevel;
 
       const subject: any = _.find(categoryMasterList, { code: 'subject' });
       subject['label'] = subject.name;
-      subject['range'] = subject.terms;
+      subject['range'] = this.sortFilters(subject.terms);
       this.subject = subject;
       return 'Framework API success';
     }), catchError(e => of('Framework API error')));
@@ -126,7 +126,7 @@ export class UserFilterComponent implements OnInit {
     if (this.stateId) {
       const requestData = { 'filters': { 'type': 'district', parentId: this.stateId } };
       return this.profileService.getUserLocation(requestData).pipe(map((res: any) => {
-        this.allDistricts = res.result.response;
+        this.allDistricts = this.sortFilters(res.result.response);
         // Get Blocks API call
         this.districtIds = _.map(this.allDistricts, 'id');
         this.selectedDistrict = this.queryParams.District;
@@ -140,7 +140,7 @@ export class UserFilterComponent implements OnInit {
     if (!_.isEmpty(districtIds)) {
       const requestData = { 'filters': { 'type': 'block', parentId: districtIds } };
       this.profileService.getUserLocation(requestData).subscribe(res => {
-        this.allBlocks = res.result.response;
+        this.allBlocks = this.sortFilters(res.result.response);
         this.selectedBlock = this.queryParams.Block;
         this.hardRefreshFilter();
         // Get school API call
@@ -154,7 +154,7 @@ export class UserFilterComponent implements OnInit {
     if (!_.isEmpty(blockIds)) {
       const requestData = { 'filters': { locationIds: blockIds } };
       this.orgDetailsService.fetchOrgs(requestData).subscribe(res => {
-        this.allSchools = res.result.response.content;
+        this.allSchools = this.sortFilters(res.result.response.content);
         this.selectedSchool = this.queryParams.School;
         this.hardRefreshFilter();
       });
@@ -173,10 +173,11 @@ export class UserFilterComponent implements OnInit {
       // Preparing data for multi-select filter
       this.allRoles['code'] = 'Roles';
       this.allRoles['label'] = this.resourceService.frmelmnts.lbl.role;
-      const roleArray = [];
+      let roleArray = [];
       _.forEach(this.allRoles, (role) => {
         roleArray.push({ code: role.role, name: role.roleName });
       });
+      roleArray = this.sortFilters(roleArray);
       this.allRoles['range'] = roleArray;
       return 'Roles API success';
     }), catchError(e => of('Roles API error')));
@@ -234,6 +235,11 @@ export class UserFilterComponent implements OnInit {
 
   onSchoolChange(schoolId) {
     this.selectedValue([schoolId], 'School');
+  }
+
+  sortFilters (object) {
+    return _.sortBy(object, [(sort) => {
+      return sort.name; }]);
   }
 
   settelemetryData() {

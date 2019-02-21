@@ -76,7 +76,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
   getAllRoles() {
     this.activatedRoute.params.subscribe(params => {
       this.userId = params.userId;
-      this.settelemetryData();
     });
     this.populateUserDetails();
     this.permissionService.permissionAvailable$.subscribe(params => {
@@ -125,6 +124,8 @@ export class UserEditComponent implements OnInit, OnDestroy {
     this.getDistrict();
     this.onDistrictChange();
     this.onBlockChange();
+    this.settelemetryData();
+    this.onFormValueChange();
   }
 
   getDistrict() {
@@ -263,6 +264,12 @@ export class UserEditComponent implements OnInit, OnDestroy {
     this.route.navigate(['../../'], { relativeTo: this.activatedRoute, queryParams: this.queryParams });
   }
 
+  onFormValueChange() {
+    this.userDetailsForm.valueChanges.subscribe(val => {
+      this.settelemetryData();
+    });
+  }
+
   settelemetryData() {
     this.telemetryImpression = {
       context: {
@@ -285,6 +292,13 @@ export class UserEditComponent implements OnInit, OnDestroy {
       id: 'user-update',
       type: 'click',
       pageid: 'user-edit'
+    };
+
+    this.submitInteractEdata = {
+      id: 'user-update',
+      type: 'click',
+      pageid: 'user-edit',
+      extra: { filters: this.userDetailsForm.value }
     };
 
     this.telemetryInteractObject = {

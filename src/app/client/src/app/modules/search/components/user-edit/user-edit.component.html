@@ -85,7 +85,7 @@
   
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button  
+    <button [disabled]="!enableSubmitBtn"
       appTelemetryInteract 
       [telemetryInteractObject]="telemetryInteractObject" 
       [telemetryInteractEdata]="submitInteractEdata" 
