@@ -78,7 +78,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
   /**
    * no result  message
   */
-  noResultMessage: INoResultMessage;
+  noResultObject: INoResultMessage;
 
   /**
     * For showing pagination on unpublished list
@@ -169,9 +169,10 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0082,
     };
-    this.noResultMessage = {
+    this.noResultObject = {
       'message': this.resourceService.messages.stmsg.m0008,
-      'messageText': this.resourceService.messages.stmsg.m0083
+      'messageText': this.resourceService.messages.stmsg.m0083,
+      'emptyImage': '../assets/images/empty.png'
     };
     this.state = 'limited-publish';
   }
@@ -249,8 +250,10 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
   }
   public deleteConfirmModal(contentIds) {
     const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
-    config.isClosable = true;
-    config.size = 'mini';
+    config.isClosable = false;
+    config.size = 'small';
+    config.transitionDuration = 0;
+    config.mustScroll = true;
     this.modalService
       .open(config)
       .onApprove(result => {

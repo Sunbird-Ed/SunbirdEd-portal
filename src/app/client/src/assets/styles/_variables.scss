@@ -1,114 +1,91 @@
 // Variables
-// Variables should follow the `$component-state-property-size` formula for
-// consistent naming. Ex: $nav-link-disabled-color and $modal-content-box-shadow-xs.
-// Color system
-// stylelint-disable
-// Fonts
-$font-stack-en:
-  'Noto Sans',
-  'Noto Sans Devanagari',
-  'Noto Sans Tamil',
-  'Noto Sans Bengali',
-  'Noto Sans Malayalam',
-  'Noto Sans Gurmukhi',
-  'Noto Sans Gujarati',
-  'Noto Sans Telugu',
-  'Noto Sans Kannada',
-  'Noto Sans Oriya',
-  'Noto Nastaliq Urdu',
-  -apple-system,
-  BlinkMacSystemFont,
-  'Segoe UI',
-  Roboto,
-  Oxygen-Sans,
-  Ubuntu,
-  Cantarell,
-  'Helvetica Neue',
-  sans-serif;
-$font-stack-hi:
-  'Noto Sans Devanagari',
-  'Noto Sans',
-  'Noto Sans Tamil',
-  'Noto Sans Bengali',
-  'Noto Sans Malayalam',
-  'Noto Sans Gurmukhi',
-  'Noto Sans Gujarati',
-  'Noto Sans Telugu',
-  'Noto Sans Kannada',
-  'Noto Sans Oriya',
-  'Noto Nastaliq Urdu',
-  -apple-system,
-  BlinkMacSystemFont,
-  'Segoe UI',
-  Roboto,
-  Oxygen-Sans,
-  Ubuntu,
-  Cantarell,
-  'Helvetica Neue',
-  sans-serif;
-$font-stack-ur:
-  'Noto Sans',
-  'Noto Nastaliq Urdu',
-  'Noto Sans Devanagari',
-  'Noto Sans Tamil',
-  'Noto Sans Bengali',
-  'Noto Sans Malayalam',
-  'Noto Sans Gurmukhi',
-  'Noto Sans Gujarati',
-  'Noto Sans Telugu',
-  'Noto Sans Kannada',
-  'Noto Sans Oriya',
-  -apple-system,
-  BlinkMacSystemFont,
-  'Segoe UI',
-  Roboto,
-  Oxygen-Sans,
-  Ubuntu,
-  Cantarell,
-  'Helvetica Neue',
-  sans-serif;
-/* gray colors */
-$gray-0:       #f3f3f3; // place holder active bg
-$gray-100:     #cccccc; // disable btn bg, icon color
-$gray-200:     #979797; // disable text, place holder text
-$gray-300:     #999999; // sub heading 2
-$gray-400:     #666666; // sub heading
-$gray-800:     #333333; // text color
+$font-stack-en: 'Noto Sans',
+'Noto Sans Devanagari',
+'Noto Sans Tamil',
+'Noto Sans Bengali',
+'Noto Sans Malayalam',
+'Noto Sans Gurmukhi',
+'Noto Sans Gujarati',
+'Noto Sans Telugu',
+'Noto Sans Kannada',
+'Noto Sans Oriya',
+'Noto Nastaliq Urdu',
+-apple-system,
+BlinkMacSystemFont,
+'Segoe UI',
+Roboto,
+Oxygen-Sans,
+Ubuntu,
+Cantarell,
+'Helvetica Neue',
+sans-serif;
+$font-stack-hi: 'Noto Sans Devanagari',
+'Noto Sans',
+'Noto Sans Tamil',
+'Noto Sans Bengali',
+'Noto Sans Malayalam',
+'Noto Sans Gurmukhi',
+'Noto Sans Gujarati',
+'Noto Sans Telugu',
+'Noto Sans Kannada',
+'Noto Sans Oriya',
+'Noto Nastaliq Urdu',
+-apple-system,
+BlinkMacSystemFont,
+'Segoe UI',
+Roboto,
+Oxygen-Sans,
+Ubuntu,
+Cantarell,
+'Helvetica Neue',
+sans-serif;
+$font-stack-ur: 'Noto Sans',
+'Noto Nastaliq Urdu',
+'Noto Sans Devanagari',
+'Noto Sans Tamil',
+'Noto Sans Bengali',
+'Noto Sans Malayalam',
+'Noto Sans Gurmukhi',
+'Noto Sans Gujarati',
+'Noto Sans Telugu',
+'Noto Sans Kannada',
+'Noto Sans Oriya',
+-apple-system,
+BlinkMacSystemFont,
+'Segoe UI',
+Roboto,
+Oxygen-Sans,
+Ubuntu,
+Cantarell,
+'Helvetica Neue',
+sans-serif;
 // Base Colors
-$blue:    #024f9d;
-$green:   #008840;
-$orange:  #e55a28;
-$red:     #ff4558;
-$white:    #fff;
-$indigo:  #6610f2;
-$purple:  #6f42c1;
-$pink:    #e83e8c;
-$yellow:  #ffc107;
-$teal:    #20c997;
-$cyan:    #17a2b8;
+$blue: #024f9d;
+$green: #008840;
+$orange: #e55a28;
+$red: #ff4558;
+$white: #fff;
+$indigo: #6610f2;
+$purple: #6f42c1;
+$pink: #e83e8c;
+$yellow: #ffc107;
+$teal: #20c997;
+$cyan: #17a2b8;
+$gray: #333333;
 // brand Colors
-$primary-color:   $blue;
+$primary-color: $blue;
 $secondary-color: $green;
-$tertiary-color:  $orange;
-// Status Colors
-$info-color:      $blue;
-$success-color:   $green;
-$warning-color:   $orange;
-$danger-color:    $red;
+$tertiary-color: $orange;
 // Nuetral Colors
-$white-color:     $white;
-$theme-colors: () !default;
-$theme-colors: map-merge((
-  "primary":    $primary-color,
-  "secondary":  $secondary-color,
-  "tertiary":   $tertiary-color,
-  "success":    $success-color,
-  "info":       $info-color,
-  "warning":    $warning-color,
-  "danger":     $danger-color,
-  "light":      $gray-100,
-  "dark":       $gray-800
-), $theme-colors);
+$white-color: $white;
+// gray colors shades 
+$gray-0: lighten($gray, 75%); // place holder active bg #F2F2F2
+$gray-100: lighten($gray, 60%); // disable btn bg, icon color #CCCCCC
+$gray-200: lighten($gray, 40%); // disable text, place holder text #999999
+$gray-300: lighten($gray, 39%); // sub heading 2 #969696
+$gray-400: lighten($gray, 20%); // sub heading #666666
+$gray-800: $gray; // text color #333333
+/*
 // primary colors shades 
 $primary-0:   lighten($primary-color,65%); // bg
 $primary-100: lighten($primary-color,15%); // default button bg
@@ -117,71 +94,131 @@ $primary-300: lighten($primary-color,5%);  // outline, focus fields
 $primary-400: $primary-color; // button bg, heading, table titles, links, toggles 
 $primary-600: darken($primary-color,15%);  // on press
 $primary-800: darken($primary-color,30%);  // hover
+*/
+
+$primary-0: #F3F7FA; // bg
+$primary-100: #EDF4F9; // default button bg
+$primary-200: #80A7CE; // divider
+$primary-300: #7AB4EE; // outline, focus fields
+$primary-400: $primary-color; // button bg, heading, table titles, links, toggles 
+$primary-600: #005391; // on press
+$primary-800: #002E50; // hover
+/*
 // secondary colors shades
 $secondary-0:   lighten($secondary-color,50%);  // toast bg
 $secondary-100: lighten($secondary-color,15%);   // buttong bg, toast
 $secondary-200: lighten($secondary-color,10%);   // button hover
 $secondary-400: $secondary-color;               // icon
+*/
+
+$secondary-0: #E1FFDF; // toast bg
+$secondary-100: #00C786; // buttong bg, toast
+$secondary-200: #07BC81; // button bg
+$secondary-400: $secondary-color; // hover
+/*
 // tertiary colors shades
 $tertiary-0:   lighten($tertiary-color,50%); // toast bg
 $tertiary-100: lighten($tertiary-color,15%); // buttong bg, toast
 $tertiary-400: $tertiary-color; // icon, label, notification bg
+*/
+
+$tertiary-0: #FEEDD7; // toast bg
+$tertiary-100: #FFA11D; // buttong bg, toast
+$tertiary-400: $tertiary-color; // icon, label, notification bg
+/*
 // red colors shades
 $red-0:   lighten($red,50%); // toast bg
 $red-100: lighten($red,15%); // buttong bg, toast
 $red-400: $red; // icon color, lable, notification bg
+*/
+
+$red-0: #FBCCD1; // toast bg
+$red-100: #FF6979; // buttong bg, toast
+$red-400: $red; // icon color, lable, notification bg
+
+// Status Colors
+$info-color: $primary-400;
+$success-color: $secondary-200;
+$warning-color: $tertiary-100;
+$danger-color: $red-100;
 // Settings for the `<body>` element.
-$bg-body:       $primary-0;
-$body-color:    $gray-800;
+$bg-body: $primary-0;
+$body-color: $gray-800;
+$theme-colors: () !default;
+$theme-colors: map-merge(( "primary": $primary-color, "secondary": $secondary-color, "tertiary": $tertiary-color, "success": $success-color, "info": $info-color, "warning": $warning-color, "danger": $danger-color, "light": $gray-100, "dark": $gray), $theme-colors);
 // Style anchor elements.
-$link-color:                theme-color("primary");
-$link-decoration:           none;
-//$link-hover-color:          darken($link-color, 15%);
-$link-hover-decoration:     underline;
+$link-color: theme-color("primary");
+$link-decoration: none;
+//$link-hover-color:        darken($link-color, 15%);
+$link-hover-decoration: underline;
 // Fonts
 // $font-default-size: 14px;
 $font-size-base: 14px; // Assumes the browser default, typically `16px`
-$font-weight-light:           300;
-$font-weight-normal:          400;
-$font-weight-bold:            700;
-$font-weight-base:            $font-weight-normal;
-$line-height-base:            ($font-size-base + 8);
-$h1-font-size:                $font-size-base * 2.286; // 32px
-$h2-font-size:                $font-size-base * 2; // 28px
-$h3-font-size:                $font-size-base * 1.714; // 24px
-$h4-font-size:                $font-size-base * 1.429; // 20px
-$h5-font-size:                $font-size-base * 1.143;  // 16px
-$h6-font-size:                $font-size-base * 1; // 14px
-$font-size-lg:                ($h3-font-size); //24px
-$font-size-normal:            ($h5-font-size); // 16px
-$font-size-md:                ($font-size-base * 1); // 14px
-$font-size-sm:                ($font-size-base * 0.8571); // 12px
-$font-size-xs:                ($font-size-base * 0.7143); // 10px
-$p-font-size:                 $font-size-md;            
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+$font-weight-base: $font-weight-normal;
+$line-height-base: ($font-size-base + 8);
+$h1-font-size: $font-size-base * 2.286; // 32px
+$h2-font-size: $font-size-base * 2; // 28px
+$h3-font-size: $font-size-base * 1.714; // 24px
+$h4-font-size: $font-size-base * 1.429; // 20px
+$h5-font-size: $font-size-base * 1.143; // 16px
+$h6-font-size: $font-size-base * 1; // 14px
+$font-size-lg: ($h4-font-size); //20px
+$font-size-md: ($h5-font-size); // 16px
+$font-size-normal: ($font-size-base * 1); // 14px
+$font-size-sm: ($font-size-base * 0.8571); // 12px
+$font-size-xs: ($font-size-base * 0.7143); // 10px
+$p-font-size: $font-size-normal;
 // spaces
 $base-block-space: 8px;
-$block-padding-y-x: ($base-block-space * 1) ($base-block-space * 3); // any block default spacing
-$block-padding-xy: ($base-block-space * 3);  // top right bottom left spacing
-$block-padding-x: ($base-block-space * 3);  // left right spacing
-$block-padding-y: ($base-block-space * 1);  // top bottom spacing
-$block-margin-xl-minus: -($base-block-space * 3); // minus margin 24px left
-$block-margin-xr-minus: -($base-block-space * 3); // minus margin 24px right
+$block-padding-y-x: ($base-block-space * 1) ($base-block-space * 2); // any block default spacing 16px
+$block-padding-xy: ($base-block-space * 2); // top right bottom left spacing
+$block-padding-x: ($base-block-space * 2) ($base-block-space * 2); // left right spacing
+$block-padding-y: ($base-block-space * 1) ($base-block-space * 1); // top bottom spacing
+$block-margin-xl-minus: -($base-block-space * 2); // minus margin 16px left
+$block-margin-xr-minus: -($base-block-space * 2); // minus margin 16px right
+$block-margin-xr-minus: -($base-block-space * 2) -($base-block-space * 2); // minus margin 16px left & right
 // width heights
-$base-btn-small-height: ($base-block-space * 3);
+$base-btn-xs-height: ($base-block-space * 3);
 $base-btn-normal-height: ($base-block-space * 4);
-$base-btn-big-height: ($base-block-space * 5);
+$base-btn-sm-height: ($base-block-space * 5);
+$base-btn-md-height: ($base-block-space * 6);
+$base-btn-lg-height: ($base-block-space * 7);
 $base-btn-fluid: 100%;
+// modal component
+$sb-modal-header-bg: $primary-400;
+$sb-modal-header-color: $white-color;
+$sb-modal-header-padding:($base-block-space * 1) ($base-block-space * 2);
+$sb-modal-header-height:($base-block-space * 5);
+$sb-modal-fs-header-height:($base-block-space * 7);
+$sb-modal-header-line-height: ($h5-font-size + 8);
+$sb-modal-content-padding: $block-padding-xy;
+$sb-modal-actions-bg: $white-color;
+$sb-modal-actions-padding:($base-block-space * 1) ($base-block-space * 2);
+$sb-modal-actions-height:($base-block-space * 7);
+$sb-modal-header-bg-success: $secondary-200;
+$sb-modal-header-bg-warning: $tertiary-400;
+$sb-modal-header-bg-error: $red-400;
+$sb-modal-header-fsize: $h5-font-size;
+$sb-modal-small-width:480px;
+$sb-modal-normal-width:720px;
+$sb-modal-large-width:900px;
+//button component
+
 // To clean
-$text-lightDark: #666;
-$text-gray: rgb(180, 171, 171);
-$signup-btn-bg-not-active-color: #9b9b9b;
-$signup-thankyou-text-color: #4a4a4a;
-$signup-btn-bg-active-color: #2ca58d;
-$form-input-border-color: #979797;
-$form-input-border-active-color: #4a90e2;
-$menuitem-color: #212121;
-$primary-border: 0.5px solid rgba(216, 216, 216, 0.5);
-$primary-background: rgba(216, 216, 216, 0.5);
-$card-label-border-color: rgba(2, 79, 157, 0.5);
-$dull-color: #b7d8f1;
-$qr-btn: #edf4f9;
+$text-lightDark: $gray-400;
+$text-gray: $gray-100;
+$signup-btn-bg-not-active-color: $gray-200;
+$signup-thankyou-text-color: $gray-400;
+$form-input-border-color: $gray-300;
+$menuitem-color: $gray-800;
+$dull-color: $gray-100;
+$qr-btn:  $gray-100;
+$signup-btn-bg-active-color: $secondary-400;
+$form-input-border-active-color: $primary-400;
+
+$primary-border: 0.5px solid $gray-100;
+$primary-background: $gray-100;
+$card-label-border-color: rgba($primary-800, 0.5);

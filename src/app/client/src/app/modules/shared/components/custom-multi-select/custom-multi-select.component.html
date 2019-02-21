@@ -16,7 +16,7 @@
     valueField="name" (ngModelChange)="selectedOption($event)" #multiSelect>
     <div class=" header template-checkbox cursor-pointer multi-select-dropdown multi-select-padding" (click)="selectAll(field.code)">
       <div [ngClass]="{'blue-text-color-sunbird': selectAllCheckBox }">
-        Select All
+        {{resourceService.frmelmnts.lbl.selectAll}}
       </div>
       <div class="ml-auto">
         <i class="square outline medium icon " [ngClass]="{'check blue': selectAllCheckBox}"></i>

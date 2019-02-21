@@ -8,7 +8,7 @@ var conceptModal;
     tabs = {};
     options.noDataMessage = options.noDataMessage ? options.noDataMessage : 'no results';
     $("#" + options.nodeName).length == 0 ? '' : $("#" + options.nodeName).remove();
-    modal = $("<div id=" + options.nodeName + " class=\"ui tree-picker small modal\">\n  <div class=\"header\">\n    " + options.name + "\n\n    <div class=\"ui menu\">\n      <a class=\"active tree item\">\n        <i class=\"list icon\"></i> " + options.name + "\n      </a>\n      <a class=\"picked item\">\n        <i class=\"checkmark icon\"></i> Selected " + options.name + "&nbsp<span class=\"count\"></span>\n      </a>\n    </div>\n  </div>\n  <div class=\"ui search form\">\n    <div class=\"field\">\n      <div class=\"ui icon input\">\n        <input type=\"text\" placeholder=\"Search\">\n        <i class=\"search icon\"></i>\n      </div>\n    </div>\n  </div>\n  <div class=\"content\">\n <div class=\"ui warning hidden message\"><div class=\"header\">" + options.noDataMessage + "</div></div> <div class=\"ui active inverted dimmer\"><div class=\"ui text loader\">Loading data</div></div>\n    <div class=\"tree-tab\">\n      <div style=\"height: 400px\"></div>\n    </div>\n\n    <div class=\"search-tab\">\n    </div>\n\n    <div class=\"picked-tab\">\n    </div>\n  </div>\n  <div class=\"actions\">\n    <a class=\"pick-search\"><i class=\"checkmark icon\"></i> Choose All</a>\n    <a class=\"unpick-search\"><i class=\"remove icon\"></i> Remove All</a>\n    <a class=\"unpick-picked\"><i class=\"remove icon\"></i> Remove All</a>\n    <a class=\"ui blue button accept\">Done</a>\n    <a class=\"ui button close\">Cancel</a>\n  </div>\n</div>").modal({
+    modal = $("<div class=\"sb-modal\"><div id=" + options.nodeName + " class=\"ui tree-picker normal modal visible active\">\n <i class=\"close icon\"></i> <div class=\"sb-modal-header\">\n " + options.name + "\n\n </div> <div class=\"sb-modal-content content\">\n <div class=\"ui grid padded stackable\"> <div class=\"right floated four wide column p-0\"><div class=\"ui mini menu d-inline-flex\">\n <a class=\"active tree item\">\n <i class=\"list icon\"></i> " + options.name + "\n  </a>\n <a class=\"picked item\">\n <i class=\"checkmark icon\"></i>"+ options.selectedText + " " + options.name + "&nbsp<span class=\"count\"></span>\n  </a>\n </div></div></div>\n \n  <div class=\"ui search form\">\n <div class=\"field\">\n  <div class=\"ui icon input\">\n <input type=\"text\" placeholder=\"  "+ options.searchText + "\">\n <i class=\"search icon\"></i>\n </div>\n </div>\n  </div>\n <div class=\"ui warning hidden message\"><div class=\"header\">" + options.noDataMessage + "</div></div> <div class=\"ui active inverted dimmer\"><div class=\"ui text loader\">Loading data</div></div>\n  <div class=\"tree-tab p-15\">\n <div style=\"height: 230px\"></div>\n </div>\n\n <div class=\"search-tab px-20 py-15\">\n  </div>\n\n <div class=\"picked-tab px-20 py-15\">\n    </div>\n  </div>\n  <div class=\"sb-modal-actions\">\n <a class=\"pick-search\"><i class=\"checkmark icon\"></i>" +options.chooseAllText+"</a>\n    <a class=\"unpick-search\"><i class=\"remove icon\"></i> " +  options.removeAllText + "</a>\n <a class=\"unpick-picked\"><i class=\"remove icon\"></i> " +  options.removeAllText + "</a>\n   <button class=\"sb-btn sb-btn-normal sb-btn-primary accept\">" + options.submitButtonText + "</button>\n  <button class=\"sb-btn sb-btn-normal sb-btn-outline-primary close\">" + options.cancelButtonText + "</button>\n    </div>\n</div></div>").modal({
       duration: 200,
       allowMultiple: true
     });
@@ -20,9 +20,9 @@ var conceptModal;
       picked: $('.picked-tab', modal)
     };
     actionButtons = {
-      pickSearch: $('.actions .pick-search', modal),
-      unpickSearch: $('.actions .unpick-search', modal),
-      unpickPicked: $('.actions .unpick-picked', modal)
+      pickSearch: $('.sb-modal-actions .pick-search', modal),
+      unpickSearch: $('.sb-modal-actions .unpick-search', modal),
+      unpickPicked: $('.sb-modal-actions .unpick-picked', modal)
     };
     config = {
       childrenKey: 'nodes',
@@ -71,7 +71,7 @@ var conceptModal;
           } else {
               setTimeout(function() {
                   $('.ui.active.dimmer', modal).removeClass('active');
-                  $(".ui.tree-picker.small.modal .field").addClass("disabled");
+                  $(".ui.tree-picker.normal.modal .field").addClass("disabled");
                   $(".ui.tree-picker.modal .ui.warning.message").removeClass("hidden");
               }, config.apiResponseTimeout);
           }
@@ -80,14 +80,20 @@ var conceptModal;
           return initializeNodes(nodes);
         }
       });
-      $('.actions .accept', modal).on('click', function (e) {
+      $('.sb-modal-actions .accept', modal).on('click', function (e) {
         modal.modal('hide');
         if (config.onSubmit) {
           config.onSubmit(picked);
         }
         return widget.html(config.displayFormat(picked));
       });
-      $('.actions .close', modal).on('click', function (e) {
+      $('.sb-modal-actions .close', modal).on('click', function (e) {
+        modal.modal('hide');
+        if (config.onClose) {
+          config.onClose();
+        }
+      });
+      $('.tree-picker .close', modal).on('click', function (e) {
         modal.modal('hide');
         if (config.onClose) {
           config.onClose();
@@ -129,7 +135,7 @@ var conceptModal;
       var tree;
       updatePickedNodes();
       tree = renderTree(nodes, {
-        height: '300px',
+        height: '230px',
         overflowY: 'auto'
       });
       tabs.tree.html(tree);
@@ -177,7 +183,7 @@ var conceptModal;
         });
         foundNodes = formatedNodes;
         list = renderList(foundNodes, {
-          height: '400px',
+          height: '230px',
           overflowY: 'auto'
         });
         $('.menu .item', modal).removeClass('active');
@@ -200,7 +206,7 @@ var conceptModal;
     showPicked = function () {
       var list;
       list = renderList(picked, {
-        height: '400px',
+        height: '230px',
         overflowY: 'auto'
       });
       $('.menu .item', modal).removeClass('active');

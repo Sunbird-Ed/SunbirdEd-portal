@@ -1,25 +1,32 @@
-<sui-modal [ngSwitch]="batchStep" *ngIf='showUpdateModal' (dismissed)="redirect()" [isClosable]="false" [isFullScreen]="true"
-  #updateBatchModal class="fullpage">
+<sui-modal
+  [mustScroll]="true" 
+  [isClosable]="true"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll
+  [ngSwitch]="batchStep" 
+  *ngIf='showUpdateModal' 
+  (dismissed)="redirect()"  
+  [isFullScreen]="true"
+  #updateBatchModal 
+>
+  <!--Header-->
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.intxt?.t0007}}
+  </div>
+  <!--/Header-->
 
-  <div class="header">
-    <div class="ui grid">
-      <div class="eleven wide column">
-        <span class="ui header uppercase">{{resourceService?.frmelmnts?.intxt?.t0007}}</span>
-      </div>
-      <div class="one wide Right floated right aligned column" [appTelemetryEnd]="telemetryEnd" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-        [telemetryInteractEdata]="closeInteractEdata" (click)="discardModalFlag = !discardModalFlag">
-        <i class="close large icon cursor-pointer" tabindex="0"></i>
+  <!--Content-->
+  <div class="sb-modal-content" *ngIf="showLoader">
+    <div class="ui grid" >
+      <div class="twelve wide column">
+        <app-loader [data]="loaderMessage"></app-loader>
       </div>
     </div>
   </div>
-
-  <div class="ui grid" *ngIf="showLoader">
-    <div class="twelve wide column">
-      <app-loader [data]="loaderMessage"></app-loader>
-    </div>
-  </div>
-
-  <div *ngIf="!showLoader" class="height-100">
+  
+  <div class="sb-modal-content" *ngIf="!showLoader">
     <div *ngSwitchCase="'update'" [appTelemetryStart]="telemetryStart" [appTelemetryImpression]="telemetryImpression" class="scrolling content px-0 fullpage-top-6 pt-10">
       <h4 class="ui left floated modal-sub-header pl-25 custom-modal-subheader">Batch Detail</h4>
       <div class="ui clearing fullpage divider mb-50"></div>
@@ -90,38 +97,114 @@
       <app-add-batch-members (deleteBatchDetails)="deleteBatchDetails($event)" [batchDetails]="batchDetails"></app-add-batch-members>
     </div>
   </div>
-  <div *ngIf="!showLoader" class="actions">
+  <!--/Content-->
+  <!--Actions-->
+  <div class="sb-modal-actions">
     <div *ngIf="batchUpdateForm.value.enrollmentType !== 'open'">
-      <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="updateInteractEdata"
-        *ngSwitchCase="'update'" (click)="updateBatch()" class="ui left floated basic primary button" tabindex="0" [disabled]="disableSubmitBtn">{{resourceService?.frmelmnts?.btn?.update}}</button>
-      <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="addmemebersInteractEdata"
-        *ngSwitchCase="'update'" class="ui primary button" id="submitbutton" [disabled]="disableSubmitBtn || batchUpdateForm.value.enrollmentType === 'open'? true:false"
-        tabindex="0" (click)="navigateToStep('addmember')"> {{resourceService?.frmelmnts?.btn?.addMembers}}</button>
-      <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="backInteractEdata"
-        *ngSwitchCase="'addmember'" (click)="navigateToStep('update')" class="ui left floated basic primary button" tabindex="0">{{resourceService?.frmelmnts?.btn?.back}}</button>
-      <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="updateBatchInteractEdata"
-        *ngSwitchCase="'addmember'" class="ui primary button" id="submitbutton" (click)="updateBatch()" tabindex="0">
-        {{resourceService?.frmelmnts?.btn?.updatebatch}}</button>
+        <button 
+        appTelemetryInteract 
+        [telemetryInteractObject]="telemetryInteractObject" 
+        [telemetryInteractEdata]="addmemebersInteractEdata"
+        *ngSwitchCase="'update'" 
+        class="sb-btn sb-btn-normal sb-btn-primary" 
+        id="submitbutton" 
+        [disabled]="disableSubmitBtn || batchUpdateForm.value.enrollmentType === 'open'? true:false"
+        (click)="navigateToStep('addmember')"
+      >
+        {{resourceService?.frmelmnts?.btn?.addMembers}}
+      </button>
+      <button 
+        appTelemetryInteract 
+        [telemetryInteractObject]="telemetryInteractObject" 
+        [telemetryInteractEdata]="updateBatchInteractEdata"
+        *ngSwitchCase="'addmember'" 
+        class="sb-btn sb-btn-normal sb-btn-primary" 
+        id="submitbutton" 
+        (click)="updateBatch()" 
+      >
+        {{resourceService?.frmelmnts?.btn?.updatebatch}}
+      </button>
+      <button 
+        appTelemetryInteract 
+        [telemetryInteractObject]="telemetryInteractObject" 
+        [telemetryInteractEdata]="updateInteractEdata"
+        *ngSwitchCase="'update'" 
+        (click)="updateBatch()" 
+        class="sb-btn sb-btn-normal sb-btn-outline-primary"  
+        [disabled]="disableSubmitBtn"
+      >
+        {{resourceService?.frmelmnts?.btn?.update}}
+      </button>
+      <button 
+        appTelemetryInteract 
+        [telemetryInteractObject]="telemetryInteractObject" 
+        [telemetryInteractEdata]="backInteractEdata"
+        *ngSwitchCase="'addmember'" 
+        (click)="navigateToStep('update')" 
+        class="sb-btn sb-btn-normal sb-btn-outline-gray mr-auto" 
+      >
+        {{resourceService?.frmelmnts?.btn?.back}}
+      </button>
     </div>
     <div *ngIf="batchUpdateForm.value.enrollmentType === 'open'">
-      <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="updateBatchInteractEdata"
-        class="ui primary button" id="submitbutton" (click)="updateBatch()" tabindex="0">
-        {{resourceService?.frmelmnts?.btn?.updatebatch}}</button>
+      <button 
+        appTelemetryInteract 
+        [telemetryInteractObject]="telemetryInteractObject" 
+        [telemetryInteractEdata]="updateBatchInteractEdata"
+        class="sb-btn sb-btn-normal sb-btn-primary" 
+        id="submitbutton" 
+        (click)="updateBatch()"
+      >
+        {{resourceService?.frmelmnts?.btn?.updatebatch}}
+      </button>
     </div>
   </div>
-
+  <!--/Actions-->
 </sui-modal>
 
-<sui-modal [isClosable]="false" *ngIf="discardModalFlag" [size]="'mini'" #discardModal>
-  <i class="close icon" (click)="discardModalFlag = !discardModalFlag"></i>
-  <div class="header"> {{resourceService?.frmelmnts?.lbl?.discardChange}}</div>
-  <div class="actions">
-    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="cancelInteractEdata"
-      class="ui primary  button announcement-button" (click)="discardModalFlag = !discardModalFlag">
+<sui-modal
+  [mustScroll]="true" 
+  [isClosable]="true"
+  [transitionDuration]="0"
+  [size]="'small'"
+  class="sb-modal sb-error"
+  appBodyScroll
+  *ngIf="discardModalFlag" 
+  #discardModal
+  (dismissed)="discardModalFlag = !discardModalFlag"
+>
+  <!--Header-->
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.lbl?.discardChange}}
+  </div>
+  <!--/Header-->
+
+  <!--Content-->
+  <div class="sb-modal-content">
+    {{resourceService?.frmelmnts?.lbl?.discardChange}}
+  </div>
+  <!--/Content-->
+
+  <!--Actions-->
+  <div class="sb-modal-actions">
+      <button 
+      appTelemetryInteract 
+      [telemetryInteractObject]="telemetryInteractObject" 
+      [telemetryInteractEdata]="discardInteractEdata"
+      class="sb-btn sb-btn-normal sb-btn-error" 
+      (click)="discardModal.deny(); redirect()"
+    >
+      {{resourceService?.frmelmnts?.btn?.discard}}
+    </button>
+    <button 
+      appTelemetryInteract 
+      [telemetryInteractObject]="telemetryInteractObject" 
+      [telemetryInteractEdata]="cancelInteractEdata"
+      class="sb-btn sb-btn-normal sb-btn-outline-error" 
+      (click)="discardModalFlag = !discardModalFlag"
+    >
       {{resourceService?.frmelmnts?.btn?.cancel}}
     </button>
-    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="discardInteractEdata"
-      class="ui gray button announcement-button" (click)="discardModal.deny(); redirect()">
-      {{resourceService?.frmelmnts?.btn?.discard}}</button>
   </div>
+  <!--/Actions-->
 </sui-modal>

@@ -1,7 +1,20 @@
-<sui-modal class="sb-modal" [isClosable]="true" [size]="'normal'" [transitionDuration]="0" (dismissed)="modelClose.emit()"
-  #modal>
-  <div class="header sb-modal-header">{{resourceService.frmelmnts?.lbl?.sltBtch}}</div>
-  <div class="scrolling content sb-modal-content">
+<sui-modal
+  [mustScroll]="true" 
+  [isClosable]="true"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll
+  (dismissed)="modelClose.emit()"
+  #modal
+>
+  <!--Header-->
+  <div class="sb-modal-header">
+    {{resourceService.frmelmnts?.lbl?.sltBtch}}
+  </div>
+  <!--/Header-->
+  <!--Content-->
+  <div class="sb-modal-content">
     <div *ngIf="!hasOngoingBatches" class="h4-title font-weight-bold mb-15">{{resourceService.frmelmnts?.lbl?.exprdbtch}}</div>
     <div *ngFor="let batchDetails of enrolledBatches" class="batch-row mb-15">
       <div class="batch-name font-weight-bold d-block mb-15">{{batchDetails.batch.name}}</div>
@@ -9,9 +22,12 @@
         <div class="column px-10"><i class="calendar outline icon"></i></div>
         <div class="column">
           <div class="date batch-date">
-            <span class="d-block mb-5"><b class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.startdate}} :
+            <span class="d-block mb-5">
+              <b class="font-weight-bold">
+                {{resourceService.frmelmnts?.lbl?.startdate}} :
               </b>
-              {{batchDetails.batch.startDate | dateFormat}}</span>
+              {{batchDetails.batch.startDate | dateFormat}}
+            </span>
             <span class="d-block mb-5"><b class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.enddate}}
                 : </b>
               {{batchDetails.batch.endDate | dateFormat}}</span>
@@ -50,4 +66,5 @@
       </div>
     </div>
   </div>
+  <!--/Content-->
 </sui-modal>

@@ -1,0 +1,36 @@
+.sb-color-primary {
+    color: $primary-color;
+}
+.sb-color-success {
+    color: $secondary-200;
+}
+.sb-color-error {
+    color: $red;
+}
+.sb-color-warning {
+    color: $warning-color;
+}
+.sb-color-info {
+    color: $info-color;
+}
+
+
+//to clean
+.color-3 {
+    color: #333; 
+}
+.color-4 {
+    color: #979797;
+}
+.color-5 {
+    color: #9017FF;
+}
+.text-gray{
+    color: #9F9F9F !important;
+}
+.text-blue{
+    color: #0079FF;
+}
+.primary-color {
+    color: $primary-color !important;
+}

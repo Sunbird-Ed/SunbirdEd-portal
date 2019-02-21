@@ -126,17 +126,26 @@
         </p>
       </div>
       <div *ngIf="showDownloadSuccessModal">
-        <sui-modal [isClosable]="true" (dismissed)="showDownloadSuccessModal = false" #modal>
-          <div class="header">
-            <div class="ui grid">
-              <div class="eleven wide column">
-                <span class="ui header">{{resourceService?.frmelmnts?.instn?.t0060}}</span>
-              </div>
-            </div>
+        <sui-modal
+          [mustScroll]="true" 
+          [isClosable]="true"
+          [transitionDuration]="0"
+          [size]="'small'"
+          class="sb-modal sb-success"
+          appBodyScroll
+          (dismissed)="showDownloadSuccessModal = false" 
+          #modal
+        >
+          <!--Header-->
+          <div class="sb-modal-header">
+            {{resourceService?.frmelmnts?.instn?.t0060}}
           </div>
-          <div class="content">
+          <!--/Header-->
+          <!--Content-->
+          <div class="sb-modal-content">
             <p>{{resourceService?.messages?.stmsg?.m0095}}</p>
           </div>
+          <!--/Content-->
         </sui-modal>
       </div>
     </div>

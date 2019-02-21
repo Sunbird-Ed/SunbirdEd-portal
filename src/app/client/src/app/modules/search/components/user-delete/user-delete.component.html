@@ -1,11 +1,41 @@
-<sui-modal [isClosable]="true" (dismissed)="redirect()" #modal >
-  <div class="header">{{resourceService.frmelmnts?.scttl?.blkuser}}</div>
-  <div class="content">
+<sui-modal 
+  [mustScroll]="true" 
+  [isClosable]="true"
+  [transitionDuration]="0"
+  [size]="'small'"
+  class="sb-modal sb-error"
+  appBodyScroll
+  (dismissed)="redirect()" 
+  #modal
+  >
+
+  <!--Header-->
+  <div class="sb-modal-header">
+    {{resourceService.frmelmnts?.scttl?.blkuser}}
+  </div>
+  <!--/Header-->
+
+  <!--Content-->
+  <div class="sb-modal-content">
     <p>{{resourceService.frmelmnts?.lbl?.confirmblock}} {{userDetails.firstName}} {{userDetails.lastName}}</p>
   </div>
-  <div class="actions">
-    <div class="ui primary approve button" (click)="modal.approve('done'); deleteUser()">{{resourceService.frmelmnts?.btn?.yes}}
-    </div>
-    <div class="ui negative cancel button" (click)="modal.deny(); redirect();">{{resourceService.frmelmnts?.btn?.no}}</div>
+  <!--/Content-->
+
+  <!--Actions-->
+  <div class="sb-modal-actions">
+    <button 
+      class="sb-btn sb-btn-normal sb-btn-error" 
+      (click)="modal.approve('done'); deleteUser()"
+    >
+      {{resourceService.frmelmnts?.btn?.yes}}
+    </button>
+    <button 
+      class="sb-btn sb-btn-normal sb-btn-outline-error" 
+      (click)="modal.deny(); redirect();"
+    >
+      {{resourceService.frmelmnts?.btn?.no}}
+    </button>
+    
   </div>
+  <!--/Actions-->
 </sui-modal>

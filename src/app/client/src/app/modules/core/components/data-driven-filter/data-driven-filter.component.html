@@ -61,10 +61,10 @@
                 </div>
                 
                 <div class="twelve wide tablet two wide computer right aligned top aligned column filter-button">
-                  <a class="searchfilterbutton ui blue tiny  button" (click)="applyFilters()" appTelemetryInteract
-                    [telemetryInteractEdata]="applyFilterInteractEdata">{{resourceService.frmelmnts?.btn?.apply}}</a>
-                  <a appTelemetryInteract [telemetryInteractEdata]="resetFilterInteractEdata"
-                  class="searchfilterbutton ui primary tiny basic button ml-5" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</a>
+                  <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="applyFilters()" appTelemetryInteract
+                    [telemetryInteractEdata]="applyFilterInteractEdata">{{resourceService.frmelmnts?.btn?.apply}}</button>
+                  <button appTelemetryInteract [telemetryInteractEdata]="resetFilterInteractEdata"
+                  class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</button>
                 </div>
               </div>
               </form>
