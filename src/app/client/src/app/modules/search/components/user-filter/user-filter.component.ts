@@ -82,7 +82,6 @@ export class UserFilterComponent implements OnInit {
     const roles = this.getRoles();
     combineLatest(userType, district, roles, frameworkDetails)
       .subscribe(val => {
-        console.log('Final response: ', val);
         this.showFilters = true;
       });
   }

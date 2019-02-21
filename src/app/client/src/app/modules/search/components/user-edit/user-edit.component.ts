@@ -102,7 +102,10 @@ export class UserEditComponent implements OnInit, OnDestroy {
           return org.organisationId !== this.userDetails.rootOrgId;
         });
         if (!_.isEmpty(rootOrgDetails)) {this.selectedOrgUserRoles = rootOrgDetails[0].roles; }
-        if (!_.isEmpty(subOrgDetails)) {this.selectedSchoolId = subOrgDetails[0].organisationId; }
+        if (!_.isEmpty(subOrgDetails)) {
+          const orgs = _.sortBy(subOrgDetails, ['orgjoindate']);
+          this.selectedSchoolId = orgs[0].organisationId;
+        }
         this.initializeFormFields();
       },
       err => {
