@@ -94,7 +94,7 @@ export class UserFilterComponent implements OnInit {
       _.forEach(res.result.response, (type) => {
         userTypeArray.push({ code: type.name, name: type.name });
       });
-      this.allUserType['range'] = userTypeArray;
+      this.allUserType['range'] = this.sortFilters(userTypeArray);
       return 'User type API success';
     }), catchError(e => of('User type API error')));
   }
@@ -154,7 +154,8 @@ export class UserFilterComponent implements OnInit {
     if (!_.isEmpty(blockIds)) {
       const requestData = { 'filters': { locationIds: blockIds } };
       this.orgDetailsService.fetchOrgs(requestData).subscribe(res => {
-        this.allSchools = this.sortFilters(res.result.response.content);
+        this.allSchools = _.sortBy(res.result.response.content, [(sort) => {
+          return sort.orgName = this.capitalizeFilterValues(sort.orgName); }]);
         this.selectedSchool = this.queryParams.School;
         this.hardRefreshFilter();
       });
@@ -239,7 +240,12 @@ export class UserFilterComponent implements OnInit {
 
   sortFilters (object) {
     return _.sortBy(object, [(sort) => {
-      return sort.name; }]);
+      return sort.name = this.capitalizeFilterValues(sort.name); }]);
+  }
+
+  capitalizeFilterValues(str) {
+    return str.toLowerCase().replace(/\b\S/g, (t) => {
+      return t.toUpperCase(); });
   }
 
   settelemetryData() {
