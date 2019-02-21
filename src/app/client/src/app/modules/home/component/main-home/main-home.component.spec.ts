@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
 import { Ng2IziToastModule } from 'ng2-izitoast';
@@ -49,7 +49,8 @@ class ActivatedRouteStub {
         'm0001': 'api failed, please try again',
         'm0004': 'api failed, please try again'
       }
-    }
+    },
+    languageSelected$: of({})
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -60,7 +61,8 @@ class ActivatedRouteStub {
          ToasterService, FrameworkService, CacheService, ContentService, PlayerService,
          { provide: Router, useClass: RouterStub },
          { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-         { provide: ResourceService, useValue: resourceBundle }],
+         { provide: ResourceService, useValue: resourceBundle }
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents()

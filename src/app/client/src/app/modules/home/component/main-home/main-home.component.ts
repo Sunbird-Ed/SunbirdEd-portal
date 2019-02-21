@@ -22,6 +22,7 @@ export class MainHomeComponent implements OnInit, OnDestroy {
   * inviewLogs
  */
   inviewLogs = [];
+  @ViewChild('slickModal') slickModal;
   /**
 	 * telemetryImpression
 	*/
@@ -153,7 +154,8 @@ export class MainHomeComponent implements OnInit, OnDestroy {
         }
       }
     ],
-    infinite: false
+    infinite: false,
+    rtl: false
   };
   /**The button clicked value for interact telemetry event */
   btnArrow: string;
@@ -237,6 +239,7 @@ export class MainHomeComponent implements OnInit, OnDestroy {
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype
       }
     };
+    this.addSlideConfig();
   }
   /**
    *ngOnDestroy unsubscribe the subscription
@@ -249,7 +252,20 @@ export class MainHomeComponent implements OnInit, OnDestroy {
       this.courseSubscription.unsubscribe();
     }
   }
-
+  addSlideConfig() {
+    this.resourceService.languageSelected$
+        .subscribe(item => {
+          if (item.value === 'ur') {
+            this.slideConfig['rtl'] = true;
+          } else {
+            this.slideConfig['rtl'] = false;
+          }
+          if (this.slickModal) {
+            this.slickModal.unslick();
+            this.slickModal.initSlick(this.slideConfig);
+          }
+    });
+  }
   /**
    * get inview  Data
   */
