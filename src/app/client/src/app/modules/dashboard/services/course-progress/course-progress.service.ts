@@ -65,6 +65,9 @@ export class CourseProgressService {
       option.param['sortBy'] = requestParam.sortBy;
       option.param['sortOrder'] = requestParam.sortOrder;
     }
+    if ( _.get(requestParam, 'username')) {
+      option.param['username'] = requestParam.username;
+    }
     return this.learnerService.get(option);
   }
 

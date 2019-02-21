@@ -282,6 +282,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
       option.sortBy = this.order;
       option.sortOrder = this.reverse ? 'desc' : 'asc';
     }
+    if (this.searchText) {
+      option.username = this.searchText;
+    }
     this.telemetryImpression.edata.uri = '/learn/course/' + this.courseId +
     '/dashboard&batchIdentifier=' + this.queryParams.batchIdentifier;
     this.courseProgressService.getDashboardData(option).pipe(
