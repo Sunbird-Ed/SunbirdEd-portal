@@ -202,7 +202,7 @@ export class UserSearchComponent implements OnInit {
     // Getting Org Ids
     let locationArray = [];
     _.each(this.searchList, (user) => {
-      if (this.userProfile.rootOrgAdmin === true) {
+      if (_.get(this.userProfile, 'rootOrgAdmin') && this.userProfile.rootOrgAdmin === true) {
         user.isEditableProfile = true;
       }
       _.each(user.locationIds, (location) => {
