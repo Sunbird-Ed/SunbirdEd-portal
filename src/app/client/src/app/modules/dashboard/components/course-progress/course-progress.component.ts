@@ -232,7 +232,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     this.queryParams.batchIdentifier = batchId;
     this.queryParams.pageNumber = this.pageNumber;
     this.searchText = '';
-    this.setInteractEventData();
     this.populateCourseDashboardData();
   }
 
@@ -313,6 +312,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   setOrder(value: string): void {
     this.order = value;
     this.reverse = !this.reverse;
+    this.setInteractEventData();
     this.populateCourseDashboardData();
   }
 
@@ -408,6 +408,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
   setInteractEventData() {
-    this.telemetryCdata = [{ 'type': 'batch', 'id': this.queryParams.batchIdentifier  }];
+    if (this.queryParams.batchIdentifier) {
+      this.telemetryCdata = [{ 'type': 'batch', 'id': this.queryParams.batchIdentifier}];
+    }
   }
 }

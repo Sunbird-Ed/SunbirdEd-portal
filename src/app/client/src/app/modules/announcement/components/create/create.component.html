@@ -239,7 +239,7 @@
       appTelemetryInteract 
       [telemetryInteractObject]="telemetryInteractObject" 
       [telemetryInteractEdata]="backBtnInteractEdata" 
-      class="sb-btn sb-btn-normal sb-btn-outline-primary mr-auto"
+      class="sb-btn sb-btn-normal sb-btn-outline-gray mr-auto"
       type="button"
       *ngIf="stepNumber !== 1" (click)="navigateToWizardNumber((+stepNumber - 1))" 
     >
@@ -255,7 +255,7 @@
   [isClosable]="true"
   [transitionDuration]="0"
   [size]="'normal'"
-  class="sb-modal"
+  class="sb-modal sb-success"
   appBodyScroll
   *ngIf="modalName === 'success'" 
   (dismissed)="redirectToOutbox();" 
@@ -269,7 +269,7 @@
   <!--Content-->
   <div class="sb-modal-content text-center">
     <div class="ui basic icon circular button">
-      <i class="ui huge checkmark icon"></i>
+      <i class="ui huge checkmark icon sb-color-success"></i>
     </div>
     <h4>{{resource?.frmelmnts?.lbl?.anncmntsentsuccess}}</h4>
     <p>{{resource?.frmelmnts?.lbl?.anncmntsentdesc}}</p>
@@ -281,7 +281,7 @@
       appTelemetryInteract 
       [telemetryInteractObject]="telemetryInteractObject" 
       [telemetryInteractEdata]="announcementSentInteractEdata" 
-      class="sb-btn sb-btn-normal sb-btn-primary" 
+      class="sb-btn sb-btn-normal sb-btn-success" 
       (click)="successModal.deny(); redirectToOutbox();"
     >
       {{resource?.frmelmnts?.btn?.anncmntgotit}}
@@ -297,7 +297,7 @@
   [isClosable]="true"
   [transitionDuration]="0"
   [size]="'normal'"
-  class="sb-modal"
+  class="sb-modal sb-error"
   appBodyScroll
   [hidden]="(modalName === 'create' || modalName === 'success' || modalName === 'close')"
   (dismissed)="redirectToOutbox();" 
@@ -311,7 +311,7 @@
   <!--Content-->
   <div class="sb-modal-content text-center">
     <div class="ui basic icon circular button">
-      <i class="ui huge help icon"></i>
+      <i class="ui huge help icon sb-color-error"></i>
     </div>
     <h4>{{resource?.frmelmnts?.lbl?.anncmntcancel}}</h4>
     <p>{{resource?.frmelmnts?.lbl?.anncmntcanceldesc}}</p>
@@ -324,7 +324,7 @@
       [telemetryInteractObject]="telemetryInteractObject" 
       [telemetryInteractEdata]="stopCreatingYesInteractEdata"
       [appTelemetryEnd]= "telemetryEnd"
-      class="sb-btn sb-btn-normal sb-btn-primary" 
+      class="sb-btn sb-btn-normal sb-btn-error" 
       (click)="cancelModal.deny();redirectToOutbox();" 
     >
       {{resource?.frmelmnts?.btn?.yes}}
@@ -333,7 +333,7 @@
       appTelemetryInteract 
       [telemetryInteractObject]="telemetryInteractObject" 
       [telemetryInteractEdata]="stopCreatingNoInteractEdata" 
-      class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+      class="sb-btn sb-btn-normal sb-btn-outline-error" 
       (click)="modalName = 'create';"
     >
       {{resource?.frmelmnts?.btn?.no}}

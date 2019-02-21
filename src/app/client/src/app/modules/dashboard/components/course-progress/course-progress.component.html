@@ -28,7 +28,7 @@
               <sui-select class="selection fluid bordered" placeholder="Select batch to see dashboard" [(ngModel)]="selectedOption"
                 [options]="batchlist" labelField="name" valueField="id" [isSearchable]="true" #select>
                 <sui-select-option *ngFor="let course of select.filteredOptions" [value]="course" (click)="setBatchId(course.id);"
-                  appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'batchSelection',type:'click',pageid:'course-progress-dashboard'}" [telemetryInteractCdata]="telemetryCdata">
+                  appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'batchSelection',type:'click',pageid:'course-progress-dashboard'}" [telemetryInteractCdata]="[{ 'type': 'batch', 'id': course.id}]">
                 </sui-select-option>
               </sui-select>
 
