@@ -1,6 +1,6 @@
 
 // import { throwError as observableThrowError, of as observableOf } from 'rxjs';
-// import { BatchListComponent } from './batch-list.component';
+// import { BatchPageSectionComponent } from './batch-page-section.component';
 // import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 // import { HttpClientTestingModule } from '@angular/common/http/testing';
 // import { RouterTestingModule } from '@angular/router/testing';
@@ -12,15 +12,15 @@
 // import { WorkSpaceService, BatchService } from '../../services';
 // import { NO_ERRORS_SCHEMA } from '@angular/core';
 // import { ActivatedRoute, Router } from '@angular/router';
-// import * as mockData from './batch-list.component.spec.data';
+// import * as mockData from './batch-page-section.component.spec.data';
 // const testData = mockData.mockRes;
 // import * as _ from 'lodash';
 // import { TelemetryModule } from '@sunbird/telemetry';
 // import { NgInviewModule } from 'angular-inport';
 
-// describe('BatchListComponent', () => {
-//   let component: BatchListComponent;
-//   let fixture: ComponentFixture<BatchListComponent>;
+// describe('BatchPageSectionComponent', () => {
+//   let component: BatchPageSectionComponent;
+//   let fixture: ComponentFixture<BatchPageSectionComponent>;
 //   let childcomponent: BatchCardComponent;
 //   let childfixture: ComponentFixture<BatchCardComponent>;
 //   const resourceBundle = {
@@ -70,7 +70,7 @@
 //   }
 //   beforeEach(async(() => {
 //     TestBed.configureTestingModule({
-//       declarations: [BatchListComponent, BatchCardComponent],
+//       declarations: [BatchPageSectionComponent],
 //       schemas: [NO_ERRORS_SCHEMA],
 //       imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule,
 //         Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(), CoreModule.forRoot(),
@@ -85,7 +85,7 @@
 //   }));
 
 //   beforeEach(() => {
-//     fixture = TestBed.createComponent(BatchListComponent);
+//     fixture = TestBed.createComponent(BatchPageSectionComponent);
 //     childfixture = TestBed.createComponent(BatchCardComponent);
 //     component = fixture.componentInstance;
 //     childcomponent = childfixture.componentInstance;
@@ -98,14 +98,14 @@
 //     userService._userProfile.roleOrgMap = roleOrgMap;
 //     spyOn(searchService, 'batchSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
 //     fixture.detectChanges();
-//     component.fetchBatchList();
+//     component.fetchPageData();
 //     expect(component.batchList).toBeDefined();
 //     expect(component.batchList.length).toBeGreaterThan(1);
 //     expect(component.showLoader).toBeFalsy();
 //   }));
 
 
-//   it('should call  batch search api and returns result count 0', inject([SearchService], (searchService) => {
+//   fit('should call get page api and returns result count 0', inject([SearchService], (searchService) => {
 //     const userService = TestBed.get(UserService);
 //     const learnerService = TestBed.get(LearnerService);
 //     spyOn(learnerService, 'get').and.returnValue(observableOf(testData.userSuccess.success));
@@ -113,7 +113,7 @@
 //     userService._userProfile.roleOrgMap = roleOrgMap;
 //     spyOn(searchService, 'batchSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountZero));
 //     fixture.detectChanges();
-//     component.fetchBatchList();
+//     component.fetchPageData();
 //     expect(component.batchList).toBeDefined();
 //     expect(component.batchList.length).toBe(0);
 //   }));
@@ -126,7 +126,7 @@
 //     userService._userProfile.roleOrgMap = roleOrgMap;
 //     spyOn(searchService, 'batchSearch').and.callFake(() => observableThrowError({}));
 //     fixture.detectChanges();
-//     component.fetchBatchList();
+//     component.fetchPageData();
 //     expect(component.batchList.length).toBeLessThanOrEqual(0);
 //     expect(component.batchList.length).toEqual(0);
 //   }));
@@ -152,7 +152,7 @@
 //     userService._userProfile = testData.userSuccess.success;
 //     userService._userProfile.roleOrgMap = roleOrgMap;
 //     spyOn(searchService, 'batchSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
-//     component.fetchBatchList();
+//     component.fetchPageData();
 //     expect(component.batchList).toBeDefined();
 //     expect(component.batchList.length).toBeGreaterThan(1);
 //     spyOn(component, 'updateBatch').and.callThrough();
@@ -178,7 +178,7 @@
 //     userService._userProfile = testData.userSuccess.success;
 //     userService._userProfile.roleOrgMap = roleOrgMap;
 //     spyOn(searchService, 'batchSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
-//     component.fetchBatchList();
+//     component.fetchPageData();
 //     expect(component.batchList).toBeDefined();
 //     expect(component.batchList.length).toBeGreaterThan(1);
 //     spyOn(component, 'updateBatch').and.callThrough();
@@ -209,7 +209,7 @@
 //     userService._userProfile = testData.userSuccess.success;
 //     userService._userProfile.roleOrgMap = roleOrgMap;
 //     spyOn(searchService, 'batchSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
-//     component.fetchBatchList();
+//     component.fetchPageData();
 //     expect(component.batchList).toBeDefined();
 //     expect(component.batchList.length).toBeGreaterThan(1);
 //     fixture.detectChanges();
