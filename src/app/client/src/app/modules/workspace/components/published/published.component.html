@@ -34,7 +34,7 @@
 
 <!-- Delete confirm Modal-->
 <ng-template let-context let-modal="modal" #modalTemplate>
-  <div class="sb-modal">
+  <div class="sb-modal sb-error">
     <div class="ui modal visible active small">
       <i class="icon close" (click)="modal.deny('denied')" tabindex="0"></i>
 
@@ -53,14 +53,14 @@
       <!--Actions-->
       <div class="sb-modal-actions">
         <button 
-          class="sb-btn sb-btn-normal sb-btn-primary" 
+          class="sb-btn sb-btn-normal sb-btn-error" 
           (click)="modal.approve('approved')" 
           autofocus
         >
           {{resourceService?.frmelmnts?.btn?.yes}}
         </button>
         <button 
-          class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+          class="sb-btn sb-btn-normal sb-btn-outline-error" 
           (click)="modal.deny('denied')"
         >
           {{resourceService?.frmelmnts?.btn?.no}}

@@ -26,6 +26,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   userProfile: any;
 
   @ViewChild('profileModal') profileModal;
+  @ViewChild('slickModal') slickModal;
   /**
    * Contains list of contributions
    */
@@ -155,7 +156,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         }
       }
     ],
-    infinite: false
+    infinite: false,
+    rtl: false
   };
   inputData: any;
   /**
@@ -222,6 +224,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       }
     };
     this.setInteractEventData();
+    this.addSlideConfig();
   }
 
   getOrgDetails() {
@@ -286,7 +289,20 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       );
     }
   }
-
+  addSlideConfig() {
+    this.resourceService.languageSelected$
+        .subscribe(item => {
+          if (item.value === 'ur') {
+            this.slideConfig['rtl'] = true;
+          } else {
+            this.slideConfig['rtl'] = false;
+          }
+          if (this.slickModal) {
+            this.slickModal.unslick();
+            this.slickModal.initSlick(this.slideConfig);
+          }
+    });
+  }
   private formatMyContributionData(contents) {
     _.forEach(contents, (content, key) => {
       const constantData = this.configService.appConfig.Course.otherCourse.constantData;

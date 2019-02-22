@@ -1,7 +1,7 @@
 
 import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage } from '@sunbird/shared';
-import { SearchService, UserService } from '@sunbird/core';
+import { SearchService, UserService, PermissionService } from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
@@ -102,6 +102,7 @@ export class UserSearchComponent implements OnInit {
   rootOrgId: string;
   userProfile: any;
   inviewLogs: any = [];
+  selectedRoles: Array<string>;
 
   customStyle = {
     backgroundColor: '#ffffff',
@@ -110,7 +111,8 @@ export class UserSearchComponent implements OnInit {
     borderRadius: '50%',
     color: '#024F9D',
     fontWeight: 'bold',
-    fontFamily: 'inherit'
+    fontFamily: 'inherit',
+    fontSize: '48px'
   };
   /**
      * Constructor to create injected service(s) object
@@ -124,7 +126,7 @@ export class UserSearchComponent implements OnInit {
   constructor(searchService: SearchService, route: Router, private ngZone: NgZone,
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
     resourceService: ResourceService, toasterService: ToasterService,
-    config: ConfigService, user: UserService, userSearchService: UserSearchService) {
+    config: ConfigService, user: UserService, userSearchService: UserSearchService, public permissionService: PermissionService) {
     this.searchService = searchService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -143,18 +145,29 @@ export class UserSearchComponent implements OnInit {
     this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
     const searchParams = {
       filters: {
-        'objectType': ['user'],
         'rootOrgId': this.rootOrgId,
-        'grade': this.queryParams.Grades,
-        'language': this.queryParams.Medium,
-        'subject': this.queryParams.Subjects,
-        'location': this.queryParams.Location,
-        'organisations.roles': this.queryParams.Roles
+        'userType': this.queryParams.Usertype,
+        'framework.medium': this.queryParams.medium,
+        'framework.gradeLevel': this.queryParams.gradeLevel,
+        'framework.subject': this.queryParams.subject
       },
       limit: this.pageLimit,
       pageNumber: this.pageNumber,
       query: this.queryParams.key
     };
+    if (!_.isEmpty(this.selectedRoles)) { searchParams.filters['organisations.roles'] = this.selectedRoles; }
+    if (this.queryParams.School) {
+      searchParams.filters['organisations.organisationId'] = this.queryParams.School;
+    } else {
+      const locationArray = [];
+      if (this.queryParams.District) {
+        locationArray.push(typeof this.queryParams.District === 'string' ? this.queryParams.District : this.queryParams.District[0]);
+      }
+      if (this.queryParams.Block) {
+        locationArray.push(typeof this.queryParams.Block === 'string' ? this.queryParams.Block : this.queryParams.Block[0]);
+      }
+      if (!_.isEmpty(locationArray)) { searchParams.filters['locationIds'] = locationArray; }
+    }
     this.searchService.userSearch(searchParams).subscribe(
       (apiResponse: ServerResponse) => {
         if (apiResponse.result.response.count && apiResponse.result.response.content.length > 0) {
@@ -198,10 +211,10 @@ export class UserSearchComponent implements OnInit {
     this.searchService.getOrganisationDetails({ orgid: orgArray }).subscribe(
       (orgApiResponse: any) => {
         _.each(this.searchList, (user) => {
+          if (this.userProfile.rootOrgAdmin === true) {
+            user.isEditableProfile = true;
+          }
           _.each(user.organisations, (org) => {
-            if (this.userProfile.rootOrgAdmin === true) {
-              user.isEditableProfile = true;
-            }
             const orgNameAndId = _.find(orgApiResponse.result.response.content, (organisation) => {
               return organisation.id === org.organisationId;
             });
@@ -283,7 +296,19 @@ export class UserSearchComponent implements OnInit {
               this.pageNumber = Number(bothParams.params.pageNumber);
             }
             this.queryParams = { ...bothParams.queryParams };
-            this.populateUserSearch();
+            this.selectedRoles = [];
+            if (this.queryParams.Roles) {
+              this.permissionService.permissionAvailable$.subscribe(params => {
+                if (params === 'success') {
+                  _.forEach(this.permissionService.allRoles, (role) => {
+                    if (this.queryParams.Roles.includes(role.roleName)) { this.selectedRoles.push(role.role); }
+                  });
+                  this.populateUserSearch();
+                }
+              });
+            } else {
+              this.populateUserSearch();
+            }
           });
       }
     });

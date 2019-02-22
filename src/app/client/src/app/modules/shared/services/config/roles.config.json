@@ -1,7 +1,7 @@
 {
     "headerDropdownRoles":{
         "workSpaceRole" : ["CONTENT_CREATOR" , "CONTENT_CREATION" , "CONTENT_REVIEWER" , "CONTENT_REVIEW" , "FLAG_REVIEWER" , "COURSE_MENTOR" ,"BOOK_REVIEWER", "BOOK_CREATOR"],
-        "adminDashboard" : ["ORG_ADMIN","SYSTEM_ADMINISTRATION"],
+        "adminDashboard" : ["ORG_ADMIN","SYSTEM_ADMINISTRATION","REPORT_VIEWER"],
         "announcementRole" : ["ANNOUNCEMENT_SENDER"],
         "myActivityRole" : ["CONTENT_CREATOR"],
         "orgSetupRole" : ["SYSTEM_ADMINISTRATION"]
@@ -49,7 +49,8 @@
        "orgType": ["SYSTEM_ADMINISTRATION"],
        "allContentRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
        "flagReviewerRole": ["FLAG_REVIEWER"],
-       "collaboratingRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"]
+       "collaboratingRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
+       "dashboardRole": ["ORG_ADMIN", "REPORT_VIEWER"]
     }
     ,"WORKSPACEAUTHGARDROLES":[
     {

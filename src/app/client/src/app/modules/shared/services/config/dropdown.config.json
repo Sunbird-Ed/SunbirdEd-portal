@@ -161,6 +161,10 @@
                 {
                     "name": "Teacher Badge Issuer",
                     "id": "TEACHER_BADGE_ISSUER"
+                },
+                {
+                    "name": "Report Viewer",
+                    "id": "REPORT_VIEWER"
                 }
             ],
             "languages": [

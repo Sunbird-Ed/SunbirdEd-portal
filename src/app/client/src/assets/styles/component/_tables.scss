@@ -2,19 +2,19 @@
 
     .ui.table {
       thead tr th {
-        padding: $block-padding-y-x;
+        padding: 8px 16px 8px 32px;
         background-color: $white-color;
         border-bottom: 1px solid rgba(34, 36, 38, 0.1);
-        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAQAAADYWf5HAAAAkElEQVQoz7XQMQ5AQBCF4dWQSJxC5wwax1Cq1e7BAdxD5SL+Tq/QCM1oNiJidwox0355mXnG/DrEtIQ6azioNZQxI0ykPhTQIwhCR+BmBYtlK7kLJYwWCcJA9M4qdrZrd8pPjZWPtOqdRQy320YSV17OatFC4euts6z39GYMKRPCTKY9UnPQ6P+GtMRfGtPnBCiqhAeJPmkqAAAAAElFTkSuQmCC');
         background-repeat: no-repeat;
         background-position: center right;
         max-width: 176px;
         text-overflow: ellipsis;
         overflow: hidden;
+        font-size: 16px;
       }
     
       td {
-        padding: $block-padding-y-x;
+        padding: 8px 16px 8px 32px;
         max-width: 176px;
         overflow: hidden;
         text-overflow: ellipsis;

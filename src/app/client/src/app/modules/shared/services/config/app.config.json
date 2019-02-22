@@ -776,6 +776,9 @@
       }
     }
   },
+  "DASHBOARD":{
+    "PAGE_LIMIT": 200
+  },
   "CONTENT_CONST": {
     "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"
   },
