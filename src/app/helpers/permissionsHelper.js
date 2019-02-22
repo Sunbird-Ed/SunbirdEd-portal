@@ -40,7 +40,7 @@ let PERMISSIONS_HELPER = {
     'upload/status/': ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'],
     'type/create': ['SYSTEM_ADMINISTRATION'],
     'type/update': ['SYSTEM_ADMINISTRATION'],
-    'user/update': ['ORG_ADMIN']
+    'portal/user/v1/update': ['ORG_ADMIN']
   },
 
   getPermissions: function (reqObj) {
