@@ -186,7 +186,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
       this.queryParams = res.queryParams;
       this.manipulateQueryParam();
       const route = this.route.url.split('/view-all');
-      this.closeUrl = '/workspace/content/batches/pagesection/' + (this.queryParams.mentors ? 'assigned' : 'created');
+      this.closeUrl = '/workspace/content/batches/' + (this.queryParams.mentors ? 'assigned' : 'created');
       this.sectionName = res.params.section.replace(/\-/g, ' ');
       this.pageNumber = Number(res.params.pageNumber);
       this.setTelemetryImpressionData();

@@ -188,10 +188,10 @@ const routes: Routes = [
         }
       },
       {
-        path: 'batches/pagesection/:category', component: BatchPageSectionComponent, canActivate: [AuthGuard],
+        path: 'batches/:category', component: BatchPageSectionComponent, canActivate: [AuthGuard],
         data: {
           telemetry: {
-            env: telemetryEnv, pageid: 'workspace-course-batch', subtype: 'paginate', uri: '/workspace/batches/pagesection',
+            env: telemetryEnv, pageid: 'workspace-course-batch', subtype: 'paginate', uri: '/workspace/batches',
             type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
           }, roles: 'coursebacthesRole',
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]

@@ -18,7 +18,12 @@
                 #slickModal="slick-modal" 
                 [config]="slideConfig">
                 <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of section.contents;let i = index; let last = last" class="slide">
-                    <app-batch-card appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"  [telemetryInteractObject]="{id:content.metaData.identifier}" *ngIf="cardType && cardType === 'batch' else contentcard" [batch]="content" (clickEvent)="playContent($event)"></app-batch-card>
+                    <app-batch-card appTelemetryInteract 
+                        [telemetryInteractEdata]="cardIntractEdata"  
+                        [telemetryInteractObject]="{id:content.metaData.identifier}" 
+                        *ngIf="cardType && cardType === 'batch' else contentcard" [batch]="content" 
+                        (clickEvent)="playContent($event)">
+                    </app-batch-card>
                     <ng-template #contentcard>
                         <app-card  appContentDirection [data]="content"
                             appTelemetryInteract 

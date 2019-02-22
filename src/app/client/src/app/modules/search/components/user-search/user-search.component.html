@@ -1,15 +1,15 @@
 <app-user-filter></app-user-filter>
 <div class="ui container">
-  <div [appTelemetryImpression]="telemetryImpression" class="ui grid">
+  <div [appTelemetryImpression]="telemetryImpression" class="ui grid mt-0">
     <div class="twelve wide column">
       <div>
         <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && !noResult">
           <div class="ui left floated header  ">
-            <p class="serch-allresult">Showing results
+            <p class="serch-allresult">{{resourceService.frmelmnts?.lbl?.showingResults}} 
               <span class="lower-case" *ngIf="this.queryParams.key">
-                for {{this.queryParams.key}}
+                "{{resourceService.frmelmnts?.lbl?.forSearch  | interpolate:'{searchString}':this.queryParams?.key}}"
               </span>
-              in "users"
+              {{resourceService.frmelmnts?.lbl?.inUsers}}
             </p>
           </div>
           <!-- <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="ui right floated basic icon circular button " [routerLink]="['/profile']">
@@ -25,7 +25,7 @@
 
         <div>
           <div *ngIf="!showLoader && !noResult" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="searchList">
-            <div in-view-item [id]="i" [data]="user" class="ui segment" *ngFor="let user of searchList;let i = index;">
+            <div in-view-item [id]="i" [data]="user" class="ui segment mb-20" *ngFor="let user of searchList;let i = index;">
               <div class="ui items">
                 <div class="item">
                   <div class="ui tiny image userSearchImage">
@@ -36,27 +36,27 @@
                     <!--<a appTelemetryInteract [telemetryInteractEdata]="userViewIntractEdata" 
                         [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}" 
                         class="header " *ngIf="user.status===1" [queryParams]="queryParams" [routerLink]="['view/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">{{user.firstName}} &nbsp;{{user.lastName}}</a>-->
-                    <div class="header mb-10" *ngIf="user.status===1">{{user.firstName}} &nbsp;{{user.lastName}}</div>
-                    <div class="header mb-10" *ngIf="user.status!==1">{{user.firstName}} &nbsp;{{user.lastName}}</div>
+                    <div class="header mb-5" *ngIf="user.status===1">{{user.firstName}} &nbsp;{{user.lastName}}</div>
+                    <div class="header mb-5" *ngIf="user.status!==1">{{user.firstName}} &nbsp;{{user.lastName}}</div>
 
                     <a *ngIf="user.status===1 && user.isEditableProfile" class="right-float">
                       <!-- update user roles -->
                       <span appTelemetryInteract [telemetryInteractEdata]="userEditIntractEdata" [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}"
-                        class="remove-outline mx-5" [queryParams]="queryParams" [routerLink]="['edit/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">
-                        <i class="edit large icon remove-outline"></i>
+                        class="remove-outline mx-10" [queryParams]="queryParams" [routerLink]="['edit/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">
+                        <span class="sunbird-portal-icon edit-user-icon mx-10"></span>
                       </span>
                       <!-- delete user -->
-                      <span appTelemetryInteract [telemetryInteractEdata]="userDeleteIntractEdata" [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}"
+                      <!-- <span appTelemetryInteract [telemetryInteractEdata]="userDeleteIntractEdata" [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}"
                         class="remove-outline mx-5">
                         <i class="trash outline large icon remove-outline" [queryParams]="queryParams" [routerLink]="['delete/' + user.id]" (click)="userSearchService.userDetailsObject=user"></i>
-                      </span>
+                      </span> -->
                     </a>
 
                     <!-- organization Name -->
                     <div class="meta">
                       <span class="cinema ">
                         <span *ngFor="let org of user.organisations; let last = last;">
-                          <span *ngIf="org.orgName">{{org.orgName}}</span>
+                          <span *ngIf="org.orgName">{{org.orgName | titlecase}}</span>
                           <span *ngIf="!last && org.orgName">,</span>
                         </span>
                       </span>
@@ -71,8 +71,9 @@
                       <!-- updated code as per new design -->
 
                       <div class="ui horizontal bulleted list">
-                        <span class="item">Veerapanchatantram</span>
-                        <span class="item">Kancheepuram</span>
+                        <span class="item" *ngIf="user.block"><span class="sunbird-portal-icon location-outline-icon"></span>&nbsp;{{user.block.name | titlecase}}</span>
+                        <span class="item" *ngIf="user.district">{{user.district.name | titlecase}}</span>
+
                       </div>
                     </div>
                   </div>

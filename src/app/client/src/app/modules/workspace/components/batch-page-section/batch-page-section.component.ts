@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService, PageApiService } from '@sunbird/core';
@@ -9,10 +9,10 @@ import {
 import { WorkSpaceService, BatchService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, first, filter, tap } from 'rxjs/operators';
-import { Subscription, Subject, of } from 'rxjs';
+import { SuiModalService } from 'ng2-semantic-ui';
+import { IImpressionEventInput } from '@sunbird/telemetry';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 
 @Component({

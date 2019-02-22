@@ -38,12 +38,12 @@ export class ProfileService {
   }
 
   /**
-   * This method invokes learner service to update user profile with private url
+   * This method call portal backend API and invokes learner service to update user profile with private url
    */
   public updatePrivateProfile(request) {
     const data = this.formatRequest(request);
     const options = {
-      url: 'user/private/v1/update',
+      url: 'portal/user/v1/update',
       data: data
     };
     return this.learnerService.patch(options).pipe(map(

@@ -17,9 +17,20 @@
   &.selection.bordered.dropdown {
     border: 1px solid rgba(34, 36, 38, 0.15);
     border-radius: 5px;
+    padding-left: 8px;
   }
 }
 
-.ui.dropdown:not(.button)>.default.text {
-  color: #4a4a4a;
+.user-search-select {
+  ::ng-deep {
+    .ui.dropdown:not(.button)>.default.text {
+      color: #4a4a4a;
+    }
+    .ui.search {
+      font-size: 13px;
+    }
+    .ui.search.selection.dropdown>input.search {
+      padding-left: 8px;
+    }
+  }
 }
