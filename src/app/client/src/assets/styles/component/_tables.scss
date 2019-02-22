@@ -2,7 +2,7 @@
 
     .ui.table {
       thead tr th {
-        padding: $block-padding-y-x;
+        padding: 8px 16px 8px 32px;
         background-color: $white-color;
         border-bottom: 1px solid rgba(34, 36, 38, 0.1);
         background-repeat: no-repeat;
@@ -10,10 +10,11 @@
         max-width: 176px;
         text-overflow: ellipsis;
         overflow: hidden;
+        font-size: 16px;
       }
     
       td {
-        padding: $block-padding-y-x;
+        padding: 8px 16px 8px 32px;
         max-width: 176px;
         overflow: hidden;
         text-overflow: ellipsis;
