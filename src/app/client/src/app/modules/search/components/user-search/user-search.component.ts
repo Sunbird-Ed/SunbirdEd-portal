@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { UserSearchService } from './../../services';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { ProfileService } from '@sunbird/profile';
 
 @Component({
   selector: 'app-user-search',
@@ -126,7 +127,8 @@ export class UserSearchComponent implements OnInit {
   constructor(searchService: SearchService, route: Router, private ngZone: NgZone,
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
     resourceService: ResourceService, toasterService: ToasterService,
-    config: ConfigService, user: UserService, userSearchService: UserSearchService, public permissionService: PermissionService) {
+    config: ConfigService, user: UserService, userSearchService: UserSearchService,
+    public permissionService: PermissionService, public profileService: ProfileService) {
     this.searchService = searchService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -175,7 +177,7 @@ export class UserSearchComponent implements OnInit {
           this.noResult = false;
           this.searchList = apiResponse.result.response.content;
           this.totalCount = apiResponse.result.response.count;
-          this.populateOrgNameAndSetRoles();
+          this.populateLocationDetailsAndSetRoles();
           this.pager = this.paginationService.getPager(apiResponse.result.response.count, this.pageNumber, this.pageLimit);
         } else {
           this.noResult = true;
@@ -197,33 +199,33 @@ export class UserSearchComponent implements OnInit {
     );
   }
 
-  populateOrgNameAndSetRoles() {
-    // Getting Org Ids
-    let orgArray = [];
-    _.each(this.searchList, (key) => {
-      _.each(key.organisations, (orgKey) => {
-        orgArray.push(orgKey.organisationId);
+  populateLocationDetailsAndSetRoles() {
+    // Getting all location Ids
+    let locationArray = [];
+    _.each(this.searchList, (user) => {
+      if (_.get(this.userProfile, 'rootOrgAdmin') && this.userProfile.rootOrgAdmin === true) {
+        user.isEditableProfile = true;
+      }
+      _.each(user.locationIds, (location) => {
+        locationArray.push(location);
       });
     });
 
-    // Calling Org search API
-    orgArray = _.uniq(orgArray);
-    this.searchService.getOrganisationDetails({ orgid: orgArray }).subscribe(
-      (orgApiResponse: any) => {
+    // Calling location search and setting location details to search list
+    if (!_.isEmpty(locationArray)) {
+      locationArray = _.uniq(locationArray);
+      const requestData = { 'filters': { id: locationArray } };
+      this.profileService.getUserLocation(requestData).subscribe(res => {
         _.each(this.searchList, (user) => {
-          if (this.userProfile.rootOrgAdmin === true) {
-            user.isEditableProfile = true;
-          }
-          _.each(user.organisations, (org) => {
-            const orgNameAndId = _.find(orgApiResponse.result.response.content, (organisation) => {
-              return organisation.id === org.organisationId;
+          _.each(user.locationIds, (location) => {
+            const locations = _.find(res.result.response, (loc) => {
+              return loc.id === location;
             });
-            // Setting Org Name
-            if (orgNameAndId) { org.orgName = orgNameAndId.orgName; }
+            if (locations) { user[locations.type] = locations; }
           });
         });
-      }
-    );
+      });
+    }
   }
 
   downloadUser() {
