@@ -18,3 +18,5 @@ export * from './fancyTree';
 export * from './card';
 export * from './courseStates';
 export * from './telemetryShare';
+export * from './batch';
+

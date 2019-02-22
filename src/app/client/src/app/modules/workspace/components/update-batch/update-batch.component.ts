@@ -366,12 +366,12 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
         });
   }
   public redirect() {
-    this.router.navigate(['workspace/content/batches/1']);
+    this.router.navigate(['.'], { queryParamsHandling: 'merge', relativeTo: this.activatedRoute.parent });
   }
   private reload() {
     setTimeout(() => {
       this.batchService.updateEvent.emit({ event: 'update' });
-      this.router.navigate(['workspace/content/batches/1']);
+      this.router.navigate(['.'], { queryParamsHandling: 'merge', relativeTo: this.activatedRoute.parent });
     }, 1000);
   }
 

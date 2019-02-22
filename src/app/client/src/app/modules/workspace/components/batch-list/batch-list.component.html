@@ -1,10 +1,13 @@
 <div class="ui grid">
-  <div class="four wide column pt-30">
-    <sui-select  (selectedOptionChange)= "changeBatchStatus()" class="inline" 
-    [(ngModel)]="status" [options]="statusOptions" valueField ="value" labelField="name" #statusselect>
-      <sui-select-option *ngFor="let option of statusselect.filteredOptions" [value]="option">
-      </sui-select-option>
-    </sui-select>
+  <div class="twelve wide column">
+      <div class=" ui clearing segment content-player-header search-content-header">
+          <div class="ui left floated header">
+              <p class="serch-allresult" > {{sectionName}}</p>
+          </div>
+          <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="ui right floated basic icon circular button" [routerLink]="[closeUrl]">
+              <i class="ui remove icon"></i>
+          </h5>
+      </div>
   </div>
 </div>
 <div class="ui grid" >
@@ -19,7 +22,6 @@
     </div>
   </div>
 </div>
-
 <div class="ui grid">
   <div class="two wide column"></div>
   <div class="ten wide column pt-0">

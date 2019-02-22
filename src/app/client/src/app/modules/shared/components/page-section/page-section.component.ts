@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { ResourceService } from '../../services/index';
+import { ResourceService, ConfigService } from '../../services/index';
 import { Component,  Input, EventEmitter, Output , OnDestroy, Inject, ViewChild} from '@angular/core';
 import {ICaraouselData} from '../../interfaces/caraouselData';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
@@ -24,6 +24,9 @@ export class PageSectionComponent implements OnInit, OnDestroy {
   * section is used to render ICaraouselData value on the view
   */
   @Input() section: ICaraouselData;
+
+  @Input() cardType: string;
+
   /**
   * section is used to render ICaraouselData value on the view
   */
@@ -34,96 +37,24 @@ export class PageSectionComponent implements OnInit, OnDestroy {
   @Output() visits = new EventEmitter<any>();
 
   @Output() viewAll = new EventEmitter<any>();
+
+  public config: ConfigService;
+
   private resourceDataSubscription: Subscription;
 
   /**
   * This is slider setting
   */
- slideConfig = {
-  'slidesToShow': 4,
-  'slidesToScroll': 4,
-  'responsive': [
-    {
-      'breakpoint': 2800,
-      'settings': {
-        'slidesToShow': 6,
-        'slidesToScroll': 6
-      }
-    },
-    {
-      'breakpoint': 2200,
-      'settings': {
-        'slidesToShow': 5,
-        'slidesToScroll': 5
-      }
-    },
-    {
-      'breakpoint': 2000,
-      'settings': {
-        'slidesToShow': 4,
-        'slidesToScroll': 4
-      }
-    },
-    {
-      'breakpoint': 1600,
-      'settings': {
-        'slidesToShow': 3.5,
-        'slidesToScroll': 3
-      }
-    },
-    {
-      'breakpoint': 1200,
-      'settings': {
-        'slidesToShow': 3,
-        'slidesToScroll': 3
-      }
-    },
-    {
-      'breakpoint': 900,
-      'settings': {
-        'slidesToShow': 2.5,
-        'slidesToScroll': 2
-      }
-    },
-    {
-      'breakpoint': 750,
-      'settings': {
-        'slidesToShow': 2,
-        'slidesToScroll': 2
-      }
-    },
-    {
-      'breakpoint': 660,
-      'settings': {
-        'slidesToShow': 1.75,
-        'slidesToScroll': 1
-      }
-    },
-    {
-      'breakpoint': 530,
-      'settings': {
-        'slidesToShow': 1.25,
-        'slidesToScroll': 1
-      }
-    },
-    {
-      'breakpoint': 450,
-      'settings': {
-        'slidesToShow': 1,
-        'slidesToScroll': 1
-      }
-    }
-  ],
-  infinite: false,
-  rtl: false
-};
+  slideConfig: object = {};
+
   /**The previous or next value of the button clicked
    * to generate interact telemetry data */
   btnArrow: string;
   pageid: string;
-  constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService,
+  constructor(config: ConfigService, public activatedRoute: ActivatedRoute, public resourceService: ResourceService,
     @Inject(DOCUMENT) private _document: any) {
     this.resourceService = resourceService;
+    this.config = config;
   }
   playContent(event) {
     event.section = this.section.name;
@@ -141,7 +72,7 @@ export class PageSectionComponent implements OnInit, OnDestroy {
     this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
     if (id && this.pageid) {
       this.cardIntractEdata = {
-        id: 'content-card',
+        id: this.cardType === 'batch' ? 'batch-card' : 'content-card',
         type: 'click',
         pageid: this.pageid
       };
@@ -213,6 +144,8 @@ export class PageSectionComponent implements OnInit, OnDestroy {
     }
   }
   addSlideConfig() {
+    this.slideConfig = this.cardType === 'batch' ? this.config.appConfig.CourseBatchPageSection
+    .slideConfig : this.config.appConfig.CoursePageSection.slideConfig;
     this.resourceService.languageSelected$
         .subscribe(item => {
           if (item.value === 'ur') {
