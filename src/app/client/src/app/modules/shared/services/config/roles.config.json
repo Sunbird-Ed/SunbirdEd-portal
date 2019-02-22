@@ -15,7 +15,7 @@
        "alluploadsRole":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW"],
        "upForReviewRole":["CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_REVIEWER"],
        "flagReviewer": ["FLAG_REVIEWER"],
-       "coursebacthesRole":["COURSE_MENTOR"],
+       "courseBatchRoles":["COURSE_MENTOR"],
        "flaggedRole":["FLAG_REVIEWER"],
        "limitedPublishingRole":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
         "textBookRole":["BOOK_CREATOR"],
@@ -42,7 +42,7 @@
        "publishedRole":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
        "alluploadsRole":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW"],
        "upForReviewRole":["CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_REVIEWER"],
-       "coursebacthesRole":["COURSE_MENTOR"],
+       "courseBatchRoles":["COURSE_MENTOR"],
        "flaggedRole":["FLAG_REVIEWER"],
        "limitedPublishingRole":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
        "bulkUpload": ["ORG_ADMIN","SYSTEM_ADMINISTRATION"],
@@ -78,7 +78,7 @@
         "roleName":"upForReviewRole","url":"workspace/content/upForReview/1","tab":"Up FOR REVIEW"
     },
     {
-        "roles":["COURSE_MENTOR"],"roleName":"coursebacthesRole","url":"/workspace/content/batches/1","tab":"Course Batches"
+        "roles":["COURSE_MENTOR"],"roleName":"courseBatchRoles","url":"/workspace/content/batches/1","tab":"Course Batches"
     },
     {
         "roles":["FLAG_REVIEWER"],

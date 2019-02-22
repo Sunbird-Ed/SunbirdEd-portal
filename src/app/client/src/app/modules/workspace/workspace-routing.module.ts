@@ -193,7 +193,7 @@ const routes: Routes = [
           telemetry: {
             env: telemetryEnv, pageid: 'workspace-course-batch', subtype: 'paginate', uri: '/workspace/batches',
             type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
-          }, roles: 'coursebacthesRole',
+          }, roles: 'courseBatchRoles',
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
         },
         children: [{
@@ -202,7 +202,7 @@ const routes: Routes = [
             telemetry: {
               env: telemetryEnv, pageid: 'batch-edit', uri: '/update/batch/',
               type: 'detail', mode: 'create', object: { type: objectType, ver: '1.0' }
-            }, roles: 'coursebacthesRole',
+            }, roles: 'courseBatchRoles',
             breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
           }
         }]
@@ -213,7 +213,7 @@ const routes: Routes = [
           telemetry: {
             env: telemetryEnv, pageid: 'view-all', subtype: 'paginate', uri: '/workspace/content/batches/view-all',
             type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
-          }, roles: 'coursebacthesRole',
+          }, roles: 'courseBatchRoles',
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
         },
         children: [{
@@ -222,7 +222,7 @@ const routes: Routes = [
             telemetry: {
               env: telemetryEnv, pageid: 'batch-edit', uri: '/update/batch/',
               type: 'detail', mode: 'create', object: { type: objectType, ver: '1.0' }
-            }, roles: 'coursebacthesRole',
+            }, roles: 'courseBatchRoles',
             breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
           }
         }]

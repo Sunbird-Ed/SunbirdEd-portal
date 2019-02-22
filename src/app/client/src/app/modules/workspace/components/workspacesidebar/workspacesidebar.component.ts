@@ -49,9 +49,9 @@ export class WorkspacesidebarComponent implements OnInit {
   */
   upForReviewRole: Array<string>;
   /**
-  * coursebacthesRole  access roles
+  * courseBatchRoles  access roles
  */
-  coursebacthesRole: Array<string>;
+  courseBatchRoles: Array<string>;
   /**
     * flaggedRole  access roles
   */
@@ -108,7 +108,7 @@ export class WorkspacesidebarComponent implements OnInit {
     this.publishedRole = this.config.rolesConfig.workSpaceRole.publishedRole;
     this.alluploadsRole = this.config.rolesConfig.workSpaceRole.alluploadsRole;
     this.upForReviewRole = this.config.rolesConfig.workSpaceRole.upForReviewRole;
-    this.coursebacthesRole = this.config.rolesConfig.workSpaceRole.coursebacthesRole;
+    this.courseBatchRoles = this.config.rolesConfig.workSpaceRole.courseBatchRoles;
     this.flaggedRole = this.config.rolesConfig.workSpaceRole.flaggedRole;
     this.limitedPublishingRole = this.config.rolesConfig.workSpaceRole.limitedPublishingRole;
     this.startRole = this.config.rolesConfig.workSpaceRole.startRole;
