@@ -200,7 +200,7 @@ export class UserSearchComponent implements OnInit {
   }
 
   populateLocationDetailsAndSetRoles() {
-    // Getting Org Ids
+    // Getting all location Ids
     let locationArray = [];
     _.each(this.searchList, (user) => {
       if (_.get(this.userProfile, 'rootOrgAdmin') && this.userProfile.rootOrgAdmin === true) {
@@ -211,6 +211,7 @@ export class UserSearchComponent implements OnInit {
       });
     });
 
+    // Calling location search and setting location details to search list
     if (!_.isEmpty(locationArray)) {
       locationArray = _.uniq(locationArray);
       const requestData = { 'filters': { id: locationArray } };
