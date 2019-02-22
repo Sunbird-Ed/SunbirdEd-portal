@@ -36,9 +36,17 @@
     [routerLink]="['flagreviewer',1]" appPermission [permission]='flagReviewer'>
     {{resourceService?.frmelmnts?.snav?.flagReviewer}}
   </a>
-  <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='coursebacthesRole' [routerLink]="['batches',1]"
+  <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='courseBatchRoles' [routerLink]="['batches','created']"
     [class.active]="router.isActive('/workspace/content/batches')">
     {{resourceService?.frmelmnts?.lnk?.coursebacthes}}
+  </a>
+  <a class="item ml-15 fs-0-785" *ngIf='permissionService.permissionAvailable' appPermission [permission]='courseBatchRoles'
+    [routerLink]="['batches','created']" [class.active]="router.isActive('/workspace/content/batches/created')">
+    Created by me<span></span>
+  </a>
+  <a class="item ml-15 fs-0-785" *ngIf='permissionService.permissionAvailable' appPermission [permission]='courseBatchRoles'
+    [routerLink]="['batches','assigned']" [class.active]="router.isActive('/workspace/content/batches/assigned')">
+    Assigned to me<span></span>
   </a>
   <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='flaggedRole' [routerLink]="['flagged',1]"
     [class.active]="router.isActive('/workspace/content/flagged')">

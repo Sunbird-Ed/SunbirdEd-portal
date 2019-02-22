@@ -2,7 +2,7 @@
     <div class="ui twelve wide column">
         <div class="d-flex flex-ai-center">
             <h4 class="ui header m-0 mr-5 pageSection-heading">{{section.name}}</h4>
-            <span class="ui primary label pageSection-count">{{section.contents.length}}</span>
+            <span class="ui primary label pageSection-count">{{section.count}}</span>
             <button class="sb-btn sb-btn-xs sb-btn-secondary ml-auto" *ngIf="section.contents.length >= 10 && section.name != 'My Courses' " type="button" (click)="navigateToViewAll(section)">{{ resourceService.frmelmnts.lnk.viewall}}</button>
         </div>
         <div class="pageSection-Slider">
@@ -17,16 +17,25 @@
                 class="carousel" 
                 #slickModal="slick-modal" 
                 [config]="slideConfig">
-                <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of section.contents;let i = index; let last = last" class="slide">    
-                    <app-card  appContentDirection [data]="content"
-                        appTelemetryInteract 
-                        [telemetryInteractEdata]="cardIntractEdata" 
-                        [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:'1.0'}"
-                        (clickEvent)="playContent($event)"
-                        [data]="content" 
-                        [customClass]="'mr-20'"
-                        class="pr-20 d-block" [class.last-card]="pr-0">
-                    </app-card>
+                <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of section.contents;let i = index; let last = last" class="slide">
+                    <app-batch-card appTelemetryInteract 
+                        [telemetryInteractEdata]="cardIntractEdata"  
+                        [telemetryInteractObject]="{id:content.metaData.identifier}" 
+                        *ngIf="cardType && cardType === 'batch' else contentcard" [batch]="content" 
+                        (clickEvent)="playContent($event)">
+                    </app-batch-card>
+                    <ng-template #contentcard>
+                        <app-card  appContentDirection [data]="content"
+                            appTelemetryInteract 
+                            [telemetryInteractEdata]="cardIntractEdata" 
+                            [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:'1.0'}"
+                            (clickEvent)="playContent($event)"
+                            [data]="content" 
+                            [customClass]="'mr-20'"
+                            class="pr-20 d-block" [class.last-card]="pr-0">
+                        </app-card>
+                    </ng-template>
+
                 </div>
             </ngx-slick>
         </div>

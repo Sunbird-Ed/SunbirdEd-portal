@@ -65,7 +65,7 @@ const routes: Routes = [
             path: 'update/batch/:batchId', component: UpdateCourseBatchComponent, canActivate: [AuthGuard],
             data: {
               telemetry: { env: telemetryEnv, pageid: 'batch-edit', type: 'view', object: { ver: '1.0', type: 'batch' } },
-              roles: 'coursebacthesRole'
+              roles: 'courseBatchRoles'
             }
           },
           {
@@ -75,7 +75,7 @@ const routes: Routes = [
                 env: telemetryEnv, pageid: 'batch-create', type: 'view', mode: 'create',
                 object: { ver: '1.0', type: 'batch' }
               },
-              roles: 'coursebacthesRole'
+              roles: 'courseBatchRoles'
             }
           }
         ]
@@ -83,7 +83,7 @@ const routes: Routes = [
       {
         path: ':courseId/dashboard', component: CourseProgressComponent, canActivate: [AuthGuard],
         data: {
-          roles: 'coursebacthesRole',
+          roles: 'courseBatchRoles',
           telemetry: { env: telemetryEnv, pageid: 'course-stats', type: 'view', object: { ver: '1.0', type: 'course' } }
         }
       },
