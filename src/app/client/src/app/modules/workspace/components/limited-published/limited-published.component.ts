@@ -78,7 +78,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
   /**
    * no result  message
   */
-  noResultObject: INoResultMessage;
+  noResultMessage: INoResultMessage;
 
   /**
     * For showing pagination on unpublished list
@@ -169,10 +169,9 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0082,
     };
-    this.noResultObject = {
+    this.noResultMessage = {
       'message': this.resourceService.messages.stmsg.m0008,
       'messageText': this.resourceService.messages.stmsg.m0083,
-      'emptyImage': '../assets/images/empty.png'
     };
     this.state = 'limited-publish';
   }
