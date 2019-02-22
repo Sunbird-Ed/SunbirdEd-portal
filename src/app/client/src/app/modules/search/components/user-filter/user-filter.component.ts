@@ -155,7 +155,7 @@ export class UserFilterComponent implements OnInit {
       const requestData = { 'filters': { locationIds: blockIds } };
       this.orgDetailsService.fetchOrgs(requestData).subscribe(res => {
         this.allSchools = _.sortBy(res.result.response.content, [(sort) => {
-          return sort.orgName = this.capitalizeFilterValues(sort.orgName); }]);
+          return sort.orgName = _.capitalize(sort.orgName); }]);
         this.selectedSchool = this.queryParams.School;
         this.hardRefreshFilter();
       });
@@ -240,12 +240,7 @@ export class UserFilterComponent implements OnInit {
 
   sortFilters (object) {
     return _.sortBy(object, [(sort) => {
-      return sort.name = this.capitalizeFilterValues(sort.name); }]);
-  }
-
-  capitalizeFilterValues(str) {
-    return str.toLowerCase().replace(/\b\S/g, (t) => {
-      return t.toUpperCase(); });
+      return sort.name = _.capitalize(sort.name); }]);
   }
 
   settelemetryData() {
