@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 export class CustomMultiSelectComponent implements OnInit {
   @Input() inputData: Array<string>;
   @Input() field: object;
+  @Input() valueField = 'name';
   checkBox: object;
   selectAllCheckBox = false;
   refresh = true;

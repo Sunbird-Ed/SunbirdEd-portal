@@ -16,6 +16,7 @@ import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 })
 
 export class UserFilterComponent implements OnInit {
+  valueField = 'code';
   queryParams: any;
   refresh = true;
   userProfile: any;
@@ -94,7 +95,7 @@ export class UserFilterComponent implements OnInit {
       _.forEach(res.result.response, (type) => {
         userTypeArray.push({ code: type.name, name: type.name });
       });
-      this.allUserType['range'] = this.sortFilters(userTypeArray);
+      this.allUserType['range'] = this.sortAndCapitaliseFilters(userTypeArray);
       return 'User type API success';
     }), catchError(e => of('User type API error')));
   }
@@ -111,7 +112,7 @@ export class UserFilterComponent implements OnInit {
 
       const gradeLevel: any = _.find(categoryMasterList, { code: 'gradeLevel' });
       gradeLevel['label'] = gradeLevel.name;
-      gradeLevel['range'] = this.sortFilters(gradeLevel.terms);
+      gradeLevel['range'] = gradeLevel.terms;
       this.class = gradeLevel;
 
       const subject: any = _.find(categoryMasterList, { code: 'subject' });
@@ -126,7 +127,7 @@ export class UserFilterComponent implements OnInit {
     if (this.stateId) {
       const requestData = { 'filters': { 'type': 'district', parentId: this.stateId } };
       return this.profileService.getUserLocation(requestData).pipe(map((res: any) => {
-        this.allDistricts = this.sortFilters(res.result.response);
+        this.allDistricts = this.sortAndCapitaliseFilters(res.result.response);
         // Get Blocks API call
         this.districtIds = _.map(this.allDistricts, 'id');
         this.selectedDistrict = this.queryParams.District;
@@ -140,7 +141,7 @@ export class UserFilterComponent implements OnInit {
     if (!_.isEmpty(districtIds)) {
       const requestData = { 'filters': { 'type': 'block', parentId: districtIds } };
       this.profileService.getUserLocation(requestData).subscribe(res => {
-        this.allBlocks = this.sortFilters(res.result.response);
+        this.allBlocks = this.sortAndCapitaliseFilters(res.result.response);
         this.selectedBlock = this.queryParams.Block;
         this.hardRefreshFilter();
         // Get school API call
@@ -155,7 +156,7 @@ export class UserFilterComponent implements OnInit {
       const requestData = { 'filters': { locationIds: blockIds } };
       this.orgDetailsService.fetchOrgs(requestData).subscribe(res => {
         this.allSchools = _.sortBy(res.result.response.content, [(sort) => {
-          return sort.orgName; }]);
+          return sort.orgName = _.capitalize(sort.orgName); }]);
         this.selectedSchool = this.queryParams.School;
         this.hardRefreshFilter();
       });
@@ -241,6 +242,11 @@ export class UserFilterComponent implements OnInit {
   sortFilters (object) {
     return _.sortBy(object, [(sort) => {
       return sort.name; }]);
+  }
+
+  sortAndCapitaliseFilters (object) {
+    return _.sortBy(object, [(sort) => {
+      return sort.name = _.capitalize(sort.name); }]);
   }
 
   settelemetryData() {
