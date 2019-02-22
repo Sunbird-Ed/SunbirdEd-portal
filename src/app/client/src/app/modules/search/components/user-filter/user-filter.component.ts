@@ -112,7 +112,7 @@ export class UserFilterComponent implements OnInit {
 
       const gradeLevel: any = _.find(categoryMasterList, { code: 'gradeLevel' });
       gradeLevel['label'] = gradeLevel.name;
-      gradeLevel['range'] = gradeLevel.terms;
+      gradeLevel['range'] = this.sortFilters(gradeLevel.terms);
       this.class = gradeLevel;
 
       const subject: any = _.find(categoryMasterList, { code: 'subject' });
