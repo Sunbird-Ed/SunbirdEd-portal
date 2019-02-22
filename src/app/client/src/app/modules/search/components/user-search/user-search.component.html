@@ -7,7 +7,7 @@
           <div class="ui left floated header  ">
             <p class="serch-allresult">{{resourceService.frmelmnts?.lbl?.showingResults}} 
               <span class="lower-case" *ngIf="this.queryParams.key">
-                {{resourceService.frmelmnts?.lbl?.forSearch  | interpolate:'{searchString}':this.queryParams?.key}}
+                "{{resourceService.frmelmnts?.lbl?.forSearch  | interpolate:'{searchString}':this.queryParams?.key}}"
               </span>
               {{resourceService.frmelmnts?.lbl?.inUsers}}
             </p>
@@ -46,17 +46,17 @@
                         <span class="sunbird-portal-icon edit-user-icon mx-10"></span>
                       </span>
                       <!-- delete user -->
-                      <span appTelemetryInteract [telemetryInteractEdata]="userDeleteIntractEdata" [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}"
-                        class="remove-outline">
-                        <span class="sunbird-portal-icon delete-user-icon" [queryParams]="queryParams" [routerLink]="['delete/' + user.id]" (click)="userSearchService.userDetailsObject=user"></span>
-                      </span>
+                      <!-- <span appTelemetryInteract [telemetryInteractEdata]="userDeleteIntractEdata" [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}"
+                        class="remove-outline mx-5">
+                        <i class="trash outline large icon remove-outline" [queryParams]="queryParams" [routerLink]="['delete/' + user.id]" (click)="userSearchService.userDetailsObject=user"></i>
+                      </span> -->
                     </a>
 
                     <!-- organization Name -->
                     <div class="meta">
                       <span class="cinema ">
                         <span *ngFor="let org of user.organisations; let last = last;">
-                          <span *ngIf="org.orgName">{{org.orgName}}</span>
+                          <span *ngIf="org.orgName">{{org.orgName | titlecase}}</span>
                           <span *ngIf="!last && org.orgName">,</span>
                         </span>
                       </span>
@@ -71,8 +71,9 @@
                       <!-- updated code as per new design -->
 
                       <div class="ui horizontal bulleted list">
-                        <span class="item"><span class="sunbird-portal-icon location-outline-icon"></span>&nbsp;Veerapanchatantram</span>
-                        <span class="item">Kancheepuram</span>
+                        <span class="item" *ngIf="user.block"><span class="sunbird-portal-icon location-outline-icon"></span>&nbsp;{{user.block.name | titlecase}}</span>
+                        <span class="item" *ngIf="user.district">{{user.district.name | titlecase}}</span>
+
                       </div>
                     </div>
                   </div>
