@@ -1,5 +1,5 @@
-<div class="ui container">
-    <div [appTelemetryImpression]="telemetryImpression" class="ui stackable grid mt-30" *ngIf="!noResult">
+<div class="ui container" [appTelemetryImpression]="telemetryImpression">
+    <div class="ui stackable grid mt-30" *ngIf="!noResult">
         <div class="three wide column pt-0">
             <div class="publicmenusection ui secondary vertical menu">
                 <a appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(report.id)"
