@@ -9,6 +9,7 @@ import { FrameworkService, FormService, PermissionService, UserService, OrgDetai
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+
 @Component({
   selector: 'app-data-driven-filter',
   templateUrl: './data-driven-filter.component.html'
@@ -49,6 +50,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
   public applyFilterInteractEdata: IInteractEventEdata;
 
   public resetFilterInteractEdata: IInteractEventEdata;
+  telemetryCdata: Array<{}>;
   private selectedLanguage: string;
   resourceDataSubscription: Subscription;
   // add langauge default value en
@@ -293,6 +295,10 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
         pageid: this.pageId
       };
     }, 5);
+    const pageSection = this.cacheService.get('pageSection');
+    if (_.get(pageSection, 'id' )) {
+      this.telemetryCdata = [{ 'type': 'page-section', 'id': pageSection.id }];
+    }
   }
   private hardRefreshFilter() {
     this.refresh = false;
