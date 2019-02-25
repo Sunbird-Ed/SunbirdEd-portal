@@ -170,6 +170,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy {
     this.publicPlayerService.playExporeCourse(event.data.metaData.identifier);
   }
   public viewAll(event) {
+    console.log(event);
     const searchQuery = JSON.parse(event.searchQuery);
     const searchQueryParams: any = {};
     _.forIn(searchQuery.request.filters, (value, key) => {
@@ -183,6 +184,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy {
     // searchQuery.request.filters.channel = this.hashTagId;
     // searchQuery.request.filters.board = this.dataDrivenFilters.board;
     this.cacheService.set('viewAllQuery', searchQueryParams, { maxAge: this.browserCacheTtlService.browserCacheTtl });
+    this.cacheService.set('pageSection', event, { maxAge: this.browserCacheTtlService.browserCacheTtl });
     const queryParams = { ...searchQueryParams, ...this.queryParams};
     const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], {queryParams: queryParams});
