@@ -198,7 +198,13 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
       const data = this.cacheService.get('viewAllQuery');
       _.forIn(data, (value, key) => this.formInputData[key] = value);
     }
-    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
+    let redirectUrl; // if pageNumber exist then go to first page every time when filter changes, else go exact path
+    if (this.activatedRoute.snapshot.params.pageNumber) { // when using dataDriven filter should this should be verified
+      redirectUrl = this.router.url.split('?')[0].replace(/[^\/]+$/, '1');
+    } else {
+      redirectUrl = this.router.url.split('?')[0];
+    }
+    this.router.navigate([redirectUrl], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
     this.hardRefreshFilter();
     this.setFilterInteractData();
   }
