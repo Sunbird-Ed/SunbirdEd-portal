@@ -156,8 +156,8 @@
         {
           "breakpoint": 2000,
           "settings": {
-            "slidesToShow": 4,
-            "slidesToScroll": 4
+            "slidesToShow": 3.01,
+            "slidesToScroll": 3.01
           }
         },
         {
