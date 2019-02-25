@@ -83,13 +83,20 @@ export class BatchService {
     };
     return this.learnerService.patch(option);
   }
+  setBatchData(batchData): void {
+    this.batchDetails = batchData;
+  }
   getBatchDetails(bathId) {
-    const option = {
-      url: `${this.configService.urlConFig.URLS.BATCH.GET_DETAILS}/${bathId}`
-    };
-    return this.learnerService.get(option).pipe(map((date) => {
-      return date.result.response;
-    }));
+    if (this.batchDetails && bathId === this.batchDetails.identifier) {
+      return observableOf(this.batchDetails);
+    } else {
+      const option = {
+        url: `${this.configService.urlConFig.URLS.BATCH.GET_DETAILS}/${bathId}`
+      };
+      return this.learnerService.get(option).pipe(map((date) => {
+        return date.result.response;
+      }));
+    }
   }
   updateBatchDetails(requestParam): Observable<ServerResponse> {
     const option = {

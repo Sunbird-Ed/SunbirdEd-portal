@@ -181,6 +181,12 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
     });
   }
 
+  onCardClick (event) {
+    const batchdata = event.data;
+    this.batchService.setBatchData(event.data);
+    this.route.navigate(['update/batch', batchdata.identifier], {queryParamsHandling: 'merge', relativeTo: this.activatedRoute});
+  }
+
   /**
     This method prepares batch card data with count of partipants,
     adds userName and prepares data structure to reuse exising page section component used in
