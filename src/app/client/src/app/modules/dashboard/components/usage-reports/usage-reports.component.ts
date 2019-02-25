@@ -64,7 +64,7 @@ export class UsageReportsComponent implements OnInit {
   }
 
   reportType(reportType) {
-    this.telemetryInteractDirective.telemetryInteractObject = this.setTelemetryInteractObject(this.currentReport.id);
+    this.telemetryInteractDirective.telemetryInteractObject = this.setTelemetryInteractObject(_.get(this.currentReport, 'id'));
     this.telemetryInteractDirective.telemetryInteractEdata = {
       id: `report_${reportType}`,
       type: 'click',
@@ -88,11 +88,7 @@ export class UsageReportsComponent implements OnInit {
 
     this.telemetryImpression = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: [{
-          type: 'role',
-          id: _.get(this.userService, 'userProfile.userRoles').toString()
-        }]
+        env: this.activatedRoute.snapshot.data.telemetry.env
       },
       object: {
         id: this.userService.userid,
@@ -102,7 +98,7 @@ export class UsageReportsComponent implements OnInit {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.router.url,
+        uri: this.router.url
       }
     };
   }

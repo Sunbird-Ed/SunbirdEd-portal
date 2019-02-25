@@ -17,7 +17,7 @@
                 <div class="ui top attached tabular menu">
                     <a (click)="reportType('graph')" class="item"
                         suiTabHeader="graph">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
-                    <a (click)="reportType('table')" class="item"
+                    <a (click)="reportType('data')" class="item"
                         suiTabHeader="tableMenu">{{resourceService?.frmelmnts?.lbl?.tables}}</a>
                     <div class="right menu">
                         <a *ngIf="currentReport?.downloadUrl" class="ui item" appTelemetryInteract
