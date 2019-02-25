@@ -37,7 +37,12 @@ describe('CourseProgressComponent', () => {
         'm0005': 'Something went wrong, please try in some time....'
       },
       'imsg': {
-        'm0022': 'Stats for last 7 days'
+        'm0022': 'Stats for last 7 days',
+        'm0044': 'Download failed!',
+        'm0043' : 'Your profile does not have a valid email ID.Please update your email ID'
+      },
+      'stmsg' : {
+       'm0132': 'We have received your download request. The file will be sent to your registered email ID shortly.'
       }
     }
   };
@@ -149,14 +154,14 @@ describe('CourseProgressComponent', () => {
       expect(toasterService.error).toHaveBeenCalledWith(testData.mockUserData.dashboardError.error.params.errmsg);
     }));
 
-  it('spy on downloadDashboardData()', inject([UserService, CourseProgressService],
-    (userService, courseService) => {
+  it('spy on downloadDashboardData()', inject([UserService, CourseProgressService, ResourceService, ToasterService],
+    (userService, courseService, resourceService, toasterService) => {
       userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
       fixture.detectChanges();
       spyOn(courseService, 'downloadDashboardData')
         .and.returnValue(observableOf(testData.mockUserData.populateCourseDashboardDataRes));
       component.downloadReport();
-      expect(component.showDownloadModal).toEqual(true);
+      expect(component.showDownloadModal).toEqual(false);
     }));
 
   it('spy on downloadDashboardData() with error', inject([UserService, CourseProgressService, ResourceService, ToasterService],
@@ -166,7 +171,8 @@ describe('CourseProgressComponent', () => {
       spyOn(courseService, 'downloadDashboardData').and.callFake(() => observableThrowError({}));
       spyOn(toasterService, 'error').and.callThrough();
       component.downloadReport();
-      expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
+      expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.imsg.m0044 + '<br/>' + '<br/>' +
+      resourceService.messages.imsg.m0043);
     }));
 
   it('should unsubscribe to userData observable', () => {
