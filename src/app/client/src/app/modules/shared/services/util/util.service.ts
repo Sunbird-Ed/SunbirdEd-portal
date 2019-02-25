@@ -119,6 +119,9 @@ export class UtilService {
     }
   }
   translateLabel(formFieldCategory, selectedLanguage) {
+    if (!formFieldCategory.translations) {
+      return formFieldCategory;
+    }
     const translation = JSON.parse(formFieldCategory.translations);
     if (translation && !translation.en) {
       translation.en = formFieldCategory.label;
