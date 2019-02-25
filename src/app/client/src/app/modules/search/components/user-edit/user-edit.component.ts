@@ -6,9 +6,6 @@ import { UserService, PermissionService, RolesAndPermissions, OrgDetailsService 
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, IUserData } from '@sunbird/shared';
 import { ProfileService } from '@sunbird/profile';
-// import { forkJoin } from 'rxjs/observable/forkJoin';
-import { delay, catchError, map } from 'rxjs/operators';
-import { forkJoin, of, throwError } from 'rxjs';
 import * as _ from 'lodash';
 
 @Component({
@@ -40,6 +37,9 @@ export class UserEditComponent implements OnInit, OnDestroy {
   schoolLoader = false;
   showMainLoader = true;
   locationCodes: Array<string>;
+  queryParams: any;
+  selectedSchoolId: any;
+  enableSubmitBtn: boolean;
 
   constructor(private userSearchService: UserSearchService, public activatedRoute: ActivatedRoute,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -50,6 +50,10 @@ export class UserEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.activatedRoute.queryParams
+      .subscribe(params => {
+        this.queryParams = { ...params };
+      });
     this.getLoggedInUserDetails();
   }
 
@@ -73,7 +77,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
   getAllRoles() {
     this.activatedRoute.params.subscribe(params => {
       this.userId = params.userId;
-      this.settelemetryData();
     });
     this.populateUserDetails();
     this.permissionService.permissionAvailable$.subscribe(params => {
@@ -95,7 +98,14 @@ export class UserEditComponent implements OnInit, OnDestroy {
         const rootOrgDetails = _.filter(this.userDetails.organisations, (org) => {
           return org.organisationId === this.userDetails.rootOrgId;
         });
-        this.selectedOrgUserRoles = rootOrgDetails[0].roles;
+        const subOrgDetails = _.filter(this.userDetails.organisations, (org) => {
+          return org.organisationId !== this.userDetails.rootOrgId;
+        });
+        if (!_.isEmpty(rootOrgDetails)) {this.selectedOrgUserRoles = rootOrgDetails[0].roles; }
+        if (!_.isEmpty(subOrgDetails)) {
+          const orgs = _.sortBy(subOrgDetails, ['orgjoindate']);
+          this.selectedSchoolId = orgs[0].organisationId;
+        }
         this.initializeFormFields();
       },
       err => {
@@ -115,6 +125,8 @@ export class UserEditComponent implements OnInit, OnDestroy {
     this.getDistrict();
     this.onDistrictChange();
     this.onBlockChange();
+    this.settelemetryData();
+    this.onFormValueChange();
   }
 
   getDistrict() {
@@ -188,6 +200,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
     let blockValue = '';
     blockControl.valueChanges.subscribe(
       (data: string) => {
+        this.userDetailsForm.controls['school'].setValue('');
         if (blockControl.status === 'VALID' && blockValue !== blockControl.value) {
           this.userDetailsForm.controls['school'].setValue('');
           this.allSchools = [];
@@ -207,6 +220,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
       (apiResponse: ServerResponse) => {
         this.allSchools = apiResponse.result.response.content;
         this.schoolLoader = false;
+        this.userDetailsForm.controls['school'].setValue(this.selectedSchoolId);
       },
       err => {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
@@ -216,45 +230,45 @@ export class UserEditComponent implements OnInit, OnDestroy {
   }
 
   onSubmitForm() {
-    const rolesUpdate = this.updateRoles();
-    const profileUpdate = this.updateProfile();
-    const apiCallsArray = [];
-
-    this.userDetailsForm.value.role.push('PUBLIC');
-    if (!_.isEqual(this.selectedOrgUserRoles.sort(), this.userDetailsForm.value.role.sort())) {
-      apiCallsArray.push(rolesUpdate);
-    }
-
-    const lDetails = _.filter(this.userDetails.userLocations, (location) => {
-      return location.type !== 'state';
-    });
-    const lCode = _.map(lDetails, 'code');
-
-    if (!_.isEqual(this.locationCodes.sort(), lCode.sort())) {
-      apiCallsArray.push(profileUpdate);
-    }
-
-    forkJoin(apiCallsArray)
-      .subscribe(val => {
-        console.log('-----------', val);
-      });
-  }
-
-  updateRoles() {
-    const option = { userId: this.userId, orgId: this.userDetails.rootOrgId, roles: this.userDetailsForm.value.role };
-    return this.userSearchService.updateRoles(option).pipe(map((res) => res), catchError(e => of('Error')));
+    this.updateProfile();
   }
 
   updateProfile() {
+    // create school and roles data
+    const roles = !_.isEmpty(this.userDetailsForm.value.role) ? this.userDetailsForm.value.role : ['PUBLIC'];
+    const orgArray = [];
+    orgArray.push({organisationId: this.userDetails.rootOrgId, roles: roles});
+    if (this.userDetailsForm.value.school) {
+      orgArray.push({organisationId: this.userDetailsForm.value.school, roles: roles});
+    }
+
+    // create location data
     this.locationCodes = [];
     if (this.userDetailsForm.value.district) { this.locationCodes.push(this.userDetailsForm.value.district); }
     if (this.userDetailsForm.value.block) { this.locationCodes.push(this.userDetailsForm.value.block); }
-    const data = { userId: this.userId, locationCodes: this.locationCodes };
-    return this.profileService.updatePrivateProfile(data).pipe(map((res) => res), catchError(e => of('Error')));
+
+    const data = { userId: this.userId, locationCodes: this.locationCodes, organisations: orgArray };
+    this.profileService.updatePrivateProfile(data)
+    .subscribe(
+      (apiResponse: ServerResponse) => {
+        this.toasterService.success(this.resourceService.messages.smsg.m0049);
+        this.redirect();
+      },
+      err => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0020);
+        this.redirect();
+      }
+    );
   }
 
   redirect(): void {
-    this.route.navigate(['../../'], { relativeTo: this.activatedRoute });
+    this.route.navigate(['../../'], { relativeTo: this.activatedRoute, queryParams: this.queryParams });
+  }
+
+  onFormValueChange() {
+    this.userDetailsForm.valueChanges.subscribe(val => {
+      this.settelemetryData();
+    });
   }
 
   settelemetryData() {
@@ -279,6 +293,13 @@ export class UserEditComponent implements OnInit, OnDestroy {
       id: 'user-update',
       type: 'click',
       pageid: 'user-edit'
+    };
+
+    this.submitInteractEdata = {
+      id: 'user-update',
+      type: 'click',
+      pageid: 'user-edit',
+      extra: { filters: this.userDetailsForm.value }
     };
 
     this.telemetryInteractObject = {

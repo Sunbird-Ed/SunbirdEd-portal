@@ -5,22 +5,16 @@ import { Component, OnInit, Input, AfterViewInit, AfterViewChecked } from '@angu
     templateUrl: './data-table.component.html',
     styleUrls: ['./data-table.component.scss']
 })
-export class DataTableComponent implements AfterViewInit, AfterViewChecked {
+export class DataTableComponent implements AfterViewInit {
 
     @Input() rowsData: Array<string[]>;
     @Input() headerData: string[];
-    table: any;
     ngAfterViewInit() {
-        this.table = $('#table').DataTable({
-            'data': this.rowsData,
-            'scrollX': true,
-            'searching': false,
+        setTimeout(() => {
+            $('#table').removeAttr('width').DataTable({
+                'data': this.rowsData,
+                'searching': false,
             });
-        }
-
-    ngAfterViewChecked() {
-    setTimeout(() => {
-        this.table.columns.adjust().draw();
-    }, 100);
-}
+        }, 100);
+    }
 }

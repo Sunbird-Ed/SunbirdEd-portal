@@ -8,7 +8,7 @@ const blobService = azure.createBlobService(envHelper.sunbird_azure_account_name
 function isValidSlug() {
     return function (req, res, next) {
         const roles = _.get(req, 'session.roles');
-        if (_.get(req, 'session.rootOrg.slug') === req.params.slug && (_.indexOf(roles, "ORG_ADMIN") >= 0 ||  _.indexOf(roles, "REPORT_VIEWER")) >= 0)){
+        if (_.get(req, 'session.rootOrg.slug') === req.params.slug && (_.indexOf(roles, "ORG_ADMIN") >= 0 ||  _.indexOf(roles, "REPORT_VIEWER")) >= 0){
             next()
         } else {  
           res.status(403)

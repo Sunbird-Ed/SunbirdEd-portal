@@ -3,6 +3,7 @@
 .ui {
   &.selection.bordered.dropdown {
     border: 1px solid rgba(34, 36, 38, 0.15);
+    border-radius: 5px;
   }
   &.icon.input {
     width: 300px;
@@ -11,10 +12,30 @@
 
 }
 
+.ui.selection.dropdown {
+  font-size: 16px;
+  font-weight: 700;
+  padding: 8px 32px;
+  min-height: 32px;
+}
+
 .w-300 {
   width: 300px;
 }
 
+.w-300 {
+  ::ng-deep {
+    .ui.search.selection.dropdown>input.search {
+      padding: 8px 32px;
+    }
+    .ui.selection.dropdown>.dropdown.icon {
+      padding: 8px;
+    }
+    .ui.selection.dropdown .menu>.item {
+      padding: 8px 32px !important;
+    }
+  }
+}
 .download-file-container {
   background-color: $gray-100;
   height: 48px;
@@ -23,6 +44,5 @@
 a {
   &.download-file {
     text-decoration: underline;
-    margin: 0 16px;
   }
 }

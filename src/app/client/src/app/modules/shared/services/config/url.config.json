@@ -40,7 +40,8 @@
       "UPDATE_PROF_VIS_FIELDS": "user/v1/profile/visibility",
       "GET_USER_BY_KEY": "user/v1/get",
       "CREATE_V2": "user/v2/create",
-      "LOCATION_SEARCH": "data/v1/location/search"
+      "LOCATION_SEARCH": "data/v1/location/search",
+      "TYPE": "user/v1/type/list"
     },
     "COMPOSITE": {
       "SEARCH": "composite/v1/search"
@@ -81,7 +82,8 @@
       "ORG_CREATION": "dashboard/v1/creation/org",
       "ORG_CONSUMPTION": "dashboard/v1/consumption/org",
       "COURSE_PROGRESS": "dashboard/v1/progress/course",
-      "COURSE_CONSUMPTION": "dashboard/v1/consumption/course"
+      "COURSE_CONSUMPTION": "dashboard/v1/consumption/course",
+      "COURSE_PROGRESS_V2":"dashboard/v2/progress/course"
     },
     "NOTES": {
       "SEARCH": "notes/v1/search",

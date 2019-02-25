@@ -132,7 +132,7 @@
     [isClosable]="false"
     [transitionDuration]="0"
     [size]="'small'"
-    class="sb-modal"
+    class="sb-modal sb-error"
     appBodyScroll
     *ngIf="removeModalFlag" 
     (dismissed)="removeModal.deny();remove()"
@@ -156,7 +156,7 @@
             appTelemetryInteract 
             [telemetryInteractObject]="telemetryInteractObject" 
             [telemetryInteractEdata]="stopCreatingNoInteractEdata"
-            class="sb-btn sb-btn-normal sb-btn-primary" 
+            class="sb-btn sb-btn-normal sb-btn-error" 
             (click)="removeModal.deny();remove()"
         >
             {{resourceService?.frmelmnts?.btn?.remove}}
@@ -165,7 +165,7 @@
             appTelemetryInteract 
             [telemetryInteractObject]="telemetryInteractObject" 
             [telemetryInteractEdata]="stopCreatingYesInteractEdata"
-            class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+            class="sb-btn sb-btn-normal sb-btn-outline-error" 
             (click)="removeModalFlag = !removeModalFlag" 
             [appTelemetryEnd]="telemetryEnd"
         >

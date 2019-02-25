@@ -25,7 +25,7 @@ const fakeActivatedRoute = {
     ],
     data: {
       telemetry: { env: 'course', pageid: 'batch-edit', type: 'view', object: { ver: '1.0', type: 'batch' } },
-      roles: 'coursebacthesRole'
+      roles: 'courseBatchRoles'
     }
   }
 };

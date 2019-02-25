@@ -77,4 +77,12 @@ export class UserSearchService {
 
     return this.learnerService.get(option);
   }
+
+  getUserType() {
+    const option = {
+      url: this.config.urlConFig.URLS.USER.TYPE
+    };
+
+    return this.learnerService.get(option);
+  }
 }
