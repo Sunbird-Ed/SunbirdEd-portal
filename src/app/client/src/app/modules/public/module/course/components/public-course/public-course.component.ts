@@ -170,7 +170,6 @@ export class PublicCourseComponent implements OnInit, OnDestroy {
     this.publicPlayerService.playExporeCourse(event.data.metaData.identifier);
   }
   public viewAll(event) {
-    console.log(event);
     const searchQuery = JSON.parse(event.searchQuery);
     const searchQueryParams: any = {};
     _.forIn(searchQuery.request.filters, (value, key) => {
