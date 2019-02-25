@@ -22,10 +22,23 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
   public openForEnrollBatches: Array<any> = [];
   public disableEnrollBtn = false;
   public unsubscribe = new Subject<void>();
+  public enrollInteractEdata;
+  public resumeInteractEdata;
 
   constructor(public resourceService: ResourceService, public playerService: PlayerService, public configService: ConfigService,
     public learnerService: LearnerService, public userService: UserService, public toasterService: ToasterService,
-    public coursesService: CoursesService, public router: Router) { }
+    public coursesService: CoursesService, public router: Router) {
+      this.resumeInteractEdata = {
+        id: 'resume',
+        type: 'click',
+        pageid: 'batch-info'
+      };
+      this.enrollInteractEdata = {
+        id: 'enroll',
+        type: 'click',
+        pageid: 'batch-info'
+      };
+    }
 
   ngOnInit() {
     if (this.enrolledBatchInfo.onGoingBatchCount) {
