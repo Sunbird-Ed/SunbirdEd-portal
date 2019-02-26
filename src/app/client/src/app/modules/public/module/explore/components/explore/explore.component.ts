@@ -161,6 +161,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
     searchQuery.request.filters.softConstraintsFilter = JSON.stringify(softConstraintsFilter);
     searchQuery.request.filters.exists = searchQuery.request.exists;
     this.cacheService.set('viewAllQuery', searchQuery.request.filters);
+    this.cacheService.set('pageSection', event, { maxAge: this.browserCacheTtlService.browserCacheTtl });
     const queryParams = { ...searchQuery.request.filters, ...this.queryParams };
     const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], { queryParams: queryParams });
