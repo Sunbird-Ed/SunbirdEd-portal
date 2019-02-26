@@ -5,6 +5,7 @@ import { WorkspacesidebarComponent } from './workspacesidebar.component';
 import {RouterTestingModule} from '@angular/router/testing';
 import { SharedModule, ConfigService} from '@sunbird/shared';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { SuiModule } from 'ng2-semantic-ui';
 describe('WorkspacesidebarComponent', () => {
   let component: WorkspacesidebarComponent;
   let fixture: ComponentFixture<WorkspacesidebarComponent>;
@@ -13,7 +14,7 @@ describe('WorkspacesidebarComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ WorkspacesidebarComponent ],
       providers: [ Ng2IzitoastService, ConfigService],
-      imports: [RouterTestingModule, HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot()]
+      imports: [RouterTestingModule, HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot(), SuiModule]
     })
     .compileComponents();
   }));
