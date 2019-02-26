@@ -94,11 +94,7 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
   }
 
   onLanguageChange(event) {
-   this._cacheService.set('portalLanguage' , event,
-    {
-      maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
-        this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
-    });
+   this._cacheService.set('portalLanguage' , event);
     this.resourceService.getResource(event);
     const language = _.find(this.languages, ['value', event]);
     this.resourceService.getLanguageChange(language);

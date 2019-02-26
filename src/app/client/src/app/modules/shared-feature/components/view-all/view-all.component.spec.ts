@@ -173,7 +173,7 @@ describe('ViewAllComponent', () => {
     component.navigateToPage(1);
     expect(component.pageNumber).toEqual(1);
     expect(component.pageLimit).toEqual(configService.appConfig.SEARCH.PAGE_LIMIT);
-    expect(route.navigate).toHaveBeenCalledWith(['learn/view-all/LatestCourses', 1], { queryParams: component.queryParams,
+    expect(route.navigate).toHaveBeenCalledWith(['learn/view-all/LatestCourses/1'], { queryParams: component.queryParams,
        relativeTo: fakeActivatedRoute});
   });
 });
