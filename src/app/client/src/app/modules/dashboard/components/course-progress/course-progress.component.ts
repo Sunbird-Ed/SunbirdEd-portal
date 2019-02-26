@@ -327,10 +327,12 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     takeUntil(this.unsubscribe))
     .subscribe(
       (apiResponse: ServerResponse) => {
-        this.showDownloadModal = true;
+        this.toasterService.success( this.resourceService .messages.stmsg.m0132);
       },
       err => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        const errMsg = this.resourceService.messages.imsg.m0044 + '<br/>' + '<br/>' +
+        this.resourceService.messages.imsg.m0043;
+        this.toasterService.error(errMsg);
       }
     );
     this.setInteractEventData();

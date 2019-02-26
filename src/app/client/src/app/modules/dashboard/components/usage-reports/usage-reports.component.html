@@ -1,8 +1,10 @@
-<div class="ui container">
+<div class="ui container" [appTelemetryImpression]="telemetryImpression">
     <div class="ui stackable grid mt-30" *ngIf="!noResult">
         <div class="three wide column pt-0">
             <div class="publicmenusection ui secondary vertical menu">
-                <a *ngFor="let report of reportMetaData" (click)="renderReport(report)" class="item" [ngClass]="{'active': currentReport.id === report.id}">
+                <a appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(report.id)"
+                    [telemetryInteractEdata]="telemetryInteractEdata" *ngFor="let report of reportMetaData"
+                    (click)="renderReport(report)" class="item" [ngClass]="{'active': currentReport.id === report.id}">
                     {{report.label || report.title}}</a>
             </div>
         </div>
@@ -13,24 +15,30 @@
             <p *ngIf="currentReport?.description" [innerHTML]="transformHTML(currentReport.description)"></p>
             <sui-tabset>
                 <div class="ui top attached tabular menu">
-                    <a class="item" suiTabHeader="graph">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
-                    <a class="item" suiTabHeader="tableMenu">{{resourceService?.frmelmnts?.lbl?.tables}}</a>
+                    <a (click)="reportType('graph')" class="item"
+                        suiTabHeader="graph">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
+                    <a (click)="reportType('data')" class="item"
+                        suiTabHeader="tableMenu">{{resourceService?.frmelmnts?.lbl?.tables}}</a>
                     <div class="right menu">
-                        <a *ngIf="currentReport?.downloadUrl" class="ui item" (click)="downloadCSV(currentReport.downloadUrl)">{{resourceService?.frmelmnts?.lbl?.downloadCsv}}</a>
+                        <a *ngIf="currentReport?.downloadUrl" class="ui item" appTelemetryInteract
+                            [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
+                            [telemetryInteractEdata]="telemetryInteractDownloadEdata"
+                            (click)="downloadCSV(currentReport.downloadUrl)">{{resourceService?.frmelmnts?.lbl?.downloadCsv}}</a>
                     </div>
                 </div>
                 <div class="ui bottom attached segment" suiTabContent="graph">
                     <div *ngFor="let chart of chartData; let i = index; let l = last;">
-                        <canvas baseChart [datasets]="chart.datasets" [labels]="chart.labels" [options]="chart.options" [chartType]="chart.chartType"
-                            [colors]="chart.colors" [legend]="chart.legend"></canvas>
-                    <div class="ui divider" *ngIf="!l"></div>
+                        <canvas baseChart [datasets]="chart.datasets" [labels]="chart.labels" [options]="chart.options"
+                            [chartType]="chart.chartType" [colors]="chart.colors" [legend]="chart.legend"></canvas>
+                        <div class="ui divider" *ngIf="!l"></div>
                     </div>
                     <div class="ui warning message" *ngIf="!chartData.length">
-                        {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}} 
+                        {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}}
                     </div>
                 </div>
                 <div class="ui bottom attached small segment" suiTabContent="tableMenu">
-                    <app-data-table *ngIf="isTableDataLoaded" [headerData]="table.header" [rowsData]="table.data"></app-data-table>
+                    <app-data-table *ngIf="isTableDataLoaded" [headerData]="table.header" [rowsData]="table.data">
+                    </app-data-table>
                     <div class="ui warning message" *ngIf="!isTableDataLoaded">
                         {{resourceService?.frmelmnts?.lbl?.tableNotAvailable}}
                     </div>
