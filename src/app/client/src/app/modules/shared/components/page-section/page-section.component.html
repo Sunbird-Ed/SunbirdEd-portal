@@ -17,7 +17,7 @@
                 class="carousel" 
                 #slickModal="slick-modal" 
                 [config]="slideConfig">
-                <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of section.contents;let i = index; let last = last" class="slide">
+                <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of section.contents;let i = index; let last = last" class="pr-20">
                     <app-batch-card appTelemetryInteract 
                         [telemetryInteractEdata]="cardIntractEdata"  
                         [telemetryInteractObject]="{id:content.metaData.identifier}" 
@@ -40,7 +40,7 @@
             </ngx-slick>
         </div>
     </div>
-    <div class="ui twelve wide column my-5 pageSection-Divider">
+    <div class="ui twelve wide column my-5 pageSection-Divider" *ngIf="cardType !== 'batch'">
         <div class="ui divider m-0"></div>
     </div>
 </div>
