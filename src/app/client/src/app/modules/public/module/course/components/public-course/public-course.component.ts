@@ -182,7 +182,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy {
     searchQueryParams.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
     // searchQuery.request.filters.channel = this.hashTagId;
     // searchQuery.request.filters.board = this.dataDrivenFilters.board;
-    this.cacheService.set('viewAllQuery', searchQueryParams, { maxAge: this.browserCacheTtlService.browserCacheTtl });
+    this.cacheService.set('viewAllQuery', searchQueryParams);
     this.cacheService.set('pageSection', event, { maxAge: this.browserCacheTtlService.browserCacheTtl });
     const queryParams = { ...searchQueryParams, ...this.queryParams};
     const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');

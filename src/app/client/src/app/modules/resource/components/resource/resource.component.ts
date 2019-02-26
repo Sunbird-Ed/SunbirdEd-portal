@@ -168,7 +168,7 @@ export class ResourceComponent implements OnInit, OnDestroy {
     searchQuery.request.filters.softConstraintsFilter = JSON.stringify(softConstraintsFilter);
     searchQuery.request.filters.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
     searchQuery.request.filters.exists = searchQuery.request.exists;
-    this.cacheService.set('viewAllQuery', searchQuery.request.filters, { maxAge: this.browserCacheTtlService.browserCacheTtl });
+    this.cacheService.set('viewAllQuery', searchQuery.request.filters);
     this.cacheService.set('pageSection', event, { maxAge: this.browserCacheTtlService.browserCacheTtl });
     const queryParams = { ...searchQuery.request.filters, ...this.queryParams}; // , ...this.queryParams
     const sectionUrl = 'resources/view-all/' + event.name.replace(/\s/g, '-');
