@@ -61,7 +61,7 @@ describe('BatchCardComponent', () => {
     expect(fixture.nativeElement.querySelector('div .batch-content-description').innerText.trim()).toEqual('FSDF');
   });
 
-  fit('should set batchDetails', inject([Router],
+  it('should set batchDetails', inject([Router],
     (route) => {
       spyOn(component.clickEvent, 'emit').and.returnValue({});
       spyOn(component, 'onAction').and.callThrough();

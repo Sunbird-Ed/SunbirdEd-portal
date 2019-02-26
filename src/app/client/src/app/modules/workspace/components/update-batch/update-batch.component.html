@@ -11,7 +11,8 @@
   >
   <!--Header-->
   <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.intxt?.t0007}}
+    <span *ngIf="!showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0007}}</span>
+    <span *ngIf="showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0015}}</span>
   </div>
   <!--/Header-->
 
@@ -21,7 +22,7 @@
       <div class="one field" [ngClass]="batchUpdateForm.controls['name'].invalid && batchUpdateForm.controls['name'].errors.required && !batchUpdateForm.controls['name'].pristine ? 'error': ''">
         <div class="required field">
           <label>{{resourceService?.frmelmnts?.lbl?.batchname}}</label>
-          <input type="text" name="name" formControlName="name" [attr.disabled]="batchDetails.status === 2 ? true : null">
+          <input type="text" name="name" formControlName="name" [attr.disabled]="(batchDetails.status === 2 || showFormInViewMode ) ? true : null">
         </div>
       </div>
       <div class="mt-0 mb-10 ui pointing red basic label below" *ngIf="batchUpdateForm.controls.name.invalid && batchUpdateForm.controls['name'].errors.required && !batchUpdateForm.controls['name'].pristine">
@@ -30,21 +31,21 @@
       <div class="one field">
         <div class="field">
           <label>{{resourceService?.frmelmnts?.lbl?.aboutbatch}}</label>
-          <input type="text" name="description" formControlName="description" [attr.disabled]="batchDetails.status === 2 ? true : null">
+          <input type="text" name="description" formControlName="description" [attr.disabled]="(batchDetails.status === 2 || showFormInViewMode ) ? true : null">
         </div>
       </div>
       <div class="inline fields">
         <label for="Enrollment Type">{{resourceService?.frmelmnts?.lbl?.natureofbatch}}</label>
         <div class="field">
           <div class="ui radio checkbox">
-            <input [attr.disabled]="batchDetails.status !== 0 ? true : null" type="radio" name="enrollmentType" value='invite-only'
+            <input [attr.disabled]="(batchDetails.status !== 0 || showFormInViewMode) ? true : null" type="radio" name="enrollmentType" value='invite-only'
               formControlName="enrollmentType">
             <label>Invite-only</label>
           </div>
         </div>
         <div class="field" *ngIf="courseCreator">
           <div class="ui radio checkbox">
-            <input [attr.disabled]="batchDetails.status !== 0 ? true : null" type="radio" value='open' name="enrollmentType"
+            <input [attr.disabled]="( batchDetails.status !== 0 || showFormInViewMode ) ? true : null" type="radio" value='open' name="enrollmentType"
               formControlName="enrollmentType">
             <label>Open</label>
           </div>
@@ -57,7 +58,7 @@
           <div class="ui read-only calendar rangestartAdd mb-10" id="rangestartAdd">
             <div class="ui input left icon">
               <i class="calendar icon date-calendar"></i>
-              <input [attr.disabled]="batchDetails.status !== 0 ? true : null" [pickerMinDate]='batchDetails.status !== 0 ? batchUpdateForm.controls["startDate"].value : pickerMinDate'
+              <input [attr.disabled]="(batchDetails.status !== 0 || showFormInViewMode) ? true : null" [pickerMinDate]='batchDetails.status !== 0 ? batchUpdateForm.controls["startDate"].value : pickerMinDate'
                 suiDatepicker formControlName="startDate" [pickerMode]="'date'">
             </div>
           </div>
@@ -70,7 +71,7 @@
           <div class="ui calendar rangeendAdd" id="rangeendAdd">
             <div class="ui input left icon">
               <i class="calendar icon date-calendar"></i>
-              <input [attr.disabled]="batchDetails.status === 2 ? true : null" [pickerMinDate]='pickerMinDateForEndDate'
+              <input [attr.disabled]="(batchDetails.status === 2 || showFormInViewMode ) ? true : null" [pickerMinDate]='pickerMinDateForEndDate'
                 suiDatepicker formControlName="endDate" [pickerMode]="'date'">
             </div>
           </div>
@@ -78,7 +79,7 @@
       </div>
       <div class="one field">
         <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
-        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors" [ngClass]="{ 'disabled': batchDetails.status === 2 }">
+        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors" [ngClass]="{ 'disabled': batchDetails.status === 2 || showFormInViewMode }">
           <input id="mentorSelList">
           <i class="dropdown icon"></i>
           <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
@@ -99,7 +100,7 @@
       </div>
       <div class="one field " *ngIf="batchUpdateForm.value.enrollmentType !== 'open'">
         <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
-        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="participant" [ngClass]="{ 'disabled': batchDetails.status === 2 }">
+        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="participant" [ngClass]="{ 'disabled': batchDetails.status === 2 || showFormInViewMode }">
           <input id="userSelList">
           <i class="dropdown icon"></i>
           <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
@@ -129,7 +130,7 @@
     <button 
       class="sb-btn sb-btn-normal sb-btn-primary" 
       [ngClass]="{ 'disabled': batchDetails.status === 2 }" 
-      [disabled]="disableSubmitBtn"
+      [disabled]="disableSubmitBtn || showFormInViewMode"
       (click)="updateBatch()"
     >
       {{resourceService?.frmelmnts?.btn?.update}}
@@ -138,6 +139,7 @@
       class="sb-btn sb-btn-normal sb-btn-outline-primary" 
       [ngClass]="{ 'disabled': batchDetails.status === 2 }" 
       (click)="batchUpdateForm.reset()"
+      [disabled]="showFormInViewMode"
     >
       {{resourceService?.frmelmnts?.btn?.clear}}
     </button>
