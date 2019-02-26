@@ -1,12 +1,12 @@
 <div class="ui container">
   <div class="ui stackable grid mt-30" >
-    <div class="three wide column pt-0" *ngIf="!router.isActive('workspace/content/batches/view-all')">
+    <div class="three wide column pt-0" *ngIf="!router.isActive('workspace/content/batches/view-all',false)">
       <app-workspacesidebar ></app-workspacesidebar>
     </div>
-    <div class="nine wide column workspacesegment" *ngIf="!router.isActive('workspace/content/batches/view-all')">
+    <div class="nine wide column workspacesegment" *ngIf="!router.isActive('workspace/content/batches/view-all',false)">
       <router-outlet></router-outlet>
     </div>
-    <div class="twelve wide column workspacesegment" *ngIf="router.isActive('workspace/content/batches/view-all')">
+    <div class="twelve wide column workspacesegment" *ngIf="router.isActive('workspace/content/batches/view-all',false)">
       <router-outlet></router-outlet>
     </div>
   </div>
