@@ -156,7 +156,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       data => {
         if (data && !data.err) {
           this.logo = data.tenantData.logo;
-          this.tenantName = data.tenantData.titleName;
+          this.tenantName = data.tenantData.titleName.toUpperCase();
         }
       }
     );
