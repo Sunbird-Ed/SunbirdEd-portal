@@ -182,9 +182,9 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
   }
 
   onCardClick (event) {
-    const batchdata = event.data;
-    this.batchService.setBatchData(event.data);
-    this.route.navigate(['update/batch', batchdata.identifier], {queryParamsHandling: 'merge', relativeTo: this.activatedRoute});
+    const batchData = event.data;
+    this.batchService.setBatchData(batchData);
+    this.route.navigate(['update/batch', batchData.identifier], {queryParamsHandling: 'merge', relativeTo: this.activatedRoute});
   }
 
   /**

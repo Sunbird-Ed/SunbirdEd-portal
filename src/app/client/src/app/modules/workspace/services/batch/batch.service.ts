@@ -86,12 +86,12 @@ export class BatchService {
   setBatchData(batchData): void {
     this.batchDetails = batchData;
   }
-  getBatchDetails(bathId) {
-    if (this.batchDetails && bathId === this.batchDetails.identifier) {
+  getBatchDetails(batchId) {
+    if (this.batchDetails && batchId === this.batchDetails.identifier) {
       return observableOf(this.batchDetails);
     } else {
       const option = {
-        url: `${this.configService.urlConFig.URLS.BATCH.GET_DETAILS}/${bathId}`
+        url: `${this.configService.urlConFig.URLS.BATCH.GET_DETAILS}/${batchId}`
       };
       return this.learnerService.get(option).pipe(map((date) => {
         return date.result.response;
@@ -125,8 +125,8 @@ export class BatchService {
     };
     return this.learnerService.post(option);
   }
-  getUpdateBatchDetails(bathId) {
-    return this.getBatchDetails(bathId).pipe(map((data) => {
+  getUpdateBatchDetails(batchId) {
+    return this.getBatchDetails(batchId).pipe(map((data) => {
       return data;
     }));
   }
