@@ -20,4 +20,11 @@ describe('BatchService', () => {
     expect(service).toBeTruthy();
   }));
 
+  it('should call setBatchData method to set the batch data  ', inject([BatchService],
+    (batchService: BatchService) => {
+    batchService.setBatchData(Response.batchlistSucessData);
+    expect(batchService.batchDetails).toBeDefined();
+    expect(batchService).toBeTruthy();
+  }));
+
 });

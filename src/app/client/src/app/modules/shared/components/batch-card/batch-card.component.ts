@@ -27,6 +27,7 @@ export class BatchCardComponent {
    * batch is used to render Ibatch value on the view
   */
   @Input() batch: Ibatch;
+  @Output() clickEvent = new EventEmitter<any>();
 
   /**
   * Constructor to create injected service(s) object
@@ -44,7 +45,7 @@ export class BatchCardComponent {
   }
 
   public onAction(batchdata) {
-    this.route.navigate(['update/batch', batchdata.identifier], {queryParamsHandling: 'merge', relativeTo: this.activatedRoute});
+    this.clickEvent.emit({ 'action': 'batchcardclick', 'data': batchdata });
   }
 
 }
