@@ -64,7 +64,7 @@ $blue: #024f9d;
 $green: #008840;
 $orange: #e55a28;
 $red: #ff4558;
-$white: #fff;
+$white: #ffffff;
 $indigo: #6610f2;
 $purple: #6f42c1;
 $pink: #e83e8c;
@@ -207,15 +207,35 @@ $sb-modal-normal-width:720px;
 $sb-modal-large-width:900px;
 //button component
 
+// page section component
+$sb-page-section-font-size: $h5-font-size;
+$sb-page-section-header-content-space: 0 0 ($base-block-space * 3) 0;
+$sb-page-sections-between-space: 0 0 ($base-block-space * 5) 0;
+
 // card component
-$sb-card-height: 200px;
 $sb-card-width: 292px;
+$sb-card-height: 200px;
+$sb-card-padding: $base-block-space;
+$sb-card-border-radius: ($base-block-space / 2);
 $sb-card-border: 0.5px solid #dedede;
 $sb-card-box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.16);
-$sb-card-label-border: 0.5px solid rgba($primary-800, 0.5);
-$sb-card-margins: ($base-block-space * 3) ($base-block-space * 2) ($base-block-space * 5) 0;
+$sb-card-bg-color: $white-color;
 $sb-card-image-height: 92px;
 $sb-card-image-width: 70px;
+$sb-card-image-border-radius: 2px;
+$sb-card-image-border: 0.5px solid #dedede;
+$sb-card-image-bg-color: $white-color;
+$sb-card-image-meta-space: 2px;
+$sb-card-label-font-size: $primary-color;
+$sb-card-label-color: $primary-color;
+$sb-card-label-border: 1px solid $primary-color;
+$sb-card-label-border-radius: 2px;
+$sb-card-label-padding: 8px;
+$sb-card-title-color: $primary-color;
+$sb-card-title-spacing: 16px 0 0 8px;
+$sb-card-meta-color: $gray-100;
+$sb-card-meta-between-spacing: 8px;
+$sb-card-meta-org-font-size: 8px;
 
 // To clean
 $text-lightDark: $gray-400;

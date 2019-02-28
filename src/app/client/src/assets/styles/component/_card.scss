@@ -1,15 +1,31 @@
+.sb-pageSection {
+  @include margin($sb-page-sections-between-space);
+  .sb-pageSection-header {
+    display: flex;
+    align-items: center;
+    @include margin($sb-page-section-header-content-space);
+  }
+  .sb-pageSection-title {
+    font-size: $h5-font-size;
+    display: inline;
+    text-transform: lowercase;
+    &::first-letter{
+      text-transform: uppercase;
+    }
+  }
+}
+
 .sb-card {
     width: $sb-card-width;
     height: $sb-card-height;
     background-color: $white-color;
-    cursor: pointer;
     box-shadow: $sb-card-box-shadow;
     border: $sb-card-border;
     border-radius: 4px;
-    margin: $sb-card-margins;
+    cursor: pointer;
     &:hover,
     &:focus {
-      transform: translateY(-2px);
+
     }
     .image {
       width: 70px;
@@ -129,41 +145,3 @@
 .last .pageSection-Divider {
   display: none !important;
 }
-
-.pageSection{
-
-    .ui.label {
-      background: $danger-color !important;
-      color: #fff;
-      padding: 3px 6px !important;
-    }
-    .ui.button {
-      background: $secondary-color !important;
-      color: #fff;
-      font-size: 0.8571rem;
-      padding: 4px 10px !important;
-      font-weight: 500;
-      height: 25px;
-      box-shadow: none !important;
-      white-space: nowrap;
-    }
-    .pageSection-heading {
-      font-size: 1.143rem !important;
-      display: inline;
-      text-transform: lowercase;
-      &::first-letter{
-        text-transform: uppercase;
-      }
-    }
-    .ui.divider {
-      border-top: 1px solid #e4e4e4 !important;
-      border-bottom: 0 !important;
-    }
-  
-    @media screen and (max-width: 768px) {
-      .twelve.wide.column {
-        margin-left: -15px !important;
-        margin-right: -15px !important;
-      }
-    }
-  }
