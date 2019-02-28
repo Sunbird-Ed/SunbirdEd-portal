@@ -207,6 +207,16 @@ $sb-modal-normal-width:720px;
 $sb-modal-large-width:900px;
 //button component
 
+// card component
+$sb-card-height: 200px;
+$sb-card-width: 292px;
+$sb-card-border: 0.5px solid #dedede;
+$sb-card-box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.16);
+$sb-card-label-border: 0.5px solid rgba($primary-800, 0.5);
+$sb-card-margins: ($base-block-space * 3) ($base-block-space * 2) ($base-block-space * 5) 0;
+$sb-card-image-height: 92px;
+$sb-card-image-width: 70px;
+
 // To clean
 $text-lightDark: $gray-400;
 $text-gray: $gray-100;
@@ -219,6 +229,5 @@ $qr-btn:  $gray-100;
 $signup-btn-bg-active-color: $secondary-400;
 $form-input-border-active-color: $primary-400;
 
-$primary-border: 0.5px solid $gray-100;
+$primary-border: 0.5px solid #dedede;
 $primary-background: $gray-100;
-$card-label-border-color: rgba($primary-800, 0.5);

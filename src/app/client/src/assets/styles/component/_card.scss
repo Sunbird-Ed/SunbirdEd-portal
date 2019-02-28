@@ -1,0 +1,169 @@
+.sb-card {
+    width: $sb-card-width;
+    height: $sb-card-height;
+    background-color: $white-color;
+    cursor: pointer;
+    box-shadow: $sb-card-box-shadow;
+    border: $sb-card-border;
+    border-radius: 4px;
+    margin: $sb-card-margins;
+    &:hover,
+    &:focus {
+      transform: translateY(-2px);
+    }
+    .image {
+      width: 70px;
+      height: 92px;
+      border: $primary-border;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      min-width: 70px;
+      max-width: 70px;
+      background-color: $primary-background;
+      img {
+        object-fit: cover;
+        width: 70px;
+        height: 92px;
+        max-width: 100%;
+      }
+    }
+    .header {
+      display: flex;
+      align-items: flex-end;
+    }
+    .meta {
+      font-size: 0.8571rem;
+      color: $text-lightDark;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      height: 92px;
+      overflow: hidden;
+      width: calc(100% - 70px);
+    }
+  
+    &.course {
+      justify-content: flex-start;
+    }
+  
+    &.non-course {
+      justify-content: flex-end;
+    }
+  
+    .topic,
+    .subtopic {
+      line-height: 1.417em;
+      max-height: 2.84em;
+      overflow: hidden;
+    }
+  
+    .avatar {
+      height: 30px;
+      width: 30px;
+      object-fit: cover;
+    }
+  
+    .ui.label {
+      font-size: 0.7857rem;
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: $sb-card-label-border;
+      color: $primary-color;
+      font-weight: 500;
+      width: auto;
+      align-self: flex-start;
+      background: transparent;
+    }
+  
+    .sub-header {
+      padding: 10px 15px;
+    }
+  
+    .title {
+      font-size: 1rem;
+      line-height: 1.429em;
+      height: 2.857em;
+      margin: 0;
+      overflow: hidden;
+      padding: 0;
+      border: 0;
+      font-weight: bold;
+      color: $primary-color !important;
+    }
+  
+    .creator {
+      font-size: 1rem;
+      height: 1.5em;
+      margin-top: 0.5em;
+      color: $text-gray;
+    }
+  
+    .description {
+      font-size: 1rem;
+      line-height: 1.25em;
+      height: 6em;
+      color: $text-lightDark;
+      padding: 8px 1rem;
+      overflow: hidden;
+      word-break: break-word;
+    }
+  }
+  
+  *[lang="hi"] .sb-card .meta {
+    line-height: 1.6em;
+  }
+
+
+.sb-card,
+.profileCard {
+  .ui.progress,
+  &.blue {
+    margin: 0;
+    .bar {
+      border-radius: 0 4px 4px 4px;
+    }
+  }
+}
+
+.last .pageSection-Divider {
+  display: none !important;
+}
+
+.pageSection{
+
+    .ui.label {
+      background: $danger-color !important;
+      color: #fff;
+      padding: 3px 6px !important;
+    }
+    .ui.button {
+      background: $secondary-color !important;
+      color: #fff;
+      font-size: 0.8571rem;
+      padding: 4px 10px !important;
+      font-weight: 500;
+      height: 25px;
+      box-shadow: none !important;
+      white-space: nowrap;
+    }
+    .pageSection-heading {
+      font-size: 1.143rem !important;
+      display: inline;
+      text-transform: lowercase;
+      &::first-letter{
+        text-transform: uppercase;
+      }
+    }
+    .ui.divider {
+      border-top: 1px solid #e4e4e4 !important;
+      border-bottom: 0 !important;
+    }
+  
+    @media screen and (max-width: 768px) {
+      .twelve.wide.column {
+        margin-left: -15px !important;
+        margin-right: -15px !important;
+      }
+    }
+  }

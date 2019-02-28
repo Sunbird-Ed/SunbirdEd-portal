@@ -12,8 +12,7 @@ import { DOCUMENT } from '@angular/platform-browser';
  */
 @Component({
   selector: 'app-page-section',
-  templateUrl: './page-section.component.html',
-  styleUrls: ['./page-section.component.scss']
+  templateUrl: './page-section.component.html'
 })
 export class PageSectionComponent implements OnInit, OnDestroy {
   inviewLogs = [];
