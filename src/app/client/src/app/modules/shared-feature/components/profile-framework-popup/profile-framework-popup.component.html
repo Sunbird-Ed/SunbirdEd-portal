@@ -1,5 +1,5 @@
-<sui-modal [isClosable]="false" [size]="'normal'" #modal [mustScroll]="'true'" appBodyScroll *ngIf="initDropDown">
-  <i *ngIf="showCloseIcon" class="close icon" (click)="onClose(modal)"></i>
+<sui-modal [isClosable]="false" [size]="'normal'" #modal [mustScroll]="'true'" appBodyScroll *ngIf="formFieldOptions.length">
+  <i *ngIf="showCloseIcon" class="close icon" (click)="modal.deny(); close.emit()"></i>
   <div class="scrollable content">
     <div class="ui grid">
       <div class="ten wide column mb-30">
@@ -7,49 +7,24 @@
       </div>
     </div>
     <form class="ui form">
-      <div class="required field" *ngIf="board">
-        <label>{{board.label}}</label>
-        <div class="field">
-          <sui-select id={{board.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[board.code]"
-              [options]="options"  (ngModelChange)="onChange($event,label.medium.index,board.code)" [ngModelOptions]="{standalone: true}">
-              <sui-select-option *ngFor="let option of board.range" [value]="option.name"></sui-select-option>
+      <div *ngFor="let field of formFieldOptions">
+        <div class="required field" *ngIf="field.code === 'board' && allowedFields.includes(field.code)">
+          <label>{{field.label}}</label>
+          <div class="field">
+            <sui-select id={{field.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[field.code]"
+              [options]="options" (ngModelChange)="handleFieldChange($event, field)" name={{field.code}}>
+              <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
             </sui-select>
+          </div>
         </div>
-        <div class="mt-0 ui pointing red basic label below" *ngIf="selectedOption && selectedOption[board.code] && selectedOption[board.code].length == 0">
-          {{resourceService?.messages?.stmsg?.m0126}}
-        </div>
-      </div>
-      <div class="required field" *ngIf="medium">
-        <label *ngIf="label.medium">{{label.medium.label}}</label>
-        <div class="field">
-          <sui-multi-select id={{medium.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[medium.code]"
-            [options]="options"  (ngModelChange)="onChange($event,label.class.index,medium.code)" [ngModelOptions]="{standalone: true}" #multiSelect>
-            <sui-select-option *ngFor="let option of medium.range" [value]="option.name"></sui-select-option>
-          </sui-multi-select>
-        </div>
-        <div class="mt-0  ui pointing red basic label below" *ngIf="!medium &&  selectedOption && selectedOption[medium.code] && selectedOption[medium.code].length == 0">
-          {{resourceService?.messages?.stmsg?.m0127}}
-        </div>
-      </div>
-      <div class="required field" *ngIf="gradeLevel">
-        <label  *ngIf="label.class">{{label.class.label}}</label>
-        <div class="field">
-          <sui-multi-select id={{gradeLevel.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[gradeLevel.code]"
-            [options]="options"    (ngModelChange)="onChange($event,label.subject.index,gradeLevel.code)" [ngModelOptions]="{standalone: true}" #multiSelect>
-            <sui-select-option *ngFor="let option of gradeLevel.range" [value]="option.name"></sui-select-option>
-          </sui-multi-select>
-        </div>
-        <div class="mt-0 ui pointing red basic label below" *ngIf="!gradeLevel && selectedOption && selectedOption[gradeLevel.code] && selectedOption[gradeLevel.code].length == 0">
-          {{resourceService?.messages?.stmsg?.m0128}}
-        </div>
-      </div>
-      <div class="field" *ngIf="subject">
-        <label  *ngIf="label.subject">{{label.subject.label}}</label>
-        <div class="field">
-          <sui-multi-select id={{subject.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[subject.code]"
-            [options]="options" [ngModelOptions]="{standalone: true}" #multiSelect>
-            <sui-select-option *ngFor="let option of subject.range" [value]="option.name"></sui-select-option>
-          </sui-multi-select>
+        <div class="required field mt-15" *ngIf="field.code !== 'board' && allowedFields.includes(field.code)">
+          <label>{{field.label}}</label>
+          <div class="field">
+            <sui-multi-select id={{field.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[field.code]"
+              [options]="options" (ngModelChange)="handleFieldChange($event, field)" name={{field.code}} #multiSelect>
+              <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
+            </sui-multi-select>
+          </div>
         </div>
       </div>
     </form>
@@ -59,5 +34,4 @@
   <div class="actions text-ac">
     <button class="ui primary button" [disabled]="!showButton" (click)="onSubmitForm()">{{buttonLabel}}</button>
   </div>
-
 </sui-modal>

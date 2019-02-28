@@ -57,7 +57,7 @@ module.exports = (app) => {
         queryObj.error_message = getErrorMessage(error);
         redirectUrl = reqQuery.error_callback + getQueryParams(queryObj);
       }
-      console.log('google sign in failed', error, googleProfile, sunbirdProfile, newUserDetails, redirectUrl);
+      console.log('google sign in failed', errType, error, googleProfile, sunbirdProfile, newUserDetails, redirectUrl);
       logErrorEvent(req, errType, error);
     } finally {
       res.redirect(redirectUrl || '/resources');

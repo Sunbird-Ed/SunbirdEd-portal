@@ -5,8 +5,7 @@ import { SearchService } from '@sunbird/core';
 import * as _ from 'lodash';
 @Component({
   selector: 'app-user-filter',
-  templateUrl: './user-filter.component.html',
-  styleUrls: ['./user-filter.component.css']
+  templateUrl: './user-filter.component.html'
 })
 
 export class UserFilterComponent implements OnInit {

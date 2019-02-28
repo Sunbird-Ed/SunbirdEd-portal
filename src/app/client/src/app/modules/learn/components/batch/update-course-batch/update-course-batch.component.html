@@ -35,13 +35,13 @@
         <div class="field">
           <div class="ui radio checkbox">
             <input [attr.disabled]="batchDetails.status !== 0 ? true : null" type="radio" name="enrollmentType" value='invite-only' formControlName="enrollmentType">
-            <label>Invite-only</label>
+            <label>{{resourceService?.frmelmnts?.lbl?.inviteonly}}</label>
           </div>
         </div>
         <div class="field" *ngIf="courseCreator">
           <div class="ui radio checkbox">
             <input [attr.disabled]="batchDetails.status !== 0 ? true : null" type="radio" value='open' name="enrollmentType" formControlName="enrollmentType">
-            <label>Open</label>
+            <label>{{resourceService?.frmelmnts?.lbl?.open}}</label>
           </div>
         </div>
       </div>
@@ -140,7 +140,7 @@
     </form>
   </div>
   <div class="actions">
-    <button class="ui secondary button" (click)="batchUpdateForm.reset()" [disabled]="showFormInViewMode">Clear</button>
-    <button class="ui primary button" [disabled]="disableSubmitBtn || showFormInViewMode" (click)="updateBatch()">Update</button>
+    <button class="ui secondary button" (click)="batchUpdateForm.reset()" [disabled]="showFormInViewMode">{{resourceService?.frmelmnts?.btn?.clear}}</button>
+    <button class="ui primary button" [disabled]="disableSubmitBtn || showFormInViewMode" (click)="updateBatch()">{{resourceService?.frmelmnts?.btn?.update}}</button>
   </div>
 </sui-modal>

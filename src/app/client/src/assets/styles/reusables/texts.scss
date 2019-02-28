@@ -1,0 +1,75 @@
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+.text-center,
+.text-ac{
+  text-align: center !important;
+}
+
+.ellipsis{
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.font-weight-bold {
+  font-weight: bold !important;;
+}
+
+.cursor-text {
+  cursor: text !important;
+}
+
+.va-bottom {
+  vertical-align: bottom !important;
+}
+
+.va-middle{
+  vertical-align: middle;
+}
+
+a{
+  color: $primary-color;
+
+  &:hover {
+    opacity:0.8;
+    color: $primary-color;
+  }
+}
+
+.line-height-1-3 {
+  line-height: 1.3em !important;
+}
+
+*[dir="ltr"] {
+  .text-right {
+    text-align: right;
+  }
+
+  .text-left {
+    text-align: left;
+  }
+}
+
+*[dir="rtl"] {
+  .text-right {
+    text-align: left;
+  }
+
+  .text-left {
+    text-align: right;
+  }
+}
+
+.break-word {
+  word-break: break-word;
+}
+
+.text-uppercase {
+  text-transform: uppercase !important;
+}
+
+.font-weight-normal {
+  font-weight: normal !important;;
+}

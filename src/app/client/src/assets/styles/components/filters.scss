@@ -1,0 +1,134 @@
+.data-driven-filter,
+.prominent-filter {
+  .prominent-filter-heading {
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .filter-title {
+    color: $primary-color;
+  }
+
+  .field {
+    width: 100%;
+    max-width: 100%;
+
+    @media screen and (min-width: 768px) {
+      max-width: 180px;
+    }
+
+    label {
+      font-size: 13px;
+    }
+  }
+
+  .ui.selection.dropdown {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+
+    .dropdown.icon {
+      padding: 10px 7px;
+    }
+
+    .menu > .item {
+      padding: 9px 7px !important;
+      color: #4a4a4a !important;
+      font-size: 13px !important;
+      line-height: 1.4;
+
+      &.active {
+        color: $primary-color !important;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .ui.multiple.dropdown {
+    font-size: 13px !important;
+    color: #4a4a4a !important;
+    border-color: #e4e4e4 !important;
+    height: 33px;
+
+    .text {
+      text-transform: lowercase;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      line-height: 1.5;
+      margin: 5px;
+
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
+
+    &.active.visible {
+      background: #fff;
+    }
+  }
+
+  .ui.button {
+    font-size: 14px;
+    text-transform: lowercase;
+    padding: 9.5px 15px;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  .topic-picker-selector {
+    font-size: 13px !important;
+    color: #4a4a4a !important;
+    border-color: #e4e4e4 !important;
+  }
+
+  .ui.dropdown .menu > .header {
+    font-weight: 500 !important;
+    margin: 7px 0 7px 5px !important;
+
+    .blue-text-color-sunbird {
+      font-weight: 600;
+    }
+  }
+}
+
+.prominent-filter .topic-picker-selector {
+  border: 1px solid #e4e4e4 !important;
+  border-radius: 5px !important;
+}
+
+@media screen and (max-width: 768px) {
+  .ui.grid > .wide.column.mobile-p-0 {
+    padding: 0 !important;
+  }
+}
+
+.computer-only {
+  display: none !important;
+
+  @media screen and (min-width: 992px) {
+    display: block !important;
+  }
+}
+
+.popup-content .data-driven-filter,
+.workspacesegment {
+  @media screen and (min-width: 992px) {
+    .ten.wide.computer {
+      width: 75% !important;
+    }
+
+    .two.wide.computer {
+      width: 25% !important;
+    }
+
+    .three.wide.computer {
+      width: 33.33% !important;
+    }
+  }
+}
+
+.searchicon.ui.icon.input input.upForReviewSearchBox {
+  border-radius: 0;
+}

@@ -56,6 +56,8 @@ export class SearchComponent implements OnInit {
 
   searchDropdownValues: Array<string> = ['All', 'Courses', 'Library'];
 
+  searchDisplayValueMappers: object;
+
   /**
    * reference of UserService service.
    */
@@ -84,6 +86,12 @@ export class SearchComponent implements OnInit {
     this.resourceService = resourceService;
     this.config = config;
     this.userService = userService;
+    this.searchDisplayValueMappers = {
+      'All': 'all',
+      'Library': 'resources',
+      'Courses': 'courses',
+      'Users': 'users'
+    };
   }
 
   ngOnInit() {
@@ -113,6 +121,13 @@ export class SearchComponent implements OnInit {
   onChange() {
     this.route.navigate([this.search[this.selectedOption], 1]);
   }
+
+
+  getSearchPlaceHolderValue () {
+    const keyName = this.searchDisplayValueMappers[this.selectedOption];
+    return this.resourceService.frmelmnts.tab[keyName];
+  }
+
   /**
    * on entering keyword
    * it navigate

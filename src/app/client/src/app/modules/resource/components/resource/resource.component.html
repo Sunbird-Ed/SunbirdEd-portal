@@ -3,19 +3,8 @@
 <app-prominent-filter [pageId]="'resource-page'" *ngIf="initFilters" [filterEnv]="filterType"  [ignoreQuery]="['key']" 
     [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter>
 
-    <div class="ui container">
+<div class="ui container">
   <div class="ui grid stackable my-0">
-    <!--<div class="twelve wide column">
-      <div class="ui grid top aligned">
-        <div class="twelve wide column">
-          <app-data-driven-filter (dataDrivenFilter)="getFilters($event)" [pageId]="'resource-page'" *ngIf="initFilters" [filterEnv]="filterType"
-          [accordionDefaultOpen]=false [isShowFilterLabel]=true></app-data-driven-filter>
-        </div>
-        <div class="three wide mobile two wide tablet two wide computer column">
-          <app-sort-by appTelemetryInteract [telemetryInteractEdata]="sortIntractEdata" [sortingOptions]="sortingOptions" [url]="redirectUrl"></app-sort-by>
-        </div>
-      </div>
-    </div>-->
     <div class="twelve wide column" *ngFor="let section of carouselData;let last = last" [ngClass]="{'last mb-30':last}">
       <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section" (viewAll)="viewAll($event)"></app-page-section>
     </div>

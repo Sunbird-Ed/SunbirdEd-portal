@@ -1,6 +1,7 @@
 import { Subscription, Observable } from 'rxjs';
 import { of, throwError } from 'rxjs';
-import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse, BrowserCacheTtlService } from '@sunbird/shared';
+import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse, UtilService,
+   BrowserCacheTtlService } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnDestroy, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, PermissionService, OrgDetailsService } from './../../services';
@@ -24,6 +25,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   @Input() frameworkName: string;
   @Input() formAction: string;
   @Output() prominentFilter = new EventEmitter();
+  public resetFilterInteractEdata: IInteractEventEdata;
   /**
  * To get url, app configs
  */
@@ -71,8 +73,10 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   isShowFilterPlaceholder = true;
   contentTypes: any;
   frameworkDataSubscription: Subscription;
+  resourceDataSubscription: Subscription;
   isFiltered = true;
-  submitIntractEdata: IInteractEventEdata;
+  applyFilterInteractEdata: IInteractEventEdata;
+  private selectedLanguage: string;
   /**
    *
     * Constructor to create injected service(s) object
@@ -92,7 +96,8 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     toasterService: ToasterService,
     permissionService: PermissionService,
     private browserCacheTtlService: BrowserCacheTtlService,
-    private orgDetailsService: OrgDetailsService
+    private utilService: UtilService,
+    private orgDetailsService: OrgDetailsService,
 
   ) {
     this.configService = configService;
@@ -107,6 +112,20 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.resourceDataSubscription = this.resourceService.languageSelected$
+      .subscribe(item => {
+        this.selectedLanguage = item.value;
+        if (this.formFieldProperties && this.formFieldProperties.length > 0) {
+             _.forEach(this.formFieldProperties, (data, index) => {
+              this.formFieldProperties[index] = this.utilService.translateLabel(data, this.selectedLanguage );
+              this.formFieldProperties[index].range  = this.utilService.translateValues(data.range, this.selectedLanguage);
+             });
+             this.filtersDetails = _.cloneDeep(this.formFieldProperties);
+             this.formInputData = this.utilService.convertSelectedOption(this.formInputData,
+              this.formFieldProperties, 'en', this.selectedLanguage);
+        }
+      }
+   );
     this.frameworkService.initialize(this.frameworkName, this.hashTagId);
     this.getFormatedFilterDetails().subscribe((formFieldProperties) => {
       this.formFieldProperties = formFieldProperties;
@@ -115,6 +134,26 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     }, (err) => {
       this.prominentFilter.emit([]);
     });
+    this.setFilterInteractData();
+  }
+  private setFilterInteractData() {
+    setTimeout(() => { // wait for model to change
+      const filters = _.pickBy(this.formInputData, (val, key) =>
+        (!_.isEmpty(val) || typeof val === 'number')
+          && _.map(this.formFieldProperties, field => field.code).includes(key));
+      this.applyFilterInteractEdata = {
+        id: 'apply-filter',
+        type: 'click',
+        pageid: this.pageId,
+        extra: {filters: filters}
+      };
+      this.resetFilterInteractEdata = {
+        id: 'reset-filter',
+        type: 'click',
+        pageid: this.pageId,
+        extra: {filters: filters}
+      };
+    }, 5);
   }
 
   getFormatedFilterDetails() {
@@ -147,6 +186,10 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
           } else {
           const frameworkTerms = _.get(_.find(this.categoryMasterList, { code : formFieldCategory.code}), 'terms');
           formFieldCategory.range = _.union(formFieldCategory.range, frameworkTerms);
+          }
+          if (this.selectedLanguage !== 'en') {
+            formFieldCategory = this.utilService.translateLabel(formFieldCategory, this.selectedLanguage );
+            formFieldCategory.range =  this.utilService.translateValues(formFieldCategory.range, this.selectedLanguage);
           }
           return true;
         });
@@ -185,6 +228,8 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.formInputData = {};
       _.forIn(params, (value, key) => this.formInputData[key] = typeof value === 'string' && key !== 'key' ? [value] : value);
+      this.formInputData = this.utilService.convertSelectedOption(this.formInputData,
+        this.formFieldProperties, 'en', this.selectedLanguage);
       if (this.formInputData.channel && this.formFieldProperties) { // To manuplulate channel data from identifier to name
         const channel = [];
          _.forEach(this.formInputData.channel, (value, key) => {
@@ -216,6 +261,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     }
     this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
     this.hardRefreshFilter();
+    this.setFilterInteractData();
   }
   selectedValue(event, code) {
     this.formInputData[code] = event;
@@ -227,24 +273,28 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   isObject(val) { return typeof val === 'object'; }
 
   applyFilters() {
+    this.formInputData = this.utilService.convertSelectedOption(this.formInputData, this.formFieldProperties, this.selectedLanguage, 'en');
     if (_.isEqual(this.formInputData, this.queryParams)) {
       this.isFiltered = true;
     } else {
-      this.isFiltered = false;
-      const queryParams: any = {};
-    _.forIn(this.formInputData, (eachInputs: Array<any | object>, key) => {
-        const formatedValue = typeof eachInputs === 'string' ? eachInputs :
-        _.compact(_.map(eachInputs, value => typeof value === 'string' ? value : _.get(value, 'identifier')));
-        if (formatedValue.length) {
-          queryParams[key] = formatedValue;
-        }
-        if (key === 'channel') {
-          queryParams[key] = this.populateChannelData(formatedValue);
-        }
-    });
-    queryParams['appliedFilters'] = true;
-    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
+        this.isFiltered = false;
+        const queryParams: any = {};
+      _.forIn(this.formInputData, (eachInputs: Array<any | object>, key) => {
+          const formatedValue = typeof eachInputs === 'string' ? eachInputs :
+          _.compact(_.map(eachInputs, value => typeof value === 'string' ? value : _.get(value, 'identifier')));
+          if (formatedValue.length) {
+            queryParams[key] = formatedValue;
+          }
+          if (key === 'channel') {
+            queryParams[key] = this.populateChannelData(formatedValue);
+          }
+      });
+      if (!_.isEmpty(queryParams)) {
+        queryParams['appliedFilters'] = true;
+        this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
+      }
     }
+    this.setFilterInteractData();
   }
 
   private populateChannelData(data) {
@@ -279,6 +329,9 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.frameworkDataSubscription) {
       this.frameworkDataSubscription.unsubscribe();
+    }
+    if (this.resourceDataSubscription) {
+      this.resourceDataSubscription.unsubscribe();
     }
   }
 }

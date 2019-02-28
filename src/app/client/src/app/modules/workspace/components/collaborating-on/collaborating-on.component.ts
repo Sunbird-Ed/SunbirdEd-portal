@@ -15,8 +15,7 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 import { SuiModalService } from 'ng2-semantic-ui';
 @Component({
   selector: 'app-collaborating-on',
-  templateUrl: './collaborating-on.component.html',
-  styleUrls: ['./collaborating-on.component.scss']
+  templateUrl: './collaborating-on.component.html'
 })
 export class CollaboratingOnComponent extends WorkSpace implements OnInit {
   /**

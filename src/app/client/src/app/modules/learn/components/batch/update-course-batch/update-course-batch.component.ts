@@ -12,8 +12,7 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 @Component({
   selector: 'app-update-course-batch',
-  templateUrl: './update-course-batch.component.html',
-  styleUrls: ['./update-course-batch.component.css']
+  templateUrl: './update-course-batch.component.html'
 })
 export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
 

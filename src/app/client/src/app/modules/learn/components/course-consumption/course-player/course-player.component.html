@@ -105,7 +105,7 @@
                                         [disabled]="prevPlaylistItem === undefined">
                                         <span class="header">{{resourceService.frmelmnts.btn.previous}}</span>
                                         <br />
-                                        <span class="font-white description text-ellipsis" title="{{prevPlaylistItem?.title || noContentToPlay}}">{{prevPlaylistItem?.title || noContentToPlay}}</span>
+                                        <span class="font-white description text-ellipsis" title="{{prevPlaylistItem?.title || resourceService.frmelmnts.lbl.noContentToPlay}}">{{prevPlaylistItem?.title || resourceService.frmelmnts.lbl.noContentToPlay}}</span>
                                     </button>
                                 </div>
                                 <div class="two wide tablet only two wide computer only column"></div>
@@ -125,7 +125,7 @@
                                         [disabled]="nextPlaylistItem === undefined">
                                         <span class="header">{{resourceService.frmelmnts.btn.next}}</span>
                                         <br />
-                                        <span class="font-white description text-ellipsis" title="{{nextPlaylistItem?.title || noContentToPlay}}">{{nextPlaylistItem?.title || noContentToPlay}}</span>
+                                        <span class="font-white description text-ellipsis" title="{{nextPlaylistItem?.title || resourceService.frmelmnts.lbl.noContentToPlay}}">{{nextPlaylistItem?.title || resourceService.frmelmnts.lbl.noContentToPlay}}</span>
                                     </button>
                                 </div>
                             </div>

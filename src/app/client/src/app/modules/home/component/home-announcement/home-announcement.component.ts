@@ -17,8 +17,7 @@ import { Subject } from 'rxjs';
  */
 @Component({
   selector: 'app-home-announcement',
-  templateUrl: './home-announcement.component.html',
-  styleUrls: ['./home-announcement.component.css']
+  templateUrl: './home-announcement.component.html'
 })
 export class HomeAnnouncementComponent implements OnInit, OnDestroy {
 

@@ -1,7 +1,7 @@
 {
   "params": {
     "userReadParam": {
-      "fields": "completeness,missingFields,lastLoginTime,organisations,roles"
+      "fields": "organisations,roles,locations"
     },
     "contentGet": "creator,body,editorState,templateId,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher,subject,author,flagReasons,flaggedBy,flags,createdOn,lastUpdatedOn,board,keywords,resourceType,framework,license,badgeAssertions,pkgVersion,contentCredits,attributions,channel,contributors,creators",
     "enrolledCourses": {
@@ -38,13 +38,17 @@
       "USER_SKILLS": "user/v1/skill/read",
       "UPDATE_PROF_VIS_FIELDS": "user/v1/profile/visibility",
       "GET_USER_BY_KEY": "user/v1/get",
-      "CREATE_V2": "user/v2/create"
+      "CREATE_V2": "user/v2/create",
+      "LOCATION_SEARCH": "data/v1/location/search"
     },
     "COMPOSITE": {
       "SEARCH": "composite/v1/search"
     },
     "SYSTEM_SETTING":{
       "CUSTODIAN_ORG":"data/v1/system/settings/get/custodianOrgId"
+    },
+    "COURSE_FRAMEWORK":{
+      "COURSE_FRAMEWORKID":"data/v1/system/settings/get/courseFrameworkId"
     },
     "COURSE": {
       "SEARCH": "course/v1/search",

@@ -582,7 +582,8 @@
           "mimeType",
           "framework",
           "contentType",
-          "pkgVersion"
+          "pkgVersion",
+          "status"
         ]
       },
       "dynamicFields": {
@@ -619,7 +620,8 @@
           "mimeType",
           "framework",
           "contentType",
-          "pkgVersion"
+          "pkgVersion",
+          "status"
         ]
       },
       "dynamicFields": {
@@ -656,7 +658,8 @@
           "mimeType",
           "framework",
           "contentType",
-          "pkgVersion"
+          "pkgVersion",
+          "status"
         ]
       },
       "dynamicFields": {
@@ -688,7 +691,8 @@
           "mimeType",
           "framework",
           "contentType",
-          "pkgVersion"
+          "pkgVersion",
+          "status"
         ]
       },
       "dynamicFields": {
@@ -720,7 +724,8 @@
           "mimeType",
           "framework",
           "contentType",
-          "pkgVersion"
+          "pkgVersion",
+          "status"
         ]
       },
       "dynamicFields": {
@@ -762,7 +767,8 @@
           "mimeType",
           "framework",
           "contentType",
-          "pkgVersion"
+          "pkgVersion",
+          "status"
         ]
       },
       "dynamicFields": {
@@ -957,7 +963,8 @@
     "framework": "framework",
     "explore-course": "explore-course",
     "framework-code": "framework-code",
-    "courses": "courses"
+    "courses": "courses",
+    "organization": "organization"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,
@@ -1031,5 +1038,20 @@
       "epub": "fa fa-file-text fa-lg",
       "doc": "fa fa-file-text fa-lg"
     }
-  }
+  },
+  "mediumCode":{
+    "english": "en",
+    "hindi": "hi",
+    "telugu": "te",
+    "kannada": "kn",
+    "tamil": "ta",
+    "marathi": "mr",
+    "urdu": "ur",
+    "malayalam": "ml",
+    "bengali": "bn",
+    "assamese": "as",
+    "gujarati": "gu",
+    "punjabi": "pa",
+    "oriya": "or"
+   }
 }

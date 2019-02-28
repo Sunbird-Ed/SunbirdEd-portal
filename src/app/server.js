@@ -14,7 +14,7 @@ const tenantHelper = require('./helpers/tenantHelper.js')
 const envHelper = require('./helpers/environmentVariablesHelper.js')
 const proxyUtils = require('./proxy/proxyUtils.js')
 const healthService = require('./helpers/healthCheckService.js')
-const { getKeyCloakClient, memoryStore} = require('./helpers/keyCloakHelper')
+const { getKeyCloakClient, memoryStore } = require('./helpers/keyCloakHelper')
 const fs = require('fs')
 const request = require('request');
 const reqDataLimitOfContentEditor = '50mb'
@@ -65,8 +65,14 @@ app.get('/health', healthService.createAndValidateRequestBody, healthService.che
 // client app routes
 require('./routes/googleSignInRoutes.js')(app, keycloak)
 
+// sso routes
+require('./routes/ssoRoutes.js')(app, keycloak)
+
 // client app routes
 require('./routes/clientRoutes.js')(app, keycloak)
+
+// report routes
+require('./routes/reportRoutes.js')(app, keycloak)
 
 app.all(['/content-editor/telemetry', '/collection-editor/telemetry'], bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)
@@ -136,9 +142,9 @@ subApp.use(bodyParser.json({ limit: '50mb' }))
 
 app.use('/plugin', subApp)
 frameworkAPI.bootstrap(frameworkConfig, subApp).then(data => runApp())
-.catch(error => {
-  runApp()   // if framework fails, do not stop the portal
-})
+  .catch(error => {
+    runApp()   // if framework fails, do not stop the portal
+  })
 
 function endSession(request, response, next) {
   delete request.session['roles']
@@ -159,7 +165,7 @@ if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
     'sunbird_instance  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird')
   process.exit(1)
 }
-function runApp () {
+function runApp() {
 
   // redirect to home if nothing found
   app.all('*', (req, res) => res.redirect('/'))
@@ -178,14 +184,14 @@ function runApp () {
               if (res.statusCode === 200) {
                 req.pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')))
               } else {
-                console.log('Error while fetching '+ envHelper.PORTAL_CDN_URL + 'index.' + packageObj.version + '.' + packageObj.buildHash + '.ejs file when CDN enabled');
+                console.log('Error while fetching ' + envHelper.PORTAL_CDN_URL + 'index.' + packageObj.version + '.' + packageObj.buildHash + '.ejs file when CDN enabled');
               }
             })
         }
         console.log('app running on port ' + envHelper.PORTAL_PORT)
       })
     })
-  },function(error){
+  }, function (error) {
     console.log('Error in loading configs ' + error)
   })
 }
@@ -201,9 +207,9 @@ const fetchDefaultChannelDetails = async (callback) => {
       'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
     },
     body: {
-        request: {
-          filters: { slug: envHelper.DEFAULT_CHANNEL }
-        }
+      request: {
+        filters: { slug: envHelper.DEFAULT_CHANNEL }
+      }
     },
     json: true
   }
@@ -222,7 +228,7 @@ const telemetryConfig = {
   authtoken: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
 }
 
-process.on('unhandledRejection', function(reason, p){
+process.on('unhandledRejection', function (reason, p) {
   console.log("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
   // application specific logging here
 });

@@ -1,0 +1,90 @@
+$bg-body: #fdfdfd;
+
+/* Fonts */
+$font-stack-en:
+  'Noto Sans',
+  'Noto Sans Devanagari',
+  'Noto Sans Tamil',
+  'Noto Sans Bengali',
+  'Noto Sans Malayalam',
+  'Noto Sans Gurmukhi',
+  'Noto Sans Gujarati',
+  'Noto Sans Telugu',
+  'Noto Sans Kannada',
+  'Noto Sans Oriya',
+  'Noto Nastaliq Urdu',
+  -apple-system,
+  BlinkMacSystemFont,
+  'Segoe UI',
+  Roboto,
+  Oxygen-Sans,
+  Ubuntu,
+  Cantarell,
+  'Helvetica Neue',
+  sans-serif;
+
+$font-stack-hi:
+  'Noto Sans Devanagari',
+  'Noto Sans',
+  'Noto Sans Tamil',
+  'Noto Sans Bengali',
+  'Noto Sans Malayalam',
+  'Noto Sans Gurmukhi',
+  'Noto Sans Gujarati',
+  'Noto Sans Telugu',
+  'Noto Sans Kannada',
+  'Noto Sans Oriya',
+  'Noto Nastaliq Urdu',
+  -apple-system,
+  BlinkMacSystemFont,
+  'Segoe UI',
+  Roboto,
+  Oxygen-Sans,
+  Ubuntu,
+  Cantarell,
+  'Helvetica Neue',
+  sans-serif;
+
+$font-stack-ur:
+  'Noto Sans',
+  'Noto Nastaliq Urdu',
+  'Noto Sans Devanagari',
+  'Noto Sans Tamil',
+  'Noto Sans Bengali',
+  'Noto Sans Malayalam',
+  'Noto Sans Gurmukhi',
+  'Noto Sans Gujarati',
+  'Noto Sans Telugu',
+  'Noto Sans Kannada',
+  'Noto Sans Oriya',
+  -apple-system,
+  BlinkMacSystemFont,
+  'Segoe UI',
+  Roboto,
+  Oxygen-Sans,
+  Ubuntu,
+  Cantarell,
+  'Helvetica Neue',
+  sans-serif;
+
+/* Colors */
+$primary-color: #024f9d;
+$secondary-color: #33b17b;
+$success-color: #008840;
+$danger-color: #e76026;
+$white-color: #fff;
+
+/* To clean */
+$text-lightDark: #666;
+$text-gray: #999;
+$signup-btn-bg-not-active-color: #9b9b9b;
+$signup-thankyou-text-color: #4a4a4a;
+$form-input-border-color: #979797;
+$menuitem-color: #212121;
+$primary-border: 0.5px solid rgba(216, 216, 216, 0.5);
+$primary-background: rgba(216, 216, 216, 0.5);
+$card-label-border-color: rgba(2, 79, 157, 0.5);
+$signup-btn-bg-active-color: #2ca58d;
+$form-input-border-active-color: #4a90e2;
+$dull-color: #b7d8f1;
+$qr-btn: #edf4f9;

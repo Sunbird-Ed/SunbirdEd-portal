@@ -53,6 +53,7 @@ let envVariables = {
   sunbird_help_link_visibility: env.sunbird_help_link_visibility || 'false',
   sunbird_extcont_whitelisted_domains: env.sunbird_extcont_whitelisted_domains || 'youtube.com,youtu.be',
   sunbird_portal_user_upload_ref_link: env.sunbird_portal_user_upload_ref_link || 'http://www.sunbird.org/features-documentation/register_user',
+  sunbird_portal_video_max_size: env.sunbird_portal_video_max_size || '50',
   GOOGLE_OAUTH_CONFIG: {
     clientId: env.sunbird_google_oauth_clientId,
     clientSecret: env.sunbird_google_oauth_clientSecret
@@ -61,7 +62,10 @@ let envVariables = {
     clientId: env.sunbird_google_keycloak_client_id,
     secret: env.sunbird_google_keycloak_secret
   },
-  sunbird_google_captcha_site_key: env.sunbird_google_captcha_site_key
+  sunbird_google_captcha_site_key: env.sunbird_google_captcha_site_key,
+  sunbird_azure_report_container_name: env.sunbird_azure_report_container_name || 'reports',
+  sunbird_azure_account_name: env.sunbird_azure_account_name,
+  sunbird_azure_account_key: env.sunbird_azure_account_key
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')

@@ -18,7 +18,7 @@
               [config]="slideConfig" (afterChange)="inviewChange(toDoList,$event)" (beforeChange)="checkSlide($event)" appTelemetryInteract  [telemetryInteractEdata]="{id: btnArrow, type: 'click', pageid: 'home', extra: { section: 'ToDo'}}">
               <div in-view-item ngxSlickItem *ngFor="let item of toDoList; trackBy: trackByFn;let i = index" class="slide" [id]="i" [data]="item">
                 <div *ngIf=" item.type !== 'profile'">
-                  <app-card [data]="item" (clickEvent)="playContent($event)" [customClass]="'pr-20'" class="pr-20 d-block"></app-card>
+                  <app-card appContentDirection [data]="item" (clickEvent)="playContent($event)" [customClass]="'pr-20'" class="pr-20 d-block"></app-card>
                 </div>
               </div>
             </ngx-slick>

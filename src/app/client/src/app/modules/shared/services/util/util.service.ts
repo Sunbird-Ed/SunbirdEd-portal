@@ -88,4 +88,75 @@ export class UtilService {
       return softConstraintData;
     }
   }
+
+  translateValues(data, lang) {
+    _.forEach(data, (value, index) => {
+      if (value.children) {
+        this.convert(value, lang);
+        _.forEach(value.children, (children) => {
+          this.convert(children, lang);
+        });
+      } else if (value.translations) {
+        this.convert(value, lang);
+      }
+    });
+    return data;
+  }
+
+  convert(value, lang) {
+    const translations = JSON.parse(value.translations);
+    if (translations) {
+      if (!translations.en) {
+        translations.en = value.name;
+        value.translations = JSON.stringify(translations);
+      }
+      if (translations[lang]) {
+        value.name = translations[lang];
+      } else {
+        value.name = translations['en'];
+      }
+    }
+  }
+  translateLabel(formFieldCategory, selectedLanguage) {
+    if (!formFieldCategory.translations) {
+      return formFieldCategory;
+    }
+    const translation = JSON.parse(formFieldCategory.translations);
+    if (translation && !translation.en) {
+      translation.en = formFieldCategory.label;
+      formFieldCategory.translations = JSON.stringify(translation);
+    }
+    if (translation && translation[selectedLanguage]) {
+      formFieldCategory.label = translation[selectedLanguage];
+      return formFieldCategory;
+    } else {
+      return formFieldCategory;
+    }
+  }
+  convertSelectedOption(selectedData, formFieldProperties, selectedLanguage, convertLanguage) {
+    const formInputData = selectedData;
+    _.forIn(selectedData, (inputData, key) => {
+      const fieldValue = _.find(formFieldProperties, ['code', key]);
+      if (fieldValue) {
+        _.forEach(fieldValue.range, (collector) => {
+          if (_.get(collector, 'translations')) {
+            const translations = JSON.parse(collector.translations);
+            _.forEach(inputData, (text) => {
+              if (translations !== null) {
+                const language = _.findKey(translations, (v) => {
+                  return v === text;
+                });
+                const index = _.findIndex(inputData, (o) => o === text);
+                if ((translations[selectedLanguage] === text || translations[language] === text)) {
+                  const value = translations[convertLanguage] ? translations[convertLanguage] : translations['en'];
+                  formInputData[key].splice(index, 1, value);
+                }
+              }
+            });
+          }
+        });
+      }
+    });
+    return formInputData;
+  }
 }

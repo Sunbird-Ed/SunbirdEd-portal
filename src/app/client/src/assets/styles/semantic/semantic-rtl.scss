@@ -1,0 +1,92 @@
+[dir="rtl"] {
+    .ui.input input{
+      text-align: right;
+    }
+    .ui.icon.input>i.circular.icon{
+      left: .5em;
+      right: auto;
+    }
+    .ui[class*="left action"].input>.button:first-child,
+    .ui[class*="left action"].input>.buttons:first-child>.button,
+    .ui[class*="left action"].input>.dropdown:first-child{
+      border-radius: 0 .28571429rem .28571429rem 0;
+    }
+    .searchicon.ui.icon.input input{
+      border-radius: .28571429rem 0 0 .28571429rem;
+    }
+    .ui.dropdown{
+      text-align: right;
+    }
+    .ui.selection.dropdown>.delete.icon, 
+    .ui.selection.dropdown>.dropdown.icon,
+    .ui.selection.dropdown>.search.icon{
+      left: 1em;
+      right: auto;
+    }
+    .ui.menu .ui.dropdown .menu>.item{
+      text-align:right;
+    }
+    .ui.modal{
+      text-align: right;
+    }
+    .ui.table{
+      text-align: right;
+    }
+    .right-floated,
+    .right-float{
+      float:left !important;
+    }
+    .ui.card [class*="right floated"],
+    .ui.cards>.card [class*="right floated"]{
+      float: left;
+    }
+    .ui.floated.header,
+    .ui[class*="left floated"].header{
+      float: right;
+    }
+    .ui[class*="right floated"].button,
+    .ui[class*="right floated"].buttons{
+      float: left;
+    }
+    i.icon.chevron.right:before{
+      content: "\f053";
+    }
+    .text-decoration-underline{
+      text-decoration: overline !important;
+    }
+    .ui.dropdown .menu>.item {
+      text-align: right;
+    }
+    
+    .ui.label>.delete.icon {
+      margin-right: .5em;
+    }
+    
+    .ui.multiple.dropdown {
+      padding: .22619048em .35714286em .22619048em 2.1em;
+    }
+    .ui.form input[type=text],
+    .ui.form input[type=text]:focus, 
+    .ui.form input[type=email], 
+    .ui.form input[type=number], 
+    .ui.form input[type=number]:focus, 
+    .ui.form input[type=password], 
+    .ui.form input[type=url], 
+    .ui.form input:not([type]), 
+    .ui.form input:not([type]):focus {
+      padding: 0.8em 1em;
+    }
+    .ui.top.right.pointing.dropdown>.menu {
+      right: auto;
+      left: 0;
+    }
+    .ui.top.pointing.dropdown>.left.menu:after,
+    .ui.top.right.pointing.dropdown>.menu:after{
+      left: 1em!important;
+      right: auto!important;
+    }
+    
+    .ui.button:not(.icon)>.icon:not(.button):not(.dropdown) {
+      margin: 0  -.21428571em 0 .42857143em;
+    }
+} 

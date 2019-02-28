@@ -1,5 +1,6 @@
+import { LearnerService } from './../learner/learner.service';
 import { Injectable } from '@angular/core';
-import { UserService } from './../user/user.service';
+import { UserService  } from './../user/user.service';
 import {
   ConfigService, ToasterService, ResourceService, ServerResponse, Framework, FrameworkData,
   BrowserCacheTtlService
@@ -23,7 +24,7 @@ export class FrameworkService {
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     private userService: UserService, private configService: ConfigService,
     public toasterService: ToasterService, public resourceService: ResourceService,
-    private publicDataService: PublicDataService
+    private publicDataService: PublicDataService, public learnerService: LearnerService
   ) { }
 
   public initialize(framework?: string, hashTagId?: string) {
@@ -92,5 +93,11 @@ export class FrameworkService {
   private setChannelData(hashTagId, channelData) {
     this.cacheService.set(hashTagId ? hashTagId : this.userService.hashTagId , channelData.result.channel,
       { maxAge: this.browserCacheTtlService.browserCacheTtl });
+  }
+  public getCourseFramework() {
+    const systemSetting = {
+      url: this.configService.urlConFig.URLS.COURSE_FRAMEWORK.COURSE_FRAMEWORKID,
+    };
+    return this.learnerService.get(systemSetting);
   }
 }

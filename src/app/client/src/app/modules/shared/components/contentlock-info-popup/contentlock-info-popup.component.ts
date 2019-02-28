@@ -3,8 +3,7 @@ import { ResourceService } from '../../services/index';
 
 @Component({
   selector: 'app-contentlock-info-popup',
-  templateUrl: './contentlock-info-popup.component.html',
-  styleUrls: ['./contentlock-info-popup.component.css']
+  templateUrl: './contentlock-info-popup.component.html'
 })
 
 export class LockInfoPopupComponent implements OnInit {

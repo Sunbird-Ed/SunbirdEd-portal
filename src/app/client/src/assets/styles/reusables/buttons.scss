@@ -1,0 +1,88 @@
+.ui.dodger-blue.basic.label {
+    border: 1px solid $primary-color !important;	
+    border-radius: 4px;
+    color: $primary-color;
+    font-size: 1rem;
+    font-weight: 300;
+    padding: 4px 16px;
+
+}
+.ui.semi-circular.dodger-blue.basic.label {
+    border: 1px solid $primary-color !important;
+    border-radius: 18.5px;
+    color: $primary-color;
+    font-size: 1.16rem;
+    padding: 10px 27px;
+}
+
+.ui.semi-circular.dodger-blue.button {
+    border: 1px solid $primary-color;
+    border-radius: 18.5px;
+    background: $primary-color;
+    color: #fff;
+    font-size: 1rem;    
+    font-weight: 100;
+    padding: 6px 27px;
+}
+
+.circular-placeholder {
+	border: 6px solid #fff;
+	background-color: #fff;
+    box-shadow: 0 0 6px 0 rgba(0,0,0,0.38);
+    border-radius: 100%;
+    height: 92px;
+    width: 92px;
+}
+.ui.button.rounded{
+    border-radius: 20px;
+}
+.ui.explore.blue.button {  
+    background-color: $primary-color;
+    padding: 10px 30px;
+}
+.ui.explore.blue.button:hover {  
+    opacity: 0.8;
+}
+.ui.explore.blue.button:active {  
+    opacity: 0.9;
+}
+.ui.basic.explore.blue.button {  
+    background-color: #fff;
+    border: 0.5px solid $primary-color;
+    box-shadow: none;
+    color: $primary-color;
+    font-weight: 700;
+    height:36px;
+    padding: 10px 30px;
+}
+.ui.basic.explore.blue.button:hover {  
+    opacity: 0.8;
+}
+.ui.basic.explore.blue.button:active {  
+    opacity: 0.9;
+}
+.ui.blue.button,
+.ui.blue.buttons .button{
+    background-color: $primary-color !important;
+    color: #fff !important;
+}
+.ui.primary.button, 
+.ui.primary.buttons .button{
+    background-color: $primary-color !important;
+    color: #fff !important;
+}
+.ui.basic.primary.button,
+.ui.basic.primary.buttons .button{
+    color: $primary-color !important;
+    background: transparent !important;
+}
+.ui.basic.blue.button,
+.ui.basic.blue.buttons .button{
+    color: $primary-color !important;
+    background: transparent !important;
+}
+.ui.red.label, 
+.ui.red.labels .label{
+    background: $danger-color !important;
+    border-color: $danger-color !important;
+}

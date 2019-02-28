@@ -11,8 +11,7 @@ import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-enroll-batch',
-  templateUrl: './enroll-batch.component.html',
-  styleUrls: ['./enroll-batch.component.css']
+  templateUrl: './enroll-batch.component.html'
 })
 export class EnrollBatchComponent implements OnInit, OnDestroy {
   @ViewChild('enrollBatch') enrollBatch;

@@ -22,7 +22,7 @@
         <div class="twelve wide column" in-view-container (inview)="inView($event)" [throttle]="[1000]" [trigger]="contentList" *ngIf="!showLoader && contentList.length">
             <div class="ui stackable four column grid dynamic-section-card ">
                 <div in-view-item [id]="i" [data]="content" class="column pt-5 pb-5 pl-10" *ngFor="let content of contentList;let i = index;">
-                    <app-card appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType || 'content',ver:'1.0'}"
+                    <app-card appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType || 'content',ver:'1.0'}"
                     (clickEvent)="playContent($event)" [data]="content"></app-card>
                 </div>
             </div>
@@ -47,11 +47,3 @@
         </div>
     </div>
 </div>
-<sui-modal [isClosable]="true" size="tiny" (dismissed)="closeModal()" #modal *ngIf="showLoginModal">
-    <div class="content">
-        <div class="ui center aligned segment">
-            <div class="ui header">{{resourceService.frmelmnts?.lbl?.signinenrollTitle}} </div>
-            <a href={{baseUrl}} class="ui button primary announcement-button close mt-20">{{resourceService.frmelmnts?.btn?.signin}}</a>
-        </div>
-    </div>
-</sui-modal>

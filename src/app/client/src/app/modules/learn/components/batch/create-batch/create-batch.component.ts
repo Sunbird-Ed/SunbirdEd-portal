@@ -11,8 +11,7 @@ import * as moment from 'moment';
 import { Subject, combineLatest } from 'rxjs';
 @Component({
   selector: 'app-create-batch',
-  templateUrl: './create-batch.component.html',
-  styleUrls: ['./create-batch.component.css']
+  templateUrl: './create-batch.component.html'
 })
 export class CreateBatchComponent implements OnInit, OnDestroy {
 

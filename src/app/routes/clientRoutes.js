@@ -28,11 +28,13 @@ module.exports = (app, keycloak) => {
   }
 
   app.get(['/dist/*.js', '/dist/*.css', '/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff', '/dist/*.eot', '/dist/*.svg'],
-        compression(), (req, res, next) => {
-          res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
-          res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
-          next()
-        })
+    compression(), (req, res, next) => {
+      if (process.env.sunbird_environment.toLowerCase() !== 'local') {
+        res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
+        res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
+      }
+      next()
+    })
 
   app.all(['/server.js', '/helpers/*.js', '/helpers/**/*.js'], (req, res) => res.sendStatus(404))
 
@@ -43,9 +45,9 @@ module.exports = (app, keycloak) => {
   })
 
   app.all(['/', '/get', '/get/dial/:dialCode', '/explore',
-    '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*','/explore-course',
+    '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course',
     '/explore-course/*', '/:slug/explore-course', '/:slug/explore-course/*',
-    '/:slug/signup', '/signup'], indexPage)
+    '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*'], indexPage)
 
   app.all('/:slug/get', (req, res) => res.redirect('/get'))
 
@@ -75,7 +77,7 @@ module.exports = (app, keycloak) => {
   })
 }
 
-function getLocals (req, callback) {
+function getLocals(req, callback) {
   var locals = {}
   locals.userId = _.get(req, 'kauth.grant.access_token.content.sub') ? req.kauth.grant.access_token.content.sub : null
   locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'kauth.grant.access_token.content.sub') ? req.sessionID : null
@@ -95,10 +97,12 @@ function getLocals (req, callback) {
   locals.userUploadRefLink = configHelper.getConfig('sunbird_portal_user_upload_ref_link')
   locals.deviceRegisterApi = envHelper.DEVICE_REGISTER_API
   locals.googleCaptchaSiteKey = envHelper.sunbird_google_captcha_site_key
+  locals.videoMaxSize = envHelper.sunbird_portal_video_max_size
+  locals.reportsLocation = envHelper.sunbird_azure_report_container_name
   callback(null, locals)
 }
 
-function indexPage (req, res) {
+function indexPage(req, res) {
   if (defaultTenant && req.path === '/') {
     tenantId = defaultTenant
     renderTenantPage(req, res)
@@ -107,11 +111,11 @@ function indexPage (req, res) {
   }
 }
 
-function renderDefaultIndexPage (req, res) {
+function renderDefaultIndexPage(req, res) {
   try {
     const mobileDetect = new MobileDetect(req.headers['user-agent'])
     if ((req.path === '/get' || req.path === '/' + req.params.slug + '/get') &&
-        mobileDetect.os() === 'AndroidOS') {
+      mobileDetect.os() === 'AndroidOS') {
       res.redirect(envHelper.ANDROID_APP_URL)
     } else {
       res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
@@ -131,7 +135,7 @@ function renderDefaultIndexPage (req, res) {
   }
 }
 // renders tenant page from cdn or from local files based on tenantCdnUrl exists
-function renderTenantPage (req, res) {
+function renderTenantPage(req, res) {
   try {
     if (tenantCdnUrl) {
       request(tenantCdnUrl + '/' + tenantId + '/' + 'index.html', function (error, response, body) {
@@ -149,16 +153,16 @@ function renderTenantPage (req, res) {
   }
 }
 // in fallback option check always for local tenant folder and redirect to / if not exists
-function loadTenantFromLocal (req, res) {
+function loadTenantFromLocal(req, res) {
   if (tenantId) {
     if (fs.existsSync(path.join(__dirname, 'tenant', tenantId, 'index.html'))) {
       res.sendFile(path.join(__dirname, 'tenant', tenantId, 'index.html'))
     } else {
-            // renderDefaultIndexPage only if there is no local default tenant else redirect
+      // renderDefaultIndexPage only if there is no local default tenant else redirect
       if (defaultTenant && req.path === '/') {
         renderDefaultIndexPage(req, res)
       } else {
-                // this will be executed only if user is typed invalid tenant in url
+        // this will be executed only if user is typed invalid tenant in url
         res.redirect('/')
       }
     }

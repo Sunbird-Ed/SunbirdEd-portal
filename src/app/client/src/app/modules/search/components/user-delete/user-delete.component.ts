@@ -10,8 +10,7 @@ import { UserSearchService } from './../../services';
  */
 @Component({
   selector: 'app-user-delete',
-  templateUrl: './user-delete.component.html',
-  styleUrls: ['./user-delete.component.css']
+  templateUrl: './user-delete.component.html'
 })
 export class UserDeleteComponent implements OnInit, OnDestroy {
    @ViewChild('modal') modal;

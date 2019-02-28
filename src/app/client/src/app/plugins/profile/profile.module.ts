@@ -6,7 +6,8 @@ import { SharedModule } from '@sunbird/shared';
 import { SlickModule } from 'ngx-slick';
 import { ProfileRoutingModule } from './profile-routing.module';
 import {
-  ProfilePageComponent, ProfileBadgeComponent
+  ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent,
+  UpdateUserDetailsComponent
 } from './components';
 import { SuiModule } from 'ng2-semantic-ui';
 import { CoreModule } from '@sunbird/core';
@@ -33,7 +34,7 @@ import { AvatarModule } from 'ngx-avatar';
     AvatarModule,
     SharedFeatureModule
   ],
-  declarations: [ProfilePageComponent, ProfileBadgeComponent],
+  declarations: [ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent, UpdateUserDetailsComponent],
   providers: [ProfileService],
   entryComponents: [ProfileBadgeComponent]
 })

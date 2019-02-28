@@ -5,13 +5,13 @@ import * as  iziModal from 'izimodal/js/iziModal';
 import {
   NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserProfile, ServerResponse
 } from '@sunbird/shared';
-import { UserService, TenantService } from '@sunbird/core';
+import { UserService, TenantService, FrameworkService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService, WorkSpaceService } from './../../../services';
 import { environment } from '@sunbird/environment';
 import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest, of, throwError } from 'rxjs';
-import { skipWhile, map, mergeMap, tap, delay } from 'rxjs/operators';
+import { skipWhile, map, mergeMap, tap, delay, first } from 'rxjs/operators';
 jQuery.fn.iziModal = iziModal;
 enum state {
   UP_FOR_REVIEW = 'upForReview',
@@ -24,8 +24,7 @@ enum state {
  */
 @Component({
   selector: 'app-collection-editor',
-  templateUrl: './collection-editor.component.html',
-  styleUrls: ['./collection-editor.component.css']
+  templateUrl: './collection-editor.component.html'
 })
 export class CollectionEditorComponent implements OnInit, OnDestroy {
 
@@ -39,7 +38,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   public collectionDetails: any;
   public ownershipType: Array<string>;
   public queryParams: object;
-
+  resource_framework: string;
   /**
   * Default method of classs CollectionEditorComponent
   * @param {ResourceService} resourceService To get language constant
@@ -51,7 +50,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   constructor(private resourceService: ResourceService, private toasterService: ToasterService, private editorService: EditorService,
     private activatedRoute: ActivatedRoute, private userService: UserService, private _zone: NgZone, private router: Router,
     private configService: ConfigService, private tenantService: TenantService, private telemetryService: TelemetryService,
-    private navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService) {
+    private navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService,
+    private frameworkService: FrameworkService) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.buildNumber = buildNumber ? buildNumber.value : '1.0';
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
@@ -61,11 +61,14 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     this.routeParams = this.activatedRoute.snapshot.params;
     this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.disableBrowserBackButton();
+    this.frameworkService.initialize();
     this.getDetails().pipe(
+      first(),
       tap(data => {
         if (data.tenantDetails) {
           this.logo = data.tenantDetails.logo;
         }
+        this.resource_framework = data.resource_framework['defaultFramework'].code;
         this.ownershipType = data.ownershipType;
         this.showLoader = false;
         this.initEditor();
@@ -91,16 +94,17 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded'].includes(this.routeParams.state);
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
-    if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
+    const disableLock = false; // lock api issue hot fix
+    if (disableLock && (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus)) {
       return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
-      this.editorService.getOwnershipType(), this.lockContent()).
+      this.editorService.getOwnershipType(), this.lockContent(), this.frameworkService.frameworkData$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2] })));
+        collectionDetails: data[1], ownershipType: data[2], resource_framework: data[4].frameworkdata })));
     } else {
       return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
-      this.editorService.getOwnershipType()).
+      this.editorService.getOwnershipType(), this.frameworkService.frameworkData$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2] })));
+        collectionDetails: data[1], ownershipType: data[2], resource_framework: data[3].frameworkdata })));
     }
   }
   lockContent () {
@@ -196,6 +200,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       tags: this.userService.dims,
       channel: this.userService.channel,
       framework: this.routeParams.framework,
+      resource_framework: this.resource_framework,
       env: this.routeParams.type.toLowerCase(),
       ownershipType: this.ownershipType
     };
@@ -282,7 +287,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('collectionEditor')) {
       document.getElementById('collectionEditor').remove();
     }
-    this.retireLock();
+    // this.retireLock(); // lock api hot fix
+    this.redirectToWorkSpace(); // lock api hot fix
   }
 
   retireLock () {
@@ -300,10 +306,13 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   redirectToWorkSpace () {
     if (this.routeParams.state === 'collaborating-on') {
       this.navigationHelperService.navigateToWorkSpace('/workspace/content/collaborating-on/1');
+    } else if ( this.routeParams.state === 'upForReview') {
+      this.navigationHelperService.navigateToWorkSpace('/workspace/content/upForReview/1');
     } else {
       this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
     }
   }
+
 
   ngOnDestroy() {
     if (document.getElementById('collectionEditor')) {

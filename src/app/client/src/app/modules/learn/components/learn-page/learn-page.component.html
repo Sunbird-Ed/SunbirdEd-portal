@@ -4,17 +4,6 @@
 
   <div class="ui container">
   <div class="ui grid stackable my-0">
-    <!--<div class="twelve wide column">
-      <div class="ui grid top aligned">
-        <div class="twelve wide column">
-         <app-data-driven-filter [pageId]="'course-page'" *ngIf="initFilters" [filterEnv]="filterType" 
-          [accordionDefaultOpen]=false [isShowFilterLabel]=true [formAction]="'filter'" [frameworkName]="frameWorkName" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
-        </div>
-        <div class="three wide mobile two wide tablet two wide computer column">
-          <app-sort-by appTelemetryInteract [telemetryInteractEdata]="sortIntractEdata" [sortingOptions]="sortingOptions" [url]="redirectUrl"></app-sort-by>
-        </div>
-      </div>
-    </div>-->
     <div class="twelve wide column" *ngIf="enrolledSection?.contents?.length">
       <app-page-section *ngIf="enrolledSection?.contents?.length" (visits)="prepareVisits($event)" [section]="enrolledSection" (playEvent)="playContent($event)" (viewAll)="viewAll($event)"></app-page-section>
     </div>

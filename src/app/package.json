@@ -1,7 +1,7 @@
 {
   "name": "player",
   "author": "sunbird",
-  "version": "1.13.2",
+  "version": "1.14.0",
   "buildNumber": "1",
   "private": true,
   "devDependencies": {
@@ -77,10 +77,11 @@
   "dependencies": {
     "@project-sunbird/discussion-service": "0.0.6",
     "@project-sunbird/ext-framework-server": "0.1.10",
-    "@project-sunbird/form-service": "0.0.10",
+    "@project-sunbird/form-service": "0.0.12",
     "@project-sunbird/review-comment": "0.0.8",
     "async": "^2.5.0",
     "asyncawait": "^1.0.7",
+    "azure-storage": "^2.10.2",
     "body-parser": "^1.17.2",
     "cassandra-session-store": "1.0.6",
     "codacy-coverage": "3.0.0",

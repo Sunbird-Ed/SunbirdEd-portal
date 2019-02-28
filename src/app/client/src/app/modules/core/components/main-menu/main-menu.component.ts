@@ -49,6 +49,7 @@ export class MainMenuComponent implements OnInit {
   learnMenuIntractEdata: IInteractEventEdata;
   libraryMenuIntractEdata: IInteractEventEdata;
   workspaceMenuIntractEdata: IInteractEventEdata;
+  helpMenuIntractEdata: IInteractEventEdata;
   exploreRoutingUrl: string;
   showExploreHeader = false;
   helpLinkVisibility: string;
@@ -101,6 +102,11 @@ export class MainMenuComponent implements OnInit {
       id: 'workspace-menu-button',
       type: 'click',
       pageid: 'workspace'
+    };
+    this.helpMenuIntractEdata = {
+      id: 'help-menu-tab',
+      type: 'click',
+      pageid: 'help'
     };
   }
 

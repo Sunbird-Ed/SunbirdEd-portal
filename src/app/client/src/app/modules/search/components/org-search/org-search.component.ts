@@ -11,8 +11,7 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
 
 @Component({
   selector: 'app-org-search',
-  templateUrl: './org-search.component.html',
-  styleUrls: ['./org-search.component.css']
+  templateUrl: './org-search.component.html'
 })
 export class OrgSearchComponent implements OnInit {
 

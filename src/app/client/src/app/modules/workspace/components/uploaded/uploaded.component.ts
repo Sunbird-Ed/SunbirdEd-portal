@@ -17,8 +17,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 */
 @Component({
   selector: 'app-uploaded',
-  templateUrl: './uploaded.component.html',
-  styleUrls: ['./uploaded.component.css']
+  templateUrl: './uploaded.component.html'
 })
 export class UploadedComponent extends WorkSpace implements OnInit {
   @ViewChild('modalTemplate')
@@ -255,6 +254,9 @@ export class UploadedComponent extends WorkSpace implements OnInit {
           (data: ServerResponse) => {
             this.showLoader = false;
             this.uploaded = this.removeContent(this.uploaded, contentIds);
+            if (this.uploaded.length === 0) {
+              this.fetchUploaded(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
+            }
             this.toasterService.success(this.resourceService.messages.smsg.m0006);
           },
           (err: ServerResponse) => {

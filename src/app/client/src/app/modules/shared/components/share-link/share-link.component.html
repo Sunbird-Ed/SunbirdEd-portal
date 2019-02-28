@@ -16,7 +16,7 @@
     <div class="ui action input shareContent width-100" id="buttonPopUp" suiPopup [popupPlacement]="position" popupTrigger="manual" popupText="Link copied to clipboard" #popup="suiPopup">
       <input type="text" id="copyLinkData"   name="title" readonly [(ngModel)]="shareLink" />
       <button class="ui basic primary button" (click)="copyLink(popup)"  #copyLinkButton >
-        COPY LINK
+        {{resourceService?.frmelmnts?.btn?.copyLink}}
       </button>
     </div>
   </div>

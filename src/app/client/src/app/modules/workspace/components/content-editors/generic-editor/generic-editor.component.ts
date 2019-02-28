@@ -7,7 +7,7 @@ import { UserService, TenantService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '@sunbird/environment';
 import { EditorService, WorkSpaceService } from '../../../services';
-import { tap, delay, map } from 'rxjs/operators';
+import { tap, delay, map, first } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 jQuery.fn.iziModal = iziModal;
@@ -16,8 +16,7 @@ jQuery.fn.iziModal = iziModal;
  * Component Launches the Generic Editor in a IFrame Modal
  */@Component({
   selector: 'app-generic-editor',
-  templateUrl: './generic-editor.component.html',
-  styleUrls: ['./generic-editor.component.css']
+  templateUrl: './generic-editor.component.html'
 })
 export class GenericEditorComponent implements OnInit, OnDestroy {
 
@@ -32,6 +31,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public ownershipType: Array<string>;
   public queryParams: object;
   public contentDetails: any;
+  public videoMaxSize: any;
 
   constructor(private userService: UserService, public _zone: NgZone, private activatedRoute: ActivatedRoute,
     private tenantService: TenantService, private telemetryService: TelemetryService, private router: Router,
@@ -43,13 +43,15 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     this.extContWhitelistedDomains = (<HTMLInputElement>document.getElementById('extContWhitelistedDomains')) ?
       (<HTMLInputElement>document.getElementById('extContWhitelistedDomains')).value : 'youtube.com,youtu.be';
+    this.videoMaxSize = (<HTMLInputElement>document.getElementById('videoMaxSize')) ?
+      (<HTMLInputElement>document.getElementById('videoMaxSize')).value : '100';
   }
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
     this.routeParams = this.activatedRoute.snapshot.params;
     this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.disableBrowserBackButton();
-    this.getDetails().pipe(
+    this.getDetails().pipe(first(),
       tap(data => {
         if (data.tenantDetails) {
           this.logo = data.tenantDetails.logo;
@@ -80,7 +82,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded'].includes(this.routeParams.state);
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
-    if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
+    const disableLock = false; // lock api issue hot fix
+    if (disableLock && (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus)) {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
       this.editorService.getOwnershipType(), this.lockContent()).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
@@ -179,6 +182,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.lock = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     window.config.extContWhitelistedDomains = this.extContWhitelistedDomains;
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
+    window.config.videoMaxSize = this.videoMaxSize;
   }
   /**
   * Re directed to the workspace on close of modal
@@ -188,7 +192,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('genericEditor')) {
       document.getElementById('genericEditor').remove();
     }
-    this.retireLock();
+    // this.retireLock(); // lock api hot fix
+    this.redirectToWorkSpace(); // lock api hot fix
   }
 
   retireLock () {

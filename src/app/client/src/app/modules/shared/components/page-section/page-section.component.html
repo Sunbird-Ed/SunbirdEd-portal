@@ -18,7 +18,7 @@
                 #slickModal="slick-modal" 
                 [config]="slideConfig">
                 <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of section.contents;let i = index; let last = last" class="slide">    
-                    <app-card 
+                    <app-card  appContentDirection [data]="content"
                         appTelemetryInteract 
                         [telemetryInteractEdata]="cardIntractEdata" 
                         [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:'1.0'}"

@@ -1,0 +1,149 @@
+.ui.menu.fixed {
+  position: -webkit-sticky;
+  position: -moz-sticky;
+  position: -ms-sticky;
+  position: -o-sticky;
+  position: sticky;
+  z-index: 999;
+  border: 0;
+  border-bottom: 0.5px solid #ddd !important;
+  margin-bottom: -1px;
+
+  .logo {
+    img {
+      height: 56px;
+      max-height: 56px;
+    }
+
+    &:hover,
+    &:focus {
+      outline: none;
+      opacity: 0.9;
+    }
+  }
+
+  .header-white {
+    padding: 10px;
+
+    @media only screen and (min-width: 768px) {
+      padding: 10px 0;
+    }
+  }
+}
+
+.searchbox {
+  width: 100%;
+
+  @media only screen and (min-width: 1100px) {
+    width: calc(100% - 284px);
+    max-width: 490px;
+  }
+
+  .ui.icon.button {
+    background: $qr-btn;
+    padding: 4px 7px;
+  }
+
+  .searchbox-inner {
+    height: 30px;
+    border: 1px solid $dull-color;
+    opacity: 1;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+}
+
+
+.qr-code-btn {
+  background: $white-color !important;
+  color: $primary-color !important;
+  font-size: 0.86rem !important;
+  border-radius: 3px !important;
+  font-weight: bold;
+  border: 1px solid $dull-color !important;
+  box-shadow: none !important;
+  height: 30px !important;
+  padding: 8px 15px !important;
+  
+  .qrcode {
+    color: $primary-color !important;
+    font-size: 1.3em;
+  }
+}
+
+.search-qrcode-divider {
+  opacity: 0.4;
+  color: $white-color;
+  font-size: 22px;
+}
+
+.ui.sidebar.visible {
+  &.right {
+    & ~ .fixed,
+    & ~ .pusher {
+      transform: translate3d(0, 0, 0) !important;
+      height: 100vh;
+    }
+  }
+
+  &.uncover {
+    z-index: 4;
+    border: 0;
+  }
+}
+
+*[dir="rtl"] {
+  .ui.right.sidebar {
+    right: auto!important;
+    left: 0!important;
+  }
+  .ui.vertical.menu .item>i.icon {
+    float: left;
+  }
+}
+
+.ui.menu .language-selector {
+  font-size: 0.86rem;
+
+  @media screen and (min-width: 992px) {
+    color: $white-color;
+  }
+
+  .ui.dropdown {
+    border: 1px solid $dull-color;
+    color: $primary-color;
+    font-size: 0.86rem;
+    border-radius: 3px;
+    font-weight: bold;
+    height: 30px;
+    padding: 7px 15px;
+
+    @media screen and (min-width: 1100px) {
+      color: $white-color;
+      border: 0;
+      font-weight: 500;
+    }
+
+    .menu {
+      width: 100%;
+
+      & > .item {
+        font-size: 0.86rem !important;
+      }
+
+      & > .active.item {
+        color: $primary-color !important;
+      }
+    }
+  }
+}
+*[dir="rtl"] {
+  .ui.menu .language-selector .ui.dropdown>.dropdown.icon{
+    margin: 0 1em 0 0;
+  }
+}
+
+.profile-avtar:hover {
+  opacity: 1;
+}
+

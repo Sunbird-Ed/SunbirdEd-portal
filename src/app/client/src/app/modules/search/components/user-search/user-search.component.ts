@@ -13,7 +13,7 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
 @Component({
   selector: 'app-user-search',
   templateUrl: './user-search.component.html',
-  styleUrls: ['./user-search.component.css']
+  styleUrls: ['./user-search.component.scss']
 })
 export class UserSearchComponent implements OnInit {
   private searchService: SearchService;
@@ -102,6 +102,16 @@ export class UserSearchComponent implements OnInit {
   rootOrgId: string;
   userProfile: any;
   inviewLogs: any = [];
+
+  customStyle = {
+    backgroundColor: '#ffffff',
+    border: '1px solid #fff',
+    boxShadow: '0 0 6px 0 rgba(0,0,0,0.38)',
+    borderRadius: '50%',
+    color: '#024F9D',
+    fontWeight: 'bold',
+    fontFamily: 'inherit'
+  };
   /**
      * Constructor to create injected service(s) object
      * Default method of Draft Component class

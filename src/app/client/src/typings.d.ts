@@ -23,6 +23,7 @@ interface JQuery {
   topicTreePicker(options?: any)
   iziModal(options?: any);
   dropdown(options?: any);
+  DataTable(options?: any);
 }
 
 // TreeModel helps to manipulate and traverse through the tree model.

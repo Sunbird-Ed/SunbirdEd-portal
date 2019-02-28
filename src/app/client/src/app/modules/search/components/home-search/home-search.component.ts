@@ -13,8 +13,7 @@ import { takeUntil, map, mergeMap, first, filter, debounceTime, catchError } fro
 import { CacheService } from 'ng2-cache-service';
 
 @Component({
-  templateUrl: './home-search.component.html',
-  styleUrls: ['./home-search.component.css']
+  templateUrl: './home-search.component.html'
 })
 export class HomeSearchComponent implements OnInit, OnDestroy {
 

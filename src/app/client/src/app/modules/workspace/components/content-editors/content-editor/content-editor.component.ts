@@ -9,7 +9,7 @@ import { environment } from '@sunbird/environment';
 import { WorkSpaceService } from '../../../services';
 import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest, of, throwError } from 'rxjs';
-import { map, mergeMap, tap, delay } from 'rxjs/operators';
+import { map, mergeMap, tap, delay, first } from 'rxjs/operators';
 jQuery.fn.iziModal = iziModal;
 
 /**
@@ -17,8 +17,7 @@ jQuery.fn.iziModal = iziModal;
  */
 @Component({
   selector: 'app-content-editor',
-  templateUrl: './content-editor.component.html',
-  styleUrls: ['./content-editor.component.css']
+  templateUrl: './content-editor.component.html'
 })
 export class ContentEditorComponent implements OnInit, OnDestroy {
 
@@ -32,6 +31,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   public contentDetails: any;
   public ownershipType: Array<string>;
   public queryParams: object;
+  public videoMaxSize: any;
+
   /**
   * Default method of class ContentEditorComponent
   */
@@ -44,13 +45,15 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.buildNumber = buildNumber ? buildNumber.value : '1.0';
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+    this.videoMaxSize = (<HTMLInputElement>document.getElementById('videoMaxSize')) ?
+      (<HTMLInputElement>document.getElementById('videoMaxSize')).value : '100';
   }
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
     this.routeParams = this.activatedRoute.snapshot.params;
     this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.disableBrowserBackButton();
-    this.getDetails().pipe(
+    this.getDetails().pipe( first(),
       tap(data => {
         if (data.tenantDetails) {
           this.logo = data.tenantDetails.logo;
@@ -81,7 +84,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded'].includes(this.routeParams.state);
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
-    if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
+    const disableLock = false; // lock api issue hot fix
+    if (disableLock && (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus)) {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
       this.editorService.getOwnershipType(), this.lockContent()).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
@@ -197,6 +201,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.config.aws_s3_urls = this.userService.cloudStorageUrls || [];
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
     window.config.lock = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
+    window.config.videoMaxSize = this.videoMaxSize;
   }
   /**
    * checks the permission using state, status and userId
@@ -244,7 +249,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('contentEditor')) {
       document.getElementById('contentEditor').remove();
     }
-    this.retireLock();
+    // this.retireLock(); // lock api hot fix
+    this.redirectToWorkSpace(); // lock api hot fix
   }
 
   retireLock () {

@@ -19,8 +19,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-batch-list',
-  templateUrl: './batch-list.component.html',
-  styleUrls: ['./batch-list.component.css']
+  templateUrl: './batch-list.component.html'
 })
 export class BatchListComponent extends WorkSpace implements OnInit {
 

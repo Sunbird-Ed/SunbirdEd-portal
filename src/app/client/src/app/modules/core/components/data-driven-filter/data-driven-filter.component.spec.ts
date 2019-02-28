@@ -15,12 +15,11 @@ import {
 } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
-import * as mockData from './data-driven-filter.component.spec.data';
 
 describe('DataDrivenFilterComponent', () => {
   let component: DataDrivenFilterComponent;
   let fixture: ComponentFixture<DataDrivenFilterComponent>;
-  let frameworkService, formService, cacheService, userService, publicDataService;
+  let frameworkService, formService, cacheService, userService, publicDataService, resourceService;
   let mockHashTagId: string, mockFrameworkInput: string;
   let mockFrameworkCategories: Array<any> = [];
   let mockFormFields: Array<any> = [];
@@ -29,18 +28,7 @@ describe('DataDrivenFilterComponent', () => {
     navigate = jasmine.createSpy('navigate');
     url = '/explore/1?';
   }
-  const resourceBundle = {
-    'messages': {
-      'emsg': {
-        'm0005': 'api failed, please try again'
-      },
-      'stmsg': {
-        'm0018': 'We are fetching content...',
-        'm0008': 'no-results',
-        'm0033': 'You dont have any content'
-      }
-    }
-  };
+
   class FakeActivatedRoute {
     queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
     snapshot = {
@@ -59,10 +47,9 @@ describe('DataDrivenFilterComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
-      providers: [ConfigService, CacheService,
+      providers: [ConfigService, CacheService, ResourceService,
         { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useClass: FakeActivatedRoute },
-        { provide: ResourceService, useValue: resourceBundle }],
+        { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -75,6 +62,7 @@ describe('DataDrivenFilterComponent', () => {
     formService = TestBed.get(FormService);
     cacheService = TestBed.get(CacheService);
     userService = TestBed.get(UserService);
+    resourceService = TestBed.get(ResourceService);
     publicDataService = TestBed.get(PublicDataService);
     spyOn(publicDataService, 'get').and.callFake((options) => {
       if (options.url === 'channel/v1/read/' + mockHashTagId && makeChannelReadSuc) {
@@ -100,6 +88,7 @@ describe('DataDrivenFilterComponent', () => {
     makeChannelReadSuc = true;
     makeFrameworkReadSuc = true;
     makeFormReadSuc = true;
+    resourceService._languageSelected.next({value: 'en', label: 'English', dir: 'ltr'});
     spyOn(cacheService, 'get').and.returnValue(undefined);
     spyOn(cacheService, 'set').and.returnValue(undefined);
     spyOn(component.dataDrivenFilter, 'emit').and.returnValue([]);
@@ -115,6 +104,8 @@ describe('DataDrivenFilterComponent', () => {
     expect(component.router.navigate).toHaveBeenCalled();
   });
   it('should apply filters', () => {
+    component.formFieldProperties = [{code: 'subject'}];
+    component.formInputData = {subject: 'Math'};
     component.applyFilters();
     expect(component.router.navigate).toHaveBeenCalled();
   });

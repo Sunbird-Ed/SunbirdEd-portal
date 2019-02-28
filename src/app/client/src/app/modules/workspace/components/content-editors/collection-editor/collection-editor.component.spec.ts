@@ -8,7 +8,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NavigationHelperService, ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
 import { EditorService } from '@sunbird/workspace';
-import { ContentService, UserService, LearnerService, CoreModule, TenantService } from '@sunbird/core';
+import { ContentService, UserService, LearnerService, CoreModule, TenantService, FrameworkService } from '@sunbird/core';
 import { mockRes } from './collection-editor.component.spec.data';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WorkSpaceService } from '../../../services';
@@ -52,8 +52,12 @@ describe('CollectionEditorComponent', () => {
   });
 
   it('should fetch tenant and collection details and set logo and collection details if success',
-  inject([EditorService, ToasterService, TenantService, WorkSpaceService],
-    (editorService, toasterService, tenantService, workspaceService) => {
+  inject([EditorService, ToasterService, TenantService, WorkSpaceService, FrameworkService],
+    (editorService, toasterService, tenantService, workspaceService, frameworkService) => {
+      frameworkService._frameWorkData$ = mockRes.frameworkData;
+      frameworkService._frameworkData$.next({
+      err: null, frameworkdata: mockRes.frameworkData
+      });
       tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData });
       spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.successResult));
       spyOn(workspaceService, 'toggleWarning').and.callFake(() => { });

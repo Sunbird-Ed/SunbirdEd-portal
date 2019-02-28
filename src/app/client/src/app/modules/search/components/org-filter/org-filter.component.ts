@@ -7,8 +7,7 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 @Component({
   selector: 'app-org-filter',
-  templateUrl: './org-filter.component.html',
-  styleUrls: ['./org-filter.component.css']
+  templateUrl: './org-filter.component.html'
 })
 export class OrgFilterComponent implements OnInit {
   queryParams: any;

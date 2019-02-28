@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import {
   ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile, Framework,
-  ILoaderMessage, NavigationHelperService
+  ILoaderMessage, NavigationHelperService , BrowserCacheTtlService
 } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService } from './../../services';
@@ -13,11 +13,11 @@ import { DefaultTemplateComponent } from '../content-creation-default-template/c
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import { WorkSpace } from '../../classes/workspace';
 import { WorkSpaceService } from '../../services';
-
+import { combineLatest, Subscription, Subject, of, throwError } from 'rxjs';
+import { takeUntil, first, mergeMap, map, tap , filter, catchError} from 'rxjs/operators';
 @Component({
   selector: 'app-data-driven',
-  templateUrl: './data-driven.component.html',
-  styleUrls: ['./data-driven.component.css']
+  templateUrl: './data-driven.component.html'
 })
 export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy {
   @ViewChild('formData') formData: DefaultTemplateComponent;
@@ -108,7 +108,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
 	*/
   telemetryImpression: IImpressionEventInput;
 
-
+  public unsubscribe = new Subject<void>();
   constructor(
     public searchService: SearchService,
     public workSpaceService: WorkSpaceService,
@@ -122,7 +122,8 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
     configService: ConfigService,
     formService: FormService,
     private _cacheService: CacheService,
-    public navigationHelperService: NavigationHelperService
+    public navigationHelperService: NavigationHelperService,
+    public browserCacheTtlService: BrowserCacheTtlService
   ) {
     super(searchService, workSpaceService, userService);
     this.activatedRoute = activatedRoute;
@@ -147,12 +148,20 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
 
   ngOnInit() {
 
-     this.checkForPreviousRouteForRedirect();
-
-    /**
+    this.checkForPreviousRouteForRedirect();
+    if (_.lowerCase(this.contentType) === 'course') {
+      this.getCourseFrameworkId().pipe(takeUntil(this.unsubscribe)).subscribe(data => {
+        this.framework = data;
+        this.fetchFrameworkMetaData();
+      }, err => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+       });
+    } else {
+      /**
      * fetchFrameworkMetaData is called to config the form data and framework data
      */
-    this.fetchFrameworkMetaData();
+      this.fetchFrameworkMetaData();
+    }
     /***
  * Call User service to get user data
  */
@@ -187,11 +196,13 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
     this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
       if (!frameworkData.err) {
         this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
-        this.framework = frameworkData.frameworkdata['defaultFramework'].code;
+        if (_.lowerCase(this.contentType) !== 'course') {
+          this.framework = frameworkData.frameworkdata['defaultFramework'].code;
+        }
         /**
-  * isCachedDataExists will check data is exists in cache or not. If exists should not call
-  * form api otherwise call form api and get form data
-  */
+        * isCachedDataExists will check data is exists in cache or not. If exists should not call
+        * form api otherwise call form api and get form data
+        */
         this.isCachedDataExists = this._cacheService.exists(this.contentType + this.formAction);
         if (this.isCachedDataExists) {
           const data: any | null = this._cacheService.get(this.contentType + this.formAction);
@@ -317,5 +328,23 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
 
   redirect() {
     this.router.navigate(['/workspace/content/create']);
+  }
+  /**
+  * fetchCourseFrameworkId (i.e TPD)
+  */
+  getCourseFrameworkId() {
+    const framework = this._cacheService.get('course' + 'framework');
+    if (framework) {
+      return of(framework);
+    } else {
+     return this.frameworkService.getCourseFramework()
+        .pipe(map((data) => {
+          const frameWork = _.get(data.result.response , 'value');
+          this._cacheService.set('course' + 'framework', frameWork, { maxAge: this.browserCacheTtlService.browserCacheTtl });
+          return frameWork;
+        }), catchError((error) => {
+          return of(false);
+        }));
+    }
   }
 }

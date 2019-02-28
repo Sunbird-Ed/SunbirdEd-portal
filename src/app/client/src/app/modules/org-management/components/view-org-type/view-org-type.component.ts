@@ -12,8 +12,7 @@ import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata } from 
  */
 @Component({
   selector: 'app-view-org-type',
-  templateUrl: './view-org-type.component.html',
-  styleUrls: ['./view-org-type.component.css']
+  templateUrl: './view-org-type.component.html'
 })
 export class ViewOrgTypeComponent implements OnInit, OnDestroy {
   public addOrganizationType: IInteractEventEdata;

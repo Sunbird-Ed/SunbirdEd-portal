@@ -135,7 +135,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let student of dashboarData | orderBy: order:reverse:'case-insensitive' | filter: searchText : ['userName', 'org']">
-                <td *ngIf="student.progress === 100">Done</td>
+                <td *ngIf="student.progress === 100">{{resourceService?.frmelmnts?.lbl?.done}}</td>
                 <td class="ui green header text-font" *ngIf="(student.progress !== 100 && student.progress > 90)">{{student.progress}}%</td>
                 <td class="ui orange header text-font" *ngIf="(student.progress !== 100 && student.progress > 30)">{{student.progress}}%</td>
                 <td class="ui red header text-font" *ngIf="(student.progress !== 100 && student.progress < 30)">{{student.progress}}%</td>
@@ -149,7 +149,7 @@
                 <td>{{student.enrolledOn | dateFormat}}</td>
               </tr>
               <tr *ngIf="dashboarData && dashboarData.length === 0">
-                <td id="noRecordsFound">No data found</td>
+                <td id="noRecordsFound">{{resourceService?.frmelmnts?.lbl?.noDataFound}}</td>
               </tr>
             </tbody>
           </table>

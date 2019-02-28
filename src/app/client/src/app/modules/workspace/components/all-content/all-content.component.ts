@@ -17,8 +17,7 @@ import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semanti
 
 @Component({
   selector: 'app-all-content',
-  templateUrl: './all-content.component.html',
-  styleUrls: ['./all-content.component.css']
+  templateUrl: './all-content.component.html'
 })
 export class AllContentComponent extends WorkSpace implements OnInit {
   @ViewChild('modalTemplate')

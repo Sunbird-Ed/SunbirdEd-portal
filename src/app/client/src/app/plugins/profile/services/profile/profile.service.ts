@@ -93,4 +93,13 @@ export class ProfileService {
     };
     return this.learnerService.get(options);
   }
+
+  public getUserLocation(request) {
+    const data = this.formatRequest(request);
+    const options = {
+      url: this.configService.urlConFig.URLS.USER.LOCATION_SEARCH,
+      data: data
+    };
+    return this.learnerService.post(options);
+  }
 }

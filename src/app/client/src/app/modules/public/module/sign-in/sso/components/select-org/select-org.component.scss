@@ -1,0 +1,129 @@
+@import "variables";
+
+.ui.raised.shadow.container.segment {
+    margin: 20px auto !important;
+    padding: 0;
+    padding: 10px;
+    width: calc(100% - 4%) !important;
+    min-height: 90vh;
+}
+
+@media only screen and (min-width: 1024px) {
+    .ui.raised.shadow.container.segment {
+        margin: 35px auto !important;
+        width: 944px !important;
+        padding: 20px;
+        box-shadow: 0 2px 16px 0 rgba(0,0,0,0.2);
+    }
+}
+@media only screen and (max-width: 767px) {
+    .ui.form .fields {
+        flex-wrap: nowrap;
+    }
+}
+.ui.form.borderd input[type=text],
+.ui.form.borderd input[type=text]:focus,
+.ui.form.borderd input[type=email],
+.ui.form.borderd input[type=number],
+.ui.form.borderd input[type=tel],
+.ui.form.borderd input[type=password],
+.ui.form.borderd input[type=url],
+.ui.form.borderd input:not([type]),
+.ui.form.borderd input:not([type]):focus {
+    border: 1px solid $form-input-border-color;
+    padding: 0.8em 0 0.8em 1em;
+    border-radius: 4px;
+}
+.ui.form.borderd input:focus {
+    border-color: $form-input-border-active-color !important;
+}
+.ui.light-sea-green.button {
+    background: $signup-btn-bg-active-color;
+    color: $white-color;
+    height: 38px !important;
+}
+.ui.grey.button {
+    background: $signup-btn-bg-not-active-color;
+    color: $white-color;
+    pointer-events: none !important;
+    cursor: not-allowed !important; 
+    height: 38px !important;
+}
+.grey.text {
+    color: $signup-thankyou-text-color;
+}
+.orange.text {
+    color: $danger-color;
+}
+.orange-border {
+    border-color: $danger-color !important;
+}
+.blue.text {
+    color: $primary-color;
+}
+.ui.basic.blue.navigation.label {
+    background: $white-color !important;
+    color: $primary-color !important;
+    border: 0  !important;
+    padding-left: 0;
+    font-size: 1rem;
+    font-weight: normal;
+    padding:10px 0;
+}
+.ui.basic.error.label {
+    background: $white-color !important;
+    color: $danger-color !important;
+    border: 0 !important;
+    padding-left: 0;
+    font-size: 1rem;
+    font-weight: normal;
+    padding:10px 0;
+}
+.fullpage {
+    ::ng-deep {
+        .ui.fullscreen.modal>.close {
+            opacity: 0;
+            pointer-events: none;
+        }        
+    }
+}
+i.close.icon {
+    font-size: 1.5rem;
+    position: absolute;
+    right: 6px;
+    top: 12px;
+}
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.ui.form .field>label {
+    font-size: 1rem !important;
+    font-weight: normal;
+}
+.width-300 {
+    width: 300px !important;
+}
+
+
+.ui[class*="left icon"].input>input {
+    padding-left: 3.37142857em !important;
+}
+
+.ui.left.icon.input .icon {
+    left: 11px;
+    top: 14px;
+    font-size: 1rem;
+    font-family: inherit;
+}
+.opacity-1 {
+    opacity: 1 !important;
+}
+
+.signup-background {
+  background: url('/assets/images/bg.svg') no-repeat center center fixed;
+  background-size: cover;
+  width: 100%;
+  position: fixed;
+}

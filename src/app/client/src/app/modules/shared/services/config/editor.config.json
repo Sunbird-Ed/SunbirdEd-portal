@@ -11,7 +11,9 @@
                 "isFlagReviewer": false
             },
             "nodeDisplayCriteria": {
-                "contentType": ["Collection"]
+                "contentType": [
+                    "Collection"
+                ]
             },
             "corePluginsPackaged": true,
             "modalId": "collectionEditor",
@@ -19,9 +21,10 @@
             "apislug": "/action",
             "alertOnUnload": true,
             "loadingImage": "",
-            "plugins": [{
+            "plugins": [
+                {
                     "id": "org.ekstep.sunbirdcommonheader",
-                    "ver": "1.8",
+                    "ver": "1.9",
                     "type": "plugin"
                 },
                 {
@@ -31,200 +34,208 @@
                 },
                 {
                     "id": "org.ekstep.metadata",
-                    "ver": "1.2",
+                    "ver": "1.3",
                     "type": "plugin"
                 },
                 {
                     "id": "org.ekstep.lessonbrowser",
-                    "ver": "1.4",
+                    "ver": "1.5",
                     "type": "plugin"
                 }
             ],
             "localDispatcherEndpoint": "/collection-editor/telemetry",
             "previewConfig": {
-            "repos": ["/sunbird-plugins/renderer"],
-            "plugins": [{
-                "id": "org.sunbird.player.endpage",
-                "ver": 1.1,
-                "type": "plugin"
-            }],
-            "splash": {
-                "text": "",
-                "icon": "",
-                "bgImage": "assets/icons/splacebackground_1.png",
-                "webLink": ""
-            },
-            "overlay": {
-                "showUser": false
-            },
-            "showEndPage": false
+                "repos": [
+                    "/sunbird-plugins/renderer"
+                ],
+                "plugins": [
+                    {
+                        "id": "org.sunbird.player.endpage",
+                        "ver": 1.1,
+                        "type": "plugin"
+                    }
+                ],
+                "splash": {
+                    "text": "",
+                    "icon": "",
+                    "bgImage": "assets/icons/splacebackground_1.png",
+                    "webLink": ""
+                },
+                "overlay": {
+                    "showUser": false
+                },
+                "showEndPage": false
             },
             "editorType": "Collection"
         },
-        "COURSE_ARRAY": [{
-            "type": "Course",
-            "label": "Course",
-            "isRoot": true,
-            "editable": true,
-            "childrenTypes": [
-                "CourseUnit",
-                "Collection",
-                "Resource"
-            ],
-            "addType": "Editor",
-            "iconClass": "fa fa-book"
+        "COURSE_ARRAY": [
+            {
+                "type": "Course",
+                "label": "Course",
+                "isRoot": true,
+                "editable": true,
+                "childrenTypes": [
+                    "CourseUnit",
+                    "Collection",
+                    "Resource"
+                ],
+                "addType": "Editor",
+                "iconClass": "fa fa-book"
             },
             {
-            "type": "CourseUnit",
-            "label": "Course Unit",
-            "isRoot": false,
-            "editable": true,
-            "childrenTypes": [
-                "CourseUnit",
-                "Collection",
-                "Resource"
-            ],
-            "addType": "Editor",
-            "iconClass": "fa fa-folder-o"
+                "type": "CourseUnit",
+                "label": "Course Unit",
+                "isRoot": false,
+                "editable": true,
+                "childrenTypes": [
+                    "CourseUnit",
+                    "Collection",
+                    "Resource"
+                ],
+                "addType": "Editor",
+                "iconClass": "fa fa-folder-o"
             },
             {
-            "type": "Collection",
-            "label": "Collection",
-            "isRoot": false,
-            "editable": false,
-            "childrenTypes": [],
-            "addType": "Browser",
-            "iconClass": "fa fa-file-o"
+                "type": "Collection",
+                "label": "Collection",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
             },
             {
-            "type": "Resource",
-            "label": "Resource",
-            "isRoot": false,
-            "editable": false,
-            "childrenTypes": [],
-            "addType": "Browser",
-            "iconClass": "fa fa-file-o"
+                "type": "Resource",
+                "label": "Resource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
             }
         ],
-        "COLLECTION_ARRAY": [{
-            "type": "Collection",
-            "label": "Collection",
-            "isRoot": true,
-            "editable": true,
-            "childrenTypes": [
-                "Collection",
-                "Resource"
-            ],
-            "addType": "Editor",
-            "iconClass": "fa fa-folder-o"
+        "COLLECTION_ARRAY": [
+            {
+                "type": "Collection",
+                "label": "Collection",
+                "isRoot": true,
+                "editable": true,
+                "childrenTypes": [
+                    "Collection",
+                    "Resource"
+                ],
+                "addType": "Editor",
+                "iconClass": "fa fa-folder-o"
             },
             {
-            "type": "Collection",
-            "label": "Collection",
-            "isRoot": false,
-            "editable": false,
-            "childrenTypes": [],
-            "addType": "Browser",
-            "iconClass": "fa fa-file-o"
+                "type": "Collection",
+                "label": "Collection",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
             },
             {
-            "type": "Resource",
-            "label": "Resource",
-            "isRoot": false,
-            "editable": false,
-            "childrenTypes": [],
-            "addType": "Browser",
-            "iconClass": "fa fa-file-o"
+                "type": "Resource",
+                "label": "Resource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
             }
         ],
-        "LESSON_PLAN": [{
-            "type": "LessonPlan",
-            "label": "LessonPlan",
-            "isRoot": true,
-            "editable": true,
-            "childrenTypes": [
-                "LessonPlanUnit",
-                "Collection",
-                "Resource"
-            ],
-            "addType": "Editor",
-            "iconClass": "fa fa-book"
+        "LESSON_PLAN": [
+            {
+                "type": "LessonPlan",
+                "label": "LessonPlan",
+                "isRoot": true,
+                "editable": true,
+                "childrenTypes": [
+                    "LessonPlanUnit",
+                    "Collection",
+                    "Resource"
+                ],
+                "addType": "Editor",
+                "iconClass": "fa fa-book"
             },
             {
-            "type": "LessonPlanUnit",
-            "label": "LessonPlan Unit",
-            "isRoot": false,
-            "editable": true,
-            "childrenTypes": [
-                "LessonPlanUnit",
-                "Collection",
-                "Resource"
-            ],
-            "addType": "Editor",
-            "iconClass": "fa fa-folder-o"
+                "type": "LessonPlanUnit",
+                "label": "LessonPlan Unit",
+                "isRoot": false,
+                "editable": true,
+                "childrenTypes": [
+                    "LessonPlanUnit",
+                    "Collection",
+                    "Resource"
+                ],
+                "addType": "Editor",
+                "iconClass": "fa fa-folder-o"
             },
             {
-            "type": "Collection",
-            "label": "Collection",
-            "isRoot": false,
-            "editable": false,
-            "childrenTypes": [],
-            "addType": "Browser",
-            "iconClass": "fa fa-file-o"
+                "type": "Collection",
+                "label": "Collection",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
             },
             {
-            "type": "Resource",
-            "label": "Resource",
-            "isRoot": false,
-            "editable": false,
-            "childrenTypes": [],
-            "addType": "Browser",
-            "iconClass": "fa fa-file-o"
+                "type": "Resource",
+                "label": "Resource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
             }
         ],
-        "DEFAULT_CONFIG": [{
-            "type": "TextBook",
-            "label": "Textbook",
-            "isRoot": true,
-            "editable": true,
-            "childrenTypes": [
-                "TextBookUnit",
-                "Collection",
-                "Resource"
-            ],
-            "addType": "Editor",
-            "iconClass": "fa fa-book"
+        "DEFAULT_CONFIG": [
+            {
+                "type": "TextBook",
+                "label": "Textbook",
+                "isRoot": true,
+                "editable": true,
+                "childrenTypes": [
+                    "TextBookUnit",
+                    "Collection",
+                    "Resource"
+                ],
+                "addType": "Editor",
+                "iconClass": "fa fa-book"
             },
             {
-            "type": "TextBookUnit",
-            "label": "Textbook Unit",
-            "isRoot": false,
-            "editable": true,
-            "childrenTypes": [
-                "TextBookUnit",
-                "Collection",
-                "Resource"
-            ],
-            "addType": "Editor",
-            "iconClass": "fa fa-folder-o"
+                "type": "TextBookUnit",
+                "label": "Textbook Unit",
+                "isRoot": false,
+                "editable": true,
+                "childrenTypes": [
+                    "TextBookUnit",
+                    "Collection",
+                    "Resource"
+                ],
+                "addType": "Editor",
+                "iconClass": "fa fa-folder-o"
             },
             {
-            "type": "Collection",
-            "label": "Collection",
-            "isRoot": false,
-            "editable": false,
-            "childrenTypes": [],
-            "addType": "Browser",
-            "iconClass": "fa fa-file-o"
+                "type": "Collection",
+                "label": "Collection",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
             },
             {
-            "type": "Resource",
-            "label": "Resource",
-            "isRoot": false,
-            "editable": false,
-            "childrenTypes": [],
-            "addType": "Browser",
-            "iconClass": "fa fa-file-o"
+                "type": "Resource",
+                "label": "Resource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
             }
         ],
         "collectionState": [
@@ -272,56 +283,62 @@
             "build_number": "1.0",
             "headerLogo": "",
             "aws_s3_urls": [],
-            "plugins": [{
-                "id": "org.ekstep.sunbirdcommonheader",
-                "ver": "1.8",
-                "type": "plugin"
-            },
-            {
-                "id": "org.ekstep.sunbirdmetadata",
-                "ver": "1.1",
-                "type": "plugin"
-            },
-            {
-                "id": "org.ekstep.metadata",
-                "ver": "1.2",
-                "type": "plugin"
-            },
-            {
-                "id": "org.ekstep.questionset",
-                "ver": "1.0",
-                "type": "plugin"
-            },
-            {
-                "id": "org.ekstep.video",
-                "ver": "1.3",
-                "type": "plugin"
-            },	
-            {	
-                "id": "org.ekstep.reviewercomments",	
-                "ver": "1.0",	
-                "type": "plugin"	
-            }],
+            "plugins": [
+                {
+                    "id": "org.ekstep.sunbirdcommonheader",
+                    "ver": "1.9",
+                    "type": "plugin"
+                },
+                {
+                    "id": "org.ekstep.sunbirdmetadata",
+                    "ver": "1.1",
+                    "type": "plugin"
+                },
+                {
+                    "id": "org.ekstep.metadata",
+                    "ver": "1.3",
+                    "type": "plugin"
+                },
+                {
+                    "id": "org.ekstep.questionset",
+                    "ver": "1.0",
+                    "type": "plugin"
+                },
+                {
+                    "id": "org.ekstep.video",
+                    "ver": "1.4",
+                    "type": "plugin"
+                },
+                {
+                    "id": "org.ekstep.reviewercomments",
+                    "ver": "1.0",
+                    "type": "plugin"
+                }
+            ],
             "dispatcher": "local",
             "localDispatcherEndpoint": "/content-editor/telemetry",
             "showHelp": false,
             "previewConfig": {
-            "repos": ["/sunbird-plugins/renderer"],
-            "plugins": [{
-                "id": "org.sunbird.player.endpage",
-                "ver": 1.1,
-                "type": "plugin"
-            }],
-            "splash": {
-                "text": "",
-                "icon": "",
-                "bgImage": "assets/icons/splacebackground_1.png",
-                "webLink": ""
-            },
-            "overlay": {
-                "showUser": false
-            },
-            "showEndPage": false
+                "repos": [
+                    "/sunbird-plugins/renderer"
+                ],
+                "plugins": [
+                    {
+                        "id": "org.sunbird.player.endpage",
+                        "ver": 1.1,
+                        "type": "plugin"
+                    }
+                ],
+                "splash": {
+                    "text": "",
+                    "icon": "",
+                    "bgImage": "assets/icons/splacebackground_1.png",
+                    "webLink": ""
+                },
+                "overlay": {
+                    "showUser": false
+                },
+                "showEndPage": false
             },
             "pluginsRepoUrl": "/plugins/v1/search"
         }
@@ -335,26 +352,34 @@
             "alertOnUnload": true,
             "headerLogo": "",
             "loadingImage": "",
-            "plugins": [{
+            "plugins": [
+                {
                     "id": "org.ekstep.sunbirdcommonheader",
-                    "ver": "1.8",
+                    "ver": "1.9",
                     "type": "plugin"
-                    }, {
+                },
+                {
                     "id": "org.ekstep.sunbirdmetadata",
                     "ver": "1.1",
                     "type": "plugin"
-                    }, {
+                },
+                {
                     "id": "org.ekstep.metadata",
-                    "ver": "1.2",
+                    "ver": "1.3",
                     "type": "plugin"
-                }],
+                }
+            ],
             "previewConfig": {
-                "repos": ["/sunbird-plugins/renderer"],
-                "plugins": [{
-                    "id": "org.sunbird.player.endpage",
-                    "ver": 1.1,
-                    "type": "plugin"
-                }],
+                "repos": [
+                    "/sunbird-plugins/renderer"
+                ],
+                "plugins": [
+                    {
+                        "id": "org.sunbird.player.endpage",
+                        "ver": 1.1,
+                        "type": "plugin"
+                    }
+                ],
                 "splash": {
                     "text": "",
                     "icon": "",

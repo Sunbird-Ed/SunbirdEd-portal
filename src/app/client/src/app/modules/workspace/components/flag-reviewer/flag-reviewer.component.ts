@@ -18,8 +18,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 */
 @Component({
   selector: 'app-flag-reviewer',
-  templateUrl: './flag-reviewer.component.html',
-  styleUrls: ['./flag-reviewer.component.css']
+  templateUrl: './flag-reviewer.component.html'
 })
 export class FlagReviewerComponent extends WorkSpace implements OnInit {
   /**

@@ -1,33 +1,5 @@
-.disableIcon {
-    pointer-events: none;
-    opacity: 0.45;
-}
-
-::ng-deep .ui.floating.main-header-search-dropdown.dropdown .menu {
-    top:25px;
-}
-
-.ui.icon.button {
-    background: #edf4f9;
-    padding: 1px 4px 7px 7px;
-    .primary-search-icon {
-      font-size: 1.2em;       
-    }
-}
-
-::ng-deep {
-    .ui.fluid.action.input.primary-search-input {
-        height: 35px;
-        border: 1px solid #60D4EB;
-        opacity: 1;
-        border-radius: 5px;
-    }    
-}
-
-@media only screen and (min-width: 767px) {
-    ::ng-deep {
-        .ui.fluid.action.input.primary-search-input {
-            height: 29px;
-        }    
-    }
+.ui.button.disabled,
+.disabled {
+  pointer-events: none !important;
+  opacity: 0.95 !important;
 }
