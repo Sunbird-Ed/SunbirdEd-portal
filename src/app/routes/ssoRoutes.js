@@ -28,7 +28,7 @@ module.exports = (app) => {
       req.session.userDetails = userDetails;
       if(!_.isEmpty(userDetails) && userDetails.phone) {
         redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
-        console.log('sso session create v2 api, successfully redirected success page', jwtPayload, req.query, userDetails, redirectUrl);
+        console.log('sso session create v2 api, successfully redirected to success page', jwtPayload, req.query, userDetails, redirectUrl);
       } else {
         redirectUrl = updatePhoneUrl; // verify phone then create user
         console.log('sso session create v2 api, successfully redirected to update phone page', jwtPayload, req.query, userDetails, redirectUrl);
