@@ -13,8 +13,13 @@
       text-transform: uppercase;
     }
   }
+  .sb-pageSection-footer {
+    color: $sb-page-sections-divider-color;
+  }
 }
-
+.last .sb-pageSection-footer {
+  display: none !important;
+}
 .sb-card {
     width: $sb-card-width;
     height: $sb-card-height;
@@ -23,10 +28,6 @@
     border: $sb-card-border;
     border-radius: 4px;
     cursor: pointer;
-    &:hover,
-    &:focus {
-
-    }
     .image {
       width: 70px;
       height: 92px;
@@ -140,8 +141,4 @@
       border-radius: 0 4px 4px 4px;
     }
   }
-}
-
-.last .pageSection-Divider {
-  display: none !important;
 }

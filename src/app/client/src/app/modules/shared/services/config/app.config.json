@@ -219,7 +219,6 @@
       "orgdetails": "orgName,email"
     },
     "slideConfig": {
-      "variableWidth": true,
       "slidesToShow": 4,
       "slidesToScroll": 4,
       "responsive": [
