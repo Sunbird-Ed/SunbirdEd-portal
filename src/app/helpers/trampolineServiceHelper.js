@@ -168,10 +168,10 @@ module.exports = {
       function (err, results) {
         telemetryHelper.logSSOEndEvent(req)
         if (err) {
-          console.log('trampoline service sign in failed',req.query['token'], err)
+          console.log('trampoline service sign in failed', jwtPayload, err)
           res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '?error=' + Buffer.from(self.errorMsg).toString('base64'))
         } else {
-          console.log('trampoline service sign in successfully', req.query['token'])
+          console.log('trampoline service sign in successfully', jwtPayload)
           if (self.payload['redirect_uri']) {
             res.redirect(self.payload['redirect_uri'])
           } else {
