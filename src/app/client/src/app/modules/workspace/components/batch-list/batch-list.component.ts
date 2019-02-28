@@ -249,6 +249,12 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
     );
   }
 
+  onCardClick (event) {
+    const batchData = event.data;
+    this.batchService.setBatchData(batchData);
+    this.route.navigate(['update/batch', batchData.identifier], {queryParamsHandling: 'merge', relativeTo: this.activatedRoute});
+  }
+
   /**
  * This method helps to navigate to different pages.
  * If page number is less than 1 or page number is greater than total number

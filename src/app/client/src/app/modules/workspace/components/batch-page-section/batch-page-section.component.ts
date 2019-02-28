@@ -157,7 +157,7 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
   /**
     * This method sets the make an api call to get all batch with page No and offset
   */
-  private fetchPageData() {
+  public fetchPageData() {
     this.showLoader = true;
     this.filters = {createdFor: this.userService.RoleOrgMap['COURSE_MENTOR']};
     if (this.category === 'created') {
@@ -181,13 +181,24 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
     });
   }
 
+  onCardClick (event) {
+    const batchData = event.data;
+    this.batchService.setBatchData(batchData);
+    this.route.navigate(['update/batch', batchData.identifier], {queryParamsHandling: 'merge', relativeTo: this.activatedRoute});
+  }
+
   /**
     This method prepares batch card data with count of partipants,
     adds userName and prepares data structure to reuse exising page section component used in
     consumption pages for content cars
   */
-  private prepareCarouselData(sections = []) {
+  public prepareCarouselData(sections = []) {
     this.batchList = _.flatten(_.map(sections, 'contents'));
+    if (!this.batchList || !this.batchList.length) {
+      this.carouselData = [];
+      this.showLoader = false;
+      return;
+    }
     const userList = _.compact(_.uniq(_.map(this.batchList, 'createdBy')));
     const { slickSize } = this.config.appConfig.CourseBatchPageSection;
     const req = {
