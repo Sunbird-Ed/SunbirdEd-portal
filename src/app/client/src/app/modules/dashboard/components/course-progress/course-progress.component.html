@@ -189,7 +189,7 @@
         </div>
         <div class="ui grid" *ngIf="showNoBatch">
           <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression">
-            <a (click)='redirect()' class="ui item basic icon circular float-ContentRight" data-tooltip="Close the dashboard"
+            <a (click)='redirect()' class="ui item basic icon circular float-ContentRight" data-tooltip="Close  Dashboard"
               appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'closeDashboard',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
               <i class="ui remove icon CloseButtonFont"></i>
             </a>
