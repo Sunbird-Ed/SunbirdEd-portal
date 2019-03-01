@@ -1,25 +1,3 @@
-.sb-pageSection {
-  @include margin($sb-page-sections-between-space);
-  .sb-pageSection-header {
-    display: flex;
-    align-items: center;
-    @include margin($sb-page-section-header-content-space);
-  }
-  .sb-pageSection-title {
-    font-size: $h5-font-size;
-    display: inline;
-    text-transform: lowercase;
-    &::first-letter{
-      text-transform: uppercase;
-    }
-  }
-  .sb-pageSection-footer {
-    color: $sb-page-sections-divider-color;
-  }
-}
-.last .sb-pageSection-footer {
-  display: none !important;
-}
 .sb-card {
     width: $sb-card-width;
     height: $sb-card-height;
@@ -28,109 +6,52 @@
     border: $sb-card-border;
     border-radius: $sb-card-border-radius;
     cursor: pointer;
+    // Card body
+    .sb-card-body {
+      padding: $sb-card-padding;
+    }
+    // Card image
     .sb-card-image {
-      width: 70px;
-      height: 92px;
-      border: $primary-border;
+      width: $sb-card-image-width;
+      height: $sb-card-image-height;
+      border: $sb-card-image-border;
+      background-color: $sb-card-image-bg-color;
+      border-radius: $sb-card-image-border-radius;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      min-width: 70px;
-      max-width: 70px;
-      background-color: $primary-background;
+      display: inline-block;
+      margin: $sb-card-image-meta-space;
       img {
         object-fit: cover;
-        width: 70px;
-        height: 92px;
-        max-width: 100%;
+        width: $sb-card-image-width;
+        height: $sb-card-image-height;
       }
     }
-    .header {
-      display: flex;
-      align-items: flex-end;
+    .sb-card-meta {
+      display: inline-block;
     }
-    .meta {
-      font-size: 0.8571rem;
-      color: $text-lightDark;
-      display: flex;
-      flex-wrap: wrap;
-      flex-direction: column;
-      height: 92px;
-      overflow: hidden;
-      width: calc(100% - 70px);
-    }
-  
-    &.course {
-      justify-content: flex-start;
-    }
-  
-    &.non-course {
-      justify-content: flex-end;
-    }
-  
-    .topic,
-    .subtopic {
-      line-height: 1.417em;
-      max-height: 2.84em;
-      overflow: hidden;
-    }
-  
-    .avatar {
-      height: 30px;
-      width: 30px;
-      object-fit: cover;
-    }
-  
-    .ui.label {
-      font-size: 0.7857rem;
-      padding: 4px 10px;
-      border-radius: 4px;
+    .sb-card-label {
+      color: $sb-card-label-color;
+      font-size: $sb-card-label-font-size;
       border: $sb-card-label-border;
-      color: $primary-color;
-      font-weight: 500;
-      width: auto;
-      align-self: flex-start;
-      background: transparent;
+      border-radius: $sb-card-label-border-radius;
+      padding: $sb-card-label-padding;
     }
-  
-    .sub-header {
-      padding: 10px 15px;
+    .sb-card-meta-item {
+      font-size: $sb-card-meta-font-size;
+      color: $sb-card-meta-color;
     }
-  
-    .title {
-      font-size: 1rem;
-      line-height: 1.429em;
-      height: 2.857em;
-      margin: 0;
-      overflow: hidden;
-      padding: 0;
-      border: 0;
-      font-weight: bold;
-      color: $primary-color !important;
+    .sb-card-title {
+      color: $sb-card-title-color;
+      font-size: $sb-card-title-font-size;
+      font-weight: $sb-card-title-font-weight;
+      margin: $sb-card-title-spacing;
     }
-  
-    .creator {
-      font-size: 1rem;
-      height: 1.5em;
-      margin-top: 0.5em;
-      color: $text-gray;
+    .sb-card-org {
+      font-size: $sb-card-meta-org-font-size;
+      color: $sb-card-meta-color;
     }
-  
-    .description {
-      font-size: 1rem;
-      line-height: 1.25em;
-      height: 6em;
-      color: $text-lightDark;
-      padding: 8px 1rem;
-      overflow: hidden;
-      word-break: break-word;
-    }
-  }
-  
-  *[lang="hi"] .sb-card .meta {
-    line-height: 1.6em;
-  }
 
+  }
 
 .sb-card,
 .profileCard {

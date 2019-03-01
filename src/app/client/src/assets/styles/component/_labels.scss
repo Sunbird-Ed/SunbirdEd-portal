@@ -5,7 +5,6 @@
     color: $white-color;
     line-height: inherit;
     @include border-radius(3px);
-    font-weight: $font-weight-bold;
     text: {
         transform: capitalize;
         decoration: none;
