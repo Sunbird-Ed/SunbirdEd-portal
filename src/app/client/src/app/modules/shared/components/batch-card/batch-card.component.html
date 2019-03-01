@@ -14,11 +14,11 @@
         </span>
       </div>
     </div>
-    <div *ngIf="batch.userName" class="content batch-content-meta">
-      <span class="mb-5 batch-card-ellipsis w-220 fs-0-92">By {{batch.userName}}</span>
-      <i class="right floated large unlock alternate icon" *ngIf="batch.enrollmentType === 'open'">
+    <div *ngIf="batch.userName" class="content batch-content-meta pr-15">
+      <span class="mb-5 batch-card-ellipsis w-200 fs-0-92">By {{batch.userName}}</span>
+      <i class="right floated unlock alternate icon fs-1-143 mr-0" *ngIf="batch.enrollmentType === 'open'">
       </i>
-      <span *ngIf="batch.courseAdditionalInfo && batch.courseAdditionalInfo.courseName" class="batch-card-ellipsis batch-course-name w-220 fs-0-92">
+      <span *ngIf="batch.courseAdditionalInfo && batch.courseAdditionalInfo.courseName" class="batch-card-ellipsis batch-course-name w-200 fs-0-92">
         {{resourceService.frmelmnts.lbl.courseName}}: {{batch.courseAdditionalInfo.courseName}}
       </span>
     </div>
