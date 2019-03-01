@@ -31,7 +31,7 @@ module.exports = (app) => {
         console.log('sso session create v2 api, successfully redirected to success page', jwtPayload.state_id, jwtPayload, req.query, userDetails, redirectUrl);
       } else {
         redirectUrl = updatePhoneUrl; // verify phone then create user
-        console.log('sso session create v2 api, successfully redirected to update phone page',jwtPayload.state_id, jwtPayload, req.query, userDetails, redirectUrl);
+        console.log('sso session create v2 api, successfully redirected to update phone page', jwtPayload.state_id, jwtPayload, req.query, userDetails, redirectUrl);
       }
     } catch (error) {
       redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error);
@@ -59,7 +59,7 @@ module.exports = (app) => {
           phoneVerified: true
         }
         await updatePhone(updatePhoneReq).catch(handleProfileUpdateError); // api need to be verified
-        console.log('sso phone updated successfully and redirected to success page',jwtPayload.state_id, req.query.phone, jwtPayload, userDetails, createUserReq, updatePhoneReq, updateRolesReq, redirectUrl, errType);
+        console.log('sso phone updated successfully and redirected to success page', jwtPayload.state_id, req.query.phone, jwtPayload, userDetails, createUserReq, updatePhoneReq, updateRolesReq, redirectUrl, errType);
       } else { // create user and update roles
         errType = 'CREATE_USER';
         createUserReq = {
@@ -96,12 +96,12 @@ module.exports = (app) => {
         console.log('sso new user read details', userDetails);
         req.session.userDetails = userDetails;
         logAuditEvent(req, createUserReq)
-        console.log('sso user creation and role updated successfully and redirected to success page',jwtPayload.state_id, req.query.phone, jwtPayload, userDetails, createUserReq, updatePhoneReq, updateRolesReq, redirectUrl, errType);
+        console.log('sso user creation and role updated successfully and redirected to success page', jwtPayload.state_id, req.query.phone, jwtPayload, userDetails, createUserReq, updatePhoneReq, updateRolesReq, redirectUrl, errType);
       }
       redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
     } catch (error) {
       redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error);
-      console.log('sso user creation/phone update failed, redirected to error page',jwtPayload.state_id, errType, req.query.phone, error, userDetails, jwtPayload, redirectUrl, createUserReq, updatePhoneReq, updateRolesReq);
+      console.log('sso user creation/phone update failed, redirected to error page', jwtPayload.state_id, errType, req.query.phone, error, userDetails, jwtPayload, redirectUrl, createUserReq, updatePhoneReq, updateRolesReq);
       logErrorEvent(req, errType, error);
     } finally {
       res.redirect(redirectUrl || errorUrl);
@@ -124,10 +124,10 @@ module.exports = (app) => {
       errType = 'CREATE_SESSION';
       await createSession(userDetails.userName, req, res);
       redirectUrl = jwtPayload.redirect_url ? jwtPayload.redirect_url : '/resources';
-      console.log('sso sign-in success callback, session created',jwtPayload.state_id, req.query, redirectUrl, errType);
+      console.log('sso sign-in success callback, session created', jwtPayload.state_id, req.query, redirectUrl, errType);
     } catch (error) {
       redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error);
-      console.log('sso sign-in success callback, create session error',jwtPayload.state_id, errType, error, req.query, jwtPayload, redirectUrl);
+      console.log('sso sign-in success callback, create session error', jwtPayload.state_id, errType, error, req.query, jwtPayload, redirectUrl);
       logErrorEvent(req, errType, error);
     } finally {
       res.redirect(redirectUrl || errorUrl);
