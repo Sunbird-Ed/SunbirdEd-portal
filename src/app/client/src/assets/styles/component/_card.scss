@@ -23,12 +23,12 @@
 .sb-card {
     width: $sb-card-width;
     height: $sb-card-height;
-    background-color: $white-color;
+    background-color: $sb-card-bg-color;
     box-shadow: $sb-card-box-shadow;
     border: $sb-card-border;
-    border-radius: 4px;
+    border-radius: $sb-card-border-radius;
     cursor: pointer;
-    .image {
+    .sb-card-image {
       width: 70px;
       height: 92px;
       border: $primary-border;

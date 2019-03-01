@@ -279,7 +279,21 @@
           }
         },
         {
+          "breakpoint": 600,
+          "settings": {
+            "slidesToShow": 1.5,
+            "slidesToScroll": 1
+          }
+        },
+        {
           "breakpoint": 530,
+          "settings": {
+            "slidesToShow": 1.33,
+            "slidesToScroll": 1
+          }
+        },
+        {
+          "breakpoint": 498,
           "settings": {
             "slidesToShow": 1.25,
             "slidesToScroll": 1
@@ -288,7 +302,22 @@
         {
           "breakpoint": 450,
           "settings": {
+            "slidesToShow": 1.15,
+            "slidesToScroll": 1
+          }
+        },
+        {
+          "breakpoint": 407,
+          "settings": {
             "slidesToShow": 1,
+            "slidesToScroll": 1
+          }
+        }
+        ,
+        {
+          "breakpoint": 332,
+          "settings": {
+            "slidesToShow": 0.95,
             "slidesToScroll": 1
           }
         }

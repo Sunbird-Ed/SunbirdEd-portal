@@ -40,7 +40,7 @@
             class="carousel" 
             #slickModal="slick-modal" 
             [config]="slideConfig">
-            <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of section.contents;let i = index; let last = last" class="mr-20">
+            <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of section.contents;let i = index; let last = last" class="mr-15">
                 <app-batch-card appTelemetryInteract 
                     [telemetryInteractEdata]="cardIntractEdata"  
                     [telemetryInteractObject]="{id:content.metaData.identifier}" 
@@ -58,7 +58,7 @@
                         (clickEvent)="playContent($event)"
                         [data]="content" 
                         class="d-block" 
-                        [class.last-card]="pr-0"
+                        [class.last-card]="mr-0"
                     >
                     </app-card>
                 </ng-template>
