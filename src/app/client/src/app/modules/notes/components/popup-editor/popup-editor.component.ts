@@ -162,8 +162,7 @@ export class PopupEditorComponent implements OnInit, AfterViewInit, OnDestroy {
           updatedBy: this.userService.userid
         }
       };
-      this.noteService.create(requestData).pipe(
-        takeUntil(this.unsubscribe$))
+      this.noteService.create(requestData)
         .subscribe(
           (data: INoteData) => {
             if (data.id) {
