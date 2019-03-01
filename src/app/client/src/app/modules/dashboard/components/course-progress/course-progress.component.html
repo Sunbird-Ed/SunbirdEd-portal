@@ -187,6 +187,22 @@
           <div class="header">{{resourceService?.frmelmnts?.lbl?.dashboardnobatchselected}}</div>
           {{resourceService?.frmelmnts?.lbl?.dashboardnobatchselecteddesc}}
         </div>
+        <div class="ui grid" *ngIf="showNoBatch">
+          <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression">
+            <a (click)='redirect()' class="ui item basic icon circular float-ContentRight" data-tooltip="Close the dashboard"
+              appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'closeDashboard',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
+              <i class="ui remove icon CloseButtonFont"></i>
+            </a>
+          </div>
+          <div class="twelve wide column">
+            <div class="ui info message">
+              <div class="header">{{resourceService?.frmelmnts?.instn?.t0061}}</div>
+              <ul class="list">
+                <li>{{resourceService?.frmelmnts?.instn?.t0062}}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
