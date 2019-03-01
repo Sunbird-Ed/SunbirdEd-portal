@@ -169,21 +169,33 @@ export class ViewAllComponent implements OnInit, OnDestroy {
       map(results => ({ params: results[0], queryParams: results[1] })),
       filter(res => this.pageNumber !== Number(res.params.pageNumber) || !_.isEqual(this.queryParams, res.queryParams)),
       tap(res => {
+        this.showLoader = true;
         this.queryParams = res.queryParams;
         const route = this.router.url.split('/view-all');
         this.closeUrl = '/' + route[0].toString();
         this.sectionName = res.params.section.replace(/\-/g, ' ');
         this.pageNumber = Number(res.params.pageNumber);
       }),
-      mergeMap((data) => {
+      tap((data) => {
         this.getframeWorkData();
         this.manipulateQueryParam(data.queryParams);
         this.setTelemetryImpressionData();
         this.setInteractEventData();
-        return this.getContentList(data);
       }),
       takeUntil(this.unsubscribe)
     ).subscribe((response: any) => {
+        this.getContents(response);
+    }, (error) => {
+      this.showLoader = false;
+      this.noResult = true;
+      this.noResultMessage = {
+        'messageText': this.resourceService.messages.fmsg.m0077
+      };
+      this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+    });
+  }
+  getContents(data) {
+    this.getContentList(data).subscribe((response: any) => {
       this.showLoader = false;
       if (response.contentData.result.count && response.contentData.result.content) {
         this.noResult = false;
@@ -206,7 +218,6 @@ export class ViewAllComponent implements OnInit, OnDestroy {
       this.toasterService.error(this.resourceService.messages.fmsg.m0051);
     });
   }
-
   setTelemetryImpressionData() {
     this.telemetryImpression = {
       context: {
