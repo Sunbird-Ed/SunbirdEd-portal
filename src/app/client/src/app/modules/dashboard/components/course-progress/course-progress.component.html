@@ -48,10 +48,11 @@
               </b>
               &nbsp;&nbsp;{{dashboarData.startDate | dateFormat :'DD/MM/YYYY' }}
             </span>
+            
             <span  class="course-end-dt black-divider px-15">
               <b>{{resourceService?.frmelmnts?.lbl?.batchenddate}}&nbsp;:
               </b>
-            &nbsp;&nbsp;{{dashboarData.endDate | dateFormat :'DD/MM/YYYY'}}
+            &nbsp;&nbsp;<span  *ngIf="dashboarData.endDate" >{{dashboarData.endDate | dateFormat :'DD/MM/YYYY'}}</span> 
               <span  *ngIf="!dashboarData.endDate" >-</span>
             </span>
            

@@ -167,16 +167,15 @@ module.exports = {
       },
       function (err, results) {
         telemetryHelper.logSSOEndEvent(req)
-        console.log('logSSOEndEvent')
         if (err) {
-          console.log('err', err)
+          console.log('trampoline service sign in failed', jwtPayload, err)
           res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '?error=' + Buffer.from(self.errorMsg).toString('base64'))
         } else {
-          console.log('grant successful')
+          console.log('trampoline service sign in successfully', jwtPayload)
           if (self.payload['redirect_uri']) {
             res.redirect(self.payload['redirect_uri'])
           } else {
-            res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/home')
+            res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '/resources')
           }
         }
       })
@@ -307,6 +306,3 @@ module.exports = {
     })
   }
 }
-
-
-

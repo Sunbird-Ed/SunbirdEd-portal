@@ -147,7 +147,8 @@ export class HomeSearchComponent implements OnInit, OnDestroy {
     if (page < 1 || page > this.paginationDetails.totalPages) {
         return;
     }
-    this.router.navigate(['search/All', page], { queryParams: this.queryParams });
+    const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
+    this.router.navigate([url], { queryParams: this.queryParams });
   }
   public playContent({ data }) {
     const { metaData } = data;

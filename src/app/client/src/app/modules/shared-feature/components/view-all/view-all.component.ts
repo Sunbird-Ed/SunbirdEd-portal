@@ -299,15 +299,11 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   }
 
   navigateToPage(page: number): undefined | void {
-    const route = this.router.url.split('?');
-    const url = route[0].substring(0, route[0].lastIndexOf('/'));
     if (page < 1 || page > this.pager.totalPages) {
       return;
     }
-    this.router.navigate([url, page], {
-      queryParams: this.queryParams,
-      relativeTo: this.activatedRoute
-    });
+    const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
+    this.router.navigate([url], { queryParams: this.queryParams, relativeTo: this.activatedRoute });
   }
 
   playContent(event) {

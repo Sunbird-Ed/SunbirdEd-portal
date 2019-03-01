@@ -161,6 +161,7 @@ export class LearnPageComponent implements OnInit, OnDestroy {
       const enrolledSection = {
         name: 'My Courses',
         length: 0,
+        count: 0,
         contents: []
       };
       if (err) {
@@ -173,6 +174,7 @@ export class LearnPageComponent implements OnInit, OnDestroy {
         formatedContent.metaData.contentType = 'Course'; // to route to course page
         return formatedContent;
       });
+      enrolledSection.count = enrolledSection.contents.length;
       return enrolledSection;
     }));
   }
@@ -234,6 +236,7 @@ export class LearnPageComponent implements OnInit, OnDestroy {
     searchQueryParams.exists = searchQuery.request.exists;
     this.cacheService.set('viewAllQuery', searchQueryParams, { maxAge: this.browserCacheTtlService.browserCacheTtl });
     const queryParams = { ...searchQueryParams, ...this.queryParams};
+    this.cacheService.set('pageSection', event, { maxAge: this.browserCacheTtlService.browserCacheTtl });
     const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], {queryParams: queryParams});
   }

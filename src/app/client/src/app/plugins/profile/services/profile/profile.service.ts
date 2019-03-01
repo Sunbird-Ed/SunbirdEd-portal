@@ -46,14 +46,7 @@ export class ProfileService {
       url: 'portal/user/v1/update',
       data: data
     };
-    return this.learnerService.patch(options).pipe(map(
-      (res: ServerResponse) => {
-        setTimeout(() => {
-          this.userService.getUserProfile();
-        }, this.configService.appConfig.timeOutConfig.setTime);
-        return res;
-      }
-    ));
+    return this.learnerService.patch(options);
   }
 
   /**
