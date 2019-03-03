@@ -37,7 +37,7 @@ describe('CardComponent', () => {
     const cdnprefixPipe = new CdnprefixPipe();
     component.data = Response.librarySearchData;
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('sb-card-title').innerText).toContain('Official Textbook');
+    expect(fixture.nativeElement.querySelector('.sb-card-title').innerText).toContain('Official Textbook');
     const badgesElm = fixture.nativeElement.querySelector('.sb-card-badge');
     expect(badgesElm.src).toContain(Response.librarySearchData.ribbon.left.image);
   });

@@ -13,6 +13,9 @@
       padding: $sb-card-padding;
       overflow: hidden;
     }
+    .sb-card-metas {
+      display: flex;
+    }
     // Card image
     .sb-card-image {
       width: $sb-card-image-width;
