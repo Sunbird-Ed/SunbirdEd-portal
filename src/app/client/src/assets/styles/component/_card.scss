@@ -15,6 +15,8 @@
     }
     .sb-card-metas {
       display: flex;
+      align-items: flex-end;
+
     }
     // Card image
     .sb-card-image {
@@ -23,9 +25,9 @@
       border: $sb-card-image-border;
       background-color: $sb-card-image-bg-color;
       border-radius: $sb-card-image-border-radius;
-      overflow: hidden;
-      display: inline-block;
       margin: $sb-card-image-meta-space;
+      box-sizing: border-box;
+      overflow: hidden;
       img {
         object-fit: cover;
         width: $sb-card-image-width;
@@ -33,7 +35,12 @@
       }
     }
     .sb-card-meta {
-      display: inline-block;
+      height: $sb-card-image-height;
+      width: $sb-card-meta-width;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      overflow: hidden;
     }
     .sb-card-label {
       color: $sb-card-label-color;
@@ -45,12 +52,16 @@
     .sb-card-meta-item {
       font-size: $sb-card-meta-font-size;
       color: $sb-card-meta-color;
+      margin: $sb-card-meta-between-spacing;
     }
     .sb-card-title {
       color: $sb-card-title-color;
       font-size: $sb-card-title-font-size;
+      line-height: $sb-card-title-line-height;
       font-weight: $sb-card-title-font-weight;
+      height: $sb-card-title-height;
       margin: $sb-card-title-spacing;
+      overflow: hidden;
     }
     .sb-card-org {
       font-size: $sb-card-meta-org-font-size;
