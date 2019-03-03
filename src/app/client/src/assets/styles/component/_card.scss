@@ -76,3 +76,36 @@
     }
   }
 }
+app-card[lang="ta"] {
+  .sb-card {
+    .sb-card-label  {
+      font-size: $sb-card-label-font-size-ta;
+    }
+    .sb-card-meta-item {
+      font-size: $sb-card-meta-font-size-ta;
+    }
+    .sb-card-title {
+      font-size: $sb-card-title-font-size-ta;
+    }
+    .sb-card-org {
+      font-size: $sb-card-meta-org-font-size-ta;
+    }
+  }
+}
+
+app-card[lang="ur"] {
+  .sb-card {
+    .sb-card-label  {
+      font-size: $sb-card-label-font-size-ur;
+    }
+    .sb-card-meta-item {
+      font-size: $sb-card-meta-font-size-ur;
+    }
+    .sb-card-title {
+      font-size: $sb-card-title-font-size-ur;
+    }
+    .sb-card-org {
+      font-size: $sb-card-meta-org-font-size-ur;
+    }
+  }
+}

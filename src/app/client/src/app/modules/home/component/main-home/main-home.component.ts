@@ -182,9 +182,7 @@ export class MainHomeComponent implements OnInit, OnDestroy {
           'slidesToScroll': 1
         }
       }
-    ],
-    'infinite': false,
-    'rtl': false
+    ]
   };
   /**The button clicked value for interact telemetry event */
   btnArrow: string;
