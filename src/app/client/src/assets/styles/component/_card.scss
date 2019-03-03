@@ -7,7 +7,6 @@
     border-radius: $sb-card-border-radius;
     cursor: pointer;
     overflow: hidden;
-    // Card body
     .sb-card-body {
       height: $sb-card-body-height;
       padding: $sb-card-padding;
@@ -18,7 +17,6 @@
       align-items: flex-end;
 
     }
-    // Card image
     .sb-card-image {
       width: $sb-card-image-width;
       height: $sb-card-image-height;
@@ -29,9 +27,9 @@
       box-sizing: border-box;
       overflow: hidden;
       img {
-        object-fit: cover;
         width: $sb-card-image-width;
         height: $sb-card-image-height;
+        object-fit: cover;
       }
     }
     .sb-card-meta {
@@ -53,6 +51,7 @@
       font-size: $sb-card-meta-font-size;
       color: $sb-card-meta-color;
       margin: $sb-card-meta-between-spacing;
+      width: $sb-card-meta-width;
     }
     .sb-card-title {
       color: $sb-card-title-color;
@@ -70,7 +69,6 @@
     .sb-card-progressbar {
       height: $sb-card-progressbar-height;
     }
-
   }
 
 .sb-card,
