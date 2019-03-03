@@ -46,6 +46,12 @@
       border: $sb-card-label-border;
       border-radius: $sb-card-label-border-radius;
       padding: $sb-card-label-padding;
+      height: $sb-card-label-height;
+    }
+    .sb-card-badge {
+      height: $sb-card-badge-height;
+      width: $sb-card-badge-width;
+      object-fit: contain;
     }
     .sb-card-meta-item {
       font-size: $sb-card-meta-font-size;
