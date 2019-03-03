@@ -6,9 +6,12 @@
     border: $sb-card-border;
     border-radius: $sb-card-border-radius;
     cursor: pointer;
+    overflow: hidden;
     // Card body
     .sb-card-body {
+      height: $sb-card-body-height;
       padding: $sb-card-padding;
+      overflow: hidden;
     }
     // Card image
     .sb-card-image {
@@ -49,6 +52,9 @@
     .sb-card-org {
       font-size: $sb-card-meta-org-font-size;
       color: $sb-card-meta-color;
+    }
+    .sb-card-progressbar {
+      height: $sb-card-progressbar-height;
     }
 
   }

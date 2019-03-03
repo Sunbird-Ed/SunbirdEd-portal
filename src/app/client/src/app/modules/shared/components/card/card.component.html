@@ -7,7 +7,7 @@
   [telemetryInteractEdata]="data.telemetryInteractEdata"
   tabindex="0"
   >
-    <!--Body-->
+    <!--Content-->
     <div class="sb-card-body">
 
       <!--Image-->
@@ -54,18 +54,19 @@
       </h4>
       <!--/Card Title-->
 
+      <!--Org-->
       <div class="sb-card-org">
         {{data.orgDetails?.orgName}}
       </div>
-    </div>
-    <!--/Body-->
+      <!--Org-->
 
-    <!--Progress Bar-->
-    <div *ngIf="data.maxCount && data.progress > 0 else blank">
-      <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount" ></sui-progress>
     </div>
-    <ng-template #blank>
-      <div class="py-2"></div>
-    </ng-template>
+    <!--/Content-->
+   
+    <!--Progress Bar-->
+    <div class="sb-card-progressbar">
+      <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount" *ngIf="data.maxCount && data.progress > 0"></sui-progress>
+    </div>
     <!--/Progress Bar-->
+
 </div>
