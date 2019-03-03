@@ -19,7 +19,7 @@
         <!--/Image-->
 
         <!--Meta Details - Course-->
-        <div class="sb-card-meta" *ngIf="data.contentType && data.contentType.toLowerCase() === 'course'">
+        <div class="sb-card-meta course" *ngIf="data.contentType && data.contentType.toLowerCase() === 'course'">
           <div class="sb-card-meta-item mb-15" *ngIf="data.topic" title="{{data.topic}}">
             {{data.topic | slice:0:40}} 
             <span *ngIf="data.topic && data.topic.length > 40">...</span>
@@ -32,7 +32,7 @@
         <!--/Meta Details - Course-->
 
         <!--Meta Details - Non-Course-->
-        <div class="sb-card-meta" *ngIf="!data.contentType || data.contentType.toLowerCase() !== 'course'">
+        <div class="sb-card-meta non-course" *ngIf="!data.contentType || data.contentType.toLowerCase() !== 'course'">
           <div class="d-flex mb-auto">
             <div class="sb-card-label" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">{{data.ribbon.right.name}}</div>
             <img src="{{data.ribbon.left.image}}" class="sb-card-badge ml-auto" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image" alt="{{data.ribbon.left.name}}">
@@ -40,10 +40,10 @@
           <div class="sb-card-meta-item ellipsis" *ngIf="data.subject" title="{{data.subject}}">
             {{resourceService.frmelmnts.lbl.subject}} : {{data.subject}}
           </div>
-          <div class="sb-card-meta-item ellipsis mt-4" *ngIf="data.gradeLevel" title="{{data.gradeLevel}}">
+          <div class="sb-card-meta-item ellipsis" *ngIf="data.gradeLevel" title="{{data.gradeLevel}}">
             {{resourceService.frmelmnts.lbl.class}} : {{data.gradeLevel}}
           </div>
-          <div class="sb-card-meta-item ellipsis mt-4" *ngIf="data.medium" title="{{data.medium}}">
+          <div class="sb-card-meta-item ellipsis" *ngIf="data.medium" title="{{data.medium}}">
             {{resourceService.frmelmnts.lbl.medium}} : {{data.medium}}
           </div>
         </div>
