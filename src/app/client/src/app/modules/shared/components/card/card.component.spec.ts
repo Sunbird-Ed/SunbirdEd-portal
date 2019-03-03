@@ -30,15 +30,15 @@ describe('CardComponent', () => {
     const cdnprefixPipe = new CdnprefixPipe();
     component.data = Response.cardData;
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('div .title').innerText).toContain('B1 Test');
-    expect(fixture.nativeElement.querySelector('div .right').innerText).toEqual('Worksheet');
+    expect(fixture.nativeElement.querySelector('.sb-card-title').innerText).toContain('B1 Test');
+    expect(fixture.nativeElement.querySelector('.sb-card-label').innerText).toEqual('Worksheet');
   });
   it('should show badgeClassImage while passing badgesData', () => {
     const cdnprefixPipe = new CdnprefixPipe();
     component.data = Response.librarySearchData;
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('div .title').innerText).toContain('Official Textbook');
-    const badgesElm = fixture.nativeElement.querySelector('.avatar');
+    expect(fixture.nativeElement.querySelector('sb-card-title').innerText).toContain('Official Textbook');
+    const badgesElm = fixture.nativeElement.querySelector('.sb-card-badge');
     expect(badgesElm.src).toContain(Response.librarySearchData.ribbon.left.image);
   });
 });

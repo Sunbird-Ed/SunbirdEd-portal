@@ -33,7 +33,7 @@
       <div class="sb-card-meta" *ngIf="!data.contentType || data.contentType.toLowerCase() !== 'course'">
         <div class="d-flex">
           <div class="sb-card-label" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">{{data.ribbon.right.name}}</div>
-          <img src="{{data.ribbon.left.image}}" class="sb-card-avatar ml-auto" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image" alt="{{data.ribbon.left.name}}">
+          <img src="{{data.ribbon.left.image}}" class="sb-card-badge ml-auto" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image" alt="{{data.ribbon.left.name}}">
         </div>
         <div class="sb-card-meta-item ellipsis" *ngIf="data.subject" title="{{data.subject}}">
           {{resourceService.frmelmnts.lbl.subject}} : {{data.subject}}
