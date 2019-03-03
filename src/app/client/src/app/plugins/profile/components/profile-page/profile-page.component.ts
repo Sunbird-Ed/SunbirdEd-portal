@@ -102,15 +102,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       {
         'breakpoint': 2000,
         'settings': {
-          'slidesToShow': 4,
-          'slidesToScroll': 4
+          'slidesToShow': 5,
+          'slidesToScroll': 5
         }
       },
       {
         'breakpoint': 1600,
         'settings': {
           'slidesToShow': 3.5,
-          'slidesToScroll': 3
+          'slidesToScroll': 3.5
         }
       },
       {
@@ -142,7 +142,21 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         }
       },
       {
+        'breakpoint': 600,
+        'settings': {
+          'slidesToShow': 1.5,
+          'slidesToScroll': 1
+        }
+      },
+      {
         'breakpoint': 530,
+        'settings': {
+          'slidesToShow': 1.33,
+          'slidesToScroll': 1
+        }
+      },
+      {
+        'breakpoint': 498,
         'settings': {
           'slidesToShow': 1.25,
           'slidesToScroll': 1
@@ -151,13 +165,28 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       {
         'breakpoint': 450,
         'settings': {
+          'slidesToShow': 1.15,
+          'slidesToScroll': 1
+        }
+      },
+      {
+        'breakpoint': 407,
+        'settings': {
           'slidesToShow': 1,
           'slidesToScroll': 1
         }
       }
+      ,
+      {
+        'breakpoint': 332,
+        'settings': {
+          'slidesToShow': 0.95,
+          'slidesToScroll': 1
+        }
+      }
     ],
-    infinite: false,
-    rtl: false
+    'infinite': false,
+    'rtl': false
   };
   inputData: any;
   /**
