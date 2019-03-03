@@ -56,8 +56,8 @@
     .sb-card-meta-item {
       font-size: $sb-card-meta-font-size;
       color: $sb-card-meta-color;
-      margin: $sb-card-meta-between-spacing;
       width: $sb-card-meta-width;
+      line-height: $sb-card-meta-line-height;
     }
     .sb-card-title {
       color: $sb-card-title-color;
@@ -74,16 +74,8 @@
     }
     .sb-card-progressbar {
       height: $sb-card-progressbar-height;
+      .ui.progress .bar {
+        border-radius: $sb-card-progressbar-border-radius;
+      }
     }
   }
-
-.sb-card,
-.profileCard {
-  .ui.progress,
-  &.blue {
-    margin: 0;
-    .bar {
-      border-radius: 0 4px 4px 4px;
-    }
-  }
-}
