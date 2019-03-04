@@ -711,6 +711,9 @@
       "allcontent",
       "collaborating-on"
     ],
+    "courseBatch":{
+      "PAGE_LIMIT": 12
+    },
     "Draft": {
       "constantData": {
         "action": {

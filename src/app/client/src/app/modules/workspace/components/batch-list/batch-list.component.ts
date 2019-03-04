@@ -219,7 +219,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
 
   fetchBatchList() {
     this.showLoader = true;
-    this.pageLimit = this.config.appConfig.WORKSPACE.PAGE_LIMIT;
+    this.pageLimit = this.config.appConfig.WORKSPACE.courseBatch.PAGE_LIMIT;
     const searchParams = {
       filters: this.filters,
       limit: this.pageLimit,
