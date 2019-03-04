@@ -15,7 +15,7 @@
         [ngClass]="{'disabled': !showInput }" 
     />
     <button class="ui icon button" [ngClass]="{'disabled': !showInput }" >
-        <i 
+        <i  appTelemetryInteract [telemetryInteractEdata]="{id:'searchButton',type:'click',pageid:searchPlaceHolderValue}"
             class="search blue icon br-0"
             (click)="onEnter(key)"
             title="{{resourceService.frmelmnts?.lbl?.SearchIn}} {{searchPlaceHolderValue}}"

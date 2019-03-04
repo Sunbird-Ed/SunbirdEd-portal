@@ -27,7 +27,9 @@
 
     <!--Actions-->
     <div class="sb-modal-actions">
-        <button 
+        <button appTelemetryInteract [telemetryInteractEdata]="{id:'startcreating',
+            type: 'click',
+            pageid: 'workspace'}"
             class="sb-btn sb-btn-normal sb-btn-primary" 
             (click)="createContent();modal.deny()"
         >
