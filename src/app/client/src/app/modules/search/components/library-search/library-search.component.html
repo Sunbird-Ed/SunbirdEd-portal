@@ -17,8 +17,8 @@
                 <i class="ui remove icon "></i>
             </h5>
         </div>
-        <div in-view-container (inview)="inView($event)" [throttle]="[1000]" [trigger]="contentList" *ngIf="!showLoader && contentList.length" class="ui stackable four column grid dynamic-section-card ">
-            <div in-view-item [id]="i" [data]="content" class="column mb-20" *ngFor="let content of contentList;let i = index;">
+        <div in-view-container (inview)="inView($event)" [throttle]="[1000]" [trigger]="contentList" *ngIf="!showLoader && contentList.length" class="masonry-grid dynamic-section-card ">
+            <div in-view-item [id]="i" [data]="content" class="masonry-item mb-20" *ngFor="let content of contentList;let i = index;">
                 <app-card appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" 
                 [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType || 'content',ver:'1.0'}"
                 (clickEvent)="playContent($event)" [data]="content"></app-card>
