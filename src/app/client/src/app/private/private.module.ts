@@ -11,7 +11,6 @@ import { BadgingModule } from '@sunbird/badge';
 @NgModule({
   imports: [
     CommonModule,
-    HomeModule,
     DashboardModule,
     AnnouncementModule,
     NotesModule,

@@ -17,6 +17,10 @@ const appRoutes: Routes = [
   {
     path: 'workspace',
     loadChildren: 'app/modules/workspace/workspace.module#WorkspaceModule'
+  },
+  {
+    path: 'home',
+    loadChildren: 'app/modules/home/home.module#HomeModule'
   }
 ];
 
