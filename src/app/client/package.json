@@ -13,7 +13,8 @@
     "precommit": "ng lint",
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -s",
     "test-coverage": "ng test --code-coverage=true --watch=false",
-    "build-cdn": "ng build --prod"
+    "build-cdn": "ng build --prod",
+    "build-stat": "ng build --prod --watch=true --stats-json" 
   },
   "nodemonConfig": {
     "ext": "ts,html,json,css,scss,less"
