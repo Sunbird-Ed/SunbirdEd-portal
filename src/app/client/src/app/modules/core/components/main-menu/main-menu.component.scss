@@ -1,24 +1,23 @@
 @import "variables";
 
 .divider {
-  color: $text-gray;
+  color: $gray-100;
 
   &:hover {
-    color: $text-gray;
+    color: $gray-100;
   }
 }
 
 .close {
-  font-size: 1.2rem;
+  font-size: $h4-font-size;
   color: $primary-color;
 }
 
 .ui.menu {
   &.text {
     .item {
-      padding: 10px 16px;
-      color: $menuitem-color;
-
+      padding: $block-padding-y-x;
+      color: $gray-800;
       &:hover,
       &:focus {
         color: $primary-color;
@@ -26,7 +25,7 @@
       }
 
       &.active {
-        font-weight: bold;
+        font-weight: $font-weight-bold;
         color: $primary-color;
 
         &:hover,
@@ -39,7 +38,7 @@
   &.vertical {
     .active.item {
       color: $primary-color;
-      font-weight: bold;
+      font-weight: $font-weight-bold;
       background: none;
     }
   }
@@ -49,8 +48,8 @@
   position: fixed !important;
   bottom: 0;
   width: 100%;
-  font-weight: bold !important;
+  font-weight: $font-weight-bold !important;
   color: $primary-color !important;
   background-color: $white-color;
-  border-top: 1px solid rgba(34,36,38, 0.15) !important;
+  border-top: 1px solid $gray-100 !important;
 }
