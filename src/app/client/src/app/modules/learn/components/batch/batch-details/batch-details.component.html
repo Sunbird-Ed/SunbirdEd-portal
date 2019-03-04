@@ -54,18 +54,18 @@
                 [telemetryInteractObject]="{id:enrolledBatchInfo.identifier,type:'batch',ver:'1',rollup:{l1:courseId}}"
                 (click)="unenrollBatch(enrolledBatchInfo)" [disabled]="isUnenrollbtnDisabled">{{resourceService.frmelmnts.btn.unenroll}}</button>
         </span>
-        <div class="header">{{enrolledBatchInfo.name}}</div>
+        <div class="header">{{enrolledBatchInfo?.name}}</div>
         <div class="selectedBatchMeta meta">
             <span class="date">{{enrolledBatchInfo.startDate | dateFormat}} </span>
-            <span *ngIf="enrolledBatchInfo.endDate" class="date"> - {{enrolledBatchInfo.endDate | dateFormat}}</span>
+            <span *ngIf="enrolledBatchInfo.endDate" class="date"> - {{enrolledBatchInfo?.endDate | dateFormat}}</span>
         </div>
     </div>
     <div class="selectedBatchContent extra content">
         <span class="right floated">
-            {{enrolledBatchInfo.participant.length}} {{resourceService.frmelmnts.lbl.learners}}
+            {{enrolledBatchInfo?.participant?.length}} {{resourceService.frmelmnts.lbl.learners}}
         </span>
         <span>
-            {{enrolledBatchInfo.mentors.length}} {{resourceService.frmelmnts.lbl.mentors}}
+            {{enrolledBatchInfo?.mentors?.length}} {{resourceService.frmelmnts.lbl.mentors}}
         </span>
     </div>    
 </div>

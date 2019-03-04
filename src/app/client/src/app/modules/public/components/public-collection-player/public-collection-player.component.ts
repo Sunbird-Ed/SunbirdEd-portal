@@ -6,7 +6,7 @@ import { Observable ,  Subscription } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {
-  WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
+  WindowScrollService, ToasterService, ILoaderMessage, PlayerConfig,
   ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
@@ -76,7 +76,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
-    public externalUrlPreviewService: ExternalUrlPreviewService, private configService: ConfigService) {
+    public externalUrlPreviewService: ExternalUrlPreviewService, private configService: ConfigService,
+    public toasterService: ToasterService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
@@ -219,7 +220,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
         });
         this.parseChildContent(this.collectionTreeNodes);
       }, (error) => {
-        // toaster error
+        this.toasterService.error(this.resourceService.messages.fmsg.m0004); // need to change message
+        this.router.navigate(['/explore']);
       });
   }
 
