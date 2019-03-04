@@ -8,7 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
-
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-unenroll-batch',
   templateUrl: './unenroll-batch.component.html'
@@ -21,6 +21,9 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy {
   readMore = false;
   disableSubmitBtn = false;
   public unsubscribe = new Subject<void>();
+  telemetryCdata: Array<{}>;
+  submitInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
   /**
 	 * telemetryImpression object for update batch page
 	*/
@@ -49,7 +52,7 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy {
           ver: this.activatedRoute.snapshot.data.telemetry.object.ver
         }
       };
-
+      this.telemetryInteractObject = { id: this.batchId, type: 'course', ver: '1.0' };
       this.courseBatchService.getEnrollToBatchDetails(this.batchId).pipe(
         takeUntil(this.unsubscribe))
         .subscribe((data) => {
@@ -59,6 +62,7 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy {
             this.redirect();
           }
           this.fetchParticipantsDetails();
+          this.setTelemetryData();
         }, (err) => {
           this.toasterService.error(this.resourceService.messages.fmsg.m0054);
           this.redirect();
@@ -96,6 +100,7 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy {
     }
   }
   unenrollFromCourse() {
+    this.setTelemetryData();
     const request = {
       request: {
         courseId: this.batchDetails.courseId,
@@ -120,5 +125,16 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy {
       this.router.navigate(['/learn/course', this.batchDetails.courseId]);
       window.location.reload();
     }, 2000);
+  }
+  setTelemetryData() {
+    setTimeout(() => {
+      this.submitInteractEdata = {
+      id: 'unenrollBatch',
+      type: 'click',
+      pageid: 'Unenroll-Batch'
+    };
+    this.telemetryCdata = [{ 'type': 'batch', 'id': this.batchDetails.identifier}];
+    }, 5);
+
   }
 }
