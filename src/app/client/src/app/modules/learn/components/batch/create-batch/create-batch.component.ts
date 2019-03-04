@@ -140,8 +140,11 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
   }
 
   private fetchBatchDetails() {
+    const requestBody = {
+      filters: {'status': '1'},
+    };
     return combineLatest(
-      this.courseBatchService.getUserList(),
+      this.courseBatchService.getUserList(requestBody),
       this.courseConsumptionService.getCourseHierarchy(this.courseId),
       (userDetails, courseDetails) => ({ userDetails, courseDetails })
     );
