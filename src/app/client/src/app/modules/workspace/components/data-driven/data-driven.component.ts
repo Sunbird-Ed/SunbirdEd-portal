@@ -308,12 +308,21 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
   createLockAndNavigateToEditor (content) {
     const state = 'draft';
     const framework = this.framework;
-    if (this.contentType === 'studymaterial') {
-      this.router.navigate(['/workspace/content/edit/content/', content.identifier, state, framework, 'Draft']);
-    } else {
-      const type = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
-      this.router.navigate(['/workspace/content/edit/collection', content.identifier, type, state, framework, 'Draft']);
-    }
+    this.lockContent(content).subscribe(
+      (data: ServerResponse) => {
+          const lock = data.result;
+          if (this.contentType === 'studymaterial') {
+            this.router.navigate(['/workspace/content/edit/content/', content.identifier, state, framework, 'Draft'], {queryParams: lock});
+          } else {
+            const type = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
+            this.router.navigate(['/workspace/content/edit/collection', content.identifier, type, state, framework, 'Draft'],
+            {queryParams: lock});
+          }
+      },
+      (err: ServerResponse) => {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0006);
+      }
+    );
   }
 
   /**
