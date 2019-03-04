@@ -127,14 +127,11 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy {
     }, 2000);
   }
   setTelemetryData() {
-    setTimeout(() => {
-      this.submitInteractEdata = {
+    this.telemetryCdata = [{ 'type': 'batch', 'id': this.batchDetails.identifier}];
+    this.submitInteractEdata = {
       id: 'unenrollBatch',
       type: 'click',
       pageid: 'Unenroll-Batch'
     };
-    this.telemetryCdata = [{ 'type': 'batch', 'id': this.batchDetails.identifier}];
-    }, 5);
-
   }
 }
