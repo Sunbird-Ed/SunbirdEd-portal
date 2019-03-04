@@ -316,7 +316,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
     this.selectedParticipants = $('#participants').dropdown('get value') ? $('#participants').dropdown('get value').split(',') : [];
     this.selectedMentors = $('#mentors').dropdown('get value') ? $('#mentors').dropdown('get value').split(',') : [];
     const requestBody = {
-      filters: {},
+      filters: {'status': '1'},
       query: query
     };
     this.courseBatchService.getUserList(requestBody).pipe(takeUntil(this.unsubscribe))
