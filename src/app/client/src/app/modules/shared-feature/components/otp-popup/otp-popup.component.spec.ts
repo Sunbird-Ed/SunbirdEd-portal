@@ -3,7 +3,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceService, SharedModule } from '@sunbird/shared';
-import { CoreModule, TenantService, OtpService } from '@sunbird/core';
+import { CoreModule, TenantService, OtpService, UserService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -19,7 +19,7 @@ describe('OtpPopupComponent', () => {
       imports: [SharedModule.forRoot(), CoreModule.forRoot(), FormsModule, ReactiveFormsModule,
         HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [OtpPopupComponent],
-      providers: [ResourceService, TenantService, OtpService],
+      providers: [ResourceService, TenantService, OtpService , UserService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
