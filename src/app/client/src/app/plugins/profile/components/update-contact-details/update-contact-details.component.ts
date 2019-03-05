@@ -124,7 +124,9 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
 
   onSubmitForm() {
     this.enableSubmitBtn = false;
-    this.generateOTP();
+    if (this.contactTypeForm.valid) {
+      this.generateOTP();
+    }
   }
 
   generateOTP() {
