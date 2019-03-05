@@ -52,8 +52,29 @@
     margin-left: -(2.5 * $base-block-space);
   }
 
+  .fancy-tree-green {	
+    color:$success-color;	
+  }
+
+  .fancy-tree-blue {	
+    color:$primary-color;	
+  }
+
   .fa-caret-right,
   .fa-caret-down {
     margin: 0 (2 * $base-block-space) 0 0;
   }
 }
+
+.curriculum-content {
+  font-size: $h6-font-size;
+  display: flex;
+  padding: $base-block-space 0;
+
+  [class^="sb-icon-"], 
+  [class*=" sb-icon-"] {
+    font-size: $h3-font-size;
+    vertical-align: middle;
+  }
+}
+
