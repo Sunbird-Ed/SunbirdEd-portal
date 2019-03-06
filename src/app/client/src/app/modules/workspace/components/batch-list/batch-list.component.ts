@@ -219,7 +219,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
 
   fetchBatchList() {
     this.showLoader = true;
-    this.pageLimit = this.config.appConfig.WORKSPACE.PAGE_LIMIT;
+    this.pageLimit = this.config.appConfig.WORKSPACE.courseBatch.PAGE_LIMIT;
     const searchParams = {
       filters: this.filters,
       limit: this.pageLimit,
@@ -230,6 +230,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
       (data: ServerResponse) => {
         if (data.result.response.count && data.result.response.content.length > 0) {
           this.noResult = false;
+          this.batchList = [];
           this.batchList = data.result.response.content;
           this.totalCount = data.result.response.count;
           this.pager = this.paginationService.getPager(data.result.response.count, this.pageNumber, this.pageLimit);
@@ -241,6 +242,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
         }
       },
       (err: ServerResponse) => {
+        this.batchList = [];
         this.showLoader = false;
         this.noResult = false;
         this.showError = true;
@@ -297,7 +299,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
       if (res.result.response.count && res.result.response.content.length > 0) {
         this.showLoader = false;
         _.forEach(res.result.response.content, (val, key) => {
-          userName[val.identifier] = val.firstName + ' ' + val.lastName;
+          userName[val.identifier] = (val.firstName || '') + ' ' + (val.lastName || '');
         });
         _.forEach(this.batchList, (item, key) => {
           this.batchList[key].userName = userName[item.createdBy];

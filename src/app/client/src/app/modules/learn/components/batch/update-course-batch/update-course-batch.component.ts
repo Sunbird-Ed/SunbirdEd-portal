@@ -152,8 +152,11 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       });
   }
   private fetchBatchDetails() {
+    const requestBody = {
+      filters: {'status': '1'},
+    };
     return combineLatest(
-      this.courseBatchService.getUserList(),
+      this.courseBatchService.getUserList(requestBody),
       this.courseConsumptionService.getCourseHierarchy(this.courseId),
       this.courseBatchService.getUpdateBatchDetails(this.batchId),
       (userDetails, courseDetails, batchDetails) => ({ userDetails, courseDetails, batchDetails })
@@ -292,7 +295,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   */
   private getUserList(query: string = '', type) {
     const requestBody = {
-      filters: {},
+      filters: {'status': '1'},
       query: query
     };
     this.courseBatchService.getUserList(requestBody).pipe(takeUntil(this.unsubscribe))
