@@ -38,7 +38,7 @@ module.exports = (app) => {
       googleProfile = await googleOauth.getProfile(req);
       errType = 'USER_FETCH_API';
       sunbirdProfile = await fetchUserByEmailId(googleProfile.emailId, req).catch(handleGetUserByIdError);
-      if (!_.get(sunbirdProfile, 'result.response.userName')) {
+      if (!_.get(sunbirdProfile, 'result.response.userName') || !_.get(sunbirdProfile, 'result.response.firstName')) {
         errType = 'USER_CREATE_API';
         newUserDetails = await createUserWithMailId(googleProfile, req).catch(handleCreateUserError);
       }
