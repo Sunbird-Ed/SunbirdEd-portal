@@ -1,3 +1,4 @@
+import { RouterTestingModule } from '@angular/router/testing';
 import { OtpPopupComponent } from './otp-popup.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -17,7 +18,7 @@ describe('OtpPopupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule.forRoot(), FormsModule, ReactiveFormsModule,
-        HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
+        HttpClientTestingModule, SuiModule, TelemetryModule.forRoot() , RouterTestingModule],
       declarations: [OtpPopupComponent],
       providers: [ResourceService, TenantService, OtpService , UserService],
       schemas: [NO_ERRORS_SCHEMA]
