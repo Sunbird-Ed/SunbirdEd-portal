@@ -143,7 +143,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         if (this.batchId) {
           this.enrolledBatchInfo = enrolledBatchDetails;
           this.enrolledCourse = true;
-          this.setTelemetryStartEndData();
+          setTimeout(() => {
+            this.setTelemetryStartEndData();
+          }, 100);
           if (this.enrolledBatchInfo.status && this.contentIds.length) {
             this.getContentState();
             this.subscribeToQueryParam();
@@ -327,46 +329,44 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
   private setTelemetryStartEndData() {
-    setTimeout(() => {
-      const deviceInfo = this.deviceDetectorService.getDeviceInfo();
-      this.telemetryCourseStart = {
-        context: {
-          env: this.activatedRoute.snapshot.data.telemetry.env
-        },
-        object: {
-          id: this.courseId,
-          type: this.activatedRoute.snapshot.data.telemetry.object.type,
-          ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
-        },
-        edata: {
-          type: this.activatedRoute.snapshot.data.telemetry.type,
-          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-          mode: 'play',
-          uaspec: {
-            agent: deviceInfo.browser,
-            ver: deviceInfo.browser_version,
-            system: deviceInfo.os_version ,
-            platform: deviceInfo.os,
-            raw: deviceInfo.userAgent
-          }
+    const deviceInfo = this.deviceDetectorService.getDeviceInfo();
+    this.telemetryCourseStart = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      object: {
+        id: this.courseId,
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        mode: 'play',
+        uaspec: {
+          agent: deviceInfo.browser,
+          ver: deviceInfo.browser_version,
+          system: deviceInfo.os_version ,
+          platform: deviceInfo.os,
+          raw: deviceInfo.userAgent
         }
-      };
-      this.telemetryCourseEndEvent = {
-        object: {
-          id: this.courseId,
-          type: this.activatedRoute.snapshot.data.telemetry.object.type,
-          ver: this.activatedRoute.snapshot.data.telemetry.object.ver
-        },
-        context: {
-          env: this.activatedRoute.snapshot.data.telemetry.env
-        },
-        edata: {
-          type: this.activatedRoute.snapshot.data.telemetry.type,
-          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-          mode: 'play'
-        }
-      };
-    }, 100);
+      }
+    };
+    this.telemetryCourseEndEvent = {
+      object: {
+        id: this.courseId,
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+      },
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        mode: 'play'
+      }
+    };
   }
   private setTelemetryCourseImpression() {
     this.telemetryCourseImpression = {
