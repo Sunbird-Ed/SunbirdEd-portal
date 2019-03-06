@@ -36,7 +36,7 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
   initializeFormFields() {
     if (this.contactType === 'phone') {
       this.contactTypeForm = new FormGroup({
-        phone: new FormControl('', [Validators.required, Validators.pattern('^\\d{10}$')]),
+        phone: new FormControl('', [Validators.required , Validators.pattern(/^[6-9]\d{9}$/)]),
         uniqueContact: new FormControl(null, [Validators.required])
       });
       this.onContactValueChange();
