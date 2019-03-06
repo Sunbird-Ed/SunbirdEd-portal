@@ -10,7 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
 import { INoteData, IdDetails } from '@sunbird/notes';
 import * as _ from 'lodash';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput , IInteractEventObject, IInteractEventEdata} from '@sunbird/telemetry';
 
 import { Subject } from 'rxjs';
 /**
@@ -123,6 +123,8 @@ export class NoteListComponent implements OnInit, OnDestroy {
   * telemetryImpression
   */
   telemetryImpression: IImpressionEventInput;
+  addNoteInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
   public unsubscribe$ = new Subject<void>();
 
   /**
@@ -199,6 +201,10 @@ export class NoteListComponent implements OnInit, OnDestroy {
         uri: this.route.url
       }
     };
+
+    this.setInteractData();
+
+
   }
 
   /**
@@ -321,5 +327,19 @@ export class NoteListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+
+  setInteractData() {
+    this.addNoteInteractEdata = {
+      id: 'add-note',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+    this.telemetryInteractObject = {
+      id: this.contentId || this.courseId,
+      type: this.activatedRoute.snapshot.data.telemetry.object.type,
+      ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+    };
   }
 }
