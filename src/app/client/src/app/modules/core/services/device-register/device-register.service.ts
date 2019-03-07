@@ -52,9 +52,7 @@ export class DeviceRegisterService {
       }
     };
     const httpOptions: HttpOptions = {
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      headers: this.publicDataService.getHeader(),
     };
     this.http.post(this.deviceRegisterApi + this.deviceId, data, httpOptions)
     .subscribe(() => {

@@ -1,4 +1,4 @@
-import { ConfigService, ServerResponse, IUserProfile, IUserData, IOrganization } from '@sunbird/shared';
+import { ConfigService, ServerResponse, IUserProfile, IUserData, IOrganization, HttpOptions } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
 import { Injectable } from '@angular/core';
@@ -338,9 +338,12 @@ export class UserService {
    */
   public startSession(): void {
     const options = this.getFingerPrintOptions();
+    const httpOptions: HttpOptions = {
+      headers: this.publicDataService.getHeader(),
+    };
     Fingerprint2.getV18(options, (result) => {
       const url = `/v1/user/session/start/${result}`;
-      this.http.get(url).subscribe();
+      this.http.get(url, httpOptions).subscribe();
     });
   }
 

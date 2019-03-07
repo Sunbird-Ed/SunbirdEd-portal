@@ -127,7 +127,7 @@ export class DataService {
   /**
    * for preparing headers
    */
-  private getHeader(headers?: HttpOptions['headers']): HttpOptions['headers'] {
+  public getHeader(headers?: HttpOptions['headers']): HttpOptions['headers'] {
     const default_headers = {
       'Accept': 'application/json',
       // 'X-Consumer-ID': 'X-Consumer-ID',
