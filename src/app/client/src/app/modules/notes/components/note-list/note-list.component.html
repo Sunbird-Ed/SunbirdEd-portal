@@ -53,8 +53,8 @@
                 <div class="content notelistrightscroll pt-10">
                   <div class="ui row mr-15">
                     <div class="right-floated pt-10">
-                      <i class="large edit icon cursor-pointer" title={{resourceService?.frmelmnts?.lbl?.edit}} (click)="showUpdateEditor = true;"></i>
-                      <i class="right-floated large trash outline icon cursor-pointer" title={{resourceService?.frmelmnts?.lbl?.delete}} (click)="showDelete = true;">
+                      <i appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="updateNoteInteractEdata"  class="large edit icon cursor-pointer" title={{resourceService?.frmelmnts?.lbl?.edit}} (click)="showUpdateEditor = true;"></i>
+                      <i appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="deleteNoteInteractEdata" class="right-floated large trash outline icon cursor-pointer" title={{resourceService?.frmelmnts?.lbl?.delete}} (click)="showDelete = true;">
                         <app-delete-note *ngIf="showDelete === true" [deleteNote]="selectedNote"  (exitModal)="showDelete = false" (deleteEventEmitter)="deleteEventEmitter($event)">
                         </app-delete-note>
                       </i>

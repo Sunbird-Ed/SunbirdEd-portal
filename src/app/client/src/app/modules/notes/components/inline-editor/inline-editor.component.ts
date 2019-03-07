@@ -1,3 +1,5 @@
+import { IInteractEventObject } from '@sunbird/telemetry';
+import { ActivatedRoute } from '@angular/router';
 
 import {takeUntil} from 'rxjs/operators';
 import { NotesService } from '../../services';
@@ -87,6 +89,9 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   noteService: NotesService;
 
+  telemetryInteractObject: IInteractEventObject;
+
+
   public unsubscribe$ = new Subject<void>();
 
   /**
@@ -103,7 +108,8 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     resourceService: ResourceService,
     userService: UserService,
     noteService: NotesService,
-    toasterService: ToasterService
+    toasterService: ToasterService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.noteService = noteService;
     this.userService = userService;
@@ -116,6 +122,13 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   ngOnInit() {
     this.updateData = { ...this.selectedNote };
+    if (this.ids) {
+      this.telemetryInteractObject = {
+        id: this.ids.courseId || this.ids.contentId,
+        type: (this.ids.courseId) ? 'Course' : 'Content',
+        ver: '1.0'
+      };
+    }
   }
 
   /**
@@ -206,5 +219,13 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  setTelemetryInteractData(type) {
+    return {
+      id: type,
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
   }
 }

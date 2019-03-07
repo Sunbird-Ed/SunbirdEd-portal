@@ -124,6 +124,8 @@ export class NoteListComponent implements OnInit, OnDestroy {
   */
   telemetryImpression: IImpressionEventInput;
   addNoteInteractEdata: IInteractEventEdata;
+  deleteNoteInteractEdata: IInteractEventEdata;
+  updateNoteInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   public unsubscribe$ = new Subject<void>();
 
@@ -333,6 +335,16 @@ export class NoteListComponent implements OnInit, OnDestroy {
   setInteractData() {
     this.addNoteInteractEdata = {
       id: 'add-note',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+    this.deleteNoteInteractEdata = {
+      id: 'delete-note',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+    this.updateNoteInteractEdata = {
+      id: 'update-note',
       type: 'click',
       pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
