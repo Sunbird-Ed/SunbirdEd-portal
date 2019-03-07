@@ -25,6 +25,10 @@ const appRoutes: Routes = [
   {
     path: 'announcement',
     loadChildren: 'app/modules/announcement/announcement.module#AnnouncementModule'
+  },
+  {
+    path: 'org',
+    loadChildren: 'app/modules/org-management/org-management.module#OrgManagementModule'
   }
 ];
 
