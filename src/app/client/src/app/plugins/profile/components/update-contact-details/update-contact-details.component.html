@@ -48,7 +48,8 @@
 
     <!--Actions-->
     <div class="sb-modal-actions">
-      <button  appTelemetryInteract [telemetryInteractEdata]="{id:'submit' , type:'click' , pageid:'profile-read'}"
+      <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="submitInteractEdata"
         [ngClass]="{'disabled':!enableSubmitBtn}" 
         (click)="onSubmitForm()" 
         class="sb-btn sb-btn-normal sb-btn-primary">

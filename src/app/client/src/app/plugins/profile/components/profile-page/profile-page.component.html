@@ -81,8 +81,9 @@
   <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3" *ngIf="userProfile.email || userProfile.phone">
     <div class="d-flex flex-dc">
       <div class="d-flex flex-jc-center">
-        <div (click)="showContactPopup=true;contactType='phone'" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-        [telemetryInteractEdata]="editMobileInteractEdata" class="ui semi-circular dodger-blue basic label mb-15 cursor-pointer" *ngIf="userProfile.phone">
+        <div (click)="showContactPopup=true;contactType='phone'"
+          class="ui semi-circular dodger-blue basic label mb-15 cursor-pointer" *ngIf="userProfile.phone" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+          [telemetryInteractEdata]="editMobileInteractEdata">
           <i class="phone blue icon mr-5" ></i> &#x200E;+91 {{userProfile.phone}}
         </div>
         <div (click)="showContactPopup=true;contactType='phone'"
@@ -203,8 +204,7 @@
               <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let item of contributions;let i = index;"
                 class="slide">
                 <div>
-                  <app-card appTelemetryInteract [telemetryInteractEdata]="{id:'content-card' , type: 'click' , pageid:'profile-read'}"  
-                  [telemetryInteractObject]="{id:item.metaData.identifier}"  (clickEvent)="onClickOfMyContributions($event)" [data]="item" [customClass]="'pr-20'"
+                  <app-card (clickEvent)="onClickOfMyContributions($event)" [data]="item" [customClass]="'pr-20'"
                     class="pr-20 d-block"></app-card>
                 </div>
               </div>
@@ -233,13 +233,11 @@
                 <span class="fs-1 color-4" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy' }}</span>
               </li>
               <div class=" mb-15 d-flex flex-jc-center relative" *ngIf="attendedTraining.length > 3">
-                <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-                [telemetryInteractEdata]="{id:'viewmore' , type:'click' , pageid:'profile-read'}" class="ui semi-circular dodger-blue button" *ngIf="showMoreTrainings"
+                <button class="ui semi-circular dodger-blue button" *ngIf="showMoreTrainings"
                   (click)="toggleCourse(true)">{{resourceService.frmelmnts.lbl.viewmore}}
                   <i class="chevron down icon pl-10"></i>
                 </button>
-                <button  appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-                [telemetryInteractEdata]="{id:'viewless' , type:'click' , pageid:'profile-read'}" class="ui semi-circular dodger-blue button" (click)="toggleCourse(false)"
+                <button class="ui semi-circular dodger-blue button" (click)="toggleCourse(false)"
                   *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}
                   <i class="chevron up icon pl-10"></i>
                 </button>

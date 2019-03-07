@@ -55,7 +55,8 @@
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button 
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+    [telemetryInteractEdata]="submitInteractEdata"
       class="sb-btn sb-btn-normal sb-btn-primary" 
       [disabled]="!enableSubmitBtn" 
       (click)="onSubmitForm()"
