@@ -21,6 +21,10 @@ const appRoutes: Routes = [
   {
     path: 'home',
     loadChildren: 'app/modules/home/home.module#HomeModule'
+  },
+  {
+    path: 'announcement',
+    loadChildren: 'app/modules/announcement/announcement.module#AnnouncementModule'
   }
 ];
 

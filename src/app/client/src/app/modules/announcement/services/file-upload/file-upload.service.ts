@@ -1,10 +1,9 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { ConfigService } from './../config/config.service';
 import { FineUploader, UIOptions } from 'fine-uploader';
-import { ToasterService } from './../toaster/toaster.service';
 import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import { ConfigService, ToasterService } from '@sunbird/shared';
 
 @Injectable()
 /**

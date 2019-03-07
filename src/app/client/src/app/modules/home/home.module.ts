@@ -1,18 +1,14 @@
-// Import modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeRoutingModule } from './home-routing.module';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SlickModule } from 'ngx-slick';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-// Import services
 import { CoreModule } from '@sunbird/core';
-import { SharedModule} from '@sunbird/shared';
-// Import component
+import { SharedModule } from '@sunbird/shared';
 import {
- HomeCalendarCardComponent, HomeFeedCardComponent, MainHomeComponent,
- HomeAnnouncementComponent, NotificationComponent
-} from './component/index';
+  HomeCalendarCardComponent, HomeFeedCardComponent, MainHomeComponent, HomeAnnouncementComponent, NotificationComponent
+} from './component';
 import { HomeAnnouncementService } from './service/index';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
