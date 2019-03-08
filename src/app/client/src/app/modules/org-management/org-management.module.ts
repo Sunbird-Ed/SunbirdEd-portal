@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
+import { Angular2CsvModule } from 'angular2-csv';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { NgInviewModule } from 'angular-inport';
     ReactiveFormsModule,
     CoreModule,
     TelemetryModule,
-    NgInviewModule
+    NgInviewModule,
+    Angular2CsvModule
   ],
   declarations: [CreateOrgTypeComponent, ViewOrgTypeComponent, OrganizationUploadComponent,
     UserUploadComponent, BulkUploadComponent, StatusComponent],

@@ -1,8 +1,7 @@
 import { ConfigService } from './../../services';
 import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import * as _ from 'lodash';
-import * as $ from 'jquery';
-import {PlayerConfig} from './../../interfaces';
+import { PlayerConfig } from './../../interfaces';
 
 @Component({
   selector: 'app-player',
@@ -36,7 +35,7 @@ export class PlayerComponent implements OnInit, OnChanges {
    * Initializes player with given config and emits player telemetry events
    * Emits event when content starts playing and end event when content was played/read completely
    */
-  showPlayer () {
+  showPlayer() {
     const iFrameSrc = this.configService.appConfig.PLAYER_CONFIG.baseURL + '&build_number=' + this.buildNumber;
     setTimeout(() => {
       this.contentIframe.nativeElement.src = iFrameSrc;
@@ -46,13 +45,13 @@ export class PlayerComponent implements OnInit, OnChanges {
       };
     }, 0);
     this.contentIframe.nativeElement.addEventListener('renderer:telemetry:event', (event: any) => {
-        this.generateContentReadEvent(event);
+      this.generateContentReadEvent(event);
     });
   }
   /**
    * Adjust player height after load
    */
-  adjustPlayerHeight () {
+  adjustPlayerHeight() {
     const playerWidth = $('#contentPlayer').width();
     if (playerWidth) {
       const height = playerWidth * (9 / 16);
@@ -61,7 +60,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
   generateContentReadEvent(event: any) {
     if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START' ||
-    event.detail.telemetryData.eid === 'END')) {
+      event.detail.telemetryData.eid === 'END')) {
       this.contentProgressEvent.emit(event);
     } else if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'IMPRESSION')) {
       this.emitSceneChangeEvent();
@@ -72,6 +71,6 @@ export class PlayerComponent implements OnInit, OnChanges {
       const stageId = this.contentIframe.nativeElement.contentWindow.EkstepRendererAPI.getCurrentStageId();
       const eventData = { stageId };
       this.sceneChangeEvent.emit(eventData);
-    } , timer); // waiting for player to load, then fetching stageId (if we dont wait stageId will be undefined)
+    }, timer); // waiting for player to load, then fetching stageId (if we dont wait stageId will be undefined)
   }
 }
