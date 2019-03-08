@@ -7,6 +7,7 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
+import { environment } from '@sunbird/environment';
 declare var jQuery: any;
 /**
  * Main header component
@@ -102,6 +103,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   userDataSubscription: Subscription;
   exploreRoutingUrl: string;
   pageId: string;
+
+  isOffline = environment.isOffline;
   /*
   * constructor
   */
@@ -113,7 +116,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.permissionService = permissionService;
     this.userService = userService;
     this.tenantService = tenantService;
-   }
+    console.log('isOffline', this.isOffline);
+  }
 
   ngOnInit() {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd))
@@ -202,7 +206,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
       if (_.includes(urlAfterRedirects.url, '/explore')) {
         this.showExploreHeader = true;
-        const url  = urlAfterRedirects.url.split('?')[0].split('/');
+        const url = urlAfterRedirects.url.split('?')[0].split('/');
         if (url.indexOf('explore') === 2) {
           this.exploreRoutingUrl = url[1] + '/' + url[2];
         } else {
@@ -210,7 +214,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
         }
       } else if (_.includes(urlAfterRedirects.url, '/explore-course')) {
         this.showExploreHeader = true;
-        const url  = urlAfterRedirects.url.split('?')[0].split('/');
+        const url = urlAfterRedirects.url.split('?')[0].split('/');
         if (url.indexOf('explore-course') === 2) {
           this.exploreRoutingUrl = url[1] + '/' + url[2];
         } else {

@@ -13,7 +13,10 @@
     "precommit": "ng lint",
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -s",
     "test-coverage": "ng test --code-coverage=true --watch=false",
-    "build-cdn": "ng build --prod"
+    "build-cdn": "ng build --prod",
+    "build-offline": "ng build --project offline --deployUrl dist/ --c=offline && mv ../dist/index.html ../dist/index.ejs",
+    "start-offline": "nodemon  --exec 'npm run build-offline'",
+    "build-offine-prod": "ng build --project offline --deployUrl dist/ --c=offlineProduction && mv ../dist/index.html ../dist/index.ejs"
   },
   "nodemonConfig": {
     "ext": "ts,html,json,css,scss,less"
