@@ -116,7 +116,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.permissionService = permissionService;
     this.userService = userService;
     this.tenantService = tenantService;
-    console.log('isOffline', this.isOffline);
   }
 
   ngOnInit() {
