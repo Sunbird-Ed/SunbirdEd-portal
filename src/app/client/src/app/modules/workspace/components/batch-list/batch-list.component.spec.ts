@@ -1,6 +1,5 @@
-
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
-import { BatchCardComponent } from './../batch-card/batch-card.component';
+import { BatchCardComponent } from '@sunbird/shared';
 import { BatchListComponent } from './batch-list.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -71,7 +70,7 @@ describe('BatchListComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BatchListComponent, BatchCardComponent],
+      declarations: [BatchListComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule,
         Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(), CoreModule.forRoot(),
@@ -91,6 +90,7 @@ describe('BatchListComponent', () => {
     component = fixture.componentInstance;
     childcomponent = childfixture.componentInstance;
   });
+
   it('should call  batch search api and returns result count more than 1', inject([SearchService], (searchService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
@@ -104,7 +104,6 @@ describe('BatchListComponent', () => {
     expect(component.batchList.length).toBeGreaterThan(1);
     expect(component.showLoader).toBeFalsy();
   }));
-
 
   it('should call  batch search api and returns result count 0', inject([SearchService], (searchService) => {
     const userService = TestBed.get(UserService);
@@ -136,6 +135,7 @@ describe('BatchListComponent', () => {
     (route) => {
       const userService = TestBed.get(UserService);
       const learnerService = TestBed.get(LearnerService);
+      route.url = '/workspace/content/batches/view-all/Ongoing-Batches/1?status=0';
       spyOn(learnerService, 'get').and.returnValue(observableOf(testData.userSuccess.success));
       userService._userProfile = testData.userSuccess.success;
       userService._userProfile.roleOrgMap = roleOrgMap;
@@ -143,7 +143,8 @@ describe('BatchListComponent', () => {
       component.pager.totalPages = 8;
       component.navigateToPage(1);
       fixture.detectChanges();
-      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/batches', component.pageNumber]);
+      expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/batches/view-all/Ongoing-Batches', component.pageNumber],
+        {queryParams: component.queryParams, relativeTo: component.activatedRoute});
     }));
 
   it('should call  user search api and returns result count more than 1', inject([SearchService], (searchService) => {

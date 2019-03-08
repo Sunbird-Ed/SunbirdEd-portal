@@ -115,9 +115,9 @@ export class DraftComponent extends WorkSpace implements OnInit {
     totalCount: Number;
 
     /**
-	  * Contains returned object of the pagination service
+      * Contains returned object of the pagination service
     * which is needed to show the pagination on inbox view
-	  */
+      */
     pager: IPagination;
 
     /**
@@ -131,12 +131,12 @@ export class DraftComponent extends WorkSpace implements OnInit {
    */
     public resourceService: ResourceService;
     /**
-	 * inviewLogs
-	*/
+     * inviewLogs
+    */
     inviewLogs = [];
     /**
-	 * telemetryImpression
-	*/
+     * telemetryImpression
+    */
     telemetryImpression: IImpressionEventInput;
     /**
       * Constructor to create injected service(s) object
@@ -204,7 +204,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
         };
         this.searchContentWithLockStatus(searchParams).subscribe(
             (data: ServerResponse) => {
-                if (data.result.count && data.result.content.length > 0) {
+                if (data.result.count && data.result.content && data.result.content.length > 0) {
                     this.totalCount = data.result.count;
                     this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
                     const constantData = this.config.appConfig.WORKSPACE.Draft.constantData;
@@ -251,8 +251,10 @@ export class DraftComponent extends WorkSpace implements OnInit {
 
     public deleteConfirmModal(contentIds) {
         const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
-        config.isClosable = true;
-        config.size = 'mini';
+        config.isClosable = false;
+        config.size = 'small';
+        config.transitionDuration = 0;
+        config.mustScroll = true;
         this.modalService
             .open(config)
             .onApprove(result => {
@@ -264,6 +266,10 @@ export class DraftComponent extends WorkSpace implements OnInit {
                     (data: ServerResponse) => {
                         this.showLoader = false;
                         this.draftList = this.removeContent(this.draftList, contentIds);
+                        // after delete if current page results are zero
+                        if (this.draftList.length === 0) {
+                            this.fetchDrafts(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
+                        }
                         this.toasterService.success(this.resourceService.messages.smsg.m0006);
                     },
                     (err: ServerResponse) => {
@@ -280,11 +286,11 @@ export class DraftComponent extends WorkSpace implements OnInit {
    * This method helps to navigate to different pages.
    * If page number is less than 1 or page number is greater than total number
    * of pages is less which is not possible, then it returns.
-	 *
-	 * @param {number} page Variable to know which page has been clicked
-	 *
-	 * @example navigateToPage(1)
-	 */
+     *
+     * @param {number} page Variable to know which page has been clicked
+     *
+     * @example navigateToPage(1)
+     */
     navigateToPage(page: number): undefined | void {
         if (page < 1 || page > this.pager.totalPages) {
             return;

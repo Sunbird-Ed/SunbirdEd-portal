@@ -26,7 +26,7 @@
     padding: 10px;
 
     @media only screen and (min-width: 768px) {
-      padding: 10px 0;
+      padding: 12px 0;
     }
   }
 }
@@ -34,7 +34,7 @@
 .searchbox {
   width: 100%;
 
-  @media only screen and (min-width: 1100px) {
+  @media only screen and (min-width: 1024px) {
     width: calc(100% - 284px);
     max-width: 490px;
   }
@@ -115,10 +115,9 @@
     font-size: 0.86rem;
     border-radius: 3px;
     font-weight: bold;
-    height: 30px;
-    padding: 7px 15px;
+    padding: 8px 16px;
 
-    @media screen and (min-width: 1100px) {
+    @media screen and (min-width: 1024px) {
       color: $white-color;
       border: 0;
       font-weight: 500;

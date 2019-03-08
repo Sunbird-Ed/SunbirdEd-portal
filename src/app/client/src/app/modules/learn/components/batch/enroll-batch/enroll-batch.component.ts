@@ -95,7 +95,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
       this.showEnrollDetails = true;
     }
   }
-  enrollToCourse(batchId) {
+  enrollToCourse(batchId?: any) {
     const request = {
       request: {
         courseId: this.batchDetails.courseId,

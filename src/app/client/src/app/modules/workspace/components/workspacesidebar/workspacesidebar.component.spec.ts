@@ -5,6 +5,7 @@ import { WorkspacesidebarComponent } from './workspacesidebar.component';
 import {RouterTestingModule} from '@angular/router/testing';
 import { SharedModule, ConfigService} from '@sunbird/shared';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { SuiModule } from 'ng2-semantic-ui';
 describe('WorkspacesidebarComponent', () => {
   let component: WorkspacesidebarComponent;
   let fixture: ComponentFixture<WorkspacesidebarComponent>;
@@ -13,7 +14,7 @@ describe('WorkspacesidebarComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ WorkspacesidebarComponent ],
       providers: [ Ng2IzitoastService, ConfigService],
-      imports: [RouterTestingModule, HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot()]
+      imports: [RouterTestingModule, HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot(), SuiModule]
     })
     .compileComponents();
   }));
@@ -32,7 +33,7 @@ describe('WorkspacesidebarComponent', () => {
     component.upForReviewRole = configService.rolesConfig.workSpaceRole.upForReviewRole;
     component.flaggedRole = configService.rolesConfig.workSpaceRole.flaggedRole;
     component.limitedPublishingRole = configService.rolesConfig.workSpaceRole.limitedPublishingRole;
-    component.coursebacthesRole = configService.rolesConfig.workSpaceRole.coursebacthesRole;
+    component.courseBatchRoles = configService.rolesConfig.workSpaceRole.courseBatchRoles;
     component.createRole =  configService.rolesConfig.workSpaceRole.createRole;
     component.allContentRole = configService.rolesConfig.workSpaceRole.allContentRole;
     component.collaboratingRole = configService.rolesConfig.workSpaceRole.collaboratingRole;
@@ -43,7 +44,7 @@ describe('WorkspacesidebarComponent', () => {
     expect(component.alluploadsRole).toBeDefined();
     expect(component.upForReviewRole).toBeDefined();
     expect(component.flaggedRole).toBeDefined();
-    expect(component.coursebacthesRole).toBeDefined();
+    expect(component.courseBatchRoles).toBeDefined();
     expect(component.createRole).toBeDefined();
     expect(component.allContentRole).toBeDefined();
     expect(component.collaboratingRole).toBeDefined();

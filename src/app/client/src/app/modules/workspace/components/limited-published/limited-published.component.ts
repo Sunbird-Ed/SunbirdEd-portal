@@ -171,7 +171,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
     };
     this.noResultMessage = {
       'message': this.resourceService.messages.stmsg.m0008,
-      'messageText': this.resourceService.messages.stmsg.m0083
+      'messageText': this.resourceService.messages.stmsg.m0083,
     };
     this.state = 'limited-publish';
   }
@@ -249,8 +249,10 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
   }
   public deleteConfirmModal(contentIds) {
     const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
-    config.isClosable = true;
-    config.size = 'mini';
+    config.isClosable = false;
+    config.size = 'small';
+    config.transitionDuration = 0;
+    config.mustScroll = true;
     this.modalService
       .open(config)
       .onApprove(result => {
@@ -262,6 +264,9 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
           (data: ServerResponse) => {
             this.showLoader = false;
             this.limitedPublishList = this.removeContent(this.limitedPublishList, contentIds);
+            if (this.limitedPublishList.length === 0) {
+              this.fetchLimitedPublished(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
+            }
             this.toasterService.success(this.resourceService.messages.smsg.m0006);
           },
           (err: ServerResponse) => {

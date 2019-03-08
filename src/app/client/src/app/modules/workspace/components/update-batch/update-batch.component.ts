@@ -37,6 +37,10 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
   * participantList for users
   */
   public participantList = [];
+
+
+  public showFormInViewMode: boolean;
+
   /**
   * batchDetails for form
   */
@@ -127,6 +131,9 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
         });
         this.showUpdateModal = true;
         this.batchDetails = data.batchDetails;
+        if (this.batchDetails.createdBy !== this.userService.userid) {
+          this.showFormInViewMode = true;
+        }
         const userList = this.sortUsers(data.userDetails);
         this.participantList = userList.participantList;
         this.mentorList = userList.mentorList;
@@ -306,9 +313,9 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
     this.disableSubmitBtn = true;
     let participants = [];
     let mentors = [];
+    mentors = $('#mentors').dropdown('get value') ? $('#mentors').dropdown('get value').split(',') : [];
     if (this.batchUpdateForm.value.enrollmentType !== 'open') {
       participants = $('#participant').dropdown('get value') ? $('#participant').dropdown('get value').split(',') : [];
-      mentors = $('#mentors').dropdown('get value') ? $('#mentors').dropdown('get value').split(',') : [];
     }
     const startDate = moment(this.batchUpdateForm.value.startDate).format('YYYY-MM-DD');
     const endDate = this.batchUpdateForm.value.endDate && moment(this.batchUpdateForm.value.endDate).format('YYYY-MM-DD');
@@ -322,13 +329,11 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
       createdFor: this.userService.userProfile.organisationIds,
       mentors: _.compact(mentors)
     };
-    if (this.batchUpdateForm.value.enrollmentType !== 'open') {
-      const selected = [];
-      _.forEach(this.selectedMentors, (value) => {
-        selected.push(value.id);
-      });
-      requestBody['mentors'] = _.concat(_.compact(requestBody['mentors']), selected);
-    }
+    const selected = [];
+    _.forEach(this.selectedMentors, (value) => {
+      selected.push(value.id);
+    });
+    requestBody['mentors'] = _.concat(_.compact(requestBody['mentors']), selected);
     this.batchService.updateBatch(requestBody).pipe(takeUntil(this.unsubscribe))
       .subscribe((response) => {
         if (participants && participants.length > 0) {
@@ -368,12 +373,12 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
         });
   }
   public redirect() {
-    this.router.navigate(['workspace/content/batches/1']);
+    this.router.navigate(['.'], { queryParamsHandling: 'merge', relativeTo: this.activatedRoute.parent });
   }
   private reload() {
     setTimeout(() => {
       this.batchService.updateEvent.emit({ event: 'update' });
-      this.router.navigate(['workspace/content/batches/1']);
+      this.router.navigate(['.'], { queryParamsHandling: 'merge', relativeTo: this.activatedRoute.parent });
     }, 1000);
   }
 

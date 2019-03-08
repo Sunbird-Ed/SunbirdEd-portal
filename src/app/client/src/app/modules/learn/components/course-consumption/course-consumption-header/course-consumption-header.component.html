@@ -11,7 +11,7 @@
               <h1 class="ui header small">
                 {{courseHierarchy.name}}
               </h1>
-              <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="courseHeader-rating ui star rating course-header-divider"
+              <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="courseHeader-rating ui star rating black-divider pr-15"
                 [isReadonly]="true" [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
               &nbsp;&nbsp;
               <a (click)="onShareLink();sharelinkModal=true;">
@@ -31,14 +31,14 @@
                     progress }}%</p>
                 </span>
                 <button appTelemetryInteract [telemetryInteractEdata]="resumeIntractEdata" [telemetryInteractObject]="courseInteractObject"
-                  class="fluid blue right floated  ui button courseHeaderButton mt-0" [disabled]="showResumeCourse"
+                  class="sb-btn sb-btn-primary sb-btn-normal width-100 mt-0" [disabled]="showResumeCourse"
                   (click)="resumeCourse(true)">
                   {{resourceService?.frmelmnts?.btn?.resumecourse}}
                   <i class="caret right icon"></i>
                 </button>
               </div>
               <div *ngIf="permissionService.permissionAvailable && !enrolledCourse" appPermission [permission]="dashboardPermission">
-                <button class="blue right floated ui button courseHeaderButton mt-10" (click)="showDashboard()">{{resourceService?.frmelmnts?.btn?.viewcoursestats}}</button>
+                <button class="sb-btn sb-btn-primary sb-btn-normal width-100 mt-10" (click)="showDashboard()">{{resourceService?.frmelmnts?.btn?.viewCourseStatsDashboard}}</button>
               </div>
             </div>
             <!-- course ended Error message starts -->

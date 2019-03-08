@@ -3,6 +3,8 @@ import { ResourceService, ToasterService } from '@sunbird/shared';
 import { ProfileService } from './../../services';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash';
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { UserService } from '@sunbird/core';
 
 @Component({
   selector: 'app-update-user-details',
@@ -20,9 +22,12 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
   sbFormBuilder: FormBuilder;
   enableSubmitBtn = false;
   showDistrictDivLoader = false;
+  submitInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
-    public profileService: ProfileService, formBuilder: FormBuilder) {
+    public profileService: ProfileService, formBuilder: FormBuilder,
+    public userService: UserService) {
     this.sbFormBuilder = formBuilder;
   }
 
@@ -33,7 +38,7 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
 
   initializeFormFields() {
     this.userDetailsForm = this.sbFormBuilder.group({
-      name: new FormControl(this.userProfile.firstName, [Validators.required]),
+      name: new FormControl(this.userProfile.firstName, [Validators.required, Validators.pattern(/^[a-zA-Z ]*$/)]),
       state: new FormControl(null),
       district: new FormControl(null)
     }, {
@@ -46,6 +51,7 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
     this.enableSubmitBtn = (this.userDetailsForm.status === 'VALID');
     this.onStateChange();
     this.enableSubmitButton();
+    this.setInteractEventData();
   }
 
   getState() {
@@ -137,6 +143,20 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
   closeModal() {
     this.userDetailsModal.deny();
     this.close.emit();
+  }
+
+  setInteractEventData() {
+    this.submitInteractEdata = {
+      id: 'submit-personal-details',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
   }
 
   ngOnDestroy() {

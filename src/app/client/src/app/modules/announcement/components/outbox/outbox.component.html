@@ -11,8 +11,8 @@
       <div class="right floated three wide column padding-right-dropdown pr-10">
         <div class="ui right-float">
           <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="createAnnouncementInteractEdata"
-            class="ui primary basic button announcement-button" [routerLink]="['../../create/1']">
-            <span class="announcement-button-text">{{resourceService?.frmelmnts?.lbl?.anncmntcreate}}</span>
+            class="sb-btn sb-btn-outline-primary sb-btn-normal" [routerLink]="['../../create/1']">
+            <span>{{resourceService?.frmelmnts?.lbl?.anncmntcreate}}</span>
           </button>
         </div>
       </div>
@@ -86,10 +86,10 @@
               <td>{{item.metrics.received ? item.metrics.received : "N/A"}}</td>
               <td>{{item.metrics.read ? item.metrics.read : "N/A"}}</td>
               <td appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="deleteAnnouncementInteractEdata"
-                class="cursor-pointer red-text-color-sunbird" [routerLink]="['delete/' + item.id]" *ngIf="item.status === 'active'">
+                class="cursor-pointer sb-color-error" [routerLink]="['delete/' + item.id]" *ngIf="item.status === 'active'">
                 <i class="icon trash"></i>{{resourceService?.frmelmnts?.lbl?.anncmntoutboxdelete}}</td>
               <td appTelemetryInteract [telemetryInteractObject]="{id:item.id,type:'announcement',ver:'1.0'}" [telemetryInteractEdata]="resendAnnouncementInteractEdata"
-                [routerLink]="['../../resend/' + item.id + '/1']" *ngIf="item.status == 'cancelled'" class="cursor-pointer blue-text-color-sunbird">
+                [routerLink]="['../../resend/' + item.id + '/1']" *ngIf="item.status == 'cancelled'" class="cursor-pointer sb-color-primary">
                 <i class="external share icon"></i>{{resourceService?.frmelmnts?.lbl?.anncmntoutboxresend}}</td>
             </tr>
           </tbody>
@@ -103,7 +103,7 @@
     <div class="twelve wide column">
       <div class="ui">
         <div class="text ann-data-text" *ngIf="outboxData.metricsupdateddate">
-          <span class="blue-text-color-sunbird">*</span>{{resourceService?.frmelmnts?.lbl?.anncmntlastupdate}} {{outboxData.metrics.updatedate}}</div>
+          <span class="sb-color-primary">*</span>{{resourceService?.frmelmnts?.lbl?.anncmntlastupdate}} {{outboxData.metrics.updatedate}}</div>
       </div>
     </div>
   </div>

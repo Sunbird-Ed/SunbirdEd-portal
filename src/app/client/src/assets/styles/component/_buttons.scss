@@ -1,0 +1,274 @@
+/* buttons sytle guide */
+// Specificity overrides
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+  &.btn-block {
+    width: 100%;
+  }
+}
+// base button styles
+.sb-btn {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    outline: 0;
+    display: inline-block;
+    border: 1px solid;
+    color: $white-color;
+    cursor: pointer;
+    min-width:($base-block-space * 8);
+    line-height: inherit;
+    @include border-radius(3px);
+    text: {
+        transform: capitalize;
+        decoration: none;
+    }
+    &:hover {
+        opacity: 1;
+    }
+    &.disabled,
+    &.disabled:hover,
+    &:disabled,
+    &:disabled:hover {
+        background-color: $gray-100;
+        color:$gray-200;
+        border:1px solid $gray-100;
+        cursor: not-allowed;
+    }
+    &+.sb-btn {
+        margin:0 $base-block-space 0 0;
+    }
+}
+// button link
+.sb-btn-link {
+    background:none;
+    border:0;
+    color:$primary-color;
+    text-decoration: underline;
+    &:hover {
+        font-weight:$font-weight-bold;
+    }
+    
+}
+// button sizes
+.sb-btn-xs, .sb-btn-normal, .sb-btn-sm,.sb-btn-md {
+    padding: ($base-block-space * 1) ($base-block-space * 2);
+}
+.sb-btn-xs {
+    height:($base-block-space * 3);
+    padding: ($base-block-space * 0) ($base-block-space * 1);
+    font-size:$font-size-sm;
+}
+//primary button style
+.sb-btn-normal {
+    height:($base-block-space * 4);
+    font-size:$font-size-sm;
+}
+.sb-btn-sm {
+    height:($base-block-space * 5);
+    font-size:$font-size-normal;
+}
+.sb-btn-md {
+    height:($base-block-space * 6);
+    font-size:$font-size-md;
+}
+.sb-btn-lg {
+  height:($base-block-space * 7);
+  padding: ($base-block-space * 3);
+  font-size:$font-size-lg;
+}
+// default outline colored btns
+.sb-btn-outline-primary{
+    @include btn-theme-bgwhite($primary-color);
+} 
+.sb-btn-outline-secondary{
+    @include btn-theme-bgwhite($secondary-200);
+} 
+.sb-btn-outline-tertiary{
+    @include btn-theme-bgwhite($tertiary-color);
+}
+// status outline buttons
+.sb-btn-outline-info{
+    @include btn-theme-bgwhite($primary-color);
+} 
+.sb-btn-outline-success{
+    @include btn-theme-bgwhite($secondary-200);
+} 
+.sb-btn-outline-warning{
+    @include btn-theme-bgwhite($tertiary-color);
+}   
+.sb-btn-outline-error{
+    @include btn-theme-bgwhite($red);
+} 
+.sb-btn-outline-gray{
+    @include btn-theme-bgwhite($gray-800);
+} 
+// default colored btns
+.sb-btn-primary,.sb-btn-info{
+    @include btn-theme($primary-color);
+    &:hover,&:active {
+        background: $primary-800;
+    }
+} 
+.sb-btn-secondary,.sb-btn-success{
+    @include btn-theme($secondary-200);
+    &:hover,&:active {
+        background: $secondary-400;
+    }
+}
+.sb-btn-tertiary,.sb-btn-warning{
+    @include btn-theme($tertiary-color);
+    &:hover,&:active {
+        background: $tertiary-400;
+    }
+}
+.sb-btn-success{
+    @include btn-theme($success-color);
+    &:hover,&:active {
+        background: $secondary-400;
+    }
+} 
+.sb-btn-info{
+    @include btn-theme($info-color);
+    &:hover,&:active {
+        background: $primary-800;
+    }
+}
+.sb-btn-warning{
+    @include btn-theme($warning-color);
+    &:hover,&:active {
+        background: $tertiary-400;
+    }
+} 
+.sb-btn-error{
+    @include btn-theme($danger-color);
+    &:hover,&:active {
+        background: $red-400;
+    }
+}
+
+// to cleanup
+.ui.dodger-blue.basic.label {
+    border: 1px solid $primary-color !important;	
+    border-radius: 4px;
+    color: $primary-color;
+    font-size: 1rem;
+    font-weight: 300;
+    padding: 4px 16px;
+
+}
+.ui.semi-circular.dodger-blue.basic.label {
+    border: 1px solid $primary-color !important;
+    border-radius: 18.5px;
+    color: $primary-color;
+    font-size: 1.16rem;
+    padding: 10px 27px;
+}
+
+.ui.semi-circular.dodger-blue.button {
+    border: 1px solid $primary-color;
+    border-radius: 18.5px;
+    background: $primary-color;
+    color: #fff;
+    font-size: 1rem;    
+    font-weight: 100;
+    padding: 6px 27px;
+}
+
+.circular-placeholder {
+	border: 6px solid #fff;
+	background-color: #fff;
+    box-shadow: 0 0 6px 0 rgba(0,0,0,0.38);
+    border-radius: 100%;
+    height: 92px;
+    width: 92px;
+}
+.ui.button.rounded{
+    border-radius: 20px;
+}
+.ui.explore.blue.button {  
+    background-color: $primary-color;
+    padding: 10px 30px;
+}
+.ui.explore.blue.button:hover {  
+    opacity: 0.8;
+}
+.ui.explore.blue.button:active {  
+    opacity: 0.9;
+}
+.ui.basic.explore.blue.button {  
+    background-color: #fff;
+    border: 0.5px solid $primary-color;
+    box-shadow: none;
+    color: $primary-color;
+    font-weight: 700;
+    height:36px;
+    padding: 10px 30px;
+}
+.ui.basic.explore.blue.button:hover {  
+    opacity: 0.8;
+}
+.ui.basic.explore.blue.button:active {  
+    opacity: 0.9;
+}
+.ui.blue.button,
+.ui.blue.buttons .button{
+    background-color: $primary-color !important;
+    color: #fff !important;
+}
+.ui.primary.button, 
+.ui.primary.buttons .button{
+    background-color: $primary-color !important;
+    color: #fff !important;
+}
+.ui.basic.primary.button,
+.ui.basic.primary.buttons .button{
+    color: $primary-color !important;
+    background: transparent !important;
+}
+.ui.basic.blue.button,
+.ui.basic.blue.buttons .button{
+    color: $primary-color !important;
+    background: transparent !important;
+}
+.ui.red.label, 
+.ui.red.labels .label{
+    background: $danger-color !important;
+    border-color: $danger-color !important;
+}
+
+// disabled button
+.sb-btn-disabled,
+.sb-btn-primary[disabled],
+.sb-btn-secondary[disabled],
+.sb-btn-tertiary[disabled],
+.sb-btn-info[disabled],
+.sb-btn-success[disabled],
+.sb-btn-warning[disabled],
+.sb-btn-error[disabled] {
+    background-color: $gray-100;
+    border:1px solid $gray-100;
+    color:$gray-200;
+    cursor: not-allowed;
+}
+.sb-btn-outline-disabled,
+.sb-btn-outline-primary[disabled],
+.sb-btn-outline-secondary[disabled],
+.sb-btn-outline-tertiary[disabled],
+.sb-btn-outline-info[disabled],
+.sb-btn-outline-success[disabled],
+.sb-btn-outline-warning[disabled],
+.sb-btn-outline-error[disabled],
+.sb-btn-outline-gray[disabled] {
+    background-color: $white-color;
+    border:1px solid $gray-100;
+    color:$gray-100;
+    cursor: not-allowed;
+    font-weight: normal;
+}
+
+.ui[class*="right floated"].sb-btn {
+    float: right;
+    margin-right: 0;
+    margin-left: 8px;
+}

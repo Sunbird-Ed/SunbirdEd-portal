@@ -1,14 +1,16 @@
 import { Subscription, Observable } from 'rxjs';
 import { of, throwError } from 'rxjs';
-import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse, UtilService,
-   BrowserCacheTtlService } from '@sunbird/shared';
+import {
+  ConfigService, ResourceService, Framework, ToasterService, ServerResponse, UtilService,
+  BrowserCacheTtlService
+} from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnDestroy, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, PermissionService, OrgDetailsService } from './../../services';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventEdata } from '@sunbird/telemetry';
-import { first, mergeMap, map, tap , catchError, filter} from 'rxjs/operators';
+import { first, mergeMap, map, tap, catchError, filter } from 'rxjs/operators';
 @Component({
   selector: 'app-prominent-filter',
   templateUrl: './prominent-filter.component.html'
@@ -25,6 +27,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   @Input() frameworkName: string;
   @Input() formAction: string;
   @Output() prominentFilter = new EventEmitter();
+  public resetFilterInteractEdata: IInteractEventEdata;
   /**
  * To get url, app configs
  */
@@ -74,7 +77,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   frameworkDataSubscription: Subscription;
   resourceDataSubscription: Subscription;
   isFiltered = true;
-  submitIntractEdata: IInteractEventEdata;
+  applyFilterInteractEdata: IInteractEventEdata;
   private selectedLanguage: string;
   /**
    *
@@ -115,16 +118,16 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
       .subscribe(item => {
         this.selectedLanguage = item.value;
         if (this.formFieldProperties && this.formFieldProperties.length > 0) {
-             _.forEach(this.formFieldProperties, (data, index) => {
-              this.formFieldProperties[index] = this.utilService.translateLabel(data, this.selectedLanguage );
-              this.formFieldProperties[index].range  = this.utilService.translateValues(data.range, this.selectedLanguage);
-             });
-             this.filtersDetails = _.cloneDeep(this.formFieldProperties);
-             this.formInputData = this.utilService.convertSelectedOption(this.formInputData,
-              this.formFieldProperties, 'en', this.selectedLanguage);
+          _.forEach(this.formFieldProperties, (data, index) => {
+            this.formFieldProperties[index] = this.utilService.translateLabel(data, this.selectedLanguage);
+            this.formFieldProperties[index].range = this.utilService.translateValues(data.range, this.selectedLanguage);
+          });
+          this.filtersDetails = _.cloneDeep(this.formFieldProperties);
+          this.formInputData = this.utilService.convertSelectedOption(this.formInputData,
+            this.formFieldProperties, 'en', this.selectedLanguage);
         }
       }
-   );
+      );
     this.frameworkService.initialize(this.frameworkName, this.hashTagId);
     this.getFormatedFilterDetails().subscribe((formFieldProperties) => {
       this.formFieldProperties = formFieldProperties;
@@ -133,6 +136,26 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     }, (err) => {
       this.prominentFilter.emit([]);
     });
+    this.setFilterInteractData();
+  }
+  private setFilterInteractData() {
+    setTimeout(() => { // wait for model to change
+      const filters = _.pickBy(this.formInputData, (val, key) =>
+        (!_.isEmpty(val) || typeof val === 'number')
+          && _.map(this.formFieldProperties, field => field.code).includes(key));
+      this.applyFilterInteractEdata = {
+        id: 'apply-filter',
+        type: 'click',
+        pageid: this.pageId,
+        extra: {filters: filters}
+      };
+      this.resetFilterInteractEdata = {
+        id: 'reset-filter',
+        type: 'click',
+        pageid: this.pageId,
+        extra: {filters: filters}
+      };
+    }, 5);
   }
 
   getFormatedFilterDetails() {
@@ -144,31 +167,32 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
         return this.getFormDetails();
       }),
       mergeMap((formData: any) => {
-        if (_.find(formData, {code: 'channel'})) {
+        if (_.find(formData, { code: 'channel' })) {
           return this.getOrgSearch().pipe(map((channelData: any) => {
             const data = _.filter(channelData, 'hashTagId');
-            return {formData: formData, channelData: data};
+            return { formData: formData, channelData: data };
           }));
         } else {
-          return of({formData: formData});
+          return of({ formData: formData });
         }
       }),
       map((formData: any) => {
         let formFieldProperties = _.filter(formData.formData, (formFieldCategory) => {
           if (formFieldCategory.code === 'channel') {
             formFieldCategory.range = _.map(formData.channelData, (value) => {
-              return {category: 'channel',
-              identifier: value.hashTagId,
-              name: value.orgName,
-            };
+              return {
+                category: 'channel',
+                identifier: value.hashTagId,
+                name: value.orgName,
+              };
             });
           } else {
-          const frameworkTerms = _.get(_.find(this.categoryMasterList, { code : formFieldCategory.code}), 'terms');
-          formFieldCategory.range = _.union(formFieldCategory.range, frameworkTerms);
+            const frameworkTerms = _.get(_.find(this.categoryMasterList, { code: formFieldCategory.code }), 'terms');
+            formFieldCategory.range = _.union(formFieldCategory.range, frameworkTerms);
           }
           if (this.selectedLanguage !== 'en') {
-            formFieldCategory = this.utilService.translateLabel(formFieldCategory, this.selectedLanguage );
-            formFieldCategory.range =  this.utilService.translateValues(formFieldCategory.range, this.selectedLanguage);
+            formFieldCategory = this.utilService.translateLabel(formFieldCategory, this.selectedLanguage);
+            formFieldCategory.range = this.utilService.translateValues(formFieldCategory.range, this.selectedLanguage);
           }
           return true;
         });
@@ -194,7 +218,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
           const framework = this.frameworkName ? this.frameworkName : 'defaultFramework';
           const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
           if (frameworkData) {
-            return of({categoryMasterList: frameworkData.categories, framework: frameworkData.code});
+            return of({ categoryMasterList: frameworkData.categories, framework: frameworkData.code });
           } else {
             return throwError('no result for ' + this.frameworkName); // framework error need to handle this
           }
@@ -211,12 +235,12 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
         this.formFieldProperties, 'en', this.selectedLanguage);
       if (this.formInputData.channel && this.formFieldProperties) { // To manuplulate channel data from identifier to name
         const channel = [];
-         _.forEach(this.formInputData.channel, (value, key) => {
-          const orgDetails = _.find(this.formFieldProperties, {code: 'channel'});
-          const range = _.find(orgDetails['range'], {'identifier': value});
+        _.forEach(this.formInputData.channel, (value, key) => {
+          const orgDetails = _.find(this.formFieldProperties, { code: 'channel' });
+          const range = _.find(orgDetails['range'], { 'identifier': value });
           channel.push(range['name']);
-         });
-         this.formInputData['channel'] =  channel;
+        });
+        this.formInputData['channel'] = channel;
       }
       this.showFilters = true;
       this.hardRefreshFilter();
@@ -240,6 +264,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     }
     this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
     this.hardRefreshFilter();
+    this.setFilterInteractData();
   }
   selectedValue(event, code) {
     this.formInputData[code] = event;
@@ -257,29 +282,32 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     } else {
       this.isFiltered = false;
       const queryParams: any = {};
-    _.forIn(this.formInputData, (eachInputs: Array<any | object>, key) => {
+      _.forIn(this.formInputData, (eachInputs: Array<any | object>, key) => {
         const formatedValue = typeof eachInputs === 'string' ? eachInputs :
-        _.compact(_.map(eachInputs, value => typeof value === 'string' ? value : _.get(value, 'identifier')));
+          _.compact(_.map(eachInputs, value => typeof value === 'string' ? value : _.get(value, 'identifier')));
         if (formatedValue.length) {
           queryParams[key] = formatedValue;
         }
         if (key === 'channel') {
           queryParams[key] = this.populateChannelData(formatedValue);
         }
-    });
-    queryParams['appliedFilters'] = true;
-    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
+      });
+      if (!_.isEmpty(queryParams)) {
+        queryParams['appliedFilters'] = true;
+        this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
+      }
     }
+    this.setFilterInteractData();
   }
 
   private populateChannelData(data) {
     const channel = [];
-         _.forEach(data, (value, key) => {
-          const orgDetails = _.find(this.formFieldProperties, {code: 'channel'});
-          const range = _.find(orgDetails['range'], {name: value});
-          channel.push(range['identifier']);
-         });
-         return channel;
+    _.forEach(data, (value, key) => {
+      const orgDetails = _.find(this.formFieldProperties, { code: 'channel' });
+      const range = _.find(orgDetails['range'], { name: value });
+      channel.push(range['identifier']);
+    });
+    return channel;
   }
 
   public handleTopicChange(topicsSelected) {
@@ -296,10 +324,10 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     this.refresh = true;
   }
   private getOrgSearch() {
-    return this.orgDetailsService.searchOrg().pipe(map(data => ( data.content )),
-    catchError(err => {
-      return [];
-    }));
+    return this.orgDetailsService.searchOrg().pipe(map(data => (data.content)),
+      catchError(err => {
+        return [];
+      }));
   }
   ngOnDestroy() {
     if (this.frameworkDataSubscription) {

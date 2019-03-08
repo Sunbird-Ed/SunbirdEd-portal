@@ -23,7 +23,7 @@ export class UtilService {
 
   processContent(data, staticData, dynamicFields, metaData) {
     let fieldValue: any;
-    const content = {
+    const content: any = {
       name: data.name || data.courseName,
       image: data.appIcon || data.courseLogoUrl,
       description: data.description,
@@ -34,7 +34,8 @@ export class UtilService {
       gradeLevel: '',
       contentType: data.contentType,
       topic: this.getTopicSubTopic('topic', data.topic),
-      subTopic: this.getTopicSubTopic('subTopic', data.topic)
+      subTopic: this.getTopicSubTopic('subTopic', data.topic),
+      metaData: {}
     };
 
     // this customization is done for enrolled courses
@@ -118,6 +119,9 @@ export class UtilService {
     }
   }
   translateLabel(formFieldCategory, selectedLanguage) {
+    if (!formFieldCategory.translations) {
+      return formFieldCategory;
+    }
     const translation = JSON.parse(formFieldCategory.translations);
     if (translation && !translation.en) {
       translation.en = formFieldCategory.label;

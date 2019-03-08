@@ -1,16 +1,24 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { InstallAppComponent } from './install-app.component';
+import { ResourceService, ConfigService, BrowserCacheTtlService } from '../../services';
+import { CacheService } from 'ng2-cache-service';
 
 describe('InstallAppComponent', () => {
     let comp: InstallAppComponent;
     let fixture: ComponentFixture<InstallAppComponent>;
 
-    beforeEach(() => {
+    beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ InstallAppComponent ],
-            schemas: [ NO_ERRORS_SCHEMA ]
-        });
+          imports: [HttpClientTestingModule],
+          declarations: [ InstallAppComponent ],
+          providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService],
+          schemas: [NO_ERRORS_SCHEMA]
+        })
+        .compileComponents();
+    }));
+    beforeEach(() => {
         fixture = TestBed.createComponent(InstallAppComponent);
         comp = fixture.componentInstance;
     });

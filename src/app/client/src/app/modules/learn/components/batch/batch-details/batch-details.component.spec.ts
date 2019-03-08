@@ -8,7 +8,7 @@ import { CoreModule, PermissionService } from '@sunbird/core';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CourseBatchService } from './../../../services';
+import { CourseBatchService, CourseProgressService } from './../../../services';
 import {userSearch, allBatchDetails, enrolledBatch } from './batch-details.component.data';
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
@@ -40,7 +40,7 @@ describe('BatchDetailsComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), SuiModule],
       declarations: [BatchDetailsComponent],
-      providers: [CourseBatchService, { provide: Router, useClass: RouterStub },
+      providers: [CourseBatchService, CourseProgressService, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })

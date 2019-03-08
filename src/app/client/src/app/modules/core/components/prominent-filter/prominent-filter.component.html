@@ -24,10 +24,10 @@
                         <div class="field">
                           <label class="mb-10">{{field.label}}</label>
                           <ng-container *ngIf="field.inputType==='select' || field.inputType==='multi-select'">
-                              <app-custom-multi-select [inputData]="formInputData[field.code]" [field]="field" (selectedValue)="selectedValue($event, field.code)"></app-custom-multi-select>
+                              <app-custom-multi-select [inputData]="formInputData[field.code]" [field]="field" (selectedValue)="selectedValue($event, field.code);setFilterInteractData()"></app-custom-multi-select>
                           </ng-container>
                           <ng-container *ngIf="field.code==='topic'">
-                            <app-topic-picker [selectedTopics]="formInputData[field.code]" [formTopic]="field" (topicChange)="handleTopicChange($event)"></app-topic-picker>
+                            <app-topic-picker [selectedTopics]="formInputData[field.code]" [formTopic]="field" (topicChange)="handleTopicChange($event);setFilterInteractData()"></app-topic-picker>
                           </ng-container>
                         </div>
                       </div>
@@ -37,10 +37,10 @@
                         <div class="field large">
                           <label class="mb-10">{{field.label}}</label>
                           <ng-container *ngIf="field.inputType==='select' || field.inputType==='multi-select'">
-                            <app-custom-multi-select [inputData]="formInputData[field.code]" [field]="field" (selectedValue)="selectedValue($event, field.code)"></app-custom-multi-select>
+                            <app-custom-multi-select [inputData]="formInputData[field.code]" [field]="field" (selectedValue)="selectedValue($event, field.code);setFilterInteractData()"></app-custom-multi-select>
                           </ng-container>
                           <ng-container *ngIf="field.code==='topic'">
-                            <app-topic-picker [selectedTopics]="formInputData[field.code]" [formTopic]="field" (topicChange)="handleTopicChange($event)"></app-topic-picker>
+                            <app-topic-picker [selectedTopics]="formInputData[field.code]" [formTopic]="field" (topicChange)="handleTopicChange($event);setFilterInteractData()"></app-topic-picker>
                           </ng-container>
                         </div>
                       </div>
@@ -49,12 +49,13 @@
                 </div>
                 <div class="twelve wide tablet two wide computer right aligned top aligned column filter-button">
                   <label class="computer-only mb-5">&nbsp;</label>
-                  <a class="searchfilterbutton ui blue tiny button" (click)="applyFilters()" appTelemetryInteract [telemetryInteractEdata]="submitIntractEdata">
+                  <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="applyFilters()" appTelemetryInteract [telemetryInteractEdata]="applyFilterInteractEdata">
                     {{resourceService.frmelmnts?.btn?.submit}}
-                  </a>
-                  <a class="ml-10 searchfilterbutton ui primary tiny basic button" (click)="resetFilters()">
+                  </button>
+                  <button appTelemetryInteract [telemetryInteractEdata]="resetFilterInteractEdata" 
+                  class="sb-btn sb-btn-normal sb-btn-outline-primary ml-10" (click)="resetFilters()">
                     {{resourceService.frmelmnts?.btn?.reset}}
-                  </a>
+                  </button>
                 </div>
               </div>
             </form>

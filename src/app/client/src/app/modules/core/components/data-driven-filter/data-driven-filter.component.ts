@@ -1,14 +1,15 @@
 import { of, throwError, Subscription } from 'rxjs';
-import { first, mergeMap, map, tap , catchError, filter} from 'rxjs/operators';
+import { first, mergeMap, map, tap, catchError, filter } from 'rxjs/operators';
 import {
   ConfigService, ResourceService, Framework, BrowserCacheTtlService, UtilService
 } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnChanges, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FrameworkService, FormService, PermissionService, UserService, OrgDetailsService  } from './../../services';
+import { FrameworkService, FormService, PermissionService, UserService, OrgDetailsService } from './../../services';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+
 @Component({
   selector: 'app-data-driven-filter',
   templateUrl: './data-driven-filter.component.html'
@@ -44,9 +45,12 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
 
   public isShowFilterPlaceholder = true;
 
-  public filterIntractEdata: IInteractEventEdata;
+  public filterInteractEdata: IInteractEventEdata;
 
-  public submitIntractEdata: IInteractEventEdata;
+  public applyFilterInteractEdata: IInteractEventEdata;
+
+  public resetFilterInteractEdata: IInteractEventEdata;
+  telemetryCdata: Array<{}>;
   private selectedLanguage: string;
   resourceDataSubscription: Subscription;
   // add langauge default value en
@@ -55,7 +59,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
     private activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
     public frameworkService: FrameworkService, public formService: FormService,
     public userService: UserService, public permissionService: PermissionService, private utilService: UtilService,
-    private browserCacheTtlService: BrowserCacheTtlService, private orgDetailsService: OrgDetailsService ) {
+    private browserCacheTtlService: BrowserCacheTtlService, private orgDetailsService: OrgDetailsService) {
     this.router.onSameUrlNavigation = 'reload';
   }
 
@@ -64,16 +68,16 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(item => {
         this.selectedLanguage = item.value;
         if (this.formFieldProperties && this.formFieldProperties.length > 0) {
-             _.forEach(this.formFieldProperties, (data, index) => {
-              this.formFieldProperties[index] = this.utilService.translateLabel(data, this.selectedLanguage );
-              this.formFieldProperties[index].range  = this.utilService.translateValues(data.range, this.selectedLanguage);
-             });
-             this.filtersDetails = _.cloneDeep(this.formFieldProperties);
-             this.formInputData = this.utilService.convertSelectedOption(this.formInputData,
-              this.formFieldProperties, 'en', this.selectedLanguage);
+          _.forEach(this.formFieldProperties, (data, index) => {
+            this.formFieldProperties[index] = this.utilService.translateLabel(data, this.selectedLanguage);
+            this.formFieldProperties[index].range = this.utilService.translateValues(data.range, this.selectedLanguage);
+          });
+          this.filtersDetails = _.cloneDeep(this.formFieldProperties);
+          this.formInputData = this.utilService.convertSelectedOption(this.formInputData,
+            this.formFieldProperties, 'en', this.selectedLanguage);
         }
       }
-        );
+      );
     this.frameworkService.initialize(this.frameworkName, this.hashTagId);
     this.getFormatedFilterDetails().subscribe((formFieldProperties) => {
       this.formFieldProperties = formFieldProperties;
@@ -94,43 +98,44 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
         return this.getFormDetails();
       }),
       mergeMap((formData: any) => {
-        if (_.find(formData, {code: 'channel'})) {
+        if (_.find(formData, { code: 'channel' })) {
           return this.getOrgSearch().pipe(map((channelData: any) => {
             const data = _.filter(channelData, 'hashTagId');
-            return {formData: formData, channelData: data};
+            return { formData: formData, channelData: data };
           }));
         } else {
-          return of({formData: formData});
+          return of({ formData: formData });
         }
       }),
       map((formData: any) => {
         let formFieldProperties = _.filter(formData.formData, (formFieldCategory) => {
           if (!_.isEmpty(formFieldCategory.allowedRoles)
             && !this.permissionService.checkRolesPermissions(formFieldCategory.allowedRoles)) {
-              return false;
+            return false;
           }
           if (formFieldCategory.code === 'channel') {
             formFieldCategory.range = _.map(formData.channelData, (value) => {
-              return {category: 'channel',
-              identifier: value.hashTagId,
-              name: value.orgName,
-            };
+              return {
+                category: 'channel',
+                identifier: value.hashTagId,
+                name: value.orgName,
+              };
             });
           } else {
             const loggedInUserRoles = _.get(this.userService, 'userProfile.userRoles');
-          const frameworkTerms = _.get(_.find(this.categoryMasterList, { code : formFieldCategory.code}), 'terms');
-          formFieldCategory.range = _.union(formFieldCategory.range, frameworkTerms);
-          if (this.filterEnv === 'upforreview' && formFieldCategory.code === 'contentType' &&
-          (_.includes(loggedInUserRoles, 'CONTENT_REVIEWER') && _.includes(loggedInUserRoles, 'BOOK_REVIEWER') &&
-          !_.find(formFieldCategory.range, { name: 'TextBook' }))) {
-                formFieldCategory.range.push({ name: 'TextBook' });
-          }
-          }
-            if (this.selectedLanguage !== 'en') {
-              formFieldCategory = this.utilService.translateLabel(formFieldCategory, this.selectedLanguage );
-            formFieldCategory.range =  this.utilService.translateValues(formFieldCategory.range, this.selectedLanguage);
-
+            const frameworkTerms = _.get(_.find(this.categoryMasterList, { code: formFieldCategory.code }), 'terms');
+            formFieldCategory.range = _.union(formFieldCategory.range, frameworkTerms);
+            if (this.filterEnv === 'upforreview' && formFieldCategory.code === 'contentType' &&
+              (_.includes(loggedInUserRoles, 'CONTENT_REVIEWER') && _.includes(loggedInUserRoles, 'BOOK_REVIEWER') &&
+                !_.find(formFieldCategory.range, { name: 'TextBook' }))) {
+              formFieldCategory.range.push({ name: 'TextBook' });
             }
+          }
+          if (this.selectedLanguage !== 'en') {
+            formFieldCategory = this.utilService.translateLabel(formFieldCategory, this.selectedLanguage);
+            formFieldCategory.range = this.utilService.translateValues(formFieldCategory.range, this.selectedLanguage);
+
+          }
           return true;
         });
         formFieldProperties = _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index');
@@ -155,7 +160,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
           const framework = this.frameworkName ? this.frameworkName : 'defaultFramework';
           const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
           if (frameworkData) {
-            return of({categoryMasterList: frameworkData.categories, framework: frameworkData.code});
+            return of({ categoryMasterList: frameworkData.categories, framework: frameworkData.code });
           } else {
             return throwError('no result for ' + this.frameworkName); // framework error need to handle this
           }
@@ -173,7 +178,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
 
       if (params.channel) {
         this.modelChange(this.formInputData.channel);
-          this.channelInputLabel = this.orgDetailsService.getOrg();
+        this.channelInputLabel = this.orgDetailsService.getOrg();
       }
       this.showFilters = true;
       this.hardRefreshFilter();
@@ -193,30 +198,40 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
     this.formInputData = _.pick(this.formInputData, this.ignoreQuery);
     if (this.viewAllMode) {
       const data = this.cacheService.get('viewAllQuery');
-      _.forIn(data, (value, key ) => this.formInputData[key] = value);
+      _.forIn(data, (value, key) => this.formInputData[key] = value);
     }
-    this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
-    this.hardRefreshFilter();
-  }
-
-  public applyFilters() {
-    this.formInputData = this.utilService.convertSelectedOption(this.formInputData, this.formFieldProperties, this.selectedLanguage, 'en');
-    const queryParams: any = {};
-    _.forIn(this.formInputData, (eachInputs: Array<any | object>, key) => {
-        const formatedValue = typeof eachInputs === 'string' ? eachInputs :
-        _.compact(_.map(eachInputs, value => typeof value === 'string' ? value : _.get(value, 'identifier')));
-        if (formatedValue.length) {
-          queryParams[key] = formatedValue;
-        }
-    });
-    queryParams['appliedFilters'] = true;
     let redirectUrl; // if pageNumber exist then go to first page every time when filter changes, else go exact path
     if (this.activatedRoute.snapshot.params.pageNumber) { // when using dataDriven filter should this should be verified
       redirectUrl = this.router.url.split('?')[0].replace(/[^\/]+$/, '1');
     } else {
       redirectUrl = this.router.url.split('?')[0];
     }
-    this.router.navigate([redirectUrl], { queryParams: queryParams });
+    this.router.navigate([redirectUrl], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
+    this.hardRefreshFilter();
+    this.setFilterInteractData();
+  }
+
+  public applyFilters() {
+    this.formInputData = this.utilService.convertSelectedOption(this.formInputData, this.formFieldProperties, this.selectedLanguage, 'en');
+    const queryParams: any = {};
+    _.forIn(this.formInputData, (eachInputs: Array<any | object>, key) => {
+      const formatedValue = typeof eachInputs === 'string' ? eachInputs :
+        _.compact(_.map(eachInputs, value => typeof value === 'string' ? value : _.get(value, 'identifier')));
+      if (formatedValue.length) {
+        queryParams[key] = formatedValue;
+      }
+    });
+    let redirectUrl; // if pageNumber exist then go to first page every time when filter changes, else go exact path
+    if (this.activatedRoute.snapshot.params.pageNumber) { // when using dataDriven filter should this should be verified
+      redirectUrl = this.router.url.split('?')[0].replace(/[^\/]+$/, '1');
+    } else {
+      redirectUrl = this.router.url.split('?')[0];
+    }
+    if (!_.isEmpty(queryParams)) {
+      queryParams['appliedFilters'] = true;
+      this.router.navigate([redirectUrl], { queryParams: queryParams });
+    }
+    this.setFilterInteractData();
   }
 
   public removeFilterSelection(field, item) {
@@ -258,23 +273,38 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
     const orgDetails = _.find(this.formFieldProperties, ['code', 'channel']);
     if (orgDetails) {
       _.forEach(data, (value, key) => {
-        this.channelInputLabel.push(_.find(orgDetails['range'], {identifier: value}));
+        this.channelInputLabel.push(_.find(orgDetails['range'], { identifier: value }));
         this.orgDetailsService.setOrg(this.channelInputLabel);
       });
     }
   }
   private setFilterInteractData() {
-    this.submitIntractEdata = {
-      id: 'submit',
-      type: 'click',
-      pageid: this.pageId,
-      extra: { filter: this.formInputData }
-    };
-    this.filterIntractEdata = {
-      id: 'filter',
-      type: 'click',
-      pageid: this.pageId
-    };
+    setTimeout(() => { // wait for model to change
+      const filters = _.pickBy(this.formInputData, (val, key) =>
+        (!_.isEmpty(val) || typeof val === 'number')
+          && _.map(this.formFieldProperties, field => field.code).includes(key));
+      this.applyFilterInteractEdata = {
+        id: 'apply-filter',
+        type: 'click',
+        pageid: this.pageId,
+        extra: {filters: filters}
+      };
+      this.resetFilterInteractEdata = {
+        id: 'reset-filter',
+        type: 'click',
+        pageid: this.pageId,
+        extra: {filters: filters}
+      };
+      this.filterInteractEdata = {
+        id: 'filter-accordion',
+        type: 'click',
+        pageid: this.pageId
+      };
+    }, 5);
+    const pageSection = this.cacheService.get('pageSection');
+    if (_.get(pageSection, 'id' )) {
+      this.telemetryCdata = [{ 'type': 'page-section', 'id': pageSection.id }];
+    }
   }
   private hardRefreshFilter() {
     this.refresh = false;
@@ -282,10 +312,10 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
     this.refresh = true;
   }
   getOrgSearch() {
-    return this.orgDetailsService.searchOrg().pipe(map(data => ( data.content )),
-    catchError(err => {
-      return [];
-    }));
+    return this.orgDetailsService.searchOrg().pipe(map(data => (data.content)),
+      catchError(err => {
+        return [];
+      }));
   }
   ngOnDestroy() {
     if (this.resourceDataSubscription) {

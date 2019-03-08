@@ -2,10 +2,10 @@
       <sui-accordion [closeOthers]="false">
         <sui-accordion-panel [isOpen]="accordionDefaultOpen" [isDisabled]="true">
           <div *ngIf="isShowFilterLabel" title class="cursor-text filter-title">
-            <span (click)="accordionDefaultOpen = !accordionDefaultOpen" class="cursor-pointer">
+            <span appTelemetryInteract [telemetryInteractEdata]="filterInteractEdata" [telemetryInteractCdata]="telemetryCdata"(click)="accordionDefaultOpen = !accordionDefaultOpen" class="cursor-pointer">
               <i alt="Filter" class="icon filter"></i>
               {{resourceService.frmelmnts?.lbl?.filters}}
-              <i class="dropdown icon vertical-align-middle" appTelemetryInteract [telemetryInteractEdata]="filterIntractEdata"></i>
+              <i class="dropdown icon vertical-align-middle"></i>
             </span>
           </div>
           <div content>
@@ -46,7 +46,7 @@
                             </sui-multi-select>
                           </div>
                           <div *ngIf="field.code === 'channel'" class="field large">
-                            <sui-multi-select (ngModelChange)="modelChange($event)" id={{field.code}} name={{field.code}}
+                            <sui-multi-select (ngModelChange)="modelChange($event);setFilterInteractData()" id={{field.code}} name={{field.code}}
                               defaultSelectionText={{field.name}} zeroSelectionText= {{resourceService.frmelmnts.lbl.Select}} class="selection filterFieldSearch"
                               [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" labelField="name" valueField="identifier"
                               #multiSelect>
@@ -54,16 +54,17 @@
                             </sui-multi-select>
                           </div>
                           <div *ngIf="field.code==='topic'" class="field">
-                            <app-topic-picker [selectedTopics]="formInputData[field.code]" [formTopic]="field" (topicChange)="handleTopicChange($event)"></app-topic-picker>
+                            <app-topic-picker [selectedTopics]="formInputData[field.code]" [formTopic]="field" (topicChange)="handleTopicChange($event);setFilterInteractData()"></app-topic-picker>
                           </div>
                         </div>
                       </div>
                 </div>
                 
                 <div class="twelve wide tablet two wide computer right aligned top aligned column filter-button">
-                  <a class="searchfilterbutton ui blue tiny  button" (click)="applyFilters()" appTelemetryInteract
-                    [telemetryInteractEdata]="submitIntractEdata">{{resourceService.frmelmnts?.btn?.apply}}</a>
-                  <a class="searchfilterbutton ui primary tiny basic button ml-5" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</a>
+                  <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="applyFilters()" appTelemetryInteract
+                    [telemetryInteractEdata]="applyFilterInteractEdata">{{resourceService.frmelmnts?.btn?.apply}}</button>
+                  <button appTelemetryInteract [telemetryInteractEdata]="resetFilterInteractEdata"
+                  class="sb-btn sb-btn-normal sb-btn-outline-primary ml-10" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</button>
                 </div>
               </div>
               </form>

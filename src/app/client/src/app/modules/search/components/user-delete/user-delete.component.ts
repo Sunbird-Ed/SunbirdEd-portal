@@ -136,7 +136,9 @@ export class UserDeleteComponent implements OnInit, OnDestroy {
     this.setUserDetails();
   }
   ngOnDestroy() {
-    this.modal.deny();
+    if (this.modal && this.modal.deny) {
+      this.modal.deny();
+    }
   }
 }
 

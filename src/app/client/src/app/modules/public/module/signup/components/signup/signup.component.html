@@ -8,7 +8,8 @@
         <div *ngIf="showSignUpForm" [appTelemetryStart]="telemetryStart">
           <div *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression" class="fs-1 font-weight-bold mb-20 text-ac">{{resourceService.frmelmnts.lbl.signUp}}</div>
           <form class="ui form borderd" [formGroup]="signUpForm" autocomplete="off" id="signUpForm">
-            <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors">{{resourceService.frmelmnts.lbl.fnameLname}}</label>
+            <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.required">{{resourceService.frmelmnts.lbl.fnameLname}}</label>
+            <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.pattern">{{resourceService.frmelmnts.lbl.enterValidName}}</label>
             <div class="required field mb-20">
               <label class="mb-10" *ngIf="!(signUpForm.controls.name.touched && signUpForm.controls['name'].errors)">{{resourceService.frmelmnts.lbl.name}}</label>
               <input [ngClass]="{'orange-border': signUpForm.controls.name.touched && signUpForm.controls['name'].errors}" formControlName="name"

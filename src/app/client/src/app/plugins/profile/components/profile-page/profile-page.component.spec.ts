@@ -50,7 +50,8 @@ describe('ProfilePageComponent', () => {
         'm0001': 'api failed, please try again',
         'm0004': 'api failed, please try again'
       }
-    }
+    },
+    languageSelected$: observableOf({})
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({

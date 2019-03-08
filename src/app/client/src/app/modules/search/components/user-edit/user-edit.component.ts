@@ -1,200 +1,82 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import { UserSearchService } from './../../services';
-import * as _ from 'lodash';
-import { SearchService, UserService, PermissionService, RolesAndPermissions } from '@sunbird/core';
+import { UserService, PermissionService, RolesAndPermissions, OrgDetailsService } from '@sunbird/core';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, IUserData } from '@sunbird/shared';
+import { ProfileService } from '@sunbird/profile';
+import * as _ from 'lodash';
 
-/**
- * The delete component deletes the announcement
- * which is requested by the logged in user have announcement
- * creator access
- */
 @Component({
   selector: 'app-user-edit',
   templateUrl: './user-edit.component.html',
   styleUrls: ['./user-edit-component.scss']
 })
 export class UserEditComponent implements OnInit, OnDestroy {
+
   @ViewChild('modal') modal;
-  /**
-	 * Contains unique announcement id
-	 */
   userId: string;
-
   allRoles: Array<RolesAndPermissions>;
-
+  userDetailsForm: FormGroup;
+  sbFormBuilder: FormBuilder;
   selectedOrgName: string;
   selectedOrgId: string;
   selectedOrgUserRoles: Array<string>;
   selectedOrgUserRolesNew: any = [];
-
-  userNames =  [ { 'name': 'Test' }, { 'name': 'No' }, { 'name': 'Benefit' }, { 'name': 'Oranges' }, { 'name': 'Artemis' } ];
-  /**
-	 * Contains announcement details returned from API or object called from
-   * announcement service
-	 */
+  stateId: string;
+  allDistricts: any;
+  allBlocks: any;
+  allSchools: any;
+  userProfile: any;
   userDetails: any;
-
-  /**
-   * To make get announcement by id
-   */
-  private searchService: SearchService;
-  private userSearchService: UserSearchService;
-
-  /**
-   * To send activatedRoute.snapshot to routerNavigationService
-   */
-  public activatedRoute: ActivatedRoute;
-
-  /**
-   * To call resource service which helps to use language constant
-   */
-  public resourceService: ResourceService;
-
-  /**
-   * To show toaster(error, success etc) after any API calls
-   */
-  private toasterService: ToasterService;
-  private permissionService: PermissionService;
-  /**
-	 * telemetryImpression
-	*/
   telemetryImpression: IImpressionEventInput;
-  organizationIntractEdata: IInteractEventEdata;
-  roleIntractEdata: IInteractEventEdata;
-  updateIntractEdata: IInteractEventEdata;
-  /**
-   * To navigate back to parent component
-   */
-  public routerNavigationService: RouterNavigationService;
+  submitInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
+  blockLoader = false;
+  schoolLoader = false;
+  showMainLoader = true;
+  locationCodes: Array<string>;
+  queryParams: any;
+  selectedSchoolId: any;
+  enableSubmitBtn: boolean;
 
-  /**
-	 * Constructor to create injected service(s) object
-	 *
-	 * Default method of DeleteComponent class
-	 *
-   * @param {UserSearchService} userSearchService Reference of UserSearchService
-   * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
-   * @param {ResourceService} resourceService Reference of ResourceService
-   * @param {ToasterService} toasterService Reference of ToasterService
-   * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
-	 */
-  constructor(userSearchService: UserSearchService, searchService: SearchService,
-    activatedRoute: ActivatedRoute, permissionService: PermissionService,
-    resourceService: ResourceService, public route: Router,
-    toasterService: ToasterService,
-    routerNavigationService: RouterNavigationService) {
-    this.userSearchService = userSearchService;
-    this.searchService = searchService;
-    this.activatedRoute = activatedRoute;
-    this.resourceService = resourceService;
-    this.toasterService = toasterService;
-    this.permissionService = permissionService;
-    this.routerNavigationService = routerNavigationService;
+  constructor(private userSearchService: UserSearchService, public activatedRoute: ActivatedRoute,
+    private permissionService: PermissionService, public resourceService: ResourceService,
+    public route: Router, private toasterService: ToasterService, formBuilder: FormBuilder,
+    public routerNavigationService: RouterNavigationService, public profileService: ProfileService,
+    public userService: UserService, public orgDetailsService: OrgDetailsService) {
+    this.sbFormBuilder = formBuilder;
   }
 
-  /**
-   * This method helps to redirect to the parent component
-   * page, i.e, outbox listing page with proper page number
-	 *
-	 */
-  redirect(): void {
-    this.route.navigate(['../../'], { relativeTo: this.activatedRoute });
-  }
-
-  populateOrgName() {
-    // Getting Org Ids
-    const orgArray = [];
-    _.each(this.userDetails.organisations, (orgKey) => {
-      orgArray.push(orgKey.organisationId);
-    });
-
-    // Calling Org search API
-    this.searchService.getOrganisationDetails({ orgid: orgArray }).subscribe(
-      (orgApiResponse: any) => {
-        // Setting Org Name
-        _.each(this.userDetails.organisations, (org) => {
-          const orgNameAndId = _.find(orgApiResponse.result.response.content, (organisation) => {
-            return organisation.id === org.organisationId;
-          });
-          if (orgNameAndId) { org.orgName = orgNameAndId.orgName; }
-        });
-      }
-    );
-  }
-
-  populateUserDetails() {
-    if (this.userSearchService.userDetailsObject === undefined ||
-      this.userSearchService.userDetailsObject.id !== this.userId) {
-      const option = { userId: this.userId };
-      this.userSearchService.getUserById(option).subscribe(
-        (apiResponse: ServerResponse) => {
-          this.userDetails = apiResponse.result.response;
-          this.populateOrgName();
-          this.selectedOrgId = this.userDetails.organisations[0].organisationId;
-          this.selectedOrgUserRoles = this.userDetails.organisations[0].roles;
-        },
-        err => {
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
-          this.redirect();
-        }
-      );
-    } else {
-      this.userDetails = this.userSearchService.userDetailsObject;
-      this.selectedOrgId = this.userDetails.organisations[0].organisationId;
-      this.selectedOrgUserRoles = this.userDetails.organisations[0].roles;
-    }
-  }
-
-  editRoles(role, userRoles, event) {
-    if (userRoles.includes(role) === true) {
-      this.selectedOrgUserRoles = this.selectedOrgUserRoles.filter((selectedRole) => {
-        return selectedRole !== role;
-      });
-    } else {
-      if (event.target.checked === true) {
-        this.selectedOrgUserRolesNew.push(role);
-      } else {
-        this.selectedOrgUserRolesNew.splice(this.selectedOrgUserRolesNew.indexOf(role));
-      }
-    }
-  }
-
-  updateRoles(roles) {
-    if (this.selectedOrgUserRolesNew) {
-      this.selectedOrgUserRolesNew.forEach((Newroles) => {
-        roles.push(Newroles);
-      });
-      const mainRole = [];
-      const mainRolesCollections = _.clone(this.allRoles);
-      _.forEach(mainRolesCollections, (value, key) => {
-        mainRole.push(value.role);
-      });
-      const option = { userId: this.userId, orgId: this.selectedOrgId, roles: roles };
-      this.userSearchService.updateRoles(option).subscribe(
-        (apiResponse: ServerResponse) => {
-          this.toasterService.success(this.resourceService.messages.smsg.m0028);
-          this.redirect();
-        },
-        err => {
-          this.selectedOrgUserRoles = _.difference(this.selectedOrgUserRoles, this.selectedOrgUserRolesNew);
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
-          this.redirect();
-        }
-      );
-    }
-  }
-
-  /**
-   * This method sets the annmouncementId and pagenumber from
-   * activated route
-	 */
   ngOnInit() {
+    this.activatedRoute.queryParams
+      .subscribe(params => {
+        this.queryParams = { ...params };
+      });
+    this.getLoggedInUserDetails();
+  }
+
+  getLoggedInUserDetails() {
+    this.userService.userData$.subscribe(
+      (user: IUserData) => {
+        if (user && !user.err) {
+          this.userProfile = user.userProfile;
+          const rootOrgDetails = _.filter(this.userProfile.organisations, (org) => {
+            return org.organisationId === this.userProfile.rootOrgId;
+          });
+          this.stateId = _.get(rootOrgDetails[0], 'locationIds[0]');
+          this.getAllRoles();
+        } else {
+          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+          this.redirect();
+        }
+      });
+  }
+
+  getAllRoles() {
     this.activatedRoute.params.subscribe(params => {
       this.userId = params.userId;
-      this.settelemetryData();
     });
     this.populateUserDetails();
     this.permissionService.permissionAvailable$.subscribe(params => {
@@ -207,6 +89,188 @@ export class UserEditComponent implements OnInit, OnDestroy {
     });
     _.remove(this.allRoles, { role: 'PUBLIC' });
   }
+
+  populateUserDetails() {
+    const option = { userId: this.userId };
+    this.userSearchService.getUserById(option).subscribe(
+      (apiResponse: ServerResponse) => {
+        this.userDetails = apiResponse.result.response;
+        const rootOrgDetails = _.filter(this.userDetails.organisations, (org) => {
+          return org.organisationId === this.userDetails.rootOrgId;
+        });
+        const subOrgDetails = _.filter(this.userDetails.organisations, (org) => {
+          return org.organisationId !== this.userDetails.rootOrgId;
+        });
+        if (!_.isEmpty(rootOrgDetails)) {this.selectedOrgUserRoles = rootOrgDetails[0].roles; }
+        if (!_.isEmpty(subOrgDetails)) {
+          const orgs = _.sortBy(subOrgDetails, ['orgjoindate']);
+          this.selectedSchoolId = orgs[0].organisationId;
+        }
+        this.initializeFormFields();
+      },
+      err => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        this.redirect();
+      }
+    );
+  }
+
+  initializeFormFields() {
+    this.userDetailsForm = this.sbFormBuilder.group({
+      role: new FormControl(this.selectedOrgUserRoles),
+      district: new FormControl(null),
+      block: new FormControl(null),
+      school: new FormControl(null)
+    });
+    this.getDistrict();
+    this.onDistrictChange();
+    this.onBlockChange();
+    this.settelemetryData();
+    this.onFormValueChange();
+  }
+
+  getDistrict() {
+    if (this.stateId) {
+      const requestData = { 'filters': { 'type': 'district', parentId: this.stateId } };
+      this.profileService.getUserLocation(requestData).subscribe(res => {
+        this.allDistricts = res.result.response;
+        const location = _.find(this.userDetails.userLocations, (locations) => {
+          return locations.type === 'district';
+        });
+        let locationExist: any;
+        if (location) {
+          locationExist = _.find(this.allDistricts, (locations) => {
+            return locations.code === location.code;
+          });
+        }
+
+        locationExist ? this.userDetailsForm.controls['district'].setValue(locationExist.code) :
+          this.userDetailsForm.controls['district'].setValue('');
+        this.showMainLoader = false;
+      }, err => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        this.redirect();
+      });
+    } else {
+      this.showMainLoader = false;
+    }
+  }
+
+  onDistrictChange() {
+    const districtControl = this.userDetailsForm.get('district');
+    let districtValue = '';
+    districtControl.valueChanges.subscribe(
+      (data: string) => {
+        if (districtControl.status === 'VALID' && districtValue !== districtControl.value) {
+          const district = _.find(this.allDistricts, (dis) => {
+            return dis.code === districtControl.value;
+          });
+          this.getBlock(district.id);
+          districtValue = districtControl.value;
+        }
+      });
+  }
+
+  getBlock(districtId) {
+    this.blockLoader = true;
+    const requestData = { 'filters': { 'type': 'block', parentId: districtId } };
+    this.profileService.getUserLocation(requestData).subscribe(res => {
+      this.allBlocks = res.result.response;
+      const location = _.find(this.userDetails.userLocations, (locations) => {
+        return locations.type === 'block';
+      });
+      let locationExist: any;
+      if (location) {
+        locationExist = _.find(this.allBlocks, (locations) => {
+          return locations.code === location.code;
+        });
+      }
+
+      locationExist ? this.userDetailsForm.controls['block'].setValue(locationExist.code) :
+        this.userDetailsForm.controls['block'].setValue('');
+      this.blockLoader = false;
+    }, err => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      this.redirect();
+    });
+  }
+
+  onBlockChange() {
+    const blockControl = this.userDetailsForm.get('block');
+    let blockValue = '';
+    blockControl.valueChanges.subscribe(
+      (data: string) => {
+        this.userDetailsForm.controls['school'].setValue('');
+        if (blockControl.status === 'VALID' && blockValue !== blockControl.value) {
+          this.userDetailsForm.controls['school'].setValue('');
+          this.allSchools = [];
+          const block = _.find(this.allBlocks, (blocks) => {
+            return blocks.code === blockControl.value;
+          });
+          if (block && block.id) { this.getSchool(block.id); }
+          blockValue = blockControl.value;
+        }
+      });
+  }
+
+  getSchool(blockId) {
+    this.schoolLoader = true;
+    const option = { 'filters': { 'locationIds': [blockId] } };
+    this.orgDetailsService.fetchOrgs(option).subscribe(
+      (apiResponse: ServerResponse) => {
+        this.allSchools = apiResponse.result.response.content;
+        this.schoolLoader = false;
+        this.userDetailsForm.controls['school'].setValue(this.selectedSchoolId);
+      },
+      err => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        this.redirect();
+      }
+    );
+  }
+
+  onSubmitForm() {
+    this.updateProfile();
+  }
+
+  updateProfile() {
+    // create school and roles data
+    const roles = !_.isEmpty(this.userDetailsForm.value.role) ? this.userDetailsForm.value.role : ['PUBLIC'];
+    const orgArray = [];
+    orgArray.push({organisationId: this.userDetails.rootOrgId, roles: roles});
+    if (this.userDetailsForm.value.school) {
+      orgArray.push({organisationId: this.userDetailsForm.value.school, roles: roles});
+    }
+
+    // create location data
+    this.locationCodes = [];
+    if (this.userDetailsForm.value.district) { this.locationCodes.push(this.userDetailsForm.value.district); }
+    if (this.userDetailsForm.value.block) { this.locationCodes.push(this.userDetailsForm.value.block); }
+
+    const data = { userId: this.userId, locationCodes: this.locationCodes, organisations: orgArray };
+    this.profileService.updatePrivateProfile(data)
+    .subscribe(
+      (apiResponse: ServerResponse) => {
+        this.toasterService.success(this.resourceService.messages.smsg.m0049);
+        this.redirect();
+      },
+      err => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0020);
+        this.redirect();
+      }
+    );
+  }
+
+  redirect(): void {
+    this.route.navigate(['../../'], { relativeTo: this.activatedRoute, queryParams: this.queryParams });
+  }
+
+  onFormValueChange() {
+    this.userDetailsForm.valueChanges.subscribe(val => {
+      this.settelemetryData();
+    });
+  }
+
   settelemetryData() {
     this.telemetryImpression = {
       context: {
@@ -224,24 +288,31 @@ export class UserEditComponent implements OnInit, OnDestroy {
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype
       }
     };
-    this.organizationIntractEdata = {
-      id: 'organization-dropdown',
-      type: 'click',
-      pageid: 'user-edit'
-    };
-    this.roleIntractEdata = {
-      id: 'role-checkbox',
-      type: 'click',
-      pageid: 'user-edit'
-    };
-    this.updateIntractEdata = {
+
+    this.submitInteractEdata = {
       id: 'user-update',
       type: 'click',
       pageid: 'user-edit'
     };
+
+    this.submitInteractEdata = {
+      id: 'user-update',
+      type: 'click',
+      pageid: 'user-edit',
+      extra: { filters: this.userDetailsForm.value }
+    };
+
+    this.telemetryInteractObject = {
+      id: this.userId,
+      type: 'user',
+      ver: '1.0'
+    };
   }
+
   ngOnDestroy() {
-    this.modal.deny();
+    if (this.modal && this.modal.deny) {
+      this.modal.deny();
+    }
   }
 }
 

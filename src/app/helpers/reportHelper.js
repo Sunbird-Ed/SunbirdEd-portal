@@ -8,8 +8,10 @@ const blobService = azure.createBlobService(envHelper.sunbird_azure_account_name
 function isValidSlug() {
     return function (req, res, next) {
         const roles = _.get(req, 'session.roles');
-        if (_.get(req, 'session.rootOrg.slug') !== req.params.slug && _.indexOf(roles, "ORG_ADMIN") === -1) {
-            res.status(403)
+        if (_.get(req, 'session.rootOrg.slug') === req.params.slug && (_.indexOf(roles, "ORG_ADMIN") >= 0 ||  _.indexOf(roles, "REPORT_VIEWER")) >= 0){
+            next()
+        } else {  
+          res.status(403)
             res.send({
                 'id': 'api.report',
                 'ver': '1.0',
@@ -23,9 +25,7 @@ function isValidSlug() {
                 },
                 'responseCode': 'FORBIDDEN',
                 'result': {}
-            })
-        } else {
-            next()
+            })    
         }
     }
 }
@@ -34,6 +34,7 @@ function azureBlobStream() {
     return function (req, res, next) {
         blobService.getBlobToText(envHelper.sunbird_azure_report_container_name, req.params.slug + '/' + req.params.filename, function (error, text) {
             if (error && error.statusCode === 404) {
+                console.log('Error with status code 404 - ', error);
                 res.status(404).send({
                     'id': 'api.report',
                     'ver': '1.0',
@@ -49,6 +50,7 @@ function azureBlobStream() {
                     'result': {}
                 });
             } else if (error) {
+                console.log('Error without status code 404 - ', error);
                 res.status(500).send({
                     'id': 'api.report',
                     'ver': '1.0',

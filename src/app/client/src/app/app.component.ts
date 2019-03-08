@@ -11,7 +11,6 @@ import { Observable, of, throwError, combineLatest } from 'rxjs';
 import { first, filter, mergeMap, tap, map } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
-const fingerPrint2 = new Fingerprint2();
 
 /**
  * main app component
@@ -146,7 +145,8 @@ export class AppComponent implements OnInit {
    * fetch device id using fingerPrint2 library.
    */
   public setDeviceId(): Observable<string> {
-    return new Observable(observer => fingerPrint2.get((deviceId) => {
+    const options = this.userService.getFingerPrintOptions();
+    return new Observable(observer => Fingerprint2.getV18(options, (deviceId) => {
       (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
       observer.next(deviceId);
       observer.complete();

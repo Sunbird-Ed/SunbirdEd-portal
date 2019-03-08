@@ -4,6 +4,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { UserService } from './../../services';
 import { ResourceService, ConfigService, IUserProfile } from '@sunbird/shared';
+import { Subscription } from 'rxjs';
 
 /**
  * Main menu component
@@ -34,6 +35,8 @@ export class SearchComponent implements OnInit {
    */
   key: string;
   resourceService: ResourceService;
+  resourceDataSubscription: Subscription;
+
 
   /**
    * option selected on dropdown
@@ -55,6 +58,10 @@ export class SearchComponent implements OnInit {
   userProfile: IUserProfile;
 
   searchDropdownValues: Array<string> = ['All', 'Courses', 'Library'];
+
+  searchPlaceHolderValue: string;
+
+  searchDisplayValueMappers: object;
 
   /**
    * reference of UserService service.
@@ -84,6 +91,12 @@ export class SearchComponent implements OnInit {
     this.resourceService = resourceService;
     this.config = config;
     this.userService = userService;
+    this.searchDisplayValueMappers = {
+      'All': 'all',
+      'Library': 'resources',
+      'Courses': 'courses',
+      'Users': 'users'
+    };
   }
 
   ngOnInit() {
@@ -105,7 +118,13 @@ export class SearchComponent implements OnInit {
         });
     });
     this.showSuiSelectDropdown = true;
+    this.resourceDataSubscription = this.resourceService.languageSelected$
+      .subscribe(item => {
+        this.setSearchPlaceHolderValue();
+      }
+    );
   }
+
   /**
    * on changing dropdown option
    * it navigate
@@ -113,6 +132,15 @@ export class SearchComponent implements OnInit {
   onChange() {
     this.route.navigate([this.search[this.selectedOption], 1]);
   }
+
+  /**
+   * search input box placeholder value
+   */
+  setSearchPlaceHolderValue () {
+    const keyName = this.searchDisplayValueMappers[this.selectedOption];
+    this.searchPlaceHolderValue = this.resourceService.frmelmnts['tab'] ? this.resourceService.frmelmnts.tab[keyName]  : '';
+  }
+
   /**
    * on entering keyword
    * it navigate
@@ -143,6 +171,7 @@ export class SearchComponent implements OnInit {
       this.setDropdownSelectedOption(this.value[2]);
     } else {
       this.selectedOption = 'All';
+      this.setSearchPlaceHolderValue();
       this.showInput = false;
     }
   }
@@ -160,6 +189,7 @@ export class SearchComponent implements OnInit {
     } else {
       this.selectedOption = value;
     }
+    this.setSearchPlaceHolderValue();
     this.showInput = true;
   }
 }

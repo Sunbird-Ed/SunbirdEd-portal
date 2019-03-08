@@ -1,5 +1,5 @@
   <section class="d-flex flex-ai-center flex-jc-center flex-dc pt-30 pb-30" *ngIf="badgeArray && badgeArray.length > 0">
-    <div class="fs-1-7 font-weight-bold mb-30">My badges ({{badgeArray.length}})&#x200E;</div>
+    <div class="fs-1-7 font-weight-bold mb-30">{{resourceService?.frmelmnts?.lbl?.myBadges}} ({{badgeArray.length}})&#x200E;</div>
     <div class="d-flex flex-ai-center flex-jc-center flex-dr flex-w-wrap badges-container">
       <div class="px-60 py-20" *ngFor="let badge of badgeArray | slice:0:limit">
           <img class="ui small custom badge image" src="{{badge.image || badge.badgeClassImage}}" alt="my badges">

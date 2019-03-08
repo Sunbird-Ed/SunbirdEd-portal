@@ -7,7 +7,7 @@ import {
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, mergeMap, first, filter } from 'rxjs/operators';
+import { takeUntil, map, mergeMap, first, filter, delay, tap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 @Component({
   templateUrl: './resource.component.html'
@@ -42,7 +42,6 @@ export class ResourceComponent implements OnInit, OnDestroy {
     this.router.onSameUrlNavigation = 'reload';
     this.filterType = this.configService.appConfig.library.filterType;
     this.redirectUrl = this.configService.appConfig.library.inPageredirectUrl;
-    this.setTelemetryData();
   }
 
   ngOnInit() {
@@ -53,12 +52,12 @@ export class ResourceComponent implements OnInit, OnDestroy {
     });
     this.initFilters = true;
     this.hashTagId = this.userService.hashTagId;
-    this.dataDrivenFilterEvent.pipe(first()
-    ).subscribe((filters: any) => {
-        this.dataDrivenFilters = filters;
-        this.fetchContentOnParamChange();
-        this.setNoResultMessage();
-      });
+    this.dataDrivenFilterEvent.pipe(first())
+    .subscribe((filters: any) => {
+      this.dataDrivenFilters = filters;
+      this.fetchContentOnParamChange();
+      this.setNoResultMessage();
+    });
   }
   public getFilters(filters) {
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
@@ -71,15 +70,22 @@ export class ResourceComponent implements OnInit, OnDestroy {
   }
   private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
-    .pipe(map((result) => ({params: result[0], queryParams: result[1]})),
-        filter(({queryParams}) => !_.isEqual(this.queryParams, queryParams)), // fetch data if queryParams changed
-        takeUntil(this.unsubscribe$))
-      .subscribe(({params, queryParams}) => {
+    .pipe(
+      tap(data => this.prepareVisits([])), // trigger pageexit if last filter resulted 0 contents
+      delay(5), // to trigger telemetry pageexit event
+      tap(data => {
         this.showLoader = true;
-        this.queryParams = { ...queryParams };
-        this.carouselData = [];
-        this.fetchPageData();
-      });
+        this.setTelemetryData();
+      }),
+      delay(5), // to show loader
+      map((result) => ({params: result[0], queryParams: result[1]})),
+      filter(({queryParams}) => !_.isEqual(this.queryParams, queryParams)), // fetch data if queryParams changed
+      takeUntil(this.unsubscribe$))
+    .subscribe(({params, queryParams}) => {
+      this.queryParams = { ...queryParams };
+      this.carouselData = [];
+      this.fetchPageData();
+    });
   }
   private fetchPageData() {
     const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
@@ -144,9 +150,11 @@ export class ResourceComponent implements OnInit, OnDestroy {
         });
       }
     });
-    this.telemetryImpression.edata.visits = this.inViewLogs;
-    this.telemetryImpression.edata.subtype = 'pageexit';
-    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    if (this.telemetryImpression) {
+      this.telemetryImpression.edata.visits = this.inViewLogs;
+      this.telemetryImpression.edata.subtype = 'pageexit';
+      this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    }
   }
   public playContent(event) {
     this.playerService.playContent(event.data.metaData);
@@ -160,7 +168,8 @@ export class ResourceComponent implements OnInit, OnDestroy {
     searchQuery.request.filters.softConstraintsFilter = JSON.stringify(softConstraintsFilter);
     searchQuery.request.filters.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
     searchQuery.request.filters.exists = searchQuery.request.exists;
-    this.cacheService.set('viewAllQuery', searchQuery.request.filters, { maxAge: this.browserCacheTtlService.browserCacheTtl });
+    this.cacheService.set('viewAllQuery', searchQuery.request.filters);
+    this.cacheService.set('pageSection', event, { maxAge: this.browserCacheTtlService.browserCacheTtl });
     const queryParams = { ...searchQuery.request.filters, ...this.queryParams}; // , ...this.queryParams
     const sectionUrl = 'resources/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], {queryParams: queryParams});
@@ -170,6 +179,7 @@ export class ResourceComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
   private setTelemetryData() {
+    this.inViewLogs = []; // set to empty every time filter or page changes
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env

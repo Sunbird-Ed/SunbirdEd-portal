@@ -1,27 +1,86 @@
 .footer {
   background: $primary-color;
-  color: #fff !important;
-  padding: 4.57rem 0;
+  color: $white-color !important;
+  padding: 34px 0;
+  margin-top: 100px;
   font-size: 14px;
+  position: relative;
 
   a {
-    color: #fff !important;
+    color: $white-color !important;
 
     &:hover,
     &:active,
     &:focus {
-      color: #fff !important;
+      color: $white-color !important;
       text-decoration: underline;
       opacity: 1;
     }
   }
 
   .playStore-img {
-    width: 124px;
+    width: 164px;
     border-radius: 5px;
 
-    &:hover {
-      width: 126px;
+    // &:hover {
+    //   width: 126px;
+    // }
+  }
+
+  .download-diksha {
+    border-radius: 20px 20px 0 0;
+    position: absolute;
+    bottom: -20px;
+    padding: 32px 12px 0 12px;
+    background: rgba(17, 17, 17, 1);
+    box-shadow: 0 20px 20px 10px rgba(0, 0, 0, 0.2);
+    max-width: 285px;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    
+    .diksha-logo {
+      background: $white-color;
+      color: black;
+      border-radius: 8px 8px 0 0;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+  }
+
+  .mobile-circles {
+    position: absolute;
+    top: 10px;
+    display: flex;
+    align-items: center;
+    margin: 0 40px;
+
+    .border-round {
+      border: 1px solid lighten( $text-gray, 30% );
+      background: black;
+    }
+
+    .border-r50 {
+      border-radius: 50%;
+    }
+
+    .big-box {
+      height: 14px;
+      width: 14px;
+    }
+
+    .oval-box {
+      height: 6px;
+      width: 76px;
+      border-radius: 3px;
+    }
+
+    .small-box {
+      height: 8px;
+      width: 8px;
     }
   }
 }
@@ -36,24 +95,57 @@
     .footerMenu {
       text-align: left;
     }
-    
+
     .contantDetails {
       text-align: right;
     }
   }
-  
+
   *[dir="rtl"] {
     .footerMenu {
       text-align: right;
     }
-    
+
     .contantDetails {
       text-align: left;
     }
   }
+
+}
+
+@media screen and (max-width: 768px) {
+
+  .footer {
+    margin-top: 170px;
+
+    .footerMenu {
+      ul {
+        margin-top: 0 !important;
+        margin-bottom: 24px !important;
+      }
+
+      li {
+        display: inline;
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+    }
+
+    .ui.container>.ui.stackable.grid>.column {
+      padding: 0 !important;
+    }
+
+    .download-diksha {
+      z-index: -1;
+      bottom: -16px;
+      margin: 0 auto;
+      right: 0;
+      left: 0;
+    }
+  }
+
 }
 
 .footer-fix {
   min-height: 90vh;
 }
-

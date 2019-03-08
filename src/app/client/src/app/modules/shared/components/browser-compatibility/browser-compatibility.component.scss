@@ -1,11 +1,10 @@
-.ui.footer.segment {
+@import "variables";
+
+.ui.segment {
     position: fixed;
+    left: 0; 
     bottom: 0;
     width: 100%;
-    background-color: white;
-    z-index: 989898;
-}
-
-.font-weight-700 {
-    font-weight: 700;
+    background-color: $white-color;
+    z-index: 9999;
 }

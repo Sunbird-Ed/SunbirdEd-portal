@@ -1,10 +1,36 @@
+// global styles
+
+// *{
+//   transition: all 300ms ease-in-out
+//   }
+html,
 body {
+  height: 100%;
+  font-size:$font-size-base;
+}
+
+body {
+  background:$bg-body;
   position: relative;
-  background: $bg-body !important;
-  font-family: $font-stack;
+  font-family: $font-stack-en;
   letter-spacing: 0.2px;
   height: auto;
+  background: $white-color;
+  color: $body-color;
 }
+
+*[lang="en"] body {
+  font-family: $font-stack-en;
+}
+
+*[lang="hi"] body {
+  font-family: $font-stack-hi;
+}
+
+*[lang="ur"] body {
+  font-family: $font-stack-ur;
+}
+
 
 button,
 input,
@@ -54,7 +80,7 @@ h5,
 .ui.form input[type=url],
 .ui.menu,
 .ui.dropdown,
-.ui.category.search> .results .category> .name {
+.ui.category.search>.results .category>.name {
   font-family: inherit;
 }
 
@@ -84,4 +110,18 @@ input[type=number]::-webkit-outer-spin-button {
 
 .ui.dimmer:not(.inverted)::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 1);
+}
+
+.publicmenusection.ui.secondary.menu .active.item {
+  color: $primary-color;
+  text-transform: capitalize;
+}
+.publicmenusection.ui.secondary.vertical.menu > .item {
+  text-transform: capitalize;
+}
+
+*[dir="rtl"] {
+  .notched.circle.loading.icon {
+    margin-left: 20px;
+  }
 }

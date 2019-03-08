@@ -12,7 +12,7 @@ import { LearnerService } from './../learner/learner.service';
 export class OrgDetailsService {
 
   orgDetails: any;
-  orgInfo: any ;
+  orgInfo: any;
 
   private _orgDetails$ = new BehaviorSubject<any>(undefined);
 
@@ -105,18 +105,29 @@ export class OrgDetailsService {
   }
   public setOrg(orgdata) {
     this.orgInfo = orgdata;
-}
+  }
 
-public getOrg(): void {
+  public getOrg(): void {
     return this.orgInfo;
-}
+  }
 
-getCustodianOrg() {
+  getCustodianOrg() {
     const systemSetting = {
       url: this.configService.urlConFig.URLS.SYSTEM_SETTING.CUSTODIAN_ORG,
     };
     return this.learnerService.get(systemSetting);
-}
+  }
+
+  fetchOrgs(filters) {
+    const option = {
+      url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      data: {
+        request: filters
+      }
+    };
+
+    return this.publicDataService.post(option);
+  }
 }
 
 

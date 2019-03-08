@@ -178,7 +178,7 @@ export class PlayerService {
         if (content.contentType !== this.configService.appConfig.PLAYER_CONFIG.contentType.Course) {
           this.router.navigate(['/resources/play/collection', content.identifier]);
         } else if (content.batchId) {
-          this.router.navigate(['/learn/course', content.courseId, 'batch', content.batchId]);
+          this.router.navigate(['/learn/course', content.courseId || content.identifier, 'batch', content.batchId]);
         } else {
           this.router.navigate(['/learn/course', content.identifier]);
         }

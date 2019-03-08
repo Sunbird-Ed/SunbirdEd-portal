@@ -194,7 +194,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
         if (page < 1 || page > this.paginationDetails.totalPages) {
             return;
         }
-        const url = this.router.url.split('?')[0].replace(/.$/, page.toString());
+        const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
         this.router.navigate([url], { queryParams: this.queryParams });
     }
     ngOnDestroy() {

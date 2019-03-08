@@ -1,5 +1,5 @@
 import { PublicPlayerService } from '@sunbird/public';
-import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { combineLatest, Subject } from 'rxjs';
 import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
@@ -64,7 +64,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   /**
   * Refrence of UserService
   */
-   private userService: UserService;
+  private userService: UserService;
   /**
     * To show / hide no result message when no result found
    */
@@ -120,10 +120,12 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   * To show / hide login popup on click of content
   */
   showLoginModal = false;
- /**
+  public showBatchInfo = false;
+  public selectedCourseBatches: any;
   /**
-   * contains the search filter type
-   */
+   /**
+    * contains the search filter type
+    */
   public frameworkData: object;
   public filterType: string;
   public frameWorkName: string;
@@ -135,7 +137,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     activatedRoute: ActivatedRoute, paginationService: PaginationService, private _cacheService: CacheService,
     resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
     configService: ConfigService, coursesService: CoursesService, public utilService: UtilService,
-    private orgDetailsService: OrgDetailsService, userService: UserService,  private browserCacheTtlService: BrowserCacheTtlService) {
+    private orgDetailsService: OrgDetailsService, userService: UserService, private browserCacheTtlService: BrowserCacheTtlService) {
     this.searchService = searchService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -152,11 +154,11 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (!this.userService.loggedIn) {
       this.getChannelId();
-    } else  {
+    } else {
       this.showFilter = true;
       this.userService.userData$.subscribe(userData => {
         if (userData && !userData.err) {
-            this.frameworkData = _.get(userData.userProfile, 'framework');
+          this.frameworkData = _.get(userData.userProfile, 'framework');
         }
       });
     }
@@ -165,23 +167,35 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     this.pageLimit = this.configService.appConfig.ViewAll.PAGE_LIMIT;
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
       map(results => ({ params: results[0], queryParams: results[1] })),
-      filter( res => this.pageNumber !== Number(res.params.pageNumber) || !_.isEqual(this.queryParams , res.queryParams)),
+      filter(res => this.pageNumber !== Number(res.params.pageNumber) || !_.isEqual(this.queryParams, res.queryParams)),
       tap(res => {
+        this.showLoader = true;
         this.queryParams = res.queryParams;
         const route = this.router.url.split('/view-all');
         this.closeUrl = '/' + route[0].toString();
         this.sectionName = res.params.section.replace(/\-/g, ' ');
         this.pageNumber = Number(res.params.pageNumber);
       }),
-      mergeMap((data) => {
+      tap((data) => {
         this.getframeWorkData();
         this.manipulateQueryParam(data.queryParams);
         this.setTelemetryImpressionData();
         this.setInteractEventData();
-        return this.getContentList(data);
       }),
       takeUntil(this.unsubscribe)
     ).subscribe((response: any) => {
+        this.getContents(response);
+    }, (error) => {
+      this.showLoader = false;
+      this.noResult = true;
+      this.noResultMessage = {
+        'messageText': this.resourceService.messages.fmsg.m0077
+      };
+      this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+    });
+  }
+  getContents(data) {
+    this.getContentList(data).subscribe((response: any) => {
       this.showLoader = false;
       if (response.contentData.result.count && response.contentData.result.content) {
         this.noResult = false;
@@ -204,7 +218,6 @@ export class ViewAllComponent implements OnInit, OnDestroy {
       this.toasterService.error(this.resourceService.messages.fmsg.m0051);
     });
   }
-
   setTelemetryImpressionData() {
     this.telemetryImpression = {
       context: {
@@ -238,7 +251,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
   private manipulateQueryParam(results) {
     this.filters = {};
     const queryFilters = _.omit(results, ['key', 'softConstraintsFilter', 'appliedFilters',
-    'sort_by', 'sortType', 'defaultSortBy', 'exists', 'dynamic']);
+      'sort_by', 'sortType', 'defaultSortBy', 'exists', 'dynamic']);
     if (!_.isEmpty(queryFilters)) {
       _.forOwn(queryFilters, (queryValue, queryKey) => {
         this.filters[queryKey] = queryValue;
@@ -260,18 +273,18 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     };
     let manipulatedData = {};
     if (_.get(this.activatedRoute.snapshot, 'data.applyMode')) {
-       manipulatedData = this.utilService.manipulateSoftConstraint( _.get(this.queryParams, 'appliedFilters'),
-      softConstraintData, this.frameworkData);
+      manipulatedData = this.utilService.manipulateSoftConstraint(_.get(this.queryParams, 'appliedFilters'),
+        softConstraintData, this.frameworkData);
     }
     const requestParams = {
-      filters: _.get(this.queryParams, 'appliedFilters') ? this.filters :  {..._.get(manipulatedData, 'filters'), ...this.filters},
+      filters: _.get(this.queryParams, 'appliedFilters') ? this.filters : { ..._.get(manipulatedData, 'filters'), ...this.filters },
       limit: this.pageLimit,
       pageNumber: Number(request.params.pageNumber),
       exists: request.queryParams.exists,
       sort_by: request.queryParams.sortType ?
         { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy),
       mode: _.get(manipulatedData, 'mode'),
-      params : this.configService.appConfig.ViewAll.contentApiQueryParams
+      params: this.configService.appConfig.ViewAll.contentApiQueryParams
     };
     if (_.get(manipulatedData, 'filters')) {
       requestParams['softConstraints'] = _.get(manipulatedData, 'softConstraints');
@@ -279,55 +292,29 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     if (_.get(this.activatedRoute.snapshot, 'data.baseUrl') === 'learn') {
       return combineLatest(
         this.searchService.contentSearch(requestParams),
-        this.coursesService.enrolledCourseData$).pipe(map(data => ({contentData: data[0] , enrolledCourseData: data[1] })));
+        this.coursesService.enrolledCourseData$).pipe(map(data => ({ contentData: data[0], enrolledCourseData: data[1] })));
     } else {
-      return this.searchService.contentSearch(requestParams).pipe(map(data => ({contentData: data })));
+      return this.searchService.contentSearch(requestParams).pipe(map(data => ({ contentData: data })));
     }
   }
 
   private formatSearchresults(response) {
-    const enrolledCoursesId = [];
-    _.forEach(_.get(response, 'enrolledCourseData.enrolledCourses'), (value, index) => {
-      enrolledCoursesId[index] = _.get(response.enrolledCourseData.enrolledCourses[index], 'courseId');
-    });
     _.forEach(response.contentData.result.content, (value, index) => {
-      if (_.get(response, 'enrolledCourseData.enrolledCourses') && _.get(response, 'enrolledCourseData.enrolledCourses.length') > 0) {
-        if (_.indexOf(enrolledCoursesId, response.contentData.result.content[index].identifier) !== -1) {
-          const constantData = this.configService.appConfig.ViewAll.enrolledCourses.constantData;
-          const metaData = { metaData: this.configService.appConfig.ViewAll.enrolledCourses.metaData };
-          const dynamicFields = {};
-          const enrolledCourses = _.find(response.enrolledCourseData.enrolledCourses,
-            ['courseId', response.contentData.result.content[index].identifier]);
-          response.contentData.result.content[index] = this.utilService.processContent(enrolledCourses,
-            constantData, dynamicFields, metaData);
-        } else {
-          const constantData = this.configService.appConfig.ViewAll.otherCourses.constantData;
-          const metaData = this.configService.appConfig.ViewAll.metaData;
-          const dynamicFields = this.configService.appConfig.ViewAll.dynamicFields;
-          response.contentData.result.content[index] = this.utilService.processContent(response.contentData.result.content[index],
-            constantData, dynamicFields, metaData);
-        }
-      } else {
-        const constantData = this.configService.appConfig.ViewAll.otherCourses.constantData;
-        const metaData = this.configService.appConfig.ViewAll.metaData;
-        const dynamicFields = this.configService.appConfig.ViewAll.dynamicFields;
-        response.contentData.result.content[index] = this.utilService.processContent(response.contentData.result.content[index],
-          constantData, dynamicFields, metaData);
-      }
+      const constantData = this.configService.appConfig.ViewAll.otherCourses.constantData;
+      const metaData = this.configService.appConfig.ViewAll.metaData;
+      const dynamicFields = this.configService.appConfig.ViewAll.dynamicFields;
+      response.contentData.result.content[index] = this.utilService.processContent(response.contentData.result.content[index],
+        constantData, dynamicFields, metaData);
     });
     return response.contentData.result.content;
   }
 
   navigateToPage(page: number): undefined | void {
-    const route = this.router.url.split('?');
-    const url = route[0].substring(0, route[0].lastIndexOf('/'));
     if (page < 1 || page > this.pager.totalPages) {
       return;
     }
-      this.router.navigate([url, page], {
-        queryParams: this.queryParams,
-        relativeTo: this.activatedRoute
-      });
+    const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
+    this.router.navigate([url], { queryParams: this.queryParams, relativeTo: this.activatedRoute });
   }
 
   playContent(event) {
@@ -336,17 +323,27 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     } else {
       const url = this.router.url.split('/');
       if (url[1] === 'learn' || url[1] === 'resources') {
-        if (event.data.metaData.batchId) {
-          event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
-          event.data.metaData.contentType = 'Course';
-        }
-        this.playerService.playContent(event.data.metaData);
+        this.handleCourseRedirection(event);
       } else {
         this.publicPlayerService.playContent(event);
       }
     }
   }
+  handleCourseRedirection({ data }) {
+    const { metaData } = data;
+    const {onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch} = this.coursesService.findEnrolledCourses(metaData.identifier);
 
+    if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
+      return this.playerService.playContent(metaData);
+    }
+
+    if (onGoingBatchCount === 1) { // play course if only one open batch is present
+      metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
+      return this.playerService.playContent(metaData);
+    }
+    this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
+    this.showBatchInfo = true;
+  }
   getChannelId() {
     this.orgDetailsService.getOrgDetails()
       .subscribe(
@@ -373,11 +370,11 @@ export class ViewAllComponent implements OnInit, OnDestroy {
         this.formService.getFormConfig(formServiceInputParams).subscribe(
           (data: ServerResponse) => {
             this.frameWorkName = _.find(data, 'framework').framework;
-            this._cacheService.set('framework' + 'search', this.frameWorkName ,
-              {maxAge: this.browserCacheTtlService.browserCacheTtl});
+            this._cacheService.set('framework' + 'search', this.frameWorkName,
+              { maxAge: this.browserCacheTtlService.browserCacheTtl });
           },
           (err: ServerResponse) => {
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+            this.toasterService.error(this.resourceService.messages.emsg.m0005);
           }
         );
       }

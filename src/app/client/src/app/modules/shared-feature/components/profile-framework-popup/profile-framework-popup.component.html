@@ -1,11 +1,22 @@
-<sui-modal [isClosable]="false" [size]="'normal'" #modal [mustScroll]="'true'" appBodyScroll *ngIf="formFieldOptions.length">
-  <i *ngIf="showCloseIcon" class="close icon" (click)="modal.deny(); close.emit()"></i>
-  <div class="scrollable content">
-    <div class="ui grid">
-      <div class="ten wide column mb-30">
-        <span class="ui header">{{resourceService?.frmelmnts?.lbl?.profilePopup}}&lrm;</span>
-      </div>
-    </div>
+<sui-modal
+  [mustScroll]="true" 
+  [isClosable]="false"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll
+  #modal 
+  (dismissed)="modal.deny();close.emit();"
+  *ngIf="formFieldOptions.length">
+
+  <!--Header-->
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.lbl?.profilePopup}}&lrm;
+  </div>
+  <!--/Header-->
+
+  <!--Content-->
+  <div class="sb-modal-content">
     <form class="ui form">
       <div *ngFor="let field of formFieldOptions">
         <div class="required field" *ngIf="field.code === 'board' && allowedFields.includes(field.code)">
@@ -17,7 +28,7 @@
             </sui-select>
           </div>
         </div>
-        <div class="required field mt-15" *ngIf="field.code !== 'board' && allowedFields.includes(field.code)">
+        <div class="field mt-15" *ngIf="field.code !== 'board' && allowedFields.includes(field.code)" [ngClass]="field.code === 'subject' ? '' : 'required'">
           <label>{{field.label}}</label>
           <div class="field">
             <sui-multi-select id={{field.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[field.code]"
@@ -28,10 +39,19 @@
         </div>
       </div>
     </form>
-    <div>
-    </div>
   </div>
-  <div class="actions text-ac">
-    <button class="ui primary button" [disabled]="!showButton" (click)="onSubmitForm()">{{buttonLabel}}</button>
+  <!--/Content-->
+
+  <!--Actions-->
+  <div class="sb-modal-actions">
+    <button 
+      class="sb-btn sb-btn-normal sb-btn-primary" 
+      [disabled]="!showButton" 
+      (click)="onSubmitForm()"
+    >
+      {{buttonLabel}}
+    </button>
   </div>
+  <!--/Actions-->
+  
 </sui-modal>

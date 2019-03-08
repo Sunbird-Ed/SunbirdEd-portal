@@ -2,14 +2,14 @@ import {
   PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ICard, ILoaderMessage, UtilService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { SearchService, PlayerService, CoursesService, UserService, FormService, ISort, ICourses } from '@sunbird/core';
+import { SearchService, PlayerService, CoursesService, UserService, FormService, ISort } from '@sunbird/core';
 import { IPagination } from '@sunbird/announcement';
 import { combineLatest, Subject, of } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, mergeMap, first, filter, debounceTime, catchError } from 'rxjs/operators';
+import { takeUntil, map, mergeMap, first, tap, debounceTime, catchError, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 
 @Component({
@@ -40,7 +40,8 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   public frameWorkName: string;
   public closeIntractEdata;
   public enrolledSection;
-
+  public showBatchInfo = false;
+  public selectedCourseBatches: any;
   sortingOptions: Array<ISort>;
 
   constructor(public searchService: SearchService, public router: Router,
@@ -53,7 +54,6 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     this.filterType = this.configService.appConfig.courses.filterType;
     this.redirectUrl = this.configService.appConfig.courses.searchPageredirectUrl;
     this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
-    this.setTelemetryData();
   }
   ngOnInit() {
     combineLatest(this.fetchEnrolledCoursesSection(), this.getFrameWork()).pipe(first(),
@@ -78,11 +78,16 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   }
   private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
-    .pipe(debounceTime(5),
-        map((result) => ({params: { pageNumber: Number(result[0].pageNumber)}, queryParams: result[1]})),
-        takeUntil(this.unsubscribe$))
-      .subscribe(({params, queryParams}) => {
+    .pipe(debounceTime(5), // to sync params and queryParams events
+      tap(data => this.inView({inview: []})), // trigger pageexit if last filter resulted 0 contents
+      delay(10), // to trigger pageexit telemetry event
+      tap(data => {
         this.showLoader = true;
+        this.setTelemetryData();
+      }),
+      map((result) => ({params: { pageNumber: Number(result[0].pageNumber)}, queryParams: result[1]})),
+      takeUntil(this.unsubscribe$))
+      .subscribe(({params, queryParams}) => {
         this.queryParams = { ...queryParams };
         this.paginationDetails.currentPage = params.pageNumber;
         this.contentList = [];
@@ -111,12 +116,8 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
             this.configService.appConfig.SEARCH.PAGE_LIMIT);
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.CoursePageSection.course;
-        this.contentList = _.map(data.result.course, (content: any) => {
-          const enrolledContent = _.find(this.enrolledSection.contents,
-            (enrolledCourse) => (enrolledCourse.metaData.courseId === content.identifier));
-          return enrolledContent ||
-            this.utilService.processContent(content, constantData, dynamicFields, metaData);
-        });
+        this.contentList = _.map(data.result.course, (content: any) =>
+          this.utilService.processContent(content, constantData, dynamicFields, metaData));
     }, err => {
         this.showLoader = false;
         this.contentList = [];
@@ -176,15 +177,24 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     if (page < 1 || page > this.paginationDetails.totalPages) {
         return;
     }
-    this.router.navigate(['search/Courses', page], { queryParams: this.queryParams });
+    const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
+    this.router.navigate([url], { queryParams: this.queryParams });
   }
-  public playContent(event) {
-    if (event.data.metaData.batchId) {
-      event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
-      event.data.metaData.contentType = 'Course';
-    }
+  public playContent({ data }) {
+    const { metaData } = data;
     this.changeDetectorRef.detectChanges();
-    this.playerService.playContent(event.data.metaData);
+    const {onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch} = this.coursesService.findEnrolledCourses(metaData.identifier);
+
+    if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
+      return this.playerService.playContent(metaData);
+    }
+
+    if (onGoingBatchCount === 1) { // play course if only one open batch is present
+      metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
+      return this.playerService.playContent(metaData);
+    }
+    this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
+    this.showBatchInfo = true;
   }
   public inView(event) {
     _.forEach(event.inview, (elem, key) => {
@@ -197,11 +207,14 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
             });
         }
     });
-    this.telemetryImpression.edata.visits = this.inViewLogs;
-    this.telemetryImpression.edata.subtype = 'pageexit';
-    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    if (this.telemetryImpression) {
+      this.telemetryImpression.edata.visits = this.inViewLogs;
+      this.telemetryImpression.edata.subtype = 'pageexit';
+      this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    }
   }
   private setTelemetryData() {
+    this.inViewLogs = []; // set to empty every time filter or page changes
     this.closeIntractEdata = {
       id: 'search-close',
       type: 'click',
