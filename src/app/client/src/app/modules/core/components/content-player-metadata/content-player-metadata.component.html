@@ -40,7 +40,7 @@
                 <div class="nine wide column">
                     <div class="content" *ngIf="metadata.owner">
                         <span class="d-inline-block mr-20">{{metadata.owner}}</span>
-                        <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}">{{resourceService.frmelmnts.lbl.contentCredits}}</a>
+                        <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="{id:'view-credits', type:'click' , pageid:'upForReview-content-player'}" (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}">{{resourceService.frmelmnts.lbl.contentCredits}}</a>
                     </div>
                 </div>
             </div>

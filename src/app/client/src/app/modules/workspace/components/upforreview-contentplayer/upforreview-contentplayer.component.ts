@@ -17,6 +17,7 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
   public reviewCommentsWarningYesInteractEdata: IInteractEventEdata;
   public reviewCommentsWarningNoInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
+  public closeInteractEdata: IInteractEventEdata;
 
   /**
    * To navigate to other pages
@@ -228,6 +229,11 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
     };
     this.reviewCommentsWarningNoInteractEdata = {
       id: 'review-comments-warning-no',
+      type: 'click',
+      pageid: 'upForReview-content-player'
+    };
+    this.closeInteractEdata = {
+      id: 'close-button',
       type: 'click',
       pageid: 'upForReview-content-player'
     };

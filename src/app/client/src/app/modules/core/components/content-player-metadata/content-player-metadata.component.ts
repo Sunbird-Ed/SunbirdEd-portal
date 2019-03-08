@@ -1,3 +1,4 @@
+import { IInteractEventObject } from '@sunbird/telemetry';
 import { Subscription } from 'rxjs';
 import { ConceptPickerService } from './../../services';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
@@ -18,6 +19,7 @@ export class ContentPlayerMetadataComponent implements OnInit, OnDestroy {
   filteredConcepts: any;
   conceptDataSubscription: Subscription;
   showContentCreditsModal: boolean;
+  telemetryInteractObject: IInteractEventObject;
 
   @Input() contentData: ContentData;
   constructor(public resourceService: ResourceService, public conceptPickerService: ConceptPickerService) { }
@@ -26,6 +28,11 @@ export class ContentPlayerMetadataComponent implements OnInit, OnDestroy {
     this.metadata = { ...this.contentData };
     this.validateContent();
     this.getConceptsNames();
+    this.telemetryInteractObject = {
+      id: _.get(this.metadata, 'identifier'),
+      type: _.get(this.metadata, 'contentType'),
+      ver: '1.0'
+    };
   }
 
   validateContent() {

@@ -217,7 +217,7 @@ export class PopupEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  setTelemetryInteractData(type) {
+  setTelemetryInteractEData(type) {
     return {
       id: type,
       type: 'click',

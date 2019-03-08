@@ -39,7 +39,7 @@
   <!--Actions-->
   <div class="sb-modal-actions">
     <button 
-    appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="setTelemetryInteractData('update-note')"
+    appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="setTelemetryInteractEData('update-note')"
       [disabled]="!updateData.title || !updateData.note" 
       *ngIf="mode === 'update'" 
       class="sb-btn sb-btn-normal sb-btn-primary ng-binding" 
@@ -49,7 +49,7 @@
       {{resourceService?.frmelmnts?.btn?.update}}
     </button>
     <button 
-    appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="setTelemetryInteractData('create-note')"
+    appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="setTelemetryInteractEData('create-note')"
       *ngIf="mode === 'create'" 
       class="sb-btn sb-btn-normal sb-btn-primary ng-binding" 
       type="submit" 
@@ -59,7 +59,7 @@
       {{resourceService?.frmelmnts?.btn?.save}}
     </button>
     <button 
-    appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="setTelemetryInteractData('clear')"
+    appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="setTelemetryInteractEData('clear')"
       *ngIf="mode === 'create'" 
       class="sb-btn sb-btn-normal sb-btn-outline-primary ng-binding" 
       type="submit" 

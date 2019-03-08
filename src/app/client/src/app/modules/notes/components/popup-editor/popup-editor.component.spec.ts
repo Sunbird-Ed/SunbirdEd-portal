@@ -1,3 +1,4 @@
+import { RouterTestingModule } from '@angular/router/testing';
 
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { IdDetails } from './../../interfaces/notes';
@@ -19,7 +20,7 @@ describe('PopupEditorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpClientTestingModule, FormsModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot()],
+      imports: [ HttpClientTestingModule, FormsModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot() , RouterTestingModule],
       declarations: [PopupEditorComponent],
       providers: [NotesService]
     })

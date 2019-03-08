@@ -1,3 +1,4 @@
+import { RouterTestingModule } from '@angular/router/testing';
 
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { IdDetails } from '@sunbird/notes';
@@ -53,7 +54,7 @@ describe('NoteCardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ OrderModule, HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot() ],
+      imports: [ OrderModule, HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot() , RouterTestingModule],
       declarations: [ NoteCardComponent, TimeAgoPipe ],
       providers: [ NotesService,
         { provide: ResourceService, useValue: mockResourceBundle },

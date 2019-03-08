@@ -60,8 +60,9 @@
         </h5>
       </td>
       <td class="UpForReviewStatusOrange">{{content.status}}</td>
-      <td *ngIf= "content.status.toLowerCase() === 'draft' && !content.lockInfo">
-        <i (click)="contentClick(content)" class="edit icon cursor-pointer">
+      <td  *ngIf= "content.status.toLowerCase() === 'draft' && !content.lockInfo">
+        <i appTelemetryInteract [telemetryInteractObject]="{id:content.identifier,type:content.contentType,ver:content.pkgVersion ? content.pkgVersion.toString(): '1.0' }"
+      [telemetryInteractEdata]="{id:'edit',type:'click',pageid:'CollaboratingOn'}" (click)="contentClick(content)" class="edit icon cursor-pointer">
         </i>
       </td>
       <td *ngIf="content.lockInfo">
