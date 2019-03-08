@@ -1,6 +1,6 @@
 
 import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService, ISort } from '@sunbird/core';
@@ -19,7 +19,9 @@ import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semanti
   selector: 'app-all-content',
   templateUrl: './all-content.component.html'
 })
-export class AllContentComponent extends WorkSpace implements OnInit {
+
+export class AllContentComponent extends WorkSpace implements OnInit, AfterViewInit {
+
   @ViewChild('modalTemplate')
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
@@ -47,6 +49,7 @@ export class AllContentComponent extends WorkSpace implements OnInit {
   */
   allContent: Array<IContents> = [];
 
+  // pageLoadTime = new PageLoadTime()
   /**
    * To show / hide loader
   */
@@ -210,18 +213,6 @@ export class AllContentComponent extends WorkSpace implements OnInit {
         this.query = this.queryParams['query'];
         this.fecthAllContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
       });
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
-        visits: this.inviewLogs
-      }
-    };
   }
   /**
   * This method sets the make an api call to get all UpForReviewContent with page No and offset
@@ -348,6 +339,22 @@ export class AllContentComponent extends WorkSpace implements OnInit {
 
   public onCloseLockInfoPopup () {
     this.showLockedContentModal = false;
+  }
+
+  ngAfterViewInit () {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
+        visits: this.inviewLogs,
+        duration: this.getPageLoadTime()
+      }
+    };
   }
 
   inview(event) {
