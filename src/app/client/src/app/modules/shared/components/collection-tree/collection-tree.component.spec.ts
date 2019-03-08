@@ -44,19 +44,19 @@ describe('CollectionTreeComponent', () => {
     };
 
     component.options = {
-      folderIcon: 'fa fa-folder-o fa-lg',
-      fileIcon: 'fa fa-file-o fa-lg',
+      folderIcon: 'sb-icon-folder',
+      fileIcon: 'sb-icon-content',
       customFileIcon: {
-        'video': 'fa fa-file-video-o fa-lg',
-        'pdf': 'fa fa-file-pdf-o fa-lg',
-        'youtube': 'fa fa-youtube fa-lg',
-        'H5P': 'fa fa-html5 fa-lg',
-        'audio': 'fa fa-file-audio-o fa-lg',
-        'ECML': 'fa fa-code-o fa-lg',
-        'HTML': 'fa fa-html5-o fa-lg',
-        'collection': 'fa fa-file-archive-o fa-lg',
-        'epub': '',
-        'doc': ''
+        'video': 'sb-icon-video',
+        'pdf': 'sb-icon-doc',
+        'youtube': 'sb-icon-video',
+        'H5P': 'sb-icon-content',
+        'audio': 'sb-icon-mp3',
+        'ECML': 'sb-icon-content',
+        'HTML': 'sb-icon-content',
+        'collection': 'sb-icon-collection',
+        'epub': 'sb-icon-doc',
+        'doc': 'sb-icon-doc'
       }
     };
     fixture.detectChanges();

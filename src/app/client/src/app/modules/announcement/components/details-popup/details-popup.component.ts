@@ -1,13 +1,12 @@
 
-import {takeUntil} from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
-import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { IAnnouncementDetails } from '@sunbird/announcement';
 import { IImpressionEventInput } from '@sunbird/telemetry';
-
 import { Subject } from 'rxjs';
 /**
  * The details popup component checks for the announcement details object
@@ -23,9 +22,9 @@ export class DetailsPopupComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();
 
   @ViewChild('modal') modal;
-   /**
-	 * telemetryImpression
-	*/
+  /**
+  * telemetryImpression
+ */
   telemetryImpression: IImpressionEventInput;
   /**
 	 * Contains unique announcement id
@@ -67,11 +66,6 @@ export class DetailsPopupComponent implements OnInit, OnDestroy {
   private toasterService: ToasterService;
 
   /**
-   * To navigate back to parent component
-   */
-  public routerNavigationService: RouterNavigationService;
-
-  /**
 	 * Constructor to create injected service(s) object
 	 *
 	 * Default method of DetailsPopupComponent class
@@ -80,18 +74,16 @@ export class DetailsPopupComponent implements OnInit, OnDestroy {
    * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
    * @param {ResourceService} resourceService Reference of ResourceService
    * @param {ToasterService} toasterService Reference of ToasterService
-   * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
 	 */
   constructor(announcementService: AnnouncementService,
+    public router: Router,
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
-    toasterService: ToasterService,
-    routerNavigationService: RouterNavigationService) {
+    toasterService: ToasterService) {
     this.announcementService = announcementService;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
-    this.routerNavigationService = routerNavigationService;
   }
 
   /**
@@ -107,36 +99,38 @@ export class DetailsPopupComponent implements OnInit, OnDestroy {
       this.announcementService.announcementDetailsObject.id !== announcementId) {
       const option = { announcementId: this.announcementId };
       this.announcementService.getAnnouncementById(option).pipe(
-      takeUntil(this.unsubscribe)).subscribe(
-        (apiResponse: ServerResponse) => {
-          this.announcementDetails = apiResponse.result;
-          if (apiResponse.result.announcement) {
-            this.announcementDetails = apiResponse.result.announcement;
+        takeUntil(this.unsubscribe)).subscribe(
+          (apiResponse: ServerResponse) => {
+            this.announcementDetails = apiResponse.result;
+            if (apiResponse.result.announcement) {
+              this.announcementDetails = apiResponse.result.announcement;
+            }
+            this.showLoader = false;
+          },
+          err => {
+            this.toasterService.error(this.resourceService.messages.emsg.m0005);
+            this.showLoader = false;
+            this.navigateToParent();
           }
-          this.showLoader = false;
-        },
-        err => {
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
-          this.showLoader = false;
-          this.routerNavigationService.navigateToParentUrl(this.activatedRoute.snapshot);
-        }
-      );
+        );
     } else {
       this.showLoader = false;
       this.announcementDetails = this.announcementService.announcementDetailsObject;
     }
   }
-
+  navigateToParent() {
+    this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
+  }
   /**
    * This method calls the getDetails method to show details
    * of a particular announcement
 	 */
   ngOnInit() {
     this.activatedRoute.params.pipe(
-    takeUntil(this.unsubscribe))
-    .subscribe(params => {
-      this.announcementId = params.announcementId;
-    });
+      takeUntil(this.unsubscribe))
+      .subscribe(params => {
+        this.announcementId = params.announcementId;
+      });
     this.getDetails(this.announcementId);
     this.telemetryImpression = {
       context: {

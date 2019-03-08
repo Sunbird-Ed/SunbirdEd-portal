@@ -96,10 +96,6 @@ describe('UserUploadComponent', () => {
     fixture.detectChanges();
     expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });
-  it('should call downloadSample method to download a csv file', () => {
-    component.downloadSampleCSV();
-    fixture.detectChanges();
-  });
   xit('should call openImageBrowser method', () => {
     component.uploadUserForm.value.provider = 1234;
     component.uploadUserForm.value.externalId = 5678;

@@ -1,21 +1,19 @@
-import { Subscription, Observable, of as observableOf, throwError as observableThrowError } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
-import { FormsModule, NgForm, FormBuilder, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { of } from 'rxjs';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-
 import { SuiModule } from 'ng2-semantic-ui';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-
 import { UserService, LearnerService, AnnouncementService, CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { SharedModule, ResourceService, ToasterService, FileUploadService, ConfigService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import {
-  DetailsComponent, GeoExplorerComponent, CreateComponent, GeoExplorerService,
-  CreateService, IGeoLocationDetails, FileUploaderComponent
+  DetailsComponent, GeoExplorerComponent, CreateComponent, GeoExplorerService, CreateService, FileUploaderComponent
 } from '@sunbird/announcement';
 import { mockRes } from './create.component.spec.data';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { FileUploadService } from './../../services';
 
 describe('CreateComponent', () => {
   let component: CreateComponent;
@@ -221,7 +219,7 @@ describe('CreateComponent', () => {
   it('should get searched announcement types when data is not present and make api call', inject([CreateService],
     (createService) => {
       component.announcementTypes = [];
-      spyOn(createService, 'getAnnouncementTypes').and.returnValue(observableOf(mockRes.createSucess));
+      spyOn(createService, 'getAnnouncementTypes').and.returnValue(of(mockRes.createSucess));
       spyOn(component, 'setAnnouncementTypes').and.callThrough();
       component.setAnnouncementTypes();
       expect(component.setAnnouncementTypes).toHaveBeenCalled();

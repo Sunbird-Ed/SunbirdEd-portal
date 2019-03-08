@@ -47,7 +47,7 @@
                         {{resourceService.frmelmnts?.lnk?.myactivity}}
                     </a>
                     <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
-                        [permission]='orgSetupRole' routerLink="orgType">
+                        [permission]='orgSetupRole' routerLink="org/orgType">
                         {{resourceService.frmelmnts?.lbl?.orgtypes}}
                     </a>
                     <a class="item" (click)="logout()">

@@ -13,7 +13,7 @@
 		</a>
 		<a class="item" [class.active]="router.isActive('/workspace')" appTelemetryInteract
 			[telemetryInteractEdata]="workspaceMenuIntractEdata" *ngIf='permissionService.permissionAvailable'
-			appPermission [permission]='workSpaceRole' (click)="navigateToWorkspace()" tabindex="0">
+			appPermission [permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0">
 			{{resourceService?.frmelmnts?.tab?.workspace}}
 		</a>
 		<a class="item" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"

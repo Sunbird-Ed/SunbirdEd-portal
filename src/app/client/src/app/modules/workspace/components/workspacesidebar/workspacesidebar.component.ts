@@ -117,4 +117,12 @@ export class WorkspacesidebarComponent implements OnInit {
     this.collaboratingRole = this.config.rolesConfig.workSpaceRole.collaboratingRole;
   }
 
+  setInteractData(id) {
+    return {
+      id,
+      type: 'click',
+      pageid: 'workspace'
+    };
+   }
+
 }

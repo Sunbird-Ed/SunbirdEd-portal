@@ -82,9 +82,9 @@
     <div class="d-flex flex-dc">
       <div class="d-flex flex-jc-center">
         <div (click)="showContactPopup=true;contactType='phone'"
-          class="ui semi-circular dodger-blue basic label mb-15 cursor-pointer" *ngIf="userProfile.phone">
-          <i class="phone blue icon mr-5" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-            [telemetryInteractEdata]="editMobileInteractEdata"></i> &#x200E;+91 {{userProfile.phone}}
+          class="ui semi-circular dodger-blue basic label mb-15 cursor-pointer" *ngIf="userProfile.phone" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+          [telemetryInteractEdata]="editMobileInteractEdata">
+          <i class="phone blue icon mr-5" ></i> &#x200E;+91 {{userProfile.phone}}
         </div>
         <div (click)="showContactPopup=true;contactType='phone'"
           class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.phone"
