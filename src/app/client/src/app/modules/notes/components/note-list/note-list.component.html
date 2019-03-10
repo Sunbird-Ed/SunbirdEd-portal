@@ -7,7 +7,7 @@
           <div class="twelve wide column">
             <div class="ui container container-with-button px-0">
               <span class="ui header">{{resourceService?.frmelmnts?.lbl?.mynotes}}</span>
-              <i class=" circular icon mx-10 link " [ngClass]="!showCreateEditor ? 'plus' : 'remove'" (click)="showCreateEditor = !showCreateEditor">
+              <i appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="addNoteInteractEdata" class=" circular icon mx-10 link " [ngClass]="!showCreateEditor ? 'plus' : 'remove'" (click)="showCreateEditor = !showCreateEditor">
               </i>
               <div class="notesearch right-floated">
                 <div class="ui icon input">

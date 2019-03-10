@@ -1,12 +1,12 @@
 <sui-modal
-  [mustScroll]="true" 
+  [mustScroll]="true"
   [isClosable]="true"
   [transitionDuration]="0"
   [size]="'normal'"
   class="sb-modal"
   appBodyScroll
-  *ngIf='showUpdateModal' 
-  (dismissed)="redirect()" 
+  *ngIf='showUpdateModal'
+  (dismissed)="redirect()"
   #updateBatchModal>
 
   <!--Header-->
@@ -75,6 +75,9 @@
           </div>
         </div>
       </div>
+      <div class="ui tweleve wide column mb-20" *ngIf="showLoader">
+        <app-loader></app-loader>
+      </div>
       <div class="one field">
         <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors"
@@ -124,21 +127,21 @@
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button 
-      class="sb-btn sb-btn-normal sb-btn-primary" 
-      [disabled]="disableSubmitBtn || showFormInViewMode" 
+    <button
+      class="sb-btn sb-btn-normal sb-btn-primary"
+      [disabled]="disableSubmitBtn || showFormInViewMode"
       (click)="updateBatch()"
     >
       {{resourceService?.frmelmnts?.btn?.update}}
     </button>
-    <button 
-      class="sb-btn sb-btn-normal sb-btn-outline-primary" 
-      (click)="resetForm()" 
+    <button
+      class="sb-btn sb-btn-normal sb-btn-outline-primary"
+      (click)="resetForm()"
       [disabled]="showFormInViewMode"
     >
       {{resourceService?.frmelmnts?.btn?.clear}}
     </button>
-    
+
   </div>
   <!--/Actions-->
 </sui-modal>

@@ -20,7 +20,7 @@
 			 appTelemetryInteract [telemetryInteractEdata]="workspaceMenuIntractEdata" 
 			 *ngIf='permissionService.permissionAvailable' 
 			 appPermission [permission]='workSpaceRole' 
-			 (click)="navigateToWorkspace()" 
+			 [routerLink]="[navigateToWorkspace()]" 
 			 tabindex="0">
 			{{resourceService?.frmelmnts?.tab?.workspace}}
 		</a>

@@ -29,39 +29,5 @@
             </div>
         </div>
         
-        <div  class="ui grid padded computer only bg-lightGray appPopup-computer border-1" *ngIf="showPopUp">
-            <div class="ui container">
-                <div class="ui grid padded">
-                    <div class="eleven wide column px-0">
-                        <div class="ui grid middle aligned">
-                            <div class="six wide column left floated left aligned  appPopup-header">
-                                <div class="header appPopup-header">
-                                    <div class="appPopup-logo img-cover p-5 va-middle m-0 mr-15">
-                                        <img src="https://diksha.gov.in/images/logos/logo.png" class="js-appLogo" alt="{{resourceService.frmelmnts?.lbl?.installAppTitle}}"/>
-                                    </div>
-                                    <div class="appPopup-title">
-                                        {{resourceService.frmelmnts?.lbl?.installAppTitle}} <br />
-                                        <p class="small text-lightGray m-0">{{resourceService.frmelmnts?.lbl?.installAppFree}}</p>
-                                        <p class="small text-lightGray m-0">{{resourceService.frmelmnts?.lbl?.installAppPlayStore}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="six wide column right floated right aligned">
-                                <a  (click) ="closePopUp()" class="ui button positive m-5" href="https://play.google.com/store/apps/details?id=in.gov.diksha.app"  target="_blank" title="{{resourceService.frmelmnts?.lbl?.installApp}}" >
-                                    {{resourceService.frmelmnts?.lbl?.installApp}}
-                                </a>
-                                <button (click) ="navigateToLibrary()" class="ui basic button blue m-5 bg-white js-setAppPopupCookie" title="{{resourceService.frmelmnts?.lbl?.viewInBrowser}}" >
-                                    {{resourceService.frmelmnts?.lbl?.viewInBrowser}}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="one wide column center aligned" >
-                        <i (click) ="closePopUp()"class="close icon link js-setAppPopupCookie" title="{{resourceService.frmelmnts?.lbl?.close}}" tabindex="0"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
     </div>
     <!-- /App Install Popup -->
