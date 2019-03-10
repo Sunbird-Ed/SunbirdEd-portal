@@ -23,6 +23,8 @@
             type="button" 
             *ngIf="section.contents.length >= 10 && section.name != 'My Courses'"
             (click)="navigateToViewAll(section)"
+            appTelemetryInteract 
+            [telemetryInteractEdata]="{id:'viewall-button' , type:'click' ,pageid:pageid , extra : {section: section.name}}"
         >
             {{ resourceService.frmelmnts.lnk.viewall}}
         </button>

@@ -120,7 +120,7 @@ export class SignupComponent implements OnInit, OnDestroy {
       name: new FormControl(null, [Validators.required, Validators.pattern(/^[a-zA-Z ]*$/)]),
       password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
       confirmPassword: new FormControl(null, [Validators.required, Validators.minLength(8)]),
-      phone: new FormControl(null, [Validators.required, Validators.pattern('^\\d{10}$')]),
+      phone: new FormControl(null, [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]),
       email: new FormControl(null, [Validators.email]),
       contactType: new FormControl('phone'),
       uniqueContact: new FormControl(null, [Validators.required])

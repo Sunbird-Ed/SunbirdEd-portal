@@ -24,7 +24,8 @@
             <input [ngClass]="{'orange-border': errorMessage}" formControlName="otp" type="text" name="otp">
           </div>
         </form>
-        <div [ngClass]="{'grey cursor-pointerText': disableResendButton}" (click)="resendOTP(); disableResendButton = true;" class="fs-1 text-ac blue text mb-30 cursor-pointer"
+        <div  appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+        [telemetryInteractEdata]="resendOtpInteractEdata" [ngClass]="{'grey cursor-pointerText': disableResendButton}" (click)="resendOTP(); disableResendButton = true;" class="fs-1 text-ac blue text mb-30 cursor-pointer"
           role="button" tabindex="0">{{resourceService?.frmelmnts?.lbl?.resendOTP}}</div>
       </div>
     </div>
@@ -34,7 +35,8 @@
 
 <!--Actions-->
 <div class="sb-modal-actions">
-  <button 
+  <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+  [telemetryInteractEdata]="submitInteractEdata"
     [ngClass]="{'disabled':!enableSubmitBtn}" 
     class="sb-btn sb-btn-normal sb-btn-primary"
     (click)="verifyOTP()"

@@ -6,7 +6,6 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { UserSearchService } from './../../services';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { ProfileService } from '@sunbird/profile';
@@ -114,6 +113,13 @@ export class UserSearchComponent implements OnInit {
     fontWeight: 'bold',
     fontFamily: 'inherit',
     fontSize: '48px'
+  };
+  csvOptions = {
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalseparator: '.',
+    showLabels: true,
+    headers: []
   };
   /**
      * Constructor to create injected service(s) object
@@ -229,12 +235,6 @@ export class UserSearchComponent implements OnInit {
   }
 
   downloadUser() {
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalseparator: '.',
-      showLabels: true
-    };
 
     const downloadArray = [{
       'firstName': 'First Name',
@@ -257,8 +257,7 @@ export class UserSearchComponent implements OnInit {
         'subject': _.join(key.subject, ',')
       });
     });
-
-    return new Angular2Csv(downloadArray, 'Users', options);
+    return  downloadArray;
   }
 
 
