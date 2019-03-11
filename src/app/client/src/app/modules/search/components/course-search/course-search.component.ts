@@ -248,8 +248,8 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   }
   private setNoResultMessage() {
     this.noResultMessage = {
-      'message': _.get(this.resourceService, 'messages.stmsg.m0007') || 'No results found',
-      'messageText': _.get(this.resourceService, 'messages.stmsg.m0006') || 'Please search for something else.'
+      'message': 'messages.stmsg.m0007',
+      'messageText': 'messages.stmsg.m0006'
     };
   }
 }
