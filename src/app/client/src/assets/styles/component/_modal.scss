@@ -18,6 +18,7 @@
         .sb-modal-content {
             min-height: 100px;
             padding: $sb-modal-content-padding;
+            overflow-y: auto;
         }
         &>.close {
             color: $white-color;
