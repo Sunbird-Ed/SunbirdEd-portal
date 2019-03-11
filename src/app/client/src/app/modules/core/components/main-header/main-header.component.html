@@ -79,7 +79,7 @@
                     </a>
                     <a 
                         class="item" 
-                        appTelemetryInteract [telemetryInteractEdata]="{id:'logout',type:'click',pageid:''}" 
+                        appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()" 
                         (click)="logout()">
                         {{resourceService.frmelmnts?.lnk?.logout}}
                     </a>

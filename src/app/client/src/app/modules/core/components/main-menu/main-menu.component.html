@@ -110,8 +110,8 @@
 				{{resourceService.frmelmnts?.lnk?.profile}}
 			</a>
 			<a class="item logout-btn"
-				appTelemetryInteract [telemetryInteractEdata]="{id:'logout',type:'click',pageid:''}" 
-			   (click)="logout()">
+				appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()" 
+				(click)="logout()">
 				{{resourceService.frmelmnts?.lnk?.logout}}
 			</a>
 		</ng-container>
