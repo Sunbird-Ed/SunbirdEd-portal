@@ -16,7 +16,7 @@
                     <i class="calendar outline icon"></i>
                     <div class="content pb-15 width-100">
                         <button class="ui right floated tiny blue basic button enrollBtn" appTelemetryInteract [telemetryInteractEdata]="enrollBatchIntractEdata"
-                            [telemetryInteractObject]="{id:batch.identifier,type:'course',ver:'1',rollup:{l1:courseId}}" (click)="enrollBatch()">{{resourceService.frmelmnts.btn.enroll}}</button>
+                            [telemetryInteractObject]="{id:batch.identifier,type:'CourseBatch',ver:'1',rollup:{l1:courseId}}" (click)="enrollBatch()">{{resourceService.frmelmnts.btn.enroll}}</button>
                         <span class="header pb-5"> {{batch.startDate | dateFormat}} - </span>
                         <span *ngIf="batch.endDate" class="header pb-5"> {{batch.endDate | dateFormat}} </span>
                     </div>
