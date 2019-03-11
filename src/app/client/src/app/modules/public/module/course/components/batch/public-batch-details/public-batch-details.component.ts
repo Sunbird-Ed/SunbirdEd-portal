@@ -87,7 +87,7 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
   }
   setTelemetryData() {
     this.signInInteractEdata = {
-      id: 'sign-in',
+      id: 'signin',
       type: 'click',
       pageid: 'explore-course',
     };
