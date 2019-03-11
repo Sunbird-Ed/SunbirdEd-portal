@@ -10,7 +10,7 @@ import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, mergeMap, first, filter, debounceTime, catchError } from 'rxjs/operators';
+import { takeUntil, map, mergeMap, first, filter, debounceTime, catchError, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 
 @Component({
@@ -110,6 +110,9 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
     private fetchContentOnParamChange() {
         combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
         .pipe( debounceTime(5), // wait for both params and queryParams event to change
+             tap(data => this.inView({inview: []})),
+             delay(10),
+             tap(data => this.setTelemetryData()),
             map(result => ({params: { pageNumber: Number(result[0].pageNumber)}, queryParams: result[1]})),
             takeUntil(this.unsubscribe$)
         ).subscribe(({params, queryParams}) => {
@@ -155,6 +158,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
         });
     }
     private setTelemetryData() {
+        this.inViewLogs = [];
         this.telemetryImpression = {
             context: {
                 env: this.activatedRoute.snapshot.data.telemetry.env
@@ -186,9 +190,11 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
                 });
             }
         });
-        this.telemetryImpression.edata.visits = this.inViewLogs;
-        this.telemetryImpression.edata.subtype = 'pageexit';
-        this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+        if (this.telemetryImpression) {
+            this.telemetryImpression.edata.visits = this.inViewLogs;
+            this.telemetryImpression.edata.subtype = 'pageexit';
+            this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+        }
     }
     public navigateToPage(page: number): void {
         if (page < 1 || page > this.paginationDetails.totalPages) {
