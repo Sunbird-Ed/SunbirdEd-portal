@@ -210,8 +210,8 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
         const userNamesKeyById = _.keyBy(res.result.response.content, 'identifier');
         _.forEach(sections, (section, sectionIndex) => {
           _.forEach(section.contents, (content, contentIndex) => {
-            sections[sectionIndex].contents[contentIndex]['userName'] = userNamesKeyById[content.createdBy].firstName
-            + ' ' + userNamesKeyById[content.createdBy].lastName;
+            sections[sectionIndex].contents[contentIndex]['userName'] = (userNamesKeyById[content.createdBy].firstName || '')
+            + ' ' + (userNamesKeyById[content.createdBy].lastName || '');
             sections[sectionIndex].contents[contentIndex]['metaData'] = {identifier: content.identifier};
             sections[sectionIndex].contents[contentIndex]['label'] = _.size(content.participant) || 0;
           });

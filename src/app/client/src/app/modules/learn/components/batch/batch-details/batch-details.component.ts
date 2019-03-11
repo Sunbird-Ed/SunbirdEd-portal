@@ -52,10 +52,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     if (this.courseProgressData && this.courseProgressData.progress) {
       this.progress = this.courseProgressData.progress ? Math.round(this.courseProgressData.progress) : 0;
     }
-    if ((!(this.enrolledBatchInfo.hasOwnProperty('endDate')) ||
-    (this.enrolledBatchInfo.endDate > this.todayDate)) &&
-    (this.enrolledBatchInfo.enrollmentType === 'open') &&
-    (this.progress !== 100)) {
+    if ((_.get(this.enrolledBatchInfo, 'endDate') && this.enrolledBatchInfo.endDate > this.todayDate ) &&
+    (this.enrolledBatchInfo.enrollmentType === 'open') && (this.progress !== 100)) {
       this.isUnenrollbtnDisabled = false;
     }
   }

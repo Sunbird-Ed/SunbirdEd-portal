@@ -1,6 +1,6 @@
 export const environment = {
-  env: 'prod',
+  env: 'offline',
   production: true,
   enableTelemetryValidation: false,
-  isOffline: false
+  isOffline: true
 };
