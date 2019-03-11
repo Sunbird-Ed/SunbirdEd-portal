@@ -109,7 +109,7 @@ export class MainMenuComponent implements OnInit {
       pageid: 'help'
     };
     this.signInIntractEdata = {
-      id: ' signIn-tab',
+      id: ' sign-in-tab',
       type: 'click',
     };
   }
