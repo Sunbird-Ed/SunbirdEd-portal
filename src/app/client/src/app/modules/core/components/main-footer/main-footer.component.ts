@@ -1,3 +1,4 @@
+import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Component, OnInit, Input } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 @Component({
@@ -23,6 +24,15 @@ export class MainFooterComponent implements OnInit {
   }
 
   ngOnInit() {
+
+  }
+
+  setTelemetryInteractEdata(type): IInteractEventEdata {
+    return {
+      id: type,
+      type: 'click',
+      pageid: 'footer'
+    };
   }
 
 }
