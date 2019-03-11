@@ -6,6 +6,7 @@ const clean = require('gulp-clean')
 const gulpSequence = require('gulp-sequence')
 const gzip = require('gulp-gzip')
 const exec = require('child_process').exec
+const brotli = require('gulp-brotli');
 
 // To download editors
 const contentEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/content-editor-iframe-1.14.2.zip'
@@ -72,7 +73,11 @@ gulp.task('client:gzip', () => {
         .pipe(gzip())
         .pipe(gulp.dest('./dist'))
 })
-
+gulp.task('client:brotli', () => {
+    return gulp.src(['./dist/*.js', './dist/*.css'])
+        .pipe(brotli.compress())
+        .pipe(gulp.dest('./dist'))
+})
 gulp.task('update:index:file', () => {
     return gulp.src('./dist/index.html')
         .pipe(rename('index.ejs'))
@@ -124,7 +129,7 @@ gulp.task('deploy',
         'clean:client:install',
         'client:install',
         'client:dist',
-        'client:gzip',
+        ['client:gzip', 'client:brotli'],
         'update:index:file',
         'clean:index:file',
         'prepare:app:dist')

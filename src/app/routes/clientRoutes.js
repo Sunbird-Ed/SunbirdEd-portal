@@ -13,11 +13,58 @@ const tenantCdnUrl = envHelper.TENANT_CDN_URL
 const defaultTenant = envHelper.DEFAULT_CHANNEL
 const oneDayMS = 86400000
 let tenantId = ''
-
+let pathMap = {}
+const setZipConfig = (req, res, type, encoding, dist = '') => {
+  let status = true;
+  try {
+    if (pathMap[req.path + type] && pathMap[req.path + type] === 'notExist') {
+      throw 'FILE_NOT_EXIST'
+    }
+    if(pathMap[req.path + '.'+ type] === 'exist'){
+    } else {
+      fs.existsSync(path.join(__dirname, dist) + req.path + '.' + type)
+      pathMap[req.path + type] = 'exist';
+    }
+    if (req.path.endsWith('.css')) {
+      res.set('Content-Type', 'text/css');
+    } else if (req.path.endsWith('.js')) {
+      res.set('Content-Type', 'text/javascript');
+    }
+    req.url = req.url + '.' + type;
+    res.set('Content-Encoding', encoding);
+  } catch(err) {
+    status = false;
+    pathMap[req.path + type] = 'notExist';
+    console.log('zip file not exist for: ', req.url)
+  }
+  return status;
+}
 module.exports = (app, keycloak) => {
   app.set('view engine', 'ejs')
 
-  app.use(express.static(path.join(__dirname, '../dist'), { extensions: ['ejs'], index: false }))
+  app.get(['*.js', '*.css'], (req, res, next) => {
+    if(req.get('Accept-Encoding').includes('br')){ // send br files
+      if(!setZipConfig(req, res, 'br', 'br', '../dist') && req.get('Accept-Encoding').includes('gzip')){
+        setZipConfig(req, res, 'gz', 'gzip', '../dist') // send gzip if br file not found
+      }
+    } else if(req.get('Accept-Encoding').includes('gzip')){
+      setZipConfig(req, res, 'gz', 'gzip', '../dist')
+    }
+    next();
+  });
+
+  app.use(express.static(path.join(__dirname, '../dist'), { extensions: ['ejs','gz', ''], index: false }))
+
+  app.get(['*.js', '*.css'], (req, res, next) => {
+    if(req.get('Accept-Encoding').includes('br')){ // send br files
+      if(!setZipConfig(req, res, 'br', 'br') && req.get('Accept-Encoding').includes('gzip')){
+        setZipConfig(req, res, 'gz', 'gzip') // send gzip if br file not found
+      }
+    } else if(req.get('Accept-Encoding').includes('gzip')){
+      setZipConfig(req, res, 'gz', 'gzip')
+    }
+    next();
+  });
 
   app.use(express.static(path.join(__dirname, '../')))
 
@@ -27,7 +74,7 @@ module.exports = (app, keycloak) => {
     app.use(express.static(path.join(__dirname, '../tenant', defaultTenant)))
   }
 
-  app.get(['/dist/*.js', '/dist/*.css', '/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff', '/dist/*.eot', '/dist/*.svg'],
+  app.get(['/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff', '/dist/*.eot', '/dist/*.svg'],
     compression(), (req, res, next) => {
       if (process.env.sunbird_environment.toLowerCase() !== 'local') {
         res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
@@ -62,7 +109,7 @@ module.exports = (app, keycloak) => {
     '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
     '/resources/*', '/myActivity', '/myActivity/*'], keycloak.protect(), indexPage)
 
-  app.all('/:tenantName', (req, res) => {
+  app.all('/:tenantName', (req, res, next) => {
     tenantId = req.params.tenantName
     if (_.isString(tenantId)) {
       tenantId = _.lowerCase(tenantId)
