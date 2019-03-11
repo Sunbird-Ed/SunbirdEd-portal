@@ -9,7 +9,7 @@ import { Subject } from 'rxjs';
 import * as moment from 'moment';
 import { UserService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
-
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-public-batch-details',
@@ -32,6 +32,9 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
     { name: 'Upcoming', value: 0 }
   ];
   todayDate = moment(new Date()).format('YYYY-MM-DD');
+  signInInteractEdata: IInteractEventEdata;
+  enrollBatchIntractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
   constructor(private browserCacheTtlService: BrowserCacheTtlService, private cacheService: CacheService,
     public resourceService: ResourceService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
     public router: Router, public userService: UserService) {
@@ -40,6 +43,7 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getAllBatchDetails();
+    this.setTelemetryData();
   }
 
   closeLoginModal() {
@@ -80,6 +84,23 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
     } else {
       this.router.navigate([this.baseUrl]);
     }
+  }
+  setTelemetryData() {
+    this.signInInteractEdata = {
+      id: 'sign-in',
+      type: 'click',
+      pageid: 'explore-course',
+    };
+    this.enrollBatchIntractEdata = {
+      id: 'enroll-batch',
+      type: 'click',
+      pageid: 'explore-course'
+    };
+    this.telemetryInteractObject = {
+      id: this.courseId,
+      type: 'explore-course',
+      ver: '1.0'
+    };
   }
 
   ngOnDestroy() {

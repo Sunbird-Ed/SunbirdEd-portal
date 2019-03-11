@@ -53,7 +53,7 @@ export class MainMenuComponent implements OnInit {
   exploreRoutingUrl: string;
   showExploreHeader = false;
   helpLinkVisibility: string;
-
+  signInIntractEdata: IInteractEventEdata;
   /*
   * constructor
   */
@@ -108,6 +108,10 @@ export class MainMenuComponent implements OnInit {
       type: 'click',
       pageid: 'help'
     };
+    this.signInIntractEdata = {
+      id: ' signIn-tab',
+      type: 'click',
+    };
   }
 
   logout() {
@@ -140,6 +144,7 @@ export class MainMenuComponent implements OnInit {
       } else {
         this.showExploreHeader = false;
       }
+      this.signInIntractEdata['pageid'] = this.exploreRoutingUrl;
     });
   }
 
