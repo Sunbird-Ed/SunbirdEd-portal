@@ -304,11 +304,10 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
         _.forEach(this.batchList, (item, key) => {
           this.batchList[key].userName = userName[item.createdBy];
         });
-        this.showLoader = false;
       } else {
         this.toasterService.error(this.resourceService.messages.fmsg.m0056);
-        this.showLoader = false;
       }
+      this.showLoader = false;
     },
       (err: ServerResponse) => {
         this.showLoader = false;
