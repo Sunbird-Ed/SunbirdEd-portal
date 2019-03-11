@@ -48,13 +48,13 @@
         }
         &.normal {
             max-width: $sb-modal-normal-width;
-            .content {
+            .sb-modal-content {
                 max-height: 380px;
             }
         }
         &.large {
             max-width: $sb-modal-large-width;
-            .content {
+            .sb-modal-content {
                 height: calc(100vh - 100px);
             }
         }
