@@ -53,7 +53,7 @@ module.exports = (app, keycloak) => {
     next();
   });
 
-  app.use(express.static(path.join(__dirname, '../dist'), { extensions: ['ejs','gz', ''], index: false }))
+  app.use(express.static(path.join(__dirname, '../dist'), { extensions: ['ejs'], index: false }))
 
   app.get(['*.js', '*.css'], (req, res, next) => {
     if(req.get('Accept-Encoding').includes('br')){ // send br files
@@ -109,7 +109,7 @@ module.exports = (app, keycloak) => {
     '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
     '/resources/*', '/myActivity', '/myActivity/*'], keycloak.protect(), indexPage)
 
-  app.all('/:tenantName', (req, res, next) => {
+  app.all('/:tenantName', (req, res) => {
     tenantId = req.params.tenantName
     if (_.isString(tenantId)) {
       tenantId = _.lowerCase(tenantId)
