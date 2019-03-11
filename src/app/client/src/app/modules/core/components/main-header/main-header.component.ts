@@ -104,7 +104,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   exploreRoutingUrl: string;
   pageId: string;
 
-  isOffline = environment.isOffline;
+  isOffline: boolean = environment.isOffline;
   /*
   * constructor
   */
