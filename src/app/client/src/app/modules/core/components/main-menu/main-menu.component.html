@@ -47,13 +47,15 @@
 		<a class="item" 
 			[class.active]="router.isActive('/search/explore') || router.isActive('/explore')" 
 			*ngIf="!router.isActive('', true)" 
-			routerLink="explore">
+			routerLink="explore"
+			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" >
 			{{resourceService?.frmelmnts?.tab?.resources}}
 		</a>
 		<a class="item" 
 			[class.active]="router.isActive('/search/explore-course') || router.isActive('/explore-course')" 
 			*ngIf="!router.isActive('', true)" 
-			routerLink="explore-course">
+			routerLink="explore-course"
+			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" >
 			{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
 		<span class="item divider">|</span>
@@ -107,7 +109,8 @@
 				routerLink="/profile">
 				{{resourceService.frmelmnts?.lnk?.profile}}
 			</a>
-			<a class="item logout-btn" 
+			<a class="item logout-btn"
+				appTelemetryInteract [telemetryInteractEdata]="{id:'logout',type:'click',pageid:''}" 
 			   (click)="logout()">
 				{{resourceService.frmelmnts?.lnk?.logout}}
 			</a>
