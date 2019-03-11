@@ -208,26 +208,6 @@ const routes: Routes = [
         }]
       },
       {
-        path: 'batches/view-all/:section/:pageNumber', component: BatchListComponent, canActivate: [AuthGuard],
-        data: {
-          telemetry: {
-            env: telemetryEnv, pageid: 'view-all', subtype: 'paginate', uri: '/workspace/content/batches/view-all',
-            type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
-          }, roles: 'courseBatchRoles',
-          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
-        },
-        children: [{
-          path: 'update/batch/:batchId', component: UpdateBatchComponent, canActivate: [AuthGuard],
-          data: {
-            telemetry: {
-              env: telemetryEnv, pageid: 'batch-edit', uri: '/update/batch/',
-              type: 'detail', mode: 'create', object: { type: objectType, ver: '1.0' }
-            }, roles: 'courseBatchRoles',
-            breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
-          }
-        }]
-      },
-      {
         path: 'allcontent/:pageNumber', component: AllContentComponent, canActivate: [AuthGuard],
         data: {
           telemetry: {
@@ -295,6 +275,26 @@ const routes: Routes = [
       roles: 'workspace',
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
     }
+  },
+  {
+    path: 'batches/view-all/:section/:pageNumber', component: BatchListComponent, canActivate: [AuthGuard],
+    data: {
+      telemetry: {
+        env: telemetryEnv, pageid: 'view-all', subtype: 'paginate', uri: '/workspace/content/batches/view-all',
+        type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
+      }, roles: 'courseBatchRoles',
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+    },
+    children: [{
+      path: 'update/batch/:batchId', component: UpdateBatchComponent, canActivate: [AuthGuard],
+      data: {
+        telemetry: {
+          env: telemetryEnv, pageid: 'batch-edit', uri: '/update/batch/',
+          type: 'detail', mode: 'create', object: { type: objectType, ver: '1.0' }
+        }, roles: 'courseBatchRoles',
+        breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+      }
+    }]
   }
 ];
 

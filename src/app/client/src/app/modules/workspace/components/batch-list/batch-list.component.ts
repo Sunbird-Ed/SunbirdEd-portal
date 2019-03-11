@@ -7,7 +7,7 @@ import {
   ResourceService, ILoaderMessage, INoResultMessage
 } from '@sunbird/shared';
 import { combineLatest, Subject } from 'rxjs';
-import { takeUntil, map, tap } from 'rxjs/operators';
+import { takeUntil, map, filter } from 'rxjs/operators';
 import { Ibatch } from './../../interfaces/';
 import { WorkSpaceService, BatchService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
@@ -181,6 +181,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
   ngOnInit() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
       map(results => ({ params: results[0], queryParams: results[1] })),
+      filter(res => this.pageNumber !== Number(res.params.pageNumber) || !_.isEqual(this.queryParams, res.queryParams)),
       takeUntil(this.unsubscribe)
     ).subscribe((res: any) => {
       this.queryParams = res.queryParams;
@@ -297,15 +298,16 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
     };
     this.UserList(req).subscribe((res: ServerResponse) => {
       if (res.result.response.count && res.result.response.content.length > 0) {
-        this.showLoader = false;
         _.forEach(res.result.response.content, (val, key) => {
           userName[val.identifier] = (val.firstName || '') + ' ' + (val.lastName || '');
         });
         _.forEach(this.batchList, (item, key) => {
           this.batchList[key].userName = userName[item.createdBy];
         });
+        this.showLoader = false;
       } else {
         this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+        this.showLoader = false;
       }
     },
       (err: ServerResponse) => {
@@ -315,7 +317,6 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
         this.toasterService.error(this.resourceService.messages.fmsg.m0056);
       }
     );
-    this.showLoader = false;
   }
 
   setTelemetryImpressionData () {
