@@ -237,7 +237,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
           this.showLoader = false;
           this.noResultMessage = {
             'message': this.resourceService.messages.stmsg.m0008,
-            'messageText': this.resourceService.messages.stmsg.m0033
+            'messageText': this.resourceService.messages.stmsg.m0035
           };
         }
       },
