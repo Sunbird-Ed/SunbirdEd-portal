@@ -64,6 +64,9 @@
       ],
       "moment": [
         "../node_modules/moment/min/moment.min.js"
+      ],
+      "@sunbird/shared-player": [
+        "app/modules/shared-player"
       ]
     },
     "module": "es2015",

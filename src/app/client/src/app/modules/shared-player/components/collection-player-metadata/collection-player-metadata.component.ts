@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { ResourceService } from './../../services';
-import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import { Component, OnInit, Input } from '@angular/core';
+import { ResourceService } from '@sunbird/shared';
+import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { ContentData } from '@sunbird/shared';
 

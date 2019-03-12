@@ -6,6 +6,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedModule } from '@sunbird/shared';
 import { BadgingModule } from '@sunbird/badge';
 import { CoreModule } from '@sunbird/core';
+import { SharedPlayerModule } from '@sunbird/shared-player';
+
 @NgModule({
     imports: [
         CommonModule,
@@ -13,7 +15,8 @@ import { CoreModule } from '@sunbird/core';
         TelemetryModule,
         SharedModule,
         BadgingModule,
-        CoreModule
+        CoreModule,
+        SharedPlayerModule
     ],
     providers: [],
     declarations: [PublicCollectionPlayerComponent, PublicContentPlayerComponent]

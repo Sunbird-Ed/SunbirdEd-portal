@@ -23,6 +23,8 @@ import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ReviewCommentsComponent } from './components/review-comments/review-comments.component';
 import { OrderModule } from 'ngx-order-pipe';
+import { SharedPlayerModule } from '@sunbird/shared-player';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -35,7 +37,8 @@ import { OrderModule } from 'ngx-order-pipe';
     ReactiveFormsModule,
     NgInviewModule,
     TelemetryModule,
-    OrderModule
+    OrderModule,
+    SharedPlayerModule
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
