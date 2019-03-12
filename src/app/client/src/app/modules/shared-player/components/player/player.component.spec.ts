@@ -1,4 +1,4 @@
-import { SharedModule } from './../../shared.module';
+import { SharedModule } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlayerComponent } from './player.component';
 

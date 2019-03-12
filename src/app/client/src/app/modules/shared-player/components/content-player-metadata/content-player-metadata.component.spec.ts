@@ -24,12 +24,6 @@ describe('ContentMetadataComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('should unsubscribe from all observable subscriptions', () => {
-    component.ngOnInit();
-    spyOn(component.conceptDataSubscription, 'unsubscribe');
-    component.ngOnDestroy();
-    expect(component.conceptDataSubscription.unsubscribe).toHaveBeenCalled();
-  });
 
   it('should Take INPUT for content MetaData and show Attribution field  ', () => {
     component.contentData = mockRes.contentData;
