@@ -187,10 +187,10 @@ export class UserService {
     hashTagIds.push(this._channel);
     let organisationIds = [];
     profileData.rootOrgAdmin = false;
-    let userRoles = profileData.roles;
+    let userRoles = [];
     if (profileData.organisations) {
       _.forEach(profileData.organisations, (org) => {
-        if (org.roles && _.isArray(org.roles)) {
+        if (org.organisationId === profileData.rootOrgId && _.isArray(org.roles)) {
           userRoles = _.union(userRoles, org.roles);
           if (org.organisationId === profileData.rootOrgId &&
             (_.indexOf(org.roles, 'ORG_ADMIN') > -1 ||
