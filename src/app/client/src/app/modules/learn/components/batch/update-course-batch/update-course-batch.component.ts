@@ -202,10 +202,12 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   */
   private fetchParticipantDetails() {
     if (this.batchDetails.participant || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
+      const userList = _.union(_.keys(this.batchDetails.participant), this.batchDetails.mentors);
       const request = {
         filters: {
-          identifier: _.union(_.keys(this.batchDetails.participant), this.batchDetails.mentors)
-        }
+          identifier: userList
+        },
+        limit : userList.length
       };
       this.courseBatchService.getUserList(request).pipe(takeUntil(this.unsubscribe))
         .subscribe((res) => {
@@ -218,6 +220,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
           }
           this.redirect();
         });
+    } else {
+      this.showLoader = false;
+      this.disableSubmitBtn = false;
     }
   }
   private processParticipantDetails(res) {
