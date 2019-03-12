@@ -247,7 +247,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
     if (this.userDetailsForm.value.district) { this.locationCodes.push(this.userDetailsForm.value.district); }
     if (this.userDetailsForm.value.block) { this.locationCodes.push(this.userDetailsForm.value.block); }
 
-    const data = { userId: this.userId, locationCodes: this.locationCodes, organisations: orgArray };
+    const data = { userId: this.userId, roles: roles, locationCodes: this.locationCodes, organisations: orgArray };
     this.profileService.updatePrivateProfile(data)
     .subscribe(
       (apiResponse: ServerResponse) => {

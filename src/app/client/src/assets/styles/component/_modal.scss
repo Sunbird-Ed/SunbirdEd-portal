@@ -18,6 +18,7 @@
         .sb-modal-content {
             min-height: 100px;
             padding: $sb-modal-content-padding;
+            overflow-y: auto;
         }
         &>.close {
             color: $white-color;
@@ -48,13 +49,13 @@
         }
         &.normal {
             max-width: $sb-modal-normal-width;
-            .content {
+            .sb-modal-content {
                 max-height: 380px;
             }
         }
         &.large {
             max-width: $sb-modal-large-width;
-            .content {
+            .sb-modal-content {
                 height: calc(100vh - 100px);
             }
         }
