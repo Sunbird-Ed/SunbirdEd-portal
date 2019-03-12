@@ -89,4 +89,16 @@
     .ui.button:not(.icon)>.icon:not(.button):not(.dropdown) {
       margin: 0  -.21428571em 0 .42857143em;
     }
+    .ui.list .list>.item>.icon+.content,
+    .ui.list .list>.item>.image+.content,
+    .ui.list>.item>.icon+.content,
+    .ui.list>.item>.image+.content {
+      padding: 0 .5em 0 0;
+    }
+    .ui.dropdown>.dropdown.icon {
+      margin: 0 1em 0 0;
+    }
+    i.icon {
+      margin: 0 0 0 .25rem;
+    }
 } 
