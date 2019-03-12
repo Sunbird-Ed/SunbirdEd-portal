@@ -33,7 +33,8 @@ describe('OrgSearchComponent', () => {
       'fmsg': {
         'm0077': 'Fetching serach result failed'
       }
-    }
+    },
+    languageSelected$: observableOf({})
   };
   const fakeActivatedRoute = {
     'params': observableOf({ pageNumber: '1' }),
