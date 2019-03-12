@@ -41,7 +41,6 @@ function getHealthCheckObj (name, healthy, err, errMsg) {
 
 // Function help to get health check response
 function getHealthCheckResp (rsp, healthy, checksArrayObj) {
-  delete rsp.responseCode
   rsp.result = {}
   rsp.result.name = hcMessages.NAME
   rsp.result.version = hcMessages.API_VERSION
@@ -201,13 +200,27 @@ function checkHealth (req, response) {
     var rsp = successResponse(rspObj)
     if (isCSHealthy && isDbConnected && isLSHealthy) {
       console.log('Portal service is healthy')
+      envHelper.sunbird_portal_health_check_status = true
       return response.status(200).send(getHealthCheckResp(rsp, true, checksArrayObj))
     } else {
       console.log({ rsp: checksArrayObj })
+      envHelper.sunbird_portal_health_check_status = false
       return response.status(200).send(getHealthCheckResp(rsp, false, checksArrayObj))
     }
   })
 }
 
+/**
+ * This function helps to check health for sunbird portal and returns 200
+ * @param {Object} req
+ * @param {Object} response
+ */
+function checkSunbirdPortalHealth (req, response) {
+  var rspObj = req.rspObj
+  var rsp = successResponse(rspObj)
+  return response.status(200).send(getHealthCheckResp(rsp, true))
+}
+
 module.exports.checkHealth = checkHealth
 module.exports.createAndValidateRequestBody = createAndValidateRequestBody
+module.exports.checkSunbirdPortalHealth = checkSunbirdPortalHealth
