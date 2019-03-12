@@ -9,6 +9,8 @@ var request = require('request')
 var uuidv1 = require('uuid/v1')
 var envHelper = require('./environmentVariablesHelper.js')
 var cassandra = require('cassandra-driver')
+var fs = require('fs');
+var path = require("path");
 var contactPoints = envHelper.PORTAL_CASSANDRA_URLS
 var hcMessages = {
   LEARNER_SERVICE: {
@@ -216,9 +218,13 @@ function checkHealth (req, response) {
  * @param {Object} response
  */
 function checkSunbirdPortalHealth (req, response) {
-  var rspObj = req.rspObj
-  var rsp = successResponse(rspObj)
-  return response.status(200).send(getHealthCheckResp(rsp, true))
+  fs.readFile(path.join(__dirname, '../client/src/assets/health-check.json'), (err, data) => {
+    if (data) {
+      var rspObj = req.rspObj
+      var rsp = successResponse(rspObj)
+      return response.status(200).send(getHealthCheckResp(rsp, true))
+    }
+  });
 }
 
 module.exports.checkHealth = checkHealth
