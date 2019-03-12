@@ -10,7 +10,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { serverRes } from './public-content-player.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { By } from '@angular/platform-browser';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
