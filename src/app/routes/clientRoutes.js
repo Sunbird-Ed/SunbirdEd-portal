@@ -14,46 +14,29 @@ const defaultTenant = envHelper.DEFAULT_CHANNEL
 const oneDayMS = 86400000
 let tenantId = ''
 let pathMap = {}
-const setZipConfig = (req, res, type, encoding, dist = '') => {
-  let status = true;
-  try {
+const setZipConfig = (req, res, type, encoding, dist = '../') => {
     if (pathMap[req.path + type] && pathMap[req.path + type] === 'notExist') {
-      throw 'FILE_NOT_EXIST'
+      return false;
     }
-    if(pathMap[req.path + '.'+ type] === 'exist'){
+    if(pathMap[req.path + '.'+ type] === 'exist' || 
+      fs.existsSync(path.join(__dirname, dist) + req.path + '.' + type)){
+        if (req.path.endsWith('.css')) {
+          res.set('Content-Type', 'text/css');
+        } else if (req.path.endsWith('.js')) {
+          res.set('Content-Type', 'text/javascript');
+        }
+        req.url = req.url + '.' + type;
+        res.set('Content-Encoding', encoding);
+        pathMap[req.path + type] = 'exist';
+        return true
     } else {
-      fs.existsSync(path.join(__dirname, dist) + req.path + '.' + type)
-      pathMap[req.path + type] = 'exist';
+      pathMap[req.path + type] = 'notExist';
+      console.log('zip file not exist for: ', req.url, type)
+      return false;
     }
-    if (req.path.endsWith('.css')) {
-      res.set('Content-Type', 'text/css');
-    } else if (req.path.endsWith('.js')) {
-      res.set('Content-Type', 'text/javascript');
-    }
-    req.url = req.url + '.' + type;
-    res.set('Content-Encoding', encoding);
-  } catch(err) {
-    status = false;
-    pathMap[req.path + type] = 'notExist';
-    console.log('zip file not exist for: ', req.url)
-  }
-  return status;
 }
 module.exports = (app, keycloak) => {
   app.set('view engine', 'ejs')
-
-  app.get(['*.js', '*.css'], (req, res, next) => {
-    if(req.get('Accept-Encoding').includes('br')){ // send br files
-      if(!setZipConfig(req, res, 'br', 'br', '../dist') && req.get('Accept-Encoding').includes('gzip')){
-        setZipConfig(req, res, 'gz', 'gzip', '../dist') // send gzip if br file not found
-      }
-    } else if(req.get('Accept-Encoding').includes('gzip')){
-      setZipConfig(req, res, 'gz', 'gzip', '../dist')
-    }
-    next();
-  });
-
-  app.use(express.static(path.join(__dirname, '../dist'), { extensions: ['ejs'], index: false }))
 
   app.get(['*.js', '*.css'], (req, res, next) => {
     if(req.get('Accept-Encoding').includes('br')){ // send br files
@@ -65,6 +48,8 @@ module.exports = (app, keycloak) => {
     }
     next();
   });
+
+  app.use(express.static(path.join(__dirname, '../dist'), { extensions: ['ejs'], index: false }))
 
   app.use(express.static(path.join(__dirname, '../')))
 
