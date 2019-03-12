@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
-import { Angular2Csv } from 'angular2-csv';
 import { OrgManagementService } from '../../services/org-management/org-management.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
@@ -93,6 +92,13 @@ export class UserUploadComponent implements OnInit, OnDestroy {
 *
 * @param {ResourceService} resourceService To call resource service which helps to use language constant
 */
+  csvOptions = {
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalseparator: '.',
+    showLabels: true,
+    headers: []
+  };
   constructor(orgManagementService: OrgManagementService, config: ConfigService,
     formBuilder: FormBuilder, toasterService: ToasterService, private router: Router,
     resourceService: ResourceService, activatedRoute: ActivatedRoute, public userService: UserService) {
@@ -127,7 +133,7 @@ export class UserUploadComponent implements OnInit, OnDestroy {
       organisationId: ['', null]
     });
     this.userUploadInstructions = [
-      { instructions: this.resourceService.frmelmnts.instn.t0070},
+      { instructions: this.resourceService.frmelmnts.instn.t0070 },
       {
         instructions: this.resourceService.frmelmnts.instn.t0071,
         subinstructions: [
@@ -160,19 +166,6 @@ export class UserUploadComponent implements OnInit, OnDestroy {
     this.router.navigate([this.redirectUrl]);
   }
   /**
- * This method helps to download a sample csv file
- */
-  public downloadSampleCSV() {
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalseparator: '.',
-      showLabels: true,
-      useBom: false
-    };
-    const csv = new Angular2Csv(this.config.appConfig.ADMIN_UPLOAD.SAMPLE_USER_CSV, 'Sample_Users', options);
-  }
-  /**
   * This method helps to call uploadOrg method to upload a csv file
   */
   openImageBrowser(inputbtn) {
@@ -200,19 +193,19 @@ export class UserUploadComponent implements OnInit, OnDestroy {
       const fd = formData;
       this.fileName = file[0].name;
       this.orgManagementService.bulkUserUpload(fd).pipe(
-      takeUntil(this.unsubscribe$))
-      .subscribe(
-        (apiResponse: ServerResponse) => {
-          this.showLoader = false;
-          this.processId = apiResponse.result.processId;
-          this.toasterService.success(this.resourceService.messages.smsg.m0030);
-        },
-        err => {
-          this.showLoader = false;
-          const errorMsg =  _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
-           this.resourceService.messages.fmsg.m0051;
-          this.toasterService.error(errorMsg);
-        });
+        takeUntil(this.unsubscribe$))
+        .subscribe(
+          (apiResponse: ServerResponse) => {
+            this.showLoader = false;
+            this.processId = apiResponse.result.processId;
+            this.toasterService.success(this.resourceService.messages.smsg.m0030);
+          },
+          err => {
+            this.showLoader = false;
+            const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
+              this.resourceService.messages.fmsg.m0051;
+            this.toasterService.error(errorMsg);
+          });
     } else if (file[0] && !(file[0].name.match(/.(csv)$/i))) {
       this.showLoader = false;
       this.toasterService.error(this.resourceService.messages.stmsg.m0080);

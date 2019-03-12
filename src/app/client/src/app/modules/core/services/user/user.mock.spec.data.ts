@@ -13,7 +13,7 @@ export const mockUserData = {
             },
             'responseCode': 'OK',
             'result': {
-                'titleName': 'Sunbird',
+                'titleName': 'SUNBIRD',
                 'logo': 'http://localhost:3000/assets/images/sunbird_logo.png',
                 'poster': 'http://localhost:3000/assets/images/sunbird_logo.png',
                 'favicon': 'http://localhost:3000/assets/images/favicon.ico',

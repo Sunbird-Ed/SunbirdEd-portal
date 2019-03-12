@@ -33,7 +33,6 @@
               ]
             },
             "scripts": [
-              "node_modules/moment/min/moment.min.js",
               "node_modules/izitoast/dist/js/iziToast.min.js",
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/slick-carousel/slick/slick.js",
@@ -41,10 +40,8 @@
               "src/assets/libs/pagedown-core/Markdown.Editor.js",
               "src/assets/libs/pagedown-core/Markdown.Sanitizer.js",
               "node_modules/@project-sunbird/telemetry-sdk/index.js",
-              "node_modules/fine-uploader/fine-uploader/fine-uploader.min.js",
               "src/assets/libs/semantic.min.js",
               "src/assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.js",
-              "src/assets/libs/semantic-ui-topic-picker/semantic-ui-topic-picker.js",
               "node_modules/tree-model/dist/TreeModel-min.js",
               "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js",
               "node_modules/datatables.net/js/jquery.dataTables.min.js"
@@ -82,6 +79,178 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.staging.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "src:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "src:build:production"
+            },
+            "staging": {
+              "browserTarget": "src:build:staging"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "src:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.spec.json",
+            "scripts": [
+              "node_modules/izitoast/dist/js/iziToast.min.js",
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/slick-carousel/slick/slick.js",
+              "src/assets/libs/pagedown-core/Markdown.Converter.js",
+              "src/assets/libs/pagedown-core/Markdown.Editor.js",
+              "src/assets/libs/pagedown-core/Markdown.Sanitizer.js",
+              "node_modules/@project-sunbird/telemetry-sdk/index.js",
+              "src/assets/libs/semantic.min.js",
+              "src/assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.js",
+              "node_modules/tree-model/dist/TreeModel-min.js",
+              "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js"
+            ],
+            "styles": [
+              "src/assets/styles/semantic/semantic.min.css",
+              "node_modules/font-awesome/css/font-awesome.css",
+              "src/assets/styles/styles.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/assets/styles/"
+              ]
+            },
+            "assets": [
+              "src/assets",
+              "src/thirdparty",
+              "src/favicon.png"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "offline": {
+      "root": "",
+      "sourceRoot": "src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "../dist",
+            "index": "src/index.html",
+            "main": "src/main.offline.ts",
+            "tsConfig": "src/tsconfig.app.json",
+            "polyfills": "src/polyfills.ts",
+            "assets": [
+              "src/assets",
+              "src/thirdparty",
+              "src/favicon.png"
+            ],
+            "styles": [
+              "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
+              "src/assets/styles/semantic/semantic.min.css",
+              "node_modules/font-awesome/css/font-awesome.css",
+              "src/assets/styles/styles.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/assets/styles/"
+              ]
+            },
+            "scripts": [
+              "node_modules/moment/min/moment.min.js",
+              "node_modules/izitoast/dist/js/iziToast.min.js",
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/slick-carousel/slick/slick.js",
+              "src/assets/libs/pagedown-core/Markdown.Converter.js",
+              "src/assets/libs/pagedown-core/Markdown.Editor.js",
+              "src/assets/libs/pagedown-core/Markdown.Sanitizer.js",
+              "node_modules/@project-sunbird/telemetry-sdk/index.js",
+              "node_modules/fine-uploader/fine-uploader/fine-uploader.min.js",
+              "src/assets/libs/semantic.min.js",
+              "src/assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.js",
+              "src/assets/libs/semantic-ui-topic-picker/semantic-ui-topic-picker.js",
+              "node_modules/tree-model/dist/TreeModel-min.js",
+              "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js",
+              "node_modules/datatables.net/js/jquery.dataTables.min.js"
+            ]
+          },
+          "configurations": {
+            "offlineProduction": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.offline.ts"
+                }
+              ]
+            },
+            "offline": {
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": true,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": false,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.offline.ts"
+                }
+              ]
+            },
+            "staging": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.offline.ts"
                 }
               ]
             }

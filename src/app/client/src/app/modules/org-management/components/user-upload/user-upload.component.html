@@ -1,13 +1,5 @@
-<sui-modal 
-  [mustScroll]="true" 
-  [isClosable]="false"
-  [transitionDuration]="0"
-  [size]="'large'"
-  class="sb-modal"
-  appBodyScroll
-  (dismissed)="redirect();modal.deny();" 
-  #modal
-  >
+<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'large'" class="sb-modal"
+  appBodyScroll (dismissed)="redirect();modal.deny();" #modal>
 
   <!--Header-->
   <div class="sb-modal-header" [appTelemetryImpression]="telemetryImpression">
@@ -75,35 +67,28 @@
           </ol>
         </li>
       </ol>
-      <div>{{resourceService?.frmelmnts?.instn?.t0076}} <a href={{uploadUserRefLink}} target="_blank">{{resourceService?.frmelmnts?.instn?.t0077}}</a></div>
+      <div>{{resourceService?.frmelmnts?.instn?.t0076}} <a href={{uploadUserRefLink}}
+          target="_blank">{{resourceService?.frmelmnts?.instn?.t0077}}</a></div>
     </div>
   </div>
   <!--/Content-->
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button 
-      appTelemetryInteract 
-      [telemetryInteractObject]="telemetryInteractObject" 
-      [telemetryInteractEdata]="userUploadInteractEdata" 
-      [disabled]="processId" 
-      class="sb-btn sb-btn-normal sb-btn-primary" 
-      (click)="openImageBrowser(inputbtn)"
-    >
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="userUploadInteractEdata" [disabled]="processId"
+      class="sb-btn sb-btn-normal sb-btn-primary" (click)="openImageBrowser(inputbtn)">
       {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
     </button>
-    <button 
-      appTelemetryInteract 
-      [telemetryInteractObject]="telemetryInteractObject" 
-      [telemetryInteractEdata]="downloadCSVInteractEdata" 
-      class="sb-btn sb-btn-normal sb-btn-outline-gray mr-auto" 
-      (click)="downloadSampleCSV()"
-    >
+    <angular2csv class="sb-btn sb-btn-normal sb-btn-outline-gray mr-auto"
+      [data]="config.appConfig.ADMIN_UPLOAD.SAMPLE_USER_CSV" filename="Sample_Users"
+      [options]="csvOptions" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="downloadCSVInteractEdata">
       {{resourceService?.frmelmnts?.btn?.smplcsv}}
-    </button>
-    <input #inputbtn type="file" accept=".csv" class="content-input ui small d-none" id="uploadUsrsCSV" onclick="this.value = null" (change)="uploadUsersCSV($event.target.files)"
-      required="" />
+    </angular2csv>
+    <input #inputbtn type="file" accept=".csv" class="content-input ui small d-none" id="uploadUsrsCSV"
+      onclick="this.value = null" (change)="uploadUsersCSV($event.target.files)" required="" />
   </div>
   <!--/Actions-->
-  
+
 </sui-modal>

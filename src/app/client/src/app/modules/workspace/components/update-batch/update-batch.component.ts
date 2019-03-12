@@ -37,6 +37,10 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
   * participantList for users
   */
   public participantList = [];
+
+
+  public showFormInViewMode: boolean;
+
   /**
   * batchDetails for form
   */
@@ -127,6 +131,9 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
         });
         this.showUpdateModal = true;
         this.batchDetails = data.batchDetails;
+        if (this.batchDetails.createdBy !== this.userService.userid) {
+          this.showFormInViewMode = true;
+        }
         const userList = this.sortUsers(data.userDetails);
         this.participantList = userList.participantList;
         this.mentorList = userList.mentorList;
