@@ -57,10 +57,7 @@ const routes: Routes = [
   },
   {
     path: 'play', loadChildren: './module/player/player.module#PlayerModule'
-  },
-  {
-    path: 'play', loadChildren: './module/player/player.module#PlayerModule'
-  },
+  }
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
