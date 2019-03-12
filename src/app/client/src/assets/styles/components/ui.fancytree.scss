@@ -48,8 +48,13 @@
     margin-bottom: $base-block-space;
   }
 
+  .fancytree-node {
+    display: flex;
+    align-items: center;
+  }
+
   .fancytree-has-children {
-    margin-left: -(2.5 * $base-block-space);
+    margin: 0 0 -(3 * $base-block-space) 0;
   }
 
   .fancy-tree-green {	
@@ -62,7 +67,7 @@
 
   .fa-caret-right,
   .fa-caret-down {
-    margin: 0 (2 * $base-block-space) 0 0;
+    margin: 0 (2.5 * $base-block-space) 0 0;
   }
 }
 
@@ -78,3 +83,18 @@
   }
 }
 
+*[dir="rtl"] {
+  .ui-fancytree,
+  .ui-fancytree ul {
+    margin: 0 (3 * $base-block-space) 0 0;
+    border-left: 0;
+    border-right: 1px dotted $gray-800;
+  }
+  .fancytree-has-children {
+    margin: 0 (-(3 * $base-block-space)) 0 0;
+  }
+  .fa-caret-right,
+  .fa-caret-down {
+    margin: 0 0 0 (2.5 * $base-block-space);
+  }
+}
