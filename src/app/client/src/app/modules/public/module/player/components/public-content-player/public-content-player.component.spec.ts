@@ -1,6 +1,6 @@
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { PublicPlayerService } from './../../services';
+import { PublicPlayerService } from './../../../../services';
 import { PublicContentPlayerComponent } from './public-content-player.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
