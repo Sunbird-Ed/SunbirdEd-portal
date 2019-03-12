@@ -3,10 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { GetComponent } from './components/get/get.component';
 import { DialCodeComponent } from './components/dial-code/dial-code.component';
 import { PublicFooterComponent } from './components/public-footer/public-footer.component';
-import {
-  LandingPageComponent, PublicContentPlayerComponent,
-  PublicCollectionPlayerComponent
-} from './components';
+import {LandingPageComponent} from './components';
 import { LandingpageGuard } from './services';
 
 const routes: Routes = [
@@ -34,21 +31,7 @@ const routes: Routes = [
       }
     }
   },
-  {
-    path: 'play/content/:contentId', component: PublicContentPlayerComponent, data: {
-      telemetry: {
-        env: 'public', pageid: 'play-content', type: 'view', subtype: 'paginate'
-      }
-    }
-  },
-  {
-    path: 'play/collection/:collectionId', component: PublicCollectionPlayerComponent, data: {
-      telemetry: {
-        env: 'public', pageid: 'play-collection', type: 'view', subtype: 'paginate'
-      }
-    }
-  },
-  {
+ {
     path: 'explore', loadChildren: './module/explore/explore.module#ExploreModule'
   },
   {
@@ -71,6 +54,9 @@ const routes: Routes = [
   },
   {
     path: 'sign-in/sso', loadChildren: './module/sign-in/sso/sso.module#SsoModule'
+  },
+  {
+    path: 'play', loadChildren: './module/player/player.module#PlayerModule'
   }
 ];
 @NgModule({

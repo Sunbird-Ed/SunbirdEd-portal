@@ -1,7 +1,7 @@
 
 import {map, catchError, first, mergeMap} from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PublicPlayerService } from './../../services';
+import { PublicPlayerService } from './../../../../services';
 import { Observable ,  Subscription } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';

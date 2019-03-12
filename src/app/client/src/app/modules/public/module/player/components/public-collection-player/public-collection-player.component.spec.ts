@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CollectionHierarchyAPI, ContentService, CoreModule } from '@sunbird/core';
 import { PublicCollectionPlayerComponent } from './public-collection-player.component';
-import { PublicPlayerService } from '../../services';
+import { PublicPlayerService } from './../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { WindowScrollService, SharedModule, ResourceService } from '@sunbird/shared';
