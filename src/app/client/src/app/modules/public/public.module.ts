@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoreModule } from '@sunbird/core';
 import {
-  LandingPageComponent, PublicContentPlayerComponent,
-  PublicCollectionPlayerComponent
+  LandingPageComponent,
 } from './components';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -33,7 +32,7 @@ import { BadgingModule } from '@sunbird/badge';
     BadgingModule
   ],
   declarations: [LandingPageComponent, GetComponent, DialCodeComponent,
-    PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent],
+    PublicFooterComponent],
   providers: [PublicPlayerService, DeviceDetectorService, LandingpageGuard]
 })
 export class PublicModule { }
