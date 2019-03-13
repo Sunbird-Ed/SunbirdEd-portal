@@ -1,18 +1,18 @@
 import { ResourceRoutingModule } from './resource-routing.module';
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ResourceComponent, CollectionPlayerComponent, ContentPlayerComponent } from './components';
 import { SharedModule } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SlickModule } from 'ngx-slick';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { CoreModule } from '@sunbird/core';
-// import { DiscussionModule } from '@sunbird/discussion';
+import { PlayerHelperModule } from '@sunbird/player-helper';
 import { NotesModule } from '@sunbird/notes';
 import { BadgingModule } from '@sunbird/badge';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
-import {SharedFeatureModule} from '@sunbird/shared-feature';
+import { SharedFeatureModule } from '@sunbird/shared-feature';
 @NgModule({
   imports: [
     CommonModule,
@@ -22,7 +22,7 @@ import {SharedFeatureModule} from '@sunbird/shared-feature';
     SlickModule,
     FormsModule,
     CoreModule,
-    // DiscussionModule,
+    PlayerHelperModule,
     NotesModule,
     BadgingModule,
     TelemetryModule,

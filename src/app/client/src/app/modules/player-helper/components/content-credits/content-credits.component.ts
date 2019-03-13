@@ -1,7 +1,5 @@
-import {
-  Component, OnInit, Input, EventEmitter, Output, OnChanges
-} from '@angular/core';
-import { ResourceService } from '../../services/index';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
+import { ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { ContentData, ContentCreditsData } from '@sunbird/shared';
 

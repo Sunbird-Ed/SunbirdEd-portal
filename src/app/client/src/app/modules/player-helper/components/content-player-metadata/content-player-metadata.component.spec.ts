@@ -4,14 +4,17 @@ import { SharedModule } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContentPlayerMetadataComponent } from './content-player-metadata.component';
 import {mockRes} from './contnet-player-metadata.spec.data';
-describe('ContentMetadataComponent', () => {
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+
+describe('ContentPlayerMetadataComponent', () => {
   let component: ContentPlayerMetadataComponent;
   let fixture: ComponentFixture<ContentPlayerMetadataComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule.forRoot()],
-      declarations: []
+      declarations: [ContentPlayerMetadataComponent],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
@@ -19,16 +22,6 @@ describe('ContentMetadataComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ContentPlayerMetadataComponent);
     component = fixture.componentInstance;
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-  it('should unsubscribe from all observable subscriptions', () => {
-    component.ngOnInit();
-    spyOn(component.conceptDataSubscription, 'unsubscribe');
-    component.ngOnDestroy();
-    expect(component.conceptDataSubscription.unsubscribe).toHaveBeenCalled();
   });
 
   it('should Take INPUT for content MetaData and show Attribution field  ', () => {

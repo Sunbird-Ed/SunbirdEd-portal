@@ -55,6 +55,9 @@
       ],
       "@sunbird/course-batch": [
         "app/modules/course-batch"
+      ],
+      "@sunbird/player-helper": [
+        "app/modules/player-helper"
       ]
     },
     "sourceMap": true,

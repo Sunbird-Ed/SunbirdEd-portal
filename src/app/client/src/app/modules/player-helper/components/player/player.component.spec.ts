@@ -1,6 +1,7 @@
-import { SharedModule } from './../../shared.module';
+import { SharedModule } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlayerComponent } from './player.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 const startEvent = {
   detail: {
@@ -13,7 +14,7 @@ const endEventSuc = {
   detail: {
     telemetryData: {
       eid: 'END',
-      edata: { summary: [{progress: 100}]}
+      edata: { summary: [{ progress: 100 }] }
     }
   }
 };
@@ -21,7 +22,7 @@ const endEventErr = {
   detail: {
     telemetryData: {
       eid: 'END',
-      edata: { summary: [{progress: 50}]}
+      edata: { summary: [{ progress: 50 }] }
     }
   }
 };
@@ -38,7 +39,8 @@ describe('PlayerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot()],
-      declarations: []
+      declarations: [PlayerComponent],
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   }));
