@@ -1,7 +1,7 @@
 
 import {combineLatest, of, Subject } from 'rxjs';
 import { PageApiService, CoursesService, ISort, PlayerService, FormService } from '@sunbird/core';
-import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
 import {
   ResourceService, ServerResponse, ToasterService, ICaraouselData, ConfigService, UtilService, INoResultMessage, BrowserCacheTtlService
 } from '@sunbird/shared';
@@ -14,7 +14,7 @@ import { takeUntil, map, mergeMap, first, filter, catchError, tap, delay } from 
 @Component({
   templateUrl: './learn-page.component.html'
 })
-export class LearnPageComponent implements OnInit, OnDestroy {
+export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public showLoader = true;
   public noResultMessage: INoResultMessage;
@@ -262,6 +262,8 @@ export class LearnPageComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'course-page'
     };
+  }
+  ngAfterViewInit () {
   }
   private setNoResultMessage() {
     this.noResultMessage = {

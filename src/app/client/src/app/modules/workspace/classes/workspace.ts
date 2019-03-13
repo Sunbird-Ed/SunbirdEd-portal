@@ -1,13 +1,13 @@
 import { WorkSpaceService } from './../services';
 import { SearchService, UserService } from '@sunbird/core';
-import { ResourceService, ServerResponse, PageLoadTime } from '@sunbird/shared';
+import { ResourceService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { mergeMap, catchError, map } from 'rxjs/operators';
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 /**
  * Base class for workspace module
 */
-export class WorkSpace extends PageLoadTime {
+export class WorkSpace {
     /**
      * Reference for search service
     */
@@ -23,7 +23,6 @@ export class WorkSpace extends PageLoadTime {
     * @param {WorkSpaceService} WorkSpaceService Reference of WorkSpaceService
     */
     constructor(searchService: SearchService, workSpaceService: WorkSpaceService, public userService: UserService) {
-        super();
         this.searchService = searchService;
         this.workSpaceService = workSpaceService;
     }

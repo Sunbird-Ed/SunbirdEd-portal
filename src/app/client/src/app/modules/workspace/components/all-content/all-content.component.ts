@@ -6,7 +6,7 @@ import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService, ISort } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
-  ResourceService, ILoaderMessage, INoResultMessage, IContents
+  ResourceService, ILoaderMessage, INoResultMessage, IContents, NavigationHelperService
 } from '@sunbird/shared';
 import { Ibatch, IStatusOption } from './../../interfaces/';
 import { WorkSpaceService } from '../../services';
@@ -173,6 +173,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
     * @param {ConfigService} config Reference of ConfigService
   */
   constructor(public searchService: SearchService,
+    public navigationhelperService: NavigationHelperService,
     public workSpaceService: WorkSpaceService,
     paginationService: PaginationService,
     activatedRoute: ActivatedRoute,
@@ -352,7 +353,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
         uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
         visits: this.inviewLogs,
-        duration: this.getPageLoadTime()
+        duration: this.navigationhelperService.getPageLoadTime()
       }
     };
   }
