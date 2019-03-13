@@ -1692,12 +1692,13 @@ i.edit.icon.editIcon-fontSize {
   padding-right: 12px;
 }
 .batchCardAlign {
-  padding-top: 20px;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
 }
 .headerBatchCard {
   font-weight: 700;
   font-size: 1.18em;
-  padding-left: 12px;
 }
 .ui.attached.batchCard.button {
   background: #ffffff !important;
