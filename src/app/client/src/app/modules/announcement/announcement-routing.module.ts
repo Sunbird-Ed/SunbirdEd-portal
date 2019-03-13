@@ -1,15 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {
-  OutboxComponent, DeleteComponent, DetailsComponent, DetailsPopupComponent,
-  InboxComponent, CreateComponent
-} from './components';
-import { AuthGuard } from './../core/guard/auth-gard.service';
+import { OutboxComponent, DeleteComponent, DetailsPopupComponent, InboxComponent, CreateComponent } from './components';
+import { AuthGuard } from '@sunbird/core';
 const telemetryEnv = 'announcement';
 const objectType = 'announcement';
 const routes: Routes = [
   {
-    path: 'announcement/outbox/:pageNumber', component: OutboxComponent, canActivate: [AuthGuard],
+    path: 'outbox/:pageNumber', component: OutboxComponent, canActivate: [AuthGuard],
     data: {
       telemetry: {
         env: telemetryEnv, pageid: 'announcement-outbox', type: 'workflow', subtype: 'paginate', object: { type: objectType, ver: '1.0' }
@@ -17,11 +14,13 @@ const routes: Routes = [
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Announcements', url: '' }]
     },
     children: [
-      { path: 'delete/:announcementId', component: DeleteComponent, data: {
-        telemetry: {
-          env: telemetryEnv
+      {
+        path: 'delete/:announcementId', component: DeleteComponent, data: {
+          telemetry: {
+            env: telemetryEnv
+          }
         }
-      } },
+      },
       {
         path: 'view/:announcementId', component: DetailsPopupComponent, data: {
           telemetry: {
@@ -32,7 +31,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'announcement/inbox/:pageNumber', component: InboxComponent,
+    path: 'inbox/:pageNumber', component: InboxComponent,
     data: {
       telemetry: {
         env: telemetryEnv, pageid: 'announcement-list', subtype: 'Paginate', type: 'list', object: { type: objectType, ver: '1.0' }
@@ -49,7 +48,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'announcement/create/:stepNumber', component: CreateComponent,
+    path: 'create/:stepNumber', component: CreateComponent,
     canActivate: [AuthGuard], data: {
       telemetry: {
         env: telemetryEnv, pageid: 'announcement-create', uri: '/announcement/create/',
@@ -58,7 +57,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'announcement/resend/:identifier/:stepNumber', component: CreateComponent,
+    path: 'resend/:identifier/:stepNumber', component: CreateComponent,
     canActivate: [AuthGuard], data: {
       telemetry: {
         env: telemetryEnv, pageid: 'announcement-resend', uri: '/announcement/create/',

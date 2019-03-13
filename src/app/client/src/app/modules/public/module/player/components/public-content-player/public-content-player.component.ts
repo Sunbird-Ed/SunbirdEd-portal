@@ -9,7 +9,7 @@ import {
   ConfigService, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData
 } from '@sunbird/shared';
-import { PublicPlayerService } from './../../services';
+import { PublicPlayerService } from '../../../../services';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 

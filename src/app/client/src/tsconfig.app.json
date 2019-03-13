@@ -61,6 +61,9 @@
       ],
       "@sunbird/course-batch": [
         "app/modules/course-batch"
+      ],
+      "moment": [
+        "../node_modules/moment/min/moment.min.js"
       ]
     },
     "module": "es2015",

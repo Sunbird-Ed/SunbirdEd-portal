@@ -21,60 +21,33 @@
         <!--/Main Menu-->
 
         <!--Avtar Dropdown-->
-        <a 
-            class="profile-avtar computer only p-0 ml-15" 
-            *ngIf="userService.loggedIn" 
-            tabindex="0"
-            >
-            <div 
-                suiDropdown [(isOpen)]="isOpen" 
-                class="ui dropdown right top pointing" 
-                id="dropdown-menu-list-header">
-                <ngx-avatar 
-                    *ngIf='userProfile' 
-                    [style]="avtarDesktopStyle" 
-                    [size]="38" 
-                    initialsSize="1" 
+        <a class="profile-avtar computer only p-0 ml-15" *ngIf="userService.loggedIn && !isOffline" tabindex="0">
+            <div suiDropdown [(isOpen)]="isOpen" class="ui dropdown right top pointing" id="dropdown-menu-list-header">
+                <ngx-avatar *ngIf='userProfile' [style]="avtarDesktopStyle" [size]="38" initialsSize="1"
                     name="{{userProfile?.firstName}}">
                 </ngx-avatar>
                 <div class="menu" suiDropdownMenu>
-                    <div 
-                        class="item headerDropdownProfile" 
-                        *ngIf='userProfile'>
+                    <div class="item headerDropdownProfile" *ngIf='userProfile'>
                         {{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}
                     </div>
                     <div class="ui divider"></div>
-                    <a 
-                        class="item" 
-                        routerLink="profile">
+                    <a class="item" routerLink="profile">
                         {{resourceService.frmelmnts?.lnk?.profile}}
                     </a>
-                    <a 
-                        class="item" 
-                        *ngIf='permissionService.permissionAvailable' 
-                        appPermission [permission]='adminDashboard' 
-                        routerLink="orgDashboard">
+                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
+                        [permission]='adminDashboard' routerLink="orgDashboard">
                         {{resourceService.frmelmnts?.lnk?.dashboard}}
                     </a>
-                    <a 
-                        class="item" 
-                        *ngIf='permissionService.permissionAvailable' 
-                        appPermission [permission]='announcementRole' 
-                        routerLink="announcement/outbox/1">
+                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
+                        [permission]='announcementRole' routerLink="announcement/outbox/1">
                         {{resourceService.frmelmnts?.lnk?.announcement}}
                     </a>
-                    <a 
-                        class="item" 
-                        *ngIf='permissionService.permissionAvailable' 
-                        appPermission [permission]='myActivityRole' 
-                        routerLink="myActivity">
+                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
+                        [permission]='myActivityRole' routerLink="myActivity">
                         {{resourceService.frmelmnts?.lnk?.myactivity}}
                     </a>
-                    <a 
-                        class="item" 
-                        *ngIf='permissionService.permissionAvailable' 
-                        appPermission [permission]='orgSetupRole' 
-                        routerLink="orgType">
+                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
+                        [permission]='orgSetupRole' routerLink="org/orgType">
                         {{resourceService.frmelmnts?.lbl?.orgtypes}}
                     </a>
                     <a 
@@ -96,12 +69,9 @@
         <div class="ui container d-flex flex-ai-center mx-0">
 
             <!--QR Button-->
-            <button 
-                class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0" 
-                appTelemetryInteract [telemetryInteractEdata]="enterDialCodeInteractEdata" 
-                (click)="showQrmodal = true;"
-                title="{{resourceService.frmelmnts?.lbl?.enterQrCode}}"
-                >
+            <button class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0" appTelemetryInteract
+                [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;"
+                title="{{resourceService.frmelmnts?.lbl?.enterQrCode}}">
                 <i class="qrcode icon d-flex flex-ai-center"></i>
                 <span>{{resourceService.frmelmnts?.lbl?.enterQrCode}}</span>
             </button>
@@ -117,25 +87,15 @@
             <!--/Logged in Pages-->
 
             <!--Explore Pages-->
-            <div class="searchbox ml-0 mr-auto my-0" *ngIf="showExploreHeader">
+            <div class="searchbox ml-0 mr-auto my-0" *ngIf="showExploreHeader && !isOffline">
                 <div class="ui fluid ui left action input searchbox-inner">
-                    <input 
-                        type="text" 
-                        id="keyword" 
-                        name="filter_search"
-                        class="searchinput br-0" 
-                        title="{{resourceService?.frmelmnts?.prmpt?.search}}" 
-                        placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}"
-                        [(ngModel)]="key" 
-                        (keyup.enter)="onEnter(key)" 
-                    />
+                    <input type="text" id="keyword" name="filter_search" class="searchinput br-0"
+                        title="{{resourceService?.frmelmnts?.prmpt?.search}}"
+                        placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}" [(ngModel)]="key"
+                        (keyup.enter)="onEnter(key)" />
                     <button class="ui icon button">
-                        <i 
-                            class="search blue icon br-0" 
-                            (click)="onEnter(key)"
-                            title="{{resourceService?.frmelmnts?.prmpt?.search}}"
-                            tabindex="0"
-                            ></i>
+                        <i class="search blue icon br-0" (click)="onEnter(key)"
+                            title="{{resourceService?.frmelmnts?.prmpt?.search}}" tabindex="0"></i>
                     </button>
                 </div>
             </div>
@@ -155,9 +115,8 @@
         <div class="ui mobile-view container d-flex flex-jc-space-between mx-0">
 
             <!--QR Button-->
-            <button class="ui button qr-code-btn d-flex flex-ai-center" 
-                appTelemetryInteract [telemetryInteractEdata]="enterDialCodeInteractEdata" 
-                (click)="showQrmodal = true;">
+            <button class="ui button qr-code-btn d-flex flex-ai-center" appTelemetryInteract
+                [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;">
                 <i class="qrcode icon d-flex flex-ai-center"></i>
                 <span class="d-flex flex-ai-center">
                     {{resourceService.frmelmnts?.lbl?.enterQrCode}}

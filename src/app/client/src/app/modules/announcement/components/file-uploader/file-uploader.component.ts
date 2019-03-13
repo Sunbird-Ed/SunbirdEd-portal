@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FileUploadService, ResourceService } from '@sunbird/shared';
+import { ResourceService } from '@sunbird/shared';
+import { FileUploadService } from './../../services';
 
 /**
  * This component helps to render file uploader html
