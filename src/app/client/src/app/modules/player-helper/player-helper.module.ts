@@ -19,4 +19,4 @@ import { SharedModule } from '@sunbird/shared';
   exports: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
     CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent]
 })
-export class SharedPlayerModule { }
+export class PlayerHelperModule { }

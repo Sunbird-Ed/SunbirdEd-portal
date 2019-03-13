@@ -17,7 +17,7 @@ import { NotesModule } from '@sunbird/notes';
 import { DashboardModule } from '@sunbird/dashboard';
 import { CourseBatchModule } from '@sunbird/course-batch';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
-import { SharedPlayerModule } from '@sunbird/shared-player';
+import { PlayerHelperModule } from '@sunbird/player-helper';
 
 @NgModule({
   imports: [
@@ -35,7 +35,7 @@ import { SharedPlayerModule } from '@sunbird/shared-player';
     CourseBatchModule,
     NgInviewModule,
     SharedFeatureModule,
-    SharedPlayerModule
+    PlayerHelperModule
   ],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,

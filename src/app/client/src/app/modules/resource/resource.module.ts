@@ -7,12 +7,12 @@ import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SlickModule } from 'ngx-slick';
 import { FormsModule } from '@angular/forms';
 import { CoreModule } from '@sunbird/core';
-import { SharedPlayerModule } from '@sunbird/shared-player';
+import { PlayerHelperModule } from '@sunbird/player-helper';
 import { NotesModule } from '@sunbird/notes';
 import { BadgingModule } from '@sunbird/badge';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
-import {SharedFeatureModule} from '@sunbird/shared-feature';
+import { SharedFeatureModule } from '@sunbird/shared-feature';
 @NgModule({
   imports: [
     CommonModule,
@@ -22,7 +22,7 @@ import {SharedFeatureModule} from '@sunbird/shared-feature';
     SlickModule,
     FormsModule,
     CoreModule,
-    SharedPlayerModule,
+    PlayerHelperModule,
     NotesModule,
     BadgingModule,
     TelemetryModule,

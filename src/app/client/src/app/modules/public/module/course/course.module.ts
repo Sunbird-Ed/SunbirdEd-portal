@@ -11,7 +11,7 @@ import { PublicCourseComponent, PublicCourseConsumptionPageComponent,
 import { SuiModule } from 'ng2-semantic-ui';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService } from '@sunbird/learn';
 import { FormsModule } from '@angular/forms';
-import { SharedPlayerModule } from '@sunbird/shared-player';
+import { PlayerHelperModule } from '@sunbird/player-helper';
 
 @NgModule({
   imports: [
@@ -24,7 +24,7 @@ import { SharedPlayerModule } from '@sunbird/shared-player';
     SharedFeatureModule,
     SuiModule,
     FormsModule,
-    SharedPlayerModule
+    PlayerHelperModule
   ],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService],
   declarations: [ PublicCourseComponent, PublicCourseConsumptionPageComponent, ExploreCourseComponent,

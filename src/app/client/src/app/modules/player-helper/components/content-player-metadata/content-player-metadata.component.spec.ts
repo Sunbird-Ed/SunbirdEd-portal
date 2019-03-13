@@ -4,7 +4,7 @@ import { SharedModule } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContentPlayerMetadataComponent } from './content-player-metadata.component';
 import {mockRes} from './contnet-player-metadata.spec.data';
-describe('ContentMetadataComponent', () => {
+describe('ContentPlayerMetadataComponent', () => {
   let component: ContentPlayerMetadataComponent;
   let fixture: ComponentFixture<ContentPlayerMetadataComponent>;
 
@@ -19,10 +19,6 @@ describe('ContentMetadataComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ContentPlayerMetadataComponent);
     component = fixture.componentInstance;
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   it('should Take INPUT for content MetaData and show Attribution field  ', () => {

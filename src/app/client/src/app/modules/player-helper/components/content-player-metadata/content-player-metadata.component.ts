@@ -1,4 +1,3 @@
-import { Subscription } from 'rxjs';
 import { Component, OnInit, Input } from '@angular/core';
 import * as _ from 'lodash';
 import { ContentData, ResourceService } from '@sunbird/shared';
@@ -15,7 +14,6 @@ export class ContentPlayerMetadataComponent implements OnInit {
   fieldData = [];
   conceptNames: any;
   filteredConcepts: any;
-  conceptDataSubscription: Subscription;
   showContentCreditsModal: boolean;
 
   @Input() contentData: ContentData;
