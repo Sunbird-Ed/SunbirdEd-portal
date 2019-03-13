@@ -340,7 +340,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     };
     this.telemetryInteractObject = {
       id: this.courseId,
-      type: 'update-batch',
+      type: 'courseBatch',
       ver: '1.0'
     };
   }
