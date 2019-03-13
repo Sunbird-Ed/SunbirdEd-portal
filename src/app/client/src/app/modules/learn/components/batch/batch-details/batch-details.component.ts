@@ -63,7 +63,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.courseInteractObject = {
       id: this.courseHierarchy.identifier,
-      type: 'Course',
+      type: 'course',
       ver: this.courseHierarchy.pkgVersion ? this.courseHierarchy.pkgVersion.toString() : '1.0'
     };
     this.updateBatchIntractEdata = {

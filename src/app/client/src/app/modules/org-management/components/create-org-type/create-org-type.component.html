@@ -41,7 +41,6 @@
             (click)="disableApproveBtn=true; addOrgType()" 
             [class.disabled]="disabled"
             appTelemetryInteract 
-            [telemetryInteractObject]="{id:'addOrgType',type:'create-org-type',ver:'1.0'}" 
             [telemetryInteractEdata]="addOrganizationType"
         >
             {{resourceService?.frmelmnts?.btn?.add}}
@@ -52,7 +51,6 @@
             (click)="disableApproveBtn=true; updateOrgType()" 
             [class.disabled]="disabled"
             appTelemetryInteract 
-            [telemetryInteractObject]="{id:'updateOrgType',type:'update-org-type',ver:'1.0'}" 
             [telemetryInteractEdata]="updateOrganizationType"
         >
             {{resourceService?.frmelmnts?.btn?.update}}
@@ -61,7 +59,6 @@
             class="sb-btn sb-btn-normal sb-btn-outline-primary" 
             (click)="modal.deny()"
             appTelemetryInteract 
-            [telemetryInteractObject]="{id:'cancel',type:'org-type',ver:'1.0'}" 
             [telemetryInteractEdata]="cancelModal"
         >
             {{resourceService?.frmelmnts?.btn?.cancel}}

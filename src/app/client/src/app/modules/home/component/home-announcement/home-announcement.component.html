@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="four wide column" *ngIf="announcementlist && announcementlist.announcements.length > 0 && !showLoader">
-      <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="seeAllInteractEdata" class="ui right floated announcement-list-see-all right-float" [routerLink]="['../announcement/inbox/1']">{{resourceService.frmelmnts?.lbl?.anncmntinboxseeall}}</a>
+      <a appTelemetryInteract [telemetryInteractEdata]="seeAllInteractEdata" class="ui right floated announcement-list-see-all right-float" [routerLink]="['../announcement/inbox/1']">{{resourceService.frmelmnts?.lbl?.anncmntinboxseeall}}</a>
     </div>
     <div class="twelve wide column" *ngIf="showLoader">
       <app-loader [data]='loaderMessage'></app-loader>

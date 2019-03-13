@@ -14,7 +14,7 @@
             <div class="mt-10 ">
                 <span class="padded chip mt-5">
                     <a class="ui label mt-5" *ngFor="let orgnisation of orgTypes;" appTelemetryInteract
-                [telemetryInteractObject]="{id:orgnisation.id,type:'org-type',ver:'1.0'}" [telemetryInteractEdata]="updateOrganizationType">
+                [telemetryInteractObject]="{id:orgnisation.id,type:'organization',ver:'1.0'}" [telemetryInteractEdata]="updateOrganizationType">
                         {{orgnisation.name}}
                         <i class="large write icon m-0 pl-10" [routerLink]="['update/' + orgnisation.id]"></i>
                     </a>

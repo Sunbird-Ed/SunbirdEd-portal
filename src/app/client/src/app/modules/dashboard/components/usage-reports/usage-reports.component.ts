@@ -58,7 +58,7 @@ export class UsageReportsComponent implements OnInit {
   setTelemetryInteractObject(val) {
     return {
       id: val,
-      type: 'view',
+      type: 'report',
       ver: '1.0'
     };
   }

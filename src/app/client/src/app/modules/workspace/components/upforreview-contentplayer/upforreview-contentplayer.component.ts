@@ -239,7 +239,7 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
     };
     this.telemetryInteractObject = {
       id: this.contentId,
-      type: 'up-for-review',
+      type: this.contentData.contentType,
       ver: this.contentData.pkgVersion ? this.contentData.pkgVersion.toString() : '1.0'
     };
   }

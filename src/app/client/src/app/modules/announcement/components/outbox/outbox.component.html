@@ -10,7 +10,7 @@
       </div>
       <div class="right floated three wide column padding-right-dropdown pr-10">
         <div class="ui right-float">
-          <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="createAnnouncementInteractEdata"
+          <button appTelemetryInteract [telemetryInteractEdata]="createAnnouncementInteractEdata"
             class="sb-btn sb-btn-outline-primary sb-btn-normal" [routerLink]="['../../create/1']">
             <span>{{resourceService?.frmelmnts?.lbl?.anncmntcreate}}</span>
           </button>
@@ -32,11 +32,11 @@
           <div class="text showing-all-sent-ann">
             <span class="mr-10">Viewing {{pager.startIndex+1}} - {{pager.endIndex+1}} of {{outboxData.count}} </span>
             <div class="ui small basic icon buttons">
-              <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="navigateInteractEdata"
+              <button appTelemetryInteract [telemetryInteractEdata]="navigateInteractEdata"
                 class="ui button" [ngClass]="{'disabled' : pager.startIndex === 0}" (click)="navigateToPage(pager.currentPage - 1)">
                 <i class="left chevron icon"></i>
               </button>
-              <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="navigateInteractEdata"
+              <button appTelemetryInteract [telemetryInteractEdata]="navigateInteractEdata"
                 class="ui button" [ngClass]="{'disabled' : pager.currentPage === pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)">
                 <i class="right chevron icon"></i>
               </button>
@@ -85,7 +85,7 @@
               <td>{{item.metrics.sent ? item.metrics.sent : "N/A"}}</td>
               <td>{{item.metrics.received ? item.metrics.received : "N/A"}}</td>
               <td>{{item.metrics.read ? item.metrics.read : "N/A"}}</td>
-              <td appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="deleteAnnouncementInteractEdata"
+              <td appTelemetryInteract [telemetryInteractObject]="{id: item.id , type : 'announcement' , ver : '1.0'}" [telemetryInteractEdata]="deleteAnnouncementInteractEdata"
                 class="cursor-pointer sb-color-error" [routerLink]="['delete/' + item.id]" *ngIf="item.status === 'active'">
                 <i class="icon trash"></i>{{resourceService?.frmelmnts?.lbl?.anncmntoutboxdelete}}</td>
               <td appTelemetryInteract [telemetryInteractObject]="{id:item.id,type:'announcement',ver:'1.0'}" [telemetryInteractEdata]="resendAnnouncementInteractEdata"

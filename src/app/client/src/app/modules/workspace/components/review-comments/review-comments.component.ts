@@ -169,7 +169,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
     };
     this.telemetryInteractObject = {
       id: this.contentData.identifier,
-      type: 'review-comments',
+      type: this.contentData.contentType,
       ver: this.contentData.pkgVersion ? this.contentData.pkgVersion.toString() : '1.0'
     };
   }
