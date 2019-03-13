@@ -121,7 +121,7 @@ describe('BatchPageSectionComponent', () => {
     const searchQuery = '{"request":{"query":"","filters":{"status":"1"},"limit":10,"sort_by":{"createdDate":"desc"}}}';
     spyOn(component, 'viewAll').and.callThrough();
     component.viewAll({searchQuery: searchQuery, name: 'Ongoingbatches'});
-    expect(router.navigate).toHaveBeenCalledWith(['/workspace/content/batches/view-all/Ongoingbatches', 1],
+    expect(router.navigate).toHaveBeenCalledWith(['/workspace/batches/view-all/Ongoingbatches', 1],
         {queryParams: { status: '1', defaultSortBy: '{"createdDate":"desc"}', exists: undefined }});
   }));
 
