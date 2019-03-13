@@ -173,8 +173,8 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
       'loaderMessage': this.resourceService.messages.stmsg.m0108,
     };
     this.noResultMessage = {
-      'message': this.resourceService.messages.stmsg.m0020,
-      'messageText': this.resourceService.messages.stmsg.m0008
+      'message': 'messages.stmsg.m0020',
+      'messageText': 'messages.stmsg.m0008'
     };
   }
 

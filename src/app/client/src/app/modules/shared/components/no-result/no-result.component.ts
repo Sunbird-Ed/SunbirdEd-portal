@@ -1,5 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import {INoResultMessage} from '../../interfaces/noresult';
+import { ResourceService } from '../../services/index';
+import { Subscription, Subject } from 'rxjs';
+import * as _ from 'lodash';
+import { takeUntil } from 'rxjs/operators';
+
+
+
 /**
  * No Result component
  */
@@ -8,7 +15,7 @@ import {INoResultMessage} from '../../interfaces/noresult';
   templateUrl: './no-result.component.html',
   styleUrls: ['./no-result.component.scss']
 })
-export class NoResultComponent implements OnInit {
+export class NoResultComponent implements OnInit, OnDestroy {
   /**
    * input for NoResultMessage
   */
@@ -17,17 +24,35 @@ export class NoResultComponent implements OnInit {
    * no result message
   */
   message: string;
+
+  resourceDataSubscription: Subscription;
   /**
    * no result messageText for component
   */
   messageText: string;
+  public unsubscribe$ = new Subject<void>();
 
-  constructor() { }
+  constructor(public resourceService: ResourceService) { }
 
   ngOnInit() {
-    if (this.data) {
-      this.message = this.data.message;
-      this.messageText = this.data.messageText;
-    }
+    this.setMessage();
+    this.resourceDataSubscription = this.resourceService.languageSelected$
+    .pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.setMessage();
+    }, err => {
+    });
+  }
+
+  setMessage() {
+    this.message = _.has(this.data, 'message') ? (_.get(this.resourceService, this.data.message) ||
+    _.get(this.resourceService, 'messages.stmsg.m0007')) : '';
+
+    this.messageText = _.has(this.data, 'messageText') ? (_.get(this.resourceService, this.data.messageText) ||
+      _.get(this.resourceService, 'messages.stmsg.m0006')) : '';
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
