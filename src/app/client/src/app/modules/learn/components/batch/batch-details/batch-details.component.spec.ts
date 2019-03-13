@@ -51,18 +51,6 @@ describe('BatchDetailsComponent', () => {
     fixture = TestBed.createComponent(BatchDetailsComponent);
     component = fixture.componentInstance;
   });
-
-  it('should fetch enrolled course details if course is enrolled', () => {
-    const courseBatchService = TestBed.get(CourseBatchService);
-    component.enrolledCourse = true;
-    component.courseId = 'do_1125083286221291521153';
-    component.batchId = '01250836468775321655';
-    component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
-    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(observableOf(enrolledBatch.result.response));
-    component.ngOnInit();
-    expect(component.enrolledBatchInfo).toBeDefined();
-    expect(component.enrolledBatchInfo.participant.length).toEqual(1);
-  });
   it('should fetch only open batch of course if course is not enrolled and user is not mentor', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     component.enrolledCourse = false;

@@ -56,6 +56,7 @@ export class MainMenuComponent implements OnInit {
   helpLinkVisibility: string;
   isOffline: boolean = environment.isOffline;
 
+  signInIntractEdata: IInteractEventEdata;
   /*
   * constructor
   */
@@ -110,6 +111,18 @@ export class MainMenuComponent implements OnInit {
       type: 'click',
       pageid: 'help'
     };
+    this.signInIntractEdata = {
+      id: ' signin-tab',
+      type: 'click',
+    };
+  }
+
+  getLogoutInteractEdata() {
+    return {
+      id: 'logout',
+      type: 'click',
+      pageid: this.router.url.split('/')[1]
+    };
   }
 
   logout() {
@@ -142,6 +155,7 @@ export class MainMenuComponent implements OnInit {
       } else {
         this.showExploreHeader = false;
       }
+      this.signInIntractEdata['pageid'] = this.exploreRoutingUrl;
     });
   }
 

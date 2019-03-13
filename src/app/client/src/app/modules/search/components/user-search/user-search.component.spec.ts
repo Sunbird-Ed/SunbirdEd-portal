@@ -35,7 +35,8 @@ describe('UserSearchComponent', () => {
       'fmsg': {
         'm0077': 'Fetching serach result failed'
       }
-    }
+    },
+    languageSelected$: observableOf({})
   };
   const mockQueryParma = {
     'Grades': ['Grade 1'],
