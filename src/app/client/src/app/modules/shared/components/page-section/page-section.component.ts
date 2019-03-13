@@ -75,14 +75,6 @@ export class PageSectionComponent implements OnInit, OnDestroy {
     }
   }
   selectedLanguageTranslation(data) {
-    if (this.section.name !== 'My Courses') {
-      const display = JSON.parse(this.section['display']);
-      if (_.has(display.name, data) && !_.isEmpty(display.name[data])) {
-        this.section.name = display.name[data];
-      } else {
-        this.section.name = display.name['en'];
-      }
-    }
     this.slideConfig = this.cardType === 'batch' ? this.config.appConfig.CourseBatchPageSection
     .slideConfig : this.config.appConfig.CoursePageSection.slideConfig;
     if (data === 'ur') {
@@ -93,6 +85,17 @@ export class PageSectionComponent implements OnInit, OnDestroy {
     if (this.slickModal) {
       this.slickModal.unslick();
       this.slickModal.initSlick(this.slideConfig);
+    }
+    try {
+      if (this.section.name !== 'My Courses') {
+        const display = JSON.parse(this.section['display']);
+        if (_.has(display.name, data) && !_.isEmpty(display.name[data])) {
+          this.section.name = display.name[data];
+        } else {
+          this.section.name = display.name['en'];
+        }
+      }
+    } catch (err) {
     }
   }
   /**
