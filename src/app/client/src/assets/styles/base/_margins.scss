@@ -25,6 +25,9 @@
 .mt-3 {
   @include margin(3px null null null);
 }
+.mt-4 {
+  @include margin(4px null null null);
+}
 .mt-5 {
   @include margin(5px null null null);
 }
@@ -42,6 +45,9 @@
 }
 .mt-20 {
   @include margin(20px null null null);
+}
+.mt-24 {
+  @include margin(24px null null null);
 }
 .mt-30 {
   @include margin(30px null null null);

@@ -1,5 +1,5 @@
 <div 
-  class="sbCard mt-20 mb-5" 
+  class="sb-card" 
   *ngIf="data" 
   (click)="onAction(data,data.action.onImage)" 
   appTelemetryInteract 
@@ -7,50 +7,69 @@
   [telemetryInteractEdata]="data.telemetryInteractEdata"
   tabindex="0"
   >
-    <div class="header p-15 pb-0">
-      <div class="image m-0 mr-15 br-4">
-        <img *ngIf="data.showImage? false : true" src="{{data.image || 'assets/images/book.png' | cdnprefixurl}}" alt="{{data.name}}">
-      </div>
+    <!--Body-->
+    <div class="sb-card-body">
 
-      <!--Course-->
-      <div class="meta course" *ngIf="data.contentType && data.contentType.toLowerCase() === 'course'">
-        <div class="topic mb-15" *ngIf="data.topic" title="{{data.topic}}">
-          {{data.topic | slice:0:40}} 
-          <span *ngIf="data.topic && data.topic.length > 40">...</span>
+      <!--Metas-->
+      <div class="sb-card-metas">
+        <!--Image-->
+        <div class="sb-card-image mr-15" *ngIf="data.showImage? false : true">
+          <img src="{{data.image || 'assets/images/book.png' | cdnprefixurl}}" alt="{{data.name}}">
         </div>
-        <div class="subtopic" *ngIf="data.subTopic" title="{{data.subTopic}}">
-          {{data.subTopic | slice:0:40}} 
-          <span *ngIf="data.subTopic && data.subTopic.length > 40">...</span>
-        </div>
-      </div>
-      <!--/Course-->
+        <!--/Image-->
 
-      <!--Non-Course-->
-      <div class="meta non-course" *ngIf="!data.contentType || data.contentType.toLowerCase() !== 'course'">
-        <div class="mb-auto d-flex">
-          <div class="ui label tiny right" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">{{data.ribbon.right.name}}</div>
-          <img src="{{data.ribbon.left.image}}" class="avatar ml-auto" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image" alt="{{data.ribbon.left.name}}">
+        <!--Meta Details - Course-->
+        <div class="sb-card-meta course" *ngIf="data.contentType && data.contentType.toLowerCase() === 'course'">
+          <div class="sb-card-meta-item mb-15" *ngIf="data.topic" title="{{data.topic}}">
+            {{data.topic | slice:0:40}} 
+            <span *ngIf="data.topic && data.topic.length > 40">...</span>
+          </div>
+          <div class="sb-card-meta-item" *ngIf="data.subTopic" title="{{data.subTopic}}">
+            {{data.subTopic | slice:0:40}} 
+            <span *ngIf="data.subTopic && data.subTopic.length > 40">...</span>
+          </div>
         </div>
-        <div class="subject ellipsis mt-3" *ngIf="data.subject" title="{{data.subject}}">{{resourceService.frmelmnts.lbl.subject}} : {{data.subject}}</div>
-        <div class="class ellipsis mt-3" *ngIf="data.gradeLevel" title="{{data.gradeLevel}}">{{resourceService.frmelmnts.lbl.class}} : {{data.gradeLevel}}</div>
-        <div class="medium ellipsis mt-3" *ngIf="data.medium" title="{{data.medium}}">{{resourceService.frmelmnts.lbl.medium}} : {{data.medium}}</div>
+        <!--/Meta Details - Course-->
+
+        <!--Meta Details - Non-Course-->
+        <div class="sb-card-meta non-course" *ngIf="!data.contentType || data.contentType.toLowerCase() !== 'course'">
+          <div class="d-flex mb-auto">
+            <div class="sb-card-label" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">{{data.ribbon.right.name}}</div>
+            <img src="{{data.ribbon.left.image}}" class="sb-card-badge ml-auto" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image" alt="{{data.ribbon.left.name}}">
+          </div>
+          <div class="sb-card-meta-item ellipsis" *ngIf="data.subject" title="{{data.subject}}">
+            {{resourceService.frmelmnts.lbl.subject}} : {{data.subject}}
+          </div>
+          <div class="sb-card-meta-item ellipsis mt-4" *ngIf="data.gradeLevel" title="{{data.gradeLevel}}">
+            {{resourceService.frmelmnts.lbl.class}} : {{data.gradeLevel}}
+          </div>
+          <div class="sb-card-meta-item ellipsis mt-4" *ngIf="data.medium" title="{{data.medium}}">
+            {{resourceService.frmelmnts.lbl.medium}} : {{data.medium}}
+          </div>
+        </div>
+        <!--/Meta Details - Non-Course-->
+        </div>
+      <!--Metas-->
+
+      <!--Card Title-->
+      <h4 class="sb-card-title">
+        {{data.name | slice:0:60 }}
+        <span *ngIf="data.name && data.name.length > 60">...</span>
+      </h4>
+      <!--/Card Title-->
+
+      <!--Org-->
+      <div class="sb-card-org ellipsis">
+        {{data.orgDetails?.orgName}}
       </div>
-      <!--/Non-Course-->
+      <!--Org-->
 
     </div>
-    <div class="sub-header">
-        <h4 class="title">
-          {{data.name | slice:0:60 }}
-          <span *ngIf="data.name && data.name.length > 60">...</span>
-        </h4>
-        <div class="creator ellipsis">
-          {{data.orgDetails?.orgName}}
-        </div>
+    <!--/Body-->
+   
+    <!--Progress Bar-->
+    <div class="sb-card-progressbar">
+      <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount" *ngIf="data.maxCount && data.progress > 0"></sui-progress>
     </div>
-    <div *ngIf="data.maxCount && data.progress > 0 else blank">
-      <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount" ></sui-progress>
-    </div>
-    <ng-template #blank>
-      <div class="py-2"></div>
-    </ng-template>
+    <!--/Progress Bar-->
 </div>
