@@ -7,9 +7,6 @@
         </div>
         <div class="pageSection-Slider">
             <ngx-slick 
-                in-view-container (inview)="inview($event)" 
-                [throttle]="[1000]" 
-                [trigger]="section.contents" 
                 (afterChange)="inviewChange(section.contents,$event)" 
                 (beforeChange)="checkSlide($event)" 
                 appTelemetryInteract  
@@ -17,7 +14,7 @@
                 class="carousel" 
                 #slickModal="slick-modal" 
                 [config]="slideConfig">
-                <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of section.contents;let i = index; let last = last" class="pr-20">
+                <div ngxSlickItem *ngFor="let content of section.contents" class="pr-20">
                     <app-batch-card appTelemetryInteract 
                         [telemetryInteractEdata]="cardIntractEdata"  
                         [telemetryInteractObject]="{id:content.metaData.identifier}" 
@@ -35,7 +32,6 @@
                             class="pr-20 d-block" [class.last-card]="pr-0">
                         </app-card>
                     </ng-template>
-
                 </div>
             </ngx-slick>
         </div>

@@ -6,8 +6,8 @@ import { CoreModule } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
 import { CollectionPlayerMetadataComponent } from './collection-player-metadata.component';
-import { DateFormatPipe } from '../../pipes';
-import { ResourceService, ConfigService, BrowserCacheTtlService } from '../../services';
+import { DateFormatPipe } from '@sunbird/shared';
+import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 import { Response } from './collection-player-metadata.spec.data';
 

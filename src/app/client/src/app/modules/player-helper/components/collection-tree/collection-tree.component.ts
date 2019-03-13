@@ -4,13 +4,10 @@
 *
 */
 
-import {
-  Component, OnInit, Input, ElementRef,
-  ViewChild, AfterViewInit, OnChanges, Output, EventEmitter
-} from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import * as _ from 'lodash';
-import { ICollectionTreeNodes, ICollectionTreeOptions, MimeTypeTofileType } from '../../interfaces';
-import { ResourceService } from '../../services/index';
+import { ICollectionTreeNodes, ICollectionTreeOptions, MimeTypeTofileType } from '@sunbird/shared';
+import { ResourceService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-collection-tree',
