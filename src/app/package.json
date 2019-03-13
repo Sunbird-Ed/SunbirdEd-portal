@@ -73,7 +73,7 @@
     "deploy": "gulp deploy",
     "test-with-coverage": "cd client && npm run test-coverage && cat ./coverage/lcov.info | codacy-coverage",
     "tenants-push-cdn": "gulp pushTenantsToCDN --gulpfile gulp-tenant.js",
-    "bundle-report": "webpack-bundle-analyzer dist/stats.json"
+    "bundle-report": "webpack-bundle-analyzer dist/stats.json --port 8887"
   },
   "dependencies": {
     "@project-sunbird/discussion-service": "0.0.6",
@@ -116,7 +116,8 @@
     "sb_cache_manager": "file:libs/sb_cache_manager",
     "sb_telemetry_util": "file:libs/sb_telemetry_util",
     "ua-parser-js": "^0.7.13",
-    "uuid": "^3.1.0"
+    "uuid": "^3.1.0",
+    "webpack-bundle-analyzer": "^3.1.0"
   },
   "standard": {
     "env": {
