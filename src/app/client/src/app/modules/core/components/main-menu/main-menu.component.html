@@ -83,13 +83,9 @@
 				(click)="showSideBar()" routerLink="/profile">
 				{{resourceService.frmelmnts?.lnk?.profile}}
 			</a>
-<<<<<<< HEAD
-			<a class="item logout-btn" (click)="logout()">
-=======
 			<a class="item logout-btn"
 				appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
 				(click)="logout()">
->>>>>>> upstream/release-1.14-sp3
 				{{resourceService.frmelmnts?.lnk?.logout}}
 			</a>
 		</ng-container>
