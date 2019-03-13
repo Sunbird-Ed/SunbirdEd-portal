@@ -5,7 +5,7 @@ import { FancyTreeComponent } from '..';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 // Import services
-import { ResourceService, BrowserCacheTtlService, ConfigService } from '../../services/index';
+import { ResourceService, BrowserCacheTtlService, ConfigService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 describe('CollectionTreeComponent', () => {
   let component: CollectionTreeComponent;

@@ -29,16 +29,12 @@
             {{ resourceService.frmelmnts.lnk.viewall}}
         </button>
         <!--/View all button-->
-
     </div>
     <!--/Header-->
 
     <!--Content-->
     <div class="sb-pageSection-content">
         <ngx-slick 
-            in-view-container (inview)="inview($event)" 
-            [throttle]="[1000]" 
-            [trigger]="section.contents" 
             (afterChange)="inviewChange(section.contents,$event)" 
             (beforeChange)="checkSlide($event)" 
             appTelemetryInteract  
@@ -46,7 +42,7 @@
             class="carousel" 
             #slickModal="slick-modal" 
             [config]="slideConfig">
-            <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of section.contents;let i = index; let last = last" class="mr-15">
+            <div ngxSlickItem *ngFor="let content of section.contents" class="mr-15">
                 <!--Batch Card-->
                 <app-batch-card appTelemetryInteract 
                     [telemetryInteractEdata]="cardIntractEdata"  

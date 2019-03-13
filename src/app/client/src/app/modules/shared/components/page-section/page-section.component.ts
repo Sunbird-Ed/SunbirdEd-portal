@@ -60,13 +60,9 @@ export class PageSectionComponent implements OnInit, OnDestroy {
     this.playEvent.emit(event);
   }
   ngOnInit() {
-    this.resourceDataSubscription = this.resourceService.languageSelected$
-      .subscribe(item => {
-        if (this.section.name !== 'My Courses') {
-          this.selectedLanguageTranslation(item.value);
-        }
-      }
-      );
+    this.resourceDataSubscription = this.resourceService.languageSelected$.subscribe(item => {
+      this.selectedLanguageTranslation(item.value);
+    });
     const id = _.get(this.activatedRoute, 'snapshot.data.telemetry.env');
     this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
     if (id && this.pageid) {
@@ -76,39 +72,29 @@ export class PageSectionComponent implements OnInit, OnDestroy {
         pageid: this.pageid
       };
     }
-    this.addSlideConfig();
   }
   selectedLanguageTranslation(data) {
-    const display = JSON.parse(this.section['display']);
-    if (_.has(display.name, data) && !_.isEmpty(display.name[data])) {
-      this.section.name = display.name[data];
+    this.slideConfig = this.cardType === 'batch' ? this.config.appConfig.CourseBatchPageSection
+    .slideConfig : this.config.appConfig.CoursePageSection.slideConfig;
+    if (data === 'ur') {
+      this.slideConfig['rtl'] = true;
     } else {
-      this.section.name = display.name['en'];
+      this.slideConfig['rtl'] = false;
     }
-    this.addSlideConfig();
-  }
-  /**
-   * get inview  Data
-  */
-  inview(event) {
-    const visitsLength = this.inviewLogs.length;
-    const visits = [];
-    _.forEach(event.inview, (inview, key) => {
-      const content = _.find(this.inviewLogs, (eachContent) => {
-        if (inview.data.metaData.courseId) {
-          return eachContent.metaData.courseId === inview.data.metaData.courseId;
-        } else if (inview.data.metaData.identifier) {
-          return eachContent.metaData.identifier === inview.data.metaData.identifier;
+    if (this.slickModal) {
+      this.slickModal.unslick();
+      this.slickModal.initSlick(this.slideConfig);
+    }
+    try {
+      if (this.section.name !== 'My Courses') {
+        const display = JSON.parse(this.section['display']);
+        if (_.has(display.name, data) && !_.isEmpty(display.name[data])) {
+          this.section.name = display.name[data];
+        } else {
+          this.section.name = display.name['en'];
         }
-      });
-      if (content === undefined) {
-        inview.data.section = this.section.name;
-        this.inviewLogs.push(inview.data);
-        visits.push(inview.data);
       }
-    });
-    if (visits.length > 0) {
-      this.visits.emit(visits);
+    } catch (err) {
     }
   }
   /**
@@ -141,22 +127,6 @@ export class PageSectionComponent implements OnInit, OnDestroy {
     } else if (event.currentSlide > event.nextSlide) {
       this.btnArrow = 'prev-button';
     }
-  }
-  addSlideConfig() {
-    this.slideConfig = this.cardType === 'batch' ? this.config.appConfig.CourseBatchPageSection
-    .slideConfig : this.config.appConfig.CoursePageSection.slideConfig;
-    this.resourceService.languageSelected$
-        .subscribe(item => {
-          if (item.value === 'ur') {
-            this.slideConfig['rtl'] = true;
-          } else {
-            this.slideConfig['rtl'] = false;
-          }
-          if (this.slickModal) {
-            this.slickModal.unslick();
-            this.slickModal.initSlick(this.slideConfig);
-          }
-    });
   }
   navigateToViewAll(section) {
     this.viewAll.emit(section);

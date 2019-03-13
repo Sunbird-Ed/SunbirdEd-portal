@@ -54,20 +54,6 @@ describe('PageSectionComponent', () => {
     expect(fixture.nativeElement.querySelector('.sb-pageSection-title')).toEqual(null);
     expect(fixture.nativeElement.querySelector('.sb-pageSection-count')).toEqual(null);
   });
-  it('should call inview method for visits data', () => {
-    component.section = { name: 'courseTest', length: 1 };
-    spyOn(component, 'inview').and.callThrough();
-    component.inview(Response.event);
-    expect(component.inview).toHaveBeenCalled();
-    expect(component.inviewLogs).toBeDefined();
-  });
-  it('should call inview method for visits data for courseId', () => {
-    component.section = { name: 'courseTest', length: 1 };
-    spyOn(component, 'inview').and.callThrough();
-    component.inview(Response.event1);
-    expect(component.inview).toHaveBeenCalled();
-    expect(component.inviewLogs).toBeDefined();
-  });
   it('should call inviewChange method for visits data', () => {
     component.section = { name: 'courseTest', length: 1 };
     spyOn(component, 'inviewChange').and.callThrough();

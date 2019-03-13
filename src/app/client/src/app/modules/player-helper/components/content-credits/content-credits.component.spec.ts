@@ -1,11 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContentCreditsComponent } from './content-credits.component';
-import { ResourceService, ConfigService, BrowserCacheTtlService } from '../../services/index';
+import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Response } from './content-credits.component.spec.data';
-import { By } from '@angular/platform-browser';
 import { CacheService } from 'ng2-cache-service';
 describe('ContentCreditsComponent', () => {
   let component: ContentCreditsComponent;
