@@ -1,8 +1,7 @@
-import { ConfigService } from './../../services';
+import { ConfigService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import * as _ from 'lodash';
-import { PlayerConfig } from './../../interfaces';
-
+import { PlayerConfig } from '@sunbird/shared';
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html'

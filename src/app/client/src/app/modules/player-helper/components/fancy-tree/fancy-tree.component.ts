@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import 'jquery.fancytree';
-import { IFancytreeOptions } from '../../interfaces';
+import { IFancytreeOptions } from '@sunbird/shared';
 
 @Component({
   selector: 'app-fancy-tree',

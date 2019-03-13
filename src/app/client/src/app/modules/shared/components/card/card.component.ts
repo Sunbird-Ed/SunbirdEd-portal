@@ -4,11 +4,10 @@ import { ICard } from '../../interfaces';
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
 @Component({
   selector: 'app-card',
-  templateUrl: './card.component.html',
-  styleUrls: ['./card.component.scss']
+  templateUrl: './card.component.html'
 })
 export class CardComponent {
-  /**
+/**
 * content is used to render IContents value on the view
 */
   @Input() data: ICard;

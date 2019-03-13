@@ -1,0 +1,93 @@
+// base label styles
+.sb-label {
+    display: inline-block;
+    border: 1px solid;
+    color: $white-color;
+    line-height: inherit;
+    @include border-radius(3px);
+    text: {
+        transform: capitalize;
+        decoration: none;
+    }
+}
+// label sizes
+.sb-label-xs, 
+.sb-label-normal, 
+.sb-label-sm,
+.sb-label-md {
+    padding: ($base-block-space / 1) ($base-block-space * 2);
+}
+.sb-label-xs {
+    height: ($base-block-space * 3);
+    padding: ($base-block-space / 2) ($base-block-space / 2);
+    font-size: $font-size-sm;
+}
+//primary label style
+.sb-label-normal {
+    height: ($base-block-space * 4);
+    font-size: $font-size-sm;
+}
+.sb-label-sm {
+    height: ($base-block-space * 5);
+    font-size: $font-size-normal;
+}
+.sb-label-md {
+    height: ($base-block-space * 6);
+    font-size: $font-size-md;
+}
+.sb-label-lg {
+  height: ($base-block-space * 7);
+  padding: ($base-block-space * 3);
+  font-size: $font-size-lg;
+}
+// default outline colored labels
+.sb-label-outline-primary {
+    @include label-theme-bgwhite($primary-color);
+} 
+.sb-label-outline-secondary {
+    @include label-theme-bgwhite($secondary-200);
+} 
+.sb-label-outline-tertiary {
+    @include label-theme-bgwhite($tertiary-color);
+}
+// status outline labels
+.sb-label-outline-info {
+    @include label-theme-bgwhite($primary-color);
+} 
+.sb-label-outline-success {
+    @include label-theme-bgwhite($secondary-200);
+} 
+.sb-label-outline-warning {
+    @include label-theme-bgwhite($tertiary-color);
+}   
+.sb-label-outline-error {
+    @include label-theme-bgwhite($red);
+} 
+.sb-label-outline-gray {
+    @include label-theme-bgwhite($gray-800);
+} 
+// default colored labels
+.sb-label-primary,
+.sb-label-info {
+    @include label-theme($primary-color);
+} 
+.sb-label-secondary,
+.sb-label-success {
+    @include label-theme($secondary-200);
+}
+.sb-label-tertiary,
+.sb-label-warning {
+    @include label-theme($tertiary-color);
+}
+.sb-label-success {
+    @include label-theme($success-color);
+} 
+.sb-label-info {
+    @include label-theme($info-color);
+}
+.sb-label-warning {
+    @include label-theme($warning-color);
+} 
+.sb-label-error {
+    @include label-theme($danger-color);
+}
