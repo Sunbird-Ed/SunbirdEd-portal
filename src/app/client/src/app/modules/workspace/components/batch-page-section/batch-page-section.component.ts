@@ -159,7 +159,7 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
   */
   public fetchPageData() {
     this.showLoader = true;
-    this.filters = {createdFor: this.userService.RoleOrgMap['COURSE_MENTOR']};
+    this.filters = {createdFor: this.userService.userProfile.organisationIds};
     if (this.category === 'created') {
       this.filters['createdBy'] = this.userService.userid;
     } else {
