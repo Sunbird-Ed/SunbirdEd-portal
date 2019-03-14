@@ -7,7 +7,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
 import { OrderModule } from 'ngx-order-pipe';
 import { SharedModule } from '@sunbird/shared';
-import { MarkdownModule } from 'ngx-md';
+import { NgxMdModule } from 'ngx-md';
 import { TimeAgoPipe } from 'time-ago-pipe';
 import { NoteListComponent, InlineEditorComponent, NoteCardComponent, DeleteNoteComponent, PopupEditorComponent } from './components';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -21,7 +21,7 @@ import { NgInviewModule } from 'angular-inport';
     FormsModule,
     OrderModule,
     SharedModule,
-    MarkdownModule.forRoot(),
+    NgxMdModule.forRoot(),
     TelemetryModule,
     NgInviewModule
   ],
