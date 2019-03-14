@@ -66,7 +66,6 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
 
   redirectToExplore() {
     this.navigationHelperService.navigateToResource('explore-course');
-    // this.router.navigate(['explore-course']);
   }
   ngOnDestroy() {
     this.unsubscribe.next();
