@@ -50,7 +50,10 @@
                         [permission]='orgSetupRole' routerLink="org/orgType">
                         {{resourceService.frmelmnts?.lbl?.orgtypes}}
                     </a>
-                    <a class="item" (click)="logout()">
+                    <a
+                        class="item"
+                        appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
+                        (click)="logout()">
                         {{resourceService.frmelmnts?.lnk?.logout}}
                     </a>
                 </div>

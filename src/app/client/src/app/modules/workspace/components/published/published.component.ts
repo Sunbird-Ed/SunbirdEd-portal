@@ -204,7 +204,7 @@ export class PublishedComponent extends WorkSpace implements OnInit {
           this.showLoader = false;
           this.noResult = true;
           this.noResultMessage = {
-            'messageText': this.resourceService.messages.stmsg.m0022
+            'messageText': 'messages.stmsg.m0022'
           };
         }
       },

@@ -1,43 +1,45 @@
-<div class="ui grid m-0">
-  <div class="twelve wide column pb-0 px-0">
-      <div class=" ui clearing segment content-player-header search-content-header p-0">
-          <div class="d-flex flex-ai-center flex-jc-space-between">
-              <p class="serch-allresult fs-1-143 font-weight-bold mb-0 pl-15" > {{sectionName}}</p>
-              <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="ui right floated basic icon circular button mx-15 my-5" [routerLink]="[closeUrl]">
-                  <i class="ui remove icon"></i>
-              </h5>
+<div class="ui container">
+   <div class="ui grid m-0">
+      <div class="twelve wide column pb-0 px-0">
+          <div class=" ui clearing segment content-player-header search-content-header p-0">
+              <div class="d-flex flex-ai-center flex-jc-space-between">
+                  <p class="serch-allresult fs-1-143 font-weight-bold mb-0 pl-15" > {{sectionName}}</p>
+                  <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="ui right floated basic icon circular button mx-15 my-5" [routerLink]="[closeUrl]">
+                      <i class="ui remove icon"></i>
+                  </h5>
+              </div>
           </div>
       </div>
-  </div>
-</div>
-<div class="ui grid m-0" >
-  <div class="twelve wide column px-0" [appTelemetryImpression]="telemetryImpression">
-    <div class="ui stackable four column grid" *ngIf="!showLoader && !noResult" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="batchList">
-      <div in-view-item *ngFor="let batch  of batchList;let i = index;" [id]="i" [data]="batch" class="column py-5 pl-10">
-        <app-batch-card (clickEvent)="onCardClick($event)" [batch]="batch"></app-batch-card>
+    </div>
+    <div class="ui grid m-0" >
+      <div class="twelve wide column px-0" [appTelemetryImpression]="telemetryImpression">
+        <div class="ui stackable four column grid" *ngIf="!showLoader && !noResult" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="batchList">
+          <div in-view-item *ngFor="let batch  of batchList;let i = index;" [id]="i" [data]="batch" class="column py-5">
+            <app-batch-card (clickEvent)="onCardClick($event)" [batch]="batch"></app-batch-card>
+          </div>
+        </div>
+        <div *ngIf="noResult  && !showLoader">
+          <app-no-result [data]="noResultMessage"></app-no-result>
+        </div>
       </div>
     </div>
-    <div *ngIf="noResult  && !showLoader">
-      <app-no-result [data]="noResultMessage"></app-no-result>
-    </div>
-  </div>
-</div>
-<div class="ui grid">
-  <div class="two wide column"></div>
-  <div class="ten wide column pt-0">
-    <div class="pb-10" *ngIf="batchList && totalCount > config.appConfig.WORKSPACE.PAGE_LIMIT && !showLoader && !showError">
-      <div class="ui pagination menu mt-10 right-floated pt-0" *ngIf="pager.pages.length ">
-        <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
-        <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
-        <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)" class="item">{{page}}</a>
-        <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)" class="item">Next</a>
-        <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.totalPages)" class="item ">Last</a>
+    <div class="ui grid">
+      <div class="two wide column"></div>
+      <div class="ten wide column pt-0">
+        <div class="pb-10" *ngIf="batchList && totalCount > config.appConfig.WORKSPACE.PAGE_LIMIT && !showLoader && !showError">
+          <div class="ui pagination menu mt-10 right-floated pt-0" *ngIf="pager.pages.length ">
+            <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
+            <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
+            <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)" class="item">{{page}}</a>
+            <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)" class="item">Next</a>
+            <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.totalPages)" class="item ">Last</a>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+    <!-- Loader -->
+    <div class="twelve wide column mt-20" *ngIf="showLoader">
+      <app-loader [data]="loaderMessage"></app-loader>
+    </div>
+    <router-outlet></router-outlet>
 </div>
-<!-- Loader -->
-<div class="twelve wide column mt-20" *ngIf="showLoader">
-  <app-loader [data]="loaderMessage"></app-loader>
-</div>
-<router-outlet></router-outlet>
