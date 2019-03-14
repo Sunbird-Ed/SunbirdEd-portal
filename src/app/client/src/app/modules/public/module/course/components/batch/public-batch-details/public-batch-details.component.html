@@ -1,7 +1,7 @@
 <div class="rightSideSectionCards ui card">
     <div class="header batchCardAlign">
         <span class="header headerBatchCard">{{resourceService?.frmelmnts?.lbl?.batches}}</span>
-        <a class="opacity-1">
+        <a class="opacity-1 ml-auto">
             <sui-select (selectedOptionChange)="getAllBatchDetails()" class="batchCardDropDown" [(ngModel)]="batchStatus" [options]="statusOptions"
                 valueField="value" labelField="name" #batchStatusSelect>
                 <sui-select-option *ngFor="let option of batchStatusSelect.filteredOptions" [value]="option">
