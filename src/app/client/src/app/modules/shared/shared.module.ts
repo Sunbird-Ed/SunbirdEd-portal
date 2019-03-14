@@ -10,9 +10,6 @@ import {
   InstallAppComponent, LockInfoPopupComponent, DataTableComponent, BatchCardComponent
 } from './components';
 import {
-    PageLoadTime
-} from './classes';
-import {
   ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService, BrowserCacheTtlService,
   PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService, ExternalUrlPreviewService
 } from './services';
