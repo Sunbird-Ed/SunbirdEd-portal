@@ -187,10 +187,10 @@ export class UserService {
     hashTagIds.push(this._channel);
     let organisationIds = [];
     profileData.rootOrgAdmin = false;
-    let userRoles = profileData.roles;
+    let userRoles = ['PUBLIC'];
     if (profileData.organisations) {
       _.forEach(profileData.organisations, (org) => {
-        if (org.roles && _.isArray(org.roles)) {
+        if (org.organisationId === profileData.rootOrgId && _.isArray(org.roles)) {
           userRoles = _.union(userRoles, org.roles);
           if (org.organisationId === profileData.rootOrgId &&
             (_.indexOf(org.roles, 'ORG_ADMIN') > -1 ||
@@ -215,7 +215,7 @@ export class UserService {
     this._dims = _.concat(organisationIds, this.channel);
     organisationIds = _.uniq(organisationIds);
     this._userProfile = profileData;
-    this._userProfile.userRoles = userRoles;
+    this._userProfile.userRoles = _.uniq(userRoles);
     this._userProfile.orgRoleMap = orgRoleMap;
     this._userProfile.organisationIds = organisationIds;
     this._userProfile.hashTagIds = _.uniq(hashTagIds);
