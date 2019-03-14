@@ -26,6 +26,7 @@ describe('LanguageDropdownComponent', () => {
         'm0051': 'Fetching other courses failed, please try again later...'
       }
     },
+    languageSelected$: observableOf({}),
     getResource: () => ({})
   };
   const mockQueryParma = {

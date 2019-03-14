@@ -197,8 +197,8 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
           this.showLoader = false;
           this.noResult = true;
           this.noResultMessage = {
-            'message': this.resourceService.messages.stmsg.m0008,
-            'messageText': this.resourceService.messages.stmsg.m0033
+            'message': 'messages.stmsg.m0008',
+            'messageText': 'messages.stmsg.m0033'
           };
         }
       },

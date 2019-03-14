@@ -42,16 +42,8 @@
             </a>
             <p class="d-block">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}</p>
           </div>
-          <label class="d-block fs-1-143 pb-15">{{resourceService.frmelmnts?.lbl?.download}}
-            {{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile}}</label>
-          <a class="d-block pb-15" href="https://play.google.com/store/apps/details?id=in.gov.diksha.app">
-            <img class="playStore-img" src="/assets/images/google_playstore.png"
-              alt="{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile}}">
-          </a>
-          <p class="d-block fs-1">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}</p>
         </div>
       </div>
-    </div>
     <div class="four wide column contantDetails">
       <label class="d-block mb-10">
         {{resourceService.frmelmnts?.lnk?.footerContact}}
@@ -67,6 +59,7 @@
       </label>
     </div>
   </div>
+</div>
   <div class="ui one column stackable center aligned page grid" *ngIf="isOffline">
     <div class="column twelve wide">
       <label class="d-block mb-10">

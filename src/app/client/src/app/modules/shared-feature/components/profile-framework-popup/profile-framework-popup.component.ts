@@ -17,6 +17,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   @Input() showCloseIcon: boolean;
   @Input() buttonLabel: string;
   @Input() formInput: any = {};
+  @Input() isClosable = false;
   @Output() submit = new EventEmitter<any>();
   @Output() close = new EventEmitter<any>();
   public allowedFields = ['board', 'medium', 'gradeLevel', 'subject'];
