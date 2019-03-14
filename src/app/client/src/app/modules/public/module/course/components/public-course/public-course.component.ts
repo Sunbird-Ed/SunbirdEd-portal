@@ -167,7 +167,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   public playContent(event) {
-    this.publicPlayerService.playExporeCourse(event.data.metaData.identifier);
+    this.publicPlayerService.playExploreCourse(event.data.metaData.identifier);
   }
   public viewAll(event) {
     const searchQuery = JSON.parse(event.searchQuery);
