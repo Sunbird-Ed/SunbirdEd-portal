@@ -26,7 +26,7 @@
   <div class="sb-modal-actions">
     <button 
       appTelemetryInteract 
-      [telemetryInteractObject]="{id:announcementId,type:'announcement',ver:'1.0'}" 
+      [telemetryInteractObject]="{id:announcementId,type:'Announcement',ver:'1.0'}" 
       [telemetryInteractEdata]="{id:'delete-announcement-yes',type:'click',pageid:'delete-announcement'}" 
       class="sb-btn sb-btn-normal sb-btn-error" 
       (click)="disableApproveBtn=true; deleteAnnouncement();" 
@@ -36,7 +36,7 @@
     </button>
     <button 
       appTelemetryInteract 
-      [telemetryInteractObject]="{id:announcementId,type:'announcement',ver:'1.0'}" 
+      [telemetryInteractObject]="{id:announcementId,type:'Announcement',ver:'1.0'}" 
       [telemetryInteractEdata]="{id:'delete-announcement-no',type:'click',pageid:'delete-announcement'}" 
       class="sb-btn sb-btn-normal sb-btn-outline-error" 
       (click)="modal.deny(); redirect();"

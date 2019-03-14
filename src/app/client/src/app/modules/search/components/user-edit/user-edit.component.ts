@@ -304,7 +304,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
     this.telemetryInteractObject = {
       id: this.userId,
-      type: 'user',
+      type: 'User',
       ver: '1.0'
     };
   }

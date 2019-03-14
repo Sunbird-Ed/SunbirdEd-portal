@@ -176,7 +176,7 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
 
     this.telemetryInteractObject = {
       id: this.userService.userid,
-      type: 'user',
+      type: 'User',
       ver: '1.0'
     };
   }

@@ -125,7 +125,7 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.ids) {
       this.telemetryInteractObject = {
         id: this.ids.courseId || this.ids.contentId,
-        type: (this.ids.courseId) ? 'course' : 'content',
+        type: (this.ids.courseId) ? 'Course' : 'Content',
         ver: '1.0'
       };
     }
