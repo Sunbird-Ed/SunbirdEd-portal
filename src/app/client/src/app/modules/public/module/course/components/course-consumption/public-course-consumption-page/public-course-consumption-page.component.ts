@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { IImpressionEventInput } from '@sunbird/telemetry';
+import { NavigationHelperService } from '@sunbird/shared';
 
 @Component({
   templateUrl: './public-course-consumption-page.component.html',
@@ -27,9 +28,10 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
   telemetryShareData: Array<ITelemetryShare>;
 
   public unsubscribe = new Subject<void>();
-  constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
-    public toasterService: ToasterService, private resourceService: ResourceService, public router: Router,
-    public contentUtilsServiceService: ContentUtilsServiceService, private configService: ConfigService) {
+  constructor(public navigationHelperService: NavigationHelperService, private activatedRoute: ActivatedRoute,
+    private courseConsumptionService: CourseConsumptionService, public toasterService: ToasterService,
+    private resourceService: ResourceService, public router: Router, public contentUtilsServiceService: ContentUtilsServiceService,
+    private configService: ConfigService) {
   }
 
   ngOnInit() {
@@ -61,8 +63,10 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
       ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
     }];
   }
+
   redirectToExplore() {
-    this.router.navigate(['explore-course']);
+    this.navigationHelperService.navigateToResource('explore-course');
+    // this.router.navigate(['explore-course']);
   }
   ngOnDestroy() {
     this.unsubscribe.next();
