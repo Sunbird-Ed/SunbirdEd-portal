@@ -1,8 +1,9 @@
 import { combineLatest, Subject } from 'rxjs';
 import { PageApiService, PlayerService, UserService, ISort } from '@sunbird/core';
-import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import {
-  ResourceService, ToasterService, INoResultMessage, ConfigService, UtilService, ICaraouselData, BrowserCacheTtlService
+  ResourceService, ToasterService, INoResultMessage, ConfigService, UtilService, ICaraouselData,
+  BrowserCacheTtlService, NavigationHelperService
 } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
@@ -12,7 +13,7 @@ import { CacheService } from 'ng2-cache-service';
 @Component({
   templateUrl: './resource.component.html'
 })
-export class ResourceComponent implements OnInit, OnDestroy {
+export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public showLoader = true;
   public baseUrl: string;
@@ -37,7 +38,8 @@ export class ResourceComponent implements OnInit, OnDestroy {
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
     public router: Router, private utilService: UtilService,
     private playerService: PlayerService, private cacheService: CacheService,
-    private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService) {
+    private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService,
+    public navigationhelperService: NavigationHelperService) {
     this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
     this.router.onSameUrlNavigation = 'reload';
     this.filterType = this.configService.appConfig.library.filterType;
@@ -180,6 +182,9 @@ export class ResourceComponent implements OnInit, OnDestroy {
   }
   private setTelemetryData() {
     this.inViewLogs = []; // set to empty every time filter or page changes
+  }
+
+  ngAfterViewInit () {
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
@@ -188,15 +193,13 @@ export class ResourceComponent implements OnInit, OnDestroy {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         uri: this.router.url,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        duration: this.navigationhelperService.getPageLoadTime()
       }
     };
-    this.sortIntractEdata = {
-      id: 'sort',
-      type: 'click',
-      pageid: this.activatedRoute.snapshot.data.telemetry.pageid || 'resource-page'
-    };
+    console.log('this.telemetryImpression', this.telemetryImpression);
   }
+
   private setNoResultMessage() {
       this.noResultMessage = {
         'message': 'messages.stmsg.m0007',
