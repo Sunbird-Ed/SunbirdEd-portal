@@ -12,6 +12,7 @@ export class CardComponent {
 * content is used to render IContents value on the view
 */
   @Input() data: ICard;
+  @Input() telemetryInteractEdata;
   @Input() customClass: string;
   @Output() clickEvent = new EventEmitter<any>();
 

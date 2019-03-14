@@ -3,8 +3,8 @@
   *ngIf="data" 
   (click)="onAction(data,data.action.onImage)" 
   appTelemetryInteract 
-  [telemetryInteractObject]="{id:data.metaData.identifier,type:data.telemetryObjectType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion.toString():'1.0'}" 
-  [telemetryInteractEdata]="data.telemetryInteractEdata"
+  [telemetryInteractObject]="{id:data.metaData.identifier || data.metaData.courseId,type:data.metaData.contentType || 'Course',ver:'1.0'}"
+  [telemetryInteractEdata]="telemetryInteractEdata"
   tabindex="0"
   >
     <div class="header p-15 pb-0">
