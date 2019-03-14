@@ -1,61 +1,73 @@
 <footer class="footer" *ngIf="showFooter">
-  <div class="ui container">
+  <div class="ui container" *ngIf="!isOffline">
     <div class="ui grid stackable">
       <div class="four wide column footerMenu">
         <ul class="p-0 m-0">
-          <li class="mb-15">
+          <!-- <li class="mb-15">
             <a href="/verticals/profile-registry/">
               {{resourceService.frmelmnts?.lnk?.footerDikshaVerticals}}
             </a>
-          </li>
+          </li> -->
           <li class="mb-15">
             <a href="/help/getting-started/explore-diksha/index.html">
               {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
             </a>
           </li>
-          <li class="mb-15">
+          <!-- <li class="mb-15">
             <a href="/partners/">
               {{resourceService.frmelmnts?.lnk?.footerPartners}}
             </a>
-          </li>
+          </li> -->
         </ul>
       </div>
       <div class="four wide column center aligned playStore">
-          <!-- <label class="d-block mb-10">{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile}}</label>
+        <!-- <label class="d-block mb-10">{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile}}</label>
           <a class="d-block" href="https://play.google.com/store/apps/details?id=in.gov.diksha.app">
             <img class="playStore-img" src="/assets/images/google_playstore.png" alt="{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile}}">
           </a> -->
-  
-          <div class="download-diksha">
-            <div class="diksha-logo p-15">
-              <div class="mobile-circles">
-                <div class="big-box border-round border-r50"></div>
-                <div class="oval-box border-round ml-20 ml-10"></div>
-                <div class="small-box border-round border-r50 ml-20 mr-10"></div>
-                <div class="small-box border-round border-r50"></div>
-              </div>
-              <label class="d-block fs-1-143 pb-15">{{resourceService.frmelmnts?.lbl?.download}} {{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile}}</label>
-              <a class="d-block pb-15" href="https://play.google.com/store/apps/details?id=in.gov.diksha.app">
-                <img class="playStore-img" src="/assets/images/google_playstore.png" alt="{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile}}">
-              </a>
-              <p class="d-block fs-1">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}</p>
+
+        <div class="download-diksha">
+          <div class="diksha-logo p-15">
+            <div class="mobile-circles">
+              <div class="big-box border-round border-r50"></div>
+              <div class="oval-box border-round ml-20 ml-10"></div>
+              <div class="small-box border-round border-r50 ml-20 mr-10"></div>
+              <div class="small-box border-round border-r50"></div>
             </div>
+            <label class="d-block pb-15">{{resourceService.frmelmnts?.lbl?.download}}
+              {{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile}}</label>
+            <a class="d-block pb-15" href="https://play.google.com/store/apps/details?id=in.gov.diksha.app">
+              <img class="playStore-img" src="/assets/images/google_playstore.png"
+                alt="{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile}}">
+            </a>
+            <p class="d-block">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}</p>
           </div>
         </div>
-      <div class="four wide column contantDetails">
-        <label class="d-block mb-10">
-          {{resourceService.frmelmnts?.lnk?.footerContact}} 
-        </label>
-        <a class="d-block mb-30" href="mailto:diksha-support@ncte-India.org">
-          diksha-support@ncte-india.org
-        </a>
-        <label class="d-block">
-          <a href="/term-of-use.html">
-            {{resourceService.frmelmnts?.lnk?.footerTnC}}
-          </a>
-          <span>| &copy; {{date | date:'yyyy'}}, DIKSHA</span>
-        </label>
       </div>
+    <div class="four wide column contantDetails">
+      <label class="d-block mb-10">
+        {{resourceService.frmelmnts?.lnk?.footerContact}}
+      </label>
+      <a class="d-block mb-30" href="mailto:support@diksha-ncte.freshdesk.com">
+        support@diksha-ncte.freshdesk.com
+      </a>
+      <label class="d-block">
+        <a href="/term-of-use.html">
+          {{resourceService.frmelmnts?.lnk?.footerTnC}}
+        </a>
+        <span>| &copy; {{date | date:'yyyy'}}, DIKSHA</span>
+      </label>
+    </div>
+  </div>
+</div>
+  <div class="ui one column stackable center aligned page grid" *ngIf="isOffline">
+    <div class="column twelve wide">
+      <label class="d-block mb-10">
+        {{resourceService.frmelmnts?.lnk?.footerContact}}
+      </label>
+      <a class="d-block mb-30" href="mailto:support@diksha-ncte.freshdesk.com">
+        support@diksha-ncte.freshdesk.com
+      </a>
     </div>
   </div>
 </footer>

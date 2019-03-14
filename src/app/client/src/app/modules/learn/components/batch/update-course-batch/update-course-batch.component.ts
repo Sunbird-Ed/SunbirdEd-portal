@@ -37,6 +37,14 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   private userSearchTime: any;
 
   /**
+	 * This variable hepls to show and hide loader.
+   * It is kept true by default as at first when we comes
+   * to a popup the loader should be displayed before the
+   * data is loaded
+	 */
+  public showLoader = true;
+
+  /**
   * courseCreator
   */
   public courseCreator = false;
@@ -183,6 +191,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
         this.disableSubmitBtn = true;
       }
     });
+    this.disableSubmitBtn = true;
     if (this.batchDetails.createdBy !== this.userService.userid) {
       this.showFormInViewMode = true;
       this.batchUpdateForm.disable();
@@ -193,10 +202,12 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   */
   private fetchParticipantDetails() {
     if (this.batchDetails.participant || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
+      const userList = _.union(_.keys(this.batchDetails.participant), this.batchDetails.mentors);
       const request = {
         filters: {
-          identifier: _.union(_.keys(this.batchDetails.participant), this.batchDetails.mentors)
-        }
+          identifier: userList
+        },
+        limit : userList.length
       };
       this.courseBatchService.getUserList(request).pipe(takeUntil(this.unsubscribe))
         .subscribe((res) => {
@@ -209,6 +220,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
           }
           this.redirect();
         });
+    } else {
+      this.showLoader = false;
+      this.disableSubmitBtn = false;
     }
   }
   private processParticipantDetails(res) {
@@ -229,6 +243,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     });
     this.selectedParticipants = _.uniqBy(this.selectedParticipants, 'id');
     this.selectedMentors = _.uniqBy(this.selectedMentors, 'id');
+    this.disableSubmitBtn = false;
+    this.showLoader = false;
   }
   private sortUsers(res) {
     const participantList = [];

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FileUploadService, ResourceService } from '@sunbird/shared';
-
+import { ResourceService } from '@sunbird/shared';
+import { FileUploadService } from './../../services';
 import { FileUploaderComponent } from './file-uploader.component';
 
 describe('FileUploaderComponent', () => {

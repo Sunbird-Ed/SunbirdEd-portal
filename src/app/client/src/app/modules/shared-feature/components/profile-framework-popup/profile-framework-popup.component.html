@@ -1,6 +1,6 @@
 <sui-modal
   [mustScroll]="true" 
-  [isClosable]="false"
+  [isClosable]="isClosable"
   [transitionDuration]="0"
   [size]="'normal'"
   class="sb-modal"
@@ -45,6 +45,8 @@
   <!--Actions-->
   <div class="sb-modal-actions">
     <button 
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="submitInteractEdata"
       class="sb-btn sb-btn-normal sb-btn-primary" 
       [disabled]="!showButton" 
       (click)="onSubmitForm()"

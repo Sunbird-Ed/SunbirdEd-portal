@@ -102,7 +102,6 @@ describe('BatchListComponent', () => {
     component.fetchBatchList();
     expect(component.batchList).toBeDefined();
     expect(component.batchList.length).toBeGreaterThan(1);
-    expect(component.showLoader).toBeFalsy();
   }));
 
   it('should call  batch search api and returns result count 0', inject([SearchService], (searchService) => {

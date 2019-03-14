@@ -3,62 +3,50 @@
 
 	<!--Logged in user-->
 	<ng-container *ngIf="userService.loggedIn">
-		<a class="item" 
-			 [class.active]="router.isActive('/search/Library') || router.isActive('/resources')" 
-			 appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" 
-			 routerLink="/resources">
+		<a class="item" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"
+			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" routerLink="/resources">
 			{{resourceService?.frmelmnts?.tab?.resources}}
 		</a>
-		<a class="item" 
-			 [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')" 
-			 appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" 
-			 routerLink="/learn">
+		<a class="item" [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')"
+			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" routerLink="/learn">
 			{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
-		<a class="item" 
-			 [class.active]="router.isActive('/workspace')" 
-			 appTelemetryInteract [telemetryInteractEdata]="workspaceMenuIntractEdata" 
-			 *ngIf='permissionService.permissionAvailable' 
-			 appPermission [permission]='workSpaceRole' 
-			 [routerLink]="[navigateToWorkspace()]" 
-			 tabindex="0">
+		<a class="item" [class.active]="router.isActive('/workspace')" appTelemetryInteract
+			[telemetryInteractEdata]="workspaceMenuIntractEdata" *ngIf='permissionService.permissionAvailable'
+			appPermission [permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0">
 			{{resourceService?.frmelmnts?.tab?.workspace}}
 		</a>
-		<a class="item" 
-			 appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata" 
-			 *ngIf='permissionService.permissionAvailable && helpLinkVisibility.toLowerCase() === "true"' 
-			 appPermission [permission]='workSpaceRole' 
-			 href="/help/creator/content-lifecycle/index.html" 
-			 target="_blank">
+		<a class="item" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
+			*ngIf='permissionService.permissionAvailable && helpLinkVisibility.toLowerCase() === "true"' appPermission
+			[permission]='workSpaceRole' href="/help/creator/content-lifecycle/index.html" target="_blank">
 			{{resourceService?.frmelmnts?.tab?.help}}
 		</a>
 	</ng-container>
 	<!--/Logged in user-->
 
 	<!--Not Logged in user-->
-	<ng-container *ngIf="!userService.loggedIn">
-		<button 
-		  class="ui blue button" 
-			*ngIf="router.isActive('', true) && exploreButtonVisibility==='true'"  
-			tabindex="0" 
-			routerLink="/explore">
+	<ng-container *ngIf="!userService.loggedIn && !isOffline">
+		<button class="ui blue button" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'"
+			tabindex="0" routerLink="/explore">
 			{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
 		</button>
-		<a class="item" 
-			[class.active]="router.isActive('/search/explore') || router.isActive('/explore')" 
-			*ngIf="!router.isActive('', true)" 
-			routerLink="explore">
+		<a class="item"
+			[class.active]="router.isActive('/search/explore') || router.isActive('/explore')"
+			*ngIf="!router.isActive('', true)"
+			routerLink="explore"
+			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" >
 			{{resourceService?.frmelmnts?.tab?.resources}}
 		</a>
-		<a class="item" 
-			[class.active]="router.isActive('/search/explore-course') || router.isActive('/explore-course')" 
-			*ngIf="!router.isActive('', true)" 
-			routerLink="explore-course">
+		<a class="item"
+			[class.active]="router.isActive('/search/explore-course') || router.isActive('/explore-course')"
+			*ngIf="!router.isActive('', true)"
+			routerLink="explore-course"
+			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" >
 			{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
 		<span class="item divider">|</span>
-		<a class="item font-weight-bold primary-color" 
-		  href="/resources" >
+		<a class="item font-weight-bold primary-color"
+		  href="/resources" appTelemetryInteract [telemetryInteractEdata]="signInIntractEdata">
 			{{resourceService.frmelmnts?.btn?.signin}}
 		</a>
 	</ng-container>
@@ -73,81 +61,56 @@
 
 		<!--Logged in user-->
 		<ng-container *ngIf="userService.loggedIn">
-			<div 
-				class="item font-weight-bold" 
-				*ngIf='userProfile'>
-				<i 
-				  class="close link icon" 
-				  (click)="showSideBar()" 
-				  tabindex="0" 
-				  title="{{resourceService?.frmelmnts?.btn?.close}}"
-				></i>
+			<div class="item font-weight-bold" *ngIf='userProfile'>
+				<i class="close link icon" (click)="showSideBar()" tabindex="0"
+					title="{{resourceService?.frmelmnts?.btn?.close}}"></i>
 				<div class="ellipsis">
-						{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}
+					{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}
 				</div>
 			</div>
 			<div class="ui divider mt-0"></div>
-			<a class="item" 
-				 [class.active]="router.isActive('/search/Library') || router.isActive('/resources')" 
-				 (click)="showSideBar()" 
-				 appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" 
-				 routerLink="/resources">
+			<a class="item" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"
+				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata"
+				routerLink="/resources">
 				{{resourceService?.frmelmnts?.tab?.resources}}
 			</a>
-			<a class="item"
-				[class.active]="router.isActive('/search/Courses') || router.isActive('/learn')"
-				(click)="showSideBar()" 
-				appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" 
+			<a class="item" [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')"
+				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata"
 				routerLink="/learn">
 				{{resourceService?.frmelmnts?.tab?.courses}}
 			</a>
-			<a class="item"
-				[class.active]="router.isActive('/search/profile') || router.isActive('/profile')"
-				(click)="showSideBar()"
-				routerLink="/profile">
+			<a class="item" [class.active]="router.isActive('/search/profile') || router.isActive('/profile')"
+				(click)="showSideBar()" routerLink="/profile">
 				{{resourceService.frmelmnts?.lnk?.profile}}
 			</a>
-			<a class="item logout-btn" 
-			   (click)="logout()">
+			<a class="item logout-btn"
+				appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
+				(click)="logout()">
 				{{resourceService.frmelmnts?.lnk?.logout}}
 			</a>
 		</ng-container>
 		<!--/Logged in user-->
 
 		<!--Not Logged in user-->
-		<ng-container *ngIf="!userService.loggedIn">
+		<ng-container *ngIf="!userService.loggedIn && !isOffline">
 			<div class="item active">
-				<i 
-					class="close link icon" 
-					(click)="showSideBar()" 
-					tabindex="0" 
-					title="{{resourceService?.frmelmnts?.btn?.close}}"
-				></i>
+				<i class="close link icon" (click)="showSideBar()" tabindex="0"
+					title="{{resourceService?.frmelmnts?.btn?.close}}"></i>
 				<a href="/resources">
 					{{resourceService.frmelmnts?.btn?.signin}}
 				</a>
 			</div>
 			<div class="ui divider mt-0"></div>
-			<a class="item" 
-				(click)="showSideBar()" 
-				*ngIf="router.isActive('', true)" 
-				routerLink="/explore">
+			<a class="item" (click)="showSideBar()" *ngIf="router.isActive('', true)" routerLink="/explore">
 				{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
 			</a>
-			<a class="item"
-			  [class.active]="router.isActive('/search/explore') || router.isActive('/explore')"
-				routerLink="explore" 
-				(click)="showSideBar()" 
-				*ngIf="!router.isActive('', true)" 
-				>
+			<a class="item" [class.active]="router.isActive('/search/explore') || router.isActive('/explore')"
+				routerLink="explore" (click)="showSideBar()" *ngIf="!router.isActive('', true)">
 				{{resourceService?.frmelmnts?.tab?.resources}}
 			</a>
 			<a class="item"
 				[class.active]="router.isActive('/search/explore-course') || router.isActive('/explore-course')"
-				routerLink="explore-course" 
-				(click)="showSideBar()" 
-				*ngIf="!router.isActive('', true)" 
-				>
+				routerLink="explore-course" (click)="showSideBar()" *ngIf="!router.isActive('', true)">
 				{{resourceService?.frmelmnts?.tab?.courses}}
 			</a>
 		</ng-container>
