@@ -31,7 +31,8 @@ describe('UpForReviewComponent', () => {
       'smsg': {
         'm0006': 'Content deleted successfully...'
       }
-    }
+    },
+    languageSelected$: observableOf({})
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');

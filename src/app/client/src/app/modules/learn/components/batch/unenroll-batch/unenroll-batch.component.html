@@ -10,7 +10,7 @@
 
     <!--Header-->
     <div class="sb-modal-header">
-        {{resourceService.frmelmnts.lbl.unenrollMsg}}
+        {{resourceService.frmelmnts.lbl.unenrollTitle}}
     </div>
     <!--/Header-->
 
@@ -22,7 +22,7 @@
 
     <!--Actions-->
     <div class="sb-modal-actions">
-        <button 
+        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata"  [telemetryInteractCdata]="telemetryCdata"
             class="sb-btn sb-btn-normal sb-btn-error"
             [disabled]="disableSubmitBtn"
             id="unenrollFromCourse" 

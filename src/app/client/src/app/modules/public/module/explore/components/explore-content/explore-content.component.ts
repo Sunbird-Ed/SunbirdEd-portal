@@ -10,7 +10,7 @@ import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, mergeMap, first, filter, debounceTime } from 'rxjs/operators';
+import { takeUntil, map, mergeMap, first, filter, debounceTime, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 @Component({
     templateUrl: './explore-content.component.html'
@@ -78,7 +78,10 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     }
     private fetchContentOnParamChange() {
         combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
-        .pipe( debounceTime(5), // wait for both params and queryParams event to change
+        .pipe( debounceTime(5),
+            tap(data => this.inView({inview: []})),
+            delay(10),
+            tap(data => this.setTelemetryData()),
             map(result => ({params: { pageNumber: Number(result[0].pageNumber)}, queryParams: result[1]})),
             takeUntil(this.unsubscribe$)
         ).subscribe(({params, queryParams}) => {
@@ -144,6 +147,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
         this.router.navigate([url], { queryParams: this.queryParams });
     }
     private setTelemetryData() {
+        this.inViewLogs = []; // set to empty every time filter or page changes
         this.telemetryImpression = {
             context: {
                 env: this.activatedRoute.snapshot.data.telemetry.env
@@ -180,9 +184,12 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
                 });
             }
         });
-        this.telemetryImpression.edata.visits = this.inViewLogs;
-        this.telemetryImpression.edata.subtype = 'pageexit';
-        this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+
+        if (this.telemetryImpression) {
+            this.telemetryImpression.edata.visits = this.inViewLogs;
+            this.telemetryImpression.edata.subtype = 'pageexit';
+            this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+        }
     }
     ngOnDestroy() {
         this.unsubscribe$.next();
@@ -190,8 +197,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     }
     private setNoResultMessage() {
         this.noResultMessage = {
-            'message': _.get(this.resourceService, 'messages.stmsg.m0007') || 'No results found',
-            'messageText': _.get(this.resourceService, 'messages.stmsg.m0006') || 'Please search for something else.'
+          'message': 'messages.stmsg.m0007',
+          'messageText': 'messages.stmsg.m0006'
         };
     }
 }

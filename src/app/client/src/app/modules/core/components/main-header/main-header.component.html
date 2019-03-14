@@ -21,7 +21,7 @@
     <!--/Main Menu-->
 
     <!--Avtar Dropdown-->
-    <a class="profile-avtar computer only p-0 ml-15" *ngIf="userService.loggedIn" tabindex="0">
+    <a class="profile-avtar computer only p-0 ml-15" *ngIf="userService.loggedIn && !isOffline" tabindex="0">
       <div suiDropdown [(isOpen)]="isOpen" class="ui dropdown right top pointing" id="dropdown-menu-list-header">
         <ngx-avatar *ngIf='userProfile' [style]="avtarDesktopStyle" [size]="38" initialsSize="1" name="{{userProfile?.firstName}}">
         </ngx-avatar>
@@ -46,10 +46,10 @@
             {{resourceService.frmelmnts?.lnk?.myactivity}}
           </a>
           <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='orgSetupRole'
-            routerLink="orgType">
+            routerLink="org/orgType">
             {{resourceService.frmelmnts?.lbl?.orgtypes}}
           </a>
-          <a class="item" (click)="logout()">
+          <a class="item" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()" (click)="logout()">
             {{resourceService.frmelmnts?.lnk?.logout}}
           </a>
         </div>
@@ -78,9 +78,50 @@
 
       <!--Search Box-->
       <!--Logged in Pages-->
-      <app-search class="sb-search-box mr-auto" *ngIf="!showExploreHeader"
-      [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}"
-      ></app-search>
+      <app-search class="sb-search-box mr-auto" *ngIf="!showExploreHeader" [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}"></app-search>
+      <!--/Logged in Pages-->
+
+      <!--Explore Pages-->
+      <div class="sb-search-box mr-auto" *ngIf="showExploreHeader && !isOffline" [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
+        <div class="input-div relative">
+          <i class="search icon"></i>
+          <input type="text" id="keyword" name="filter_search" class="sb-search-input" title="{{resourceService?.frmelmnts?.prmpt?.search}}"
+            placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}" [(ngModel)]="key" (keyup.enter)="onEnter(key)" />
+          <!-- <i class="close icon"></i>
+            <div class="sb-loader"></div> -->
+        </div>
+        <button class="sb-btn sb-btn-normal" (click)="onEnter(key)" title="{{resourceService?.frmelmnts?.prmpt?.search}}"
+          tabindex="0">Search</button>
+      </div>
+      <!--/Explore Pages-->
+      <!--/Search Box-->
+
+      <!--Language Dropdown-->
+      <app-language-dropdown class="computer only" *ngIf="!router.isActive('workspace', false)">
+      </app-language-dropdown>
+      <!--/Language Dropdown-->
+    </div>
+  </div>
+  <!--/Computer-->
+
+  <!--Mobile-->
+  <div class="p-10 mobile only" *ngIf="showExploreHeader || userService.loggedIn">
+    <div class="ui mobile-view container d-flex flex-jc-space-between mx-0">
+
+      <!--QR Button-->
+      <button class="ui button qr-code-btn d-flex flex-ai-center" appTelemetryInteract [telemetryInteractEdata]="enterDialCodeInteractEdata"
+        (click)="showQrmodal = true;">
+        <i class="qrcode icon d-flex flex-ai-center"></i>
+        <span class="d-flex flex-ai-center">
+          {{resourceService.frmelmnts?.lbl?.enterQrCode}}
+        </span>
+      </button>
+      <!--/QR Button-->
+
+      <!--Language Dropdown-->
+      <app-language-dropdown *ngIf="!router.isActive('workspace', false)">
+      </app-language-dropdown>
+      <!--/Language Dropdown-->
 
       <!-- <div class="sb-search-box medium ml-0 mr-auto">
         <div class="input-div relative">
@@ -114,7 +155,6 @@
     </div>
   </div>
   <!--/Computer-->
-
   <!--Mobile-->
   <div class="p-10 mobile only" *ngIf="showExploreHeader || userService.loggedIn">
     <div class="ui mobile-view container d-flex flex-jc-space-between mx-0">

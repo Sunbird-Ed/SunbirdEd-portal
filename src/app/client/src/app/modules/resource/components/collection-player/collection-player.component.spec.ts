@@ -1,12 +1,11 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CollectionPlayerComponent } from './collection-player.component';
-import { ContentService, PlayerService, CoreModule } from '@sunbird/core';
-import { ActivatedRoute, Router, Params } from '@angular/router';
-import { WindowScrollService, ConfigService, SharedModule, ResourceService } from '../../../shared';
-import { CollectionTreeComponent, AppLoaderComponent, PlayerComponent, FancyTreeComponent } from '../../../shared/components';
+import { PlayerService, CoreModule } from '@sunbird/core';
+import { ActivatedRoute } from '@angular/router';
+import { WindowScrollService, SharedModule, ResourceService } from '../../../shared';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -69,18 +68,18 @@ describe('CollectionPlayerComponent', () => {
       loaderMessage: 'Fetching content details!'
     });
     expect(component.collectionTreeOptions).toEqual({
-      fileIcon: 'fa fa-file-o fa-lg',
+      fileIcon: 'sb-icon-content',
       customFileIcon: {
-        'video': 'fa fa-file-video-o fa-lg',
-        'pdf': 'fa fa-file-pdf-o fa-lg',
-        'youtube': 'fa fa-youtube fa-lg fancy_tree_red',
-        'H5P': 'fa fa-html5 fa-lg',
-        'audio': 'fa fa-file-audio-o fa-lg',
-        'ECML': 'fa fa-file-code-o fa-lg',
-        'HTML': 'fa fa-html5 fa-lg',
-        'collection': 'fa fa-file-archive-o fa-lg',
-        'epub': 'fa fa-file-text fa-lg',
-        'doc': 'fa fa-file-text fa-lg'
+        'video': 'sb-icon-video',
+        'pdf': 'sb-icon-doc',
+        'youtube': 'sb-icon-video',
+        'H5P': 'sb-icon-content',
+        'audio': 'sb-icon-mp3',
+        'ECML': 'sb-icon-content',
+        'HTML': 'sb-icon-content',
+        'collection': 'sb-icon-collection',
+        'epub': 'sb-icon-doc',
+        'doc': 'sb-icon-doc'
       }
     });
   });

@@ -6,7 +6,7 @@ import { ResourceService, ToasterService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
-
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-popup',
   templateUrl: './profile-framework-popup.component.html',
@@ -17,6 +17,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   @Input() showCloseIcon: boolean;
   @Input() buttonLabel: string;
   @Input() formInput: any = {};
+  @Input() isClosable = false;
   @Output() submit = new EventEmitter<any>();
   @Output() close = new EventEmitter<any>();
   public allowedFields = ['board', 'medium', 'gradeLevel', 'subject'];
@@ -30,6 +31,8 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   private frameWorkId: string;
   private custodianOrg = false;
   private custodianOrgBoard: any = {};
+  submitInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
   constructor(private router: Router, private userService: UserService, private frameworkService: FrameworkService,
     private formService: FormService, public resourceService: ResourceService, private cacheService: CacheService,
     private toasterService: ToasterService, private channelService: ChannelService, private orgDetailsService: OrgDetailsService
@@ -51,6 +54,8 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         this.toasterService.warning(this.resourceService.messages.emsg.m0012);
         this.navigateToLibrary();
       });
+
+      this.setInteractEventData();
   }
   private getFormOptionsForCustodianOrg() {
     return this.getCustodianOrgData().pipe(mergeMap((data) => {
@@ -242,4 +247,19 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       this.cacheService.set('showFrameWorkPopUp', 'installApp' );
     }
   }
+
+  setInteractEventData() {
+    this.submitInteractEdata = {
+      id: 'submit-profile-framework-details',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
+  }
+
 }

@@ -4,7 +4,8 @@ import { Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Subscription, Subject } from 'rxjs';
-import { TenantService, OtpService } from '@sunbird/core';
+import { TenantService, OtpService, UserService } from '@sunbird/core';
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-otp-popup',
@@ -25,9 +26,11 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
   tenantDataSubscription: Subscription;
   logo: string;
   tenantName: string;
-
+  submitInteractEdata: IInteractEventEdata;
+  resendOtpInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
   constructor(public resourceService: ResourceService, public tenantService: TenantService,
-    public deviceDetectorService: DeviceDetectorService, public otpService: OtpService) { }
+    public deviceDetectorService: DeviceDetectorService, public otpService: OtpService , public userService: UserService) { }
 
   ngOnInit() {
     this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
@@ -43,6 +46,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
       otp: new FormControl('', [Validators.required])
     });
     this.enableSubmitButton();
+    this.setInteractEventData();
   }
 
   verifyOTP() {
@@ -113,5 +117,25 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  setInteractEventData() {
+    this.submitInteractEdata = {
+      id: 'submit-otp',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+
+    this.resendOtpInteractEdata = {
+      id: 'resend-otp',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
   }
 }

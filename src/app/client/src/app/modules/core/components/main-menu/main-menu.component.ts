@@ -6,6 +6,7 @@ import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { first, filter } from 'rxjs/operators';
 import * as _ from 'lodash';
+import { environment } from '@sunbird/environment';
 declare var jQuery: any;
 
 /**
@@ -37,9 +38,9 @@ export class MainMenuComponent implements OnInit {
    * reference of config service.
    */
   public config: ConfigService;
-    /**
-   * user profile details.
-   */
+  /**
+ * user profile details.
+ */
   userProfile: IUserProfile;
   /**
    * reference of Router.
@@ -53,12 +54,14 @@ export class MainMenuComponent implements OnInit {
   exploreRoutingUrl: string;
   showExploreHeader = false;
   helpLinkVisibility: string;
+  isOffline: boolean = environment.isOffline;
 
+  signInIntractEdata: IInteractEventEdata;
   /*
   * constructor
   */
   constructor(resourceService: ResourceService, userService: UserService, router: Router,
-     permissionService: PermissionService, config: ConfigService, private cacheService: CacheService) {
+    permissionService: PermissionService, config: ConfigService, private cacheService: CacheService) {
     this.resourceService = resourceService;
     this.userService = userService;
     this.permissionService = permissionService;
@@ -108,6 +111,18 @@ export class MainMenuComponent implements OnInit {
       type: 'click',
       pageid: 'help'
     };
+    this.signInIntractEdata = {
+      id: ' signin-tab',
+      type: 'click',
+    };
+  }
+
+  getLogoutInteractEdata() {
+    return {
+      id: 'logout',
+      type: 'click',
+      pageid: this.router.url.split('/')[1]
+    };
   }
 
   logout() {
@@ -123,7 +138,7 @@ export class MainMenuComponent implements OnInit {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
       if (_.includes(urlAfterRedirects.url, '/explore')) {
         this.showExploreHeader = true;
-        const url  = urlAfterRedirects.url.split('?')[0].split('/');
+        const url = urlAfterRedirects.url.split('?')[0].split('/');
         if (url.indexOf('explore') === 2) {
           this.exploreRoutingUrl = url[1] + '/' + url[2];
         } else {
@@ -131,7 +146,7 @@ export class MainMenuComponent implements OnInit {
         }
       } else if (_.includes(urlAfterRedirects.url, '/explore-course')) {
         this.showExploreHeader = true;
-        const url  = urlAfterRedirects.url.split('?')[0].split('/');
+        const url = urlAfterRedirects.url.split('?')[0].split('/');
         if (url.indexOf('explore-course') === 2) {
           this.exploreRoutingUrl = url[1] + '/' + url[2];
         } else {
@@ -140,13 +155,14 @@ export class MainMenuComponent implements OnInit {
       } else {
         this.showExploreHeader = false;
       }
+      this.signInIntractEdata['pageid'] = this.exploreRoutingUrl;
     });
   }
 
   navigateToWorkspace() {
     const authroles = this.permissionService.getWorkspaceAuthRoles();
     if (authroles) {
-      this.router.navigate([authroles.url]);
+      return authroles.url;
     }
   }
 }

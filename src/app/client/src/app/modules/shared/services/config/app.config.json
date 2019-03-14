@@ -237,17 +237,17 @@
           }
         },
         {
-          "breakpoint": 2000,
+          "breakpoint": 1920,
           "settings": {
             "slidesToShow": 4,
-            "slidesToScroll": 4
+            "slidesToScroll": 3
           }
         },
         {
-          "breakpoint": 1600,
+          "breakpoint": 1440,
           "settings": {
             "slidesToShow": 3.5,
-            "slidesToScroll": 3.5
+            "slidesToScroll": 3
           }
         },
         {
@@ -258,9 +258,9 @@
           }
         },
         {
-          "breakpoint": 900,
+          "breakpoint": 992,
           "settings": {
-            "slidesToShow": 2.5,
+            "slidesToShow": 2.25,
             "slidesToScroll": 2
           }
         },
@@ -279,7 +279,21 @@
           }
         },
         {
+          "breakpoint": 600,
+          "settings": {
+            "slidesToShow": 1.5,
+            "slidesToScroll": 1
+          }
+        },
+        {
           "breakpoint": 530,
+          "settings": {
+            "slidesToShow": 1.33,
+            "slidesToScroll": 1
+          }
+        },
+        {
+          "breakpoint": 498,
           "settings": {
             "slidesToShow": 1.25,
             "slidesToScroll": 1
@@ -287,6 +301,13 @@
         },
         {
           "breakpoint": 450,
+          "settings": {
+            "slidesToShow": 1.15,
+            "slidesToScroll": 1
+          }
+        },
+        {
+          "breakpoint": 390,
           "settings": {
             "slidesToShow": 1,
             "slidesToScroll": 1
@@ -711,6 +732,9 @@
       "allcontent",
       "collaborating-on"
     ],
+    "courseBatch":{
+      "PAGE_LIMIT": 12
+    },
     "Draft": {
       "constantData": {
         "action": {
@@ -1187,18 +1211,18 @@
     }
   },
   "collectionTreeOptions": {
-    "fileIcon": "fa fa-file-o fa-lg",
+    "fileIcon": "sb-icon-content",
     "customFileIcon": {
-      "video": "fa fa-file-video-o fa-lg",
-      "pdf": "fa fa-file-pdf-o fa-lg",
-      "youtube": "fa fa-youtube fa-lg fancy_tree_red",
-      "H5P": "fa fa-html5 fa-lg",
-      "audio": "fa fa-file-audio-o fa-lg",
-      "ECML": "fa fa-file-code-o fa-lg",
-      "HTML": "fa fa-html5 fa-lg",
-      "collection": "fa fa-file-archive-o fa-lg",
-      "epub": "fa fa-file-text fa-lg",
-      "doc": "fa fa-file-text fa-lg"
+      "video": "sb-icon-video",
+      "pdf": "sb-icon-doc",
+      "youtube": "sb-icon-video",
+      "H5P": "sb-icon-content",
+      "audio": "sb-icon-mp3",
+      "ECML": "sb-icon-content",
+      "HTML": "sb-icon-content",
+      "collection": "sb-icon-collection",
+      "epub": "sb-icon-doc",
+      "doc": "sb-icon-doc"
     }
   },
   "mediumCode":{

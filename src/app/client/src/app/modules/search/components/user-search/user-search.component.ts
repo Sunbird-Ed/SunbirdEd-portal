@@ -6,7 +6,6 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { UserSearchService } from './../../services';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { ProfileService } from '@sunbird/profile';
@@ -115,6 +114,13 @@ export class UserSearchComponent implements OnInit {
     fontFamily: 'inherit',
     fontSize: '48px'
   };
+  csvOptions = {
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalseparator: '.',
+    showLabels: true,
+    headers: []
+  };
   /**
      * Constructor to create injected service(s) object
      * Default method of Draft Component class
@@ -183,8 +189,8 @@ export class UserSearchComponent implements OnInit {
           this.noResult = true;
           this.showLoader = false;
           this.noResultMessage = {
-            'message': this.resourceService.messages.stmsg.m0008,
-            'messageText': this.resourceService.messages.stmsg.m0007
+            'message': 'messages.stmsg.m0008',
+            'messageText': 'messages.stmsg.m0007'
           };
         }
       },
@@ -192,7 +198,7 @@ export class UserSearchComponent implements OnInit {
         this.showLoader = false;
         this.noResult = true;
         this.noResultMessage = {
-          'messageText': this.resourceService.messages.fmsg.m0077
+          'messageText': 'messages.fmsg.m0077'
         };
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
       }
@@ -229,12 +235,6 @@ export class UserSearchComponent implements OnInit {
   }
 
   downloadUser() {
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalseparator: '.',
-      showLabels: true
-    };
 
     const downloadArray = [{
       'firstName': 'First Name',
@@ -257,8 +257,7 @@ export class UserSearchComponent implements OnInit {
         'subject': _.join(key.subject, ',')
       });
     });
-
-    return new Angular2Csv(downloadArray, 'Users', options);
+    return  downloadArray;
   }
 
 

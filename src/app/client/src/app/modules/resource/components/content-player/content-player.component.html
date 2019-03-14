@@ -67,7 +67,7 @@
                                             <div class="four wide column "></div>
                                             <div class="four wide column ">
                                                 <h2 class="ui centered aligned icon tiny header toc-note">
-                                                    <a class="ui take-note-card cursor-pointer" (click)="showNoteEditor=!showNoteEditor">
+                                                    <a appTelemetryInteract [telemetryInteractObject]="objectInteract" [telemetryInteractEdata]="{id:'take-note', type:'click',pageid:'content-player'}" class="ui take-note-card cursor-pointer" (click)="showNoteEditor=!showNoteEditor">
                                                         <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId}" (exitModal)="showNoteEditor=false"
                                                             (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
                                                         <img src="{{'assets/images/takenote.png' | cdnprefixurl }}">
