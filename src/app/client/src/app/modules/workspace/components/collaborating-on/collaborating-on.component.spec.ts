@@ -28,7 +28,8 @@ describe('CollaboratingOnComponent', () => {
       'smsg': {
         'm0006': 'Content deleted successfully...'
       }
-    }
+    },
+    languageSelected$: observableOf({})
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
@@ -104,7 +105,7 @@ describe('CollaboratingOnComponent', () => {
     expect(component.showLoader).toBeFalsy();
     expect(component.noResult).toBeTruthy();
     expect(component.showError).toBeFalsy();
-    expect(component.noResultMessage.messageText).toBe(resourceBundle.messages.stmsg.m0123);
+    expect(component.noResultMessage.messageText).toBe('messages.stmsg.m0123');
   }));
 
   it('should call fetchall content method and change the route  ', inject([ConfigService, Router],

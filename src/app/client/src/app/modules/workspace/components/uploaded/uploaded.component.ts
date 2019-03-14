@@ -209,8 +209,8 @@ export class UploadedComponent extends WorkSpace implements OnInit {
           this.noResult = true;
           this.showLoader = false;
           this.noResultMessage = {
-            'message': this.resourceService.messages.stmsg.m0008,
-            'messageText': this.resourceService.messages.stmsg.m0024
+            'message': 'messages.stmsg.m0008',
+            'messageText': 'messages.stmsg.m0024'
           };
         }
       },

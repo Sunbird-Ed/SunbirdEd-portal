@@ -48,7 +48,7 @@ export class UsageReportsComponent implements OnInit {
     }, (err) => {
       console.log(err);
       this.noResultMessage = {
-        'messageText': this.resourceService.messages.stmsg.m0131
+        'messageText': 'messages.stmsg.m0131'
       };
       this.noResult = true;
     });

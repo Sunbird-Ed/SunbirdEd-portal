@@ -170,7 +170,7 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
       'loaderMessage': this.resourceService.messages.stmsg.m0124,
     };
     this.noResultMessage = {
-      'messageText': this.resourceService.messages.stmsg.m0123
+      'messageText': 'messages.stmsg.m0123'
     };
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.collaboratingOnSortingOptions;
   }

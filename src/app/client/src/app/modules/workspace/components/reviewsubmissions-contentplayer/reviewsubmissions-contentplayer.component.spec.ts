@@ -30,7 +30,8 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
       lbl: {
         description: 'description'
       }
-    }
+    },
+    languageSelected$: observableOf({})
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({

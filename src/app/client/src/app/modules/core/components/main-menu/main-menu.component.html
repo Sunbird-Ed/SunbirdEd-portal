@@ -30,16 +30,23 @@
 			tabindex="0" routerLink="/explore">
 			{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
 		</button>
-		<a class="item" [class.active]="router.isActive('/search/explore') || router.isActive('/explore')"
-			*ngIf="!router.isActive('', true)" routerLink="explore">
+		<a class="item"
+			[class.active]="router.isActive('/search/explore') || router.isActive('/explore')"
+			*ngIf="!router.isActive('', true)"
+			routerLink="explore"
+			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" >
 			{{resourceService?.frmelmnts?.tab?.resources}}
 		</a>
-		<a class="item" [class.active]="router.isActive('/search/explore-course') || router.isActive('/explore-course')"
-			*ngIf="!router.isActive('', true)" routerLink="explore-course">
+		<a class="item"
+			[class.active]="router.isActive('/search/explore-course') || router.isActive('/explore-course')"
+			*ngIf="!router.isActive('', true)"
+			routerLink="explore-course"
+			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" >
 			{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
 		<span class="item divider">|</span>
-		<a class="item font-weight-bold primary-color" href="/resources">
+		<a class="item font-weight-bold primary-color"
+		  href="/resources" appTelemetryInteract [telemetryInteractEdata]="signInIntractEdata">
 			{{resourceService.frmelmnts?.btn?.signin}}
 		</a>
 	</ng-container>
@@ -76,7 +83,9 @@
 				(click)="showSideBar()" routerLink="/profile">
 				{{resourceService.frmelmnts?.lnk?.profile}}
 			</a>
-			<a class="item logout-btn" (click)="logout()">
+			<a class="item logout-btn"
+				appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
+				(click)="logout()">
 				{{resourceService.frmelmnts?.lnk?.logout}}
 			</a>
 		</ng-container>

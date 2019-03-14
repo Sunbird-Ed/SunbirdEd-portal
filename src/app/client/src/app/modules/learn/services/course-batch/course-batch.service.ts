@@ -45,6 +45,9 @@ export class CourseBatchService {
           }
         }
       };
+      if (requestParam.limit) {
+        option.data.request['limit'] = requestParam.limit;
+      }
       const mentorOrg = this.userService.userProfile.roleOrgMap['COURSE_MENTOR'];
       if (mentorOrg && mentorOrg.includes(this.userService.rootOrgId)) {
         option.data.request.filters['rootOrgId'] = this.userService.rootOrgId;
