@@ -26,14 +26,15 @@
                     </app-batch-card>
                     <ng-template #contentcard>
                         <app-card  appContentDirection [data]="content"
+                            appTelemetryInteract 
+                            [telemetryInteractEdata]="cardIntractEdata" 
+                            [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:'1.0'}"
                             (clickEvent)="playContent($event)"
                             [data]="content" 
                             [customClass]="'mr-20'"
-                            [telemetryInteractEdata]="cardIntractEdata"
                             class="pr-20 d-block" [class.last-card]="pr-0">
                         </app-card>
                     </ng-template>
-
                 </div>
             </ngx-slick>
         </div>
@@ -42,4 +43,3 @@
         <div class="ui divider m-0"></div>
     </div>
 </div>
-
