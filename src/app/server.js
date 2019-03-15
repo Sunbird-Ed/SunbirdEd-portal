@@ -62,6 +62,9 @@ app.all('/logoff', endSession, (req, res) => {
 // health check api
 app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth)
 
+// check portal health and return 200
+app.get('/service/health', healthService.createAndValidateRequestBody, healthService.checkSunbirdPortalHealth)
+
 // client app routes
 require('./routes/googleSignInRoutes.js')(app, keycloak)
 
