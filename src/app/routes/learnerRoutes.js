@@ -13,13 +13,11 @@ module.exports = function (app) {
   // helper route to enable enable admin to update user fields
   app.patch('/learner/portal/user/v1/update',
     proxyUtils.verifyToken(),permissionsHelper.checkPermission(),
-    // proxy(envHelper.learner_Service_Local_BaseUrl, {
-    proxy(learnerURL, {
+    proxy(envHelper.learner_Service_Local_BaseUrl, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
       proxyReqPathResolver: (req) => {
         console.log('calling user update');
-        // return '/private/user/v1/update';
-        return '/api/user/private/v1/update';
+        return '/private/user/v1/update';
       }
   }))
   // Generate telemetry fot proxy service
