@@ -60,7 +60,6 @@ module.exports = function (app) {
     }))
 
   app.all('/learner/*',
-    healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
     proxyUtils.verifyToken(),
     permissionsHelper.checkPermission(),
     proxy(learnerURL, {
