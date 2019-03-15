@@ -267,7 +267,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
         duration: this.navigationhelperService.getPageLoadTime()
       }
     };
-    console.log('this.telemetryImpression', this.telemetryImpression);
+    console.log('this.telemetryImpression', JSON.parse(JSON.stringify(this.telemetryImpression)));
   }
   private setNoResultMessage() {
     this.noResultMessage = {

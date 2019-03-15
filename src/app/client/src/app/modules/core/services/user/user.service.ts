@@ -338,12 +338,9 @@ export class UserService {
    */
   public startSession(): void {
     const options = this.getFingerPrintOptions();
-    const httpOptions: HttpOptions = {
-      headers: this.publicDataService.getHeader(),
-    };
     Fingerprint2.getV18(options, (result) => {
       const url = `/v1/user/session/start/${result}`;
-      this.http.get(url, httpOptions).subscribe();
+      this.http.get(url).subscribe();
     });
   }
 
