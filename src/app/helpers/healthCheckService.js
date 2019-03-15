@@ -11,7 +11,7 @@ var envHelper = require('./environmentVariablesHelper.js')
 var cassandra = require('cassandra-driver')
 var fs = require('fs');
 var path = require('path');
-const dateFormat = require('dateformat')
+var dateFormat = require('dateformat')
 var contactPoints = envHelper.PORTAL_CASSANDRA_URLS
 var hcMessages = {
   LEARNER_SERVICE: {
@@ -43,7 +43,7 @@ function getHealthCheckObj(name, healthy, err, errMsg) {
 };
 
 // Function help to get health check response
-function getHealthCheckResp(rsp, healthy, checksArrayObj) {
+function getHealthCheckResp (rsp, healthy, checksArrayObj) {
   rsp.result = {}
   rsp.result.name = hcMessages.NAME
   rsp.result.version = hcMessages.API_VERSION
@@ -52,7 +52,7 @@ function getHealthCheckResp(rsp, healthy, checksArrayObj) {
   return rsp
 }
 
-function createAndValidateRequestBody(req, res, next) {
+function createAndValidateRequestBody (req, res, next) {
   req.body = req.body || {}
   req.body.ts = new Date()
   req.body.url = req.url
@@ -72,7 +72,7 @@ function createAndValidateRequestBody(req, res, next) {
   req.rspObj = rspObj
   next()
 }
-function successResponse(data) {
+function successResponse (data) {
   var response = {}
   response.id = data.apiId
   response.ver = data.apiVersion
@@ -83,7 +83,7 @@ function successResponse(data) {
   return response
 }
 
-function getParams(msgId, status, errCode, msg) {
+function getParams (msgId, status, errCode, msg) {
   var params = {}
   params.resmsgid = uuidv1()
   params.msgid = msgId || null
@@ -94,7 +94,7 @@ function getParams(msgId, status, errCode, msg) {
   return params
 }
 
-function checkCassandraDBHealth(callback) {
+function checkCassandraDBHealth (callback) {
   const client = new cassandra.Client({ contactPoints: contactPoints })
   client.connect()
     .then(function () {
@@ -107,7 +107,7 @@ function checkCassandraDBHealth(callback) {
       callback(err, false)
     })
 }
-function contentServiceHealthCheck(callback) {
+function contentServiceHealthCheck (callback) {
   var options = {
     method: 'GET',
     url: envHelper.content_Service_Local_BaseUrl + '/health',
@@ -124,7 +124,7 @@ function contentServiceHealthCheck(callback) {
     }
   })
 }
-function learnerServiceHealthCheck(callback) {
+function learnerServiceHealthCheck (callback) {
   var options = {
     method: 'GET',
     url: envHelper.learner_Service_Local_BaseUrl + '/health',
@@ -145,7 +145,7 @@ function learnerServiceHealthCheck(callback) {
  * @param {Object} req
  * @param {Object} response
  */
-function checkHealth(req, response) {
+function checkHealth (req, response) {
   var rspObj = req.rspObj
   var checksArrayObj = []
   var isCSHealthy
@@ -224,7 +224,7 @@ function checkHealth(req, response) {
  * @param {Object} req
  * @param {Object} response
  */
-function checkSunbirdPortalHealth(req, response) {
+function checkSunbirdPortalHealth (req, response) {
   fs.readFile(path.join(__dirname, '../client/src/assets/health-check.json'), (err, data) => {
     if (data) {
       var rspObj = req.rspObj
@@ -234,7 +234,12 @@ function checkSunbirdPortalHealth(req, response) {
   });
 }
 
-function checkDependantServiceHealth(dependancyServices) {
+/**
+ * This function helps to check health of all dependency services of poratal and returns
+ * 503 error if any service is down
+ * @param {Array} dependancyServices
+ */
+function checkDependantServiceHealth (dependancyServices) {
   return function (req, res, next) {
     if (envHelper.sunbird_portal_health_check_enabled === 'false') {
       next()
