@@ -235,7 +235,7 @@ function checkSunbirdPortalHealth (req, response) {
 }
 
 /**
- * This function helps to check health of all dependency services of poratal and returns
+ * This function helps to check health of all dependency services of portal and returns
  * 503 error if any service is down
  * @param {Array} dependancyServices
  */
