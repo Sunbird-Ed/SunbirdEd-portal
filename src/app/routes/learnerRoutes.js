@@ -6,17 +6,20 @@ const telemetryHelper = require('../helpers/telemetryHelper.js')
 const reqDataLimitOfContentUpload = '50mb'
 const proxy = require('express-http-proxy')
 const configHelper = require('../helpers/configServiceSDKHelper.js')
+const healthService = require('../helpers/healthCheckService.js')
 
 module.exports = function (app) {
 
   // helper route to enable enable admin to update user fields
   app.patch('/learner/portal/user/v1/update',
     proxyUtils.verifyToken(),permissionsHelper.checkPermission(),
-    proxy(envHelper.learner_Service_Local_BaseUrl, {
+    // proxy(envHelper.learner_Service_Local_BaseUrl, {
+    proxy(learnerURL, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
       proxyReqPathResolver: (req) => {
         console.log('calling user update');
-        return '/private/user/v1/update';
+        // return '/private/user/v1/update';
+        return '/api/user/private/v1/update';
       }
   }))
   // Generate telemetry fot proxy service
@@ -41,10 +44,6 @@ module.exports = function (app) {
       }
     }))
 
-  app.post('/learner/user/v1/create', function (req, res, next) {
-    next()
-  })
-
   app.all('/learner/data/v1/role/read',
     proxyUtils.verifyToken(),
     permissionsHelper.checkPermission(),
@@ -63,6 +62,7 @@ module.exports = function (app) {
     }))
 
   app.all('/learner/*',
+    healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
     proxyUtils.verifyToken(),
     permissionsHelper.checkPermission(),
     proxy(learnerURL, {
