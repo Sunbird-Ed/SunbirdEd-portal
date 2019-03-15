@@ -33,7 +33,7 @@ var hcMessages = {
   API_VERSION: '1.0'
 }
 // Function return to get health check object
-function getHealthCheckObj(name, healthy, err, errMsg) {
+function getHealthCheckObj (name, healthy, err, errMsg) {
   return {
     name: name,
     healthy: healthy,
