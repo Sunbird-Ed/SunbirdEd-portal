@@ -11,6 +11,7 @@ var envHelper = require('./environmentVariablesHelper.js')
 var cassandra = require('cassandra-driver')
 var fs = require('fs');
 var path = require('path');
+var dateFormat = require('dateformat')
 var contactPoints = envHelper.PORTAL_CASSANDRA_URLS
 var hcMessages = {
   LEARNER_SERVICE: {
@@ -233,6 +234,51 @@ function checkSunbirdPortalHealth (req, response) {
   });
 }
 
+/**
+ * This function helps to check health of all dependency services of portal and returns 503 error if any service is down
+ * @param {Array} dependancyServices
+ */
+function checkDependantServiceHealth (dependancyServices) {
+  return function (req, res, next) {
+    if (envHelper.sunbird_portal_health_check_enabled === 'false') {
+      next()
+    } else {
+      var heathyServiceCount = 0
+      dependancyServices.forEach(service => {
+        if (service === 'LEARNER' && envHelper.sunbird_learner_service_health_status === 'true') {
+          heathyServiceCount++
+        } else if (service === 'CONTENT' && envHelper.sunbird_content_service_health_status === 'true') {
+          heathyServiceCount++
+        } else if (service === 'CASSANDRA' && envHelper.sunbird_portal_cassandra_db_health_status === 'true') {
+          heathyServiceCount++
+        }
+      });
+
+      if (dependancyServices.length !== heathyServiceCount) {
+        res.status(503)
+        res.send({
+          'id': 'api.error',
+          'ver': '1.0',
+          'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
+          'params': {
+            'resmsgid': uuidv1(),
+            'msgid': null,
+            'status': 'failed',
+            'err': 'SERVICE_UNAVAILABLE',
+            'errmsg': 'Service is unavailable'
+          },
+          'responseCode': 'SERVICE_UNAVAILABLE',
+          'result': {}
+        })
+        res.end()
+      } else {
+        next()
+      }
+    }
+  }
+}
+
 module.exports.checkHealth = checkHealth
 module.exports.createAndValidateRequestBody = createAndValidateRequestBody
 module.exports.checkSunbirdPortalHealth = checkSunbirdPortalHealth
+module.exports.checkDependantServiceHealth = checkDependantServiceHealth
