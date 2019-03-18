@@ -64,6 +64,9 @@
       ],
       "moment": [
         "../node_modules/moment/min/moment.min.js"
+      ],
+      "@sunbird/player-helper": [
+        "app/modules/player-helper"
       ]
     },
     "module": "es2015",

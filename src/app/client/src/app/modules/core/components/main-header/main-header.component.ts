@@ -246,6 +246,14 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     };
   }
 
+  getLogoutInteractEdata() {
+    return {
+      id: 'logout',
+      type: 'click',
+      pageid: this.router.url.split('/')[1]
+    };
+  }
+
   logout() {
     window.location.replace('/logoff');
     this.cacheService.removeAll();
