@@ -189,7 +189,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
       this.showLoader = false;
       this.noResult = true;
       this.noResultMessage = {
-        'messageText': this.resourceService.messages.fmsg.m0077
+        'messageText': 'messages.fmsg.m0077'
       };
       this.toasterService.error(this.resourceService.messages.fmsg.m0051);
     });
@@ -205,15 +205,15 @@ export class ViewAllComponent implements OnInit, OnDestroy {
       } else {
         this.noResult = true;
         this.noResultMessage = {
-          'message': this.resourceService.messages.stmsg.m0007,
-          'messageText': this.resourceService.messages.stmsg.m0006
+          'message': 'messages.stmsg.m0007',
+          'messageText': 'messages.stmsg.m0006'
         };
       }
     }, (error) => {
       this.showLoader = false;
       this.noResult = true;
       this.noResultMessage = {
-        'messageText': this.resourceService.messages.fmsg.m0077
+        'messageText': 'messages.fmsg.m0077'
       };
       this.toasterService.error(this.resourceService.messages.fmsg.m0051);
     });

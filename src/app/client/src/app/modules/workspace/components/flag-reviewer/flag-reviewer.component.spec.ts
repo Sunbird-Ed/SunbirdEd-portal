@@ -28,7 +28,8 @@ describe('FlagReviewerComponent', () => {
         'm0008': 'no-results',
         'm0033': 'You dont have any content for review...'
       }
-    }
+    },
+    languageSelected$: observableOf({})
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');

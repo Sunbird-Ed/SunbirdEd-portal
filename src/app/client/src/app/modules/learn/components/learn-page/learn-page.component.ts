@@ -1,9 +1,10 @@
 
 import {combineLatest, of, Subject } from 'rxjs';
 import { PageApiService, CoursesService, ISort, PlayerService, FormService } from '@sunbird/core';
-import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
 import {
-  ResourceService, ServerResponse, ToasterService, ICaraouselData, ConfigService, UtilService, INoResultMessage, BrowserCacheTtlService
+  ResourceService, ServerResponse, ToasterService, ICaraouselData, ConfigService, UtilService, INoResultMessage,
+  BrowserCacheTtlService, NavigationHelperService
 } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -14,7 +15,7 @@ import { takeUntil, map, mergeMap, first, filter, catchError, tap, delay } from 
 @Component({
   templateUrl: './learn-page.component.html'
 })
-export class LearnPageComponent implements OnInit, OnDestroy {
+export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public showLoader = true;
   public noResultMessage: INoResultMessage;
@@ -42,7 +43,8 @@ export class LearnPageComponent implements OnInit, OnDestroy {
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
     public router: Router, private utilService: UtilService, public coursesService: CoursesService,
     private playerService: PlayerService, private cacheService: CacheService,
-    private browserCacheTtlService: BrowserCacheTtlService, public formService: FormService) {
+    private browserCacheTtlService: BrowserCacheTtlService, public formService: FormService,
+    public navigationhelperService: NavigationHelperService) {
     this.redirectUrl = this.configService.appConfig.courses.inPageredirectUrl;
     this.filterType = this.configService.appConfig.courses.filterType;
     this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
@@ -246,6 +248,13 @@ export class LearnPageComponent implements OnInit, OnDestroy {
   }
   private setTelemetryData() {
     this.inViewLogs = [];
+    this.sortIntractEdata = {
+      id: 'sort',
+      type: 'click',
+      pageid: 'course-page'
+    };
+  }
+  ngAfterViewInit () {
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
@@ -254,19 +263,16 @@ export class LearnPageComponent implements OnInit, OnDestroy {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         uri: this.router.url,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        duration: this.navigationhelperService.getPageLoadTime()
       }
     };
-    this.sortIntractEdata = {
-      id: 'sort',
-      type: 'click',
-      pageid: 'course-page'
-    };
+    console.log('this.telemetryImpression', JSON.parse(JSON.stringify(this.telemetryImpression)));
   }
   private setNoResultMessage() {
     this.noResultMessage = {
-      'message': _.get(this.resourceService, 'messages.stmsg.m0007') || 'No results found',
-      'messageText': _.get(this.resourceService, 'messages.stmsg.m0006') || 'Please search for something else.'
+      'message': 'messages.stmsg.m0007',
+      'messageText': 'messages.stmsg.m0006'
     };
   }
 }
