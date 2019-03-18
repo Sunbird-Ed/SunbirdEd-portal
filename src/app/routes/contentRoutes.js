@@ -13,6 +13,7 @@ module.exports = (app) => {
         telemetryHelper.generateTelemetryForProxy)
 
     app.all('/content/*',
+        healthService.checkDependantServiceHealth(['CONTENT', 'CASSANDRA']),
         proxyUtils.verifyToken(),
         permissionsHelper.checkPermission(),
         proxy(contentURL, {

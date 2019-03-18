@@ -16,7 +16,6 @@ module.exports = function (app) {
     proxy(envHelper.learner_Service_Local_BaseUrl, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
       proxyReqPathResolver: (req) => {
-        console.log('calling user update');
         return '/private/user/v1/update';
       }
   }))
@@ -60,6 +59,7 @@ module.exports = function (app) {
     }))
 
   app.all('/learner/*',
+    healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
     proxyUtils.verifyToken(),
     permissionsHelper.checkPermission(),
     proxy(learnerURL, {
