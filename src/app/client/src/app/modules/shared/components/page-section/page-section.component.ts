@@ -16,45 +16,33 @@ import { DOCUMENT } from '@angular/platform-browser';
   styleUrls: ['./page-section.component.scss']
 })
 export class PageSectionComponent implements OnInit, OnDestroy {
-  inviewLogs = [];
-  cardIntractEdata: IInteractEventEdata;
+
+  inViewLogs = [];
+
+  cardInteractEdata: IInteractEventEdata;
+
   refresh = true;
-  @ViewChild('slickModal') slickModal;
-  /**
-  * section is used to render ICaraouselData value on the view
-  */
+
   @Input() section: ICaraouselData;
 
   @Input() cardType: string;
-  /**
-  * section is used to render ICaraouselData value on the view
-  */
+
   @Output() playEvent = new EventEmitter<any>();
-  /**
-  * section is used to render ICaraouselData value on the view
-  */
+
   @Output() visits = new EventEmitter<any>();
 
   @Output() viewAll = new EventEmitter<any>();
 
-  public config: ConfigService;
-
   private resourceDataSubscription: Subscription;
 
-  /**
-  * This is slider setting
-  */
   slideConfig: object = {};
 
-  /**The previous or next value of the button clicked
-   * to generate interact telemetry data */
-  btnArrow: string;
   pageid: string;
-  constructor(config: ConfigService, public activatedRoute: ActivatedRoute,
-    public resourceService: ResourceService, private cdr: ChangeDetectorRef) {
-    this.resourceService = resourceService;
-    this.config = config;
-  }
+
+  constructor(public config: ConfigService, public activatedRoute: ActivatedRoute, public resourceService: ResourceService,
+    private cdr: ChangeDetectorRef) {
+      this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
+    }
   playContent(event) {
     event.section = this.section.name;
     this.playEvent.emit(event);
@@ -65,10 +53,9 @@ export class PageSectionComponent implements OnInit, OnDestroy {
     this.resourceDataSubscription = this.resourceService.languageSelected$.subscribe(item => {
       this.selectedLanguageTranslation(item.value);
     });
-    const id = _.get(this.activatedRoute, 'snapshot.data.telemetry.env');
-    this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
-    if (id && this.pageid) {
-      this.cardIntractEdata = {
+    this.updateContentViewed();
+    if (this.pageid) {
+      this.cardInteractEdata = {
         id: this.cardType === 'batch' ? 'batch-card' : 'content-card',
         type: 'click',
         pageid: this.pageid
@@ -102,14 +89,16 @@ export class PageSectionComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
     this.refresh = true;
   }
-  /**
-   * get inviewChange
-  */
-  inviewChange(contentList, event) {
+  handleAfterChange(event) {
+    if (event.currentSlide) {
+      this.updateContentViewed();
+    }
+  }
+  updateContentViewed() {
     const visits = [];
-    const slideData = contentList;
+    const slideData: any = this.section.contents;
     _.forEach(slideData, (slide, key) => {
-      const content = _.find(this.inviewLogs, (eachContent) => {
+      const content = _.find(this.inViewLogs, (eachContent) => {
         if (slide.metaData.courseId) {
           return eachContent.metaData.courseId === slide.metaData.courseId;
         } else if (slide.metaData.identifier) {
@@ -118,19 +107,12 @@ export class PageSectionComponent implements OnInit, OnDestroy {
       });
       if (content === undefined) {
         slide.section = this.section.name;
-        this.inviewLogs.push(slide);
+        this.inViewLogs.push(slide);
         visits.push(slide);
       }
     });
     if (visits.length > 0) {
       this.visits.emit(visits);
-    }
-  }
-  checkSlide(event) {
-    if (event.currentSlide < event.nextSlide) {
-      this.btnArrow = 'next-button';
-    } else if (event.currentSlide > event.nextSlide) {
-      this.btnArrow = 'prev-button';
     }
   }
   navigateToViewAll(section) {

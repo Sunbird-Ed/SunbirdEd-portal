@@ -55,18 +55,11 @@ describe('PageSectionComponent', () => {
     expect(fixture.nativeElement.querySelector('.pageSection-count')).toEqual(null);
   });
   it('should call inviewChange method for visits data', () => {
-    component.section = { name: 'courseTest', length: 1 };
-    spyOn(component, 'inviewChange').and.callThrough();
-    component.inviewChange(Response.slideContentList, Response.slideEventData);
-    expect(component.inviewChange).toHaveBeenCalled();
-    expect(component.inviewLogs).toBeDefined();
-  });
-  it('should call checkSlide method for interact data', () => {
-    component.section = { name: 'courseTest', length: 1 };
-    spyOn(component, 'checkSlide').and.callThrough();
-    component.checkSlide(Response.slide2EventData);
-    console.log('checkslide 2: ', component.checkSlide(Response.slide2EventData));
-    expect(component.checkSlide).toHaveBeenCalled();
+    component.section = { name: 'courseTest', length: 1 , contents: []};
+    spyOn(component, 'handleAfterChange').and.callThrough();
+    component.handleAfterChange({});
+    expect(component.handleAfterChange).toHaveBeenCalled();
+    expect(component.inViewLogs).toBeDefined();
   });
   it('should call playContent', () => {
     spyOn(component, 'playContent').and.callThrough();
