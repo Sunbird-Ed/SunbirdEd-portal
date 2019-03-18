@@ -5,6 +5,7 @@ const contentURL = envHelper.CONTENT_URL
 const telemetryHelper = require('../helpers/telemetryHelper.js')
 const reqDataLimitOfContentUpload = '50mb'
 const proxy = require('express-http-proxy')
+const healthService = require('../helpers/healthCheckService.js')
 
 module.exports = (app) => {
     // Generate telemetry fot proxy service

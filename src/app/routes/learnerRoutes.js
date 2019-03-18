@@ -6,6 +6,7 @@ const telemetryHelper = require('../helpers/telemetryHelper.js')
 const reqDataLimitOfContentUpload = '50mb'
 const proxy = require('express-http-proxy')
 const configHelper = require('../helpers/configServiceSDKHelper.js')
+const healthService = require('../helpers/healthCheckService.js')
 
 module.exports = function (app) {
 
@@ -40,10 +41,6 @@ module.exports = function (app) {
         return JSON.stringify(data)
       }
     }))
-
-  app.post('/learner/user/v1/create', function (req, res, next) {
-    next()
-  })
 
   app.all('/learner/data/v1/role/read',
     proxyUtils.verifyToken(),
