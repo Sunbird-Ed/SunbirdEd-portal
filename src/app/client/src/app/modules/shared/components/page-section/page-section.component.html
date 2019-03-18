@@ -3,32 +3,28 @@
         <div class="d-flex flex-ai-center">
             <h4 class="ui header m-0 mr-5 pageSection-heading">{{section.name}}</h4>
             <span class="ui primary label pageSection-count">{{section.count}}</span>
-            <button appTelemetryInteract [telemetryInteractEdata]="{id:'viewall-button' , type:'click' ,pageid:pageid , extra : {section: section.name}}" class="sb-btn sb-btn-xs sb-btn-secondary ml-auto" *ngIf="section.count > 10 && section.name != 'My Courses' " type="button" (click)="navigateToViewAll(section)">{{ resourceService.frmelmnts.lnk.viewall}}</button>
+            <button appTelemetryInteract
+                [telemetryInteractEdata]="{id:'viewall-button' , type:'click' ,pageid:pageid , extra : {section: section.name}}"
+                class="sb-btn sb-btn-xs sb-btn-secondary ml-auto"
+                *ngIf="section.count > 10 && section.name != 'My Courses' " type="button"
+                (click)="navigateToViewAll(section)">{{ resourceService.frmelmnts.lnk.viewall}}</button>
         </div>
-        <div class="pageSection-Slider">
-            <ngx-slick 
-                (afterChange)="inviewChange(section.contents,$event)" 
-                (beforeChange)="checkSlide($event)" 
-                appTelemetryInteract  
-                [telemetryInteractEdata]="{id: btnArrow === undefined ? 'prev-button' : btnArrow , type: 'click', pageid: pageid, extra: { section: section.name}}" 
-                class="carousel" 
-                #slickModal="slick-modal" 
-                [config]="slideConfig">
+        <div *ngIf="refresh" class="pageSection-Slider">
+            <ngx-slick (afterChange)="inviewChange(section.contents,$event)" (beforeChange)="checkSlide($event)"
+                [config]="slideConfig" appTelemetryInteract
+                [telemetryInteractEdata]="{id: btnArrow === undefined ? 'prev-button' : btnArrow , type: 'click', pageid: pageid, extra: { section: section.name}}"
+                class="carousel" #slickModal="slick-modal">
                 <div ngxSlickItem *ngFor="let content of section.contents" class="pr-20">
-                    <app-batch-card appTelemetryInteract 
-                        [telemetryInteractEdata]="cardIntractEdata"  
-                        [telemetryInteractObject]="{id:content.metaData.identifier}" 
-                        *ngIf="cardType && cardType === 'batch' else contentcard" [batch]="content" 
+                    <app-batch-card appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"
+                        [telemetryInteractObject]="{id:content.metaData.identifier}"
+                        *ngIf="cardType && cardType === 'batch' else contentcard" [batch]="content"
                         (clickEvent)="playContent($event)">
                     </app-batch-card>
                     <ng-template #contentcard>
-                        <app-card  appContentDirection [data]="content"
-                            appTelemetryInteract 
-                            [telemetryInteractEdata]="cardIntractEdata" 
+                        <app-card appContentDirection [data]="content" appTelemetryInteract
+                            [telemetryInteractEdata]="cardIntractEdata"
                             [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:'1.0'}"
-                            (clickEvent)="playContent($event)"
-                            [data]="content" 
-                            [customClass]="'mr-20'"
+                            (clickEvent)="playContent($event)" [data]="content" [customClass]="'mr-20'"
                             class="pr-20 d-block" [class.last-card]="pr-0">
                         </app-card>
                     </ng-template>
@@ -40,4 +36,3 @@
         <div class="ui divider m-0"></div>
     </div>
 </div>
-

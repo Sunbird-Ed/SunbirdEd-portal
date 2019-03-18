@@ -1,10 +1,10 @@
 import { ActivatedRoute } from '@angular/router';
-import { ResourceService, ConfigService } from '../../services/index';
-import { Component,  Input, EventEmitter, Output , OnDestroy, Inject, ViewChild} from '@angular/core';
-import {ICaraouselData} from '../../interfaces/caraouselData';
+import { ResourceService, ConfigService } from '../../services';
+import { Component, Input, EventEmitter, Output, OnDestroy, Inject, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { ICaraouselData } from '../../interfaces';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import * as _ from 'lodash';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Subscription } from 'rxjs';
 import { DOCUMENT } from '@angular/platform-browser';
 /**
@@ -18,7 +18,7 @@ import { DOCUMENT } from '@angular/platform-browser';
 export class PageSectionComponent implements OnInit, OnDestroy {
   inviewLogs = [];
   cardIntractEdata: IInteractEventEdata;
-
+  refresh = true;
   @ViewChild('slickModal') slickModal;
   /**
   * section is used to render ICaraouselData value on the view
@@ -26,7 +26,6 @@ export class PageSectionComponent implements OnInit, OnDestroy {
   @Input() section: ICaraouselData;
 
   @Input() cardType: string;
-
   /**
   * section is used to render ICaraouselData value on the view
   */
@@ -51,8 +50,8 @@ export class PageSectionComponent implements OnInit, OnDestroy {
    * to generate interact telemetry data */
   btnArrow: string;
   pageid: string;
-  constructor(config: ConfigService, public activatedRoute: ActivatedRoute, public resourceService: ResourceService,
-    @Inject(DOCUMENT) private _document: any) {
+  constructor(config: ConfigService, public activatedRoute: ActivatedRoute,
+    public resourceService: ResourceService, private cdr: ChangeDetectorRef) {
     this.resourceService = resourceService;
     this.config = config;
   }
@@ -61,6 +60,8 @@ export class PageSectionComponent implements OnInit, OnDestroy {
     this.playEvent.emit(event);
   }
   ngOnInit() {
+    this.slideConfig = this.cardType === 'batch' ? this.config.appConfig.CourseBatchPageSection
+      .slideConfig : this.config.appConfig.CoursePageSection.slideConfig;
     this.resourceDataSubscription = this.resourceService.languageSelected$.subscribe(item => {
       this.selectedLanguageTranslation(item.value);
     });
@@ -75,16 +76,14 @@ export class PageSectionComponent implements OnInit, OnDestroy {
     }
   }
   selectedLanguageTranslation(data) {
-    this.slideConfig = this.cardType === 'batch' ? this.config.appConfig.CourseBatchPageSection
-    .slideConfig : this.config.appConfig.CoursePageSection.slideConfig;
-    if (data === 'ur') {
+    if (data === 'ur' && !this.slideConfig['rtl']) {
       this.slideConfig['rtl'] = true;
+      this.reInitSlick();
+    } else if (data !== 'ur' && this.slideConfig['rtl']) {
+      this.slideConfig['rtl'] = false;
+      this.reInitSlick();
     } else {
       this.slideConfig['rtl'] = false;
-    }
-    if (this.slickModal) {
-      this.slickModal.unslick();
-      this.slickModal.initSlick(this.slideConfig);
     }
     try {
       if (this.section.name !== 'My Courses') {
@@ -97,6 +96,11 @@ export class PageSectionComponent implements OnInit, OnDestroy {
       }
     } catch (err) {
     }
+  }
+  reInitSlick() {
+    this.refresh = false;
+    this.cdr.detectChanges();
+    this.refresh = true;
   }
   /**
    * get inviewChange
