@@ -9,9 +9,9 @@ const exec = require('child_process').exec
 const brotli = require('gulp-brotli');
 
 // To download editors
-const contentEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/content-editor-iframe-1.14.2.zip'
-const collectionEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/collection-editor-iframe-1.14.2.zip'
-const genericEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/generic-editor-iframe-1.14.2.zip'
+const contentEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/content-editor-iframe-1.15.0.zip'
+const collectionEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/collection-editor-iframe-1.15.0.zip'
+const genericEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/generic-editor-iframe-1.15.0.zip'
 const editorsDestPath = 'client/src/thirdparty/editors/'
 
 gulp.task('clean:editors', () => {
