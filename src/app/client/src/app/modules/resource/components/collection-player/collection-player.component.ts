@@ -10,6 +10,7 @@ import {
   ToasterService, ResourceService, ContentData, ContentUtilsServiceService, ITelemetryShare, ConfigService
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import * as TreeModel from 'tree-model';
 
 @Component({
   selector: 'app-collection-player',

@@ -25,5 +25,3 @@ interface JQuery {
   DataTable(options?: any);
 }
 
-// TreeModel helps to manipulate and traverse through the tree model.
-declare const TreeModel: any;
