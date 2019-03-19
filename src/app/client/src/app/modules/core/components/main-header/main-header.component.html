@@ -154,28 +154,7 @@
       <!--/Language Dropdown-->
     </div>
   </div>
-  <!--/Computer-->
-  <!--Mobile-->
-  <div class="p-10 mobile only" *ngIf="showExploreHeader || userService.loggedIn">
-    <div class="ui mobile-view container d-flex flex-jc-space-between mx-0">
-
-      <!--QR Button-->
-      <button class="ui button qr-code-btn d-flex flex-ai-center" appTelemetryInteract [telemetryInteractEdata]="enterDialCodeInteractEdata"
-        (click)="showQrmodal = true;">
-        <i class="qrcode icon d-flex flex-ai-center"></i>
-        <span class="d-flex flex-ai-center">
-          {{resourceService.frmelmnts?.lbl?.enterQrCode}}
-        </span>
-      </button>
-      <!--/QR Button-->
-
-      <!--Language Dropdown-->
-      <app-language-dropdown *ngIf="!router.isActive('workspace', false)">
-      </app-language-dropdown>
-      <!--/Language Dropdown-->
-
-    </div>
-  </div>
   <!--/Mobile-->
+  
   <!--/Header Blue Section-->
 </div>
