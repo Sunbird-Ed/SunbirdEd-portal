@@ -2,6 +2,7 @@ import { ConfigService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import * as _ from 'lodash';
 import { PlayerConfig } from '@sunbird/shared';
+import { environment } from '@sunbird/environment';
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html'
@@ -35,7 +36,9 @@ export class PlayerComponent implements OnInit, OnChanges {
    * Emits event when content starts playing and end event when content was played/read completely
    */
   showPlayer() {
-    const iFrameSrc = this.configService.appConfig.PLAYER_CONFIG.baseURL + '&build_number=' + this.buildNumber;
+    const src = environment.isOffline ? this.configService.appConfig.PLAYER_CONFIG.localBaseUrl
+      : this.configService.appConfig.PLAYER_CONFIG.baseURL;
+    const iFrameSrc = src + '&build_number=' + this.buildNumber;
     setTimeout(() => {
       this.contentIframe.nativeElement.src = iFrameSrc;
       this.contentIframe.nativeElement.onload = () => {
