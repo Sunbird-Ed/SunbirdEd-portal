@@ -216,7 +216,6 @@ export class UserService {
     organisationIds = _.uniq(organisationIds);
     this._userProfile = profileData;
     this._userProfile.userRoles = _.uniq(userRoles);
-    console.warn(this._userProfile.userRoles);
     this._userProfile.orgRoleMap = orgRoleMap;
     this._userProfile.organisationIds = organisationIds;
     this._userProfile.hashTagIds = _.uniq(hashTagIds);
