@@ -149,7 +149,7 @@ gulp.task('offline-client:dist', (cb) => {
 })
 
 gulp.task('install-player', (cb) => {
-    exec('npm install  @project-sunbird/content-player', { maxBuffer: Infinity }, function (err, stdout, stderr) {
+    exec('npm install  @project-sunbird/content-player --no-save', { maxBuffer: Infinity }, function (err, stdout, stderr) {
         console.log(stdout)
         console.log(stderr)
         cb(err)
