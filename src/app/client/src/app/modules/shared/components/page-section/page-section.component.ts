@@ -50,8 +50,9 @@ export class PageSectionComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.updateSlick();
-    this.slideConfig = this.cardType === 'batch' ? this.config.appConfig.CourseBatchPageSection
-      .slideConfig : this.config.appConfig.CoursePageSection.slideConfig;
+    this.slideConfig = this.cardType === 'batch'
+      ? _.cloneDeep(this.config.appConfig.CourseBatchPageSection.slideConfig)
+      : _.cloneDeep(this.config.appConfig.CoursePageSection.slideConfig);
     this.resourceDataSubscription = this.resourceService.languageSelected$.subscribe(item => {
       this.selectedLanguageTranslation(item.value);
     });
