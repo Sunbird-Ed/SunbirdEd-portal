@@ -56,7 +56,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
       });
     this.getLoggedInUserDetails();
   }
-
   getLoggedInUserDetails() {
     this.userService.userData$.subscribe(
       (user: IUserData) => {
