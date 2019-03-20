@@ -16,7 +16,7 @@
     "build-cdn": "ng build --prod",
     "build-offline": "ng build --project offline --deployUrl dist/ --c=offline && mv ../dist/index.html ../dist/index.ejs",
     "start-offline": "nodemon  --exec 'npm run build-offline'",
-    "build-offine-prod": "ng build --project offline --deployUrl dist/ --c=offlineProduction && mv ../dist/index.html ../dist/index.ejs"
+    "build-offline-prod": "ng build --project offline --deployUrl dist/ --c=offlineProduction && mv ../dist/index.html ../dist/index.ejs"
   },
   "nodemonConfig": {
     "ext": "png,jpeg,js,ts,html,json,css,scss"
