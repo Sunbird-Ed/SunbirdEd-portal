@@ -18,7 +18,7 @@
     </div>
     <!--/Header-->
     <!--Content-->
-    <div class="sb-pageSection-content">
+    <div *ngIf="refresh" class="sb-pageSection-content">
         <ngx-slick (afterChange)="handleAfterChange($event)" appTelemetryInteract
             [telemetryInteractEdata]="{id: 'slick-nav', type: 'click', pageid: pageid, extra: { section: section.name}}"
             class="carousel" #slickModal="slick-modal" [config]="slideConfig">

@@ -75,9 +75,15 @@ export class PageSectionComponent implements OnInit, OnDestroy {
   selectedLanguageTranslation(data) {
     if (data === 'ur' && !this.slideConfig['rtl']) { // other language to urdu
       this.slideConfig['rtl'] = true;
+      this.contentList = [];
+      this.updateSlick();
+      this.maxSlide = 0;
       this.reInitSlick();
     } else if (data !== 'ur' && this.slideConfig['rtl']) { // urdu to other language
       this.slideConfig['rtl'] = false;
+      this.contentList = [];
+      this.updateSlick();
+      this.maxSlide = 0;
       this.reInitSlick();
     } else { // other language to other language
       this.slideConfig['rtl'] = false;
