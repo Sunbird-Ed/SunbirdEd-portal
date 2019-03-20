@@ -16,8 +16,6 @@ import { DOCUMENT } from '@angular/platform-browser';
 })
 export class PageSectionComponent implements OnInit, OnDestroy {
 
-  inViewLogs = [];
-
   cardInteractEdata: IInteractEventEdata;
 
   refresh = true;
@@ -38,6 +36,10 @@ export class PageSectionComponent implements OnInit, OnDestroy {
 
   pageid: string;
 
+  contentList = [];
+
+  maxSlide = 0;
+
   constructor(public config: ConfigService, public activatedRoute: ActivatedRoute, public resourceService: ResourceService,
     private cdr: ChangeDetectorRef) {
       this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
@@ -47,12 +49,12 @@ export class PageSectionComponent implements OnInit, OnDestroy {
     this.playEvent.emit(event);
   }
   ngOnInit() {
+    this.updateSlick();
     this.slideConfig = this.cardType === 'batch' ? this.config.appConfig.CourseBatchPageSection
       .slideConfig : this.config.appConfig.CoursePageSection.slideConfig;
     this.resourceDataSubscription = this.resourceService.languageSelected$.subscribe(item => {
       this.selectedLanguageTranslation(item.value);
     });
-    this.updateContentViewed();
     if (this.pageid) {
       this.cardInteractEdata = {
         id: this.cardType === 'batch' ? 'batch-card' : 'content-card',
@@ -61,14 +63,23 @@ export class PageSectionComponent implements OnInit, OnDestroy {
       };
     }
   }
+  updateSlick() {
+    if (this.contentList.length && this.contentList.length < this.section.contents.length) {
+      const upperLimit = _.get(this.config, 'appConfig.CoursePageSection.slideConfig.slidesToScroll') || 4;
+      this.contentList.push(...this.section.contents.slice(this.contentList.length, this.contentList.length + upperLimit));
+    } else if (this.contentList.length === 0) {
+      const upperLimit = (_.get(this.config, 'appConfig.CoursePageSection.slideConfig.slidesToScroll') || 4) * 2 - 1;
+      this.contentList.push(...this.section.contents.slice(0, upperLimit));
+    }
+  }
   selectedLanguageTranslation(data) {
-    if (data === 'ur' && !this.slideConfig['rtl']) {
+    if (data === 'ur' && !this.slideConfig['rtl']) { // other language to urdu
       this.slideConfig['rtl'] = true;
       this.reInitSlick();
-    } else if (data !== 'ur' && this.slideConfig['rtl']) {
+    } else if (data !== 'ur' && this.slideConfig['rtl']) { // urdu to other language
       this.slideConfig['rtl'] = false;
       this.reInitSlick();
-    } else {
+    } else { // other language to other language
       this.slideConfig['rtl'] = false;
     }
     try {
@@ -89,26 +100,15 @@ export class PageSectionComponent implements OnInit, OnDestroy {
     this.refresh = true;
   }
   handleAfterChange(event) {
-    if (event.currentSlide) {
-      this.updateContentViewed();
+    if (event.currentSlide > this.maxSlide) {
+      this.maxSlide = event.currentSlide;
+      this.updateSlick();
     }
   }
   updateContentViewed() {
-    const visits = [];
-    const slideData: any = this.section.contents;
-    _.forEach(slideData, (slide, key) => {
-      const content = _.find(this.inViewLogs, (eachContent) => {
-        if (slide.metaData.courseId) {
-          return eachContent.metaData.courseId === slide.metaData.courseId;
-        } else if (slide.metaData.identifier) {
-          return eachContent.metaData.identifier === slide.metaData.identifier;
-        }
-      });
-      if (content === undefined) {
-        slide.section = this.section.name;
-        this.inViewLogs.push(slide);
-        visits.push(slide);
-      }
+    const visits = _.map(this.contentList, content => {
+      content.section = this.section.name;
+      return content;
     });
     if (visits.length > 0) {
       this.visits.emit(visits);
@@ -118,6 +118,7 @@ export class PageSectionComponent implements OnInit, OnDestroy {
     this.viewAll.emit(section);
   }
   ngOnDestroy() {
+    this.updateContentViewed();
     if (this.resourceDataSubscription) {
       this.resourceDataSubscription.unsubscribe();
     }
