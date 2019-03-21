@@ -7,6 +7,7 @@ import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
+import * as $ from 'jquery';
 import * as moment from 'moment';
 import { Subject, combineLatest } from 'rxjs';
 @Component({

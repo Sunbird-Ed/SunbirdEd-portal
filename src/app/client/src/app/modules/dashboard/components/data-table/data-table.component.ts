@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, AfterViewInit, AfterViewChecked } from '@angular/core';
+import * as $ from 'jquery';
 import 'datatables.net';
 @Component({
     selector: 'app-data-table',

@@ -12,6 +12,7 @@ import { environment } from '@sunbird/environment';
 import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest, of, throwError } from 'rxjs';
 import { skipWhile, map, mergeMap, tap, delay, first } from 'rxjs/operators';
+import * as jQuery from 'jquery';
 jQuery.fn.iziModal = iziModal;
 enum state {
   UP_FOR_REVIEW = 'upForReview',

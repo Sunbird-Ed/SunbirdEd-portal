@@ -10,6 +10,7 @@ import { WorkSpaceService } from '../../../services';
 import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest, of, throwError } from 'rxjs';
 import { map, mergeMap, tap, delay, first } from 'rxjs/operators';
+import * as jQuery from 'jquery';
 jQuery.fn.iziModal = iziModal;
 
 /**
