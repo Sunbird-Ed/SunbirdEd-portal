@@ -133,7 +133,7 @@
       "progress": "progress"
     }
   },
-  "CourseBatchPageSection":{
+  "CourseBatchPageSection": {
     "slickSize": 10,
     "slideConfig": {
       "slidesToShow": 4,
@@ -693,7 +693,8 @@
       "webm": "video/webm",
       "xUrl": "text/x-url"
     },
-    "baseURL": "/content/preview/preview.html?webview=true"
+    "baseURL": "/content/preview/preview.html?webview=true",
+    "localBaseUrl": "/contentPlayer/preview.html?webview=true"
   },
   "WORKSPACE": {
     "PAGE_LIMIT": 9,
@@ -732,7 +733,7 @@
       "allcontent",
       "collaborating-on"
     ],
-    "courseBatch":{
+    "courseBatch": {
       "PAGE_LIMIT": 12
     },
     "Draft": {
@@ -959,7 +960,7 @@
       }
     }
   },
-  "DASHBOARD":{
+  "DASHBOARD": {
     "PAGE_LIMIT": 200
   },
   "CONTENT_CONST": {
@@ -1225,7 +1226,7 @@
       "doc": "sb-icon-doc"
     }
   },
-  "mediumCode":{
+  "mediumCode": {
     "english": "en",
     "hindi": "hi",
     "telugu": "te",
@@ -1239,5 +1240,5 @@
     "gujarati": "gu",
     "punjabi": "pa",
     "oriya": "or"
-   }
+  }
 }

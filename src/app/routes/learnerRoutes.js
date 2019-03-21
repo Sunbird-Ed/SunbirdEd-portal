@@ -6,6 +6,7 @@ const telemetryHelper = require('../helpers/telemetryHelper.js')
 const reqDataLimitOfContentUpload = '50mb'
 const proxy = require('express-http-proxy')
 const configHelper = require('../helpers/configServiceSDKHelper.js')
+const healthService = require('../helpers/healthCheckService.js')
 
 module.exports = function (app) {
 
@@ -15,7 +16,6 @@ module.exports = function (app) {
     proxy(envHelper.learner_Service_Local_BaseUrl, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
       proxyReqPathResolver: (req) => {
-        console.log('calling user update');
         return '/private/user/v1/update';
       }
   }))
@@ -41,10 +41,6 @@ module.exports = function (app) {
       }
     }))
 
-  app.post('/learner/user/v1/create', function (req, res, next) {
-    next()
-  })
-
   app.all('/learner/data/v1/role/read',
     proxyUtils.verifyToken(),
     permissionsHelper.checkPermission(),
@@ -63,6 +59,7 @@ module.exports = function (app) {
     }))
 
   app.all('/learner/*',
+    healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
     proxyUtils.verifyToken(),
     permissionsHelper.checkPermission(),
     proxy(learnerURL, {
@@ -78,8 +75,12 @@ module.exports = function (app) {
         }
       },
       userResDecorator: (proxyRes, proxyResData, req, res) => {
-        const data = JSON.parse(proxyResData.toString('utf8'));
-        if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+        try {
+            const data = JSON.parse(proxyResData.toString('utf8'));
+            if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+        } catch(err) {
+            console.log('content api user res decorator json parse error', proxyResData);
+        }
         return proxyResData;
       }
     }))

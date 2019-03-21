@@ -1,15 +1,12 @@
 
-import {takeUntil} from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { NotesService } from '../../services';
 import { UserService } from '@sunbird/core';
-import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnChanges, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
-import { NgModel } from '@angular/forms';
-import { NgIf } from '@angular/common';
 import { INoteData, IdDetails } from '@sunbird/notes';
-
 import { Subject } from 'rxjs';
-
+import { Markdown } from './../../../../../assets/libs/pagedown-core/pagedown';
 /**
  * This component provides the editor popup to create and update notes.
  */

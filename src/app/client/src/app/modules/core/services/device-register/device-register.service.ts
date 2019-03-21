@@ -4,6 +4,7 @@ import { ConfigService, RequestParam,  HttpOptions} from '@sunbird/shared';
 import * as moment from 'moment';
 import { UUID } from 'angular2-uuid';
 import { HttpClient } from '@angular/common/http';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class DeviceRegisterService {
   private appId: string;
   private deviceId: string;
   private deviceRegisterApi: string;
-  constructor(public publicDataService: PublicDataService,
+  constructor(public deviceDetectorService: DeviceDetectorService, public publicDataService: PublicDataService,
     private configService: ConfigService, private http: HttpClient) {
 
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
@@ -28,6 +29,7 @@ export class DeviceRegisterService {
   }
   registerDevice(channel: string, deviceId?: string) {
     console.log('calling registerDevice');
+    const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     this.deviceId = (<HTMLInputElement>document.getElementById('deviceId'))
     && (<HTMLInputElement>document.getElementById('deviceId')).value;
     const data = {
@@ -38,6 +40,14 @@ export class DeviceRegisterService {
         msgid: UUID.UUID()
       },
       request: {
+        did: this.deviceId,
+        uaspec: {
+          agent: deviceInfo.browser,
+          ver: deviceInfo.browser_version,
+          system: deviceInfo.os_version,
+          platform: deviceInfo.os,
+          raw: deviceInfo.userAgent
+        },
         channel: channel
       }
     };
