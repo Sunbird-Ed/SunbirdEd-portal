@@ -1,3 +1,68 @@
+.sb-treePicker {
+    display: flex;
+
+    .sb-treePicker-selectionSection {
+        width: 400px;
+        border-right: 1px solid #ccc;
+
+        .sb-search-box {
+            width: 392px;
+        }
+    }
+
+    .sb-treePicker-selectedSection {
+        width: 282px;
+        padding: 8px;
+    }
+
+    .tree,
+    .list {
+        .node {
+            .add.icon:before,
+            .minus.icon:before {
+                font-size: 11px;
+                line-height: 11px;
+                border-radius: 4px;
+                border: 1px solid ;
+                height: 15px;
+                width: 15px;
+                padding: 2px;
+                color: $primary-200;
+                border-color: $primary-200;
+            }
+            .square,
+            .minus,
+            .checkmark {
+                display: none;
+            }
+            &.opened,
+            &.childless {
+                .add {
+                    display: none;
+                }
+                .square {
+                    
+                }
+            }
+        }
+    }
+}
+
+
+
+.ui.tree-picker.modal .tree .node.childless > .head .radio.icon,
+.ui.tree-picker.modal .list .node.childless > .head .radio.icon,
+.ui.tree-picker.modal .tree .node.opened > .head .minus.icon,
+.ui.tree-picker.modal .list .node.opened > .head .minus.icon,
+.ui.tree-picker.modal .tree .node.picked > .head .checkmark.icon,
+.ui.tree-picker.modal .list .node.picked > .head .checkmark.icon {
+    display: inline-block;
+}
+
+
+
+
+
 
 .ui.tree-picker.modal .ui.warning.message .header {
     border-bottom: none;
@@ -56,38 +121,12 @@
     color: #888;
 }
 
-.ui.tree-picker.modal .tree .node > .head .radio.icon,
-.ui.tree-picker.modal .list .node > .head .radio.icon {
-    color: #ddd;
-    display: none;
-}
-
-.ui.tree-picker.modal .tree .node > .head .minus.icon,
-.ui.tree-picker.modal .list .node > .head .minus.icon {
-    display: none;
-}
-
-.ui.tree-picker.modal .tree .node > .head .checkmark.icon,
-.ui.tree-picker.modal .list .node > .head .checkmark.icon {
-    display: none;
-}
-
 .ui.tree-picker.modal .tree .node .content,
 .ui.tree-picker.modal .list .node .content {
     display: none;
     border-left: 1px dotted #ccc;
     margin-left: 9px;
     padding-left: 10px;
-}
-
-.ui.tree-picker.modal .tree .node.childless > .head .add.circle.icon,
-.ui.tree-picker.modal .list .node.childless > .head .add.circle.icon {
-    display: none;
-}
-
-.ui.tree-picker.modal .tree .node.childless > .head .radio.icon,
-.ui.tree-picker.modal .list .node.childless > .head .radio.icon {
-    display: inline-block;
 }
 
 .ui.tree-picker.modal .tree .node.picked > .head .name,
@@ -98,17 +137,6 @@
 .ui.tree-picker.modal .tree .node.picked > .head .checkmark.icon,
 .ui.tree-picker.modal .list .node.picked > .head .checkmark.icon {
     color: #2b9289;
-    display: inline-block;
-}
-
-.ui.tree-picker.modal .tree .node.opened > .head .add.circle.icon,
-.ui.tree-picker.modal .list .node.opened > .head .add.circle.icon {
-    display: none;
-}
-
-.ui.tree-picker.modal .tree .node.opened > .head .minus.icon,
-.ui.tree-picker.modal .list .node.opened > .head .minus.icon {
-    display: inline-block;
 }
 
 .ui.tree-picker.modal .tree .node.disabled,

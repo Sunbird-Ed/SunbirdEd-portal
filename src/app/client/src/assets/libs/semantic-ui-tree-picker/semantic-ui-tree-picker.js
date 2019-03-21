@@ -1,14 +1,92 @@
 var conceptModal;
 (function () {
   $.fn.treePicker = function (options) {
-    var actionButtons, config, count, initialize, initializeNodeList, initializeNodes, loadNodes, modal, nodeClicked, nodeIsPicked, nodes, pickNode, picked, recursiveNodeSearch, renderList, renderTree, showPicked, showSearch, showTree, tabs, unpickNode, updatePickedIds, updatePickedNodes, widget;
+    var actionButtons, config, count, initialize, initializeNodeList, initializeNodes, loadNodes, modal, nodeClicked, nodeIsPicked, nodes, pickNode, picked, recursiveNodeSearch, renderList, renderTree, showPicked, showSearch, showTree, tabs, unpickNode, updatePickedIds, updatePickedNodes, widget, modalTemplate, nodeElementHtml ;
     widget = $(this);
     picked = [];
     nodes = [];
     tabs = {};
     options.noDataMessage = options.noDataMessage ? options.noDataMessage : 'no results';
     $("#" + options.nodeName).length == 0 ? '' : $("#" + options.nodeName).remove();
-    modal = $("<div class=\"sb-modal\"><div id=" + options.nodeName + " class=\"ui tree-picker normal modal visible active\">\n <i class=\"close icon\"></i> <div class=\"sb-modal-header\">\n " + options.name + "\n\n </div> <div class=\"sb-modal-content content\">\n <div class=\"ui grid padded stackable\"> <div class=\"right floated four wide column p-0\"><div class=\"ui mini menu d-inline-flex\">\n <a class=\"active tree item\">\n <i class=\"list icon\"></i> " + options.name + "\n  </a>\n <a class=\"picked item\">\n <i class=\"checkmark icon\"></i>"+ options.selectedText + " " + options.name + "&nbsp<span class=\"count\"></span>\n  </a>\n </div></div></div>\n \n  <div class=\"ui search form\">\n <div class=\"field\">\n  <div class=\"ui icon input\">\n <input type=\"text\" placeholder=\"  "+ options.searchText + "\">\n <i class=\"search icon\"></i>\n </div>\n </div>\n  </div>\n <div class=\"ui warning hidden message\"><div class=\"header\">" + options.noDataMessage + "</div></div> <div class=\"ui active inverted dimmer\"><div class=\"ui text loader\">Loading data</div></div>\n  <div class=\"tree-tab p-15\">\n <div style=\"height: 230px\"></div>\n </div>\n\n <div class=\"search-tab px-20 py-15\">\n  </div>\n\n <div class=\"picked-tab px-20 py-15\">\n    </div>\n  </div>\n  <div class=\"sb-modal-actions\">\n <a class=\"pick-search\"><i class=\"checkmark icon\"></i>" +options.chooseAllText+"</a>\n    <a class=\"unpick-search\"><i class=\"remove icon\"></i> " +  options.removeAllText + "</a>\n <a class=\"unpick-picked\"><i class=\"remove icon\"></i> " +  options.removeAllText + "</a>\n   <button class=\"sb-btn sb-btn-normal sb-btn-primary accept\">" + options.submitButtonText + "</button>\n  <button class=\"sb-btn sb-btn-normal sb-btn-outline-primary close\">" + options.cancelButtonText + "</button>\n    </div>\n</div></div>").modal({
+
+    /*Modal HTML Starts*/
+    modalTemplate = `
+      <div class="sb-modal">
+        <div id="${options.nodeName}" class="ui tree-picker normal modal visible active">
+
+          <!--Header-->
+          <i class="close icon close-modal"></i> 
+          <div class="sb-modal-header">
+            ${options.name}
+          </div> 
+          <!--/Header-->
+
+          <!--Content-->
+          <div class="sb-modal-content">
+            <div class="sb-treePicker">
+
+              <!--Selection Section-->
+              <div class="sb-treePicker-selectionSection">
+
+                <!--Search Box-->
+                <div class="sb-search-box large no-btn">
+                  <div class="input-div relative">
+                    <i class="search icon"></i>
+                    <i class="close icon"></i>
+                    <input class="sb-search-input" type="text" placeholder="${options.searchText}" />
+                  </div>
+                </div>
+                <!--/Search Box-->
+
+                <div class="tree-tab p-15">
+                  <div></div>
+                </div>
+                <div class="search-tab px-20 py-15"></div>
+              </div>
+              <!--/Selection Section-->
+
+              <!--Selected Section-->
+              <div class="sb-treePicker-selectedSection">
+                <div>
+                  ${options.selectedText} ${options.name}
+                  <span class="count"></span>
+                </div>
+                <div class="picked-tab px-20 py-15"></div>
+              </div>
+              <!--/Selected Section-->
+
+            </div>
+          </div>
+          <!--/Content-->
+
+          <!--Actions-->
+          <div class="sb-modal-actions">
+            <a class="pick-search">
+              <i class="checkmark icon"></i>
+              ${options.chooseAllText}
+            </a> 
+            <a class="unpick-search">
+              <i class="remove icon"></i>
+              ${options.removeAllText}
+            </a>
+            <a class="unpick-picked">
+              <i class="remove icon"></i>
+              ${options.removeAllText}
+            </a>
+            <button class="sb-btn sb-btn-normal sb-btn-primary accept">
+              ${options.submitButtonText}
+            </button> 
+            <button class="sb-btn sb-btn-normal sb-btn-outline-primary close close-modal">
+              ${options.cancelButtonText}
+            </button> 
+          </div>
+          <!--/Actions-->
+
+        </div>
+      </div>`;
+    /*Modal HTML Ends*/
+
+    modal = $(modalTemplate).modal({
       duration: 200,
       allowMultiple: true
     });
@@ -80,6 +158,7 @@ var conceptModal;
           return initializeNodes(nodes);
         }
       });
+      /* On click of Done button*/
       $('.sb-modal-actions .accept', modal).on('click', function (e) {
         modal.modal('hide');
         if (config.onSubmit) {
@@ -87,13 +166,14 @@ var conceptModal;
         }
         return widget.html(config.displayFormat(picked));
       });
-      $('.sb-modal-actions .close', modal).on('click', function (e) {
+      /* On click of Close button*/
+      $('.sb-modal-actions .close-modal', modal).on('click', function (e) {
         modal.modal('hide');
         if (config.onClose) {
           config.onClose();
         }
       });
-      $('.tree-picker .close', modal).on('click', function (e) {
+      $('.tree-picker .close-modal', modal).on('click', function (e) {
         modal.modal('hide');
         if (config.onClose) {
           config.onClose();
@@ -114,7 +194,7 @@ var conceptModal;
       $('.menu .picked', modal).on('click', function (e) {
         return showPicked();
       });
-      return $('.search input', modal).on('keyup', function (e) {
+      return $('.sb-search-input', modal).on('keyup', function (e) {
         return showSearch($(this).val());
       });
     };
@@ -135,8 +215,6 @@ var conceptModal;
       var tree;
       updatePickedNodes();
       tree = renderTree(nodes, {
-        height: '230px',
-        overflowY: 'auto'
       });
       tabs.tree.html(tree);
       return initializeNodeList(tree);
@@ -162,11 +240,11 @@ var conceptModal;
       }
     };
     showTree = function () {
-      $('.menu .item', modal).removeClass('active');
-      $('.menu .tree', modal).addClass('active');
+      //$('.menu .item', modal).removeClass('active');
+      //$('.menu .tree', modal).addClass('active');
       tabs.tree.show();
-      tabs.search.hide();
-      tabs.picked.hide();
+     // tabs.search.hide();
+      //tabs.picked.hide();
       return modal.attr('data-mode', 'tree');
     };
     showSearch = function (query) {
@@ -183,13 +261,11 @@ var conceptModal;
         });
         foundNodes = formatedNodes;
         list = renderList(foundNodes, {
-          height: '230px',
-          overflowY: 'auto'
         });
-        $('.menu .item', modal).removeClass('active');
+        //$('.menu .item', modal).removeClass('active');
         tabs.search.show().html(list);
         tabs.tree.hide();
-        tabs.picked.hide();
+        //tabs.picked.hide();
         modal.attr('data-mode', 'search');
         initializeNodeList(list);
         return $('.name', list).each(function () {
@@ -206,14 +282,12 @@ var conceptModal;
     showPicked = function () {
       var list;
       list = renderList(picked, {
-        height: '230px',
-        overflowY: 'auto'
       });
-      $('.menu .item', modal).removeClass('active');
-      $('.menu .picked', modal).addClass('active');
+      //$('.menu .item', modal).removeClass('active');
+      //$('.menu .picked', modal).addClass('active');
       tabs.picked.show().html(list);
-      tabs.tree.hide();
-      tabs.search.hide();
+      //tabs.tree.hide();
+     // tabs.search.hide();
       modal.attr('data-mode', 'picked');
       return initializeNodeListForSelected(list);
     };
@@ -228,7 +302,19 @@ var conceptModal;
         if (config.hidden(node)) {
           continue;
         }
-        nodeElement = $("<div class=\"node\" data-id=\"" + node.id + "\" data-name=\"" + node.name + "\">\n  <div class=\"head " + node.selectable + "\">\n    <i class=\"add circle icon\"></i>\n    <i class=\"minus circle icon\"></i>\n    <i class=\"radio icon\"></i>\n    <a class=\"name\">" + node.name + "</a>\n    <i class=\"checkmark icon\"></i>\n  </div>\n  <div class=\"content\"></div>\n</div>").appendTo(tree);
+        nodeElementHtml = `
+          <div class="node" data-id="${node.id}" data-name="${node.name}">
+            <div class="head ${node.selectable}">
+              <i class="add icon"></i>
+              <i class="minus icon"></i>
+              <i class="square outline icon"></i>
+              <i class="checkmark icon"></i>
+              <a class="name">${node.name}</a>
+            </div>
+            <div class="content"></div>
+          </div>`;
+
+        nodeElement = $(nodeElementHtml).appendTo(tree);
         if (config.disabled(node)) {
           nodeElement.addClass('disabled');
         }
@@ -251,7 +337,17 @@ var conceptModal;
         if (config.hidden(node)) {
           continue;
         }
-        nodeElement = $("<div class=\"node\" data-id=\"" + node.id + "\" data-name=\"" + node.name + "\">\n  <div class=\"head " + node.selectable + "\">\n    <a class=\"name\">" + node.name + "</a>\n    <i class=\"checkmark icon\"></i>\n  </div>\n  <div class=\"content\"></div>\n</div>").appendTo(list);
+
+        nodeElementhtml = `
+          <div class="node" data-id="${node.id}" data-name="${node.name}">
+            <div class="head ${node.selectable}">
+              <i class="checkmark icon"></i>
+              <a class="name">${node.name}</a>
+            </div>  
+            <div class="content"></div>
+          </div>`;
+
+        nodeElement = $(nodeElementhtml).appendTo(list);
         if (config.disabled(node)) {
           nodeElement.addClass('disabled');
         }
@@ -334,6 +430,8 @@ var conceptModal;
         name: node.attr('data-name')
       });
       updatePickedIds();
+      showPicked();
+      $(".node[data-id=" + id + "] .square.outline", modal).addClass('d-none');
       return $(".node[data-id=" + id + "]", modal).addClass('picked');
     };
     unpickNode = function (node) {
@@ -344,6 +442,7 @@ var conceptModal;
         return ("" + n.id) !== ("" + id);
       });
       updatePickedIds();
+      $(".node[data-id=" + id + "] .square.outline", modal).removeClass('d-none');
       return $(".node[data-id=" + id + "]", modal).removeClass('picked');
     };
     nodeIsPicked = function (node) {
@@ -385,4 +484,3 @@ var conceptModal;
   };
 
 }).call(this);
-//# sourceURL=semantic-ui-tree-picker.js
