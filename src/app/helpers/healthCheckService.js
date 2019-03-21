@@ -13,6 +13,7 @@ var fs = require('fs');
 var path = require('path');
 var dateFormat = require('dateformat')
 var contactPoints = envHelper.PORTAL_CASSANDRA_URLS
+var checksArrayObj = []
 var hcMessages = {
   LEARNER_SERVICE: {
     NAME: 'learnerservice.api',
@@ -110,14 +111,19 @@ function checkCassandraDBHealth (callback) {
 function contentServiceHealthCheck (callback) {
   var options = {
     method: 'GET',
-    url: envHelper.content_Service_Local_BaseUrl + '/health',
+    url: envHelper.content_Service_Local_BaseUrl + '/service/health',
     headers: {
       'Content-Type': 'application/json'
     }
   }
   request(options, function (error, response, body) {
-    if (!error && body && body.responseCode === 'OK') {
-      console.log('response', response)
+    try {
+      if (typeof body === 'string') {
+        body = JSON.parse(body)
+      }
+      body.responseCode = body.responseCode.toLowerCase()
+    } catch (err) { }
+    if (!error && body && body.responseCode === 'ok') {
       callback(null, true)
     } else {
       callback(error, false)
@@ -127,13 +133,19 @@ function contentServiceHealthCheck (callback) {
 function learnerServiceHealthCheck (callback) {
   var options = {
     method: 'GET',
-    url: envHelper.learner_Service_Local_BaseUrl + '/health',
+    url: envHelper.learner_Service_Local_BaseUrl + '/service/health',
     headers: {
       'Content-Type': 'application/json'
     }
   }
   request(options, function (error, response, body) {
-    if (!error && body && body.responseCode === 'OK') {
+    try {
+      if (typeof body === 'string') {
+        body = JSON.parse(body)
+      }
+      body.responseCode = body.responseCode.toLowerCase()
+    } catch (err) { }
+    if (!error && body && body.responseCode === 'ok') {
       callback(null, true)
     } else {
       callback(error, false)
@@ -147,7 +159,7 @@ function learnerServiceHealthCheck (callback) {
  */
 function checkHealth (req, response) {
   var rspObj = req.rspObj
-  var checksArrayObj = []
+  checksArrayObj = []
   var isCSHealthy
   var isLSHealthy
   var isDbConnected
@@ -174,7 +186,7 @@ function checkHealth (req, response) {
           envHelper.sunbird_learner_service_health_status = 'false'
           checksArrayObj.push(getHealthCheckObj(hcMessages.LEARNER_SERVICE.NAME,
             isLSHealthy, hcMessages.LEARNER_SERVICE.FAILED_CODE, hcMessages.LEARNER_SERVICE.FAILED_MESSAGE))
-        } else if (res && res.result && res.result.response && res.result.response.healthy) {
+        } else if (res && res === true) {
           isLSHealthy = true
           envHelper.sunbird_learner_service_health_status = 'true'
           checksArrayObj.push(getHealthCheckObj(hcMessages.LEARNER_SERVICE.NAME, isLSHealthy, '', ''))
@@ -194,7 +206,7 @@ function checkHealth (req, response) {
           envHelper.sunbird_content_service_health_status = 'false'
           checksArrayObj.push(getHealthCheckObj(hcMessages.CONTENT_SERVICE.NAME,
             isLSHealthy, hcMessages.CONTENT_SERVICE.FAILED_CODE, hcMessages.CONTENT_SERVICE.FAILED_MESSAGE))
-        } else if (res && res.result && res.result.response && res.result.response.healthy) {
+        } else if (res && res === true) {
           isCSHealthy = true
           envHelper.sunbird_content_service_health_status = 'true'
           checksArrayObj.push(getHealthCheckObj(hcMessages.CONTENT_SERVICE.NAME, isLSHealthy, '', ''))
@@ -268,7 +280,7 @@ function checkDependantServiceHealth (dependancyServices) {
             'errmsg': 'Service is unavailable'
           },
           'responseCode': 'SERVICE_UNAVAILABLE',
-          'result': {}
+          'result': { check: checksArrayObj}
         })
         res.end()
       } else {

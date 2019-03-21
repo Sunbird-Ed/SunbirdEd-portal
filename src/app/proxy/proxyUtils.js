@@ -7,7 +7,7 @@ const _ = require('lodash')
 
 const decorateRequestHeaders = function () {
   return function (proxyReqOpts, srcReq) {
-    var channel = _.get(srcReq, 'session.rootOrghashTagId') || _.get(srcReq, 'headers.X-Channel-Id')
+    var channel = _.get(srcReq, 'session.rootOrghashTagId') || _.get(srcReq, 'headers.X-Channel-Id') || envHelper.DEFAULT_CHANNEL
     if (channel) {
       proxyReqOpts.headers['X-Channel-Id'] = channel
     }
@@ -22,6 +22,7 @@ const decorateRequestHeaders = function () {
     }
     proxyReqOpts.headers.Authorization = 'Bearer ' + sunbirdApiAuthToken
     proxyReqOpts.rejectUnauthorized = false
+    console.log("proxyReqOpts",proxyReqOpts)
     return proxyReqOpts
   }
 }
