@@ -17,4 +17,4 @@ cd ..
 # Gzipping of assets
 ./node_modules/.bin/gulp gzip:editors client:gzip
 mv dist/index.html dist/index.${version}.${build_hash}.ejs
-tar -xf player-dist_${build_hash}.tar.gz dist
+tar -cf player-dist_${build_hash}.tar.gz dist
