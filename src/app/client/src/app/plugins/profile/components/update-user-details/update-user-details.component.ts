@@ -42,16 +42,16 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
     const formControlName = element._element.nativeElement.attributes.getNamedItem('formcontrolname').value;
     let value = '';
     if (e.target.value) {
-     switch (formControlName) {
-       case 'state' : {
-         value = this.selectedState ? this.selectedState.name : '';
-        break;
-       }
-       case 'district' : {
-        value = this.selectedDistrict ? this.selectedDistrict.name : '';
-        break;
-       }
-     }
+      switch (formControlName) {
+        case 'state': {
+          value = this.selectedState ? this.selectedState.name : '';
+          break;
+        }
+        case 'district': {
+          value = this.selectedDistrict ? this.selectedDistrict.name : '';
+          break;
+        }
+      }
     }
     e.target.value = value;
   }
@@ -89,7 +89,7 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
       }
       this.selectedState = locationExist;
       locationExist ? this.userDetailsForm.controls['state'].setValue(locationExist.code) :
-      this.userDetailsForm.controls['state'].setValue('');
+        this.userDetailsForm.controls['state'].setValue('');
     }, err => {
       this.closeModal();
       this.toasterService.error(this.resourceService.messages.emsg.m0016);
@@ -134,7 +134,7 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
       }
       this.selectedDistrict = locationExist;
       locationExist ? this.userDetailsForm.controls['district'].setValue(locationExist.code) :
-      this.userDetailsForm.controls['district'].setValue('');
+        this.userDetailsForm.controls['district'].setValue('');
     }, err => {
       this.closeModal();
       this.toasterService.error(this.resourceService.messages.emsg.m0017);
