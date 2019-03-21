@@ -21,7 +21,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'orgDashboard', component: UsageReportsComponent, canActivate: [AuthGuard],
+    path: 'organization', component: UsageReportsComponent, canActivate: [AuthGuard],
     data: {
       roles: 'dashboardRole',
       telemetry: { env: 'dashboard', pageid: 'org-admin-dashboard', type: 'view' },
@@ -30,8 +30,7 @@ const routes: Routes = [
     }
   },
   {
-    // path: 'orgDashboard/organization/:datasetType/:id/:timePeriod', component: OrganisationComponent,
-    path: 'orgDashboard/organization/creation/:id/:timePeriod', component: OrganisationComponent,
+    path: 'organization/creation/:id/:timePeriod', component: OrganisationComponent,
     data: {
       telemetry: { env: 'profile', pageid: 'org-admin-dashboard', type: 'view' },
       breadcrumbs: [{ label: 'Home', url: '/home' },
