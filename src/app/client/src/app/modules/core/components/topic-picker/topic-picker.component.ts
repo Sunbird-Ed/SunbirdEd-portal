@@ -2,7 +2,9 @@ import { Component, OnInit, Output, Input, EventEmitter, OnDestroy, AfterViewIni
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
 import { ResourceService } from '@sunbird/shared';
-
+import * as $ from 'jquery';
+import * as  treePicker from './../../../../../assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker';
+$.fn.treePicker = treePicker;
 interface TopicTreeNode {
   id: string;
   name: string;
