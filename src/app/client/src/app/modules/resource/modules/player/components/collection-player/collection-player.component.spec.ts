@@ -5,7 +5,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CollectionPlayerComponent } from './collection-player.component';
 import { PlayerService, CoreModule } from '@sunbird/core';
 import { ActivatedRoute } from '@angular/router';
-import { WindowScrollService, SharedModule, ResourceService } from '../../../shared';
+import { WindowScrollService, SharedModule, ResourceService } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
