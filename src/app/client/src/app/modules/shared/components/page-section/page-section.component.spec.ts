@@ -59,7 +59,6 @@ describe('PageSectionComponent', () => {
     spyOn(component, 'handleAfterChange').and.callThrough();
     component.handleAfterChange({});
     expect(component.handleAfterChange).toHaveBeenCalled();
-    expect(component.inViewLogs).toBeDefined();
   });
   it('should call playContent', () => {
     spyOn(component, 'playContent').and.callThrough();
