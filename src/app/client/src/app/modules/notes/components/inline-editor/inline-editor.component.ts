@@ -3,11 +3,9 @@ import {takeUntil} from 'rxjs/operators';
 import { NotesService } from '../../services';
 import { UserService } from '@sunbird/core';
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewEncapsulation, OnDestroy } from '@angular/core';
-import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
-import { NgModel } from '@angular/forms';
-import { NgIf } from '@angular/common';
+import { ResourceService, ToasterService } from '@sunbird/shared';
 import { INoteData, IdDetails } from '@sunbird/notes';
-
+import { Markdown } from './../../../../../assets/libs/pagedown-core/pagedown';
 import { Subject } from 'rxjs';
 
 /**

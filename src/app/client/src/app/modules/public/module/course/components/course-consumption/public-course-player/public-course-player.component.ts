@@ -1,14 +1,15 @@
 import { Subject } from 'rxjs';
-import { takeUntil, first } from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import {
-  ILoaderMessage, ConfigService, ICollectionTreeOptions,
-  ToasterService, ResourceService
+  ILoaderMessage, ConfigService, ICollectionTreeOptions, ToasterService, ResourceService
 } from '@sunbird/shared';
 import { CourseConsumptionService } from '@sunbird/learn';
 import { IImpressionEventInput } from '@sunbird/telemetry';
+import * as TreeModel from 'tree-model';
+
 @Component({
   selector: 'app-public-course-player',
   templateUrl: './public-course-player.component.html',
