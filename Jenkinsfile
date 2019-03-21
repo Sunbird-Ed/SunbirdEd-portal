@@ -46,7 +46,7 @@ node('build-slave') {
                 }
                 stage('Build-CDN') {
                     sh ("docker run --rm -v `pwd`:/work -w /work node:8.11.2-alpine sh ./build-cdn.sh ${params.cdnUrl} ${commit_hash}")
-                    archiveArtifacts "player-dist*.tar.gz"
+                    archiveArtifacts 'src/app/player-dist*.tar.gz'
                 }
             }
 
