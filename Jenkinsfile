@@ -45,7 +45,7 @@ node('build-slave') {
                     error 'cdn url is not defined'
                 }
                 stage('Build-CDN') {
-                    sh ("docker run --rm -v `pwd`:/work -w /work node:8.11.2-alpine sh ./pipelines/player-all/build.sh ${params.cdn}")
+                    sh ("docker run --rm -v `pwd`:/work -w /work node:8.11.2-alpine sh ./build-cdn.sh ${params.cdn}")
                     archiveArtifacts "player-dist*.tar.gz"
                 }
             }
