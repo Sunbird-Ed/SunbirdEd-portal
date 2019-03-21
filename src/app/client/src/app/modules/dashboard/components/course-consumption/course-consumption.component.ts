@@ -162,7 +162,7 @@ export class CourseConsumptionComponent implements OnDestroy {
       if (params.id && params.timePeriod) {
 
         // update the impression event after a course is selected
-        this.telemetryImpression.edata.uri = '/activity/course/consumption/' + params.id + '/' + params.timePeriod;
+        this.telemetryImpression.edata.uri = 'dashboard/activity/course/consumption/' + params.id + '/' + params.timePeriod;
         this.telemetryImpression.object = {
           id: params.id,
           type: 'course',
@@ -242,7 +242,7 @@ export class CourseConsumptionComponent implements OnDestroy {
       if (this.myCoursesList.length === 1) {
         this.identifier = this.myCoursesList[0].identifier;
         this.courseName = this.myCoursesList[0].name;
-        this.route.navigate(['activity/course/consumption', this.identifier, this.timePeriod]);
+        this.route.navigate(['dashboard/activity/course/consumption', this.identifier, this.timePeriod]);
       }
       this.validateIdentifier(this.identifier);
       this.showLoader = false;
@@ -258,7 +258,7 @@ export class CourseConsumptionComponent implements OnDestroy {
             if (data.result.content.length === 1) {
               this.identifier = data.result.content[0].identifier;
               this.courseName = data.result.content[0].name;
-              this.route.navigate(['activity/course/consumption', this.identifier, this.timePeriod]);
+              this.route.navigate(['dashboard/activity/course/consumption', this.identifier, this.timePeriod]);
             } else {
               this.isMultipleCourses = true;
             }
@@ -287,7 +287,7 @@ export class CourseConsumptionComponent implements OnDestroy {
       return false;
     }
 
-    this.route.navigate(['activity/course/consumption', course.identifier, this.timePeriod]);
+    this.route.navigate(['dashboard/activity/course/consumption', course.identifier, this.timePeriod]);
   }
 
   /**
@@ -304,7 +304,7 @@ export class CourseConsumptionComponent implements OnDestroy {
       return false;
     }
 
-    this.route.navigate(['activity/course/consumption', this.identifier, timePeriod]);
+    this.route.navigate(['dashboard/activity/course/consumption', this.identifier, timePeriod]);
   }
 
   /**
@@ -327,7 +327,7 @@ export class CourseConsumptionComponent implements OnDestroy {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: '/myActivity'
+        uri: 'dashboard/myActivity'
       }
     };
   }
