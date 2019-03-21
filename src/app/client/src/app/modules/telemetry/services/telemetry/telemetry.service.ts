@@ -167,7 +167,7 @@ export class TelemetryService {
   /**
    * Feedback 'feedback' telemetry event
    *
-   * @param {ILogEventInput} logEventInput
+   * @param {IFeedBackEventInput} IFeedBackEventInput
    * @memberof TelemetryService
    */
   public feedback(feedbackEventInput: IFeedBackEventInput) {
