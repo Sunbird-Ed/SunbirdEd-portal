@@ -9,7 +9,6 @@ import { environment } from '@sunbird/environment';
 import { EditorService, WorkSpaceService } from '../../../services';
 import { tap, delay, map, first } from 'rxjs/operators';
 import * as _ from 'lodash';
-import * as jQuery from 'jquery';
 jQuery.fn.iziModal = iziModal;
 
 /**

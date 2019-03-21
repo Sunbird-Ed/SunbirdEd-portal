@@ -8,7 +8,6 @@ import { UserService } from '@sunbird/core';
 import { BatchService } from '../../services';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
-import * as $ from 'jquery';
 import * as moment from 'moment';
 @Component({
   selector: 'app-update-batch',
