@@ -38,10 +38,10 @@ node('build-slave') {
             // if toggle enabled; default is false
             // override this variable by creating a jenkins parameter and assign `true`
             def cdnEnable = params.cdnEnable ?: false
-            // If cdn variable is set build; else skip
+            // If cdnEnable variable is set true; else skip
             if (cdnEnable) {
-                // check jenkins parameter cdn
-                if ( ! params.cdn ){
+                // check jenkins parameter cdnUrl
+                if ( ! params.cdnUrl ){
                     error 'cdn url is not defined'
                 }
                 stage('Build-CDN') {
