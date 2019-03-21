@@ -1,4 +1,4 @@
-<div 
+<!-- <div 
     class="ui fluid ui left action input searchbox-inner" 
     id="search-input-container"
     >
@@ -22,4 +22,14 @@
             tabindex="0"
             ></i>
     </button>
+</div> -->
+
+<div class="input-div relative" id="search-input-container">
+  <i class="search icon"></i>
+  <input type="text" id="keyword" name="filter_search" class="sb-search-input" title="{{resourceService.frmelmnts?.lbl?.SearchIn}} {{searchPlaceHolderValue}}"
+    placeholder="{{resourceService.frmelmnts?.lbl?.SearchIn}} {{searchPlaceHolderValue}}" [(ngModel)]="key"
+    (keyup.enter)="onEnter(key)" [disabled]="!showInput" [ngClass]="{'disabled': !showInput }" />
+  <!-- <i class="close icon"></i>
+  <div class="sb-loader"></div> -->
 </div>
+<button class="sb-btn sb-btn-normal" [ngClass]="{'disabled': !showInput }" (click)="onEnter(key)" title="{{resourceService.frmelmnts?.lbl?.SearchIn}} {{searchPlaceHolderValue}}">Search</button>
