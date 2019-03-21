@@ -24,6 +24,8 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
   showDistrictDivLoader = false;
   submitInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
+  selectedState;
+  selectedDistrict;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public profileService: ProfileService, formBuilder: FormBuilder,
@@ -34,6 +36,24 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initializeFormFields();
     this.getState();
+  }
+
+  clearInput(e, element) {
+    const formControlName = element._element.nativeElement.attributes.getNamedItem('formcontrolname').value;
+    let value = '';
+    if (e.target.value) {
+     switch (formControlName) {
+       case 'state' : {
+         value = this.selectedState ? this.selectedState.name : '';
+        break;
+       }
+       case 'district' : {
+        value = this.selectedDistrict ? this.selectedDistrict.name : '';
+        break;
+       }
+     }
+    }
+    e.target.value = value;
   }
 
   initializeFormFields() {
@@ -67,7 +87,7 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
           return locations.code === location.code;
         });
       }
-
+      this.selectedState = locationExist;
       locationExist ? this.userDetailsForm.controls['state'].setValue(locationExist.code) :
       this.userDetailsForm.controls['state'].setValue('');
     }, err => {
@@ -112,7 +132,7 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
           return locations.code === location.code;
         });
       }
-
+      this.selectedDistrict = locationExist;
       locationExist ? this.userDetailsForm.controls['district'].setValue(locationExist.code) :
       this.userDetailsForm.controls['district'].setValue('');
     }, err => {
