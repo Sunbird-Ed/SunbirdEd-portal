@@ -12,6 +12,8 @@ import { CourseConsumptionService, CourseBatchService, CourseProgressService } f
 import { INoteData } from '@sunbird/notes';
 import { IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import * as TreeModel from 'tree-model';
+
 @Component({
   selector: 'app-course-player',
   templateUrl: './course-player.component.html',

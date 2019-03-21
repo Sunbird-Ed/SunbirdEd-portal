@@ -110,7 +110,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     'largeBox': false
   };
 
-  isOffline = environment.isOffline;
+  isOffline: boolean = environment.isOffline;
   /*
   * constructor
   */
