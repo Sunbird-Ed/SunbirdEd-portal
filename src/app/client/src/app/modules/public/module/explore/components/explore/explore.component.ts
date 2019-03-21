@@ -1,7 +1,7 @@
 import { combineLatest, Subject } from 'rxjs';
 import { PageApiService, OrgDetailsService, UserService } from '@sunbird/core';
 import { PublicPlayerService } from './../../../../services';
-import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, HostListener } from '@angular/core';
 import {
   ResourceService, ToasterService, INoResultMessage, ConfigService, UtilService, ICaraouselData, BrowserCacheTtlService
 } from '@sunbird/shared';
@@ -19,7 +19,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
   public showLoginModal = false;
   public baseUrl: string;
   public noResultMessage: INoResultMessage;
-  public carouselData: Array<ICaraouselData> = [];
+  public carouselMasterData: Array<ICaraouselData> = [];
   public filterType: string;
   public queryParams: any;
   public hashTagId: string;
@@ -31,7 +31,14 @@ export class ExploreComponent implements OnInit, OnDestroy {
   public dataDrivenFilterEvent = new EventEmitter();
   public initFilters = false;
   public loaderMessage;
+  public pageSections: Array<ICaraouselData> = [];
 
+  @HostListener('window:scroll', []) onScroll(): void {
+    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
+    && this.pageSections.length < this.carouselMasterData.length) {
+        this.pageSections.push(this.carouselMasterData[this.pageSections.length]);
+    }
+  }
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
     public router: Router, private utilService: UtilService, private orgDetailsService: OrgDetailsService,
@@ -69,14 +76,13 @@ export class ExploreComponent implements OnInit, OnDestroy {
     this.dataDrivenFilterEvent.emit(defaultFilters);
   }
   private fetchContentOnParamChange() {
-    combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
-      .pipe(map((result) => ({ params: result[0], queryParams: result[1] })),
-        filter(({ queryParams }) => !_.isEqual(this.queryParams, queryParams)), // fetch data if queryParams changed
+    combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
         takeUntil(this.unsubscribe$))
-      .subscribe(({ params, queryParams }) => {
+      .subscribe((result) => {
         this.showLoader = true;
-        this.queryParams = { ...queryParams };
-        this.carouselData = [];
+        this.queryParams = { ...result[0], ...result[1] };
+        this.carouselMasterData = [];
+        this.pageSections = [];
         this.fetchPageData();
       });
   }
@@ -109,10 +115,16 @@ export class ExploreComponent implements OnInit, OnDestroy {
     this.pageApiService.getPageData(option)
       .subscribe(data => {
         this.showLoader = false;
-        this.carouselData = this.prepareCarouselData(_.get(data, 'sections'));
+        this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
+        if (this.carouselMasterData.length >= 2) {
+          this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
+        } else if (this.carouselMasterData.length >= 1) {
+          this.pageSections = [this.carouselMasterData[0]];
+        }
       }, err => {
         this.showLoader = false;
-        this.carouselData = [];
+        this.carouselMasterData = [];
+        this.pageSections = [];
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       });
   }

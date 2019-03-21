@@ -34,7 +34,7 @@
             {{resourceService.frmelmnts?.lnk?.profile}}
           </a>
           <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='adminDashboard'
-            routerLink="orgDashboard">
+            routerLink="dashboard/organization">
             {{resourceService.frmelmnts?.lnk?.dashboard}}
           </a>
           <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='announcementRole'
@@ -42,7 +42,7 @@
             {{resourceService.frmelmnts?.lnk?.announcement}}
           </a>
           <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='myActivityRole'
-            routerLink="myActivity">
+            routerLink="dashboard/myActivity">
             {{resourceService.frmelmnts?.lnk?.myactivity}}
           </a>
           <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='orgSetupRole'
