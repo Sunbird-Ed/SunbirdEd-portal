@@ -36,6 +36,7 @@ node('build-slave') {
 
             stage('ArchiveArtifacts') {
                 archiveArtifacts "metadata.json"
+                archiveArtifacts "player-dist.tar.gz"
                 currentBuild.description = "${build_tag}"
             }
         }
