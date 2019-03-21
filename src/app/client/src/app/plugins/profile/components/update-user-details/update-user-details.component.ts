@@ -38,10 +38,9 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
     this.getState();
   }
 
-  clearInput(e, element) {
-    const formControlName = element._element.nativeElement.attributes.getNamedItem('formcontrolname').value;
+  clearInput(event, formControlName) {
     let value = '';
-    if (e.target.value) {
+    if (event.target.value) {
       switch (formControlName) {
         case 'state': {
           value = this.selectedState ? this.selectedState.name : '';
@@ -53,7 +52,7 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
         }
       }
     }
-    e.target.value = value;
+    event.target.value = value;
   }
 
   initializeFormFields() {
