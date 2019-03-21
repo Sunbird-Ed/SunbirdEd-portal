@@ -162,7 +162,7 @@ gulp.task('copy-player', () => {
 })
 
 gulp.task('clean:content-player:modules', (done) => {
-    return gulp.src('.node_modules/@project-sunbird/content-player/node_modules', { read: false })
+    return gulp.src('./node_modules/@project-sunbird/content-player/node_modules', { read: false })
         .pipe(clean())
 })
 
@@ -174,6 +174,5 @@ gulp.task('build-offline', gulpSequence(
     'clean:index:file',
     'install-player',
     'clean:content-player:modules',
-    'copy-player',
-    'client:brotli'
+    'copy-player'
 ))
