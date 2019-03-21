@@ -125,7 +125,7 @@ describe('LearnPageComponent', () => {
     expect(component.enrolledSection.contents.length).toEqual(1);
     expect(component.frameWorkName).toEqual('TPD');
     expect(component.showLoader).toBeFalsy();
-    expect(component.carouselData.length).toEqual(1);
+    expect(component.carouselMasterData.length).toEqual(1);
   }));
   it('should not throw error if fetching frameWork from form service fails', fakeAsync(() => {
     coursesService.initialize();
@@ -136,7 +136,7 @@ describe('LearnPageComponent', () => {
     expect(component.enrolledSection.contents.length).toEqual(1);
     expect(component.frameWorkName).toEqual(undefined);
     expect(component.showLoader).toBeFalsy();
-    expect(component.carouselData.length).toEqual(1);
+    expect(component.carouselMasterData.length).toEqual(1);
   }));
   it('should fetch content after getting hashTagId and filter data and throw error if page api fails', fakeAsync(() => {
     sendPageApi = false;
@@ -147,7 +147,7 @@ describe('LearnPageComponent', () => {
     expect(component.enrolledSection.contents.length).toEqual(1);
     expect(component.frameWorkName).toEqual('TPD');
     expect(component.showLoader).toBeFalsy();
-    expect(component.carouselData.length).toEqual(0);
+    expect(component.carouselMasterData.length).toEqual(0);
     expect(toasterService.error).toHaveBeenCalled();
   }));
   it('should unsubscribe from all observable subscriptions', () => {

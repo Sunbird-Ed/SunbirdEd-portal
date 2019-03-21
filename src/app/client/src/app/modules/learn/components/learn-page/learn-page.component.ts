@@ -1,7 +1,7 @@
 
 import {combineLatest, of, Subject } from 'rxjs';
 import { PageApiService, CoursesService, ISort, PlayerService, FormService } from '@sunbird/core';
-import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit, HostListener } from '@angular/core';
 import {
   ResourceService, ServerResponse, ToasterService, ICaraouselData, ConfigService, UtilService, INoResultMessage,
   BrowserCacheTtlService, NavigationHelperService
@@ -19,7 +19,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public showLoader = true;
   public noResultMessage: INoResultMessage;
-  public carouselData: Array<ICaraouselData> = [];
+  public carouselMasterData: Array<ICaraouselData> = [];
   public filterType: string;
   public queryParams: any;
   public hashTagId: string;
@@ -38,6 +38,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   public enrolledCourses: Array<any>;
   public showBatchInfo = false;
   public selectedCourseBatches: any;
+  public pageSections: Array<ICaraouselData> = [];
 
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
@@ -48,6 +49,12 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.redirectUrl = this.configService.appConfig.courses.inPageredirectUrl;
     this.filterType = this.configService.appConfig.courses.filterType;
     this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+  }
+  @HostListener('window:scroll', []) onScroll(): void {
+    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
+    && this.pageSections.length < this.carouselMasterData.length) {
+        this.pageSections.push(this.carouselMasterData[this.pageSections.length]);
+    }
   }
   ngOnInit() {
     combineLatest(this.fetchEnrolledCoursesSection(), this.getFrameWork()).pipe(first(),
@@ -62,7 +69,6 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
           return of({});
         }
     })).subscribe((filters: any) => {
-      console.log('got enrolled coures');
         this.dataDrivenFilters = filters;
         this.fetchContentOnParamChange();
         this.setNoResultMessage();
@@ -75,18 +81,16 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
     .pipe(
       tap(data => this.prepareVisits([])), // trigger pageexit if last filter resulted 0 contents
-      delay(5), // to trigger telemetry
+      delay(1), // to trigger telemetry
       tap(data => {
         this.showLoader = true;
         this.setTelemetryData();
       }),
-      delay(10), // to show loader
-      map((result) => ({params: result[0], queryParams: result[1]})),
-        filter(({queryParams}) => !_.isEqual(this.queryParams, queryParams)), // fetch data if queryParams changed
-        takeUntil(this.unsubscribe$))
-      .subscribe(({params, queryParams}) => {
-        this.queryParams = { ...queryParams };
-        this.carouselData = [];
+      takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        this.queryParams = { ...result[0], ...result[1] };
+        this.carouselMasterData = [];
+        this.pageSections = [];
         this.fetchPageData();
       });
   }
@@ -109,10 +113,18 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.pageApiService.getPageData(option).pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
         this.showLoader = false;
-        this.carouselData = this.prepareCarouselData(_.get(data, 'sections'));
+        this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
+        if (this.enrolledSection.contents.length) {
+          this.pageSections = [this.carouselMasterData[0]];
+        } else if (!this.enrolledSection.contents.length && this.carouselMasterData.length > 2) {
+          this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
+        } else {
+          this.pageSections = [this.carouselMasterData[0]];
+        }
       }, err => {
         this.showLoader = false;
-        this.carouselData = [];
+        this.carouselMasterData = [];
+        this.pageSections = [];
         this.toasterService.error(this.resourceService.messages.fmsg.m0002);
     });
   }
@@ -181,23 +193,12 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     }));
   }
   public prepareVisits(event) {
-    _.forEach(event, (inView, index) => {
-      if (inView.metaData.identifier) {
-        this.inViewLogs.push({
-          objid: inView.metaData.identifier,
-          objtype: 'course',
-          index: index,
-          section: inView.section,
-        });
-      } else if (inView.metaData.courseId) {
-        this.inViewLogs.push({
-          objid: inView.metaData.courseId,
-          objtype: 'course',
-          index: index,
-          section: inView.section,
-        });
-      }
-    });
+    _.forEach(event, (content, index) => this.inViewLogs.push({
+      objid: content.metaData.courseId ? content.metaData.courseId : content.metaData.identifier,
+      objtype: 'course',
+      index: index,
+      section: content.section,
+    }));
     if (this.telemetryImpression) {
       this.telemetryImpression.edata.visits = this.inViewLogs;
       this.telemetryImpression.edata.subtype = 'pageexit';
@@ -267,7 +268,6 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
         duration: this.navigationhelperService.getPageLoadTime()
       }
     };
-    console.log('this.telemetryImpression', JSON.parse(JSON.stringify(this.telemetryImpression)));
   }
   private setNoResultMessage() {
     this.noResultMessage = {
