@@ -64,7 +64,6 @@ var conceptModal;
 
           <!--Actions-->
           <div class="sb-modal-actions">
-            <!--
             <a class="pick-search">
               <i class="checkmark icon"></i>
               ${options.chooseAllText}
@@ -72,7 +71,7 @@ var conceptModal;
             <a class="unpick-search">
                 <i class="remove icon"></i>
                 ${options.removeAllText}
-            </a>-->
+            </a>
             <button class="sb-btn sb-btn-normal sb-btn-primary accept">
               ${options.submitButtonText}
             </button> 
