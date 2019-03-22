@@ -46,7 +46,7 @@ var conceptModal;
 
               <!--Selected Section-->
               <div class="sb-treePicker-selectedSection">
-                <div class="d-flex">
+                <div class="d-flex flex-ai-center">
                   ${options.selectedText} ${options.name}
                   <span class="count ml-5"></span>
                   <button class="unpick-picked ml-auto sb-btn sb-btn-outline-error sb-btn-xs sb-left-icon-btn">
@@ -98,9 +98,9 @@ var conceptModal;
       picked: $('.picked-tab', modal)
     };
     actionButtons = {
-      pickSearch: $('.sb-modal-actions .pick-search', modal),
-      unpickSearch: $('.sb-modal-actions .unpick-search', modal),
-      unpickPicked: $('.sb-modal-actions .unpick-picked', modal)
+      pickSearch: $('.pick-search', modal),
+      unpickSearch: $('.unpick-search', modal),
+      unpickPicked: $('.unpick-picked', modal)
     };
     config = {
       childrenKey: 'nodes',
@@ -276,6 +276,7 @@ var conceptModal;
           return $(this).html(name);
         });
       } else {
+        tabs.search.hide();
         return showTree();
       }
     };
