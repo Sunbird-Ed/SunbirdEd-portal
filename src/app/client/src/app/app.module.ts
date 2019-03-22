@@ -17,6 +17,7 @@ import { CacheService } from 'ng2-cache-service';
 import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storage/cache-storage-abstract.service';
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import { PluginModules } from './framework.config';
 @NgModule({
   declarations: [
     AppComponent
@@ -32,8 +33,9 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     WebExtensionModule.forRoot(),
     TelemetryModule.forRoot(),
     DeviceDetectorModule.forRoot(),
-    PublicModule,
     SharedFeatureModule,
+    ...PluginModules,
+    PublicModule,
     AppRoutingModule // don't add any module below this because it contains wildcard route
   ],
   entryComponents: [AppComponent],

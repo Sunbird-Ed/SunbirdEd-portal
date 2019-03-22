@@ -125,7 +125,7 @@ describe('PublicCourseComponent', () => {
     expect(component.frameWorkName).toEqual('TPD');
     // expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
-    expect(component.carouselData.length).toEqual(1);
+    expect(component.carouselMasterData.length).toEqual(1);
   });
   it('should not navigate to landing page if fetching frameWork from form service fails and data driven filter returns data', () => {
     sendFormApi = false;
@@ -135,7 +135,7 @@ describe('PublicCourseComponent', () => {
     expect(component.frameWorkName).toEqual(undefined);
     // expect(component.dataDrivenFilters).toEqual({});
     expect(component.showLoader).toBeFalsy();
-    expect(component.carouselData.length).toEqual(1);
+    expect(component.carouselMasterData.length).toEqual(1);
   });
   it('should fetch content after getting hashTagId and filter data and throw error if page api fails', () => {
     sendPageApi = false;
@@ -146,7 +146,7 @@ describe('PublicCourseComponent', () => {
     expect(component.frameWorkName).toEqual('TPD');
     // expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
-    expect(component.carouselData.length).toEqual(0);
+    expect(component.carouselMasterData.length).toEqual(0);
     expect(toasterService.error).toHaveBeenCalled();
   });
   it('should unsubscribe from all observable subscriptions', () => {

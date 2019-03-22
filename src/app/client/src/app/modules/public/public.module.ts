@@ -8,7 +8,6 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GetComponent } from './components/get/get.component';
 import { DialCodeComponent } from './components/dial-code/dial-code.component';
-import { PublicFooterComponent } from './components/public-footer/public-footer.component';
 import { PublicPlayerService, LandingpageGuard } from './services';
 import { SharedModule } from '@sunbird/shared';
 import { PublicRoutingModule } from './public-routing.module';
@@ -31,8 +30,7 @@ import { BadgingModule } from '@sunbird/badge';
     DeviceDetectorModule,
     BadgingModule
   ],
-  declarations: [LandingPageComponent, GetComponent, DialCodeComponent,
-    PublicFooterComponent],
+  declarations: [LandingPageComponent, GetComponent, DialCodeComponent],
   providers: [PublicPlayerService, DeviceDetectorService, LandingpageGuard]
 })
 export class PublicModule { }

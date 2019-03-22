@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { GetComponent } from './components/get/get.component';
 import { DialCodeComponent } from './components/dial-code/dial-code.component';
-import { PublicFooterComponent } from './components/public-footer/public-footer.component';
 import { LandingPageComponent } from './components';
 import { LandingpageGuard } from './services';
 import { environment } from '@sunbird/environment';
@@ -24,6 +23,7 @@ if (environment.isOffline) {
   };
 }
 const routes: Routes = [
+  rootRoute,
   {
     path: 'get', component: GetComponent, data: {
       telemetry: {
@@ -66,7 +66,7 @@ const routes: Routes = [
     path: 'play', loadChildren: './module/player/player.module#PlayerModule'
   }
 ];
-routes.unshift(rootRoute);
+
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
