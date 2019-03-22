@@ -136,7 +136,7 @@ describe('CourseConsumptionComponent', () => {
     const response = component.onAfterCourseChange(courseDetails);
     fixture.detectChanges();
     expect(component.isMultipleCourses).toBeFalsy();
-    expect(route.navigate).toHaveBeenCalledWith(['activity/course/consumption', courseDetails.identifier, '7d']);
+    expect(route.navigate).toHaveBeenCalledWith(['dashboard/activity/course/consumption', courseDetails.identifier, '7d']);
   }));
 
   it('should call onAfterFilterChange function - but should not change time period', inject([Router], (route) => {
@@ -155,7 +155,7 @@ describe('CourseConsumptionComponent', () => {
     const response = component.onAfterFilterChange('14d');
     fixture.detectChanges();
     expect(response).toBeFalsy();
-    expect(route.navigate).toHaveBeenCalledWith(['activity/course/consumption', component.identifier, '14d']);
+    expect(route.navigate).toHaveBeenCalledWith(['dashboard/activity/course/consumption', component.identifier, '14d']);
   }));
 
   it('should call onAfterCourseChange function - but should not load graph', inject([Router], (route) => {
@@ -195,7 +195,7 @@ describe('CourseConsumptionComponent', () => {
       searchService._searchedContentList = testData.searchSuccess.result;
       component.myCoursesList = testData.searchSuccess.result.content;
       component.getMyContent();
-      expect(route.navigate).toHaveBeenCalledWith(['activity/course/consumption', component.identifier, '7d']);
+      expect(route.navigate).toHaveBeenCalledWith(['dashboard/activity/course/consumption', component.identifier, '7d']);
       expect(component.showLoader).toEqual(false);
     }));
 
