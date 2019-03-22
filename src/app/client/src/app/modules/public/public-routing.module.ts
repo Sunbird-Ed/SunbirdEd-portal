@@ -23,6 +23,7 @@ if (environment.isOffline) {
   };
 }
 const routes: Routes = [
+  rootRoute,
   {
     path: 'get', component: GetComponent, data: {
       telemetry: {
@@ -65,7 +66,7 @@ const routes: Routes = [
     path: 'play', loadChildren: './module/player/player.module#PlayerModule'
   }
 ];
-routes.unshift(rootRoute);
+
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
