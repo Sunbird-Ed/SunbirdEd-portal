@@ -231,16 +231,17 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   resolved(captchaResponse: string) {
-    if (captchaResponse) {
-      this.onSubmitSignUpForm();
-    }
     const newResponse = captchaResponse
       ? `${captchaResponse.substr(0, 7)}...${captchaResponse.substr(-7)}`
       : captchaResponse;
     this.captchaResponse += `${JSON.stringify(newResponse)}\n`;
+    if (this.captchaResponse) {
+      this.onSubmitSignUpForm();
+    }
   }
 
   onSubmitSignUpForm() {
+    this.disableSubmitBtn = true;
     this.generateOTP();
   }
 
