@@ -307,4 +307,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
     }
     return contentType;
   }
+  getCreatorName(name) {
+    return name.replace(/null/ig, '');
+  }
 }
