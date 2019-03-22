@@ -19,8 +19,12 @@
     }
 
     .sb-treePicker-selectedSection {
-        width: 282px;
-        padding: 8px;
+        width: 267px;
+        padding: 8px 16px;
+    }
+
+    .count {
+        color: #00C786;
     }
 
     .tree,
@@ -31,6 +35,7 @@
             .icon,
             .name {
                 cursor: pointer;
+                vertical-align: middle;
             }
 
             .add.icon:before,
@@ -47,48 +52,63 @@
                 border-color: $primary-200;
                 display: inline-block;
             }
+
             .checkmark:before {
                 color: $white-color;
-                background: $green !important;
-                border-color: $green;
+                background: #00C786 !important;
+                border-color: #00C786;
             }
+
             .square{
-                font-size: 16px;
+                vertical-align: middle;
+                color: $primary-200;
             }
+
             .square,
             .minus,
             .checkmark {
                 display: none;
             }
+
             &.opened>.head{
                 .add {
                     display: none;
                 }
+
                 .minus {
                     display: inline-block;
                 }
             }
-            &.childless .content{
-                .add,
-                .minus {
-                    display: none;
+
+            &.childless {
+                .head {
+                    .square {
+                        display: inline-block;
+                    }
+                    .add {
+                        display: none;
+                    }
                 }
-                .square {
-                    display: inline-block;
+                .content{
+                    .add,
+                    .minus {
+                        display: none;
+                    }
                 }
+
             }
+
             &.picked {
                 .checkmark {
                     display: inline-block;
                 }
-                .name {
-                    color: $green;
-                }
             }
+
             .name {
                 color: #333;
                 cursor: pointer;
             }
+
             .content {
                 display: none;
                 border-left: 1px dotted #ccc;
@@ -101,33 +121,16 @@
             }
 
             .search-query {
-                background: #ffdc72;
+                background: $secondary-color;
             }
         }
     }
-}
+    .tree {
+        .picked {
+            .name {
+                color: #00C786;
+            }
 
-.ui.tree-picker.modal .actions .pick-search,
-.ui.tree-picker.modal .actions .unpick-search,
-.ui.tree-picker.modal .actions .unpick-picked {
-    color: #2b9289;
-    cursor: pointer;
-    float: left;
-    display: none;
-    margin-top: 8px;
-    margin-right: 25px;
-}
-
-.ui.tree-picker.modal .actions .unpick-search,
-.ui.tree-picker.modal .actions .unpick-picked {
-    color: #932b53;
-}
-
-.ui.tree-picker.modal[data-mode="search"] .actions .pick-search,
-.ui.tree-picker.modal[data-mode="search"] .actions .unpick-search {
-    display: inline-block;
-}
-
-.ui.tree-picker.modal[data-mode="picked"] .actions .unpick-picked {
-    display: inline-block;
+        }
+    }
 }

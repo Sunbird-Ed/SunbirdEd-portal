@@ -46,9 +46,13 @@ var conceptModal;
 
               <!--Selected Section-->
               <div class="sb-treePicker-selectedSection">
-                <div>
+                <div class="d-flex">
                   ${options.selectedText} ${options.name}
-                  <span class="count"></span>
+                  <span class="count ml-5"></span>
+                  <button class="unpick-picked ml-auto sb-btn sb-btn-outline-error sb-btn-xs sb-left-icon-btn">
+                    <i class="trash icon"></i>
+                    ${options.removeAllText}
+                  </button>
                 </div>
                 <div class="picked-tab py-15"></div>
               </div>
@@ -60,18 +64,15 @@ var conceptModal;
 
           <!--Actions-->
           <div class="sb-modal-actions">
+            <!--
             <a class="pick-search">
               <i class="checkmark icon"></i>
               ${options.chooseAllText}
             </a> 
             <a class="unpick-search">
-              <i class="remove icon"></i>
-              ${options.removeAllText}
-            </a>
-            <a class="unpick-picked">
-              <i class="remove icon"></i>
-              ${options.removeAllText}
-            </a>
+                <i class="remove icon"></i>
+                ${options.removeAllText}
+            </a>-->
             <button class="sb-btn sb-btn-normal sb-btn-primary accept">
               ${options.submitButtonText}
             </button> 
@@ -187,12 +188,12 @@ var conceptModal;
       actionButtons.unpickPicked.on('click', function (e) {
         return $('.picked-tab .node.picked .name').trigger('click');
       });
-      $('.menu .tree', modal).on('click', function (e) {
+      /*$('.menu .tree', modal).on('click', function (e) {
         return showTree();
       });
       $('.menu .picked', modal).on('click', function (e) {
         return showPicked();
-      });
+      });*/
       return $('.sb-search-input', modal).on('keyup', function (e) {
         return showSearch($(this).val());
       });
@@ -441,6 +442,7 @@ var conceptModal;
         return ("" + n.id) !== ("" + id);
       });
       updatePickedIds();
+      showPicked();
       $(".node[data-id=" + id + "] .square.outline", modal).removeClass('d-none');
       return $(".node[data-id=" + id + "]", modal).removeClass('picked');
     };
