@@ -8,6 +8,7 @@ import {
   ConfigService, ServerResponse, ContentDetails, PlayerConfig, ContentData, NavigationHelperService
 } from '@sunbird/shared';
 import * as _ from 'lodash';
+import { environment } from '@sunbird/environment';
 
 @Injectable()
 export class PublicPlayerService {
@@ -30,13 +31,13 @@ export class PublicPlayerService {
    * @param {string} id
    * @returns {Observable<{contentId: string, contentData: ContentData }>}
    */
-  getConfigByContent(id: string,  option: any = { }): Observable<PlayerConfig> {
+  getConfigByContent(id: string, option: any = {}): Observable<PlayerConfig> {
     return this.getContent(id).pipe(
       mergeMap((contentDetails) => {
         return observableOf(this.getConfig({
           contentId: contentDetails.result.content.identifier,
           contentData: contentDetails.result.content
-        }, option ));
+        }, option));
       }));
   }
 
@@ -62,19 +63,22 @@ export class PublicPlayerService {
    * @param {ContentDetails} contentDetails
    * @memberof PlayerService
    */
-  getConfig(contentDetails: ContentDetails,  option: any = { }): PlayerConfig {
+  getConfig(contentDetails: ContentDetails, option: any = {}): PlayerConfig {
     const configuration: any = this.configService.appConfig.PLAYER_CONFIG.playerConfig;
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = this.userService.anonymousSid;
     configuration.context.uid = 'anonymous';
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     configuration.context.pdata.ver = buildNumber && buildNumber.value ?
-    buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+      buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     configuration.context.channel = _.get(this.orgDetailsService.orgDetails, 'hashTagId');
     configuration.context.pdata.id = this.userService.appId;
     configuration.metadata = contentDetails.contentData;
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
       {} : contentDetails.contentData.body;
+    if (environment.isOffline) {
+      configuration.data = '';
+    }
     if (option.dialCode) {
       configuration.context.cdata = [{
         id: option.dialCode,
