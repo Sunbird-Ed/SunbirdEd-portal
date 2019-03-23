@@ -6,11 +6,7 @@ import { environment } from '@sunbird/environment';
 
 let rootRoute: any = {
   path: '', component: LandingPageComponent, canActivate: [LandingpageGuard],
-  data: {
-    telemetry: {
-      env: 'public', pageid: 'landing-page', type: 'edit', subtype: 'paginate'
-    }
-  }
+  data: { telemetry: { env: 'public', pageid: 'landing-page', type: 'edit', subtype: 'paginate' } }
 };
 if (environment.isOffline) {
   rootRoute = {
@@ -48,8 +44,7 @@ const routes: Routes = [
   },
   {
     path: 'play', loadChildren: './module/player/player.module#PlayerModule'
-  }
-];
+  }];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
