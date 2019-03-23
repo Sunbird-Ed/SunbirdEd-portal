@@ -8,9 +8,8 @@ import { CommonModule } from '@angular/common';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { PublicModule } from '@sunbird/public';
 import { TelemetryModule } from '@sunbird/telemetry';
-import {SharedFeatureModule} from '@sunbird/shared-feature';
+import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { BootstrapFramework, WebExtensionModule } from '@project-sunbird/web-extensions';
 import { WebExtensionsConfig } from './framework.config';
 import { CacheService } from 'ng2-cache-service';
@@ -35,7 +34,6 @@ import { PluginModules } from './framework.config';
     DeviceDetectorModule.forRoot(),
     SharedFeatureModule,
     ...PluginModules,
-    PublicModule,
     AppRoutingModule // don't add any module below this because it contains wildcard route
   ],
   entryComponents: [AppComponent],

@@ -3,44 +3,37 @@ import { ErrorPageComponent, AuthGuard } from '@sunbird/core';
 import { RouterModule, Routes } from '@angular/router';
 const appRoutes: Routes = [
   {
-    path: 'learn',
-    loadChildren: 'app/modules/learn/learn.module#LearnModule'
+    path: 'learn', loadChildren: 'app/modules/learn/learn.module#LearnModule'
   },
   {
-    path: 'resources',
-    loadChildren: 'app/modules/resource/resource.module#ResourceModule'
+    path: 'resources', loadChildren: 'app/modules/resource/resource.module#ResourceModule'
   },
   {
-    path: 'search',
-    loadChildren: 'app/modules/search/search.module#SearchModule'
+    path: 'search', loadChildren: 'app/modules/search/search.module#SearchModule'
   },
   {
-    path: 'workspace',
-    loadChildren: 'app/modules/workspace/workspace.module#WorkspaceModule'
+    path: 'workspace', loadChildren: 'app/modules/workspace/workspace.module#WorkspaceModule'
   },
   {
-    path: 'home',
-    loadChildren: 'app/modules/home/home.module#HomeModule'
+    path: 'home', loadChildren: 'app/modules/home/home.module#HomeModule'
   },
   {
-    path: 'announcement',
-    loadChildren: 'app/modules/announcement/announcement.module#AnnouncementModule'
+    path: 'announcement', loadChildren: 'app/modules/announcement/announcement.module#AnnouncementModule'
   },
   {
-    path: 'org',
-    loadChildren: 'app/modules/org-management/org-management.module#OrgManagementModule'
+    path: 'org', loadChildren: 'app/modules/org-management/org-management.module#OrgManagementModule'
   },
   {
-    path: 'dashboard',
-    loadChildren: 'app/modules/dashboard/dashboard.module#DashboardModule'
+    path: 'dashboard', loadChildren: 'app/modules/dashboard/dashboard.module#DashboardModule'
   },
   {
-    path: 'error',
-    component: ErrorPageComponent
+    path: '', loadChildren: 'app/modules/public/public.module#PublicModule'
   },
   {
-    path: '**',
-    redirectTo: ''
+    path: 'error', component: ErrorPageComponent
+  },
+  {
+    path: '**', redirectTo: ''
   }
 ];
 
