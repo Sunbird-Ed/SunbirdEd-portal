@@ -2,7 +2,8 @@ import { PermissionDirective, BodyScrollDirective } from './directives';
 import { RouterModule } from '@angular/router';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
+  SuiProgressModule, SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
 import { AvatarModule } from 'ngx-avatar';
@@ -24,7 +25,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
 @NgModule({
   imports: [
     CommonModule,
-    SuiModule,
+    SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
+    SuiRatingModule, SuiCollapseModule,
     SharedModule,
     RouterModule,
     FormsModule,
