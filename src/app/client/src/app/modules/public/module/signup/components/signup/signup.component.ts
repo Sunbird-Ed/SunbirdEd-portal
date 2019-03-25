@@ -259,8 +259,9 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.disableSubmitBtn = false;
       },
       (err) => {
-        const failedgenerateOTPMessage = (err.error.params.status === 'PHONE_ALREADY_IN_USE') ||
-          (err.error.params.status === 'EMAIL_IN_USE') ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0085;
+        const failedgenerateOTPMessage = (_.get(err, 'error.params.status') && err.error.params.status === 'PHONE_ALREADY_IN_USE') ||
+          (_.get(err, 'error.params.status') &&
+          err.error.params.status === 'EMAIL_IN_USE') ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0085;
         this.toasterService.error(failedgenerateOTPMessage);
         this.resetGoogleCaptcha();
         this.disableSubmitBtn = false;
