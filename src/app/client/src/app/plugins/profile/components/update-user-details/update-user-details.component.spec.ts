@@ -98,8 +98,8 @@ describe('UpdateUserDetailsComponent', () => {
     spyOn(component, 'enableSubmitButton');
     component.ngOnInit();
     const name = component.userDetailsForm.controls['name'];
-    name.setValue('@@11');
-    expect(name.errors.pattern).toBeTruthy();
+    name.setValue(' ');
+    expect(name.errors).toBeTruthy();
   });
 
   it('should call get state and get success', () => {
