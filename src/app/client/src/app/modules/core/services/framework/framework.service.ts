@@ -8,7 +8,7 @@ import {
 import { Observable, BehaviorSubject } from 'rxjs';
 import { skipWhile, mergeMap } from 'rxjs/operators';
 import { PublicDataService } from './../public-data/public-data.service';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 @Injectable()
 export class FrameworkService {

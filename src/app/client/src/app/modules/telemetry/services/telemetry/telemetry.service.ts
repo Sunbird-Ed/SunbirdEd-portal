@@ -1,5 +1,5 @@
 import { Injectable, Inject, InjectionToken } from '@angular/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import {
   ITelemetryEvent, ITelemetryContextData, TelemetryObject,
   IStartEventInput, IImpressionEventInput,

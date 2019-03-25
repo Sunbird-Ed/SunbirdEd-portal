@@ -1,7 +1,7 @@
 import { map } from 'rxjs/operators';
 import { ConfigService, ServerResponse, ContentData } from '@sunbird/shared';
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user/user.service';
 import { ContentService } from './../content/content.service';

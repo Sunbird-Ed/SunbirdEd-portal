@@ -4,7 +4,7 @@ import { PermissionService } from './../services';
 import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
 import { Observable } from 'rxjs';
 import { UserService } from './../services/user/user.service';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 /**
  * Service for Route Guards to restrict the access of route

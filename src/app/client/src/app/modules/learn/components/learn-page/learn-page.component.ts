@@ -6,7 +6,7 @@ import {
   ResourceService, ServerResponse, ToasterService, ICaraouselData, ConfigService, UtilService, INoResultMessage,
   BrowserCacheTtlService, NavigationHelperService
 } from '@sunbird/shared';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';

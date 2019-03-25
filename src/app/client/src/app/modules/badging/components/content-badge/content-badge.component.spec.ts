@@ -9,7 +9,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule} from '@sunbird/shared';
 import { mockResponse } from './content-badge.component.spec.data';
 import { ContentBadgeService } from './../../services';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 describe('ContentBadgeComponent', () => {
   let component: ContentBadgeComponent;
   let fixture: ComponentFixture<ContentBadgeComponent>;

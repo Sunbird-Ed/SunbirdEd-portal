@@ -3,7 +3,7 @@ import { Observable ,  BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { SearchParam } from '@sunbird/core';
 import { ServerResponse, ToasterService, ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 @Injectable()
 export class ConceptPickerService {

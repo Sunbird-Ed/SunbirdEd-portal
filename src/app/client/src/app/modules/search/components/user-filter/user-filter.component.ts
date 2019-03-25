@@ -2,7 +2,7 @@ import { ResourceService, IUserData, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService, OrgDetailsService, RolesAndPermissions, PermissionService, FrameworkService } from '@sunbird/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { map, catchError } from 'rxjs/operators';
 import { of, combineLatest } from 'rxjs';

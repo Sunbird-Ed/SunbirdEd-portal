@@ -5,7 +5,7 @@ import {
   WindowScrollService, ToasterService, NavigationHelperService
 } from '@sunbird/shared';
 import { PlayerService, PermissionService, UserService } from '@sunbird/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-upforreview-contentplayer',

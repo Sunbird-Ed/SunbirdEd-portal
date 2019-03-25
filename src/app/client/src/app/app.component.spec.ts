@@ -14,7 +14,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { RouterTestingModule } from '@angular/router/testing';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { CacheService } from 'ng2-cache-service';
 

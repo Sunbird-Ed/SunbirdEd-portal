@@ -6,7 +6,7 @@ import { ResourceService, ToasterService, SharedModule, ConfigService, UtilServi
 import { PageApiService, CoursesService, CoreModule, PlayerService, FormService, LearnerService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './learn-page.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';

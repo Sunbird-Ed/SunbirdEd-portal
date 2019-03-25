@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { SearchParam, LearnerService, UserService, PlayerService } from '@sunbird/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 /**
  * Service for batch
  */

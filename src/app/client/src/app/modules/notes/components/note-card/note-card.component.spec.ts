@@ -14,7 +14,7 @@ import { response } from './note-card-component.spec.data';
 import { mockUserData } from './../../../core/services/user/user.mock.spec.data';
 import { NoteCardComponent } from './note-card.component';
 import { TimeAgoPipe } from 'time-ago-pipe';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 const mockResourceBundle = {
   'messages': {

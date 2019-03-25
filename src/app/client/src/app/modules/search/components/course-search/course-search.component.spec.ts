@@ -5,7 +5,7 @@ import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { SearchService, CoursesService, CoreModule, FormService, LearnerService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './course-search.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
