@@ -120,7 +120,7 @@ export class SignupComponent implements OnInit, OnDestroy {
       name: new FormControl(null, [Validators.required, Validators.pattern(/^[a-zA-Z ]*$/)]),
       password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
       confirmPassword: new FormControl(null, [Validators.required, Validators.minLength(8)]),
-      phone: new FormControl(null, [Validators.required, Validators.pattern('^\\d{10}$')]),
+      phone: new FormControl(null, [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]),
       email: new FormControl(null, [Validators.email]),
       contactType: new FormControl('phone'),
       uniqueContact: new FormControl(null, [Validators.required])
@@ -231,16 +231,17 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   resolved(captchaResponse: string) {
-    if (captchaResponse) {
-      this.onSubmitSignUpForm();
-    }
     const newResponse = captchaResponse
       ? `${captchaResponse.substr(0, 7)}...${captchaResponse.substr(-7)}`
       : captchaResponse;
     this.captchaResponse += `${JSON.stringify(newResponse)}\n`;
+    if (this.captchaResponse) {
+      this.onSubmitSignUpForm();
+    }
   }
 
   onSubmitSignUpForm() {
+    this.disableSubmitBtn = true;
     this.generateOTP();
   }
 
@@ -258,8 +259,9 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.disableSubmitBtn = false;
       },
       (err) => {
-        const failedgenerateOTPMessage = (err.error.params.status === 'PHONE_ALREADY_IN_USE') ||
-          (err.error.params.status === 'EMAIL_IN_USE') ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0085;
+        const failedgenerateOTPMessage = (_.get(err, 'error.params.status') && err.error.params.status === 'PHONE_ALREADY_IN_USE') ||
+          (_.get(err, 'error.params.status') &&
+          err.error.params.status === 'EMAIL_IN_USE') ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0085;
         this.toasterService.error(failedgenerateOTPMessage);
         this.resetGoogleCaptcha();
         this.disableSubmitBtn = false;

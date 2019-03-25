@@ -416,6 +416,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   setInteractEventData() {
     if (_.get(this.queryParams, 'batchIdentifier')) {
       this.telemetryCdata = [{ 'type': 'batch', 'id': this.queryParams.batchIdentifier}];
+    } else {
+      this.telemetryCdata = [{ 'type': 'course', 'id': this.courseId}];
     }
   }
 }

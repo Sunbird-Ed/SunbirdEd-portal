@@ -7,7 +7,7 @@ import {
   ResourceService, ILoaderMessage, INoResultMessage
 } from '@sunbird/shared';
 import { combineLatest, Subject } from 'rxjs';
-import { takeUntil, map, tap } from 'rxjs/operators';
+import { takeUntil, map, filter } from 'rxjs/operators';
 import { Ibatch } from './../../interfaces/';
 import { WorkSpaceService, BatchService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
@@ -173,14 +173,15 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
       'loaderMessage': this.resourceService.messages.stmsg.m0108,
     };
     this.noResultMessage = {
-      'message': this.resourceService.messages.stmsg.m0020,
-      'messageText': this.resourceService.messages.stmsg.m0008
+      'message': 'messages.stmsg.m0020',
+      'messageText': 'messages.stmsg.m0008'
     };
   }
 
   ngOnInit() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
       map(results => ({ params: results[0], queryParams: results[1] })),
+      filter(res => this.pageNumber !== Number(res.params.pageNumber) || !_.isEqual(this.queryParams, res.queryParams)),
       takeUntil(this.unsubscribe)
     ).subscribe((res: any) => {
       this.queryParams = res.queryParams;
@@ -219,7 +220,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
 
   fetchBatchList() {
     this.showLoader = true;
-    this.pageLimit = this.config.appConfig.WORKSPACE.PAGE_LIMIT;
+    this.pageLimit = this.config.appConfig.WORKSPACE.courseBatch.PAGE_LIMIT;
     const searchParams = {
       filters: this.filters,
       limit: this.pageLimit,
@@ -230,6 +231,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
       (data: ServerResponse) => {
         if (data.result.response.count && data.result.response.content.length > 0) {
           this.noResult = false;
+          this.batchList = [];
           this.batchList = data.result.response.content;
           this.totalCount = data.result.response.count;
           this.pager = this.paginationService.getPager(data.result.response.count, this.pageNumber, this.pageLimit);
@@ -241,6 +243,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
         }
       },
       (err: ServerResponse) => {
+        this.batchList = [];
         this.showLoader = false;
         this.noResult = false;
         this.showError = true;
@@ -295,9 +298,8 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
     };
     this.UserList(req).subscribe((res: ServerResponse) => {
       if (res.result.response.count && res.result.response.content.length > 0) {
-        this.showLoader = false;
         _.forEach(res.result.response.content, (val, key) => {
-          userName[val.identifier] = val.firstName + ' ' + val.lastName;
+          userName[val.identifier] = (val.firstName || '') + ' ' + (val.lastName || '');
         });
         _.forEach(this.batchList, (item, key) => {
           this.batchList[key].userName = userName[item.createdBy];
@@ -305,6 +307,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
       } else {
         this.toasterService.error(this.resourceService.messages.fmsg.m0056);
       }
+      this.showLoader = false;
     },
       (err: ServerResponse) => {
         this.showLoader = false;
@@ -313,7 +316,6 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
         this.toasterService.error(this.resourceService.messages.fmsg.m0056);
       }
     );
-    this.showLoader = false;
   }
 
   setTelemetryImpressionData () {

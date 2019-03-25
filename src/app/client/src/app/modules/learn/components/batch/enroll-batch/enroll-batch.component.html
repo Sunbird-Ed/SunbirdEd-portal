@@ -55,7 +55,7 @@
   <!--/Content-->
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button 
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata"  [telemetryInteractCdata]="telemetryCdata"
         [disabled]="disableSubmitBtn" 
         class="sb-btn sb-btn-normal sb-btn-primary" 
         id="enrollToCourse" 

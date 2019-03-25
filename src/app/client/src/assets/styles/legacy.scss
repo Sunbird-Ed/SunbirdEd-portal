@@ -921,11 +921,6 @@ ul.subList-padding {
   margin-left: 5px;
 }
 
-.curriculum-content {
-  font-size: 15px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
 .content-detail {
   color: #7c7b7b;
   font-size: 14px;
@@ -1697,12 +1692,13 @@ i.edit.icon.editIcon-fontSize {
   padding-right: 12px;
 }
 .batchCardAlign {
-  padding-top: 20px;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
 }
 .headerBatchCard {
   font-weight: 700;
   font-size: 1.18em;
-  padding-left: 12px;
 }
 .ui.attached.batchCard.button {
   background: #ffffff !important;

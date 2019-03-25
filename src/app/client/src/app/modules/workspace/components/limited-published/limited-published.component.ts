@@ -170,8 +170,8 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
       'loaderMessage': this.resourceService.messages.stmsg.m0082,
     };
     this.noResultMessage = {
-      'message': this.resourceService.messages.stmsg.m0008,
-      'messageText': this.resourceService.messages.stmsg.m0083,
+      'message': 'messages.stmsg.m0008',
+      'messageText': 'messages.stmsg.m0083'
     };
     this.state = 'limited-publish';
   }

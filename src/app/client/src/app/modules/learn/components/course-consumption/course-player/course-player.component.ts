@@ -143,7 +143,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         if (this.batchId) {
           this.enrolledBatchInfo = enrolledBatchDetails;
           this.enrolledCourse = true;
-          this.setTelemetryStartEndData();
+          setTimeout(() => {
+            this.setTelemetryStartEndData();
+          }, 100);
           if (this.enrolledBatchInfo.status && this.contentIds.length) {
             this.getContentState();
             this.subscribeToQueryParam();

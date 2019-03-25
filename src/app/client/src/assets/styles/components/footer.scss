@@ -1,54 +1,46 @@
-.footer {
-  background: $primary-color;
-  color: $white-color !important;
-  padding: 34px 0;
-  margin-top: 100px;
-  font-size: 14px;
-  position: relative;
+.download-diksha {
+  border-radius: 20px 20px 0 0;
+  position: absolute;
+  bottom: 0px;
+  padding: 32px 12px 0 12px;
+  background: #333;
+  box-shadow: 0 20px 20px 10px rgba(0, 0, 0, 0.2);
+  max-width: 250px;
+  right: 0;
+  left: 0;
+  margin: 0 auto;
+  z-index: 9999;
 
-  a {
-    color: $white-color !important;
+  .diksha-logo {
+    background: $white-color;
+    color: black;
+    border-radius: 8px 8px 0 0;
+    text-align: center;
 
-    &:hover,
-    &:active,
-    &:focus {
-      color: $white-color !important;
-      text-decoration: underline;
-      opacity: 1;
-    }
-  }
-
-  .playStore-img {
-    width: 164px;
-    border-radius: 5px;
-
-    // &:hover {
-    //   width: 126px;
-    // }
-  }
-
-  .download-diksha {
-    border-radius: 20px 20px 0 0;
-    position: absolute;
-    bottom: -20px;
-    padding: 32px 12px 0 12px;
-    background: rgba(17, 17, 17, 1);
-    box-shadow: 0 20px 20px 10px rgba(0, 0, 0, 0.2);
-    max-width: 285px;
-    right: 0;
-    left: 0;
-    margin: 0 auto;
-    
-    .diksha-logo {
-      background: $white-color;
-      color: black;
-      border-radius: 8px 8px 0 0;
+    .playStore-img {
+      width: 120px;
     }
 
+    .app-download {
+      &:hover {
+        opacity: inherit;
+      }
+
+      line-height: 0;
+    }
+
+    p,
     label {
-      font-weight: bold;
+      font-size: 12px;
     }
 
+    p {
+      line-height: 16px;
+    }
+  }
+
+  label {
+    font-weight: bold;
   }
 
   .mobile-circles {
@@ -56,11 +48,11 @@
     top: 10px;
     display: flex;
     align-items: center;
-    margin: 0 40px;
+    margin: 0 20px;
 
     .border-round {
-      border: 1px solid lighten( $text-gray, 30% );
-      background: black;
+      border: none;
+      background: #464646;
     }
 
     .border-r50 {
@@ -83,6 +75,38 @@
       width: 8px;
     }
   }
+
+}
+
+.footer {
+  background: $primary-color;
+  color: $white-color !important;
+  padding: 34px 0;
+  margin-top: 100px;
+  font-size: 14px;
+  position: relative;
+
+  a {
+    color: $white-color !important;
+
+    &:hover,
+    &:active,
+    &:focus {
+      color: $white-color !important;
+      text-decoration: underline;
+      opacity: 1;
+    }
+  }
+
+  // .playStore-img {
+  //   width: 120px;
+  //   border-radius: 5px;
+
+  // &:hover {
+  //   width: 126px;
+  // }
+  // }
+
 }
 
 .contantDetails,
@@ -115,6 +139,22 @@
 
 @media screen and (max-width: 768px) {
 
+  .download-diksha {
+    bottom: 204px;
+    margin: 0 auto;
+    right: 0;
+    left: 0;
+    z-index: inherit;
+
+    a {
+      padding-bottom: 0 !important;
+    }
+
+    p {
+      display: none !important;
+    }
+  }
+
   .footer {
     margin-top: 170px;
 
@@ -133,14 +173,6 @@
 
     .ui.container>.ui.stackable.grid>.column {
       padding: 0 !important;
-    }
-
-    .download-diksha {
-      z-index: -1;
-      bottom: -16px;
-      margin: 0 auto;
-      right: 0;
-      left: 0;
     }
   }
 

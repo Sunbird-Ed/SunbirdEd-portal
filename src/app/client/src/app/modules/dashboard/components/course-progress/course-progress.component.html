@@ -120,26 +120,26 @@
                   </div>
                 </th>
                 <th>
-                  <div  class="cursor-pointer" (click)="setOrder('enrolledOn')"
+                  <div  class="cursor-pointer" 
                     appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByEnrolledOn',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
                     {{resourceService?.frmelmnts?.lbl?.dashboardsortbyenrolledon}}
                     <span class="primary-color" [hidden]="reverse" style="float:right">
-                      <i class="sort down icon fs-1" ></i>
+                      <!-- <i class="sort down icon fs-1" ></i> -->
                     </span>
                     <span class="primary-color" [hidden]="!reverse" style="float:right">
-                      <i class="sort up icon fs-1" ></i>
+                      <!-- <i class="sort up icon fs-1" ></i> -->
                     </span>
                   </div>
                 </th>
                 <th class="table-headerDashboard">
-                  <div class="cursor-pointer"  (click)="setOrder('progress')"
+                  <div class="cursor-pointer"  
                     appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByStatus',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
                     {{resourceService?.frmelmnts?.lbl?.dashboardsortbystatus}}
                     <span class="primary-color" [hidden]="reverse" style="float:right">
-                      <i class="sort down icon fs-1" ></i>
+                      <!-- <i class="sort down icon fs-1" ></i> -->
                     </span>
                     <span  class="primary-color" [hidden]="!reverse" style="float:right">
-                      <i class="sort up icon fs-1" ></i>
+                      <!-- <i class="sort up icon fs-1" ></i> -->
                     </span>
                   </div>
                 </th>
@@ -186,6 +186,22 @@
         <div class="ui warning message tweleve wide column" *ngIf="batchlist && batchlist.length > 1 && showWarningDiv && !showLoader">
           <div class="header">{{resourceService?.frmelmnts?.lbl?.dashboardnobatchselected}}</div>
           {{resourceService?.frmelmnts?.lbl?.dashboardnobatchselecteddesc}}
+        </div>
+        <div class="ui grid" *ngIf="showNoBatch">
+          <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression">
+            <a (click)='redirect()' class="ui item basic icon circular float-ContentRight" data-tooltip="Close  Dashboard"
+              appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'closeDashboard',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
+              <i class="ui remove icon CloseButtonFont"></i>
+            </a>
+          </div>
+          <div class="twelve wide column">
+            <div class="ui info message">
+              <div class="header">{{resourceService?.frmelmnts?.instn?.t0061}}</div>
+              <ul class="list">
+                <li>{{resourceService?.frmelmnts?.instn?.t0062}}</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>

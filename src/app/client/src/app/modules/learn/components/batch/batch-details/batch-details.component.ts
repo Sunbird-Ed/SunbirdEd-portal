@@ -1,9 +1,9 @@
 
-import { takeUntil, map } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { CourseBatchService, CourseProgressService } from './../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, Input, OnDestroy, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { PermissionService, UserService } from '@sunbird/core';
 import * as _ from 'lodash';
@@ -19,6 +19,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   batchStatus: Number;
   @Input() courseId: string;
   @Input() enrolledCourse: boolean;
+  @Input() enrolledBatchInfo: any;
   @Input() batchId: string;
   @Input() courseHierarchy: any;
   @Input() courseProgressData: any;
@@ -34,7 +35,6 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   showError = false;
   userNames = {};
   showBatchList = false;
-  enrolledBatchInfo: any;
   statusOptions = [
     { name: 'Ongoing', value: 1 },
     { name: 'Upcoming', value: 0 }
@@ -51,11 +51,12 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     this.isUnenrollbtnDisabled = true;
     if (this.courseProgressData && this.courseProgressData.progress) {
       this.progress = this.courseProgressData.progress ? Math.round(this.courseProgressData.progress) : 0;
+    } else {
+      return;
     }
-    if ((!(this.enrolledBatchInfo.hasOwnProperty('endDate')) ||
-    (this.enrolledBatchInfo.endDate > this.todayDate)) &&
-    (this.enrolledBatchInfo.enrollmentType === 'open') &&
-    (this.progress !== 100)) {
+    console.log('progress', this.progress);
+    if ((!this.enrolledBatchInfo.endDate || this.enrolledBatchInfo.endDate > this.todayDate ) &&
+    this.enrolledBatchInfo.enrollmentType === 'open' && this.progress !== 100) {
       this.isUnenrollbtnDisabled = false;
     }
   }
@@ -153,28 +154,21 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
      }
   }
   getEnrolledCourseBatchDetails() {
-    this.courseBatchService.getEnrolledBatchDetails(this.batchId).pipe(
+    if (this.enrolledBatchInfo.participant) {
+      const participant = [];
+      _.forIn(this.enrolledBatchInfo.participant, (value, key) => {
+        participant.push(key);
+      });
+      this.enrolledBatchInfo.participant = participant;
+    } else {
+      this.enrolledBatchInfo.participant = [];
+    }
+    this.isUnenrollDisabled();
+    this.courseProgressService.courseProgressData.pipe(
       takeUntil(this.unsubscribe))
-      .subscribe((data: ServerResponse) => {
-        this.enrolledBatchInfo = data;
-        if (this.enrolledBatchInfo.participant) {
-          const participant = [];
-          _.forIn(this.enrolledBatchInfo.participant, (value, key) => {
-            participant.push(key);
-          });
-          this.enrolledBatchInfo.participant = participant;
-        } else {
-          this.enrolledBatchInfo.participant = [];
-        }
+      .subscribe(courseProgressData => {
+        this.courseProgressData = courseProgressData;
         this.isUnenrollDisabled();
-        this.courseProgressService.courseProgressData.pipe(
-          takeUntil(this.unsubscribe))
-          .subscribe(courseProgressData => {
-            this.courseProgressData = courseProgressData;
-            this.isUnenrollDisabled();
-          });
-      }, () => {
-        // handle error
       });
   }
   fetchUserDetails() {

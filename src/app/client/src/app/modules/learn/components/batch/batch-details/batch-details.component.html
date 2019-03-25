@@ -1,7 +1,7 @@
 <div *ngIf="!enrolledCourse" class="rightSideSectionCards ui card">
     <div class="header batchCardAlign">
         <span class="header headerBatchCard">{{resourceService?.frmelmnts?.lbl?.batches}}</span>
-        <a class="opacity-1">
+        <a class="opacity-1 ml-auto">
             <sui-select (selectedOptionChange)="getAllBatchDetails()" class="batchCardDropDown" [(ngModel)]="batchStatus" [options]="statusOptions"
                 valueField="value" labelField="name" #batchStatusSelect>
                 <sui-select-option *ngFor="let option of batchStatusSelect.filteredOptions" [value]="option">
@@ -13,7 +13,7 @@
         <div class="description annannouncement-description">
             <div *ngIf="showBatchList" class="ui divided list">
                 <div class="item pt-10" *ngFor="let batch of batchList">
-                    <i [ngClass]="userService.userid === batch.createdBy ? 'write' : 'eye'" class="icon float-ContentRight cursor-pointer write" appTelemetryInteract [telemetryInteractEdata]="updateBatchIntractEdata"
+                    <i [ngClass]="userService.userid === batch.createdBy ? 'write' : 'eye'" class="icon right-floated cursor-pointer write" appTelemetryInteract [telemetryInteractEdata]="updateBatchIntractEdata"
                         [telemetryInteractObject]="{id:batch.identifier,type:'batch',ver:'1',rollup:{l1:courseId}}" (click)="batchUpdate(batch)"
                         *ngIf="courseMentor"></i>
                     <i class="calendar outline icon"></i>
@@ -54,18 +54,18 @@
                 [telemetryInteractObject]="{id:enrolledBatchInfo.identifier,type:'batch',ver:'1',rollup:{l1:courseId}}"
                 (click)="unenrollBatch(enrolledBatchInfo)" [disabled]="isUnenrollbtnDisabled">{{resourceService.frmelmnts.btn.unenroll}}</button>
         </span>
-        <div class="header">{{enrolledBatchInfo.name}}</div>
+        <div class="header">{{enrolledBatchInfo?.name}}</div>
         <div class="selectedBatchMeta meta">
             <span class="date">{{enrolledBatchInfo.startDate | dateFormat}} </span>
-            <span *ngIf="enrolledBatchInfo.endDate" class="date"> - {{enrolledBatchInfo.endDate | dateFormat}}</span>
+            <span *ngIf="enrolledBatchInfo.endDate" class="date"> - {{enrolledBatchInfo?.endDate | dateFormat}}</span>
         </div>
     </div>
     <div class="selectedBatchContent extra content">
         <span class="right floated">
-            {{enrolledBatchInfo.participant.length}} {{resourceService.frmelmnts.lbl.learners}}
+            {{enrolledBatchInfo?.participant?.length}} {{resourceService.frmelmnts.lbl.learners}}
         </span>
         <span>
-            {{enrolledBatchInfo.mentors.length}} {{resourceService.frmelmnts.lbl.mentors}}
+            {{enrolledBatchInfo?.mentors?.length}} {{resourceService.frmelmnts.lbl.mentors}}
         </span>
     </div>    
 </div>

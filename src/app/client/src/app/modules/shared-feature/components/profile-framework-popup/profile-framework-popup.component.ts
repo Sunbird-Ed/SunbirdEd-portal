@@ -6,7 +6,7 @@ import { ResourceService, ToasterService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
-
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-popup',
   templateUrl: './profile-framework-popup.component.html',
@@ -17,6 +17,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   @Input() showCloseIcon: boolean;
   @Input() buttonLabel: string;
   @Input() formInput: any = {};
+  @Input() isClosable = false;
   @Output() submit = new EventEmitter<any>();
   @Output() close = new EventEmitter<any>();
   public allowedFields = ['board', 'medium', 'gradeLevel', 'subject'];
@@ -30,6 +31,8 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   private frameWorkId: string;
   private custodianOrg = false;
   private custodianOrgBoard: any = {};
+  submitInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
   constructor(private router: Router, private userService: UserService, private frameworkService: FrameworkService,
     private formService: FormService, public resourceService: ResourceService, private cacheService: CacheService,
     private toasterService: ToasterService, private channelService: ChannelService, private orgDetailsService: OrgDetailsService
@@ -51,6 +54,8 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         this.toasterService.warning(this.resourceService.messages.emsg.m0012);
         this.navigateToLibrary();
       });
+
+      this.setInteractEventData();
   }
   private getFormOptionsForCustodianOrg() {
     return this.getCustodianOrgData().pipe(mergeMap((data) => {
@@ -58,7 +63,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       const board = _.cloneDeep(this.custodianOrgBoard);
       if (_.get(this.selectedOption, 'board[0]')) { // update mode, get 1st board framework and update all fields
         this.selectedOption.board = _.get(this.selectedOption, 'board[0]');
-        this.frameWorkId = _.get(_.find(this.custOrgFrameworks, { 'name': event }), 'identifier');
+        this.frameWorkId = _.get(_.find(this.custOrgFrameworks, { 'name': this.selectedOption.board }), 'identifier');
         return this.getFormatedFilterDetails().pipe(map((formFieldProperties) => {
           this._formFieldProperties = formFieldProperties;
           this.mergeBoard(); // will merge board from custodian org and board from selected framework data
@@ -127,7 +132,6 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     this.unsubscribe = this.getFormatedFilterDetails().pipe().subscribe(
       (formFieldProperties) => {
         if (!formFieldProperties.length) {
-          console.log('no data');
         } else {
           this._formFieldProperties = formFieldProperties;
           this.mergeBoard();
@@ -142,7 +146,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   private mergeBoard() {
     _.forEach(this._formFieldProperties, (field) => {
       if (field.code === 'board') {
-        field.range = _.unionBy(_.concat(this.custodianOrgBoard.range, field.range), 'name');
+        field.range = _.unionBy(_.concat(field.range, this.custodianOrgBoard.range), 'name');
       }
     });
   }
@@ -242,4 +246,19 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       this.cacheService.set('showFrameWorkPopUp', 'installApp' );
     }
   }
+
+  setInteractEventData() {
+    this.submitInteractEdata = {
+      id: 'submit-profile-framework-details',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
+  }
+
 }

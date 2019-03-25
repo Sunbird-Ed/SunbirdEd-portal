@@ -136,8 +136,8 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
       'loaderMessage': this.resourceService.messages.stmsg.m0108,
     };
     this.noResultMessage = {
-      'message': this.resourceService.messages.stmsg.m0020,
-      'messageText': this.resourceService.messages.stmsg.m0008
+      'message': 'messages.stmsg.m0020',
+      'messageText': 'messages.stmsg.m0008'
     };
   }
 
@@ -159,7 +159,7 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
   */
   public fetchPageData() {
     this.showLoader = true;
-    this.filters = {createdFor: this.userService.RoleOrgMap['COURSE_MENTOR']};
+    this.filters = {createdFor: this.userService.userProfile.organisationIds};
     if (this.category === 'created') {
       this.filters['createdBy'] = this.userService.userid;
     } else {
@@ -210,8 +210,8 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
         const userNamesKeyById = _.keyBy(res.result.response.content, 'identifier');
         _.forEach(sections, (section, sectionIndex) => {
           _.forEach(section.contents, (content, contentIndex) => {
-            sections[sectionIndex].contents[contentIndex]['userName'] = userNamesKeyById[content.createdBy].firstName
-            + ' ' + userNamesKeyById[content.createdBy].lastName;
+            sections[sectionIndex].contents[contentIndex]['userName'] = (userNamesKeyById[content.createdBy].firstName || '')
+            + ' ' + (userNamesKeyById[content.createdBy].lastName || '');
             sections[sectionIndex].contents[contentIndex]['metaData'] = {identifier: content.identifier};
             sections[sectionIndex].contents[contentIndex]['label'] = _.size(content.participant) || 0;
           });
@@ -262,7 +262,7 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
     searchQueryParams.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
     searchQueryParams.exists = searchQuery.request.exists;
     const queryParams = { ...searchQueryParams, ...this.filters };
-    const sectionUrl = '/workspace/content/batches/view-all/' + event.name.replace(/\s/g, '-');
+    const sectionUrl = '/workspace/batches/view-all/' + event.name.replace(/\s/g, '-');
     this.route.navigate([sectionUrl, 1], {queryParams: queryParams});
   }
 

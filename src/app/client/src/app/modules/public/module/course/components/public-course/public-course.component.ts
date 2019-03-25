@@ -167,7 +167,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   public playContent(event) {
-    this.publicPlayerService.playExporeCourse(event.data.metaData.identifier);
+    this.publicPlayerService.playExploreCourse(event.data.metaData.identifier);
   }
   public viewAll(event) {
     const searchQuery = JSON.parse(event.searchQuery);
@@ -212,8 +212,8 @@ export class PublicCourseComponent implements OnInit, OnDestroy {
   }
   private setNoResultMessage() {
     this.noResultMessage = {
-      'message': _.get(this.resourceService, 'messages.stmsg.m0007') || 'No results found',
-      'messageText': _.get(this.resourceService, 'messages.stmsg.m0006') || 'Please search for something else.'
+      'message': 'messages.stmsg.m0007',
+      'messageText': 'messages.stmsg.m0006'
     };
   }
 }
