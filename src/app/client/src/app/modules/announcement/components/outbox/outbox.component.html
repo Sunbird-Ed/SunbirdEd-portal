@@ -10,7 +10,7 @@
       </div>
       <div class="right floated three wide column padding-right-dropdown pr-10">
         <div class="ui right-float">
-          <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="createAnnouncementInteractEdata"
+          <button appTelemetryInteract [telemetryInteractEdata]="createAnnouncementInteractEdata"
             class="sb-btn sb-btn-outline-primary sb-btn-normal" [routerLink]="['../../create/1']">
             <span>{{resourceService?.frmelmnts?.lbl?.anncmntcreate}}</span>
           </button>
@@ -32,11 +32,11 @@
           <div class="text showing-all-sent-ann">
             <span class="mr-10">Viewing {{pager.startIndex+1}} - {{pager.endIndex+1}} of {{outboxData.count}} </span>
             <div class="ui small basic icon buttons">
-              <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="navigateInteractEdata"
+              <button appTelemetryInteract [telemetryInteractEdata]="navigateInteractEdata"
                 class="ui button" [ngClass]="{'disabled' : pager.startIndex === 0}" (click)="navigateToPage(pager.currentPage - 1)">
                 <i class="left chevron icon"></i>
               </button>
-              <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="navigateInteractEdata"
+              <button appTelemetryInteract [telemetryInteractEdata]="navigateInteractEdata"
                 class="ui button" [ngClass]="{'disabled' : pager.currentPage === pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)">
                 <i class="right chevron icon"></i>
               </button>
@@ -76,7 +76,7 @@
             </tr>
           </thead>
           <tbody in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="outboxData.announcements">
-            <tr appTelemetryInteract [telemetryInteractObject]="{id:item.id,type:'announcement',ver:'1.0'}" [telemetryInteractEdata]="{id:'view-announcement',type:'click',pageid:'announcement-create'}"
+            <tr appTelemetryInteract [telemetryInteractObject]="{id:item.id,type:'Announcement',ver:'1.0'}" [telemetryInteractEdata]="{id:'view-announcement',type:'click',pageid:'announcement-create'}"
               in-view-item *ngFor="let item of outboxData.announcements;let i = index;" [id]="i" [data]="item" class="table-list-name-ann">
               <td [routerLink]="['view/' + item.id]" (click)="announcementService.announcementDetailsObject = item;" class="cursor-pointer">{{item.title | slice:0:50}}
                 <span *ngIf="item.title.length > 50">...</span>
@@ -85,10 +85,10 @@
               <td>{{item.metrics.sent ? item.metrics.sent : "N/A"}}</td>
               <td>{{item.metrics.received ? item.metrics.received : "N/A"}}</td>
               <td>{{item.metrics.read ? item.metrics.read : "N/A"}}</td>
-              <td appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="deleteAnnouncementInteractEdata"
+              <td appTelemetryInteract [telemetryInteractObject]="{id: item.id , type : 'Announcement' , ver : '1.0'}" [telemetryInteractEdata]="deleteAnnouncementInteractEdata"
                 class="cursor-pointer sb-color-error" [routerLink]="['delete/' + item.id]" *ngIf="item.status === 'active'">
                 <i class="icon trash"></i>{{resourceService?.frmelmnts?.lbl?.anncmntoutboxdelete}}</td>
-              <td appTelemetryInteract [telemetryInteractObject]="{id:item.id,type:'announcement',ver:'1.0'}" [telemetryInteractEdata]="resendAnnouncementInteractEdata"
+              <td appTelemetryInteract [telemetryInteractObject]="{id:item.id,type:'Announcement',ver:'1.0'}" [telemetryInteractEdata]="resendAnnouncementInteractEdata"
                 [routerLink]="['../../resend/' + item.id + '/1']" *ngIf="item.status == 'cancelled'" class="cursor-pointer sb-color-primary">
                 <i class="external share icon"></i>{{resourceService?.frmelmnts?.lbl?.anncmntoutboxresend}}</td>
             </tr>

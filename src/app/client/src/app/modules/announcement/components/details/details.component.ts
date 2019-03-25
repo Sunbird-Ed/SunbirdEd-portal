@@ -47,8 +47,8 @@ export class DetailsComponent implements OnInit {
       pageid: 'announcement-create'
     };
     this.telemetryInteractObject = {
-      id: '',
-      type: 'announcement',
+      id: this.announcementDetails.id,
+      type: 'Announcement',
       ver: '1.0'
     };
   }

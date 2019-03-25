@@ -168,7 +168,7 @@ export class CourseConsumptionComponent implements OnDestroy {
           type: 'course',
           ver: '1.0'
         };
-        this.interactObject = { id: params.id, type: 'course', ver: '1.0' };
+        this.interactObject = { id: params.id, type: 'Course', ver: '1.0' };
         this.isMultipleCourses = false;
         this.showDashboard = true;
         this.getDashboardData(params.timePeriod, params.id);

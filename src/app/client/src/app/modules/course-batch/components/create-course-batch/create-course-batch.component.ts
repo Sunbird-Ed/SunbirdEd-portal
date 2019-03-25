@@ -287,7 +287,7 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
     };
     this.telemetryInteractObject = {
       id: this.courseId,
-      type: 'create-batch',
+      type: 'CourseBatch',
       ver: '1.0'
     };
     this.cancelInteractEdata = {

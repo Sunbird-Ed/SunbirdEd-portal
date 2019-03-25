@@ -192,7 +192,7 @@ export class OrganisationComponent implements OnDestroy {
           type: 'org',
           ver: '1.0'
         };
-        this.interactObject = { id: params.id, type: 'organization', ver: '1.0' };
+        this.interactObject = { id: params.id, type: 'Organization', ver: '1.0' };
         this.getDashboardData(params.timePeriod, params.id);
       }
     });

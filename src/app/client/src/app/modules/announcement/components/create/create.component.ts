@@ -593,7 +593,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     };
     this.telemetryInteractObject = {
       id: '',
-      type: 'announcement',
+      type: 'Announcement',
       ver: '1.0'
     };
   }

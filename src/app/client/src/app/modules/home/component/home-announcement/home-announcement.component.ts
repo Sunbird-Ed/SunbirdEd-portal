@@ -62,7 +62,6 @@ export class HomeAnnouncementComponent implements OnInit, OnDestroy {
    */
   showLoader = true;
   seeAllInteractEdata: IInteractEventEdata;
-  public telemetryInteractObject: IInteractEventObject;
   /**
    * Constructor
    * inject service(s)
@@ -149,11 +148,6 @@ export class HomeAnnouncementComponent implements OnInit, OnDestroy {
       id: 'all-announcement',
       type: 'click',
       pageid: 'announcement-list'
-    };
-    this.telemetryInteractObject = {
-      id: '',
-      type: 'announcement',
-      ver: '1.0'
     };
   }
 

@@ -398,7 +398,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
                 ver: this.activatedRoute.snapshot.data.telemetry.object.ver
               }
             };
-            this.interactObject = { id: this.courseId, type: 'course', ver: '1.0' };
+            this.interactObject = { id: this.courseId, type: 'Course', ver: '1.0' };
             this.populateBatchData();
           });
       }

@@ -117,11 +117,6 @@ export class AssignBadgesContentComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'content-badge'
     };
-    this.telemetryInteractObject = {
-      id: '',
-      type: 'badge',
-      ver: '1.0'
-    };
   }
 
   ngOnDestroy() {
