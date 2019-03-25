@@ -11,7 +11,6 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
 
 const fakeActivatedRoute = {
   snapshot: {
@@ -41,11 +40,10 @@ describe('PageSectionComponent', () => {
     fixture = TestBed.createComponent(PageSectionComponent);
     component = fixture.componentInstance;
   });
-
   it('should show TEST INPUT for success data', () => {
     component.section = Response.successData;
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.sb-pageSection-title').innerText).toEqual('Multiple Data');
+    expect(fixture.nativeElement.querySelector('.sb-pageSection-title').innerText).toEqual('Multiple data');
     expect(fixture.nativeElement.querySelector('.sb-pageSection-count').innerText).toEqual('1');
   });
   it('should show TEST INPUT for no contents data', () => {
