@@ -10,7 +10,7 @@ import {
   ContentDetails, PlayerConfig, ContentData, NavigationHelperService
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI } from '../../interfaces';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { environment } from '@sunbird/environment';
 import { PublicDataService } from './../public-data/public-data.service';
 /**

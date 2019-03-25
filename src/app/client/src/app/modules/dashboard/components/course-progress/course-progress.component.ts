@@ -3,7 +3,7 @@ import { combineLatest,  Subscription ,  Observable ,  Subject, of } from 'rxjs'
 import {first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, delay} from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { UserService } from '@sunbird/core';
 import { ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService } from '@sunbird/shared';
 import { CourseProgressService } from './../../services';

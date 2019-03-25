@@ -2,7 +2,7 @@ import { Directive, Input, OnInit, OnChanges, HostListener } from '@angular/core
 import { IInteractEventInput, IInteractEventObject, IInteractEventEdata } from '../../interfaces';
 import { TelemetryService } from '../../services';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 /**
  * TelemetryInteract Directive
  */

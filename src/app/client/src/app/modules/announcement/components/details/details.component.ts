@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IAnnouncementDetails } from '@sunbird/announcement';
 import { IImpressionEventInput,  IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 /**

@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, Input, EventEmitter, OnDestroy, AfterViewInit } from '@angular/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { Subscription } from 'rxjs';
 import { ResourceService } from '@sunbird/shared';
 import * as $ from 'jquery';

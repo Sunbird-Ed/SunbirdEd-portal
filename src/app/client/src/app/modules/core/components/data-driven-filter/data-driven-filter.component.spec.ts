@@ -2,7 +2,7 @@
 
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { DataDrivenFilterComponent } from './data-driven-filter.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

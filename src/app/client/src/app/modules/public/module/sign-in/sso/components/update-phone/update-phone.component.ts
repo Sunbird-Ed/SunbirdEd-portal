@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { TenantService, UserService, OtpService } from '@sunbird/core';
 import { first } from 'rxjs/operators';
 import { ResourceService, ToasterService } from '@sunbird/shared';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 @Component({
   templateUrl: './update-phone.component.html',

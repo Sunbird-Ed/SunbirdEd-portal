@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { Subject  } from 'rxjs';
 import {
   ConfigService, ResourceService, ToasterService,

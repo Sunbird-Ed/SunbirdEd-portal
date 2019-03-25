@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { ICard } from '@sunbird/shared';
 import { Subject, Observable } from 'rxjs';
   // Dependency injection creates new instance each time if used in router sub-modules

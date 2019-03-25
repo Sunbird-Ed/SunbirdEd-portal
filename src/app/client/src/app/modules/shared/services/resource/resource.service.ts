@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
 import { CacheService } from 'ng2-cache-service';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 /**
  * Service to fetch resource bundle
  */

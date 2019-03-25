@@ -14,7 +14,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as mockData from './batch-list.component.spec.data';
 const testData = mockData.mockRes;
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 
