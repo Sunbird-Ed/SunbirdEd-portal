@@ -5,11 +5,11 @@ import { CommonModule } from '@angular/common';
 import { ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
   OtpPopupComponent, BatchInfoComponent } from './components';
 import { SlickModule } from 'ngx-slick';
-import { SuiModule } from 'ng2-semantic-ui';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { NgInviewModule } from 'angular-inport';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
+  SuiProgressModule, SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
 
 @NgModule({
   imports: [
@@ -18,9 +18,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SharedModule,
     CoreModule,
     TelemetryModule,
-    NgInviewModule,
     RouterModule,
-    SuiModule,
+    SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
+    SuiProgressModule, SuiRatingModule, SuiCollapseModule,
     FormsModule,
     ReactiveFormsModule
   ],

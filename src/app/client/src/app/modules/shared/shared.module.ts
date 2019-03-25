@@ -1,4 +1,5 @@
-import { SuiModule } from 'ng2-semantic-ui/dist';
+import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
+  SuiProgressModule, SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
 import { FormsModule } from '@angular/forms';
 import {
@@ -19,17 +20,16 @@ import { CacheService } from 'ng2-cache-service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { NgInviewModule } from 'angular-inport';
 import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
 
 @NgModule({
   imports: [
     CommonModule,
-    SuiModule,
+    SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
+    SuiRatingModule, SuiCollapseModule,
     SlickModule,
     FormsModule,
-    TelemetryModule,
-    NgInviewModule
+    TelemetryModule
   ],
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, PageSectionComponent,
     BatchCardComponent, NoResultComponent, DateFilterXtimeAgoPipe, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
