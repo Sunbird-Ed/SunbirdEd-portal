@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { ContentService } from './../content/content.service';
 import { PublicDataService } from './../public-data/public-data.service';
 import { CacheService } from 'ng2-cache-service';
-import { getOrCreateChangeDetectorRef } from '@angular/core/src/render3/di';
 import { LearnerService } from './../learner/learner.service';
 @Injectable()
 export class OrgDetailsService {

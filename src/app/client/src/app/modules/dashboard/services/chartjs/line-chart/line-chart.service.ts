@@ -64,7 +64,7 @@ export class LineChartService {
       i++;
     });
 
-    _.forOwn(groupList, (group, groupId) => {
+    _.forOwn(groupList, (group: any, groupId) => {
       chartList.push({ yaxesData: group.yAxes, xaxesData: group.xAxes, chartOptions: group.options, chartColors: group.colors });
     });
 

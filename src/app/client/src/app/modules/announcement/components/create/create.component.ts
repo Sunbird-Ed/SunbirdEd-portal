@@ -198,7 +198,7 @@ export class CreateComponent implements OnInit, OnDestroy {
   setAnnouncementTypes(): void {
     this.showResendLoader = true;
     if (this.createService._announcementTypes) {
-      _.each(this.createService._announcementTypes, (key) => {
+      _.each(this.createService._announcementTypes, (key: any) => {
         this.announcementTypes.push(key.name);
       });
       this.showResendLoader = false;
