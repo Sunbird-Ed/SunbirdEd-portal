@@ -116,7 +116,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
         if (this.enrolledSection.contents.length) {
           this.pageSections = [this.carouselMasterData[0]];
-        } else if (!this.enrolledSection.contents.length && this.carouselMasterData.length > 2) {
+        } else if (!this.enrolledSection.contents.length && this.carouselMasterData.length >= 2) {
           this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
         } else {
           this.pageSections = [this.carouselMasterData[0]];

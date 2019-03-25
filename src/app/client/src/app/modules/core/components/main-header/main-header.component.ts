@@ -1,7 +1,7 @@
-import { filter } from 'rxjs/operators';
+import { filter, flatMap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { UserService, PermissionService, TenantService } from './../../services';
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash';
@@ -103,6 +103,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   userDataSubscription: Subscription;
   exploreRoutingUrl: string;
   pageId: string;
+  searchBox = {
+    'center': false,
+    'smallBox': false,
+    'mediumBox': false,
+    'largeBox': false
+  };
 
   isOffline: boolean = environment.isOffline;
   /*
@@ -171,6 +177,38 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       });
     this.setInteractEventData();
     this.cdr.detectChanges();
+    if (window.innerWidth <= 1023 && window.innerWidth > 548) {
+      this.searchBox.center = true;
+      this.searchBox.largeBox = true;
+      this.searchBox.smallBox = false;
+      this.searchBox.mediumBox = false;
+    } else if (window.innerWidth <= 548) {
+      this.searchBox.smallBox = true;
+      this.searchBox.largeBox = false;
+      this.searchBox.mediumBox = false;
+    } else {
+      this.searchBox.center = false;
+      this.searchBox.smallBox = false;
+      this.searchBox.largeBox = false;
+      this.searchBox.mediumBox = true;
+    }
+    window.onresize = (e) => {
+      if (window.innerWidth <= 1023 && window.innerWidth > 548) {
+        this.searchBox.center = true;
+        this.searchBox.largeBox = true;
+        this.searchBox.smallBox = false;
+        this.searchBox.mediumBox = false;
+      } else if (window.innerWidth <= 548) {
+        this.searchBox.largeBox = false;
+        this.searchBox.mediumBox = false;
+        this.searchBox.smallBox = true;
+      } else {
+        this.searchBox.center = false;
+        this.searchBox.smallBox = false;
+        this.searchBox.largeBox = false;
+        this.searchBox.mediumBox = true;
+      }
+    };
   }
 
   getCacheLanguage() {

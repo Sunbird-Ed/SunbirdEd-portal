@@ -81,7 +81,7 @@ describe('ResourceComponent', () => {
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
-    expect(component.carouselData.length).toEqual(1);
+    expect(component.carouselMasterData.length).toEqual(1);
   });
   xit('should fetch content after getting hashTagId and filter data and throw error if page api fails', () => {
     sendPageApi = false;
@@ -90,7 +90,7 @@ describe('ResourceComponent', () => {
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
-    expect(component.carouselData.length).toEqual(0);
+    expect(component.carouselMasterData.length).toEqual(0);
     expect(toasterService.error).toHaveBeenCalled();
   });
   xit('should unsubscribe from all observable subscriptions', () => {
