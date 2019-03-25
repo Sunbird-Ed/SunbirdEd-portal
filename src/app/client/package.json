@@ -51,7 +51,7 @@
     "izimodal": "^1.5.1",
     "jquery": "^3.3.1",
     "jquery.fancytree": "^2.28.1",
-    "lodash": "^4.17.4",
+    "lodash-es": "^4.17.11",
     "moment": "^2.20.1",
     "moment-duration-format": "^2.2.2",
     "ng-recaptcha": "^4.2.1",

@@ -6,7 +6,7 @@ import { CourseBatchService } from '../../../services';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IImpressionEventInput } from '@sunbird/telemetry';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({

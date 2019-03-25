@@ -9,7 +9,7 @@ import { SearchService, UserService, LearnerService, ContentService } from '@sun
 import { OrgTypeService } from '@sunbird/org-management';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { Observable, of as observableOf } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';

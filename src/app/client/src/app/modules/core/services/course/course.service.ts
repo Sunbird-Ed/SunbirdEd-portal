@@ -6,7 +6,7 @@ import { UserService } from './../user/user.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { IEnrolledCourses, ICourses } from './../../interfaces';
 import { ContentService } from '../content/content.service';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 /**
  *  Service for course API calls.
  */

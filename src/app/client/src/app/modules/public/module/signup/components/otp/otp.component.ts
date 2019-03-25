@@ -3,7 +3,7 @@ import { SignupService } from './../../services';
 import { ResourceService, ServerResponse } from '@sunbird/shared';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import {
   IStartEventInput, IEndEventInput, IInteractEventInput,
   IInteractEventObject, IInteractEventEdata

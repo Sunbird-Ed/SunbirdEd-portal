@@ -12,7 +12,7 @@ import { SearchService, UserService, LearnerService, ContentService } from '@sun
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { UserDeleteComponent } from './user-delete.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';

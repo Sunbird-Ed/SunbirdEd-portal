@@ -4,7 +4,7 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ResourceService, IUserData, IUserProfile, ToasterService } from '@sunbird/shared';
 import { UserService, BadgesService } from '@sunbird/core';
 import { ContentBadgeService } from './../../services';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { ActivatedRoute } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({

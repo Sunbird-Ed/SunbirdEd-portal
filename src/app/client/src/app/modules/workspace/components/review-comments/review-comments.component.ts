@@ -5,7 +5,7 @@ import { UserService } from '@sunbird/core';
 import { ReviewCommentsService } from '../../services';
 import { Subject } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import * as moment from 'moment';
 @Component({
