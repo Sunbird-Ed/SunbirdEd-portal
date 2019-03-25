@@ -1,5 +1,4 @@
 .sb-card {
-  width: $sb-card-width;
   max-width: $sb-card-width;
   background-color: $sb-card-bg-color;
   box-shadow: $sb-card-box-shadow;
@@ -7,9 +6,6 @@
   border-radius: $sb-card-border-radius;
   cursor: pointer;
   overflow: hidden;
-  @media screen and (min-width: 340px) {
-    min-width: $sb-card-width;
-  }
   .sb-card-body {
     height: $sb-card-body-height;
     padding: $sb-card-padding;
@@ -111,5 +107,6 @@ app-card[lang="ur"] {
     .sb-card-org {
       font-size: $sb-card-meta-org-font-size-ur;
     }
+    
   }
 }
