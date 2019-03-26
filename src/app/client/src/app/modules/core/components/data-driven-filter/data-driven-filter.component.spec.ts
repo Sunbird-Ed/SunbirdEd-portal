@@ -47,7 +47,7 @@ describe('DataDrivenFilterComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
+      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       providers: [ConfigService, CacheService, ResourceService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute }],

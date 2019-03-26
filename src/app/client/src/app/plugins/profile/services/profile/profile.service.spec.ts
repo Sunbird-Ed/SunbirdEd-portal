@@ -9,7 +9,7 @@ import { mockRes } from './profile.service.spec.data';
 describe('ProfileService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
       providers: [ProfileService]
     });
   });

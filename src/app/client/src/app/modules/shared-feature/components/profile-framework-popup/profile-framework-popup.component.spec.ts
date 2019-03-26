@@ -26,7 +26,7 @@ describe('ProfileFrameworkPopupComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       declarations: [ProfileFrameworkPopupComponent],
       providers: [CacheService, { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub }],

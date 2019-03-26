@@ -14,7 +14,7 @@ describe('EditorService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule,
-        CoreModule.forRoot(), SharedModule.forRoot()],
+        CoreModule, SharedModule.forRoot()],
       providers: [EditorService, ConfigService, ContentService, WorkSpaceService, CacheService]
     });
   });

@@ -19,7 +19,7 @@ describe('PopupEditorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpClientTestingModule, FormsModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot()],
+      imports: [ HttpClientTestingModule, FormsModule, SuiModule, SharedModule.forRoot(), CoreModule],
       declarations: [PopupEditorComponent],
       providers: [NotesService]
     })

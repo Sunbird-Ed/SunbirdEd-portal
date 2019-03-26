@@ -53,7 +53,7 @@ describe('NoteCardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ OrderModule, HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot() ],
+      imports: [ OrderModule, HttpClientTestingModule, SharedModule.forRoot(), CoreModule ],
       declarations: [ NoteCardComponent, TimeAgoPipe ],
       providers: [ NotesService,
         { provide: ResourceService, useValue: mockResourceBundle },

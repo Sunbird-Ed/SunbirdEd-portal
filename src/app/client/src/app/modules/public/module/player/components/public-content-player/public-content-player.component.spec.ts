@@ -46,7 +46,7 @@ describe('PublicContentPlayerComponent', () => {
   let fixture: ComponentFixture<PublicContentPlayerComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CoreModule.forRoot(), SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule,
+      imports: [CoreModule, SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule,
       TelemetryModule.forRoot()],
       declarations: [PublicContentPlayerComponent],
       schemas: [NO_ERRORS_SCHEMA],

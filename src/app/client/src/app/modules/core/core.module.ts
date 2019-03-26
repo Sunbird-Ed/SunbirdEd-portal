@@ -35,7 +35,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
   exports: [MainHeaderComponent, MainFooterComponent, PermissionDirective, BodyScrollDirective, ConceptPickerComponent,
     DataDrivenFilterComponent, SortByComponent, BreadcrumbsComponent, FlagContentComponent,
     TelemetryModule, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent],
-    providers: [ChannelService, AuthGuard]
+    providers: [CacheService, AuthGuard]
 })
 export class CoreModule {
 }

@@ -32,7 +32,7 @@ describe('CollectionEditorComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionEditorComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule.forRoot(), TelemetryModule.forRoot()],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule, TelemetryModule.forRoot()],
       providers: [
         EditorService, UserService, ContentService,
         ResourceService, ToasterService, ConfigService, LearnerService,

@@ -10,7 +10,7 @@ import { UserService, LearnerService, CoreModule } from '@sunbird/core';
 describe('NotesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
       providers: [NotesService, LearnerService, UserService]
     });
   });

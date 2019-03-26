@@ -35,7 +35,7 @@ describe('FlagConentplayerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [FlagConentplayerComponent],
       imports: [HttpClientTestingModule, Ng2IziToastModule,
-        CoreModule.forRoot(), PlayerHelperModule, RouterTestingModule, SharedModule.forRoot()],
+        CoreModule, PlayerHelperModule, RouterTestingModule, SharedModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [ResourceService, ToasterService, NavigationHelperService,
         { provide: ResourceService, useValue: resourceBundle }

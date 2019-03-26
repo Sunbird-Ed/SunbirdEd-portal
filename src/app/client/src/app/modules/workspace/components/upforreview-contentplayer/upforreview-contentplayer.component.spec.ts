@@ -36,7 +36,7 @@ describe('UpforreviewContentplayerComponent', () => {
       declarations: [ UpforreviewContentplayerComponent ],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [HttpClientTestingModule, Ng2IziToastModule,
-      CoreModule.forRoot(),
+      CoreModule,
       RouterTestingModule, SharedModule.forRoot()],
       providers: [ ResourceService, ToasterService, NavigationHelperService,
       { provide: ResourceService, useValue: resourceBundle }

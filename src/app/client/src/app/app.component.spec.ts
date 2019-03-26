@@ -42,7 +42,7 @@ describe('AppComponent', () => {
   let userService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule.forRoot(),
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule,
         RouterTestingModule],
       declarations: [
         AppComponent
