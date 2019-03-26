@@ -32,7 +32,7 @@
                     <ngx-avatar class="my-avatar" [style]="customStyle" [size]="80" initialsSize="1" [textSizeRatio]="2" name="{{user.firstName}} ">
                     </ngx-avatar>
                   </div>
-                  <div class="content ">
+                  <div class="content userSearchContent">
                     <!--<a appTelemetryInteract [telemetryInteractEdata]="userViewIntractEdata" 
                         [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}" 
                         class="header " *ngIf="user.status===1" [queryParams]="queryParams" [routerLink]="['view/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">{{user.firstName}} &nbsp;{{user.lastName}}</a>-->
