@@ -53,6 +53,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
 
   private router: Router;
 
+  private objectRollUp: any;
+
   public loader: Boolean = true;
   public treeModel: any;
   public contentDetails = [];
@@ -62,7 +64,9 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   public badgeData: Array<object>;
   private subsrciption: Subscription;
   public closeCollectionPlayerInteractEdata: IInteractEventEdata;
+  public closePlayerInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
+  public playerTelemetryInteractObject: IInteractEventObject;
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
@@ -116,10 +120,14 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     }
   }
 
-  private initPlayer(id: string): void {
-    this.playerConfig = this.getPlayerConfig(id).pipe(catchError((error) => {
-      return error;
-    }));
+  private initPlayer(id: string) {
+    this.playerConfig = this.getPlayerConfig(id).pipe(map((data) => {
+      data.context.objectRollup = this.objectRollUp;
+      this.playerTelemetryInteractObject.rollup = this.objectRollUp;
+      return data;
+    }), catchError((err) => {
+      return err;
+    }), );
   }
 
   public playContent(data: any): void {
@@ -210,6 +218,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
             if (content) {
+              this.setRollUpData(content);
               this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') }, true);
             } else {
               // show toaster error
@@ -225,6 +234,11 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       });
   }
 
+  private setRollUpData (content) {
+    const nodes = content.getPath();
+    this.objectRollUp = {};
+    nodes.forEach((eachnode, index) => this.objectRollUp['l' + (index + 1)] = eachnode.model.identifier);
+  }
   private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
     const inputParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
     return this.playerService.getCollectionHierarchy(collectionId, inputParams).pipe(
@@ -253,11 +267,17 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'public'
     };
+    this.closePlayerInteractEdata = {
+      id: 'close-player',
+      type: 'click',
+      pageid: 'public'
+    };
     this.telemetryInteractObject = {
       id: this.activatedRoute.snapshot.params.collectionId,
-      type: 'collection',
+      type: 'Content',
       ver: '1.0'
     };
+    this.playerTelemetryInteractObject = { ...this.telemetryInteractObject };
   }
   deviceDetector() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();

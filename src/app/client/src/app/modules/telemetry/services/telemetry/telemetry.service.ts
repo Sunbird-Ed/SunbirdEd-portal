@@ -233,7 +233,7 @@ export class TelemetryService {
    * @returns
    * @memberof TelemetryService
    */
-  private getRollUpData(data: Array<string> = []) {
+  public getRollUpData(data: Array<string> = []) {
     const rollUp = {};
     data.forEach((element, index) => rollUp['l' + (index + 1)] = element);
     return rollUp;

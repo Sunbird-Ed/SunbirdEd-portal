@@ -1,19 +1,25 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { PublicDataService } from './../public-data/public-data.service';
-import { ConfigService, RequestParam,  HttpOptions} from '@sunbird/shared';
+import { ConfigService,  HttpOptions} from '@sunbird/shared';
 import * as moment from 'moment';
 import { UUID } from 'angular2-uuid';
 import { HttpClient } from '@angular/common/http';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { Observable, timer, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DeviceRegisterService {
+export class DeviceRegisterService implements OnDestroy {
   private portalVersion: string;
   private appId: string;
   private deviceId: string;
   private deviceRegisterApi: string;
+  private timer$: Observable<any>;
+  private channel: string;
+  // private timerSubscription : Observable<any>;
+  private timerSubscription: Subscription;
+
   constructor(public deviceDetectorService: DeviceDetectorService, public publicDataService: PublicDataService,
     private configService: ConfigService, private http: HttpClient) {
 
@@ -27,8 +33,22 @@ export class DeviceRegisterService {
     this.deviceRegisterApi = (<HTMLInputElement>document.getElementById('deviceRegisterApi'))
     && (<HTMLInputElement>document.getElementById('deviceRegisterApi')).value;
   }
+
+  onTimeOut () {
+    this.registerDevice(this.channel);
+  }
+
   registerDevice(channel: string, deviceId?: string) {
     console.log('calling registerDevice');
+    this.channel = channel;
+    // call register api every 24hrs
+    this.timer$ = timer(3.6e+6, 3.6e+6);
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
+    this.timerSubscription = this.timer$.subscribe(t => {
+        this.onTimeOut();
+    });
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     this.deviceId = (<HTMLInputElement>document.getElementById('deviceId'))
     && (<HTMLInputElement>document.getElementById('deviceId')).value;
@@ -61,5 +81,9 @@ export class DeviceRegisterService {
     }, (err) => {
       console.log('called device', err);
     });
+  }
+
+  ngOnDestroy() {
+    this.timerSubscription.unsubscribe();
   }
 }

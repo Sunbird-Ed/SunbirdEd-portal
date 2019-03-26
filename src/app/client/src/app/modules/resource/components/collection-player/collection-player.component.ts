@@ -48,6 +48,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
 
   private router: Router;
 
+  private objectRollUp: any;
+
   /**
    * Reference of config service
    */
@@ -125,6 +127,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
 
   private initPlayer(id: string): void {
     this.playerConfig = this.getPlayerConfig(id).pipe(map((content) => {
+      content.context.objectRollup = this.objectRollUp;
       this.telemetryContentImpression = {
         context: {
           env: this.route.snapshot.data.telemetry.env
@@ -149,8 +152,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
         id: content.metadata.identifier,
         type: content.metadata.contentType || content.metadata.resourceType || 'content',
         ver: content.metadata.pkgVersion ? content.metadata.pkgVersion.toString() : '1.0',
-        rollup: { l1: this.collectionId }
-        // rollup: this.collectionInteractObject
+        rollup: this.objectRollUp
       };
       this.triggerContentImpression = true;
       return content;
@@ -238,6 +240,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
             if (content) {
+              this.setRollUpData(content);
               this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
             } else {
               this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
@@ -251,6 +254,13 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
       });
   }
+
+  private setRollUpData (content) {
+    const nodes = content.getPath();
+    this.objectRollUp = {};
+    nodes.forEach((eachnode, index) => this.objectRollUp['l' + (index + 1)] = eachnode.model.identifier);
+  }
+
   setTelemetryData() {
     this.telemetryImpression = {
       context: {
