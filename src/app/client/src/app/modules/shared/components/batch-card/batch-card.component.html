@@ -1,7 +1,7 @@
 <div class="ui link cards mb-0 mt-15">
   <div class="ui fluid card mouse-pointer">
     <div class="image" (click)="onAction(batch)" 
-    appTelemetryInteract [telemetryInteractObject]="{id:batch.identifier,type:'batch',ver:'1.0'}" [telemetryInteractEdata]="{id:'batchId',type:'click',pageid:'course-batch'}">
+    appTelemetryInteract [telemetryInteractObject]="{id:batch.identifier,type:'CourseBatch',ver:'1.0'}" [telemetryInteractEdata]="{id:'batchId',type:'click',pageid:'course-batch'}">
       <div class="ui fluid image">
           <div class="ui black right ribbon label">Batch of {{batch.label}} </div>
         <!-- <img src="{{'assets/images/default.png' | cdnprefixurl}}"> -->
