@@ -21,11 +21,15 @@ node('build-slave') {
                 commit_hash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                 branch_name = sh(script: 'git name-rev --name-only HEAD | rev | cut -d "/" -f1| rev', returnStdout: true).trim()
                 build_tag = branch_name + "_" + commit_hash
+                // Creating artifact version
+                artifact_version = branch_name + "_" + commit_hash
                 println(ANSI_BOLD + ANSI_YELLOW + "github_release_tag not specified, using the latest commit hash: " + commit_hash + ANSI_NORMAL)
             } else {
                 def scmVars = checkout scm
                 checkout scm: [$class: 'GitSCM', branches: [[name: "refs/tags/$params.github_release_tag"]], userRemoteConfigs: [[url: scmVars.GIT_URL]]]
                 build_tag = params.github_release_tag
+                // Creating artifact version
+                artifact_version = branch_name + "_" + commit_hash
                 println(ANSI_BOLD + ANSI_YELLOW + "github_release_tag specified, building from github_release_tag: " + params.github_release_tag + ANSI_NORMAL)
             }
             echo "build_tag: " + build_tag
@@ -45,8 +49,8 @@ node('build-slave') {
                     error 'cdn url is not defined'
                 }
                 stage('Build-CDN') {
-                    sh ("docker run --rm -v `pwd`:/work -w /work node:8.11.2-alpine sh ./build-cdn.sh ${params.cdnUrl} ${commit_hash}")
-                    archiveArtifacts 'src/app/player-dist*.tar.gz'
+                    sh ("docker run --rm -v `pwd`:/work -w /work node:8.11.2-alpine sh ./build-cdn.sh ${params.cdnUrl} ${commit_hash} ${artifact_version}")
+                    archiveArtifacts 'src/app/player_artifacts.zip*'
                 }
             }
 
