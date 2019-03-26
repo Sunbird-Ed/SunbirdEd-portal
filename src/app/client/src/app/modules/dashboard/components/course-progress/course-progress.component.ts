@@ -3,7 +3,7 @@ import { combineLatest,  Subscription ,  Observable ,  Subject, of } from 'rxjs'
 import {first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, delay} from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { UserService } from '@sunbird/core';
 import { ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService } from '@sunbird/shared';
 import { CourseProgressService } from './../../services';
@@ -398,7 +398,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
                 ver: this.activatedRoute.snapshot.data.telemetry.object.ver
               }
             };
-            this.interactObject = { id: this.courseId, type: 'course', ver: '1.0' };
+            this.interactObject = { id: this.courseId, type: 'Course', ver: '1.0' };
             this.populateBatchData();
           });
       }

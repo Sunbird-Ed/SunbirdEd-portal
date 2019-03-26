@@ -2,7 +2,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService, PlayerService, CopyContentService, PermissionService, BreadcrumbsService } from '@sunbird/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { INoteData } from '@sunbird/notes';
 import {
   ConfigService, IUserData, ResourceService, ToasterService, WindowScrollService, NavigationHelperService,
@@ -81,6 +81,7 @@ export class ContentPlayerComponent implements OnInit {
   showExtContentMsg = false;
 
   closeUrl: any;
+  contentRatingModal = false;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
@@ -207,6 +208,14 @@ export class ContentPlayerComponent implements OnInit {
   onShareLink() {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.contentId, this.contentData.mimeType);
     this.setTelemetryShareData(this.contentData);
+  }
+  public contentProgressEvent(event) {
+    const eid = event.detail.telemetryData.eid;
+    if (eid === 'END') {
+      this.contentRatingModal = true;
+      console.log('call me');
+      return;
+    }
   }
   setTelemetryShareData(param) {
     this.telemetryShareData = [{

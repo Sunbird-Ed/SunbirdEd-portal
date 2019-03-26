@@ -4,7 +4,7 @@ import { first, mergeMap, map , filter } from 'rxjs/operators';
 import { of, throwError, Subscription } from 'rxjs';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { Router } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
@@ -257,7 +257,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
 
     this.telemetryInteractObject = {
       id: this.userService.userid,
-      type: 'user',
+      type: 'User',
       ver: '1.0'
     };
   }

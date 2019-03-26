@@ -5,7 +5,7 @@ import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/cor
 import { AnnouncementService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService, ResourceService, ServerResponse } from '@sunbird/shared';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 import { IAnnouncementListData } from '@sunbird/announcement';
 import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
@@ -62,7 +62,6 @@ export class HomeAnnouncementComponent implements OnInit, OnDestroy {
    */
   showLoader = true;
   seeAllInteractEdata: IInteractEventEdata;
-  public telemetryInteractObject: IInteractEventObject;
   /**
    * Constructor
    * inject service(s)
@@ -149,11 +148,6 @@ export class HomeAnnouncementComponent implements OnInit, OnDestroy {
       id: 'all-announcement',
       type: 'click',
       pageid: 'announcement-list'
-    };
-    this.telemetryInteractObject = {
-      id: '',
-      type: 'announcement',
-      ver: '1.0'
     };
   }
 

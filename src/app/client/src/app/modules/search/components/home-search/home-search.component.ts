@@ -7,7 +7,7 @@ import { IPagination } from '@sunbird/announcement';
 import { combineLatest, Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, delay, first, debounceTime, tap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';

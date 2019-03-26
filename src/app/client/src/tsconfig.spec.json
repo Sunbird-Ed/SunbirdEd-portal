@@ -65,7 +65,7 @@
         "app/modules/player-helper"
       ]
     },
-    "module": "commonjs",
+    "module": "es2015",
     "types": [
       "jasmine",
       "node"

@@ -11,7 +11,6 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
 
 const fakeActivatedRoute = {
   snapshot: {
@@ -41,11 +40,10 @@ describe('PageSectionComponent', () => {
     fixture = TestBed.createComponent(PageSectionComponent);
     component = fixture.componentInstance;
   });
-
   it('should show TEST INPUT for success data', () => {
     component.section = Response.successData;
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.sb-pageSection-title').innerText).toEqual('Multiple Data');
+    expect(fixture.nativeElement.querySelector('.sb-pageSection-title').innerText).toEqual('Multiple data');
     expect(fixture.nativeElement.querySelector('.sb-pageSection-count').innerText).toEqual('1');
   });
   it('should show TEST INPUT for no contents data', () => {
@@ -55,18 +53,10 @@ describe('PageSectionComponent', () => {
     expect(fixture.nativeElement.querySelector('.sb-pageSection-count')).toEqual(null);
   });
   it('should call inviewChange method for visits data', () => {
-    component.section = { name: 'courseTest', length: 1 };
-    spyOn(component, 'inviewChange').and.callThrough();
-    component.inviewChange(Response.slideContentList, Response.slideEventData);
-    expect(component.inviewChange).toHaveBeenCalled();
-    expect(component.inviewLogs).toBeDefined();
-  });
-  it('should call checkSlide method for interact data', () => {
-    component.section = { name: 'courseTest', length: 1 };
-    spyOn(component, 'checkSlide').and.callThrough();
-    component.checkSlide(Response.slide2EventData);
-    console.log('checkslide 2: ', component.checkSlide(Response.slide2EventData));
-    expect(component.checkSlide).toHaveBeenCalled();
+    component.section = { name: 'courseTest', length: 1 , contents: []};
+    spyOn(component, 'handleAfterChange').and.callThrough();
+    component.handleAfterChange({});
+    expect(component.handleAfterChange).toHaveBeenCalled();
   });
   it('should call playContent', () => {
     spyOn(component, 'playContent').and.callThrough();

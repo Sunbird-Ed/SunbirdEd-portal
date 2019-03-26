@@ -15,7 +15,8 @@ export const Response = {
     },
     defaultData: {
         'name': 'Multiple Data',
-        'length': 0
+        'length': 0,
+        'contents': []
     },
     playContentData: {
         action: {eventName: 'onImage'},

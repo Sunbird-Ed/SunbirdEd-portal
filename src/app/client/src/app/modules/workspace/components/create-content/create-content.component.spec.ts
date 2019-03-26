@@ -30,7 +30,7 @@ describe('CreateContentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, SharedModule.forRoot(), HttpClientTestingModule, CoreModule.forRoot(), TelemetryModule],
+      imports: [RouterTestingModule, SharedModule.forRoot(), HttpClientTestingModule, CoreModule, TelemetryModule],
       declarations: [CreateContentComponent],
       providers: [ResourceService, CacheService, ConfigService,
        {provide: ActivatedRoute, useValue: fakeActivatedRoute}]

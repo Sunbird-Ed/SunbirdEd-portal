@@ -2,7 +2,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { FineUploader, UIOptions } from 'fine-uploader';
 import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { ConfigService, ToasterService } from '@sunbird/shared';
 
 @Injectable()

@@ -1,6 +1,6 @@
 
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { mockUserData } from './../../../core/services/user/user.mock.spec.data';
+import { mockUserData } from './../../../../../core/services/user/user.mock.spec.data';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule, ResourceService, ToasterService, NavigationHelperService, WindowScrollService } from '@sunbird/shared';
@@ -64,7 +64,7 @@ describe('ContentPlayerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CoreModule.forRoot(), SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
+      imports: [CoreModule, SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
       declarations: [ ContentPlayerComponent ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute},

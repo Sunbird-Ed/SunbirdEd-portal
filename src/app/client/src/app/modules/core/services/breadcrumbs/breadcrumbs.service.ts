@@ -1,7 +1,9 @@
 import { IBreadcrumb } from '../../interfaces';
 import { Injectable, EventEmitter } from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BreadcrumbsService {
 
   dynamicData: IBreadcrumb;

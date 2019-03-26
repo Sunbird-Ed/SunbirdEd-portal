@@ -9,9 +9,9 @@ const exec = require('child_process').exec
 const brotli = require('gulp-brotli');
 
 // To download editors
-const contentEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/content-editor-iframe-1.14.2.zip'
-const collectionEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/collection-editor-iframe-1.14.2.zip'
-const genericEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/generic-editor-iframe-1.14.2.zip'
+const contentEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/content-editor-iframe-1.15.0.zip'
+const collectionEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/collection-editor-iframe-1.15.0.zip'
+const genericEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/generic-editor-iframe-1.15.0.zip'
 const editorsDestPath = 'client/src/thirdparty/editors/'
 
 gulp.task('clean:editors', () => {
@@ -73,11 +73,13 @@ gulp.task('client:gzip', () => {
         .pipe(gzip())
         .pipe(gulp.dest('./dist'))
 })
+
 gulp.task('client:brotli', () => {
     return gulp.src(['./dist/*.js', './dist/*.css'])
         .pipe(brotli.compress())
         .pipe(gulp.dest('./dist'))
 })
+
 gulp.task('update:index:file', () => {
     return gulp.src('./dist/index.html')
         .pipe(rename('index.ejs'))
@@ -134,3 +136,43 @@ gulp.task('deploy',
         'clean:index:file',
         'prepare:app:dist')
 )
+
+
+// offline app preparation tasks
+
+gulp.task('offline-client:dist', (cb) => {
+    exec('npm run build-offline-prod --prefix ./client ', { maxBuffer: Infinity }, function (err, stdout, stderr) {
+        console.log(stdout)
+        console.log(stderr)
+        cb(err)
+    })
+})
+
+gulp.task('install-player', (cb) => {
+    exec('npm install  @project-sunbird/content-player --no-save', { maxBuffer: Infinity }, function (err, stdout, stderr) {
+        console.log(stdout)
+        console.log(stderr)
+        cb(err)
+    })
+})
+
+gulp.task('copy-player', () => {
+    return gulp.src(['node_modules/@project-sunbird/content-player/**/*'], { "base": "node_modules/@project-sunbird/content-player" })
+        .pipe(gulp.dest('./dist/contentPlayer/'))
+})
+
+gulp.task('clean:content-player:modules', (done) => {
+    return gulp.src('./node_modules/@project-sunbird/content-player/node_modules', { read: false })
+        .pipe(clean())
+})
+
+gulp.task('build-offline', gulpSequence(
+    'clean:client:install',
+    'client:install',
+    'offline-client:dist',
+    'update:index:file',
+    'clean:index:file',
+    'install-player',
+    'clean:content-player:modules',
+    'copy-player'
+))

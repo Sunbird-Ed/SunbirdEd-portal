@@ -3,7 +3,7 @@ import {throwError as observableThrowError, of as observableOf,  Observable } fr
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import * as testData from './details-popup.component.spec.data';
 import { Component, OnInit, NO_ERRORS_SCHEMA } from '@angular/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { HttpClient } from '@angular/common/http';
 import { TelemetryModule } from '@sunbird/telemetry';
 // Modules

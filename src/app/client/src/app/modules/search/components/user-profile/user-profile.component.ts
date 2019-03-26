@@ -3,7 +3,7 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { UserSearchService } from './../../services';
 import { BadgesService, BreadcrumbsService, LearnerService, UserService } from '@sunbird/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 
 /**

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRouteSnapshot } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 /**
  * Service to redirect to parent component
  *

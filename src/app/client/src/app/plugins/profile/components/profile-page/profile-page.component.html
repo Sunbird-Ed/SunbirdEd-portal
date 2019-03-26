@@ -43,7 +43,7 @@
       <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
         [telemetryInteractEdata]="editProfileInteractEdata"
         class="sb-btn sb-btn-primary sb-btn-xs right-aligned-button right-0 bottom-5 absolute computer only"
-        (click)="showEditUserDetailsPopup=true">Edit</button>
+        (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
     </div>
 
     <div class="m-0 pl-0 computer only" *ngIf="orgDetails && orgDetails.locations && !isCustodianOrgUser">
@@ -197,11 +197,11 @@
 
         <div class="ui segment">
           <div class="regular slider pt-10">
-            <ngx-slick in-view-container [throttle]="[1000]" [trigger]="item"
+            <ngx-slick 
               (afterChange)="onTelemetryEvent(contributions,$event)"
               (beforeChange)="beforeContributionSlideChange($event)" class="carousel" #slickModal="slick-modal"
               [config]="slideConfig">
-              <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let item of contributions;let i = index;"
+              <div ngxSlickItem *ngFor="let item of contributions;let i = index;"
                 class="slide">
                 <div>
                   <app-card (clickEvent)="onClickOfMyContributions($event)" [data]="item" [customClass]="'pr-20'"

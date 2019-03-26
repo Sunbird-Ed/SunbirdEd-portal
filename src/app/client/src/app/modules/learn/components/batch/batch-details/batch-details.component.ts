@@ -6,7 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { PermissionService, UserService } from '@sunbird/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { Subject } from 'rxjs';
 import * as moment from 'moment';

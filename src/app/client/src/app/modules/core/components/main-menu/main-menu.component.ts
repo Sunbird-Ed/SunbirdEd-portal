@@ -5,7 +5,7 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { first, filter } from 'rxjs/operators';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { environment } from '@sunbird/environment';
 declare var jQuery: any;
 

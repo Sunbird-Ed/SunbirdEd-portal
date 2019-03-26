@@ -48,7 +48,7 @@ describe('PublicCourseConsumptionPageComponent', () => {
   let activatedRouteStub, courseService, toasterService, courseConsumptionService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), Ng2IziToastModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, Ng2IziToastModule],
       declarations: [ PublicCourseConsumptionPageComponent ],
       providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: ResourceService, useValue: resourceServiceMockData },

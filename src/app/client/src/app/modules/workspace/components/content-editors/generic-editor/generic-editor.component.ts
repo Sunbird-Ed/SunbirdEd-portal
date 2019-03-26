@@ -8,8 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '@sunbird/environment';
 import { EditorService, WorkSpaceService } from '../../../services';
 import { tap, delay, map, first } from 'rxjs/operators';
-import * as _ from 'lodash';
-
+import * as _ from 'lodash-es';
 jQuery.fn.iziModal = iziModal;
 
 /**

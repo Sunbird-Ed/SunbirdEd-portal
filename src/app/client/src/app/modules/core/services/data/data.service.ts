@@ -6,13 +6,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 /**
  * Service to provide base CRUD methods to make api request.
  *
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class DataService {
   /**
    * Contains rootOrg Id

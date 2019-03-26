@@ -41,7 +41,7 @@ describe('AddBatchMembersComponent', () => {
     TestBed.configureTestingModule({
       declarations: [AddBatchMembersComponent],
       imports: [OrderModule, RouterTestingModule, AngularMultiSelectModule,
-        FormsModule, HttpClientModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
+        FormsModule, HttpClientModule, SuiModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       providers: [SearchService, CourseBatchService, ToasterService, UserService,
         { provide: ResourceService, useValue: resourceServiceMockData }]
     })

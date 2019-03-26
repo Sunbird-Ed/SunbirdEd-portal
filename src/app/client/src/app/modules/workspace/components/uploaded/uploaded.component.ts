@@ -8,7 +8,7 @@ import {
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 

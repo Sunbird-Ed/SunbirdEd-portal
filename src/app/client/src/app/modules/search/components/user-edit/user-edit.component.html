@@ -10,8 +10,9 @@
   #modal
 >
   <!--Header-->
-  <div class="sb-modal-header">
-    {{resourceService.frmelmnts?.lbl?.setRole}}
+  <div class="sb-modal-header" *ngIf="userDetails">
+    {{resourceService.frmelmnts?.lbl?.setRole}} {{userDetails.firstName}} 
+    {{userDetails.lastName}}
   </div>
   <!--/Header-->
 

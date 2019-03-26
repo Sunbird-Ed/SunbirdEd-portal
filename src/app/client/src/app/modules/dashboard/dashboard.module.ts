@@ -13,7 +13,9 @@ import {
   RendererService, LineChartService, DownloadService, CourseProgressService,
   UsageService
 } from './services';
-import { OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent } from './components';
+import {
+  OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent,
+  DataTableComponent } from './components';
 // SB core and shared services
 import { SearchService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
@@ -30,8 +32,8 @@ import { OrderModule } from 'ngx-order-pipe';
     OrderModule,
     TelemetryModule
   ],
-  declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent],
-  exports: [CourseProgressComponent],
+  declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent, DataTableComponent],
+  exports: [CourseProgressComponent, DataTableComponent],
   providers: [
     RendererService,
     DashboardUtilsService,

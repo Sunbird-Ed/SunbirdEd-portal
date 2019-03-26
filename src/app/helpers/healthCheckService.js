@@ -13,6 +13,7 @@ var fs = require('fs');
 var path = require('path');
 var dateFormat = require('dateformat')
 var contactPoints = envHelper.PORTAL_CASSANDRA_URLS
+var checksArrayObj = []
 var hcMessages = {
   LEARNER_SERVICE: {
     NAME: 'learnerservice.api',
@@ -158,7 +159,7 @@ function learnerServiceHealthCheck (callback) {
  */
 function checkHealth (req, response) {
   var rspObj = req.rspObj
-  var checksArrayObj = []
+  checksArrayObj = []
   var isCSHealthy
   var isLSHealthy
   var isDbConnected
@@ -279,7 +280,7 @@ function checkDependantServiceHealth (dependancyServices) {
             'errmsg': 'Service is unavailable'
           },
           'responseCode': 'SERVICE_UNAVAILABLE',
-          'result': {}
+          'result': { check: checksArrayObj}
         })
         res.end()
       } else {

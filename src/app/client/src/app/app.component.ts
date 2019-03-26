@@ -7,7 +7,7 @@ import {
 } from '@sunbird/shared';
 import { Component, HostListener, OnInit, ViewChild, Inject } from '@angular/core';
 import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService } from '@sunbird/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { Observable, of, throwError, combineLatest } from 'rxjs';
 import { first, filter, mergeMap, tap, map } from 'rxjs/operators';
