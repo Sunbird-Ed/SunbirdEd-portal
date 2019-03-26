@@ -10,7 +10,9 @@ import { skipWhile } from 'rxjs/operators';
  * This service returns the organization details.
  */
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class TenantService extends DataService {
   /**
    * BehaviorSubject containing tenant data.

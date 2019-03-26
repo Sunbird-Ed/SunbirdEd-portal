@@ -10,7 +10,9 @@ import * as _ from 'lodash-es';
 /**
  *  Service for course API calls.
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CoursesService {
   private enrolledCourses: Array<ICourses>;
   /**

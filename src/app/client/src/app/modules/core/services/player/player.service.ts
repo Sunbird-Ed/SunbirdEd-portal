@@ -16,7 +16,9 @@ import { PublicDataService } from './../public-data/public-data.service';
 /**
  * helper services to fetch content details and preparing content player config
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class PlayerService {
   /**
    * stores content details
