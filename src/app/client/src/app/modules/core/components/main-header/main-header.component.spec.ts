@@ -20,7 +20,7 @@ describe('MainHeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule.forRoot(),
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule,
         TelemetryModule.forRoot(), RouterTestingModule, WebExtensionModule.forRoot()],
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],

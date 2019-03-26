@@ -59,7 +59,7 @@ describe('OrganizationUploadComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OrganizationUploadComponent],
-      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, CoreModule.forRoot(), SharedModule.forRoot(),
+      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, CoreModule, SharedModule.forRoot(),
         TelemetryModule.forRoot()],
       providers: [OrgManagementService, { provide: Router, useClass: RouterStub },
         { provide: ResourceService, useValue: ResourceData },

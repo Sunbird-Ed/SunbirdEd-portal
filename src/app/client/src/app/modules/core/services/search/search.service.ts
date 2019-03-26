@@ -12,7 +12,9 @@ import * as _ from 'lodash-es';
 /**
  * Service to search content
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SearchService {
   /**
    * Contains searched content list

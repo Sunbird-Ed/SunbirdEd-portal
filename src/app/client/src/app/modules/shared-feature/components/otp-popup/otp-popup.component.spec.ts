@@ -17,7 +17,7 @@ describe('OtpPopupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), CoreModule.forRoot(), FormsModule, ReactiveFormsModule,
+      imports: [SharedModule.forRoot(), CoreModule, FormsModule, ReactiveFormsModule,
         HttpClientTestingModule, SuiModule, TelemetryModule.forRoot() , RouterTestingModule],
       declarations: [OtpPopupComponent],
       providers: [ResourceService, TenantService, OtpService , UserService],

@@ -54,7 +54,7 @@ describe('DialCodeComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot(), TelemetryModule.forRoot(),  Ng2IziToastModule],
+      imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), TelemetryModule.forRoot(),  Ng2IziToastModule],
       declarations: [DialCodeComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [SearchService, UtilService, ConfigService,

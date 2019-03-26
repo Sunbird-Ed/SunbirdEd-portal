@@ -55,7 +55,7 @@ describe('ProfilePageComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule,  SharedModule.forRoot(), CoreModule.forRoot(),
+      imports: [HttpClientTestingModule,  SharedModule.forRoot(), CoreModule,
         TelemetryModule, NgInviewModule, SlickModule],
       declarations: [ ProfilePageComponent ],
       providers: [ProfileService, UserService, SearchService,

@@ -9,7 +9,9 @@ import { CollectionHierarchyAPI } from '../../interfaces';
  * Service to provides CRUD methods to make content api request by extending DataService.
  *
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ContentService extends DataService {
   /**
    * base Url for content api

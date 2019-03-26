@@ -63,7 +63,7 @@ describe('CourseProgressComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule.forRoot(), OrderModule,
-        CoreModule.forRoot(), DashboardModule,  TelemetryModule.forRoot()],
+        CoreModule, DashboardModule,  TelemetryModule.forRoot()],
       declarations: [],
       providers: [CourseProgressService,
         { provide: Router, useClass: RouterStub },

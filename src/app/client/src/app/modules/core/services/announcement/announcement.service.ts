@@ -13,7 +13,9 @@ import { ConfigService } from '@sunbird/shared';
  *
  * It responsible to make http call
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 
 /**
  * AnnouncementService extends dataservice where

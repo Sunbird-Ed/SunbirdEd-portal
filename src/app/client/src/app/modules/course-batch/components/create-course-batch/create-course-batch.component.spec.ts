@@ -62,7 +62,7 @@ describe('CreateCourseBatchComponent', () => {
 
       declarations: [CreateCourseBatchComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [ReactiveFormsModule, FormsModule, SharedModule.forRoot(), CoreModule.forRoot(), SuiModule, RouterTestingModule,
+      imports: [ReactiveFormsModule, FormsModule, SharedModule.forRoot(), CoreModule, SuiModule, RouterTestingModule,
         HttpClientTestingModule, TelemetryModule.forRoot() ],
       providers: [CourseBatchService, ToasterService, ResourceService,
         { provide: Router, useClass: RouterStub },
