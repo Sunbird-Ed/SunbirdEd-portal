@@ -66,7 +66,8 @@
 
       <!--QR Button-->
       <button class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0" appTelemetryInteract
-        [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;" title="{{resourceService.frmelmnts?.lbl?.enterQrCode}}">
+        [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;"
+        title="{{resourceService.frmelmnts?.lbl?.enterQrCode}}">
         <i class="qrcode icon d-flex flex-ai-center"></i>
         <span>{{resourceService.frmelmnts?.lbl?.enterQrCode}}</span>
       </button>
@@ -78,20 +79,25 @@
 
       <!--Search Box-->
       <!--Logged in Pages-->
-      <app-search class="sb-search-box mr-auto" *ngIf="!showExploreHeader" [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}"></app-search>
+      <app-search class="sb-search-box mr-auto" *ngIf="!showExploreHeader"
+        [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
+      </app-search>
       <!--/Logged in Pages-->
 
       <!--Explore Pages-->
-      <div class="sb-search-box mr-auto" *ngIf="showExploreHeader && !isOffline" [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
+      <div class="sb-search-box mr-auto" *ngIf="showExploreHeader && !isOffline"
+        [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
         <div class="input-div relative">
           <i class="search icon"></i>
-          <input type="text" id="keyword" name="filter_search" class="sb-search-input" title="{{resourceService?.frmelmnts?.prmpt?.search}}"
-            placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}" [(ngModel)]="key" (keyup.enter)="onEnter(key)" />
+          <input type="text" id="keyword" name="filter_search" class="sb-search-input"
+            title="{{resourceService?.frmelmnts?.prmpt?.search}}"
+            placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}" [(ngModel)]="key"
+            (keyup.enter)="onEnter(key)" />
           <!-- <i class="close icon"></i>
             <div class="sb-loader"></div> -->
         </div>
-        <button class="sb-btn sb-btn-normal" (click)="onEnter(key)" title="{{resourceService?.frmelmnts?.prmpt?.search}}"
-          tabindex="0">Search</button>
+        <button class="sb-btn sb-btn-normal" (click)="onEnter(key)"
+          title="{{resourceService?.frmelmnts?.prmpt?.search}}" tabindex="0">Search</button>
       </div>
       <!--/Explore Pages-->
       <!--/Search Box-->
@@ -109,8 +115,8 @@
     <div class="ui mobile-view container d-flex flex-jc-space-between mx-0">
 
       <!--QR Button-->
-      <button class="ui button qr-code-btn d-flex flex-ai-center" appTelemetryInteract [telemetryInteractEdata]="enterDialCodeInteractEdata"
-        (click)="showQrmodal = true;">
+      <button class="ui button qr-code-btn d-flex flex-ai-center" appTelemetryInteract
+        [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;">
         <i class="qrcode icon d-flex flex-ai-center"></i>
         <span class="d-flex flex-ai-center">
           {{resourceService.frmelmnts?.lbl?.enterQrCode}}
@@ -135,7 +141,7 @@
       <!--/Logged in Pages-->
 
       <!--Explore Pages-->
-      <div class="searchbox ml-0 mr-auto my-0" *ngIf="showExploreHeader">
+      <!-- <div class="searchbox ml-0 mr-auto my-0" *ngIf="showExploreHeader">
         <div class="ui fluid ui left action input searchbox-inner">
           <input type="text" id="keyword" name="filter_search" class="searchinput br-0" title="{{resourceService?.frmelmnts?.prmpt?.search}}"
             placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}" [(ngModel)]="key" (keyup.enter)="onEnter(key)" />
@@ -144,7 +150,7 @@
               tabindex="0"></i>
           </button>
         </div>
-      </div>
+      </div> -->
       <!--/Explore Pages-->
       <!--/Search Box-->
 
@@ -155,6 +161,6 @@
     </div>
   </div>
   <!--/Mobile-->
-  
+
   <!--/Header Blue Section-->
 </div>

@@ -269,7 +269,7 @@ export class UserFilterComponent implements OnInit {
 
     this.telemetryInteractObject = {
       id: this.userService.userid,
-      type: 'user',
+      type: 'User',
       ver: '1.0'
     };
   }
