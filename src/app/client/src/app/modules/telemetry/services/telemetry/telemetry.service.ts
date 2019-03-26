@@ -3,7 +3,7 @@ import * as _ from 'lodash-es';
 import {
   ITelemetryEvent, ITelemetryContextData, TelemetryObject,
   IStartEventInput, IImpressionEventInput,
-  IInteractEventInput, IShareEventInput, IErrorEventInput, IEndEventInput, ILogEventInput, ITelemetryContext
+  IInteractEventInput, IShareEventInput, IErrorEventInput, IEndEventInput, ILogEventInput, ITelemetryContext, IFeedBackEventInput
 } from './../../interfaces/telemetry';
  export const TELEMETRY_PROVIDER = new InjectionToken('telemetryProvider');
 /**
@@ -160,6 +160,20 @@ export class TelemetryService {
     if (this.isInitialized) {
       const eventData: ITelemetryEvent = this.getEventData(logEventInput);
       this.telemetryProvider.log(eventData.edata, eventData.options);
+    }
+  }
+
+
+  /**
+   * Feedback 'feedback' telemetry event
+   *
+   * @param {IFeedBackEventInput} IFeedBackEventInput
+   * @memberof TelemetryService
+   */
+  public feedback(feedbackEventInput: IFeedBackEventInput) {
+    if (this.isInitialized) {
+      const eventData: ITelemetryEvent = this.getEventData(feedbackEventInput);
+      this.telemetryProvider.feedback(eventData.edata, eventData.options);
     }
   }
 
