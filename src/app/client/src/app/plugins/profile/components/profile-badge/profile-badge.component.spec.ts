@@ -14,7 +14,7 @@ describe('ProfileBadgeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule.forRoot()],
+      imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule],
       declarations: [ProfileBadgeComponent],
       providers: [UserService, BadgesService],
       schemas: [NO_ERRORS_SCHEMA]

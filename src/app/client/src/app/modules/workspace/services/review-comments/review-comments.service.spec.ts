@@ -10,7 +10,7 @@ import { ExtPluginService } from '@sunbird/core';
  describe('ReviewCommentsService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, RouterTestingModule, CoreModule.forRoot(), SharedModule.forRoot()],
+        imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, SharedModule.forRoot()],
         providers: [ReviewCommentsService, ConfigService]
         });
     });

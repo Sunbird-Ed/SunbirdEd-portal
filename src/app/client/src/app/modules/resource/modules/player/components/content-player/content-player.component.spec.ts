@@ -64,7 +64,7 @@ describe('ContentPlayerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CoreModule.forRoot(), SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
+      imports: [CoreModule, SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
       declarations: [ ContentPlayerComponent ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute},

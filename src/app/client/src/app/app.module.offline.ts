@@ -21,7 +21,7 @@ import { WebExtensionsConfig, PluginModules } from './framework.config';
   declarations: [
   ],
   imports: [
-    CoreModule.forRoot(),
+    CoreModule,
     CommonModule,
     BrowserModule,
     HttpClientModule,
