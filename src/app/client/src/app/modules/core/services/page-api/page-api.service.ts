@@ -13,7 +13,9 @@ import { PublicDataService } from './../public-data/public-data.service';
 /**
 *  Service for page API calls.
 */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class PageApiService {
   /**
   *  To get url, app configs.

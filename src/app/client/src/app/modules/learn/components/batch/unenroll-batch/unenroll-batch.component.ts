@@ -52,7 +52,7 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy {
           ver: this.activatedRoute.snapshot.data.telemetry.object.ver
         }
       };
-      this.telemetryInteractObject = { id: this.batchId, type: 'course', ver: '1.0' };
+      this.telemetryInteractObject = { id: this.batchId, type: 'Course', ver: '1.0' };
       this.courseBatchService.getEnrollToBatchDetails(this.batchId).pipe(
         takeUntil(this.unsubscribe))
         .subscribe((data) => {

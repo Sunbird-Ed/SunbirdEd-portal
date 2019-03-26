@@ -31,7 +31,7 @@ describe('GenericEditorComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [GenericEditorComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, CoreModule.forRoot(), TelemetryModule.forRoot()],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, CoreModule, TelemetryModule.forRoot()],
       providers: [
         UserService, LearnerService, ContentService, EditorService,
         ResourceService, ToasterService, ConfigService,

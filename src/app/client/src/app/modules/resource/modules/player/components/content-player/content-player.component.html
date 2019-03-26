@@ -56,7 +56,7 @@
                             <p>{{resourceService.messages.imsg.m0036}}</p>
                         </div>
                     </div>
-                    <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
+                    <app-player (contentProgressEvent)="contentProgressEvent($event)"  class="content-player" [playerConfig]="playerConfig"></app-player>
                     <div class="twelve wide column contentMetaSection">
                         <div class="ui stackable grid mt-30">
                             <div class="row">
@@ -124,4 +124,5 @@
 </div>
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
 </app-share-link>
+<app-content-rating *ngIf="contentRatingModal && contentData"  [contentData] = "contentData"></app-content-rating>
 <router-outlet></router-outlet>

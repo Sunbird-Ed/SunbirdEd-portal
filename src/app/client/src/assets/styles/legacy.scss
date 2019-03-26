@@ -1630,6 +1630,11 @@ i.trash.outline.icon.trashIcon-fontSize {
   max-width: 80px;
   max-height: 80px;
 }
+[dir="rtl"] {
+  .ui.items > .item > .userSearchContent {
+    padding: 0 24px 0 0;
+  }
+}
 .ui.items > .item.userSearchCardHover {
   padding: 10px;
 }

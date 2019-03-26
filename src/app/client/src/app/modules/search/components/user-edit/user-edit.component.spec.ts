@@ -40,7 +40,7 @@ describe('UserEditComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, ReactiveFormsModule, FormsModule, SharedModule.forRoot(), CoreModule.forRoot(),
+      imports: [HttpClientTestingModule, ReactiveFormsModule, FormsModule, SharedModule.forRoot(), CoreModule,
         TelemetryModule.forRoot(),
          Ng2IziToastModule, RouterTestingModule],
       declarations: [UserEditComponent],

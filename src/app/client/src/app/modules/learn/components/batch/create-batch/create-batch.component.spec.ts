@@ -68,7 +68,7 @@ describe('CreateBatchComponent', () => {
     TestBed.configureTestingModule({
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [SharedModule.forRoot(), CoreModule.forRoot(), SuiModule, RouterTestingModule,
+      imports: [SharedModule.forRoot(), CoreModule, SuiModule, RouterTestingModule,
         HttpClientTestingModule, LearnModule],
       providers: [CourseBatchService, ToasterService, ResourceService, UserService, CourseConsumptionService,
         CourseProgressService, TelemetryService, { provide: Router, useClass: RouterStub },

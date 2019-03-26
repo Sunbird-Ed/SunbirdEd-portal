@@ -23,7 +23,7 @@ import { PluginModules } from './framework.config';
     AppComponent
   ],
   imports: [
-    CoreModule.forRoot(),
+    CoreModule,
     CommonModule,
     BrowserModule,
     HttpClientModule,

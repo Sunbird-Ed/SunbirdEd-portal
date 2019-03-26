@@ -5,7 +5,9 @@ import { SearchParam } from '@sunbird/core';
 import { ServerResponse, ToasterService, ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ConceptPickerService {
   private searchService: SearchService;
   private toasterService: ToasterService;

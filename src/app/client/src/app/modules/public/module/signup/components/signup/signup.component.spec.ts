@@ -31,7 +31,7 @@ describe('SignUpComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), RecaptchaModule, CoreModule.forRoot(),
+      imports: [SharedModule.forRoot(), RecaptchaModule, CoreModule,
         HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [ SignupComponent ],
       providers: [FormBuilder, ResourceService, SignupService,

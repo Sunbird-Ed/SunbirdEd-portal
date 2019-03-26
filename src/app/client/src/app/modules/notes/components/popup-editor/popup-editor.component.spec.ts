@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { response } from './popup-editor-component.spec.data';
 import { mockUserData } from './../../../core/services/user/user.mock.spec.data';
 import { PopupEditorComponent } from './popup-editor.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('PopupEditorComponent', () => {
   let component: PopupEditorComponent;
@@ -19,7 +20,7 @@ describe('PopupEditorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpClientTestingModule, FormsModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot()],
+      imports: [ HttpClientTestingModule, FormsModule, SuiModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],
       declarations: [PopupEditorComponent],
       providers: [NotesService]
     })

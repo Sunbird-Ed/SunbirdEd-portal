@@ -24,7 +24,7 @@ describe('UpdatePhoneComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(),
+      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(),
         RouterTestingModule],
       declarations: [ UpdatePhoneComponent ],
       schemas: [NO_ERRORS_SCHEMA],

@@ -37,7 +37,7 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [ReviewsubmissionsContentplayerComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, PlayerHelperModule, CoreModule.forRoot(),
+      imports: [HttpClientTestingModule, Ng2IziToastModule, PlayerHelperModule, CoreModule,
         RouterTestingModule, SharedModule.forRoot()],
       providers: [ResourceService, ToasterService, NavigationHelperService,
         { provide: ResourceService, useValue: resourceBundle }
