@@ -10,7 +10,9 @@ import { FrameworkService } from './../framework/framework.service';
 /**
  * Service to copy content
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CopyContentService {
   /**
    * base Url for content api

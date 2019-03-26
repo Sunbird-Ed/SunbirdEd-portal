@@ -115,7 +115,7 @@ describe('ReviewCommentsComponent', () => {
         { provide: ResourceService, useValue: mockResourceBundle },
         { provide: UserService, useValue: mockUserService },
       ],
-      imports: [SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule,
+      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule,
         TelemetryModule.forRoot(), OrderModule],
     })
     .compileComponents();

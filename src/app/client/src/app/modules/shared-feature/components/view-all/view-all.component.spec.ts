@@ -42,7 +42,7 @@ describe('ViewAllComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
+      imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       declarations: [ ViewAllComponent ],
       providers: [ConfigService, CoursesService, SearchService, LearnerService, PublicPlayerService,
         { provide: ResourceService, useValue: resourceBundle },

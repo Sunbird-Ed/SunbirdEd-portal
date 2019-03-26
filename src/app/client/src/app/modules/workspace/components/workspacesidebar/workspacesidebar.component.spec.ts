@@ -14,7 +14,7 @@ describe('WorkspacesidebarComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ WorkspacesidebarComponent ],
       providers: [ Ng2IzitoastService, ConfigService],
-      imports: [RouterTestingModule, HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot(), SuiModule]
+      imports: [RouterTestingModule, HttpClientTestingModule, CoreModule, SharedModule.forRoot(), SuiModule]
     })
     .compileComponents();
   }));

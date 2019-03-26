@@ -7,7 +7,9 @@ import * as _ from 'lodash-es';
 /**
  * Service to fetch badges
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BadgesService {
   /**
    * BehaviorSubject Containing badges.

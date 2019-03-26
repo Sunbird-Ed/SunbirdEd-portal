@@ -46,7 +46,7 @@ describe('PublicCollectionPlayerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [PublicCollectionPlayerComponent],
-      imports: [CoreModule.forRoot(), HttpClientTestingModule, RouterTestingModule,
+      imports: [CoreModule, HttpClientTestingModule, RouterTestingModule,
       TelemetryModule.forRoot(), SharedModule.forRoot()],
       providers: [ContentService, PublicPlayerService, ResourceService,
         { provide: Router, useClass: RouterStub },

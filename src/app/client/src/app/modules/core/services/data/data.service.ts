@@ -12,7 +12,9 @@ import * as _ from 'lodash-es';
  * Service to provide base CRUD methods to make api request.
  *
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class DataService {
   /**
    * Contains rootOrg Id
