@@ -3,7 +3,7 @@
 # set -o errexit
 set -x
 
-apk add --no-cache git python make g++ jq
+apk add --no-cache git python make g++ jq zip
 cd src/app
 version=$(jq '.version' package.json | sed 's/\"//g')
 cdnUrl=$1
