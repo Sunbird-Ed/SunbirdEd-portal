@@ -47,7 +47,8 @@
         </td>
         <td class="UpForReviewStatusOrange">{{content.status}}</td>
         <td>
-          <i class="trash large icon" (click)="deleteConfirmModal(content.identifier); $event.stopPropagation()">
+          <i appTelemetryInteract [telemetryInteractObject]="{id:content.identifier,type:content.contentType,ver:content.pkgVersion ? content.pkgVersion.toString(): '1.0' }"
+          [telemetryInteractEdata]="{id:'deleteContent',type:'click',pageid:'AllContent'}"  class="trash large icon" (click)="deleteConfirmModal(content.identifier); $event.stopPropagation()">
           </i>
         </td>
         <td>
