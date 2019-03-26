@@ -69,7 +69,7 @@ describe('PublishedPopupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot()],
+      imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule],
       declarations: [PublishedPopupComponent],
       providers: [ToasterService, NavigationHelperService, WorkSpaceService, ReviewCommentsService,
         { provide: Router, useClass: RouterStub },

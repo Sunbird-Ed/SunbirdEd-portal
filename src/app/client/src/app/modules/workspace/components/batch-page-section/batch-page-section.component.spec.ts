@@ -73,7 +73,7 @@ describe('BatchPageSectionComponent', () => {
       declarations: [BatchPageSectionComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule,
-        Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(), CoreModule.forRoot(),
+        Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(), CoreModule,
         TelemetryModule.forRoot(), NgInviewModule],
       providers: [PaginationService, WorkSpaceService, ResourceService, ToasterService, BatchService,
         { provide: ResourceService, useValue: resourceBundle },

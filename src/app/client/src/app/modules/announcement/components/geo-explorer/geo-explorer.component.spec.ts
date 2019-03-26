@@ -27,7 +27,7 @@ describe('GeoExplorerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ GeoExplorerComponent ],
       providers: [ToasterService , GeoExplorerService, LearnerService, UserService],
-      imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule.forRoot(), Ng2IziToastModule, CoreModule.forRoot()]
+      imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule.forRoot(), Ng2IziToastModule, CoreModule]
     })
     .compileComponents();
   }));

@@ -10,7 +10,9 @@ import { skipWhile, mergeMap } from 'rxjs/operators';
 import { PublicDataService } from './../public-data/public-data.service';
 import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class FrameworkService {
   private _frameworkData: FrameworkData = {};
   private _channelData: any = {};

@@ -7,7 +7,9 @@ import { ContentService } from './../content/content.service';
 import { PublicDataService } from './../public-data/public-data.service';
 import { CacheService } from 'ng2-cache-service';
 import { LearnerService } from './../learner/learner.service';
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class OrgDetailsService {
 
   orgDetails: any;

@@ -17,7 +17,7 @@ describe('InlineEditorComponent', () => {
   let fixture: ComponentFixture<InlineEditorComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpClientTestingModule, FormsModule, SharedModule.forRoot(), CoreModule.forRoot() , RouterTestingModule],
+      imports: [ HttpClientTestingModule, FormsModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],
       declarations: [InlineEditorComponent],
       providers: [NotesService]
     })
