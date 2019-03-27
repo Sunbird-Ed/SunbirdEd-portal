@@ -110,4 +110,12 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.showPlayer).toBeTruthy();
     expect(component.badgeData).toEqual(serverRes.result.result.content.badgeAssertions);
   });
+  it('should call  contentProgressEvent method and open contentRatingModal', () => {
+    spyOn(component, 'contentProgressEvent').and.callThrough();
+    const event = {'detail': {
+     'telemetryData': {'eid': 'END'}
+    }};
+    component.contentProgressEvent(event);
+    expect(component.contentRatingModal).toBeTruthy();
+  });
 });
