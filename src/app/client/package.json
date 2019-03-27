@@ -60,7 +60,7 @@
     "ng2-izitoast": "^2.0.0",
     "ng2-semantic-ui": "github:project-sunbird/ng2-semantic-ui",
     "ng4-click-outside": "^1.0.1",
-    "ngx-avatar": "^3.2.0",
+    "ngx-avatar": "^3.3.3",
     "ngx-device-detector": "^1.3.0",
     "ngx-md": "^7.0.0",
     "ngx-order-pipe": "^2.0.1",
