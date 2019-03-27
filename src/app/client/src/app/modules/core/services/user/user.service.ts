@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { PublicDataService } from './../public-data/public-data.service';
 import { skipWhile } from 'rxjs/operators';
 import * as UAParser from 'ua-parser-js';
+import { TelemetryService } from '@sunbird/telemetry';
 
 /**
  * Service to fetch user details from server
@@ -97,7 +98,7 @@ export class UserService {
   * @param {ConfigService} config ConfigService reference
   * @param {LearnerService} learner LearnerService reference
   */
-  constructor(config: ConfigService, learner: LearnerService,
+  constructor(public telemetryService: TelemetryService, config: ConfigService, learner: LearnerService,
     private http: HttpClient, contentService: ContentService, publicDataService: PublicDataService) {
     this.config = config;
     this.learnerService = learner;
@@ -149,6 +150,7 @@ export class UserService {
     };
     this.learnerService.get(option).subscribe(
       (data: ServerResponse) => {
+        this.telemetryService.captureServerDate(data);
         this.setUserProfile(data);
       },
       (err: ServerResponse) => {
@@ -186,6 +188,9 @@ export class UserService {
     profileData.skills = _.get(profileData, 'skills' ) || [];
     hashTagIds.push(this._channel);
     let organisationIds = [];
+    if (profileData.rootOrgId) {
+      organisationIds.push(profileData.rootOrgId);
+    }
     profileData.rootOrgAdmin = false;
     let userRoles = profileData.roles;
     if (profileData.organisations) {
@@ -208,9 +213,6 @@ export class UserService {
           hashTagIds.push(org.organisationId);
         }
       });
-    }
-    if (profileData.rootOrgId) {
-      organisationIds.push(profileData.rootOrgId);
     }
     this._dims = _.concat(organisationIds, this.channel);
     organisationIds = _.uniq(organisationIds);
