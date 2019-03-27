@@ -63,7 +63,7 @@
             <re-captcha #captchaRef="reCaptcha" (resolved)="resolved($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
           </form>
           <button appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"  [telemetryInteractCdata]="telemetryCdata" [ngClass]="{'grey':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}" class="ui button width-300 mt-10" tabindex="0"
-            (click)="captchaRef.execute(); disableSubmitBtn = true;">{{resourceService.frmelmnts.lbl.signUp}}</button>
+            (click)="captchaRef.execute();">{{resourceService.frmelmnts.lbl.signUp}}</button>
           <a (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
         </div>
         <div class="mt-40" *ngIf="!showSignUpForm">
