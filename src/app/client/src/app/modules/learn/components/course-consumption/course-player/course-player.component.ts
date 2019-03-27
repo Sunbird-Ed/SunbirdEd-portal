@@ -3,7 +3,7 @@ import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { UserService, BreadcrumbsService, PermissionService, CoursesService } from '@sunbird/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import {
   WindowScrollService, ILoaderMessage, ConfigService, ICollectionTreeOptions, NavigationHelperService,
   ToasterService, ResourceService, ExternalUrlPreviewService
@@ -12,6 +12,8 @@ import { CourseConsumptionService, CourseBatchService, CourseProgressService } f
 import { INoteData } from '@sunbird/notes';
 import { IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import * as TreeModel from 'tree-model';
+
 @Component({
   selector: 'app-course-player',
   templateUrl: './course-player.component.html',

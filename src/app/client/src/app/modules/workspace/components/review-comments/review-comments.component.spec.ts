@@ -7,7 +7,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ReviewCommentsService } from '../../services';
 import { of, throwError } from 'rxjs';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { FormControl } from '@angular/forms';
 import { OrderModule } from 'ngx-order-pipe';
 
@@ -115,7 +115,7 @@ describe('ReviewCommentsComponent', () => {
         { provide: ResourceService, useValue: mockResourceBundle },
         { provide: UserService, useValue: mockUserService },
       ],
-      imports: [SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule,
+      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule,
         TelemetryModule.forRoot(), OrderModule],
     })
     .compileComponents();

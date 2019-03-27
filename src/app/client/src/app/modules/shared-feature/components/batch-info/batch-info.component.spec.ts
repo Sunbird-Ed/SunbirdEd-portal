@@ -28,7 +28,7 @@ describe('BatchInfoComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       declarations: [BatchInfoComponent],
       providers: [{ provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },

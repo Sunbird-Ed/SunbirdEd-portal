@@ -5,10 +5,10 @@
 */
 
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { ICollectionTreeNodes, ICollectionTreeOptions, MimeTypeTofileType } from '@sunbird/shared';
 import { ResourceService } from '@sunbird/shared';
-
+import * as TreeModel from 'tree-model';
 @Component({
   selector: 'app-collection-tree',
   templateUrl: './collection-tree.component.html'

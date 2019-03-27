@@ -9,7 +9,7 @@ import { GeoExplorerComponent } from './../geo-explorer/geo-explorer.component';
 import { CreateService } from './../../services';
 import { UserService } from '@sunbird/core';
 import { IGeoLocationDetails, IAnnouncementDetails, IAttachementType } from './../../interfaces';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import {
   IEndEventInput, IStartEventInput, IInteractEventInput,
   IImpressionEventInput, IInteractEventObject, IInteractEventEdata
@@ -198,7 +198,7 @@ export class CreateComponent implements OnInit, OnDestroy {
   setAnnouncementTypes(): void {
     this.showResendLoader = true;
     if (this.createService._announcementTypes) {
-      _.each(this.createService._announcementTypes, (key) => {
+      _.each(this.createService._announcementTypes, (key: any) => {
         this.announcementTypes.push(key.name);
       });
       this.showResendLoader = false;
@@ -593,7 +593,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     };
     this.telemetryInteractObject = {
       id: '',
-      type: 'announcement',
+      type: 'Announcement',
       ver: '1.0'
     };
   }

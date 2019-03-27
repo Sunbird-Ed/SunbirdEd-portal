@@ -4,7 +4,7 @@ import { ResourceService, ToasterService, ConfigService, NavigationHelperService
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { CoursesService, BreadcrumbsService } from '@sunbird/core';
 import * as moment from 'moment';
 @Component({

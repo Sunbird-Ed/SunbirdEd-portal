@@ -207,6 +207,14 @@ $sb-modal-normal-width:720px;
 $sb-modal-large-width:900px;
 //button component
 
+// Search Component
+$sb-search-btn-bg: $primary-100;
+$sb-search-btn-font-size: $font-size-sm;
+$sb-search-box-shadow-color: $primary-300;
+$sb-search-input-font-size: $font-size-sm;
+$sb-search-border-color: $primary-300;
+$sb-search-close-btn-bg: $blue;
+$sb-search-close-btn-color: $white;
 // page section component
 $sb-page-section-font-size: $h5-font-size;
 $sb-page-section-header-content-space: 0 0 ($base-block-space * 3) 0;

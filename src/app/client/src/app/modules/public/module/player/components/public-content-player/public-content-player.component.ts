@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { Subject  } from 'rxjs';
 import {
   ConfigService, ResourceService, ToasterService,
@@ -46,7 +46,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
   queryParams: any;
 
   showExtContentMsg = false;
-
+  contentRatingModal = false;
   public showFooter: Boolean = false;
   contentData: ContentData;
   public unsubscribe$ = new Subject<void>();
@@ -138,6 +138,13 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
     this.navigationHelperService.navigateToResource('/explore');
   }
 
+  contentProgressEvent(event) {
+    const eid = event.detail.telemetryData.eid;
+    if (eid === 'END') {
+      this.contentRatingModal = true;
+      return;
+    }
+  }
   deviceDetector() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     if (deviceInfo.device === 'android' || deviceInfo.os === 'android') {

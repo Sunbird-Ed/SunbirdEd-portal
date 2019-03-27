@@ -40,7 +40,7 @@ describe('PublicBatchDetailsComponent', () => {
   let fixture: ComponentFixture<PublicBatchDetailsComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), SuiModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, SuiModule],
       declarations: [PublicBatchDetailsComponent],
       providers: [CourseBatchService, UserService, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],

@@ -12,7 +12,7 @@ describe('BulkUploadComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [BulkUploadComponent],
-      imports: [RouterTestingModule, Ng2IziToastModule, HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot()],
+      imports: [RouterTestingModule, Ng2IziToastModule, HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
       providers: [],
       schemas: [NO_ERRORS_SCHEMA]
     })

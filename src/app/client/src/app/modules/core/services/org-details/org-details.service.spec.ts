@@ -16,7 +16,7 @@ describe('OrgDetailsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
       providers: [OrgDetailsService, { provide: Router, useClass: RouterStub }]
     });
   });

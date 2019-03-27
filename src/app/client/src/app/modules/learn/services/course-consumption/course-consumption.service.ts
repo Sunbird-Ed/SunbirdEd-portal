@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { PlayerService } from '@sunbird/core';
 import { ServerResponse } from '@sunbird/shared';
 import { CourseProgressService } from '../courseProgress/course-progress.service';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 @Injectable()
 export class CourseConsumptionService {

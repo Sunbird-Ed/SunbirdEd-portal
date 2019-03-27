@@ -2,16 +2,11 @@ import { PermissionDirective, BodyScrollDirective } from './directives';
 import { RouterModule } from '@angular/router';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
+  SuiProgressModule, SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
 import { AvatarModule } from 'ngx-avatar';
-import {
-  LearnerService, AnnouncementService, ConceptPickerService,
-  BadgesService, ContentService, CoursesService, PageApiService,
-  TenantService, FrameworkService, FormService, PlayerService, SearchService,
-  CopyContentService, BreadcrumbsService, OrgDetailsService, ChannelService
-} from './services';
 import {
   MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, ConceptPickerComponent,
   DataDrivenFilterComponent, ErrorPageComponent, SortByComponent, FlagContentComponent,
@@ -24,7 +19,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
 @NgModule({
   imports: [
     CommonModule,
-    SuiModule,
+    SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
+    SuiRatingModule, SuiCollapseModule,
     SharedModule,
     RouterModule,
     FormsModule,
@@ -38,17 +34,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
     ErrorPageComponent, FlagContentComponent, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent],
   exports: [MainHeaderComponent, MainFooterComponent, PermissionDirective, BodyScrollDirective, ConceptPickerComponent,
     DataDrivenFilterComponent, SortByComponent, BreadcrumbsComponent, FlagContentComponent,
-    TelemetryModule, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent]
+    TelemetryModule, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent],
+    providers: [CacheService, AuthGuard]
 })
 export class CoreModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: CoreModule,
-      providers: [LearnerService, TenantService, SearchService, CopyContentService,
-        AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
-        AuthGuard, FrameworkService, FormService, CacheService,
-        ConceptPickerService, BreadcrumbsService, PlayerService, OrgDetailsService,
-        ChannelService]
-    };
-  }
 }

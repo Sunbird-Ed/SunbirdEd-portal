@@ -10,7 +10,7 @@ import { mockResponse } from './content-badge.service.spec.data';
 describe('ContentBadgeService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreModule.forRoot(), SharedModule.forRoot(), HttpClientTestingModule],
+      imports: [CoreModule, SharedModule.forRoot(), HttpClientTestingModule],
       providers: [ContentBadgeService]
     });
   });

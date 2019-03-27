@@ -1,6 +1,6 @@
 
 import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as  iziModal from 'izimodal/js/iziModal';
 import {
   NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserProfile, ServerResponse

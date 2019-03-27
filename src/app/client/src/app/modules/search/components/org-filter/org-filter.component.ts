@@ -3,7 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeD
 import { Router, ActivatedRoute } from '@angular/router';
 import { SearchService } from '@sunbird/core';
 import { OrgTypeService } from '@sunbird/org-management';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { Observable } from 'rxjs';
 @Component({
   selector: 'app-org-filter',

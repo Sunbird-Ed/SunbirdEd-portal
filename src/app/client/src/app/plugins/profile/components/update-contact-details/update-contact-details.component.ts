@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { UserService, OtpService } from '@sunbird/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { Subject } from 'rxjs';
@@ -176,7 +176,7 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
 
     this.telemetryInteractObject = {
       id: this.userService.userid,
-      type: 'user',
+      type: 'User',
       ver: '1.0'
     };
   }

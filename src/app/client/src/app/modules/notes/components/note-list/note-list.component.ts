@@ -9,7 +9,7 @@ import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
 import { INoteData, IdDetails } from '@sunbird/notes';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventInput, IImpressionEventInput , IInteractEventObject, IInteractEventEdata} from '@sunbird/telemetry';
 
 import { Subject } from 'rxjs';
@@ -124,8 +124,11 @@ export class NoteListComponent implements OnInit, OnDestroy {
   */
   telemetryImpression: IImpressionEventInput;
   addNoteInteractEdata: IInteractEventEdata;
+  deleteNoteInteractEdata: IInteractEventEdata;
+  updateNoteInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   public unsubscribe$ = new Subject<void>();
+
 
   /**
    * The constructor - Constructor for Note List Component.
@@ -333,6 +336,16 @@ export class NoteListComponent implements OnInit, OnDestroy {
   setInteractData() {
     this.addNoteInteractEdata = {
       id: 'add-note',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+    this.deleteNoteInteractEdata = {
+      id: 'delete-note',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+    this.updateNoteInteractEdata = {
+      id: 'update-note',
       type: 'click',
       pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };

@@ -7,7 +7,7 @@ import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInter
 import { UserService } from '@sunbird/core';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 /**
  * This component helps to upload bulk users data (csv file)
  *
@@ -237,7 +237,7 @@ export class UserUploadComponent implements OnInit, OnDestroy {
     };
     this.telemetryInteractObject = {
       id: this.userService.userid,
-      type: 'user',
+      type: 'User',
       ver: '1.0'
     };
   }

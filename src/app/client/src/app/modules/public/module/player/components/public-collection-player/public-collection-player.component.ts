@@ -1,5 +1,5 @@
 
-import {map, catchError, first, mergeMap} from 'rxjs/operators';
+import { map, catchError, first, mergeMap } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PublicPlayerService } from './../../../../services';
 import { Observable ,  Subscription } from 'rxjs';
@@ -10,8 +10,9 @@ import {
   ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import * as TreeModel from 'tree-model';
 
 @Component({
   selector: 'app-public-collection-player',

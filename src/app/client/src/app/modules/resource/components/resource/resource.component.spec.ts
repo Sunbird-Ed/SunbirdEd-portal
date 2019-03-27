@@ -5,7 +5,7 @@ import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { PageApiService, CoreModule, UserService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './resource.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -36,7 +36,7 @@ describe('ResourceComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
+      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [ResourceComponent],
       providers: [ ResourceService,
       { provide: Router, useClass: RouterStub },
@@ -81,7 +81,7 @@ describe('ResourceComponent', () => {
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
-    expect(component.carouselData.length).toEqual(1);
+    expect(component.carouselMasterData.length).toEqual(1);
   });
   xit('should fetch content after getting hashTagId and filter data and throw error if page api fails', () => {
     sendPageApi = false;
@@ -90,7 +90,7 @@ describe('ResourceComponent', () => {
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
-    expect(component.carouselData.length).toEqual(0);
+    expect(component.carouselMasterData.length).toEqual(0);
     expect(toasterService.error).toHaveBeenCalled();
   });
   xit('should unsubscribe from all observable subscriptions', () => {

@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormService, FrameworkService, OrgDetailsService, UserService } from './../../services';
 import { ConfigService, ResourceService, ToasterService, ServerResponse, Framework} from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { Subject, Subscription} from 'rxjs';
 
 @Component({

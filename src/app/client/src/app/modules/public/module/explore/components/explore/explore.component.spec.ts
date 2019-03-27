@@ -6,7 +6,7 @@ import { PageApiService, OrgDetailsService, CoreModule, UserService} from '@sunb
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicPlayerService } from './../../../../services';
 import { SuiModule } from 'ng2-semantic-ui';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './explore.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -45,7 +45,7 @@ describe('ExploreComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
+      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [ExploreComponent],
       providers: [PublicPlayerService, { provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
@@ -109,7 +109,7 @@ describe('ExploreComponent', () => {
     expect(component.hashTagId).toEqual('123');
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
-    expect(component.carouselData.length).toEqual(1);
+    expect(component.carouselMasterData.length).toEqual(1);
   });
   it('should fetch content after getting hashTagId and filter data and throw error if page api fails', () => {
     sendPageApi = false;
@@ -119,7 +119,7 @@ describe('ExploreComponent', () => {
     expect(component.hashTagId).toEqual('123');
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
-    expect(component.carouselData.length).toEqual(0);
+    expect(component.carouselMasterData.length).toEqual(0);
     expect(toasterService.error).toHaveBeenCalled();
   });
   it('should unsubscribe from all observable subscriptions', () => {

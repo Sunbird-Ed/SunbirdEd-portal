@@ -1,12 +1,12 @@
 import { combineLatest, Subject } from 'rxjs';
 import { PageApiService, PlayerService, UserService, ISort } from '@sunbird/core';
-import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, AfterViewInit, HostListener } from '@angular/core';
 import {
   ResourceService, ToasterService, INoResultMessage, ConfigService, UtilService, ICaraouselData,
   BrowserCacheTtlService, NavigationHelperService
 } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, delay, tap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
@@ -18,7 +18,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   public showLoader = true;
   public baseUrl: string;
   public noResultMessage: INoResultMessage;
-  public carouselData: Array<ICaraouselData> = [];
+  public carouselMasterData: Array<ICaraouselData> = [];
   public filterType: string;
   public hashTagId: string;
   public sortingOptions: Array<ISort>;
@@ -33,7 +33,14 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   public initFilters = false;
   public loaderMessage;
   public redirectUrl;
+  public pageSections: Array<ICaraouselData> = [];
 
+  @HostListener('window:scroll', []) onScroll(): void {
+    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
+    && this.pageSections.length < this.carouselMasterData.length) {
+        this.pageSections.push(this.carouselMasterData[this.pageSections.length]);
+    }
+  }
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService, private cdr: ChangeDetectorRef,
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
     public router: Router, private utilService: UtilService,
@@ -74,18 +81,16 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
     .pipe(
       tap(data => this.prepareVisits([])), // trigger pageexit if last filter resulted 0 contents
-      delay(5), // to trigger telemetry pageexit event
+      delay(1), // to trigger telemetry pageexit event
       tap(data => {
         this.showLoader = true;
         this.setTelemetryData();
       }),
-      delay(5), // to show loader
-      map((result) => ({params: result[0], queryParams: result[1]})),
-      filter(({queryParams}) => !_.isEqual(this.queryParams, queryParams)), // fetch data if queryParams changed
       takeUntil(this.unsubscribe$))
-    .subscribe(({params, queryParams}) => {
-      this.queryParams = { ...queryParams };
-      this.carouselData = [];
+    .subscribe((result) => {
+      this.queryParams = { ...result[0], ...result[1] };
+      this.carouselMasterData = [];
+      this.pageSections = [];
       this.fetchPageData();
     });
   }
@@ -121,11 +126,17 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     this.pageApiService.getPageData(option)
       .subscribe(data => {
         this.showLoader = false;
-        this.carouselData = this.prepareCarouselData(_.get(data, 'sections'));
+        this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
+        if (this.carouselMasterData.length >= 2) {
+          this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
+        } else if (this.carouselMasterData.length >= 1) {
+          this.pageSections = [this.carouselMasterData[0]];
+        }
         this.cdr.detectChanges();
       }, err => {
         this.showLoader = false;
-        this.carouselData = [];
+        this.carouselMasterData = [];
+        this.pageSections = [];
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
     });
   }
@@ -197,7 +208,6 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
         duration: this.navigationhelperService.getPageLoadTime()
       }
     };
-    console.log('this.telemetryImpression', JSON.parse(JSON.stringify(this.telemetryImpression)));
   }
 
   private setNoResultMessage() {

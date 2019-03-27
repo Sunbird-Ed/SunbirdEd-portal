@@ -6,7 +6,7 @@ import { CourseBatchService } from '../../../services';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IImpressionEventInput } from '@sunbird/telemetry';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
@@ -52,7 +52,7 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy {
           ver: this.activatedRoute.snapshot.data.telemetry.object.ver
         }
       };
-      this.telemetryInteractObject = { id: this.batchId, type: 'course', ver: '1.0' };
+      this.telemetryInteractObject = { id: this.batchId, type: 'Course', ver: '1.0' };
       this.courseBatchService.getEnrollToBatchDetails(this.batchId).pipe(
         takeUntil(this.unsubscribe))
         .subscribe((data) => {

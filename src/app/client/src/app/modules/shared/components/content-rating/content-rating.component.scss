@@ -1,0 +1,16 @@
+@import 'variables';
+
+::ng-deep {
+
+    .sb-rating.ui.star.rating {
+    
+            .icon {
+                margin-right: 4px;
+            }
+            .active.icon, .icon.selected {
+                color: $primary-300 !important;
+                text-shadow: none !important;
+            }
+    
+    } 
+}
