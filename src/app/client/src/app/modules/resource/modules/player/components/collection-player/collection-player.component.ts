@@ -100,7 +100,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   public contentDetails = [];
   public nextPlaylistItem: any;
   public prevPlaylistItem: any;
-
+  contentRatingModal = false;
   constructor(route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     private toasterService: ToasterService, private resourceService: ResourceService,
@@ -328,6 +328,13 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   onShareLink() {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.collectionId, this.mimeType);
     this.setTelemetryShareData(this.collectionData);
+  }
+  public contentProgressEvent(event) {
+    const eid = event.detail.telemetryData.eid;
+    if (eid === 'END') {
+      this.contentRatingModal = true;
+      return;
+    }
   }
   setTelemetryShareData(param) {
     this.telemetryShareData = [{

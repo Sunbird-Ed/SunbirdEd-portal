@@ -213,7 +213,6 @@ export class ContentPlayerComponent implements OnInit {
     const eid = event.detail.telemetryData.eid;
     if (eid === 'END') {
       this.contentRatingModal = true;
-      console.log('call me');
       return;
     }
   }
