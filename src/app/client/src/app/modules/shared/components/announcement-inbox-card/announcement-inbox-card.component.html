@@ -24,7 +24,7 @@
     </span>
   </div>
   <div class="pt-20" *ngIf="announcement.links && announcement.links.length > 0">
-    <div appTelemetryInteract [telemetryInteractObject]="{id:'',type:'announcement-list',ver:'1.0'}" [telemetryInteractEdata]="{id:'view-announcement',type:'click',pageid:'announcement-list'}" *ngFor="let links of announcement.links ;  let first = first; let last = last; let i = index" [ngClass]="{ first: first , last: last}">
+    <div appTelemetryInteract [telemetryInteractObject]="{id:announcement.id,type:'Announcement',ver:'1.0'}" [telemetryInteractEdata]="{id:'view-announcement',type:'click',pageid:'announcement-list'}" *ngFor="let links of announcement.links ;  let first = first; let last = last; let i = index" [ngClass]="{ first: first , last: last}">
       <div *ngIf="first">
         <i class="linkify icon opacity04">
         </i>
