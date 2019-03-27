@@ -53,12 +53,14 @@
           class="sb-btn sb-btn-normal sb-btn-error" 
           (click)="modal.approve('approved')" 
           autofocus
+          appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="{id:'yes' , type:'click' , pageid:'draft'}"
         >
           {{resourceService?.frmelmnts?.btn?.yes}}
         </button>
         <button 
           class="sb-btn sb-btn-normal sb-btn-outline-error" 
           (click)="modal.deny('denied')"
+          appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="{id:'no' , type:'click' , pageid:'draft'}"
         >
           {{resourceService?.frmelmnts?.btn?.no}}
         </button>

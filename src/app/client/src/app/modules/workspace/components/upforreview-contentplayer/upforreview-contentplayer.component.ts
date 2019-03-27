@@ -17,6 +17,7 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
   public reviewCommentsWarningYesInteractEdata: IInteractEventEdata;
   public reviewCommentsWarningNoInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
+  public closeInteractEdata: IInteractEventEdata;
 
   /**
    * To navigate to other pages
@@ -231,9 +232,14 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'upForReview-content-player'
     };
+    this.closeInteractEdata = {
+      id: 'close-button',
+      type: 'click',
+      pageid: 'upForReview-content-player'
+    };
     this.telemetryInteractObject = {
       id: this.contentId,
-      type: 'up-for-review',
+      type: this.contentData.contentType,
       ver: this.contentData.pkgVersion ? this.contentData.pkgVersion.toString() : '1.0'
     };
   }
