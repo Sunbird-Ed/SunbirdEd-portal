@@ -113,7 +113,6 @@ export class UserProfileComponent implements OnInit {
   * @param {ResourceService} resourceService Reference of ResourceService
   * @param {ToasterService} toasterService Reference of ToasterService
   * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
-  * @param {BreadcrumbsService} breadcrumbsService Reference of BreadcrumbsService
   * @param {LearnerService} learnerService Reference of LearnerService
   * @param {ConfigService} config Reference of ConfigService
   * @param {UserService} userService Reference of contentService
