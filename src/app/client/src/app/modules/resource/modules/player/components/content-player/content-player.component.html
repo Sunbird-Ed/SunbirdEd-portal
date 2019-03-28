@@ -1,4 +1,4 @@
-<div class="ui container" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
+<div class="ui container">
 <div id="content-player" class="ui grid">
     <div class="twelve wide column">
         <div class='mt-5 videosegment ui segment'>
@@ -13,7 +13,7 @@
                                     </span>
                                 </div>
                                 <div class="two wide column">
-                                    <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" [telemetryInteractCdata]="telemetryCdata" class="ui right floated basic icon circular button  mouse-pointer"
+                                    <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" class="ui right floated basic icon circular button  mouse-pointer"
                                         (click)="close()">
                                         <i class="ui remove icon"></i>
                                     </h5>
@@ -67,7 +67,7 @@
                                             <div class="four wide column "></div>
                                             <div class="four wide column ">
                                                 <h2 class="ui centered aligned icon tiny header toc-note">
-                                                    <a appTelemetryInteract [telemetryInteractObject]="objectInteract" [telemetryInteractEdata]="{id:'take-note', type:'click',pageid:'content-player'}" [telemetryInteractCdata]="telemetryCdata" class="ui take-note-card cursor-pointer" (click)="showNoteEditor=!showNoteEditor">
+                                                    <a appTelemetryInteract [telemetryInteractObject]="objectInteract" [telemetryInteractEdata]="{id:'take-note', type:'click',pageid:'content-player'}" class="ui take-note-card cursor-pointer" (click)="showNoteEditor=!showNoteEditor">
                                                         <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId}" (exitModal)="showNoteEditor=false"
                                                             (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
                                                         <img src="{{'assets/images/takenote.png' | cdnprefixurl }}">

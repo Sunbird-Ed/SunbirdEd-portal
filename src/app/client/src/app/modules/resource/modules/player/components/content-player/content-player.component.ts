@@ -8,8 +8,7 @@ import {
   ConfigService, IUserData, ResourceService, ToasterService, WindowScrollService, NavigationHelperService,
   PlayerConfig, ContentData, ContentUtilsServiceService, ITelemetryShare
 } from '@sunbird/shared';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
-import { DeviceDetectorService } from 'ngx-device-detector';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  *Component to play content
@@ -81,18 +80,11 @@ export class ContentPlayerComponent implements OnInit {
 
   showExtContentMsg = false;
 
-  public telemetryCourseEndEvent: IEndEventInput;
-
-  public telemetryCourseStart: IStartEventInput;
-
-  telemetryCdata: Array<{}>;
-
   closeUrl: any;
   contentRatingModal = false;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
-    public toasterService: ToasterService,  private deviceDetectorService: DeviceDetectorService ,
-    public windowScrollService: WindowScrollService, public playerService: PlayerService,
+    public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
     public copyContentService: CopyContentService, public permissionService: PermissionService,
     public contentUtilsServiceService: ContentUtilsServiceService, public breadcrumbsService: BreadcrumbsService,
     private configService: ConfigService) {
@@ -104,7 +96,6 @@ export class ContentPlayerComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.contentId;
-      this.telemetryCdata = [{id: this.contentId , type: 'Content'}];
       this.contentStatus = params.contentStatus;
       this.userService.userData$.subscribe(
         (user: IUserData) => {
@@ -165,7 +156,6 @@ export class ContentPlayerComponent implements OnInit {
             }, 5000);
           }
           this.setTelemetryData();
-          this.setTelemetryStartEndData();
           this.showPlayer = true;
           this.windowScrollService.smoothScroll('content-player');
           this.breadcrumbsService.setBreadcrumbs([{ label: this.contentData.name, url: '' }]);
@@ -233,47 +223,5 @@ export class ContentPlayerComponent implements OnInit {
       type: param.contentType,
       ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
     }];
-  }
-  private setTelemetryStartEndData() {
-    const deviceInfo = this.deviceDetectorService.getDeviceInfo();
-    this.telemetryCourseStart = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: this.telemetryCdata
-      },
-      object: {
-        id: this.contentId,
-        type: 'Content',
-        ver: '1.0',
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        mode: 'play',
-        uaspec: {
-          agent: deviceInfo.browser,
-          ver: deviceInfo.browser_version,
-          system: deviceInfo.os_version ,
-          platform: deviceInfo.os,
-          raw: deviceInfo.userAgent
-        }
-      }
-    };
-    this.telemetryCourseEndEvent = {
-      object: {
-        id: this.contentId,
-        type: 'Content',
-        ver: '1.0',
-      },
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: this.telemetryCdata
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        mode: 'play'
-      }
-    };
   }
 }
