@@ -194,7 +194,7 @@ export class UserService {
       organisationIds.push(profileData.rootOrgId);
     }
     profileData.rootOrgAdmin = false;
-    let userRoles = profileData.roles;
+    let userRoles = ['PUBLIC'];
     if (profileData.organisations) {
       _.forEach(profileData.organisations, (org) => {
         if (org.roles && _.isArray(org.roles)) {
@@ -219,7 +219,7 @@ export class UserService {
     this._dims = _.concat(organisationIds, this.channel);
     organisationIds = _.uniq(organisationIds);
     this._userProfile = profileData;
-    this._userProfile.userRoles = userRoles;
+    this._userProfile.userRoles = _.uniq(userRoles);
     this._userProfile.orgRoleMap = orgRoleMap;
     this._userProfile.organisationIds = organisationIds;
     this._userProfile.hashTagIds = _.uniq(hashTagIds);
