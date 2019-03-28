@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { UserSearchService } from './../../services';
-import { BadgesService, BreadcrumbsService, LearnerService, UserService } from '@sunbird/core';
+import { BadgesService, LearnerService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 
@@ -76,10 +76,7 @@ export class UserProfileComponent implements OnInit {
    * To navigate back to parent component
    */
   public routerNavigationService: RouterNavigationService;
-  /**
-   * To pass dynamic breadcrumb data.
-   */
-  public breadcrumbsService: BreadcrumbsService;
+
   router: Router;
 
   /**
@@ -128,7 +125,6 @@ export class UserProfileComponent implements OnInit {
     resourceService: ResourceService,
     toasterService: ToasterService,
     routerNavigationService: RouterNavigationService,
-    breadcrumbsService: BreadcrumbsService,
     learnerService: LearnerService,
     configService: ConfigService,
     userService: UserService,
@@ -139,7 +135,6 @@ export class UserProfileComponent implements OnInit {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.routerNavigationService = routerNavigationService;
-    this.breadcrumbsService = breadcrumbsService;
     this.learnerService = learnerService;
     this.configService = configService;
     this.userService = userService;
@@ -157,7 +152,7 @@ export class UserProfileComponent implements OnInit {
       (apiResponse: ServerResponse) => {
         this.userDetails = apiResponse.result.response;
         this.formatEndorsementList();
-        this.breadcrumbsService.setBreadcrumbs([{ label: this.userDetails.firstName, url: '' }]);
+        // this.breadcrumbsService.setBreadcrumbs([{ label: this.userDetails.firstName, url: '' }]);
         this.populateBadgeDescription();
         this.showLoader = false;
       },

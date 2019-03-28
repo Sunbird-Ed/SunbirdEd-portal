@@ -12,7 +12,7 @@ export * from './concept-picker/concept-picker.service';
 export * from './tenant/tenant.service';
 export * from './framework/framework.service';
 export * from './form/form.service';
-export * from './breadcrumbs/breadcrumbs.service';
+// export * from './breadcrumbs/breadcrumbs.service';
 export * from './player/player.service';
 export * from './copy-content/copy-content.service';
 export * from './org-details/org-details.service';
