@@ -64,7 +64,7 @@ describe('ContentPlayerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CoreModule.forRoot(), SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
+      imports: [CoreModule, SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
       declarations: [ ContentPlayerComponent ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute},
@@ -92,6 +92,14 @@ describe('ContentPlayerComponent', () => {
     userService._userData$.next({ err: null, userProfile: mockUserData });
     component.ngOnInit();
     expect(component.playerConfig).toBeTruthy();
+  });
+  it('should call  contentProgressEvent method and open contentRatingModal', () => {
+    spyOn(component, 'contentProgressEvent').and.callThrough();
+    const event = {'detail': {
+     'telemetryData': {'eid': 'END'}
+    }};
+    component.contentProgressEvent(event);
+    expect(component.contentRatingModal).toBeTruthy();
   });
   xit('should config player if content status is "Unlisted"', () => {
     const userService = TestBed.get(UserService);

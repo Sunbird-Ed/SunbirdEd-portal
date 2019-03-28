@@ -14,7 +14,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as mockData from './batch-page-section.component.spec.data';
 const testData = mockData.mockRes;
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { PageApiService } from '@sunbird/core';
@@ -73,7 +73,7 @@ describe('BatchPageSectionComponent', () => {
       declarations: [BatchPageSectionComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule,
-        Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(), CoreModule.forRoot(),
+        Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(), CoreModule,
         TelemetryModule.forRoot(), NgInviewModule],
       providers: [PaginationService, WorkSpaceService, ResourceService, ToasterService, BatchService,
         { provide: ResourceService, useValue: resourceBundle },

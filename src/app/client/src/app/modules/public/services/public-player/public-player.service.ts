@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 import {
   ConfigService, ServerResponse, ContentDetails, PlayerConfig, ContentData, NavigationHelperService
 } from '@sunbird/shared';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { environment } from '@sunbird/environment';
 
 @Injectable()
@@ -113,11 +113,14 @@ export class PublicPlayerService {
     }, 0);
   }
 
-  public playExporeCourse(courseId) {
-    if (this.userService.loggedIn) {
-      this.router.navigate(['learn/course', courseId]);
-    } else {
-      this.router.navigate(['explore-course/course', courseId]);
-    }
+  public playExploreCourse(courseId) {
+    this.navigationHelperService.storeResourceCloseUrl();
+    setTimeout(() => {
+      if (this.userService.loggedIn) {
+        this.router.navigate(['learn/course', courseId]);
+      } else {
+        this.router.navigate(['explore-course/course', courseId]);
+      }
+    }, 0);
   }
 }

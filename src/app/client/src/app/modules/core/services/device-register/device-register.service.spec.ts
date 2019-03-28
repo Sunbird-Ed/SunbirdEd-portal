@@ -8,7 +8,7 @@ import { of } from 'rxjs';
 describe('DeviceRegisterService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot()],
+        imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
         });
         spyOn(document, 'getElementById').and.callFake((id) => {
             if (id === 'buildNumber') {

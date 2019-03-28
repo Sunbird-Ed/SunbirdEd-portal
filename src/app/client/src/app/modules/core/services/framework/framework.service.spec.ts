@@ -15,7 +15,7 @@ describe('FrameworkService', () => {
   let makeChannelReadSuc, makeFrameworkReadSuc  = true;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule.forRoot()],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule],
       providers: [CacheService]
     });
     userService = TestBed.get(UserService);

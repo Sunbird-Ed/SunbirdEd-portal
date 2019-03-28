@@ -4,7 +4,7 @@ import { CourseBatchService } from '@sunbird/learn';
 import { Router } from '@angular/router';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import * as moment from 'moment';
 import { UserService } from '@sunbird/core';

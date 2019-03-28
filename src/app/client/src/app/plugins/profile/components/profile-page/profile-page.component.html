@@ -176,8 +176,9 @@
 
 
   <!-- my badges section starts -->
-  <extension-point *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"
-    [name]="'profile-widget'"></extension-point>
+  <!-- <extension-point *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"
+    [name]="'profile-widget'"></extension-point> -->
+  <app-profile-badge *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"></app-profile-badge>
   <!-- my badges section ends -->
 
 
@@ -233,11 +234,13 @@
                 <span class="fs-1 color-4" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy' }}</span>
               </li>
               <div class=" mb-15 d-flex flex-jc-center relative" *ngIf="attendedTraining.length > 3">
-                <button class="ui semi-circular dodger-blue button" *ngIf="showMoreTrainings"
+                <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+                [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" class="ui semi-circular dodger-blue button" *ngIf="showMoreTrainings"
                   (click)="toggleCourse(true)">{{resourceService.frmelmnts.lbl.viewmore}}
                   <i class="chevron down icon pl-10"></i>
                 </button>
-                <button class="ui semi-circular dodger-blue button" (click)="toggleCourse(false)"
+                <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+                [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}" class="ui semi-circular dodger-blue button" (click)="toggleCourse(false)"
                   *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}
                   <i class="chevron up icon pl-10"></i>
                 </button>

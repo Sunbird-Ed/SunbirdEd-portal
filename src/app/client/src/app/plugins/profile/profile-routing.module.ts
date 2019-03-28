@@ -5,7 +5,7 @@ const telemetryEnv = 'profile';
 const objectType = 'profile';
 const routes: Routes = [
   {
-    path: 'profile', component: ProfilePageComponent,
+    path: '', component: ProfilePageComponent,
     data: {
       telemetry: {
         env: telemetryEnv, type: 'view', mode: 'create', subtype: 'paginate', object: { type: objectType, ver: '1.0' }

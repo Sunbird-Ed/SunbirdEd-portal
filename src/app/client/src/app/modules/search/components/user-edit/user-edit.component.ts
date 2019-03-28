@@ -6,7 +6,7 @@ import { UserService, PermissionService, RolesAndPermissions, OrgDetailsService 
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, IUserData } from '@sunbird/shared';
 import { ProfileService } from '@sunbird/profile';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 @Component({
   selector: 'app-user-edit',
@@ -303,7 +303,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
     this.telemetryInteractObject = {
       id: this.userId,
-      type: 'user',
+      type: 'User',
       ver: '1.0'
     };
   }

@@ -1,7 +1,7 @@
 import { Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { OrgTypeService } from './../../services';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
@@ -95,7 +95,7 @@ export class ViewOrgTypeComponent implements OnInit, OnDestroy {
     this.orgTypeSubscription = this.orgTypeService.orgTypeData$.subscribe((apiResponse) => {
       if (apiResponse && apiResponse.orgTypeData) {
         this.orgTypes = { ...apiResponse.orgTypeData.result.response };
-        this.orgTypes = _.sortBy(this.orgTypes, (orgTypeList) => orgTypeList.name.toLowerCase());
+        this.orgTypes = _.sortBy(this.orgTypes, (orgTypeList: any) => orgTypeList.name.toLowerCase());
         this.showLoader = false;
       } else if (apiResponse && apiResponse.err) {
         this.showLoader = false;
@@ -119,7 +119,7 @@ export class ViewOrgTypeComponent implements OnInit, OnDestroy {
 
     // Update event
     this.orgUpdateSubscription = this.orgTypeService.orgTypeUpdateEvent.subscribe(data => {
-      _.each(this.orgTypes, (key, index) => {
+      _.each(this.orgTypes, (key: any, index) => {
         if (data && data.id === key.id) {
           this.orgTypes[index].name = data.name;
         }

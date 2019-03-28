@@ -11,7 +11,7 @@ import {
 import { Ibatch, IStatusOption } from './../../interfaces/';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 
@@ -260,7 +260,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
           this.noResult = true;
           this.showLoader = false;
           this.noResultMessage = {
-            'messageText': 'messages.stmsg.m0125'
+            'messageText': 'messages.stmsg.m0126'
           };
         }
       },

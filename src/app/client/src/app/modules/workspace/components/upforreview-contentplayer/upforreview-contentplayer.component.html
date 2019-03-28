@@ -15,7 +15,7 @@
         </div>
         <div class="two wide column">
           <h5 class="ui right floated basic icon circular button  mouse-pointer" (click)="close()">
-            <i class="ui remove icon" (click)="close()"></i>
+            <i appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeInteractEdata" class="ui remove icon" (click)="close()"></i>
           </h5>
         </div>
       </div>

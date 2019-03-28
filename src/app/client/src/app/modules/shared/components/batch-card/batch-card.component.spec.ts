@@ -40,7 +40,7 @@ describe('BatchCardComponent', () => {
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SuiModule, FormsModule, ReactiveFormsModule,
-        HttpClientTestingModule, Ng2IziToastModule, TelemetryModule.forRoot(), CoreModule.forRoot()],
+        HttpClientTestingModule, Ng2IziToastModule, TelemetryModule.forRoot(), CoreModule],
       providers: [PaginationService, ResourceService, ToasterService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },

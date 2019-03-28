@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 import { ActivatedRoute } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { ContentData } from '@sunbird/shared';
 
 @Component({

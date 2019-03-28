@@ -101,7 +101,7 @@
                         <div class="ui row pt-0">
                             <div class="ui twelve column grid pr-0">
                                 <div class="five wide mobile only three wide tablet only three wide computer only column">
-                                    <button class="ui blue button left floated fluid tocbutton toc-left-nav-btn-content" (click)="navigateToContent(prevPlaylistItem)"
+                                    <button appTelemetryInteract [telemetryInteractObject]="contentInteractObject" [telemetryInteractEdata]="{id: 'previous-button',type: 'click',pageid: 'course-consumption'}" class="ui blue button left floated fluid tocbutton toc-left-nav-btn-content" (click)="navigateToContent(prevPlaylistItem)"
                                         [disabled]="prevPlaylistItem === undefined">
                                         <span class="header">{{resourceService.frmelmnts.btn.previous}}</span>
                                         <br />
@@ -121,7 +121,7 @@
                                 </div>
                                 <div class="two wide tablet only two wide computer only column"></div>
                                 <div class="five wide mobile only three wide tablet only three wide computer only column pr-0">
-                                    <button class="ui blue button right floated fluid toc-right-nav-btn-content" (click)="navigateToContent(nextPlaylistItem)"
+                                    <button appTelemetryInteract [telemetryInteractObject]="contentInteractObject" [telemetryInteractEdata]="{id: 'next-button',type: 'click',pageid: 'course-consumption'}" class="ui blue button right floated fluid toc-right-nav-btn-content" (click)="navigateToContent(nextPlaylistItem)"
                                         [disabled]="nextPlaylistItem === undefined">
                                         <span class="header">{{resourceService.frmelmnts.btn.next}}</span>
                                         <br />

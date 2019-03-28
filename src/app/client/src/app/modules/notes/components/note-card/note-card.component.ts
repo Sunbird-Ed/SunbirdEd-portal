@@ -9,7 +9,7 @@ import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
 import { INoteData, IdDetails } from '@sunbird/notes';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 import { Subject } from 'rxjs';
 

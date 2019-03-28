@@ -5,7 +5,7 @@ import { BreadcrumbsService } from '../../services';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Component, OnInit, Input, AfterViewInit, OnDestroy, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { IBreadcrumb } from '../../interfaces';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 /**
  * This component returns breadcrumbs in each relevant pages when provided

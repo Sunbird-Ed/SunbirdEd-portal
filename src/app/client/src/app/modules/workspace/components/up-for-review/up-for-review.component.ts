@@ -10,7 +10,7 @@ import {
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 /**
@@ -237,7 +237,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
           this.showLoader = false;
           this.noResultMessage = {
             'message': 'messages.stmsg.m0008',
-            'messageText': 'messages.stmsg.m0033'
+            'messageText': 'messages.stmsg.m0035'
           };
         }
       },

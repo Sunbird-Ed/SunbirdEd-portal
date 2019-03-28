@@ -46,7 +46,7 @@ describe('PublicCollectionPlayerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [PublicCollectionPlayerComponent],
-      imports: [CoreModule.forRoot(), HttpClientTestingModule, RouterTestingModule,
+      imports: [CoreModule, HttpClientTestingModule, RouterTestingModule,
       TelemetryModule.forRoot(), SharedModule.forRoot()],
       providers: [ContentService, PublicPlayerService, ResourceService,
         { provide: Router, useClass: RouterStub },
@@ -143,5 +143,13 @@ describe('PublicCollectionPlayerComponent', () => {
     component.OnPlayContent(content, true);
     expect(component.OnPlayContent).toHaveBeenCalledWith(content, true);
     expect(component.playContent).toHaveBeenCalledWith(content);
+  });
+  it('should call  contentProgressEvent method and open contentRatingModal', () => {
+    spyOn(component, 'contentProgressEvent').and.callThrough();
+    const event = {'detail': {
+     'telemetryData': {'eid': 'END'}
+    }};
+    component.contentProgressEvent(event);
+    expect(component.contentRatingModal).toBeTruthy();
   });
 });
