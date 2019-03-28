@@ -90,7 +90,7 @@ describe('AppComponent', () => {
     userService._authenticated = true;
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
-    spyOn(learnerService, 'get').and.returnValue(of(mockData.success));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
     component.ngOnInit();
     const config = {
       userOrgDetails: {
@@ -127,7 +127,7 @@ describe('AppComponent', () => {
     spyOn(deviceRegisterService, 'registerDevice');
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
-    spyOn(learnerService, 'get').and.returnValue(of(mockData.success));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
     component.ngOnInit();
     expect(deviceRegisterService.registerDevice).toHaveBeenCalledWith('b00bc992ef25f1a9a8d63291e20efc8d');
   });
@@ -209,7 +209,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     userService._authenticated = true;
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
-    spyOn(learnerService, 'get').and.returnValue(of(mockData.success));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
     component.ngOnInit();
     expect(component.showFrameWorkPopUp).toBeTruthy();
   }));

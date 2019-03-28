@@ -17,14 +17,14 @@ describe('userService', () => {
   it('should fetch user profile details', inject([UserService], (service: UserService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
     expect(userService._userProfile).toBeDefined();
   }));
   it('should emit user profile data on success', inject([UserService], (service: UserService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
     userService.userData$.subscribe(userData => {
       expect(userData.userProfile).toBeDefined();
@@ -33,7 +33,7 @@ describe('userService', () => {
   it('should emit error on api failure', inject([UserService], (service: UserService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(observableThrowError(mockUserData.error));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableThrowError(mockUserData.error));
     userService.initialize(true);
     userService.userData$.subscribe(userData => {
       expect(userData.err).toBeDefined();
@@ -42,7 +42,7 @@ describe('userService', () => {
   it('should return userProfile when userProfile get method is called', inject([UserService], (service: UserService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
     const userProfile = userService.userProfile;
     expect(userProfile).toBeDefined();
@@ -50,14 +50,14 @@ describe('userService', () => {
   it('should set rootOrgAdmin to true', inject([UserService], (service: UserService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.rootOrgSuccess));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.rootOrgSuccess));
     userService.initialize(true);
     expect(userService._userProfile.rootOrgAdmin).toBeTruthy();
   }));
   it('should set rootOrgAdmin to false', inject([UserService], (service: UserService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
     expect(userService._userProfile.rootOrgAdmin).toBeFalsy();
   }));

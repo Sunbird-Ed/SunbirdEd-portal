@@ -1,7 +1,7 @@
 
 import { of as observableOf, throwError as observableThrowError, Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { ServerResponse, RequestParam, HttpOptions } from '@sunbird/shared';
+import { ServerResponse, ServerResponseWithHeaders, RequestParam, HttpOptions } from '@sunbird/shared';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
@@ -49,6 +49,29 @@ export class DataService {
   }
 
   /**
+   * for making get api calls which needs headers in response
+   *  headers are fetched to get server time using Date attribute in header
+   * @param requestParam interface
+   */
+  getWithHeaders(requestParam: RequestParam): Observable<ServerResponse> {
+    const httpOptions: HttpOptions = {
+      headers: requestParam.header ? requestParam.header : this.getHeader(),
+      params: requestParam.param,
+      observe: 'response'
+    };
+    return this.http.get(this.baseUrl + requestParam.url, httpOptions).pipe(
+      mergeMap((response: ServerResponseWithHeaders) => {
+        const data = response.body;
+        // replace ts time with header date , this value is used in telemetry
+        data.ts = new Date(response.headers.get('Date'));
+        if (data.responseCode !== 'OK') {
+          return observableThrowError(data);
+        }
+        return observableOf(data);
+      }));
+  }
+
+  /**
    * for making get api calls
    *
    * @param requestParam interface
@@ -68,11 +91,33 @@ export class DataService {
   }
 
   /**
-   * for making post api calls
+   * for making post api calls with headers in response object
    *
    * @param {RequestParam} requestParam interface
    *
    */
+  postWithHeaders(requestParam: RequestParam): Observable<any> {
+    const httpOptions: HttpOptions = {
+      headers: requestParam.header ? this.getHeader(requestParam.header) : this.getHeader(),
+      params: requestParam.param,
+      observe: 'response'
+    };
+    return this.http.post(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
+      mergeMap((response: ServerResponseWithHeaders) => {
+        const data = response.body;
+        // replace ts time with header date , this value is used in telemetry
+        data.ts =  new Date(response.headers.get('Date'));
+        if (data.responseCode !== 'OK') {
+          return observableThrowError(data);
+        }
+        return observableOf(data);
+      }));
+  }
+
+  /**
+   * for making post api calls
+   * @param {RequestParam} requestParam interface
+  */
   post(requestParam: RequestParam): Observable<ServerResponse> {
     const httpOptions: HttpOptions = {
       headers: requestParam.header ? this.getHeader(requestParam.header) : this.getHeader(),

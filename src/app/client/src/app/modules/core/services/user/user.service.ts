@@ -150,7 +150,7 @@ export class UserService {
       url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${this.userid}`,
       param: this.config.urlConFig.params.userReadParam
     };
-    this.learnerService.get(option).subscribe(
+    this.learnerService.getWithHeaders(option).subscribe(
       (data: ServerResponse) => {
         this.captureServerDate(data);
         this.setUserProfile(data);

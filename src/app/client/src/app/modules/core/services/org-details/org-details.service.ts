@@ -42,7 +42,7 @@ export class OrgDetailsService {
     if (this.orgDetails) {
       return observableOf(this.orgDetails);
     } else {
-      return this.publicDataService.post(option).pipe(mergeMap((data: ServerResponse) => {
+      return this.publicDataService.postWithHeaders(option).pipe(mergeMap((data: ServerResponse) => {
         this.captureServerDate(data);
         if (data.result.response.count > 0) {
           this.orgDetails = data.result.response.content[0];
@@ -122,6 +122,9 @@ export class OrgDetailsService {
     return this.learnerService.get(systemSetting);
   }
 
+  /**
+  * serverresponse.ts is taken from header and not from api response ts, and format in IST
+  */
   private captureServerDate (serverresponse) {
     if (serverresponse.ts) {
       this._etsDates = {serverEts: serverresponse.ts, localTime: new Date()};
