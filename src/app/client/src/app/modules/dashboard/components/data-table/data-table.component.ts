@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, AfterViewInit, AfterViewChecked } from '@angular/core';
-// import * as $ from 'jquery';
+import * as $ from 'jquery';
 import 'datatables.net';
 @Component({
     selector: 'app-data-table',
@@ -12,7 +12,7 @@ export class DataTableComponent implements AfterViewInit {
     @Input() headerData: string[];
     ngAfterViewInit() {
         setTimeout(() => {
-            jQuery('#table').removeAttr('width').DataTable({
+            $('#table').removeAttr('width').DataTable({
                 'data': this.rowsData,
                 'searching': false,
             });
