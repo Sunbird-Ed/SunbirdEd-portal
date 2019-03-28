@@ -27,6 +27,8 @@ const setZipConfig = (req, res, type, encoding, dist = '../') => {
         }
         req.url = req.url + '.' + type;
         res.set('Content-Encoding', encoding);
+        res.set('Cache-Control', 'public, max-age=' + oneDayMS * 30)
+        res.set('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
         pathMap[req.path + type] = 'exist';
         return true
     } else {

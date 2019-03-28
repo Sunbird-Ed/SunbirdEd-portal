@@ -260,7 +260,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
           this.noResult = true;
           this.showLoader = false;
           this.noResultMessage = {
-            'messageText': 'messages.stmsg.m0125'
+            'messageText': 'messages.stmsg.m0126'
           };
         }
       },
