@@ -17,7 +17,6 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserSearchComponent } from './user-search.component';
 import { Response } from './user-search.component.spec.data';
-import { ProfileModule } from '@sunbird/profile';
 import { TelemetryService } from '@sunbird/telemetry';
 
 describe('UserSearchComponent', () => {
@@ -61,7 +60,7 @@ describe('UserSearchComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, ProfileModule, CoreModule, SharedModule.forRoot(), Ng2IziToastModule],
+      imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), Ng2IziToastModule],
       declarations: [UserSearchComponent, UserFilterComponent],
       providers: [OrgDetailsService, FrameworkService, TelemetryService, ResourceService, SearchService, PaginationService, UserService,
         LearnerService, ContentService, ConfigService, ToasterService, UserSearchService,
