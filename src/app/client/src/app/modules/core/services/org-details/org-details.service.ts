@@ -7,7 +7,6 @@ import { ContentService } from './../content/content.service';
 import { PublicDataService } from './../public-data/public-data.service';
 import { CacheService } from 'ng2-cache-service';
 import { LearnerService } from './../learner/learner.service';
-import { TelemetryService } from '@sunbird/telemetry';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +15,13 @@ export class OrgDetailsService {
 
   orgDetails: any;
   orgInfo: any;
+  _etsDates: any;
 
   private _orgDetails$ = new BehaviorSubject<any>(undefined);
 
   public readonly orgDetails$: Observable<any> = this._orgDetails$.asObservable();
 
-  constructor(public telemetryService: TelemetryService, public configService: ConfigService, private cacheService: CacheService,
+  constructor(public configService: ConfigService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService,
     public contentService: ContentService, public router: Router, public toasterService: ToasterService,
     public resourceService: ResourceService, public learnerService: LearnerService, public publicDataService: PublicDataService) {
@@ -43,7 +43,7 @@ export class OrgDetailsService {
       return observableOf(this.orgDetails);
     } else {
       return this.publicDataService.post(option).pipe(mergeMap((data: ServerResponse) => {
-        this.telemetryService.captureServerDate(data);
+        this.captureServerDate(data);
         if (data.result.response.count > 0) {
           this.orgDetails = data.result.response.content[0];
           this.setOrgDetailsToRequestHeaders();
@@ -120,6 +120,16 @@ export class OrgDetailsService {
       url: this.configService.urlConFig.URLS.SYSTEM_SETTING.CUSTODIAN_ORG,
     };
     return this.learnerService.get(systemSetting);
+  }
+
+  private captureServerDate (serverresponse) {
+    if (serverresponse.ts) {
+      this._etsDates = {serverEts: serverresponse.ts, localTime: new Date()};
+    }
+  }
+
+  get getServerTime() {
+    return this._etsDates;
   }
 
   fetchOrgs(filters) {

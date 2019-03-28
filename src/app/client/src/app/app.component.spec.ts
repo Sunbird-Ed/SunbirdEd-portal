@@ -112,10 +112,11 @@ describe('AppComponent', () => {
         sid: component.userService.sessionId,
         channel: _.get(userService.userProfile, 'rootOrg.hashTagId'),
         env: 'home',
-        enableValidation: true
+        enableValidation: true,
+        timeStampData: {serverEts: '2018-02-28 12:07:33:518+0000', localTime: new Date()}
       }
     };
-    expect(telemetryService.initialize).toHaveBeenCalledWith(config);
+    expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
   });
   it('should call register Device api for login Session', () => {
     const learnerService = TestBed.get(LearnerService);
@@ -159,10 +160,11 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
         sid: component.userService.anonymousSid,
         channel: '1235654',
         env: 'home',
-        enableValidation: true
+        enableValidation: true,
+        timeStampData: {}
       }
     };
-    expect(telemetryService.initialize).toHaveBeenCalledWith(config);
+    expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
   });
   it('should call register Device api for Anonymous Session', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);

@@ -220,7 +220,8 @@ export class AppComponent implements OnInit {
           sid: this.userService.sessionId,
           channel: _.get(this.userProfile, 'rootOrg.hashTagId'),
           env: 'home',
-          enableValidation: environment.enableTelemetryValidation
+          enableValidation: environment.enableTelemetryValidation,
+          timeStampData: this.userService.getServerTime
         }
       };
     } else {
@@ -244,7 +245,8 @@ export class AppComponent implements OnInit {
           sid: this.userService.anonymousSid,
           channel: this.orgDetails.hashTagId,
           env: 'home',
-          enableValidation: environment.enableTelemetryValidation
+          enableValidation: environment.enableTelemetryValidation,
+          timeStampData: this.orgDetailsService.getServerTime
         }
       };
     }

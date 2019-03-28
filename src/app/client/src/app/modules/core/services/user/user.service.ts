@@ -10,7 +10,6 @@ import { HttpClient } from '@angular/common/http';
 import { PublicDataService } from './../public-data/public-data.service';
 import { skipWhile } from 'rxjs/operators';
 import * as UAParser from 'ua-parser-js';
-import { TelemetryService } from '@sunbird/telemetry';
 
 /**
  * Service to fetch user details from server
@@ -28,6 +27,9 @@ export class UserService {
     * Contains session id
     */
   private _sessionId: string;
+
+  _etsDates: any;
+
   /**
    * Contains root org id
    */
@@ -98,7 +100,7 @@ export class UserService {
   * @param {ConfigService} config ConfigService reference
   * @param {LearnerService} learner LearnerService reference
   */
-  constructor(public telemetryService: TelemetryService, config: ConfigService, learner: LearnerService,
+  constructor(config: ConfigService, learner: LearnerService,
     private http: HttpClient, contentService: ContentService, publicDataService: PublicDataService) {
     this.config = config;
     this.learnerService = learner;
@@ -150,7 +152,7 @@ export class UserService {
     };
     this.learnerService.get(option).subscribe(
       (data: ServerResponse) => {
-        this.telemetryService.captureServerDate(data);
+        this.captureServerDate(data);
         this.setUserProfile(data);
       },
       (err: ServerResponse) => {
@@ -305,6 +307,10 @@ export class UserService {
     return this._hashTagId;
   }
 
+  get getServerTime() {
+    return this._etsDates;
+  }
+
   get channel() {
     return this._channel;
   }
@@ -349,6 +355,22 @@ export class UserService {
   getUserByKey(key) {
     return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_BY_KEY + '/' + key});
   }
+
+   /**
+   *
+   *
+   * @private
+   * @param {*} Apiresponseobj
+   * @returns
+   * @memberof UserService, etsDates is sent in telemetry events, telemetry
+   * library will calculate the diff of local and server dates and pass accurate date
+   */
+  private captureServerDate (serverresponse) {
+    if (serverresponse.ts) {
+      this._etsDates = {serverEts: serverresponse.ts, localTime: new Date()};
+    }
+  }
+
   public getFingerPrintOptions(): object {
     return ({
       preprocessor: (key, value) => {

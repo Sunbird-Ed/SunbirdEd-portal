@@ -31,8 +31,6 @@ export class TelemetryService {
    */
   private telemetryProvider: any;
 
-  private etsDates: any;
-
   /**
    *
    *
@@ -196,7 +194,6 @@ export class TelemetryService {
         tags: _.compact(this.context.userOrgDetails.organisationIds)
       }
     };
-    event.edata['ets'] = this.etsDates;
     return event;
   }
 
@@ -241,21 +238,6 @@ export class TelemetryService {
       rollup: this.getRollUpData(this.context.userOrgDetails.organisationIds)
     };
     return eventContextData;
-  }
-
-   /**
-   *
-   *
-   * @private
-   * @param {*} Apiresponseobj
-   * @returns
-   * @memberof TelemetryService, etsDates is sent in telemetry events, telemetry
-   * library will calculate the diff of local and server dates and pass accurate date
-   */
-  public captureServerDate (serverresponse) {
-    if (serverresponse.ts) {
-      this.etsDates = {serverEts: serverresponse.ts, localTime: new Date()};
-    }
   }
 
   /**
