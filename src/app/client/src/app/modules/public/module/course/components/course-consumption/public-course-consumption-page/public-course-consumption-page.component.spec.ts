@@ -3,7 +3,7 @@ import {of,  Observable } from 'rxjs';
 import { CourseHierarchyGetMockResponse } from '../public-course-player/public-course-player.component.mock.data';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PublicCourseConsumptionPageComponent } from './public-course-consumption-page.component';
-import {SharedModule, ResourceService, ToasterService, ContentUtilsServiceService } from '@sunbird/shared';
+import {SharedModule, ResourceService, ToasterService, ContentUtilsServiceService, NavigationHelperService } from '@sunbird/shared';
 import { CoreModule, CoursesService } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
@@ -45,7 +45,7 @@ class MockRouter {
 describe('PublicCourseConsumptionPageComponent', () => {
   let component: PublicCourseConsumptionPageComponent;
   let fixture: ComponentFixture<PublicCourseConsumptionPageComponent>;
-  let activatedRouteStub, courseService, toasterService, courseConsumptionService;
+  let activatedRouteStub, courseService, toasterService, courseConsumptionService, navigationHelperService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, Ng2IziToastModule],
@@ -65,6 +65,8 @@ describe('PublicCourseConsumptionPageComponent', () => {
     courseService = TestBed.get(CoursesService);
     toasterService = TestBed.get(ToasterService);
     courseConsumptionService = TestBed.get(CourseConsumptionService);
+    navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'navigateToResource').and.returnValue('');
     spyOn(toasterService, 'error').and.returnValue('');
   });
 
@@ -82,7 +84,7 @@ describe('PublicCourseConsumptionPageComponent', () => {
     spyOn(component, 'redirectToExplore').and.callThrough();
     component.ngOnInit();
     expect(component.redirectToExplore).toHaveBeenCalled();
-    expect(component.router.navigate).toHaveBeenCalledWith(['explore-course']);
+    expect(component.navigationHelperService.navigateToResource).toHaveBeenCalledWith('explore-course');
   });
 
   it('should open share link popup and share url should be of anonymous explore course page', () => {
