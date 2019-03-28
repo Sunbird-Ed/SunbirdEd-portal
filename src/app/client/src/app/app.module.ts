@@ -11,13 +11,13 @@ import { SharedModule } from '@sunbird/shared';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
-import { BootstrapFramework, WebExtensionModule } from '@project-sunbird/web-extensions';
-import { WebExtensionsConfig } from './framework.config';
+// import { BootstrapFramework, WebExtensionModule } from '@project-sunbird/web-extensions';
+// import { WebExtensionsConfig } from './framework.config';
 import { CacheService } from 'ng2-cache-service';
 import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storage/cache-storage-abstract.service';
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
-import { PluginModules } from './framework.config';
+// import { PluginModules } from './framework.config';
 @NgModule({
   declarations: [
     AppComponent
@@ -31,11 +31,11 @@ import { PluginModules } from './framework.config';
     SuiRatingModule, SuiCollapseModule,
     SharedModule.forRoot(),
     Ng2IziToastModule,
-    WebExtensionModule.forRoot(),
+    // WebExtensionModule.forRoot(), disabling as it dosnt support lazy loading
     TelemetryModule.forRoot(),
     DeviceDetectorModule.forRoot(),
     SharedFeatureModule,
-    ...PluginModules,
+    // ...PluginModules, disabling as it dosnt support lazy loading
     AppRoutingModule // don't add any module below this because it contains wildcard route
   ],
   entryComponents: [AppComponent],
@@ -46,7 +46,7 @@ import { PluginModules } from './framework.config';
   ]
 })
 export class AppModule {
-  constructor(bootstrapFramework: BootstrapFramework) {
-    bootstrapFramework.initialize(WebExtensionsConfig);
+  constructor() {
+    // bootstrapFramework.initialize(WebExtensionsConfig); disabling as it dosnt support lazy loading
   }
 }

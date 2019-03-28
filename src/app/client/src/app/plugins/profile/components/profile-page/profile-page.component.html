@@ -176,8 +176,9 @@
 
 
   <!-- my badges section starts -->
-  <extension-point *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"
-    [name]="'profile-widget'"></extension-point>
+  <!-- <extension-point *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"
+    [name]="'profile-widget'"></extension-point> -->
+  <app-profile-badge *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"></app-profile-badge>
   <!-- my badges section ends -->
 
 
