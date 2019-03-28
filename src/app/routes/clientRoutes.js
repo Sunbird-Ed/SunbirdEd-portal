@@ -27,8 +27,6 @@ const setZipConfig = (req, res, type, encoding, dist = '../') => {
         }
         req.url = req.url + '.' + type;
         res.set('Content-Encoding', encoding);
-        res.set('Cache-Control', 'public, max-age=' + oneDayMS * 30)
-        res.set('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
         pathMap[req.path + type] = 'exist';
         return true
     } else {
@@ -41,6 +39,8 @@ module.exports = (app, keycloak) => {
   app.set('view engine', 'ejs')
 
   app.get(['*.js', '*.css'], (req, res, next) => {
+    res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
+    res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
     if(req.get('Accept-Encoding').includes('br')){ // send br files
       if(!setZipConfig(req, res, 'br', 'br') && req.get('Accept-Encoding').includes('gzip')){
         setZipConfig(req, res, 'gz', 'gzip') // send gzip if br file not found
