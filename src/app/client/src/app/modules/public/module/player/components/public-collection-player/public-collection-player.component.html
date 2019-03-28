@@ -9,7 +9,7 @@
               <div class="ui grid">
                 <div class="twelve wide column">
                   <h1 class="ui header small HomeAccordianHeading m-responsive-cp left floated header">{{contentTitle}}</h1>
-                  <h5 class="ui right floated basic icon circular button mouse-pointer" (click)="closeContentPlayer()" appTelemetryInteract [telemetryInteractObject]="playerTelemetryInteractObject" [telemetryInteractEdata]="closePlayerInteractEdata">
+                  <h5 class="ui right floated basic icon circular button mouse-pointer" (click)="closeContentPlayer()" appTelemetryInteract [telemetryInteractCdata]="this.telemetryCdata" [telemetryInteractObject]="playerTelemetryInteractObject" [telemetryInteractEdata]="closePlayerInteractEdata">
                     <i class="ui remove icon"></i>
                   </h5>
                 </div>
@@ -55,7 +55,7 @@
   <div class="row" *ngIf="!loader">
     <div class="twelve wide column">
       <span class="ui HomeAccordianHeading m-responsive-cp left floated header">{{collectionTitle}}</span>
-      <h5 appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeCollectionPlayerInteractEdata"
+      <h5 appTelemetryInteract [telemetryInteractCdata]="this.telemetryCdata" [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeCollectionPlayerInteractEdata"
         class="ui right floated basic icon circular button mouse-pointer" (click)="closeCollectionPlayer()">
         <i class="ui remove icon"></i>
       </h5>

@@ -56,6 +56,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
 
   private objectRollUp: any;
 
+  telemetryCdata: Array<{}>;
+
   public loader: Boolean = true;
   public treeModel: any;
   public contentDetails = [];
@@ -92,14 +94,19 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
   }
   ngOnInit() {
+    this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
     this.getContent();
-    this.setInteractEventData();
     this.deviceDetector();
+    this.setTelemetryData();
   }
   setTelemetryData() {
+    if (this.dialCode) {
+      this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
+    }
     this.telemetryImpression = {
       context: {
-        env: this.route.snapshot.data.telemetry.env
+        env: this.route.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
       },
       object: {
         id: this.collectionId,
@@ -206,7 +213,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       first(),
       mergeMap((params) => {
         this.collectionId = params.collectionId;
-        this.setTelemetryData();
+        this.setInteractEventData();
         return this.getCollectionHierarchy(params.collectionId);
       }), )
       .subscribe((data) => {
