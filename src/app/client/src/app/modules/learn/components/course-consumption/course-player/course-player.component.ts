@@ -122,7 +122,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.courseId = courseId;
         this.batchId = batchId;
         this.courseStatus = courseStatus;
-        this.telemetryCdata = [{id: this.courseId , type: 'Course'} , {id: this.batchId , type: 'Batch'}];
+        this.telemetryCdata = [{id: this.courseId , type: 'Course'} , {id: this.batchId , type: 'CourseBatch'}];
         this.setTelemetryCourseImpression();
         const inputParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
         if (this.batchId) {
