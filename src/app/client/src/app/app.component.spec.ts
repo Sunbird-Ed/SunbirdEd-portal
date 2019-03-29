@@ -124,12 +124,12 @@ describe('AppComponent', () => {
     const tenantService = TestBed.get(TenantService);
     const deviceRegisterService = TestBed.get(DeviceRegisterService);
     userService._authenticated = true;
-    spyOn(deviceRegisterService, 'registerDevice');
+    spyOn(deviceRegisterService, 'initialize');
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
     spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
     component.ngOnInit();
-    expect(deviceRegisterService.registerDevice).toHaveBeenCalledWith('b00bc992ef25f1a9a8d63291e20efc8d');
+    expect(deviceRegisterService.initialize).toHaveBeenCalledWith('b00bc992ef25f1a9a8d63291e20efc8d');
   });
 const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654', rootOrgId: '1235654'}] }}};
   it('should config telemetry service for Anonymous Session', () => {
@@ -171,12 +171,12 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     const publicDataService = TestBed.get(PublicDataService);
     const tenantService = TestBed.get(TenantService);
     const deviceRegisterService = TestBed.get(DeviceRegisterService);
-    spyOn(deviceRegisterService, 'registerDevice');
+    spyOn(deviceRegisterService, 'initialize');
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({}));
     orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
     component.ngOnInit();
-    expect(deviceRegisterService.registerDevice).toHaveBeenCalledWith('1235654');
+    expect(deviceRegisterService.initialize).toHaveBeenCalledWith('1235654');
   });
 
   it('Should subscribe to tenant service and retrieve title and favicon details', () => {

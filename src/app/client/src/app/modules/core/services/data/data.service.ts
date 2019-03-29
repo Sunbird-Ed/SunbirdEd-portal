@@ -1,7 +1,7 @@
 
 import { of as observableOf, throwError as observableThrowError, Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { ServerResponse, ServerResponseWithHeaders, RequestParam, HttpOptions } from '@sunbird/shared';
+import { ServerResponse, RequestParam, HttpOptions } from '@sunbird/shared';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
@@ -60,14 +60,13 @@ export class DataService {
       observe: 'response'
     };
     return this.http.get(this.baseUrl + requestParam.url, httpOptions).pipe(
-      mergeMap((response: ServerResponseWithHeaders) => {
-        const data = response.body;
+      mergeMap(({body, headers}: any) => {
         // replace ts time with header date , this value is used in telemetry
-        data.ts = new Date(response.headers.get('Date'));
-        if (data.responseCode !== 'OK') {
-          return observableThrowError(data);
+        body.ts =  new Date(headers.get('Date'));
+        if (body.responseCode !== 'OK') {
+          return observableThrowError(body);
         }
-        return observableOf(data);
+        return observableOf(body);
       }));
   }
 
@@ -103,14 +102,13 @@ export class DataService {
       observe: 'response'
     };
     return this.http.post(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
-      mergeMap((response: ServerResponseWithHeaders) => {
-        const data = response.body;
+      mergeMap(({body, headers}: any) => {
         // replace ts time with header date , this value is used in telemetry
-        data.ts =  new Date(response.headers.get('Date'));
-        if (data.responseCode !== 'OK') {
-          return observableThrowError(data);
+        body.ts =  new Date(headers.get('Date'));
+        if (body.responseCode !== 'OK') {
+          return observableThrowError(body);
         }
-        return observableOf(data);
+        return observableOf(body);
       }));
   }
 

@@ -28,7 +28,7 @@ export class UserService {
     */
   private _sessionId: string;
 
-  _etsDates: any;
+  timeStampData: any;
 
   /**
    * Contains root org id
@@ -308,7 +308,7 @@ export class UserService {
   }
 
   get getServerTime() {
-    return this._etsDates;
+    return this.timeStampData;
   }
 
   get channel() {
@@ -367,7 +367,7 @@ export class UserService {
    */
   private captureServerDate (serverresponse) {
     if (serverresponse.ts) {
-      this._etsDates = {serverEts: serverresponse.ts, localTime: new Date()};
+      this.timeStampData = {serverEts: serverresponse.ts, localTime: new Date()};
     }
   }
 

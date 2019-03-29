@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { PublicDataService } from './../public-data/public-data.service';
 import { ConfigService,  HttpOptions} from '@sunbird/shared';
 import * as moment from 'moment';
@@ -10,7 +10,7 @@ import { Observable, timer, Subscription } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class DeviceRegisterService implements OnDestroy {
+export class DeviceRegisterService  {
   private portalVersion: string;
   private appId: string;
   private deviceId: string;
@@ -34,21 +34,18 @@ export class DeviceRegisterService implements OnDestroy {
     && (<HTMLInputElement>document.getElementById('deviceRegisterApi')).value;
   }
 
-  onTimeOut () {
-    this.registerDevice(this.channel);
+  public initialize(channel) {
+    this.registerDevice(channel);
+    this.timer$ = timer(3.6e+6, 3.6e+6);
+    this.timerSubscription = this.timer$.subscribe(t => {
+      this.registerDevice(this.channel);
+    });
   }
 
   registerDevice(channel: string, deviceId?: string) {
     console.log('calling registerDevice');
     this.channel = channel;
     // call register api every 24hrs
-    this.timer$ = timer(3.6e+6, 3.6e+6);
-    if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();
-    }
-    this.timerSubscription = this.timer$.subscribe(t => {
-        this.onTimeOut();
-    });
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     this.deviceId = (<HTMLInputElement>document.getElementById('deviceId'))
     && (<HTMLInputElement>document.getElementById('deviceId')).value;
@@ -81,9 +78,5 @@ export class DeviceRegisterService implements OnDestroy {
     }, (err) => {
       console.log('called device', err);
     });
-  }
-
-  ngOnDestroy() {
-    this.timerSubscription.unsubscribe();
   }
 }

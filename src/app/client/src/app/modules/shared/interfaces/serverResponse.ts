@@ -30,19 +30,6 @@ export interface ServerResponse {
     headers?: any;
 }
 
-/**
- * server response with headers
-*/
-export interface ServerResponseWithHeaders {
-    statusText: string;
-    ok: boolean;
-    status: number;
-    type: number;
-    url: string;
-    headers?: any;
-    body?: any;
-}
-
 export interface Params {
     resmsgid: string;
     msgid?: any;

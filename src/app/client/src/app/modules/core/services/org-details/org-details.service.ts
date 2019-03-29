@@ -15,7 +15,7 @@ export class OrgDetailsService {
 
   orgDetails: any;
   orgInfo: any;
-  _etsDates: any;
+  timeStampData: any;
 
   private _orgDetails$ = new BehaviorSubject<any>(undefined);
 
@@ -127,12 +127,12 @@ export class OrgDetailsService {
   */
   private captureServerDate (serverresponse) {
     if (serverresponse.ts) {
-      this._etsDates = {serverEts: serverresponse.ts, localTime: new Date()};
+      this.timeStampData = {serverEts: serverresponse.ts, localTime: new Date()};
     }
   }
 
   get getServerTime() {
-    return this._etsDates;
+    return this.timeStampData;
   }
 
   fetchOrgs(filters) {
