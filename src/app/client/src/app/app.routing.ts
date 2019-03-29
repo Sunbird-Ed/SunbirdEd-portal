@@ -30,6 +30,9 @@ const appRoutes: Routes = [
     path: 'profile', loadChildren: 'app/plugins/profile/profile.module#ProfileModule'
   },
   {
+    path: 'get', loadChildren: 'app/modules/dial-code-search/dial-code-search.module#DialCodeSearchModule'
+  },
+  {
     path: '', loadChildren: 'app/modules/public/public.module#PublicModule'
   },
   {

@@ -16,9 +16,6 @@ if (environment.isOffline) {
 const routes: Routes = [
   rootRoute,
   {
-    path: 'get', loadChildren: './module/dial-code-search/dial-code-search.module#DialCodeSearchModule'
-  },
-  {
     path: 'explore', loadChildren: './module/explore/explore.module#ExploreModule'
   },
   {
