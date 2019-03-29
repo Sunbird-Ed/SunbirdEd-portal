@@ -93,6 +93,14 @@ describe('ContentPlayerComponent', () => {
     component.ngOnInit();
     expect(component.playerConfig).toBeTruthy();
   });
+  it('should call  contentProgressEvent method and open contentRatingModal', () => {
+    spyOn(component, 'contentProgressEvent').and.callThrough();
+    const event = {'detail': {
+     'telemetryData': {'eid': 'END'}
+    }};
+    component.contentProgressEvent(event);
+    expect(component.contentRatingModal).toBeTruthy();
+  });
   xit('should config player if content status is "Unlisted"', () => {
     const userService = TestBed.get(UserService);
     const playerService = TestBed.get(PlayerService);

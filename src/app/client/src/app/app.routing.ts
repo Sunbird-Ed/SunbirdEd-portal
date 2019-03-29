@@ -27,6 +27,9 @@ const appRoutes: Routes = [
     path: 'dashboard', loadChildren: 'app/modules/dashboard/dashboard.module#DashboardModule'
   },
   {
+    path: 'profile', loadChildren: 'app/plugins/profile/profile.module#ProfileModule'
+  },
+  {
     path: '', loadChildren: 'app/modules/public/public.module#PublicModule'
   },
   {

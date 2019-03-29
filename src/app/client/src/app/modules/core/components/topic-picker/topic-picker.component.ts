@@ -2,7 +2,6 @@ import { Component, OnInit, Output, Input, EventEmitter, OnDestroy, AfterViewIni
 import * as _ from 'lodash-es';
 import { Subscription } from 'rxjs';
 import { ResourceService } from '@sunbird/shared';
-import * as $ from 'jquery';
 import * as  treePicker from './../../../../../assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker';
 $.fn.treePicker = treePicker;
 interface TopicTreeNode {
@@ -73,7 +72,7 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initTopicPicker(this.formatTopics(this.formTopic.range));
   }
   private initTopicPicker(data: Array<TopicTreeNode>) {
-    $('.topic-picker-selector').treePicker({
+    jQuery('.topic-picker-selector').treePicker({
       data: data,
       name: this.resourceService.frmelmnts.lbl.topics,
       noDataMessage: this.resourceService.messages.fmsg.m0089,
