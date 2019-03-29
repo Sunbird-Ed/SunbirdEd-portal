@@ -152,7 +152,10 @@ export class UserService {
     };
     this.learnerService.getWithHeaders(option).subscribe(
       (data: ServerResponse) => {
-        this.captureServerDate(data);
+        if (data.ts) {
+          // data.ts is taken from header and not from api response ts, and format in IST
+          this.timeStampData = {serverEts: data.ts, localTime: new Date()};
+        }
         this.setUserProfile(data);
       },
       (err: ServerResponse) => {
@@ -354,21 +357,6 @@ export class UserService {
 
   getUserByKey(key) {
     return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_BY_KEY + '/' + key});
-  }
-
-   /**
-   *
-   *
-   * @private
-   * @param {*} Apiresponseobj
-   * @returns
-   * @memberof UserService, etsDates is sent in telemetry events, telemetry
-   * library will calculate the diff of local and server dates and pass accurate date
-   */
-  private captureServerDate (serverresponse) {
-    if (serverresponse.ts) {
-      this.timeStampData = {serverEts: serverresponse.ts, localTime: new Date()};
-    }
   }
 
   public getFingerPrintOptions(): object {

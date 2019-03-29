@@ -43,7 +43,10 @@ export class OrgDetailsService {
       return observableOf(this.orgDetails);
     } else {
       return this.publicDataService.postWithHeaders(option).pipe(mergeMap((data: ServerResponse) => {
-        this.captureServerDate(data);
+        if (data.ts) {
+          // data.ts is taken from header and not from api response ts, and format in IST
+          this.timeStampData = {serverEts: data.ts, localTime: new Date()};
+        }
         if (data.result.response.count > 0) {
           this.orgDetails = data.result.response.content[0];
           this.setOrgDetailsToRequestHeaders();
@@ -120,15 +123,6 @@ export class OrgDetailsService {
       url: this.configService.urlConFig.URLS.SYSTEM_SETTING.CUSTODIAN_ORG,
     };
     return this.learnerService.get(systemSetting);
-  }
-
-  /**
-  * serverresponse.ts is taken from header and not from api response ts, and format in IST
-  */
-  private captureServerDate (serverresponse) {
-    if (serverresponse.ts) {
-      this.timeStampData = {serverEts: serverresponse.ts, localTime: new Date()};
-    }
   }
 
   get getServerTime() {
