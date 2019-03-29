@@ -17,6 +17,8 @@ import { CacheService } from 'ng2-cache-service';
 import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storage/cache-storage-abstract.service';
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 // import { PluginModules } from './framework.config';
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     DeviceDetectorModule.forRoot(),
     SharedFeatureModule,
     // ...PluginModules, disabling as it dosnt support lazy loading
-    AppRoutingModule // don't add any module below this because it contains wildcard route
+    AppRoutingModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    // don't add any module below this because it contains wildcard route
   ],
   entryComponents: [AppComponent],
   bootstrap: [AppComponent],
