@@ -54,6 +54,10 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
 
   private router: Router;
 
+  private objectRollUp: any;
+
+  telemetryCdata: Array<{}>;
+
   public loader: Boolean = true;
   public treeModel: any;
   public contentDetails = [];
@@ -63,12 +67,12 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   public badgeData: Array<object>;
   private subsrciption: Subscription;
   public closeCollectionPlayerInteractEdata: IInteractEventEdata;
+  public closePlayerInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
-
+  public playerTelemetryInteractObject: IInteractEventObject;
   public telemetryCourseEndEvent: IEndEventInput;
-
-  public telemetryCdata: [{}];
   public telemetryCourseStart: IStartEventInput;
+
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
@@ -94,11 +98,16 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
   }
   ngOnInit() {
+    this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
     this.getContent();
-    this.setInteractEventData();
     this.deviceDetector();
+    this.setTelemetryData();
   }
   setTelemetryData() {
+    if (this.dialCode) {
+      this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
+    }
+
     this.telemetryImpression = {
       context: {
         env: this.route.snapshot.data.telemetry.env,
@@ -116,6 +125,23 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
         subtype: this.route.snapshot.data.telemetry.subtype
       }
     };
+
+    this.closeCollectionPlayerInteractEdata = {
+      id: 'close-collection',
+      type: 'click',
+      pageid: 'public'
+    };
+    this.closePlayerInteractEdata = {
+      id: 'close-player',
+      type: 'click',
+      pageid: 'public'
+    };
+    this.telemetryInteractObject = {
+      id: this.activatedRoute.snapshot.params.collectionId,
+      type: 'Content',
+      ver: '1.0'
+    };
+    this.playerTelemetryInteractObject = { ...this.telemetryInteractObject };
   }
 
   ngOnDestroy() {
@@ -124,10 +150,14 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     }
   }
 
-  private initPlayer(id: string): void {
-    this.playerConfig = this.getPlayerConfig(id).pipe(catchError((error) => {
-      return error;
-    }));
+  private initPlayer(id: string) {
+    this.playerConfig = this.getPlayerConfig(id).pipe(map((data) => {
+      data.context.objectRollup = this.objectRollUp;
+      this.playerTelemetryInteractObject.rollup = this.objectRollUp;
+      return data;
+    }), catchError((err) => {
+      return err;
+    }), );
   }
 
   public playContent(data: any): void {
@@ -220,6 +250,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
             if (content) {
+              this.setRollUpData(content);
               this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') }, true);
             } else {
               // show toaster error
@@ -235,6 +266,11 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       });
   }
 
+  private setRollUpData (content) {
+    const nodes = content.getPath();
+    this.objectRollUp = {};
+    nodes.forEach((eachnode, index) => this.objectRollUp['l' + (index + 1)] = eachnode.model.identifier);
+  }
   private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
     const inputParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
     return this.playerService.getCollectionHierarchy(collectionId, inputParams).pipe(
@@ -263,18 +299,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       queryParams: this.queryParams
     };
     this.router.navigate([], navigationExtras);
-  }
-  setInteractEventData() {
-    this.closeCollectionPlayerInteractEdata = {
-      id: 'close-collection',
-      type: 'click',
-      pageid: 'public'
-    };
-    this.telemetryInteractObject = {
-      id: this.activatedRoute.snapshot.params.collectionId,
-      type: 'collection',
-      ver: '1.0'
-    };
   }
   deviceDetector() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();

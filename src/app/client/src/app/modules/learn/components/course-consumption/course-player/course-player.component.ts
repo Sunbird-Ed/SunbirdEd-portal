@@ -334,6 +334,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
   private setTelemetryStartEndData() {
+    this.telemetryCdata = [{ 'type': 'Course', 'id': this.courseId }, { 'type': 'CourseBatch', 'id': this.batchId }];
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     this.telemetryCourseStart = {
       context: {
@@ -417,9 +418,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   private setContentInteractData(config) {
     this.contentInteractObject = {
       id: config.metadata.identifier,
-      type: config.metadata.contentType || config.metadata.resourceType || 'content',
+      type: config.metadata.contentType || config.metadata.resourceType || 'Content',
       ver: config.metadata.pkgVersion ? config.metadata.pkgVersion.toString() : '1.0',
-      rollup: { l1: this.courseId }
+      rollup: { l1: this.courseId, l2: this.contentId }
     };
     this.closeContentIntractEdata = {
       id: 'content-close',

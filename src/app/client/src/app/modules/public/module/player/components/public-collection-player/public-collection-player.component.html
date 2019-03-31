@@ -9,7 +9,7 @@
               <div class="ui grid">
                 <div class="twelve wide column">
                   <h1 class="ui header small HomeAccordianHeading m-responsive-cp left floated header">{{contentTitle}}</h1>
-                  <h5 class="ui right floated basic icon circular button mouse-pointer" (click)="closeContentPlayer()">
+                  <h5 class="ui right floated basic icon circular button mouse-pointer" (click)="closeContentPlayer()" appTelemetryInteract [telemetryInteractCdata]="this.telemetryCdata" [telemetryInteractObject]="playerTelemetryInteractObject" [telemetryInteractEdata]="closePlayerInteractEdata">
                     <i class="ui remove icon"></i>
                   </h5>
                 </div>
