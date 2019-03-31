@@ -71,7 +71,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   public telemetryInteractObject: IInteractEventObject;
   public playerTelemetryInteractObject: IInteractEventObject;
   public telemetryCourseEndEvent: IEndEventInput;
-  public telemetryCdata: [{}];
   public telemetryCourseStart: IStartEventInput;
 
   public loaderMessage: ILoaderMessage = {
