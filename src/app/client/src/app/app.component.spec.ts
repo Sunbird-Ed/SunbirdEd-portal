@@ -201,15 +201,15 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
     expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
   });
-  it('should check framework key is in user read api and open the popup  ', async(() => {
+  it('should check framework key is in user read api and open the popup  ', () => {
     const learnerService = TestBed.get(LearnerService);
     const publicDataService = TestBed.get(PublicDataService);
     const tenantService = TestBed.get(TenantService);
     userService._authenticated = true;
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
-    spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
+    spyOn(publicDataService, 'postWithHeaders').and.returnValue(of({result: { response: { content: 'data'} } }));
     spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
     component.ngOnInit();
     expect(component.showFrameWorkPopUp).toBeTruthy();
-  }));
+  });
 });
