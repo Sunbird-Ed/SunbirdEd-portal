@@ -9,8 +9,9 @@ import {
   WindowScrollService, ILoaderMessage, PlayerConfig, ICollectionTreeOptions, NavigationHelperService,
   ToasterService, ResourceService, ContentData, ContentUtilsServiceService, ITelemetryShare, ConfigService
 } from '@sunbird/shared';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-collection-player',
@@ -24,6 +25,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   telemetryImpression: IImpressionEventInput;
 
   telemetryContentImpression: IImpressionEventInput;
+
+  public telemetryCourseEndEvent: IEndEventInput;
+
+  public telemetryCourseStart: IStartEventInput;
 
   private route: ActivatedRoute;
 
@@ -102,10 +107,11 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   public contentDetails = [];
   public nextPlaylistItem: any;
   public prevPlaylistItem: any;
-
+  public telemetryCdata: [{}];
+  contentRatingModal = false;
   constructor(route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
-    private toasterService: ToasterService, private resourceService: ResourceService,
+    private toasterService: ToasterService, private deviceDetectorService: DeviceDetectorService, private resourceService: ResourceService,
     public permissionService: PermissionService, public copyContentService: CopyContentService,
     public contentUtilsServiceService: ContentUtilsServiceService, config: ConfigService, private configService: ConfigService) {
     this.route = route;
@@ -229,12 +235,14 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       first(),
       mergeMap((params) => {
         this.collectionId = params.collectionId;
+        this.telemetryCdata = [{id: this.collectionId, type: 'Collection'}];
         this.collectionStatus = params.collectionStatus;
         return this.getCollectionHierarchy(params.collectionId);
       }), )
       .subscribe((data) => {
         this.collectionTreeNodes = data;
         this.setTelemetryData();
+        this.setTelemetryStartEndData();
         this.loader = false;
         this.route.queryParams.subscribe((queryParams) => {
           this.contentId = queryParams.contentId;
@@ -265,7 +273,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   setTelemetryData() {
     this.telemetryImpression = {
       context: {
-        env: this.route.snapshot.data.telemetry.env
+        env: this.route.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
       },
       object: {
         id: this.collectionId,
@@ -339,6 +348,13 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.collectionId, this.mimeType);
     this.setTelemetryShareData(this.collectionData);
   }
+  public contentProgressEvent(event) {
+    const eid = event.detail.telemetryData.eid;
+    if (eid === 'END') {
+      this.contentRatingModal = true;
+      return;
+    }
+  }
   setTelemetryShareData(param) {
     this.telemetryShareData = [{
       id: param.identifier,
@@ -346,4 +362,48 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
     }];
   }
+
+  private setTelemetryStartEndData() {
+    const deviceInfo = this.deviceDetectorService.getDeviceInfo();
+    this.telemetryCourseStart = {
+      context: {
+        env: this.route.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
+      },
+      object: {
+        id: this.collectionId,
+        type: 'Collection',
+        ver: '1.0',
+      },
+      edata: {
+        type: this.route.snapshot.data.telemetry.type,
+        pageid: this.route.snapshot.data.telemetry.pageid,
+        mode: 'play',
+        uaspec: {
+          agent: deviceInfo.browser,
+          ver: deviceInfo.browser_version,
+          system: deviceInfo.os_version ,
+          platform: deviceInfo.os,
+          raw: deviceInfo.userAgent
+        }
+      }
+    };
+    this.telemetryCourseEndEvent = {
+      object: {
+        id: this.collectionId,
+        type: 'Collection',
+        ver: '1.0',
+      },
+      context: {
+        env: this.route.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
+      },
+      edata: {
+        type: this.route.snapshot.data.telemetry.type,
+        pageid: this.route.snapshot.data.telemetry.pageid,
+        mode: 'play'
+      }
+    };
+  }
+
 }

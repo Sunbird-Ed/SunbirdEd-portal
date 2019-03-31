@@ -2,9 +2,8 @@
 import { Observable, of } from 'rxjs';
 import { ConfigService, ToasterService, ResourceService, SharedModule, NavigationHelperService,
   BrowserCacheTtlService } from '@sunbird/shared';
-import {
-  UserService, LearnerService, CoursesService, PermissionService, TenantService, PublicDataService,
-  ConceptPickerService, SearchService, ContentService, CoreModule, OrgDetailsService, DeviceRegisterService
+import { UserService, LearnerService, CoursesService, PermissionService, TenantService,
+  PublicDataService, SearchService, ContentService, CoreModule, OrgDetailsService, DeviceRegisterService
 } from '@sunbird/core';
 import { TelemetryService, TELEMETRY_PROVIDER } from '@sunbird/telemetry';
 import { TestBed, async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
@@ -53,7 +52,7 @@ describe('AppComponent', () => {
         ToasterService, TenantService, CacheService,
         UserService, ConfigService, LearnerService, BrowserCacheTtlService,
         PermissionService, ResourceService, CoursesService, OrgDetailsService, ProfileService,
-        TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, ConceptPickerService, SearchService, ContentService],
+        TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, SearchService, ContentService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));

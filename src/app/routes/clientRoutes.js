@@ -39,6 +39,8 @@ module.exports = (app, keycloak) => {
   app.set('view engine', 'ejs')
 
   app.get(['*.js', '*.css'], (req, res, next) => {
+    res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
+    res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
     if(req.get('Accept-Encoding').includes('br')){ // send br files
       if(!setZipConfig(req, res, 'br', 'br') && req.get('Accept-Encoding').includes('gzip')){
         setZipConfig(req, res, 'gz', 'gzip') // send gzip if br file not found
@@ -49,6 +51,14 @@ module.exports = (app, keycloak) => {
     next();
   });
 
+  app.get(['/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff', '/dist/*.eot', '/dist/*.svg',
+  '/*.ttf', '/*.woff2', '/*.woff', '/*.eot', '/*.svg'],
+    compression(), (req, res, next) => {
+        res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
+        res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
+      next()
+  })
+
   app.use(express.static(path.join(__dirname, '../dist'), { extensions: ['ejs'], index: false }))
 
   app.use(express.static(path.join(__dirname, '../')))
@@ -58,15 +68,6 @@ module.exports = (app, keycloak) => {
   if (defaultTenant) {
     app.use(express.static(path.join(__dirname, '../tenant', defaultTenant)))
   }
-
-  app.get(['/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff', '/dist/*.eot', '/dist/*.svg'],
-    compression(), (req, res, next) => {
-      if (process.env.sunbird_environment.toLowerCase() !== 'local') {
-        res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
-        res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
-      }
-      next()
-    })
 
   app.all(['/server.js', '/helpers/*.js', '/helpers/**/*.js'], (req, res) => res.sendStatus(404))
 

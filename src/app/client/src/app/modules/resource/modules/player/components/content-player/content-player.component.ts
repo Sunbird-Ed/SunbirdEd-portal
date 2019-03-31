@@ -1,7 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService, PlayerService, CopyContentService, PermissionService, BreadcrumbsService } from '@sunbird/core';
+import { UserService, PlayerService, CopyContentService, PermissionService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { INoteData } from '@sunbird/notes';
 import {
@@ -86,7 +86,7 @@ export class ContentPlayerComponent implements OnInit {
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
     public copyContentService: CopyContentService, public permissionService: PermissionService,
-    public contentUtilsServiceService: ContentUtilsServiceService, public breadcrumbsService: BreadcrumbsService,
+    public contentUtilsServiceService: ContentUtilsServiceService,
     private configService: ConfigService) {
   }
   /**
@@ -158,7 +158,7 @@ export class ContentPlayerComponent implements OnInit {
           this.setTelemetryData();
           this.showPlayer = true;
           this.windowScrollService.smoothScroll('content-player');
-          this.breadcrumbsService.setBreadcrumbs([{ label: this.contentData.name, url: '' }]);
+          // this.breadcrumbsService.setBreadcrumbs([{ label: this.contentData.name, url: '' }]);
           this.badgeData = _.get(response, 'result.content.badgeAssertions');
         } else {
           this.toasterService.warning(this.resourceService.messages.imsg.m0027);
@@ -213,7 +213,6 @@ export class ContentPlayerComponent implements OnInit {
     const eid = event.detail.telemetryData.eid;
     if (eid === 'END') {
       this.contentRatingModal = true;
-      console.log('call me');
       return;
     }
   }

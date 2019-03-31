@@ -12,7 +12,7 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
   SuiProgressModule, SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { WebExtensionModule } from '@project-sunbird/web-extensions';
+// import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { AvatarModule } from 'ngx-avatar';
 @NgModule({
@@ -25,14 +25,13 @@ import { AvatarModule } from 'ngx-avatar';
     CoreModule,
     FormsModule,
     ReactiveFormsModule,
-    WebExtensionModule,
+    // WebExtensionModule,
     TelemetryModule,
     SlickModule,
     AvatarModule,
     SharedFeatureModule
   ],
   declarations: [ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent, UpdateUserDetailsComponent],
-  providers: [ProfileService],
-  entryComponents: [ProfileBadgeComponent]
+  providers: []
 })
 export class ProfileModule { }

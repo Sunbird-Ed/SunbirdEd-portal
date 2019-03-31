@@ -1,7 +1,7 @@
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { UserService, BreadcrumbsService, PermissionService, CoursesService } from '@sunbird/core';
+import { UserService, PermissionService, CoursesService } from '@sunbird/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash-es';
 import {
@@ -109,7 +109,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   constructor(public activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, public windowScrollService: WindowScrollService,
     public router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
-    private toasterService: ToasterService, private resourceService: ResourceService, public breadcrumbsService: BreadcrumbsService,
+    private toasterService: ToasterService, private resourceService: ResourceService,
     private cdr: ChangeDetectorRef, public courseBatchService: CourseBatchService, public permissionService: PermissionService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService,
     private courseProgressService: CourseProgressService, private deviceDetectorService: DeviceDetectorService) {
@@ -122,6 +122,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.courseId = courseId;
         this.batchId = batchId;
         this.courseStatus = courseStatus;
+        this.telemetryCdata = [{id: this.courseId , type: 'Course'} , {id: this.batchId , type: 'CourseBatch'}];
         this.setTelemetryCourseImpression();
         const inputParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
         if (this.batchId) {
@@ -257,7 +258,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
         this.enableContentPlayer = true;
         this.contentTitle = data.title;
-        this.breadcrumbsService.setBreadcrumbs([{ label: this.contentTitle, url: '' }]);
+        // this.breadcrumbsService.setBreadcrumbs([{ label: this.contentTitle, url: '' }]);
         this.windowScrollService.smoothScroll('app-player-collection-renderer', 500);
       }, (err) => {
         this.loader = false;
@@ -333,7 +334,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
   private setTelemetryStartEndData() {
-    this.telemetryCdata = [{ 'type': 'course', 'id': this.courseId }, { 'type': 'batch', 'id': this.batchId }];
+    this.telemetryCdata = [{ 'type': 'Course', 'id': this.courseId }, { 'type': 'CourseBatch', 'id': this.batchId }];
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     this.telemetryCourseStart = {
       context: {
@@ -378,7 +379,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   private setTelemetryCourseImpression() {
     this.telemetryCourseImpression = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,

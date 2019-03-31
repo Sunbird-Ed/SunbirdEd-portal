@@ -4,7 +4,8 @@ import { CoreModule, UserService, SearchService, PlayerService , LearnerService,
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgInviewModule } from 'angular-inport';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ProfileService, ProfilePageComponent } from '@sunbird/profile';
+import { ProfileService } from '@sunbird/profile';
+import {ProfilePageComponent} from './profile-page.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SlickModule } from 'ngx-slick';

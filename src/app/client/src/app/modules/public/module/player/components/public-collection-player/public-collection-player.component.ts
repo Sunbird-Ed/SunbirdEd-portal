@@ -11,7 +11,7 @@ import {
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
 
 @Component({
@@ -70,6 +70,10 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   public closePlayerInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
   public playerTelemetryInteractObject: IInteractEventObject;
+  public telemetryCourseEndEvent: IEndEventInput;
+  public telemetryCdata: [{}];
+  public telemetryCourseStart: IStartEventInput;
+
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
@@ -80,6 +84,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
 	 * dialCode
 	*/
   public dialCode: string;
+  contentRatingModal = false;
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
@@ -103,6 +108,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     if (this.dialCode) {
       this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
     }
+
     this.telemetryImpression = {
       context: {
         env: this.route.snapshot.data.telemetry.env,
@@ -120,6 +126,23 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
         subtype: this.route.snapshot.data.telemetry.subtype
       }
     };
+
+    this.closeCollectionPlayerInteractEdata = {
+      id: 'close-collection',
+      type: 'click',
+      pageid: 'public'
+    };
+    this.closePlayerInteractEdata = {
+      id: 'close-player',
+      type: 'click',
+      pageid: 'public'
+    };
+    this.telemetryInteractObject = {
+      id: this.activatedRoute.snapshot.params.collectionId,
+      type: 'Content',
+      ver: '1.0'
+    };
+    this.playerTelemetryInteractObject = { ...this.telemetryInteractObject };
   }
 
   ngOnDestroy() {
@@ -213,7 +236,9 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       first(),
       mergeMap((params) => {
         this.collectionId = params.collectionId;
-        this.setInteractEventData();
+        this.telemetryCdata = [{id: this.collectionId, type: 'Collection'}];
+        this.setTelemetryData();
+        this.setTelemetryStartEndData();
         return this.getCollectionHierarchy(params.collectionId);
       }), )
       .subscribe((data) => {
@@ -257,6 +282,13 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
         return { data: response.result.content };
       }));
   }
+  public contentProgressEvent(event) {
+    const eid = event.detail.telemetryData.eid;
+    if (eid === 'END') {
+      this.contentRatingModal = true;
+      return;
+    }
+  }
   closeCollectionPlayer() {
     this.navigationHelperService.navigateToPreviousUrl('/explore');
   }
@@ -269,28 +301,53 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     };
     this.router.navigate([], navigationExtras);
   }
-  setInteractEventData() {
-    this.closeCollectionPlayerInteractEdata = {
-      id: 'close-collection',
-      type: 'click',
-      pageid: 'public'
-    };
-    this.closePlayerInteractEdata = {
-      id: 'close-player',
-      type: 'click',
-      pageid: 'public'
-    };
-    this.telemetryInteractObject = {
-      id: this.activatedRoute.snapshot.params.collectionId,
-      type: 'Content',
-      ver: '1.0'
-    };
-    this.playerTelemetryInteractObject = { ...this.telemetryInteractObject };
-  }
   deviceDetector() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     if ( deviceInfo.device === 'android' || deviceInfo.os === 'android') {
       this.showFooter = true;
     }
+  }
+
+  private setTelemetryStartEndData() {
+    const deviceInfo = this.deviceDetectorService.getDeviceInfo();
+    this.telemetryCourseStart = {
+      context: {
+        env: this.route.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
+      },
+      object: {
+        id: this.collectionId,
+        type: 'Collection',
+        ver: '1.0',
+      },
+      edata: {
+        type: this.route.snapshot.data.telemetry.type,
+        pageid: this.route.snapshot.data.telemetry.pageid,
+        mode: 'play',
+        uaspec: {
+          agent: deviceInfo.browser,
+          ver: deviceInfo.browser_version,
+          system: deviceInfo.os_version ,
+          platform: deviceInfo.os,
+          raw: deviceInfo.userAgent
+        }
+      }
+    };
+    this.telemetryCourseEndEvent = {
+      object: {
+        id: this.collectionId,
+        type: 'Collection',
+        ver: '1.0',
+      },
+      context: {
+        env: this.route.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
+      },
+      edata: {
+        type: this.route.snapshot.data.telemetry.type,
+        pageid: this.route.snapshot.data.telemetry.pageid,
+        mode: 'play'
+      }
+    };
   }
 }

@@ -10,10 +10,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedModule, ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
-import {
-  CoreModule, FrameworkService, FormService, ContentService, UserService, LearnerService,
-  ConceptPickerService, SearchService, PermissionService, PublicDataService
-} from '@sunbird/core';
+import { CoreModule, FrameworkService, FormService, UserService, PublicDataService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 
@@ -81,7 +78,7 @@ describe('DataDrivenFilterComponent', () => {
     });
   });
 
-   it('should get formated filter data by calling framework service and form service and set formated date in session', () => {
+  it('should get formated filter data by calling framework service and form service and set formated date in session', () => {
     mockHashTagId = undefined;
     mockFrameworkInput = undefined;
     mockFrameworkCategories = [];
