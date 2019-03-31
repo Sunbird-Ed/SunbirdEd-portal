@@ -93,6 +93,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   public showExtContentMsg = false;
 
+  telemetryCdata: Array<{}>;
+
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
@@ -120,6 +122,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.courseId = courseId;
         this.batchId = batchId;
         this.courseStatus = courseStatus;
+        this.telemetryCdata = [{id: this.courseId , type: 'Course'} , {id: this.batchId , type: 'CourseBatch'}];
         this.setTelemetryCourseImpression();
         const inputParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
         if (this.batchId) {
@@ -334,7 +337,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     this.telemetryCourseStart = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
       },
       object: {
         id: this.courseId,
@@ -361,7 +365,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         ver: this.activatedRoute.snapshot.data.telemetry.object.ver
       },
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
@@ -373,7 +378,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   private setTelemetryCourseImpression() {
     this.telemetryCourseImpression = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,

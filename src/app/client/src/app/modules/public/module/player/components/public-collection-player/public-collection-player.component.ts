@@ -11,7 +11,7 @@ import {
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
 
 @Component({
@@ -64,6 +64,11 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   private subsrciption: Subscription;
   public closeCollectionPlayerInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
+
+  public telemetryCourseEndEvent: IEndEventInput;
+
+  public telemetryCdata: [{}];
+  public telemetryCourseStart: IStartEventInput;
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
@@ -96,7 +101,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   setTelemetryData() {
     this.telemetryImpression = {
       context: {
-        env: this.route.snapshot.data.telemetry.env
+        env: this.route.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
       },
       object: {
         id: this.collectionId,
@@ -199,7 +205,9 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       first(),
       mergeMap((params) => {
         this.collectionId = params.collectionId;
+        this.telemetryCdata = [{id: this.collectionId, type: 'Collection'}];
         this.setTelemetryData();
+        this.setTelemetryStartEndData();
         return this.getCollectionHierarchy(params.collectionId);
       }), )
       .subscribe((data) => {
@@ -273,5 +281,48 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     if ( deviceInfo.device === 'android' || deviceInfo.os === 'android') {
       this.showFooter = true;
     }
+  }
+
+  private setTelemetryStartEndData() {
+    const deviceInfo = this.deviceDetectorService.getDeviceInfo();
+    this.telemetryCourseStart = {
+      context: {
+        env: this.route.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
+      },
+      object: {
+        id: this.collectionId,
+        type: 'Collection',
+        ver: '1.0',
+      },
+      edata: {
+        type: this.route.snapshot.data.telemetry.type,
+        pageid: this.route.snapshot.data.telemetry.pageid,
+        mode: 'play',
+        uaspec: {
+          agent: deviceInfo.browser,
+          ver: deviceInfo.browser_version,
+          system: deviceInfo.os_version ,
+          platform: deviceInfo.os,
+          raw: deviceInfo.userAgent
+        }
+      }
+    };
+    this.telemetryCourseEndEvent = {
+      object: {
+        id: this.collectionId,
+        type: 'Collection',
+        ver: '1.0',
+      },
+      context: {
+        env: this.route.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
+      },
+      edata: {
+        type: this.route.snapshot.data.telemetry.type,
+        pageid: this.route.snapshot.data.telemetry.pageid,
+        mode: 'play'
+      }
+    };
   }
 }
