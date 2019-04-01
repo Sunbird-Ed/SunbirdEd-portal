@@ -9,7 +9,7 @@ import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, mergeMap, first, filter, debounceTime } from 'rxjs/operators';
+import { takeUntil, map, mergeMap, first, filter, debounceTime, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 @Component({
     templateUrl: './library-search.component.html'
@@ -49,14 +49,13 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
         this.filterType = this.configService.appConfig.library.filterType;
         this.redirectUrl = this.configService.appConfig.library.searchPageredirectUrl;
         this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
-        this.setTelemetryData();
     }
     ngOnInit() {
         this.userService.userData$.subscribe(userData => {
             if (userData && !userData.err) {
                 this.frameworkData = _.get(userData.userProfile, 'framework');
             }
-          });
+        });
         this.initFilters = true;
         this.dataDrivenFilterEvent.pipe(first()).
             subscribe((filters: any) => {
@@ -78,6 +77,11 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
     private fetchContentOnParamChange() {
         combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
             .pipe(debounceTime(5), // wait for both params and queryParams event to change
+                tap(data => this.inView({ inview: [] })), // trigger pageexit if last filter resulted 0 contents
+                delay(10), // to trigger pageexit telemetry event
+                tap(data => {
+                    this.setTelemetryData();
+                }),
                 map(result => ({ params: { pageNumber: Number(result[0].pageNumber) }, queryParams: result[1] })),
                 takeUntil(this.unsubscribe$)
             ).subscribe(({ params, queryParams }) => {
@@ -92,16 +96,18 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
         let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
         filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
         const softConstraintData = {
-            filters: {channel: this.userService.hashTagId,
-            board: [this.dataDrivenFilters.board]},
+            filters: {
+                channel: this.userService.hashTagId,
+                board: [this.dataDrivenFilters.board]
+            },
             softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
             mode: 'soft'
-          };
-          const manipulatedData = this.utilService.manipulateSoftConstraint( _.get(this.queryParams, 'appliedFilters'),
-          softConstraintData, this.frameworkData );
+        };
+        const manipulatedData = this.utilService.manipulateSoftConstraint(_.get(this.queryParams, 'appliedFilters'),
+            softConstraintData, this.frameworkData);
         const option = {
-            filters: _.get(this.queryParams, 'appliedFilters') ?  filters :
-            (_.get(manipulatedData, 'filters') ? _.get(manipulatedData, 'filters') : {}),
+            filters: _.get(this.queryParams, 'appliedFilters') ? filters :
+                (_.get(manipulatedData, 'filters') ? _.get(manipulatedData, 'filters') : {}),
             limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
             pageNumber: this.paginationDetails.currentPage,
             query: this.queryParams.key,
@@ -111,13 +117,13 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
             params: this.configService.appConfig.Library.contentApiQueryParams
         };
         option.filters.contentType = filters.contentType ||
-        ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+            ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
         if (_.get(manipulatedData, 'filters')) {
             option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
-          }
+        }
         this.frameworkService.channelData$.subscribe((channelData) => {
             if (!channelData.err) {
-               option.params.framework = _.get(channelData, 'channelData.defaultFramework');
+                option.params.framework = _.get(channelData, 'channelData.defaultFramework');
             }
         });
         this.searchService.contentSearch(option)
@@ -145,6 +151,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
         this.router.navigate([url], { queryParams: this.queryParams });
     }
     private setTelemetryData() {
+        this.inViewLogs = [];
         this.telemetryImpression = {
             context: {
                 env: this.activatedRoute.snapshot.data.telemetry.env
@@ -186,18 +193,20 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
                 });
             }
         });
-        this.telemetryImpression.edata.visits = this.inViewLogs;
-        this.telemetryImpression.edata.subtype = 'pageexit';
-        this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+        if (this.telemetryImpression) {
+            this.telemetryImpression.edata.visits = this.inViewLogs;
+            this.telemetryImpression.edata.subtype = 'pageexit';
+            this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+        }
     }
     ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }
     private setNoResultMessage() {
-      this.noResultMessage = {
-        'message': 'messages.stmsg.m0007',
-        'messageText': 'messages.stmsg.m0006'
-      };
+        this.noResultMessage = {
+            'message': 'messages.stmsg.m0007',
+            'messageText': 'messages.stmsg.m0006'
+        };
     }
 }
