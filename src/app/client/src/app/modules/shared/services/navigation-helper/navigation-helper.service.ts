@@ -85,7 +85,7 @@ export class NavigationHelperService {
 
   public getPageLoadTime() {
      this.pageEndTime = Date.now();
-     const loadTime = this.pageEndTime - this.pageStartTime;
+     const loadTime = (this.pageEndTime - this.pageStartTime) / 1000;
      return loadTime;
   }
 

@@ -1,19 +1,25 @@
 import { Injectable } from '@angular/core';
 import { PublicDataService } from './../public-data/public-data.service';
-import { ConfigService, RequestParam,  HttpOptions} from '@sunbird/shared';
+import { ConfigService,  HttpOptions} from '@sunbird/shared';
 import * as moment from 'moment';
 import { UUID } from 'angular2-uuid';
 import { HttpClient } from '@angular/common/http';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { Observable, timer, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DeviceRegisterService {
+export class DeviceRegisterService  {
   private portalVersion: string;
   private appId: string;
   private deviceId: string;
   private deviceRegisterApi: string;
+  private timer$: Observable<any>;
+  private channel: string;
+  // private timerSubscription : Observable<any>;
+  private timerSubscription: Subscription;
+
   constructor(public deviceDetectorService: DeviceDetectorService, public publicDataService: PublicDataService,
     private configService: ConfigService, private http: HttpClient) {
 
@@ -27,8 +33,19 @@ export class DeviceRegisterService {
     this.deviceRegisterApi = (<HTMLInputElement>document.getElementById('deviceRegisterApi'))
     && (<HTMLInputElement>document.getElementById('deviceRegisterApi')).value;
   }
+
+  public initialize(channel) {
+    this.registerDevice(channel);
+    this.timer$ = timer(3.6e+6, 3.6e+6);
+    this.timerSubscription = this.timer$.subscribe(t => {
+      this.registerDevice(this.channel);
+    });
+  }
+
   registerDevice(channel: string, deviceId?: string) {
     console.log('calling registerDevice');
+    this.channel = channel;
+    // call register api every 24hrs
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     this.deviceId = (<HTMLInputElement>document.getElementById('deviceId'))
     && (<HTMLInputElement>document.getElementById('deviceId')).value;

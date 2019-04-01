@@ -5,7 +5,7 @@ import { CourseConsumptionService, CourseBatchService } from './../../../service
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { CoursesService, BreadcrumbsService } from '@sunbird/core';
+import { CoursesService } from '@sunbird/core';
 import * as moment from 'moment';
 @Component({
   templateUrl: './course-consumption-page.component.html'
@@ -21,7 +21,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   constructor(private activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, private coursesService: CoursesService,
     public toasterService: ToasterService, public courseBatchService: CourseBatchService,
-    private resourceService: ResourceService, public router: Router, public breadcrumbsService: BreadcrumbsService,
+    private resourceService: ResourceService, public router: Router,
     public navigationHelperService: NavigationHelperService) {
   }
   ngOnInit() {
@@ -94,15 +94,15 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   }
   private updateBreadCrumbs() {
     if (this.batchId) {
-      this.breadcrumbsService.setBreadcrumbs([{
-        label: this.courseHierarchy.name,
-        url: '/learn/course/' + this.courseId + '/batch/' + this.batchId
-      }]);
+      // this.breadcrumbsService.setBreadcrumbs([{
+      //   label: this.courseHierarchy.name,
+      //   url: '/learn/course/' + this.courseId + '/batch/' + this.batchId
+      // }]);
     } else {
-      this.breadcrumbsService.setBreadcrumbs([{
-        label: this.courseHierarchy.name,
-        url: '/learn/course/' + this.courseId
-      }]);
+      // this.breadcrumbsService.setBreadcrumbs([{
+      //   label: this.courseHierarchy.name,
+      //   url: '/learn/course/' + this.courseId
+      // }]);
     }
   }
   ngOnDestroy() {

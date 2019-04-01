@@ -85,7 +85,7 @@ describe('LanguageDropdownComponent', () => {
     const publicDataService = TestBed.get(PublicDataService);
     const resourceService = TestBed.get(ResourceService);
     spyOn(resourceService, 'getResource');
-    spyOn(publicDataService, 'post').and.callFake(() => observableOf(Response.orgResponse));
+    spyOn(publicDataService, 'postWithHeaders').and.callFake(() => observableOf(Response.orgResponse));
     component.orgDetailsService.getOrgDetails('ap').subscribe((data) => {
     });
      fixture.detectChanges();

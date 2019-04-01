@@ -1,6 +1,7 @@
 #Dockerfile for the player setup
 FROM node:8.11.0
 MAINTAINER "Rajesh Rajendran <rajesh.r@optit.co>"
+RUN sed -i '/jessie-updates/d' /etc/apt/sources.list
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils \
 && apt-get install -y --force-yes \ 
  python python-dev autoconf g++ make nasm bzip2

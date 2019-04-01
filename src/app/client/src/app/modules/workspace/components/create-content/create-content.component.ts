@@ -1,11 +1,8 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { ResourceService, ConfigService } from '@sunbird/shared';
-import { SuiModule } from 'ng2-semantic-ui/dist';
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { FrameworkService, PermissionService } from '@sunbird/core';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import { ConceptPickerService } from '@sunbird/core';
 @Component({
   selector: 'app-create-content',
   templateUrl: './create-content.component.html'
@@ -64,7 +61,7 @@ export class CreateContentComponent implements OnInit {
 
   * @param {ResourceService} resourceService Reference of ResourceService
  */
-  constructor(configService: ConfigService, resourceService: ResourceService, private conceptPickerService: ConceptPickerService,
+  constructor(configService: ConfigService, resourceService: ResourceService,
     frameworkService: FrameworkService, permissionService: PermissionService, private activatedRoute: ActivatedRoute) {
     this.resourceService = resourceService;
     this.frameworkService = frameworkService;
@@ -74,7 +71,6 @@ export class CreateContentComponent implements OnInit {
 
   ngOnInit() {
     this.frameworkService.initialize();
-    this.conceptPickerService.initialize();
     this.textBookRole = this.configService.rolesConfig.workSpaceRole.textBookRole;
     this.courseRole = this.configService.rolesConfig.workSpaceRole.courseRole;
     this.lessonRole = this.configService.rolesConfig.workSpaceRole.lessonRole;

@@ -83,6 +83,7 @@ export class PlayerService {
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = this.userService.sessionId;
     configuration.context.uid = this.userService.userid;
+    configuration.context.contextRollup = this.getRollUpData(this.userService.userProfile.organisationIds);
     configuration.context.channel = this.userService.channel;
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     configuration.context.pdata.ver = buildNumber && buildNumber.value ?
@@ -101,13 +102,8 @@ export class PlayerService {
     _.forEach(this.userService.userProfile.organisations, (org) => {
       if (org.hashTagId) {
         tags.push(org.hashTagId);
-      } else if (org.organisationId) {
-        tags.push(org.organisationId);
       }
     });
-    if (this.userService.channel) {
-      tags.push(this.userService.channel);
-    }
     configuration.context.tags = tags;
     configuration.context.app = [this.userService.channel];
     if (contentDetails.courseId) {
@@ -122,6 +118,20 @@ export class PlayerService {
       {} : contentDetails.contentData.body;
     configuration.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
     return configuration;
+  }
+
+  /**
+   *
+   *
+   * @private
+   * @param {Array<string>} [data=[]]
+   * @returns
+   * @memberof TelemetryService
+   */
+  private getRollUpData(data: Array<string> = []) {
+    const rollUp = {};
+    data.forEach((element, index) => rollUp['l' + (index + 1)] = element);
+    return rollUp;
   }
 
   public getCollectionHierarchy(identifier: string, option: any = { params: {} }): Observable<CollectionHierarchyAPI.Get> {

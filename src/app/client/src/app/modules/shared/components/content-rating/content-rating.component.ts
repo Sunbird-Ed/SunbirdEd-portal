@@ -54,7 +54,7 @@ export class ContentRatingComponent implements OnInit {
           env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env')
         },
         object: {
-          id: _.get(this.activatedRoute.snapshot.params, 'contentId'),
+          id: _.get(this.activatedRoute.snapshot.params, 'contentId') ||  _.get(this.activatedRoute.snapshot.params, 'collectionId'),
           type: _.get(this.contentData , 'contentType'),
           ver: this.contentData ? _.get(this.contentData , 'pkgVersion').toString() : '1.0'
         },

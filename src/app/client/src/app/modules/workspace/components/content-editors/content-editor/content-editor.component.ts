@@ -187,6 +187,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
         ver: this.portalVersion,
         pid: 'sunbird-portal'
       },
+      contextRollUp: this.telemetryService.getRollUpData(this.userProfile.organisationIds),
       tags: this.userService.dims,
       channel: this.userService.channel,
       framework: this.routeParams.framework,

@@ -5,8 +5,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { NgInviewModule } from 'angular-inport';
-import {SharedFeatureModule} from '@sunbird/shared-feature';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
+  SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
 import { GetComponent } from './components';
 import { DialCodeComponent } from './components';
 import { FormsModule } from '@angular/forms';
@@ -19,8 +19,8 @@ import { FormsModule } from '@angular/forms';
     SharedModule,
     NgInviewModule,
     DialCodeSearchRoutingModule,
-    SharedFeatureModule,
-    SuiModule,
+    SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
+    SuiRatingModule, SuiCollapseModule,
     FormsModule
   ],
   declarations: [ GetComponent, DialCodeComponent]
