@@ -57,10 +57,11 @@ export class MainMenuComponent implements OnInit {
   isOffline: boolean = environment.isOffline;
 
   signInIntractEdata: IInteractEventEdata;
+  slug: string;
   /*
   * constructor
   */
-  constructor(resourceService: ResourceService, userService: UserService, router: Router,
+  constructor(resourceService: ResourceService, userService: UserService, router: Router, public activatedRoute: ActivatedRoute,
     permissionService: PermissionService, config: ConfigService, private cacheService: CacheService) {
     this.resourceService = resourceService;
     this.userService = userService;
@@ -71,6 +72,7 @@ export class MainMenuComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.slug = this.activatedRoute.snapshot.params.slug;
     try {
       this.helpLinkVisibility = (<HTMLInputElement>document.getElementById('helpLinkVisibility')).value;
     } catch (error) {
@@ -133,9 +135,12 @@ export class MainMenuComponent implements OnInit {
   showSideBar() {
     jQuery('.ui.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
   }
-
+  navigateTo(url) {
+    return this.slug ? this.slug + url : url;
+  }
   getUrl() {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
+      this.slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
       if (_.includes(urlAfterRedirects.url, '/explore')) {
         this.showExploreHeader = true;
         const url = urlAfterRedirects.url.split('?')[0].split('/');
