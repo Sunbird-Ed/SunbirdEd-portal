@@ -329,7 +329,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     _.forEach(contents, (content, key) => {
       const constantData = this.configService.appConfig.Course.otherCourse.constantData;
       const metaData = this.configService.appConfig.Course.otherCourse.metaData;
-      const dynamicFields = {};
+      const dynamicFields = this.configService.appConfig.Course.otherCourse.dynamicFields;
       this.contributions[key] = this.utilService.processContent(content,
         constantData, dynamicFields, metaData);
     });

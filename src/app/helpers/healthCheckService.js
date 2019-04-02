@@ -237,13 +237,16 @@ function checkHealth (req, response) {
  * @param {Object} response
  */
 function checkSunbirdPortalHealth (req, response) {
-  fs.readFile(path.join(__dirname, '../client/src/assets/health-check.json'), (err, data) => {
-    if (data) {
-      var rspObj = req.rspObj
-      var rsp = successResponse(rspObj)
-      return response.status(200).send(getHealthCheckResp(rsp, true))
-    }
-  });
+  // fs.readFile(path.join(__dirname, '../client/src/assets/health-check.json'), (err, data) => {
+  //   if (data) {
+  //     var rspObj = req.rspObj
+  //     var rsp = successResponse(rspObj)
+  //     return response.status(200).send(getHealthCheckResp(rsp, true))
+  //   }
+  // });
+  var rspObj = req.rspObj
+  var rsp = successResponse(rspObj)
+  return response.status(200).send(getHealthCheckResp(rsp, true))
 }
 
 /**
