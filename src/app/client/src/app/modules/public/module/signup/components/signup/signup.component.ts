@@ -117,7 +117,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   initializeFormFields() {
     this.signUpForm = this.sbFormBuilder.group({
-      name: new FormControl(null, [Validators.required, Validators.pattern(/^[a-zA-Z ]*$/)]),
+      name: new FormControl(null, [Validators.required]),
       password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
       confirmPassword: new FormControl(null, [Validators.required, Validators.minLength(8)]),
       phone: new FormControl(null, [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]),
