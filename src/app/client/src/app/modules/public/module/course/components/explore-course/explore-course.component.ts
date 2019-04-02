@@ -8,7 +8,7 @@ import { PublicPlayerService } from '../../../../services';
 import { combineLatest, Subject, of } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, debounceTime, catchError, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
@@ -177,7 +177,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
         };
     }
     public playContent(event) {
-        this.publicPlayerService.playExporeCourse(event.data.metaData.identifier);
+        this.publicPlayerService.playExploreCourse(event.data.metaData.identifier);
     }
     public inView(event) {
         _.forEach(event.inview, (elem, key) => {

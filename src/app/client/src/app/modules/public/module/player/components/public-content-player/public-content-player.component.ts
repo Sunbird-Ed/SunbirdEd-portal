@@ -3,14 +3,14 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { Subject  } from 'rxjs';
 import {
   ConfigService, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData
 } from '@sunbird/shared';
 import { PublicPlayerService } from '../../../../services';
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -46,12 +46,16 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
   queryParams: any;
 
   showExtContentMsg = false;
-
+  contentRatingModal = false;
   public showFooter: Boolean = false;
   contentData: ContentData;
   public unsubscribe$ = new Subject<void>();
   public badgeData: Array<object>;
   public dialCode: string;
+  telemetryCdata: Array<{}>;
+  public telemetryInteractObject: IInteractEventObject;
+  public closePlayerInteractEdata: IInteractEventEdata;
+
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
@@ -66,15 +70,20 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.contentId;
+      this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
       this.setTelemetryData();
       this.getContent();
       this.deviceDetector();
     });
   }
   setTelemetryData() {
+    if (this.dialCode) {
+      this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
+    }
     this.telemetryImpression = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
       },
       object: {
         id: this.contentId,
@@ -87,6 +96,16 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
         uri: this.router.url,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype
       }
+    };
+    this.telemetryInteractObject = {
+      id: this.contentId,
+      type: 'Content',
+      ver: '1.0'
+    };
+    this.closePlayerInteractEdata = {
+      id: 'close-player',
+      type: 'click',
+      pageid: 'public'
     };
   }
   /**
@@ -138,6 +157,13 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
     this.navigationHelperService.navigateToResource('/explore');
   }
 
+  contentProgressEvent(event) {
+    const eid = event.detail.telemetryData.eid;
+    if (eid === 'END') {
+      this.contentRatingModal = true;
+      return;
+    }
+  }
   deviceDetector() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     if (deviceInfo.device === 'android' || deviceInfo.os === 'android') {

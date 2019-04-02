@@ -7,7 +7,7 @@ import {
 } from '@sunbird/shared';
 import { Component, HostListener, OnInit, ViewChild, Inject } from '@angular/core';
 import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService } from '@sunbird/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { Observable, of, throwError, combineLatest } from 'rxjs';
 import { first, filter, mergeMap, tap, map } from 'rxjs/operators';
@@ -102,7 +102,7 @@ export class AppComponent implements OnInit {
         this.tenantService.getTenantInfo(this.slug);
         this.setPortalTitleLogo();
         this.telemetryService.initialize(this.getTelemetryContext());
-        this.deviceRegisterService.registerDevice(this.channel);
+        this.deviceRegisterService.initialize(this.channel);
         this.checkTncAndFrameWorkSelected();
         this.initApp = true;
       }, error => {
@@ -220,7 +220,8 @@ export class AppComponent implements OnInit {
           sid: this.userService.sessionId,
           channel: _.get(this.userProfile, 'rootOrg.hashTagId'),
           env: 'home',
-          enableValidation: environment.enableTelemetryValidation
+          enableValidation: environment.enableTelemetryValidation,
+          timeStampData: this.userService.getServerTime
         }
       };
     } else {
@@ -244,7 +245,8 @@ export class AppComponent implements OnInit {
           sid: this.userService.anonymousSid,
           channel: this.orgDetails.hashTagId,
           env: 'home',
-          enableValidation: environment.enableTelemetryValidation
+          enableValidation: environment.enableTelemetryValidation,
+          timeStampData: this.orgDetailsService.getServerTime
         }
       };
     }

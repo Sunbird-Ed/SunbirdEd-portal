@@ -6,7 +6,9 @@ import { ConfigService, ServerResponse, BrowserCacheTtlService } from '@sunbird/
 import { Observable, of } from 'rxjs';
 import { PublicDataService } from './../public-data/public-data.service';
 import { CacheService } from 'ng2-cache-service';
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class FormService {
   /**
    * Reference of user service.

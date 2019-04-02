@@ -6,7 +6,7 @@
   <app-no-result [data]="noResultMessage"></app-no-result>
 </div>
 
-<table class="ui sortable upForReviewTable table" *ngIf="collaboratingContent.length > 0 && !showLoader && !noResult ">
+<table class="ui single line sortable upForReviewTable table" *ngIf="collaboratingContent.length > 0 && !showLoader && !noResult ">
   <thead>
     <tr>
       <th (click)="sortColumns('name')" class="five wide UpReviewTableHeader sorted bl-0" [ngClass]="{'ascending':sortDirection === 'asc' && 
@@ -36,7 +36,7 @@
         <h5 class="ui image header">
           <img src="{{content.appIcon || 'assets/images/default.png' | cdnprefixurl}}" class="ui tiny image UpReviewTinyImage">
           <div class="content ">
-            <div class="UpReviewHeader">{{content.name | slice:0:25}}
+            <div class="UpReviewHeader" title="{{content.name}}">{{content.name | slice:0:25}}
               <i *ngIf="content.name.length > 25">...</i>
             </div>
             <div class="UpReviewSubHeader">{{content.contentType}}
@@ -61,7 +61,8 @@
       </td>
       <td class="UpForReviewStatusOrange">{{content.status}}</td>
       <td *ngIf= "content.status.toLowerCase() === 'draft' && !content.lockInfo">
-        <i (click)="contentClick(content)" class="edit icon cursor-pointer">
+        <i appTelemetryInteract [telemetryInteractObject]="{id:content.identifier,type:content.contentType,ver:content.pkgVersion ? content.pkgVersion.toString(): '1.0' }"
+          [telemetryInteractEdata]="{id:'edit',type:'click',pageid:'CollaboratingOn'}"  (click)="contentClick(content)" class="edit icon cursor-pointer">
         </i>
       </td>
       <td *ngIf="content.lockInfo">

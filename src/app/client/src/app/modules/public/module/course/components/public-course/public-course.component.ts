@@ -5,7 +5,7 @@ import {
   ResourceService, ToasterService, INoResultMessage, ConfigService, UtilService, ICaraouselData, BrowserCacheTtlService, ServerResponse
 } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { PublicPlayerService } from './../../../../services';
@@ -181,7 +181,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   public playContent(event) {
-    this.publicPlayerService.playExporeCourse(event.data.metaData.identifier);
+    this.publicPlayerService.playExploreCourse(event.data.metaData.identifier);
   }
   public viewAll(event) {
     const searchQuery = JSON.parse(event.searchQuery);

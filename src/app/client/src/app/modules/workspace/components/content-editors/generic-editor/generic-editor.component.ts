@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '@sunbird/environment';
 import { EditorService, WorkSpaceService } from '../../../services';
 import { tap, delay, map, first } from 'rxjs/operators';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 jQuery.fn.iziModal = iziModal;
 
 /**
@@ -166,6 +166,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
         ver: this.portalVersion,
         pid: 'sunbird-portal'
       },
+      contextRollUp: this.telemetryService.getRollUpData(this.userProfile.organisationIds),
       tags: this.userService.dims,
       channel: this.userService.channel,
       env: 'generic-editor',

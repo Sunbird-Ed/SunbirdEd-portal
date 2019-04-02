@@ -154,7 +154,6 @@
     <div class="sb-modal-actions">
         <button 
             appTelemetryInteract 
-            [telemetryInteractObject]="telemetryInteractObject" 
             [telemetryInteractEdata]="stopCreatingNoInteractEdata"
             class="sb-btn sb-btn-normal sb-btn-error" 
             (click)="removeModal.deny();remove()"
@@ -163,7 +162,6 @@
         </button>
         <button 
             appTelemetryInteract 
-            [telemetryInteractObject]="telemetryInteractObject" 
             [telemetryInteractEdata]="stopCreatingYesInteractEdata"
             class="sb-btn sb-btn-normal sb-btn-outline-error" 
             (click)="removeModalFlag = !removeModalFlag" 

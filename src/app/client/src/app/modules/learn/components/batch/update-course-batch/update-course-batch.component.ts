@@ -8,7 +8,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { IImpressionEventInput } from '@sunbird/telemetry';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as moment from 'moment';
 @Component({
   selector: 'app-update-course-batch',
@@ -147,6 +147,16 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
         const userList = this.sortUsers(data.userDetails);
         this.participantList = userList.participantList;
         this.mentorList = userList.mentorList;
+        if (this.batchDetails.mentors) {
+          this.batchDetails.mentors.forEach(id => {
+            _.remove(this.mentorList, mentor => mentor.id === id);
+          });
+        }
+        if (this.batchDetails.participant) {
+          _.forIn(this.batchDetails.participant, (id, key) => {
+           _.remove(this.participantList, participant => participant.id === id);
+          });
+        }
         this.initializeUpdateForm();
         this.fetchParticipantDetails();
         this.initDropDown();

@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import {INoResultMessage} from '../../interfaces/noresult';
 import { ResourceService } from '../../services/index';
 import { Subscription, Subject } from 'rxjs';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { takeUntil } from 'rxjs/operators';
 
 

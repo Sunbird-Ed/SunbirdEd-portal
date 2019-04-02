@@ -3,11 +3,13 @@ import { LearnerService } from './../learner/learner.service';
 import { Injectable } from '@angular/core';
 import { Observable ,  BehaviorSubject } from 'rxjs';
 import { UUID } from 'angular2-uuid';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 /**
  * Service to fetch badges
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BadgesService {
   /**
    * BehaviorSubject Containing badges.

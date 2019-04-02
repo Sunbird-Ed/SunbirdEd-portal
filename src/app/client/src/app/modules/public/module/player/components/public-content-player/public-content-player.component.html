@@ -13,7 +13,7 @@
                   </h1>
                 </div>
                 <div class="two wide column">
-                    <h5 class="ui right floated basic icon circular button  mouse-pointer" (click)="close()">
+                    <h5 appTelemetryInteract [telemetryInteractCdata]="this.telemetryCdata" [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closePlayerInteractEdata" class="ui right floated basic icon circular button  mouse-pointer" (click)="close()">
                         <i class="ui remove icon"></i>
                     </h5>
                 </div>
@@ -34,7 +34,7 @@
               <p>{{resourceService.messages.imsg.m0036}}</p>
             </div>
           </div>
-          <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
+          <app-player class="content-player" (contentProgressEvent)="contentProgressEvent($event)" [playerConfig]="playerConfig"></app-player>
 
           <div class="twelve wide column contentMetaSection">
             <div class="ui grid mt-30">
@@ -90,3 +90,4 @@
   </div>
 </div>
 </div>
+<app-content-rating  *ngIf="contentRatingModal && contentData"  [contentData] = "contentData"></app-content-rating>

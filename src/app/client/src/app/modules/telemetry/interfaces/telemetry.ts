@@ -57,6 +57,10 @@ export interface ILogEventData {
   'pageid'?: string;
   'params'?: Array<{}>;
 }
+export interface IFeedBackEventData {
+  'rating'?: number;
+  'comments'?: string;
+}
 export interface ITelemetryContextData {
   'channel': string;
   'uid': string;
@@ -80,7 +84,7 @@ export interface TelemetryEventOptions {
 }
 export interface ITelemetryEvent {
   'edata': IStartEventData | IImpressionEventData | IInteractEventEdata | IShareEventData
-  | IErrorEventData | IEndEventData | ILogEventData;
+  | IErrorEventData | IEndEventData | ILogEventData | IFeedBackEventData;
   'contentId'?: string;
   'contentVer'?: string;
   'options': TelemetryEventOptions;
@@ -153,7 +157,18 @@ export interface ILogEventInput {
   };
   'edata': ILogEventData;
 }
-
+export interface IFeedBackEventInput {
+  'context': {
+    'env': string;
+  };
+  'object'?: {
+    'id': string;
+    'type': string;
+    'ver'?: string;
+    'rollup'?: {};
+  };
+  'edata': IFeedBackEventData;
+}
 export interface IShareEventInput {
   'context': {
     'env': string;
@@ -205,6 +220,7 @@ export interface ITelemetry {
   'cdata'?: Array<{}>;
   'dispatcher'?: undefined;
   'enableValidation': boolean;
+  'timeStampData'?: {};
 }
 
 export interface IUserOrgDetails {

@@ -8,11 +8,13 @@ import { Observable } from 'rxjs';
 import { SearchParam } from './../../interfaces/search';
 import { LearnerService } from './../learner/learner.service';
 import { PublicDataService } from './../public-data/public-data.service';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 /**
  * Service to search content
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SearchService {
   /**
    * Contains searched content list

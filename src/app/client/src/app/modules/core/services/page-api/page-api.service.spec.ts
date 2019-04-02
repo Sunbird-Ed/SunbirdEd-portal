@@ -10,7 +10,7 @@ import { testData } from './page-api.service.spec.data';
 describe('PageApiService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule.forRoot()],
+      imports: [HttpClientTestingModule, CoreModule],
       providers: [PageApiService, ConfigService, LearnerService, CacheService, BrowserCacheTtlService, PublicDataService]
     });
   });

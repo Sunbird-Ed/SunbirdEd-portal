@@ -100,6 +100,11 @@
           "onImage": {
             "eventName": "onImage"
           }
+        },
+        "ribbon": {
+          "right": {
+            "class": "ui black right ribbon label"
+          }
         }
       },
       "metaData": {
@@ -109,6 +114,9 @@
           "framework",
           "contentType"
         ]
+      },
+      "dynamicFields": {
+        "ribbon.right.name": "resourceType"
       }
     },
     "enrolledCourses": {

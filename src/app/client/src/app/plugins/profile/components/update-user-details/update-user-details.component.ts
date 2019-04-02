@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } 
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { ProfileService } from './../../services';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { UserService } from '@sunbird/core';
 
@@ -57,7 +57,7 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
 
   initializeFormFields() {
     this.userDetailsForm = this.sbFormBuilder.group({
-      name: new FormControl(this.userProfile.firstName, [Validators.required, Validators.pattern(/^[a-zA-Z ]*$/)]),
+      name: new FormControl(this.userProfile.firstName, [Validators.required]),
       state: new FormControl(null),
       district: new FormControl(null)
     }, {
@@ -173,7 +173,7 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
 
     this.telemetryInteractObject = {
       id: this.userService.userid,
-      type: 'user',
+      type: 'User',
       ver: '1.0'
     };
   }

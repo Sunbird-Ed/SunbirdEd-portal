@@ -9,7 +9,7 @@ import {
 import { SearchService, UserService, LearnerService, ContentService, PermissionService, RolesAndPermissions } from '@sunbird/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { UserEditComponent } from './user-edit.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -40,7 +40,7 @@ describe('UserEditComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, ReactiveFormsModule, FormsModule, SharedModule.forRoot(), CoreModule.forRoot(),
+      imports: [HttpClientTestingModule, ReactiveFormsModule, FormsModule, SharedModule.forRoot(), CoreModule,
         TelemetryModule.forRoot(),
          Ng2IziToastModule, RouterTestingModule],
       declarations: [UserEditComponent],

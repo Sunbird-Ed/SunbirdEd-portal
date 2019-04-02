@@ -1,5 +1,5 @@
 <div class="ui container">
-<div [appTelemetryImpression]="telemetryImpression" class="ui grid">
+<div class="ui grid">
     <div class="twelve wide column">
         <div class=" ui grid">
             <div class="twelve wide column">
@@ -7,7 +7,7 @@
                 [accordionDefaultOpen]=false [isShowFilterLabel]=true></app-data-driven-filter>
             </div>
         </div>
-        <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && contentList.length && this.queryParams.key">
+        <div class="ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && contentList.length && this.queryParams.key">
                 <div class="ui left floated header">
                         <p class="serch-allresult">{{resourceService.frmelmnts?.lbl?.showingResultsFor |
                             interpolate:'{searchString}':this.queryParams.key}}
@@ -17,14 +17,14 @@
                 <i class="ui remove icon "></i>
             </h5>
         </div>
-        <div in-view-container (inview)="inView($event)" [throttle]="[1000]" [trigger]="contentList" *ngIf="!showLoader && contentList.length" class="masonry-grid dynamic-section-card ">
+        <div  [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inView($event)"  *ngIf="!showLoader && contentList.length" class="masonry-grid dynamic-section-card ">
             <div in-view-item [id]="i" [data]="content" class="masonry-item mb-20" *ngFor="let content of contentList;let i = index;">
                 <app-card appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" 
-                [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType || 'content',ver:'1.0'}"
+                [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType || 'Content',ver:'1.0'}"
                 (clickEvent)="playContent($event)" [data]="content"></app-card>
             </div>
         </div>
-        <div *ngIf="contentList.length === 0 && !showLoader">
+        <div  [appTelemetryImpression]="telemetryImpression" *ngIf="contentList.length === 0 && !showLoader">
             <app-no-result [data]="noResultMessage"></app-no-result>
         </div>
         <div class="ui grid">

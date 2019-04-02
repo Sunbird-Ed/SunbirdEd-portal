@@ -107,3 +107,27 @@
     }
   }
 }
+
+[dir="rtl"] {
+  .sb-search-box {
+    .sb-search-input {
+      border-radius: 0 3px 3px 0;
+    }
+    .sb-btn {
+      border-radius: 3px 0 0 3px;
+    }
+    .icon {  
+      &.search {
+        right: $base-block-space;
+      }
+      &.close {
+        top: $base-block-space;
+        left: $base-block-space;
+      }
+    }
+    .sb-loader {
+      left: $base-block-space * 4;
+      right: unset;
+    }
+  }
+}

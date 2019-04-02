@@ -4,7 +4,7 @@ import { UserService, PermissionService, TenantService } from './../../services'
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
@@ -109,7 +109,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     'mediumBox': false,
     'largeBox': false
   };
-
+  slug: string;
   isOffline: boolean = environment.isOffline;
   /*
   * constructor
@@ -222,7 +222,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     if (this.userService.loggedIn) {
       this.router.navigate(['resources']);
     } else {
-      this.router.navigate(['']);
+      window.location.href = this.slug ? this.slug : '';
     }
   }
   onEnter(key) {
@@ -241,6 +241,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
 
   getUrl() {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
+      this.slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
       if (_.includes(urlAfterRedirects.url, '/explore')) {
         this.showExploreHeader = true;
         const url = urlAfterRedirects.url.split('?')[0].split('/');

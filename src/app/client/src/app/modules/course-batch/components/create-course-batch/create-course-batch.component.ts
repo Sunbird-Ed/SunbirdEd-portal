@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { takeUntil, mergeMap, map } from 'rxjs/operators';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as moment from 'moment';
 import { Subject, combineLatest } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -287,7 +287,7 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
     };
     this.telemetryInteractObject = {
       id: this.courseId,
-      type: 'create-batch',
+      type: 'CourseBatch',
       ver: '1.0'
     };
     this.cancelInteractEdata = {

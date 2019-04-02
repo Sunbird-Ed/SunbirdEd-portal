@@ -62,7 +62,7 @@ describe('UpdateUserDetailsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), CoreModule.forRoot(), FormsModule, ReactiveFormsModule,
+      imports: [SharedModule.forRoot(), CoreModule, FormsModule, ReactiveFormsModule,
         HttpClientTestingModule, SuiModule, TelemetryModule],
       declarations: [UpdateUserDetailsComponent],
       providers: [{ provide: ResourceService, useValue: resourceBundle }, { provide: ActivatedRoute, useClass: ActivatedRouteStub },
@@ -98,8 +98,8 @@ describe('UpdateUserDetailsComponent', () => {
     spyOn(component, 'enableSubmitButton');
     component.ngOnInit();
     const name = component.userDetailsForm.controls['name'];
-    name.setValue('@@11');
-    expect(name.errors.pattern).toBeTruthy();
+    name.setValue(' ');
+    expect(name.errors).toBeTruthy();
   });
 
   it('should call get state and get success', () => {

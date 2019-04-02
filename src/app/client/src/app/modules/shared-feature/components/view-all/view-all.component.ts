@@ -8,7 +8,7 @@ import {
 import { SearchService, CoursesService, ISort, PlayerService, OrgDetailsService, UserService, FormService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
@@ -319,7 +319,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
 
   playContent(event) {
     if (!this.userService.loggedIn && event.data.contentType === 'Course') {
-      this.publicPlayerService.playExporeCourse(event.data.metaData.identifier);
+      this.publicPlayerService.playExploreCourse(event.data.metaData.identifier);
     } else {
       const url = this.router.url.split('/');
       if (url[1] === 'learn' || url[1] === 'resources') {

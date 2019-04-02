@@ -30,6 +30,9 @@
         <button 
             class="sb-btn sb-btn-normal sb-btn-primary" 
             (click)="createContent();modal.deny()"
+            appTelemetryInteract [telemetryInteractEdata]="{id:'start-creating',
+            type: 'click',
+            pageid: 'workspace'}"
         >
             {{resourceService?.frmelmnts?.btn?.startcreating}}
         </button>

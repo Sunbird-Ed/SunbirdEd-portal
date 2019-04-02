@@ -1,9 +1,9 @@
 import { Injectable, Inject, InjectionToken } from '@angular/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import {
   ITelemetryEvent, ITelemetryContextData, TelemetryObject,
   IStartEventInput, IImpressionEventInput,
-  IInteractEventInput, IShareEventInput, IErrorEventInput, IEndEventInput, ILogEventInput, ITelemetryContext
+  IInteractEventInput, IShareEventInput, IErrorEventInput, IEndEventInput, ILogEventInput, ITelemetryContext, IFeedBackEventInput
 } from './../../interfaces/telemetry';
  export const TELEMETRY_PROVIDER = new InjectionToken('telemetryProvider');
 /**
@@ -163,6 +163,20 @@ export class TelemetryService {
     }
   }
 
+
+  /**
+   * Feedback 'feedback' telemetry event
+   *
+   * @param {IFeedBackEventInput} IFeedBackEventInput
+   * @memberof TelemetryService
+   */
+  public feedback(feedbackEventInput: IFeedBackEventInput) {
+    if (this.isInitialized) {
+      const eventData: ITelemetryEvent = this.getEventData(feedbackEventInput);
+      this.telemetryProvider.feedback(eventData.edata, eventData.options);
+    }
+  }
+
   /**
    *
    *
@@ -225,6 +239,7 @@ export class TelemetryService {
     };
     return eventContextData;
   }
+
   /**
    *
    *
@@ -233,7 +248,7 @@ export class TelemetryService {
    * @returns
    * @memberof TelemetryService
    */
-  private getRollUpData(data: Array<string> = []) {
+  public getRollUpData(data: Array<string> = []) {
     const rollUp = {};
     data.forEach((element, index) => rollUp['l' + (index + 1)] = element);
     return rollUp;

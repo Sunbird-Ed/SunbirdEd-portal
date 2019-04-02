@@ -2,7 +2,7 @@ import { IInteractEventEdata, IInteractEventObject, TelemetryInteractDirective }
 import { IImpressionEventInput } from './../../../telemetry/interfaces/telemetry';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UsageService } from './../../services';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from '@sunbird/core';
 import { ToasterService, ResourceService, INoResultMessage } from '@sunbird/shared';
@@ -58,7 +58,7 @@ export class UsageReportsComponent implements OnInit {
   setTelemetryInteractObject(val) {
     return {
       id: val,
-      type: 'view',
+      type: 'Report',
       ver: '1.0'
     };
   }

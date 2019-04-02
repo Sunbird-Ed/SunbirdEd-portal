@@ -1,6 +1,6 @@
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { ProminentFilterComponent } from './prominent-filter.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -9,8 +9,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedModule, ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
 import {
-  CoreModule, FrameworkService, FormService, ContentService, UserService, LearnerService,
-  ConceptPickerService, SearchService, PermissionService, PublicDataService
+  CoreModule, FrameworkService, FormService, UserService, PublicDataService
 } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
@@ -44,7 +43,7 @@ describe('ProminentFilterComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
+      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       providers: [ConfigService, CacheService, ResourceService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute }],

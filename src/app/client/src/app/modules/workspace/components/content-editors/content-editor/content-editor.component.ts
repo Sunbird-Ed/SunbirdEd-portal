@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, NgZone, Renderer2, OnDestroy } from '@angular/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as iziModal from 'izimodal/js/iziModal';
 import { NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserProfile, ServerResponse } from '@sunbird/shared';
 import { UserService, TenantService } from '@sunbird/core';
@@ -187,6 +187,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
         ver: this.portalVersion,
         pid: 'sunbird-portal'
       },
+      contextRollUp: this.telemetryService.getRollUpData(this.userProfile.organisationIds),
       tags: this.userService.dims,
       channel: this.userService.channel,
       framework: this.routeParams.framework,

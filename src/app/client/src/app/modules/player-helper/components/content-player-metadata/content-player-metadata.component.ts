@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { ContentData, ResourceService } from '@sunbird/shared';
 
 @Component({

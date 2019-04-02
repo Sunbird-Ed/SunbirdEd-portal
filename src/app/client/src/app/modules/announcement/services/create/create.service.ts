@@ -7,7 +7,7 @@ import { ConfigService, ServerResponse, } from '@sunbird/shared';
 import { UserService, AnnouncementService } from '@sunbird/core';
 
 
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 @Injectable()
 

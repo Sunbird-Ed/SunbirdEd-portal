@@ -8,7 +8,7 @@ import { UserService, SearchService } from '@sunbird/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { DashboardData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 /**
  * The organization component
@@ -192,7 +192,7 @@ export class OrganisationComponent implements OnDestroy {
           type: 'org',
           ver: '1.0'
         };
-        this.interactObject = { id: params.id, type: 'organization', ver: '1.0' };
+        this.interactObject = { id: params.id, type: 'Organization', ver: '1.0' };
         this.getDashboardData(params.timePeriod, params.id);
       }
     });

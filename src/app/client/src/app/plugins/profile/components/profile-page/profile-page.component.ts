@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 import { mergeMap, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { MyContributions } from '../../interfaces';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
@@ -264,6 +264,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         }
       });
     });
+    this.roles = _.uniq(this.roles);
     orgList = _.sortBy(orgList, ['orgjoindate']);
     this.orgDetails = orgList[0];
   }
@@ -328,7 +329,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     _.forEach(contents, (content, key) => {
       const constantData = this.configService.appConfig.Course.otherCourse.constantData;
       const metaData = this.configService.appConfig.Course.otherCourse.metaData;
-      const dynamicFields = {};
+      const dynamicFields = this.configService.appConfig.Course.otherCourse.dynamicFields;
       this.contributions[key] = this.utilService.processContent(content,
         constantData, dynamicFields, metaData);
     });
@@ -465,7 +466,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     };
     this.telemetryInteractObject = {
       id: this.userService.userid,
-      type: 'user',
+      type: 'User',
       ver: '1.0'
     };
   }

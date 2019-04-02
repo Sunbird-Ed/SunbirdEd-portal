@@ -1,4 +1,4 @@
-<div class="ui container mt-30">
+<div class="ui container mt-30" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
   <div class="ui grid">
     <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
       <div class="ui text centered inline loader mt-40">
@@ -12,13 +12,13 @@
             <h1 class="ui header small HomeAccordianHeading m-responsive-cp left floated header">
               {{contentTitle}}
             </h1>
-            <h5 appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="objectContentInteract"
+            <h5 appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="objectContentInteract" [telemetryInteractCdata]="telemetryCdata"
               class="ui right floated basic icon circular button mouse-pointer" (click)="closeContentPlayer()">
               <i class="ui remove icon"></i>
             </h5>
           </div>
           <div class="twelve wide column">
-            <app-player class="content-player" [playerConfig]="playerConfig | async"></app-player>
+            <app-player class="content-player" (contentProgressEvent)="contentProgressEvent($event)" [playerConfig]="playerConfig | async"></app-player>
           </div>
         </div>
       <div class="ui row pt-0">
@@ -54,7 +54,7 @@
   <div class="row" *ngIf="!loader" [appTelemetryImpression]="telemetryImpression">
     <div class="twelve wide column">
       <span class="ui HomeAccordianHeading m-responsive-cp left floated header">{{collectionTitle}}</span>
-      <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" class="ui right floated basic icon circular button  mouse-pointer"
+      <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" [telemetryInteractCdata]="telemetryCdata" class="ui right floated basic icon circular button  mouse-pointer"
         (click)="closeCollectionPlayer()">
         <i class="ui remove icon"></i>
       </h5>
@@ -123,4 +123,5 @@
 </div>
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
 </app-share-link>
+<app-content-rating *ngIf="contentRatingModal && collectionData"  [contentData] = "collectionData"></app-content-rating>
 <router-outlet></router-outlet>

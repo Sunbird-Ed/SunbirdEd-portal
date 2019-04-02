@@ -8,7 +8,7 @@ import {
 } from '@sunbird/shared';
 import { WorkSpaceService, BatchService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { SuiModalService } from 'ng2-semantic-ui';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
@@ -159,7 +159,7 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
   */
   public fetchPageData() {
     this.showLoader = true;
-    this.filters = {createdFor: this.userService.RoleOrgMap['COURSE_MENTOR']};
+    this.filters = {createdFor: this.userService.userProfile.organisationIds};
     if (this.category === 'created') {
       this.filters['createdBy'] = this.userService.userid;
     } else {

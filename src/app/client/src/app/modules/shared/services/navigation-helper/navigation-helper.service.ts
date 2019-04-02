@@ -3,7 +3,7 @@ import {filter} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute, RouterStateSnapshot, NavigationStart } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 interface UrlHistory {
   url: string;
   queryParams?: any;
@@ -85,7 +85,7 @@ export class NavigationHelperService {
 
   public getPageLoadTime() {
      this.pageEndTime = Date.now();
-     const loadTime = this.pageEndTime - this.pageStartTime;
+     const loadTime = (this.pageEndTime - this.pageStartTime) / 1000;
      return loadTime;
   }
 

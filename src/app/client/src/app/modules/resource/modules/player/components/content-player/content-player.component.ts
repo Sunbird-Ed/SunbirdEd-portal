@@ -1,8 +1,8 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService, PlayerService, CopyContentService, PermissionService, BreadcrumbsService } from '@sunbird/core';
-import * as _ from 'lodash';
+import { UserService, PlayerService, CopyContentService, PermissionService } from '@sunbird/core';
+import * as _ from 'lodash-es';
 import { INoteData } from '@sunbird/notes';
 import {
   ConfigService, IUserData, ResourceService, ToasterService, WindowScrollService, NavigationHelperService,
@@ -81,11 +81,12 @@ export class ContentPlayerComponent implements OnInit {
   showExtContentMsg = false;
 
   closeUrl: any;
+  contentRatingModal = false;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
     public copyContentService: CopyContentService, public permissionService: PermissionService,
-    public contentUtilsServiceService: ContentUtilsServiceService, public breadcrumbsService: BreadcrumbsService,
+    public contentUtilsServiceService: ContentUtilsServiceService,
     private configService: ConfigService) {
   }
   /**
@@ -157,7 +158,7 @@ export class ContentPlayerComponent implements OnInit {
           this.setTelemetryData();
           this.showPlayer = true;
           this.windowScrollService.smoothScroll('content-player');
-          this.breadcrumbsService.setBreadcrumbs([{ label: this.contentData.name, url: '' }]);
+          // this.breadcrumbsService.setBreadcrumbs([{ label: this.contentData.name, url: '' }]);
           this.badgeData = _.get(response, 'result.content.badgeAssertions');
         } else {
           this.toasterService.warning(this.resourceService.messages.imsg.m0027);
@@ -207,6 +208,13 @@ export class ContentPlayerComponent implements OnInit {
   onShareLink() {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.contentId, this.contentData.mimeType);
     this.setTelemetryShareData(this.contentData);
+  }
+  public contentProgressEvent(event) {
+    const eid = event.detail.telemetryData.eid;
+    if (eid === 'END') {
+      this.contentRatingModal = true;
+      return;
+    }
   }
   setTelemetryShareData(param) {
     this.telemetryShareData = [{

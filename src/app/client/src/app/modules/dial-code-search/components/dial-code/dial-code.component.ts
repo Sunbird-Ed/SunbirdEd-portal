@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, ConfigService, UtilService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SearchService, SearchParam } from '@sunbird/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -70,7 +70,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   /**
    * to store search results
   */
-  searchResults: Array<any>;
+  searchResults: Array<any> = [];
   /**
    * to unsubscribe
   */
@@ -90,7 +90,6 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.instanceName = this.resourceService.instance;
     this.activatedRoute.params.subscribe(params => {
-      this.searchResults = [];
       this.searchKeyword = this.dialCode = params.dialCode;
       this.searchDialCode();
       this.setTelemetryData();
@@ -129,13 +128,13 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     takeUntil(this.unsubscribe$))
     .subscribe(
       (apiResponse: ServerResponse) => {
-        this.showLoader = false;
         if (apiResponse.result.content && apiResponse.result.content.length > 0) {
           const constantData = this.configService.appConfig.GetPage.constantData;
           const metaData = this.configService.appConfig.GetPage.metaData;
           const dynamicFields = this.configService.appConfig.GetPage.dynamicFields;
           this.searchResults = this.utilService.getDataForCard(apiResponse.result.content, constantData, dynamicFields, metaData);
         }
+        this.showLoader = false;
       },
       err => {
         this.showLoader = false;

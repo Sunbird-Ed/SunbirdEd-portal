@@ -20,7 +20,7 @@ describe('MainHeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule.forRoot(),
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule,
         TelemetryModule.forRoot(), RouterTestingModule, WebExtensionModule.forRoot()],
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
@@ -41,7 +41,7 @@ describe('MainHeaderComponent', () => {
     spyOn(document, 'getElementById').and.returnValue('true');
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
     fixture.detectChanges();
     expect(component.userProfile).toBeTruthy();

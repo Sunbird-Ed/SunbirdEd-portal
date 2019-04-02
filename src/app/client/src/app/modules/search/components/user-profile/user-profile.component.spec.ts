@@ -8,11 +8,11 @@ import {
     SharedModule, ServerResponse, PaginationService, ResourceService,
     ConfigService, ToasterService, INoResultMessage, RouterNavigationService
 } from '@sunbird/shared';
-import { SearchService, UserService, LearnerService, ContentService, BadgesService, BreadcrumbsService } from '@sunbird/core';
+import { SearchService, UserService, LearnerService, ContentService, BadgesService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { UserProfileComponent } from './user-profile.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -55,7 +55,7 @@ describe('UserProfileComponent', () => {
             declarations: [UserProfileComponent],
             providers: [ResourceService, SearchService, PaginationService, UserService,
                 LearnerService, ContentService, ConfigService, ToasterService, UserSearchService, RouterNavigationService,
-                BadgesService, BreadcrumbsService,
+                BadgesService,
                 { provide: ResourceService, useValue: resourceBundle },
                 { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
             schemas: [NO_ERRORS_SCHEMA]

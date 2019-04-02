@@ -9,7 +9,7 @@ import { DashboardUtilsService } from './../dashboard-utils/dashboard-utils.serv
 import { DashboardParams, DashboardData } from './../../interfaces';
 
 
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 /**
  * Service to get organization admin dashboard data

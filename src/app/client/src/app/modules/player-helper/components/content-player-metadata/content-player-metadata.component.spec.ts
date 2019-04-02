@@ -12,7 +12,7 @@ describe('ContentPlayerMetadataComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule.forRoot()],
+      imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule],
       declarations: [ContentPlayerMetadataComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })

@@ -9,7 +9,7 @@ describe('CurriculumCardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       declarations: [ CurriculumCardComponent ]
     })
     .compileComponents();

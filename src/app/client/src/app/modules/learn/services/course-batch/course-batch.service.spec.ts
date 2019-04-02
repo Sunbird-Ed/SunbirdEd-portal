@@ -11,7 +11,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 describe('BatchService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       providers: [CourseBatchService]
     });
   });

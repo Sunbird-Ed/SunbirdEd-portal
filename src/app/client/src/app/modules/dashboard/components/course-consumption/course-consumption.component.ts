@@ -10,7 +10,7 @@ import { ResourceService, ServerResponse } from '@sunbird/shared';
 // Interface
 import { DashboardData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 import { Subject } from 'rxjs';
 
@@ -168,7 +168,7 @@ export class CourseConsumptionComponent implements OnDestroy {
           type: 'course',
           ver: '1.0'
         };
-        this.interactObject = { id: params.id, type: 'course', ver: '1.0' };
+        this.interactObject = { id: params.id, type: 'Course', ver: '1.0' };
         this.isMultipleCourses = false;
         this.showDashboard = true;
         this.getDashboardData(params.timePeriod, params.id);

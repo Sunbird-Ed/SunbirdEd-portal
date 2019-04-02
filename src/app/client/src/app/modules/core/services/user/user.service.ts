@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { HttpClient } from '@angular/common/http';
 import { PublicDataService } from './../public-data/public-data.service';
 import { skipWhile } from 'rxjs/operators';
@@ -27,6 +27,9 @@ export class UserService {
     * Contains session id
     */
   private _sessionId: string;
+
+  timeStampData: any;
+
   /**
    * Contains root org id
    */
@@ -147,8 +150,12 @@ export class UserService {
       url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${this.userid}`,
       param: this.config.urlConFig.params.userReadParam
     };
-    this.learnerService.get(option).subscribe(
+    this.learnerService.getWithHeaders(option).subscribe(
       (data: ServerResponse) => {
+        if (data.ts) {
+          // data.ts is taken from header and not from api response ts, and format in IST
+          this.timeStampData = {serverEts: data.ts, localTime: new Date()};
+        }
         this.setUserProfile(data);
       },
       (err: ServerResponse) => {
@@ -186,8 +193,11 @@ export class UserService {
     profileData.skills = _.get(profileData, 'skills' ) || [];
     hashTagIds.push(this._channel);
     let organisationIds = [];
+    if (profileData.rootOrgId) {
+      organisationIds.push(profileData.rootOrgId);
+    }
     profileData.rootOrgAdmin = false;
-    let userRoles = profileData.roles;
+    let userRoles = ['PUBLIC'];
     if (profileData.organisations) {
       _.forEach(profileData.organisations, (org) => {
         if (org.roles && _.isArray(org.roles)) {
@@ -209,13 +219,10 @@ export class UserService {
         }
       });
     }
-    if (profileData.rootOrgId) {
-      organisationIds.push(profileData.rootOrgId);
-    }
     this._dims = _.concat(organisationIds, this.channel);
     organisationIds = _.uniq(organisationIds);
     this._userProfile = profileData;
-    this._userProfile.userRoles = userRoles;
+    this._userProfile.userRoles = _.uniq(userRoles);
     this._userProfile.orgRoleMap = orgRoleMap;
     this._userProfile.organisationIds = organisationIds;
     this._userProfile.hashTagIds = _.uniq(hashTagIds);
@@ -303,6 +310,10 @@ export class UserService {
     return this._hashTagId;
   }
 
+  get getServerTime() {
+    return this.timeStampData;
+  }
+
   get channel() {
     return this._channel;
   }
@@ -347,6 +358,7 @@ export class UserService {
   getUserByKey(key) {
     return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_BY_KEY + '/' + key});
   }
+
   public getFingerPrintOptions(): object {
     return ({
       preprocessor: (key, value) => {
