@@ -1,17 +1,19 @@
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SlickModule } from 'ngx-slick';
+import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
-   AnnouncementInboxCardComponent, ContentCreditsComponent,
+  AnnouncementInboxCardComponent, ContentCreditsComponent,
   PageSectionComponent, NoResultComponent, AppLoaderComponent, PlayerComponent,
   CollectionTreeComponent, FancyTreeComponent, CardComponent, CardCreationComponent, ShareLinkComponent, CollectionPlayerMetadataComponent,
   BrowserCompatibilityComponent, QrCodeModalComponent, RedirectComponent, CustomMultiSelectComponent,
-  InstallAppComponent
+  InstallAppComponent, LockInfoPopupComponent, DataTableComponent, BatchCardComponent
 } from './components';
 import {
   ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService, BrowserCacheTtlService,
   PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService, ExternalUrlPreviewService
 } from './services';
+import { ContentDirectionDirective } from './directives';
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { DateFormatPipe, DateFilterXtimeAgoPipe, FilterPipe, InterpolatePipe } from './pipes';
@@ -22,6 +24,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -29,18 +32,20 @@ import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
     SlickModule,
     FormsModule,
     TelemetryModule,
-    NgInviewModule
+    NgInviewModule,
+    ChartsModule
   ],
   declarations: [AppLoaderComponent, ContentCreditsComponent, AnnouncementInboxCardComponent,
-    DateFormatPipe, PageSectionComponent, NoResultComponent, DateFilterXtimeAgoPipe,
+    DateFormatPipe, PageSectionComponent, BatchCardComponent, NoResultComponent, DateFilterXtimeAgoPipe,
     CollectionTreeComponent, FancyTreeComponent, PlayerComponent, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
     ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe,
-    RedirectComponent, CustomMultiSelectComponent, InstallAppComponent],
+    RedirectComponent, CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective,
+    DataTableComponent],
   exports: [AppLoaderComponent, ContentCreditsComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
-    PageSectionComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
+    PageSectionComponent, BatchCardComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
     PlayerComponent, CardComponent, CardCreationComponent, FilterPipe, ShareLinkComponent, CollectionPlayerMetadataComponent,
     BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent, CustomMultiSelectComponent,
-    InstallAppComponent]
+    InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, DataTableComponent]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

@@ -1,0 +1,70 @@
+<sui-modal 
+  [mustScroll]="true" 
+  [isClosable]="true"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll 
+  (dismissed)="closeModal();" 
+  #contactTypeModal
+  >
+
+  <ng-container *ngIf="showForm">
+
+    <!--Header-->
+    <div class="sb-modal-header" [ngSwitch]="contactType">
+      <span *ngSwitchCase="'email'" class="fs-1-286">{{resourceService?.frmelmnts?.lbl?.updateEmailId}}</span>
+      <span *ngSwitchCase="'phone'" class="fs-1-286">{{resourceService?.frmelmnts?.lbl?.updatePhoneNo}}</span>
+    </div>
+    <!--/Header-->
+
+    <!--Content-->
+    <div class="sb-modal-content">
+      <form class="ui form borderd" [formGroup]="contactTypeForm">
+        <div [ngSwitch]="contactType">
+          <div class="field" *ngSwitchCase="'email'">
+            <label class="fs-1">{{resourceService?.frmelmnts?.prmpt?.enteremailID}}</label>
+            <div class="field">
+              <input formControlName="email" type="text" name="email">
+            </div>
+            <label class="ui basic blue error label pt-0" *ngIf="contactTypeForm.controls.email.touched && contactTypeForm.controls['email'].errors">{{resourceService?.frmelmnts?.lbl?.validEmail}}</label>
+            <label class="ui basic blue error label pt-0" *ngIf="showUniqueError && !(contactTypeForm.controls.email.touched && contactTypeForm.controls['email'].errors)">{{showUniqueError}}</label>
+          </div>
+          <div class="field" *ngSwitchCase="'phone'">
+            <label class="fs-1">{{resourceService?.frmelmnts?.prmpt?.enterphoneno}}</label>
+            <div class="field">
+              <div class="ui left icon input">
+                <input formControlName="phone" type="number" name="phone">
+                <i class=" icon">{{resourceService?.frmelmnts?.lbl?.indPhoneCode}}-</i>
+              </div>
+            </div>
+            <label class="ui basic blue error label pt-0" *ngIf="contactTypeForm.controls.phone.touched && contactTypeForm.controls['phone'].errors">{{resourceService?.frmelmnts?.lbl?.validPhone}}</label>
+            <label class="ui basic blue error label pt-0" *ngIf="showUniqueError && !(contactTypeForm.controls.phone.touched && contactTypeForm.controls['phone'].errors)">{{showUniqueError}}</label>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!--/Content-->
+
+    <!--Actions-->
+    <div class="sb-modal-actions">
+      <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="submitInteractEdata"
+        [ngClass]="{'disabled':!enableSubmitBtn}" 
+        (click)="onSubmitForm()" 
+        class="sb-btn sb-btn-normal sb-btn-primary">
+          {{resourceService?.frmelmnts?.btn?.submitbtn}}
+        </button>
+    </div>
+    <!--/Actions-->
+  </ng-container>
+
+  <app-otp-popup 
+    *ngIf="!showForm" 
+    [otpData]="otpData" 
+    (verificationSuccess)="updateProfile($event)" 
+    (redirectToParent)="showParentForm($event)">
+  </app-otp-popup>
+</sui-modal>
+
+<router-outlet></router-outlet>

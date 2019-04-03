@@ -1,11 +1,12 @@
 {
   "params": {
     "userReadParam": {
-      "fields": "completeness,missingFields,lastLoginTime,organisations,roles"
+      "fields": "organisations,roles,locations"
     },
     "contentGet": "creator,body,editorState,templateId,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher,subject,author,flagReasons,flaggedBy,flags,createdOn,lastUpdatedOn,board,keywords,resourceType,framework,license,badgeAssertions,pkgVersion,contentCredits,attributions,channel,contributors,creators",
     "enrolledCourses": {
-      "fields": "contentType,topic,name"
+      "fields": "contentType,topic,name,channel",
+      "batchDetails": "name,endDate,startDate,status,enrollmentType,createdBy"
     }
   },
   "URLS": {
@@ -28,6 +29,7 @@
     },
     "USER": {
       "SIGNUP": "user/v1/create",
+      "TNC_ACCEPT": "/user/v1/tnc/accept",
       "UPDATE_USER_PROFILE": "user/v1/update",
       "GET_PROFILE": "user/v2/read/",
       "TENANT_LOGO": "get/tenant/logo",
@@ -35,10 +37,20 @@
       "ENDORSE_SKILLS": "user/v1/skill/endorse/add",
       "UPDATE_SKILLS": "user/v1/skill/update",
       "USER_SKILLS": "user/v1/skill/read",
-      "UPDATE_PROF_VIS_FIELDS": "user/v1/profile/visibility"
+      "UPDATE_PROF_VIS_FIELDS": "user/v1/profile/visibility",
+      "GET_USER_BY_KEY": "user/v1/get",
+      "CREATE_V2": "user/v2/create",
+      "LOCATION_SEARCH": "data/v1/location/search",
+      "TYPE": "user/v1/type/list"
     },
     "COMPOSITE": {
       "SEARCH": "composite/v1/search"
+    },
+    "SYSTEM_SETTING":{
+      "CUSTODIAN_ORG":"data/v1/system/settings/get/custodianOrgId"
+    },
+    "COURSE_FRAMEWORK":{
+      "COURSE_FRAMEWORKID":"data/v1/system/settings/get/courseFrameworkId"
     },
     "COURSE": {
       "SEARCH": "course/v1/search",
@@ -61,13 +73,17 @@
       "FLAG": "content/v1/flag",
       "ACCEPT_FLAG": "content/v1/flag/accept",
       "DISCARD_FLAG": "content/v1/flag/reject",
-      "COPY": "content/v1/copy"
+      "COPY": "content/v1/copy",
+      "LOCK_LIST": "lock/v1/list",
+      "LOCK_CREATE": "lock/v1/create",
+      "LOCK_RETIRE": "lock/v1/retire"
     },
     "DASHBOARD": {
       "ORG_CREATION": "dashboard/v1/creation/org",
       "ORG_CONSUMPTION": "dashboard/v1/consumption/org",
       "COURSE_PROGRESS": "dashboard/v1/progress/course",
-      "COURSE_CONSUMPTION": "dashboard/v1/consumption/course"
+      "COURSE_CONSUMPTION": "dashboard/v1/consumption/course",
+      "COURSE_PROGRESS_V2":"dashboard/v2/progress/course"
     },
     "NOTES": {
       "SEARCH": "notes/v1/search",
@@ -139,6 +155,10 @@
     "TELEMETRY": {
       "APISLUG": "service/v1/content/",
       "SYNC": "data/v1/telemetry"
+    },
+    "OTP": {
+      "GENERATE": "otp/v1/generate",
+      "VERIFY": "otp/v1/verify"
     }
   }
 }

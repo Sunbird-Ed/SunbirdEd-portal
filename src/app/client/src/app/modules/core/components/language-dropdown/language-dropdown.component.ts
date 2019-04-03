@@ -2,16 +2,15 @@
 import { takeUntil, first } from 'rxjs/operators';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormService, FrameworkService, OrgDetailsService } from './../../services';
-import { ConfigService, ResourceService, ToasterService, ServerResponse, Framework } from '@sunbird/shared';
+import { FormService, FrameworkService, OrgDetailsService, UserService } from './../../services';
+import { ConfigService, ResourceService, ToasterService, ServerResponse, Framework} from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
-
-import { Subject, Subscription } from 'rxjs';
+import * as _ from 'lodash';
+import { Subject, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-language-dropdown',
-  templateUrl: './language-dropdown.component.html',
-  styleUrls: ['./language-dropdown.component.css']
+  templateUrl: './language-dropdown.component.html'
 })
 export class LanguageDropdownComponent implements OnInit, OnDestroy {
   @Input() redirectUrl: string;
@@ -30,7 +29,7 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
     public orgDetailsService: OrgDetailsService,
     public formService: FormService, public toasterService: ToasterService,
     private _cacheService: CacheService, public frameworkService: FrameworkService,
-    public configService: ConfigService, public resourceService: ResourceService) { }
+    public configService: ConfigService, public resourceService: ResourceService,   public userService: UserService) { }
 
   ngOnInit() {
     this.getChannelId();
@@ -45,14 +44,21 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
   }
 
   getChannelId() {
-    this.orgDetailsUnsubscribe = this.orgDetailsService.orgDetails$.subscribe(((data) => {
-      if (data && !data.err) {
-        this.channelId = data.orgDetails.hashTagId;
+    if (this.userService.loggedIn) {
+      this.userService.userData$.pipe(first()).subscribe((user) => {
+        if (user && !user.err ) {
+        this.channelId = this.userService.channel,
         this.getLanguage();
-      } else if (data && data.err) {
-        // error
-      }
-    }));
+        }
+      });
+    } else {
+      this.orgDetailsUnsubscribe = this.orgDetailsService.orgDetails$.subscribe(((data) => {
+        if (data && !data.err) {
+          this.channelId = data.orgDetails.hashTagId;
+          this.getLanguage();
+        }
+      }));
+    }
   }
 
   getLanguage() {
@@ -77,9 +83,10 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
                 maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
                   this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
               });
+            this.onLanguageChange('en');
           },
           (err: ServerResponse) => {
-            this.languages = [{ 'value': 'en', 'name': 'English' }];
+            this.languages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr' }];
             this.onLanguageChange('en');
           }
         );
@@ -87,16 +94,16 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
   }
 
   onLanguageChange(event) {
-   this._cacheService.set('portalLanguage' , event,
-    {
-      maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
-        this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
-    });
+   this._cacheService.set('portalLanguage' , event);
     this.resourceService.getResource(event);
+    const language = _.find(this.languages, ['value', event]);
+    this.resourceService.getLanguageChange(language);
   }
 
   ngOnDestroy() {
-    this.orgDetailsUnsubscribe.unsubscribe();
+    if (this.orgDetailsUnsubscribe) {
+      this.orgDetailsUnsubscribe.unsubscribe();
+    }
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }

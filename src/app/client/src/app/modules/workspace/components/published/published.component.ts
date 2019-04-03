@@ -23,8 +23,7 @@ import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semanti
 
 @Component({
   selector: 'app-published',
-  templateUrl: './published.component.html',
-  styleUrls: ['./published.component.css']
+  templateUrl: './published.component.html'
 })
 export class PublishedComponent extends WorkSpace implements OnInit {
   @ViewChild('modalTemplate')
@@ -78,11 +77,6 @@ export class PublishedComponent extends WorkSpace implements OnInit {
     * For showing pagination on draft list
   */
   private paginationService: PaginationService;
-
-  /**
-    * Refrence of UserService
-  */
-  private userService: UserService;
 
   /**
      * Contains page limit of inbox list
@@ -145,11 +139,10 @@ export class PublishedComponent extends WorkSpace implements OnInit {
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
     config: ConfigService) {
-    super(searchService, workSpaceService);
+    super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
     this.activatedRoute = activatedRoute;
-    this.userService = userService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.config = config;
@@ -211,7 +204,7 @@ export class PublishedComponent extends WorkSpace implements OnInit {
           this.showLoader = false;
           this.noResult = true;
           this.noResultMessage = {
-            'messageText': this.resourceService.messages.stmsg.m0022
+            'messageText': 'messages.stmsg.m0022'
           };
         }
       },
@@ -236,8 +229,10 @@ export class PublishedComponent extends WorkSpace implements OnInit {
 
   public deleteConfirmModal(contentIds) {
     const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
-    config.isClosable = true;
-    config.size = 'mini';
+    config.isClosable = false;
+    config.size = 'small';
+    config.transitionDuration = 0;
+    config.mustScroll = true;
     this.modalService
       .open(config)
       .onApprove(result => {
@@ -249,6 +244,9 @@ export class PublishedComponent extends WorkSpace implements OnInit {
           (data: ServerResponse) => {
             this.showLoader = false;
             this.publishedContent = this.removeContent(this.publishedContent, contentIds);
+            if (this.publishedContent.length === 0) {
+              this.fetchPublishedContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
+            }
             this.toasterService.success(this.resourceService.messages.smsg.m0006);
           },
           (err: ServerResponse) => {

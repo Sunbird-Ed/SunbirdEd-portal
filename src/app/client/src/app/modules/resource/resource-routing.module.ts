@@ -11,7 +11,8 @@ const routes: Routes = [
     path: '', component: ResourceComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }],
-      telemetry: { env: telemetryEnv, pageid: 'library', type: 'view' }
+      telemetry: { env: telemetryEnv, pageid: 'library', type: 'view', subtype: 'paginate' },
+      softConstraints: {badgeAssertions: 98, board: 99, channel: 100}
     }
   }, {
     path: 'view-all/:section/:pageNumber', component: ViewAllComponent,
@@ -20,7 +21,9 @@ const routes: Routes = [
       telemetry: {
         env: telemetryEnv, pageid: 'view-all', type: 'view', subtype: 'paginate'
       },
-      filterType: 'library'
+      filterType: 'library',
+      softConstraints: {badgeAssertions: 98, board: 99, channel: 100},
+      applyMode: true
     }
   },
   {

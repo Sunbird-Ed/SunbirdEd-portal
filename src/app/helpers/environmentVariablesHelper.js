@@ -37,6 +37,7 @@ let envVariables = {
   BUILD_NUMBER: env.sunbird_build_number || packageObj.version + '.' + packageObj.buildHash,
   TELEMETRY_SERVICE_LOCAL_URL: env.sunbird_telemetry_service_local_url || 'http://telemetry-service:9001/',
   PORTAL_API_CACHE_TTL: env.sunbird_api_response_cache_ttl || '600',
+  RESPONSE_CACHE_TTL: env.sunbird_response_cache_ttl || '180', // used in tenant helper to cache the tenant response info
   TENANT_CDN_URL: env.sunbird_tenant_cdn_url || '',
   CLOUD_STORAGE_URLS: env.sunbird_cloud_storage_urls,
   PORTAL_CASSANDRA_CONSISTENCY_LEVEL: env.sunbird_cassandra_consistency_level || 'one',
@@ -50,9 +51,22 @@ let envVariables = {
   learner_Service_Local_BaseUrl: env.sunbird_learner_service_local_base_url || 'http://learner-service:9000',
   content_Service_Local_BaseUrl: env.sunbird_content_service_local_base_url || 'http://content-service:5000',
   sunbird_explore_button_visibility: env.sunbird_explore_button_visibility || 'true',
-  sunbird_enable_signup: env.sunbird_enable_signup || 'true',
+  sunbird_help_link_visibility: env.sunbird_help_link_visibility || 'false',
   sunbird_extcont_whitelisted_domains: env.sunbird_extcont_whitelisted_domains || 'youtube.com,youtu.be',
-  sunbird_portal_user_upload_ref_link: env.sunbird_portal_user_upload_ref_link || 'http://www.sunbird.org/features-documentation/register_user'
+  sunbird_portal_user_upload_ref_link: env.sunbird_portal_user_upload_ref_link || 'http://www.sunbird.org/features-documentation/register_user',
+  sunbird_portal_video_max_size: env.sunbird_portal_video_max_size || '50',
+  GOOGLE_OAUTH_CONFIG: {
+    clientId: env.sunbird_google_oauth_clientId,
+    clientSecret: env.sunbird_google_oauth_clientSecret
+  },
+  KEYCLOAK_GOOGLE_CLIENT: {
+    clientId: env.sunbird_google_keycloak_client_id,
+    secret: env.sunbird_google_keycloak_secret
+  },
+  sunbird_google_captcha_site_key: env.sunbird_google_captcha_site_key,
+  sunbird_azure_report_container_name: env.sunbird_azure_report_container_name || 'reports',
+  sunbird_azure_account_name: env.sunbird_azure_account_name,
+  sunbird_azure_account_key: env.sunbird_azure_account_key
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')

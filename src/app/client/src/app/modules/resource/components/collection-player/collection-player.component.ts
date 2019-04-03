@@ -14,7 +14,7 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
 @Component({
   selector: 'app-collection-player',
   templateUrl: './collection-player.component.html',
-  styleUrls: ['./collection-player.component.css']
+  styleUrls: ['./collection-player.component.scss']
 })
 export class CollectionPlayerComponent implements OnInit, OnDestroy {
   /**

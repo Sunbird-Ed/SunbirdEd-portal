@@ -1,54 +1,72 @@
-<div class="ui">
-    <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
-        <div class="ui text centered inline loader mt-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
-    </div>
-    <div class="ui stackable grid courseStructureHeader m-responsive-cp-nmt-50">
-        <div class="one wide tablet one wide computer column"></div>
-        <div class="ten wide column pt-0">
-            <div class="ui stackable grid">
-                <div class="nine wide column pt-0">
-                    <div class="courseStructureHeaderText courseStructureSectionHeading">{{courseHierarchy.name}}</div>
-                    <br>
-                    <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true"
-                        [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>&nbsp;&nbsp;
-                    <a (click)="onShareLink();sharelinkModal=true;">
-                        <i class="cursor-pointer large blue share alternate icon"></i>
-                    </a>
-                    <span *ngIf="permissionService.permissionAvailable && courseStatus !== 'Unlisted'" appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
-                        (click)="copyContent(courseHierarchy)" class="ui mouse-pointer content-font ml-10 ng-isolate-scope"
-                        title="Copy content">
-                        <i class="ui large blue clone outline icon"></i>
-                    </span>
-                    <h6 class="ui small negative message" *ngIf="courseHierarchy.status === 'Flagged'">{{resourceService?.messages?.imsg?.m0001}}</h6>
-                </div>
-                <div class="three wide column">
-                    <div *ngIf="enrolledCourse" class="">
-                        <span>
-                            <p class="text-align-center m-responsive-cp-header">{{resourceService?.messages?.stmsg?.m0108}} {{ progress }}%</p>
-                        </span>
-                        <button appTelemetryInteract [telemetryInteractEdata]="resumeIntractEdata" [telemetryInteractObject]="courseInteractObject"
-                            class="fluid blue right floated  ui button courseHeaderButton mt-0" [disabled]="showResumeCourse"
-                            (click)="resumeCourse(true)">
-                            {{resourceService?.frmelmnts?.btn?.resumecourse}}
-                            <i class="caret right icon"></i>
-                        </button>
-                    </div>
-                    <div *ngIf="permissionService.permissionAvailable && !enrolledCourse" appPermission [permission]="dashboardPermission">
-                        <button class="blue right floated ui button courseHeaderButton mt-10" (click)="showDashboard()">{{resourceService?.frmelmnts?.btn?.viewcoursestats}}</button>
-                    </div>
-                </div>
-                <!-- course ended Error message starts -->
-                <!-- <h6 class="ui small negative message mt-0 mb-15 ml-15" *ngIf="courseEndedErrorMessage">{{resourceService?.messages?.imsg?.m0043}}</h6> -->
-                <!-- course ended Error message ends -->
+<div class="courseStructureHeader mt-10">
+  <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
+    <div class="ui text centered inline loader mt-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
+  </div>
+  <div class="ui container">
+    <div class="ui stackable padded grid m-responsive-cp-nmt-50">
+      <div class="row">
+        <div class="twelve wide column px-0">
+          <div class="ui stackable grid">
+            <div class="nine wide column">
+              <h1 class="ui header small">
+                {{courseHierarchy.name}}
+              </h1>
+              <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="courseHeader-rating ui star rating black-divider pr-15"
+                [isReadonly]="true" [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
+              &nbsp;&nbsp;
+              <a (click)="onShareLink();sharelinkModal=true;">
+                <i class="cursor-pointer large blue share alternate icon"></i>
+              </a>
+              <span *ngIf="permissionService.permissionAvailable && courseStatus !== 'Unlisted'" appPermission
+                [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(courseHierarchy)" class="ui mouse-pointer content-font ml-10 ng-isolate-scope"
+                title="Copy content">
+                <i class="ui large blue clone outline icon"></i>
+              </span>
+              <h6 class="ui small negative message" *ngIf="courseHierarchy.status === 'Flagged'">{{resourceService?.messages?.imsg?.m0001}}</h6>
             </div>
+            <div class="three wide column">
+              <div *ngIf="enrolledCourse">
+                <span>
+                  <p class="text-align-center m-responsive-cp-header">{{resourceService?.messages?.stmsg?.m0108}} {{
+                    progress }}%</p>
+                </span>
+                <button appTelemetryInteract [telemetryInteractEdata]="resumeIntractEdata" [telemetryInteractObject]="courseInteractObject"
+                  class="sb-btn sb-btn-primary sb-btn-normal width-100 mt-0" [disabled]="showResumeCourse"
+                  (click)="resumeCourse(true)">
+                  {{resourceService?.frmelmnts?.btn?.resumecourse}}
+                  <i class="caret right icon"></i>
+                </button>
+              </div>
+              <div *ngIf="permissionService.permissionAvailable && !enrolledCourse" appPermission [permission]="dashboardPermission">
+                <button class="sb-btn sb-btn-primary sb-btn-normal width-100 mt-10" (click)="showDashboard()">{{resourceService?.frmelmnts?.btn?.viewCourseStatsDashboard}}</button>
+              </div>
+            </div>
+            <!-- course ended Error message starts -->
+            <!-- <h6 class="ui small negative message mt-0 mb-15 ml-15" *ngIf="courseEndedErrorMessage">{{resourceService?.messages?.imsg?.m0043}}</h6> -->
+            <!-- course ended Error message ends -->
+          </div>
         </div>
-        <div class="one wide tablet one wide computer column"></div>
+      </div>
     </div>
+  </div>
 </div>
-<div class="ui grid mt-12" *ngIf="enrolledCourse">
-    <div class="twelve wide column p-0 ">
-        <sui-progress class="ui tiny progress blue" [value]="progress" [maximum]="100"></sui-progress>
+<div  *ngIf="enrolledCourse">
+  <div class="ui container">
+    <div class="ui stackable padded grid m-responsive-cp-nmt-50" *ngIf="getBatchStatus() && batchEndDate">
+      <div class="nine wide column pl-0 pt-5">
+        <div class="ui info message compact">
+          <div class="header">
+            {{resourceService?.frmelmnts?.lbl?.expiredBatchWarning | interpolate:'{EndDate}':batchEndDate}}
+          </div>
+        </div>
+      </div>
+      <div class="three wide column">
+      </div>
     </div>
+  </div>
+  <div class="twelve wide column p-0">
+    <sui-progress class="ui tiny progress blue status" [ngClass]="{'expired':getBatchStatus()}" [value]="progress" [maximum]="100"></sui-progress>
+  </div>
 </div>
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
 </app-share-link>

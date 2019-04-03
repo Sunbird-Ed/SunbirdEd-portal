@@ -1,25 +1,23 @@
-
 import { environment } from '@sunbird/environment';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TelemetryService, ITelemetryContext } from '@sunbird/telemetry';
 import { UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
 NavigationHelperService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, Inject} from '@angular/core';
 import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { ProfileService } from '@sunbird/profile';
 import { Observable, of, throwError, combineLatest } from 'rxjs';
 import { first, filter, mergeMap, tap, map } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
-const fingerPrint2 = new Fingerprint2();
+import { DOCUMENT } from '@angular/platform-browser';
 
 /**
  * main app component
  */
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
@@ -39,6 +37,12 @@ export class AppComponent implements OnInit {
    * this variable is used to show the FrameWorkPopUp
    */
   public showFrameWorkPopUp = false;
+
+  /**
+   * this variable is used to show the terms and conditions popup
+   */
+  public showTermsAndCondPopUp = false;
+
   /**
    * Used to fetch tenant details and org details for Anonymous user. Possible values
    * 1. url slug param will be slug for Anonymous user
@@ -65,7 +69,8 @@ export class AppComponent implements OnInit {
     private deviceRegisterService: DeviceRegisterService, private courseService: CoursesService, private tenantService: TenantService,
     private telemetryService: TelemetryService, public router: Router, private configService: ConfigService,
     private orgDetailsService: OrgDetailsService, private activatedRoute: ActivatedRoute,
-    private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService) {
+    private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
+    @Inject(DOCUMENT) private _document: any) {
   }
   /**
    * dispatch telemetry window unload event before browser closes
@@ -94,24 +99,54 @@ export class AppComponent implements OnInit {
       this.setPortalTitleLogo();
       this.telemetryService.initialize(this.getTelemetryContext());
       this.deviceRegisterService.registerDevice(this.channel);
-      const frameWorkPopUp: boolean = this.cacheService.get('showFrameWorkPopUp');
-      if (frameWorkPopUp) {
-        this.showFrameWorkPopUp = false;
-      } else {
-        if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
-          this.showFrameWorkPopUp = true;
-        }
-      }
+      this.checkTncAndFrameWorkSelected();
       this.initApp = true;
     }, error => {
       this.initApp = true;
     });
+    this.changeLanguageAttribute();
   }
+
+  /**
+   * checks if user has accepted the tnc and show tnc popup.
+   */
+  public checkTncAndFrameWorkSelected () {
+    if ( _.has(this.userProfile, 'promptTnC') &&  _.has(this.userProfile, 'tncLatestVersion') &&
+      _.has(this.userProfile, 'tncLatestVersion')  &&  this.userProfile.promptTnC  === true) {
+      this.showTermsAndCondPopUp = true;
+    } else {
+      this.checkFrameworkSelected();
+    }
+  }
+
+  /**
+   * checks if user has selected the framework and shows popup if not selected.
+   */
+  public checkFrameworkSelected() {
+    const frameWorkPopUp: boolean = this.cacheService.get('showFrameWorkPopUp');
+    if (frameWorkPopUp) {
+      this.showFrameWorkPopUp = false;
+    } else {
+      if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
+        this.showFrameWorkPopUp = true;
+      }
+    }
+  }
+
+  /**
+   * once tnc is accpeted from tnc popup on submit this function is triggered
+   */
+  public onAcceptTnc () {
+    this.showTermsAndCondPopUp = false;
+    this.checkFrameworkSelected();
+  }
+
   /**
    * fetch device id using fingerPrint2 library.
    */
   public setDeviceId(): Observable<string> {
-    return new Observable(observer => fingerPrint2.get((deviceId) => {
+    const options = this.userService.getFingerPrintOptions();
+    return new Observable(observer => Fingerprint2.getV18(options, (deviceId) => {
       (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
       observer.next(deviceId);
       observer.complete();
@@ -138,7 +173,7 @@ export class AppComponent implements OnInit {
           return throwError(user.err);
         }
         this.userProfile = user.userProfile;
-        this.slug = _.get(this.userProfile, 'userProfile.rootOrg.slug');
+        this.slug = _.get(this.userProfile, 'rootOrg.slug');
         this.channel = this.userService.hashTagId;
         return of(user.userProfile);
     }));
@@ -197,6 +232,7 @@ export class AppComponent implements OnInit {
             ver: version,
             pid: this.configService.appConfig.TELEMETRY.PID
           },
+          batchsize: 2,
           endpoint: this.configService.urlConFig.URLS.TELEMETRY.SYNC,
           apislug: this.configService.urlConFig.URLS.CONTENT_PREFIX,
           host: '',
@@ -232,10 +268,11 @@ export class AppComponent implements OnInit {
       this.showFrameWorkPopUp = false;
       this.utilService.toggleAppPopup();
       this.showAppPopUp = this.utilService.showAppPopUp;
-      console.log(this.showAppPopUp);
     }, err => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0085);
-        this.frameWorkPopUp.modal.deny();
+      this.toasterService.warning(this.resourceService.messages.emsg.m0012);
+      this.frameWorkPopUp.modal.deny();
+      this.router.navigate(['/resources']);
+      this.cacheService.set('showFrameWorkPopUp', 'installApp' );
     });
   }
   viewInBrowser() {
@@ -244,5 +281,12 @@ export class AppComponent implements OnInit {
   closeIcon() {
     this.showFrameWorkPopUp = false;
     this.cacheService.set('showFrameWorkPopUp', 'installApp' );
+  }
+  changeLanguageAttribute() {
+    this.resourceService.languageSelected$
+      .subscribe(item => {
+        this._document.documentElement.lang = item.value;
+        this._document.documentElement.dir =  item.dir;
+      });
   }
 }

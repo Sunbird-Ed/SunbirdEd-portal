@@ -5,14 +5,13 @@ import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared'
 import { CourseBatchService } from './../../../services';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput,  IInteractEventObject, IInteractEventEdata  } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-enroll-batch',
-  templateUrl: './enroll-batch.component.html',
-  styleUrls: ['./enroll-batch.component.css']
+  templateUrl: './enroll-batch.component.html'
 })
 export class EnrollBatchComponent implements OnInit, OnDestroy {
   @ViewChild('enrollBatch') enrollBatch;
@@ -22,6 +21,9 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
   readMore = false;
   disableSubmitBtn = false;
   public unsubscribe = new Subject<void>();
+  telemetryCdata: Array<{}>;
+  submitInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
   /**
 	 * telemetryImpression object for update batch page
 	*/
@@ -55,6 +57,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe))
         .subscribe((data) => {
           this.batchDetails = data;
+          this.setTelemetryData();
           if (this.batchDetails.enrollmentType !== 'open') {
             this.toasterService.error(this.resourceService.messages.fmsg.m0082);
             this.redirect();
@@ -96,7 +99,8 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
       this.showEnrollDetails = true;
     }
   }
-  enrollToCourse(batchId) {
+  enrollToCourse(batchId?: any) {
+    this.setTelemetryData();
     const request = {
       request: {
         courseId: this.batchDetails.courseId,
@@ -129,5 +133,13 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
           this.router.navigate(['/learn']);
         });
     }, 2000);
+  }
+  setTelemetryData() {
+    this.submitInteractEdata = {
+      id: 'enroll-batch',
+      type: 'click',
+      pageid: 'course-consumption'
+    };
+    this.telemetryCdata = [{ 'type': 'batch', 'id': this.batchDetails.identifier}];
   }
 }

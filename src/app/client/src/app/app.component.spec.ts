@@ -16,6 +16,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { RouterTestingModule } from '@angular/router/testing';
 import * as _ from 'lodash';
 import { ProfileService } from '@sunbird/profile';
+import { CacheService } from 'ng2-cache-service';
 
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 
@@ -49,7 +50,7 @@ describe('AppComponent', () => {
       providers: [
         { provide: Router, useClass: RouterStub},
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        ToasterService, TenantService,
+        ToasterService, TenantService, CacheService,
         UserService, ConfigService, LearnerService, BrowserCacheTtlService,
         PermissionService, ResourceService, CoursesService, OrgDetailsService, ProfileService,
         TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, ConceptPickerService, SearchService, ContentService],
@@ -150,6 +151,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
           ver: '1.1.12',
           pid: configService.appConfig.TELEMETRY.PID
         },
+        batchsize: 2,
         endpoint: configService.urlConFig.URLS.TELEMETRY.SYNC,
         apislug: configService.urlConFig.URLS.CONTENT_PREFIX,
         host: '',
@@ -209,5 +211,4 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.ngOnInit();
     expect(component.showFrameWorkPopUp).toBeTruthy();
   }));
-
 });

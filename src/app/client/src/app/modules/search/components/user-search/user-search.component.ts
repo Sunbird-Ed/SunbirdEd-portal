@@ -1,7 +1,7 @@
 
 import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage } from '@sunbird/shared';
-import { SearchService, UserService } from '@sunbird/core';
+import { SearchService, UserService, PermissionService } from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
@@ -9,11 +9,12 @@ import * as _ from 'lodash';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { UserSearchService } from './../../services';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { ProfileService } from '@sunbird/profile';
 
 @Component({
   selector: 'app-user-search',
   templateUrl: './user-search.component.html',
-  styleUrls: ['./user-search.component.css']
+  styleUrls: ['./user-search.component.scss']
 })
 export class UserSearchComponent implements OnInit {
   private searchService: SearchService;
@@ -102,6 +103,18 @@ export class UserSearchComponent implements OnInit {
   rootOrgId: string;
   userProfile: any;
   inviewLogs: any = [];
+  selectedRoles: Array<string>;
+
+  customStyle = {
+    backgroundColor: '#ffffff',
+    border: '1px solid #fff',
+    boxShadow: '0 0 6px 0 rgba(0,0,0,0.38)',
+    borderRadius: '50%',
+    color: '#024F9D',
+    fontWeight: 'bold',
+    fontFamily: 'inherit',
+    fontSize: '48px'
+  };
   /**
      * Constructor to create injected service(s) object
      * Default method of Draft Component class
@@ -114,7 +127,8 @@ export class UserSearchComponent implements OnInit {
   constructor(searchService: SearchService, route: Router, private ngZone: NgZone,
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
     resourceService: ResourceService, toasterService: ToasterService,
-    config: ConfigService, user: UserService, userSearchService: UserSearchService) {
+    config: ConfigService, user: UserService, userSearchService: UserSearchService,
+    public permissionService: PermissionService, public profileService: ProfileService) {
     this.searchService = searchService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -133,18 +147,29 @@ export class UserSearchComponent implements OnInit {
     this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
     const searchParams = {
       filters: {
-        'objectType': ['user'],
         'rootOrgId': this.rootOrgId,
-        'grade': this.queryParams.Grades,
-        'language': this.queryParams.Medium,
-        'subject': this.queryParams.Subjects,
-        'location': this.queryParams.Location,
-        'organisations.roles': this.queryParams.Roles
+        'userType': this.queryParams.Usertype,
+        'framework.medium': this.queryParams.medium,
+        'framework.gradeLevel': this.queryParams.gradeLevel,
+        'framework.subject': this.queryParams.subject
       },
       limit: this.pageLimit,
       pageNumber: this.pageNumber,
       query: this.queryParams.key
     };
+    if (!_.isEmpty(this.selectedRoles)) { searchParams.filters['organisations.roles'] = this.selectedRoles; }
+    if (this.queryParams.School) {
+      searchParams.filters['organisations.organisationId'] = this.queryParams.School;
+    } else {
+      const locationArray = [];
+      if (this.queryParams.District) {
+        locationArray.push(typeof this.queryParams.District === 'string' ? this.queryParams.District : this.queryParams.District[0]);
+      }
+      if (this.queryParams.Block) {
+        locationArray.push(typeof this.queryParams.Block === 'string' ? this.queryParams.Block : this.queryParams.Block[0]);
+      }
+      if (!_.isEmpty(locationArray)) { searchParams.filters['locationIds'] = locationArray; }
+    }
     this.searchService.userSearch(searchParams).subscribe(
       (apiResponse: ServerResponse) => {
         if (apiResponse.result.response.count && apiResponse.result.response.content.length > 0) {
@@ -152,14 +177,14 @@ export class UserSearchComponent implements OnInit {
           this.noResult = false;
           this.searchList = apiResponse.result.response.content;
           this.totalCount = apiResponse.result.response.count;
-          this.populateOrgNameAndSetRoles();
+          this.populateLocationDetailsAndSetRoles();
           this.pager = this.paginationService.getPager(apiResponse.result.response.count, this.pageNumber, this.pageLimit);
         } else {
           this.noResult = true;
           this.showLoader = false;
           this.noResultMessage = {
-            'message': this.resourceService.messages.stmsg.m0008,
-            'messageText': this.resourceService.messages.stmsg.m0007
+            'message': 'messages.stmsg.m0008',
+            'messageText': 'messages.stmsg.m0007'
           };
         }
       },
@@ -167,40 +192,40 @@ export class UserSearchComponent implements OnInit {
         this.showLoader = false;
         this.noResult = true;
         this.noResultMessage = {
-          'messageText': this.resourceService.messages.fmsg.m0077
+          'messageText': 'messages.fmsg.m0077'
         };
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
       }
     );
   }
 
-  populateOrgNameAndSetRoles() {
-    // Getting Org Ids
-    let orgArray = [];
-    _.each(this.searchList, (key) => {
-      _.each(key.organisations, (orgKey) => {
-        orgArray.push(orgKey.organisationId);
+  populateLocationDetailsAndSetRoles() {
+    // Getting all location Ids
+    let locationArray = [];
+    _.each(this.searchList, (user) => {
+      if (_.get(this.userProfile, 'rootOrgAdmin') && this.userProfile.rootOrgAdmin === true) {
+        user.isEditableProfile = true;
+      }
+      _.each(user.locationIds, (location) => {
+        locationArray.push(location);
       });
     });
 
-    // Calling Org search API
-    orgArray = _.uniq(orgArray);
-    this.searchService.getOrganisationDetails({ orgid: orgArray }).subscribe(
-      (orgApiResponse: any) => {
+    // Calling location search and setting location details to search list
+    if (!_.isEmpty(locationArray)) {
+      locationArray = _.uniq(locationArray);
+      const requestData = { 'filters': { id: locationArray } };
+      this.profileService.getUserLocation(requestData).subscribe(res => {
         _.each(this.searchList, (user) => {
-          _.each(user.organisations, (org) => {
-            if (this.userProfile.rootOrgAdmin === true) {
-              user.isEditableProfile = true;
-            }
-            const orgNameAndId = _.find(orgApiResponse.result.response.content, (organisation) => {
-              return organisation.id === org.organisationId;
+          _.each(user.locationIds, (location) => {
+            const locations = _.find(res.result.response, (loc) => {
+              return loc.id === location;
             });
-            // Setting Org Name
-            if (orgNameAndId) { org.orgName = orgNameAndId.orgName; }
+            if (locations) { user[locations.type] = locations; }
           });
         });
-      }
-    );
+      });
+    }
   }
 
   downloadUser() {
@@ -273,7 +298,19 @@ export class UserSearchComponent implements OnInit {
               this.pageNumber = Number(bothParams.params.pageNumber);
             }
             this.queryParams = { ...bothParams.queryParams };
-            this.populateUserSearch();
+            this.selectedRoles = [];
+            if (this.queryParams.Roles) {
+              this.permissionService.permissionAvailable$.subscribe(params => {
+                if (params === 'success') {
+                  _.forEach(this.permissionService.allRoles, (role) => {
+                    if (this.queryParams.Roles.includes(role.roleName)) { this.selectedRoles.push(role.role); }
+                  });
+                  this.populateUserSearch();
+                }
+              });
+            } else {
+              this.populateUserSearch();
+            }
           });
       }
     });

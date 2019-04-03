@@ -4,7 +4,7 @@ import { ResourceService } from '@sunbird/shared';
 @Component({
   selector: 'app-public-footer',
   templateUrl: './public-footer.component.html',
-  styleUrls: ['./public-footer.component.css']
+  styleUrls: ['./public-footer.component.scss']
 })
 export class PublicFooterComponent implements OnInit {
 

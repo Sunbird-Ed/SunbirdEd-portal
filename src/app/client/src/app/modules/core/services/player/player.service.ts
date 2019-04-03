@@ -133,6 +133,44 @@ export class PlayerService {
     }));
   }
 
+  updateContentBodyForReviewer(data) {
+    // data object is body of the content after JSON.parse()
+    let parsedData;
+    try {
+      parsedData = JSON.parse(data);
+    } catch {
+      parsedData = null;
+    }
+    if (!parsedData) {
+      return data;
+    }
+    const questionSetPluginId = 'org.ekstep.questionset';
+    const questionPluginId = 'org.ekstep.question';
+    // checking content has questionset plugin dependency
+    const isQuestionSetPluginExist = parsedData.theme['plugin-manifest']['plugin'].filter((plugin) => {
+        return plugin.id !== questionSetPluginId;
+    });
+
+    if (isQuestionSetPluginExist) {
+        // checking each stage for questionset plugin
+        parsedData.theme['stage'].forEach((stage) =>  {
+            if (stage[questionSetPluginId]) {
+                // checking each questionset plugin inside a stage
+                stage[questionSetPluginId].forEach( (questionSetData) => {
+                    const questionSetConfigData = JSON.parse(questionSetData.config.__cdata);
+                    const actualNumberOfQuestions = questionSetData[questionPluginId].length;
+                    // ensuring total items (display items ) always equval to number of questions inside question set
+                    questionSetConfigData.total_items = actualNumberOfQuestions;
+                    // ensuring shuffle is always off for the reviewer
+                    questionSetConfigData.shuffle_questions = false;
+                    questionSetData.config.__cdata = JSON.stringify(questionSetConfigData);
+                });
+            }
+        });
+    }
+    return JSON.stringify(parsedData);
+  }
+
   playContent(content) {
     this.navigationHelperService.storeResourceCloseUrl();
     setTimeout(() => { // setTimeOut is used to trigger telemetry interact event as changeDetectorRef.detectChanges() not working.
@@ -140,7 +178,7 @@ export class PlayerService {
         if (content.contentType !== this.configService.appConfig.PLAYER_CONFIG.contentType.Course) {
           this.router.navigate(['/resources/play/collection', content.identifier]);
         } else if (content.batchId) {
-          this.router.navigate(['/learn/course', content.courseId, 'batch', content.batchId]);
+          this.router.navigate(['/learn/course', content.courseId || content.identifier, 'batch', content.batchId]);
         } else {
           this.router.navigate(['/learn/course', content.identifier]);
         }

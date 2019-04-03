@@ -1,0 +1,56 @@
+@import "variables";
+
+.divider {
+  color: $text-gray;
+
+  &:hover {
+    color: $text-gray;
+  }
+}
+
+.close {
+  font-size: 1.2rem;
+  color: $primary-color;
+}
+
+.ui.menu {
+  &.text {
+    .item {
+      padding: 0.35714286em 0.86em;
+      color: $menuitem-color;
+
+      &:hover,
+      &:focus {
+        color: $primary-color;
+        outline: none;
+      }
+
+      &.active {
+        font-weight: bold;
+        color: $primary-color;
+
+        &:hover,
+        &:focus {
+          opacity: 0.9;
+        }
+      }
+    }
+  }
+  &.vertical {
+    .active.item {
+      color: $primary-color;
+      font-weight: bold;
+      background: none;
+    }
+  }
+}
+
+.logout-btn {
+  position: fixed !important;
+  bottom: 0;
+  width: 100%;
+  font-weight: bold !important;
+  color: $primary-color !important;
+  background-color: $white-color;
+  border-top: 1px solid rgba(34,36,38, 0.15) !important;
+}

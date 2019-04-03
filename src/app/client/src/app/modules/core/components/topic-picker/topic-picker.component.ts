@@ -1,5 +1,8 @@
 import { Component, OnInit, Output, Input, EventEmitter, OnDestroy, AfterViewInit } from '@angular/core';
 import * as _ from 'lodash';
+import { Subscription } from 'rxjs';
+import { ResourceService } from '@sunbird/shared';
+
 interface TopicTreeNode {
   id: string;
   name: string;
@@ -9,7 +12,7 @@ interface TopicTreeNode {
 @Component({
   selector: 'app-topic-picker',
   templateUrl: './topic-picker.component.html',
-  styleUrls: ['./topic-picker.component.css']
+  styleUrls: ['./topic-picker.component.scss']
 })
 export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -23,7 +26,12 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public placeHolder: string;
 
-  constructor() {
+  public selectedNodes: any;
+
+  resourceDataSubscription: Subscription;
+
+  constructor(public resourceService: ResourceService) {
+    this.resourceService = resourceService;
   }
   ngOnInit() {
     const selectedTopics = _.reduce(this.selectedTopics, (collector, element) => {
@@ -36,12 +44,19 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
     }, { formated: [], unformatted: [] });
     this.formatSelectedTopics(this.formTopic.range, selectedTopics.unformatted, selectedTopics.formated);
     this.selectedTopics =  selectedTopics.formated;
+    this.selectedNodes = {...selectedTopics.formated};
     this.topicChange.emit(this.selectedTopics);
-    this.placeHolder = this.selectedTopics.length + ' topics selected';
+    this.resourceDataSubscription = this.resourceService.languageSelected$
+      .subscribe(item => {
+        this.initTopicPicker(this.formatTopics(this.formTopic.range));
+        this.placeHolder = this.selectedTopics.length + ' ' + this.resourceService.frmelmnts.lbl.topics +
+        ' ' + this.resourceService.frmelmnts.lbl.selected;
+      }
+    );
   }
   private formatSelectedTopics(topics, unformatted, formated) {
     _.forEach(topics, (topic) => {
-      if (unformatted.includes(topic.identifier)) {
+      if (unformatted.includes(topic.name)) {
         formated.push({
           identifier: topic.identifier,
           name: topic.name
@@ -58,10 +73,17 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
   private initTopicPicker(data: Array<TopicTreeNode>) {
     $('.topic-picker-selector').treePicker({
       data: data,
-      name: 'Topics',
-      noDataMessage: 'No Topics/SubTopics found',
-      picked: _.map(this.selectedTopics, 'identifier'),
+      name: this.resourceService.frmelmnts.lbl.topics,
+      noDataMessage: this.resourceService.messages.fmsg.m0089,
+      submitButtonText: this.resourceService.frmelmnts.lbl.done,
+      cancelButtonText: this.resourceService.frmelmnts.btn.cancelCapitalize,
+      removeAllText: this.resourceService.frmelmnts.lbl.removeAll,
+      chooseAllText: this.resourceService.frmelmnts.lbl.chooseAll,
+      searchText: this.resourceService.frmelmnts.prmpt.search,
+      selectedText: this.resourceService.frmelmnts.lbl.selected,
+      picked: _.map(this.selectedNodes, 'id'),
       onSubmit: (selectedNodes) => {
+        this.selectedNodes = selectedNodes;
         this.selectedTopics = _.map(selectedNodes, node => ({
           identifier: node.id,
           name: node.name

@@ -1,13 +1,16 @@
 @import "variables";
 
 .ui.breadcrumb {
-    font-size: 0.85rem;
+  font-size: 0.85rem;
+  line-height: 1em;
 }
+
 .ui.breadcrumb a,
 .ui.breadcrumb .active.section {
-    color: $link-color;
-    font-weight: bold;
+  color: $primary-color;
+  font-weight: bold;
 }
+
 .ui.breadcrumb .divider {
-    color: $link-color;
+  color: $primary-color;
 }

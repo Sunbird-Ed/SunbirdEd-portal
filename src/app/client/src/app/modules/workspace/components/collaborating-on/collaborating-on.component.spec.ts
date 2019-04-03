@@ -28,7 +28,8 @@ describe('CollaboratingOnComponent', () => {
       'smsg': {
         'm0006': 'Content deleted successfully...'
       }
-    }
+    },
+    languageSelected$: observableOf({})
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
@@ -71,8 +72,10 @@ describe('CollaboratingOnComponent', () => {
     fixture = TestBed.createComponent(CollaboratingOnComponent);
     component = fixture.componentInstance;
   });
-  it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
+  it('should call search api and returns result count more than 1',
+  inject([SearchService, WorkSpaceService], (searchService, workSpaceService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountTwo));
+    spyOn(workSpaceService, 'getContentLockList').and.callFake(() => observableOf({result: {count: 0}}));
     component.fecthAllContent(9, 1, bothParams);
     fixture.detectChanges();
     expect(component.collaboratingContent).toBeDefined();
@@ -102,7 +105,7 @@ describe('CollaboratingOnComponent', () => {
     expect(component.showLoader).toBeFalsy();
     expect(component.noResult).toBeTruthy();
     expect(component.showError).toBeFalsy();
-    expect(component.noResultMessage.messageText).toBe(resourceBundle.messages.stmsg.m0123);
+    expect(component.noResultMessage.messageText).toBe('messages.stmsg.m0123');
   }));
 
   it('should call fetchall content method and change the route  ', inject([ConfigService, Router],
@@ -148,10 +151,12 @@ describe('CollaboratingOnComponent', () => {
   });
   it('should open  editor on edit icon click when status is not processing  ', inject([WorkSpaceService, Router],
     (workSpaceService, route, http) => {
+      spyOn(document, 'getElementById').and.returnValue('true');
+      const userService = TestBed.get(UserService);
+      userService._userData$.next({ err: null, userProfile: Response.userData });
       spyOn(component, 'contentClick').and.callThrough();
-      component.contentClick(Response.searchSuccessWithCountTwo.result.content[1]);
-      expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/collection',
-        'do_2124341006465925121871', 'TextBook', 'collaborating-on', 'NCF']);
       fixture.detectChanges();
+      component.contentClick(Response.searchSuccessWithCountTwo.result.content[1]);
+      expect(component.showLockedContentModal).toBeTruthy();
   }));
 });

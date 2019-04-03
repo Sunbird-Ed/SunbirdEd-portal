@@ -17,8 +17,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-create-course-batch',
-  templateUrl: './create-course-batch.component.html',
-  styleUrls: ['./create-course-batch.component.css']
+  templateUrl: './create-course-batch.component.html'
 })
 
 export class CreateCourseBatchComponent implements OnInit, OnDestroy {

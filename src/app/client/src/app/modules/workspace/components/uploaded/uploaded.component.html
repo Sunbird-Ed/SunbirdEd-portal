@@ -31,12 +31,42 @@
 </div>
 
 <ng-template let-context let-modal="modal" #modalTemplate>
-  <div class="header"> {{resourceService?.frmelmnts?.lbl?.deletecontent}}</div>
-  <div class="content">
-    <p>{{resourceService?.frmelmnts?.lbl?.deleteconfirm}}</p>
+  <div class="sb-modal sb-error">
+    <div class="ui modal visible active small">
+      <i class="icon close" (click)="modal.deny('denied')" tabindex="0"></i>
+
+      <!--Header-->
+      <div class="sb-modal-header">
+        {{resourceService?.frmelmnts?.lbl?.deletecontent}}
+      </div>
+      <!--/Header-->
+
+      <!--Content-->
+      <div class="sb-modal-content">
+        <p>{{resourceService?.frmelmnts?.lbl?.deleteconfirm}}</p>
+      </div>
+      <!--/Content-->
+
+      <!--Actions-->
+      <div class="sb-modal-actions">
+        <button 
+          class="sb-btn sb-btn-normal sb-btn-error" 
+          (click)="modal.approve('approved')" 
+          autofocus
+        >
+          {{resourceService?.frmelmnts?.btn?.yes}}
+        </button>
+        <button 
+          class="sb-btn sb-btn-normal sb-btn-outline-error" 
+          (click)="modal.deny('denied')"
+        >
+          {{resourceService?.frmelmnts?.btn?.no}}
+        </button>
+        
+      </div>
+      <!--/Actions-->
   </div>
-  <div class="actions">
-    <button class="ui red button" (click)="modal.deny('denied')">No</button>
-    <button class="ui primary button" (click)="modal.approve('approved')" autofocus>Yes</button>
-  </div>
+</div>
 </ng-template>
+
+<app-contentlock-info-popup [content]="lockPopupData" (closeEvent)="onCloseLockInfoPopup($event)" *ngIf="showLockedContentModal"></app-contentlock-info-popup>

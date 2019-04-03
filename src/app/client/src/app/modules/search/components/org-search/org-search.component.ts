@@ -11,8 +11,7 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
 
 @Component({
   selector: 'app-org-search',
-  templateUrl: './org-search.component.html',
-  styleUrls: ['./org-search.component.css']
+  templateUrl: './org-search.component.html'
 })
 export class OrgSearchComponent implements OnInit {
 
@@ -153,8 +152,8 @@ export class OrgSearchComponent implements OnInit {
           this.noResult = true;
           this.showLoader = false;
           this.noResultMessage = {
-            'message': this.resourceService.messages.stmsg.m0008,
-            'messageText': this.resourceService.messages.stmsg.m0007
+            'message': 'messages.stmsg.m0008',
+            'messageText': 'messages.stmsg.m0007'
           };
         }
       },
@@ -162,7 +161,7 @@ export class OrgSearchComponent implements OnInit {
         this.showLoader = false;
         this.noResult = true;
         this.noResultMessage = {
-          'messageText': this.resourceService.messages.fmsg.m0077
+          'messageText': 'messages.fmsg.m0077'
         };
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
       }

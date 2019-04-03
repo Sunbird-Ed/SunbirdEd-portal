@@ -1,27 +1,26 @@
-<div class="ui grid">
-  <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
-    <div class="ui text centered inline loader mt-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
-  </div>
-  <div *ngIf="showPlayer" class="row">
-    <div class="twelve wide column">
-      <div class="ui grid" id="app-player-collection-renderer">
-        <div class="one wide column"></div>
-        <div class="ten wide column">
-          <span class="ui HomeAccordianHeading m-responsive-cp left floated header">{{contentTitle}}</span>
-          <h5 appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="objectContentInteract"
-            class="ui right floated basic icon circular button  mouse-pointer" (click)="closeContentPlayer()">
-            <i class="ui remove icon"></i>
-          </h5>
-        </div>
-        <div class="one wide column"></div>
+<div class="ui container mt-30">
+  <div class="ui grid">
+    <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
+      <div class="ui text centered inline loader mt-40">
+        {{resourceService.frmelmnts.lbl.copycontent}}
       </div>
-      <div class="ui grid">
-        <div class="one wide column"></div>
-        <div class="ten wide column">
-          <app-player class="content-player" [playerConfig]="playerConfig | async"></app-player>
+    </div>
+    <div class="row" *ngIf="showPlayer">
+      <div class="twelve wide column">
+        <div class="ui grid" id="app-player-collection-renderer">
+          <div class="twelve wide column">
+            <h1 class="ui header small HomeAccordianHeading m-responsive-cp left floated header">
+              {{contentTitle}}
+            </h1>
+            <h5 appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="objectContentInteract"
+              class="ui right floated basic icon circular button mouse-pointer" (click)="closeContentPlayer()">
+              <i class="ui remove icon"></i>
+            </h5>
+          </div>
+          <div class="twelve wide column">
+            <app-player class="content-player" [playerConfig]="playerConfig | async"></app-player>
+          </div>
         </div>
-        <div class="one wide column"></div>
-      </div>
       <div class="ui row pt-0">
         <div class="ui twelve column grid pr-0">
           <div class="one wide tablet only one wide computer only column"></div>
@@ -48,24 +47,21 @@
     <div *ngIf="triggerContentImpression" [appTelemetryImpression]="telemetryContentImpression"></div>
   </div>
   <div *ngIf="loader" class="row">
-    <div class="ten wide centered column">
+    <div class="twelve wide centered column">
       <app-loader [data]="loaderMessage"></app-loader>
     </div>
   </div>
-  <div class="row" *ngIf="!loader">
-    <div [appTelemetryImpression]="telemetryImpression" class="one wide column"></div>
-    <div class="ten wide column">
+  <div class="row" *ngIf="!loader" [appTelemetryImpression]="telemetryImpression">
+    <div class="twelve wide column">
       <span class="ui HomeAccordianHeading m-responsive-cp left floated header">{{collectionTitle}}</span>
       <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" class="ui right floated basic icon circular button  mouse-pointer"
         (click)="closeCollectionPlayer()">
         <i class="ui remove icon"></i>
       </h5>
     </div>
-    <div class="one wide column"></div>
   </div>
   <div class="row pb-0" *ngIf="!loader">
-    <div class="one wide column"></div>
-    <div *ngIf="collectionStatus !== 'Unlisted'" class="ten wide column">
+    <div *ngIf="collectionStatus !== 'Unlisted'" class="twelve wide column">
       <div class="ui grid">
         <div class="twelve wide column">
           <div class="player-badge-alignment">
@@ -99,18 +95,14 @@
         </div>
       </div>
     </div>
-    <div class="one wide column"></div>
   </div>
   <div class="row pt-0">
-    <div class="one wide column"></div>
-    <div class="ten wide column">
+    <div class="twelve wide column">
       <app-assign-badges-content *ngIf="contentType === 'TextBook'" [data]="badgeData"></app-assign-badges-content>
     </div>
-    <div class="one wide column"></div>
   </div>
   <div class="row" *ngIf="!loader">
-    <div class="one wide column"></div>
-    <div class="ten wide column">
+    <div class="twelve wide column">
       <app-collection-tree *ngIf="collectionTreeNodes.data && collectionTreeNodes.data.children && collectionTreeNodes.data.children.length >0 ; else dataCommingSoon" (contentSelect)="OnPlayContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions">        
       </app-collection-tree>
       <ng-template #dataCommingSoon>
@@ -121,15 +113,13 @@
         </div> 
     </ng-template>
     </div>
-    <div class="one wide column"></div>
   </div>
   <div class="row">
-    <div class="one wide column"></div>
-    <div class="ten wide column">
+    <div class="twelve wide column">
       <app-collection-player-metadata *ngIf=!showPlayer [metaData]="collectionData"></app-collection-player-metadata>
     </div>
-    <div class="one wide column"></div>
   </div>
+</div>
 </div>
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
 </app-share-link>

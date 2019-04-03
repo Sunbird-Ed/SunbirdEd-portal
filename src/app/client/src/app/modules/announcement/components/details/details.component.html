@@ -77,10 +77,8 @@
           </div>
         </div>
       </div>
-      <div class="ann-details-sent-date-bg" *ngIf="announcementDetails.createdDate && !announcementDetails.hideDate">
-        <span class="ng-binding announcement-description">
+      <div class="sb-modal-actions announcement-footer mt-10 flex-dr" *ngIf="announcementDetails.createdDate && !announcementDetails.hideDate">
           {{resourceService?.frmelmnts?.lbl?.anncmntdtlssenton}} {{announcementDetails.createdDate | dateFormat}}
-        </span>
       </div>
     </div>
   </div>

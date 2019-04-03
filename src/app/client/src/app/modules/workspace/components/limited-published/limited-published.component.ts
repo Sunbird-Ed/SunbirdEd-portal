@@ -22,7 +22,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-limited-published',
   templateUrl: './limited-published.component.html',
-  styleUrls: ['./limited-published.component.css']
+  styleUrls: ['./limited-published.component.scss']
 })
 export class LimitedPublishedComponent extends WorkSpace implements OnInit {
 
@@ -84,11 +84,6 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
     * For showing pagination on unpublished list
   */
   private paginationService: PaginationService;
-
-  /**
-    * Refrence of UserService
-  */
-  private userService: UserService;
 
   /**
   * To get url, app configs
@@ -163,11 +158,10 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
     config: ConfigService, contentUtilsServiceService: ContentUtilsServiceService) {
-    super(searchService, workSpaceService);
+    super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
     this.activatedRoute = activatedRoute;
-    this.userService = userService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.config = config;
@@ -176,8 +170,8 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
       'loaderMessage': this.resourceService.messages.stmsg.m0082,
     };
     this.noResultMessage = {
-      'message': this.resourceService.messages.stmsg.m0008,
-      'messageText': this.resourceService.messages.stmsg.m0083
+      'message': 'messages.stmsg.m0008',
+      'messageText': 'messages.stmsg.m0083'
     };
     this.state = 'limited-publish';
   }
@@ -255,8 +249,10 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
   }
   public deleteConfirmModal(contentIds) {
     const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
-    config.isClosable = true;
-    config.size = 'mini';
+    config.isClosable = false;
+    config.size = 'small';
+    config.transitionDuration = 0;
+    config.mustScroll = true;
     this.modalService
       .open(config)
       .onApprove(result => {
@@ -268,6 +264,9 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
           (data: ServerResponse) => {
             this.showLoader = false;
             this.limitedPublishList = this.removeContent(this.limitedPublishList, contentIds);
+            if (this.limitedPublishList.length === 0) {
+              this.fetchLimitedPublished(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
+            }
             this.toasterService.success(this.resourceService.messages.smsg.m0006);
           },
           (err: ServerResponse) => {

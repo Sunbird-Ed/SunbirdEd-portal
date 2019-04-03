@@ -41,6 +41,11 @@ export class ContentUtilsServiceService {
       return `${this.baseUrl}resources/play/content/${contentShare.identifier}/Unlisted`;
     }
   }
+
+  getCoursePublicShareUrl (courseid) {
+    return `${this.baseUrl}explore-course/course/${courseid}`;
+  }
+
   /**
   * getPublicShareUrl
   * {string}  identifier - content or course identifier

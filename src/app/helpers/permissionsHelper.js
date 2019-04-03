@@ -39,7 +39,8 @@ let PERMISSIONS_HELPER = {
     'org/upload': ['SYSTEM_ADMINISTRATION'],
     'upload/status/': ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'],
     'type/create': ['SYSTEM_ADMINISTRATION'],
-    'type/update': ['SYSTEM_ADMINISTRATION']
+    'type/update': ['SYSTEM_ADMINISTRATION'],
+    'portal/user/v1/update': ['ORG_ADMIN']
   },
 
   getPermissions: function (reqObj) {
@@ -109,6 +110,7 @@ let PERMISSIONS_HELPER = {
         if (body.result.response.rootOrg && body.result.response.rootOrg.id) {
           reqObj.session.rootOrgId = body.result.response.rootOrg.id
           reqObj.session.rootOrghashTagId = body.result.response.rootOrg.hashTagId
+          reqObj.session.rootOrg = body.result.response.rootOrg
         }
       }
     } catch (e) {

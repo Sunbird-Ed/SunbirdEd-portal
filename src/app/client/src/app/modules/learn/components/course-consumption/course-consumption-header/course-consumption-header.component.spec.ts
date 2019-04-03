@@ -120,4 +120,20 @@ describe('CourseConsumptionHeaderComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
+  it('should call  getBatchStatus and return true if batch status is  "2" and course is not completed', () => {
+    component.enrolledBatchInfo = {status: 2};
+    component.progress = 50;
+    spyOn(component, 'getBatchStatus').and.callThrough();
+    const returnValue = component.getBatchStatus();
+    expect(component.getBatchStatus).toHaveBeenCalled();
+    expect(returnValue).toBe(true);
+  });
+  it('should call  getBatchStatus and return false if batch status is not  "2" and course is  completed', () => {
+    component.enrolledBatchInfo = {status: 1};
+    component.progress = 100;
+    spyOn(component, 'getBatchStatus').and.callThrough();
+    const returnValue = component.getBatchStatus();
+    expect(component.getBatchStatus).toHaveBeenCalled();
+    expect(returnValue).toBe(false);
+  });
 });

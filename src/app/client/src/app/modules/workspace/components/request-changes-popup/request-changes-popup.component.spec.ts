@@ -162,6 +162,7 @@ describe('RequestChangesPopupComponent', () => {
   it('should validate modal when it validation passes', () => {
     component.reasons = ['Others'];
     component.comment = 'Test';
+    component.showDefaultConfig = true;
     component.validateModal();
     expect(component.isDisabled).toBe(false);
   });

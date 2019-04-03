@@ -1,0 +1,74 @@
+/* search component styles starts here */
+
+// search with button
+.sb-search-bar {
+    position: relative;
+    display: flex;
+    margin-right: 8px;
+    &.large {
+        width: ($base-block-space * 56);
+    }
+    &.medium {
+        width: ($base-block-space * 48);
+    }
+    &.small {
+        width: ($base-block-space * 32);
+    }
+    .sb-search-btn {
+        border-radius: 0 3px 3px 0;
+        background-color: $primary-200; //#EDF4F9
+        font-size: $font-size-sm;
+        font-weight: bold;
+        color: $primary-400;
+        border: 0.5px solid #7AB4EE;
+        padding: 3px 16px;
+        border-left: 0;
+    }
+    .input-div {
+        @include size(100%,auto);
+        position: relative;
+        .sb-search-icon {
+            position: absolute;
+            top: 8px;
+            color: $gray-800;
+            height: 16px;
+            width: 16px;
+            line-height: normal;
+            left: 8px;
+        }
+        .sb-search-input {
+            @include size(100%,auto);
+            border-top-left-radius:  4px;
+            border-bottom-left-radius:  4px;
+            background-color: $white-color;
+            padding: 8px 32px;
+            font-size: 12px;
+            color: $body-color;
+            font-weight: normal;
+            border: 0.5px solid #7AB4EE;
+            min-height: 32px;
+            outline: none;
+        }
+        .sb-close-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            line-height: normal;
+            display: flex;
+            justify-content: center;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: $primary-400;
+            border: none;
+            .close {
+                height: unset;
+                width: unset;
+                font-size: 12px;
+                margin: 0;
+                position: unset;
+                left: 0;
+            }
+        }
+    }
+}

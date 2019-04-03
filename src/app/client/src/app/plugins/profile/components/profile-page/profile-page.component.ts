@@ -1,18 +1,19 @@
 import { ProfileService } from '../../services';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { UserService, PermissionService, SearchService, PlayerService, CoursesService } from '@sunbird/core';
+import { UserService, PermissionService, SearchService, PlayerService, CoursesService, OrgDetailsService } from '@sunbird/core';
 import {
   ResourceService, ConfigService, ServerResponse, IUserProfile, IUserData, ToasterService,
   UtilService
 } from '../../../../modules/shared';
 import { Subscription } from 'rxjs';
+import { mergeMap, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { MyContributions } from '../../interfaces';
 import * as _ from 'lodash';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
-
+import { CacheService } from 'ng2-cache-service';
 @Component({
   selector: 'app-profile-page',
   templateUrl: './profile-page.component.html',
@@ -25,6 +26,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   userProfile: any;
 
   @ViewChild('profileModal') profileModal;
+  @ViewChild('slickModal') slickModal;
   /**
    * Contains list of contributions
    */
@@ -37,6 +39,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   roles: Array<string>;
   showMoreRoles = true;
   showMoreTrainings = true;
+  isCustodianOrgUser = false;
   /**
    * Contains default limit to show awards
    */
@@ -70,6 +73,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     fontWeight: 'bold',
     fontFamily: 'inherit'
   };
+  showContactPopup = false;
+  showEditUserDetailsPopup = false;
+  state: string;
+  district: string;
    /**
   /**
     * Slider setting to display number of cards on the slider.
@@ -149,7 +156,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         }
       }
     ],
-    infinite: false
+    infinite: false,
+    rtl: false
   };
   inputData: any;
   /**
@@ -157,19 +165,41 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   */
   telemetryImpression: IImpressionEventInput;
   myFrameworkEditEdata: IInteractEventEdata;
+  editProfileInteractEdata: IInteractEventEdata;
+  editMobileInteractEdata: IInteractEventEdata;
+  editEmailInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
-  constructor(public resourceService: ResourceService, public coursesService: CoursesService,
+  constructor( private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
     public permissionService: PermissionService, public toasterService: ToasterService, public profileService: ProfileService,
     public userService: UserService, public configService: ConfigService, public router: Router, public utilService: UtilService,
-    public searchService: SearchService, private playerService: PlayerService, private activatedRoute: ActivatedRoute) {
+    public searchService: SearchService, private playerService: PlayerService, private activatedRoute: ActivatedRoute,
+  public orgDetailsService: OrgDetailsService) {
     this.btnArrow = 'prev-button';
   }
 
   ngOnInit() {
+    this.getCustodianOrgUser().subscribe(custodianOrgUser => {
+      this.isCustodianOrgUser = custodianOrgUser;
+    },
+    err => {
+      this.toasterService.warning(this.resourceService.messages.emsg.m0012);
+    });
+
     this.userSubscription = this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
+
+          const state = _.find(this.userProfile.userLocations, (locations) => {
+            return locations.type === 'state';
+          });
+          this.state = _.get(state, 'name') || '';
+
+          const district = _.find(this.userProfile.userLocations, (locations) => {
+            return locations.type === 'district';
+          });
+          this.district = _.get(district, 'name') || '';
+
           this.inputData =  _.get(this.userProfile, 'framework') ? _.cloneDeep(_.get(this.userProfile, 'framework')) : {};
           this.getOrgDetails();
           this.getMyContent();
@@ -194,6 +224,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       }
     };
     this.setInteractEventData();
+    this.addSlideConfig();
   }
 
   getOrgDetails() {
@@ -212,6 +243,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         }
       });
     });
+    this.roles = _.uniq(this.roles);
     orgList = _.sortBy(orgList, ['orgjoindate']);
     this.orgDetails = orgList[0];
   }
@@ -258,7 +290,20 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       );
     }
   }
-
+  addSlideConfig() {
+    this.resourceService.languageSelected$
+        .subscribe(item => {
+          if (item.value === 'ur') {
+            this.slideConfig['rtl'] = true;
+          } else {
+            this.slideConfig['rtl'] = false;
+          }
+          if (this.slickModal) {
+            this.slickModal.unslick();
+            this.slickModal.initSlick(this.slideConfig);
+          }
+    });
+  }
   private formatMyContributionData(contents) {
     _.forEach(contents, (content, key) => {
       const constantData = this.configService.appConfig.Course.otherCourse.constantData;
@@ -321,9 +366,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       this.showEdit = false;
     },
       err => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0085);
-        this.profileModal.modal.deny();
         this.showEdit = false;
+        this.toasterService.warning(this.resourceService.messages.emsg.m0012);
+        this.profileModal.modal.deny();
+        this.router.navigate(['/resources']);
+        this.cacheService.set('showFrameWorkPopUp', 'installApp' );
       });
   }
 
@@ -366,9 +413,33 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     }
   }
 
+  private getCustodianOrgUser() {
+    return this.orgDetailsService.getCustodianOrg().pipe(map((custodianOrg) => {
+      if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
+        return true;
+      }
+      return false;
+    }));
+  }
+
   setInteractEventData() {
     this.myFrameworkEditEdata = {
       id: 'profile-edit-framework',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.editProfileInteractEdata = {
+      id: 'profile-edit-address',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.editMobileInteractEdata = {
+      id: 'profile-edit-mobile',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.editEmailInteractEdata = {
+      id: 'profile-edit-emailId',
       type: 'click',
       pageid: 'profile-read'
     };

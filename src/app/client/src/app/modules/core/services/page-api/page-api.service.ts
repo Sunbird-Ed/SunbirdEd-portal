@@ -52,29 +52,38 @@ export class PageApiService {
      _.has(requestParam.sort_by, 'createdOn'))) {
       return observableOf(pageData);
     } else {
-      const option: any = {
-        url: this.config.urlConFig.URLS.PAGE_PREFIX,
-        param: { ...requestParam.params },
-        data: {
-          request: {
-            source: requestParam.source,
-            name: requestParam.name,
-            filters: requestParam.filters,
-            sort_by: requestParam.sort_by,
-            softConstraints: requestParam.softConstraints || { badgeAssertions: 1 },
-            mode: requestParam.mode
-          }
-        }
-      };
-      if (!_.isEmpty(requestParam.exists)) {
-        option.data['exists'] = requestParam.exists;
-      }
-      return this.publicDataService.post(option).pipe(map((data) => {
-        this.setData(data, requestParam);
-        return { sections : data.result.response.sections };
-      }));
+      return this.getPageSectionData(requestParam);
     }
   }
+
+  getBatchPageData(requestParam: IPageSection) {
+    return this.getPageSectionData(requestParam);
+  }
+
+  getPageSectionData (requestParam: IPageSection) {
+    const option: any = {
+      url: this.config.urlConFig.URLS.PAGE_PREFIX,
+      param: { ...requestParam.params },
+      data: {
+        request: {
+          source: requestParam.source,
+          name: requestParam.name,
+          filters: requestParam.filters,
+          sort_by: requestParam.sort_by,
+          softConstraints: requestParam.softConstraints,
+          mode: requestParam.mode
+        }
+      }
+    };
+    if (!_.isEmpty(requestParam.exists)) {
+      option.data['exists'] = requestParam.exists;
+    }
+    return this.publicDataService.post(option).pipe(map((data) => {
+      this.setData(data, requestParam);
+      return { sections : data.result.response.sections };
+    }));
+  }
+
   setData(data, requestParam) {
     const sort_by = _.has(requestParam.sort_by, 'lastUpdatedOn') || _.has(requestParam.sort_by, 'createdOn');
     if (_.isEmpty(requestParam.filters) && !sort_by) {

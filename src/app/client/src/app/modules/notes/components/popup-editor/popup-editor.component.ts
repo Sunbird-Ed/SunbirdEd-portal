@@ -17,7 +17,7 @@ import { Subject } from 'rxjs';
 @Component({
   selector: 'app-popup-editor',
   templateUrl: './popup-editor.component.html',
-  styleUrls: ['./popup-editor.component.css'],
+  styleUrls: ['./popup-editor.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 
@@ -162,8 +162,7 @@ export class PopupEditorComponent implements OnInit, AfterViewInit, OnDestroy {
           updatedBy: this.userService.userid
         }
       };
-      this.noteService.create(requestData).pipe(
-        takeUntil(this.unsubscribe$))
+      this.noteService.create(requestData)
         .subscribe(
           (data: INoteData) => {
             if (data.id) {

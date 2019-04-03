@@ -1,5 +1,5 @@
 <div 
-  class="sbCard mt-20 mr-30 mb-5" 
+  class="sbCard mt-20 mb-5" 
   *ngIf="data" 
   (click)="onAction(data,data.action.onImage)" 
   appTelemetryInteract 
@@ -16,11 +16,11 @@
       <div class="meta course" *ngIf="data.contentType && data.contentType.toLowerCase() === 'course'">
         <div class="topic mb-15" *ngIf="data.topic" title="{{data.topic}}">
           {{data.topic | slice:0:40}} 
-          <span *ngIf="data.topic && data.topic.length >= 30">...</span>
+          <span *ngIf="data.topic && data.topic.length > 40">...</span>
         </div>
         <div class="subtopic" *ngIf="data.subTopic" title="{{data.subTopic}}">
           {{data.subTopic | slice:0:40}} 
-          <span *ngIf="data.subTopic && data.subTopic.length >= 30">...</span>
+          <span *ngIf="data.subTopic && data.subTopic.length > 40">...</span>
         </div>
       </div>
       <!--/Course-->
@@ -40,14 +40,17 @@
     </div>
     <div class="sub-header">
         <h4 class="title">
-          {{data.name | slice:0:40 }}
-          <span *ngIf="data.name && data.name.length >= 40">...</span>
+          {{data.name | slice:0:60 }}
+          <span *ngIf="data.name && data.name.length > 60">...</span>
         </h4>
         <div class="creator ellipsis">
           {{data.orgDetails?.orgName}}
         </div>
     </div>
-    <div *ngIf="data.maxCount && data.progress > 0">
-    <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount" ></sui-progress>
-  </div>
+    <div *ngIf="data.maxCount && data.progress > 0 else blank">
+      <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount" ></sui-progress>
+    </div>
+    <ng-template #blank>
+      <div class="py-2"></div>
+    </ng-template>
 </div>

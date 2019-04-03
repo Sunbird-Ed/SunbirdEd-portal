@@ -1,31 +1,32 @@
-<div class="ui stackable grid landing-page-section">
-    <div class="one wide column"></div>
-    <div class="five wide column landing-page-image">
-        <img class="ui fluid image" src="{{'assets/images/landingPage.jpg' |  cdnprefixurl}} " />
-    </div>
-    <div class="five wide column">
-        <div class="ui left aligned container landing-page-description">
-            <p>In 2000, ten years later, the international community met again at the World Education Forum in Dakar, Senegal,
-                an event which drew 1100 participants.</p>
-            <p>The forum took stock of the fact that many countries were far from having reached the goals established at the
-                World Conference on Education for All in 1990.</p>
-            <br/>
-            <p>The participants agreed on the Dakar Framework for Action which re-affirmed their commitment to achieving Education
-                for All by the year 2015, and identified six key measurable education goals which aim to meet the learning
-                needs of all children, youth and adults by 2015.</p>
-            <br/>
-            <a class="expand-or-minimize">Read More > </a>
+<div class="landing-page-section mb-20">
+    <div class="ui container">
+        <div class="ui stackable grid py-20">
+            <div class="six wide column">
+                <img class="ui fluid image" src="{{'assets/images/landingPage.jpg' |  cdnprefixurl}} " />
+            </div>
+            <div class="six wide column">
+                <p>In 2000, ten years later, the international community met again at the World Education Forum in Dakar, Senegal,
+                    an event which drew 1100 participants.</p>
+                <p>The forum took stock of the fact that many countries were far from having reached the goals established at the
+                    World Conference on Education for All in 1990.</p>
+                <br/>
+                <p>The participants agreed on the Dakar Framework for Action which re-affirmed their commitment to achieving Education
+                    for All by the year 2015, and identified six key measurable education goals which aim to meet the learning
+                    needs of all children, youth and adults by 2015.</p>
+                <br/>
+                <a href="#">Read More > </a>
+            </div>
         </div>
     </div>
-    <div class="one wide column"></div>
 </div>
+
+<div class="ui container">
 <div class="ui stackable grid">
-    <div class="one wide column"></div>
-    <div class="seven wide column ">
+    <div class="eight wide column ">
         <div class="ui segment">
             <div class="header p-10 segment-heading">
                 <span>Featured Articles</span>
-                <a class="expand-or-minimize right-float">View All</a>
+                <a href="#" class="right-floated">View All</a>
             </div>
             <br>
             <div class="ui two stackable cards">
@@ -70,12 +71,12 @@
             </div>
         </div>
     </div>
-    <div class="three wide column">
+    <div class="four wide column">
         <div class="ui segment">
             <div class="content">
                 <div class="header segment-heading">
                     <span>Announcements</span>
-                    <a class="right-float expand-or-minimize">View All</a>
+                    <a class="right-float">View All</a>
                 </div>
                 <div class="description mt-10">
                     <div class="ui relaxed divided list">
@@ -104,12 +105,12 @@
             <div class="content">
                 <div class="header segment-heading">
                     <span>Calendar</span>
-                    <a class="right-float expand-or-minimize">View All</a>
+                    <a class="right-float">View All</a>
                 </div>
             </div>
         </div>
         <button type="button" onclick="openModal()" class="ui basic fluid button mt-5">ORGANIZATIONS</button>
     </div>
-    <div class="one wide column"></div>
+</div>
 </div>
 <router-outlet></router-outlet>

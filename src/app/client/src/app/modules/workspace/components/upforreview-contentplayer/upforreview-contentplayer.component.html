@@ -35,11 +35,11 @@
         <div *ngIf="permissionService.permissionAvailable && contentData && 
           (contentData.status === 'Review' || contentData.status === 'FlagReview') && userId !== contentData.createdBy"
           appPermission [permission]="['CONTENT_REVIEWER', 'CONTENT_REVIEW','BOOK_REVIEWER','FLAG_REVIEWER']">
-          <button (click)="checkComments()" class="ui right floated primary button mouse-pointer"
+          <button (click)="checkComments()" class="ui right floated sb-btn sb-btn-primary sb-btn-normal"
           appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="publishInteractEdata">
             {{resourceService?.frmelmnts?.btn?.publish}}
           </button>
-          <button [routerLink]="['requestchanges']" class="ui right floated primary button mouse-pointer"
+          <button [routerLink]="['requestchanges']" class="ui right floated sb-btn sb-btn-primary sb-btn-normal"
           appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="requestForChangesInteractEdata">
             {{resourceService?.frmelmnts?.btn?.requestChanges}}
           </button>
@@ -74,8 +74,25 @@
   </div>
 </div>
 <!-- publish warning modal -->
-<sui-modal [isClosable]="false" [size]="'small'" *ngIf="showPublishWarningModal" #publishWarningModal>
-  <div class="scrolling content">
+
+<sui-modal
+  [mustScroll]="true" 
+  [isClosable]="true"
+  [transitionDuration]="0"
+  [size]="'small'"
+  class="sb-modal"
+  appBodyScroll
+  *ngIf="showPublishWarningModal" 
+  #publishWarningModal
+  >
+  <!--Header-->
+  <div class="sb-modal-header">
+    &nbsp;
+  </div>
+  <!--/Header-->
+
+  <!--Content-->
+  <div class="sb-modal-content">
     <div class="ui centered grid">
       <div class="row">
         <div class="ui basic icon circular button cursor-pointer">
@@ -89,16 +106,32 @@
       </div>
     </div>
   </div>
-  <div class="actions footer">
-    <div class="ui buttons">
-      <button class="ui orange button" type="button " (click)="showPublishWarningModal = false"
-      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="reviewCommentsWarningNoInteractEdata"
-      >{{resourceService?.frmelmnts?.btn?.no}}</button>
-      <div class="or"></div>
-      <button class="ui blue button " type="button " (click)="showPublishWarningModal = false; goToPublish();"
-      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="reviewCommentsWarningYesInteractEdata"
-      >{{resourceService?.frmelmnts?.btn?.yes}}</button>
-    </div>
+  <!--/Content-->
+
+  <!--Actions-->
+  <div class="sb-modal-actions">
+    <button 
+      class="sb-btn sb-btn-normal sb-btn-primary" 
+      type="button " 
+      (click)="showPublishWarningModal = false; goToPublish();"
+      appTelemetryInteract 
+      [telemetryInteractObject]="telemetryInteractObject" 
+      [telemetryInteractEdata]="reviewCommentsWarningYesInteractEdata"
+    >
+      {{resourceService?.frmelmnts?.btn?.yes}}
+    </button>
+    <button 
+      class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+      type="button " 
+      (click)="showPublishWarningModal = false"
+      appTelemetryInteract 
+      [telemetryInteractObject]="telemetryInteractObject" 
+      [telemetryInteractEdata]="reviewCommentsWarningNoInteractEdata"
+      >
+        {{resourceService?.frmelmnts?.btn?.no}}
+      </button>
   </div>
+  <!--Actions-->
+
 </sui-modal>
 <router-outlet></router-outlet>

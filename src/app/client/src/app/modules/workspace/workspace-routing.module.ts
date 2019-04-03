@@ -4,7 +4,8 @@ import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, CollectionEditorComponent, ContentEditorComponent,
   GenericEditorComponent, UploadedComponent, DataDrivenComponent, FlaggedComponent, UpForReviewComponent,
-  BatchListComponent, UpdateBatchComponent, UpforreviewContentplayerComponent, ReviewsubmissionsContentplayerComponent,
+  BatchListComponent, BatchPageSectionComponent, UpdateBatchComponent,
+  UpforreviewContentplayerComponent, ReviewsubmissionsContentplayerComponent,
   FlagConentplayerComponent, PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
   AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent} from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
@@ -87,15 +88,29 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'edit/collection/:contentId/:type/:state/:framework', component: CollectionEditorComponent, canActivate: [AuthGuard],
+        path: 'edit/collection/:contentId/:type/:state/:framework/:contentStatus',
+          component: CollectionEditorComponent, canActivate: [AuthGuard],
         data: { roles: 'workspace' }
       },
       {
-        path: 'edit/content/:contentId/:state/:framework', component: ContentEditorComponent,
+        path: 'edit/content/:contentId/:state/:framework/:contentStatus', component: ContentEditorComponent,
         canActivate: [AuthGuard], data: { roles: 'workspace' }
       },
       {
         path: 'edit/generic', component: GenericEditorComponent,
+        canActivate: [AuthGuard], data: { roles: 'workspace' }
+      },
+      {
+        path: 'edit/generic/:contentId/:state/:framework/:contentStatus', component: GenericEditorComponent,
+        canActivate: [AuthGuard], data: { roles: 'workspace' }
+      },
+      {
+        path: 'edit/collection/:contentId/:type/:state/:framework',
+          component: CollectionEditorComponent, canActivate: [AuthGuard],
+        data: { roles: 'workspace' }
+      },
+      {
+        path: 'edit/content/:contentId/:state/:framework', component: ContentEditorComponent,
         canActivate: [AuthGuard], data: { roles: 'workspace' }
       },
       {
@@ -173,12 +188,12 @@ const routes: Routes = [
         }
       },
       {
-        path: 'batches/:pageNumber', component: BatchListComponent, canActivate: [AuthGuard],
+        path: 'batches/:category', component: BatchPageSectionComponent, canActivate: [AuthGuard],
         data: {
           telemetry: {
             env: telemetryEnv, pageid: 'workspace-course-batch', subtype: 'paginate', uri: '/workspace/batches',
             type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
-          }, roles: 'coursebacthesRole',
+          }, roles: 'courseBatchRoles',
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
         },
         children: [{
@@ -187,7 +202,7 @@ const routes: Routes = [
             telemetry: {
               env: telemetryEnv, pageid: 'batch-edit', uri: '/update/batch/',
               type: 'detail', mode: 'create', object: { type: objectType, ver: '1.0' }
-            }, roles: 'coursebacthesRole',
+            }, roles: 'courseBatchRoles',
             breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
           }
         }]
@@ -212,18 +227,17 @@ const routes: Routes = [
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
         }
       },
-      // {
-      //   path: 'collaborating-on/:pageNumber', component: CollaboratingOnComponent, canActivate: [AuthGuard],
-      //   data: {
-      //     telemetry: {
-      //       env: telemetryEnv, pageid: 'workspace-content-collaborating-on',
-      // subtype:'paginate', uri: 'workspace/content/collaborating-on',
-      //       type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
-      //     }, roles: 'collaboratingRole',
-      //     breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
-      //   }
-      // },
-      // { path: '**', redirectTo: 'create' }
+      {
+        path: 'collaborating-on/:pageNumber', component: CollaboratingOnComponent, canActivate: [AuthGuard],
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'workspace-content-collaborating-on',
+      subtype: 'paginate', uri: 'workspace/content/collaborating-on',
+            type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
+          }, roles: 'collaboratingRole',
+          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+        }
+      }
     ]
   },
   {
@@ -261,6 +275,26 @@ const routes: Routes = [
       roles: 'workspace',
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
     }
+  },
+  {
+    path: 'batches/view-all/:section/:pageNumber', component: BatchListComponent, canActivate: [AuthGuard],
+    data: {
+      telemetry: {
+        env: telemetryEnv, pageid: 'view-all', subtype: 'paginate', uri: '/workspace/content/batches/view-all',
+        type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
+      }, roles: 'courseBatchRoles',
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+    },
+    children: [{
+      path: 'update/batch/:batchId', component: UpdateBatchComponent, canActivate: [AuthGuard],
+      data: {
+        telemetry: {
+          env: telemetryEnv, pageid: 'batch-edit', uri: '/update/batch/',
+          type: 'detail', mode: 'create', object: { type: objectType, ver: '1.0' }
+        }, roles: 'courseBatchRoles',
+        breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+      }
+    }]
   }
 ];
 

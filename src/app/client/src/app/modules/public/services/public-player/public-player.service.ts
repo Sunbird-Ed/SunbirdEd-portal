@@ -108,4 +108,15 @@ export class PublicPlayerService {
       }
     }, 0);
   }
+
+  public playExploreCourse(courseId) {
+    this.navigationHelperService.storeResourceCloseUrl();
+    setTimeout(() => {
+      if (this.userService.loggedIn) {
+        this.router.navigate(['learn/course', courseId]);
+      } else {
+        this.router.navigate(['explore-course/course', courseId]);
+      }
+    }, 0);
+  }
 }

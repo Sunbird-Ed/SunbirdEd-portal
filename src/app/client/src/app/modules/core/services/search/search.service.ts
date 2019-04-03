@@ -246,7 +246,8 @@ export class SearchService {
           query: requestParam.query,
           sort_by: requestParam.sort_by,
           exists: requestParam.exists,
-          softConstraints: requestParam.softConstraints || { badgeAssertions: 1 },
+          softConstraints: requestParam.softConstraints,
+          mode: requestParam.mode,
           facets: requestParam.facets && requestParam.facets
         }
       }

@@ -1,18 +1,22 @@
-<sui-modal *ngIf='showCreateModal' (dismissed)="redirect()" [isClosable]="true" #createBatchModel>
-  <div class="header">
-    <div class="ui grid">
-      <div class="eleven wide column">
-        <span class="ui header">{{resourceService?.frmelmnts.lbl.createnewbatch}}</span>
-      </div>
-      <!-- <div class="one wide column actions">
-        <h5 class="ui basic icon circular button deny" (click)="redirect();">
-          <i class="ui remove icon"></i>
-        </h5>
-      </div> -->
-    </div>
-  </div>
+<sui-modal
+  [mustScroll]="true" 
+  [isClosable]="true"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll
+  *ngIf='showCreateModal' 
+  (dismissed)="redirect()"
+  #createBatchModel>
 
-  <div class="scrolling content" [appTelemetryImpression]="telemetryImpression">
+  <!--Header-->
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts.lbl.createnewbatch}}
+  </div>
+  <!--/Header-->
+
+  <!--Content-->
+  <div class="sb-modal-content" [appTelemetryImpression]="telemetryImpression">
     <form [formGroup]="createBatchForm" class="ui form batchAddUserForm">
       <div class="one field" [ngClass]="createBatchForm.controls['name'].invalid && createBatchForm.controls['name'].errors.required && !createBatchForm.controls['name'].pristine ? 'error': ''">
         <div class="required field">
@@ -34,13 +38,13 @@
         <div class="field">
           <div class="ui radio checkbox">
             <input type="radio" name="enrollmentType" value='invite-only' formControlName="enrollmentType">
-            <label>Invite-only</label>
+            <label>{{resourceService?.frmelmnts?.lbl?.inviteonly}}</label>
           </div>
         </div>
         <div class="field" *ngIf="courseCreator">
           <div class="ui radio checkbox">
             <input type="radio" value='open' name="enrollmentType" formControlName="enrollmentType">
-            <label>Open</label>
+            <label>{{resourceService?.frmelmnts?.lbl?.open}}</label>
           </div>
         </div>
       </div>
@@ -69,18 +73,7 @@
         </div>
       </div>
 
-      <!-- <div *ngIf="createBatchForm.value.enrollmentType !== 'open'" class="one field">
-        <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
-        <ng-template let-mentor #optionTemplate>
-          <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png'}}"> {{mentor.name}}{{mentor.otherDetail}}
-        </ng-template>
-        <sui-multi-select [isSearchable]="true" formControlName="mentors" labelField="name" valueField="id" [optionTemplate]="optionTemplate"
-          [options]="mentorList" #templated class="selection ">
-          <sui-select-option *ngFor="let mentor of templated.filteredOptions" [value]="mentor">
-          </sui-select-option>
-        </sui-multi-select>
-      </div> -->
-      <div class="one field " *ngIf="createBatchForm.value.enrollmentType !== 'open'">
+      <div class="one field">
         <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors" ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
           <input id="mentorSelList">
@@ -94,17 +87,6 @@
         </div>
       </div>
 
-      <!-- <div *ngIf="createBatchForm.value.enrollmentType !== 'open'" class="one field">
-        <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
-        <ng-template let-user #useroptionTemplate>
-          <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
-        </ng-template>
-        <sui-multi-select [isSearchable]="true" formControlName="users" labelField="name" valueField="id" [optionTemplate]="useroptionTemplate"
-          [options]="userList" #userselect class="selection ">
-          <sui-select-option *ngFor="let user of userselect.filteredOptions " [value]="user">
-          </sui-select-option>
-        </sui-multi-select>
-      </div> -->
       <div class="one field " *ngIf="createBatchForm.value.enrollmentType !== 'open'">
         <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="participants" ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
@@ -118,11 +100,27 @@
           </div>
         </div>
       </div>
-
     </form>
   </div>
-  <div class="actions">
-    <button class="ui secondary button" (click)="createBatchForm.reset()">Clear</button>
-    <button class="ui primary button" id="submitbutton" [disabled]="disableSubmitBtn" (click)="createBatch()">Create</button>
+  <!--/Content-->
+
+  <!--Actions-->
+  <div class="sb-modal-actions">
+    <button 
+      class="sb-btn sb-btn-normal sb-btn-primary" 
+      id="submitbutton" 
+      [disabled]="disableSubmitBtn" 
+      (click)="createBatch()"
+    >
+      {{resourceService?.frmelmnts?.btn?.create}}
+    </button>
+    <button 
+      class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+      (click)="createBatchForm.reset()"
+    >
+      {{resourceService?.frmelmnts?.btn?.clear}}
+    </button>
+    
   </div>
+  <!--/Actions-->
 </sui-modal>

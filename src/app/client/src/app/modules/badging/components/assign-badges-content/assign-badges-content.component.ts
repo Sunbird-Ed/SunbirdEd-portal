@@ -9,8 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-assign-badges-content',
-  templateUrl: './assign-badges-content.component.html',
-  styleUrls: ['./assign-badges-content.component.css']
+  templateUrl: './assign-badges-content.component.html'
 })
 export class AssignBadgesContentComponent implements OnInit, OnDestroy {
   showBadgeAssingModel: boolean;

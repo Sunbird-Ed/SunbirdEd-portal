@@ -6,8 +6,13 @@ import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { NgInviewModule } from 'angular-inport';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
-import { CourseComponent, ExploreCourseComponent  } from './components';
+import { PublicCourseComponent, PublicCourseConsumptionPageComponent,
+  ExploreCourseComponent, PublicCoursePlayerComponent, PublicBatchDetailsComponent } from './components';
 import { SuiModule } from 'ng2-semantic-ui';
+import { CourseConsumptionService, CourseBatchService, CourseProgressService } from '@sunbird/learn';
+import { FormsModule } from '@angular/forms';
+
+
 @NgModule({
   imports: [
     CommonModule,
@@ -17,8 +22,11 @@ import { SuiModule } from 'ng2-semantic-ui';
     NgInviewModule,
     CourseRoutingModule,
     SharedFeatureModule,
-    SuiModule
+    SuiModule,
+    FormsModule
   ],
-  declarations: [ CourseComponent, ExploreCourseComponent]
+  providers: [CourseConsumptionService, CourseBatchService, CourseProgressService],
+  declarations: [ PublicCourseComponent, PublicCourseConsumptionPageComponent, ExploreCourseComponent,
+    PublicCoursePlayerComponent, PublicBatchDetailsComponent ]
 })
 export class CourseModule { }

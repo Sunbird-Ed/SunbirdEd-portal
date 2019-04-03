@@ -15,8 +15,7 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 import { SuiModalService } from 'ng2-semantic-ui';
 @Component({
   selector: 'app-collaborating-on',
-  templateUrl: './collaborating-on.component.html',
-  styleUrls: ['./collaborating-on.component.scss']
+  templateUrl: './collaborating-on.component.html'
 })
 export class CollaboratingOnComponent extends WorkSpace implements OnInit {
   /**
@@ -49,6 +48,15 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
   */
   noResult = false;
   /**
+     * To show content locked modal
+    */
+  showLockedContentModal = false;
+  /**
+     * lock popup data for locked contents
+    */
+    lockPopupData: object;
+
+  /**
    * To show / hide error
   */
   showError = false;
@@ -60,10 +68,6 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
   * For showing pagination on draft list
   */
   private paginationService: PaginationService;
-  /**
-  * Refrence of UserService
-  */
-  private userService: UserService;
   /**
   * To get url, app configs
   */
@@ -154,11 +158,10 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
     config: ConfigService, public modalService: SuiModalService) {
-    super(searchService, workSpaceService);
+    super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
     this.activatedRoute = activatedRoute;
-    this.userService = userService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.config = config;
@@ -167,7 +170,7 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
       'loaderMessage': this.resourceService.messages.stmsg.m0124,
     };
     this.noResultMessage = {
-      'messageText': this.resourceService.messages.stmsg.m0123
+      'messageText': 'messages.stmsg.m0123'
     };
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.collaboratingOnSortingOptions;
   }
@@ -235,7 +238,7 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
       query: _.toString(bothParams.queryParams.query),
       sort_by: this.sort
     };
-    this.search(searchParams).subscribe(
+    this.searchContentWithLockStatus(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content &&
           data.result.content.length > 0) {
@@ -274,10 +277,20 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit {
     this.pageNumber = page;
     this.route.navigate(['workspace/content/collaborating-on', this.pageNumber], { queryParams: this.queryParams });
   }
+
   contentClick(content) {
-    if (content.status.toLowerCase() !== 'processing') {
-      this.workSpaceService.navigateToContent(content, this.state);
+    if (_.size(content.lockInfo) && this.userService.userid !== content.lockInfo.createdBy) {
+        this.lockPopupData = content;
+        this.showLockedContentModal = true;
+    } else {
+      if (content.status.toLowerCase() === 'draft') {  // only draft state contents need to be locked
+        this.workSpaceService.navigateToContent(content, this.state);
+      }
     }
+  }
+
+  public onCloseLockInfoPopup () {
+    this.showLockedContentModal = false;
   }
 
   inview(event) {

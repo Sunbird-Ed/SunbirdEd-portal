@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en" dir="ltr">
+
 <head>
   <meta charset="utf-8">
   <title></title>
@@ -7,38 +8,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon">
 </head>
+
 <body>
   <% if (userId) { %>
-  <input type="hidden" id="userId" value="<%=userId%>" />
-  <% } %>
-  <% if (sessionId) { %>
-    <input type="hidden" id="sessionId" value="<%=sessionId%>" />
-  <% } %>
-  <% if (appId) { %>
-  <input type="hidden" id="appId" value="<%=appId%>" />
-  <% } %>
-  <% if (cloudStorageUrls) { %>
-  <input type="hidden" id="cloudStorageUrls" value="<%=cloudStorageUrls%>" />
-  <% } %>
-  <% if (defaultTenant) { %>
-    <input type="hidden" id="defaultTenant" value="<%=defaultTenant%>" />
-  <% } %>
-  <% if (exploreButtonVisibility) { %>
-    <input type="hidden" id="exploreButtonVisibility" value="<%=exploreButtonVisibility%>" />
-  <% } %>
-    <input type="hidden" id="apiCacheTtl" value="<%=apiCacheTtl%>" />
-    <input type="hidden" id="userUploadRefLink" value="<%=userUploadRefLink%>" />
-    <input type="hidden" id="defaultTenantIndexStatus" value="<%=defaultTenantIndexStatus%>" />
-    <input type="hidden" id="enableSignup" value="<%=enableSignup%>" />
-    <input type="hidden" id="buildNumber" value="<%=buildNumber%>" />
-    <input type="hidden" id="extContWhitelistedDomains" value="<%=extContWhitelistedDomains%>"/>
-    <input type="hidden" id="deviceRegisterApi" value="<%=deviceRegisterApi%>"/>
-  
-  <input type="hidden" id="cdnUrl" value="<%=cdnUrl%>" />
-  <input type="hidden" id="theme" value="<%=theme%>" />
-  <input type="hidden" id="defaultPortalLanguage" value="<%=defaultPortalLanguage%>" />
-  <input type="hidden" id="instance" value="<%=instance%>" />
-  <input type="hidden" id="deviceId"/>
-  <app-root></app-root>
+    <input type="hidden" id="userId" value="<%=userId%>" />
+    <% } %>
+      <% if (sessionId) { %>
+        <input type="hidden" id="sessionId" value="<%=sessionId%>" />
+        <% } %>
+          <% if (appId) { %>
+            <input type="hidden" id="appId" value="<%=appId%>" />
+            <% } %>
+              <% if (cloudStorageUrls) { %>
+                <input type="hidden" id="cloudStorageUrls" value="<%=cloudStorageUrls%>" />
+                <% } %>
+                  <% if (defaultTenant) { %>
+                    <input type="hidden" id="defaultTenant" value="<%=defaultTenant%>" />
+                    <% } %>
+                      <% if (exploreButtonVisibility) { %>
+                        <input type="hidden" id="exploreButtonVisibility" value="<%=exploreButtonVisibility%>" />
+                        <% } %>
+                          <% if (helpLinkVisibility) { %>
+                            <input type="hidden" id="helpLinkVisibility" value="<%=helpLinkVisibility%>" />
+                            <% } %>
+
+                              <input type="hidden" id="apiCacheTtl" value="<%=apiCacheTtl%>" />
+                              <input type="hidden" id="userUploadRefLink" value="<%=userUploadRefLink%>" />
+                              <input type="hidden" id="defaultTenantIndexStatus" value="<%=defaultTenantIndexStatus%>" />
+                              <input type="hidden" id="buildNumber" value="<%=buildNumber%>" />
+                              <input type="hidden" id="extContWhitelistedDomains" value="<%=extContWhitelistedDomains%>" />
+                              <input type="hidden" id="deviceRegisterApi" value="<%=deviceRegisterApi%>" />
+
+                              <input type="hidden" id="cdnUrl" value="<%=cdnUrl%>" />
+                              <input type="hidden" id="theme" value="<%=theme%>" />
+                              <input type="hidden" id="defaultPortalLanguage" value="<%=defaultPortalLanguage%>" />
+                              <input type="hidden" id="instance" value="<%=instance%>" />
+                              <input type="hidden" id="deviceId" />
+                              <input type="hidden" id="googleCaptchaSiteKey" value="<%=googleCaptchaSiteKey%>" />
+                              <input type="hidden" id="videoMaxSize" value="<%=videoMaxSize%>" />
+                              <input type="hidden" id="reportsLocation" value="<%=reportsLocation%>" />
+                              <app-root></app-root>
 </body>
+
 </html>

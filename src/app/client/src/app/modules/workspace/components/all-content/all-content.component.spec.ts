@@ -30,7 +30,8 @@ describe('AllContentComponent', () => {
       'smsg': {
         'm0006': 'Content deleted successfully...'
       }
-    }
+    },
+    languageSelected$: observableOf({})
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
@@ -134,13 +135,12 @@ describe('AllContentComponent', () => {
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
   });
-  it('should open collection edition on list click   ', inject([WorkSpaceService, Router],
+  it('should open collection edition on list click', inject([WorkSpaceService, Router],
     (workSpaceService, route, http) => {
       spyOn(component, 'contentClick').and.callThrough();
       component.contentClick(Response.searchSuccessWithCountTwo.result.content[1]);
       expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/collection',
-        'do_2124341006465925121871', 'TextBook', 'allcontent', 'NCF']);
-      fixture.detectChanges();
+        'do_2124341006465925121871', 'TextBook', 'allcontent', 'NCF', 'Review']);
   }));
   it('should call delete api and get success response', inject([SuiModalService, WorkSpaceService, ActivatedRoute],
     (modalService, workSpaceService, activatedRoute, http) => {

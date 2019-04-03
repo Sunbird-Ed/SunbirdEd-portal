@@ -8,8 +8,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import { ConceptPickerService } from '@sunbird/core';
 @Component({
   selector: 'app-create-content',
-  templateUrl: './create-content.component.html',
-  styleUrls: ['./create-content.component.css']
+  templateUrl: './create-content.component.html'
 })
 export class CreateContentComponent implements OnInit {
 

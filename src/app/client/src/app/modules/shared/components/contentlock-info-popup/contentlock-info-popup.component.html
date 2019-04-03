@@ -1,0 +1,36 @@
+<sui-modal
+    [mustScroll]="true" 
+    [isClosable]="true"
+    [transitionDuration]="0"
+    [size]="'small'"
+    class="sb-modal"
+    appBodyScroll
+    (dismissed)="closeModal()" 
+    #modal
+>
+    <!--Header-->
+	<div class="sb-modal-header">
+        &nbsp;
+    </div>
+    <!--/Header-->
+    <!--Content-->
+    <div class="sb-modal-content">
+        <div class="ui center aligned segment">
+            <div class="header cardsHeading">
+                {{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':content.lockInfo.creatorInfo.name | interpolate:'{contentName}':content?.name}} 
+            </div>
+        </div>
+    </div>
+    <!--/Content-->
+    <!--Actions-->
+	<div class="sb-modal-actions">
+        <button 
+            class="sb-btn sb-btn-normal sb-btn-primary"
+            (click)="closeModal()"
+        >
+            {{resourceService.frmelmnts?.btn?.ok}}
+        </button>
+    </div>
+    <!--/Actions-->
+
+</sui-modal>

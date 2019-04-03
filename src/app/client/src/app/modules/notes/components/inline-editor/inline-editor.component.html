@@ -26,10 +26,10 @@
 
 <div class="actions">
   <button *ngIf="mode === 'create'" class="ui primary right floated button mb-15 mt-10 ng-binding" type="submit"
-    (click)="createNote();" [disabled]="!noteData.title || !noteData.note" tabindex="3">SAVE</button>
+    (click)="createNote();" [disabled]="!noteData.title || !noteData.note" tabindex="3">{{resourceService?.frmelmnts?.btn?.save}}</button>
   <button *ngIf="mode === 'create'" class="ui secondary right floated button mb-15 mt-10 ng-binding" type="submit"
-    (click)="clearNote()" tabindex="4">CLEAR</button>
+    (click)="clearNote()" tabindex="4">{{resourceService?.frmelmnts?.btn?.clear}}</button>
 
   <button [disabled]="!updateData.title || !updateData.note" *ngIf="mode === 'update'" class="ui primary right floated button mb-15 mt-10 ng-binding" type="submit"
-    (click)="updateNote()" tabindex="4">UPDATE</button>
+    (click)="updateNote()" tabindex="4">{{resourceService?.frmelmnts?.btn?.update}}</button>
 </div>

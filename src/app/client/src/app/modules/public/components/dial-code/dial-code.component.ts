@@ -9,7 +9,7 @@ import { Subject } from 'rxjs';
 @Component({
   selector: 'app-dial-code',
   templateUrl: './dial-code.component.html',
-  styleUrls: ['./dial-code.component.css']
+  styleUrls: ['./dial-code.component.scss']
 })
 export class DialCodeComponent implements OnInit, OnDestroy {
   inviewLogs: any = [];

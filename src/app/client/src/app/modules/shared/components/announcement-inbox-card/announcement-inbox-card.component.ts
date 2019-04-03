@@ -8,8 +8,7 @@ import * as moment from 'moment';
  */
 @Component({
   selector: 'app-announcement-inbox-card',
-  templateUrl: './announcement-inbox-card.component.html',
-  styleUrls: ['./announcement-inbox-card.component.css']
+  templateUrl: './announcement-inbox-card.component.html'
 })
 export class AnnouncementInboxCardComponent {
   /**

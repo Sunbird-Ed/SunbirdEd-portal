@@ -21,6 +21,8 @@ export class TelemetryInteractDirective {
 
   @Input() telemetryInteractEdata: IInteractEventEdata;
 
+  @Input() telemetryInteractCdata: Array<{}>;
+
   @HostListener('click', ['$event'])
 
   private onClick(e) {
@@ -31,6 +33,7 @@ export class TelemetryInteractDirective {
           env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
           _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
           _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env') ,
+          cdata: this.telemetryInteractCdata || [],
         },
         edata: this.telemetryInteractEdata
       };

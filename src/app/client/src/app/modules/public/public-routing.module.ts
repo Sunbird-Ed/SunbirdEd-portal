@@ -4,10 +4,10 @@ import { GetComponent } from './components/get/get.component';
 import { DialCodeComponent } from './components/dial-code/dial-code.component';
 import { PublicFooterComponent } from './components/public-footer/public-footer.component';
 import {
-  LandingPageComponent, SignupComponent, PublicContentPlayerComponent,
+  LandingPageComponent, PublicContentPlayerComponent,
   PublicCollectionPlayerComponent
 } from './components';
-import { SignupGuard, LandingpageGuard } from './services';
+import { LandingpageGuard } from './services';
 
 const routes: Routes = [
   {
@@ -17,15 +17,6 @@ const routes: Routes = [
     data: {
       telemetry: {
         env: 'public', pageid: 'landing-page', type: 'edit', subtype: 'paginate'
-      }
-    }
-  },
-  {
-    path: 'signup', component: SignupComponent,
-    canActivate: [SignupGuard],
-    data: {
-      telemetry: {
-        env: 'public', pageid: 'signup', type: 'edit', subtype: 'paginate'
       }
     }
   },
@@ -68,6 +59,18 @@ const routes: Routes = [
   },
   {
     path: ':slug/explore-course', loadChildren: './module/course/course.module#CourseModule'
+  },
+  {
+    path: ':slug/signup', loadChildren: './module/signup/signup.module#SignupModule'
+  },
+  {
+    path: 'signup', loadChildren: './module/signup/signup.module#SignupModule'
+  },
+  {
+    path: ':slug/sign-in/sso', loadChildren: './module/sign-in/sso/sso.module#SsoModule'
+  },
+  {
+    path: 'sign-in/sso', loadChildren: './module/sign-in/sso/sso.module#SsoModule'
   }
 ];
 @NgModule({

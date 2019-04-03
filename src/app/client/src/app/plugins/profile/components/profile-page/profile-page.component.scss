@@ -1,4 +1,5 @@
- 
+@import "variables"; 
+
 /* fonts */
   .font-w-bold {
     font-weight: bold !important;
@@ -44,10 +45,13 @@
 
   @media only screen and (max-width: 767px) {
     .profile-label-container {
-        max-width: 200px !important;
+      max-width: 200px !important;
     }
     .m-responsive-flex-dc {
-        flex-direction: column;
+      flex-direction: column;
+    }
+    .m-responsive-mt-15 {
+      margin-top: 15px;
     }
   }
 
@@ -70,4 +74,17 @@
 
 .line-height-24 {
   line-height: 24px !important;
+}
+
+.ui.semi-circular.update.basic.label {
+  border: 1px solid $primary-color !important;
+  border-radius: 18.5px;
+  font-size: 1.16rem;
+  padding: 11px 27px;
+  padding-right: 80px;
+  color: #9b9b9b;
+}
+
+.text-warm-grey {
+  color:#9b9b9b;
 }

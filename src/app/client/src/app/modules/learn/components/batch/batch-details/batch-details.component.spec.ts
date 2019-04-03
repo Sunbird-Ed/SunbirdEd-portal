@@ -8,7 +8,7 @@ import { CoreModule, PermissionService } from '@sunbird/core';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CourseBatchService } from './../../../services';
+import { CourseBatchService, CourseProgressService } from './../../../services';
 import {userSearch, allBatchDetails, enrolledBatch } from './batch-details.component.data';
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
@@ -40,7 +40,7 @@ describe('BatchDetailsComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), SuiModule],
       declarations: [BatchDetailsComponent],
-      providers: [CourseBatchService, { provide: Router, useClass: RouterStub },
+      providers: [CourseBatchService, CourseProgressService, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -50,18 +50,6 @@ describe('BatchDetailsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BatchDetailsComponent);
     component = fixture.componentInstance;
-  });
-
-  it('should fetch enrolled course details if course is enrolled', () => {
-    const courseBatchService = TestBed.get(CourseBatchService);
-    component.enrolledCourse = true;
-    component.courseId = 'do_1125083286221291521153';
-    component.batchId = '01250836468775321655';
-    component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
-    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(observableOf(enrolledBatch.result.response));
-    component.ngOnInit();
-    expect(component.enrolledBatchInfo).toBeDefined();
-    expect(component.enrolledBatchInfo.participant.length).toEqual(1);
   });
   it('should fetch only open batch of course if course is not enrolled and user is not mentor', () => {
     const courseBatchService = TestBed.get(CourseBatchService);

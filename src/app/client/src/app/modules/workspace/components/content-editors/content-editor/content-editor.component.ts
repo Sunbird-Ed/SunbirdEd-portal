@@ -3,13 +3,13 @@ import * as _ from 'lodash';
 import * as iziModal from 'izimodal/js/iziModal';
 import { NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserProfile, ServerResponse } from '@sunbird/shared';
 import { UserService, TenantService } from '@sunbird/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService } from './../../../services/editors/editor.service';
 import { environment } from '@sunbird/environment';
 import { WorkSpaceService } from '../../../services';
 import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest, of, throwError } from 'rxjs';
-import { map, mergeMap, tap, delay } from 'rxjs/operators';
+import { map, mergeMap, tap, delay, first } from 'rxjs/operators';
 jQuery.fn.iziModal = iziModal;
 
 /**
@@ -17,8 +17,7 @@ jQuery.fn.iziModal = iziModal;
  */
 @Component({
   selector: 'app-content-editor',
-  templateUrl: './content-editor.component.html',
-  styleUrls: ['./content-editor.component.css']
+  templateUrl: './content-editor.component.html'
 })
 export class ContentEditorComponent implements OnInit, OnDestroy {
 
@@ -31,24 +30,30 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   private browserBackEventSub;
   public contentDetails: any;
   public ownershipType: Array<string>;
+  public queryParams: object;
+  public videoMaxSize: any;
+
   /**
   * Default method of class ContentEditorComponent
   */
   constructor(private resourceService: ResourceService, private toasterService: ToasterService,
     private editorService: EditorService, private activatedRoute: ActivatedRoute, private configService: ConfigService,
     private userService: UserService, private _zone: NgZone, private renderer: Renderer2,
-    private tenantService: TenantService, private telemetryService: TelemetryService,
+    private tenantService: TenantService, private telemetryService: TelemetryService, private router: Router,
     private navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService
   ) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.buildNumber = buildNumber ? buildNumber.value : '1.0';
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+    this.videoMaxSize = (<HTMLInputElement>document.getElementById('videoMaxSize')) ?
+      (<HTMLInputElement>document.getElementById('videoMaxSize')).value : '100';
   }
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
     this.routeParams = this.activatedRoute.snapshot.params;
+    this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.disableBrowserBackButton();
-    this.getDetails().pipe(
+    this.getDetails().pipe( first(),
       tap(data => {
         if (data.tenantDetails) {
           this.logo = data.tenantDetails.logo;
@@ -65,15 +70,50 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
         this.setRenderer();
       },
         (error) => {
-          this.toasterService.error(this.resourceService.messages.emsg.m0004);
+          if (error === 'NO_PERMISSION') {
+            this.toasterService.error(this.resourceService.messages.emsg.m0013);
+          } else if (['RESOURCE_SELF_LOCKED', 'RESOURCE_LOCKED'].includes(_.get(error, 'error.params.err'))) {
+            this.toasterService.error(_.replace(error.error.params.errmsg, 'resource', 'content'));
+          } else {
+            this.toasterService.error(this.resourceService.messages.emsg.m0004);
+          }
           this.closeModal();
         });
   }
   private getDetails() {
-    return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-    this.editorService.getOwnershipType()).
+    const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
+    const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded'].includes(this.routeParams.state);
+    const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
+    if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
+      return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
+      this.editorService.getOwnershipType(), this.lockContent()).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        contentDetails: data[1], ownershipType: data[2] })));
+        collectionDetails: data[1], ownershipType: data[2] })));
+    } else {
+      return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
+      this.editorService.getOwnershipType()).
+      pipe(map(data => ({ tenantDetails: data[0].tenantData,
+        collectionDetails: data[1], ownershipType: data[2] })));
+    }
+  }
+  lockContent () {
+    const contentInfo = {
+      contentType: this.routeParams.type,
+      framework: this.routeParams.framework,
+      identifier: this.routeParams.contentId,
+      mimeType: 'application/vnd.ekstep.ecml-archive'
+    };
+    const input = {
+      resourceId : contentInfo.identifier,
+      resourceType : 'Content',
+      resourceInfo : JSON.stringify(contentInfo),
+      creatorInfo : JSON.stringify({'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.identifier}),
+      createdBy : this.userService.userProfile.identifier
+    };
+    return this.workspaceService.lockContent(input).pipe(tap((data) => {
+      this.queryParams = data.result;
+      this.router.navigate([], {relativeTo: this.activatedRoute, queryParams: data.result});
+    }));
   }
   private getContentDetails() {
     const options: any = { params: { mode: 'edit' } };
@@ -83,7 +123,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
         if (this.validateRequest()) {
           return of(data);
         } else {
-          return throwError(data);
+          return throwError('NO_PERMISSION');
         }
       }));
   }
@@ -135,7 +175,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.context = {
       user: {
         id: this.userService.userid,
-        name: this.userProfile.firstName + ' ' + this.userProfile.lastName,
+        name : !_.isEmpty(this.userProfile.lastName) ? this.userProfile.firstName + ' ' + this.userProfile.lastName :
+        this.userProfile.firstName,
         orgIds: this.userProfile.organisationIds,
         organisations: this.userService.orgIdNameMap
       },
@@ -158,6 +199,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.config.headerLogo = this.logo;
     window.config.aws_s3_urls = this.userService.cloudStorageUrls || [];
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
+    window.config.lock = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
+    window.config.videoMaxSize = this.videoMaxSize;
   }
   /**
    * checks the permission using state, status and userId
@@ -167,8 +210,10 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     const validState = _.indexOf(this.configService.editorConfig.CONTENT_EDITOR.contentState, this.routeParams.state) > -1;
     if (this.contentDetails.mimeType === this.configService.appConfig.CONTENT_CONST.CREATE_LESSON && validStatus) {
       if (validState && this.contentDetails.createdBy !== this.userService.userid) {
-        return true;
+        return true; // we need to remove this case or validState should be changed
       } else if (validState && this.contentDetails.createdBy === this.userService.userid) {
+        return true;
+      } else if (validState && _.includes(this.contentDetails.collaborators, this.userService.userid)) {
         return true;
       } else if (this.contentDetails.createdBy === this.userService.userid) {
         return true;
@@ -203,8 +248,29 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('contentEditor')) {
       document.getElementById('contentEditor').remove();
     }
-    this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
+    this.retireLock();
   }
+
+  retireLock () {
+    const inputData = {'resourceId': this.routeParams.contentId, 'resourceType': 'Content'};
+    this.workspaceService.retireLock(inputData).subscribe(
+      (data: ServerResponse) => {
+        this.redirectToWorkSpace();
+      },
+      (err: ServerResponse) => {
+        this.redirectToWorkSpace();
+      }
+    );
+  }
+
+  redirectToWorkSpace () {
+    if (this.routeParams.state === 'collaborating-on') {
+      this.navigationHelperService.navigateToWorkSpace('/workspace/content/collaborating-on/1');
+    } else {
+      this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
+    }
+  }
+
   ngOnDestroy() {
     if (document.getElementById('contentEditor')) {
       document.getElementById('contentEditor').remove();

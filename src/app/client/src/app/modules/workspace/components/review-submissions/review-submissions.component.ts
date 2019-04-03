@@ -17,8 +17,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-review-submissions',
-  templateUrl: './review-submissions.component.html',
-  styleUrls: ['./review-submissions.component.css']
+  templateUrl: './review-submissions.component.html'
 })
 export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
   /**
@@ -73,11 +72,6 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
     * For showing pagination on draft list
   */
   private paginationService: PaginationService;
-
-  /**
-    * Refrence of UserService
-  */
-  private userService: UserService;
 
   /**
     * To get url, app configs
@@ -138,11 +132,10 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
     route: Router, userService: UserService,
     config: ConfigService, resourceService: ResourceService,
     toasterService: ToasterService) {
-    super(searchService, workSpaceService);
+    super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
     this.activatedRoute = activatedRoute;
-    this.userService = userService;
     this.config = config;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
@@ -204,8 +197,8 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
           this.showLoader = false;
           this.noResult = true;
           this.noResultMessage = {
-            'message': this.resourceService.messages.stmsg.m0008,
-            'messageText': this.resourceService.messages.stmsg.m0033
+            'message': 'messages.stmsg.m0008',
+            'messageText': 'messages.stmsg.m0033'
           };
         }
       },

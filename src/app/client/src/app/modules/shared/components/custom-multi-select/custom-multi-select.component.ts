@@ -1,3 +1,4 @@
+import { ResourceService } from './../../services/resource/resource.service';
 import { Component, OnInit, ChangeDetectorRef, Input,  EventEmitter, Output, OnChanges } from '@angular/core';
 import * as _ from 'lodash';
 @Component({
@@ -8,12 +9,13 @@ import * as _ from 'lodash';
 export class CustomMultiSelectComponent implements OnInit {
   @Input() inputData: Array<string>;
   @Input() field: object;
+  @Input() valueField = 'name';
   checkBox: object;
   selectAllCheckBox = false;
   refresh = true;
   @Output() selectedValue = new EventEmitter<any>();
 
-  constructor( private cdr: ChangeDetectorRef) { }
+  constructor( private cdr: ChangeDetectorRef, public resourceService: ResourceService) { }
   checkbox(name) {
     if (this.checkBox[name]) {
       this.checkBox[name] = false;

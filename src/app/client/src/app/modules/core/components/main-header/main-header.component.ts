@@ -1,19 +1,19 @@
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { UserService, PermissionService, TenantService } from './../../services';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
+declare var jQuery: any;
 /**
  * Main header component
  */
 @Component({
   selector: 'app-header',
-  templateUrl: './main-header.component.html',
-  styleUrls: ['./main-header.component.css']
+  templateUrl: './main-header.component.html'
 })
 export class MainHeaderComponent implements OnInit, OnDestroy {
   /**
@@ -100,11 +100,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   public telemetryInteractObject: IInteractEventObject;
   tenantDataSubscription: Subscription;
   userDataSubscription: Subscription;
-
-  /**
-  * value to enable and disable signUp button
-  */
-  enableSignup = true;
   exploreRoutingUrl: string;
   pageId: string;
   /*
@@ -112,7 +107,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   */
   constructor(config: ConfigService, resourceService: ResourceService, public router: Router,
     permissionService: PermissionService, userService: UserService, tenantService: TenantService,
-    public activatedRoute: ActivatedRoute, private cacheService: CacheService) {
+    public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef) {
     this.config = config;
     this.resourceService = resourceService;
     this.permissionService = permissionService;
@@ -161,7 +156,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       data => {
         if (data && !data.err) {
           this.logo = data.tenantData.logo;
-          this.tenantName = data.tenantData.titleName;
+          this.tenantName = data.tenantData.titleName.toUpperCase();
         }
       }
     );
@@ -172,13 +167,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
         }
       });
     this.setInteractEventData();
-    try {
-      const enableSignupButton: string = (<HTMLInputElement>document.getElementById('enableSignup')) ?
-        (<HTMLInputElement>document.getElementById('enableSignup')).value : 'true';
-      this.enableSignup = (enableSignupButton.toLowerCase() === 'true');
-    } catch {
-      console.log('error while fetching enableSignup');
-    }
+    this.cdr.detectChanges();
   }
 
   getCacheLanguage() {
@@ -190,7 +179,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
   navigateToHome() {
     if (this.userService.loggedIn) {
-      this.router.navigate(['home']);
+      this.router.navigate(['resources']);
     } else {
       this.router.navigate(['']);
     }
@@ -254,6 +243,14 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     };
   }
 
+  getLogoutInteractEdata() {
+    return {
+      id: 'logout',
+      type: 'click',
+      pageid: this.router.url.split('/')[1]
+    };
+  }
+
   logout() {
     window.location.replace('/logoff');
     this.cacheService.removeAll();
@@ -266,5 +263,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();
     }
+  }
+  showSideBar() {
+    jQuery('.ui.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
   }
 }

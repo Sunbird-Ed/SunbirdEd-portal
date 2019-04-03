@@ -1,11 +1,11 @@
 
-import {of as observableOf, throwError as observableThrowError,  Observable } from 'rxjs';
+import {of as observableOf, throwError as observableThrowError,  Observable, BehaviorSubject } from 'rxjs';
 
 import {mergeMap} from 'rxjs/operators';
 import { BrowserCacheTtlService } from './../browser-cache-ttl/browser-cache-ttl.service';
 import { HttpOptions, RequestParam, ServerResponse } from './../../interfaces';
 import { ConfigService } from './../config/config.service';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
@@ -38,6 +38,10 @@ export class ResourceService {
    * Contains instance name
    */
   private _instance: string;
+  // Observable navItem source
+  private _languageSelected = new BehaviorSubject<any>({});
+  // Observable navItem stream
+  languageSelected$ = this._languageSelected.asObservable();
 
   /**
    * constructor
@@ -60,6 +64,13 @@ export class ResourceService {
   }
   public initialize() {
     this.getResource();
+    if (this.cacheService.get('resourcebundlesearch')) {
+      const data = this.cacheService.get('resourcebundlesearch');
+      const language = this.cacheService.get('portalLanguage');
+      this.getLanguageChange(_.find(data[0].range, ['value', language]));
+    } else {
+      this.getLanguageChange({ 'value': 'en', 'name': 'English', 'dir': 'ltr' });
+    }
   }
   /**
    * method to fetch resource bundle
@@ -119,5 +130,9 @@ export class ResourceService {
  */
   get instance(): string {
     return this._instance;
+  }
+
+  getLanguageChange(language) {
+    this._languageSelected.next(language);
   }
 }

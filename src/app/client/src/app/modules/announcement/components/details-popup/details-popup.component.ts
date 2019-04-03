@@ -16,8 +16,7 @@ import { Subject } from 'rxjs';
  */
 @Component({
   selector: 'app-details-popup',
-  templateUrl: './details-popup.component.html',
-  styleUrls: ['./details-popup.component.css']
+  templateUrl: './details-popup.component.html'
 })
 export class DetailsPopupComponent implements OnInit, OnDestroy {
 

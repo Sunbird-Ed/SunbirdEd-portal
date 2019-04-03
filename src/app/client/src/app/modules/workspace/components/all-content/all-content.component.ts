@@ -14,10 +14,10 @@ import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+
 @Component({
   selector: 'app-all-content',
-  templateUrl: './all-content.component.html',
-  styleUrls: ['./all-content.component.css']
+  templateUrl: './all-content.component.html'
 })
 export class AllContentComponent extends WorkSpace implements OnInit {
   @ViewChild('modalTemplate')
@@ -63,6 +63,16 @@ export class AllContentComponent extends WorkSpace implements OnInit {
   noResult = false;
 
   /**
+   * lock popup data for locked contents
+  */
+  lockPopupData: object;
+
+  /**
+   * To show content locked modal
+  */
+  showLockedContentModal = false;
+
+  /**
    * To show / hide error
   */
   showError = false;
@@ -76,11 +86,6 @@ export class AllContentComponent extends WorkSpace implements OnInit {
     * For showing pagination on draft list
   */
   private paginationService: PaginationService;
-
-  /**
-    * Refrence of UserService
-  */
-  private userService: UserService;
 
   /**
   * To get url, app configs
@@ -171,11 +176,10 @@ export class AllContentComponent extends WorkSpace implements OnInit {
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
     config: ConfigService, public modalService: SuiModalService) {
-    super(searchService, workSpaceService);
+    super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
     this.activatedRoute = activatedRoute;
-    this.userService = userService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.config = config;
@@ -251,7 +255,7 @@ export class AllContentComponent extends WorkSpace implements OnInit {
       query: _.toString(bothParams.queryParams.query),
       sort_by: this.sort
     };
-    this.search(searchParams).subscribe(
+    this.searchContentWithLockStatus(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
           this.allContent = data.result.content;
@@ -264,7 +268,7 @@ export class AllContentComponent extends WorkSpace implements OnInit {
           this.noResult = true;
           this.showLoader = false;
           this.noResultMessage = {
-            'messageText': this.resourceService.messages.stmsg.m0125
+            'messageText': 'messages.stmsg.m0126'
           };
         }
       },
@@ -278,8 +282,10 @@ export class AllContentComponent extends WorkSpace implements OnInit {
   }
   public deleteConfirmModal(contentIds) {
     const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
-    config.isClosable = true;
-    config.size = 'mini';
+    config.isClosable = false;
+    config.size = 'small';
+    config.transitionDuration = 0;
+    config.mustScroll = true;
     this.modalService
       .open(config)
       .onApprove(result => {
@@ -322,10 +328,26 @@ export class AllContentComponent extends WorkSpace implements OnInit {
     this.pageNumber = page;
     this.route.navigate(['workspace/content/allcontent', this.pageNumber], { queryParams: this.queryParams });
   }
+
   contentClick(content) {
-    if (content.status.toLowerCase() !== 'processing') {
-      this.workSpaceService.navigateToContent(content, this.state);
+    if (_.size(content.lockInfo)) {
+        this.lockPopupData = content;
+        this.showLockedContentModal = true;
+    } else {
+      const status = content.status.toLowerCase();
+      if (status === 'processing') {
+        return;
+      }
+      if (status === 'draft') { // only draft state contents need to be locked
+        this.workSpaceService.navigateToContent(content, this.state);
+      } else {
+        this.workSpaceService.navigateToContent(content, this.state);
+      }
     }
+  }
+
+  public onCloseLockInfoPopup () {
+    this.showLockedContentModal = false;
   }
 
   inview(event) {

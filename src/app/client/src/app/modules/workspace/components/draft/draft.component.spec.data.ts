@@ -90,6 +90,40 @@ export const mockRes = {
       }
     }
   ],
+  localSingleContentData: [
+    {
+      'name': 'Untitled Collection',
+      'description': 'Untitled Collection',
+      'action': {
+        'right': {
+          'class': 'trash large icon',
+          'eventName': 'delete',
+          'displayType': 'icon'
+        },
+        'onImage': {
+          'eventName': 'onImage'
+        }
+      },
+      'ribbon': {
+        'right': {
+          'name': 'Resource',
+          'class': 'ui black right ribbon label'
+        }
+      },
+      'telemetryInteractEdata': {
+        'id': 'draftContentId',
+        'type': 'click',
+        'pageid': 'DraftContent'
+      },
+      'telemetryObjectType': 'draft',
+      'metaData': {
+        'identifier': 'do_112523105235623936168',
+        'mimeType': 'application/vnd.ekstep.ecml-archive',
+        'framework': 'NCF',
+        'contentType': 'Resource'
+      }
+    }
+  ],
   deleteSuccess: {
     'id': 'api.content.retire",', 'ver': '1.0', 'ts': '2018-03-21T13:22:47.263Z"',
     'params': {

@@ -1,0 +1,100 @@
+.toc-title{
+  padding: $base-block-space;
+  color: $gray-800;
+  font-size: $h5-font-size;
+  font-weight: 500;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  [class^="sb-icon-"], 
+  [class*=" sb-icon-"] {
+    font-size: $h3-font-size;
+    font-weight: 500;
+  }
+}
+.disabled .title,
+.disabled.fancytree-node {
+  pointer-events: none;
+  opacity: .6;
+}
+.ui-fancytree,
+.ui-fancytree ul {
+  margin: 0 0 0 (3 * $base-block-space);
+  padding: 0 $base-block-space;
+  border-left: 1px dotted $gray-800;
+
+  &:focus {
+    outline: none;
+  }
+
+  li {
+    margin: 0 0 (2 * $base-block-space) 0;
+    padding: 0;
+    cursor: pointer;
+
+    [class^="sb-icon-"], 
+    [class*=" sb-icon-"] {
+      font-size: $h3-font-size;
+      vertical-align: middle;
+    }
+
+    .fancytree-title {
+      padding: 0 (2 * $base-block-space);
+    }
+  }
+
+  .fancytree-folder {
+    margin-bottom: $base-block-space;
+  }
+
+  .fancytree-node {
+    display: flex;
+    align-items: center;
+  }
+
+  .fancytree-has-children {
+    margin: 0 0 -(3 * $base-block-space) 0;
+  }
+
+  .fancy-tree-green {	
+    color:$success-color;	
+  }
+
+  .fancy-tree-blue {	
+    color:$primary-color;	
+  }
+
+  .fa-caret-right,
+  .fa-caret-down {
+    margin: 0 (2.5 * $base-block-space) 0 0;
+  }
+}
+
+.curriculum-content {
+  font-size: $h6-font-size;
+  display: flex;
+  padding: $base-block-space 0;
+
+  [class^="sb-icon-"], 
+  [class*=" sb-icon-"] {
+    font-size: $h3-font-size;
+    vertical-align: middle;
+  }
+}
+
+*[dir="rtl"] {
+  .ui-fancytree,
+  .ui-fancytree ul {
+    margin: 0 (3 * $base-block-space) 0 0;
+    border-left: 0;
+    border-right: 1px dotted $gray-800;
+  }
+  .fancytree-has-children {
+    margin: 0 (-(3 * $base-block-space)) 0 0;
+  }
+  .fa-caret-right,
+  .fa-caret-down {
+    margin: 0 0 0 (2.5 * $base-block-space);
+  }
+}

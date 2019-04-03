@@ -1,0 +1,11 @@
+@import "variables";
+
+.ui.basic.error.label {
+    background: $white-color !important;
+    color: $danger-color !important;
+    border: 0 !important;
+    padding-left: 0;
+    font-size: 1rem;
+    font-weight: normal;
+    padding:10px 0;
+}

@@ -18,8 +18,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 */
 @Component({
   selector: 'app-flag-reviewer',
-  templateUrl: './flag-reviewer.component.html',
-  styleUrls: ['./flag-reviewer.component.css']
+  templateUrl: './flag-reviewer.component.html'
 })
 export class FlagReviewerComponent extends WorkSpace implements OnInit {
   /**
@@ -79,11 +78,6 @@ export class FlagReviewerComponent extends WorkSpace implements OnInit {
     * For showing pagination on draft list
   */
   private paginationService: PaginationService;
-
-  /**
-    * Refrence of UserService
-  */
-  private userService: UserService;
 
   /**
   * To get url, app configs
@@ -156,11 +150,10 @@ export class FlagReviewerComponent extends WorkSpace implements OnInit {
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
     config: ConfigService, permissionService: PermissionService) {
-    super(searchService, workSpaceService);
+    super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
     this.activatedRoute = activatedRoute;
-    this.userService = userService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.config = config;
@@ -253,8 +246,8 @@ export class FlagReviewerComponent extends WorkSpace implements OnInit {
           this.noResult = true;
           this.showLoader = false;
           this.noResultMessage = {
-            'message': this.resourceService.messages.stmsg.m0008,
-            'messageText': this.resourceService.messages.stmsg.m0033
+            'message': 'messages.stmsg.m0008',
+            'messageText': 'messages.stmsg.m0033'
           };
         }
       },

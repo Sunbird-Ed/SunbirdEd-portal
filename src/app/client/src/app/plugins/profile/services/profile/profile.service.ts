@@ -36,6 +36,19 @@ export class ProfileService {
       }
     ));
   }
+
+  /**
+   * This method call portal backend API and invokes learner service to update user profile with private url
+   */
+  public updatePrivateProfile(request) {
+    const data = this.formatRequest(request);
+    const options = {
+      url: 'portal/user/v1/update',
+      data: data
+    };
+    return this.learnerService.patch(options);
+  }
+
   /**
    * This method is used to update user profile visibility
    */
@@ -61,7 +74,7 @@ export class ProfileService {
    * This method is used to format the request
    */
   private formatRequest(request) {
-    request.userId = this.userService.userid;
+    request.userId = request.userId ? request.userId : this.userService.userid;
     return {
       params: {},
       request: request
@@ -92,5 +105,14 @@ export class ProfileService {
       url: this.configService.urlConFig.URLS.USER.SKILLS
     };
     return this.learnerService.get(options);
+  }
+
+  public getUserLocation(request) {
+    const data = this.formatRequest(request);
+    const options = {
+      url: this.configService.urlConFig.URLS.USER.LOCATION_SEARCH,
+      data: data
+    };
+    return this.learnerService.post(options);
   }
 }
