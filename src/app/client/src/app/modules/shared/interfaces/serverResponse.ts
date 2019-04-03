@@ -26,6 +26,8 @@ export interface ServerResponse {
      * api version
     */
     ver: string;
+
+    headers?: any;
 }
 
 export interface Params {

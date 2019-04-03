@@ -10,7 +10,9 @@ import {
 import * as _ from 'lodash-es';
 import { environment } from '@sunbird/environment';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class PublicPlayerService {
   /**
    * stores content details

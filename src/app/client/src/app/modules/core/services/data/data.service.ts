@@ -49,6 +49,28 @@ export class DataService {
   }
 
   /**
+   * for making get api calls which needs headers in response
+   *  headers are fetched to get server time using Date attribute in header
+   * @param requestParam interface
+   */
+  getWithHeaders(requestParam: RequestParam): Observable<ServerResponse> {
+    const httpOptions: HttpOptions = {
+      headers: requestParam.header ? requestParam.header : this.getHeader(),
+      params: requestParam.param,
+      observe: 'response'
+    };
+    return this.http.get(this.baseUrl + requestParam.url, httpOptions).pipe(
+      mergeMap(({body, headers}: any) => {
+        // replace ts time with header date , this value is used in telemetry
+        body.ts =  new Date(headers.get('Date'));
+        if (body.responseCode !== 'OK') {
+          return observableThrowError(body);
+        }
+        return observableOf(body);
+      }));
+  }
+
+  /**
    * for making get api calls
    *
    * @param requestParam interface
@@ -68,11 +90,32 @@ export class DataService {
   }
 
   /**
-   * for making post api calls
+   * for making post api calls with headers in response object
    *
    * @param {RequestParam} requestParam interface
    *
    */
+  postWithHeaders(requestParam: RequestParam): Observable<any> {
+    const httpOptions: HttpOptions = {
+      headers: requestParam.header ? this.getHeader(requestParam.header) : this.getHeader(),
+      params: requestParam.param,
+      observe: 'response'
+    };
+    return this.http.post(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
+      mergeMap(({body, headers}: any) => {
+        // replace ts time with header date , this value is used in telemetry
+        body.ts =  new Date(headers.get('Date'));
+        if (body.responseCode !== 'OK') {
+          return observableThrowError(body);
+        }
+        return observableOf(body);
+      }));
+  }
+
+  /**
+   * for making post api calls
+   * @param {RequestParam} requestParam interface
+  */
   post(requestParam: RequestParam): Observable<ServerResponse> {
     const httpOptions: HttpOptions = {
       headers: requestParam.header ? this.getHeader(requestParam.header) : this.getHeader(),

@@ -51,6 +51,14 @@ module.exports = (app, keycloak) => {
     next();
   });
 
+  app.get(['/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff', '/dist/*.eot', '/dist/*.svg',
+  '/*.ttf', '/*.woff2', '/*.woff', '/*.eot', '/*.svg'],
+    compression(), (req, res, next) => {
+        res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
+        res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
+      next()
+  })
+
   app.use(express.static(path.join(__dirname, '../dist'), { extensions: ['ejs'], index: false }))
 
   app.use(express.static(path.join(__dirname, '../')))
@@ -60,15 +68,6 @@ module.exports = (app, keycloak) => {
   if (defaultTenant) {
     app.use(express.static(path.join(__dirname, '../tenant', defaultTenant)))
   }
-
-  app.get(['/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff', '/dist/*.eot', '/dist/*.svg'],
-    compression(), (req, res, next) => {
-      if (process.env.sunbird_environment.toLowerCase() !== 'local') {
-        res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
-        res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
-      }
-      next()
-    })
 
   app.all(['/server.js', '/helpers/*.js', '/helpers/**/*.js'], (req, res) => res.sendStatus(404))
 
@@ -113,8 +112,8 @@ module.exports = (app, keycloak) => {
 
 function getLocals(req, callback) {
   var locals = {}
-  locals.userId = _.get(req, 'kauth.grant.access_token.content.sub') ? req.kauth.grant.access_token.content.sub : null
-  locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'kauth.grant.access_token.content.sub') ? req.sessionID : null
+  locals.userId = _.get(req, 'session.userId') ? req.session.userId : null
+  locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'session.userId') ? req.sessionID : null
   locals.cdnUrl = envHelper.PORTAL_CDN_URL
   locals.theme = configHelper.getConfig('sunbird_theme')
   locals.defaultPortalLanguage = configHelper.getConfig('sunbird_default_language')

@@ -26,4 +26,9 @@ export interface HttpOptions {
   */
     body?: any;
 
+    /**
+   * if value is response , headers will be returned in api response
+  */
+    observe?: any;
+
 }

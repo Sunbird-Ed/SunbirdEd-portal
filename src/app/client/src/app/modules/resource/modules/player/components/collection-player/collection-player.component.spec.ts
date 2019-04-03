@@ -1,3 +1,4 @@
+import { TelemetryModule } from '@sunbird/telemetry';
 
 import {of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -41,7 +42,7 @@ describe('CollectionPlayerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionPlayerComponent],
-      imports: [SuiModule, HttpClientTestingModule, CoreModule, SharedModule.forRoot(), RouterTestingModule],
+      imports: [SuiModule, HttpClientTestingModule, CoreModule, SharedModule.forRoot(), RouterTestingModule , TelemetryModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [ ResourceService, { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }]

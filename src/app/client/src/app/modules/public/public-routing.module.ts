@@ -9,9 +9,6 @@ const routes: Routes = [
     data: { telemetry: { env: 'public', pageid: 'landing-page', type: 'edit', subtype: 'paginate' } }
   },
   {
-    path: 'get', loadChildren: './module/dial-code-search/dial-code-search.module#DialCodeSearchModule'
-  },
-  {
     path: 'explore', loadChildren: './module/explore/explore.module#ExploreModule'
   },
   {

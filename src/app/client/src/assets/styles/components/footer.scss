@@ -9,7 +9,7 @@
   right: 0;
   left: 0;
   margin: 0 auto;
-  z-index: 9999;
+  z-index: 9;
 
   .diksha-logo {
     background: $white-color;
@@ -137,7 +137,7 @@
 
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
 
   .download-diksha {
     bottom: 204px;
@@ -145,6 +145,7 @@
     right: 0;
     left: 0;
     z-index: inherit;
+    box-shadow: 0 -5px 20px 5px rgba(0, 0, 0, 0.2);
 
     a {
       padding-bottom: 0 !important;

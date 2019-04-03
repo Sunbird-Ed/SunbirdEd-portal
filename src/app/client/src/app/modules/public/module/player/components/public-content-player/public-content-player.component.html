@@ -13,7 +13,7 @@
                   </h1>
                 </div>
                 <div class="two wide column">
-                    <h5 class="ui right floated basic icon circular button  mouse-pointer" (click)="close()">
+                    <h5 appTelemetryInteract [telemetryInteractCdata]="this.telemetryCdata" [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closePlayerInteractEdata" class="ui right floated basic icon circular button  mouse-pointer" (click)="close()">
                         <i class="ui remove icon"></i>
                     </h5>
                 </div>
