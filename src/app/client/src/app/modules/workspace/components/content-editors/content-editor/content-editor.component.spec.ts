@@ -17,7 +17,7 @@ const mockResourceService = { messages: { emsg: { m0004: '1000' } } };
 const mockActivatedRoute = {
   snapshot: {
     params: {
-      'contentId': 'do_21247940906829414411032', 'state': 'upForReview', 'framework': 'framework'
+      'contentId': 'do_21247940906829414411032', 'state': 'upForReview', 'framework': 'framework', 'contentStatus': 'Draft'
     }
   }
 };

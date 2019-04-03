@@ -18,7 +18,7 @@ const mockActivatedRoute = {
   snapshot: {
     params: {
       'contentId': 'do_21247940906829414411032',
-      'type': 'collection', 'state': 'upForReview', 'framework': 'framework'
+      'type': 'collection', 'state': 'upForReview', 'framework': 'framework', 'contentStatus': 'Draft'
     }
   }
 };

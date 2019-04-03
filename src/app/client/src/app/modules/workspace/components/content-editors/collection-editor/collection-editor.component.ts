@@ -291,7 +291,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('collectionEditor')) {
       document.getElementById('collectionEditor').remove();
     }
-    if (this.collectionDetails.status.toLowerCase() === 'draft') {
+    if (this.routeParams.contentStatus.toLowerCase() === 'draft') {
       this.retireLock();
     } else {
       this.redirectToWorkSpace();
