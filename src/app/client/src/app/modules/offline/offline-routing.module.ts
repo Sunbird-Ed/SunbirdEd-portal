@@ -5,7 +5,7 @@ import { ContentImportComponent } from './index';
 
 const routes: Routes = [
   {
-    path: 'get', loadChildren: './../public/module/dial-code-search/dial-code-search.module#DialCodeSearchModule'
+    path: 'get', loadChildren: './../dial-code-search/dial-code-search.module#DialCodeSearchModule'
   },
   {
     path: '', loadChildren: './../public/module/explore/explore.module#ExploreModule'
