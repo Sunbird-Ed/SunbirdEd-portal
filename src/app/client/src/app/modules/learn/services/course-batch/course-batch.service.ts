@@ -25,7 +25,8 @@ export class CourseBatchService {
         request: {
           filters: requestParam.filters,
           limit: requestParam.limit,
-          sort_by: requestParam.sort_by
+          sort_by: requestParam.sort_by,
+          fields: requestParam.fields
         }
       }
     };

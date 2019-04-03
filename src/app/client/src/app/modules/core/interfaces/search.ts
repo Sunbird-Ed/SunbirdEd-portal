@@ -74,6 +74,7 @@ export interface SearchParam {
   */
  facets?: Array<string>;
  exists?: Array<string>;
+ fields?: Array<string>;
   /**
      * mode : soft
      */

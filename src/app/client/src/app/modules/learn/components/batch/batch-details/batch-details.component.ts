@@ -116,10 +116,13 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     };
     const searchParamsCreator =  _.cloneDeep(searchParams);
     const searchParamsMentor =  _.cloneDeep(searchParams);
-
+    const fields = ['createdBy', 'identifier', 'endDate', 'startDate', 'enrollmentType', 'participant', 'courseId'];
     if (this.courseMentor) {
       searchParamsCreator.filters.createdBy = this.userService.userid;
       searchParamsMentor.filters.mentors = [this.userService.userid];
+      const newFields = _.union(fields, ['name', 'description', 'mentors', 'status']);
+      searchParamsCreator.fields = newFields;
+      searchParamsMentor.fields = newFields;
       combineLatest(
         this.courseBatchService.getAllBatchDetails(searchParamsCreator),
         this.courseBatchService.getAllBatchDetails(searchParamsMentor),
@@ -136,6 +139,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
           this.toasterService.error(this.resourceService.messages.fmsg.m0004);
         });
      } else {
+       searchParams.fields = fields;
        searchParams.filters.enrollmentType = 'open';
        this.courseBatchService.getAllBatchDetails(searchParams).pipe(
         takeUntil(this.unsubscribe))
