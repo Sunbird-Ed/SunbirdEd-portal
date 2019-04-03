@@ -154,8 +154,7 @@ function endSession(request, response, next) {
   delete request.session['rootOrgId']
   delete request.session['orgs']
   if (request.session) {
-    if (_.get(request, 'kauth.grant.access_token.content.sub')) { telemetryHelper.logSessionEnd(request) }
-
+    if (_.get(request, 'session.userId')) { telemetryHelper.logSessionEnd(request) }
     request.session.sessionEvents = request.session.sessionEvents || []
     delete request.session.sessionEvents
     delete request.session['deviceId']
