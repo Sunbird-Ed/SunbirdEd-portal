@@ -14,7 +14,7 @@ module.exports = {
     })
   },
   prepareRequestBody: function (req) {
-    var userId = req.kauth.grant.access_token.content.sub
+    var userId = req.session.userId
     var data = {
       'params': {},
       'request': {'userId': userId}
