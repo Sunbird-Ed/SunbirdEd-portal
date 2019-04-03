@@ -56,6 +56,50 @@ export  const allBatchDetails = {
       }
     }
   };
+  export  const allBatchDetailsForMentor = {
+    'id': 'api.course.batch.search', 'ver': 'v1', 'ts': '2018-05-30 04:02:30:798+0000',
+    'params': {
+      'resmsgid': null, 'msgid': '389dd8c0-bb69-bbaf-778a-eedde7994e25', 'err': null,
+      'status': 'success', 'errmsg': null
+    }, 'responseCode': 'OK', 'result': {
+      'response': {
+        'count': 1,
+        'content': [{
+          'identifier': '01248661735846707228',
+          'endDate': '2018-07-13',
+          'createdBy': '159e93d1-da0c-4231-be94-e75b0c226d7c',
+          'description': 'test',
+          'participant': { 'ac918519-f8b8-4150-bd90-56ead42454d0': true },
+          'mentors': [],
+          'name': 'Test 2 batch',
+          'enrollmentType': 'invite-only',
+          'courseId': 'do_112470675618004992181',
+          'startDate': '2018-04-20',
+          'status': 1
+        }]
+      }
+    }
+  };
+  export  const allBatchDetailsForNonMentor = {
+    'id': 'api.course.batch.search', 'ver': 'v1', 'ts': '2018-05-30 04:02:30:798+0000',
+    'params': {
+      'resmsgid': null, 'msgid': '389dd8c0-bb69-bbaf-778a-eedde7994e25', 'err': null,
+      'status': 'success', 'errmsg': null
+    }, 'responseCode': 'OK', 'result': {
+      'response': {
+        'count': 1,
+        'content': [{
+          'identifier': '01248661735846707228',
+          'endDate': '2018-07-13',
+          'createdBy': '159e93d1-da0c-4231-be94-e75b0c226d7c',
+          'participant': { 'ac918519-f8b8-4150-bd90-56ead42454d0': true },
+          'enrollmentType': 'invite-only',
+          'courseId': 'do_112470675618004992181',
+          'startDate': '2018-04-20',
+        }]
+      }
+    }
+  };
 export const userSearch = {
     'id': 'api.user.search',
     'ver': 'v1',

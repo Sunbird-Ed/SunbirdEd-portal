@@ -9,7 +9,8 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseBatchService, CourseProgressService } from './../../../services';
-import {userSearch, allBatchDetails, enrolledBatch } from './batch-details.component.data';
+import {userSearch, allBatchDetails, enrolledBatch , allBatchDetailsForNonMentor ,
+  allBatchDetailsForMentor } from './batch-details.component.data';
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
 }
@@ -56,7 +57,7 @@ describe('BatchDetailsComponent', () => {
     component.enrolledCourse = false;
     component.courseId = 'do_1125083286221291521153';
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
-    spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
+    spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetailsForNonMentor));
     spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(userSearch));
     component.ngOnInit();
     const searchParams: any = {
@@ -65,6 +66,7 @@ describe('BatchDetailsComponent', () => {
         courseId: component.courseId,
         enrollmentType: 'open'
       },
+      fields : ['createdBy', 'identifier', 'endDate', 'startDate', 'enrollmentType', 'participant', 'courseId'],
       offset: 0,
       sort_by: { createdDate: 'desc' }
     };
@@ -102,7 +104,7 @@ describe('BatchDetailsComponent', () => {
     component.courseId = 'do_1125083286221291521153';
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
-    spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
+    spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetailsForMentor));
     spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(userSearch));
     const searchParams: any = {
       filters: {
@@ -110,6 +112,8 @@ describe('BatchDetailsComponent', () => {
         courseId: component.courseId,
         createdBy: component.userService.userid
       },
+      fields : ['createdBy', 'identifier', 'endDate', 'startDate', 'enrollmentType', 'participant',
+      'courseId', 'name', 'description', 'mentors', 'status'],
       offset: 0,
       sort_by: { createdDate: 'desc' }
     };
