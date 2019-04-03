@@ -147,7 +147,7 @@ describe('BatchDetailsComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
-  fit('should call isUnenrollDisabled and make the isUnenrollbtnDisabled false', () => {
+  it('should call isUnenrollDisabled and make the isUnenrollbtnDisabled false', () => {
     component.courseProgressData = {progress: 0,
       completedCount: 1, totalCount: 1, content: [], lastPlayedContentId: 'do_112501345261985792135'};
     component.enrolledBatchInfo = {'endDate': '2019-08-28T18:30:00.000Z', 'enrollmentType': 'open'};
