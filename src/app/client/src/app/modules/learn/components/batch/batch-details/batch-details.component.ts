@@ -50,7 +50,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   isUnenrollDisabled() {
     this.isUnenrollbtnDisabled = true;
     if (this.courseProgressData) {
-      this.progress = _.get(this.courseProgressData ,'progress') ? Math.round(this.courseProgressData.progress) : 0;
+      this.progress = _.get(this.courseProgressData , 'progress') ? Math.round(this.courseProgressData.progress) : 0;
     } else {
       return;
     }
