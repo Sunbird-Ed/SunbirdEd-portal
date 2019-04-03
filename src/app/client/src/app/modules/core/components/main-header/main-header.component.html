@@ -107,6 +107,10 @@
       <app-language-dropdown class="computer only" *ngIf="!router.isActive('workspace', false)">
       </app-language-dropdown>
       <!--/Language Dropdown-->
+      <button class="ui button qr-code-btn d-flex flex computer only mr-0" [routerLink]="['/import/content']"
+        *ngIf="isOffline">
+        {{resourceService.frmelmnts?.lbl?.importContent}}
+      </button>
     </div>
   </div>
   <!--/Computer-->

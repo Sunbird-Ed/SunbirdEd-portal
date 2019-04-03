@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ContentImportComponent } from './index';
 
 
 const routes: Routes = [
@@ -14,6 +15,13 @@ const routes: Routes = [
   },
   {
     path: 'play', loadChildren: './../public/module/player/player.module#PlayerModule'
+  },
+  {
+    path: 'import/content', component: ContentImportComponent, data: {
+      telemetry: {
+        env: 'offline', pageid: 'import-content', type: 'view', subtype: 'scroll'
+      },
+    }
   }];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

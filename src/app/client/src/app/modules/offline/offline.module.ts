@@ -5,6 +5,7 @@ import { PublicPlayerService } from '@sunbird/public';
 import { SharedModule } from '@sunbird/shared';
 import { OfflineRoutingModule } from './offline-routing.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ContentImportComponent } from './components/content-import/content-import.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -12,6 +13,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
     SharedModule,
     OfflineRoutingModule
   ],
-  providers: [PublicPlayerService, DeviceDetectorService]
+  providers: [PublicPlayerService, DeviceDetectorService],
+  declarations: [ContentImportComponent]
 })
 export class OfflineModule { }
