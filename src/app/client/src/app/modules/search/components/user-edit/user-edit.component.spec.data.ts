@@ -48,6 +48,26 @@ export const Response = {
             'isApproved': true,
             'orgjoindate': '2018-01-20 09:21:37:828+0000',
             'orgLeftDate': null
+          },
+          {
+            'organisationId': 'ORG_001',
+            'updatedBy': null,
+            'addedByName': 'paqPbvW3s7CNzPQGTuCEiqwYNB3kfjDCXXLzCL2fzskZpcyvAQqYxoa3ePT6a+wzaAmCWueMEdPmZuRg==',
+            'addedBy': '781c21fc-5054-4ee0-9a02-fbb1006a4fdd',
+            'roles': [
+              'ORG_ADMIN' , 'SYSTEM_ADMINISTRATION' , 'BOOK_CREATOR'
+            ],
+            'approvedBy': '781c21fc-5054-4ee0-9a02-fbb1006a4fdd',
+            'updatedDate': null,
+            'userId': 'f2eea64e-0e93-444f-b81b-05ea5bad32ba',
+            'approvaldate': '2018-01-20 09:21:37:828+0000',
+            'isDeleted': false,
+            'isRejected': false,
+            'id': '0124226774494904322',
+            'position': null,
+            'isApproved': true,
+            'orgjoindate': '2018-01-20 09:21:37:828+0000',
+            'orgLeftDate': null
           }
         ],
         'provider': null,

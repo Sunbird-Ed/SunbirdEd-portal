@@ -107,7 +107,8 @@ export class UserService {
     this.contentService = contentService;
     this.publicDataService = publicDataService;
     try {
-      this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
+      const userToken = _.split((<HTMLInputElement>document.getElementById('userId')).value , ':');
+      this._userid = userToken[userToken.length - 1];
       this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
       this._authenticated = true;
     } catch (error) {
