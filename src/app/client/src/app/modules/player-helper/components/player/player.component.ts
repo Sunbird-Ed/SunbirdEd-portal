@@ -1,22 +1,37 @@
-import { ConfigService } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import {
+  ConfigService
+} from '@sunbird/shared';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges
+} from '@angular/core';
 import * as _ from 'lodash-es';
-import { PlayerConfig } from '@sunbird/shared';
-import { environment } from '@sunbird/environment';
+import {
+  PlayerConfig
+} from '@sunbird/shared';
+import {
+  environment
+} from '@sunbird/environment';
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html'
 })
 export class PlayerComponent implements OnInit, OnChanges {
   @Input() playerConfig: PlayerConfig;
-  @Output() contentProgressEvent = new EventEmitter<any>();
+  @Output() contentProgressEvent = new EventEmitter < any > ();
   @ViewChild('contentIframe') contentIframe: ElementRef;
-  @Output() playerOnDestroyEvent = new EventEmitter<any>();
-  @Output() sceneChangeEvent = new EventEmitter<any>();
+  @Output() playerOnDestroyEvent = new EventEmitter < any > ();
+  @Output() sceneChangeEvent = new EventEmitter < any > ();
   buildNumber: string;
   constructor(public configService: ConfigService) {
     try {
-      this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')).value;
+      this.buildNumber = ( < HTMLInputElement > document.getElementById('buildNumber')).value;
     } catch (error) {
       this.buildNumber = '1.0';
     }
@@ -36,8 +51,8 @@ export class PlayerComponent implements OnInit, OnChanges {
    * Emits event when content starts playing and end event when content was played/read completely
    */
   showPlayer() {
-    const src = environment.isOffline ? this.configService.appConfig.PLAYER_CONFIG.localBaseUrl
-      : this.configService.appConfig.PLAYER_CONFIG.baseURL;
+    const src = environment.isOffline ? this.configService.appConfig.PLAYER_CONFIG.localBaseUrl :
+      this.configService.appConfig.PLAYER_CONFIG.baseURL;
     const iFrameSrc = src + '&build_number=' + this.buildNumber;
     setTimeout(() => {
       this.contentIframe.nativeElement.src = iFrameSrc;
@@ -49,6 +64,9 @@ export class PlayerComponent implements OnInit, OnChanges {
     this.contentIframe.nativeElement.addEventListener('renderer:telemetry:event', (event: any) => {
       this.generateContentReadEvent(event);
     });
+    if (window.innerWidth <= 768) {
+      this.viewInFullscreen();
+    }
   }
   /**
    * Adjust player height after load
@@ -62,7 +80,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
   generateContentReadEvent(event: any) {
     if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START' ||
-      event.detail.telemetryData.eid === 'END')) {
+        event.detail.telemetryData.eid === 'END')) {
       this.contentProgressEvent.emit(event);
     } else if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'IMPRESSION')) {
       this.emitSceneChangeEvent();
@@ -71,8 +89,22 @@ export class PlayerComponent implements OnInit, OnChanges {
   emitSceneChangeEvent(timer = 0) {
     setTimeout(() => {
       const stageId = this.contentIframe.nativeElement.contentWindow.EkstepRendererAPI.getCurrentStageId();
-      const eventData = { stageId };
+      const eventData = {
+        stageId
+      };
       this.sceneChangeEvent.emit(eventData);
     }, timer); // waiting for player to load, then fetching stageId (if we dont wait stageId will be undefined)
+  }
+
+  viewInFullscreen() {
+    if (document.fullscreenEnabled) {
+      const iframe = document.querySelector('#contentPlayer');
+      // Do fullscreen
+      if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+      } else {
+        document.querySelector('.error').innerHTML = 'Your browser is not supported';
+      }
+    }
   }
 }
