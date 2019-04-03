@@ -1,12 +1,12 @@
 
 import {takeUntil} from 'rxjs/operators';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // Custom service(s)
 import { RendererService, CourseConsumptionService } from './../../services';
 import { UserService, SearchService } from '@sunbird/core';
-import { ResourceService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
 // Interface
 import { DashboardData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
@@ -24,7 +24,7 @@ import { Subject } from 'rxjs';
   templateUrl: './course-consumption.component.html',
   styleUrls: ['./course-consumption.component.scss']
 })
-export class CourseConsumptionComponent implements OnDestroy {
+export class CourseConsumptionComponent implements OnDestroy, AfterViewInit {
   /**
    * Variable to gather and unsubscribe all observable subscriptions in this component.
    */
@@ -146,7 +146,7 @@ export class CourseConsumptionComponent implements OnDestroy {
    * @param {ResourceService} resourceService To get language constant
    */
   constructor(route: Router, consumption: CourseConsumptionService, activatedRoute: ActivatedRoute, searchService: SearchService,
-    rendererService: RendererService, resourceService: ResourceService) {
+    rendererService: RendererService, resourceService: ResourceService, public navigationhelperService: NavigationHelperService) {
     this.consumptionService = consumption;
     this.activatedRoute = activatedRoute;
     this.searchService = searchService;
@@ -154,7 +154,6 @@ export class CourseConsumptionComponent implements OnDestroy {
     this.resourceService = resourceService;
     this.route = route;
     // init the default impression event
-    this.initTelemetryImpressionEvent();
     this.activatedRoute.params.pipe(
     takeUntil(this.unsubscribe))
     .subscribe(params => {
@@ -316,10 +315,7 @@ export class CourseConsumptionComponent implements OnDestroy {
     step === 'next' ? this.showGraph++ : this.showGraph--;
   }
 
-  /**
-   * Function to initialise the telemetry impression event for course consumption dashboard page
-   */
-  initTelemetryImpressionEvent() {
+  ngAfterViewInit () {
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
@@ -327,7 +323,8 @@ export class CourseConsumptionComponent implements OnDestroy {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: 'dashboard/myActivity'
+        uri: 'dashboard/myActivity',
+        duration: this.navigationhelperService.getPageLoadTime()
       }
     };
   }

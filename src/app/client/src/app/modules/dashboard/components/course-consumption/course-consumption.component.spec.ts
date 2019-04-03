@@ -200,7 +200,6 @@ describe('CourseConsumptionComponent', () => {
     }));
 
     it('should unsubscribe from all observable subscriptions', () => {
-      component.initTelemetryImpressionEvent();
       component.getDashboardData('7d', 'do_2123250076616048641482');
       component.getMyContent();
       spyOn(component.unsubscribe, 'complete');

@@ -52,7 +52,6 @@ describe('DetailsPopupComponent', () => {
   beforeEach(async(() => {
     fixture = TestBed.createComponent(DetailsPopupComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   }));
 
   it('should create', () => {
@@ -79,7 +78,6 @@ describe('DetailsPopupComponent', () => {
           expect(apiResponse.params.status).toBe('successful');
         }
       );
-      fixture.detectChanges();
       expect(component.showLoader).toBe(false);
 
     }));
@@ -89,7 +87,6 @@ describe('DetailsPopupComponent', () => {
       announcementService.announcementDetailsObject = testData.mockRes.detailsObject;
       component.getDetails('92ca4110-19df-11e8-8773-d9334313c305');
       expect(component.showLoader).toBe(false);
-      fixture.detectChanges();
     }));
 
   it('should call get announcement by id api and get error response',
