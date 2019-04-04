@@ -83,6 +83,7 @@ export class PlayerService {
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = this.userService.sessionId;
     configuration.context.uid = this.userService.userid;
+    configuration.context.timeStampData = this.userService.getServerTime;
     configuration.context.contextRollup = this.getRollUpData(this.userService.userProfile.organisationIds);
     configuration.context.channel = this.userService.channel;
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));

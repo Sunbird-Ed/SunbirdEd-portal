@@ -206,7 +206,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       framework: this.routeParams.framework,
       resource_framework: this.resource_framework,
       env: this.routeParams.type.toLowerCase(),
-      ownershipType: this.ownershipType
+      ownershipType: this.ownershipType,
+      timeStampData: this.userService.getServerTime
     };
   }
   private setWindowConfig() {

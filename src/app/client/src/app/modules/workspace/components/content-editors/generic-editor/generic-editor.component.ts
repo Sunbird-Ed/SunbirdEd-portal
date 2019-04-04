@@ -171,7 +171,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       channel: this.userService.channel,
       env: 'generic-editor',
       framework: this.routeParams.framework,
-      ownershipType: this.ownershipType
+      ownershipType: this.ownershipType,
+      timeStampData: this.userService.getServerTime
     };
   }
   private setWindowConfig() {
