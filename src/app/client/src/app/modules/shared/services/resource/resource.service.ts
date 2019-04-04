@@ -64,13 +64,6 @@ export class ResourceService {
   }
   public initialize() {
     this.getResource(this._cacheService.get('portalLanguage') || 'en');
-    if (this.cacheService.get('resourcebundlesearch')) {
-      const data = this.cacheService.get('resourcebundlesearch');
-      const language = this.cacheService.get('portalLanguage');
-      this.getLanguageChange(_.find(data[0].range, ['value', language]));
-    } else {
-      this.getLanguageChange({ 'value': 'en', 'name': 'English', 'dir': 'ltr' });
-    }
   }
   /**
    * method to fetch resource bundle

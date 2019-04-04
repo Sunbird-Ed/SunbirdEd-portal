@@ -19,6 +19,7 @@ export class LanguageDropdownComponent implements OnInit {
 
   ngOnInit() {
     this.selectedLanguage = this._cacheService.get('portalLanguage') || 'en';
+    this.resourceService.getLanguageChange(_.find(this.languageRange, ['value', this.selectedLanguage]));
   }
 
   onLanguageChange(event) {

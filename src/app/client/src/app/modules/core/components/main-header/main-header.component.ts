@@ -21,7 +21,6 @@ export class MainHeaderComponent implements OnInit {
     filterEnv: 'resourcebundle'
   };
   exploreButtonVisibility: string;
-  key: string;
   queryParam: any = {};
   showExploreHeader = false;
   showQrmodal = false;
@@ -31,7 +30,6 @@ export class MainHeaderComponent implements OnInit {
   announcementRole: Array<string>;
   myActivityRole: Array<string>;
   orgSetupRole: Array<string>;
-  public channelId: string;
   avtarMobileStyle = {
     backgroundColor: 'transparent',
     color: '#AAAAAA',
@@ -88,23 +86,18 @@ export class MainHeaderComponent implements OnInit {
       this.userService.userData$.pipe(first()).subscribe((user: any) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
-          this.channelId = this.userService.channel,
-            this.getLanguage();
+            this.getLanguage(this.userService.channel);
         }
       });
     } else {
       this.orgDetailsService.orgDetails$.pipe(first()).subscribe(((data) => {
         if (data && !data.err) {
-          this.channelId = data.orgDetails.hashTagId;
-          this.getLanguage();
+          this.getLanguage(data.orgDetails.hashTagId);
         }
       }));
     }
     this.getUrl();
-    this.activatedRoute.queryParams.subscribe(queryParams => {
-      this.queryParam = { ...queryParams };
-      this.key = this.queryParam['key'];
-    });
+    this.activatedRoute.queryParams.subscribe(queryParams => this.queryParam = { ...queryParams });
     this.tenantService.tenantData$.subscribe(({tenantData}) => {
       this.tenantInfo.logo = tenantData ? tenantData.logo : undefined;
       this.tenantInfo.titleName = tenantData ? tenantData.titleName.toUpperCase() : undefined;
@@ -113,7 +106,7 @@ export class MainHeaderComponent implements OnInit {
     this.cdr.detectChanges();
     this.setWindowConfig();
   }
-  getLanguage() {
+  getLanguage(channelId) {
     const isCachedDataExists = this._cacheService.get(this.languageFormQuery.filterEnv + this.languageFormQuery.formAction);
     if (isCachedDataExists) {
       this.languages = isCachedDataExists[0].range;
@@ -123,8 +116,7 @@ export class MainHeaderComponent implements OnInit {
         formAction: this.languageFormQuery.formAction,
         contentType: this.languageFormQuery.filterEnv
       };
-      this.formService.getFormConfig(formServiceInputParams, this.channelId).pipe()
-      .subscribe((data: any) => {
+      this.formService.getFormConfig(formServiceInputParams, channelId).subscribe((data: any) => {
         this.languages = data[0].range;
         this._cacheService.set(this.languageFormQuery.filterEnv + this.languageFormQuery.formAction, data,
           { maxAge: this.config.appConfig.cacheServiceConfig.setTimeInMinutes * this.config.appConfig.cacheServiceConfig.setTimeInSeconds});
@@ -142,9 +134,8 @@ export class MainHeaderComponent implements OnInit {
   }
   onEnter(key) {
     this.queryParam = {};
-    if (this.key && this.key.length) {
-      this.key = key;
-      this.queryParam.key = this.key;
+    if (key && key.length) {
+      this.queryParam.key = key;
     }
     this.router.navigate([this.exploreRoutingUrl, 1], { queryParams: this.queryParam });
   }
