@@ -1,5 +1,5 @@
 <div *ngIf="showQrmodal">
-  <app-qr-code-modal (closeQrModal)="closeQrModalEvent($event)"></app-qr-code-modal>
+  <app-qr-code-modal (closeQrModal)="showQrmodal = false"></app-qr-code-modal>
 </div>
 <div class="ui fixed main menu bs-0 d-block">
 
@@ -7,8 +7,8 @@
   <div class="ui container flex-ai-center flex-jc-space-between header-white">
 
     <!--Logo-->
-    <a class="d-flex logo" tabindex="0" title="{{tenantName}}" role="banner" (click)="navigateToHome()">
-      <img class="cursor-pointer" alt={{tenantName}} src="{{logo}}">
+    <a class="d-flex logo" tabindex="0" title="{{tenantInfo.titleName}}" role="banner" (click)="navigateToHome()">
+      <img class="cursor-pointer" alt={{tenantInfo.titleName}} src="{{tenantInfo.logo}}">
     </a>
     <!--/Logo-->
 
@@ -22,7 +22,7 @@
 
     <!--Avtar Dropdown-->
     <a class="profile-avtar computer only p-0 ml-15" *ngIf="userService.loggedIn && !isOffline" tabindex="0">
-      <div suiDropdown [(isOpen)]="isOpen" class="ui dropdown right top pointing" id="dropdown-menu-list-header">
+      <div suiDropdown class="ui dropdown right top pointing" id="dropdown-menu-list-header">
         <ngx-avatar *ngIf='userProfile' [style]="avtarDesktopStyle" [size]="38" initialsSize="1"
           name="{{userProfile?.firstName}}">
         </ngx-avatar>
@@ -92,9 +92,8 @@
           <i class="search icon"></i>
           <input type="text" id="keyword" name="filter_search" class="sb-search-input"
             title="{{resourceService?.frmelmnts?.prmpt?.search}}"
-            placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}" [(ngModel)]="key"
-            (keyup.enter)="onEnter(key)" />
-          <!-- <i class="close icon"></i>
+            placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}" (keyup.enter)="onEnter(key)" />
+          <!-- <i class="close icon"></i> [(ngModel)]="key"
             <div class="sb-loader"></div> -->
         </div>
         <button class="sb-btn sb-btn-normal" (click)="onEnter(key)"
@@ -104,7 +103,8 @@
       <!--/Search Box-->
 
       <!--Language Dropdown-->
-      <app-language-dropdown class="computer only" *ngIf="!router.isActive('workspace', false)">
+      <app-language-dropdown [languageRange]='languages' class="computer only"
+        *ngIf="languages && !router.isActive('workspace', false)">
       </app-language-dropdown>
       <!--/Language Dropdown-->
       <button class="ui button qr-code-btn d-flex flex computer only mr-0" [routerLink]="['/import/content']"
@@ -130,7 +130,8 @@
       <!--/QR Button-->
 
       <!--Language Dropdown-->
-      <app-language-dropdown *ngIf="!router.isActive('workspace', false)">
+      <app-language-dropdown [languageRange]='languages' class="mobile only"
+        *ngIf="languages && !router.isActive('workspace', false)">
       </app-language-dropdown>
       <!--/Language Dropdown-->
 
@@ -160,8 +161,8 @@
       <!--/Search Box-->
 
       <!--Language Dropdown-->
-      <app-language-dropdown class="computer only" *ngIf="!router.isActive('workspace', false)">
-      </app-language-dropdown>
+      <!-- <app-language-dropdown class="computer only" *ngIf="!router.isActive('workspace', false)">
+      </app-language-dropdown> -->
       <!--/Language Dropdown-->
     </div>
   </div>

@@ -48,7 +48,7 @@ export class ResourceService {
    * @param {ConfigService} config ConfigService reference
    * @param {HttpClient} http LearnerService reference
    */
-  constructor(config: ConfigService, http: HttpClient,
+  constructor(config: ConfigService, http: HttpClient, private _cacheService: CacheService,
     private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService) {
     if (!ResourceService.singletonInstance) {
       this.http = http;
@@ -63,7 +63,7 @@ export class ResourceService {
     return ResourceService.singletonInstance;
   }
   public initialize() {
-    this.getResource();
+    this.getResource(this._cacheService.get('portalLanguage') || 'en');
     if (this.cacheService.get('resourcebundlesearch')) {
       const data = this.cacheService.get('resourcebundlesearch');
       const language = this.cacheService.get('portalLanguage');
