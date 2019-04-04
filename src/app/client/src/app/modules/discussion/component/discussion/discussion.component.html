@@ -1,0 +1,93 @@
+<div class="ui divider margin-bottom-20 margin-top-30" *ngIf="batchId"></div>
+<div class="row" *ngIf="batchId && discussionThread.length > 0">
+    <div class="col-md-6">
+        <h3>{{resourceService?.frmelmnts?.lbl?.comments}}</h3>
+    </div>
+</div>
+!batchId {{!batchId}}
+<div class="col-md-6" *ngIf="discussionThread.length === 0">
+    <button class=" sb-btn sb-btn-primary sb-btn-normal pull-right" (click)="startNewConversionClick()">{{resourceService?.frmelmnts?.lbl?.conversation}}</button>
+</div>
+<div class="row MB30" *ngFor="let thread of discussionThread;let i=index">
+    <div class="col-md-12">
+        <div class="col-md-12 teamHeader MB30" (click)="collapse(i,thread.id)">
+            <span class="teamName">{{thread.title}}</span>
+        </div>
+        <div class="row" *ngIf="thread.show">
+            <div class="col-md-11">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 userInfo">
+                        <div class="clearfix userDetails">
+                            <div class="">
+                                <h2 style="color:lightseagreen">{{thread.author.name}}</h2>
+                                <p>{{thread.body}}</p>
+                                <!-- <div class="post_buttom" style="margin-top:-20px" *ngIf="!thread.replyEditor">
+                                    <img src="data:image/jpeg;base64,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"
+                                        alt="Smiley face" height="30" width="30">
+                                    <span class="ui item" (click)="reply(i)">Reply</span>
+                                </div> -->
+                                <!-- <div *ngIf="thread.replyEditor">
+                                    <textarea class="wmd-input" [(ngModel)]="replyContent"
+                                        id="wmd-input" placeholder="Reply Here....">
+
+                                    </textarea>
+                                    <br />
+                                    <div class="post_buttom">
+                                        <button class="ui item" style="margin-right: 5px"
+                                            (click)="replyToThread(thread.id)">Post</button>
+                                        <button class="ui item" (click)="cancel(i)">cancel</button>
+                                    </div>
+                                </div> -->
+                                <div class="ui section divider"></div>
+                                <div *ngFor="let reply of repliesContent; let i=index">
+                                    <h2 style="color:lightseagreen">{{reply.author.name}}</h2>
+                                    <P *ngIf="!parseBody(reply.body)">{{reply.body}}</P>
+                                    <div [innerHTML]="reply.body" *ngIf="parseBody(reply.body)"></div>
+                                    <!-- <div class="row" *ngIf="reply.actions.vote <= 0">
+                                        <div class="col-md-10">
+                                            <img class="pull-right cursor_pointer" src="https://previews.123rf.com/images/rclassenlayouts/rclassenlayouts1208/rclassenlayouts120800101/14757879-face-symbol-hand-i-like-fan-fanpage-social-voting-dislike-network-book-icon-community.jpg"
+                                                alt="Smiley face" height="35" width="35"
+                                                (click)="likePostClick(reply.id,false)">
+                                        </div>
+                                        <div class="col-md-2" style="margin-top:2px;font-size:20px">
+                                            <span>
+                                                {{reply.actions.vote}}
+                                            </span>
+                                        </div>
+                                    </div> -->
+                                    <!-- <div class="row" *ngIf="reply.actions.vote > 0">
+                                        <div class="col-md-10">
+                                            <img class="pull-right cursor_pointer" src="https://previews.123rf.com/images/arhimicrostok/arhimicrostok1705/arhimicrostok170502441/77784877-like-icon-hand-finger-up-sign-thumb-up-symbol-flat-design-style-.jpg"
+                                                alt="Smiley face" height="35" width="35"
+                                                (click)="likePostClick(reply.id,true)">
+                                        </div>
+                                        <div class="col-md-2" style="margin-top:2px;font-size:20px">
+                                            <span>
+                                                {{reply.actions.vote}}
+                                            </span>
+                                        </div>
+                                    </div> -->
+                                    <div class="ui section divider"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <quill-editor [(ngModel)]="editorContent" [options]="editorOptions" (blur)="onEditorBlured($event)"
+        (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)">
+    </quill-editor> -->
+<div class="editor" *ngIf="discussionThread && discussionThread.length !== 0">
+    <textarea class="wmd-input" [(ngModel)]="editorContent" id="wmd-input" placeholder="{{resourceService?.frmelmnts?.btn?.typeCharacters}}"></textarea>
+    <br />
+    <div class="post_buttom">
+        <button class="ui item primary floated button" style="margin-right: 5px" [ngClass]="{'disabled_cursor': isDisabled()}" [disabled]="isDisabled()"
+            (click)="replyToThread()">{{resourceService?.frmelmnts?.btn?.submit}}</button>
+        <button class="ui item primary floated button" (click)="postCancel()">{{resourceService?.frmelmnts?.btn?.cancel}}</button>
+    </div>
+    <input type="file" id="myFile" name="myFile" accept=".pdf" (change)="fileEvent($event)" title="Choose a file" autocomplete="off"
+    />
+</div>

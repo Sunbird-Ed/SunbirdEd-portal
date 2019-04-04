@@ -19,5 +19,6 @@ export * from './install-app/install-app.component';
 export * from './contentlock-info-popup/contentlock-info-popup.component';
 export * from './data-table/data-table.component';
 export * from './batch-card/batch-card.component';
+export * from './content-rating/content-rating.component';
 
 

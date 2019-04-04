@@ -217,3 +217,22 @@ export interface ITelemetryContext {
   'config': ITelemetry;
   'userOrgDetails': IUserOrgDetails;
 }
+
+export interface IFeedbackObject {
+  'id'?: string;
+  'type'?: string;
+  'ver'?: string;
+  'rollup'?: {};
+}
+export interface IFeedbackEdata {   
+  'rating'?: Number;
+  'comments'?: string;  
+}
+
+ export interface IFeedbackEventInput {
+  'context': {
+    'env': string;
+  };
+  'object': IFeedbackObject;
+  'edata': IFeedbackEdata;
+} 

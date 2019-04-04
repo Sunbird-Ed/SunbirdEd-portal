@@ -55,7 +55,10 @@
       ],
       "@sunbird/course-batch": [
         "app/modules/course-batch"
-      ]
+      ],
+      "@sunbird/discussion": [
+        "app/modules/discussion"
+      ],
     },
     "sourceMap": true,
     "declaration": false,

@@ -1,0 +1,34 @@
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal rating-modal" appBodyScroll
+  (dismissed)="closeModal(contentFeedbackModal);" #contentFeedbackModal>
+  <!--Header-->
+  <div class="sb-modal-header">
+      {{resourceService?.frmelmnts?.lbl?.ratingHeading}}
+  </div>
+  <!--/Header-->
+  <!--Content-->
+  <div class="sb-modal-content text-center">
+    <div class="ui basic icon circular button">
+      <i class="ui huge star icon"></i>
+    </div>
+    <div class="ui form">
+      <div class="field">
+        <h5>{{resourceService?.frmelmnts?.lbl?.ratingContent}}</h5>
+      </div>
+      <div class="field">
+        <sui-rating class="courseHeader-rating ui star rating" [(ngModel)]="rating" [maximum]="5"></sui-rating>
+      </div>
+      <div class="field">
+        <textarea rows="2" [(ngModel)]="comments"></textarea>
+      </div>      
+    </div>
+  </div>
+  <!--/Content-->
+  <!--Actions-->
+  <div class="sb-modal-actions">
+      <button class="sb-btn sb-btn-normal sb-btn-primary" type="submit" (click)="sendFeedback(contentFeedbackModal, true);">{{resourceService?.frmelmnts?.btn?.submit}}</button>  
+      <button class="sb-btn sb-btn-normal sb-btn-outline-error" type="submit" (click)="closeModal(contentFeedbackModal);">
+      {{resourceService?.frmelmnts?.btn?.cancel}}
+       </button>
+  </div>
+  <!--/Actions-->
+</sui-modal>

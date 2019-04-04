@@ -1,3 +1,5 @@
+
+// import { DiscussionModule } from './../discussion/discussion.module';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { LearnRoutingModule } from './learn-routing.module';
 import { NgModule } from '@angular/core';
@@ -11,12 +13,14 @@ import {
   LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
   CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
   UpdateCourseBatchComponent, CurriculumCardComponent, UnEnrollBatchComponent} from './components';
-import { CourseConsumptionService, CourseBatchService, CourseProgressService } from './services';
+import { CourseConsumptionService, CourseBatchService, CourseProgressService, CourseDiscussionsService } from './services';
 import { CoreModule } from '@sunbird/core';
 import { NotesModule } from '@sunbird/notes';
 import { DashboardModule } from '@sunbird/dashboard';
 import { CourseBatchModule } from '@sunbird/course-batch';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
+import { DiscussionModule } from '@sunbird/discussion';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -32,9 +36,10 @@ import {SharedFeatureModule} from '@sunbird/shared-feature';
     TelemetryModule,
     CourseBatchModule,
     NgInviewModule,
-    SharedFeatureModule
+    SharedFeatureModule,
+    DiscussionModule
   ],
-  providers: [CourseConsumptionService, CourseBatchService, CourseProgressService],
+  providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, CourseDiscussionsService],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
     UpdateCourseBatchComponent, CurriculumCardComponent, UnEnrollBatchComponent]

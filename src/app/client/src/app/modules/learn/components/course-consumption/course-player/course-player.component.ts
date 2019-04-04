@@ -1,3 +1,5 @@
+
+
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
@@ -10,8 +12,10 @@ import {
 } from '@sunbird/shared';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService } from './../../../services';
 import { INoteData } from '@sunbird/notes';
-import { IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata, IFeedbackObject, IFeedbackEdata } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { DiscussionModule } from './../../../../discussion/discussion.module';
+
 @Component({
   selector: 'app-course-player',
   templateUrl: './course-player.component.html',
@@ -90,6 +94,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public noContentToPlay = 'No content to play';
 
   public showExtContentMsg = false;
+
+  show: Boolean = false;
+  public feedbackModal: Boolean = false;
+  public showRatingModal: Boolean = false;
+  public telemetryFeedbackObject: IFeedbackObject;
 
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
@@ -284,6 +293,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     const eid = event.detail.telemetryData.eid;
     if (eid === 'END' && !this.validEndEvent(event)) {
       return;
+    }     
+    if (eid === 'END' && this.nextPlaylistItem === undefined) {
+      this.showRatingModal = true;
     }
     const request: any = {
       userId: this.userService.userid,
@@ -366,6 +378,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         mode: 'play'
       }
+    };
+      this.telemetryFeedbackObject = {
+      id: this.courseId,
+      type:'course',
+      ver: '1.0'
     };
   }
   private setTelemetryCourseImpression() {

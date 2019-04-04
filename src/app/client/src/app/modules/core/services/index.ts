@@ -22,3 +22,4 @@ export * from './ext-plugin/ext-plugin.service';
 export * from './device-register/device-register.service';
 export * from './channel/channel.service';
 export * from './otp/otp.service';
+export * from './discussions/discussions.service';

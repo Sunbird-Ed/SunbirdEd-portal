@@ -1,0 +1,82 @@
+.ui.button.right.floated{
+    text-align: right;
+}
+.ui.button.left.floated{
+    text-align: left;
+}
+.post_buttom{
+    float: right;
+    cursor: pointer
+}
+.teamHeader {
+    padding: 15px;
+    background: #d3d3d35e;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
+.teamName {
+    font-size: 20   px;
+}
+.hours {
+    font-size: 18px;
+    font-weight: 500;
+    padding-right: 20px;
+}
+.cursor_pointer {
+    cursor: pointer;
+}
+.disabled_cursor {
+    cursor: not-allowed 
+}
+.userInfo {
+    min-width: 200px;
+    margin-bottom: 30px;
+}
+    .userDetails {
+        margin-left: 18px;
+       /* background: lightgrey;
+        padding: 10px;
+        border-radius: 4px;
+        height: 120px;
+        padding-top: 25px;
+        padding-left: 25px;
+        overflow: auto; */
+    }
+    .image-circle {
+        padding: 15px;
+        height: 50px;
+        width: 50px;
+        margin-bottom: 10px;
+    }
+    .user-image {
+        height: 50px;
+        width: 50px;
+        border-radius: 25px;
+        object-fit: cover;
+        margin-bottom: 10px;
+    }
+    .trashIcon {
+        float: right;
+        display: none;
+        font-size: 15px; 
+        opacity: 0.5;
+        cursor: pointer;
+    }
+    .userName {
+        color: black;
+        font-size: 18px;
+        margin: 0; 
+    }
+    .desig {
+        color:black;
+        font-size: 16px;
+        margin: 0;
+    }
+.MB30 {
+    margin-bottom: 10px;
+}
+.wmd-input{
+    width: 100%;
+    margin-bottom: 20px;
+}

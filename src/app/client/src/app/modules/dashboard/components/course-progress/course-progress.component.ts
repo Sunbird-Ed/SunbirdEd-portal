@@ -4,12 +4,14 @@ import {first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, de
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
-import { UserService } from '@sunbird/core';
+import { UserService, DiscussionService } from '@sunbird/core';
 import { ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService } from '@sunbird/shared';
 import { CourseProgressService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import { IPagination } from '@sunbird/announcement';
+import { CourseDiscussionsService } from './../../../learn/services/course-discussion/course-discussion.service';
+import { DiscussionModule } from './../../../discussion/discussion.module';
 /**
  * This component shows the course progress dashboard
  */

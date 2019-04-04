@@ -26,7 +26,7 @@
                                 </b>
                             </div>
                             <app-collection-tree *ngIf="collectionTreeNodes.data && collectionTreeNodes.data.children && collectionTreeNodes.data.children.length >0 ; else dataCommingSoon" (contentSelect)="navigateToContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"
-                                    [contentStatus]="contentStatus"></app-collection-tree>
+                                    [contentStatus]="contentStatus"></app-collection-tree>                           
                             <ng-template #dataCommingSoon>
                                 <div class="placeholder mt-40">
                                     <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl }}"/>
@@ -34,7 +34,7 @@
                                     <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>
                                 </div> 
                             </ng-template>
-                            <div class="ui fitted divider mb-20 mt-30"></div>
+                            <app-discussion></app-discussion>
                         </div>
                         <div class='three wide column'>
                             <app-batch-details *ngIf="courseStatus !== 'Unlisted'" [courseId]="courseId" [batchId]="batchId" [enrolledCourse]="enrolledCourse" [enrolledBatchInfo]="enrolledBatchInfo"
@@ -153,4 +153,5 @@
     </div>
 </div>
 </div>
+<app-content-rating *ngIf='showRatingModal'[feedbackObject]='telemetryFeedbackObject' ></app-content-rating>
 <router-outlet></router-outlet>

@@ -19,6 +19,7 @@
     "RESOURCEBUNDLES_PREFIX": "resourcebundles/v1",
     "DEVICE_REGISTER": "v3/device/register/",
     "PAGE_PREFIX": "data/v1/page/assemble",
+    "DISCUSSION_PREFIX": "/discussions/v1/",
     "RESOURCEBUNDLES": {
       "ENG": "/read"
     },
@@ -60,7 +61,13 @@
       "GET_ENROLLED_COURSES": "course/v1/user/enrollment/list",
       "ENROLL_USER_COURSE": "course/v1/enrol",
       "RECOMMENDED_COURSE": "recommended/courses",
-      "UNENROLL_USER_COURSE":"course/v1/unenrol"
+      "UNENROLL_USER_COURSE":"course/v1/unenrol",
+      "COURSE_DISCUSSIONS_POST":"thread/create",
+      "RETRIEVE_DISCUSSION":"list",
+      "REPLY_TO_THREAD":"thread/reply",
+      "RETRIEVE_REPLIES":"thread/",
+      "LIKE_POST":  "thread/vote",
+      "UPLOAD_FILE": "files/service"
     },
     "CONTENT": {
       "SEARCH": "content/v1/search",

@@ -1,3 +1,4 @@
+
 // Angular modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -7,6 +8,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { SuiModule } from 'ng2-semantic-ui';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { DiscussionModule } from './../discussion/discussion.module';
 // Custome component(s) and services
 import {
   CourseConsumptionService, DashboardUtilsService, OrganisationService,
@@ -28,7 +30,8 @@ import { OrderModule } from 'ngx-order-pipe';
     SuiModule,
     SharedModule,
     OrderModule,
-    TelemetryModule
+    TelemetryModule,
+    DiscussionModule
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent],
   exports: [CourseProgressComponent],

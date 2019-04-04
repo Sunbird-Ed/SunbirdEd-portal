@@ -10,7 +10,7 @@ import {
   LearnerService, AnnouncementService, ConceptPickerService,
   BadgesService, ContentService, CoursesService, PageApiService,
   TenantService, FrameworkService, FormService, PlayerService, SearchService,
-  CopyContentService, BreadcrumbsService, OrgDetailsService, ChannelService
+  CopyContentService, BreadcrumbsService, OrgDetailsService, ChannelService, DiscussionService
 } from './services';
 import {
   MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, ConceptPickerComponent,
@@ -51,7 +51,7 @@ export class CoreModule {
         AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
         AuthGuard, FrameworkService, FormService, CacheService,
         ConceptPickerService, BreadcrumbsService, PlayerService, OrgDetailsService,
-        ChannelService]
+        ChannelService, DiscussionService]
     };
   }
 }
