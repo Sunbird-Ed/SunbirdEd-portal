@@ -81,6 +81,9 @@ export class PublicPlayerService {
     if (environment.isOffline) {
       configuration.data = '';
     }
+    if (environment.isOffline && !navigator.onLine) {
+      configuration.metadata = _.omit(configuration.metadata, ['streamingUrl']);
+    }
     if (option.dialCode) {
       configuration.context.cdata = [{
         id: option.dialCode,

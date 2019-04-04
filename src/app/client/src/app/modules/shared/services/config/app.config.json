@@ -702,7 +702,7 @@
       "xUrl": "text/x-url"
     },
     "baseURL": "/content/preview/preview.html?webview=true",
-    "localBaseUrl": "/contentPlayer/preview.html?webview=true"
+    "localBaseUrl": "/contentPlayer/preview/preview.html?webview=true"
   },
   "WORKSPACE": {
     "PAGE_LIMIT": 9,

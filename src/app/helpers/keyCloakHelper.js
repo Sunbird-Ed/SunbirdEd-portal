@@ -30,6 +30,13 @@ const deauthenticated = function (request) {
 }
 const authenticated = function (request) {
   permissionsHelper.getPermissions(request)
+  try {
+    var userId = request.kauth.grant.access_token.content.sub.split(':')
+    request.session.userId = userId[userId.length - 1];
+    request.session.save();
+  } catch(err) {
+    console.log('userId conversation error', request.kauth.grant.access_token.content.sub, err);
+  }
   async.series({
     getUserData: function (callback) {
       permissionsHelper.getCurrentUserRoles(request, callback)

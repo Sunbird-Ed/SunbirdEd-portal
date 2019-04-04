@@ -23,7 +23,8 @@
     <!--Avtar Dropdown-->
     <a class="profile-avtar computer only p-0 ml-15" *ngIf="userService.loggedIn && !isOffline" tabindex="0">
       <div suiDropdown [(isOpen)]="isOpen" class="ui dropdown right top pointing" id="dropdown-menu-list-header">
-        <ngx-avatar *ngIf='userProfile' [style]="avtarDesktopStyle" [size]="38" initialsSize="1" name="{{userProfile?.firstName}}">
+        <ngx-avatar *ngIf='userProfile' [style]="avtarDesktopStyle" [size]="38" initialsSize="1"
+          name="{{userProfile?.firstName}}">
         </ngx-avatar>
         <div class="menu" suiDropdownMenu>
           <div class="item headerDropdownProfile" *ngIf='userProfile'>
@@ -61,7 +62,7 @@
 
   <!--Header Blue Section-->
   <!--Computer-->
-  <div class="bg-primary p-8" *ngIf="showExploreHeader || userService.loggedIn">
+  <div class="bg-primary p-8" *ngIf="showExploreHeader || userService.loggedIn || isOffline">
     <div class="ui container d-flex flex-ai-center mx-0">
 
       <!--QR Button-->
@@ -79,7 +80,7 @@
 
       <!--Search Box-->
       <!--Logged in Pages-->
-      <app-search class="sb-search-box mr-auto" *ngIf="!showExploreHeader"
+      <app-search class="sb-search-box mr-auto" *ngIf="!showExploreHeader && !isOffline"
         [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
       </app-search>
       <!--/Logged in Pages-->
@@ -106,12 +107,16 @@
       <app-language-dropdown class="computer only" *ngIf="!router.isActive('workspace', false)">
       </app-language-dropdown>
       <!--/Language Dropdown-->
+      <button class="ui button qr-code-btn d-flex flex computer only mr-0" [routerLink]="['/import/content']"
+        *ngIf="isOffline">
+        {{resourceService.frmelmnts?.lbl?.importContent}}
+      </button>
     </div>
   </div>
   <!--/Computer-->
 
   <!--Mobile-->
-  <div class="p-10 mobile only" *ngIf="showExploreHeader || userService.loggedIn">
+  <div class="p-10 mobile only" *ngIf="showExploreHeader || userService.loggedIn || isOffline">
     <div class="ui mobile-view container d-flex flex-jc-space-between mx-0">
 
       <!--QR Button-->
