@@ -18,7 +18,8 @@ const mockActivatedRoute = {
   snapshot: {
     params: {
       'contentId': 'do_21247940906829414411032',
-      'type': 'collection', 'state': 'upForReview', 'framework': 'framework', 'contentStatus': 'Draft'
+      'type': 'collection', 'state': 'upForReview', 'framework': 'framework',
+      'contentStatus': 'Review'
     }
   }
 };
@@ -87,6 +88,13 @@ describe('CollectionEditorComponent', () => {
   it('should navigate to draft', inject([Router, NavigationHelperService], (router, navigationHelperService) => () => {
     spyOn(navigationHelperService, 'navigateToWorkSpace').and.callFake(() => { });
     component.closeModal();
+    expect(component.redirectToWorkSpace).toHaveBeenCalled();
     expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('workspace/content/draft/1');
+  }));
+
+  it('should call retire method', inject([Router, NavigationHelperService], (router, navigationHelperService) => () => {
+    spyOn(component, 'retireLock');
+    component.closeModal();
+    expect(component.retireLock).toHaveBeenCalled();
   }));
 });
