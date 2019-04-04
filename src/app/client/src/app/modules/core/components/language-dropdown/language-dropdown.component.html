@@ -7,7 +7,7 @@
     valueField="value">
     <sui-select-option 
       *ngFor="let option of languages" 
-      [value]="option">
+      [value]="option" appTelemetryInteract [telemetryInteractEdata]="getTelemetryInteractEdata(option.value)">
     </sui-select-option> 
   </sui-select>
 </div>
