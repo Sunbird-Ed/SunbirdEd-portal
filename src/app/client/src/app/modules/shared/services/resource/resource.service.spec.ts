@@ -50,9 +50,5 @@ describe('ResourceService', () => {
    resourceService.initialize();
    expect(resourceService.frmelmnts).toBeDefined();
    expect(resourceService.messages).toBeDefined();
-   const selectedLanguageData = {value: 'ur', name: 'Urdu', dir: 'rtl'};
-   resourceService.languageSelected$.subscribe(languageData => {
-    expect(languageData).toEqual(selectedLanguageData);
-  });
  }));
 });

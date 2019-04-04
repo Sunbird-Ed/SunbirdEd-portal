@@ -27,6 +27,7 @@ describe('LanguageDropdownComponent', () => {
       }
     },
     languageSelected$: observableOf({}),
+    getLanguageChange: () => {},
     getResource: () => ({})
   };
   const mockQueryParma = {
@@ -66,8 +67,7 @@ describe('LanguageDropdownComponent', () => {
     component.onLanguageChange('en');
     expect(component.onLanguageChange).toHaveBeenCalledWith('en');
   });
-  it('On ngOninit for else case', inject([CacheService],
-    (cacheService) =>  {
+  it('On ngOninit for else case', inject([CacheService], (cacheService) =>  {
       cacheService.set('portalLanguage', null);
     component.ngOnInit();
     expect(component.selectedLanguage).toBe('en');
