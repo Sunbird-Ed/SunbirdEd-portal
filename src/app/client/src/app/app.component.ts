@@ -102,7 +102,7 @@ export class AppComponent implements OnInit {
         this.tenantService.getTenantInfo(this.slug);
         this.setPortalTitleLogo();
         this.telemetryService.initialize(this.getTelemetryContext());
-        this.deviceRegisterService.registerDevice(this.channel);
+        this.deviceRegisterService.initialize(this.channel);
         this.checkTncAndFrameWorkSelected();
         this.initApp = true;
       }, error => {
@@ -164,7 +164,7 @@ export class AppComponent implements OnInit {
       return of(undefined);
     } else {
       return this.router.events.pipe(filter(event => event instanceof NavigationEnd), first(),
-        map(data => this.slug = _.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug')));
+        map(data => this.slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug')));
     }
   }
   /**
@@ -220,7 +220,8 @@ export class AppComponent implements OnInit {
           sid: this.userService.sessionId,
           channel: _.get(this.userProfile, 'rootOrg.hashTagId'),
           env: 'home',
-          enableValidation: environment.enableTelemetryValidation
+          enableValidation: environment.enableTelemetryValidation,
+          timeStampData: this.userService.getServerTime
         }
       };
     } else {
@@ -244,7 +245,8 @@ export class AppComponent implements OnInit {
           sid: this.userService.anonymousSid,
           channel: this.orgDetails.hashTagId,
           env: 'home',
-          enableValidation: environment.enableTelemetryValidation
+          enableValidation: environment.enableTelemetryValidation,
+          timeStampData: this.orgDetailsService.getServerTime
         }
       };
     }

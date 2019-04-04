@@ -2,21 +2,11 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LandingPageComponent } from './components';
 import { LandingpageGuard } from './services';
-import { environment } from '@sunbird/environment';
 
-let rootRoute: any = {
-  path: '', component: LandingPageComponent, canActivate: [LandingpageGuard],
-  data: { telemetry: { env: 'public', pageid: 'landing-page', type: 'edit', subtype: 'paginate' } }
-};
-if (environment.isOffline) {
-  rootRoute = {
-    path: '', loadChildren: './module/explore/explore.module#ExploreModule'
-  };
-}
 const routes: Routes = [
-  rootRoute,
   {
-    path: 'get', loadChildren: './module/dial-code-search/dial-code-search.module#DialCodeSearchModule'
+    path: '', component: LandingPageComponent, canActivate: [LandingpageGuard],
+    data: { telemetry: { env: 'public', pageid: 'landing-page', type: 'edit', subtype: 'paginate' } }
   },
   {
     path: 'explore', loadChildren: './module/explore/explore.module#ExploreModule'

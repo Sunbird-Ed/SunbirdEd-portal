@@ -112,8 +112,8 @@ module.exports = (app, keycloak) => {
 
 function getLocals(req, callback) {
   var locals = {}
-  locals.userId = _.get(req, 'kauth.grant.access_token.content.sub') ? req.kauth.grant.access_token.content.sub : null
-  locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'kauth.grant.access_token.content.sub') ? req.sessionID : null
+  locals.userId = _.get(req, 'session.userId') ? req.session.userId : null
+  locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'session.userId') ? req.sessionID : null
   locals.cdnUrl = envHelper.PORTAL_CDN_URL
   locals.theme = configHelper.getConfig('sunbird_theme')
   locals.defaultPortalLanguage = configHelper.getConfig('sunbird_default_language')

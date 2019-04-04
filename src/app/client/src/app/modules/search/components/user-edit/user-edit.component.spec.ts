@@ -198,4 +198,13 @@ describe('UserEditComponent', () => {
     const modalHeader  = fixture.debugElement.query(By.css('.sb-modal-header'));
     expect(modalHeader).toBeNull();
   });
+
+  it('should show roles from all the organizations' , () => {
+    const searchService = TestBed.get(UserSearchService);
+    spyOn(searchService, 'getUserById').and.returnValue(observableOf(Response.successData));
+    component.populateUserDetails();
+    expect(component.selectedOrgUserRoles).toContain('ORG_ADMIN');
+    expect(component.selectedOrgUserRoles).toContain('SYSTEM_ADMINISTRATION');
+    expect(component.selectedOrgUserRoles).toContain('BOOK_CREATOR');
+  });
 });

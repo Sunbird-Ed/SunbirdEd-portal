@@ -42,7 +42,7 @@
                             <div *ngIf="enrolledCourse" class="my-15">
                                 <div>
                                     <br>
-                                    <span appTelemetryInteract [telemetryInteractObject]="contentInteractObject" [telemetryInteractEdata]="{id:'add-note' , type:'click' , pageid:'course-consumption'}" (click)="showNoteEditor=!showNoteEditor" class="cursor-pointer">
+                                    <span appTelemetryInteract [telemetryInteractObject]="contentInteractObject" [telemetryInteractEdata]="{id:'add-note' , type:'click' , pageid:'course-consumption'}" [telemetryInteractCdata]="telemetryCdata" (click)="showNoteEditor=!showNoteEditor" class="cursor-pointer">
                                         <i class="circular icon mr-10 plus"></i>&nbsp;{{resourceService.frmelmnts.lbl.addnote}}
                                         <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId, courseId:courseId}" (exitModal)="showNoteEditor=false"
                                             (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
@@ -81,7 +81,7 @@
                                     <div class="twelve wide column">
                                         <span class="ui HomeAccordianHeading left floated header">{{contentTitle}}</span>
                                         <h5 appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="contentInteractObject"
-                                            class="ui right floated basic icon circular button mouse-pointer" (click)="closeContentPlayer()">
+                                         [telemetryInteractCdata]="telemetryCdata" class="ui right floated basic icon circular button mouse-pointer" (click)="closeContentPlayer()">
                                             <i class="ui remove icon"></i>
                                         </h5>
                                     </div>
@@ -111,7 +111,7 @@
                                 <div class="two wide tablet only two wide computer only column"></div>
                                 <div class="two wide column center aligned" ng-if="toc.showNoteInLecture">
                                     <h2 class="ui center aligned icon tiny header toc-note">
-                                        <a appTelemetryInteract [telemetryInteractObject]="contentInteractObject" [telemetryInteractEdata]="{id: 'takenote-button',type: 'click',pageid: 'course-consumption'}" class="ui take-note-card cursor-pointer" (click)="showNoteEditor=!showNoteEditor">
+                                        <a appTelemetryInteract [telemetryInteractObject]="contentInteractObject" [telemetryInteractEdata]="{id: 'takenote-button',type: 'click',pageid: 'course-consumption'}" [telemetryInteractCdata]="telemetryCdata" class="ui take-note-card cursor-pointer" (click)="showNoteEditor=!showNoteEditor">
                                             <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId, courseId:courseId}" (exitModal)="showNoteEditor=false"
                                                 (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
                                             <img src="{{'assets/images/takenote.png' |  cdnprefixurl}}">

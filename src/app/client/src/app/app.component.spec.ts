@@ -89,7 +89,7 @@ describe('AppComponent', () => {
     userService._authenticated = true;
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
-    spyOn(learnerService, 'get').and.returnValue(of(mockData.success));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
     component.ngOnInit();
     const config = {
       userOrgDetails: {
@@ -111,10 +111,11 @@ describe('AppComponent', () => {
         sid: component.userService.sessionId,
         channel: _.get(userService.userProfile, 'rootOrg.hashTagId'),
         env: 'home',
-        enableValidation: true
+        enableValidation: true,
+        timeStampData: {serverEts: '2018-02-28 12:07:33:518+0000', localTime: new Date()}
       }
     };
-    expect(telemetryService.initialize).toHaveBeenCalledWith(config);
+    expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
   });
   it('should call register Device api for login Session', () => {
     const learnerService = TestBed.get(LearnerService);
@@ -122,12 +123,12 @@ describe('AppComponent', () => {
     const tenantService = TestBed.get(TenantService);
     const deviceRegisterService = TestBed.get(DeviceRegisterService);
     userService._authenticated = true;
-    spyOn(deviceRegisterService, 'registerDevice');
+    spyOn(deviceRegisterService, 'initialize');
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
-    spyOn(learnerService, 'get').and.returnValue(of(mockData.success));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
     component.ngOnInit();
-    expect(deviceRegisterService.registerDevice).toHaveBeenCalledWith('b00bc992ef25f1a9a8d63291e20efc8d');
+    expect(deviceRegisterService.initialize).toHaveBeenCalledWith('b00bc992ef25f1a9a8d63291e20efc8d');
   });
 const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654', rootOrgId: '1235654'}] }}};
   it('should config telemetry service for Anonymous Session', () => {
@@ -158,22 +159,23 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
         sid: component.userService.anonymousSid,
         channel: '1235654',
         env: 'home',
-        enableValidation: true
+        enableValidation: true,
+        timeStampData: {}
       }
     };
-    expect(telemetryService.initialize).toHaveBeenCalledWith(config);
+    expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
   });
   it('should call register Device api for Anonymous Session', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
     const publicDataService = TestBed.get(PublicDataService);
     const tenantService = TestBed.get(TenantService);
     const deviceRegisterService = TestBed.get(DeviceRegisterService);
-    spyOn(deviceRegisterService, 'registerDevice');
+    spyOn(deviceRegisterService, 'initialize');
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({}));
     orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
     component.ngOnInit();
-    expect(deviceRegisterService.registerDevice).toHaveBeenCalledWith('1235654');
+    expect(deviceRegisterService.initialize).toHaveBeenCalledWith('1235654');
   });
 
   it('Should subscribe to tenant service and retrieve title and favicon details', () => {
@@ -199,15 +201,15 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
     expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
   });
-  it('should check framework key is in user read api and open the popup  ', async(() => {
+  it('should check framework key is in user read api and open the popup  ', () => {
     const learnerService = TestBed.get(LearnerService);
     const publicDataService = TestBed.get(PublicDataService);
     const tenantService = TestBed.get(TenantService);
     userService._authenticated = true;
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
-    spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
-    spyOn(learnerService, 'get').and.returnValue(of(mockData.success));
+    spyOn(publicDataService, 'postWithHeaders').and.returnValue(of({result: { response: { content: 'data'} } }));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
     component.ngOnInit();
     expect(component.showFrameWorkPopUp).toBeTruthy();
-  }));
+  });
 });

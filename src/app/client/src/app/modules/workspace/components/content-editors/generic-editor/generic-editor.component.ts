@@ -166,6 +166,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
         ver: this.portalVersion,
         pid: 'sunbird-portal'
       },
+      contextRollUp: this.telemetryService.getRollUpData(this.userProfile.organisationIds),
       tags: this.userService.dims,
       channel: this.userService.channel,
       env: 'generic-editor',
@@ -190,7 +191,11 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('genericEditor')) {
       document.getElementById('genericEditor').remove();
     }
-    this.retireLock();
+    if (this.routeParams.contentStatus.toLowerCase() === 'draft') {
+      this.retireLock();
+    } else {
+      this.redirectToWorkSpace();
+    }
   }
 
   retireLock () {
