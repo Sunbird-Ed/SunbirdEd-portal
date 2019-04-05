@@ -1,6 +1,6 @@
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { UserService, PermissionService, CoursesService } from '@sunbird/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -105,7 +105,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public collectionTreeOptions: ICollectionTreeOptions;
 
   public unsubscribe = new Subject<void>();
-
+  contentRatingModal = false;
+     /**
+   * Dom element reference of contentRatingModal
+   */
+  @ViewChild('modal') modal;
   constructor(public activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, public windowScrollService: WindowScrollService,
     public router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
@@ -288,6 +292,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
     const eid = event.detail.telemetryData.eid;
     if (eid === 'END' && !this.validEndEvent(event)) {
+      this.contentRatingModal = true;
+      if (this.modal) {
+        this.modal.showContentRatingModal = true;
+      }
       return;
     }
     const request: any = {
