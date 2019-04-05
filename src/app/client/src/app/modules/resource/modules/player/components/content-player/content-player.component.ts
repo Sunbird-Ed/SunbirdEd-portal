@@ -85,7 +85,7 @@ export class ContentPlayerComponent implements OnInit {
   /**
    * Dom element reference of contentRatingModal
    */
-  @ViewChild('Modal') Modal;
+  @ViewChild('modal') modal;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
@@ -217,8 +217,8 @@ export class ContentPlayerComponent implements OnInit {
     const eid = event.detail.telemetryData.eid;
     if (eid === 'END') {
       this.contentRatingModal = true;
-      if (this.Modal) {
-        this.Modal.showContentRatingModal = true;
+      if (this.modal) {
+        this.modal.showContentRatingModal = true;
       }
       return;
     }

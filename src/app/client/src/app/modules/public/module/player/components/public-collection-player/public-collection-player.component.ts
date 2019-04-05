@@ -87,7 +87,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     /**
    * Dom element reference of contentRatingModal
    */
-  @ViewChild('Modal') Modal;
+  @ViewChild('modal') modal;
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
@@ -289,8 +289,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     const eid = event.detail.telemetryData.eid;
     if (eid === 'END') {
       this.contentRatingModal = true;
-      if (this.Modal) {
-        this.Modal.showContentRatingModal = true;
+      if (this.modal) {
+        this.modal.showContentRatingModal = true;
       }
       return;
     }

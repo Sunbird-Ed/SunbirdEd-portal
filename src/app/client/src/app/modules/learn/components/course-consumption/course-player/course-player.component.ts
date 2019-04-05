@@ -109,7 +109,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
      /**
    * Dom element reference of contentRatingModal
    */
-  @ViewChild('Modal') Modal;
+  @ViewChild('modal') modal;
   constructor(public activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, public windowScrollService: WindowScrollService,
     public router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
@@ -293,8 +293,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     const eid = event.detail.telemetryData.eid;
     if (eid === 'END' && !this.validEndEvent(event)) {
       this.contentRatingModal = true;
-      if (this.Modal) {
-        this.Modal.showContentRatingModal = true;
+      if (this.modal) {
+        this.modal.showContentRatingModal = true;
       }
       return;
     }

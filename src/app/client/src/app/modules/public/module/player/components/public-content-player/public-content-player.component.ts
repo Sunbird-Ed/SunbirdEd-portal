@@ -50,7 +50,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
     /**
    * Dom element reference of contentRatingModal
    */
-  @ViewChild('Modal') Modal;
+  @ViewChild('modal') modal;
   public showFooter: Boolean = false;
   contentData: ContentData;
   public unsubscribe$ = new Subject<void>();
@@ -165,8 +165,8 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
     const eid = event.detail.telemetryData.eid;
     if (eid === 'END') {
       this.contentRatingModal = true;
-      if (this.Modal) {
-        this.Modal.showContentRatingModal = true;
+      if (this.modal) {
+        this.modal.showContentRatingModal = true;
       }
       return;
     }
