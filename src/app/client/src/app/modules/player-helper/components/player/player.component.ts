@@ -10,17 +10,17 @@ import { Router } from '@angular/router';
 })
 export class PlayerComponent implements OnInit, OnChanges {
   @Input() playerConfig: PlayerConfig;
-  @Output() contentProgressEvent = new EventEmitter <any> ();
+  @Output() contentProgressEvent = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
-  @Output() playerOnDestroyEvent = new EventEmitter <any> ();
-  @Output() sceneChangeEvent = new EventEmitter <any> ();
+  @Output() playerOnDestroyEvent = new EventEmitter<any>();
+  @Output() sceneChangeEvent = new EventEmitter<any>();
   buildNumber: string;
   viewFullscreenBtn = false;
   viewFullScreenIntractEdata;
   viewFullScreenIntractObject;
   constructor(public configService: ConfigService, public router: Router) {
     try {
-      this.buildNumber = ( <HTMLInputElement> document.getElementById('buildNumber')).value;
+      this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')).value;
     } catch (error) {
       this.buildNumber = '1.0';
     }
