@@ -18,6 +18,7 @@ import {
 import {
   environment
 } from '@sunbird/environment';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html'
@@ -30,7 +31,9 @@ export class PlayerComponent implements OnInit, OnChanges {
   @Output() sceneChangeEvent = new EventEmitter < any > ();
   buildNumber: string;
   viewFullscreenBtn = false;
-  constructor(public configService: ConfigService) {
+  viewFullScreenIntractEdata;
+  viewFullScreenIntractObject;
+  constructor(public configService: ConfigService, public router: Router) {
     try {
       this.buildNumber = ( < HTMLInputElement > document.getElementById('buildNumber')).value;
     } catch (error) {
@@ -42,6 +45,16 @@ export class PlayerComponent implements OnInit, OnChanges {
    */
   ngOnInit() {
     this.showPlayer();
+    this.viewFullScreenIntractEdata = {
+      id: 'view-full-screen-button',
+      type: 'click',
+      pageid: this.router.url.split('/')[1]
+    };
+    this.viewFullScreenIntractObject = {
+      id: this.playerConfig.metadata.identifier,
+      type: this.playerConfig.metadata.contentType,
+      ver: this.playerConfig.metadata.pkgVersion ? this.playerConfig.metadata.pkgVersion.toString() : '1.0'
+    };
   }
 
   ngOnChanges() {

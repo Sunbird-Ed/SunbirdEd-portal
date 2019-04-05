@@ -1,2 +1,2 @@
 <iframe #contentIframe id="contentPlayer" class="contentViewerIframeShadow br-4"></iframe>
-<button class="sb-btn sb-btn-primary sb-btn-normal pull-right view-fullscreen"[ngClass]="{'d-none': !viewFullscreenBtn}" (click)="viewInFullscreen()"> <i class="expand icon"></i> View Full Screen</button>
+<button class="sb-btn sb-btn-primary sb-btn-normal pull-right view-fullscreen"[ngClass]="{'d-none': !viewFullscreenBtn}" (click)="viewInFullscreen()" appTelemetryInteract [telemetryInteractEdata]="viewFullScreenIntractEdata" [telemetryInteractObject]="viewFullScreenIntractObject"> <i class="expand icon"></i> View Full Screen</button>
