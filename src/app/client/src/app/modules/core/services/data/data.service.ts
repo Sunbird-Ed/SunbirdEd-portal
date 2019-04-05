@@ -62,7 +62,7 @@ export class DataService {
     return this.http.get(this.baseUrl + requestParam.url, httpOptions).pipe(
       mergeMap(({body, headers}: any) => {
         // replace ts time with header date , this value is used in telemetry
-        body.ts =  new Date(headers.get('Date'));
+        body.ts =  this.getDateDiff((headers.get('Date')));
         if (body.responseCode !== 'OK') {
           return observableThrowError(body);
         }
@@ -104,7 +104,7 @@ export class DataService {
     return this.http.post(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
       mergeMap(({body, headers}: any) => {
         // replace ts time with header date , this value is used in telemetry
-        body.ts =  new Date(headers.get('Date'));
+        body.ts =  this.getDateDiff((headers.get('Date')));
         if (body.responseCode !== 'OK') {
           return observableThrowError(body);
         }
@@ -200,6 +200,16 @@ export class DataService {
       return { ...default_headers, ...headers };
     } else {
       return { ...default_headers };
+    }
+  }
+
+  private getDateDiff (serverdate): number {
+    const currentdate: any = new Date();
+    const serverDate: any = new Date(serverdate);
+    if (serverdate) {
+      return serverdate - currentdate;
+    } else {
+      return 0;
     }
   }
 }
