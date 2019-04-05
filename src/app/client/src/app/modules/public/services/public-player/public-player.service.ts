@@ -70,6 +70,7 @@ export class PublicPlayerService {
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = this.userService.anonymousSid;
     configuration.context.uid = 'anonymous';
+    configuration.context.timeDiff = this.orgDetailsService.getServerTimeDiff;
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     configuration.context.pdata.ver = buildNumber && buildNumber.value ?
       buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
