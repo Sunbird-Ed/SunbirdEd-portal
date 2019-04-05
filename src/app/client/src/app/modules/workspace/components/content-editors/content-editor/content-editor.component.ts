@@ -191,7 +191,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
       tags: this.userService.dims,
       channel: this.userService.channel,
       framework: this.routeParams.framework,
-      ownershipType: this.ownershipType
+      ownershipType: this.ownershipType,
+      timeDiff: this.userService.getServerTimeDiff
     };
   }
   private setWindowConfig() {
@@ -249,7 +250,11 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('contentEditor')) {
       document.getElementById('contentEditor').remove();
     }
-    this.retireLock();
+    if (this.routeParams.contentStatus.toLowerCase() === 'draft') {
+      this.retireLock();
+    } else {
+      this.redirectToWorkSpace();
+    }
   }
 
   retireLock () {

@@ -1,3 +1,4 @@
+import { IInteractEventEdata } from '@sunbird/telemetry';
 
 import { takeUntil, first } from 'rxjs/operators';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
@@ -106,5 +107,9 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  getTelemetryInteractEdata(language): IInteractEventEdata {
+    return {id : `${language}-lang`, type: 'click' , pageid: this.router.url.split('/')[1]};
   }
 }
