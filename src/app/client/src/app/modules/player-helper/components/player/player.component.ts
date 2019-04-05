@@ -29,6 +29,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   @Output() playerOnDestroyEvent = new EventEmitter < any > ();
   @Output() sceneChangeEvent = new EventEmitter < any > ();
   buildNumber: string;
+  viewFullscreenBtn = false;
   constructor(public configService: ConfigService) {
     try {
       this.buildNumber = ( < HTMLInputElement > document.getElementById('buildNumber')).value;
@@ -64,6 +65,13 @@ export class PlayerComponent implements OnInit, OnChanges {
     this.contentIframe.nativeElement.addEventListener('renderer:telemetry:event', (event: any) => {
       this.generateContentReadEvent(event);
     });
+
+    if (this.playerConfig.metadata.mimeType !== 'video/x-youtube' && this.playerConfig.metadata.mimeType !== 'video/mp4') {
+      this.viewFullscreenBtn = true;
+    } else {
+      this.viewFullscreenBtn = false;
+    }
+
     if (window.innerWidth <= 768) {
       this.viewInFullscreen();
     }
