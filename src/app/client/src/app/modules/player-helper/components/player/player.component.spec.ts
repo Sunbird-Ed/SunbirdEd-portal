@@ -2,6 +2,7 @@ import { SharedModule } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlayerComponent } from './player.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
 
 const startEvent = {
   detail: {
@@ -38,7 +39,7 @@ describe('PlayerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot()],
+      imports: [SharedModule.forRoot(), RouterTestingModule],
       declarations: [PlayerComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })

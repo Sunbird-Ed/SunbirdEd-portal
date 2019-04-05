@@ -10,6 +10,7 @@ import { SharedModule, ToasterService, ResourceService, NavigationHelperService 
 import { PlayerService, UserService, LearnerService, ContentService, CoreModule } from '@sunbird/core';
 import * as mockData from './flag-contentplayer.componemt.spec.data';
 import { PlayerHelperModule } from '@sunbird/player-helper';
+import { TelemetryService } from '@sunbird/telemetry';
 const testData = mockData.mockRes;
 describe('FlagConentplayerComponent', () => {
   let component: FlagConentplayerComponent;
@@ -37,7 +38,7 @@ describe('FlagConentplayerComponent', () => {
       imports: [HttpClientTestingModule, Ng2IziToastModule,
         CoreModule, PlayerHelperModule, RouterTestingModule, SharedModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [ResourceService, ToasterService, NavigationHelperService,
+      providers: [ResourceService, ToasterService, NavigationHelperService, TelemetryService,
         { provide: ResourceService, useValue: resourceBundle }
       ]
     })
