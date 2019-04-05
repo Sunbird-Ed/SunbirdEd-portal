@@ -470,7 +470,7 @@ describe('CoursePlayerComponent', () => {
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
   });
-  fit('should call  contentProgressEvent method and open contentRatingModal', () => {
+  it('should call  contentProgressEvent method and open contentRatingModal', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const contentData = {model: { mimeType: 'application/vnd.ekstep.eclm-archive'}};
     const playerDestroyData = { contentId: '123'};
