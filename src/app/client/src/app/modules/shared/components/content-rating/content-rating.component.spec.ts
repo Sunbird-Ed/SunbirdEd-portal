@@ -32,9 +32,6 @@ describe('ContentRatingComponent', () => {
   it('can load instance', () => {
     expect(component).toBeTruthy();
   });
-  it('should call submit and generate the feedback event ', async(() => {
-
-  }));
   it('should call submit and generate the feedback event ', () => {
     const telemetryService = TestBed.get(TelemetryService);
     const toasterService = TestBed.get(ToasterService);
