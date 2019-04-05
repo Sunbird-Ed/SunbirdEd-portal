@@ -470,4 +470,20 @@ describe('CoursePlayerComponent', () => {
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
   });
+  fit('should call  contentProgressEvent method and open contentRatingModal', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const contentData = {model: { mimeType: 'application/vnd.ekstep.eclm-archive'}};
+    const playerDestroyData = { contentId: '123'};
+    const telemetryEvent = { detail: {
+      telemetryData: { eid: 'END',
+        edata: {summary: [{progress: 100}]}
+      }}};
+    spyOn(component, 'findContentById').and.returnValue(contentData);
+    spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
+    component.courseProgressData = { content: [{ contentId: '123', status: 1}]};
+    component.enrolledBatchInfo = {status: 1};
+    component.batchId = '123';
+    component.contentProgressEvent(telemetryEvent);
+    expect(component.contentRatingModal).toBeFalsy();
+  });
 });
