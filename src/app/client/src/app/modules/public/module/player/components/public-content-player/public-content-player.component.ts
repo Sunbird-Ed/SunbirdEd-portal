@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -47,6 +47,10 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
 
   showExtContentMsg = false;
   contentRatingModal = false;
+    /**
+   * Dom element reference of contentRatingModal
+   */
+  @ViewChild('Modal') Modal;
   public showFooter: Boolean = false;
   contentData: ContentData;
   public unsubscribe$ = new Subject<void>();
@@ -161,6 +165,9 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
     const eid = event.detail.telemetryData.eid;
     if (eid === 'END') {
       this.contentRatingModal = true;
+      if (this.Modal) {
+        this.Modal.showContentRatingModal = true;
+      }
       return;
     }
   }

@@ -123,5 +123,5 @@
 </div>
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
 </app-share-link>
-<app-content-rating *ngIf="contentRatingModal && collectionData"  [contentData] = "collectionData"></app-content-rating>
+<app-content-rating #Modal *ngIf="contentRatingModal && collectionData"  [contentData] = "collectionData"></app-content-rating>
 <router-outlet></router-outlet>
