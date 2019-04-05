@@ -78,6 +78,28 @@
 
 }
 
+*[dir="rtl"] {
+
+  .diksha-logo {
+    height: 148px;
+  }
+
+  .mobile-circles {
+    flex-direction: row-reverse;
+
+    .oval-box {
+      margin-right: 0px !important;
+      margin-left: 20px !important;
+    }
+
+    .border-round:nth-child(3) {     
+      margin-left: 20px !important;
+      margin-right: 10px !important;
+    }
+  }
+
+}
+
 .footer {
   background: $primary-color;
   color: $white-color !important;
@@ -155,6 +177,15 @@
       display: none !important;
     }
   }
+
+    .download-diksha {
+      height: 123px;
+
+      .diksha-logo {
+        height: unset;
+      }
+
+    }
 
   .footer {
     margin-top: 170px;
