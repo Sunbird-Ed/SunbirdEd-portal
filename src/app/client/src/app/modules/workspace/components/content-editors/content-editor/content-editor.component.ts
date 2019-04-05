@@ -192,7 +192,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
       channel: this.userService.channel,
       framework: this.routeParams.framework,
       ownershipType: this.ownershipType,
-      timeStampData: this.userService.getServerTime
+      timeDiff: this.userService.getServerTimeDiff
     };
   }
   private setWindowConfig() {

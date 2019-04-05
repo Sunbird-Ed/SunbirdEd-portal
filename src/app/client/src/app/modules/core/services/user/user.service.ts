@@ -28,7 +28,7 @@ export class UserService {
     */
   private _sessionId: string;
 
-  timeStampData: any;
+  timeDiff: any;
 
   /**
    * Contains root org id
@@ -154,7 +154,7 @@ export class UserService {
       (data: ServerResponse) => {
         if (data.ts) {
           // data.ts is taken from header and not from api response ts, and format in IST
-          this.timeStampData = data.ts;
+          this.timeDiff = data.ts;
         }
         this.setUserProfile(data);
       },
@@ -310,8 +310,8 @@ export class UserService {
     return this._hashTagId;
   }
 
-  get getServerTime() {
-    return this.timeStampData;
+  get getServerTimeDiff() {
+    return this.timeDiff;
   }
 
   get channel() {

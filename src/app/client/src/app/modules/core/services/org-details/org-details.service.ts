@@ -15,7 +15,7 @@ export class OrgDetailsService {
 
   orgDetails: any;
   orgInfo: any;
-  timeStampData: any;
+  timeDiff: any;
 
   private _orgDetails$ = new BehaviorSubject<any>(undefined);
 
@@ -45,7 +45,7 @@ export class OrgDetailsService {
       return this.publicDataService.postWithHeaders(option).pipe(mergeMap((data: ServerResponse) => {
         if (data.ts) {
           // data.ts is taken from header and not from api response ts, and format in IST
-          this.timeStampData = data.ts;
+          this.timeDiff = data.ts;
         }
         if (data.result.response.count > 0) {
           this.orgDetails = data.result.response.content[0];
@@ -125,8 +125,8 @@ export class OrgDetailsService {
     return this.learnerService.get(systemSetting);
   }
 
-  get getServerTime() {
-    return this.timeStampData;
+  get getServerTimeDiff() {
+    return this.timeDiff;
   }
 
   fetchOrgs(filters) {

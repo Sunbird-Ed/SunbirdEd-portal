@@ -205,6 +205,7 @@ export class DataService {
 
   private getDateDiff (serverdate): number {
     const currentdate: any = new Date();
+    const serverDate: any = new Date(serverdate);
     if (serverdate) {
       return serverdate - currentdate;
     } else {
