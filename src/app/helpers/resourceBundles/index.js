@@ -1,10 +1,11 @@
 let dateFormat = require('dateformat')
-const configHelper = require('../configServiceSDKHelper.js')
+const envHelper = require('../environmentVariablesHelper.js')
 let HttpStatus = require('http-status-codes')
 let uuidv1 = require('uuid/v1')
 let path = require('path')
 let fs = require('fs')
 const API_VERSION = '1.0'
+const compression = require('compression')
 
 function sendSuccessResponse (res, id, result, code = HttpStatus.OK) {
   res.status(code)
@@ -66,8 +67,8 @@ function getErrorCode (httpCode) {
 
 module.exports = function (express) {
   var router = express.Router()
-  router.get('/read/:lang?', (requestObj, responseObj, next) => {
-    var lang = requestObj.params['lang'] || configHelper.getConfig('sunbird_default_language')
+  router.get('/read/:lang?', compression(), (requestObj, responseObj, next) => {
+    var lang = requestObj.params['lang'] || envHelper.sunbird_default_language
 
     try {
       var bundles = JSON.parse(fs.readFileSync(path.join(__dirname, '/./../../resourcebundles/json/', lang + '.json')))

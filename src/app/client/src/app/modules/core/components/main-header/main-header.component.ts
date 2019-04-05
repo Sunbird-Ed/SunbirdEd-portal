@@ -1,7 +1,6 @@
-import { filter, flatMap } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
-import { UserService, PermissionService, TenantService } from './../../services';
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
+import { filter, first } from 'rxjs/operators';
+import { UserService, PermissionService, TenantService, OrgDetailsService, FormService } from './../../services';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -9,67 +8,28 @@ import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 declare var jQuery: any;
-/**
- * Main header component
- */
+
 @Component({
   selector: 'app-header',
   templateUrl: './main-header.component.html'
 })
-export class MainHeaderComponent implements OnInit, OnDestroy {
-  /**
-   * reference of tenant service.
-   */
-  public tenantService: TenantService;
-  /**
-   * organization log
-   */
+export class MainHeaderComponent implements OnInit {
+
+  languageFormQuery = {
+    formType: 'content',
+    formAction: 'search',
+    filterEnv: 'resourcebundle'
+  };
   exploreButtonVisibility: string;
-  logo: string;
-  key: string;
   queryParam: any = {};
   showExploreHeader = false;
   showQrmodal = false;
-  /**
-   * tenant name
-   */
-  tenantName: string;
-  /**
-   * user profile details.
-   */
+  tenantInfo: any = {};
   userProfile: IUserProfile;
-  /**
-   * Sui dropdown initiator
-   */
-  isOpen: boolean;
-  /**
-   * Admin Dashboard access roles
-   */
   adminDashboard: Array<string>;
-  /**
-   * Announcement access roles
-   */
   announcementRole: Array<string>;
-  /**
-   * MyActivity access roles
-   */
   myActivityRole: Array<string>;
-  /**
-   * Organization Setup access roles
-   */
   orgSetupRole: Array<string>;
-  /**
-   * reference of UserService service.
-   */
-  public userService: UserService;
-  /**
-   * reference of config service.
-   */
-  public config: ConfigService;
-  /**
-   * reference of resourceService service.
-   */
-  public resourceService: ResourceService;
   avtarMobileStyle = {
     backgroundColor: 'transparent',
     color: '#AAAAAA',
@@ -92,15 +52,9 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     height: '38px',
     width: '38px'
   };
-  /**
-   * reference of permissionService service.
-   */
-  public permissionService: PermissionService;
   public signUpInteractEdata: IInteractEventEdata;
   public enterDialCodeInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
-  tenantDataSubscription: Subscription;
-  userDataSubscription: Subscription;
   exploreRoutingUrl: string;
   pageId: string;
   searchBox = {
@@ -111,72 +65,153 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   };
   slug: string;
   isOffline: boolean = environment.isOffline;
-  /*
-  * constructor
-  */
-  constructor(config: ConfigService, resourceService: ResourceService, public router: Router,
-    permissionService: PermissionService, userService: UserService, tenantService: TenantService,
-    public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef) {
-    this.config = config;
-    this.resourceService = resourceService;
-    this.permissionService = permissionService;
-    this.userService = userService;
-    this.tenantService = tenantService;
-  }
+  languages: Array<any>;
 
-  ngOnInit() {
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(event => {
-        let currentRoute = this.activatedRoute.root;
-        if (currentRoute.children) {
-          while (currentRoute.children.length > 0) {
-            const child: ActivatedRoute[] = currentRoute.children;
-            child.forEach(route => {
-              currentRoute = route;
-              if (route.snapshot.data.telemetry) {
-                if (route.snapshot.data.telemetry.pageid) {
-                  this.pageId = route.snapshot.data.telemetry.pageid;
-                } else {
-                  this.pageId = route.snapshot.data.telemetry.env;
-                }
-              }
-            });
-          }
-        }
-      });
-    try {
-      this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
-    } catch (error) {
-      this.exploreButtonVisibility = 'false';
-    }
-    this.getUrl();
-    if (!this.userService.loggedIn) {
-      this.getCacheLanguage();
-    }
-    this.activatedRoute.queryParams.subscribe(queryParams => {
-      this.queryParam = { ...queryParams };
-      this.key = this.queryParam['key'];
-    });
-    this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
-    this.announcementRole = this.config.rolesConfig.headerDropdownRoles.announcementRole;
-    this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
-    this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;
-    this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
-      data => {
-        if (data && !data.err) {
-          this.logo = data.tenantData.logo;
-          this.tenantName = data.tenantData.titleName.toUpperCase();
-        }
+  constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
+    public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
+    public orgDetailsService: OrgDetailsService, private _cacheService: CacheService, public formService: FormService,
+    public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef) {
+      try {
+        this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
+      } catch (error) {
+        this.exploreButtonVisibility = 'false';
       }
-    );
-    this.userDataSubscription = this.userService.userData$.subscribe(
-      (user: IUserData) => {
+      this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
+      this.announcementRole = this.config.rolesConfig.headerDropdownRoles.announcementRole;
+      this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
+      this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;
+  }
+  ngOnInit() {
+    if (this.userService.loggedIn) {
+      this.userService.userData$.pipe(first()).subscribe((user: any) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
+            this.getLanguage(this.userService.channel);
         }
       });
+    } else {
+      this.orgDetailsService.orgDetails$.pipe(first()).subscribe(((data) => {
+        if (data && !data.err) {
+          this.getLanguage(data.orgDetails.hashTagId);
+        }
+      }));
+    }
+    this.getUrl();
+    this.activatedRoute.queryParams.subscribe(queryParams => this.queryParam = { ...queryParams });
+    this.tenantService.tenantData$.subscribe(({tenantData}) => {
+      this.tenantInfo.logo = tenantData ? tenantData.logo : undefined;
+      this.tenantInfo.titleName = tenantData ? tenantData.titleName.toUpperCase() : undefined;
+    });
     this.setInteractEventData();
     this.cdr.detectChanges();
+    this.setWindowConfig();
+  }
+  getLanguage(channelId) {
+    const isCachedDataExists = this._cacheService.get(this.languageFormQuery.filterEnv + this.languageFormQuery.formAction);
+    if (isCachedDataExists) {
+      this.languages = isCachedDataExists[0].range;
+    } else {
+      const formServiceInputParams = {
+        formType: this.languageFormQuery.formType,
+        formAction: this.languageFormQuery.formAction,
+        contentType: this.languageFormQuery.filterEnv
+      };
+      this.formService.getFormConfig(formServiceInputParams, channelId).subscribe((data: any) => {
+        this.languages = data[0].range;
+        this._cacheService.set(this.languageFormQuery.filterEnv + this.languageFormQuery.formAction, data,
+          { maxAge: this.config.appConfig.cacheServiceConfig.setTimeInMinutes * this.config.appConfig.cacheServiceConfig.setTimeInSeconds});
+      }, (err: any) => {
+        this.languages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr' }];
+      });
+    }
+  }
+  navigateToHome() {
+    if (this.userService.loggedIn) {
+      this.router.navigate(['resources']);
+    } else {
+      window.location.href = this.slug ? this.slug : '';
+    }
+  }
+  onEnter(key) {
+    this.queryParam = {};
+    if (key && key.length) {
+      this.queryParam.key = key;
+    }
+    this.router.navigate([this.exploreRoutingUrl, 1], { queryParams: this.queryParam });
+  }
+
+  getUrl() {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
+      let currentRoute = this.activatedRoute.root;
+      if (currentRoute.children) {
+        while (currentRoute.children.length > 0) {
+          const child: ActivatedRoute[] = currentRoute.children;
+          child.forEach(route => {
+            currentRoute = route;
+            if (route.snapshot.data.telemetry) {
+              if (route.snapshot.data.telemetry.pageid) {
+                this.pageId = route.snapshot.data.telemetry.pageid;
+              } else {
+                this.pageId = route.snapshot.data.telemetry.env;
+              }
+            }
+          });
+        }
+      }
+      this.slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
+      if (_.includes(urlAfterRedirects.url, '/explore')) {
+        this.showExploreHeader = true;
+        const url = urlAfterRedirects.url.split('?')[0].split('/');
+        if (url.indexOf('explore') === 2) {
+          this.exploreRoutingUrl = url[1] + '/' + url[2];
+        } else {
+          this.exploreRoutingUrl = url[1];
+        }
+      } else if (_.includes(urlAfterRedirects.url, '/explore-course')) {
+        this.showExploreHeader = true;
+        const url = urlAfterRedirects.url.split('?')[0].split('/');
+        if (url.indexOf('explore-course') === 2) {
+          this.exploreRoutingUrl = url[1] + '/' + url[2];
+        } else {
+          this.exploreRoutingUrl = url[1];
+        }
+      } else {
+        this.showExploreHeader = false;
+      }
+    });
+  }
+
+  setInteractEventData() {
+    this.signUpInteractEdata = {
+      id: 'signup',
+      type: 'click',
+      pageid: 'public'
+    };
+    this.telemetryInteractObject = {
+      id: '',
+      type: 'signup',
+      ver: '1.0'
+    };
+    this.enterDialCodeInteractEdata = {
+      id: 'click-dial-code',
+      type: 'click',
+      pageid: 'explore'
+    };
+  }
+
+  getLogoutInteractEdata() {
+    return {
+      id: 'logout',
+      type: 'click',
+      pageid: this.router.url.split('/')[1]
+    };
+  }
+
+  logout() {
+    window.location.replace('/logoff');
+    this.cacheService.removeAll();
+  }
+  setWindowConfig() {
     if (window.innerWidth <= 1023 && window.innerWidth > 548) {
       this.searchBox.center = true;
       this.searchBox.largeBox = true;
@@ -209,102 +244,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
         this.searchBox.mediumBox = true;
       }
     };
-  }
-
-  getCacheLanguage() {
-    const isCachedDataExists = this.cacheService.exists('portalLanguage');
-    if (isCachedDataExists) {
-      const data: any | null = this.cacheService.get('portalLanguage');
-      this.resourceService.getResource(data);
-    }
-  }
-  navigateToHome() {
-    if (this.userService.loggedIn) {
-      this.router.navigate(['resources']);
-    } else {
-      window.location.href = this.slug ? this.slug : '';
-    }
-  }
-  onEnter(key) {
-    this.key = key;
-    this.queryParam = {};
-    this.queryParam['key'] = this.key;
-    if (this.key && this.key.length > 0) {
-      this.queryParam['key'] = this.key;
-    } else {
-      delete this.queryParam['key'];
-    }
-    this.router.navigate([this.exploreRoutingUrl, 1], {
-      queryParams: this.queryParam
-    });
-  }
-
-  getUrl() {
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
-      this.slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
-      if (_.includes(urlAfterRedirects.url, '/explore')) {
-        this.showExploreHeader = true;
-        const url = urlAfterRedirects.url.split('?')[0].split('/');
-        if (url.indexOf('explore') === 2) {
-          this.exploreRoutingUrl = url[1] + '/' + url[2];
-        } else {
-          this.exploreRoutingUrl = url[1];
-        }
-      } else if (_.includes(urlAfterRedirects.url, '/explore-course')) {
-        this.showExploreHeader = true;
-        const url = urlAfterRedirects.url.split('?')[0].split('/');
-        if (url.indexOf('explore-course') === 2) {
-          this.exploreRoutingUrl = url[1] + '/' + url[2];
-        } else {
-          this.exploreRoutingUrl = url[1];
-        }
-      } else {
-        this.showExploreHeader = false;
-      }
-    });
-  }
-
-  closeQrModalEvent(event) {
-    this.showQrmodal = false;
-  }
-  setInteractEventData() {
-    this.signUpInteractEdata = {
-      id: 'signup',
-      type: 'click',
-      pageid: 'public'
-    };
-    this.telemetryInteractObject = {
-      id: '',
-      type: 'signup',
-      ver: '1.0'
-    };
-    this.enterDialCodeInteractEdata = {
-      id: 'click-dial-code',
-      type: 'click',
-      pageid: 'explore'
-    };
-  }
-
-  getLogoutInteractEdata() {
-    return {
-      id: 'logout',
-      type: 'click',
-      pageid: this.router.url.split('/')[1]
-    };
-  }
-
-  logout() {
-    window.location.replace('/logoff');
-    this.cacheService.removeAll();
-  }
-
-  ngOnDestroy() {
-    if (this.tenantDataSubscription) {
-      this.tenantDataSubscription.unsubscribe();
-    }
-    if (this.userDataSubscription) {
-      this.userDataSubscription.unsubscribe();
-    }
   }
   showSideBar() {
     jQuery('.ui.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
