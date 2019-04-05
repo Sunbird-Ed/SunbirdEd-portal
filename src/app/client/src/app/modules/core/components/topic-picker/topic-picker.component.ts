@@ -82,7 +82,7 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
       chooseAllText: this.resourceService.frmelmnts.lbl.chooseAll,
       searchText: this.resourceService.frmelmnts.prmpt.search,
       selectedText: this.resourceService.frmelmnts.lbl.selected,
-      picked: _.map(this.selectedNodes, 'id'),
+      picked: _.map(this.selectedNodes, 'identifier'),
       onSubmit: (selectedNodes) => {
         this.selectedNodes = selectedNodes;
         this.selectedTopics = _.map(selectedNodes, node => ({

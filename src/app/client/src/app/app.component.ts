@@ -164,7 +164,7 @@ export class AppComponent implements OnInit {
       return of(undefined);
     } else {
       return this.router.events.pipe(filter(event => event instanceof NavigationEnd), first(),
-        map(data => this.slug = _.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug')));
+        map(data => this.slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug')));
     }
   }
   /**

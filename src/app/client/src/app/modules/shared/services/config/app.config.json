@@ -100,6 +100,11 @@
           "onImage": {
             "eventName": "onImage"
           }
+        },
+        "ribbon": {
+          "right": {
+            "class": "ui black right ribbon label"
+          }
         }
       },
       "metaData": {
@@ -109,6 +114,9 @@
           "framework",
           "contentType"
         ]
+      },
+      "dynamicFields": {
+        "ribbon.right.name": "resourceType"
       }
     },
     "enrolledCourses": {
@@ -694,7 +702,7 @@
       "xUrl": "text/x-url"
     },
     "baseURL": "/content/preview/preview.html?webview=true",
-    "localBaseUrl": "/contentPlayer/preview.html?webview=true"
+    "localBaseUrl": "/contentPlayer/preview/preview.html?webview=true"
   },
   "WORKSPACE": {
     "PAGE_LIMIT": 9,

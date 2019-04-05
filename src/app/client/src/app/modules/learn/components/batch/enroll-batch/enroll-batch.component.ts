@@ -126,8 +126,9 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
         .subscribe(() => {
           this.disableSubmitBtn = false;
           this.toasterService.success(this.resourceService.messages.smsg.m0036);
-          this.router.navigate(['/learn/course', this.batchDetails.courseId, 'batch', this.batchDetails.identifier]);
-          window.location.reload();
+          this.router.navigate(['/learn/course', this.batchDetails.courseId, 'batch', this.batchDetails.identifier]).then(() => {
+            window.location.reload();
+          });
         }, (err) => {
           this.disableSubmitBtn = false;
           this.router.navigate(['/learn']);

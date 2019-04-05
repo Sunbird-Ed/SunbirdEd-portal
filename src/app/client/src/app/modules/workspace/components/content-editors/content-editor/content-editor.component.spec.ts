@@ -17,7 +17,7 @@ const mockResourceService = { messages: { emsg: { m0004: '1000' } } };
 const mockActivatedRoute = {
   snapshot: {
     params: {
-      'contentId': 'do_21247940906829414411032', 'state': 'upForReview', 'framework': 'framework'
+      'contentId': 'do_21247940906829414411032', 'state': 'upForReview', 'framework': 'framework', 'contentStatus': 'Review'
     }
   }
 };
@@ -83,6 +83,13 @@ describe('ContentEditorComponent', () => {
   it('should navigate to draft', inject([ NavigationHelperService], ( navigationHelperService) => () => {
     spyOn(navigationHelperService, 'navigateToWorkSpace').and.callFake(() => { });
     component.closeModal();
+    expect(component.redirectToWorkSpace).toHaveBeenCalled();
     expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('workspace/content/draft/1');
+  }));
+
+  it('should call retire method', inject([Router, NavigationHelperService], (router, navigationHelperService) => () => {
+    spyOn(component, 'retireLock');
+    component.closeModal();
+    expect(component.retireLock).toHaveBeenCalled();
   }));
 });
