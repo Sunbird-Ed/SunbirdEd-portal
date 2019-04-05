@@ -7,6 +7,7 @@ import { ContentService } from './../content/content.service';
 import { PublicDataService } from './../public-data/public-data.service';
 import { CacheService } from 'ng2-cache-service';
 import { LearnerService } from './../learner/learner.service';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,6 +15,7 @@ export class OrgDetailsService {
 
   orgDetails: any;
   orgInfo: any;
+  timeStampData: any;
 
   private _orgDetails$ = new BehaviorSubject<any>(undefined);
 
@@ -40,7 +42,11 @@ export class OrgDetailsService {
     if (this.orgDetails) {
       return observableOf(this.orgDetails);
     } else {
-      return this.publicDataService.post(option).pipe(mergeMap((data: ServerResponse) => {
+      return this.publicDataService.postWithHeaders(option).pipe(mergeMap((data: ServerResponse) => {
+        if (data.ts) {
+          // data.ts is taken from header and not from api response ts, and format in IST
+          this.timeStampData = {serverEts: data.ts, localTime: new Date()};
+        }
         if (data.result.response.count > 0) {
           this.orgDetails = data.result.response.content[0];
           this.setOrgDetailsToRequestHeaders();
@@ -117,6 +123,10 @@ export class OrgDetailsService {
       url: this.configService.urlConFig.URLS.SYSTEM_SETTING.CUSTODIAN_ORG,
     };
     return this.learnerService.get(systemSetting);
+  }
+
+  get getServerTime() {
+    return this.timeStampData;
   }
 
   fetchOrgs(filters) {

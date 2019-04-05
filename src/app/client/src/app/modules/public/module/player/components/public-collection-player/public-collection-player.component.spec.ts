@@ -96,7 +96,6 @@ describe('PublicCollectionPlayerComponent', () => {
       type: '',
       ver: ''
     };
-    component.setInteractEventData();
     expect(component.closeCollectionPlayerInteractEdata).toBeDefined();
   });
   it('should call closeContentPlayer method', () => {

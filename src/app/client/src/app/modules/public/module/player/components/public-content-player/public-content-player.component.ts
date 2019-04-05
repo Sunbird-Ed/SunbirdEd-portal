@@ -10,7 +10,7 @@ import {
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData
 } from '@sunbird/shared';
 import { PublicPlayerService } from '../../../../services';
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -52,6 +52,10 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   public badgeData: Array<object>;
   public dialCode: string;
+  telemetryCdata: Array<{}>;
+  public telemetryInteractObject: IInteractEventObject;
+  public closePlayerInteractEdata: IInteractEventEdata;
+
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
@@ -66,15 +70,20 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.contentId;
+      this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
       this.setTelemetryData();
       this.getContent();
       this.deviceDetector();
     });
   }
   setTelemetryData() {
+    if (this.dialCode) {
+      this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
+    }
     this.telemetryImpression = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
       },
       object: {
         id: this.contentId,
@@ -87,6 +96,16 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
         uri: this.router.url,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype
       }
+    };
+    this.telemetryInteractObject = {
+      id: this.contentId,
+      type: 'Content',
+      ver: '1.0'
+    };
+    this.closePlayerInteractEdata = {
+      id: 'close-player',
+      type: 'click',
+      pageid: 'public'
     };
   }
   /**

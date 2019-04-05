@@ -196,6 +196,11 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         ver: this.portalVersion,
         pid: 'sunbird-portal'
       },
+      actor: {
+        id: this.userService.userid || 'anonymous',
+        type: 'User'
+      },
+      contextRollUp: this.telemetryService.getRollUpData(this.userProfile.organisationIds),
       tags: this.userService.dims,
       channel: this.userService.channel,
       framework: this.routeParams.framework,
@@ -286,7 +291,11 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('collectionEditor')) {
       document.getElementById('collectionEditor').remove();
     }
-    this.retireLock();
+    if (this.routeParams.contentStatus.toLowerCase() === 'draft') {
+      this.retireLock();
+    } else {
+      this.redirectToWorkSpace();
+    }
   }
 
   retireLock () {

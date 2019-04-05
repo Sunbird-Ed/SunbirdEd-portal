@@ -61,7 +61,6 @@ describe('PlayerService', () => {
     expect(playerConfig.context.dims).toContain('d5773f35773feab');
     expect(playerConfig.context.dims.length).toBe(1);
     expect(playerConfig.context.sid).toContain('d5773f35773feab');
-    expect(playerConfig.context.tags).toContain('d5773f35773feab');
   });
   it('should return player config with courseId', () => {
     const playerService = TestBed.get(PlayerService);

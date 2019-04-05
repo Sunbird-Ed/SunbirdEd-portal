@@ -10,7 +10,9 @@ import {
 import * as _ from 'lodash-es';
 import { environment } from '@sunbird/environment';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class PublicPlayerService {
   /**
    * stores content details
@@ -78,6 +80,9 @@ export class PublicPlayerService {
       {} : contentDetails.contentData.body;
     if (environment.isOffline) {
       configuration.data = '';
+    }
+    if (environment.isOffline && !navigator.onLine) {
+      configuration.metadata = _.omit(configuration.metadata, ['streamingUrl']);
     }
     if (option.dialCode) {
       configuration.context.cdata = [{

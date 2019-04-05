@@ -81,13 +81,17 @@ export class CopyContentService {
     if (contentData.description === undefined) {
       contentData.description = '';
     }
+    let creator = userData.firstName;
+    if (!_.isEmpty(userData.lastName)) {
+      creator = userData.firstName + ' ' + userData.lastName;
+    }
     const req = {
       request: {
         content: {
           name: 'Copy of ' + contentData.name,
           description: contentData.description,
           code: contentData.code + '.copy',
-          creator: userData.firstName + ' ' + userData.lastName,
+          creator: creator,
           createdFor: userData.organisationIds,
           createdBy: userData.userId,
           organization: userData.organisationNames,

@@ -93,6 +93,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   public showExtContentMsg = false;
 
+  telemetryCdata: Array<{}>;
+
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
@@ -120,6 +122,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.courseId = courseId;
         this.batchId = batchId;
         this.courseStatus = courseStatus;
+        this.telemetryCdata = [{id: this.courseId , type: 'Course'} , {id: this.batchId , type: 'CourseBatch'}];
         this.setTelemetryCourseImpression();
         const inputParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
         if (this.batchId) {
@@ -331,10 +334,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
   private setTelemetryStartEndData() {
+    this.telemetryCdata = [{ 'type': 'Course', 'id': this.courseId }, { 'type': 'CourseBatch', 'id': this.batchId }];
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     this.telemetryCourseStart = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
       },
       object: {
         id: this.courseId,
@@ -361,7 +366,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         ver: this.activatedRoute.snapshot.data.telemetry.object.ver
       },
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
@@ -373,7 +379,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   private setTelemetryCourseImpression() {
     this.telemetryCourseImpression = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
@@ -411,9 +418,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   private setContentInteractData(config) {
     this.contentInteractObject = {
       id: config.metadata.identifier,
-      type: config.metadata.contentType || config.metadata.resourceType || 'content',
+      type: config.metadata.contentType || config.metadata.resourceType || 'Content',
       ver: config.metadata.pkgVersion ? config.metadata.pkgVersion.toString() : '1.0',
-      rollup: { l1: this.courseId }
+      rollup: { l1: this.courseId, l2: this.contentId }
     };
     this.closeContentIntractEdata = {
       id: 'content-close',
