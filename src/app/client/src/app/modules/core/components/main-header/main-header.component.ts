@@ -90,11 +90,11 @@ export class MainHeaderComponent implements OnInit {
         }
       });
     } else {
-      this.orgDetailsService.orgDetails$.pipe(first()).subscribe(((data) => {
+      this.orgDetailsService.orgDetails$.pipe(first()).subscribe((data) => {
         if (data && !data.err) {
           this.getLanguage(data.orgDetails.hashTagId);
         }
-      }));
+      });
     }
     this.getUrl();
     this.activatedRoute.queryParams.subscribe(queryParams => this.queryParam = { ...queryParams });
