@@ -154,7 +154,7 @@ export class UserService {
       (data: ServerResponse) => {
         if (data.ts) {
           // data.ts is taken from header and not from api response ts, and format in IST
-          this.timeStampData = {serverTime: data.ts, localTime: new Date()};
+          this.timeStampData = data.ts;
         }
         this.setUserProfile(data);
       },
