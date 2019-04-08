@@ -1,32 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Ng2IzitoastService } from 'ng2-izitoast';
 
 /**
  * Service to show toaster
  *
  */
 @Injectable()
-
-/**
- * ToasterService helps to change the config of
- * the iziToast
- */
 export class ToasterService {
 
   /**
    * To show toaster messages
    */
-  public iziToast: Ng2IzitoastService;
+  public iziToast: any;
 
   /**
 	 * Constructor to create injected service(s) object
-	 *
-	 * Default method of ToasterService class
-	 *
-   * @param {Ng2IzitoastService} iziToast To show toaster messages
 	 */
-  constructor(iziToast: Ng2IzitoastService) {
-    this.iziToast = iziToast;
+  constructor() {
+    this.iziToast = iziToast; // global object
     this.iziToast.settings({
       position: 'topCenter',
       titleSize: '18'
