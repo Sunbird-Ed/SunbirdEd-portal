@@ -5,7 +5,6 @@ import { ToasterService } from '../../services/index';
 import { TelemetryService } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
 import { ContentRatingComponent } from './content-rating.component';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 describe('ContentRatingComponent', () => {
   let component: ContentRatingComponent;
   let fixture: ComponentFixture<ContentRatingComponent>;
@@ -18,7 +17,6 @@ describe('ContentRatingComponent', () => {
       } }, params: {'contentId': 'do_20083743'} }
     };
     TestBed.configureTestingModule({
-      imports: [Ng2IziToastModule],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [ContentRatingComponent],
       providers: [TelemetryService, ToasterService,

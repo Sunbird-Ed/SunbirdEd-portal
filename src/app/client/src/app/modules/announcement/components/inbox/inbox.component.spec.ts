@@ -7,14 +7,11 @@ import * as _ from 'lodash-es';
 import { HttpClient } from '@angular/common/http';
 import { IAnnouncementListData, IPagination, IAnnouncementDetails, InboxComponent } from '@sunbird/announcement';
 import { TelemetryModule } from '@sunbird/telemetry';
-
-// Modules
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { NgInviewModule } from 'angular-inport';
 import { AnnouncementService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
@@ -43,7 +40,7 @@ describe('InboxComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [InboxComponent],
-            imports: [HttpClientTestingModule, Ng2IziToastModule,
+            imports: [HttpClientTestingModule,
                 SuiModule, RouterTestingModule, NgInviewModule,
                 SharedModule.forRoot(), TelemetryModule.forRoot()],
             providers: [HttpClientModule, AnnouncementService, ConfigService, HttpClient,

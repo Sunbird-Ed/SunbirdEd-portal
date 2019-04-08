@@ -9,7 +9,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { ViewOrgTypeComponent, OrgTypeService, IorgTypeData } from '@sunbird/org-management';
 import { LearnerService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -37,7 +36,7 @@ describe('ViewOrgTypeComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [ViewOrgTypeComponent],
-            imports: [HttpClientTestingModule, Ng2IziToastModule,
+            imports: [HttpClientTestingModule,
                 RouterTestingModule, TelemetryModule.forRoot(),
                 SharedModule.forRoot()],
             providers: [HttpClientModule, OrgTypeService, HttpClient,
