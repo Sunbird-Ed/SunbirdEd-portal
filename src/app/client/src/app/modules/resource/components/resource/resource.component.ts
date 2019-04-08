@@ -47,6 +47,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     private playerService: PlayerService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService,
     public navigationhelperService: NavigationHelperService) {
+    window.scroll(0, 0);
     this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
     this.router.onSameUrlNavigation = 'reload';
     this.filterType = this.configService.appConfig.library.filterType;

@@ -7,7 +7,9 @@ import {Router} from '@angular/router';
 })
 export class WorkspaceComponent implements OnInit {
 
-  constructor(public router: Router) { }
+  constructor(public router: Router) {
+    window.scroll(0, 0);
+  }
 
   ngOnInit() {
   }
