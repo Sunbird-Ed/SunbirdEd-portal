@@ -1,6 +1,6 @@
 
 import { mergeMap, first, map, catchError } from 'rxjs/operators';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { PlayerService, CollectionHierarchyAPI, PermissionService, CopyContentService } from '@sunbird/core';
 import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
@@ -109,6 +109,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   public prevPlaylistItem: any;
   public telemetryCdata: [{}];
   contentRatingModal = false;
+    /**
+   * Dom element reference of contentRatingModal
+   */
+  @ViewChild('modal') modal;
   constructor(route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     private toasterService: ToasterService, private deviceDetectorService: DeviceDetectorService, private resourceService: ResourceService,
@@ -352,6 +356,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     const eid = event.detail.telemetryData.eid;
     if (eid === 'END') {
       this.contentRatingModal = true;
+      if (this.modal) {
+        this.modal.showContentRatingModal = true;
+      }
       return;
     }
   }

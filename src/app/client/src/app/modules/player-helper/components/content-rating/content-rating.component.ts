@@ -1,7 +1,7 @@
 import {
-  Component, OnInit, Input, ViewChild
+  Component, OnInit, Input, ViewChild, OnDestroy
 } from '@angular/core';
-import { ResourceService, ToasterService } from '../../services/index';
+import { ResourceService, ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -10,12 +10,13 @@ import * as _ from 'lodash';
   templateUrl: './content-rating.component.html',
   styleUrls: ['./content-rating.component.scss']
 })
-export class ContentRatingComponent implements OnInit {
+export class ContentRatingComponent implements OnInit, OnDestroy {
   /**
   *Output for Sharelink;
   */
   @ViewChild('modal') modal;
   @Input() contentData?: any;
+  public showContentRatingModal = true;
   public resourceService: ResourceService;
   /**
    * To show toaster(error, success etc) after any API calls
@@ -54,7 +55,8 @@ export class ContentRatingComponent implements OnInit {
           env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env')
         },
         object: {
-          id: _.get(this.activatedRoute.snapshot.params, 'contentId') ||  _.get(this.activatedRoute.snapshot.params, 'collectionId'),
+          id: _.get(this.activatedRoute.snapshot.params, 'contentId') ||  _.get(this.activatedRoute.snapshot.params, 'collectionId') ||
+          _.get(this.activatedRoute.snapshot.params, 'courseId'),
           type: _.get(this.contentData , 'contentType'),
           ver: this.contentData ? _.get(this.contentData , 'pkgVersion').toString() : '1.0'
         },
@@ -65,6 +67,9 @@ export class ContentRatingComponent implements OnInit {
       this.telemetryService.feedback(feedbackTelemetry);
       this.toasterService.success(this.resourceService.messages.smsg.m0050);
     }
+    this.showContentRatingModal = false;
+  }
+  ngOnDestroy() {
     if (this.modal && this.modal.deny) {
       this.modal.deny();
     }

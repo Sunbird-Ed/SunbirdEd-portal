@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService, PlayerService, CopyContentService, PermissionService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -82,6 +82,10 @@ export class ContentPlayerComponent implements OnInit {
 
   closeUrl: any;
   contentRatingModal = false;
+  /**
+   * Dom element reference of contentRatingModal
+   */
+  @ViewChild('modal') modal;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
@@ -213,6 +217,9 @@ export class ContentPlayerComponent implements OnInit {
     const eid = event.detail.telemetryData.eid;
     if (eid === 'END') {
       this.contentRatingModal = true;
+      if (this.modal) {
+        this.modal.showContentRatingModal = true;
+      }
       return;
     }
   }

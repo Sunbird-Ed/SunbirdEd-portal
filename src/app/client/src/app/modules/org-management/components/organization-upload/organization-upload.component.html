@@ -41,12 +41,12 @@
       class="sb-btn sb-btn-normal sb-btn-primary" (click)="openImageBrowser(inputbtn)">
       {{resourceService?.frmelmnts?.btn?.uploadorgscsv}}
     </button>
-    <angular2csv class="sb-btn sb-btn-normal sb-btn-outline-gray mr-auto" [data]="config.appConfig.ADMIN_UPLOAD.SAMPLE_ORGANIZATION_CSV" 
+    <!-- <angular2csv class="sb-btn sb-btn-normal sb-btn-outline-gray mr-auto" [data]="config.appConfig.ADMIN_UPLOAD.SAMPLE_ORGANIZATION_CSV" 
       filename="Sample_Organizations" [options]="csvOptions"
       appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
       [telemetryInteractEdata]="downloadSampleOrgCSVInteractEdata">
-      {{resourceService?.frmelmnts?.btn?.smplcsv}}
-    </angular2csv>
+      {{resourceService?.frmelmnts?.btn?.smplcsv}} TODO: use Blob object to generate csv file
+    </angular2csv> -->
     <input #inputbtn type="file" class="d-none" accept=".csv" id="uploadorgscsv" onclick="this.value = null"
       (change)="uploadOrg($event.target.files)" autofocus required="" />
   </div>

@@ -165,7 +165,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         }, []);
         const updatedRange = _.filter(current.range, range => _.find(parentAssociations, {code: range.code}));
         current.range = updatedRange.length ? updatedRange : current.range;
-        current.range = _.unionBy(current.range, 'code');
+        current.range = _.unionBy(current.range, 'identifier');
         if (!editMode) {
           this.selectedOption[current.code] = [];
         }

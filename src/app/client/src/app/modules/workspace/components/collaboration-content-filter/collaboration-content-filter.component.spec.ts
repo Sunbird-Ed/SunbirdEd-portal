@@ -1,7 +1,6 @@
 import { CollaborationContentFilterComponent } from './collaboration-content-filter.component';
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
@@ -24,7 +23,7 @@ describe('CollaborationContentFilterComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CollaborationContentFilterComponent ],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, SharedModule.forRoot()],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,

@@ -153,9 +153,9 @@ export class DefaultTemplateComponent implements OnInit {
   /**
 * to get selected concepts from concept picker.
 */
-  concepts(events) {
-    this.formInputData['concepts'] = events;
-  }
+  // concepts(events) {
+  //   this.formInputData['concepts'] = events;
+  // }
 
   /**
   * @description            - Which is used to update the form when vlaues is get changes
@@ -213,19 +213,21 @@ export class DefaultTemplateComponent implements OnInit {
     // reset the depended field first
     // Update the depended field with associated value
     // Currently, supported only for the dropdown values
-    let dependedValues;
-    let groupdFields;
+    let dependedValues = [];
+    let groupdFields = [];
     if (field.depends && field.depends.length) {
       _.forEach(field.depends, (id) => {
         if (resetSelected) {
           this.resetSelectedField(id, field.range);
         }
         dependedValues = _.map(associations, i => _.pick(i, ['name', 'category']));
-        groupdFields = _.chain(dependedValues)
+        if (dependedValues.length) {
+          groupdFields = _.chain(dependedValues)
           .groupBy('category')
           .map((name, category) => ({ name, category }))
           .value();
-        this.updateDropDownList(id, dependedValues);
+          this.updateDropDownList(id, dependedValues);
+        }
         if (groupdFields.length) {
           _.forEach(groupdFields, (value, key) => {
             this.updateDropDownList(value.category, _.map(value.name, i => _.pick(i, 'name')));

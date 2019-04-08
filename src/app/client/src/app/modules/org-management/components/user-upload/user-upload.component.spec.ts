@@ -8,7 +8,6 @@ import { LearnerService, CoreModule } from '@sunbird/core';
 import { OrgManagementService } from '@sunbird/org-management';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceService, ToasterService, ConfigService, SharedModule } from '@sunbird/shared';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { FormBuilder } from '@angular/forms';
 import { UserUploadComponent } from './user-upload.component';
 import { mockRes } from './user-upload.component.spec.data';
@@ -73,7 +72,7 @@ describe('UserUploadComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UserUploadComponent],
-      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, CoreModule, SharedModule.forRoot(),
+      imports: [SuiModule, HttpClientTestingModule, RouterTestingModule, CoreModule, SharedModule.forRoot(),
         TelemetryModule.forRoot()],
       providers: [OrgManagementService, FormBuilder,
         { provide: Router, useClass: RouterStub },
