@@ -1,12 +1,12 @@
-<sui-modal
+<sui-modal 
   [mustScroll]="true" 
   [isClosable]="true"
   [transitionDuration]="0"
   [size]="'normal'"
   class="sb-modal"
   appBodyScroll
-  (dismissed)="modal.deny();" 
-  #modal
+  (dismissed)="showContentRatingModal = false" 
+  #modal  *ngIf="showContentRatingModal"
 >
   <!--Header-->
   <div class="sb-modal-header">

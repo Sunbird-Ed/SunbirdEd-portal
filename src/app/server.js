@@ -26,9 +26,6 @@ const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'hel
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
 const frameworkConfig = require('./framework.config.js');
-const configHelper = require('./helpers/configServiceSDKHelper.js')
-
-
 
 const app = express()
 
@@ -173,28 +170,24 @@ function runApp() {
   app.all('*', (req, res) => res.redirect('/'))
   // start server after building the configuration data and fetch default channel id
 
-  configHelper.init().then(function (status) {
-    fetchDefaultChannelDetails((channelError, channelRes, channelData) => {
-      portal.server = app.listen(envHelper.PORTAL_PORT, () => {
-        let defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId')
-        envHelper.defaultChannelId = defaultChannelId; // needs to be added in envVariable file
-        console.log(defaultChannelId, 'is set as default channel id in evnHelper');
-        if (envHelper.PORTAL_CDN_URL) {
-          const req = request
-            .get(envHelper.PORTAL_CDN_URL + 'index.' + packageObj.version + '.' + packageObj.buildHash + '.ejs')
-            .on('response', function (res) {
-              if (res.statusCode === 200) {
-                req.pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')))
-              } else {
-                console.log('Error while fetching ' + envHelper.PORTAL_CDN_URL + 'index.' + packageObj.version + '.' + packageObj.buildHash + '.ejs file when CDN enabled');
-              }
-            })
-        }
-        console.log('app running on port ' + envHelper.PORTAL_PORT)
-      })
+  fetchDefaultChannelDetails((channelError, channelRes, channelData) => {
+    portal.server = app.listen(envHelper.PORTAL_PORT, () => {
+      let defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId')
+      envHelper.defaultChannelId = defaultChannelId; // needs to be added in envVariable file
+      console.log(defaultChannelId, 'is set as default channel id in evnHelper');
+      if (envHelper.PORTAL_CDN_URL) {
+        const req = request
+          .get(envHelper.PORTAL_CDN_URL + 'index.' + packageObj.version + '.' + packageObj.buildHash + '.ejs')
+          .on('response', function (res) {
+            if (res.statusCode === 200) {
+              req.pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')))
+            } else {
+              console.log('Error while fetching ' + envHelper.PORTAL_CDN_URL + 'index.' + packageObj.version + '.' + packageObj.buildHash + '.ejs file when CDN enabled');
+            }
+          })
+      }
+      console.log('app running on port ' + envHelper.PORTAL_PORT)
     })
-  }, function (error) {
-    console.log('Error in loading configs ' + error)
   })
 }
 const fetchDefaultChannelDetails = async (callback) => {
