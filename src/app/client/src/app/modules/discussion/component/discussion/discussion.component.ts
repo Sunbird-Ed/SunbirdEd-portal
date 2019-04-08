@@ -73,7 +73,9 @@ export class DiscussionComponent implements OnInit {
     });
   }
   startNewConversionClick() {
-    this.postComment();
+    // if (this.batchId) {
+      this.postComment();
+    // }
   }
   getReplies(id) {
     this.courseDiscussionsService.getReplies(id).subscribe((res: any) => {
@@ -92,7 +94,7 @@ export class DiscussionComponent implements OnInit {
     this.courseDiscussionsService.retrieveDiscussion(id).subscribe((res: any) => {
       this.discussionThread = res.result.threads;
       if (this.discussionThread.length !== 0) {
-        this.threadId =  this.discussionThread['0'].id;
+        this.threadId = this.discussionThread['0'].id;
         this.getReplies(this.threadId);
       }
     });
@@ -112,7 +114,7 @@ export class DiscussionComponent implements OnInit {
   }
   replyToThread(id) {
     const body = {
-      'body': this.uploadedFile ? this.uploadedFile + '  ' : ''  + this.editorContent,
+      'body': this.uploadedFile ? this.uploadedFile + '  ' : '' + this.editorContent,
       'threadId': this.threadId
     };
     this.courseDiscussionsService.replyToThread(body).subscribe((res) => {

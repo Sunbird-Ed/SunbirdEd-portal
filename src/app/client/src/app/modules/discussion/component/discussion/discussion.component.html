@@ -4,8 +4,7 @@
         <h3>{{resourceService?.frmelmnts?.lbl?.comments}}</h3>
     </div>
 </div>
-!batchId {{!batchId}}
-<div class="col-md-6" *ngIf="discussionThread.length === 0">
+<div class="col-md-6" *ngIf="discussionThread.length === 0 && batchId">
     <button class=" sb-btn sb-btn-primary sb-btn-normal pull-right" (click)="startNewConversionClick()">{{resourceService?.frmelmnts?.lbl?.conversation}}</button>
 </div>
 <div class="row MB30" *ngFor="let thread of discussionThread;let i=index">

@@ -150,6 +150,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   telemetryImpression: IImpressionEventInput;
   telemetryCdata: Array<{}>;
   subscription: Subscription;
+  showDiscussion: Boolean = false;
+  optionChanged: Boolean = false;
   /**
 	 * Constructor to create injected service(s) object
 	 *
@@ -235,8 +237,17 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     this.queryParams.pageNumber = this.pageNumber;
     this.searchText = '';
     this.populateCourseDashboardData();
+    //  this.optionChanged = true
+    this.changeDiscussions();
   }
 
+changeDiscussions(){
+  this.optionChanged = false
+      this.showDiscussion = true;
+   setTimeout(() => {
+     this.optionChanged = true
+   }, 10);
+}
   /**
   * To method helps to set time period and calls the populateCourseDashboardData
   *
