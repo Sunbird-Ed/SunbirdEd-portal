@@ -8,7 +8,6 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
 import { CommonModule } from '@angular/common';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 // import { BootstrapFramework, WebExtensionModule } from '@project-sunbird/web-extensions';
@@ -30,7 +29,6 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule,
     SharedModule.forRoot(),
-    Ng2IziToastModule,
     // WebExtensionModule.forRoot(), disabling as it dosnt support lazy loading
     TelemetryModule.forRoot(),
     DeviceDetectorModule.forRoot(),

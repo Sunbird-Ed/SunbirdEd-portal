@@ -13,7 +13,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { UserProfileComponent } from './user-profile.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './user-profile.component.spec.data';
@@ -51,7 +50,7 @@ describe('UserProfileComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, SharedModule.forRoot(), Ng2IziToastModule, RouterTestingModule, OrderModule],
+            imports: [HttpClientTestingModule, SharedModule.forRoot(), RouterTestingModule, OrderModule],
             declarations: [UserProfileComponent],
             providers: [ResourceService, SearchService, PaginationService, UserService,
                 LearnerService, ContentService, ConfigService, ToasterService, UserSearchService, RouterNavigationService,

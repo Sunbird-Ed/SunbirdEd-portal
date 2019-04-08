@@ -11,7 +11,6 @@ import { mockData } from './app.component.spec.data';
 import { AppComponent } from './app.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { RouterTestingModule } from '@angular/router/testing';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
@@ -41,7 +40,7 @@ describe('AppComponent', () => {
   let userService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule,
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
         RouterTestingModule],
       declarations: [
         AppComponent
