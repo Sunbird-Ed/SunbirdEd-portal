@@ -1,6 +1,6 @@
 
 import { map, catchError, first, mergeMap } from 'rxjs/operators';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { PublicPlayerService } from './../../../../services';
 import { Observable ,  Subscription } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
@@ -84,6 +84,10 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
 	*/
   public dialCode: string;
   contentRatingModal = false;
+    /**
+   * Dom element reference of contentRatingModal
+   */
+  @ViewChild('modal') modal;
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
@@ -285,6 +289,9 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     const eid = event.detail.telemetryData.eid;
     if (eid === 'END') {
       this.contentRatingModal = true;
+      if (this.modal) {
+        this.modal.showContentRatingModal = true;
+      }
       return;
     }
   }
