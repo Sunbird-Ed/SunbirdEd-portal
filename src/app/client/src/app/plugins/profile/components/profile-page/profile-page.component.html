@@ -7,8 +7,11 @@
         </ngx-avatar>
       </div>
     </div>
-    <div class="fs-2-5 font-w-bold mb-15 text-ac">{{userProfile.firstName | titlecase}} {{userProfile.lastName |
-      titlecase}}</div>
+    <div class="fs-2-5 font-w-bold mb-15 text-ac relative position">{{userProfile.firstName | titlecase}} {{userProfile.lastName |
+      titlecase}}
+      <i  *ngIf="!isCustodianOrgUser" title="{{resourceService.frmelmnts.lbl.stateRecord}}" class="info circle icon name-info"></i>  
+
+    </div>
     <div class="mb-10 d-flex mb-5 flex-jc-center">
       <div class="fs-1-16">{{resourceService?.frmelmnts?.lbl?.userId}} :</div>
       <div class="fs-1-16 ml-5">{{userProfile.userName}}</div>
@@ -22,11 +25,14 @@
         defaultShowMoreRolesLimit}} {{resourceService.frmelmnts.lbl.more}}
         <i class="chevron down icon"></i>
       </span>
-      <span (click)="toggle(false)" *ngIf="!showMoreRoles">{{resourceService.frmelmnts.lbl.showLess}}
+      <span (click)="toggle(false)" *ngIf="!showMoreRoles">
+        {{resourceService.frmelmnts.lbl.showLess}}
         <i class="chevron up icon"></i>
       </span>
     </div>
-    <div class="fs-1-5 font-w-bold mb-10 text-ac" *ngIf=" orgDetails && orgDetails.orgName">{{orgDetails.orgName}}</div>
+    <div class="fs-1-5 font-w-bold mb-10 text-ac" *ngIf=" orgDetails && orgDetails.orgName">{{orgDetails.orgName}}   
+      <i title="{{resourceService.frmelmnts.lbl.stateRecord}}" class="info circle icon name-info"></i>  
+    </div>
 
     <!-- add state and district -->
     <div class="ui container relative" *ngIf="isCustodianOrgUser">

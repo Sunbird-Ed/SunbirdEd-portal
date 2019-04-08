@@ -171,7 +171,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       channel: this.userService.channel,
       env: 'generic-editor',
       framework: this.routeParams.framework,
-      ownershipType: this.ownershipType
+      ownershipType: this.ownershipType,
+      timeDiff: this.userService.getServerTimeDiff
     };
   }
   private setWindowConfig() {
@@ -191,7 +192,11 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('genericEditor')) {
       document.getElementById('genericEditor').remove();
     }
-    this.retireLock();
+    if (this.routeParams.contentStatus.toLowerCase() === 'draft') {
+      this.retireLock();
+    } else {
+      this.redirectToWorkSpace();
+    }
   }
 
   retireLock () {

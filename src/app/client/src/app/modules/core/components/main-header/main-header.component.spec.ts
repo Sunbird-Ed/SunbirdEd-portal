@@ -41,6 +41,7 @@ describe('MainHeaderComponent', () => {
     spyOn(document, 'getElementById').and.returnValue('true');
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
+    userService._authenticated = true;
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
     fixture.detectChanges();
@@ -53,15 +54,15 @@ describe('MainHeaderComponent', () => {
     spyOn(service, 'get').and.returnValue(observableOf(mockUserData.tenantSuccess));
     service.getTenantInfo('Sunbird');
     component.ngOnInit();
-    expect(component.logo).toEqual(mockUserData.tenantSuccess.result.logo);
-    expect(component.tenantName).toEqual(mockUserData.tenantSuccess.result.titleName);
+    expect(component.tenantInfo.logo).toEqual(mockUserData.tenantSuccess.result.logo);
+    expect(component.tenantInfo.titleName).toEqual(mockUserData.tenantSuccess.result.titleName);
   });
 
   it('Should not update logo unless tenant service returns it', () => {
     spyOn(document, 'getElementById').and.returnValue('true');
     component.ngOnInit();
-    expect(component.logo).toBeUndefined();
-    expect(component.tenantName).toBeUndefined();
+    expect(component.tenantInfo.logo).toBeUndefined();
+    expect(component.tenantInfo.titleName).toBeUndefined();
   });
 
   it('Should update the logo on initialization', () => {
@@ -97,20 +98,5 @@ describe('MainHeaderComponent', () => {
     userService._authenticated = false;
     component.ngOnInit();
     expect(cacheService.exists('portalLanguage')).toEqual(false);
-  });
-
-  it('should unsubscribe from all observable subscriptions', () => {
-    component.ngOnInit();
-    spyOn(component.userDataSubscription, 'unsubscribe');
-    spyOn(component.tenantDataSubscription, 'unsubscribe');
-    component.ngOnDestroy();
-    expect(component.userDataSubscription.unsubscribe).toHaveBeenCalled();
-    expect(component.tenantDataSubscription.unsubscribe).toHaveBeenCalled();
-  });
-
-  it('should call closeQrModalEvent method and close the QrModal ', () => {
-    spyOn(component, 'closeQrModalEvent').and.callThrough();
-    component.closeQrModalEvent('success');
-    expect(component.showQrmodal).toBeFalsy();
   });
 });
