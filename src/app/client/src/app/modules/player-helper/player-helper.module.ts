@@ -4,7 +4,8 @@ import { SuiModule } from 'ng2-semantic-ui/dist';
 import { TelemetryModule } from '@sunbird/telemetry';
 import {
   ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
-  CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent
+  CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent,
+  ContentRatingComponent
 } from './components';
 import { SharedModule } from '@sunbird/shared';
 @NgModule({
@@ -15,8 +16,8 @@ import { SharedModule } from '@sunbird/shared';
     SharedModule
   ],
   declarations: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
-    CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent],
+    CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent],
   exports: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
-    CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent]
+    CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent]
 })
 export class PlayerHelperModule { }

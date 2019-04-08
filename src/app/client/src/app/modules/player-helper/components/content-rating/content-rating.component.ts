@@ -1,7 +1,7 @@
 import {
   Component, OnInit, Input, ViewChild, OnDestroy
 } from '@angular/core';
-import { ResourceService, ToasterService } from '../../services/index';
+import { ResourceService, ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
