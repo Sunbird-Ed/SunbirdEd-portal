@@ -221,7 +221,7 @@ export class AppComponent implements OnInit {
           channel: _.get(this.userProfile, 'rootOrg.hashTagId'),
           env: 'home',
           enableValidation: environment.enableTelemetryValidation,
-          timeStampData: this.userService.getServerTime
+          timeDiff: this.userService.getServerTimeDiff
         }
       };
     } else {
@@ -246,7 +246,7 @@ export class AppComponent implements OnInit {
           channel: this.orgDetails.hashTagId,
           env: 'home',
           enableValidation: environment.enableTelemetryValidation,
-          timeStampData: this.orgDetailsService.getServerTime
+          timeDiff: this.orgDetailsService.getServerTimeDiff
         }
       };
     }

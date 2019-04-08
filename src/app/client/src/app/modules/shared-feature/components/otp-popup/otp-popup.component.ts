@@ -76,7 +76,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
         this.enableSubmitBtn = true;
         this.infoMessage = '';
         this.errorMessage = err.error.params.status === 'ERROR_INVALID_OTP' ?
-          wrongOTPMessage : this.resourceService.messages.fmsg.m0085;
+          wrongOTPMessage : this.resourceService.messages.fmsg.m0051;
       }
     );
   }
@@ -96,7 +96,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
       },
       (err) => {
         this.infoMessage = '';
-        this.errorMessage = this.resourceService.messages.fmsg.m0085;
+        this.errorMessage = this.resourceService.messages.fmsg.m0051;
       }
     );
   }

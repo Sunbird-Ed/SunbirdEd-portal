@@ -111,7 +111,7 @@ describe('AppComponent', () => {
         channel: _.get(userService.userProfile, 'rootOrg.hashTagId'),
         env: 'home',
         enableValidation: true,
-        timeStampData: {serverEts: '2018-02-28 12:07:33:518+0000', localTime: new Date()}
+        timeDiff: 0
       }
     };
     expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
@@ -159,7 +159,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
         channel: '1235654',
         env: 'home',
         enableValidation: true,
-        timeStampData: {}
+        timeDiff: 0
       }
     };
     expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
