@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed , async} from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ResourceService } from '../../services/index';
-import { ToasterService } from '../../services/index';
+import { ResourceService } from '@sunbird/shared';
+import { ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
 import { ContentRatingComponent } from './content-rating.component';
