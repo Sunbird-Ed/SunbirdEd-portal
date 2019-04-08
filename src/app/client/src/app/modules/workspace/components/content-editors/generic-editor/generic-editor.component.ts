@@ -193,7 +193,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       document.getElementById('genericEditor').remove();
     }
     const isContentStatus = _.get(this.routeParams, 'contentStatus');
-    if ((isContentStatus && this.routeParams.contentStatus.toLowerCase() === 'draft') ||
+    if ((isContentStatus && isContentStatus.toLowerCase() === 'draft') ||
   (window.context && window.context.contentId && !isContentStatus)) {
       this.retireLock();
     } else {
