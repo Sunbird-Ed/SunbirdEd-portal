@@ -10,7 +10,7 @@ import { ConfigService, ResourceService, ToasterService, SharedModule, BrowserCa
 import { UserService, LearnerService, PermissionService, TenantService, CoreModule } from '@sunbird/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { WebExtensionModule } from '@project-sunbird/web-extensions';
+// import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 
@@ -21,7 +21,7 @@ describe('MainHeaderComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule,
-        TelemetryModule.forRoot(), RouterTestingModule, WebExtensionModule.forRoot()],
+        TelemetryModule.forRoot(), RouterTestingModule],
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [ToasterService, TenantService, CacheService, BrowserCacheTtlService,

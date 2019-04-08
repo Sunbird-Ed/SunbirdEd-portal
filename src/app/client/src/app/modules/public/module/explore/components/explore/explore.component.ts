@@ -116,6 +116,9 @@ export class ExploreComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.showLoader = false;
         this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
+        if (!this.carouselMasterData.length) {
+          return; // no page section
+        }
         if (this.carouselMasterData.length >= 2) {
           this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
         } else if (this.carouselMasterData.length >= 1) {
