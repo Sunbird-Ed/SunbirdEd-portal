@@ -16,6 +16,7 @@
             .sb-search-input {
                 border: 0.5px solid #7AB4EE;
             }
+            
             .search {
                 color: #aaa;
             }
@@ -129,6 +130,9 @@
                     display: inline-block;
                     height: 15px;
                     margin: 0 9px 0 0;
+                }
+                .head .square {
+                    display: none;
                 }
             }
 

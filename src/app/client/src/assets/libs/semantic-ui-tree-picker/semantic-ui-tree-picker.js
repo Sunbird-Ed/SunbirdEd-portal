@@ -33,6 +33,7 @@ var conceptModal;
                   <div class="input-div relative">
                     <i class="search icon"></i>
                     <input class="sb-search-input" type="text" placeholder="${options.searchText}" />
+                    <i class="close icon clear d-none"></i>
                   </div>
                 </div>
                 <!--/Search Box-->
@@ -172,6 +173,9 @@ var conceptModal;
           config.onClose();
         }
       });
+      $('.tree-picker .clear').on('click', function (e) {
+        clearSearch();
+      });
       $('.tree-picker .close-modal', modal).on('click', function (e) {
         modal.modal('hide');
         if (config.onClose) {
@@ -254,6 +258,7 @@ var conceptModal;
         tabs.search.show().html(list);
         tabs.tree.hide();
         modal.attr('data-mode', 'search');
+        $('.sb-treePicker .clear').removeClass('d-none');
         initializeNodeList(list);
         return $('.name', list).each(function () {
           var name, regex;
@@ -263,10 +268,17 @@ var conceptModal;
           return $(this).html(name);
         });
       } else {
+        $('.sb-treePicker .clear').addClass('d-none');
         tabs.search.hide();
         return showTree();
       }
     };
+    clearSearch = function(){
+      $('.sb-treePicker .sb-search-input').val('');
+      $('.sb-treePicker .clear').addClass('d-none');
+      tabs.search.hide();
+      return showTree();
+    }
     showPicked = function () {
       var list;
       list = renderList(picked, {
@@ -323,7 +335,7 @@ var conceptModal;
         }
 
         nodeElementhtml = `
-          <div class="node" data-id="${node.id}" data-name="${node.name}">
+          <div class="node childless" data-id="${node.id}" data-name="${node.name}">
             <div class="head ${node.selectable}">
               <i class="square outline icon"></i>
               <i class="checkmark icon"></i>
