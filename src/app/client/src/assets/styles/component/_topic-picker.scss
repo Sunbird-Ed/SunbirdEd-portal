@@ -16,7 +16,7 @@
             .sb-search-input {
                 border: 0.5px solid #7AB4EE;
             }
-            
+
             .search {
                 color: #aaa;
             }
@@ -32,6 +32,9 @@
                 &.picked {
                     display: block;
                 }
+            }
+            .empty {
+                display: none;
             }
         }
     }

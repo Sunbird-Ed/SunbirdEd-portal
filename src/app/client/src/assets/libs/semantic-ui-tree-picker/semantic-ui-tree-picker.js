@@ -348,6 +348,10 @@ var conceptModal;
         if (config.disabled(node)) {
           nodeElement.addClass('disabled');
         }
+      };
+      if (nodes.length === 0) {
+        emptyMessage = '<div class="empty">No results were found.</div>';
+        nodeElement = $(emptyMessage).appendTo(list);
       }
       return list;
     };
