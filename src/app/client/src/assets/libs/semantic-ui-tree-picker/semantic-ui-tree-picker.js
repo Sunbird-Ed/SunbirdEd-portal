@@ -22,7 +22,7 @@ var conceptModal;
           <!--/Header-->
 
           <!--Content-->
-          <div class="sb-modal-content">
+          <div class="sb-modal-content p-0">
             <div class="sb-treePicker">
 
               <!--Selection Section-->
@@ -309,7 +309,7 @@ var conceptModal;
               <i class="minus icon"></i>
               <i class="square outline icon"></i>
               <i class="checkmark icon"></i>
-              <a class="name">${node.name}</a>
+              <span class="name">${node.name}</span>
             </div>
             <div class="content"></div>
           </div>`;

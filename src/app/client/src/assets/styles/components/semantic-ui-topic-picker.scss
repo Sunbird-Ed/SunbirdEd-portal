@@ -2,7 +2,8 @@
     display: flex;
 
     .sb-treePicker-selectionSection {
-        width: 415px;
+        width: 424px;
+        padding: 16px;
         border-right: 1px solid #ccc;
 
         .sb-search-box {
@@ -19,8 +20,8 @@
     }
 
     .sb-treePicker-selectedSection {
-        width: 267px;
-        padding: 8px 0 16px 16px;
+        width: calc(100% - 424px);
+        padding: 16px;
     }
 
     .count {
@@ -32,6 +33,15 @@
         .node {
             margin: 0 0 8px 0;
 
+            .head {
+                display: flex;
+                align-items: center;
+            }
+
+            .icon {
+                margin: 0 8px 0 0;
+            }
+
             .icon,
             .name {
                 cursor: pointer;
@@ -41,13 +51,13 @@
             .add.icon:before,
             .minus.icon:before,
             .checkmark:before {
-                font-size: 11px;
+                font-size: 10px;
                 line-height: 11px;
                 border-radius: 4px;
                 border: 1px solid ;
                 height: 15px;
                 width: 15px;
-                padding: 2px;
+                padding: 1px 2px;
                 color: $primary-200;
                 border-color: $primary-200;
                 display: inline-block;
@@ -62,6 +72,7 @@
             .square{
                 vertical-align: middle;
                 color: $primary-200;
+                font-size: 15px;
             }
 
             .square,
@@ -71,6 +82,11 @@
             }
 
             &.opened>.head{
+
+                .name {
+                    color: #333;
+                }
+
                 .add {
                     display: none;
                 }
@@ -95,12 +111,13 @@
                         display: none;
                     }
                 }
-
             }
 
             &.picked {
                 .checkmark {
                     display: inline-block;
+                    height: 15px;
+                    margin: 0 9px 0 0;
                 }
             }
 
