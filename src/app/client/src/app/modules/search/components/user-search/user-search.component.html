@@ -18,9 +18,9 @@
         </div>
 
         <div class=" ui clearing segment" *ngIf="!showLoader && !noResult && config.appConfig.SEARCH.USER.DOWNLOAD_BUTTON_VISIBILITY === 'TRUE'">
-          <angular2csv class="ui right floated primary button" [data]="downloadUser()" filename="Users" [options]="csvOptions">
-            {{resourceService.frmelmnts?.btn?.download}}
-          </angular2csv>
+          <!-- <angular2csv class="ui right floated primary button" [data]="downloadUser()" filename="Users" [options]="csvOptions">
+            {{resourceService.frmelmnts?.btn?.download}} TODO: use Blob object to generate csv file
+          </angular2csv> -->
         </div>
 
         <div>

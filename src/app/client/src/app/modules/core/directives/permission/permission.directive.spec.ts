@@ -5,7 +5,6 @@ import { Component, Directive, ElementRef, Input, OnInit } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ConfigService, ResourceService, ToasterService , BrowserCacheTtlService} from '@sunbird/shared';
 import { UserService, LearnerService, PermissionService, ContentService } from '@sunbird/core';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { CacheService } from 'ng2-cache-service';
 @Component({
   template: `<a appPermission id="permission" [permission]= 'adminDashboard'
@@ -19,7 +18,7 @@ describe('PermissionDirective', () => {
   let fixture: ComponentFixture<TestWrapperComponent>;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule, Ng2IziToastModule],
+      imports: [HttpClientModule],
       declarations: [PermissionDirective, TestWrapperComponent],
       providers: [ToasterService, ResourceService, PermissionService, UserService,
       CacheService, ContentService, ConfigService, LearnerService, HttpClient, BrowserCacheTtlService]

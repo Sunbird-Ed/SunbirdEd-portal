@@ -1,6 +1,5 @@
 
 import {of as observableOf,  Observable } from 'rxjs';
-import { Ng2IzitoastService } from 'ng2-izitoast';
 import { response } from './tenant.service.spec.data';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { LearnerService } from '../learner/learner.service';
@@ -16,7 +15,7 @@ describe('TenantService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [TenantService, UserService, ConfigService,
-        LearnerService, ResourceService, ToasterService, Ng2IzitoastService]
+        LearnerService, ResourceService, ToasterService]
     });
   });
 

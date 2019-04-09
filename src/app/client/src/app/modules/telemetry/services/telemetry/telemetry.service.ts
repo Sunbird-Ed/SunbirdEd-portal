@@ -62,7 +62,9 @@ export class TelemetryService {
     this.isInitialized = true;
     console.log('Telemetry Service is Initialized!', this.context);
   }
-
+  getDeviceId(callback) {
+    EkTelemetry.getFingerPrint(callback);
+  }
   /**
    *
    * Telemetry data sync method

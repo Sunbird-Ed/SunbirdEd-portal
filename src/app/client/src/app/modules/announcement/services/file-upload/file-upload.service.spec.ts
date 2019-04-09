@@ -1,12 +1,11 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { FileUploadService } from './file-upload.service';
 import { ConfigService, ToasterService } from '@sunbird/shared';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 
 describe('FileUploadService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [Ng2IziToastModule],
+      imports: [],
       providers: [FileUploadService, ConfigService, ToasterService]
     });
   });

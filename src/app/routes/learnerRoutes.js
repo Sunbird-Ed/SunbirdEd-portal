@@ -5,7 +5,6 @@ const learnerURL = envHelper.LEARNER_URL
 const telemetryHelper = require('../helpers/telemetryHelper.js')
 const reqDataLimitOfContentUpload = '50mb'
 const proxy = require('express-http-proxy')
-const configHelper = require('../helpers/configServiceSDKHelper.js')
 const healthService = require('../helpers/healthCheckService.js')
 
 module.exports = function (app) {

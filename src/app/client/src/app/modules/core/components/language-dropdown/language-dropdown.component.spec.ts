@@ -27,6 +27,7 @@ describe('LanguageDropdownComponent', () => {
       }
     },
     languageSelected$: observableOf({}),
+    getLanguageChange: () => {},
     getResource: () => ({})
   };
   const mockQueryParma = {
@@ -64,41 +65,12 @@ describe('LanguageDropdownComponent', () => {
     spyOn(component, 'onLanguageChange');
     cacheService.set('portalLanguage', 'en', { maxAge: 10 * 60 });
     component.onLanguageChange('en');
-    expect( component.onLanguageChange).toHaveBeenCalledWith('en');
+    expect(component.onLanguageChange).toHaveBeenCalledWith('en');
   });
-  it('On ngOninit if case', inject([CacheService],
-    (cacheService) =>  {
-    cacheService.set('portalLanguage', 'hi', { maxAge: 10 * 60 });
-   component.selectedLanguage = cacheService.get('portalLanguage');
-   spyOn(cacheService, 'exists').and.returnValue(true);
-    expect(component.selectedLanguage).toBe('hi');
-  }));
-  it('On ngOninit for else case', inject([CacheService],
-    (cacheService) =>  {
+  it('On ngOninit for else case', inject([CacheService], (cacheService) =>  {
       cacheService.set('portalLanguage', null);
     component.ngOnInit();
     expect(component.selectedLanguage).toBe('en');
-  }));
-
-  it('On getting channel id', () => {
-    const orgDetailsService = TestBed.get(OrgDetailsService);
-    const publicDataService = TestBed.get(PublicDataService);
-    const resourceService = TestBed.get(ResourceService);
-    spyOn(resourceService, 'getResource');
-    spyOn(publicDataService, 'postWithHeaders').and.callFake(() => observableOf(Response.orgResponse));
-    component.orgDetailsService.getOrgDetails('ap').subscribe((data) => {
-    });
-     fixture.detectChanges();
-    expect(component.channelId).toBe('0123166374296453124');
-  });
-
-  it('should unsubscribe from all observable subscriptions', inject([ResourceService],
-    ( resourceService) => {
-     spyOn(resourceService, 'getResource');
-    component.ngOnInit();
-   spyOn(component.unsubscribe, 'complete');
-    component.ngOnDestroy();
-    expect(component.unsubscribe.complete).toHaveBeenCalled();
   }));
 });
 

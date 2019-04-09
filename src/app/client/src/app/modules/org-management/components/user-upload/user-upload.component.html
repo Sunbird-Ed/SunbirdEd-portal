@@ -80,12 +80,12 @@
       class="sb-btn sb-btn-normal sb-btn-primary" (click)="openImageBrowser(inputbtn)">
       {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
     </button>
-    <angular2csv class="sb-btn sb-btn-normal sb-btn-outline-gray mr-auto"
+    <!-- <angular2csv class="sb-btn sb-btn-normal sb-btn-outline-gray mr-auto"
       [data]="config.appConfig.ADMIN_UPLOAD.SAMPLE_USER_CSV" filename="Sample_Users"
       [options]="csvOptions" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
       [telemetryInteractEdata]="downloadCSVInteractEdata">
-      {{resourceService?.frmelmnts?.btn?.smplcsv}}
-    </angular2csv>
+      {{resourceService?.frmelmnts?.btn?.smplcsv}} TODO: use Blob object to generate csv file
+    </angular2csv> -->
     <input #inputbtn type="file" accept=".csv" class="content-input ui small d-none" id="uploadUsrsCSV"
       onclick="this.value = null" (change)="uploadUsersCSV($event.target.files)" required="" />
   </div>
