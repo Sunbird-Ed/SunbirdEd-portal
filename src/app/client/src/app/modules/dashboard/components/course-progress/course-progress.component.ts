@@ -1,3 +1,4 @@
+
 import { combineLatest,  Subscription ,  Observable ,  Subject, of } from 'rxjs';
 
 import {first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, delay} from 'rxjs/operators';
@@ -10,7 +11,7 @@ import { CourseProgressService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import { IPagination } from '@sunbird/announcement';
-import { CourseDiscussionsService } from './../../../learn/services/course-discussion/course-discussion.service';
+import { CourseDiscussService } from './../../../discussion/services/course-discuss/course-discuss.service';
 import { DiscussionModule } from './../../../discussion/discussion.module';
 /**
  * This component shows the course progress dashboard
