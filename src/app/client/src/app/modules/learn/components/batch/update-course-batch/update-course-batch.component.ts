@@ -211,13 +211,19 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   * fetch mentors and participant details of current batch
   */
   private fetchParticipantDetails() {
+    console.log('call me');
+    let userList = [];
     if (this.batchDetails.participant || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
-      const userList = _.union(_.keys(this.batchDetails.participant), this.batchDetails.mentors);
+      if (this.batchDetails.enrollmentType !== 'open') {
+         userList = _.union(_.keys(this.batchDetails.participant), this.batchDetails.mentors);
+      } else {
+        userList = this.batchDetails.mentors;
+      }
       const request = {
         filters: {
-          identifier: this.batchDetails.enrollmentType === 'open' ? this.batchDetails.mentors : userList
+          identifier: userList
         },
-        limit : this.batchDetails.enrollmentType === 'open' ? this.batchDetails.mentors.length : userList.length
+        limit : userList.length
       };
       this.courseBatchService.getUserList(request).pipe(takeUntil(this.unsubscribe))
         .subscribe((res) => {
