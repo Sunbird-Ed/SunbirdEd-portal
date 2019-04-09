@@ -6,7 +6,7 @@ name=player
 node=$2
 org=$3
 
-docker build -f ./Dockerfile.Build --build-arg commit_hash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag}-build . 
+docker build -f ./Dockerfile.Build --build-arg commit_hash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag}-build .
 docker run --name=${name}-${build_tag}-build ${org}/${name}:${build_tag}-build
 containerid=$(docker ps -aqf "name=${name}-${build_tag}-build")
 rm -rf ./dist
