@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, Input, EventEmitter, OnDestroy, AfterViewInit } from '@angular/core';
-import * as _ from 'lodash-es';
+import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
 import { ResourceService } from '@sunbird/shared';
 import * as  treePicker from './../../../../../assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker';
