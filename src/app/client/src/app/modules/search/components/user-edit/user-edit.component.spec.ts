@@ -10,7 +10,6 @@ import { SearchService, UserService, LearnerService, ContentService, PermissionS
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import * as _ from 'lodash-es';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { UserEditComponent } from './user-edit.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './user-edit.component.spec.data';
@@ -41,8 +40,7 @@ describe('UserEditComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, ReactiveFormsModule, FormsModule, SharedModule.forRoot(), CoreModule,
-        TelemetryModule.forRoot(),
-         Ng2IziToastModule, RouterTestingModule],
+        TelemetryModule.forRoot(), RouterTestingModule],
       declarations: [UserEditComponent],
       providers: [ResourceService, OrgDetailsService, SearchService, PaginationService, UserService, TelemetryService, FormBuilder,
         LearnerService, ContentService, ConfigService, ToasterService, UserSearchService,

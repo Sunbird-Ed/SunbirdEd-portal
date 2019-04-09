@@ -3,7 +3,6 @@ import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing'
 import { GenericEditorComponent } from './generic-editor.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { NavigationHelperService, ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
 import { ContentService, UserService, LearnerService, TenantService, CoreModule } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -31,7 +30,7 @@ describe('GenericEditorComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [GenericEditorComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, CoreModule, TelemetryModule.forRoot()],
+      imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, TelemetryModule.forRoot()],
       providers: [
         UserService, LearnerService, ContentService, EditorService,
         ResourceService, ToasterService, ConfigService,
