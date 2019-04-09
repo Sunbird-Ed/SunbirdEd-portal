@@ -3,26 +3,29 @@
         <div class="three wide column pt-0">
             <div class="publicmenusection ui secondary vertical menu">
                 <a appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(report.id)"
-                    [telemetryInteractEdata]="telemetryInteractEdata" *ngFor="let report of reportMetaData"
-                    (click)="renderReport(report)" class="item" [ngClass]="{'active': currentReport.id === report.id}">
+                    [telemetryInteractEdata]="setTelemetryInteractEdata('report-view')"
+                    *ngFor="let report of reportMetaData" (click)="renderReport(report)" class="item"
+                    [ngClass]="{'active': currentReport.id === report.id}">
                     {{report.label || report.title}}</a>
             </div>
         </div>
-        <div class="nine wide column workspacesegment">
+        <div class="nine wide column workspacesegment" *ngIf="currentReport">
             <h2 class="ui small header">
                 {{currentReport?.title || currentReport?.label}}
             </h2>
             <p *ngIf="currentReport?.description" [innerHTML]="transformHTML(currentReport.description)"></p>
             <sui-tabset>
+                <!-- [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)" -->
                 <div class="ui top attached tabular menu">
-                    <a (click)="reportType('graph')" class="item"
-                        suiTabHeader="graph">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
-                    <a (click)="reportType('data')" class="item"
-                        suiTabHeader="tableMenu">{{resourceService?.frmelmnts?.lbl?.tables}}</a>
+                    <a appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)" [telemetryInteractEdata]="setTelemetryInteractEdata('report-graph')"
+                        class="item" suiTabHeader="graph">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
+                    <a appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
+                        [telemetryInteractEdata]="setTelemetryInteractEdata('report_table_'+table.name)"
+                        *ngFor="let table of tables" class="item" [suiTabHeader]="table.id">{{table?.name}}</a>
                     <div class="right menu">
                         <a *ngIf="currentReport?.downloadUrl" class="ui item" appTelemetryInteract
                             [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
-                            [telemetryInteractEdata]="telemetryInteractDownloadEdata"
+                            [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')"
                             (click)="downloadCSV(currentReport.downloadUrl)">{{resourceService?.frmelmnts?.lbl?.downloadCsv}}</a>
                     </div>
                 </div>
@@ -36,11 +39,14 @@
                         {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}}
                     </div>
                 </div>
-                <div class="ui bottom attached small segment" suiTabContent="tableMenu">
-                    <app-data-table *ngIf="isTableDataLoaded" [headerData]="table.header" [rowsData]="table.data">
-                    </app-data-table>
-                    <div class="ui warning message" *ngIf="!isTableDataLoaded">
-                        {{resourceService?.frmelmnts?.lbl?.tableNotAvailable}}
+                <div *ngIf="isTableDataLoaded">
+                    <div *ngFor="let table of tables" class="ui bottom attached small segment"
+                        [suiTabContent]="table.id">
+                        <app-data-table [tableId]="table.id" [headerData]="table.header" [rowsData]="table.data">
+                        </app-data-table>
+                        <div class="ui warning message" *ngIf="!isTableDataLoaded">
+                            {{resourceService?.frmelmnts?.lbl?.tableNotAvailable}}
+                        </div>
                     </div>
                 </div>
             </sui-tabset>
