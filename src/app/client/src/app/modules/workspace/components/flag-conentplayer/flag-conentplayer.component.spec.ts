@@ -5,7 +5,6 @@ import { FlagConentplayerComponent } from './flag-conentplayer.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { SharedModule, ToasterService, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { PlayerService, UserService, LearnerService, ContentService, CoreModule } from '@sunbird/core';
 import * as mockData from './flag-contentplayer.componemt.spec.data';
@@ -35,7 +34,7 @@ describe('FlagConentplayerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [FlagConentplayerComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule,
+      imports: [HttpClientTestingModule,
         CoreModule, PlayerHelperModule, RouterTestingModule, SharedModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [ResourceService, ToasterService, NavigationHelperService, TelemetryService,

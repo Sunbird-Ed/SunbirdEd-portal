@@ -10,7 +10,6 @@ import { OrgTypeService } from '@sunbird/org-management';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { Observable, of as observableOf } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserFilterComponent } from './user-filter.component';
@@ -29,7 +28,7 @@ xdescribe('UserFilterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), Ng2IziToastModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot()],
       declarations: [ UserFilterComponent ],
       providers: [ResourceService, SearchService, PaginationService, UserService,
         LearnerService, ContentService, ConfigService, ToasterService,

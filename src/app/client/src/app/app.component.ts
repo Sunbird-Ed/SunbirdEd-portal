@@ -93,6 +93,7 @@ export class AppComponent implements OnInit {
         if (this.userService.loggedIn) {
           this.permissionService.initialize();
           this.courseService.initialize();
+          this.userService.startSession();
           return this.setUserDetails();
         } else {
           return this.setOrgDetails();
@@ -149,12 +150,11 @@ export class AppComponent implements OnInit {
    * fetch device id using fingerPrint2 library.
    */
   public setDeviceId(): Observable<string> {
-    const options = this.userService.getFingerPrintOptions();
-    return new Observable(observer => Fingerprint2.getV18(options, (deviceId) => {
-      (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-      observer.next(deviceId);
-      observer.complete();
-    }));
+    return new Observable(observer => this.telemetryService.getDeviceId(deviceId => {
+        (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+        observer.next(deviceId);
+        observer.complete();
+      }));
   }
   /**
    * set slug from url only for Anonymous user.

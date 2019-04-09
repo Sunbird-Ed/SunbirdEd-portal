@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { UserService, LearnerService, AnnouncementService, CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedModule, ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
@@ -47,7 +46,7 @@ describe('CreateComponent', () => {
     TestBed.configureTestingModule({
       declarations: [CreateComponent, GeoExplorerComponent, DetailsComponent, FileUploaderComponent],
       imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, SharedModule.forRoot(),
-        Ng2IziToastModule, CoreModule, TelemetryModule.forRoot()],
+        CoreModule, TelemetryModule.forRoot()],
       providers: [ToasterService, ResourceService, CreateService, UserService,
         LearnerService, AnnouncementService, FileUploadService,
         GeoExplorerService, ConfigService,

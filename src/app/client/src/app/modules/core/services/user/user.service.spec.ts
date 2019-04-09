@@ -1,7 +1,6 @@
 
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { mockUserData } from './user.mock.spec.data';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { ConfigService, ToasterService, SharedModule} from '@sunbird/shared';
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -10,7 +9,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 describe('userService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       providers: [UserService, ConfigService, LearnerService]
     });
   });

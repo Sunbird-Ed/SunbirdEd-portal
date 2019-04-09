@@ -1,21 +1,14 @@
 
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-// Import NG testing module(s)
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
-
-// Import services
 import { UploadedComponent } from './uploaded.component';
 import { SharedModule, PaginationService, ToasterService, ResourceService } from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
-
-// Import Module
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-// Test data
 import * as mockData from './uploaded.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
@@ -58,7 +51,7 @@ describe('UploadedComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UploadedComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(),
+      imports: [HttpClientTestingModule, RouterTestingModule, SharedModule.forRoot(),
         TelemetryModule.forRoot(), NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,

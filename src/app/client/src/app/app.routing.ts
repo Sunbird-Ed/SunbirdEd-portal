@@ -24,7 +24,7 @@ const appRoutes: Routes = [
     path: 'org', loadChildren: 'app/modules/org-management/org-management.module#OrgManagementModule'
   },
   {
-    path: 'dashboard', loadChildren: 'app/modules/dashboard/dashboard.module#DashboardModule'
+    path: 'dashBoard', loadChildren: 'app/modules/dashboard/dashboard.module#DashboardModule'
   },
   {
     path: 'profile', loadChildren: 'app/plugins/profile/profile.module#ProfileModule'

@@ -9,7 +9,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CreateOrgTypeComponent, OrgTypeService, IorgTypeData } from '@sunbird/org-management';
 import { LearnerService } from '@sunbird/core';
@@ -43,7 +42,7 @@ describe('CreateOrgTypeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CreateOrgTypeComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule,
+      imports: [HttpClientTestingModule,
         SuiModule, RouterTestingModule, ReactiveFormsModule, FormsModule,
         SharedModule.forRoot(), TelemetryModule.forRoot()],
       providers: [HttpClientModule, OrgTypeService,

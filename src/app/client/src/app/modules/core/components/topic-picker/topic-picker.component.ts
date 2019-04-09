@@ -57,7 +57,7 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   private formatSelectedTopics(topics, unformatted, formated) {
     _.forEach(topics, (topic) => {
-      if (unformatted.includes(topic.name)) {
+      if (unformatted.includes(topic.name) && !topic.children) {
         formated.push({
           identifier: topic.identifier,
           name: topic.name

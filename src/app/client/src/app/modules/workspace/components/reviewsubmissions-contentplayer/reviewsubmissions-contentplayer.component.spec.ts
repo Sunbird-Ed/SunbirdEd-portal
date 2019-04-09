@@ -4,7 +4,6 @@ import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing'
 import { ReviewsubmissionsContentplayerComponent } from './reviewsubmissions-contentplayer.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { SharedModule, ToasterService, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { PlayerService, UserService, LearnerService, ContentService, CoreModule } from '@sunbird/core';
 import * as mockData from './reviewsubmissions-contentplayer.component.spec.data';
@@ -38,7 +37,7 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [ReviewsubmissionsContentplayerComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, PlayerHelperModule, CoreModule,
+      imports: [HttpClientTestingModule, PlayerHelperModule, CoreModule,
         RouterTestingModule, SharedModule.forRoot()],
       providers: [ResourceService, ToasterService, NavigationHelperService, TelemetryService,
         { provide: ResourceService, useValue: resourceBundle }

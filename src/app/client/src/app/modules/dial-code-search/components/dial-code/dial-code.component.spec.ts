@@ -5,7 +5,6 @@ import { SharedModule, ResourceService, UtilService, ConfigService } from '@sunb
 import { SearchService } from '@sunbird/core';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule } from '@angular/forms';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DialCodeComponent } from './dial-code.component';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -54,7 +53,7 @@ describe('DialCodeComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), TelemetryModule.forRoot(),  Ng2IziToastModule],
+      imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
       declarations: [DialCodeComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [SearchService, UtilService, ConfigService,
