@@ -125,11 +125,11 @@ var conceptModal;
       } else if (widget.attr("data-picked-ids")) {
         widget.attr("data-picked-ids").split(",");
       }
-
       if (config.picked) {
         if (nodes.length) {
           updatePickedNodes();
           widget.html(config.displayFormat(picked));
+          showPicked();
         } else {
           widget.html(config.displayFormat(config.picked));
         }
@@ -341,6 +341,7 @@ var conceptModal;
         nodeElementhtml = `
           <div class="node" data-id="${node.id}" data-name="${node.name}">
             <div class="head ${node.selectable}">
+              <i class="square outline icon"></i>
               <i class="checkmark icon"></i>
               <a class="name">${node.name}</a>
             </div>  
