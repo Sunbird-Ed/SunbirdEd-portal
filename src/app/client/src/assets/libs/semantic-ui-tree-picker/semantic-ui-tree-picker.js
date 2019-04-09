@@ -29,7 +29,7 @@ var conceptModal;
               <div class="sb-treePicker-selectionSection">
 
                 <!--Search Box-->
-                <div class="sb-search-box medium no-btn">
+                <div class="sb-search-box no-btn mb-15">
                   <div class="input-div relative">
                     <i class="search icon"></i>
                     <input class="sb-search-input" type="text" placeholder="${options.searchText}" />
@@ -37,10 +37,10 @@ var conceptModal;
                 </div>
                 <!--/Search Box-->
 
-                <div class="tree-tab py-15">
+                <div class="tree-tab">
                   <div></div>
                 </div>
-                <div class="search-tab py-15"></div>
+                <div class="search-tab"></div>
               </div>
               <!--/Selection Section-->
 
@@ -64,11 +64,11 @@ var conceptModal;
 
           <!--Actions-->
           <div class="sb-modal-actions">
-            <a class="pick-search">
+            <a class="pick-search d-none">
               <i class="checkmark icon"></i>
               ${options.chooseAllText}
             </a> 
-            <a class="unpick-search">
+            <a class="unpick-search d-none">
                 <i class="remove icon"></i>
                 ${options.removeAllText}
             </a>

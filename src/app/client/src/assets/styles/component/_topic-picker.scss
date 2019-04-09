@@ -1,10 +1,13 @@
 .sb-treePicker {
     display: flex;
+    flex-wrap: wrap;
 
     .sb-treePicker-selectionSection {
         width: 424px;
         padding: 16px;
-        border-right: 1px solid #ccc;
+        border-width: 0 1px 0 0;
+        border-style: solid;
+        border-color: #ccc;
 
         .sb-search-box {
             max-width: 392px;
@@ -147,7 +150,18 @@
             .name {
                 color: #00C786;
             }
+        }
+    }
+}
 
+@include respond-below(sm) {
+    .sb-treePicker {
+        .sb-treePicker-selectionSection {
+            width: 100%;
+            border-width: 0 0 1px 0;
+        }
+        .sb-treePicker-selectedSection {
+            width: 100%;
         }
     }
 }
