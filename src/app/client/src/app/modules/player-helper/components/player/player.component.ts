@@ -4,6 +4,7 @@ import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
 import { environment } from '@sunbird/environment';
 import { Router } from '@angular/router';
+import { ToasterService, ResourceService } from '@sunbird/shared';
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html'
@@ -18,7 +19,8 @@ export class PlayerComponent implements OnInit, OnChanges {
   viewFullscreenBtn = false;
   viewFullScreenIntractEdata;
   viewFullScreenIntractObject;
-  constructor(public configService: ConfigService, public router: Router) {
+  constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
+    public resourceService: ResourceService) {
     try {
       this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')).value;
     } catch (error) {
@@ -66,8 +68,6 @@ export class PlayerComponent implements OnInit, OnChanges {
 
     if (this.playerConfig.metadata.mimeType !== 'video/x-youtube' && this.playerConfig.metadata.mimeType !== 'video/mp4') {
       this.viewFullscreenBtn = true;
-    } else {
-      this.viewFullscreenBtn = false;
     }
 
     if (window.innerWidth <= 768) {
@@ -106,7 +106,7 @@ export class PlayerComponent implements OnInit, OnChanges {
       if (iframe.requestFullscreen) {
         iframe.requestFullscreen();
       } else {
-        document.querySelector('.error').innerHTML = 'Your browser is not supported';
+        this.toasterService.warning(this.resourceService.messages.fmsg.m0004);
       }
     }
   }
