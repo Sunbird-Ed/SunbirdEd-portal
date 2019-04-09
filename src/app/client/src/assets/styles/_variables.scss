@@ -267,6 +267,13 @@ $sb-card-meta-font-size-ur: 10px;
 $sb-card-title-font-size-ur: $font-size-sm;
 $sb-card-meta-org-font-size-ur: $font-size-sm;
 
+// tooltip Component
+$tooltip-bg: $gray;
+$tooltip-color: $white;
+$tooltip-content-color: $gray-200;
+$tooltip-content-font-size: $font-size-sm;
+$tooltip-header-font-size: $font-size-normal;
+
 // To clean
 $text-lightDark: $gray-400;
 $text-gray: $gray-100;

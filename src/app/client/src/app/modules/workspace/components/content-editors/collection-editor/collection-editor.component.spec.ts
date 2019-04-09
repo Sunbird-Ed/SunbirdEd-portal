@@ -4,7 +4,6 @@ import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing'
 import { CollectionEditorComponent } from './collection-editor.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NavigationHelperService, ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
 import { EditorService } from '@sunbird/workspace';
@@ -33,7 +32,7 @@ describe('CollectionEditorComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionEditorComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule, TelemetryModule.forRoot()],
+      imports: [HttpClientTestingModule, CoreModule, TelemetryModule.forRoot()],
       providers: [
         EditorService, UserService, ContentService,
         ResourceService, ToasterService, ConfigService, LearnerService,

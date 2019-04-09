@@ -17,7 +17,6 @@ export class DeviceRegisterService  {
   private deviceRegisterApi: string;
   private timer$: Observable<any>;
   private channel: string;
-  // private timerSubscription : Observable<any>;
   private timerSubscription: Subscription;
 
   constructor(public deviceDetectorService: DeviceDetectorService, public publicDataService: PublicDataService,
@@ -43,10 +42,8 @@ export class DeviceRegisterService  {
   }
 
   registerDevice(channel: string, deviceId?: string) {
-    console.log('calling registerDevice');
     this.channel = channel;
-    // call register api every 24hrs
-    const deviceInfo = this.deviceDetectorService.getDeviceInfo();
+    const deviceInfo = this.deviceDetectorService.getDeviceInfo(); // call register api every 24hrs
     this.deviceId = (<HTMLInputElement>document.getElementById('deviceId'))
     && (<HTMLInputElement>document.getElementById('deviceId')).value;
     const data = {

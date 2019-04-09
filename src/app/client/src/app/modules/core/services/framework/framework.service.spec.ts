@@ -6,7 +6,6 @@ import { FrameworkService, UserService, CoreModule, PublicDataService } from '@s
 import { SharedModule } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 import { mockFrameworkData } from './framework.mock.spec.data';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 
 describe('FrameworkService', () => {
   let userService, publicDataService, frameworkService;
@@ -15,7 +14,7 @@ describe('FrameworkService', () => {
   let makeChannelReadSuc, makeFrameworkReadSuc  = true;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       providers: [CacheService]
     });
     userService = TestBed.get(UserService);
