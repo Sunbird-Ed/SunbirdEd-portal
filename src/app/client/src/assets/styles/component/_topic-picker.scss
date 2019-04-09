@@ -25,6 +25,14 @@
     .sb-treePicker-selectedSection {
         width: calc(100% - 424px);
         padding: 16px;
+        .list {
+            .node {
+                display: none;
+                &.picked {
+                    display: block;
+                }
+            }
+        }
     }
 
     .count {
@@ -149,14 +157,6 @@
         .picked {
             .name {
                 color: #00C786;
-            }
-        }
-    }
-    .list {
-        .node {
-            display: none;
-            &.picked {
-                display: block;
             }
         }
     }
