@@ -187,12 +187,6 @@ var conceptModal;
       actionButtons.unpickPicked.on('click', function (e) {
         return $('.picked-tab .node.picked .name').trigger('click');
       });
-      /*$('.menu .tree', modal).on('click', function (e) {
-        return showTree();
-      });
-      $('.menu .picked', modal).on('click', function (e) {
-        return showPicked();
-      });*/
       return $('.sb-search-input', modal).on('keyup', function (e) {
         return showSearch($(this).val());
       });
@@ -239,11 +233,7 @@ var conceptModal;
       }
     };
     showTree = function () {
-      //$('.menu .item', modal).removeClass('active');
-      //$('.menu .tree', modal).addClass('active');
       tabs.tree.show();
-     // tabs.search.hide();
-      //tabs.picked.hide();
       return modal.attr('data-mode', 'tree');
     };
     showSearch = function (query) {
@@ -261,10 +251,8 @@ var conceptModal;
         foundNodes = formatedNodes;
         list = renderList(foundNodes, {
         });
-        //$('.menu .item', modal).removeClass('active');
         tabs.search.show().html(list);
         tabs.tree.hide();
-        //tabs.picked.hide();
         modal.attr('data-mode', 'search');
         initializeNodeList(list);
         return $('.name', list).each(function () {
@@ -283,11 +271,7 @@ var conceptModal;
       var list;
       list = renderList(picked, {
       });
-      //$('.menu .item', modal).removeClass('active');
-      //$('.menu .picked', modal).addClass('active');
       tabs.picked.show().html(list);
-      //tabs.tree.hide();
-     // tabs.search.hide();
       modal.attr('data-mode', 'picked');
       return initializeNodeListForSelected(list);
     };
@@ -443,7 +427,6 @@ var conceptModal;
         return ("" + n.id) !== ("" + id);
       });
       updatePickedIds();
-      //showPicked();
       $(".node[data-id=" + id + "] .square.outline", modal).removeClass('d-none');
       return $(".node[data-id=" + id + "]", modal).removeClass('picked');
     };
@@ -484,5 +467,4 @@ var conceptModal;
     };
     return initialize();
   };
-
 }).call(this);
