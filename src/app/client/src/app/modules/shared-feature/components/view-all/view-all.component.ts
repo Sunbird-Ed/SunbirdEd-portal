@@ -314,6 +314,7 @@ export class ViewAllComponent implements OnInit, OnDestroy {
       return;
     }
     const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
+    window.scroll(0, 0);
     this.router.navigate([url], { queryParams: this.queryParams, relativeTo: this.activatedRoute });
   }
 
