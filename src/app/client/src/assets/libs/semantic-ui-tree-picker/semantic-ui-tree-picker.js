@@ -442,7 +442,7 @@ var conceptModal;
         return ("" + n.id) !== ("" + id);
       });
       updatePickedIds();
-      showPicked();
+      //showPicked();
       $(".node[data-id=" + id + "] .square.outline", modal).removeClass('d-none');
       return $(".node[data-id=" + id + "]", modal).removeClass('picked');
     };

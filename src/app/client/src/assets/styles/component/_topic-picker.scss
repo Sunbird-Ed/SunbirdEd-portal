@@ -152,6 +152,14 @@
             }
         }
     }
+    .list {
+        .node {
+            display: none;
+            &.picked {
+                display: block;
+            }
+        }
+    }
 }
 
 @include respond-below(sm) {
