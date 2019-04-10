@@ -10,87 +10,7 @@ var conceptModal;
     $("#" + options.nodeName).length == 0 ? '' : $("#" + options.nodeName).remove();
 
     /*Modal HTML Starts*/
-    modalTemplate = `
-      <div class="sb-modal">
-        <div id="${options.nodeName}" class="ui normal modal visible active sb-treePicker">
-
-          <!--Header-->
-          <i class="close icon js-close-modal"></i> 
-          <div class="sb-modal-header">
-            ${options.name}
-          </div> 
-          <!--/Header-->
-
-          <!--Content-->
-          <div class="sb-modal-content p-0">
-            <div class="sb-treePicker-body">
-
-              <!--Selection Section-->
-              <div class="sb-treePicker-selectionSection">
-
-                <!--Search Box-->
-                <div class="sb-search-box no-btn mb-15">
-                  <div class="input-div relative">
-                    <i class="search icon sb-search-icon"></i>
-                    <input class="sb-search-input" type="text" placeholder="${options.searchText}" />
-                    <i class="close icon js-clear d-none"></i>
-                  </div>
-                </div>
-                <!--/Search Box-->
-
-                <div class="tree-tab">
-                  <div></div>
-                </div>
-
-                <div class="search-tab">
-                </div>
-
-              </div>
-              <!--/Selection Section-->
-
-              <!--Selected Section-->
-              <div class="sb-treePicker-selectedSection">
-
-                <div class="d-flex flex-ai-center">
-                  ${options.selectedText} ${options.name}
-                  <span class="sb-treePicker-selected-count ml-5"></span>
-                  <button class="unpick-picked ml-auto sb-btn sb-btn-outline-error sb-btn-xs sb-left-icon-btn">
-                    <i class="trash icon"></i>
-                    ${options.removeAllText}
-                  </button>
-                </div>
-
-                <div class="picked-tab py-15">
-                </div>
-
-              </div>
-              <!--/Selected Section-->
-
-            </div>
-          </div>
-          <!--/Content-->
-
-          <!--Actions-->
-          <div class="sb-modal-actions">
-            <a class="pick-search d-none">
-              <i class="checkmark icon"></i>
-              ${options.chooseAllText}
-            </a> 
-            <a class="unpick-search d-none">
-                <i class="remove icon"></i>
-                ${options.removeAllText}
-            </a>
-            <button class="sb-btn sb-btn-normal sb-btn-primary accept">
-              ${options.submitButtonText}
-            </button> 
-            <button class="sb-btn sb-btn-normal sb-btn-outline-primary close js-close-modal ml-10">
-              ${options.cancelButtonText}
-            </button> 
-          </div>
-          <!--/Actions-->
-
-        </div>
-      </div>`;
+    modalTemplate = "<div class=\"sb-modal\"><div id=\""+options.nodeName+"\" class=\"ui normal modal visible active sb-treePicker\"><!--Header--><i class=\"close icon js-close-modal\"></i><div class=\"sb-modal-header\">"+options.name+"</div> <!--/Header--><!--Content--><div class=\"sb-modal-content p-0\"><div class=\"sb-treePicker-body\"><!--Selection Section--><div class=\"sb-treePicker-selectionSection\"><!--Search Box--><div class=\"sb-search-box no-btn mb-15\"><div class=\"input-div relative\"><i class=\"search icon sb-search-icon\"></i><input class=\"sb-search-input\" type=\"text\" placeholder=\""+options.searchText+"\" /><i class=\"close icon js-clear d-none\"></i></div></div><!--/Search Box--><div class=\"tree-tab\"><div></div></div><div class=\"search-tab\"></div></div><!--/Selection Section--><!--Selected Section--><div class=\"sb-treePicker-selectedSection\"><div class=\"d-flex flex-ai-center\">"+options.selectedText + options.name +"<span class=\"sb-treePicker-selected-count ml-5\"></span><button class=\"unpick-picked ml-auto sb-btn sb-btn-outline-error sb-btn-xs sb-left-icon-btn\"><i class=\"trash icon\"></i>"+options.removeAllText+"</button></div><div class=\"picked-tab py-15\"></div></div><!--/Selected Section--></div></div><!--/Content--><!--Actions--><div class=\"sb-modal-actions\"><a class=\"pick-search d-none\"><i class=\"checkmark icon\"></i>"+options.chooseAllText+"</a><a class=\"unpick-search d-none\"><i class=\"remove icon\"></i>"+options.removeAllText+"</a><button class=\"sb-btn sb-btn-normal sb-btn-primary accept\">"+options.submitButtonText+"</button><button class=\"sb-btn sb-btn-normal sb-btn-outline-primary close js-close-modal ml-10\">"+options.cancelButtonText+"</button></div><!--/Actions--></div></div>";
     /*Modal HTML Ends*/
 
     modal = $(modalTemplate).modal({
@@ -300,17 +220,7 @@ var conceptModal;
         if (config.hidden(node)) {
           continue;
         }
-        nodeElementHtml = `
-          <div class="node" data-id="${node.id}" data-name="${node.name}">
-            <div class="head ${node.selectable}">
-              <i class="add icon"></i>
-              <i class="minus icon"></i>
-              <i class="square outline icon"></i>
-              <i class="checkmark icon"></i>
-              <span class="name">${node.name}</span>
-            </div>
-            <div class="content"></div>
-          </div>`;
+        nodeElementHtml = "<div class=\"node\" data-id=\""+node.id+"\" data-name=\""+node.name+"\"><div class=\"head "+node.selectable+"\"><i class=\"add icon\"></i><i class=\"minus icon\"></i><i class=\"square outline icon\"></i><i class=\"checkmark icon\"></i><span class=\"name\">"+node.name+"</span></div><div class=\"content\"></div></div>";
         nodeElement = $(nodeElementHtml).appendTo(tree);
         if (config.disabled(node)) {
           nodeElement.addClass('disabled');
@@ -334,15 +244,7 @@ var conceptModal;
         if (config.hidden(node)) {
           continue;
         }
-        nodeElementhtml = `
-          <div class="node childless" data-id="${node.id}" data-name="${node.name}">
-            <div class="head ${node.selectable}">
-              <i class="square outline icon"></i>
-              <i class="checkmark icon"></i>
-              <a class="name">${node.name}</a>
-            </div>  
-            <div class="content"></div>
-          </div>`;
+        nodeElementhtml = "<div class=\"node childless\" data-id=\""+node.id+"\" data-name=\""+node.name+"\"><div class=\"head "+node.selectable+"\"><i class=\"square outline icon\"></i><i class=\"checkmark icon\"></i><a class=\"name\">"+node.name+"</a></div> <div class=\"content\"></div></div>";
         nodeElement = $(nodeElementhtml).appendTo(list);
         if (config.disabled(node)) {
           nodeElement.addClass('disabled');
