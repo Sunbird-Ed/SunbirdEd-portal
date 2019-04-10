@@ -7,10 +7,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils \
     && useradd jenkins
 RUN npm i -g npm@3.10.10
 RUN mkdir -p /home/jenkins
-RUN chown -R jenkins:jenkins /home/jenkins
-USER jenkins
 WORKDIR /home/jenkins
 COPY * /home/jenkins/
+RUN chown -R jenkins:jenkins /home/jenkins
+USER jenkins
 WORKDIR /home/jenkins/app
 RUN npm set progress=false
 RUN npm install  --unsafe-perm
