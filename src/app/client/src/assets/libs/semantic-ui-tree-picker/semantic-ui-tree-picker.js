@@ -12,10 +12,10 @@ var conceptModal;
     /*Modal HTML Starts*/
     modalTemplate = `
       <div class="sb-modal">
-        <div id="${options.nodeName}" class="ui tree-picker normal modal visible active">
+        <div id="${options.nodeName}" class="ui normal modal visible active sb-treePicker">
 
           <!--Header-->
-          <i class="close icon close-modal"></i> 
+          <i class="close icon js-close-modal"></i> 
           <div class="sb-modal-header">
             ${options.name}
           </div> 
@@ -23,7 +23,7 @@ var conceptModal;
 
           <!--Content-->
           <div class="sb-modal-content p-0">
-            <div class="sb-treePicker">
+            <div class="sb-treePicker-body">
 
               <!--Selection Section-->
               <div class="sb-treePicker-selectionSection">
@@ -33,7 +33,7 @@ var conceptModal;
                   <div class="input-div relative">
                     <i class="search icon sb-search-icon"></i>
                     <input class="sb-search-input" type="text" placeholder="${options.searchText}" />
-                    <i class="close icon clear d-none"></i>
+                    <i class="close icon js-clear d-none"></i>
                   </div>
                 </div>
                 <!--/Search Box-->
@@ -41,12 +41,16 @@ var conceptModal;
                 <div class="tree-tab">
                   <div></div>
                 </div>
-                <div class="search-tab"></div>
+
+                <div class="search-tab">
+                </div>
+
               </div>
               <!--/Selection Section-->
 
               <!--Selected Section-->
               <div class="sb-treePicker-selectedSection">
+
                 <div class="d-flex flex-ai-center">
                   ${options.selectedText} ${options.name}
                   <span class="sb-treePicker-selected-count ml-5"></span>
@@ -55,7 +59,10 @@ var conceptModal;
                     ${options.removeAllText}
                   </button>
                 </div>
-                <div class="picked-tab py-15"></div>
+
+                <div class="picked-tab py-15">
+                </div>
+
               </div>
               <!--/Selected Section-->
 
@@ -76,7 +83,7 @@ var conceptModal;
             <button class="sb-btn sb-btn-normal sb-btn-primary accept">
               ${options.submitButtonText}
             </button> 
-            <button class="sb-btn sb-btn-normal sb-btn-outline-primary close close-modal">
+            <button class="sb-btn sb-btn-normal sb-btn-outline-primary close js-close-modal ml-10">
               ${options.cancelButtonText}
             </button> 
           </div>
@@ -98,9 +105,9 @@ var conceptModal;
       picked: $('.picked-tab', modal)
     };
     actionButtons = {
-      pickSearch: $('.pick-search', modal),
-      unpickSearch: $('.unpick-search', modal),
-      unpickPicked: $('.unpick-picked', modal)
+      pickSearch: $('.sb-treePicker .pick-search', modal),
+      unpickSearch: $('.sb-treePicker .unpick-search', modal),
+      unpickPicked: $('.sb-treePicker .unpick-picked', modal)
     };
     config = {
       childrenKey: 'nodes',
@@ -117,7 +124,6 @@ var conceptModal;
       }
     };
     $.extend(config, options);
-    
     initialize = function () {
       if (config.data) {
         nodes = config.data;
@@ -168,22 +174,15 @@ var conceptModal;
         return widget.html(config.displayFormat(picked));
       });
       /* On click of Close button*/
-      $('.sb-modal-actions .close-modal', modal).on('click', function (e) {
+      $('.sb-treePicker .js-close-modal', modal).on('click', function (e) {
         modal.modal('hide');
         if (config.onClose) {
           config.onClose();
         }
       });
       /* Clear Search field */
-      $('.tree-picker .clear').on('click', function (e) {
+      $('.sb-treePicker .js-clear').on('click', function (e) {
         clearSearch();
-      });
-      /* Close modal */
-      $('.tree-picker .close-modal', modal).on('click', function (e) {
-        modal.modal('hide');
-        if (config.onClose) {
-          config.onClose();
-        }
       });
       actionButtons.pickSearch.on('click', function (e) {
         return $('.search-tab .node:not(.picked) .name').trigger('click');
@@ -198,7 +197,6 @@ var conceptModal;
         return showSearch($(this).val());
       });
     };
-
     loadNodes = function (url, params, success) {
       if (params == null) {
         params = {};
@@ -212,7 +210,6 @@ var conceptModal;
         return success(nodes);
       });
     };
-
     initializeNodes = function (nodes) {
       var tree;
       updatePickedNodes();
@@ -221,7 +218,6 @@ var conceptModal;
       tabs.tree.html(tree);
       return initializeNodeList(tree);
     };
-
     updatePickedNodes = function () {
       var i, id, len, ref, results1, searchResult;
       if (config.picked) {
@@ -242,12 +238,10 @@ var conceptModal;
         return results1;
       }
     };
-
     showTree = function () {
       tabs.tree.show();
       return modal.attr('data-mode', 'tree');
     };
-
     showSearch = function (query) {
       var foundNodes, list;
       var formatedNodes = [];
@@ -266,29 +260,27 @@ var conceptModal;
         tabs.search.show().html(list);
         tabs.tree.hide();
         modal.attr('data-mode', 'search');
-        $('.sb-treePicker .clear').removeClass('d-none');
+        $('.sb-treePicker .js-clear').removeClass('d-none');
         initializeNodeList(list);
         return $('.name', list).each(function () {
           var name, regex;
           name = $(this).text();
           regex = RegExp('(' + query + ')', 'gi');
-          name = name.replace(regex, "<strong class='search-query'>$1</strong>");
+          name = name.replace(regex, "<strong class='sb-treePicker-searchedQuery'>$1</strong>");
           return $(this).html(name);
         });
       } else {
-        $('.sb-treePicker .clear').addClass('d-none');
+        $('.sb-treePicker .js-clear').addClass('d-none');
         tabs.search.hide();
         return showTree();
       }
     };
-
     clearSearch = function(){
       $('.sb-treePicker .sb-search-input').val('');
-      $('.sb-treePicker .clear').addClass('d-none');
+      $('.sb-treePicker .js-clear').addClass('d-none');
       tabs.search.hide();
       return showTree();
     };
-
     showPicked = function () {
       var list;
       list = renderList(picked, {
@@ -297,7 +289,6 @@ var conceptModal;
       modal.attr('data-mode', 'picked');
       return initializeNodeListForSelected(list);
     };
-
     renderTree = function (nodes, css) {
       var i, len, node, nodeElement, tree;
       if (css == null) {
@@ -320,7 +311,6 @@ var conceptModal;
             </div>
             <div class="content"></div>
           </div>`;
-
         nodeElement = $(nodeElementHtml).appendTo(tree);
         if (config.disabled(node)) {
           nodeElement.addClass('disabled');
@@ -333,7 +323,6 @@ var conceptModal;
       }
       return tree;
     };
-
     renderList = function (nodes, css) {
       var i, len, list, node, nodeElement;
       if (css == null) {
@@ -345,7 +334,6 @@ var conceptModal;
         if (config.hidden(node)) {
           continue;
         }
-
         nodeElementhtml = `
           <div class="node childless" data-id="${node.id}" data-name="${node.name}">
             <div class="head ${node.selectable}">
@@ -355,19 +343,18 @@ var conceptModal;
             </div>  
             <div class="content"></div>
           </div>`;
-
         nodeElement = $(nodeElementhtml).appendTo(list);
         if (config.disabled(node)) {
           nodeElement.addClass('disabled');
         }
       };
-      if (nodes.length === 0) {
+      /*No search result found*/
+      /*if (nodes.length === 0) {
         emptyMessage = '<div class="empty">No results were found.</div>';
         nodeElement = $(emptyMessage).appendTo(list);
-      }
+      }*/
       return list;
     };
-
     initializeNodeList = function (tree) {
       return $('.node', tree).each(function () {
         var content, head, node;
@@ -376,6 +363,9 @@ var conceptModal;
         head = $('>.head', node);
         content = $('>.content', node);
         $('>.name', clickHead).on('click', function (e) {
+          return nodeClicked(node);
+        });
+        $('>.icon', clickHead).on('click', function (e) {
           return nodeClicked(node);
         });
         if (nodeIsPicked(node)) {
@@ -397,7 +387,6 @@ var conceptModal;
         return updatePickedIds();
       });
     };
-
     initializeNodeListForSelected = function (tree) {
       return $('.node', tree).each(function () {
         var content, head, node;
@@ -406,6 +395,9 @@ var conceptModal;
         head = $('>.head', node);
         content = $('>.content', node);
         $('>.name', clickHead).on('click', function (e) {
+          return nodeClicked(node);
+        });
+        $('>.icon', clickHead).on('click', function (e) {
           return nodeClicked(node);
         });
         if (nodeIsPicked(node)) {
@@ -420,7 +412,6 @@ var conceptModal;
         return updatePickedIds();
       });
     };
-
     nodeClicked = function (node) {
       if (!node.hasClass('disabled')) {
         if (config.singlePick) {
@@ -435,7 +426,6 @@ var conceptModal;
         }
       }
     };
-
     pickNode = function (node) {
       var id;
       config.picked = null;
@@ -449,7 +439,6 @@ var conceptModal;
       $(".node[data-id=" + id + "] .square.outline", modal).addClass('d-none');
       return $(".node[data-id=" + id + "]", modal).addClass('picked');
     };
-
     unpickNode = function (node) {
       var id;
       config.picked = null;
@@ -461,13 +450,11 @@ var conceptModal;
       $(".node[data-id=" + id + "] .square.outline", modal).removeClass('d-none');
       return $(".node[data-id=" + id + "]", modal).removeClass('picked');
     };
-
     nodeIsPicked = function (node) {
       return picked.filter(function (n) {
         return ("" + n.id) === node.attr('data-id');
       }).length;
     };
-
     updatePickedIds = function () {
       widget.attr('data-picked-ids', picked.map(function (n) {
         return n.id;
@@ -480,7 +467,6 @@ var conceptModal;
         return count.html("");
       }
     };
-
     recursiveNodeSearch = function (nodes, comparator) {
       var i, len, node, results;
       results = [];
