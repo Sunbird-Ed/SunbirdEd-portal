@@ -275,6 +275,37 @@ $tooltip-content-font-size: $font-size-sm;
 $tooltip-header-font-size: $font-size-normal;
 
 // Topic Picker
+$sb-treePicker-selectionTab-width: 424px;
+$sb-treePicker-selectedTab-width: calc(100% - 424px);
+$sb-treePicker-selectionTab-padding: 16px;
+$sb-treePicker-selectedTab-padding: 16px;
+$sb-treePicker-searchbox-max-width: 392px;
+$sb-treePicker-searchbox-width: 100%;
+$sb-treePicker-searchbox-border: 0.5px solid #7AB4EE;
+$sb-treePicker-searchbox-iconColor-search: #aaa;
+$sb-treePicker-selected-color: #00C786;
+$sb-treePicker-tabs-divider-border-color: #ccc;
+$sb-treePicker-tabs-divider-border-mobile: 0 0 1px 0;
+$sb-treePicker-tabs-divider-border-desktop: 0 1px 0 0;
+$sb-treePicker-nodes-between-spacing: 0 0 8px 0;
+$sb-treePicker-nodes-icon-title-spacing: 0 8px 0 0;
+$sb-treePicker-nodes-icons-font-size: 10px;
+$sb-treePicker-nodes-icons-line-height: 11px;
+$sb-treePicker-nodes-icons-border-radius: 4px;
+$sb-treePicker-nodes-icons-border: 1px solid $primary-200;
+$sb-treePicker-nodes-icons-padding: 1px 2px;
+$sb-treePicker-nodes-icons-height: 15px;
+$sb-treePicker-nodes-icons-width: 15px;
+$sb-treePicker-nodes-icons-color: $primary-200;
+$sb-treePicker-not-selected-node-icons-size: 15px;
+$sb-treePicker-nodes-name-color: #666;
+$sb-treePicker-opened-node-name-color: #333;
+$sb-treePicker-node-min-height: 15px;
+$sb-treePicker-nodes-childlist-border: 1px dotted #ccc;
+$sb-treePicker-nodes-childlist-padding: 8px;
+$sb-treePicker-nodes-childlist-margin: 8px;
+$sb-treePicker-nodes-disabled-opacity: 0.3;
+$sb-treePicker-search-query-highlight-color: $yellow;
 
 // To clean
 $text-lightDark: $gray-400;

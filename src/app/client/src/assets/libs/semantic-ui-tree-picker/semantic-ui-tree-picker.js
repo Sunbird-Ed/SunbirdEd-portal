@@ -31,7 +31,7 @@ var conceptModal;
                 <!--Search Box-->
                 <div class="sb-search-box no-btn mb-15">
                   <div class="input-div relative">
-                    <i class="search icon"></i>
+                    <i class="search icon sb-search-icon"></i>
                     <input class="sb-search-input" type="text" placeholder="${options.searchText}" />
                     <i class="close icon clear d-none"></i>
                   </div>
@@ -49,7 +49,7 @@ var conceptModal;
               <div class="sb-treePicker-selectedSection">
                 <div class="d-flex flex-ai-center">
                   ${options.selectedText} ${options.name}
-                  <span class="count ml-5"></span>
+                  <span class="sb-treePicker-selected-count ml-5"></span>
                   <button class="unpick-picked ml-auto sb-btn sb-btn-outline-error sb-btn-xs sb-left-icon-btn">
                     <i class="trash icon"></i>
                     ${options.removeAllText}
@@ -91,7 +91,7 @@ var conceptModal;
       allowMultiple: true
     });
     conceptModal = modal;
-    count = $('.count', modal);
+    count = $('.sb-treePicker-selected-count', modal);
     tabs = {
       tree: $('.tree-tab', modal),
       search: $('.search-tab', modal),
