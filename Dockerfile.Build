@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils \
     && apt-get install -y --force-yes python python-dev autoconf g++ make nasm bzip2 \
     && useradd jenkins
 RUN npm i -g npm@3.10.10
-RUN mkdir -p /opt/player \
+RUN mkdir -p /opt/player
 RUN chown -R jenkins:jenkins /opt/player
 USER jenkins
 WORKDIR /opt/player
