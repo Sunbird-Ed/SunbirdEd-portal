@@ -14,6 +14,6 @@ import { ContentImportComponent } from './components/content-import/content-impo
     OfflineRoutingModule
   ],
   providers: [PublicPlayerService, DeviceDetectorService],
-  declarations: [ContentImportComponent]
+  declarations: []
 })
 export class OfflineModule { }

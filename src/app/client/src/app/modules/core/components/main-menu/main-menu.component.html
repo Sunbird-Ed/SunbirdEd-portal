@@ -49,6 +49,16 @@
 		</a>
 	</ng-container>
 	<!--/Not Logged in user-->
+	<!-- offline container-->
+	<ng-container *ngIf="isOffline">
+			<a class="item"
+			[routerLink]="'/'" appTelemetryInteract
+			[telemetryInteractEdata]="myLibraryMenuInteractEdata">
+			{{resourceService.frmelmnts?.btn?.myLibrary}}
+		</a>
+		</ng-container>
+	<!-- offline container-->
+
 
 </div>
 <!--/Computer-->

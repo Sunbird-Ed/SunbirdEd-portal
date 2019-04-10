@@ -16,6 +16,7 @@ import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
 // import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { ContentImportComponent } from '../offline';
 @NgModule({
   imports: [
     CommonModule,
@@ -31,10 +32,12 @@ import { TelemetryModule } from '@sunbird/telemetry';
   ],
   declarations: [MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, PermissionDirective,
     BodyScrollDirective, DataDrivenFilterComponent, SortByComponent,
-    ErrorPageComponent, FlagContentComponent, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent],
+    ContentImportComponent,
+    ErrorPageComponent, FlagContentComponent, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent , ],
   exports: [MainHeaderComponent, MainFooterComponent, PermissionDirective, BodyScrollDirective,
     DataDrivenFilterComponent, SortByComponent, FlagContentComponent,
-    TelemetryModule, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent],
+    ContentImportComponent,
+    TelemetryModule, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent , ],
     providers: [CacheService, AuthGuard]
 })
 export class CoreModule {

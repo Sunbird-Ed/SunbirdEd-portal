@@ -24,6 +24,7 @@ export class MainHeaderComponent implements OnInit {
   queryParam: any = {};
   showExploreHeader = false;
   showQrmodal = false;
+  showImportModal = false;
   tenantInfo: any = {};
   userProfile: IUserProfile;
   adminDashboard: Array<string>;

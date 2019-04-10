@@ -1,7 +1,7 @@
 import { ExploreRoutingModule } from './explore-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ExploreContentComponent} from './components';
+import { ExploreContentComponent} from './components/';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';

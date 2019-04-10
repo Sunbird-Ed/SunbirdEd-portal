@@ -1,10 +1,9 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import { FineUploader, UIOptions } from 'fine-uploader';
 import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
 import * as _ from 'lodash-es';
 import { ConfigService, ToasterService, ResourceService } from '@sunbird/shared';
-import { EventEmitter } from 'events';
 import {
   IErrorEventData, IStartEventInput, IEndEventInput
 } from '@sunbird/telemetry';
@@ -39,11 +38,13 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
 
   progress: any;
 
+  processingFiles: Boolean = false;
+
   /**
    * To show warning/error/success message
    */
   public tosterService: ToasterService;
-  public resourceService: ResourceService;
+  // public resourceService: ResourceService;
   /*
    * Default method of class FileUploadService
    *
@@ -52,9 +53,14 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
    */
   public fileuploadingError: IErrorEventData;
 
+  @ViewChild('modal') modal;
+  @Output() closeImportModal = new EventEmitter<any>();
+
+
   constructor(
     config: ConfigService,
     tosterService: ToasterService,
+    public resourceService: ResourceService,
     public activatedRoute: ActivatedRoute,
 
   ) {
@@ -105,7 +111,6 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
         itemLimit: 100,
         allowedExtensions: ['ecar'],
         stopOnFirstInvalidFile: false,
-        acceptFiles: 'ecar'
       }
     };
   }
@@ -134,18 +139,40 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
       autoUpload: true,
       request: options.request,
       warnBeforeUnload: true,
-      validation: options.fileValidation,
       callbacks: {
         onComplete: (id, name, responseJSON, xhr) => {
           if (responseJSON.responseCode === 'OK') {
 
           }
         },
-        onUpload(id, name) {
+        onProgress: () => {
+          this.processingFiles = true;
+          document.getElementById('retry-btn').style.display = "none";
         },
-        onCancel: (id, name) => {
+        onCancel: () => {
+          this.processingFiles = false;
 
-        }
+        },
+        onAllComplete: (id, name) => {
+          this.processingFiles = false;
+          let uploadingFailed = document.getElementsByClassName('qq-upload-fail');
+          let progressUploads = document.getElementsByClassName('qq-in-progress');
+          let totalFiles = document.getElementsByClassName('qq-upload-list-selector');
+          let successFullyUploaded = document.getElementsByClassName('qq-upload-success');
+          if (uploadingFailed.length) {
+            this.tosterService.error(
+              `Content Import Failed: ${uploadingFailed.length} `
+            )
+          } else if (successFullyUploaded.length && uploadingFailed.length) {
+            this.tosterService.warning(
+              `Content Imported Scuessfully: ${successFullyUploaded.length} , Content Import Failed: ${uploadingFailed.length}`
+            )
+          } else {
+            this.tosterService.success(
+              `Content Imported Scuessfully : ${successFullyUploaded.length}`
+            )
+          }
+        },
       },
     };
     this.getWindowObject.cancelUploadFile = () => {
@@ -155,4 +182,8 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
     this.uploader = new FineUploader(this.uiOptions);
   }
 
+
+  closeModal() {
+    this.closeImportModal.emit('success');
+  }
 }
