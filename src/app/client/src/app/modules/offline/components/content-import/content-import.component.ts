@@ -105,6 +105,7 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
         itemLimit: 100,
         allowedExtensions: ['ecar'],
         stopOnFirstInvalidFile: false,
+        acceptFiles: ".ecar"
       }
     };
   }
@@ -133,6 +134,7 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
       autoUpload: true,
       request: options.request,
       warnBeforeUnload: true,
+      validation: options.fileValidation,
       callbacks: {
         onComplete: (id, name, responseJSON, xhr) => {
           if (responseJSON.responseCode === 'OK') {
