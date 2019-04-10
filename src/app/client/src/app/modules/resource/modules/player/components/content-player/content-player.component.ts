@@ -215,7 +215,12 @@ export class ContentPlayerComponent implements OnInit {
   }
   public contentProgressEvent(event) {
     const eid = event.detail.telemetryData.eid;
-    if (eid === 'END') {
+    let contentProgress;
+    const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
+    if (playerSummary) {
+      contentProgress =  _.find(event.detail.telemetryData.edata.summary, 'progress');
+    }
+    if (eid === 'END' && contentProgress.progress === 100) {
       this.contentRatingModal = true;
       if (this.modal) {
         this.modal.showContentRatingModal = true;

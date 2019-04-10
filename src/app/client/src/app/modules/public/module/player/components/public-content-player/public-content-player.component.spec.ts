@@ -113,8 +113,8 @@ describe('PublicContentPlayerComponent', () => {
   it('should call  contentProgressEvent method and open contentRatingModal', () => {
     spyOn(component, 'contentProgressEvent').and.callThrough();
     const event = {'detail': {
-     'telemetryData': {'eid': 'END'}
-    }};
+      'telemetryData': {'eid': 'END', 'edata': {'summary': [{'progress': 100}]}}
+     }};
     component.contentProgressEvent(event);
     expect(component.contentRatingModal).toBeTruthy();
   });
