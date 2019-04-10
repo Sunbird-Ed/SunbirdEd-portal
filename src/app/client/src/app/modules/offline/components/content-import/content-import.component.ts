@@ -105,7 +105,7 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
         itemLimit: 100,
         allowedExtensions: ['ecar'],
         stopOnFirstInvalidFile: false,
-        acceptFiles: ".ecar"
+        acceptFiles: 'ecar'
       }
     };
   }
