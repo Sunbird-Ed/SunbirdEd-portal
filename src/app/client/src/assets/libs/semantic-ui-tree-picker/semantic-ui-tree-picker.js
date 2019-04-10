@@ -117,6 +117,7 @@ var conceptModal;
       }
     };
     $.extend(config, options);
+    
     initialize = function () {
       if (config.data) {
         nodes = config.data;
@@ -173,9 +174,11 @@ var conceptModal;
           config.onClose();
         }
       });
+      /* Clear Search field */
       $('.tree-picker .clear').on('click', function (e) {
         clearSearch();
       });
+      /* Close modal */
       $('.tree-picker .close-modal', modal).on('click', function (e) {
         modal.modal('hide');
         if (config.onClose) {
@@ -195,6 +198,7 @@ var conceptModal;
         return showSearch($(this).val());
       });
     };
+
     loadNodes = function (url, params, success) {
       if (params == null) {
         params = {};
@@ -208,6 +212,7 @@ var conceptModal;
         return success(nodes);
       });
     };
+
     initializeNodes = function (nodes) {
       var tree;
       updatePickedNodes();
@@ -216,6 +221,7 @@ var conceptModal;
       tabs.tree.html(tree);
       return initializeNodeList(tree);
     };
+
     updatePickedNodes = function () {
       var i, id, len, ref, results1, searchResult;
       if (config.picked) {
@@ -236,10 +242,12 @@ var conceptModal;
         return results1;
       }
     };
+
     showTree = function () {
       tabs.tree.show();
       return modal.attr('data-mode', 'tree');
     };
+
     showSearch = function (query) {
       var foundNodes, list;
       var formatedNodes = [];
@@ -273,12 +281,14 @@ var conceptModal;
         return showTree();
       }
     };
+
     clearSearch = function(){
       $('.sb-treePicker .sb-search-input').val('');
       $('.sb-treePicker .clear').addClass('d-none');
       tabs.search.hide();
       return showTree();
-    }
+    };
+
     showPicked = function () {
       var list;
       list = renderList(picked, {
@@ -287,6 +297,7 @@ var conceptModal;
       modal.attr('data-mode', 'picked');
       return initializeNodeListForSelected(list);
     };
+
     renderTree = function (nodes, css) {
       var i, len, node, nodeElement, tree;
       if (css == null) {
@@ -322,6 +333,7 @@ var conceptModal;
       }
       return tree;
     };
+
     renderList = function (nodes, css) {
       var i, len, list, node, nodeElement;
       if (css == null) {
@@ -355,6 +367,7 @@ var conceptModal;
       }
       return list;
     };
+
     initializeNodeList = function (tree) {
       return $('.node', tree).each(function () {
         var content, head, node;
@@ -422,6 +435,7 @@ var conceptModal;
         }
       }
     };
+
     pickNode = function (node) {
       var id;
       config.picked = null;
@@ -435,6 +449,7 @@ var conceptModal;
       $(".node[data-id=" + id + "] .square.outline", modal).addClass('d-none');
       return $(".node[data-id=" + id + "]", modal).addClass('picked');
     };
+
     unpickNode = function (node) {
       var id;
       config.picked = null;
@@ -446,11 +461,13 @@ var conceptModal;
       $(".node[data-id=" + id + "] .square.outline", modal).removeClass('d-none');
       return $(".node[data-id=" + id + "]", modal).removeClass('picked');
     };
+
     nodeIsPicked = function (node) {
       return picked.filter(function (n) {
         return ("" + n.id) === node.attr('data-id');
       }).length;
     };
+
     updatePickedIds = function () {
       widget.attr('data-picked-ids', picked.map(function (n) {
         return n.id;
@@ -463,6 +480,7 @@ var conceptModal;
         return count.html("");
       }
     };
+
     recursiveNodeSearch = function (nodes, comparator) {
       var i, len, node, results;
       results = [];
