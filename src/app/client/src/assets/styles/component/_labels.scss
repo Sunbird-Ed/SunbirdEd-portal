@@ -77,7 +77,7 @@
 }
 .sb-label-tertiary,
 .sb-label-warning {
-    @include label-theme($tertiary-color);
+    @include label-theme($tertiary-200);
 }
 .sb-label-success {
     @include label-theme($success-color);
