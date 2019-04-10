@@ -83,11 +83,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
 	 * dialCode
 	*/
   public dialCode: string;
-  contentRatingModal = false;
-    /**
-   * Dom element reference of contentRatingModal
-   */
-  @ViewChild('modal') modal;
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
@@ -284,21 +279,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
         this.badgeData = _.get(response, 'result.content.badgeAssertions');
         return { data: response.result.content };
       }));
-  }
-  public contentProgressEvent(event) {
-    const eid = event.detail.telemetryData.eid;
-    let contentProgress;
-    const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
-    if (playerSummary) {
-      contentProgress =  _.find(event.detail.telemetryData.edata.summary, 'progress');
-    }
-    if (eid === 'END' && contentProgress.progress === 100) {
-      this.contentRatingModal = true;
-      if (this.modal) {
-        this.modal.showContentRatingModal = true;
-      }
-      return;
-    }
   }
   closeCollectionPlayer() {
     this.navigationHelperService.navigateToPreviousUrl('/explore');

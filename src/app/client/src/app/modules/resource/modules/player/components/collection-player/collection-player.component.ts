@@ -108,11 +108,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   public nextPlaylistItem: any;
   public prevPlaylistItem: any;
   public telemetryCdata: [{}];
-  contentRatingModal = false;
-    /**
-   * Dom element reference of contentRatingModal
-   */
-  @ViewChild('modal') modal;
   constructor(route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     private toasterService: ToasterService, private deviceDetectorService: DeviceDetectorService, private resourceService: ResourceService,
@@ -351,21 +346,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   onShareLink() {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.collectionId, this.mimeType);
     this.setTelemetryShareData(this.collectionData);
-  }
-  public contentProgressEvent(event) {
-    const eid = event.detail.telemetryData.eid;
-    let contentProgress;
-    const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
-    if (playerSummary) {
-      contentProgress =  _.find(event.detail.telemetryData.edata.summary, 'progress');
-    }
-    if (eid === 'END' && contentProgress.progress === 100) {
-      this.contentRatingModal = true;
-      if (this.modal) {
-        this.modal.showContentRatingModal = true;
-      }
-      return;
-    }
   }
   setTelemetryShareData(param) {
     this.telemetryShareData = [{

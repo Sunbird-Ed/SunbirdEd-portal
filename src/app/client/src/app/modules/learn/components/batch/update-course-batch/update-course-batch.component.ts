@@ -211,13 +211,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   * fetch mentors and participant details of current batch
   */
   private fetchParticipantDetails() {
-    let userList = [];
     if (this.batchDetails.participant || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
-      if (this.batchDetails.enrollmentType !== 'open') {
-         userList = _.union(_.keys(this.batchDetails.participant), this.batchDetails.mentors);
-      } else {
-        userList = this.batchDetails.mentors;
-      }
+      const userList = _.union(_.keys(this.batchDetails.participant), this.batchDetails.mentors);
       const request = {
         filters: {
           identifier: userList

@@ -81,11 +81,6 @@ export class ContentPlayerComponent implements OnInit {
   showExtContentMsg = false;
 
   closeUrl: any;
-  contentRatingModal = false;
-  /**
-   * Dom element reference of contentRatingModal
-   */
-  @ViewChild('modal') modal;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
@@ -212,21 +207,6 @@ export class ContentPlayerComponent implements OnInit {
   onShareLink() {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.contentId, this.contentData.mimeType);
     this.setTelemetryShareData(this.contentData);
-  }
-  public contentProgressEvent(event) {
-    const eid = event.detail.telemetryData.eid;
-    let contentProgress;
-    const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
-    if (playerSummary) {
-      contentProgress =  _.find(event.detail.telemetryData.edata.summary, 'progress');
-    }
-    if (eid === 'END' && contentProgress.progress === 100) {
-      this.contentRatingModal = true;
-      if (this.modal) {
-        this.modal.showContentRatingModal = true;
-      }
-      return;
-    }
   }
   setTelemetryShareData(param) {
     this.telemetryShareData = [{

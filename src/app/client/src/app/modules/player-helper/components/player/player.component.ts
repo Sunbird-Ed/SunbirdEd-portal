@@ -14,6 +14,11 @@ export class PlayerComponent implements OnInit, OnChanges {
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   buildNumber: string;
+  contentRatingModal = false;
+  /**
+ * Dom element reference of contentRatingModal
+ */
+  @ViewChild('modal') modal;
   constructor(public configService: ConfigService) {
     try {
       this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')).value;
@@ -63,6 +68,18 @@ export class PlayerComponent implements OnInit, OnChanges {
   generateContentReadEvent(event: any) {
     if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START' ||
       event.detail.telemetryData.eid === 'END')) {
+      let contentProgress;
+      const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
+      if (playerSummary) {
+        contentProgress = _.find(event.detail.telemetryData.edata.summary, 'progress');
+      }
+      if (event.detail.telemetryData.eid === 'END' && contentProgress.progress === 100) {
+        this.contentRatingModal = true;
+        if (this.modal) {
+          this.modal.showContentRatingModal = true;
+        }
+
+      }
       this.contentProgressEvent.emit(event);
     } else if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'IMPRESSION')) {
       this.emitSceneChangeEvent();

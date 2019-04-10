@@ -143,12 +143,4 @@ describe('PublicCollectionPlayerComponent', () => {
     expect(component.OnPlayContent).toHaveBeenCalledWith(content, true);
     expect(component.playContent).toHaveBeenCalledWith(content);
   });
-  it('should call  contentProgressEvent method and open contentRatingModal', () => {
-    spyOn(component, 'contentProgressEvent').and.callThrough();
-    const event = {'detail': {
-      'telemetryData': {'eid': 'END', 'edata': {'summary': [{'progress': 100}]}}
-     }};
-    component.contentProgressEvent(event);
-    expect(component.contentRatingModal).toBeTruthy();
-  });
 });
