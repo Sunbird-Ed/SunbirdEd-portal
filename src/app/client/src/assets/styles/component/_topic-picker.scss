@@ -76,7 +76,7 @@
 
             .disabled {
                 opacity: $sb-treePicker-nodes-disabled-opacity;
-                pointer: initial;
+                cursor: default;
             }
 
             .search-query {
@@ -104,7 +104,6 @@
             }
 
             .square{
-                vertical-align: middle;
                 color: $sb-treePicker-nodes-icons-color;
                 font-size: $sb-treePicker-not-selected-node-icons-size;
             }
@@ -150,7 +149,7 @@
             &.picked {
                 .checkmark {
                     display: inline-block;
-                    margin: 0 9px 0 0;
+                    margin: $sb-treePicker-checked-nodes-icon-title-spacing;
                 }
                 .head .square {
                     display: none;
