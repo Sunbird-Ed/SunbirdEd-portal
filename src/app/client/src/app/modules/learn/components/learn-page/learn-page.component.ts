@@ -46,6 +46,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     private playerService: PlayerService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService, public formService: FormService,
     public navigationhelperService: NavigationHelperService) {
+    window.scroll(0, 0);
     this.redirectUrl = this.configService.appConfig.courses.inPageredirectUrl;
     this.filterType = this.configService.appConfig.courses.filterType;
     this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
@@ -114,6 +115,9 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe(data => {
         this.showLoader = false;
         this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
+        if (!this.carouselMasterData.length) {
+          return; // no page section
+        }
         if (this.enrolledSection.contents.length) {
           this.pageSections = [this.carouselMasterData[0]];
         } else if (!this.enrolledSection.contents.length && this.carouselMasterData.length >= 2) {

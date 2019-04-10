@@ -42,7 +42,7 @@ describe('OrganisationComponent', () => {
   }
   const creationDataset = 'creation';
   const consumptionDataset = 'consumption';
-  const dashboardBaseUrl = 'dashboard/organization';
+  const dashboardBaseUrl = 'dashBoard/organization';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

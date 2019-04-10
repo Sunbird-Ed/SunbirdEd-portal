@@ -93,6 +93,7 @@ export class AppComponent implements OnInit {
         if (this.userService.loggedIn) {
           this.permissionService.initialize();
           this.courseService.initialize();
+          this.userService.startSession();
           return this.setUserDetails();
         } else {
           return this.setOrgDetails();
@@ -149,12 +150,11 @@ export class AppComponent implements OnInit {
    * fetch device id using fingerPrint2 library.
    */
   public setDeviceId(): Observable<string> {
-    const options = this.userService.getFingerPrintOptions();
-    return new Observable(observer => Fingerprint2.getV18(options, (deviceId) => {
-      (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-      observer.next(deviceId);
-      observer.complete();
-    }));
+    return new Observable(observer => this.telemetryService.getDeviceId(deviceId => {
+        (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+        observer.next(deviceId);
+        observer.complete();
+      }));
   }
   /**
    * set slug from url only for Anonymous user.
@@ -164,7 +164,7 @@ export class AppComponent implements OnInit {
       return of(undefined);
     } else {
       return this.router.events.pipe(filter(event => event instanceof NavigationEnd), first(),
-        map(data => this.slug = _.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug')));
+        map(data => this.slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug')));
     }
   }
   /**
@@ -221,7 +221,7 @@ export class AppComponent implements OnInit {
           channel: _.get(this.userProfile, 'rootOrg.hashTagId'),
           env: 'home',
           enableValidation: environment.enableTelemetryValidation,
-          timeStampData: this.userService.getServerTime
+          timeDiff: this.userService.getServerTimeDiff
         }
       };
     } else {
@@ -246,7 +246,7 @@ export class AppComponent implements OnInit {
           channel: this.orgDetails.hashTagId,
           env: 'home',
           enableValidation: environment.enableTelemetryValidation,
-          timeStampData: this.orgDetailsService.getServerTime
+          timeDiff: this.orgDetailsService.getServerTimeDiff
         }
       };
     }

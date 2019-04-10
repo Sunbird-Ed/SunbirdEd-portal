@@ -67,6 +67,9 @@
       ],
       "@sunbird/player-helper": [
         "app/modules/player-helper"
+      ],
+      "@sunbird/offline": [
+        "app/modules/offline"
       ]
     },
     "module": "es2015",

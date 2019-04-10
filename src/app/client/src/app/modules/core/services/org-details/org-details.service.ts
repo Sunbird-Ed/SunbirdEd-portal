@@ -1,5 +1,5 @@
-import { throwError as observableThrowError, of as observableOf, Observable, BehaviorSubject } from 'rxjs';
-import { mergeMap, catchError } from 'rxjs/operators';
+import { throwError, of, Observable, BehaviorSubject } from 'rxjs';
+import { mergeMap, catchError, skipWhile } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { ConfigService, ServerResponse, ToasterService, ResourceService, BrowserCacheTtlService } from '@sunbird/shared';
 import { Router } from '@angular/router';
@@ -15,11 +15,12 @@ export class OrgDetailsService {
 
   orgDetails: any;
   orgInfo: any;
-  timeStampData: any;
+  timeDiff: any;
 
   private _orgDetails$ = new BehaviorSubject<any>(undefined);
 
-  public readonly orgDetails$: Observable<any> = this._orgDetails$.asObservable();
+  public readonly orgDetails$: Observable<any> = this._orgDetails$.asObservable()
+  .pipe(skipWhile(data => data === undefined || data === null));
 
   constructor(public configService: ConfigService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService,
@@ -40,18 +41,18 @@ export class OrgDetailsService {
       }
     };
     if (this.orgDetails) {
-      return observableOf(this.orgDetails);
+      return of(this.orgDetails);
     } else {
       return this.publicDataService.postWithHeaders(option).pipe(mergeMap((data: ServerResponse) => {
         if (data.ts) {
           // data.ts is taken from header and not from api response ts, and format in IST
-          this.timeStampData = {serverEts: data.ts, localTime: new Date()};
+          this.timeDiff = data.ts;
         }
         if (data.result.response.count > 0) {
           this.orgDetails = data.result.response.content[0];
           this.setOrgDetailsToRequestHeaders();
           this._orgDetails$.next({ err: null, orgDetails: this.orgDetails });
-          return observableOf(data.result.response.content[0]);
+          return of(data.result.response.content[0]);
         } else {
           option.data.request.filters.slug = (<HTMLInputElement>document.getElementById('defaultTenant')).value;
           return this.publicDataService.post(option).pipe(mergeMap((responseData: ServerResponse) => {
@@ -59,14 +60,14 @@ export class OrgDetailsService {
               this.orgDetails = responseData.result.response.content[0];
               this.setOrgDetailsToRequestHeaders();
               this._orgDetails$.next({ err: null, orgDetails: this.orgDetails });
-              return observableOf(responseData.result.response.content[0]);
+              return of(responseData.result.response.content[0]);
             } else {
               this._orgDetails$.next({ err: responseData, orgDetails: this.orgDetails });
-              observableThrowError(responseData);
+              throwError(responseData);
             }
           }), catchError((err) => {
             this._orgDetails$.next({ err: err, orgDetails: this.orgDetails });
-            return observableThrowError(err);
+            return throwError(err);
           }));
         }
       }));
@@ -94,12 +95,12 @@ export class OrgDetailsService {
     };
     const orgDetails: any = this.cacheService.get('orgDetails');
     if (orgDetails) {
-      return observableOf(orgDetails);
+      return of(orgDetails);
     } else {
       return this.publicDataService.post(option).pipe(mergeMap((data: ServerResponse) => {
         if (data.result.response.count > 0) {
           this.setOrgDetails(data.result.response);
-          return observableOf(data.result.response);
+          return of(data.result.response);
         }
       }));
     }
@@ -125,8 +126,8 @@ export class OrgDetailsService {
     return this.learnerService.get(systemSetting);
   }
 
-  get getServerTime() {
-    return this.timeStampData;
+  get getServerTimeDiff() {
+    return this.timeDiff;
   }
 
   fetchOrgs(filters) {

@@ -47,6 +47,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     private playerService: PlayerService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService,
     public navigationhelperService: NavigationHelperService) {
+    window.scroll(0, 0);
     this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
     this.router.onSameUrlNavigation = 'reload';
     this.filterType = this.configService.appConfig.library.filterType;
@@ -127,6 +128,9 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe(data => {
         this.showLoader = false;
         this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
+        if (!this.carouselMasterData.length) {
+          return; // no page section
+        }
         if (this.carouselMasterData.length >= 2) {
           this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
         } else if (this.carouselMasterData.length >= 1) {

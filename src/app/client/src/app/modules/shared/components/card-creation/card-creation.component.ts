@@ -2,7 +2,7 @@ import { ResourceService } from '../../services/index';
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { ICard } from '../../interfaces';
 import {IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 @Component({
   selector: 'app-card-creation',
   templateUrl: './card-creation.component.html',

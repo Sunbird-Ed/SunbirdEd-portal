@@ -191,6 +191,25 @@ export class OrganisationComponent implements OnDestroy, AfterViewInit {
   }
 
   /**
+<<<<<<< HEAD
+=======
+   * Function to initialise the telemetry impression event for org admin dashboard page
+   */
+  initTelemetryImpressionEvent() {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: '/dashBoard/organization'
+      }
+    };
+  }
+
+  /**
+>>>>>>> upstream/release-1.15
    * Function to get dashboard data for given time period and organization identifier
    *
    * @param {string} timePeriod timePeriod: last 7d/14d/5w
@@ -264,7 +283,7 @@ export class OrganisationComponent implements OnDestroy, AfterViewInit {
       return false;
     }
 
-    this.route.navigate(['dashboard/organization', this.datasetType, this.identifier, timePeriod]);
+    this.route.navigate(['dashBoard/organization', this.datasetType, this.identifier, timePeriod]);
   }
 
   /**
@@ -279,7 +298,7 @@ export class OrganisationComponent implements OnDestroy, AfterViewInit {
       return false;
     }
     this.showGraph = datasetType === 'creation' ? 1 : 0;
-    this.route.navigate(['dashboard/organization', datasetType, this.identifier, this.timePeriod]);
+    this.route.navigate(['dashBoard/organization', datasetType, this.identifier, this.timePeriod]);
   }
 
   /**
@@ -306,7 +325,7 @@ export class OrganisationComponent implements OnDestroy, AfterViewInit {
       return false;
     }
 
-    this.route.navigate(['dashboard/organization', this.datasetType, identifier, this.timePeriod]);
+    this.route.navigate(['dashBoard/organization', this.datasetType, identifier, this.timePeriod]);
   }
 
   /**
@@ -329,7 +348,7 @@ export class OrganisationComponent implements OnDestroy, AfterViewInit {
       this.myOrganizations = data.content;
       if (this.myOrganizations.length === 1) {
         this.identifier = this.myOrganizations[0].identifier;
-        this.route.navigate(['dashboard/organization', this.datasetType, this.identifier, this.timePeriod]);
+        this.route.navigate(['dashBoard/organization', this.datasetType, this.identifier, this.timePeriod]);
       }
       this.isMultipleOrgs = this.userService.userProfile.organisationIds.length > 1 ? true : false;
       this.showLoader = false;
@@ -391,7 +410,7 @@ export class OrganisationComponent implements OnDestroy, AfterViewInit {
             this.isMultipleOrgs = orgIds.length > 1 ? true : false;
             if (this.myOrganizations.length === 1) {
               this.identifier = this.myOrganizations[0].identifier;
-              this.route.navigate(['dashboard/organization', this.datasetType, this.identifier, this.timePeriod]);
+              this.route.navigate(['dashBoard/organization', this.datasetType, this.identifier, this.timePeriod]);
             }
           }
 

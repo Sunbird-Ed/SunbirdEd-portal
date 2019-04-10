@@ -10,7 +10,6 @@ import { SearchService, UserService, LearnerService, ContentService, PermissionS
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import * as _ from 'lodash-es';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { UserEditComponent } from './user-edit.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './user-edit.component.spec.data';
@@ -41,8 +40,7 @@ describe('UserEditComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, ReactiveFormsModule, FormsModule, SharedModule.forRoot(), CoreModule,
-        TelemetryModule.forRoot(),
-         Ng2IziToastModule, RouterTestingModule],
+        TelemetryModule.forRoot(), RouterTestingModule],
       declarations: [UserEditComponent],
       providers: [ResourceService, OrgDetailsService, SearchService, PaginationService, UserService, TelemetryService, FormBuilder,
         LearnerService, ContentService, ConfigService, ToasterService, UserSearchService,
@@ -197,5 +195,14 @@ describe('UserEditComponent', () => {
     component.userDetailsForm.controls['role'].setValue('PUBLIC');
     const modalHeader  = fixture.debugElement.query(By.css('.sb-modal-header'));
     expect(modalHeader).toBeNull();
+  });
+
+  it('should show roles from all the organizations' , () => {
+    const searchService = TestBed.get(UserSearchService);
+    spyOn(searchService, 'getUserById').and.returnValue(observableOf(Response.successData));
+    component.populateUserDetails();
+    expect(component.selectedOrgUserRoles).toContain('ORG_ADMIN');
+    expect(component.selectedOrgUserRoles).toContain('SYSTEM_ADMINISTRATION');
+    expect(component.selectedOrgUserRoles).toContain('BOOK_CREATOR');
   });
 });

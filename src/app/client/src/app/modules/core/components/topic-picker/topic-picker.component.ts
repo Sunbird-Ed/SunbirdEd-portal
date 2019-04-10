@@ -57,7 +57,7 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   private formatSelectedTopics(topics, unformatted, formated) {
     _.forEach(topics, (topic) => {
-      if (unformatted.includes(topic.name)) {
+      if (unformatted.includes(topic.name) && !topic.children) {
         formated.push({
           identifier: topic.identifier,
           name: topic.name
@@ -82,7 +82,7 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
       chooseAllText: this.resourceService.frmelmnts.lbl.chooseAll,
       searchText: this.resourceService.frmelmnts.prmpt.search,
       selectedText: this.resourceService.frmelmnts.lbl.selected,
-      picked: _.map(this.selectedNodes, 'id'),
+      picked: _.map(this.selectedNodes, 'identifier'),
       onSubmit: (selectedNodes) => {
         this.selectedNodes = selectedNodes;
         this.selectedTopics = _.map(selectedNodes, node => ({

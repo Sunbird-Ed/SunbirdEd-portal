@@ -8,13 +8,11 @@ import { HttpClient } from '@angular/common/http';
 import { IAnnouncementListData, IPagination, IAnnouncementDetails } from '@sunbird/announcement';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
-// Modules
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 
 import { OutboxComponent } from '../index';
 import { AnnouncementService } from '@sunbird/core';
@@ -49,7 +47,7 @@ describe('OutboxComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [OutboxComponent],
-            imports: [HttpClientTestingModule, Ng2IziToastModule,
+            imports: [HttpClientTestingModule,
                 SuiModule, RouterTestingModule,
                 SharedModule.forRoot(), TelemetryModule.forRoot(), NgInviewModule],
             providers: [HttpClientModule, AnnouncementService, ConfigService, HttpClient,

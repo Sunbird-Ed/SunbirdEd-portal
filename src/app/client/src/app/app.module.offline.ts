@@ -7,8 +7,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { CommonModule } from '@angular/common';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
-import { Ng2IziToastModule } from 'ng2-izitoast';
-import { PublicModule } from '@sunbird/public';
+import { OfflineModule } from '@sunbird/offline';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { CacheService } from 'ng2-cache-service';
@@ -27,11 +26,10 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     HttpClientModule,
     SuiModule,
     SharedModule.forRoot(),
-    Ng2IziToastModule,
     // WebExtensionModule.forRoot(),
     TelemetryModule.forRoot(),
     DeviceDetectorModule.forRoot(),
-    PublicModule,
+    OfflineModule,
     SharedFeatureModule,
     // ...PluginModules,
     AppRoutingOfflineModule // don't add any module below this because it contains wildcard route

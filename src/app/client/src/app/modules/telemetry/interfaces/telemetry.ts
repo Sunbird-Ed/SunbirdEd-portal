@@ -220,7 +220,7 @@ export interface ITelemetry {
   'cdata'?: Array<{}>;
   'dispatcher'?: undefined;
   'enableValidation': boolean;
-  'timeStampData'?: {};
+  'timeDiff'?: Number;
 }
 
 export interface IUserOrgDetails {

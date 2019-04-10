@@ -3,20 +3,21 @@ FROM node:8.11.0
 MAINTAINER "Rajesh Rajendran <rajesh.r@optit.co>"
 RUN sed -i '/jessie-updates/d' /etc/apt/sources.list
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils \
-&& apt-get install -y --force-yes \ 
- python python-dev autoconf g++ make nasm bzip2
+    && apt-get install -y --force-yes python python-dev autoconf g++ make nasm bzip2 \
+    && useradd jenkins
 RUN mkdir -p /opt/player \
 WORKDIR /opt/player
 COPY * /opt/player/
 WORKDIR /opt/player/app
 RUN npm set progress=false
-RUN npm install  --unsafe-perm 
+RUN npm install  --unsafe-perm
 RUN npm run deploy
 WORKDIR /opt/player/app/app_dist
 RUN npm i -g npm@3.10.10
-RUN npm install --production  --unsafe-perm  
+RUN npm install --production  --unsafe-perm
 WORKDIR /opt/player/app
+RUN chown -R jenkins:jenkins /opt/player
 # passing commit hash as build arg
 ARG commit_hash=0
 ENV commit_hash ${commit_hash}
-CMD ["/bin/bash","-x","../vcs-config.sh"]   
+CMD ["/bin/bash","-x","../vcs-config.sh"]

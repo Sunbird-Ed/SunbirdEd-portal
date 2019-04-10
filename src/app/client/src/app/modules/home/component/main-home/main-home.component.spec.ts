@@ -3,7 +3,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable, of } from 'rxjs';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { AnnouncementService, UserService, CoursesService, LearnerService, FrameworkService, ContentService,
   PlayerService } from '@sunbird/core';
 import { SharedModule, ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
@@ -54,8 +53,7 @@ class ActivatedRouteStub {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule.forRoot(),
-       Ng2IziToastModule, NgInviewModule, TelemetryModule.forRoot()],
+      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule.forRoot(), NgInviewModule, TelemetryModule.forRoot()],
       declarations: [MainHomeComponent],
       providers: [UserService, CoursesService, ResourceService, LearnerService, AnnouncementService,
          ToasterService, FrameworkService, CacheService, ContentService, PlayerService,

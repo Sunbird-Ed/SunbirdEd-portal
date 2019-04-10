@@ -12,8 +12,8 @@ export class ContentPlayerMetadataComponent implements OnInit {
   metadata: any;
   contentFieldData: any;
   fieldData = [];
-  conceptNames: any;
-  filteredConcepts: any;
+  // conceptNames: any;
+  // filteredConcepts: any;
   showContentCreditsModal: boolean;
 
   @Input() contentData: ContentData;

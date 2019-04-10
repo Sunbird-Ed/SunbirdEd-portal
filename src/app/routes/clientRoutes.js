@@ -7,7 +7,6 @@ const _ = require('lodash')
 const path = require('path')
 const envHelper = require('../helpers/environmentVariablesHelper.js')
 const tenantHelper = require('../helpers/tenantHelper.js')
-const configHelper = require('../helpers/configServiceSDKHelper.js')
 const defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState()
 const tenantCdnUrl = envHelper.TENANT_CDN_URL
 const defaultTenant = envHelper.DEFAULT_CHANNEL
@@ -91,7 +90,7 @@ module.exports = (app, keycloak) => {
   app.all('/app', (req, res) => res.redirect(envHelper.ANDROID_APP_URL))
 
   app.all(['/home', '/home/*', '/announcement', '/announcement/*', '/search', '/search/*',
-    '/orgType', '/orgType/*', '/dashboard', '/dashboard/*', '/orgDashboard', '/orgDashboard/*',
+    '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*', 
     '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
     '/resources/*', '/myActivity', '/myActivity/*'], keycloak.protect(), indexPage)
 
@@ -112,22 +111,22 @@ module.exports = (app, keycloak) => {
 
 function getLocals(req, callback) {
   var locals = {}
-  locals.userId = _.get(req, 'kauth.grant.access_token.content.sub') ? req.kauth.grant.access_token.content.sub : null
-  locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'kauth.grant.access_token.content.sub') ? req.sessionID : null
+  locals.userId = _.get(req, 'session.userId') ? req.session.userId : null
+  locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'session.userId') ? req.sessionID : null
   locals.cdnUrl = envHelper.PORTAL_CDN_URL
-  locals.theme = configHelper.getConfig('sunbird_theme')
-  locals.defaultPortalLanguage = configHelper.getConfig('sunbird_default_language')
+  locals.theme = envHelper.sunbird_theme
+  locals.defaultPortalLanguage = envHelper.sunbird_default_language
   locals.instance = process.env.sunbird_instance
   locals.appId = envHelper.APPID
   locals.defaultTenant = envHelper.DEFAULT_CHANNEL
-  locals.exploreButtonVisibility = configHelper.getConfig('sunbird_explore_button_visibility')
+  locals.exploreButtonVisibility = envHelper.sunbird_explore_button_visibility
   locals.helpLinkVisibility = envHelper.sunbird_help_link_visibility
   locals.defaultTenantIndexStatus = defaultTenantIndexStatus
-  locals.extContWhitelistedDomains = configHelper.getConfig('sunbird_extcont_whitelisted_domains')
+  locals.extContWhitelistedDomains = envHelper.sunbird_extcont_whitelisted_domains
   locals.buildNumber = envHelper.BUILD_NUMBER
   locals.apiCacheTtl = envHelper.PORTAL_API_CACHE_TTL
   locals.cloudStorageUrls = envHelper.CLOUD_STORAGE_URLS
-  locals.userUploadRefLink = configHelper.getConfig('sunbird_portal_user_upload_ref_link')
+  locals.userUploadRefLink = envHelper.sunbird_portal_user_upload_ref_link
   locals.deviceRegisterApi = envHelper.DEVICE_REGISTER_API
   locals.googleCaptchaSiteKey = envHelper.sunbird_google_captcha_site_key
   locals.videoMaxSize = envHelper.sunbird_portal_video_max_size

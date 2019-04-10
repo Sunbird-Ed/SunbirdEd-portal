@@ -22,6 +22,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
   sbFormBuilder: FormBuilder;
   selectedOrgName: string;
   selectedOrgId: string;
+  rootOrgRoles: Array<string>;
   selectedOrgUserRoles: Array<string>;
   selectedOrgUserRolesNew: any = [];
   stateId: string;
@@ -100,7 +101,15 @@ export class UserEditComponent implements OnInit, OnDestroy {
         const subOrgDetails = _.filter(this.userDetails.organisations, (org) => {
           return org.organisationId !== this.userDetails.rootOrgId;
         });
-        if (!_.isEmpty(rootOrgDetails)) {this.selectedOrgUserRoles = rootOrgDetails[0].roles; }
+        if (!_.isEmpty(rootOrgDetails)) {
+          this.rootOrgRoles = rootOrgDetails[0].roles;
+          this.selectedOrgUserRoles = rootOrgDetails[0].roles;
+         }
+        if (!_.isEmpty(subOrgDetails)) {
+          _.forEach(subOrgDetails, (org) => {
+            this.selectedOrgUserRoles = _.union(this.selectedOrgUserRoles, org.roles);
+          });
+        }
         if (!_.isEmpty(subOrgDetails)) {
           const orgs = _.sortBy(subOrgDetails, ['orgjoindate']);
           this.selectedSchoolId = orgs[0].organisationId;
@@ -236,11 +245,20 @@ export class UserEditComponent implements OnInit, OnDestroy {
     // create school and roles data
     const roles = !_.isEmpty(this.userDetailsForm.value.role) ? this.userDetailsForm.value.role : ['PUBLIC'];
     const orgArray = [];
-    orgArray.push({organisationId: this.userDetails.rootOrgId, roles: roles});
+    const newRoles = [...roles];
+    const mainRoles = ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION', 'ADMIN', 'SYSTEM_ADMIN'];
+    _.remove(newRoles, (role) => {
+        return _.includes(mainRoles, role);
+    });
+    orgArray.push({organisationId: this.userDetails.rootOrgId, roles: _.concat(newRoles, _.intersection(mainRoles, this.rootOrgRoles))});
+     _.forEach(this.userDetails.organisations, (org) => {
+        if (org.organisationId !== this.userDetails.rootOrgId) {
+          orgArray.push({organisationId: org.organisationId, roles: _.concat(newRoles, _.intersection(mainRoles, org.roles))});
+        }
+      });
     if (this.userDetailsForm.value.school) {
       orgArray.push({organisationId: this.userDetailsForm.value.school, roles: roles});
     }
-
     // create location data
     this.locationCodes = [];
     if (this.userDetailsForm.value.district) { this.locationCodes.push(this.userDetailsForm.value.district); }

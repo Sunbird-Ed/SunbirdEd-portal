@@ -11,7 +11,6 @@ import { mockData } from './app.component.spec.data';
 import { AppComponent } from './app.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { RouterTestingModule } from '@angular/router/testing';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
@@ -41,7 +40,7 @@ describe('AppComponent', () => {
   let userService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule,
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
         RouterTestingModule],
       declarations: [
         AppComponent
@@ -112,7 +111,7 @@ describe('AppComponent', () => {
         channel: _.get(userService.userProfile, 'rootOrg.hashTagId'),
         env: 'home',
         enableValidation: true,
-        timeStampData: {serverEts: '2018-02-28 12:07:33:518+0000', localTime: new Date()}
+        timeDiff: 0
       }
     };
     expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
@@ -160,7 +159,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
         channel: '1235654',
         env: 'home',
         enableValidation: true,
-        timeStampData: {}
+        timeDiff: 0
       }
     };
     expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));

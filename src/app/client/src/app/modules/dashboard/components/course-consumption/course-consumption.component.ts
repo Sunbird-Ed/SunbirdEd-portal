@@ -232,7 +232,7 @@ export class CourseConsumptionComponent implements OnDestroy, AfterViewInit {
       if (this.myCoursesList.length === 1) {
         this.identifier = this.myCoursesList[0].identifier;
         this.courseName = this.myCoursesList[0].name;
-        this.route.navigate(['dashboard/activity/course/consumption', this.identifier, this.timePeriod]);
+        this.route.navigate(['dashBoard/activity/course/consumption', this.identifier, this.timePeriod]);
       }
       this.validateIdentifier(this.identifier);
       this.showLoader = false;
@@ -248,7 +248,7 @@ export class CourseConsumptionComponent implements OnDestroy, AfterViewInit {
             if (data.result.content.length === 1) {
               this.identifier = data.result.content[0].identifier;
               this.courseName = data.result.content[0].name;
-              this.route.navigate(['dashboard/activity/course/consumption', this.identifier, this.timePeriod]);
+              this.route.navigate(['dashBoard/activity/course/consumption', this.identifier, this.timePeriod]);
             } else {
               this.isMultipleCourses = true;
             }
@@ -277,7 +277,7 @@ export class CourseConsumptionComponent implements OnDestroy, AfterViewInit {
       return false;
     }
 
-    this.route.navigate(['dashboard/activity/course/consumption', course.identifier, this.timePeriod]);
+    this.route.navigate(['dashBoard/activity/course/consumption', course.identifier, this.timePeriod]);
   }
 
   /**
@@ -294,7 +294,7 @@ export class CourseConsumptionComponent implements OnDestroy, AfterViewInit {
       return false;
     }
 
-    this.route.navigate(['dashboard/activity/course/consumption', this.identifier, timePeriod]);
+    this.route.navigate(['dashBoard/activity/course/consumption', this.identifier, timePeriod]);
   }
 
   /**
@@ -322,13 +322,12 @@ export class CourseConsumptionComponent implements OnDestroy, AfterViewInit {
         },
         object: {
           id: params.id,
-          type: 'course',
+          type: 'Course',
           ver: '1.0'
         }
       };
     });
   }
-
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
