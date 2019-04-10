@@ -244,18 +244,20 @@ export class InboxComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit () {
-     this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: '/announcement/inbox/' + this.pageNumber,
-        duration: this.navigationhelperService.getPageLoadTime()
-      }
-    };
+    setTimeout(() => {
+        this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          uri: '/announcement/inbox/' + this.pageNumber,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 
   ngOnDestroy() {
