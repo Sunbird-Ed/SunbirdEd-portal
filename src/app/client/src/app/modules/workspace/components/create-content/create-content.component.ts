@@ -81,16 +81,18 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit () {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri,
-        duration: this.navigationhelperService.getPageLoadTime()
-      }
-    };
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.activatedRoute.snapshot.data.telemetry.uri,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 }

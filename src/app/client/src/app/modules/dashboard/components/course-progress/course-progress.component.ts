@@ -288,8 +288,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     if (this.searchText) {
       option.username = this.searchText;
     }
-    this.telemetryImpression.edata.uri = '/learn/course/' + this.courseId +
-    '/dashboard&batchIdentifier=' + this.queryParams.batchIdentifier;
     this.courseProgressService.getDashboardData(option).pipe(
     takeUntil(this.unsubscribe))
     .subscribe(
@@ -393,23 +391,25 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   ngAfterViewInit () {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: [{ id: this.activatedRoute.snapshot.params.courseId, type: 'Course' }]
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: '/learn/course/' + this.courseId + '/dashboard',
-        duration: this.navigationhelperService.getPageLoadTime()
-      },
-      object: {
-        id: this.courseId,
-        type: this.activatedRoute.snapshot.data.telemetry.object.type,
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
-      }
-    };
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env,
+          cdata: [{ id: this.activatedRoute.snapshot.params.courseId, type: 'Course' }]
+        },
+        edata: {
+          uri: '/learn/course/' + this.courseId + '/dashboard&batchIdentifier=' + this.activatedRoute.snapshot.params.batchId,
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          duration: this.navigationhelperService.getPageLoadTime()
+        },
+        object: {
+          id: this.courseId,
+          type: this.activatedRoute.snapshot.data.telemetry.object.type,
+          ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+        }
+      };
+    });
   }
 
   ngOnDestroy() {

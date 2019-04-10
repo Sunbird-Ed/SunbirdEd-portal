@@ -183,14 +183,6 @@ export class OrganisationComponent implements OnDestroy, AfterViewInit {
       if (params.id && params.timePeriod) {
         // this.datasetType = params.datasetType;
         this.showDashboard = false;
-        // update the impression event after an org is selected
-        this.telemetryImpression.edata.uri = 'dashboard/organization/' + params.datasetType
-          + '/' + params.id + '/' + params.timePeriod;
-        this.telemetryImpression.object = {
-          id: params.id,
-          type: 'org',
-          ver: '1.0'
-        };
         this.interactObject = { id: params.id, type: 'Organization', ver: '1.0' };
         this.getDashboardData(params.timePeriod, params.id);
       }
@@ -417,17 +409,26 @@ export class OrganisationComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit () {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: '/dashboard/organization',
-        duration: this.navigationhelperService.getPageLoadTime()
-      }
-    };
+    const params = this.activatedRoute.snapshot.params;
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          uri: 'dashboard/organization/' + params.datasetType
+          + '/' + params.id + '/' + params.timePeriod,
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          duration: this.navigationhelperService.getPageLoadTime()
+        },
+        object: {
+          id: params.id,
+          type: 'org',
+          ver: '1.0'
+        }
+      };
+    });
   }
 
   ngOnDestroy() {

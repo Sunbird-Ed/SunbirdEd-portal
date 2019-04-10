@@ -157,16 +157,7 @@ export class CourseConsumptionComponent implements OnDestroy, AfterViewInit {
     this.activatedRoute.params.pipe(
     takeUntil(this.unsubscribe))
     .subscribe(params => {
-
       if (params.id && params.timePeriod) {
-
-        // update the impression event after a course is selected
-        this.telemetryImpression.edata.uri = 'dashboard/activity/course/consumption/' + params.id + '/' + params.timePeriod;
-        this.telemetryImpression.object = {
-          id: params.id,
-          type: 'course',
-          ver: '1.0'
-        };
         this.interactObject = { id: params.id, type: 'Course', ver: '1.0' };
         this.isMultipleCourses = false;
         this.showDashboard = true;
@@ -316,17 +307,26 @@ export class CourseConsumptionComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit () {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: 'dashboard/myActivity',
-        duration: this.navigationhelperService.getPageLoadTime()
-      }
-    };
+    setTimeout(() => {
+      const params = this.activatedRoute.snapshot.params;
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          // update the impression event after a course is selected
+          uri: 'dashboard/activity/course/consumption/' + params.id + '/' + params.timePeriod,
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          duration: this.navigationhelperService.getPageLoadTime()
+        },
+        object: {
+          id: params.id,
+          type: 'course',
+          ver: '1.0'
+        }
+      };
+    });
   }
 
   ngOnDestroy() {
