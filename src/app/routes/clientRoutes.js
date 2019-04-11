@@ -51,7 +51,7 @@ module.exports = (app, keycloak) => {
   });
 
   app.get(['/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff', '/dist/*.eot', '/dist/*.svg',
-  '/*.ttf', '/*.woff2', '/*.woff', '/*.eot', '/*.svg'],
+  '/*.ttf', '/*.woff2', '/*.woff', '/*.eot', '/*.svg', '/*.html'],
     compression(), (req, res, next) => {
         res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
         res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())

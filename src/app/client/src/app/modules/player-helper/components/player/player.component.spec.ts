@@ -73,5 +73,16 @@ describe('PlayerComponent', () => {
     component.generateContentReadEvent(endEventSuc);
     expect(contentProgressEvent).toBeDefined();
   });
+  it('should emit "END" event and open contentRating', () => {
+    let contentProgressEvent;
+    component.contentProgressEvent.subscribe((data) => {
+      contentProgressEvent = data;
+    });
+    component.playerConfig = playerConfig;
+    component.generateContentReadEvent(endEventSuc);
+    component.showRatingPopup(endEventSuc);
+    expect(contentProgressEvent).toBeDefined();
+    expect(component.contentRatingModal).toBeTruthy();
+  });
 });
 

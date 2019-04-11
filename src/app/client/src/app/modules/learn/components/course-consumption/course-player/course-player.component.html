@@ -93,7 +93,7 @@
                                 </div>
                                 <div class="ui grid">
                                     <div class="twelve wide column" [appTelemetryImpression]="telemetryContentImpression">
-                                        <app-player (contentProgressEvent)="contentProgressEvent($event)" class="content-player" [playerConfig]="playerConfig"></app-player>
+                                        <app-player (contentProgressEvent)="contentProgressEvent($event)" class="content-player" [playerConfig] ="playerConfig" [playerOption] = "playerOption"></app-player>
                                     </div>
                                 </div>
                             </div>
