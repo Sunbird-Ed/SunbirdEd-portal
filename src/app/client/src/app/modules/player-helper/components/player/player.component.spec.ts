@@ -86,5 +86,13 @@ describe('PlayerComponent', () => {
     expect(contentProgressEvent).toBeDefined();
     expect(component.contentRatingModal).toBeTruthy();
   });
+
+  it('should call the viewfullscreen method',  () => {
+    expect(component).toBeTruthy();
+    spyOn(component, 'viewInFullscreen').and.callThrough();
+    const button = fixture.debugElement.nativeElement.querySelector('button');
+    button.click();
+    expect(component.viewInFullscreen).toHaveBeenCalled();
+  });
 });
 
