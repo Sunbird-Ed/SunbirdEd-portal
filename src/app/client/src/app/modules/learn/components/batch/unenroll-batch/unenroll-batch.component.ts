@@ -1,9 +1,9 @@
 
 import { takeUntil } from 'rxjs/operators';
 import { UserService, CoursesService } from '@sunbird/core';
-import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { CourseBatchService } from '../../../services';
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
@@ -13,7 +13,7 @@ import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
   selector: 'app-unenroll-batch',
   templateUrl: './unenroll-batch.component.html'
 })
-export class UnEnrollBatchComponent implements OnInit, OnDestroy {
+export class UnEnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('unenrollBatch') unenrollBatch;
   batchId: string;
   batchDetails: any;
@@ -30,28 +30,12 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy {
   telemetryImpression: IImpressionEventInput;
   constructor(public router: Router, public activatedRoute: ActivatedRoute, public courseBatchService: CourseBatchService,
     public resourceService: ResourceService, public toasterService: ToasterService, public userService: UserService,
-    public configService: ConfigService, public coursesService: CoursesService) { }
+    public configService: ConfigService, public coursesService: CoursesService,
+    public navigationhelperService: NavigationHelperService) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.batchId = params.batchId;
-
-      // Create the telemetry impression event for enroll batch page
-      this.telemetryImpression = {
-        context: {
-          env: this.activatedRoute.snapshot.data.telemetry.env
-        },
-        edata: {
-          type: this.activatedRoute.snapshot.data.telemetry.type,
-          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-          uri: '/unenroll/batch/' + this.batchId
-        },
-        object: {
-          id: this.batchId,
-          type: this.activatedRoute.snapshot.data.telemetry.object.type,
-          ver: this.activatedRoute.snapshot.data.telemetry.object.ver
-        }
-      };
       this.telemetryInteractObject = { id: this.batchId, type: 'Course', ver: '1.0' };
       this.courseBatchService.getEnrollToBatchDetails(this.batchId).pipe(
         takeUntil(this.unsubscribe))
@@ -125,6 +109,26 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy {
       this.router.navigate(['/learn/course', this.batchDetails.courseId]);
       window.location.reload();
     }, 2000);
+  }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: '/unenroll/batch/' + this.activatedRoute.snapshot.params.batchId,
+          duration: this.navigationhelperService.getPageLoadTime()
+        },
+        object: {
+          id: this.activatedRoute.snapshot.params.batchId,
+          type: this.activatedRoute.snapshot.data.telemetry.object.type,
+          ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+        }
+      };
+    });
   }
   setTelemetryData() {
     this.telemetryCdata = [{ 'type': 'batch', 'id': this.batchDetails.identifier}];
