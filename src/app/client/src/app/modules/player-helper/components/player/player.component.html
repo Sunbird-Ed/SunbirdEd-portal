@@ -1,3 +1,3 @@
 <iframe #contentIframe id="contentPlayer" class="contentViewerIframeShadow br-4 bs-2"></iframe>
-<app-content-rating #modal *ngIf="contentRatingModal && playerConfig"  [contentData] = "playerConfig.metadata"></app-content-rating>
+<app-content-rating #modal *ngIf="contentRatingModal &&  showContentRating && playerConfig"  [contentData] = "playerConfig.metadata"></app-content-rating>
 
