@@ -7,6 +7,7 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
 import { takeUntil, map, catchError, mergeMap } from 'rxjs/operators';
 import { Subject, forkJoin, of } from 'rxjs';
 import * as TreeModel from 'tree-model';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-dial-code',
@@ -24,7 +25,9 @@ export class DialCodeComponent implements OnInit, OnDestroy {
    */
   private searchService: SearchService;
 
-
+  telemetryInteractObject: IInteractEventObject;
+  closeMobilePopup: IInteractEventEdata;
+  appMobileDownload: IInteractEventEdata;
   /**
    * reference of ToasterService
    */
@@ -98,6 +101,26 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       this.searchDialCode();
       this.setTelemetryData();
     });
+
+    setTimeout(() => {
+      $('.mobile-app-popup').css({ 'bottom': '0' });
+      $('.mobile-popup-dimmer').css({ 'bottom': '0' });
+    }, 500);
+
+    $('.app-download').click(function (event) {
+      const btnId = $(this).attr('id');
+      window.location.href = 'https://play.google.com/store/apps/details?id=in.gov.diksha.app';
+    });
+
+    $('.close-mobile-div').click(() => {
+      $('.mobile-app-popup').css({ 'bottom': '-999px' });
+      $('.mobile-popup-dimmer').css({ 'display': 'none' });
+    });
+
+    $('.mobile-popup-dimmer').click(() => {
+      $('.mobile-app-popup').css({ 'bottom': '-999px' });
+      $('.mobile-popup-dimmer').css({ 'display': 'none' });
+    });
   }
   setTelemetryData() {
     this.telemetryImpression = {
@@ -119,6 +142,22 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         uri: this.router.url,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype
       }
+    };
+    this.telemetryInteractObject = {
+      id: this.dialCode,
+      type: 'dialCode',
+      ver: '1.0'
+    };
+    this.closeMobilePopup = {
+      id: 'mobile-popup-close',
+      type: 'click',
+      pageid: 'get-dial'
+    };
+
+    this.appMobileDownload = {
+      id: 'app-download-mobile',
+      type: 'click',
+      pageid: 'get-dial'
     };
   }
   public searchDialCode() {

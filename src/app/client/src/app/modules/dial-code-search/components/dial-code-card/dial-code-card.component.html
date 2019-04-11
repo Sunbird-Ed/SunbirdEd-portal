@@ -72,4 +72,10 @@
       <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount" *ngIf="data.maxCount && data.progress > 0"></sui-progress>
     </div>
     <!--/Progress Bar-->
+
+    <div class="btn-div">
+      <button class="ui primary button">
+        <i class="caret right icon"></i> {{resourceService?.frmelmnts?.lbl?.playContent}}
+      </button>
+    </div>
 </div>
