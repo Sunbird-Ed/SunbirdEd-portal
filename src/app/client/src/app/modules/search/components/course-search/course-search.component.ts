@@ -179,6 +179,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     }
     const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
     this.router.navigate([url], { queryParams: this.queryParams });
+    window.scroll(0, 0);
   }
   public playContent({ data }) {
     const { metaData } = data;
