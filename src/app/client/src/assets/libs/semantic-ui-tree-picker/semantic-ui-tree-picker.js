@@ -169,7 +169,7 @@ var conceptModal;
         foundNodes = recursiveNodeSearch(nodes, function (node) {
           return node.name && node.name.toLowerCase().indexOf(query.toLowerCase()) > -1;
         });
-        _.forEach(foundNodes, function (value) {
+        foundNodes.forEach(function (value) {
           if (value.selectable === 'selectable') {
             formatedNodes.push(value);
           }
