@@ -101,7 +101,10 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       this.searchDialCode();
       this.setTelemetryData();
     });
+    this.handleMobilePopupBanner();
+  }
 
+  handleMobilePopupBanner () {
     setTimeout(() => {
       $('.mobile-app-popup').css({ 'bottom': '0' });
       $('.mobile-popup-dimmer').css({ 'bottom': '0' });
@@ -122,6 +125,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       $('.mobile-popup-dimmer').css({ 'display': 'none' });
     });
   }
+
   setTelemetryData() {
     this.telemetryImpression = {
       context: {
@@ -221,7 +225,8 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   }
 
   public getCollectionHierarchy(collectionId) {
-    return this.playerService.getCollectionHierarchy(collectionId).pipe(map((res) => res.result.content), catchError(e => of(undefined)));
+    return this.playerService.getCollectionHierarchy(collectionId).pipe(map((res) =>
+    _.get(res, 'result.content')), catchError(e => of(undefined)));
   }
 
   public navigateToSearch() {
