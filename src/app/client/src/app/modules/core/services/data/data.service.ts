@@ -207,7 +207,7 @@ export class DataService {
     const currentdate: any = new Date();
     const serverDate: any = new Date(serverdate);
     if (serverdate) {
-      return serverdate - currentdate;
+      return ( serverDate - currentdate ) / 1000;
     } else {
       return 0;
     }
