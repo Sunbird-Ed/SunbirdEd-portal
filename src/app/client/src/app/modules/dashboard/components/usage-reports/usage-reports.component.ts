@@ -8,7 +8,6 @@ import { UserService } from '@sunbird/core';
 import { ToasterService, ResourceService, INoResultMessage } from '@sunbird/shared';
 import { UUID } from 'angular2-uuid';
 import { ActivatedRoute, Router } from '@angular/router';
-import {testData } from './testData';
 @Component({
   selector: 'app-usage-reports',
   templateUrl: './usage-reports.component.html',
@@ -43,7 +42,6 @@ export class UsageReportsComponent implements OnInit {
         if (_.get(data, 'responseCode') === 'OK') {
           this.noResult = false;
           this.reportMetaData = _.get(data, 'result');
-          this.reportMetaData.push(testData);
           if (this.reportMetaData[0]) { this.renderReport(this.reportMetaData[0]); }
         }
       }, (err) => {
