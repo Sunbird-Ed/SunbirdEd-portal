@@ -14,7 +14,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   buildNumber: string;
-  @Input() showContentRating = true;
+  @Input() playerOption = {};
   contentRatingModal = false;
   /**
  * Dom element reference of contentRatingModal

@@ -73,6 +73,7 @@ export class ReviewsubmissionsContentplayerComponent implements OnInit {
    * To navigate back to parent component
    */
   public routerNavigationService: RouterNavigationService;
+  playerOption: any;
   /**
   * Constructor to create injected service(s) object
   Default method of Draft Component class

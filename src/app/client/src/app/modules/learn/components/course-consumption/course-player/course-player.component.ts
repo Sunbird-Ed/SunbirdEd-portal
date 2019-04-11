@@ -106,6 +106,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   public unsubscribe = new Subject<void>();
   contentRatingModal = false;
+  playerOption: any;
      /**
    * Dom element reference of contentRatingModal
    */
@@ -119,6 +120,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     private courseProgressService: CourseProgressService, private deviceDetectorService: DeviceDetectorService) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
+    this.playerOption = {
+      showContentRating: false
+    };
   }
   ngOnInit() {
     this.activatedRoute.params.pipe(first(),

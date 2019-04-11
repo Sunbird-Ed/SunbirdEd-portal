@@ -73,7 +73,7 @@ describe('PlayerComponent', () => {
     component.generateContentReadEvent(endEventSuc);
     expect(contentProgressEvent).toBeDefined();
   });
-  fit('should emit "END" event and open contentRating', () => {
+  it('should emit "END" event and open contentRating', () => {
     let contentProgressEvent;
     component.contentProgressEvent.subscribe((data) => {
       contentProgressEvent = data;

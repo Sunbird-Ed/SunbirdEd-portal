@@ -83,6 +83,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
 	 * dialCode
 	*/
   public dialCode: string;
+  playerOption: any;
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
@@ -95,6 +96,9 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     this.router = router;
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
+    this.playerOption = {
+      showContentRating: true
+    };
   }
   ngOnInit() {
     this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');

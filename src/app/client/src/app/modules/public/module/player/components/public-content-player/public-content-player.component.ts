@@ -44,7 +44,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
    */
   errorMessage: string;
   queryParams: any;
-
+  playerOption: any;
   showExtContentMsg = false;
   public showFooter: Boolean = false;
   contentData: ContentData;
@@ -61,6 +61,9 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
     public navigationHelperService: NavigationHelperService, public router: Router, private deviceDetectorService: DeviceDetectorService,
     private configService: ConfigService
   ) {
+    this.playerOption = {
+      showContentRating: true
+    };
   }
   /**
    *

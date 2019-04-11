@@ -103,6 +103,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
    * contains link that can be shared
    */
   shareLink: string;
+  playerOption: any;
   public treeModel: any;
   public contentDetails = [];
   public nextPlaylistItem: any;
@@ -120,6 +121,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     this.config = config;
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
+    this.playerOption = {
+      showContentRating: true
+    };
   }
   ngOnInit() {
     this.getContent();

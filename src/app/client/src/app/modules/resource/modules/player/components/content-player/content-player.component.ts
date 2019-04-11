@@ -81,12 +81,16 @@ export class ContentPlayerComponent implements OnInit {
   showExtContentMsg = false;
 
   closeUrl: any;
+  playerOption: any;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
     public copyContentService: CopyContentService, public permissionService: PermissionService,
     public contentUtilsServiceService: ContentUtilsServiceService,
     private configService: ConfigService) {
+      this.playerOption = {
+        showContentRating: true
+      };
   }
   /**
    *
