@@ -83,11 +83,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
 	 * dialCode
 	*/
   public dialCode: string;
-  contentRatingModal = false;
-    /**
-   * Dom element reference of contentRatingModal
-   */
-  @ViewChild('modal') modal;
+  playerOption: any;
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
@@ -100,6 +96,9 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     this.router = router;
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
+    this.playerOption = {
+      showContentRating: true
+    };
   }
   ngOnInit() {
     this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
@@ -133,12 +132,12 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     this.closeCollectionPlayerInteractEdata = {
       id: 'close-collection',
       type: 'click',
-      pageid: 'public'
+      pageid: this.route.snapshot.data.telemetry.pageid
     };
     this.closePlayerInteractEdata = {
       id: 'close-player',
       type: 'click',
-      pageid: 'public'
+      pageid: this.route.snapshot.data.telemetry.pageid
     };
     this.telemetryInteractObject = {
       id: this.activatedRoute.snapshot.params.collectionId,
@@ -284,16 +283,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
         this.badgeData = _.get(response, 'result.content.badgeAssertions');
         return { data: response.result.content };
       }));
-  }
-  public contentProgressEvent(event) {
-    const eid = event.detail.telemetryData.eid;
-    if (eid === 'END') {
-      this.contentRatingModal = true;
-      if (this.modal) {
-        this.modal.showContentRatingModal = true;
-      }
-      return;
-    }
   }
   closeCollectionPlayer() {
     this.navigationHelperService.navigateToPreviousUrl('/explore');

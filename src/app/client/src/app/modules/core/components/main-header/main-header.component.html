@@ -23,7 +23,8 @@
     <!--Avtar Dropdown-->
     <a class="profile-avtar computer only p-0 ml-15" *ngIf="userService.loggedIn && !isOffline" tabindex="0">
       <div suiDropdown class="ui dropdown right top pointing" id="dropdown-menu-list-header">
-        <ngx-avatar *ngIf='userProfile' [style]="avtarDesktopStyle" [size]="38" initialsSize="1" name="{{userProfile?.firstName}}">
+        <ngx-avatar *ngIf='userProfile' [style]="avtarDesktopStyle" [size]="38" initialsSize="1"
+          name="{{userProfile?.firstName}}">
         </ngx-avatar>
         <div class="menu" suiDropdownMenu>
           <div class="item headerDropdownProfile" *ngIf='userProfile'>
@@ -91,8 +92,7 @@
           <i class="search icon"></i>
           <input type="text" id="keyword" name="filter_search" class="sb-search-input"
             title="{{resourceService?.frmelmnts?.prmpt?.search}}" [(ngModel)]='queryParam.key'
-            placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}" 
-            (keyup.enter)="onEnter(key)" />
+            placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}" (keyup.enter)="onEnter(key)" />
           <!-- <i class="close icon"></i> [(ngModel)]="key"
             <div class="sb-loader"></div> -->
         </div>
@@ -103,7 +103,8 @@
       <!--/Search Box-->
 
       <!--Language Dropdown-->
-      <app-language-dropdown [languageRange]='languages' class="computer only" *ngIf="languages && !router.isActive('workspace', false)">
+      <app-language-dropdown [languageRange]='languages' class="computer only"
+        *ngIf="languages && !router.isActive('workspace', false)">
       </app-language-dropdown>
       <!--/Language Dropdown-->
       <button class="ui button qr-code-btn d-flex flex computer only mr-0" [routerLink]="['/import/content']"
@@ -129,7 +130,8 @@
       <!--/QR Button-->
 
       <!--Language Dropdown-->
-      <app-language-dropdown [languageRange]='languages' class="mobile only" *ngIf="languages && !router.isActive('workspace', false)">
+      <app-language-dropdown [languageRange]='languages' class="mobile only"
+        *ngIf="languages && !router.isActive('workspace', false)">
       </app-language-dropdown>
       <!--/Language Dropdown-->
 

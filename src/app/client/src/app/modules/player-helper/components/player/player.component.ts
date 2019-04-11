@@ -19,6 +19,12 @@ export class PlayerComponent implements OnInit, OnChanges {
   viewFullscreenBtn = false;
   viewFullScreenIntractEdata;
   viewFullScreenIntractObject;
+  @Input() playerOption: any ;
+  contentRatingModal = false;
+  /**
+ * Dom element reference of contentRatingModal
+ */
+  @ViewChild('modal') modal;
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
     public resourceService: ResourceService) {
     try {
@@ -85,8 +91,11 @@ export class PlayerComponent implements OnInit, OnChanges {
     }
   }
   generateContentReadEvent(event: any) {
-    if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START' || event.detail.telemetryData.eid === 'END')) {
+    if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START' ||
+      event.detail.telemetryData.eid === 'END')) {
+      this.showRatingPopup(event);
       this.contentProgressEvent.emit(event);
+
     } else if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'IMPRESSION')) {
       this.emitSceneChangeEvent();
     }
@@ -107,6 +116,19 @@ export class PlayerComponent implements OnInit, OnChanges {
         iframe.requestFullscreen();
       } else {
         this.toasterService.warning(this.resourceService.messages.fmsg.m0004);
+      }
+    }
+  }
+  showRatingPopup(event) {
+    let contentProgress;
+    const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
+    if (playerSummary) {
+      contentProgress = _.find(event.detail.telemetryData.edata.summary, 'progress');
+    }
+    if (event.detail.telemetryData.eid === 'END' && contentProgress.progress === 100) {
+      this.contentRatingModal = true;
+      if (this.modal) {
+        this.modal.showContentRatingModal = true;
       }
     }
   }

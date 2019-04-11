@@ -171,8 +171,5 @@ gulp.task('build-offline', gulpSequence(
     'client:install',
     'offline-client:dist',
     'update:index:file',
-    'clean:index:file',
-    'install-player',
-    'clean:content-player:modules',
-    'copy-player'
+    'clean:index:file'
 ))
