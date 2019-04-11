@@ -121,7 +121,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
     this.playerOption = {
-      showContentRating: false
+      showContentRating: true
     };
   }
   ngOnInit() {
