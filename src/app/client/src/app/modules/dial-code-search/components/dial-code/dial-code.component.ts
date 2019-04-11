@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, ConfigService, UtilService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -84,7 +83,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
 
   constructor(resourceService: ResourceService, router: Router, activatedRoute: ActivatedRoute,
     searchService: SearchService, toasterService: ToasterService, public configService: ConfigService,
-    public utilService: UtilService, public playerService: PlayerService, public http: HttpClient) {
+    public utilService: UtilService, public playerService: PlayerService) {
     this.resourceService = resourceService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -166,7 +165,6 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     _.forEach(collectionIds, (data) => {
       apiArray.push(this.getCollectionHierarchy(data));
     });
-
     return forkJoin(apiArray).pipe(map((results) => {
       const model = new TreeModel();
       _.forEach(results, (eachCollection) => {
