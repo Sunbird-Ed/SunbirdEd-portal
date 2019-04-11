@@ -14,6 +14,12 @@ export class PlayerComponent implements OnInit, OnChanges {
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   buildNumber: string;
+  @Input() playerOption: any ;
+  contentRatingModal = false;
+  /**
+ * Dom element reference of contentRatingModal
+ */
+  @ViewChild('modal') modal;
   constructor(public configService: ConfigService) {
     try {
       this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')).value;
@@ -63,7 +69,9 @@ export class PlayerComponent implements OnInit, OnChanges {
   generateContentReadEvent(event: any) {
     if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START' ||
       event.detail.telemetryData.eid === 'END')) {
+      this.showRatingPopup(event);
       this.contentProgressEvent.emit(event);
+
     } else if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'IMPRESSION')) {
       this.emitSceneChangeEvent();
     }
@@ -74,5 +82,18 @@ export class PlayerComponent implements OnInit, OnChanges {
       const eventData = { stageId };
       this.sceneChangeEvent.emit(eventData);
     }, timer); // waiting for player to load, then fetching stageId (if we dont wait stageId will be undefined)
+  }
+  showRatingPopup(event) {
+    let contentProgress;
+    const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
+    if (playerSummary) {
+      contentProgress = _.find(event.detail.telemetryData.edata.summary, 'progress');
+    }
+    if (event.detail.telemetryData.eid === 'END' && contentProgress.progress === 100) {
+      this.contentRatingModal = true;
+      if (this.modal) {
+        this.modal.showContentRatingModal = true;
+      }
+    }
   }
 }
