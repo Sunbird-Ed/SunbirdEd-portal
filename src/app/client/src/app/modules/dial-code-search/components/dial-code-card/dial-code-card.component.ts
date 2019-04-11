@@ -1,6 +1,6 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
-import { ResourceService, ICard } from '@sunbird/shared'
+import { ResourceService, ICard } from '@sunbird/shared';
 
 @Component({
   selector: 'app-dial-code-card',
