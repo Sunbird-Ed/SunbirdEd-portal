@@ -113,10 +113,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
    * which is needed to show the pagination on inbox view
      */
    pager: IPagination;
-     /**
-	 * This variable helps to show the download link default value is true
-	 */
-   showDownloadLink = true;
   /**
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to parent component
@@ -298,7 +294,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
         this.dashboarData = apiResponse.result;
-        this.showDownloadLink = apiResponse.result.showDownloadLink ? apiResponse.result.showDownloadLink : true;
         this.totalCount = apiResponse.result.count;
         this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
       },

@@ -84,7 +84,7 @@
             </div>
           </div>
           <div class="d-flex">
-            <a href="javascript:void(0);"  *ngIf="showDownloadLink" class="ui download-file right floated text-decoration-underline pr-30"
+            <a href="javascript:void(0);" class="ui download-file right floated text-decoration-underline pr-30"
               (click)="downloadReport();" appTelemetryInteract [telemetryInteractObject]="interactObject"
               [telemetryInteractEdata]="{id:'download',type:'click',pageid:'course-progress-dashboard'}">
               {{resourceService?.frmelmnts?.instn?.t0065}}</a>
