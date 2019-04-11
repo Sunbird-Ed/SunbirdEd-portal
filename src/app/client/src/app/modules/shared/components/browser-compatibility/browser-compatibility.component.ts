@@ -33,7 +33,7 @@ export class BrowserCompatibilityComponent implements OnInit {
 
   showCompatibilityModal() {
     this.deviceInfo = this._deviceDetectorService.getDeviceInfo();
-    if ( this.deviceInfo.browser !== 'chrome') {
+    if ( (this.deviceInfo.browser).toLowerCase() !== 'chrome') {
       this.showBrowserMsg = true;
       if ((localStorage.getItem('BrowserIncompatibleModel') !== 'shown')) {
         this.browserCompatible = true;
