@@ -99,7 +99,6 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
   @ViewChild('publishWarningModal') publishWarningModal;
 
   showPublishWarningModal = false;
-  
   /**
   * Constructor to create injected service(s) object
   Default method of Draft Component class
