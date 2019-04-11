@@ -34,7 +34,7 @@
               <p>{{resourceService.messages.imsg.m0036}}</p>
             </div>
           </div>
-          <app-player class="content-player" (contentProgressEvent)="contentProgressEvent($event)" [playerConfig]="playerConfig"></app-player>
+          <app-player class="content-player" [playerOption] ="playerOption"  [playerConfig]="playerConfig"></app-player>
 
           <div class="twelve wide column contentMetaSection">
             <div class="ui grid mt-30">
@@ -90,4 +90,3 @@
   </div>
 </div>
 </div>
-<app-content-rating #modal  *ngIf="contentRatingModal && contentData"  [contentData] = "contentData"></app-content-rating>

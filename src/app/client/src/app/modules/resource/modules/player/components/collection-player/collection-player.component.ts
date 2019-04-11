@@ -103,16 +103,12 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
    * contains link that can be shared
    */
   shareLink: string;
+  playerOption: any;
   public treeModel: any;
   public contentDetails = [];
   public nextPlaylistItem: any;
   public prevPlaylistItem: any;
   public telemetryCdata: [{}];
-  contentRatingModal = false;
-    /**
-   * Dom element reference of contentRatingModal
-   */
-  @ViewChild('modal') modal;
   constructor(route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     private toasterService: ToasterService, private deviceDetectorService: DeviceDetectorService, private resourceService: ResourceService,
@@ -125,6 +121,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     this.config = config;
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
+    this.playerOption = {
+      showContentRating: true
+    };
   }
   ngOnInit() {
     this.getContent();
@@ -351,16 +350,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   onShareLink() {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.collectionId, this.mimeType);
     this.setTelemetryShareData(this.collectionData);
-  }
-  public contentProgressEvent(event) {
-    const eid = event.detail.telemetryData.eid;
-    if (eid === 'END') {
-      this.contentRatingModal = true;
-      if (this.modal) {
-        this.modal.showContentRatingModal = true;
-      }
-      return;
-    }
   }
   setTelemetryShareData(param) {
     this.telemetryShareData = [{
