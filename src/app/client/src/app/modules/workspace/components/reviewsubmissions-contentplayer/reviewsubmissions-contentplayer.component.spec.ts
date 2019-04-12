@@ -9,6 +9,7 @@ import { PlayerService, UserService, LearnerService, ContentService, CoreModule 
 import * as mockData from './reviewsubmissions-contentplayer.component.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { PlayerHelperModule } from '@sunbird/player-helper';
+import { TelemetryService } from '@sunbird/telemetry';
 
 
 const testData = mockData.mockRes;
@@ -38,7 +39,7 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
       declarations: [ReviewsubmissionsContentplayerComponent],
       imports: [HttpClientTestingModule, PlayerHelperModule, CoreModule,
         RouterTestingModule, SharedModule.forRoot()],
-      providers: [ResourceService, ToasterService, NavigationHelperService,
+      providers: [ResourceService, ToasterService, NavigationHelperService, TelemetryService,
         { provide: ResourceService, useValue: resourceBundle }
       ]
     })
