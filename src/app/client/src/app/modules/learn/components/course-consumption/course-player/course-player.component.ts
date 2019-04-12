@@ -105,13 +105,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public collectionTreeOptions: ICollectionTreeOptions;
 
   public unsubscribe = new Subject<void>();
-  contentRatingModal = false;
   playerOption: any;
-     /**
-   * Dom element reference of contentRatingModal
-   */
-  @ViewChild('modal') modal;
-  constructor(public activatedRoute: ActivatedRoute, private configService: ConfigService,
+ constructor(public activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, public windowScrollService: WindowScrollService,
     public router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
     private toasterService: ToasterService, private resourceService: ResourceService,
@@ -159,7 +154,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           setTimeout(() => {
             this.setTelemetryStartEndData();
           }, 100);
-          if (this.enrolledBatchInfo.status && this.contentIds.length) {
+          if (_.hasIn(this.enrolledBatchInfo, 'status') && this.contentIds.length) {
             this.getContentState();
             this.subscribeToQueryParam();
           }
@@ -296,10 +291,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
     const eid = event.detail.telemetryData.eid;
     if (eid === 'END' && !this.validEndEvent(event)) {
-      this.contentRatingModal = true;
-      if (this.modal) {
-        this.modal.showContentRatingModal = true;
-      }
       return;
     }
     const request: any = {
