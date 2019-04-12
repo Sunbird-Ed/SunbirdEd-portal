@@ -123,6 +123,7 @@
       &.close {
         top: $base-block-space;
         left: $base-block-space;
+        right: unset;
       }
     }
     .sb-loader {
