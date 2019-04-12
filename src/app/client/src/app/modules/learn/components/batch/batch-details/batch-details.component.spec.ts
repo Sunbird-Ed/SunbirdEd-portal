@@ -65,6 +65,7 @@ describe('BatchDetailsComponent', () => {
         courseId: component.courseId,
         enrollmentType: 'open'
       },
+      params : {fields: 'participants'},
       offset: 0,
       sort_by: { createdDate: 'desc' }
     };
@@ -90,6 +91,7 @@ describe('BatchDetailsComponent', () => {
         courseId: component.courseId,
         enrollmentType: 'open'
       },
+      params : {fields: 'participants'},
       offset: 0,
       sort_by: { createdDate: 'desc' }
     };
@@ -110,6 +112,7 @@ describe('BatchDetailsComponent', () => {
         courseId: component.courseId,
         createdBy: component.userService.userid
       },
+      params : {fields: 'participants'},
       offset: 0,
       sort_by: { createdDate: 'desc' }
     };
