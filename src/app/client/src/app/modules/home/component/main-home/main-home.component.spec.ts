@@ -125,6 +125,8 @@ class ActivatedRouteStub {
     spyOn(toasterService, 'error').and.callFake(() => 'error');
     spyOn(component, 'inviewChange').and.callThrough();
     component.ngOnInit();
+    component.ngAfterViewInit();
+    tick(100);
     component.inviewChange(testData.toDoList, testData.eventData2);
     expect(component.inviewChange).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
@@ -134,6 +136,8 @@ class ActivatedRouteStub {
     spyOn(toasterService, 'error').and.callFake(() => 'error');
     spyOn(component, 'anouncementInview').and.callThrough();
     component.ngOnInit();
+    component.ngAfterViewInit();
+    tick(100);
     component.anouncementInview(testData.announcementInview);
     expect(component.anouncementInview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
