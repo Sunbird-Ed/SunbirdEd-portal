@@ -19,10 +19,6 @@ export class CourseBatchService {
     return this.batchSearch(searchParams);
   }
   batchSearch(requestParam: SearchParam): Observable<ServerResponse> {
-    // let url = this.configService.urlConFig.URLS.BATCH.GET_BATCHS;
-    // if (_.get(requestParam, 'fields')) {
-    //   url = this.configService.urlConFig.URLS.BATCH.GET_BATCHS + '?fields=' + _.get(requestParam, 'fields');
-    // }
     const option = {
       url: this.configService.urlConFig.URLS.BATCH.GET_BATCHS,
       param : {...requestParam.params},
