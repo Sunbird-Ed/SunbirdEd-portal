@@ -20,14 +20,13 @@
       outline: none;
       opacity: 0.9;
     }
+  }
 
-    &>.container {
-      padding: $base-block-space;
-      @media only screen and (min-width: 768px) {
-        padding: $base-block-space 0;
-      }
+  &>.container {
+    padding: $base-block-space;
+    @media only screen and (min-width: 768px) {
+      padding: $base-block-space 0;
     }
-
   }
 }
 
