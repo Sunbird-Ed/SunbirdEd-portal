@@ -8,6 +8,11 @@
   border: 0;
   border-bottom: 0.5px solid #ddd !important;
   margin-bottom: -1px;
+  padding: 10px;
+
+  @media only screen and (min-width: 768px) {
+    padding: 12px 0;
+  }
 
   .logo {
     img {
@@ -19,14 +24,6 @@
     &:focus {
       outline: none;
       opacity: 0.9;
-    }
-  }
-
-  .header-white {
-    padding: 10px;
-
-    @media only screen and (min-width: 768px) {
-      padding: 12px 0;
     }
   }
 }
