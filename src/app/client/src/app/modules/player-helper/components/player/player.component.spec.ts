@@ -86,8 +86,6 @@ describe('PlayerComponent', () => {
     expect(contentProgressEvent).toBeDefined();
     expect(component.contentRatingModal).toBeTruthy();
   });
-<<<<<<< HEAD
-=======
 
   it('should call the viewfullscreen method',  () => {
     expect(component).toBeTruthy();
@@ -96,6 +94,5 @@ describe('PlayerComponent', () => {
     button.click();
     expect(component.viewInFullscreen).toHaveBeenCalled();
   });
->>>>>>> upstream/release-1.15
 });
 
