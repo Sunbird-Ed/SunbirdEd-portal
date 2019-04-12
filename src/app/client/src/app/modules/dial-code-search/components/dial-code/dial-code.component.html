@@ -5,7 +5,7 @@
         <div class="ui fluid icon input">
           <input type="text" name="search" (keyup.enter)="navigateToSearch()" [(ngModel)]="searchKeyword" placeholder="{{resourceService.frmelmnts?.prmpt?.searchContent}}"
             title="Search" />
-          <i class="search icon dialcode-search-icon" (click)="navigateToSearch()"></i>
+          <i class="search icon dialcode-search-icon cursor-pointer" tabindex="0" (click)="navigateToSearch()"></i>
         </div>
       </div>
     </div>
@@ -16,13 +16,13 @@
     </div>
     <div *ngIf="!showLoader" class="row dial-code-section-bg">
       <div class="twelve wide column">
-        <div class="ui tiny header font-weight-bold"> {{resourceService.frmelmnts?.lbl?.dialCode}} '{{dialCode}}'
+        <div class="ui tiny header"> {{resourceService.frmelmnts?.lbl?.dialCode}} '{{dialCode}}'
         </div>
       </div>
     </div>
     <div *ngIf="!showLoader && searchResults.length > 0" class="row">
       <div class="twelve wide column">
-        <div class="ui tiny header pt-30 font-weight-bold"> {{resourceService.frmelmnts?.lbl?.linkedContents}} ({{searchResults.length}})
+        <div class="ui tiny header pt-30"> {{resourceService.frmelmnts?.lbl?.linkedContents}} ({{searchResults.length}})
         </div>
       </div>
     </div>
