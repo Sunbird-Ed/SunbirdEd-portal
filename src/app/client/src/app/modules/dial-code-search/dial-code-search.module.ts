@@ -7,8 +7,7 @@ import { SharedModule } from '@sunbird/shared';
 import { NgInviewModule } from 'angular-inport';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
   SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
-import { GetComponent } from './components';
-import { DialCodeComponent } from './components';
+import { GetComponent, DialCodeComponent, DialCodeCardComponent } from './components';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
@@ -23,6 +22,6 @@ import { FormsModule } from '@angular/forms';
     SuiRatingModule, SuiCollapseModule,
     FormsModule
   ],
-  declarations: [ GetComponent, DialCodeComponent]
+  declarations: [ GetComponent, DialCodeComponent, DialCodeCardComponent]
 })
 export class DialCodeSearchModule { }

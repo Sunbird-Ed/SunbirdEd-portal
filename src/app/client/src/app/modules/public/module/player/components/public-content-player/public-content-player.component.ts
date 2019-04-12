@@ -44,13 +44,8 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
    */
   errorMessage: string;
   queryParams: any;
-
+  playerOption: any;
   showExtContentMsg = false;
-  contentRatingModal = false;
-    /**
-   * Dom element reference of contentRatingModal
-   */
-  @ViewChild('modal') modal;
   public showFooter: Boolean = false;
   contentData: ContentData;
   public unsubscribe$ = new Subject<void>();
@@ -66,6 +61,9 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
     public navigationHelperService: NavigationHelperService, public router: Router, private deviceDetectorService: DeviceDetectorService,
     private configService: ConfigService
   ) {
+    this.playerOption = {
+      showContentRating: true
+    };
   }
   /**
    *
@@ -159,17 +157,6 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
    */
   close() {
     this.navigationHelperService.navigateToResource('/explore');
-  }
-
-  contentProgressEvent(event) {
-    const eid = event.detail.telemetryData.eid;
-    if (eid === 'END') {
-      this.contentRatingModal = true;
-      if (this.modal) {
-        this.modal.showContentRatingModal = true;
-      }
-      return;
-    }
   }
   deviceDetector() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();

@@ -19,7 +19,7 @@
     "build-offline-prod": "ng build --project offline  --c=offlineProduction && mv ../dist/index.html ../dist/index.ejs"
   },
   "nodemonConfig": {
-    "ext": "ts,html,json,css,scss,less"
+    "ext": "png,jpeg,js,ts,html,json,css,scss"
   },
   "engines": {
     "node": ">=8.9"

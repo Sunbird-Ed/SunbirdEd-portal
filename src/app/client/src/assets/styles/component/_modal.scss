@@ -130,13 +130,3 @@
         }
     }
 }
-.ui.tree-picker.modal {
-    top: 3.5rem;
-    .sb-modal-actions {
-        .pick-search,
-        .unpick-search,
-        .unpick-picked {
-            display: none;
-        }
-    }
-}

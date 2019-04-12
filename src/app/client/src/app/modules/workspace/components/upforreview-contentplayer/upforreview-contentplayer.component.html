@@ -22,7 +22,7 @@
 
       <div class="ui grid">
         <div [ngClass]="showCommentBoxClass" >
-          <app-player class="content-player" [playerConfig]="playerConfig" (contentProgressEvent)="contentProgressEvent($event)" (sceneChangeEvent)="handleSceneChangeEvent($event)"></app-player>
+          <app-player  class="content-player" [playerConfig]="playerConfig" (contentProgressEvent)="contentProgressEvent($event)" (sceneChangeEvent)="handleSceneChangeEvent($event)"></app-player>
         </div>
         <div class="four wide column" *ngIf="contentData.mimeType === 'application/vnd.ekstep.ecml-archive' && stageId">
           <app-review-comments [contentData]="contentData" [playerLoaded]="playerLoaded" [stageId]="stageId" (reviewCommentEvent)="handleReviewCommentEvent($event)"></app-review-comments>
