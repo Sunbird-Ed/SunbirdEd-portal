@@ -2,6 +2,8 @@ import { SharedModule } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlayerComponent } from './player.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 const startEvent = {
   detail: {
@@ -38,7 +40,7 @@ describe('PlayerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot()],
+      imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
       declarations: [PlayerComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -84,5 +86,16 @@ describe('PlayerComponent', () => {
     expect(contentProgressEvent).toBeDefined();
     expect(component.contentRatingModal).toBeTruthy();
   });
+<<<<<<< HEAD
+=======
+
+  it('should call the viewfullscreen method',  () => {
+    expect(component).toBeTruthy();
+    spyOn(component, 'viewInFullscreen').and.callThrough();
+    const button = fixture.debugElement.nativeElement.querySelector('button');
+    button.click();
+    expect(component.viewInFullscreen).toHaveBeenCalled();
+  });
+>>>>>>> upstream/release-1.15
 });
 
