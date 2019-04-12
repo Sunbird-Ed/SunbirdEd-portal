@@ -21,13 +21,13 @@
       opacity: 0.9;
     }
 
-    &>.container{ 
-      padding: 10px;
-      @media only screen and (min-width: 768px) {
-        padding: 12px 0;
+    &>.container {
+      padding: $base-block-space 0;
+      @include respond-below(sm) {
+        padding: $base-block-space;
       }
     }
-    
+
   }
 }
 
