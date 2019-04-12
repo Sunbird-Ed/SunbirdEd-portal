@@ -120,7 +120,7 @@ class ActivatedRouteStub {
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
   }));
-  it('should call inviewChange method for visits data', () => {
+  it('should call inviewChange method for visits data', fakeAsync(() => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => 'error');
     spyOn(component, 'inviewChange').and.callThrough();
@@ -130,8 +130,8 @@ class ActivatedRouteStub {
     component.inviewChange(testData.toDoList, testData.eventData2);
     expect(component.inviewChange).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
-  });
-  it('should call announcemnetInview method for visits data', () => {
+  }));
+  it('should call announcemnetInview method for visits data', fakeAsync(() => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => 'error');
     spyOn(component, 'anouncementInview').and.callThrough();
@@ -141,5 +141,5 @@ class ActivatedRouteStub {
     component.anouncementInview(testData.announcementInview);
     expect(component.anouncementInview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
-  });
+  }));
 });
