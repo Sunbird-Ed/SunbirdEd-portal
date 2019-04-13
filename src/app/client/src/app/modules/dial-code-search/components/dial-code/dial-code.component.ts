@@ -173,9 +173,9 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     };
     this.searchService.contentSearch(requestParams, false).pipe(
       mergeMap(apiResponse => {
+        const linkedCollectionsIds = [];
+        this.linkedContents = [];
         if (apiResponse.result.content && apiResponse.result.content.length > 0) {
-          const linkedCollectionsIds = [];
-          this.linkedContents = [];
           _.forEach(apiResponse.result.content, (data) => {
             if (data.mimeType === 'application/vnd.ekstep.content-collection') {
               linkedCollectionsIds.push(data.identifier);
@@ -189,6 +189,8 @@ export class DialCodeComponent implements OnInit, OnDestroy {
           } else {
             return of([]);
           }
+        } else {
+          return of([]);
         }
       }))
       .subscribe(data => {
