@@ -7,12 +7,12 @@ import 'datatables.net';
     styleUrls: ['./data-table.component.scss']
 })
 export class DataTableComponent implements AfterViewInit {
-
+    @Input() tableId: any;
     @Input() rowsData: Array<string[]>;
     @Input() headerData: string[];
     ngAfterViewInit() {
         setTimeout(() => {
-            $('#table').removeAttr('width').DataTable({
+            $(`#${this.tableId}`).removeAttr('width').DataTable({
                 'data': this.rowsData,
                 'searching': false,
             });

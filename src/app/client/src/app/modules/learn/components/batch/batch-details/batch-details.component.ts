@@ -110,6 +110,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
         status: this.batchStatus.toString(),
         courseId: this.courseId
       },
+      params : {fields: 'participants'},
       offset: 0,
       sort_by: { createdDate: 'desc' }
     };

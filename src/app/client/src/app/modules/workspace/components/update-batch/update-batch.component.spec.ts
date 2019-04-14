@@ -90,12 +90,12 @@ describe('UpdateBatchComponent', () => {
     });
     spyOn(batchService, 'getUpdateBatchDetails').and.returnValue(observableOf(updateBatchDetails));
     fixture.detectChanges();
-    expect(component.participantList.length).toBe(1);
+    expect(component.participantList.length).toBe(3);
     expect(component.mentorList.length).toBe(1);
     expect(component.mentorList[0].id).toBe('97255811-5486-4f01-bad1-36138d0f5b8a');
     expect(component.batchUpdateForm).toBeDefined();
     expect(component.showUpdateModal).toBeTruthy();
-    expect(component.selectedParticipants.length).toBe(2);
+    expect(component.selectedParticipants.length).toBe(0);
     expect(component.selectedMentors.length).toBe(6);
   });
   it('should navigate to parent page if fetching batch details fails', () => {

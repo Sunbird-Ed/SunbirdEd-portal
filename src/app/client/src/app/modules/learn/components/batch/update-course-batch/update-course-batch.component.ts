@@ -152,9 +152,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
             _.remove(this.mentorList, mentor => mentor.id === id);
           });
         }
-        if (this.batchDetails.participant) {
-          _.forIn(this.batchDetails.participant, (id, key) => {
-           _.remove(this.participantList, participant => participant.id === id);
+        if (this.batchDetails.participants) {
+          this.batchDetails.participants.forEach(id => {
+            _.remove(this.participantList, participant => participant.id === id);
           });
         }
         this.initializeUpdateForm();
@@ -211,8 +211,13 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   * fetch mentors and participant details of current batch
   */
   private fetchParticipantDetails() {
-    if (this.batchDetails.participant || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
-      const userList = _.union(_.keys(this.batchDetails.participant), this.batchDetails.mentors);
+    let userList = [];
+    if (this.batchDetails.participants || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
+      if (this.batchDetails.enrollmentType !== 'open') {
+        userList = _.union(this.batchDetails.participants, this.batchDetails.mentors);
+      } else {
+        userList = this.batchDetails.mentors;
+      }
       const request = {
         filters: {
           identifier: userList
@@ -239,8 +244,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     const users = this.sortUsers(res);
     const participantList = users.participantList;
     const mentorList = users.mentorList;
-    _.forEach(this.batchDetails.participant, (value, key) => {
-      const user = _.find(participantList, ['id', key]);
+    _.forEach(this.batchDetails.participants, (value, key) => {
+      const user = _.find(participantList, ['id', value]);
       if (user) {
         this.selectedParticipants.push(user);
       }

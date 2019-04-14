@@ -80,10 +80,10 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy {
     this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
   }
   fetchParticipantsDetails() {
-    if (!_.isUndefined(this.batchDetails.participant)) {
+    if (!_.isUndefined(this.batchDetails.participants)) {
       const request = {
         filters: {
-          identifier: _.keys(this.batchDetails.participant)
+          identifier: this.batchDetails.participants
         }
       };
       this.courseBatchService.getUserList(request).pipe(
