@@ -10,3 +10,19 @@
   <router-outlet *ngIf="initApp"></router-outlet>
 </div>
 <app-footer></app-footer>
+<sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+  (dismissed)="showLoginModal = false" #modal *ngIf="sessionExpiryInterceptor.sessionExpired">
+  <div class="sb-modal-header">
+    Session Expired
+  </div>
+  <div class="sb-modal-content">
+    <div class="ui center aligned segment">
+      Please Login to continue accessing
+    </div>
+  </div>
+  <div class="sb-modal-actions">
+    <a (click)="handleLogin()" class="sb-btn sb-btn-normal sb-btn-primary">
+      Login
+    </a>
+  </div>
+</sui-modal>
