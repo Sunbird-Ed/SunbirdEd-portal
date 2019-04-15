@@ -6,7 +6,8 @@ import {
   NavigationHelperService, ConfigService, BrowserCacheTtlService
 } from '@sunbird/shared';
 import { Component, HostListener, OnInit, ViewChild, Inject } from '@angular/core';
-import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService } from '@sunbird/core';
+import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
+  SessionExpiryInterceptor } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { Observable, of, throwError, combineLatest } from 'rxjs';
@@ -66,6 +67,7 @@ export class AppComponent implements OnInit {
   showAppPopUp = false;
   viewinBrowser = false;
   isOffline: boolean = environment.isOffline;
+  sessionExpired = false;
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -74,7 +76,7 @@ export class AppComponent implements OnInit {
     private telemetryService: TelemetryService, public router: Router, private configService: ConfigService,
     private orgDetailsService: OrgDetailsService, private activatedRoute: ActivatedRoute,
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
-    @Inject(DOCUMENT) private _document: any) {
+    @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor) {
   }
   /**
    * dispatch telemetry window unload event before browser closes
@@ -83,6 +85,9 @@ export class AppComponent implements OnInit {
   @HostListener('window:beforeunload', ['$event'])
   public beforeunloadHandler($event) {
     this.telemetryService.syncEvents();
+  }
+  handleLogin() {
+    window.location.reload();
   }
   ngOnInit() {
     this.resourceService.initialize();

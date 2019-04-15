@@ -16,6 +16,16 @@ module.exports = function (app) {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
       proxyReqPathResolver: (req) => {
         return '/private/user/v1/update';
+      }, 
+      userResDecorator: (proxyRes, proxyResData, req, res) => {
+        try {
+            const data = JSON.parse(proxyResData.toString('utf8'));
+            if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+            else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+        } catch(err) {
+            console.log('content api user res decorator json parse error', proxyResData);
+            return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+        }
       }
   }))
   // Generate telemetry fot proxy service
@@ -31,12 +41,18 @@ module.exports = function (app) {
       proxyReqPathResolver: function (req) {
         return require('url').parse(learnerURL + '/content/v1/media/upload').path
       },
-      userResDecorator: function (proxyRes, proxyResData, userReq, userRes) {
-        let data = JSON.parse(proxyResData.toString('utf8'))
-        if (data.responseCode === 'OK') {
-          data.success = true
+      userResDecorator: function (proxyRes, proxyResData,  req, res) {
+        try {
+          let data = JSON.parse(proxyResData.toString('utf8'))
+          if (data.responseCode === 'OK') {
+            data.success = true
+            return JSON.stringify(data)
+          }
+          else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+        } catch (err) {
+          console.log('content api user res decorator json parse error', proxyResData);
+          return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
         }
-        return JSON.stringify(data)
       }
     }))
 
@@ -53,6 +69,16 @@ module.exports = function (app) {
           return require('url').parse(learnerURL + urlParam + '?' + query).path
         } else {
           return require('url').parse(learnerURL + urlParam).path
+        }
+      },
+      userResDecorator: function (proxyRes, proxyResData,  req, res) {
+        try {
+          let data = JSON.parse(proxyResData.toString('utf8'))
+          if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+          else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+        } catch (err) {
+          console.log('content api user res decorator json parse error', proxyResData);
+          return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
         }
       }
     }))
@@ -77,10 +103,11 @@ module.exports = function (app) {
         try {
             const data = JSON.parse(proxyResData.toString('utf8'));
             if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+            else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
         } catch(err) {
             console.log('content api user res decorator json parse error', proxyResData);
+            return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
         }
-        return proxyResData;
       }
     }))
 }
