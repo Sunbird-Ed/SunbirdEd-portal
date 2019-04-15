@@ -16,7 +16,6 @@ import { CacheService } from 'ng2-cache-service';
 import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storage/cache-storage-abstract.service';
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { PluginModules } from './framework.config';
 @NgModule({
   declarations: [
@@ -34,7 +33,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     TelemetryModule.forRoot(),
     DeviceDetectorModule.forRoot(),
     SharedFeatureModule,
-    BrowserAnimationsModule,
     // ...PluginModules, disabling as it dosnt support lazy loading
     AppRoutingModule // don't add any module below this because it contains wildcard route
   ],

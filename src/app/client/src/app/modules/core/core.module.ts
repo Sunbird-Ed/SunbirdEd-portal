@@ -14,6 +14,7 @@ import {
 } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { TelemetryModule } from '@sunbird/telemetry';
 @NgModule({
@@ -27,7 +28,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
     ReactiveFormsModule,
     // WebExtensionModule,
     TelemetryModule,
-    AvatarModule
+    AvatarModule,
+    BrowserAnimationsModule
   ],
   declarations: [MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, PermissionDirective,
     BodyScrollDirective, DataDrivenFilterComponent, SortByComponent,
