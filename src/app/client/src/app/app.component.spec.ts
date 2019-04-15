@@ -15,6 +15,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { CacheService } from 'ng2-cache-service';
+import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } from '@angular/animations';
 
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 
@@ -48,7 +49,7 @@ describe('AppComponent', () => {
       providers: [
         { provide: Router, useClass: RouterStub},
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        ToasterService, TenantService, CacheService,
+        ToasterService, TenantService, CacheService, AnimationBuilder,
         UserService, ConfigService, LearnerService, BrowserCacheTtlService,
         PermissionService, ResourceService, CoursesService, OrgDetailsService, ProfileService,
         TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, SearchService, ContentService],
