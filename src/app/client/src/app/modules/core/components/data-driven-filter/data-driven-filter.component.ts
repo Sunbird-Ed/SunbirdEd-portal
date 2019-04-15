@@ -253,7 +253,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
   private enrichFiltersOnInputChange() {
     this.filtersDetails = _.map(this.formFieldProperties, (eachFields) => {
       const enrichField = _.cloneDeep(eachFields);
-      if (!_.includes(['channel'], enrichField.code)) {
+      if (!_.includes(['channel', 'contentType', 'topic'], enrichField.code)) {
         enrichField.range = _.filter(this.enrichFilters[enrichField.code],
           (field) => {
             return _.find(eachFields.range, { name: _.get(field, 'name')});
