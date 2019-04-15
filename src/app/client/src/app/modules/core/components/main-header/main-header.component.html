@@ -1,7 +1,7 @@
 <div *ngIf="showQrmodal">
   <app-qr-code-modal (closeQrModal)="showQrmodal = false"></app-qr-code-modal>
 </div>
-<div class="ui fixed main menu bs-0 d-block">
+<div class="ui fixed main menu bs-0 d-block" appStickyHeader>
 
   <!--Header White Section-->
   <div class="ui container">

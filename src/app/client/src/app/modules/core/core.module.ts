@@ -1,4 +1,4 @@
-import { PermissionDirective, BodyScrollDirective } from './directives';
+import { PermissionDirective, BodyScrollDirective, StickyHeaderDirective } from './directives';
 import { RouterModule } from '@angular/router';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -14,6 +14,7 @@ import {
 } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { TelemetryModule } from '@sunbird/telemetry';
 @NgModule({
@@ -27,11 +28,13 @@ import { TelemetryModule } from '@sunbird/telemetry';
     ReactiveFormsModule,
     // WebExtensionModule,
     TelemetryModule,
-    AvatarModule
+    AvatarModule,
+    BrowserAnimationsModule
   ],
   declarations: [MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, PermissionDirective,
     BodyScrollDirective, DataDrivenFilterComponent, SortByComponent,
-    ErrorPageComponent, FlagContentComponent, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent],
+    ErrorPageComponent, FlagContentComponent, LanguageDropdownComponent,
+     ProminentFilterComponent, TopicPickerComponent, StickyHeaderDirective],
   exports: [MainHeaderComponent, MainFooterComponent, PermissionDirective, BodyScrollDirective,
     DataDrivenFilterComponent, SortByComponent, FlagContentComponent,
     TelemetryModule, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent],
