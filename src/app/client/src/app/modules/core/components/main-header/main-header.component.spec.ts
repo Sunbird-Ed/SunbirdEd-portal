@@ -8,6 +8,7 @@ import { MainHeaderComponent } from './main-header.component';
 import { ConfigService, ResourceService, ToasterService, SharedModule, BrowserCacheTtlService } from '@sunbird/shared';
 import { UserService, LearnerService, PermissionService, TenantService, CoreModule } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } from '@angular/animations';
 // import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
@@ -24,7 +25,7 @@ describe('MainHeaderComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [ToasterService, TenantService, CacheService, BrowserCacheTtlService,
         ResourceService, PermissionService,
-        UserService, ConfigService,
+        UserService, ConfigService, AnimationBuilder,
         LearnerService]
     })
       .compileComponents();
