@@ -60,7 +60,28 @@ function verifyToken () {
     }
   }
 }
-
+const handleSessionExpiry = (proxyRes, proxyResData, req, res, data) => {
+  if ((proxyRes.statusCode === 401 || proxyRes.statusCode === 403) && !req.session.userId) {
+      return {
+        id: 'app.error',
+        ver: '1.0',
+        ts: dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
+        params:
+        {
+            'resmsgid': uuidv1(),
+            'msgid': null,
+            'status': 'failed',
+            'err': 'SESSION_EXPIRED',
+            'errmsg': 'Session Expired'
+        },
+        responseCode: 'SESSION_EXPIRED',
+        result: { }
+    };
+  } else {
+    return proxyResData;
+  }
+}
 module.exports.decorateRequestHeaders = decorateRequestHeaders
 module.exports.decoratePublicRequestHeaders = decoratePublicRequestHeaders
 module.exports.verifyToken = verifyToken
+module.exports.handleSessionExpiry = handleSessionExpiry

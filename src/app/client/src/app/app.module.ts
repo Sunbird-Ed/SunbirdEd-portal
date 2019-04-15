@@ -2,11 +2,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
   SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
 import { CommonModule } from '@angular/common';
-import { CoreModule } from '@sunbird/core';
+import { CoreModule, SessionExpiryInterceptor } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
@@ -41,6 +41,7 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
   providers: [
     CacheService,
     { provide: CacheStorageAbstract, useClass: CacheSessionStorage },
+    // { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true }
   ]
 })
 export class AppModule {
