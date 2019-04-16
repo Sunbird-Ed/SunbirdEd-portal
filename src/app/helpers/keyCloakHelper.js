@@ -22,6 +22,7 @@ const getKeyCloakClient = (config, store) => {
 const deauthenticated = function (request) {
   delete request.session['roles']
   delete request.session['rootOrgId']
+  delete request.session.userId
   if (request.session) {
     request.session.sessionEvents = request.session.sessionEvents || []
     telemetryHelper.logSessionEnd(request)

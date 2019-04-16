@@ -1,4 +1,4 @@
-const proxyHeaders = require('./proxyUtils.js')
+const proxyUtils = require('./proxyUtils.js')
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
 const permissionsHelper = require('./../helpers/permissionsHelper.js')
@@ -18,7 +18,7 @@ module.exports = function (app) {
   }
   app.use('/plugins/v1/search', proxy(contentServiceBaseUrl, {
     preserveHostHdr: true,
-    proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: function (req) {
       var originalUrl = req.originalUrl
       originalUrl = originalUrl.replace('/', '')
@@ -28,25 +28,25 @@ module.exports = function (app) {
 
   app.use('/content-plugins/*', proxy(contentProxyUrl, {
     preserveHostHdr: true,
-    proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
 
   app.use('/plugins/*', proxy(contentProxyUrl, {
     preserveHostHdr: true,
-    proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
 
   app.use('/assets/public/*', proxy(contentProxyUrl, {
     preserveHostHdr: true,
-    proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
 
   app.use('/content/preview/*', proxy(contentProxyUrl, {
     preserveHostHdr: true,
-    proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
 
@@ -57,7 +57,7 @@ module.exports = function (app) {
     bodyParser.json(), proxy(contentProxyUrl, {
       preserveHostHdr: true,
       limit: reqDataLimitOfContentUpload,
-      proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
       proxyReqPathResolver: proxyReqPathResolverMethod,
       proxyReqBodyDecorator: function (bodyContent, srcReq) {
         if (bodyContent && bodyContent.request && bodyContent.request.content) {
@@ -68,7 +68,7 @@ module.exports = function (app) {
     }))
 
   app.use('/action/data/v1/page/assemble', proxy(learnerServiceBaseUrl, {
-    proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: function (req) {
       var originalUrl = req.originalUrl
       originalUrl = originalUrl.replace('/action/', '')
@@ -78,7 +78,7 @@ module.exports = function (app) {
 
 
   app.use('/action/data/v1/form/read', proxy(contentServiceBaseUrl, {
-    proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: function (req) {
       var originalUrl = req.originalUrl
       originalUrl = originalUrl.replace('/action/', '')
@@ -103,42 +103,52 @@ module.exports = function (app) {
   proxy(envHelper.PORTAL_EXT_PLUGIN_URL, {
     proxyReqPathResolver: req => {
       return req.originalUrl.replace('/action', '/plugin')
-    }
+    },
+    userResDecorator: userResDecorator
   }))
   app.use('/action/textbook/v1/toc/*', addCorsHeaders,
   proxy(learner_Service_Local_BaseUrl, {
-    proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: (req) => {
       var originalUrl = req.originalUrl
       originalUrl = originalUrl.replace('/action/textbook/v1/', '/v1/textbook/')
       return require('url').parse(learner_Service_Local_BaseUrl + originalUrl).path
-    }
+    },
+    userResDecorator: userResDecorator
   }))
   app.post('/action/user/v1/search',
     addCorsHeaders,
-    proxyHeaders.verifyToken(),
+    proxyUtils.verifyToken(),
     permissionsHelper.checkPermission(),
     proxy(learnerURL, {
       limit: reqDataLimitOfContentUpload,
-      proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
       proxyReqPathResolver: function (req) {
         let originalUrl = req.originalUrl.replace('/action/', '')
         return require('url').parse(learnerURL + originalUrl).path
       },
-      userResDecorator: (proxyRes, proxyResData, req, res) => {
-          if(req.method === 'GET' && proxyRes.statusCode === 404) res.redirect('/')
-          return proxyResData;
-      }
+      userResDecorator: userResDecorator
   }))
 
   app.use('/action/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
     preserveHostHdr: true,
     limit: reqDataLimitOfContentUpload,
-    proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
-    proxyReqPathResolver: proxyReqPathResolverMethod
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
   }))
 
   app.use('/v1/url/fetchmeta', proxy(contentProxyUrl, {
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
+}
+const userResDecorator = (proxyRes, proxyResData, req, res) => {
+  try {
+      const data = JSON.parse(proxyResData.toString('utf8'));
+      if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+      else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+  } catch(err) {
+      console.log('content api user res decorator json parse error', proxyResData);
+      return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
+  }
 }

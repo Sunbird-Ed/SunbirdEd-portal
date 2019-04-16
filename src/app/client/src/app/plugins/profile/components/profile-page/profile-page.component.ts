@@ -385,14 +385,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       this.toasterService.success(this.resourceService.messages.smsg.m0046);
       this.profileModal.modal.deny();
       this.showEdit = false;
-    },
-      err => {
-        this.showEdit = false;
-        this.toasterService.warning(this.resourceService.messages.emsg.m0012);
-        this.profileModal.modal.deny();
-        this.router.navigate(['/resources']);
-        this.cacheService.set('showFrameWorkPopUp', 'installApp' );
-      });
+    }, err => {
+      this.showEdit = false;
+      this.toasterService.warning(this.resourceService.messages.emsg.m0012);
+      this.profileModal.modal.deny();
+      this.cacheService.set('showFrameWorkPopUp', 'installApp' );
+    });
   }
 
   onClickOfMyContributions(content) {

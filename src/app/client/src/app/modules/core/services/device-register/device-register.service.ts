@@ -72,8 +72,6 @@ export class DeviceRegisterService  {
     };
     this.http.post(this.deviceRegisterApi + this.deviceId, data, httpOptions)
     .subscribe(() => {
-    }, (err) => {
-      console.log('called device', err);
     });
   }
 }

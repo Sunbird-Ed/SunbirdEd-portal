@@ -1,7 +1,7 @@
 <div *ngIf="showQrmodal">
   <app-qr-code-modal (closeQrModal)="showQrmodal = false"></app-qr-code-modal>
 </div>
-<div class="ui fixed main menu bs-0 d-block">
+<div class="ui fixed main menu bs-0 d-block" appStickyHeader>
 
   <!--Header White Section-->
   <div class="ui container">
@@ -98,11 +98,11 @@
           <i class="search icon"></i>
           <input type="text" id="keyword" name="filter_search" class="sb-search-input"
             title="{{resourceService?.frmelmnts?.prmpt?.search}}" [(ngModel)]='queryParam.key'
-            placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}" (keyup.enter)="onEnter(key)" />
+            placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}" (keyup.enter)="onEnter(queryParam.key)" />
           <!-- <i class="close icon"></i> [(ngModel)]="key"
             <div class="sb-loader"></div> -->
         </div>
-        <button class="sb-btn sb-btn-normal" (click)="onEnter(key)"
+        <button class="sb-btn sb-btn-normal" (click)="onEnter(queryParam.key)"
           title="{{resourceService?.frmelmnts?.prmpt?.search}}" tabindex="0">Search</button>
       </div>
       <!--/Explore Pages-->
