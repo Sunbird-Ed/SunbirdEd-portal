@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
-import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
 import { OrgTypeService } from './../../services/';
 import { FormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
@@ -18,7 +18,7 @@ import { takeUntil } from 'rxjs/operators';
   selector: 'app-create-org-type',
   templateUrl: './create-org-type.component.html'
 })
-export class CreateOrgTypeComponent implements OnInit, OnDestroy {
+export class CreateOrgTypeComponent implements OnInit, OnDestroy, AfterViewInit {
   public addOrganizationType: IInteractEventEdata;
   public updateOrganizationType: IInteractEventEdata;
   public cancelModal: IInteractEventEdata;
@@ -93,7 +93,8 @@ export class CreateOrgTypeComponent implements OnInit, OnDestroy {
     resourceService: ResourceService,
     toasterService: ToasterService,
     routerNavigationService: RouterNavigationService,
-    orgTypeService: OrgTypeService) {
+    orgTypeService: OrgTypeService,
+    public navigationhelperService: NavigationHelperService) {
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
@@ -187,18 +188,6 @@ export class CreateOrgTypeComponent implements OnInit, OnDestroy {
         this.pageId = 'create-organization-type';
       }
     });
-
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.pageId,
-        uri: this.pageUri,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
-      }
-    };
     this.setInteractEventData();
   }
 
@@ -218,6 +207,23 @@ export class CreateOrgTypeComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: this.pageId
     };
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.pageId,
+          uri: this.pageUri,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 
   ngOnDestroy() {
