@@ -76,9 +76,9 @@ export class PlayerComponent implements OnInit, OnChanges {
       this.viewFullscreenBtn = true;
     }
 
-    if (window.innerWidth <= 768) {
-      this.viewInFullscreen();
-    }
+    // if (window.innerWidth <= 768) {
+    //   this.viewInFullscreen();
+    // }
   }
   /**
    * Adjust player height after load
@@ -108,17 +108,17 @@ export class PlayerComponent implements OnInit, OnChanges {
     }, timer); // waiting for player to load, then fetching stageId (if we dont wait stageId will be undefined)
   }
 
-  viewInFullscreen() {
-    if (document.fullscreenEnabled) {
-      const iframe = document.querySelector('#contentPlayer');
-      // Do fullscreen
-      if (iframe.requestFullscreen) {
-        iframe.requestFullscreen();
-      } else {
-        this.toasterService.warning(this.resourceService.messages.fmsg.m0004);
-      }
-    }
-  }
+  // viewInFullscreen() {
+  //   if (document.fullscreenEnabled) {
+  //     const iframe = document.querySelector('#contentPlayer');
+  //     // Do fullscreen
+  //     if (iframe.requestFullscreen) {
+  //       iframe.requestFullscreen();
+  //     } else {
+  //       this.toasterService.warning(this.resourceService.messages.fmsg.m0004);
+  //     }
+  //   }
+  // }
   showRatingPopup(event) {
     let contentProgress;
     const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
