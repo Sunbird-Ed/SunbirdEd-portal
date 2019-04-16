@@ -94,5 +94,10 @@ describe('PlayerComponent', () => {
     button.click();
     expect(component.viewInFullscreen).toHaveBeenCalled();
   });
+  it('should call ngOnChange ',  () => {
+   component.playerConfig = playerConfig;
+   component.ngOnChanges();
+   expect(component.contentRatingModal).toBeFalsy();
+  });
 });
 
