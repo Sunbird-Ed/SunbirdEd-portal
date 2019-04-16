@@ -6,8 +6,11 @@ import { SharedModule } from '@sunbird/shared';
 import { OfflineRoutingModule } from './offline-routing.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ContentImportComponent } from './components/content-import/content-import.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 @NgModule({
   imports: [
+    BrowserAnimationsModule,
     CommonModule,
     CoreModule,
     SharedModule,

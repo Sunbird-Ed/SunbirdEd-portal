@@ -147,7 +147,6 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
         },
         onProgress: () => {
           this.processingFiles = true;
-          document.getElementById('retry-btn').style.display = "none";
         },
         onCancel: () => {
           this.processingFiles = false;
@@ -155,22 +154,21 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
         },
         onAllComplete: (id, name) => {
           this.processingFiles = false;
-          let uploadingFailed = document.getElementsByClassName('qq-upload-fail');
-          let progressUploads = document.getElementsByClassName('qq-in-progress');
-          let totalFiles = document.getElementsByClassName('qq-upload-list-selector');
-          let successFullyUploaded = document.getElementsByClassName('qq-upload-success');
+          const uploadingFailed = document.getElementsByClassName('qq-upload-fail');
+          const totalFiles = document.getElementsByClassName('qq-upload-list-selector');
+          const successFullyUploaded = document.getElementsByClassName('qq-upload-success');
           if (uploadingFailed.length) {
             this.tosterService.error(
               `Content Import Failed: ${uploadingFailed.length} `
-            )
+            );
           } else if (successFullyUploaded.length && uploadingFailed.length) {
             this.tosterService.warning(
               `Content Imported Scuessfully: ${successFullyUploaded.length} , Content Import Failed: ${uploadingFailed.length}`
-            )
-          } else {
+            );
+          } else if (successFullyUploaded.length) {
             this.tosterService.success(
               `Content Imported Scuessfully : ${successFullyUploaded.length}`
-            )
+            );
           }
         },
       },
@@ -182,7 +180,18 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
     this.uploader = new FineUploader(this.uiOptions);
   }
 
-
+  modalClose() {
+    const progressUploads = document.getElementsByClassName('qq-in-progress');
+    if (progressUploads.length) {
+      const isProgress = confirm('Contents are being uploaded');
+      if (isProgress) {
+        this.modal.deny();
+        return false;
+      }
+      return false;
+    }
+    this.modal.deny();
+  }
   closeModal() {
     this.closeImportModal.emit('success');
   }

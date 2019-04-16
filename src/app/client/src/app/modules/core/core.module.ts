@@ -1,9 +1,11 @@
-import { PermissionDirective, BodyScrollDirective } from './directives';
+import { PermissionDirective, BodyScrollDirective, StickyHeaderDirective } from './directives';
 import { RouterModule } from '@angular/router';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
-  SuiProgressModule, SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
+import {
+  SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
+  SuiProgressModule, SuiRatingModule, SuiCollapseModule
+} from 'ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
 import { AvatarModule } from 'ngx-avatar';
@@ -30,15 +32,16 @@ import { ContentImportComponent } from '../offline';
     TelemetryModule,
     AvatarModule
   ],
-  declarations: [MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, PermissionDirective,
+  declarations: [MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, PermissionDirective, StickyHeaderDirective,
     BodyScrollDirective, DataDrivenFilterComponent, SortByComponent,
     ContentImportComponent,
-    ErrorPageComponent, FlagContentComponent, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent , ],
-  exports: [MainHeaderComponent, MainFooterComponent, PermissionDirective, BodyScrollDirective,
+    ErrorPageComponent, FlagContentComponent, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent,],
+
+  exports: [MainHeaderComponent, MainFooterComponent, PermissionDirective, StickyHeaderDirective, BodyScrollDirective,
     DataDrivenFilterComponent, SortByComponent, FlagContentComponent,
     ContentImportComponent,
-    TelemetryModule, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent , ],
-    providers: [CacheService, AuthGuard]
+    TelemetryModule, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent,],
+  providers: [CacheService, AuthGuard]
 })
 export class CoreModule {
 }
