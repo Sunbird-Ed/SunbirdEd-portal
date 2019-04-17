@@ -6,6 +6,7 @@ const telemetryHelper = require('../helpers/telemetryHelper.js')
 const reqDataLimitOfContentUpload = '50mb'
 const proxy = require('express-http-proxy')
 const healthService = require('../helpers/healthCheckService.js')
+const _ = require('lodash')
 
 module.exports = (app) => {
     // Generate telemetry fot proxy service
@@ -31,11 +32,12 @@ module.exports = (app) => {
             userResDecorator: (proxyRes, proxyResData, req, res) => {
                 try {
                     const data = JSON.parse(proxyResData.toString('utf8'));
-                    if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
-                } catch(err) {
+                    if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+                    else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data)
+                } catch (err) {
                     console.log('content api user res decorator json parse error', proxyResData);
+                    return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res)
                 }
-                return proxyResData;
             }
         }))
 }

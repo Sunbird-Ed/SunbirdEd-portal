@@ -96,15 +96,6 @@ describe('CollectionPlayerComponent', () => {
     expect(component.showPlayer).toBeTruthy();
     expect(component.contentTitle).toEqual(content.title);
   });
-  it('should call  contentProgressEvent method and open contentRatingModal', () => {
-    spyOn(component, 'contentProgressEvent').and.callThrough();
-    const event = {'detail': {
-     'telemetryData': {'eid': 'END'}
-    }};
-    component.contentProgressEvent(event);
-    expect(component.contentRatingModal).toBeTruthy();
-  });
-
   it('should get content based on route/query params', () => {
     const playerService: PlayerService = TestBed.get(PlayerService);
     const windowScrollService = TestBed.get(WindowScrollService);

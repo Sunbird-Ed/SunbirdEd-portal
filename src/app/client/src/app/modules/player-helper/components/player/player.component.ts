@@ -3,6 +3,8 @@ import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter, 
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
 import { environment } from '@sunbird/environment';
+import { Router } from '@angular/router';
+import { ToasterService, ResourceService } from '@sunbird/shared';
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html'
@@ -14,7 +16,14 @@ export class PlayerComponent implements OnInit, OnChanges {
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   buildNumber: string;
-  constructor(public configService: ConfigService) {
+  @Input() playerOption: any ;
+  contentRatingModal = false;
+  /**
+ * Dom element reference of contentRatingModal
+ */
+  @ViewChild('modal') modal;
+  constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
+    public resourceService: ResourceService) {
     try {
       this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')).value;
     } catch (error) {
@@ -29,6 +38,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    this.contentRatingModal = false;
     this.showPlayer();
   }
   /**
@@ -36,8 +46,8 @@ export class PlayerComponent implements OnInit, OnChanges {
    * Emits event when content starts playing and end event when content was played/read completely
    */
   showPlayer() {
-    const src = environment.isOffline ? this.configService.appConfig.PLAYER_CONFIG.localBaseUrl
-      : this.configService.appConfig.PLAYER_CONFIG.baseURL;
+    const src = environment.isOffline ? this.configService.appConfig.PLAYER_CONFIG.localBaseUrl :
+      this.configService.appConfig.PLAYER_CONFIG.baseURL;
     const iFrameSrc = src + '&build_number=' + this.buildNumber;
     setTimeout(() => {
       this.contentIframe.nativeElement.src = iFrameSrc;
@@ -63,7 +73,9 @@ export class PlayerComponent implements OnInit, OnChanges {
   generateContentReadEvent(event: any) {
     if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START' ||
       event.detail.telemetryData.eid === 'END')) {
+      this.showRatingPopup(event);
       this.contentProgressEvent.emit(event);
+
     } else if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'IMPRESSION')) {
       this.emitSceneChangeEvent();
     }
@@ -74,5 +86,19 @@ export class PlayerComponent implements OnInit, OnChanges {
       const eventData = { stageId };
       this.sceneChangeEvent.emit(eventData);
     }, timer); // waiting for player to load, then fetching stageId (if we dont wait stageId will be undefined)
+  }
+
+  showRatingPopup(event) {
+    let contentProgress;
+    const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
+    if (playerSummary) {
+      contentProgress = _.find(event.detail.telemetryData.edata.summary, 'progress');
+    }
+    if (event.detail.telemetryData.eid === 'END' && contentProgress.progress === 100) {
+      this.contentRatingModal = true;
+      if (this.modal) {
+        this.modal.showContentRatingModal = true;
+      }
+    }
   }
 }

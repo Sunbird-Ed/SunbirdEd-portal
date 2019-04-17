@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil, mergeMap } from 'rxjs/operators';
-import { RouterNavigationService, ResourceService, ToasterService, ServerResponse, ILoaderMessage } from '@sunbird/shared';
+import { RouterNavigationService, ResourceService, ToasterService, ServerResponse, ILoaderMessage,
+NavigationHelperService } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { AddBatchMembersComponent } from '../add-batch-members/add-batch-members.component';
@@ -19,7 +20,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
   templateUrl: './update-course-batch.component.html'
 })
 
-export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
+export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('updateBatchModal') private updateBatchModal;
   /**
@@ -131,7 +132,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     route: Router,
     resourceService: ResourceService, userService: UserService,
     courseBatchService: CourseBatchService,
-    toasterService: ToasterService, private deviceDetectorService: DeviceDetectorService) {
+    toasterService: ToasterService, private deviceDetectorService: DeviceDetectorService,
+    public navigationhelperService: NavigationHelperService) {
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
@@ -253,16 +255,6 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     }, 1000);
   }
   private setTelemetryData() {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.router.url
-      }
-    };
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     this.telemetryStart = {
       context: {
@@ -377,6 +369,23 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
 
     }
   }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.router.url,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
+  }
+
   /**
   * It takes form step  as a input and change the state
   *

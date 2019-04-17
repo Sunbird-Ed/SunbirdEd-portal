@@ -34,7 +34,7 @@ module.exports = (app) => {
         console.log('sso session create v2 api, successfully redirected to update phone page', jwtPayload.state_id, jwtPayload, req.query, userDetails, redirectUrl);
       }
     } catch (error) {
-      redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error);
+      redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
       console.log('sso session create v2 api failed', errType,  error, jwtPayload, req.query, userDetails, redirectUrl);
       logErrorEvent(req, errType, error);
     } finally {
@@ -100,7 +100,7 @@ module.exports = (app) => {
       }
       redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
     } catch (error) {
-      redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error);
+      redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
       console.log('sso user creation/phone update failed, redirected to error page', jwtPayload.state_id, errType, req.query.phone, error, userDetails, jwtPayload, redirectUrl, createUserReq, updatePhoneReq, updateRolesReq);
       logErrorEvent(req, errType, error);
     } finally {
@@ -126,7 +126,7 @@ module.exports = (app) => {
       redirectUrl = jwtPayload.redirect_url ? jwtPayload.redirect_url : '/resources';
       console.log('sso sign-in success callback, session created', jwtPayload.state_id, req.query, redirectUrl, errType);
     } catch (error) {
-      redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error);
+      redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
       console.log('sso sign-in success callback, create session error', jwtPayload.state_id, errType, error, req.query, jwtPayload, redirectUrl);
       logErrorEvent(req, errType, error);
     } finally {
@@ -146,7 +146,7 @@ module.exports = (app) => {
       response = await createSession(userName, req, res);
       console.log('sso sign in create session api success', req.query, response);
     } catch (error) {
-      response = { error: getErrorMessage(error) };
+      response = { error: getErrorMessage(error, errType) };
       console.log('sso sign in create session api failed', errType, error, req.query);
       logErrorEvent(req, errType, error);
     } finally {
@@ -180,9 +180,11 @@ const delay = (duration = 1000) => {
   });
 }
 
-const getErrorMessage = (error) => {
+const getErrorMessage = (error, errorType) => {
   if(_.get(error, 'params.err') === 'USER_ACCOUNT_BLOCKED') {
     return 'User account is blocked. Please contact admin';
+  } else if (['VERIFY_SIGNATURE', 'PAYLOAD_DATA_MISSING', 'VERIFY_TOKEN'].includes(errorType) ) {
+    return 'Your account could not be signed in to DIKSHA due to invalid credentials provided. Please try again with valid credentials.';
   } else {
     return 'Your account could not be signed in to DIKSHA due to technical issue. Please try again after some time';
   }

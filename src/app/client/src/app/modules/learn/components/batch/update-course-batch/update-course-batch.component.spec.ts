@@ -93,7 +93,7 @@ describe('UpdateCourseBatchComponent', () => {
     expect(component.courseCreator).toBeDefined();
     expect(component.batchUpdateForm).toBeDefined();
     expect(component.showUpdateModal).toBeTruthy();
-    expect(component.selectedParticipants.length).toBe(2);
+    expect(component.selectedParticipants.length).toBe(0);
     expect(component.selectedMentors.length).toBe(6);
   });
   it('should navigate to parent page if fetching batch details fails', () => {

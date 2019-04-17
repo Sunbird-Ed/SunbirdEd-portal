@@ -2,6 +2,8 @@ import { SharedModule } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlayerComponent } from './player.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 const startEvent = {
   detail: {
@@ -38,7 +40,7 @@ describe('PlayerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot()],
+      imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
       declarations: [PlayerComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -73,5 +75,21 @@ describe('PlayerComponent', () => {
     component.generateContentReadEvent(endEventSuc);
     expect(contentProgressEvent).toBeDefined();
   });
+  it('should emit "END" event and open contentRating', () => {
+    let contentProgressEvent;
+    component.contentProgressEvent.subscribe((data) => {
+      contentProgressEvent = data;
+    });
+    component.playerConfig = playerConfig;
+    component.generateContentReadEvent(endEventSuc);
+    component.showRatingPopup(endEventSuc);
+    expect(contentProgressEvent).toBeDefined();
+    expect(component.contentRatingModal).toBeTruthy();
+  });
+  it('should call ngOnChange ',  () => {
+    component.playerConfig = playerConfig;
+    component.ngOnChanges();
+    expect(component.contentRatingModal).toBeFalsy();
+   });
 });
 

@@ -1,4 +1,4 @@
-import { PermissionDirective, BodyScrollDirective } from './directives';
+import { PermissionDirective, BodyScrollDirective, StickyHeaderDirective } from './directives';
 import { RouterModule } from '@angular/router';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -31,7 +31,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
   ],
   declarations: [MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, PermissionDirective,
     BodyScrollDirective, DataDrivenFilterComponent, SortByComponent,
-    ErrorPageComponent, FlagContentComponent, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent],
+    ErrorPageComponent, FlagContentComponent, LanguageDropdownComponent,
+     ProminentFilterComponent, TopicPickerComponent, StickyHeaderDirective],
   exports: [MainHeaderComponent, MainFooterComponent, PermissionDirective, BodyScrollDirective,
     DataDrivenFilterComponent, SortByComponent, FlagContentComponent,
     TelemetryModule, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent],
