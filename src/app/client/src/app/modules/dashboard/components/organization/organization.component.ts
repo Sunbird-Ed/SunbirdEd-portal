@@ -1,11 +1,11 @@
 
 import {takeUntil, first} from 'rxjs/operators';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Subscription ,  Subject } from 'rxjs';
 import { RendererService, OrganisationService, DownloadService } from './../../services';
 import { UserService, SearchService } from '@sunbird/core';
-import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { DashboardData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
@@ -24,7 +24,7 @@ import * as _ from 'lodash-es';
 /**
  * @class OrganisationComponent
  */
-export class OrganisationComponent implements OnDestroy {
+export class OrganisationComponent implements OnDestroy, AfterViewInit {
   /**
    * Variable to gather and unsubscribe all observable subscriptions in this component.
    */
@@ -170,7 +170,7 @@ export class OrganisationComponent implements OnDestroy {
    */
   constructor(downloadService: DownloadService, route: Router, activatedRoute: ActivatedRoute, userService: UserService,
     searchService: SearchService, rendererService: RendererService, orgService: OrganisationService, resourceService: ResourceService,
-    public toasterService: ToasterService) {
+    public toasterService: ToasterService, public navigationhelperService: NavigationHelperService) {
     this.downloadService = downloadService;
     this.activatedRoute = activatedRoute;
     this.searchService = searchService;
@@ -179,40 +179,15 @@ export class OrganisationComponent implements OnDestroy {
     this.orgService = orgService;
     this.userService = userService;
     this.route = route;
-    this.initTelemetryImpressionEvent();
     this.activatedRoute.params.subscribe(params => {
       if (params.id && params.timePeriod) {
         // this.datasetType = params.datasetType;
         this.showDashboard = false;
-        // update the impression event after an org is selected
-        this.telemetryImpression.edata.uri = 'dashBoard/organization/' + params.datasetType
-          + '/' + params.id + '/' + params.timePeriod;
-        this.telemetryImpression.object = {
-          id: params.id,
-          type: 'org',
-          ver: '1.0'
-        };
         this.interactObject = { id: params.id, type: 'Organization', ver: '1.0' };
         this.getDashboardData(params.timePeriod, params.id);
       }
     });
     this.getMyOrganisations();
-  }
-
-  /**
-   * Function to initialise the telemetry impression event for org admin dashboard page
-   */
-  initTelemetryImpressionEvent() {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: '/dashBoard/organization'
-      }
-    };
   }
 
   /**
@@ -432,6 +407,30 @@ export class OrganisationComponent implements OnDestroy {
       );
     }
   }
+
+  ngAfterViewInit () {
+    const params = this.activatedRoute.snapshot.params;
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          uri: 'dashboard/organization/' + params.datasetType
+          + '/' + params.id + '/' + params.timePeriod,
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          duration: this.navigationhelperService.getPageLoadTime()
+        },
+        object: {
+          id: params.id,
+          type: 'org',
+          ver: '1.0'
+        }
+      };
+    });
+  }
+
   ngOnDestroy() {
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();
