@@ -44,12 +44,12 @@ export class EditorService {
      * @param req OBJECT
      */
     create(req): Observable<ServerResponse> {
-      if (!_.isArray(_.get(req, 'content.subject'))) {
+      if (_.get(req, 'content.subject') && !_.isArray(_.get(req, 'content.subject'))) {
         const subject = [];
         subject.push(req.content.subject);
         req.content.subject = subject;
       }
-      if (!_.isArray(_.get(req, 'content.medium'))) {
+      if (_.get(req, 'content.medium') && !_.isArray(_.get(req, 'content.medium'))) {
         const medium = [];
         medium.push(req.content.medium);
         req.content.medium = medium;
