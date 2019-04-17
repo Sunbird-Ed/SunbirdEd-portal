@@ -191,25 +191,6 @@ export class OrganisationComponent implements OnDestroy, AfterViewInit {
   }
 
   /**
-<<<<<<< HEAD
-=======
-   * Function to initialise the telemetry impression event for org admin dashboard page
-   */
-  initTelemetryImpressionEvent() {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: '/dashBoard/organization'
-      }
-    };
-  }
-
-  /**
->>>>>>> upstream/release-1.15
    * Function to get dashboard data for given time period and organization identifier
    *
    * @param {string} timePeriod timePeriod: last 7d/14d/5w
