@@ -187,15 +187,17 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.contentIds.push(node.model.identifier);
       }
     });
-    let video = 0 ;
+    let videoContentCount = 0 ;
     _.forEach(mimeTypeCount, (value, key) => {
       if (key.includes('video')) {
-        video = video + value;
+        videoContentCount = videoContentCount + value;
       } else {
         this.curriculum.push({ mimeType: key, count: value });
       }
     });
-    this.curriculum.push({ mimeType: 'video', count: video });
+    if (videoContentCount > 0) {
+      this.curriculum.push({ mimeType: 'video', count: videoContentCount });
+    }
   }
   private getContentState() {
     const req = {
