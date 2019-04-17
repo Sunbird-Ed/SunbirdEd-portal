@@ -38,6 +38,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    this.contentRatingModal = false;
     this.showPlayer();
   }
   /**

@@ -1,9 +1,9 @@
 
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {combineLatest, Subject } from 'rxjs';
 import {takeUntil,  mergeMap } from 'rxjs/operators';
-import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { RouterNavigationService, ResourceService, ToasterService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
@@ -14,7 +14,7 @@ import * as moment from 'moment';
   selector: 'app-update-course-batch',
   templateUrl: './update-course-batch.component.html'
 })
-export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
+export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('updateBatchModal') private updateBatchModal;
   /**
@@ -114,7 +114,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     resourceService: ResourceService, userService: UserService,
     courseBatchService: CourseBatchService,
     toasterService: ToasterService,
-    courseConsumptionService: CourseConsumptionService) {
+    courseConsumptionService: CourseConsumptionService,
+    public navigationhelperService: NavigationHelperService) {
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
@@ -133,7 +134,6 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
         mergeMap((params) => {
           this.batchId = params.batchId;
           this.courseId = params.courseId;
-          this.setTelemetryImpressionData();
           return this.fetchBatchDetails();
         }),
         takeUntil(this.unsubscribe)
@@ -435,27 +435,30 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       return ' (' + userData.maskedPhone + ')';
     }
   }
-  // Create the telemetry impression event for update batch page
-  private setTelemetryImpressionData() {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.router.url
-      },
-      object: {
-        id: this.batchId,
-        type: this.activatedRoute.snapshot.data.telemetry.object.type,
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
-        rollup: {
-          l1: this.courseId,
-          l2: this.batchId
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.router.url,
+          duration: this.navigationhelperService.getPageLoadTime()
+        },
+        object: {
+          id: this.activatedRoute.snapshot.params.batchId,
+          type: this.activatedRoute.snapshot.data.telemetry.object.type,
+          ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
+          rollup: {
+            l1: this.activatedRoute.snapshot.params.courseId,
+            l2: this.activatedRoute.snapshot.params.batchId
+          }
         }
-      }
-    };
+      };
+    });
   }
   ngOnDestroy() {
     if (this.updateBatchModal && this.updateBatchModal.deny) {

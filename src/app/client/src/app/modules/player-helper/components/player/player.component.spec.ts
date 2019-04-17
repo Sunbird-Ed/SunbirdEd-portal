@@ -86,5 +86,10 @@ describe('PlayerComponent', () => {
     expect(contentProgressEvent).toBeDefined();
     expect(component.contentRatingModal).toBeTruthy();
   });
+  it('should call ngOnChange ',  () => {
+    component.playerConfig = playerConfig;
+    component.ngOnChanges();
+    expect(component.contentRatingModal).toBeFalsy();
+   });
 });
 

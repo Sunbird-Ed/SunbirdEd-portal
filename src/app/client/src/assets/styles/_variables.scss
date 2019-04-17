@@ -281,6 +281,7 @@ $sb-treePicker-selectedTab-width: calc(100% - 424px);
 $sb-treePicker-selectionTab-padding: ($base-block-space * 2);
 $sb-treePicker-selectedTab-padding: ($base-block-space * 2);
 $sb-treePicker-searchbox-max-width: 392px;
+$sb-treePicker-searchbox-tree-space: 0 0 (2*$base-block-space) 0;
 $sb-treePicker-searchbox-width: 100%;
 $sb-treePicker-searchbox-border: 0.5px solid $primary-300;
 $sb-treePicker-searchbox-iconColor-search: #aaa;

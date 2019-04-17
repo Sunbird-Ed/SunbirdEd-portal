@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { takeUntil, mergeMap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { RouterNavigationService, ResourceService, ToasterService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
@@ -13,7 +13,7 @@ import { Subject, combineLatest } from 'rxjs';
   selector: 'app-create-batch',
   templateUrl: './create-batch.component.html'
 })
-export class CreateBatchComponent implements OnInit, OnDestroy {
+export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('createBatchModel') private createBatchModel;
 
@@ -99,7 +99,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
     resourceService: ResourceService, userService: UserService,
     courseBatchService: CourseBatchService,
     toasterService: ToasterService,
-    courseConsumptionService: CourseConsumptionService) {
+    courseConsumptionService: CourseConsumptionService,
+    public navigationhelperService: NavigationHelperService) {
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
@@ -115,7 +116,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.activatedRoute.parent.params.pipe(mergeMap((params) => {
       this.courseId = params.courseId;
-      this.setTelemetryImpressionData();
       this.initializeFormFields();
       this.showCreateModal = true;
       return this.fetchBatchDetails();
@@ -339,17 +339,20 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
           }
         });
   }
-  private setTelemetryImpressionData() {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.router.url
-      }
-    };
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.router.url,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
   ngOnDestroy() {
     if (this.createBatchModel && this.createBatchModel.deny) {
