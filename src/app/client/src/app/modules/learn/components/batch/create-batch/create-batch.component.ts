@@ -271,14 +271,14 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private getUserOtherDetail(userData) {
-    if (userData.email && userData.phone) {
-      return ' (' + userData.email + ', ' + userData.phone + ')';
+    if (userData.maskedEmail && userData.maskedPhone) {
+      return ' (' + userData.maskedEmail + ', ' + userData.maskedPhone + ')';
     }
-    if (userData.email && !userData.phone) {
-      return ' (' + userData.email + ')';
+    if (userData.maskedEmail && !userData.maskedPhone) {
+      return ' (' + userData.maskedEmail + ')';
     }
-    if (!userData.email && userData.phone) {
-      return ' (' + userData.phone + ')';
+    if (!userData.maskedEmail && userData.maskedPhone) {
+      return ' (' + userData.maskedPhone + ')';
     }
   }
   private initDropDown() {
