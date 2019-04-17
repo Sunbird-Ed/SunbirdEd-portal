@@ -184,7 +184,9 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
 
   onCardClick (event) {
     const batchData = event.data;
-    this.batchService.setBatchData(batchData);
+    if (batchData.enrollmentType === 'open') {
+      this.batchService.setBatchData(batchData);
+    }
     this.route.navigate(['update/batch', batchData.identifier], {queryParamsHandling: 'merge', relativeTo: this.activatedRoute});
   }
 
@@ -214,7 +216,7 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
             sections[sectionIndex].contents[contentIndex]['userName'] = (userNamesKeyById[content.createdBy].firstName || '')
             + ' ' + (userNamesKeyById[content.createdBy].lastName || '');
             sections[sectionIndex].contents[contentIndex]['metaData'] = {identifier: content.identifier};
-            sections[sectionIndex].contents[contentIndex]['label'] = _.size(content.participant) || 0;
+            sections[sectionIndex].contents[contentIndex]['label'] = _.size(content.participantCount) || 0;
           });
         });
         this.carouselData = sections;
