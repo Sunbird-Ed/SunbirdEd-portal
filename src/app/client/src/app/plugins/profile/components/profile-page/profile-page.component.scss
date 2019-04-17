@@ -124,6 +124,13 @@ display: inline-block;
   }
 }
 
+::ng-deep {
+  .ui.popup {
+    .arrow{
+      display: none;
+    }
+  }
+}
 // @media only screen and (max-width: 1023px){
 //   ::ng-deep {
 //     .ui.popup {
