@@ -26,6 +26,10 @@ describe('CourseConsumptionComponent', () => {
   const fakeActivatedRoute = {
     'params': observableOf({ 'id': 1, 'timePeriod': '7d' }),
     snapshot: {
+      params: {
+        'id': '1',
+        'timePeriod': '7d'
+      },
       data: {
         telemetry: {
           env: 'course', pageid: 'course-creator-dashboard', type: 'view',
@@ -200,7 +204,6 @@ describe('CourseConsumptionComponent', () => {
     }));
 
     it('should unsubscribe from all observable subscriptions', () => {
-      component.initTelemetryImpressionEvent();
       component.getDashboardData('7d', 'do_2123250076616048641482');
       component.getMyContent();
       spyOn(component.unsubscribe, 'complete');

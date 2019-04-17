@@ -1,13 +1,13 @@
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
-import { ResourceService, ConfigService } from '@sunbird/shared';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { ResourceService, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { FrameworkService, PermissionService } from '@sunbird/core';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-create-content',
   templateUrl: './create-content.component.html'
 })
-export class CreateContentComponent implements OnInit {
+export class CreateContentComponent implements OnInit, AfterViewInit {
 
   /*
  roles allowed to create textBookRole
@@ -62,7 +62,8 @@ export class CreateContentComponent implements OnInit {
   * @param {ResourceService} resourceService Reference of ResourceService
  */
   constructor(configService: ConfigService, resourceService: ResourceService,
-    frameworkService: FrameworkService, permissionService: PermissionService, private activatedRoute: ActivatedRoute) {
+    frameworkService: FrameworkService, permissionService: PermissionService, private activatedRoute: ActivatedRoute,
+    public navigationhelperService: NavigationHelperService) {
     this.resourceService = resourceService;
     this.frameworkService = frameworkService;
     this.permissionService = permissionService;
@@ -77,15 +78,21 @@ export class CreateContentComponent implements OnInit {
     this.collectionRole = this.configService.rolesConfig.workSpaceRole.collectionRole;
     this.lessonplanRole = this.configService.rolesConfig.workSpaceRole.lessonplanRole;
     this.contentUploadRole = this.configService.rolesConfig.workSpaceRole.contentUploadRole;
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri
-      }
-    };
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.activatedRoute.snapshot.data.telemetry.uri,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 }
