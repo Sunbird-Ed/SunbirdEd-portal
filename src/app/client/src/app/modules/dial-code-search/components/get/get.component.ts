@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ResourceService } from '@sunbird/shared';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
@@ -7,7 +7,7 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
   templateUrl: './get.component.html',
   styleUrls: ['./get.component.scss']
 })
-export class GetComponent implements OnInit {
+export class GetComponent implements OnInit, AfterViewInit {
   /**
 	 * telemetryImpression
 	*/
@@ -30,24 +30,31 @@ export class GetComponent implements OnInit {
   public router: Router;
 
 
-  constructor(resourceService: ResourceService, router: Router, public activatedRoute: ActivatedRoute) {
+  constructor(resourceService: ResourceService, router: Router, public activatedRoute: ActivatedRoute,
+    public navigationhelperService: NavigationHelperService) {
     this.resourceService = resourceService;
     this.router = router;
   }
 
   ngOnInit() {
     this.instanceName = this.resourceService.instance;
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.router.url,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
-      }
-    };
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.router.url,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 
   public navigateToSearch() {

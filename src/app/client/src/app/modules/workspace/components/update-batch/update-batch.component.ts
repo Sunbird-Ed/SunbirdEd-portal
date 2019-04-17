@@ -407,14 +407,14 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
   }
 
   private getUserOtherDetail(userData) {
-    if (userData.email && userData.phone) {
-      return ' (' + userData.email + ', ' + userData.phone + ')';
+    if (userData.maskedEmail && userData.maskedPhone) {
+      return ' (' + userData.maskedEmail + ', ' + userData.maskedPhone + ')';
     }
-    if (userData.email && !userData.phone) {
-      return ' (' + userData.email + ')';
+    if (userData.maskedEmail && !userData.maskedPhone) {
+      return ' (' + userData.maskedEmail + ')';
     }
-    if (!userData.email && userData.phone) {
-      return ' (' + userData.phone + ')';
+    if (!userData.maskedEmail && userData.maskedPhone) {
+      return ' (' + userData.maskedPhone + ')';
     }
   }
   // Create the telemetry impression event for update batch page
