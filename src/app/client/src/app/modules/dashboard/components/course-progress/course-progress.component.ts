@@ -90,6 +90,10 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
 	 * This variable helps to show the warning div
 	 */
   showWarningDiv = false;
+   /**
+	 * This variable helps to show the csv downloadURl
+	 */
+  showDownloadLink = true;
   /**
    * To navigate to other pages
    */
@@ -294,6 +298,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
         this.dashboarData = apiResponse.result;
+        this.showDownloadLink = apiResponse.result.showDownloadLink ? apiResponse.result.showDownloadLink : false;
         this.totalCount = apiResponse.result.count;
         this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
       },
