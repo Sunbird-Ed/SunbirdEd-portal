@@ -90,10 +90,70 @@
 }
 
 .name-info {
-      position: absolute;
-      right: -($base-block-space*4);
-      top: -($base-block-space);
-      font-size: $base-block-space*1.5;
-      color: $gray-200;
-      
+  background-color: $gray-400;
+    -webkit-mask-image: url(../../../../../assets/images/info-icon.svg);
+    mask-image: url(../../../../../assets/images/info-icon.svg);
+  -webkit-mask-size: contain;
+-webkit-mask-position: 50% 50%;
+-webkit-mask-repeat: no-repeat;
+mask-size: contain;
+mask-position: 50% 50%;
+mask-repeat: no-repeat;
+width: 20px;
+height: 20px;
+margin-left: 3px;
+display: inline-block;
 }
+.org-info{
+  .info {
+    // background-image: url(../../../../../assets/images/info-icon.svg);
+    background-color: $gray-400;
+    -webkit-mask-image: url(../../../../../assets/images/info-icon.svg);
+    mask-image: url(../../../../../assets/images/info-icon.svg);
+    -webkit-mask-size: contain;
+  -webkit-mask-position: 50% 50%;
+  -webkit-mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-position: 50% 50%;
+  mask-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-top: 3px;
+    margin-left: 5px;
+  }
+}
+
+::ng-deep {
+  .ui.popup {
+    .arrow{
+      display: none;
+    }
+  }
+}
+// @media only screen and (max-width: 1023px){
+//   ::ng-deep {
+//     .ui.popup {
+//       -webkit-animation: seconds 2.0s forwards;
+//       animation: seconds 2.0s forwards;
+//       }
+//   }
+// }
+  
+
+// @-webkit-keyframes seconds {
+//   0% {
+//     opacity: 1;
+//   }
+//   100% {
+//     opacity: 0;
+//   }
+// }
+// @keyframes seconds {
+//   0% {
+//     opacity: 1;
+//   }
+//   100% {
+//     opacity: 0;
+//   }
+// }
