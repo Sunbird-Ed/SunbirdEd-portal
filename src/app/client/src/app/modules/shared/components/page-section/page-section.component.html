@@ -1,6 +1,6 @@
 <div class="sb-pageSection" *ngIf="section && section.contents && section.contents.length">
     <!--Header-->
-    <div class="sb-pageSection-header">
+    <div *ngIf="section.name" class="sb-pageSection-header">
         <!--Section Title-->
         <h4 class="sb-pageSection-title m-0 mr-5"> {{section.name}}</h4>
         <!--/Section Title-->
