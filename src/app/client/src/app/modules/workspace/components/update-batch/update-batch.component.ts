@@ -1,11 +1,12 @@
-import { takeUntil, mergeMap } from 'rxjs/operators';
-import { Subject, combineLatest } from 'rxjs';
+import { takeUntil, mergeMap, catchError, map } from 'rxjs/operators';
+import { Subject, combineLatest, of as observableOf } from 'rxjs';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { UserService } from '@sunbird/core';
-import { BatchService } from '../../services';
+import { UserService, SearchService } from '@sunbird/core';
+import { BatchService, WorkSpaceService } from '../../services';
+import { WorkSpace } from '../../classes/workspace';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import * as moment from 'moment';
@@ -14,7 +15,7 @@ import * as moment from 'moment';
   templateUrl: './update-batch.component.html',
   styleUrls: ['./update-batch.component.scss']
 })
-export class UpdateBatchComponent implements OnInit, OnDestroy {
+export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy {
 
   @ViewChild('updateBatchModal') private updateBatchModal;
   /**
@@ -62,13 +63,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
    * service for redirection to update batch  component
   */
   private activatedRoute: ActivatedRoute;
-  /**
-  * Refrence of UserService
-  */
-  private userService: UserService;
-  /**
-  * Refrence of UserService
-  */
+
   private batchService: BatchService;
   /**
   * To call resource service which helps to use language constant
@@ -79,8 +74,8 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
   */
   private toasterService: ToasterService;
   /**
-	 * telemetryImpression object for update batch page
-	*/
+   * telemetryImpression object for update batch page
+  */
   public telemetryImpression: IImpressionEventInput;
 
   public pickerMinDate = new Date(new Date().setHours(0, 0, 0, 0));
@@ -91,20 +86,24 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
 
   public courseCreator = false;
   /**
-	 * Constructor to create injected service(s) object
+   * Constructor to create injected service(s) object
    * @param {Router} router Reference of Router
    * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
    * @param {UserService} UserService Reference of UserService
   */
   constructor(activatedRoute: ActivatedRoute,
-    route: Router,
-    resourceService: ResourceService, userService: UserService,
-    batchService: BatchService,
-    toasterService: ToasterService) {
+      route: Router,
+      public userService: UserService,
+      public workSpaceService: WorkSpaceService,
+      public searchService: SearchService,
+      resourceService: ResourceService,
+      batchService: BatchService,
+      toasterService: ToasterService,
+    ) {
+    super(searchService, workSpaceService, userService);
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
-    this.userService = userService;
     this.batchService = batchService;
     this.toasterService = toasterService;
   }
@@ -152,10 +151,35 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
   private fetchBatchDetails() {
     return combineLatest(
       this.batchService.getUserList(),
-      this.batchService.getUpdateBatchDetails(this.batchId),
+      this.getBatchDetails(),
       (userDetails, batchDetails) => ({ userDetails, batchDetails })
     );
   }
+
+  private getBatchDetails() {
+    if (this.batchService.batchDetails && this.batchId  === this.batchService.batchDetails.identifier) {
+      return observableOf(this.batchDetails);
+    } else {
+      const searchParams = {
+        filters: { 'identifier': this.batchId },
+        params : {fields: 'participants'}
+      };
+      return this.getBatches(searchParams)
+        .pipe(map((data) => {
+            if (data.result.response.count && data.result.response.content.length > 0) {
+              return data.result.response.content[0];
+            } else {
+              this.redirect();
+              this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+            }
+        }), catchError((error) => {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+          this.redirect();
+          return observableOf({});
+        }));
+      }
+  }
+
   /**
   * initializes form fields and apply field level validation
   */

@@ -229,51 +229,60 @@ export const getUserList = {
   };
 
 export const updateBatchDetails = {
-    'identifier': '01248661735846707228',
-    'createdFor': [
-      '0123673542904299520',
-      '0123673689120112640',
-      'ORG_001'
-    ],
-    'courseAdditionalInfo': {
-      'courseName': '29 course',
-      'leafNodesCount': '1',
-      'description': '',
-      'courseLogoUrl': 'https://e_112470675618004992181/artifact/1ef4769e36c4d18cfd9832cd7cb5d03e_1475774424986.thumb.jpeg',
-      'tocUrl': 'https://ekstep-pub112470675618004992181/artifact/do_112470675618004992181toc.json',
-      'status': 'Live'
-    },
-    'endDate': '2018-07-13T18:29:59.999Z',
-    'description': 'test',
-    'countIncrementDate': '2018-04-20 20:00:01:531+0000',
-    'countDecrementDate': null,
-    'updatedDate': '2018-04-20 20:00:01:531+0000',
-    'participant': {
-      'ac918519-f8b8-4150-bd90-56ead42454d0': true,
-      '27d5a117-e1a1-4202-8476-6be21fd76a5c': true
-    },
-    'countIncrementStatus': true,
-    'createdDate': '2018-04-20 17:16:42:032+0000',
-    'createdBy': '159e93d1-da0c-4231-be94-e75b0c226d7c',
-    'courseCreator': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-    'hashTagId': '01248661735846707228',
-    'mentors': [
-      'b2479136-8608-41c0-b3b1-283f38c338ed',
-      '15dedad5-1332-4618-824f-63d859a662fd',
-      '9d76c081-fbf6-45e0-adb7-64013fe41a64',
-      '6d4da241-a31b-4041-bbdb-dd3a898b3f85',
-      '874ed8a5-782e-4f6c-8f36-e0288455901e',
-      '80736bb1-9c64-488f-9902-d6fbfcd3e7ed',
-      '97255811-5486-4f01-bad1-36138d0f5b8a7'
-    ],
-    'name': 'Test 2 batch',
-    'countDecrementStatus': false,
-    'id': '01248661735846707228',
-    'enrollmentType': 'invite-only',
-    'courseId': 'do_112470675618004992181',
-    'startDate': '2018-04-20T18:29:59.999Z',
-    'status': 1
-  };
+   'result': {
+      'response': {
+        'count': 3,
+        'content': [
+          {
+            'identifier': '01248661735846707228',
+            'createdFor': [
+              '0123673542904299520',
+              '0123673689120112640',
+              'ORG_001'
+            ],
+            'courseAdditionalInfo': {
+              'courseName': '29 course',
+              'leafNodesCount': '1',
+              'description': '',
+              'courseLogoUrl': 'https://e_112470675618004992181/artifact/1ef4769e36c4d18cfd9832cd7cb5d03e_1475774424986.thumb.jpeg',
+              'tocUrl': 'https://ekstep-pub112470675618004992181/artifact/do_112470675618004992181toc.json',
+              'status': 'Live'
+            },
+            'endDate': '2018-07-13T18:29:59.999Z',
+            'description': 'test',
+            'countIncrementDate': '2018-04-20 20:00:01:531+0000',
+            'countDecrementDate': null,
+            'updatedDate': '2018-04-20 20:00:01:531+0000',
+            'participant': {
+              'ac918519-f8b8-4150-bd90-56ead42454d0': true,
+              '27d5a117-e1a1-4202-8476-6be21fd76a5c': true
+            },
+            'countIncrementStatus': true,
+            'createdDate': '2018-04-20 17:16:42:032+0000',
+            'createdBy': '159e93d1-da0c-4231-be94-e75b0c226d7c',
+            'courseCreator': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+            'hashTagId': '01248661735846707228',
+            'mentors': [
+              'b2479136-8608-41c0-b3b1-283f38c338ed',
+              '15dedad5-1332-4618-824f-63d859a662fd',
+              '9d76c081-fbf6-45e0-adb7-64013fe41a64',
+              '6d4da241-a31b-4041-bbdb-dd3a898b3f85',
+              '874ed8a5-782e-4f6c-8f36-e0288455901e',
+              '80736bb1-9c64-488f-9902-d6fbfcd3e7ed',
+              '97255811-5486-4f01-bad1-36138d0f5b8a7'
+            ],
+            'name': 'Test 2 batch',
+            'countDecrementStatus': false,
+            'id': '01248661735846707228',
+            'enrollmentType': 'invite-only',
+            'courseId': 'do_112470675618004992181',
+            'startDate': '2018-04-20T18:29:59.999Z',
+            'status': 1
+          }
+        ]
+      }
+    }
+};
 
 export const getUserDetails = {
     'id': 'api.user.search',

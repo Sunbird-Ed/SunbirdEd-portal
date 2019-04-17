@@ -254,7 +254,10 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
 
   onCardClick (event) {
     const batchData = event.data;
-    this.batchService.setBatchData(batchData);
+    if (batchData.enrollmentType === 'open') {
+       // setting data only if type is open  as participants not exists for open batches
+       this.batchService.setBatchData(batchData);
+    }
     this.route.navigate(['update/batch', batchData.identifier], {queryParamsHandling: 'merge', relativeTo: this.activatedRoute});
   }
 
@@ -290,7 +293,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
     _.forEach(this.batchList, (item, key) => {
       participants[item.id] = !_.isUndefined(item.participant) ? _.size(item.participant) : 0;
       userList.push(item.createdBy);
-      this.batchList[key].label = participants[item.id];
+      this.batchList[key].label = item.participantCount || 0;
     });
     userList = _.compact(_.uniq(userList));
     const req = {

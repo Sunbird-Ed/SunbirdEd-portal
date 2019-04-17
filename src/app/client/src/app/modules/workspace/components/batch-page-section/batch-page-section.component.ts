@@ -169,8 +169,7 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
       source: 'web',
       name: 'User Courses',
       filters: this.filters,
-      sort_by: { createdDate: this.config.appConfig.WORKSPACE.createdDate },
-      params: {fields: 'participants'}
+      sort_by: { createdDate: this.config.appConfig.WORKSPACE.createdDate }
     };
     this.pageApiService.getBatchPageData(option).pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
@@ -184,7 +183,10 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
 
   onCardClick (event) {
     const batchData = event.data;
-    this.batchService.setBatchData(batchData);
+    if (batchData.enrollmentType === 'open') {
+      // setting data only if type is open  as participants not exists for open batches
+       this.batchService.setBatchData(batchData);
+    }
     this.route.navigate(['update/batch', batchData.identifier], {queryParamsHandling: 'merge', relativeTo: this.activatedRoute});
   }
 
@@ -214,7 +216,7 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
             sections[sectionIndex].contents[contentIndex]['userName'] = (userNamesKeyById[content.createdBy].firstName || '')
             + ' ' + (userNamesKeyById[content.createdBy].lastName || '');
             sections[sectionIndex].contents[contentIndex]['metaData'] = {identifier: content.identifier};
-            sections[sectionIndex].contents[contentIndex]['label'] = _.size(content.participant) || 0;
+            sections[sectionIndex].contents[contentIndex]['label'] = content.participantCount || 0;
           });
         });
         this.carouselData = sections;

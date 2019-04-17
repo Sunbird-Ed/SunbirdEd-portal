@@ -276,15 +276,18 @@ export class SearchService {
   batchSearch(requestParam: SearchParam): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.BATCH.GET_BATCHS,
+      param : {...requestParam.params},
       data: {
         request: {
           filters: requestParam.filters,
-          offset: (requestParam.pageNumber - 1) * requestParam.limit,
           limit: requestParam.limit,
           sort_by: requestParam.sort_by
         }
       }
     };
+    if (requestParam.pageNumber) {
+      option['data']['request']['offset'] = (requestParam.pageNumber - 1) * requestParam.limit;
+    }
     return this.learnerService.post(option);
   }
   /**

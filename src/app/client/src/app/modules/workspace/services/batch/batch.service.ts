@@ -83,6 +83,10 @@ export class BatchService {
     };
     return this.learnerService.patch(option);
   }
+
+  /**
+   * this is set only for open batches, as participants will not be there
+   */
   setBatchData(batchData): void {
     this.batchDetails = batchData;
   }
