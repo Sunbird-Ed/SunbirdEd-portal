@@ -1,5 +1,5 @@
-import { Component, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
-import { ResourceService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
+import { Component, ViewChild, ElementRef, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { ResourceService, ToasterService, ServerResponse, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OrgManagementService } from '../../services';
 import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
@@ -16,7 +16,7 @@ import * as _ from 'lodash-es';
   selector: 'app-organization',
   templateUrl: './organization-upload.component.html'
 })
-export class OrganizationUploadComponent implements OnInit, OnDestroy {
+export class OrganizationUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('inputbtn') inputbtn: ElementRef;
   @ViewChild('modal') modal;
   /**
@@ -75,7 +75,8 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
     headers: []
   };
   constructor(orgManagementService: OrgManagementService, activatedRoute: ActivatedRoute, toasterService: ToasterService,
-    config: ConfigService, resourceService: ResourceService, public userService: UserService, private router: Router) {
+    config: ConfigService, resourceService: ResourceService, public userService: UserService, private router: Router,
+    public navigationhelperService: NavigationHelperService) {
     this.activatedRoute = activatedRoute;
     this.orgManagementService = orgManagementService;
     this.resourceService = resourceService;
@@ -119,17 +120,6 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
         ]
       }
     ];
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: 'profile-bulk-upload-organization-upload',
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: this.router.url
-      }
-    };
     this.setInteractEventData();
   }
   /**
@@ -182,6 +172,24 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: 'profile-bulk-upload-organization-upload',
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          uri: this.router.url,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
+  }
+
   setInteractEventData() {
     this.orgUploadInteractEdata = {
       id: 'upload-org',

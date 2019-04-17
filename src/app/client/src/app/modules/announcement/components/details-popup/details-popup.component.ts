@@ -1,9 +1,9 @@
 
 import { takeUntil } from 'rxjs/operators';
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
-import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { IAnnouncementDetails } from '@sunbird/announcement';
 import { IImpressionEventInput } from '@sunbird/telemetry';
@@ -17,7 +17,7 @@ import { Subject } from 'rxjs';
   selector: 'app-details-popup',
   templateUrl: './details-popup.component.html'
 })
-export class DetailsPopupComponent implements OnInit, OnDestroy {
+export class DetailsPopupComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public unsubscribe = new Subject<void>();
 
@@ -79,7 +79,8 @@ export class DetailsPopupComponent implements OnInit, OnDestroy {
     public router: Router,
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
-    toasterService: ToasterService) {
+    toasterService: ToasterService,
+    public navigationhelperService: NavigationHelperService) {
     this.announcementService = announcementService;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
@@ -132,21 +133,27 @@ export class DetailsPopupComponent implements OnInit, OnDestroy {
         this.announcementId = params.announcementId;
       });
     this.getDetails(this.announcementId);
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      object: {
-        id: this.announcementId,
-        type: this.activatedRoute.snapshot.data.telemetry.object.type,
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: '/announcement/outbox/' + this.announcementId,
-      }
-    };
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        object: {
+          id: this.announcementId,
+          type: this.activatedRoute.snapshot.data.telemetry.object.type,
+          ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: '/announcement/outbox/' + this.announcementId,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 
   ngOnDestroy() {

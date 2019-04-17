@@ -1,11 +1,11 @@
 import { IInteractEventEdata, IInteractEventObject, TelemetryInteractDirective } from '@sunbird/telemetry';
 import { IImpressionEventInput } from './../../../telemetry/interfaces/telemetry';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { UsageService } from './../../services';
 import * as _ from 'lodash-es';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from '@sunbird/core';
-import { ToasterService, ResourceService, INoResultMessage } from '@sunbird/shared';
+import { ToasterService, ResourceService, INoResultMessage, NavigationHelperService } from '@sunbird/shared';
 import { UUID } from 'angular2-uuid';
 import { ActivatedRoute, Router } from '@angular/router';
 @Component({
@@ -13,7 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './usage-reports.component.html',
   styleUrls: ['./usage-reports.component.scss']
 })
-export class UsageReportsComponent implements OnInit {
+export class UsageReportsComponent implements OnInit, AfterViewInit {
   reportMetaData: any;
   chartData: Array<object> = [];
   tables: any;
@@ -29,7 +29,8 @@ export class UsageReportsComponent implements OnInit {
   @ViewChild(TelemetryInteractDirective) telemetryInteractDirective;
   constructor(private usageService: UsageService, private sanitizer: DomSanitizer,
     public userService: UserService, private toasterService: ToasterService,
-    public resourceService: ResourceService, activatedRoute: ActivatedRoute, private router: Router
+    public resourceService: ResourceService, activatedRoute: ActivatedRoute, private router: Router,
+    public navigationhelperService: NavigationHelperService
   ) {
     this.activatedRoute = activatedRoute;
   }
@@ -51,7 +52,6 @@ export class UsageReportsComponent implements OnInit {
         };
         this.noResult = true;
       });
-    this.setTelemetryImpression();
   }
 
   setTelemetryInteractObject(val) {
@@ -69,25 +69,6 @@ export class UsageReportsComponent implements OnInit {
       pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
   }
-
-  setTelemetryImpression() {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      object: {
-        id: this.userService.userid,
-        type: 'user',
-        ver: '1.0'
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.router.url
-      }
-    };
-  }
-
   renderReport(report: any) {
     this.currentReport = report;
     this.isTableDataLoaded = false;
@@ -135,6 +116,27 @@ export class UsageReportsComponent implements OnInit {
       this.tables.push(tableData);
     });
     this.isTableDataLoaded = true;
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        object: {
+          id: this.userService.userid,
+          type: 'user',
+          ver: '1.0'
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.router.url,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 
   downloadCSV(url) {

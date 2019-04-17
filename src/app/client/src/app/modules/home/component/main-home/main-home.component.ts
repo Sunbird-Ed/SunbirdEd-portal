@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { CoursesService, UserService, PlayerService } from '@sunbird/core';
-import { ResourceService, ToasterService, ServerResponse, ConfigService, UtilService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse, ConfigService, UtilService, NavigationHelperService } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 /**
@@ -17,7 +17,7 @@ import * as _ from 'lodash-es';
   styleUrls: ['./main-home.component.scss']
 })
 
-export class MainHomeComponent implements OnInit, OnDestroy {
+export class MainHomeComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
   * inviewLogs
  */
@@ -188,7 +188,8 @@ export class MainHomeComponent implements OnInit, OnDestroy {
    */
   constructor(resourceService: ResourceService, private playerService: PlayerService,
     userService: UserService, courseService: CoursesService, toasterService: ToasterService,
-    route: Router, activatedRoute: ActivatedRoute, configService: ConfigService, utilService: UtilService) {
+    route: Router, activatedRoute: ActivatedRoute, configService: ConfigService, utilService: UtilService,
+    public navigationhelperService: NavigationHelperService) {
     this.userService = userService;
     this.courseService = courseService;
     this.resourceService = resourceService;
@@ -247,17 +248,6 @@ export class MainHomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // this.populateUserProfile();
     this.populateEnrolledCourse();
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
-      }
-    };
     this.addSlideConfig();
   }
   /**
@@ -366,5 +356,21 @@ export class MainHomeComponent implements OnInit, OnDestroy {
       type: 'user',
       ver: '1.0'
     };
+  }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.activatedRoute.snapshot.data.telemetry.uri,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 }
