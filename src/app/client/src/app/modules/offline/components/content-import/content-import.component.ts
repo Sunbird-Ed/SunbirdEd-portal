@@ -1,14 +1,13 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import { FineUploader, UIOptions } from 'fine-uploader';
 import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
 import * as _ from 'lodash-es';
 import { ConfigService, ToasterService, ResourceService } from '@sunbird/shared';
-import { EventEmitter } from 'events';
 import {
   IErrorEventData, IStartEventInput, IEndEventInput
 } from '@sunbird/telemetry';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-content-import',
@@ -39,11 +38,13 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
 
   progress: any;
 
+  processingFiles: Boolean = false;
+
   /**
    * To show warning/error/success message
    */
   public tosterService: ToasterService;
-  public resourceService: ResourceService;
+  // public resourceService: ResourceService;
   /*
    * Default method of class FileUploadService
    *
@@ -52,10 +53,16 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
    */
   public fileuploadingError: IErrorEventData;
 
+  @ViewChild('modal') modal;
+  @Output() closeImportModal = new EventEmitter<any>();
+
+
   constructor(
     config: ConfigService,
     tosterService: ToasterService,
+    public resourceService: ResourceService,
     public activatedRoute: ActivatedRoute,
+    public router: Router
 
   ) {
     // this.progress = 0;
@@ -105,7 +112,6 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
         itemLimit: 100,
         allowedExtensions: ['ecar'],
         stopOnFirstInvalidFile: false,
-        acceptFiles: 'ecar'
       }
     };
   }
@@ -134,18 +140,38 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
       autoUpload: true,
       request: options.request,
       warnBeforeUnload: true,
-      validation: options.fileValidation,
       callbacks: {
         onComplete: (id, name, responseJSON, xhr) => {
           if (responseJSON.responseCode === 'OK') {
 
           }
         },
-        onUpload(id, name) {
+        onProgress: () => {
+          this.processingFiles = true;
         },
-        onCancel: (id, name) => {
+        onCancel: () => {
+          this.processingFiles = false;
 
-        }
+        },
+        onAllComplete: (id, name) => {
+          this.processingFiles = false;
+          const uploadingFailed = document.getElementsByClassName('qq-upload-fail');
+          const totalFiles = document.getElementsByClassName('qq-upload-list-selector');
+          const successFullyUploaded = document.getElementsByClassName('qq-upload-success');
+          if (uploadingFailed.length) {
+            this.tosterService.error(
+              `Content Import Failed: ${uploadingFailed.length} `
+            );
+          } else if (successFullyUploaded.length && uploadingFailed.length) {
+            this.tosterService.warning(
+              `Content Imported Scuessfully: ${successFullyUploaded.length} , Content Import Failed: ${uploadingFailed.length}`
+            );
+          } else if (successFullyUploaded.length) {
+            this.tosterService.success(
+              `Content Imported Scuessfully : ${successFullyUploaded.length}`
+            );
+          }
+        },
       },
     };
     this.getWindowObject.cancelUploadFile = () => {
@@ -155,4 +181,22 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
     this.uploader = new FineUploader(this.uiOptions);
   }
 
+  modalClose() {
+    const progressUploads = document.getElementsByClassName('qq-in-progress');
+    if (progressUploads.length) {
+      const isProgress = confirm('Contents are being uploaded');
+      if (isProgress) {
+        this.modal.deny();
+        this.router.navigate(['/']);
+        return false;
+      }
+      return false;
+    }
+    this.modal.deny();
+    this.router.navigate(['/']);
+
+  }
+  closeModal() {
+    this.closeImportModal.emit('success');
+  }
 }
