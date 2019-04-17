@@ -1,16 +1,16 @@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { TenantService, UserService, OtpService } from '@sunbird/core';
 import { first } from 'rxjs/operators';
-import { ResourceService, ToasterService } from '@sunbird/shared';
+import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 
 @Component({
   templateUrl: './update-phone.component.html',
   styleUrls: ['./update-phone.component.scss']
 })
-export class UpdatePhoneComponent implements OnInit {
+export class UpdatePhoneComponent implements OnInit, AfterViewInit {
   public phoneForm: FormGroup;
   public phoneNumber: number;
   public submitPhoneNumber = false;
@@ -22,7 +22,8 @@ export class UpdatePhoneComponent implements OnInit {
   public showUniqueError;
   otpData = {};
   constructor(public activatedRoute: ActivatedRoute, private tenantService: TenantService, public resourceService: ResourceService,
-    public userService: UserService, public otpService: OtpService, public toasterService: ToasterService) { }
+    public userService: UserService, public otpService: OtpService, public toasterService: ToasterService,
+    public navigationhelperService: NavigationHelperService) { }
 
   ngOnInit() {
     this.setTenantInfo();
@@ -106,17 +107,22 @@ export class UpdatePhoneComponent implements OnInit {
     window.location.href = `/v1/sso/phone/verified` +
     this.getQueryParams({ ...this.activatedRoute.snapshot.queryParams, ...{phone: this.phoneNumber}});
   }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env,
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.activatedRoute.snapshot.data.telemetry.uri,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
+  }
   private setTelemetryData() {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri
-      }
-    };
     this.submitPhoneInteractEdata = {
       id: 'submit-phone',
       type: 'click',
