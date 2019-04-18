@@ -58,6 +58,8 @@ module.exports = (app, keycloak) => {
 
   app.use(express.static(path.join(__dirname, '../dist'), { extensions: ['ejs'], index: false }))
 
+  app.use(express.static(path.join(__dirname, '../')))
+
   app.use(express.static(path.join(__dirname, '../tenant'), { index: false }))
 
   if (envHelper.DEFAULT_CHANNEL) {
