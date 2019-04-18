@@ -11,6 +11,7 @@
 
   &.small {
     min-width: 282px;
+    width: 100%;
   }
 
   &:focus-within {
@@ -123,6 +124,7 @@
       &.close {
         top: $base-block-space;
         left: $base-block-space;
+        right: unset;
       }
     }
     .sb-loader {

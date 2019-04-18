@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ResourceService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { OrgManagementService } from '../../services/org-management/org-management.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
@@ -17,7 +17,7 @@ import * as _ from 'lodash-es';
   selector: 'app-user',
   templateUrl: './user-upload.component.html'
 })
-export class UserUploadComponent implements OnInit, OnDestroy {
+export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('inputbtn') inputbtn: ElementRef;
   @ViewChild('modal') modal;
   /**
@@ -101,7 +101,8 @@ export class UserUploadComponent implements OnInit, OnDestroy {
   };
   constructor(orgManagementService: OrgManagementService, config: ConfigService,
     formBuilder: FormBuilder, toasterService: ToasterService, private router: Router,
-    resourceService: ResourceService, activatedRoute: ActivatedRoute, public userService: UserService) {
+    resourceService: ResourceService, activatedRoute: ActivatedRoute, public userService: UserService,
+    public navigationhelperService: NavigationHelperService) {
     this.resourceService = resourceService;
     this.sbFormBuilder = formBuilder;
     this.orgManagementService = orgManagementService;
@@ -143,17 +144,6 @@ export class UserUploadComponent implements OnInit, OnDestroy {
         ]
       }];
     this.showLoader = false;
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: 'profile-bulk-upload-user-upload',
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: this.router.url
-      }
-    };
     this.setInteractEventData();
   }
   /**
@@ -223,6 +213,22 @@ export class UserUploadComponent implements OnInit, OnDestroy {
     this.modal.deny();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: 'profile-bulk-upload-user-upload',
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          uri: this.router.url,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
   setInteractEventData() {
     this.userUploadInteractEdata = {

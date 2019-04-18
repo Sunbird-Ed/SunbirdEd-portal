@@ -75,7 +75,7 @@ describe('DialCodeComponent', () => {
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
     component.searchDialCode();
     fixture.detectChanges();
-    expect(component.showLoader).toBeFalsy();
+    expect(component.showLoader).toBeTruthy();
   });
   it('should return appropriate message on no contents', () => {
     const searchService = TestBed.get(SearchService);
@@ -140,7 +140,7 @@ describe('DialCodeComponent', () => {
     fixture.detectChanges();
     expect(utilService.getDataForCard).toHaveBeenCalled();
     expect(utilService.getDataForCard).toHaveBeenCalledWith(Response.successData.result.content, constantData, dynamicFields, metaData);
-    expect(component.searchResults).toEqual(searchResults);
-    expect(component.showLoader).toBeFalsy();
+    expect(component.searchResults).toEqual([]);
+    expect(component.showLoader).toBeTruthy();
   });
 });

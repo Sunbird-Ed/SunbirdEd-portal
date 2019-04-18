@@ -27,7 +27,7 @@
             <div class="field">
               <input formControlName="email" type="text" name="email">
             </div>
-            <label class="ui basic blue error label pt-0" *ngIf="contactTypeForm.controls.email.touched && contactTypeForm.controls['email'].errors">{{resourceService?.frmelmnts?.lbl?.validEmail}}</label>
+            <label class="ui basic blue error label pt-0" *ngIf="contactTypeForm.controls.email.dirty && contactTypeForm.controls['email'].errors">{{resourceService?.frmelmnts?.lbl?.validEmail}}</label>
             <label class="ui basic blue error label pt-0" *ngIf="showUniqueError && !(contactTypeForm.controls.email.touched && contactTypeForm.controls['email'].errors)">{{showUniqueError}}</label>
           </div>
           <div class="field" *ngSwitchCase="'phone'">
@@ -38,7 +38,7 @@
                 <i class=" icon">{{resourceService?.frmelmnts?.lbl?.indPhoneCode}}-</i>
               </div>
             </div>
-            <label class="ui basic blue error label pt-0" *ngIf="contactTypeForm.controls.phone.touched && contactTypeForm.controls['phone'].errors">{{resourceService?.frmelmnts?.lbl?.validPhone}}</label>
+            <label class="ui basic blue error label pt-0" *ngIf="contactTypeForm.controls.phone.dirty && contactTypeForm.controls['phone'].errors">{{resourceService?.frmelmnts?.lbl?.validPhone}}</label>
             <label class="ui basic blue error label pt-0" *ngIf="showUniqueError && !(contactTypeForm.controls.phone.touched && contactTypeForm.controls['phone'].errors)">{{showUniqueError}}</label>
           </div>
         </div>
