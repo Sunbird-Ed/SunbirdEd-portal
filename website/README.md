@@ -2,13 +2,15 @@
 
 ### Build
 
-1. Build CSS from SCSS files
+1. Run `npm install` to download the dependencies
+
+2. Build CSS from SCSS files
 
 Execute the command `npm run build-css` to build the css.
 
 The output CSS file is available at dist/style.css.
 
-2. Compile included HTML files
+3. Compile included HTML files
 
 Execute the command `npm run compile-html` to embed the content of included HTML files.
 
