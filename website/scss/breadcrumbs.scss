@@ -1,0 +1,28 @@
+.breadcrumbs {
+	list-style: none;
+	padding:0;
+}
+
+.breadcrumbs li {
+	display: inline-block;
+}
+
+.breadcrumbs li, .breadcrumbs li a {
+	color:#444444;
+	font-size:14px;
+  line-height: 20px;
+  a {
+  	font-weight: bold;
+  	&:hover {
+  		color: #1cadce;
+  	}
+  }
+}
+
+.breadcrumbs li i {
+  margin: 0 8px;
+  line-height: .1;
+  position: relative;
+  top: 6px;
+  font-size: 22px
+}

@@ -1,0 +1,42 @@
+.navbar-collapse{overflow:hidden;}
+body > header {
+	color:#FFF;
+	background: #0d9474;
+    background: -moz-linear-gradient(45deg, #0d9474 0%, #2a6fa8 100%);
+	background: -o-linear-gradient(45deg, #0d9474 0%, #2a6fa8 100%); 
+    background: -webkit-linear-gradient(45deg, #0d9474 0%, #2a6fa8 100%);
+    background: linear-gradient(45deg, #0d9474 0%, #2a6fa8 100%);
+    position:fixed;
+    width:100%;
+    top:0;
+    left:0;
+    z-index: 2;
+}
+.logo{
+	padding-top:10px;
+	padding-bottom:10px;
+}
+.signup{padding-top:25px; padding-bottom:10px;}
+.main-menu{min-height:0;margin-bottom: 0;}
+.navbar-nav > li{list-style:none;padding:5px 10px;}
+.navbar-nav > li > a{color:#f0f0f0; font-weight:500;}
+.navbar-nav > li:hover > a,
+.navbar-nav > li:active > a,
+.navbar-nav > li:focus > a{color:#fff;text-decoration:underline;}
+@media screen and (min-width:768px){
+.main-menu{padding:30px 0 20px 0;}
+}
+.collapse {
+    display: none;
+}
+.collapse.in {
+    display: block;
+}
+.fixed-content{margin-top:75px;}
+@media (min-width: 768px){
+	.main-menu .navbar-nav {
+		padding:0;
+	}
+}
+.navbar{border:0;}
+.navbar-toggle{margin-right:0;}

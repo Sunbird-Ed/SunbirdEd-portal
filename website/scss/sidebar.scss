@@ -1,0 +1,256 @@
+
+.sidebar {
+	@media (max-width: $screen-sm-max) {
+		display: none;
+	}
+}
+
+.logo-container {
+	@media (max-width: $screen-sm-max) {
+		.dropdown-toggle {
+			background-color: transparent;
+			border: 1px solid transparent;
+			background-image: none;
+			border-radius: 4px;
+			text-align: center;
+			position: fixed;
+			top: 0;
+			right: 10px;
+			line-height: 43px;
+			font-size: 28px;
+			padding: 4px;
+			color: #fff;
+			margin: 0;
+			display: block !important;
+			z-index: 3;
+		}
+	}
+	.logo {
+		position: fixed;
+		top: 0;
+		width: 275px;
+		text-align:center;
+		img {
+			max-height:55px;
+			margin-top: 5px;
+		}	
+		@media (max-width: $screen-sm-max) {
+			width: 100%;
+			padding: 10px 15px;
+			background-color: #1D2A38;
+			position: fixed;
+			height: 53px;
+			top: 0;
+			left: 0;
+			right: 0;
+			z-index: 2;
+			img {
+				width: 130px;
+			}
+		}
+	}
+	.dropdown-toggle {
+		display: none;
+		outline: none;
+	}
+}
+
+.sidebar-container {
+	@media (max-width: $screen-sm-max) {
+		display: none;
+		position: fixed;
+		top: 60px;
+		background: #0d9474;
+		background: -moz-linear-gradient(45deg, #0d9474 0%, #2a6fa8 100%);
+		background: -webkit-linear-gradient(45deg, #0d9474 0%, #2a6fa8 100%);
+		background: linear-gradient(45deg, #0d9474 0%, #2a6fa8 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0d9474', endColorstr='#2a6fa8',GradientType=1 );
+		z-index:100;
+		max-height:calc(100% - 60px);
+		overflow-y:auto;
+		width:100%;
+	}
+	.inner__searchbar {
+		@media (min-width: $screen-sm-max) {
+		  position: fixed;
+		  top: 70px;
+		  width: 290px;
+		}
+	  .search {
+	    .search-icon {
+				position: absolute;
+	      right: 20px;
+	      top: 20px;
+	    }
+			.search-bar {
+				padding: 15px;
+			}
+	    .search-results {
+		  position: fixed;
+	      top: 114px;
+	      bottom: 0;
+	      left: 0;
+	      width: 290px;
+				transition: all 0.2s ease-in;
+		    -webkit-transition: all 0.2s ease-in;
+				@media (max-width: $screen-sm-max) {
+					position: relative;
+					width: 100%;
+					top: 0;
+				}
+	    }
+	  }
+	}
+	.inner__sidebar {
+		overflow-y: scroll;
+		padding: 0 0 10px 15px;
+		@media (min-width: $screen-sm-max) {
+			position: fixed;
+			bottom: 0px;
+			top: 60px;
+			width: 290px;
+			&::-webkit-scrollbar {
+		    width: 10px;
+			}
+			&::-webkit-scrollbar-track {
+		    background-color:rgba(255,255,255,0.3);
+			}
+			&::-webkit-scrollbar-thumb {
+		    border-radius: 0;
+		    background-color:#ddd;
+		    border: 0;
+			}
+		}
+		.sidebar-wrapper {
+			.sidebar-group {
+				display:block;
+				list-style:none;
+				padding-left: 10px;
+				margin-left: 3px;
+				border-left: 1px solid rgba(255, 255, 255, 0.5);
+				li {
+					margin-top: 5px;
+					a {
+						font-size:14px;
+						font-weight:normal;
+						text-decoration: none;
+						line-height: 19px;
+						margin: 7px 0 0 0;
+						display: block;
+						color: #ddd;
+					}
+					a:hover {
+						color: #ffffff;
+					}
+					a.sidebar-link-selected {
+						color:#ffffff;
+						font-weight:bold;
+					}
+					.premium {
+						color: #ffffff;
+						margin-left: 5px;
+					}
+					.sidebar-group-title {
+						font-size:14px;
+						font-weight:bold;
+						color: #eee;
+						text-transform: none;
+						line-height: 19px;
+						margin: 10px 0 0 0;
+						display: block
+					}
+				}
+			}
+			.sidebar-group-title {
+				text-decoration: none;
+				line-height: 19px;
+				color:#ffffff;
+				text-transform: uppercase;
+				font-weight: bold;
+				font-size: 16px;
+				display: flex;
+				margin-top: 20px;
+				.fa,
+				.plus-minus {
+					width:12px;
+					margin-right: 8px;
+					text-align: center;
+				}
+				.fa {
+					font-size: 14px;
+				  padding-top: 3px;
+				}
+			}
+		}
+	}
+	.inner__supportbar {
+	  position: fixed;
+	  bottom: 0;
+	  background: rgb(80, 80, 80);
+		@media (max-width: $screen-sm-max) {
+			position: relative;
+		}
+	  a {
+	    font-size: 14px;
+	    padding: 10px 0px;
+			width: 275px;
+			text-align: center;
+	    display: inline-block;
+	    color: #cecece;
+			@media (max-width: $screen-sm-max) {
+				width: 100%;
+			}
+	    &:hover {
+	      color: #ffffff;
+	      background-color: #2A3745;
+	    }
+	  }
+	}
+}
+.sidebar-container{
+	@media (min-width: 991px) {
+		width: 290px;
+		height: 100vh;
+		background: #0d9474;
+		background: -moz-linear-gradient(45deg, #0d9474 0%, #2a6fa8 100%);
+		background: -webkit-linear-gradient(45deg, #0d9474 0%, #2a6fa8 100%);
+		background: linear-gradient(45deg, #0d9474 0%, #2a6fa8 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0d9474', endColorstr='#2a6fa8',GradientType=1 );
+	}
+}
+/*
+Uncomment this in multiversion
+.sidebar-container .inner__sidebar .sidebar-wrapper .sidebar-group {
+	display:none;
+}*/
+.sidebar-container .inner__sidebar .sidebar-wrapper .section.active .sidebar-group {
+	display:block;
+}
+.section-developer-docs.path-apis .sidebar-group{
+	display:block !important;
+}
+
+/* Multiversion - Remove from Here*/
+.sidebar-group.architecture,
+.sidebar-group.features-documentation,
+.sidebar-group.developer-docs,
+.sidebar-group.usertaskflow,
+.sidebar-group.contributions,
+.sidebar-group.apis,
+.sidebar-group.faqs{display:none !important;}
+
+.sidebar-wrapper.architecture .sidebar-group.architecture,
+.sidebar-wrapper.architecture-views .sidebar-group.architecture,
+.sidebar-wrapper.features-documentation .sidebar-group.features-documentation,
+.sidebar-wrapper.features-documentation-badging-framework .sidebar-group.features-documentation,
+.sidebar-wrapper.usertaskflow .sidebar-group.usertaskflow,
+.sidebar-wrapper.features-documentation-mobileapp .sidebar-group.features-documentation,
+.sidebar-wrapper.developer-docs .sidebar-group.developer-docs,
+.sidebar-wrapper.contributions .sidebar-group.contributions,
+.sidebar-wrapper.developer-docs-installation .sidebar-group.developer-docs,
+.sidebar-wrapper.developer-docs-singlesignon .sidebar-group.developer-docs,
+.sidebar-wrapper.developer-docs-configuring-sunbird .sidebar-group.developer-docs,
+.sidebar-wrapper.developer-docs-telemetry .sidebar-group.developer-docs,
+.sidebar-wrapper.apis .sidebar-group.apis,
+.sidebar-wrapper.faqs .sidebar-group.faqs{display:block !important;}
+/* Multiversion - Remove upto Here*/
