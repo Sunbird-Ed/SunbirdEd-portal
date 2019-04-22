@@ -1,8 +1,9 @@
 
 import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
-import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage } from '@sunbird/shared';
+import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
+NavigationHelperService } from '@sunbird/shared';
 import { SearchService, UserService } from '@sunbird/core';
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
@@ -12,7 +13,7 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
   selector: 'app-org-search',
   templateUrl: './org-search.component.html'
 })
-export class OrgSearchComponent implements OnInit {
+export class OrgSearchComponent implements OnInit, AfterViewInit {
 
   /**
    * Reference of toaster service
@@ -120,7 +121,7 @@ export class OrgSearchComponent implements OnInit {
   constructor(searchService: SearchService, route: Router,
     activatedRoute: ActivatedRoute, paginationService: PaginationService, resourceService: ResourceService,
     toasterService: ToasterService, public ngZone: NgZone, config: ConfigService,
-    userService: UserService) {
+    userService: UserService, public navigationhelperService: NavigationHelperService) {
     this.searchService = searchService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -231,17 +232,6 @@ export class OrgSearchComponent implements OnInit {
   ngOnInit() {
     this.getQueryParams();
     this.setInteractEventData();
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.route.url,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
-      }
-    };
   }
   setInteractEventData() {
     this.closeIntractEdata = {
@@ -259,6 +249,22 @@ export class OrgSearchComponent implements OnInit {
       type: 'click',
       pageid: 'organization-search'
     };
+  }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.route.url,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
   inview(event) {
     _.forEach(event.inview, (inview, key) => {

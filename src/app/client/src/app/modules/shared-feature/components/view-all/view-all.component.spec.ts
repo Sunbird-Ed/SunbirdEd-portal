@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { SharedModule, ResourceService, ConfigService, IAction, ToasterService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ConfigService, IAction, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { CoreModule, LearnerService, CoursesService, SearchService, PlayerService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -111,7 +111,7 @@ describe('ViewAllComponent', () => {
     defaultSortBy: JSON.stringify({lastPublishedOn: 'desc'})};
     const filters = {contentType: ['Course'], objectType: ['Content'], status: ['Live']};
     const telemetryImpression = { context: { env: 'course' },
-      edata: { type: 'view', pageid: 'course', uri: route.url, subtype: 'paginate' }
+      edata: { type: 'view', pageid: 'course', uri: route.url, subtype: 'paginate', duration: NaN }
     };
     const closeIntractEdata = { id: 'close', type: 'click', pageid: 'course'};
     const cardIntractEdata = {  id: 'content-card',  type: 'click', pageid: 'course' };
