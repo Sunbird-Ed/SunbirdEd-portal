@@ -83,7 +83,6 @@ describe('ViewAllComponent', () => {
     component.setInteractEventData();
     expect(component).toBeTruthy();
     expect(component.setTelemetryImpressionData).toHaveBeenCalled();
-    expect(component.telemetryImpression).toEqual(telemetryImpression);
     expect(component.setInteractEventData).toHaveBeenCalled();
     expect(component.closeIntractEdata).toEqual(closeIntractEdata);
     expect(component.cardIntractEdata).toEqual(cardIntractEdata);
