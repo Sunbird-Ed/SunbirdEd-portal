@@ -1,8 +1,8 @@
 import { takeUntil, mergeMap } from 'rxjs/operators';
 import { Subject, combineLatest } from 'rxjs';
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { BatchService } from '../../services';
@@ -14,7 +14,7 @@ import * as moment from 'moment';
   templateUrl: './update-batch.component.html',
   styleUrls: ['./update-batch.component.scss']
 })
-export class UpdateBatchComponent implements OnInit, OnDestroy {
+export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('updateBatchModal') private updateBatchModal;
   /**
@@ -100,7 +100,8 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
     route: Router,
     resourceService: ResourceService, userService: UserService,
     batchService: BatchService,
-    toasterService: ToasterService) {
+    toasterService: ToasterService,
+    public navigationhelperService: NavigationHelperService) {
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
@@ -402,17 +403,23 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.router.url
+        uri: this.router.url,
+        duration: this.navigationhelperService.getPageLoadTime()
       },
       object: {
-        id: this.batchId,
+        id: this.activatedRoute.snapshot.params.batchId,
         type: this.activatedRoute.snapshot.data.telemetry.object.type,
         ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
         rollup: {
-          l1: this.batchId
+          l1: this.activatedRoute.snapshot.params.batchId
         }
       }
     };
+  }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.setTelemetryImpressionData();
+    });
   }
   ngOnDestroy() {
     if (this.updateBatchModal && this.updateBatchModal.deny) {

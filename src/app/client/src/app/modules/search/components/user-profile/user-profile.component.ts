@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
+import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService,
+NavigationHelperService } from '@sunbird/shared';
 import { UserSearchService } from './../../services';
 import { BadgesService, LearnerService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -16,7 +17,7 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, AfterViewInit {
   /**
 	 * Contains unique announcement id
 	 */
@@ -127,7 +128,8 @@ export class UserProfileComponent implements OnInit {
     learnerService: LearnerService,
     configService: ConfigService,
     userService: UserService,
-    router: Router) {
+    router: Router,
+    public navigationhelperService: NavigationHelperService) {
     this.userSearchService = userSearchService;
     this.badgesService = badgesService;
     this.activatedRoute = activatedRoute;
@@ -255,25 +257,31 @@ export class UserProfileComponent implements OnInit {
         this.activatedRoute.params.subscribe(params => {
           this.userId = params.userId;
           this.populateUserProfile();
-          this.telemetryImpression = {
-            context: {
-              env: this.activatedRoute.snapshot.data.telemetry.env
-            },
-            object: {
-              id: this.userId,
-              type: 'user',
-              ver: '1.0'
-            },
-            edata: {
-              type: this.activatedRoute.snapshot.data.telemetry.type,
-              pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-              uri: this.route.url,
-              subtype: this.activatedRoute.snapshot.data.telemetry.subtype
-            }
-          };
         });
         this.queryParams = this.activatedRoute.snapshot.queryParams;
       }
+    });
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        object: {
+          id: this.activatedRoute.snapshot.params.userId,
+          type: 'user',
+          ver: '1.0'
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.route.url,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
     });
   }
   /**

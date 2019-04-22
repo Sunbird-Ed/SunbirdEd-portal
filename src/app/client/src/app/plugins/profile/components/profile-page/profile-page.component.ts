@@ -1,8 +1,9 @@
 import { ProfileService } from '../../services';
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { UserService, SearchService, PlayerService, CoursesService, OrgDetailsService } from '@sunbird/core';
 import {
-  ResourceService, ConfigService, ServerResponse, IUserProfile, IUserData, ToasterService, UtilService
+  ResourceService, ConfigService, ServerResponse, IUserProfile, IUserData, ToasterService, UtilService,
+  NavigationHelperService
 } from '@sunbird/shared';
 import { first } from 'rxjs/operators';
 import * as _ from 'lodash-es';
@@ -14,7 +15,7 @@ import { CacheService } from 'ng2-cache-service';
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.scss']
 })
-export class ProfilePageComponent implements OnInit, OnDestroy {
+export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('profileModal') profileModal;
   @ViewChild('slickModal') slickModal;
@@ -44,7 +45,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   constructor(private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
     public configService: ConfigService, public router: Router, public utilService: UtilService, public searchService: SearchService,
-    private playerService: PlayerService, private activatedRoute: ActivatedRoute, public orgDetailsService: OrgDetailsService) {
+    private playerService: PlayerService, private activatedRoute: ActivatedRoute, public orgDetailsService: OrgDetailsService,
+    public navigationhelperService: NavigationHelperService) {
   }
 
   ngOnInit() {
@@ -176,22 +178,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   }
 
   setInteractEventData() {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      object: {
-        id: this.userService.userid,
-        type: 'User',
-        ver: '1.0'
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: 'profile-read',
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: this.router.url,
-      }
-    };
     this.myFrameworkEditEdata = {
       id: 'profile-edit-framework',
       type: 'click',
@@ -217,6 +203,28 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       type: 'User',
       ver: '1.0'
     };
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        object: {
+          id: this.userService.userid,
+          type: 'User',
+          ver: '1.0'
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: 'profile-read',
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          uri: this.router.url,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 
   ngOnDestroy() {
