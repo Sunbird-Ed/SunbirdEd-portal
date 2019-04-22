@@ -1,7 +1,8 @@
 .sb-card {
+  width: $sb-card-width;
   max-width: $sb-card-width;
+  height: $sb-card-height;
   background-color: $sb-card-bg-color;
-  box-shadow: $sb-card-box-shadow;
   border: $sb-card-border;
   border-radius: $sb-card-border-radius;
   cursor: pointer;
@@ -9,6 +10,7 @@
   margin-top: $sb-card-hover-movement;
   &:hover {
     transform: translateY(-$sb-card-hover-movement);
+    box-shadow: $sb-card-box-shadow;
   }
   .sb-card-body {
     height: $sb-card-body-height;
