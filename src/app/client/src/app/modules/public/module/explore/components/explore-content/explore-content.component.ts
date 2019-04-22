@@ -95,12 +95,16 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     private fetchContents() {
         let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
         filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-          const softConstraintData = {
-            filters: {channel: this.hashTagId,
-            board: [this.dataDrivenFilters.board]},
+          const softConstraintData: any = {
+            filters: {
+                channel: this.hashTagId,
+            },
             softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
             mode: 'soft'
           };
+          if (this.dataDrivenFilters.board) {
+            softConstraintData.board = [this.dataDrivenFilters.board];
+          }
           const manipulatedData = this.utilService.manipulateSoftConstraint( _.get(this.queryParams,
              'appliedFilters'), softConstraintData );
         const option = {
