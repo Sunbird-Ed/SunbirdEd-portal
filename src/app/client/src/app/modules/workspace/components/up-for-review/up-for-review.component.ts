@@ -1,12 +1,13 @@
 
 import { combineLatest,  Observable } from 'rxjs';
 import { WorkSpace } from './../../classes/workspace';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchService, UserService, PermissionService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
-  ResourceService, IContents, ILoaderMessage, INoResultMessage, IUserData
+  ResourceService, IContents, ILoaderMessage, INoResultMessage, IUserData,
+  NavigationHelperService
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
@@ -21,7 +22,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
   selector: 'app-up-for-review',
   templateUrl: './up-for-review.component.html'
 })
-export class UpForReviewComponent extends WorkSpace implements OnInit {
+export class UpForReviewComponent extends WorkSpace implements OnInit, AfterViewInit {
   /**
   * To navigate to other pages
   */
@@ -142,7 +143,8 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
-    config: ConfigService, permissionService: PermissionService) {
+    config: ConfigService, permissionService: PermissionService,
+    public navigationhelperService: NavigationHelperService) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
@@ -174,19 +176,6 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
         this.queryParams = bothParams.queryParams;
         this.fecthUpForReviewContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
       });
-
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
-        visits: this.inviewLogs
-      }
-    };
   }
 
   /**
@@ -287,6 +276,22 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
     this.telemetryImpression.edata.visits = this.inviewLogs;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
+          visits: this.inviewLogs
+        }
+      };
+    });
   }
   getContentType() {
     this.userService.userData$.subscribe(
