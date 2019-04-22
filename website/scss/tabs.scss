@@ -1,0 +1,25 @@
+.inner__content .tabs {
+	.switcher {
+		margin-bottom: 20px;
+    position: relative;
+    top: -30px;
+    padding-right: 30px;
+    border-top: 3px solid #c7d4e4;
+
+    > div > .btn {
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: bold;
+      padding: 15px 30px;
+      color: #444444;
+      background-color: #c7d4e4;
+      border-radius: 0 0 3px 3px;
+      border: none;
+      margin-right: 1px;
+
+      &.btn-inactive {
+        background-color: #EFF4F5;
+      }
+    }
+	}
+}
