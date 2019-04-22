@@ -60,13 +60,13 @@
               <b>{{resourceService?.frmelmnts?.lbl?.participants}}&nbsp;:
               </b>  &nbsp;&nbsp; {{dashboarData.count}}
             </span>
-            <span *ngIf="dashboarData.completedCount" class="course-completed pl-15">
+            <span *ngIf="dashboarData.completedCount!==null" class="course-completed pl-15">
               <b>{{resourceService?.frmelmnts?.lbl?.completedCourse}}&nbsp;:
               </b>
               &nbsp;&nbsp;{{dashboarData.completedCount}}
             </span>
             
-            <span class="course-completed ml-auto" *ngIf="dashboarData.reportUpdatedOn">
+            <span class="course-completed ml-auto" *ngIf="dashboarData.reportUpdatedOn && dashboarData.reportUpdatedOn!==null">
               <span class="font-italic">{{resourceService?.frmelmnts?.lbl?.reportUpdatedOn}}</span>&nbsp;:&nbsp;{{dashboarData.reportUpdatedOn | dateFormat :'DD/MM/YYYY'}}
             </span>
           </div>
