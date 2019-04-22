@@ -16,10 +16,10 @@
   }
 
   &.sb-toast-sm-padding {
-    padding: 16px 24px;
+    padding: $base-block-space*2 $base-block-space*3;
     min-height: auto;
   }
-  
+
   &.sb-toast-info,
   &.sb-toast-success,
   &.sb-toast-warning,
