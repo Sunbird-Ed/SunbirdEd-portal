@@ -49,7 +49,7 @@ module.exports = {
     context.sid = req.sessionID
     context.did = req.session.deviceId
     context.rollup = telemetry.getRollUpData(dims)
-    const actor = telemetry.getActorData(req.kauth.grant.access_token.content.sub, 'user')
+    const actor = telemetry.getActorData(req.session.userId, 'user')
     telemetry.start({
       edata: edata,
       context: context,
@@ -63,7 +63,7 @@ module.exports = {
    */
   logSessionEnd: function (req) {
     const edata = telemetry.endEventData('session')
-    const actor = telemetry.getActorData(req.kauth.grant.access_token.content.sub, 'user')
+    const actor = telemetry.getActorData(req.session.userId, 'user')
     var dims = _.clone(req.session.orgs || [])
     var channel = req.session.rootOrghashTagId || _.get(req, 'headers.X-Channel-Id')
     const context = telemetry.getContextData({ channel: channel, env: 'user' })
@@ -407,7 +407,7 @@ module.exports = {
       'ver': '3.0',
       'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
       'params': {
-        'requesterId': req.kauth.grant.access_token.content.sub,
+        'requesterId': req.session.userId,
         'did': telemtryEventConfig.default_did,
         'msgid': uuidv1()
       },

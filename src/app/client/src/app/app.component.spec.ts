@@ -2,9 +2,8 @@
 import { Observable, of } from 'rxjs';
 import { ConfigService, ToasterService, ResourceService, SharedModule, NavigationHelperService,
   BrowserCacheTtlService } from '@sunbird/shared';
-import {
-  UserService, LearnerService, CoursesService, PermissionService, TenantService, PublicDataService,
-  ConceptPickerService, SearchService, ContentService, CoreModule, OrgDetailsService, DeviceRegisterService
+import { UserService, LearnerService, CoursesService, PermissionService, TenantService,
+  PublicDataService, SearchService, ContentService, CoreModule, OrgDetailsService, DeviceRegisterService
 } from '@sunbird/core';
 import { TelemetryService, TELEMETRY_PROVIDER } from '@sunbird/telemetry';
 import { TestBed, async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
@@ -12,11 +11,11 @@ import { mockData } from './app.component.spec.data';
 import { AppComponent } from './app.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { RouterTestingModule } from '@angular/router/testing';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { CacheService } from 'ng2-cache-service';
+import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } from '@angular/animations';
 
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 
@@ -42,7 +41,7 @@ describe('AppComponent', () => {
   let userService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule.forRoot(),
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
         RouterTestingModule],
       declarations: [
         AppComponent
@@ -50,10 +49,10 @@ describe('AppComponent', () => {
       providers: [
         { provide: Router, useClass: RouterStub},
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        ToasterService, TenantService, CacheService,
+        ToasterService, TenantService, CacheService, AnimationBuilder,
         UserService, ConfigService, LearnerService, BrowserCacheTtlService,
         PermissionService, ResourceService, CoursesService, OrgDetailsService, ProfileService,
-        TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, ConceptPickerService, SearchService, ContentService],
+        TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, SearchService, ContentService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
@@ -90,7 +89,7 @@ describe('AppComponent', () => {
     userService._authenticated = true;
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
-    spyOn(learnerService, 'get').and.returnValue(of(mockData.success));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
     component.ngOnInit();
     const config = {
       userOrgDetails: {
@@ -112,10 +111,11 @@ describe('AppComponent', () => {
         sid: component.userService.sessionId,
         channel: _.get(userService.userProfile, 'rootOrg.hashTagId'),
         env: 'home',
-        enableValidation: true
+        enableValidation: true,
+        timeDiff: 0
       }
     };
-    expect(telemetryService.initialize).toHaveBeenCalledWith(config);
+    expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
   });
   it('should call register Device api for login Session', () => {
     const learnerService = TestBed.get(LearnerService);
@@ -123,12 +123,12 @@ describe('AppComponent', () => {
     const tenantService = TestBed.get(TenantService);
     const deviceRegisterService = TestBed.get(DeviceRegisterService);
     userService._authenticated = true;
-    spyOn(deviceRegisterService, 'registerDevice');
+    spyOn(deviceRegisterService, 'initialize');
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
-    spyOn(learnerService, 'get').and.returnValue(of(mockData.success));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
     component.ngOnInit();
-    expect(deviceRegisterService.registerDevice).toHaveBeenCalledWith('b00bc992ef25f1a9a8d63291e20efc8d');
+    expect(deviceRegisterService.initialize).toHaveBeenCalledWith('b00bc992ef25f1a9a8d63291e20efc8d');
   });
 const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654', rootOrgId: '1235654'}] }}};
   it('should config telemetry service for Anonymous Session', () => {
@@ -159,22 +159,23 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
         sid: component.userService.anonymousSid,
         channel: '1235654',
         env: 'home',
-        enableValidation: true
+        enableValidation: true,
+        timeDiff: 0
       }
     };
-    expect(telemetryService.initialize).toHaveBeenCalledWith(config);
+    expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
   });
   it('should call register Device api for Anonymous Session', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
     const publicDataService = TestBed.get(PublicDataService);
     const tenantService = TestBed.get(TenantService);
     const deviceRegisterService = TestBed.get(DeviceRegisterService);
-    spyOn(deviceRegisterService, 'registerDevice');
+    spyOn(deviceRegisterService, 'initialize');
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({}));
     orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
     component.ngOnInit();
-    expect(deviceRegisterService.registerDevice).toHaveBeenCalledWith('1235654');
+    expect(deviceRegisterService.initialize).toHaveBeenCalledWith('1235654');
   });
 
   it('Should subscribe to tenant service and retrieve title and favicon details', () => {
@@ -200,15 +201,15 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
     expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
   });
-  it('should check framework key is in user read api and open the popup  ', async(() => {
+  it('should check framework key is in user read api and open the popup  ', () => {
     const learnerService = TestBed.get(LearnerService);
     const publicDataService = TestBed.get(PublicDataService);
     const tenantService = TestBed.get(TenantService);
     userService._authenticated = true;
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
-    spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
-    spyOn(learnerService, 'get').and.returnValue(of(mockData.success));
+    spyOn(publicDataService, 'postWithHeaders').and.returnValue(of({result: { response: { content: 'data'} } }));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
     component.ngOnInit();
     expect(component.showFrameWorkPopUp).toBeTruthy();
-  }));
+  });
 });

@@ -22,11 +22,10 @@
     }
   }
 
-  .header-white {
-    padding: 10px;
-
+  &>.container {
+    padding: $base-block-space;
     @media only screen and (min-width: 768px) {
-      padding: 10px 0;
+      padding: $base-block-space 0;
     }
   }
 }
@@ -115,8 +114,7 @@
     font-size: 0.86rem;
     border-radius: 3px;
     font-weight: bold;
-    height: 30px;
-    padding: 7px 15px;
+    padding: 8px 16px;
 
     @media screen and (min-width: 1024px) {
       color: $white-color;

@@ -8,9 +8,9 @@ import {
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
 
 /**
  * The draft component search for all the drafts
@@ -130,6 +130,8 @@ export class DraftComponent extends WorkSpace implements OnInit {
     * To call resource service which helps to use language constant
    */
     public resourceService: ResourceService;
+
+    private telemetryInteractObject: IInteractEventObject ;
     /**
      * inviewLogs
     */
@@ -238,6 +240,11 @@ export class DraftComponent extends WorkSpace implements OnInit {
             this.showLockedContentModal = true;
         } else {
             if (param.action.eventName === 'delete') {
+                this.telemetryInteractObject = {
+                    id: param.data.metaData.identifier,
+                    type: param.data.metaData.contentType,
+                    ver: '1.0'
+                };
                 this.deleteConfirmModal(param.data.metaData.identifier);
             } else {
                 this.workSpaceService.navigateToContent(param.data.metaData, this.state);

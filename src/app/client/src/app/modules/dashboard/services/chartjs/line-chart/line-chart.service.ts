@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { DashboardData } from './../../../interfaces';
 
 /**
@@ -64,7 +64,7 @@ export class LineChartService {
       i++;
     });
 
-    _.forOwn(groupList, (group, groupId) => {
+    _.forOwn(groupList, (group: any, groupId) => {
       chartList.push({ yaxesData: group.yAxes, xaxesData: group.xAxes, chartOptions: group.options, chartColors: group.colors });
     });
 

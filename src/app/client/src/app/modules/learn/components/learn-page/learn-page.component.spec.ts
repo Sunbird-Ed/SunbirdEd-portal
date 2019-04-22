@@ -6,7 +6,7 @@ import { ResourceService, ToasterService, SharedModule, ConfigService, UtilServi
 import { PageApiService, CoursesService, CoreModule, PlayerService, FormService, LearnerService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './learn-page.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -47,7 +47,7 @@ describe('LearnPageComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
+      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [LearnPageComponent],
       providers: [{ provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
@@ -125,7 +125,7 @@ describe('LearnPageComponent', () => {
     expect(component.enrolledSection.contents.length).toEqual(1);
     expect(component.frameWorkName).toEqual('TPD');
     expect(component.showLoader).toBeFalsy();
-    expect(component.carouselData.length).toEqual(1);
+    expect(component.carouselMasterData.length).toEqual(1);
   }));
   it('should not throw error if fetching frameWork from form service fails', fakeAsync(() => {
     coursesService.initialize();
@@ -136,7 +136,7 @@ describe('LearnPageComponent', () => {
     expect(component.enrolledSection.contents.length).toEqual(1);
     expect(component.frameWorkName).toEqual(undefined);
     expect(component.showLoader).toBeFalsy();
-    expect(component.carouselData.length).toEqual(1);
+    expect(component.carouselMasterData.length).toEqual(1);
   }));
   it('should fetch content after getting hashTagId and filter data and throw error if page api fails', fakeAsync(() => {
     sendPageApi = false;
@@ -147,7 +147,7 @@ describe('LearnPageComponent', () => {
     expect(component.enrolledSection.contents.length).toEqual(1);
     expect(component.frameWorkName).toEqual('TPD');
     expect(component.showLoader).toBeFalsy();
-    expect(component.carouselData.length).toEqual(0);
+    expect(component.carouselMasterData.length).toEqual(0);
     expect(toasterService.error).toHaveBeenCalled();
   }));
   it('should unsubscribe from all observable subscriptions', () => {

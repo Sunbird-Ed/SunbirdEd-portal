@@ -1,15 +1,14 @@
-import { ConfigService, ServerResponse, IUserProfile, IUserData, IOrganization } from '@sunbird/shared';
+import { ConfigService, ServerResponse, IUserProfile, IUserData, IOrganization, HttpOptions } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { HttpClient } from '@angular/common/http';
 import { PublicDataService } from './../public-data/public-data.service';
 import { skipWhile } from 'rxjs/operators';
-import * as UAParser from 'ua-parser-js';
 
 /**
  * Service to fetch user details from server
@@ -27,6 +26,9 @@ export class UserService {
     * Contains session id
     */
   private _sessionId: string;
+
+  timeDiff: any;
+
   /**
    * Contains root org id
    */
@@ -147,8 +149,12 @@ export class UserService {
       url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${this.userid}`,
       param: this.config.urlConFig.params.userReadParam
     };
-    this.learnerService.get(option).subscribe(
+    this.learnerService.getWithHeaders(option).subscribe(
       (data: ServerResponse) => {
+        if (data.ts) {
+          // data.ts is taken from header and not from api response ts, and format in IST
+          this.timeDiff = data.ts;
+        }
         this.setUserProfile(data);
       },
       (err: ServerResponse) => {
@@ -172,7 +178,6 @@ export class UserService {
   public initialize(loggedIn) {
     if (loggedIn) {
       this.getUserProfile();
-      this.startSession(); // logs session start with device id
     }
   }
   /**
@@ -186,6 +191,9 @@ export class UserService {
     profileData.skills = _.get(profileData, 'skills' ) || [];
     hashTagIds.push(this._channel);
     let organisationIds = [];
+    if (profileData.rootOrgId) {
+      organisationIds.push(profileData.rootOrgId);
+    }
     profileData.rootOrgAdmin = false;
     let userRoles = ['PUBLIC'];
     if (profileData.organisations) {
@@ -208,9 +216,6 @@ export class UserService {
           hashTagIds.push(org.organisationId);
         }
       });
-    }
-    if (profileData.rootOrgId) {
-      organisationIds.push(profileData.rootOrgId);
     }
     this._dims = _.concat(organisationIds, this.channel);
     organisationIds = _.uniq(organisationIds);
@@ -303,6 +308,10 @@ export class UserService {
     return this._hashTagId;
   }
 
+  get getServerTimeDiff() {
+    return this.timeDiff;
+  }
+
   get channel() {
     return this._channel;
   }
@@ -337,66 +346,14 @@ export class UserService {
    * method to log session start
    */
   public startSession(): void {
-    const options = this.getFingerPrintOptions();
-    Fingerprint2.getV18(options, (result) => {
-      const url = `/v1/user/session/start/${result}`;
-      this.http.get(url).subscribe();
-    });
+    const deviceId = (<HTMLInputElement>document.getElementById('deviceId'))
+      ? (<HTMLInputElement>document.getElementById('deviceId')).value : '';
+    const url = `/v1/user/session/start/${deviceId}`;
+    this.http.get(url).subscribe();
   }
 
   getUserByKey(key) {
     return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_BY_KEY + '/' + key});
   }
-  public getFingerPrintOptions(): object {
-    return ({
-      preprocessor: (key, value) => {
-        if (key === 'userAgent') {
-          const parser = new UAParser(value); // https://github.com/faisalman/ua-parser-js
-          const userAgentMinusVersion = parser.getOS().name + ' ' + parser.getBrowser().name;
-          return userAgentMinusVersion;
-        }
-        return value;
-      },
-      audio: {
-        timeout: 1000,
-        excludeIOS11: true
-      },
-      fonts: {
-        swfContainerId: 'fingerprintjs2',
-        swfPath: 'flash/compiled/FontList.swf',
-        userDefinedFonts: [],
-        extendedJsFonts: false
-      },
-      screen: {
-        detectScreenOrientation: true
-      },
-      plugins: {
-        sortPluginsFor: [/palemoon/i],
-        excludeIE: false
-      },
-      extraComponents: [],
-      excludes: {
-        // Unreliable on Windows, see https://github.com/Valve/fingerprintjs2/issues/375
-        'enumerateDevices': true,
-        // devicePixelRatio depends on browser zoom, and it's impossible to detect browser zoom
-        'pixelRatio': true,
-        // DNT depends on incognito mode for some browsers (Chrome) and it's impossible to detect incognito mode
-        'doNotTrack': true,
-        // uses js fonts already
-        'fontsFlash': true,
-        'canvas': true,
-        'screenResolution': true,
-        'availableScreenResolution': true,
-        'touchSupport': true,
-        'plugins': true,
-        'webgl': true,
-        'audio': true,
-        'language': true,
-        'deviceMemory': true
-      },
-      NOT_AVAILABLE: 'not available',
-      ERROR: 'error',
-      EXCLUDED: 'excluded'
-    });
-  }
+
 }

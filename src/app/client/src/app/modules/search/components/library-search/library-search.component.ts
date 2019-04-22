@@ -7,9 +7,9 @@ import { IPagination } from '@sunbird/announcement';
 import { combineLatest, Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, mergeMap, first, filter, debounceTime } from 'rxjs/operators';
+import { takeUntil, map, mergeMap, first, filter, debounceTime, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 @Component({
     templateUrl: './library-search.component.html'
@@ -49,7 +49,6 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
         this.filterType = this.configService.appConfig.library.filterType;
         this.redirectUrl = this.configService.appConfig.library.searchPageredirectUrl;
         this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
-        this.setTelemetryData();
     }
     ngOnInit() {
         this.userService.userData$.subscribe(userData => {
@@ -78,6 +77,11 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
     private fetchContentOnParamChange() {
         combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
             .pipe(debounceTime(5), // wait for both params and queryParams event to change
+                tap(data => this.inView({ inview: [] })), // trigger pageexit if last filter resulted 0 contents
+                delay(10), // to trigger pageexit telemetry event
+                tap(data => {
+                this.setTelemetryData();
+                }),
                 map(result => ({ params: { pageNumber: Number(result[0].pageNumber) }, queryParams: result[1] })),
                 takeUntil(this.unsubscribe$)
             ).subscribe(({ params, queryParams }) => {
@@ -143,8 +147,10 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
         }
         const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
         this.router.navigate([url], { queryParams: this.queryParams });
+        window.scroll(0, 0);
     }
     private setTelemetryData() {
+        this.inViewLogs = [];
         this.telemetryImpression = {
             context: {
                 env: this.activatedRoute.snapshot.data.telemetry.env
@@ -186,9 +192,11 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
                 });
             }
         });
+        if (this.telemetryImpression) {
         this.telemetryImpression.edata.visits = this.inViewLogs;
         this.telemetryImpression.edata.subtype = 'pageexit';
         this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+        }
     }
     ngOnDestroy() {
         this.unsubscribe$.next();

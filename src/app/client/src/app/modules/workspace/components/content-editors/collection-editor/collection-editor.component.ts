@@ -1,6 +1,6 @@
 
 import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as  iziModal from 'izimodal/js/iziModal';
 import {
   NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserProfile, ServerResponse
@@ -196,12 +196,18 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         ver: this.portalVersion,
         pid: 'sunbird-portal'
       },
+      actor: {
+        id: this.userService.userid || 'anonymous',
+        type: 'User'
+      },
+      contextRollUp: this.telemetryService.getRollUpData(this.userProfile.organisationIds),
       tags: this.userService.dims,
       channel: this.userService.channel,
       framework: this.routeParams.framework,
       resource_framework: this.resource_framework,
       env: this.routeParams.type.toLowerCase(),
-      ownershipType: this.ownershipType
+      ownershipType: this.ownershipType,
+      timeDiff: this.userService.getServerTimeDiff
     };
   }
   private setWindowConfig() {
@@ -286,7 +292,11 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     if (document.getElementById('collectionEditor')) {
       document.getElementById('collectionEditor').remove();
     }
-    this.retireLock();
+    if (this.routeParams.contentStatus.toLowerCase() === 'draft') {
+      this.retireLock();
+    } else {
+      this.redirectToWorkSpace();
+    }
   }
 
   retireLock () {

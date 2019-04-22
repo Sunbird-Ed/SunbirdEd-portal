@@ -4,7 +4,7 @@ import { Subscription, Subject } from 'rxjs';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { IUserProfile, ILoaderMessage } from '@sunbird/shared';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 @Component({
   selector: 'app-tnc-popup',

@@ -6,7 +6,7 @@ import {
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnChanges, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, PermissionService, UserService, OrgDetailsService } from './../../services';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 
@@ -252,11 +252,14 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
   }
   private enrichFiltersOnInputChange() {
     this.filtersDetails = _.map(this.formFieldProperties, (eachFields) => {
-      if (!_.includes(['channel'], eachFields.code)) {
-        eachFields.range = _.filter(this.enrichFilters[eachFields.code],
-          (field) => _.get(field, 'name') && field.name !== '');
+      const enrichField = _.cloneDeep(eachFields);
+      if (!_.includes(['channel', 'contentType', 'topic'], enrichField.code)) {
+        enrichField.range = _.filter(this.enrichFilters[enrichField.code],
+          (field) => {
+            return _.find(eachFields.range, { name: _.get(field, 'name')});
+          });
       }
-      return eachFields;
+      return enrichField;
     });
     this.hardRefreshFilter();
   }

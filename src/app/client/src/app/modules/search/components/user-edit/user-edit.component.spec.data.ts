@@ -48,6 +48,26 @@ export const Response = {
             'isApproved': true,
             'orgjoindate': '2018-01-20 09:21:37:828+0000',
             'orgLeftDate': null
+          },
+          {
+            'organisationId': 'ORG_001',
+            'updatedBy': null,
+            'addedByName': 'paqPbvW3s7CNzPQGTuCEiqwYNB3kfjDCXXLzCL2fzskZpcyvAQqYxoa3ePT6a+wzaAmCWueMEdPmZuRg==',
+            'addedBy': '781c21fc-5054-4ee0-9a02-fbb1006a4fdd',
+            'roles': [
+              'ORG_ADMIN' , 'SYSTEM_ADMINISTRATION' , 'BOOK_CREATOR'
+            ],
+            'approvedBy': '781c21fc-5054-4ee0-9a02-fbb1006a4fdd',
+            'updatedDate': null,
+            'userId': 'f2eea64e-0e93-444f-b81b-05ea5bad32ba',
+            'approvaldate': '2018-01-20 09:21:37:828+0000',
+            'isDeleted': false,
+            'isRejected': false,
+            'id': '0124226774494904322',
+            'position': null,
+            'isApproved': true,
+            'orgjoindate': '2018-01-20 09:21:37:828+0000',
+            'orgLeftDate': null
           }
         ],
         'provider': null,
@@ -154,6 +174,34 @@ export const Response = {
     'responseCode': 'CLIENT_ERROR',
     'result': {
       'response': null
+    }
+  },
+  userdata: {
+    'err': null,
+    'userProfile': {
+      'missingFields': [],
+      'updatedDate': '2018-07-09 16:07:35:977+0000',
+      'completeness': 100,
+      'id': '159e93d1-da0c-4231-be94-e75b0c226d7c',
+      'identifier': '159e93d1-da0c-4231-be94-e75b0c226d7c',
+      'rootOrgId': 'ORG_001',
+      'firstName': 'Sunil',
+      'phone': '******7878',
+      'dob': '1982-01-01',
+      'status': 1,
+      'lastName': 'Pandith',
+      'gender': 'Male',
+      'email': 'su************@gmail.com',
+      'phoneverified': null,
+      'profileSummary': '.aa .   ',
+      'userName': 'sunil1as990',
+      'userId': '159e93d1-da0c-4231-be94-e75b0c226d7c',
+      'emailVerified': null,
+      'lastLoginTime': 1534920693649,
+      'createdDate': '2017-11-03 05:28:41:536+0000',
+      'createdBy': '',
+      'location': 'Bangaloree',
+      'rootOrgAdmin': false
     }
   }
 };

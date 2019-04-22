@@ -7,13 +7,15 @@ import { IPageSection } from './../../interfaces/index';
 import { Injectable } from '@angular/core';
 import { ConfigService, ServerResponse, BrowserCacheTtlService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { PublicDataService } from './../public-data/public-data.service';
 
 /**
 *  Service for page API calls.
 */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class PageApiService {
   /**
   *  To get url, app configs.

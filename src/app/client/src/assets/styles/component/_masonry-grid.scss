@@ -1,0 +1,16 @@
+.masonry-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    @media screen and (min-width: 684px) {
+        justify-content: normal;
+    }
+}
+
+[dir="ltr"] .masonry-item {
+    margin: 0 (3 * $base-block-space) (3 * $base-block-space) 0;
+}
+
+[dir="rtl"] .masonry-item {
+    margin: 0 0 (3 * $base-block-space) (3 * $base-block-space);
+}

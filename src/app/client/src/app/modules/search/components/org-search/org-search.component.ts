@@ -5,8 +5,7 @@ import { SearchService, UserService } from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
-import { Angular2Csv } from 'angular2-csv/Angular2-csv';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
@@ -101,6 +100,13 @@ export class OrgSearchComponent implements OnInit {
    * To get user profile of logged-in user
    */
   public userService: UserService;
+  csvOptions = {
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalseparator: '.',
+    showLabels: true,
+    headers: []
+  };
   /**
    * Constructor to create injected service(s) object
    * Default method of Draft Component class
@@ -172,12 +178,7 @@ export class OrgSearchComponent implements OnInit {
   * This method helps to download the orgnasition name
   */
   downloadOrganisation() {
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalseparator: '.',
-      showLabels: true
-    };
+
     const downloadArray = [{
       'orgName': 'Organisation Name'
     }];
@@ -186,7 +187,7 @@ export class OrgSearchComponent implements OnInit {
         'orgName': key.orgName
       });
     });
-    return new Angular2Csv(downloadArray, 'Organisations', options);
+    return downloadArray;
   }
 
   /**

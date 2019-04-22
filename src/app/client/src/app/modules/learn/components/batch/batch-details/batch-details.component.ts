@@ -6,7 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { PermissionService, UserService } from '@sunbird/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { Subject } from 'rxjs';
 import * as moment from 'moment';
@@ -49,12 +49,11 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
   isUnenrollDisabled() {
     this.isUnenrollbtnDisabled = true;
-    if (this.courseProgressData && this.courseProgressData.progress) {
-      this.progress = this.courseProgressData.progress ? Math.round(this.courseProgressData.progress) : 0;
+    if (this.courseProgressData) {
+      this.progress = _.get(this.courseProgressData , 'progress') ? Math.round(this.courseProgressData.progress) : 0;
     } else {
       return;
     }
-    console.log('progress', this.progress);
     if ((!this.enrolledBatchInfo.endDate || this.enrolledBatchInfo.endDate > this.todayDate ) &&
     this.enrolledBatchInfo.enrollmentType === 'open' && this.progress !== 100) {
       this.isUnenrollbtnDisabled = false;
@@ -193,7 +192,9 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       });
   }
   batchUpdate(batch) {
-    this.courseBatchService.setUpdateBatchDetails(batch);
+    if (batch.enrollmentType === 'open') {
+      this.courseBatchService.setUpdateBatchDetails(batch);
+    }
     this.router.navigate(['update/batch', batch.identifier], { relativeTo: this.activatedRoute });
   }
   createBatch() {

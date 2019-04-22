@@ -7,7 +7,9 @@ import { HttpClient } from '@angular/common/http';
  * Service to provides CRUD methods to make Learner api request by extending DataService.
  *
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LearnerService extends DataService {
   /**
    * base Url for lerner api

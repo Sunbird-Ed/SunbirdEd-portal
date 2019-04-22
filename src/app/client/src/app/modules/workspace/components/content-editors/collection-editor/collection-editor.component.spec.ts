@@ -4,7 +4,6 @@ import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing'
 import { CollectionEditorComponent } from './collection-editor.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NavigationHelperService, ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
 import { EditorService } from '@sunbird/workspace';
@@ -18,7 +17,8 @@ const mockActivatedRoute = {
   snapshot: {
     params: {
       'contentId': 'do_21247940906829414411032',
-      'type': 'collection', 'state': 'upForReview', 'framework': 'framework'
+      'type': 'collection', 'state': 'upForReview', 'framework': 'framework',
+      'contentStatus': 'Review'
     }
   }
 };
@@ -32,7 +32,7 @@ describe('CollectionEditorComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionEditorComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule.forRoot(), TelemetryModule.forRoot()],
+      imports: [HttpClientTestingModule, CoreModule, TelemetryModule.forRoot()],
       providers: [
         EditorService, UserService, ContentService,
         ResourceService, ToasterService, ConfigService, LearnerService,
@@ -87,6 +87,13 @@ describe('CollectionEditorComponent', () => {
   it('should navigate to draft', inject([Router, NavigationHelperService], (router, navigationHelperService) => () => {
     spyOn(navigationHelperService, 'navigateToWorkSpace').and.callFake(() => { });
     component.closeModal();
+    expect(component.redirectToWorkSpace).toHaveBeenCalled();
     expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('workspace/content/draft/1');
+  }));
+
+  it('should call retire method', inject([Router, NavigationHelperService], (router, navigationHelperService) => () => {
+    spyOn(component, 'retireLock');
+    component.closeModal();
+    expect(component.retireLock).toHaveBeenCalled();
   }));
 });

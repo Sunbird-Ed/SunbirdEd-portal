@@ -1,42 +1,70 @@
-const express = require('express')
-const fs = require('fs')
-const request = require('request')
-const compression = require('compression')
-const MobileDetect = require('mobile-detect')
-const _ = require('lodash')
-const path = require('path')
-const envHelper = require('../helpers/environmentVariablesHelper.js')
-const tenantHelper = require('../helpers/tenantHelper.js')
-const configHelper = require('../helpers/configServiceSDKHelper.js')
-const defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState()
-const tenantCdnUrl = envHelper.TENANT_CDN_URL
-const defaultTenant = envHelper.DEFAULT_CHANNEL
-const oneDayMS = 86400000
-let tenantId = ''
+const express = require('express'),
+fs = require('fs'),
+request = require('request'),
+compression = require('compression'),
+MobileDetect = require('mobile-detect'),
+_ = require('lodash'),
+path = require('path'),
+envHelper = require('../helpers/environmentVariablesHelper.js'),
+tenantHelper = require('../helpers/tenantHelper.js'),
+defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState(),
+oneDayMS = 86400000,
+pathMap = {}
 
+const setZipConfig = (req, res, type, encoding, dist = '../') => {
+    if (pathMap[req.path + type] && pathMap[req.path + type] === 'notExist') {
+      return false;
+    }
+    if(pathMap[req.path + '.'+ type] === 'exist' || 
+      fs.existsSync(path.join(__dirname, dist) + req.path + '.' + type)){
+        if (req.path.endsWith('.css')) {
+          res.set('Content-Type', 'text/css');
+        } else if (req.path.endsWith('.js')) {
+          res.set('Content-Type', 'text/javascript');
+        }
+        req.url = req.url + '.' + type;
+        res.set('Content-Encoding', encoding);
+        pathMap[req.path + type] = 'exist';
+        return true
+    } else {
+      pathMap[req.path + type] = 'notExist';
+      console.log('zip file not exist for: ', req.url, type)
+      return false;
+    }
+}
 module.exports = (app, keycloak) => {
   app.set('view engine', 'ejs')
 
+  app.get(['*.js', '*.css'], (req, res, next) => {
+    res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
+    res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
+    if(req.get('Accept-Encoding').includes('br')){ // send br files
+      if(!setZipConfig(req, res, 'br', 'br') && req.get('Accept-Encoding').includes('gzip')){
+        setZipConfig(req, res, 'gz', 'gzip') // send gzip if br file not found
+      }
+    } else if(req.get('Accept-Encoding').includes('gzip')){
+      setZipConfig(req, res, 'gz', 'gzip')
+    }
+    next();
+  });
+
+  app.get(['/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff', '/dist/*.eot', '/dist/*.svg',
+    '/*.ttf', '/*.woff2', '/*.woff', '/*.eot', '/*.svg', '/*.html'], compression(),
+    (req, res, next) => {
+      res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
+      res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
+      next()
+  })
+
   app.use(express.static(path.join(__dirname, '../dist'), { extensions: ['ejs'], index: false }))
 
-  app.use(express.static(path.join(__dirname, '../')))
+  app.use('/dist', express.static(path.join(__dirname, '../dist'), { extensions: ['ejs'], index: false }))
 
-  app.use(express.static(path.join(__dirname, '../tenant', tenantId)))
+  app.use(express.static(path.join(__dirname, '../tenant'), { index: false }))
 
-  if (defaultTenant) {
-    app.use(express.static(path.join(__dirname, '../tenant', defaultTenant)))
+  if (envHelper.DEFAULT_CHANNEL) {
+    app.use(express.static(path.join(__dirname, '../tenant', envHelper.DEFAULT_CHANNEL)))
   }
-
-  app.get(['/dist/*.js', '/dist/*.css', '/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff', '/dist/*.eot', '/dist/*.svg'],
-    compression(), (req, res, next) => {
-      if (process.env.sunbird_environment.toLowerCase() !== 'local') {
-        res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
-        res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
-      }
-      next()
-    })
-
-  app.all(['/server.js', '/helpers/*.js', '/helpers/**/*.js'], (req, res) => res.sendStatus(404))
 
   app.get('/assets/images/*', (req, res, next) => {
     res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS)
@@ -47,7 +75,7 @@ module.exports = (app, keycloak) => {
   app.all(['/', '/get', '/get/dial/:dialCode', '/explore',
     '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course',
     '/explore-course/*', '/:slug/explore-course', '/:slug/explore-course/*',
-    '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*'], indexPage)
+    '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*'], indexPage(false))
 
   app.all('/:slug/get', (req, res) => res.redirect('/get'))
 
@@ -58,114 +86,84 @@ module.exports = (app, keycloak) => {
   app.all('/app', (req, res) => res.redirect(envHelper.ANDROID_APP_URL))
 
   app.all(['/home', '/home/*', '/announcement', '/announcement/*', '/search', '/search/*',
-    '/orgType', '/orgType/*', '/dashboard', '/dashboard/*', '/orgDashboard', '/orgDashboard/*',
+    '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*', 
     '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
-    '/resources/*', '/myActivity', '/myActivity/*'], keycloak.protect(), indexPage)
+    '/resources/*', '/myActivity', '/myActivity/*'], keycloak.protect(), indexPage(true))
 
-  app.all('/:tenantName', (req, res) => {
-    tenantId = req.params.tenantName
-    if (_.isString(tenantId)) {
-      tenantId = _.lowerCase(tenantId)
-    }
-    if (tenantId) {
-      renderTenantPage(req, res)
-    } else if (defaultTenant) {
-      renderTenantPage(req, res)
-    } else {
-      res.redirect('/')
-    }
-  })
+  app.all('/:tenantName', renderTenantPage)
 }
 
-function getLocals(req, callback) {
+function getLocals(req) {
   var locals = {}
-  locals.userId = _.get(req, 'kauth.grant.access_token.content.sub') ? req.kauth.grant.access_token.content.sub : null
-  locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'kauth.grant.access_token.content.sub') ? req.sessionID : null
+  if(req.loggedInRoute){
+    locals.userId = _.get(req, 'session.userId') ? req.session.userId : null
+    locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'session.userId') ? req.sessionID : null
+  } else {
+    locals.userId = null
+    locals.sessionId = null
+  }
   locals.cdnUrl = envHelper.PORTAL_CDN_URL
-  locals.theme = configHelper.getConfig('sunbird_theme')
-  locals.defaultPortalLanguage = configHelper.getConfig('sunbird_default_language')
+  locals.theme = envHelper.sunbird_theme
+  locals.defaultPortalLanguage = envHelper.sunbird_default_language
   locals.instance = process.env.sunbird_instance
   locals.appId = envHelper.APPID
   locals.defaultTenant = envHelper.DEFAULT_CHANNEL
-  locals.exploreButtonVisibility = configHelper.getConfig('sunbird_explore_button_visibility')
+  locals.exploreButtonVisibility = envHelper.sunbird_explore_button_visibility
   locals.helpLinkVisibility = envHelper.sunbird_help_link_visibility
   locals.defaultTenantIndexStatus = defaultTenantIndexStatus
-  locals.extContWhitelistedDomains = configHelper.getConfig('sunbird_extcont_whitelisted_domains')
+  locals.extContWhitelistedDomains = envHelper.sunbird_extcont_whitelisted_domains
   locals.buildNumber = envHelper.BUILD_NUMBER
   locals.apiCacheTtl = envHelper.PORTAL_API_CACHE_TTL
   locals.cloudStorageUrls = envHelper.CLOUD_STORAGE_URLS
-  locals.userUploadRefLink = configHelper.getConfig('sunbird_portal_user_upload_ref_link')
+  locals.userUploadRefLink = envHelper.sunbird_portal_user_upload_ref_link
   locals.deviceRegisterApi = envHelper.DEVICE_REGISTER_API
   locals.googleCaptchaSiteKey = envHelper.sunbird_google_captcha_site_key
   locals.videoMaxSize = envHelper.sunbird_portal_video_max_size
   locals.reportsLocation = envHelper.sunbird_azure_report_container_name
-  callback(null, locals)
+  return locals
 }
 
-function indexPage(req, res) {
-  if (defaultTenant && req.path === '/') {
-    tenantId = defaultTenant
-    renderTenantPage(req, res)
-  } else {
-    renderDefaultIndexPage(req, res)
+const indexPage = (loggedInRoute) => {
+  return function(req, res){
+    if (envHelper.DEFAULT_CHANNEL && req.path === '/') {
+      renderTenantPage(req, res)
+    } else {
+      req.loggedInRoute = loggedInRoute
+      renderDefaultIndexPage(req, res)
+    }
   }
 }
 
-function renderDefaultIndexPage(req, res) {
-  try {
-    const mobileDetect = new MobileDetect(req.headers['user-agent'])
-    if ((req.path === '/get' || req.path === '/' + req.params.slug + '/get') &&
-      mobileDetect.os() === 'AndroidOS') {
-      res.redirect(envHelper.ANDROID_APP_URL)
-    } else {
-      res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
-      var responseData = getLocals(req, function (error, response) {
-        if (!error) {
-          _.forIn(response, function (value, key) {
-            res.locals[key] = value
-          })
-          res.render(path.join(__dirname, '../dist', 'index.ejs'))
-        } else {
-          console.warn('Fails to render')
-        }
-      })
-    }
-  } catch (e) {
-    throw e
+const renderDefaultIndexPage = (req, res) => {
+  const mobileDetect = new MobileDetect(req.headers['user-agent'])
+  if ((req.path == '/get' || req.path == `/${req.params.slug}/get`) && mobileDetect.os() == 'AndroidOS') {
+    res.redirect(envHelper.ANDROID_APP_URL)
+  } else {
+    res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
+    res.locals = getLocals(req);
+    res.render(path.join(__dirname, '../dist', 'index.ejs'))
   }
 }
 // renders tenant page from cdn or from local files based on tenantCdnUrl exists
-function renderTenantPage(req, res) {
-  try {
-    if (tenantCdnUrl) {
-      request(tenantCdnUrl + '/' + tenantId + '/' + 'index.html', function (error, response, body) {
-        if (error || !body || response.statusCode !== 200) {
-          loadTenantFromLocal(req, res)
-        } else {
-          res.send(body)
-        }
-      })
-    } else {
-      loadTenantFromLocal(req, res)
-    }
-  } catch (e) {
+const renderTenantPage = (req, res) => {
+  const tenantName = _.lowerCase(req.params.tenantName) || envHelper.DEFAULT_CHANNEL
+  if (envHelper.TENANT_CDN_URL) {
+    request(`${envHelper.TENANT_CDN_URL}/${tenantName}/index.html`, (error, response, body) => {
+      if (error || !body || response.statusCode !== 200) {
+        loadTenantFromLocal(req, res)
+      } else {
+        res.send(body)
+      }
+    })
+  } else {
     loadTenantFromLocal(req, res)
   }
 }
 // in fallback option check always for local tenant folder and redirect to / if not exists
-function loadTenantFromLocal(req, res) {
-  if (tenantId) {
-    if (fs.existsSync(path.join(__dirname, 'tenant', tenantId, 'index.html'))) {
-      res.sendFile(path.join(__dirname, 'tenant', tenantId, 'index.html'))
-    } else {
-      // renderDefaultIndexPage only if there is no local default tenant else redirect
-      if (defaultTenant && req.path === '/') {
-        renderDefaultIndexPage(req, res)
-      } else {
-        // this will be executed only if user is typed invalid tenant in url
-        res.redirect('/')
-      }
-    }
+const loadTenantFromLocal = (req, res) => {
+  const tenantName = _.lowerCase(req.params.tenantName) || envHelper.DEFAULT_CHANNEL
+  if (tenantName && fs.existsSync(path.join(__dirname, './../tenant', tenantName, 'index.html'))) {
+    res.sendFile(path.join(__dirname, './../tenant', tenantName, 'index.html'))
   } else {
     renderDefaultIndexPage(req, res)
   }

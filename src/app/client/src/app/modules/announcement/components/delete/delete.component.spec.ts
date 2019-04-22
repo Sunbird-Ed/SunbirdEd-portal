@@ -3,7 +3,7 @@ import {throwError as observableThrowError, of as observableOf,  Observable } fr
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import * as testData from './delete.component.spec.data';
 import { Component, OnInit } from '@angular/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { HttpClient } from '@angular/common/http';
 
 // Modules
@@ -11,7 +11,6 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { AnnouncementService } from '@sunbird/core';
 import { SharedModule, ResourceService, ToasterService, ConfigService, RouterNavigationService } from '@sunbird/shared';
 import { DeleteComponent } from './delete.component';
@@ -31,7 +30,7 @@ describe('DeleteComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DeleteComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule,
+      imports: [HttpClientTestingModule,
         SuiModule, SharedModule.forRoot(),  TelemetryModule.forRoot()],
       providers: [HttpClientModule, AnnouncementService,
         ResourceService, ToasterService, ConfigService, HttpClient, RouterNavigationService,

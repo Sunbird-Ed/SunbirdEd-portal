@@ -9,7 +9,7 @@
   right: 0;
   left: 0;
   margin: 0 auto;
-  z-index: 9999;
+  z-index: 9;
 
   .diksha-logo {
     background: $white-color;
@@ -78,6 +78,28 @@
 
 }
 
+*[dir="rtl"] {
+
+  .diksha-logo {
+    height: 148px;
+  }
+
+  .mobile-circles {
+    flex-direction: row-reverse;
+
+    .oval-box {
+      margin-right: 0px !important;
+      margin-left: 20px !important;
+    }
+
+    .border-round:nth-child(3) {     
+      margin-left: 20px !important;
+      margin-right: 10px !important;
+    }
+  }
+
+}
+
 .footer {
   background: $primary-color;
   color: $white-color !important;
@@ -137,7 +159,7 @@
 
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
 
   .download-diksha {
     bottom: 204px;
@@ -145,6 +167,7 @@
     right: 0;
     left: 0;
     z-index: inherit;
+    box-shadow: 0 -5px 20px 5px rgba(0, 0, 0, 0.2);
 
     a {
       padding-bottom: 0 !important;
@@ -154,6 +177,15 @@
       display: none !important;
     }
   }
+
+    .download-diksha {
+      height: 123px;
+
+      .diksha-logo {
+        height: unset;
+      }
+
+    }
 
   .footer {
     margin-top: 170px;

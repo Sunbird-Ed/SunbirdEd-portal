@@ -5,14 +5,13 @@ import { ResourceService, ToasterService, ConfigService, SharedModule } from '@s
 import { PermissionService, LearnerService, CoreModule } from '@sunbird/core';
 import { BulkUploadComponent } from './bulk-upload.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 describe('BulkUploadComponent', () => {
   let component: BulkUploadComponent;
   let fixture: ComponentFixture<BulkUploadComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [BulkUploadComponent],
-      imports: [RouterTestingModule, Ng2IziToastModule, HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot()],
+      imports: [RouterTestingModule, HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
       providers: [],
       schemas: [NO_ERRORS_SCHEMA]
     })

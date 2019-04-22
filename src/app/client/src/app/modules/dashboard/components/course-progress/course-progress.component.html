@@ -48,14 +48,14 @@
               </b>
               &nbsp;&nbsp;{{dashboarData.startDate | dateFormat :'DD/MM/YYYY' }}
             </span>
-            
+
             <span  class="course-end-dt black-divider px-15">
               <b>{{resourceService?.frmelmnts?.lbl?.batchenddate}}&nbsp;:
               </b>
-            &nbsp;&nbsp;<span  *ngIf="dashboarData.endDate" >{{dashboarData.endDate | dateFormat :'DD/MM/YYYY'}}</span> 
+            &nbsp;&nbsp;<span  *ngIf="dashboarData.endDate" >{{dashboarData.endDate | dateFormat :'DD/MM/YYYY'}}</span>
               <span  *ngIf="!dashboarData.endDate" >-</span>
             </span>
-           
+
             <span *ngIf="dashboarData.count" class="course-participants black-divider px-15">
               <b>{{resourceService?.frmelmnts?.lbl?.participants}}&nbsp;:
               </b>  &nbsp;&nbsp; {{dashboarData.count}}
@@ -65,6 +65,10 @@
               </b>
               &nbsp;&nbsp;{{dashboarData.completedCount}}
             </span>
+            <!-- This needs to be developed -->
+            <!-- <span class="course-completed ml-auto">
+              <span class="font-italic">This report was last updated on</span>&nbsp;:&nbsp;dd/mm/yyyy
+            </span> -->
           </div>
         </div>
         <div class="d-flex flex-jc-space-between flex-ai-center download-file-container mt-15 mb-0 mx-0" *ngIf="dashboarData">
@@ -81,7 +85,7 @@
           </div>
           <div class="d-flex">
             <a href="javascript:void(0);" class="ui download-file right floated text-decoration-underline pr-30"
-              (click)="downloadReport();" appTelemetryInteract [telemetryInteractObject]="interactObject"
+              (click)="downloadReport();" *ngIf="showDownloadLink" appTelemetryInteract [telemetryInteractObject]="interactObject"
               [telemetryInteractEdata]="{id:'download',type:'click',pageid:'course-progress-dashboard'}">
               {{resourceService?.frmelmnts?.instn?.t0065}}</a>
           </div>
@@ -120,7 +124,7 @@
                   </div>
                 </th>
                 <th>
-                  <div  class="cursor-pointer" 
+                  <div  class="cursor-pointer"
                     appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByEnrolledOn',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
                     {{resourceService?.frmelmnts?.lbl?.dashboardsortbyenrolledon}}
                     <span class="primary-color" [hidden]="reverse" style="float:right">
@@ -132,7 +136,7 @@
                   </div>
                 </th>
                 <th class="table-headerDashboard">
-                  <div class="cursor-pointer"  
+                  <div class="cursor-pointer"
                     appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByStatus',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
                     {{resourceService?.frmelmnts?.lbl?.dashboardsortbystatus}}
                     <span class="primary-color" [hidden]="reverse" style="float:right">
@@ -152,8 +156,8 @@
                   <span *ngIf="!student.username">-</span>
                 </td>
                 <td>{{student.orgName}}</td>
-                <td><span *ngIf="student.phone">{{student.phone}} </span>
-                  <span *ngIf="!student.phone">-</span>
+                <td><span *ngIf="student.maskedPhone">{{student.maskedPhone}} </span>
+                  <span *ngIf="!student.maskedPhone">-</span>
                 </td>
                 <td>{{student.enrolledOn | dateFormat :'DD/MM/YYYY'}}</td>
 

@@ -100,6 +100,11 @@
           "onImage": {
             "eventName": "onImage"
           }
+        },
+        "ribbon": {
+          "right": {
+            "class": "ui black right ribbon label"
+          }
         }
       },
       "metaData": {
@@ -109,6 +114,9 @@
           "framework",
           "contentType"
         ]
+      },
+      "dynamicFields": {
+        "ribbon.right.name": "resourceType"
       }
     },
     "enrolledCourses": {
@@ -133,7 +141,7 @@
       "progress": "progress"
     }
   },
-  "CourseBatchPageSection":{
+  "CourseBatchPageSection": {
     "slickSize": 10,
     "slideConfig": {
       "slidesToShow": 4,
@@ -237,17 +245,17 @@
           }
         },
         {
-          "breakpoint": 2000,
+          "breakpoint": 1920,
           "settings": {
             "slidesToShow": 4,
-            "slidesToScroll": 4
+            "slidesToScroll": 3
           }
         },
         {
-          "breakpoint": 1600,
+          "breakpoint": 1440,
           "settings": {
             "slidesToShow": 3.5,
-            "slidesToScroll": 3.5
+            "slidesToScroll": 3
           }
         },
         {
@@ -258,9 +266,9 @@
           }
         },
         {
-          "breakpoint": 900,
+          "breakpoint": 992,
           "settings": {
-            "slidesToShow": 2.5,
+            "slidesToShow": 2.25,
             "slidesToScroll": 2
           }
         },
@@ -279,7 +287,21 @@
           }
         },
         {
+          "breakpoint": 600,
+          "settings": {
+            "slidesToShow": 1.5,
+            "slidesToScroll": 1
+          }
+        },
+        {
           "breakpoint": 530,
+          "settings": {
+            "slidesToShow": 1.33,
+            "slidesToScroll": 1
+          }
+        },
+        {
+          "breakpoint": 498,
           "settings": {
             "slidesToShow": 1.25,
             "slidesToScroll": 1
@@ -287,6 +309,13 @@
         },
         {
           "breakpoint": 450,
+          "settings": {
+            "slidesToShow": 1.15,
+            "slidesToScroll": 1
+          }
+        },
+        {
+          "breakpoint": 390,
           "settings": {
             "slidesToShow": 1,
             "slidesToScroll": 1
@@ -672,7 +701,8 @@
       "webm": "video/webm",
       "xUrl": "text/x-url"
     },
-    "baseURL": "/content/preview/preview.html?webview=true"
+    "baseURL": "/content/preview/preview.html?webview=true",
+    "localBaseUrl": "/contentPlayer/preview/preview.html?offline=true"
   },
   "WORKSPACE": {
     "PAGE_LIMIT": 9,
@@ -711,7 +741,7 @@
       "allcontent",
       "collaborating-on"
     ],
-    "courseBatch":{
+    "courseBatch": {
       "PAGE_LIMIT": 12
     },
     "Draft": {
@@ -938,7 +968,7 @@
       }
     }
   },
-  "DASHBOARD":{
+  "DASHBOARD": {
     "PAGE_LIMIT": 200
   },
   "CONTENT_CONST": {
@@ -1204,7 +1234,7 @@
       "doc": "sb-icon-doc"
     }
   },
-  "mediumCode":{
+  "mediumCode": {
     "english": "en",
     "hindi": "hi",
     "telugu": "te",
@@ -1218,5 +1248,5 @@
     "gujarati": "gu",
     "punjabi": "pa",
     "oriya": "or"
-   }
+  }
 }

@@ -1,12 +1,15 @@
-<app-prominent-filter [pageId]="'resource-page'" *ngIf="initFilters" [filterEnv]="filterType"  [ignoreQuery]="['key']" 
-    [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter>
+<app-prominent-filter [pageId]="'resource-page'" *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']"
+  [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true
+  [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter>
 
-<div class="ui container">
+<div class="ui container mt-24">
   <div [appTelemetryImpression]="telemetryImpression" *ngIf="!showLoader" class="ui grid stackable my-0">
-    <div class="twelve wide column" *ngFor="let section of carouselData;let last = last" [ngClass]="{'last mb-30':last}">
-      <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section" (viewAll)="viewAll($event)"></app-page-section>
+    <div class="twelve wide column py-0" *ngFor="let section of pageSections;let last = last"
+      [ngClass]="{'last mb-30':last}">
+      <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section"
+        (viewAll)="viewAll($event)"></app-page-section>
     </div>
-    <div class="twelve wide column" *ngIf="carouselData.length === 0 && !showLoader">
+    <div class="twelve wide column" *ngIf="carouselMasterData.length === 0 && !showLoader">
       <app-no-result [data]="noResultMessage"></app-no-result>
     </div>
   </div>

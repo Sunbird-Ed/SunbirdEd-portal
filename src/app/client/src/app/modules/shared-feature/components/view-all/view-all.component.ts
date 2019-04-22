@@ -8,7 +8,7 @@ import {
 import { SearchService, CoursesService, ISort, PlayerService, OrgDetailsService, UserService, FormService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
@@ -313,7 +313,8 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     if (page < 1 || page > this.pager.totalPages) {
       return;
     }
-    const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
+    const url = decodeURI(this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString()));
+    window.scroll(0, 0);
     this.router.navigate([url], { queryParams: this.queryParams, relativeTo: this.activatedRoute });
   }
 

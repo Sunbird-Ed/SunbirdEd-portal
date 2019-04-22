@@ -1,11 +1,12 @@
 import { combineLatest,  Subscription ,  Observable ,  Subject, of } from 'rxjs';
 
 import {first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, delay} from 'rxjs/operators';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { UserService } from '@sunbird/core';
-import { ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService,
+  NavigationHelperService } from '@sunbird/shared';
 import { CourseProgressService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
@@ -18,7 +19,7 @@ import { IPagination } from '@sunbird/announcement';
   templateUrl: './course-progress.component.html',
   styleUrls: ['./course-progress.component.scss']
 })
-export class CourseProgressComponent implements OnInit, OnDestroy {
+export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit {
   modelChanged: Subject<string> = new Subject<string>();
   /**
    * Variable to gather and unsubscribe all observable subscriptions in this component.
@@ -89,6 +90,10 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
 	 * This variable helps to show the warning div
 	 */
   showWarningDiv = false;
+   /**
+	 * This variable helps to show the csv downloadURl
+	 */
+  showDownloadLink = true;
   /**
    * To navigate to other pages
    */
@@ -166,7 +171,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     resourceService: ResourceService,
     toasterService: ToasterService,
     courseProgressService: CourseProgressService,  paginationService: PaginationService,
-    config: ConfigService) {
+    config: ConfigService,
+    public navigationhelperService: NavigationHelperService) {
     this.user = user;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -286,14 +292,13 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     if (this.searchText) {
       option.username = this.searchText;
     }
-    this.telemetryImpression.edata.uri = '/learn/course/' + this.courseId +
-    '/dashboard&batchIdentifier=' + this.queryParams.batchIdentifier;
     this.courseProgressService.getDashboardData(option).pipe(
     takeUntil(this.unsubscribe))
     .subscribe(
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
         this.dashboarData = apiResponse.result;
+        this.showDownloadLink = apiResponse.result.showDownloadLink ? apiResponse.result.showDownloadLink : false;
         this.totalCount = apiResponse.result.count;
         this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
       },
@@ -381,24 +386,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
             this.courseId = bothParams.params.courseId;
             this.batchId = bothParams.params.batchId;
             this.queryParams = { ...bothParams.queryParams };
-            // Create the telemetry impression event for course stats page
-            this.telemetryImpression = {
-              context: {
-                env: this.activatedRoute.snapshot.data.telemetry.env,
-                cdata: [{ id: this.courseId, type: 'course' }]
-              },
-              edata: {
-                type: this.activatedRoute.snapshot.data.telemetry.type,
-                pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-                uri: '/learn/course/' + this.courseId + '/dashboard'
-              },
-              object: {
-                id: this.courseId,
-                type: this.activatedRoute.snapshot.data.telemetry.object.type,
-                ver: this.activatedRoute.snapshot.data.telemetry.object.ver
-              }
-            };
-            this.interactObject = { id: this.courseId, type: 'course', ver: '1.0' };
+            this.interactObject = { id: this.courseId, type: 'Course', ver: '1.0' };
             this.populateBatchData();
           });
       }
@@ -406,6 +394,29 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     this.searchBatch();
     this.setInteractEventData();
   }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env,
+          cdata: [{ id: this.activatedRoute.snapshot.params.courseId, type: 'Course' }]
+        },
+        edata: {
+          uri: '/learn/course/' + this.courseId + '/dashboard&batchIdentifier=' + this.activatedRoute.snapshot.params.batchId,
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          duration: this.navigationhelperService.getPageLoadTime()
+        },
+        object: {
+          id: this.courseId,
+          type: this.activatedRoute.snapshot.data.telemetry.object.type,
+          ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+        }
+      };
+    });
+  }
+
   ngOnDestroy() {
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();

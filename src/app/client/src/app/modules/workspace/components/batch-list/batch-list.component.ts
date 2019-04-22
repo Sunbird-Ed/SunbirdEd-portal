@@ -11,7 +11,7 @@ import { takeUntil, map, filter } from 'rxjs/operators';
 import { Ibatch } from './../../interfaces/';
 import { WorkSpaceService, BatchService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 
@@ -254,7 +254,9 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
 
   onCardClick (event) {
     const batchData = event.data;
-    this.batchService.setBatchData(batchData);
+    if (batchData.enrollmentType === 'open') {
+      this.batchService.setBatchData(batchData);
+    }
     this.route.navigate(['update/batch', batchData.identifier], {queryParamsHandling: 'merge', relativeTo: this.activatedRoute});
   }
 
@@ -290,7 +292,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
     _.forEach(this.batchList, (item, key) => {
       participants[item.id] = !_.isUndefined(item.participant) ? _.size(item.participant) : 0;
       userList.push(item.createdBy);
-      this.batchList[key].label = participants[item.id];
+      this.batchList[key].label = item.participantCount || 0;
     });
     userList = _.compact(_.uniq(userList));
     const req = {

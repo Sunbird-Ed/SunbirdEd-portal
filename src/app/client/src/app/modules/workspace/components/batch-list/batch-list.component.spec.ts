@@ -4,7 +4,6 @@ import { BatchListComponent } from './batch-list.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SharedModule, PaginationService, ToasterService, ResourceService } from '@sunbird/shared';
@@ -14,7 +13,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as mockData from './batch-list.component.spec.data';
 const testData = mockData.mockRes;
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 
@@ -73,7 +72,7 @@ describe('BatchListComponent', () => {
       declarations: [BatchListComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule,
-        Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(), CoreModule.forRoot(),
+        RouterTestingModule, SharedModule.forRoot(), CoreModule,
         TelemetryModule.forRoot(), NgInviewModule],
       providers: [PaginationService, WorkSpaceService, ResourceService, ToasterService, BatchService,
         { provide: ResourceService, useValue: resourceBundle },

@@ -10,7 +10,7 @@ import { GeoHttpParam, IGeoLocationDetails } from './../../interfaces';
 import { Observable } from 'rxjs';
 
 
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 /**
  * Service to manage geo explorer http calls

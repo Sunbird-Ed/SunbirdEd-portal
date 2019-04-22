@@ -1,7 +1,7 @@
 import { WorkSpaceService } from './../services';
 import { SearchService, UserService } from '@sunbird/core';
 import { ResourceService, ServerResponse } from '@sunbird/shared';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { mergeMap, catchError, map } from 'rxjs/operators';
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 /**

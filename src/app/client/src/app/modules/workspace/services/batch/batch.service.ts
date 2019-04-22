@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { SearchParam, LearnerService, UserService, PlayerService } from '@sunbird/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 /**
  * Service for batch
  */
@@ -83,6 +83,9 @@ export class BatchService {
     };
     return this.learnerService.patch(option);
   }
+  /**
+   * this is set only for open batches, as participants will not be there
+  */
   setBatchData(batchData): void {
     this.batchDetails = batchData;
   }

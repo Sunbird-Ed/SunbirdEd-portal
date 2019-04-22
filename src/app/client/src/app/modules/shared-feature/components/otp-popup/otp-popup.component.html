@@ -24,7 +24,7 @@
             <input [ngClass]="{'orange-border': errorMessage}" formControlName="otp" type="text" name="otp">
           </div>
         </form>
-        <div  appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+        <div  appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" *ngIf="!disableResendButton"
         [telemetryInteractEdata]="resendOtpInteractEdata" [ngClass]="{'grey cursor-pointerText': disableResendButton}" (click)="resendOTP(); disableResendButton = true;" class="fs-1 text-ac blue text mb-30 cursor-pointer"
           role="button" tabindex="0">{{resourceService?.frmelmnts?.lbl?.resendOTP}}</div>
       </div>

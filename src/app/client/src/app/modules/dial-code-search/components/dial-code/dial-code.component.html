@@ -1,0 +1,72 @@
+<div class="ui container" [appTelemetryImpression]="telemetryImpression">
+  <div class="ui grid">
+    <div class="row">
+      <div class="six wide computer twelve wide mobile eight wide tablet column centered pt-10">
+        <div class="ui fluid icon input">
+          <input type="text" name="search" (keyup.enter)="navigateToSearch()" [(ngModel)]="searchKeyword" placeholder="{{resourceService.frmelmnts?.prmpt?.searchContent}}"
+            title="Search" />
+          <i class="search icon dialcode-search-icon cursor-pointer" tabindex="0" (click)="navigateToSearch()"></i>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="showLoader">
+      <div class="twelve wide column">
+        <app-loader [data]='loaderMessage'></app-loader>
+      </div>
+    </div>
+    <div *ngIf="!showLoader" class="row dial-code-section-bg">
+      <div class="twelve wide column">
+        <div class="ui tiny header"> {{resourceService.frmelmnts?.lbl?.dialCode}} '{{dialCode}}'
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!showLoader && searchResults.length > 0" class="row">
+      <div class="twelve wide column">
+        <div class="ui tiny header pt-30"> {{resourceService.frmelmnts?.lbl?.linkedContents}} ({{searchResults.length}})
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="twelve wide column">
+        <div *ngIf="!showLoader && searchResults.length" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="searchResults"
+          class="ui stackable four column grid dynamic-section-card ">
+          <div in-view-item [id]="i" [data]="content" class="column py-5 pl-10" *ngFor="let content of searchResults;let i = index;">
+            <app-dial-code-card appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"></app-dial-code-card>
+          </div>
+        </div>
+        <div *ngIf="!showLoader && !searchResults.length">
+          <div class="placeholder mt-40">
+            <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl}}" />
+            <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0121}}</h5>
+            <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeMobilePopup"
+  class="mobile-popup-dimmer">
+  <div class="mobile-app-popup">
+    <div class="download-diksha">
+      <button class="ui button close-mobile-div">
+        <i class="close icon"></i>
+      </button>
+      <div class="diksha-logo p-15">
+        <div class="mobile-circles">
+          <div class="big-box border-round border-r50"></div>
+          <div class="oval-box border-round ml-20 ml-10"></div>
+          <div class="small-box border-round border-r50 ml-20 mr-10"></div>
+          <div class="small-box border-round border-r50"></div>
+        </div>
+        <label class="d-block fs-1-143 pb-10 text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile}}</label>
+        <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="appMobileDownload"
+          id='app-download-mobile' class="d-block pb-0 text-center app-download">
+          <img class="playStore-img" src="../../../../../assets/images/google_playstore.png" alt="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile}}"
+            title="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile}}">
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

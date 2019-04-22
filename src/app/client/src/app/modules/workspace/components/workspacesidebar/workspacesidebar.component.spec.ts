@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Ng2IzitoastService } from 'ng2-izitoast';
 import { CoreModule } from '@sunbird/core';
 import { WorkspacesidebarComponent } from './workspacesidebar.component';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -13,8 +12,8 @@ describe('WorkspacesidebarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ WorkspacesidebarComponent ],
-      providers: [ Ng2IzitoastService, ConfigService],
-      imports: [RouterTestingModule, HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot(), SuiModule]
+      providers: [ ConfigService],
+      imports: [RouterTestingModule, HttpClientTestingModule, CoreModule, SharedModule.forRoot(), SuiModule]
     })
     .compileComponents();
   }));

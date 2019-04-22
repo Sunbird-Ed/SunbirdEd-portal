@@ -9,7 +9,6 @@ import { LearnerService, CoreModule } from '@sunbird/core';
 import { OrgManagementService } from '@sunbird/org-management';
 import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { ResourceService, ConfigService, SharedModule, ToasterService } from '@sunbird/shared';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { mockRes } from './organization-upload.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { By } from '@angular/platform-browser';
@@ -59,7 +58,7 @@ describe('OrganizationUploadComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OrganizationUploadComponent],
-      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, CoreModule.forRoot(), SharedModule.forRoot(),
+      imports: [SuiModule, HttpClientTestingModule, CoreModule, SharedModule.forRoot(),
         TelemetryModule.forRoot()],
       providers: [OrgManagementService, { provide: Router, useClass: RouterStub },
         { provide: ResourceService, useValue: ResourceData },
@@ -80,11 +79,6 @@ describe('OrganizationUploadComponent', () => {
     fixture.detectChanges();
     component.redirectUrl = '/profile';
     expect(router.navigate).toHaveBeenCalledWith(['/profile']);
-  });
-  it('should call downloadSample method and download a sample csv file', () => {
-    spyOn(component, 'downloadSample').and.callThrough();
-    component.downloadSample();
-    expect(component.downloadSample).toHaveBeenCalled();
   });
   xit('should call openImageBrowser method', () => {
     let inputEl: DebugElement;
