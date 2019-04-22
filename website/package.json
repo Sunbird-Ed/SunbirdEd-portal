@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-css": "node-sass scss/style.scss -o ./../src/app/tenant/sunbird/css/",
-    "compile-html": "html-includes --src src --dest ./../src/app/tenant/sunbird/",
+    "build-css": "node-sass scss/style.scss -o ./../src/app/tenant/sunbirdorg/css/",
+    "compile-html": "html-includes --src src --dest ./../src/app/tenant/sunbirdorg/",
     "build": "npm run build-css && npm run compile-html"
   },
   "author": "",
