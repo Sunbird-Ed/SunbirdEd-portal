@@ -1,8 +1,8 @@
 import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } from '@angular/animations';
 
-import { AfterViewInit, Directive, ElementRef, Inject, OnDestroy } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, Inject, OnDestroy, NgZone, ChangeDetectorRef, } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, map, pairwise, share, throttleTime, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, pairwise, share, throttleTime, takeUntil, tap } from 'rxjs/operators';
 
 enum Direction {
   Up = 'Up',
@@ -12,7 +12,7 @@ enum Direction {
 
 /** @dynamic */
 @Directive({
-  selector: '[appStickyHeader]',
+  selector: '[appStickyHeader]'
 })
 export class StickyHeaderDirective implements AfterViewInit, OnDestroy {
   player: AnimationPlayer;
@@ -31,31 +31,25 @@ export class StickyHeaderDirective implements AfterViewInit, OnDestroy {
     player.play();
   }
 
-  constructor(private builder: AnimationBuilder, private el: ElementRef) {}
+  constructor(private builder: AnimationBuilder, private el: ElementRef, private zone: NgZone,
+    private cdr: ChangeDetectorRef) {}
 
   private fadeIn(): AnimationMetadata[] {
-    return [style({ opacity: 0 }), animate('400ms ease-in', style({ opacity: 1 }))];
+    return [style({ opacity: 0 }), animate('200ms ease-in', style({ opacity: 1 }))];
   }
 
   private fadeOut(): AnimationMetadata[] {
-    return [style({ opacity: '*' }), animate('400ms ease-in', style({ opacity: 0 }))];
-  }
-
-  private fadeUp(): AnimationMetadata[] {
-    return [style({ opacity: 0 }), animate('200ms ease-in', style({ opacity: 1, transform: 'translateY(0)' }))];
-  }
-
-  private fadeDown(): AnimationMetadata[] {
-    return [style({ opacity: '*' }), animate('200ms ease-in', style({ opacity: 0, transform: 'translateY(-100%)' }))];
+    return [style({ opacity: '*' }), animate('200ms ease-in', style({ opacity: 0 }))];
   }
 
   ngAfterViewInit() {
+    this.zone.runOutsideAngular(() => {
     const scroll$ = fromEvent(window, 'scroll').pipe(
       throttleTime(10),
       map( (window1) => window.pageYOffset),
       pairwise(),
       map(([y1, y2]): Direction => {
-        return (y2 < y1 ? (y1 < 130 ? Direction.Up : Direction.None) : (y2 > 130 ? Direction.Down : Direction.None));
+        return (y2 < y1 ? ((y1 < 160 || y2 < 160) ? Direction.Up : Direction.None) : (y2 > 160 ? Direction.Down : Direction.None));
       }),
       distinctUntilChanged(),
       share(),
@@ -64,13 +58,15 @@ export class StickyHeaderDirective implements AfterViewInit, OnDestroy {
 
     const goingDown$ = scroll$.pipe(filter(direction => direction === Direction.Down));
 
-    goingUp$.pipe(
-      takeUntil(this.unsubscribe))
-      .subscribe(() => (this.show = true));
-    goingDown$.pipe(
-      takeUntil(this.unsubscribe))
-      .subscribe(() => (this.show = false));
-
+    goingUp$.subscribe(() => {
+      this.show = true;
+      this.cdr.detectChanges();
+    });
+    goingDown$.subscribe(() => {
+      this.show = false;
+      this.cdr.detectChanges();
+    });
+  });
   }
 
   ngOnDestroy() {

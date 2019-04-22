@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ResourceService, ServerResponse, ToasterService, ConfigService, UtilService } from '@sunbird/shared';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { ResourceService, ServerResponse, ToasterService, ConfigService, UtilService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SearchService, SearchParam, PlayerService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -14,7 +14,7 @@ import * as $ from 'jquery';
   templateUrl: './dial-code.component.html',
   styleUrls: ['./dial-code.component.scss']
 })
-export class DialCodeComponent implements OnInit, OnDestroy {
+export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   inviewLogs: any = [];
   /**
 	 * telemetryImpression
@@ -86,7 +86,8 @@ export class DialCodeComponent implements OnInit, OnDestroy {
 
   constructor(resourceService: ResourceService, router: Router, activatedRoute: ActivatedRoute,
     searchService: SearchService, toasterService: ToasterService, public configService: ConfigService,
-    public utilService: UtilService, public playerService: PlayerService) {
+    public utilService: UtilService, public navigationhelperService: NavigationHelperService,
+    public playerService: PlayerService) {
     this.resourceService = resourceService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -99,7 +100,6 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe(params => {
       this.searchKeyword = this.dialCode = params.dialCode;
       this.searchDialCode();
-      this.setTelemetryData();
     });
     this.handleMobilePopupBanner();
   }
@@ -126,44 +126,6 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     });
   }
 
-  setTelemetryData() {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: [{
-          type: 'dialCode',
-          id: this.dialCode
-        }]
-      },
-      object: {
-        id: this.dialCode,
-        type: 'dialCode',
-        ver: '1.0'
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.router.url,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
-      }
-    };
-    this.telemetryInteractObject = {
-      id: this.dialCode,
-      type: 'dialCode',
-      ver: '1.0'
-    };
-    this.closeMobilePopup = {
-      id: 'mobile-popup-close',
-      type: 'click',
-      pageid: 'get-dial'
-    };
-
-    this.appMobileDownload = {
-      id: 'app-download-mobile',
-      type: 'click',
-      pageid: 'get-dial'
-    };
-  }
   public searchDialCode() {
     this.showLoader = true;
     const requestParams = {
@@ -260,6 +222,31 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     this.telemetryImpression.edata.visits = this.inviewLogs;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env,
+          cdata: [{
+            type: 'dialCode',
+            id: this.dialCode
+          }]
+        },
+        object: {
+          id: this.dialCode,
+          type: 'dialCode',
+          ver: '1.0'
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.router.url,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
   ngOnDestroy() {
     this.unsubscribe$.next();
