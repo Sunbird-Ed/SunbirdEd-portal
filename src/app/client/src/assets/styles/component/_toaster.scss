@@ -15,6 +15,11 @@
     background: none;
   }
 
+  &.sb-toast-sm-padding {
+    padding: 16px 24px;
+    min-height: auto;
+  }
+  
   &.sb-toast-info,
   &.sb-toast-success,
   &.sb-toast-warning,
