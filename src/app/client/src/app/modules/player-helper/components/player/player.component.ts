@@ -16,9 +16,6 @@ export class PlayerComponent implements OnInit, OnChanges {
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   buildNumber: string;
-  viewFullscreenBtn = false;
-  viewFullScreenIntractEdata;
-  viewFullScreenIntractObject;
   @Input() playerOption: any ;
   contentRatingModal = false;
   /**
@@ -38,19 +35,10 @@ export class PlayerComponent implements OnInit, OnChanges {
    */
   ngOnInit() {
     this.showPlayer();
-    this.viewFullScreenIntractEdata = {
-      id: 'view-full-screen-button',
-      type: 'click',
-      pageid: this.router.url.split('/')[1]
-    };
-    this.viewFullScreenIntractObject = {
-      id: this.playerConfig.metadata.identifier,
-      type: this.playerConfig.metadata.contentType,
-      ver: this.playerConfig.metadata.pkgVersion ? this.playerConfig.metadata.pkgVersion.toString() : '1.0'
-    };
   }
 
   ngOnChanges() {
+    this.contentRatingModal = false;
     this.showPlayer();
   }
   /**
@@ -71,14 +59,6 @@ export class PlayerComponent implements OnInit, OnChanges {
     this.contentIframe.nativeElement.addEventListener('renderer:telemetry:event', (event: any) => {
       this.generateContentReadEvent(event);
     });
-
-    if (this.playerConfig.metadata.mimeType !== 'video/x-youtube' && this.playerConfig.metadata.mimeType !== 'video/mp4') {
-      this.viewFullscreenBtn = true;
-    }
-
-    if (window.innerWidth <= 768) {
-      this.viewInFullscreen();
-    }
   }
   /**
    * Adjust player height after load
@@ -108,17 +88,6 @@ export class PlayerComponent implements OnInit, OnChanges {
     }, timer); // waiting for player to load, then fetching stageId (if we dont wait stageId will be undefined)
   }
 
-  viewInFullscreen() {
-    if (document.fullscreenEnabled) {
-      const iframe = document.querySelector('#contentPlayer');
-      // Do fullscreen
-      if (iframe.requestFullscreen) {
-        iframe.requestFullscreen();
-      } else {
-        this.toasterService.warning(this.resourceService.messages.fmsg.m0004);
-      }
-    }
-  }
   showRatingPopup(event) {
     let contentProgress;
     const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');

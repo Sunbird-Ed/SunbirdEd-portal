@@ -32,7 +32,8 @@ describe('OrganisationComponent', () => {
           env: 'profile', pageid: 'org-admin-dashboard', type: 'view',
           object: { type: 'profile', ver: '1.0' }
         }
-      }
+      },
+      params: {}
     }
   };
 
