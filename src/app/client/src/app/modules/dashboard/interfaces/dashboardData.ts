@@ -28,7 +28,7 @@ export interface ICourseProgressData {
     progress: number;
     user: string;
     userName: string;
-    countn: number;
+    count: number;
     data?: Array<any>;
 }
 
