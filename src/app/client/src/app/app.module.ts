@@ -30,6 +30,7 @@ import { PluginModules } from './framework.config';
     SuiRatingModule, SuiCollapseModule,
     SharedModule.forRoot(),
     WebExtensionModule.forRoot(),
+    TelemetryModule.forRoot(),
     DeviceDetectorModule.forRoot(),
     SharedFeatureModule,
     ...PluginModules,
