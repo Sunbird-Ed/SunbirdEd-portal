@@ -1,8 +1,9 @@
 import { combineLatest, Subject, of, Observable } from 'rxjs';
 import { PageApiService, OrgDetailsService, FormService, UserService } from '@sunbird/core';
-import { Component, OnInit, OnDestroy, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, HostListener, AfterViewInit } from '@angular/core';
 import {
-  ResourceService, ToasterService, INoResultMessage, ConfigService, UtilService, ICaraouselData, BrowserCacheTtlService, ServerResponse
+  ResourceService, ToasterService, INoResultMessage, ConfigService, UtilService, ICaraouselData, BrowserCacheTtlService, ServerResponse,
+  NavigationHelperService
 } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -15,7 +16,7 @@ import { takeUntil, map, mergeMap, first, filter, catchError } from 'rxjs/operat
   templateUrl: './public-course.component.html',
   styleUrls: ['./public-course.component.scss']
 })
-export class PublicCourseComponent implements OnInit, OnDestroy {
+export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public showLoader = true;
   public showLoginModal = false;
@@ -46,7 +47,8 @@ export class PublicCourseComponent implements OnInit, OnDestroy {
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
     public router: Router, private utilService: UtilService, private orgDetailsService: OrgDetailsService,
     private publicPlayerService: PublicPlayerService, private cacheService: CacheService,
-    private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService, public formService: FormService) {
+    private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService, public formService: FormService,
+    public navigationhelperService: NavigationHelperService) {
     this.router.onSameUrlNavigation = 'reload';
     this.filterType = this.configService.appConfig.exploreCourse.filterType;
     this.setTelemetryData();
@@ -205,6 +207,11 @@ export class PublicCourseComponent implements OnInit, OnDestroy {
     const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], {queryParams: queryParams});
   }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.setTelemetryData();
+    });
+  }
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -218,7 +225,8 @@ export class PublicCourseComponent implements OnInit, OnDestroy {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         uri: this.router.url,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        duration: this.navigationhelperService.getPageLoadTime()
       }
     };
     this.sortIntractEdata = {

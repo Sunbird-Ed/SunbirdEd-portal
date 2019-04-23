@@ -2,7 +2,8 @@ import {
   ResourceService,
   ConfigService,
   BrowserCacheTtlService,
-  ToasterService } from '@sunbird/shared';
+  ToasterService,
+  NavigationHelperService } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { RedirectComponent } from './redirect.component';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
@@ -54,6 +55,7 @@ describe('RedirectComponent', () => {
         CacheService,
         ToasterService,
         BrowserCacheTtlService,
+        NavigationHelperService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ],
