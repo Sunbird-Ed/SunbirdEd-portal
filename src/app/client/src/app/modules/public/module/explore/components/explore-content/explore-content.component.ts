@@ -6,7 +6,7 @@ import { SearchService, PlayerService, OrgDetailsService, UserService, Framework
 import { IPagination } from '@sunbird/announcement';
 import { PublicPlayerService } from '../../../../services';
 import { combineLatest, Subject } from 'rxjs';
-import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
@@ -15,7 +15,7 @@ import { CacheService } from 'ng2-cache-service';
 @Component({
     templateUrl: './explore-content.component.html'
 })
-export class ExploreContentComponent implements OnInit, OnDestroy {
+export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public showLoader = true;
     public showLoginModal = false;
@@ -37,6 +37,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     public contentList: Array<ICard> = [];
     public cardIntractEdata: IInteractEventEdata;
     public loaderMessage: ILoaderMessage;
+    public sortByOption = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
 
     constructor(public searchService: SearchService, public router: Router,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -44,10 +45,9 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
         public configService: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
         public navigationHelperService: NavigationHelperService, private publicPlayerService: PublicPlayerService,
         public userService: UserService, public frameworkService: FrameworkService,
-        public cacheService: CacheService) {
+        public cacheService: CacheService, public navigationhelperService: NavigationHelperService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.explore.filterType;
-        this.setTelemetryData();
     }
     ngOnInit() {
         this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug).pipe(
@@ -160,7 +160,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
                 type: this.activatedRoute.snapshot.data.telemetry.type,
                 pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
                 uri: this.router.url,
-                subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+                subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+                duration: this.navigationhelperService.getPageLoadTime()
             }
         };
         this.cardIntractEdata = {
@@ -194,6 +195,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
             this.telemetryImpression.edata.subtype = 'pageexit';
             this.telemetryImpression = Object.assign({}, this.telemetryImpression);
         }
+    }
+    ngAfterViewInit () {
+        setTimeout(() => {
+          this.setTelemetryData();
+        });
     }
     ngOnDestroy() {
         this.unsubscribe$.next();

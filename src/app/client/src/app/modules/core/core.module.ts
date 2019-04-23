@@ -10,7 +10,7 @@ import { AvatarModule } from 'ngx-avatar';
 import {
   MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent,
   DataDrivenFilterComponent, ErrorPageComponent, SortByComponent, FlagContentComponent,
-  LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent
+  LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent, SunbirdFooterComponent
 } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
@@ -32,10 +32,10 @@ import { TelemetryModule } from '@sunbird/telemetry';
   declarations: [MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, PermissionDirective,
     BodyScrollDirective, DataDrivenFilterComponent, SortByComponent,
     ErrorPageComponent, FlagContentComponent, LanguageDropdownComponent,
-     ProminentFilterComponent, TopicPickerComponent, StickyHeaderDirective],
+     ProminentFilterComponent, TopicPickerComponent, StickyHeaderDirective, SunbirdFooterComponent],
   exports: [MainHeaderComponent, MainFooterComponent, PermissionDirective, BodyScrollDirective,
     DataDrivenFilterComponent, SortByComponent, FlagContentComponent,
-    TelemetryModule, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent],
+    TelemetryModule, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent, SunbirdFooterComponent],
     providers: [CacheService, AuthGuard]
 })
 export class CoreModule {

@@ -1,11 +1,11 @@
 import {
   PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ICard, ILoaderMessage, UtilService, BrowserCacheTtlService
+  ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService
 } from '@sunbird/shared';
 import { SearchService, PlayerService, CoursesService, UserService, FormService, ISort } from '@sunbird/core';
 import { IPagination } from '@sunbird/announcement';
 import { combineLatest, Subject } from 'rxjs';
-import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
@@ -15,7 +15,7 @@ import { CacheService } from 'ng2-cache-service';
 @Component({
   templateUrl: './home-search.component.html'
 })
-export class HomeSearchComponent implements OnInit, OnDestroy {
+export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public showLoader = true;
   public noResultMessage: INoResultMessage;
@@ -48,7 +48,8 @@ export class HomeSearchComponent implements OnInit, OnDestroy {
     public resourceService: ResourceService, public toasterService: ToasterService, public changeDetectorRef: ChangeDetectorRef,
     public configService: ConfigService, public utilService: UtilService, public coursesService: CoursesService,
     private playerService: PlayerService, public userService: UserService, public cacheService: CacheService,
-    public formService: FormService, public browserCacheTtlService: BrowserCacheTtlService) {
+    public formService: FormService, public browserCacheTtlService: BrowserCacheTtlService,
+    public navigationhelperService: NavigationHelperService) {
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.home.filterType;
     // this.redirectUrl = this.configService.appConfig.courses.searchPageredirectUrl;
@@ -200,17 +201,22 @@ export class HomeSearchComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'home-search'
     };
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.router.url,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
-      }
-    };
+  }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.router.url,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
   ngOnDestroy() {
     this.unsubscribe$.next();

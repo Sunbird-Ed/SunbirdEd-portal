@@ -1,0 +1,47 @@
+.inner__content .get-started {
+
+  margin: 20px 0 0 -45px;
+  text-align: right;
+  font-size: 14px;
+  border-radius: 0 2px 2px 0;
+  border: none;
+  text-transform: uppercase;
+  background-color: #EFF4F5;
+
+  transition: all .2s ease-in;
+  -webkit-transition: all .2s ease-in;
+
+  white-space: normal;
+  padding: 12px 15px;
+  display: inline-block;
+  width: calc(100% + 45px);
+  box-shadow: none;
+  color: #444444;
+
+  i {
+    position: relative;
+    top: 5px;
+    left: 0;
+    line-height: 0.1;
+    font-size: 20px;
+    margin: 0;
+    margin-bottom: -5px;
+    width: 16px;
+    display: inline-block;
+  }
+
+  &:hover {
+    color: #1cadce;
+  }
+}
+
+.inner__content blockquote .get-started {
+
+  margin: 0 0 0 -30px;
+  margin-bottom: -20px;
+  position: relative;
+  margin-top: -15px;
+  bottom: -30px;
+  width: calc(100% + 60px);
+  border-radius: 0;
+}

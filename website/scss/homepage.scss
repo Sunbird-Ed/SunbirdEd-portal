@@ -1,0 +1,183 @@
+
+.text-light{
+	font-weight:300;
+}
+.text-regular{
+	font-weight:400;
+}
+.text-semibold{
+	font-weight:600;
+}
+
+.section1{
+	padding:120px 0;
+	text-align:center;
+	color:#fff;
+	background-image:url('../img/sunbird-bg.jpg');
+    min-height: 500px; 
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+.section1 .inner-content{    
+    padding: 20px 0;
+    margin: 30px 0;
+}
+.section1 .inner-content-heading{
+	font-size: 45px;
+}
+.section1 .secondary-content{
+	margin:20px 0;
+	font-size: 22px;
+}
+
+.btn-default{
+	background:#fb4b00;
+	color:#FFF;
+	border: 1px solid #fb4b00;
+	padding: 8px 16px;
+}
+
+.btn-default:hover, .btn-default:focus{
+	background:#f7946a;
+	color:#FFF;
+	border: 1px solid #f7946a;
+}
+.btn-secondary{
+	background:transparent;
+	color:#FFF;
+	border: 2px solid #FFF; 
+	padding: 8px 16px;
+}
+.btn-default a, .btn-default a:hover, .btn-default a:focus, .btn-secondary a, .btn-secondary a:hover, .btn-secondary a:focus{
+	color:#FFF;
+	font-size:16px;
+	font-weight:600;
+	text-decoration:none;
+}
+.btn-features-cover{
+	text-align:center;
+}
+
+.btn-features, .btn-features:hover, .btn-features:focus{
+    background: none;
+    border: none;
+}
+.btn-features{
+	margin: 20px 0;
+    outline: 0;	
+}
+.btn-features:hover{
+    color: #FFF;
+    outline: 0;	
+}
+.btn-features a:hover{
+	color:#FFF;
+	text-decoration:none;
+	background: #737373;
+}
+.btn-features a{
+	color:#737373;
+    font-size: 16px;
+    font-weight:600;
+    text-decoration:none;
+    padding: 8px 16px;
+    background: transparent;
+    border: 2px solid #737373;
+    outline: 0;	
+}
+.section2{
+	padding:20px 0;
+}
+.partner-list{
+	display:inline-block;
+	padding:0 25px;
+	border-right:1px dotted #333;
+	font-size:18px;
+}
+.partner-list:first-child, .partner-list:last-child{
+	border-right:none;
+}
+
+.section3{
+	padding:100px 0;
+	text-align:center;
+	background-image:url('../img/sunbirdteam.jpg');
+    min-height: 500px; 
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.section3 .inner-contribute{
+	font-size:50px;
+	color:#12c89f;
+	padding:0 0 30px 0;
+}
+.section3 .contribute-content{
+	text-align:center;
+	padding:40px;
+	background:rgba(0, 0, 0, 0.6);
+	display: inline-block;
+}
+.section4{
+	background:#EAEAEA;
+	padding: 100px 0;
+}
+
+.section4 .main-content{
+	font-size:39px;
+	color:#168b7b;
+	margin:0 0 20px 0;
+}
+.learning-list li{
+	font-size:18px;
+	margin-bottom:10px;
+}
+ul.learning-list{
+	padding-left:25px;
+}
+
+.section5{
+	padding:50px 0;
+}
+.section5 .main-content{
+	padding:100px 0;
+}
+.section5 .inner-content-heading{
+    color: #1A858D;
+    font-size:45px;
+    padding: 0 0 20px;
+}
+.git-icon{
+	margin-bottom:20px;
+}
+.section6 .content-cover{
+	text-align:center;
+	color:#FFF;
+	padding:30px 10px;
+}
+.section6 .content-title, .section6 .main-content, .section6 .btn-signup{
+	margin:20px 0;
+}
+.section6 .content-title{
+	font-size:45px;
+}
+.section6 .main-content{
+	font-size:22px;
+}
+.section6{
+	padding:100px 0;
+	text-align:center;
+	background-image:url('../img/sunbird-bg.jpg');
+    min-height: 500px; 
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

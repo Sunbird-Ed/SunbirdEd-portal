@@ -1,0 +1,134 @@
+@import "./global";
+@import "./footer";
+@import "./headers";
+@import "./header";
+@import "./tabs";
+@import "./sidebar";
+@import "./blockquote";
+@import "./toc";
+@import "./image";
+@import "./platform_selector";
+@import "./section_selector";
+@import "./docspage";
+@import "./inner";
+@import "./breadcrumbs";
+@import "./searchbar";
+@import "./get_started";
+@import "./owl";
+@import "./homepage";
+@import "./redoc";
+body{
+	font-family: "Roboto", Corbel, Avenir, "Lucida Grande", "Lucida Sans", sans-serif;
+	
+}
+@media screen and (min-width:992px){
+.doc-layout{
+	overflow:hidden;
+}}
+.btn-inactive {
+	border-color: white;
+}
+
+.btn-default {
+	margin-right: 5px;
+}
+
+.main {
+	max-width: 1200px;
+	padding: 30px 15px;
+}
+
+.page-title {
+	padding-top: 0px;
+	margin-top: 0px;
+}
+
+.premium-label {
+	float: right;
+	max-width: 100px;
+}
+
+.premium-star {
+	max-width: 30px;
+	margin-right: 10px;
+}
+
+.premium-flag {
+	height: 1.3em;
+	padding: 0 0.3em;
+}
+
+pre {
+	word-break: normal;
+	word-wrap: normal;
+	overflow-x: auto;
+	code {
+		//white-space: pre;
+	}
+}
+
+body {
+	font-size: 14px;
+	line-height: 1.3;
+}
+
+a:hover, a:focus {
+	color: #5691AD;
+}
+
+.full-width {
+	display: inline-block;
+	width: 100%;
+}
+
+.attention-grabber {
+	font-size: 1.1em;
+	margin: 20px 0px;
+	font-weight: 600;
+	text-align: center;
+}
+
+/*
+ * Keyframes
+ */
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/*
+ * CSS Page Transitions
+ * Don't forget to add vendor prefixes!
+ */
+.m-scene {
+  /** Basic styles for an animated element */
+  .scene_element {
+    animation-duration: .2s;
+    animation-delay: .1s;
+    transition-timing-function: ease-in;
+    animation-fill-mode: both;
+
+  }
+
+  /** An element that fades in */
+  .scene_element--fadein {
+    animation-name: fadeIn;
+  }
+}
+
+a {
+  color: #1cadce;
+  text-decoration: none;
+  transition: all .2s ease-in;
+  -webkit-transition: all .2s ease-in;
+  &:hover {
+    text-decoration: none;
+    color: #076074;
+  }
+}

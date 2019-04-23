@@ -14,7 +14,7 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
   selector: 'app-data-driven-filter',
   templateUrl: './data-driven-filter.component.html'
 })
-export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
+export class DataDrivenFilterComponent implements OnInit, OnDestroy {
   @Input() filterEnv: string;
   @Input() accordionDefaultOpen: boolean;
   @Input() isShowFilterLabel: boolean;
@@ -243,11 +243,6 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
       }
       this.formInputData = _.pickBy(this.formInputData);
       this.hardRefreshFilter();
-    }
-  }
-  ngOnChanges() {
-    if (this.formFieldProperties && this.enrichFilters) {
-      this.enrichFiltersOnInputChange();
     }
   }
   private enrichFiltersOnInputChange() {

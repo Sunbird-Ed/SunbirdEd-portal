@@ -2,8 +2,9 @@
     <div  class="ui grid">
         <div class="twelve wide column">
             <app-data-driven-filter [pageId]="'explore-search'" *ngIf="initFilters" [filterEnv]="filterType"
-                [enrichFilters]="facetsList" [ignoreQuery]="['key']" [accordionDefaultOpen]=true
+                [enrichFilters]="facetsList" [ignoreQuery]="['key']" [accordionDefaultOpen]=false
                 [isShowFilterLabel]=true [hashTagId]="hashTagId" [showSearchedParam]=true (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
+                <app-sort-by [sortingOptions]="sortByOption" [url]="activatedRoute.snapshot.params.slug ? '/' + activatedRoute.snapshot.params.slug+ '/explore/1' : '/explore/1'"></app-sort-by>
         </div>
         <div class="twelve wide column">
             <div class="ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && contentList.length && this.queryParams.key">
@@ -17,8 +18,8 @@
         <div [appTelemetryImpression]="telemetryImpression" class="twelve wide column" in-view-container (inview)="inView($event)" *ngIf="!showLoader && contentList.length">
             <div class="masonry-grid dynamic-section-card">
                 <div in-view-item [id]="i" [data]="content" class="masonry-item" *ngFor="let content of contentList;let i = index;">
-                    <app-card  appContentDirection [data]="content" appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType || 'content',ver:'1.0'}"
-                            (clickEvent)="playContent($event)" [data]="content"></app-card>
+                    <app-asset-card  appContentDirection [data]="content" appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType || 'content',ver:'1.0'}"
+                            (clickEvent)="playContent($event)" [data]="content"></app-asset-card>
                 </div>
             </div>
         </div>
