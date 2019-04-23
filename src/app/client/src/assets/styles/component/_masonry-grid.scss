@@ -2,9 +2,8 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-}
-@include respond-above(xs) {
-    .masonry-grid {
+    
+    @media screen and (min-width: 656px) {
         justify-content: normal;
     }
 }
@@ -42,6 +41,24 @@
     }
 
     [dir="rtl"] .masonry-item:nth-child(3n) {
+        margin-left: 0;
+    }
+}
+@include respond-between(lg,xxxl) {
+    [dir="ltr"] .masonry-item:nth-child(4n) {
+        margin-right: 0;
+    }
+
+    [dir="rtl"] .masonry-item:nth-child(4n) {
+        margin-left: 0;
+    }
+}
+@include respond-above(xxxl) {
+    [dir="ltr"] .masonry-item:nth-child(5n) {
+        margin-right: 0;
+    }
+
+    [dir="rtl"] .masonry-item:nth-child(5n) {
         margin-left: 0;
     }
 }
