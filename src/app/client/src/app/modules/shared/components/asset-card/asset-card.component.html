@@ -8,8 +8,8 @@ tabindex="0">
     <i class="database icon fs-2-57 text-gray"></i>
    </div> 
   
-    <div class="header">{{data?.name | titlecase | slice:0:15}}<span *ngIf="data.name && data.name.length > 15">...</span>
-      <p class="text-light pt-10" *ngIf="data?.version">{{data?.version}}</p>
+    <div class="header pt-10">{{data?.name | titlecase | slice:0:15}}<span *ngIf="data.name && data.name.length > 15">...</span>
+      <p class="text-light pt-10">Version : {{data?.version || '1.0'}}</p>
       <p class="text-light pt-10" *ngIf="data?.assetType">{{data?.assetType | titlecase}}</p>
     </div>
   </div>
@@ -18,10 +18,11 @@ tabindex="0">
       <span class="card-text" *ngIf="data?.creator">Created By : {{data?.creator | titlecase}}</span>
       <span class="card-text" *ngIf="data?.link">Link: <a href="{{data?.link}}" target="blank">{{data?.link}}</a></span>
       <span class="card-text" *ngIf="data?.region">Region : {{data?.region | titlecase}}</span>
-      <span class="card-text" *ngIf="data?.orgDetails">Owner : {{data.orgDetails?.orgName}}</span>
+      <span class="card-text" *ngIf="data?.orgDetails?.orgName">Owner : {{data?.orgDetails?.orgName}}</span>
     </div>
   </div>
-  <div class="extra content">
-    {{data?.description | titlecase | slice:0:60}} <span *ngIf="data.description && data.description.length > 60">...</span>
+  <div class="extra content" id="des">
+    {{data?.description | titlecase | slice:0:33}} <span class="extras" *ngIf="data.description && data.description.length > 33">{{data?.description | titlecase | slice:33}}</span>
+    <br *ngIf="!data?.description"> 
   </div>
 </div>

@@ -38,3 +38,9 @@
 #contentBackground {
     background: #024f9d;
 }
+.extras { 
+    display: none;
+}
+#des:hover .extras {
+    display: inline-block;
+}
