@@ -66,7 +66,7 @@
               &nbsp;&nbsp;{{dashboarData.completedCount}}
             </span>
             
-            <span class="course-completed ml-auto" *ngIf="dashboarData.reportUpdatedOn && dashboarData.reportUpdatedOn!==null">
+            <span class="course-completed ml-auto" >
               <span class="font-italic">{{resourceService?.frmelmnts?.lbl?.reportUpdatedOn}}</span>&nbsp;:&nbsp;{{dashboarData.reportUpdatedOn | dateFormat :'DD/MM/YYYY'}}
             </span>
           </div>
@@ -172,7 +172,8 @@
                 <td *ngIf="student.progress === 100">{{resourceService?.frmelmnts?.lbl?.completed}}</td>
                 <td class="ui  header text-font" *ngIf="(student.progress !== 100 && student.progress > 90)">{{student.progress}}%</td>
                 <td class="ui  header text-font" *ngIf="(student.progress !== 100 && student.progress > 30)">{{student.progress}}%</td>
-                <td class="ui  header text-font" *ngIf="(student.progress !== 100 && student.progress < 30)">{{student.progress}}%</td>
+                <td class="ui  header text-font" *ngIf="(student.progress !== 100 && student.progress < 30 && student.progress!==null)">{{student.progress}}%</td>
+                <td class="ui  header text-font" *ngIf="!student.progress">-</td>
               </tr>
               <tr *ngIf="dashboarData && dashboarData.data.length === 0">
                 <td id="noRecordsFound">{{resourceService?.frmelmnts?.lbl?.noMatchingRecordFound}}</td>
