@@ -71,12 +71,11 @@
             </span>
           </div>
         </div>
-        <div class="sb-toaster sb-toast-info sb-mw-100" *ngIf="dashboarData &&  dashboarData.count>10000" >
+        <div class="sb-toaster sb-toast-info sb-mw-100 sb-toast-sm-padding" *ngIf="dashboarData &&  dashboarData.count>10000" >
           <div class="sb-toast-body">
             <div class="sb-toast-texts">
               <div class="sb-toast-message">{{resourceService?.frmelmnts?.instn?.t0085}}</div>
             </div>
-            <span class="sb-toast-close-icon"></span>
           </div>
         </div>
         <div class="d-flex flex-jc-space-between flex-ai-center download-file-container mt-15 mb-0 mx-0" *ngIf="dashboarData">
@@ -172,7 +171,8 @@
                 <td *ngIf="student.progress === 100">{{resourceService?.frmelmnts?.lbl?.completed}}</td>
                 <td class="ui  header text-font" *ngIf="(student.progress !== 100 && student.progress > 90)">{{student.progress}}%</td>
                 <td class="ui  header text-font" *ngIf="(student.progress !== 100 && student.progress > 30)">{{student.progress}}%</td>
-                <td class="ui  header text-font" *ngIf="(student.progress !== 100 && student.progress < 30)">{{student.progress}}%</td>
+                <td class="ui  header text-font" *ngIf="(student.progress !== 100 && student.progress < 30 && student.progress!==null)">{{student.progress}}%</td>
+                <td class="ui  header text-font" *ngIf="!student.progress">-</td>
               </tr>
               <tr *ngIf="dashboarData && dashboarData.data.length === 0">
                 <td id="noRecordsFound">{{resourceService?.frmelmnts?.lbl?.noMatchingRecordFound}}</td>

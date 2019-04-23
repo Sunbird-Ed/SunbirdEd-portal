@@ -1,6 +1,6 @@
 
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject, tick, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UploadedComponent } from './uploaded.component';
@@ -107,12 +107,14 @@ describe('UploadedComponent', () => {
     expect(component.uploaded.length).toBeLessThanOrEqual(0);
     expect(component.uploaded.length).toEqual(0);
   }));
-  it('should call inview method for visits data', () => {
+  it('should call inview method for visits data', fakeAsync(() => {
     spyOn(component, 'inview').and.callThrough();
+    component.ngAfterViewInit();
+    tick(100);
     component.inview(testData.event.inview);
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
-  });
+  }));
 });
 
 

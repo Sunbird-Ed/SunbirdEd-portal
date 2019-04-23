@@ -39,6 +39,9 @@ describe('UserProfileComponent', () => {
     const fakeActivatedRoute = {
         'params': observableOf({ userId: '3' }),
         snapshot: {
+            params: {
+                userId: '12421312'
+            },
             queryParams: {},
             data: {
                 telemetry: {
