@@ -5,7 +5,7 @@ import {
 import { SearchService, PlayerService, UserService, FrameworkService } from '@sunbird/core';
 import { IPagination } from '@sunbird/announcement';
 import { combineLatest, Subject } from 'rxjs';
-import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
@@ -14,7 +14,7 @@ import { CacheService } from 'ng2-cache-service';
 @Component({
     templateUrl: './library-search.component.html'
 })
-export class LibrarySearchComponent implements OnInit, OnDestroy {
+export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public showLoader = true;
     public noResultMessage: INoResultMessage;
@@ -44,7 +44,8 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
         public resourceService: ResourceService, public toasterService: ToasterService,
         public configService: ConfigService, public utilService: UtilService,
         public navigationHelperService: NavigationHelperService, public userService: UserService,
-        public cacheService: CacheService, public frameworkService: FrameworkService) {
+        public cacheService: CacheService, public frameworkService: FrameworkService,
+        public navigationhelperService: NavigationHelperService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.library.filterType;
         this.redirectUrl = this.configService.appConfig.library.searchPageredirectUrl;
@@ -151,17 +152,6 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
     }
     private setTelemetryData() {
         this.inViewLogs = [];
-        this.telemetryImpression = {
-            context: {
-                env: this.activatedRoute.snapshot.data.telemetry.env
-            },
-            edata: {
-                type: this.activatedRoute.snapshot.data.telemetry.type,
-                pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-                uri: this.router.url,
-                subtype: this.activatedRoute.snapshot.data.telemetry.subtype
-            }
-        };
         this.cardIntractEdata = {
             id: 'content-card',
             type: 'click',
@@ -197,6 +187,22 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
         this.telemetryImpression.edata.subtype = 'pageexit';
         this.telemetryImpression = Object.assign({}, this.telemetryImpression);
         }
+    }
+    ngAfterViewInit () {
+        setTimeout(() => {
+            this.telemetryImpression = {
+                context: {
+                    env: this.activatedRoute.snapshot.data.telemetry.env
+                },
+                edata: {
+                    type: this.activatedRoute.snapshot.data.telemetry.type,
+                    pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+                    uri: this.router.url,
+                    subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+                    duration: this.navigationhelperService.getPageLoadTime()
+                }
+            };
+        });
     }
     ngOnDestroy() {
         this.unsubscribe$.next();

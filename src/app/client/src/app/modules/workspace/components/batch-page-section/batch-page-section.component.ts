@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService, PageApiService } from '@sunbird/core';
 import {
   ServerResponse, ConfigService, ToasterService,
-  ResourceService, ILoaderMessage, INoResultMessage, ICaraouselData
+  ResourceService, ILoaderMessage, INoResultMessage, ICaraouselData, NavigationHelperService
 } from '@sunbird/shared';
 import { WorkSpaceService, BatchService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
@@ -19,7 +19,7 @@ import { Subject } from 'rxjs';
   selector: 'app-batch-page-section',
   templateUrl: './batch-page-section.component.html'
 })
-export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDestroy {
+export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDestroy , AfterViewInit {
 
  public unsubscribe$ = new Subject<void>();
 
@@ -125,7 +125,7 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
-    config: ConfigService) {
+    config: ConfigService, public navigationhelperService: NavigationHelperService) {
     super(searchService, workSpaceService, userService);
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -147,7 +147,6 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
       this.category = params.category;
       this.fetchPageData();
     });
-    this.setTelemetryImpression();
     this.batchService.updateEvent
       .subscribe((data) => {
         this.fetchPageData();
@@ -279,9 +278,16 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
         uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.category,
-        visits: this.inviewLogs
+        visits: this.inviewLogs,
+        duration: this.navigationhelperService.getPageLoadTime()
       }
     };
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.setTelemetryImpression();
+    });
   }
 
   ngOnDestroy() {
