@@ -1,12 +1,19 @@
 //Container styles
-@include respond-between(xl,xxxl) {
-    .ui.container {
-        width:1288px;
-    }
+/*@include respond-between(xl,xxxl) {
+  .ui.container {
+      width: 1288px;
   }
+}*/
 
-  @include respond-above(xxxl) {
-    .ui.container {
-        width:1608px;
-    }
+@include respond-above(lg) {
+  .ui.container {
+    width: 1216px;
   }
+}
+
+@include respond-above(xxxl) {
+  .ui.container {
+    width: 1524px;
+  }
+}
+
