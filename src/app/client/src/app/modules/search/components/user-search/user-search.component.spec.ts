@@ -47,6 +47,9 @@ describe('UserSearchComponent', () => {
     'params': observableOf({ pageNumber: '1' }),
     'queryParams': observableOf({ OrgType: ['012352495007170560157'] }),
     snapshot: {
+      params: {
+        userId: '12421312'
+      },
       data: {
         telemetry: {
           env: 'profile', pageid: 'use-search', type: 'view', subtype: 'paginate'

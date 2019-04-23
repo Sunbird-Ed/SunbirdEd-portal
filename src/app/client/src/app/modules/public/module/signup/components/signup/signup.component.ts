@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
-import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { SignupService } from './../../services';
 import { TenantService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -16,7 +16,7 @@ import { CacheService } from 'ng2-cache-service';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent implements OnInit, OnDestroy {
+export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   public unsubscribe = new Subject<void>();
   signUpForm: FormGroup;
   sbFormBuilder: FormBuilder;
@@ -39,7 +39,8 @@ export class SignupComponent implements OnInit, OnDestroy {
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService, private cacheService: CacheService,
     public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
-    public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService) {
+    public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
+    public navigationhelperService: NavigationHelperService) {
     this.sbFormBuilder = formBuilder;
   }
 
@@ -64,11 +65,6 @@ export class SignupComponent implements OnInit, OnDestroy {
 
     // Telemetry Start
     this.signUpTelemetryStart();
-
-    // Telemetry Impression
-    setTimeout(() => {
-      this.signUpTelemetryImpression();
-    }, 300);
   }
 
   getCacheLanguage() {
@@ -110,7 +106,8 @@ export class SignupComponent implements OnInit, OnDestroy {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri
+        uri: this.activatedRoute.snapshot.data.telemetry.uri,
+        duration: this.navigationhelperService.getPageLoadTime()
       }
     };
   }
@@ -281,6 +278,13 @@ export class SignupComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryCdata = [{ 'type': 'signup', 'id': this.activatedRoute.snapshot.data.telemetry.uuid }];
+      this.signUpTelemetryImpression();
+    });
+  }
+
   ngOnDestroy() {
     if (this.tenantDataSubscription) {
       this.tenantDataSubscription.unsubscribe();
@@ -298,7 +302,5 @@ export class SignupComponent implements OnInit, OnDestroy {
         'contactType': this.signUpForm.controls.contactType.value.toString()
       }
     };
-
-    this.telemetryCdata = [{ 'type': 'signup', 'id': this.activatedRoute.snapshot.data.telemetry.uuid }];
   }
 }

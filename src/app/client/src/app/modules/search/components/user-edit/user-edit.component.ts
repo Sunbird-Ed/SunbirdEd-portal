@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserSearchService } from './../../services';
 import { UserService, PermissionService, RolesAndPermissions, OrgDetailsService } from '@sunbird/core';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, IUserData } from '@sunbird/shared';
+import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, IUserData,
+  NavigationHelperService } from '@sunbird/shared';
 import { ProfileService } from '@sunbird/profile';
 import * as _ from 'lodash-es';
 
@@ -13,7 +14,7 @@ import * as _ from 'lodash-es';
   templateUrl: './user-edit.component.html',
   styleUrls: ['./user-edit-component.scss']
 })
-export class UserEditComponent implements OnInit, OnDestroy {
+export class UserEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('modal') modal;
   userId: string;
@@ -46,7 +47,8 @@ export class UserEditComponent implements OnInit, OnDestroy {
     private permissionService: PermissionService, public resourceService: ResourceService,
     public route: Router, private toasterService: ToasterService, formBuilder: FormBuilder,
     public routerNavigationService: RouterNavigationService, public profileService: ProfileService,
-    public userService: UserService, public orgDetailsService: OrgDetailsService) {
+    public userService: UserService, public orgDetailsService: OrgDetailsService,
+    public navigationhelperService: NavigationHelperService) {
     this.sbFormBuilder = formBuilder;
   }
 
@@ -289,23 +291,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
   }
 
   settelemetryData() {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      object: {
-        id: this.userId,
-        type: 'user',
-        ver: '1.0'
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.route.url,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
-      }
-    };
-
     this.submitInteractEdata = {
       id: 'user-update',
       type: 'click',
@@ -324,6 +309,28 @@ export class UserEditComponent implements OnInit, OnDestroy {
       type: 'User',
       ver: '1.0'
     };
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        object: {
+          id: this.activatedRoute.snapshot.params.userId,
+          type: 'user',
+          ver: '1.0'
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.route.url,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 
   ngOnDestroy() {

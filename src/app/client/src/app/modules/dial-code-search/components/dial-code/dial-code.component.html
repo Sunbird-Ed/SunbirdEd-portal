@@ -46,9 +46,8 @@
   </div>
 </div>
 
-<div appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeMobilePopup"
-  class="mobile-popup-dimmer">
-  <div class="mobile-app-popup">
+<div class="mobile-popup-dimmer" (click)="closeMobileAppPopup()" [ngClass]="{'bottom-0': showMobilePopup}">
+  <div class="mobile-app-popup" [ngClass]="{'bottom-0': showMobilePopup}">
     <div class="download-diksha">
       <button class="ui button close-mobile-div">
         <i class="close icon"></i>
@@ -61,10 +60,9 @@
           <div class="small-box border-round border-r50"></div>
         </div>
         <label class="d-block fs-1-143 pb-10 text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile}}</label>
-        <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="appMobileDownload"
-          id='app-download-mobile' class="d-block pb-0 text-center app-download">
+        <a id='app-download-mobile' class="d-block pb-0 text-center app-download">
           <img class="playStore-img" src="../../../../../assets/images/google_playstore.png" alt="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile}}"
-            title="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile}}">
+            title="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile}}" (click)="redirectToDikshaApp()">
         </a>
       </div>
     </div>

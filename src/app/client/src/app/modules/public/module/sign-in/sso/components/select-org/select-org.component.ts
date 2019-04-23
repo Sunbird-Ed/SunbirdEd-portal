@@ -1,15 +1,15 @@
 import { first } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormService } from '@sunbird/core';
 import { ActivatedRoute } from '@angular/router';
 import { TenantService } from '@sunbird/core';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, NavigationHelperService } from '@sunbird/shared';
 
 @Component({
   templateUrl: './select-org.component.html',
   styleUrls: ['./select-org.component.scss']
 })
-export class SelectOrgComponent implements OnInit {
+export class SelectOrgComponent implements OnInit, AfterViewInit {
   public selectedOrg: any;
   public orgList: Array<any>;
   public errorUrl = '/sso/sign-in/error';
@@ -18,7 +18,7 @@ export class SelectOrgComponent implements OnInit {
   public disableSubmitBtn = true;
   public submitOrgInteractEdata;
   constructor(private formService: FormService, public activatedRoute: ActivatedRoute, private tenantService: TenantService,
-    public resourceService: ResourceService) { }
+    public resourceService: ResourceService, public navigationhelperService: NavigationHelperService) { }
 
   ngOnInit() {
     this.setTenantInfo();
@@ -50,17 +50,24 @@ export class SelectOrgComponent implements OnInit {
   public handleOrgSelection(event) {
     window.location.href = this.selectedOrg;
   }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env,
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.activatedRoute.snapshot.data.telemetry.uri,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
+  }
+
   private setTelemetryData() {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri
-      }
-    };
     this.submitOrgInteractEdata = {
       id: 'submit-org',
       type: 'click',

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import {
   ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile, Framework,
@@ -19,7 +19,7 @@ import { takeUntil, first, mergeMap, map, tap , filter, catchError} from 'rxjs/o
   selector: 'app-data-driven',
   templateUrl: './data-driven.component.html'
 })
-export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy {
+export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('formData') formData: DefaultTemplateComponent;
   @ViewChild('modal') modal;
 
@@ -171,17 +171,6 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
           this.userProfile = user.userProfile;
         }
       });
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri
-      }
-    };
   }
   ngOnDestroy() {
     if (this.modal && this.modal.deny) {
@@ -331,6 +320,23 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy 
 
   redirect() {
     this.router.navigate(['/workspace/content/create']);
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          uri: this.activatedRoute.snapshot.data.telemetry.uri,
+          duration: this.navigationHelperService.getPageLoadTime()
+        }
+      };
+    });
   }
   /**
   * fetchCourseFrameworkId (i.e TPD)
