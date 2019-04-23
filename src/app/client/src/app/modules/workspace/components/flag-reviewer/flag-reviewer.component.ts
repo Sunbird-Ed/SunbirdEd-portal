@@ -1,12 +1,13 @@
 
 import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import { WorkSpace } from './../../classes/workspace';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchService, UserService, PermissionService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
-  ResourceService, IContents, ILoaderMessage, INoResultMessage, IUserData
+  ResourceService, IContents, ILoaderMessage, INoResultMessage, IUserData,
+  NavigationHelperService
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
@@ -20,7 +21,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
   selector: 'app-flag-reviewer',
   templateUrl: './flag-reviewer.component.html'
 })
-export class FlagReviewerComponent extends WorkSpace implements OnInit {
+export class FlagReviewerComponent extends WorkSpace implements OnInit, AfterViewInit {
   /**
   * To navigate to other pages
   */
@@ -149,7 +150,8 @@ export class FlagReviewerComponent extends WorkSpace implements OnInit {
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
-    config: ConfigService, permissionService: PermissionService) {
+    config: ConfigService, permissionService: PermissionService,
+    public navigationhelperService: NavigationHelperService) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
@@ -185,19 +187,6 @@ export class FlagReviewerComponent extends WorkSpace implements OnInit {
         this.queryParams = bothParams.queryParams;
         this.fecthFlagReviewerContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
       });
-
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
-        visits: this.inviewLogs
-      }
-    };
   }
 
   /**
@@ -278,6 +267,25 @@ export class FlagReviewerComponent extends WorkSpace implements OnInit {
   contentClick(content) {
     this.workSpaceService.navigateToContent(content, this.state);
   }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
+          visits: this.inviewLogs,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
+  }
+
   /**
   * get inview  Data
   */

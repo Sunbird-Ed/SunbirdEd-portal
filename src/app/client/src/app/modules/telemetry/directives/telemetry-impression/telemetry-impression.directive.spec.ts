@@ -16,7 +16,7 @@ describe('TelemetryImpressionDirective', () => {
     const directive = new TelemetryImpressionDirective(telemetryService);
     spyOn(telemetryService, 'impression').and.callFake(() => observableOf(eventData.inputData));
     directive.appTelemetryImpression = eventData.inputData;
-    directive.ngOnInit();
+    directive.ngOnChanges();
     expect(directive.appTelemetryImpression).toBeDefined();
     expect(directive.appTelemetryImpression).toBe(eventData.inputData);
     expect(telemetryService.impression).toHaveBeenCalled();
