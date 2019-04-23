@@ -1,0 +1,27 @@
+<div class="ui card" *ngIf="data"
+appTelemetryInteract 
+[telemetryInteractObject]="{id:data.metaData.identifier,type:data.telemetryObjectType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion.toString():'1.0'}" 
+[telemetryInteractEdata]="data.telemetryInteractEdata" [telemetryInteractCdata]="telemetryCdata"
+tabindex="0">
+  <div class="content" id="contentBackground" (click)="onAction(data,data.action.onImage)" >
+   <div class="thick-gray-border left floated">
+    <i class="database icon fs-2-57 text-gray"></i>
+   </div> 
+  
+    <div class="header">{{data?.name | titlecase | slice:0:15}}<span *ngIf="data.name && data.name.length > 15">...</span>
+      <p class="text-light pt-10" *ngIf="data?.version">{{data?.version}}</p>
+      <p class="text-light pt-10" *ngIf="data?.assetType">{{data?.assetType | titlecase}}</p>
+    </div>
+  </div>
+  <div class="content">
+    <div class="details">
+      <span class="card-text" *ngIf="data?.creator">Created By : {{data?.creator | titlecase}}</span>
+      <span class="card-text" *ngIf="data?.link">Link: <a href="{{data?.link}}" target="blank">{{data?.link}}</a></span>
+      <span class="card-text" *ngIf="data?.region">Region : {{data?.region | titlecase}}</span>
+      <span class="card-text" *ngIf="data?.orgDetails">Owner : {{data.orgDetails?.orgName}}</span>
+    </div>
+  </div>
+  <div class="extra content">
+    {{data?.description | titlecase | slice:0:60}} <span *ngIf="data.description && data.description.length > 60">...</span>
+  </div>
+</div>

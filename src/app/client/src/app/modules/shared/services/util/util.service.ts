@@ -35,7 +35,13 @@ export class UtilService {
       contentType: data.contentType,
       topic: this.getTopicSubTopic('topic', data.topic),
       subTopic: this.getTopicSubTopic('subTopic', data.topic),
-      metaData: {}
+      metaData: {},
+      creator: data.creator,
+      lastUpdatedOn: data.lastUpdatedOn,
+      link: data.link,
+      assetType: data.assetType,
+      region: data.region
+
     };
 
     // this customization is done for enrolled courses

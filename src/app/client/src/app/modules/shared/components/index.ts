@@ -12,6 +12,7 @@ export * from './custom-multi-select/custom-multi-select.component';
 export * from './install-app/install-app.component';
 export * from './contentlock-info-popup/contentlock-info-popup.component';
 export * from './batch-card/batch-card.component';
+export * from './asset-card/asset-card.component';
 
 
 
