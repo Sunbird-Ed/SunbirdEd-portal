@@ -37,6 +37,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     public contentList: Array<ICard> = [];
     public cardIntractEdata: IInteractEventEdata;
     public loaderMessage: ILoaderMessage;
+    public sortByOption = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
 
     constructor(public searchService: SearchService, public router: Router,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
