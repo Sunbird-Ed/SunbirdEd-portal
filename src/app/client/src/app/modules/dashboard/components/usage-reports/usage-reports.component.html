@@ -17,8 +17,9 @@
             <sui-tabset>
                 <!-- [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)" -->
                 <div class="ui top attached tabular menu">
-                    <a appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)" [telemetryInteractEdata]="setTelemetryInteractEdata('report-graph')"
-                        class="item" suiTabHeader="graph">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
+                    <a appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
+                        [telemetryInteractEdata]="setTelemetryInteractEdata('report-graph')" class="item"
+                        suiTabHeader="graph">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
                     <a appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
                         [telemetryInteractEdata]="setTelemetryInteractEdata('report_table_'+table.name)"
                         *ngFor="let table of tables" class="item" [suiTabHeader]="table.id">{{table?.name}}</a>
@@ -31,9 +32,8 @@
                 </div>
                 <div class="ui bottom attached segment" suiTabContent="graph">
                     <div *ngFor="let chart of chartData; let i = index; let l = last;">
-                        <canvas baseChart [datasets]="chart.datasets" [labels]="chart.labels" [options]="chart.options"
-                            [chartType]="chart.chartType" [colors]="chart.colors" [legend]="chart.legend"></canvas>
-                        <div class="ui divider" *ngIf="!l"></div>
+                        <app-data-chart [chartData]="chart"></app-data-chart>
+                        <hr *ngIf="!l" />
                     </div>
                     <div class="ui warning message" *ngIf="!chartData.length">
                         {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}}

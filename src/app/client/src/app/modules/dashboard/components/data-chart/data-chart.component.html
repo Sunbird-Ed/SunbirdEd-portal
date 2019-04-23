@@ -1,0 +1,26 @@
+<div *ngIf="chart">
+  <canvas baseChart [datasets]="chart.datasets" [labels]="chart.labels" [options]="chart.options"
+    [chartType]="chart.chartType" [colors]="chart.colors" [legend]="chart.legend"></canvas>
+  <form [formGroup]="chartFilters">
+    <div class="ui segment">
+      <sui-select class="selection" placeholder="Select User Roles" formControlName="userRoles">
+        <sui-select-option *ngFor="let option of ['Student','Teacher','Undeclared']" [value]="option">
+        </sui-select-option>
+      </sui-select> &nbsp;&nbsp;
+
+      <sui-select class="selection" placeholder="Select Region" formControlName="region">
+        <sui-select-option *ngFor="let option of ['Delhi','Mumbai','Bengaluru']" [value]="option">
+        </sui-select-option>
+      </sui-select> &nbsp;&nbsp;
+      <sui-select class="selection" placeholder="Select Device type">
+        <sui-select-option *ngFor="let option of ['Portal','App']" [value]="option">
+        </sui-select-option>
+      </sui-select> &nbsp;&nbsp;
+      <div class="ui left icon input">
+        <i class="calendar icon"></i>
+        <input suiDatepicker [pickerMode]="'date'" [pickerUseNativeOnMobile]="false" formControlName="timeLine">
+      </div>
+    </div>
+    <button class="button" style="width: 150px;height: 30px;" (click)="resetFilter()">Reset Filter</button>
+  </form>
+</div>
