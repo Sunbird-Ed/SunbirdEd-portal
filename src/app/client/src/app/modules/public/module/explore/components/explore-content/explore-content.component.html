@@ -2,8 +2,9 @@
     <div  class="ui grid">
         <div class="twelve wide column">
             <app-data-driven-filter [pageId]="'explore-search'" *ngIf="initFilters" [filterEnv]="filterType"
-                [enrichFilters]="facetsList" [ignoreQuery]="['key']" [accordionDefaultOpen]=true
+                [enrichFilters]="facetsList" [ignoreQuery]="['key']" [accordionDefaultOpen]=false
                 [isShowFilterLabel]=true [hashTagId]="hashTagId" [showSearchedParam]=true (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
+                <app-sort-by [sortingOptions]="sortByOption" [url]="activatedRoute.snapshot.params.slug ? '/' + activatedRoute.snapshot.params.slug+ '/explore/1' : '/explore/1'"></app-sort-by>
         </div>
         <div class="twelve wide column">
             <div class="ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && contentList.length && this.queryParams.key">
