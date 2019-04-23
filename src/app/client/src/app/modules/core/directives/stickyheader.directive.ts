@@ -35,11 +35,11 @@ export class StickyHeaderDirective implements AfterViewInit, OnDestroy {
     private cdr: ChangeDetectorRef) {}
 
   private fadeIn(): AnimationMetadata[] {
-    return [style({ opacity: 0 }), animate('200ms ease-in', style({ opacity: 1 }))];
+    return [style({ opacity: 0}), animate('400ms ease-in', style({ opacity: 1, transform: 'translateY(0)'}))];
   }
 
   private fadeOut(): AnimationMetadata[] {
-    return [style({ opacity: '*' }), animate('200ms ease-in', style({ opacity: 0 }))];
+    return [style({ opacity: '*' }), animate('400ms ease-in', style({ opacity: 0, transform: 'translateY(-100%)' }))];
   }
 
   ngAfterViewInit() {
