@@ -1,6 +1,7 @@
 #Dockerfile for the player setup
 FROM circleci/node:8.11.2-stretch
 MAINTAINER "Rajesh Rajendran <rajesh.r@optit.co>"
+USER root
 RUN mkdir -p /opt/player \
 WORKDIR /opt/player
 COPY * /opt/player/
