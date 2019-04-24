@@ -11,7 +11,6 @@ import { CourseProgressService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import { IPagination } from '@sunbird/announcement';
-import { UUID } from 'angular2-uuid';
 /**
  * This component shows the course progress dashboard
  */
