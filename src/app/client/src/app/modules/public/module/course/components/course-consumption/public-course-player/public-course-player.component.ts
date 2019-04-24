@@ -1,10 +1,11 @@
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import {
-  ILoaderMessage, ConfigService, ICollectionTreeOptions, ToasterService, ResourceService
+  ILoaderMessage, ConfigService, ICollectionTreeOptions, ToasterService, ResourceService,
+  NavigationHelperService
 } from '@sunbird/shared';
 import { CourseConsumptionService } from '@sunbird/learn';
 import { IImpressionEventInput } from '@sunbird/telemetry';
@@ -15,7 +16,7 @@ import * as TreeModel from 'tree-model';
   templateUrl: './public-course-player.component.html',
   styleUrls: ['./public-course-player.component.css']
 })
-export class PublicCoursePlayerComponent implements OnInit, OnDestroy {
+export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private courseId: string;
 
@@ -47,7 +48,8 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy {
   constructor(public activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService,
     public router: Router,
-    private toasterService: ToasterService, private resourceService: ResourceService) {
+    private toasterService: ToasterService, private resourceService: ResourceService,
+    public navigationhelperService: NavigationHelperService) {
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
   }
 
@@ -61,7 +63,6 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy {
         this.loader = false;
         this.courseHierarchy = courseHierarchy;
         this.parseChildContent();
-        this.setTelemetryCourseImpression();
         this.collectionTreeNodes = { data: this.courseHierarchy };
       });
   }
@@ -83,6 +84,11 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy {
       this.curriculum.push({ mimeType: key, count: value });
     });
   }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.setTelemetryCourseImpression();
+    });
+  }
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
@@ -96,9 +102,10 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         uri: this.router.url,
+        duration: this.navigationhelperService.getPageLoadTime()
       },
       object: {
-        id: this.courseId,
+        id: this.activatedRoute.snapshot.params.courseId,
         type: 'course',
         ver: '1.0'
       }
