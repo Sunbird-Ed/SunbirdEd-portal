@@ -33,7 +33,7 @@
         <div class="twelve wide column" *ngIf="showLoader">
             <app-loader [data]='loaderMessage'></app-loader>
         </div>
-        <div class="twelve wide column right aligned" *ngIf="paginationDetails.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader">
+        <div class="twelve wide column right aligned p-16" *ngIf="paginationDetails.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader">
             <div class="ui pagination menu" *ngIf="paginationDetails.pages.length">
                 <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="item " (click)="navigateToPage(1) ">{{resourceService.frmelmnts?.lbl?.first}}</a>
                 <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="item " (click)="navigateToPage(paginationDetails.currentPage - 1)">{{resourceService.frmelmnts?.lbl?.previous}}</a>

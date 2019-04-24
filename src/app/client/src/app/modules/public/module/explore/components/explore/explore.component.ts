@@ -1,9 +1,10 @@
 import { combineLatest, Subject } from 'rxjs';
 import { PageApiService, OrgDetailsService, UserService } from '@sunbird/core';
 import { PublicPlayerService } from './../../../../services';
-import { Component, OnInit, OnDestroy, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, HostListener, AfterViewInit } from '@angular/core';
 import {
-  ResourceService, ToasterService, INoResultMessage, ConfigService, UtilService, ICaraouselData, BrowserCacheTtlService
+  ResourceService, ToasterService, INoResultMessage, ConfigService, UtilService, ICaraouselData,
+  BrowserCacheTtlService, NavigationHelperService
 } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -13,7 +14,7 @@ import { CacheService } from 'ng2-cache-service';
 @Component({
   templateUrl: './explore.component.html'
 })
-export class ExploreComponent implements OnInit, OnDestroy {
+export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public showLoader = true;
   public showLoginModal = false;
@@ -43,10 +44,10 @@ export class ExploreComponent implements OnInit, OnDestroy {
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
     public router: Router, private utilService: UtilService, private orgDetailsService: OrgDetailsService,
     private publicPlayerService: PublicPlayerService, private cacheService: CacheService,
-    private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService) {
+    private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService,
+    public navigationhelperService: NavigationHelperService) {
     this.router.onSameUrlNavigation = 'reload';
     this.filterType = this.configService.appConfig.explore.filterType;
-    this.setTelemetryData();
   }
 
   ngOnInit() {
@@ -181,6 +182,11 @@ export class ExploreComponent implements OnInit, OnDestroy {
     const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], { queryParams: queryParams });
   }
+  ngAfterViewInit () {
+      setTimeout(() => {
+        this.setTelemetryData();
+      });
+  }
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -194,7 +200,8 @@ export class ExploreComponent implements OnInit, OnDestroy {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         uri: this.router.url,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        duration: this.navigationhelperService.getPageLoadTime()
       }
     };
     this.sortIntractEdata = {

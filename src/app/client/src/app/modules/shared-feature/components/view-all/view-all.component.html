@@ -1,13 +1,9 @@
 <div class="ui container" [appTelemetryImpression]="telemetryImpression">
     <div class="ui grid">
-        <div class="twelve wide column mt-15">
-            <div class="ui grid top aligned">
-                <div class="twelve wide column" *ngIf="showFilter">
-                    <app-data-driven-filter [pageId]="'view-all'" *ngIf="filterType" [filterEnv]="filterType"
-                        [viewAllMode]="true" [accordionDefaultOpen]=false [isShowFilterLabel]=true [hashTagId]="hashTagId"
-                        [formAction]="formAction" [frameworkName]="frameWorkName"></app-data-driven-filter>
-                </div>
-            </div>
+        <div class="twelve wide column" *ngIf="showFilter">
+            <app-data-driven-filter [pageId]="'view-all'" *ngIf="filterType" [filterEnv]="filterType"
+                [viewAllMode]="true" [accordionDefaultOpen]=false [isShowFilterLabel]=true [hashTagId]="hashTagId"
+                [formAction]="formAction" [frameworkName]="frameWorkName"></app-data-driven-filter>
         </div>
         <div class="twelve wide column">
             <div class=" ui clearing segment content-player-header search-content-header">
@@ -35,7 +31,7 @@
         <div class="twelve wide column" *ngIf="showLoader">
             <app-loader [data]='loaderMessage'></app-loader>
         </div>
-        <div class="twelve wide column right aligned" *ngIf="searchList && totalCount > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
+        <div class="twelve wide column right aligned p-16" *ngIf="searchList && totalCount > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
             <div class="ui pagination menu" *ngIf="pager.pages.length">
                 <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">{{resourceService.frmelmnts?.lbl?.first}}</a>
                 <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">{{resourceService.frmelmnts?.lbl?.previous}}</a>

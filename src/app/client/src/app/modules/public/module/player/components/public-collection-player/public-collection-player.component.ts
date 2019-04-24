@@ -1,6 +1,6 @@
 
 import { map, catchError, first, mergeMap } from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { PublicPlayerService } from './../../../../services';
 import { Observable ,  Subscription } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
@@ -18,7 +18,7 @@ import * as TreeModel from 'tree-model';
   selector: 'app-public-collection-player',
   templateUrl: './public-collection-player.component.html'
 })
-export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
+export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
 	 * telemetryImpression
 	*/
@@ -110,25 +110,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     if (this.dialCode) {
       this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
     }
-
-    this.telemetryImpression = {
-      context: {
-        env: this.route.snapshot.data.telemetry.env,
-        cdata: this.telemetryCdata
-      },
-      object: {
-        id: this.collectionId,
-        type: 'collection',
-        ver: '1.0'
-      },
-      edata: {
-        type: this.route.snapshot.data.telemetry.type,
-        pageid: this.route.snapshot.data.telemetry.pageid,
-        uri: this.router.url,
-        subtype: this.route.snapshot.data.telemetry.subtype
-      }
-    };
-
     this.closeCollectionPlayerInteractEdata = {
       id: 'close-collection',
       type: 'click',
@@ -145,6 +126,29 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       ver: '1.0'
     };
     this.playerTelemetryInteractObject = { ...this.telemetryInteractObject };
+  }
+
+  ngAfterViewInit () {
+      setTimeout(() => {
+        this.telemetryImpression = {
+          context: {
+            env: this.route.snapshot.data.telemetry.env,
+            cdata: [{id: this.activatedRoute.snapshot.params.collectionId, type: 'Collection'}]
+          },
+          object: {
+            id: this.activatedRoute.snapshot.params.collectionId,
+            type: 'collection',
+            ver: '1.0'
+          },
+          edata: {
+            type: this.route.snapshot.data.telemetry.type,
+            pageid: this.route.snapshot.data.telemetry.pageid,
+            uri: this.router.url,
+            subtype: this.route.snapshot.data.telemetry.subtype,
+            duration: this.navigationHelperService.getPageLoadTime()
+          }
+        };
+      });
   }
 
   ngOnDestroy() {
