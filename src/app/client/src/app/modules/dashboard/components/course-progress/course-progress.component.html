@@ -60,15 +60,22 @@
               <b>{{resourceService?.frmelmnts?.lbl?.participants}}&nbsp;:
               </b>  &nbsp;&nbsp; {{dashboarData.count}}
             </span>
-            <span *ngIf="dashboarData.completedCount" class="course-completed pl-15">
+            <span *ngIf="dashboarData.completedCount!==null" class="course-completed pl-15">
               <b>{{resourceService?.frmelmnts?.lbl?.completedCourse}}&nbsp;:
               </b>
               &nbsp;&nbsp;{{dashboarData.completedCount}}
             </span>
-            <!-- This needs to be developed -->
-            <!-- <span class="course-completed ml-auto">
-              <span class="font-italic">This report was last updated on</span>&nbsp;:&nbsp;dd/mm/yyyy
-            </span> -->
+            
+            <span class="course-completed ml-auto" *ngIf="dashboarData.reportUpdatedOn && dashboarData.reportUpdatedOn!==null">
+              <span class="font-italic">{{resourceService?.frmelmnts?.lbl?.reportUpdatedOn}}</span>&nbsp;:&nbsp;{{dashboarData.reportUpdatedOn | dateFormat :'DD/MM/YYYY'}}
+            </span>
+          </div>
+        </div>
+        <div class="sb-toaster sb-toast-info sb-mw-100 sb-toast-sm-padding" *ngIf="dashboarData &&  dashboarData.count>10000" >
+          <div class="sb-toast-body">
+            <div class="sb-toast-texts">
+              <div class="sb-toast-message">{{resourceService?.frmelmnts?.instn?.t0085}}</div>
+            </div>
           </div>
         </div>
         <div class="d-flex flex-jc-space-between flex-ai-center download-file-container mt-15 mb-0 mx-0" *ngIf="dashboarData">
@@ -124,26 +131,26 @@
                   </div>
                 </th>
                 <th>
-                  <div  class="cursor-pointer"
+                  <div  class="cursor-pointer" (click)="setOrder('enrolledOn')"
                     appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByEnrolledOn',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
                     {{resourceService?.frmelmnts?.lbl?.dashboardsortbyenrolledon}}
                     <span class="primary-color" [hidden]="reverse" style="float:right">
-                      <!-- <i class="sort down icon fs-1" ></i> -->
+                      <i class="sort down icon fs-1" ></i>
                     </span>
                     <span class="primary-color" [hidden]="!reverse" style="float:right">
-                      <!-- <i class="sort up icon fs-1" ></i> -->
+                      <i class="sort up icon fs-1" ></i>
                     </span>
                   </div>
                 </th>
                 <th class="table-headerDashboard">
-                  <div class="cursor-pointer"
+                  <div class="cursor-pointer" (click)="setOrder('progress')"
                     appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByStatus',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
                     {{resourceService?.frmelmnts?.lbl?.dashboardsortbystatus}}
                     <span class="primary-color" [hidden]="reverse" style="float:right">
-                      <!-- <i class="sort down icon fs-1" ></i> -->
+                      <i class="sort down icon fs-1" ></i>
                     </span>
                     <span  class="primary-color" [hidden]="!reverse" style="float:right">
-                      <!-- <i class="sort up icon fs-1" ></i> -->
+                      <i class="sort up icon fs-1" ></i>
                     </span>
                   </div>
                 </th>
@@ -164,7 +171,8 @@
                 <td *ngIf="student.progress === 100">{{resourceService?.frmelmnts?.lbl?.completed}}</td>
                 <td class="ui  header text-font" *ngIf="(student.progress !== 100 && student.progress > 90)">{{student.progress}}%</td>
                 <td class="ui  header text-font" *ngIf="(student.progress !== 100 && student.progress > 30)">{{student.progress}}%</td>
-                <td class="ui  header text-font" *ngIf="(student.progress !== 100 && student.progress < 30)">{{student.progress}}%</td>
+                <td class="ui  header text-font" *ngIf="(student.progress !== 100 && student.progress < 30 && student.progress!==null)">{{student.progress}}%</td>
+                <td class="ui  header text-font" *ngIf="student.progress ===null">-</td>
               </tr>
               <tr *ngIf="dashboarData && dashboarData.data.length === 0">
                 <td id="noRecordsFound">{{resourceService?.frmelmnts?.lbl?.noMatchingRecordFound}}</td>

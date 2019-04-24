@@ -94,12 +94,16 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     private fetchContents() {
         let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
         filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-          const softConstraintData = {
-            filters: {channel: this.hashTagId,
-            board: [this.dataDrivenFilters.board]},
+          const softConstraintData: any = {
+            filters: {
+                channel: this.hashTagId,
+            },
             softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
             mode: 'soft'
           };
+          if (this.dataDrivenFilters.board) {
+            softConstraintData.board = [this.dataDrivenFilters.board];
+          }
           const manipulatedData = this.utilService.manipulateSoftConstraint( _.get(this.queryParams,
              'appliedFilters'), softConstraintData );
         const option = {
@@ -144,6 +148,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         }
         const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
         this.router.navigate([url], { queryParams: this.queryParams });
+        window.scroll({
+            top: 100,
+            left: 100,
+            behavior: 'smooth'
+        });
     }
     private setTelemetryData() {
         this.inViewLogs = []; // set to empty every time filter or page changes
