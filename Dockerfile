@@ -1,10 +1,6 @@
 #Dockerfile for the player setup
-FROM node:8.11.0
+FROM circleci/node:8.11.2-stretch
 MAINTAINER "Rajesh Rajendran <rajesh.r@optit.co>"
-RUN sed -i '/jessie-updates/d' /etc/apt/sources.list
-RUN apt-get update && apt-get install -y --no-install-recommends apt-utils \
-&& apt-get install -y --force-yes \ 
- python python-dev autoconf g++ make nasm bzip2
 RUN mkdir -p /opt/player \
 WORKDIR /opt/player
 COPY * /opt/player/
@@ -23,7 +19,6 @@ RUN /bin/bash -x ../vcs-config.sh
 
 FROM node:8.11-slim
 MAINTAINER "Rajesh R <rajesh.r@optit.co>"
-
 RUN useradd -u 1001 -md /home/sunbird sunbird
 WORKDIR /home/sunbird
 COPY --from=0 /opt/player/app/app_dist/ /home/sunbird/app_dist/
