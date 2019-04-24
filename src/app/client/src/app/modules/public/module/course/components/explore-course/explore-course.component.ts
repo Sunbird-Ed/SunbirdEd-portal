@@ -203,6 +203,11 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
         }
         const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
         this.router.navigate([url], { queryParams: this.queryParams });
+        window.scroll({
+            top: 100,
+            left: 100,
+            behavior: 'smooth'
+        });
     }
     ngAfterViewInit () {
         setTimeout(() => {

@@ -134,7 +134,7 @@ $red-400: $red; // icon color, lable, notification bg
 
 $red-0: #FBCCD1; // toast bg
 $red-100: #FF6979; // buttong bg, toast
-$red-400: $red; // icon color, lable, notification bg
+$red-400: #E55A28; // icon color, lable, notification bg
 
 // Status Colors
 $info-color: $primary-400;
@@ -223,9 +223,9 @@ $sb-page-sections-divider-color: $gray-0 !important;
 
 // card component
 $sb-card-width: 292px;
-$sb-card-height: 200px;
+$sb-card-height: 208px;
 $sb-card-hover-movement: 2px;
-$sb-card-body-height: 194px;
+$sb-card-body-height: 204px;
 $sb-card-progressbar-height: 4px;
 $sb-card-padding: ($base-block-space * 2) ($base-block-space * 2) ($base-block-space) ($base-block-space * 2);
 $sb-card-border-radius: ($base-block-space / 2);
