@@ -26,7 +26,7 @@ MAINTAINER "Rajesh R <rajesh.r@optit.co>"
 
 RUN useradd -u 1001 -md /home/sunbird sunbird
 WORKDIR /home/sunbird
-COPY --from=0 /opt/player/app/app_dist /home/sunbird/
+COPY --from=0 /opt/player/app/app_dist/ /home/sunbird/app_dist/
 RUN chown -R sunbird:sunbird /home/sunbird
 USER sunbird
 WORKDIR /home/sunbird/app_dist
