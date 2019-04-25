@@ -2,25 +2,41 @@
   <canvas baseChart [datasets]="chart.datasets" [labels]="chart.labels" [options]="chart.options"
     [chartType]="chart.chartType" [colors]="chart.colors" [legend]="chart.legend"></canvas>
   <form [formGroup]="chartFilters">
-    <div class="ui segment">
-      <sui-select class="selection" placeholder="Select User Roles" formControlName="userRoles">
-        <sui-select-option *ngFor="let option of ['Student','Teacher','Undeclared']" [value]="option">
-        </sui-select-option>
-      </sui-select> &nbsp;&nbsp;
-
-      <sui-select class="selection" placeholder="Select Region" formControlName="region">
-        <sui-select-option *ngFor="let option of ['Delhi','Mumbai','Bengaluru']" [value]="option">
-        </sui-select-option>
-      </sui-select> &nbsp;&nbsp;
-      <sui-select class="selection" placeholder="Select Device type">
-        <sui-select-option *ngFor="let option of ['Portal','App']" [value]="option">
-        </sui-select-option>
-      </sui-select> &nbsp;&nbsp;
-      <div class="ui left icon input">
-        <i class="calendar icon"></i>
-        <input suiDatepicker [pickerMode]="'date'" [pickerMinDate]="startDate" [pickerMaxDate]="endDate" [pickerUseNativeOnMobile]="false" formControlName="timeLine">
+    <div class="ui segments">
+      <div class="ui segment">
+        <div class="ui grid">
+          <div class="four wide column">
+            <sui-select class="selection" placeholder="Select User Roles" formControlName="userRoles">
+              <sui-select-option *ngFor="let option of ['Student','Teacher','Undeclared']" [value]="option">
+              </sui-select-option>
+            </sui-select>
+          </div>
+          <div class="four wide column">
+            <sui-select class="selection" placeholder="Select Region" formControlName="region">
+              <sui-select-option *ngFor="let option of ['Delhi','Mumbai','Bengaluru']" [value]="option">
+              </sui-select-option>
+            </sui-select>
+          </div>
+          <div class="four wide column">
+            <sui-select class="selection" placeholder="Select Device type">
+              <sui-select-option *ngFor="let option of ['Portal','App']" [value]="option">
+              </sui-select-option>
+            </sui-select>
+          </div>
+          <div class="four wide column">
+            <div class="ui left icon input">
+              <i class="calendar icon"></i>
+              <input placeholder="Select timeline" suiDatepicker [pickerMode]="'date'" [pickerMinDate]="startDate"
+                [pickerMaxDate]="endDate" [pickerUseNativeOnMobile]="false" formControlName="timeLine">
+            </div>
+          </div>
+          <div class="four wide column">
+            <button class="ui primary button" (click)="resetFilter()">
+              Reset Filter
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-    <button class="button" style="width: 150px;height: 30px;" (click)="resetFilter()">Reset Filter</button>
   </form>
 </div>
