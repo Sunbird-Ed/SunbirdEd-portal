@@ -75,8 +75,6 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
     this.isTableDataLoaded = false;
     const url = report.dataSource;
     this.downloadUrl = report.downloadUrl;
-    this.tables = [];
-    this.chartData = [];
     this.usageService.getData(url).subscribe((response) => {
       if (_.get(response, 'responseCode') === 'OK') {
         const data = _.get(response, 'result');
@@ -89,6 +87,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   }
 
   createChartData(charts, data) {
+    this.chartData = [];
     _.forEach(charts, chart => {
       const chartObj: any = {};
       chartObj.options = _.get(chart, 'options') || { responsive: true };
@@ -108,6 +107,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   }
 
   renderTable(tables, data) {
+    this.tables = [];
     tables = _.isArray(tables) ? tables : [tables];
     _.forEach(tables, table => {
       const tableData: any = {};
