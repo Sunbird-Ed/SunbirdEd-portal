@@ -64,6 +64,8 @@ module.exports = (app, keycloak) => {
 
   app.use('/sunbird-plugins', express.static(path.join(__dirname, '../sunbird-plugins')))
 
+  app.use('/tenant', express.static(path.join(__dirname, '../tenant'), { index: false }))
+
   if (envHelper.DEFAULT_CHANNEL) {
     app.use(express.static(path.join(__dirname, '../tenant', envHelper.DEFAULT_CHANNEL)))
   }

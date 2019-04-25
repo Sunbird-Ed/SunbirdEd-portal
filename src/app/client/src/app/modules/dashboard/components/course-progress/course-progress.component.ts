@@ -337,12 +337,10 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     takeUntil(this.unsubscribe))
     .subscribe(
       (apiResponse: ServerResponse) => {
-        this.toasterService.success( this.resourceService .messages.stmsg.m0132);
+        window.open(_.get(apiResponse, 'result.signedUrl'), '_blank');
       },
       err => {
-        const errMsg = this.resourceService.messages.imsg.m0044 + '<br/>' + '<br/>' +
-        this.resourceService.messages.imsg.m0043;
-        this.toasterService.error(errMsg);
+        this.toasterService.error(this.resourceService.messages.imsg.m0045);
       }
     );
     this.setInteractEventData();
