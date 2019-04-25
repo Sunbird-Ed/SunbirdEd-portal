@@ -18,7 +18,7 @@
       </sui-select> &nbsp;&nbsp;
       <div class="ui left icon input">
         <i class="calendar icon"></i>
-        <input suiDatepicker [pickerMode]="'date'" [pickerUseNativeOnMobile]="false" formControlName="timeLine">
+        <input suiDatepicker [pickerMode]="'date'" [pickerMinDate]="startDate" [pickerMaxDate]="endDate" [pickerUseNativeOnMobile]="false" formControlName="timeLine">
       </div>
     </div>
     <button class="button" style="width: 150px;height: 30px;" (click)="resetFilter()">Reset Filter</button>

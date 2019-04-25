@@ -16,11 +16,14 @@ export class DataChartComponent implements OnInit, AfterViewInit {
   chart;
   chartFilters: FormGroup;
   @ViewChild(BaseChartDirective) chartInfo: BaseChartDirective;
-
+  startDate;
+  endDate;
   constructor() { }
 
   ngOnInit() {
     this.chart = _.cloneDeep(this.chartData);
+    this.startDate = moment(this.chartData.labels[0], 'DD-MM-YYYY').toDate();
+    this.endDate = moment(this.chartData.labels[this.chartData.labels.length - 1], 'DD-MM-YYYY').toDate();
     this.chartFilters = new FormGroup({
       timeLine: new FormControl(''),
       userRoles: new FormControl(''),
@@ -71,13 +74,6 @@ export class DataChartComponent implements OnInit, AfterViewInit {
     this.chartInfo.update();
   }
 
-  // public chartClicked(e:any): void {
-  //   if (e.active.length > 0) {
-  //     let datasetIndex = e.active[0]._datasetIndex
-  //     let dataIndex = e.active[0]._index
-  //     this.chartFilters.get('timeLine').setValue(this.chartInfo.labels[dataIndex]);
-  //   }
-  // }
   applyFiltersToGraph([region, timeLine, userRoles]) {
     let endIndex = this.chartData.labels.length;
     let startIndex = 0;
