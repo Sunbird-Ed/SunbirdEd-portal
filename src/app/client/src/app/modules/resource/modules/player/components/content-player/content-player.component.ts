@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService, PlayerService, CopyContentService, PermissionService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -18,7 +18,7 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
   templateUrl: './content-player.component.html',
   styleUrls: ['./content-player.component.scss']
 })
-export class ContentPlayerComponent implements OnInit {
+export class ContentPlayerComponent implements OnInit, AfterViewInit {
   /**
 	 * telemetryImpression
 	*/
@@ -78,6 +78,11 @@ export class ContentPlayerComponent implements OnInit {
    */
   createNoteData: INoteData;
 
+  /**
+   * Page Load Time, used this data in impression telemetry
+   */
+  public pageLoadDuration: Number;
+
   showExtContentMsg = false;
 
   closeUrl: any;
@@ -87,7 +92,7 @@ export class ContentPlayerComponent implements OnInit {
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
     public copyContentService: CopyContentService, public permissionService: PermissionService,
     public contentUtilsServiceService: ContentUtilsServiceService,
-    private configService: ConfigService) {
+    private configService: ConfigService, public navigationhelperService: NavigationHelperService) {
       this.playerOption = {
         showContentRating: true
       };
@@ -122,7 +127,8 @@ export class ContentPlayerComponent implements OnInit {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         uri: this.router.url,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        duration: this.pageLoadDuration
       }
     };
     this.closeIntractEdata = {
@@ -211,6 +217,9 @@ export class ContentPlayerComponent implements OnInit {
   onShareLink() {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.contentId, this.contentData.mimeType);
     this.setTelemetryShareData(this.contentData);
+  }
+  ngAfterViewInit () {
+    this.pageLoadDuration = this.navigationhelperService.getPageLoadTime();
   }
   setTelemetryShareData(param) {
     this.telemetryShareData = [{
