@@ -15,7 +15,7 @@ const setZipConfig = (req, res, type, encoding, dist = '../') => {
     if (pathMap[req.path + type] && pathMap[req.path + type] === 'notExist') {
       return false;
     }
-    if(pathMap[req.path + '.'+ type] === 'exist' || 
+    if(pathMap[req.path + '.'+ type] === 'exist' ||
       fs.existsSync(path.join(__dirname, dist) + req.path + '.' + type)){
         if (req.path.endsWith('.css')) {
           res.set('Content-Type', 'text/css');
@@ -62,6 +62,10 @@ module.exports = (app, keycloak) => {
 
   app.use(express.static(path.join(__dirname, '../tenant'), { index: false }))
 
+  app.use('/sunbird-plugins', express.static(path.join(__dirname, '../sunbird-plugins')))
+
+  app.use('/tenant', express.static(path.join(__dirname, '../tenant'), { index: false }))
+
   if (envHelper.DEFAULT_CHANNEL) {
     app.use(express.static(path.join(__dirname, '../tenant', envHelper.DEFAULT_CHANNEL)))
   }
@@ -86,7 +90,7 @@ module.exports = (app, keycloak) => {
   app.all('/app', (req, res) => res.redirect(envHelper.ANDROID_APP_URL))
 
   app.all(['/home', '/home/*', '/announcement', '/announcement/*', '/search', '/search/*',
-    '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*', 
+    '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
     '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
     '/resources/*', '/myActivity', '/myActivity/*'], keycloak.protect(), indexPage(true))
 

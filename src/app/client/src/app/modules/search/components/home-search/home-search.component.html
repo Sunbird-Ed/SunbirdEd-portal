@@ -1,49 +1,49 @@
 <div class="ui container">
-<div class="ui grid">
-  <div class="twelve wide column">
-    <app-data-driven-filter (dataDrivenFilter)="getFilters($event)" [pageId]="'home-page'" [ignoreQuery]="['key']" [accordionDefaultOpen]=false
-      [isShowFilterLabel]=true *ngIf="initFilters" [filterEnv]="filterType"></app-data-driven-filter>
-    <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && contentList.length">
-      <div class="ui left floated header  ">
-        <p class="serch-allresult">{{resourceService.frmelmnts?.lbl?.showingResults}}
-          <span class="lower-case" *ngIf="this.queryParams.key">
-            {{resourceService.frmelmnts?.lbl?.forSearch  | interpolate:'{searchString}':this.queryParams?.key}}
-          </span>
-          {{resourceService.frmelmnts?.lbl?.inAll}}
-        </p>
-      </div>
-      <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="ui right floated basic icon circular button "
-        [routerLink]="['/home']">
-        <i class="ui remove icon "></i>
-      </h5>
+  <div class="ui grid">
+    <div class="twelve wide column">
+      <app-data-driven-filter (dataDrivenFilter)="getFilters($event)" [pageId]="'home-page'" [ignoreQuery]="['key']" [accordionDefaultOpen]=false
+        [isShowFilterLabel]=true *ngIf="initFilters" [filterEnv]="filterType"></app-data-driven-filter>
     </div>
-    <div [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inView($event)" *ngIf="!showLoader && contentList.length"
-      class="masonry-grid dynamic-section-card ">
-      <div in-view-item [id]="index" [data]="content" class="masonry-item mb-20" *ngFor="let content of contentList;let i = index;">
-        <app-card appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType||'Content',ver:'1.0'}"
-          [data]="content" (clickEvent)="playContent($event)"></app-card>
+    <div class="twelve wide column">
+      <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && contentList.length">
+        <div class="ui left floated header  ">
+          <p class="serch-allresult">{{resourceService.frmelmnts?.lbl?.showingResults}}
+            <span class="lower-case" *ngIf="this.queryParams.key">
+              {{resourceService.frmelmnts?.lbl?.forSearch  | interpolate:'{searchString}':this.queryParams?.key}}
+            </span>
+            {{resourceService.frmelmnts?.lbl?.inAll}}
+          </p>
+        </div>
+        <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="ui right floated basic icon circular button "
+          [routerLink]="['/home']">
+          <i class="ui remove icon "></i>
+        </h5>
       </div>
     </div>
-    <div [appTelemetryImpression]="telemetryImpression" *ngIf="contentList.length === 0 && !showLoader">
+    <div class="twelve wide column">
+      <div [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inView($event)" *ngIf="!showLoader && contentList.length"
+        class="masonry-grid dynamic-section-card ">
+        <div in-view-item [id]="index" [data]="content" class="masonry-item" *ngFor="let content of contentList;let i = index;">
+          <app-card appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType||'Content',ver:'1.0'}"
+            [data]="content" (clickEvent)="playContent($event)"></app-card>
+        </div>
+      </div>
+    </div>
+    <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression" *ngIf="contentList.length === 0 && !showLoader">
       <app-no-result [data]="noResultMessage"></app-no-result>
     </div>
-    <div class="ui grid">
-        <div class="twelve wide column pt-0">
-            <div class="pb-10" *ngIf="paginationDetails.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader">
-                <div class="ui pagination menu mt-10 right-floated pt-0" *ngIf="paginationDetails.pages.length">
-                        <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="item " (click)="navigateToPage(1) ">{{resourceService.frmelmnts?.lbl?.first}}</a>
-                        <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="item " (click)="navigateToPage(paginationDetails.currentPage - 1)">{{resourceService.frmelmnts?.lbl?.previous}}</a>
-                        <a *ngFor="let page of paginationDetails.pages" [ngClass]="{active:paginationDetails.currentPage===page}" (click)="navigateToPage(page)" class="item">{{page}}</a>
-                        <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" (click)="navigateToPage(paginationDetails.currentPage + 1)" class="item">{{resourceService.frmelmnts?.lbl?.next}}</a>
-                        <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" (click)="navigateToPage(paginationDetails.totalPages)" class="item ">{{resourceService.frmelmnts?.lbl?.last}}</a>
-                </div>
-            </div>
-        </div>
+    <div class="twelve wide column right aligned p-16" *ngIf="paginationDetails.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader">
+      <div class="ui pagination menu" *ngIf="paginationDetails.pages.length">
+        <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="item " (click)="navigateToPage(1) ">{{resourceService.frmelmnts?.lbl?.first}}</a>
+        <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="item " (click)="navigateToPage(paginationDetails.currentPage - 1)">{{resourceService.frmelmnts?.lbl?.previous}}</a>
+        <a *ngFor="let page of paginationDetails.pages" [ngClass]="{active:paginationDetails.currentPage===page}" (click)="navigateToPage(page)" class="item">{{page}}</a>
+        <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" (click)="navigateToPage(paginationDetails.currentPage + 1)" class="item">{{resourceService.frmelmnts?.lbl?.next}}</a>
+        <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" (click)="navigateToPage(paginationDetails.totalPages)" class="item ">{{resourceService.frmelmnts?.lbl?.last}}</a>
+      </div>
     </div>
     <div class="twelve wide column" *ngIf="showLoader">
       <app-loader [data]='loaderMessage'></app-loader>
     </div>
   </div>
-</div>
 </div>
 <app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches" (modelClose)="showBatchInfo = false"></app-batch-info>

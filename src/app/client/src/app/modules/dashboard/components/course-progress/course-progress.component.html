@@ -172,7 +172,7 @@
                 <td class="ui  header text-font" *ngIf="(student.progress !== 100 && student.progress > 90)">{{student.progress}}%</td>
                 <td class="ui  header text-font" *ngIf="(student.progress !== 100 && student.progress > 30)">{{student.progress}}%</td>
                 <td class="ui  header text-font" *ngIf="(student.progress !== 100 && student.progress < 30 && student.progress!==null)">{{student.progress}}%</td>
-                <td class="ui  header text-font" *ngIf="!student.progress">-</td>
+                <td class="ui  header text-font" *ngIf="student.progress ===null">-</td>
               </tr>
               <tr *ngIf="dashboarData && dashboarData.data.length === 0">
                 <td id="noRecordsFound">{{resourceService?.frmelmnts?.lbl?.noMatchingRecordFound}}</td>
