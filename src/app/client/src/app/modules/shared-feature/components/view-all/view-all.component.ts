@@ -1,14 +1,14 @@
 import { PublicPlayerService } from '@sunbird/public';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { combineLatest, Subject } from 'rxjs';
 import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ILoaderMessage, UtilService, ICard, BrowserCacheTtlService
+  ILoaderMessage, UtilService, ICard, BrowserCacheTtlService, NavigationHelperService
 } from '@sunbird/shared';
 import { SearchService, CoursesService, ISort, PlayerService, OrgDetailsService, UserService, FormService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
@@ -16,7 +16,7 @@ import { CacheService } from 'ng2-cache-service';
   selector: 'app-view-all',
   templateUrl: './view-all.component.html'
 })
-export class ViewAllComponent implements OnInit, OnDestroy {
+export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
 	 * telemetryImpression
 	*/
@@ -137,7 +137,8 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     activatedRoute: ActivatedRoute, paginationService: PaginationService, private _cacheService: CacheService,
     resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
     configService: ConfigService, coursesService: CoursesService, public utilService: UtilService,
-    private orgDetailsService: OrgDetailsService, userService: UserService, private browserCacheTtlService: BrowserCacheTtlService) {
+    private orgDetailsService: OrgDetailsService, userService: UserService, private browserCacheTtlService: BrowserCacheTtlService,
+    public navigationhelperService: NavigationHelperService) {
     this.searchService = searchService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -179,7 +180,6 @@ export class ViewAllComponent implements OnInit, OnDestroy {
       tap((data) => {
         this.getframeWorkData();
         this.manipulateQueryParam(data.queryParams);
-        this.setTelemetryImpressionData();
         this.setInteractEventData();
       }),
       takeUntil(this.unsubscribe)
@@ -217,19 +217,6 @@ export class ViewAllComponent implements OnInit, OnDestroy {
       };
       this.toasterService.error(this.resourceService.messages.fmsg.m0051);
     });
-  }
-  setTelemetryImpressionData() {
-    this.telemetryImpression = {
-      context: {
-        env: _.get(this.activatedRoute.snapshot, 'data.telemetry.env')
-      },
-      edata: {
-        type: _.get(this.activatedRoute.snapshot, 'data.telemetry.type'),
-        pageid: _.get(this.activatedRoute.snapshot, 'data.telemetry.pageid'),
-        uri: this.router.url,
-        subtype: _.get(this.activatedRoute.snapshot, 'data.telemetry.subtype')
-      }
-    };
   }
   setInteractEventData() {
     this.closeIntractEdata = {
@@ -313,8 +300,14 @@ export class ViewAllComponent implements OnInit, OnDestroy {
     if (page < 1 || page > this.pager.totalPages) {
       return;
     }
-    const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
+    const url = decodeURI(this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString()));
+    window.scroll(0, 0);
     this.router.navigate([url], { queryParams: this.queryParams, relativeTo: this.activatedRoute });
+    window.scroll({
+      top: 100,
+      left: 100,
+      behavior: 'smooth'
+    });
   }
 
   playContent(event) {
@@ -379,6 +372,25 @@ export class ViewAllComponent implements OnInit, OnDestroy {
         );
       }
     }
+  }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.setTelemetryImpressionData();
+    });
+  }
+  setTelemetryImpressionData() {
+    this.telemetryImpression = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot, 'data.telemetry.env')
+      },
+      edata: {
+        type: _.get(this.activatedRoute.snapshot, 'data.telemetry.type'),
+        pageid: _.get(this.activatedRoute.snapshot, 'data.telemetry.pageid'),
+        uri: this.router.url,
+        subtype: _.get(this.activatedRoute.snapshot, 'data.telemetry.subtype'),
+        duration: this.navigationhelperService.getPageLoadTime()
+      }
+    };
   }
   ngOnDestroy() {
     this.unsubscribe.next();

@@ -4,7 +4,7 @@ import { Injectable, Input, EventEmitter } from '@angular/core';
 import { ConfigService, ServerResponse, BrowserCacheTtlService } from '@sunbird/shared';
 import { PlayerService } from '@sunbird/core';
 import { SearchParam, LearnerService, UserService, ContentService, SearchService } from '@sunbird/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 @Injectable()
 export class CourseBatchService {

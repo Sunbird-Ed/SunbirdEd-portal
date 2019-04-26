@@ -16,7 +16,7 @@
     <!--/Header-->
 
     <!--Content-->
-    <div class="sb-modal-content" *ngIf="formFieldProperties && categoryMasterList">
+    <div class="sb-modal-content o-y-visible" *ngIf="formFieldProperties && categoryMasterList">
         <app-content-creation-default-template 
             #formData 
             [formFieldProperties]="formFieldProperties" 
@@ -30,6 +30,9 @@
         <button 
             class="sb-btn sb-btn-normal sb-btn-primary" 
             (click)="createContent();modal.deny()"
+            appTelemetryInteract [telemetryInteractEdata]="{id:'start-creating',
+            type: 'click',
+            pageid: 'workspace'}"
         >
             {{resourceService?.frmelmnts?.btn?.startcreating}}
         </button>

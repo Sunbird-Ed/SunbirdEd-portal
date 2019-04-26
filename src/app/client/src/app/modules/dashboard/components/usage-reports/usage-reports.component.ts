@@ -1,24 +1,22 @@
 import { IInteractEventEdata, IInteractEventObject, TelemetryInteractDirective } from '@sunbird/telemetry';
 import { IImpressionEventInput } from './../../../telemetry/interfaces/telemetry';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { UsageService } from './../../services';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from '@sunbird/core';
-import { ToasterService, ResourceService, INoResultMessage } from '@sunbird/shared';
+import { ToasterService, ResourceService, INoResultMessage, NavigationHelperService } from '@sunbird/shared';
 import { UUID } from 'angular2-uuid';
 import { ActivatedRoute, Router } from '@angular/router';
-
 @Component({
   selector: 'app-usage-reports',
   templateUrl: './usage-reports.component.html',
   styleUrls: ['./usage-reports.component.scss']
 })
-export class UsageReportsComponent implements OnInit {
-
+export class UsageReportsComponent implements OnInit, AfterViewInit {
   reportMetaData: any;
   chartData: Array<object> = [];
-  table: any;
+  tables: any;
   isTableDataLoaded = false;
   currentReport: any;
   slug: string;
@@ -31,7 +29,8 @@ export class UsageReportsComponent implements OnInit {
   @ViewChild(TelemetryInteractDirective) telemetryInteractDirective;
   constructor(private usageService: UsageService, private sanitizer: DomSanitizer,
     public userService: UserService, private toasterService: ToasterService,
-    public resourceService: ResourceService, activatedRoute: ActivatedRoute, private router: Router
+    public resourceService: ResourceService, activatedRoute: ActivatedRoute, private router: Router,
+    public navigationhelperService: NavigationHelperService
   ) {
     this.activatedRoute = activatedRoute;
   }
@@ -39,75 +38,42 @@ export class UsageReportsComponent implements OnInit {
   ngOnInit() {
     const reportsLocation = (<HTMLInputElement>document.getElementById('reportsLocation')).value;
     this.slug = _.get(this.userService, 'userProfile.rootOrg.slug');
-    this.usageService.getData(`/${reportsLocation}/${this.slug}/config.json`).subscribe(data => {
-      if (_.get(data, 'responseCode') === 'OK') {
-        this.noResult = false;
-        this.reportMetaData = _.get(data, 'result');
-        if (this.reportMetaData[0]) { this.renderReport(this.reportMetaData[0]); }
-      }
-    }, (err) => {
-      console.log(err);
-      this.noResultMessage = {
-        'messageText': 'messages.stmsg.m0131'
-      };
-      this.noResult = true;
-    });
-    this.setTelemetryImpression();
+    this.usageService.getData(`/${reportsLocation}/${this.slug}/config.json`)
+      .subscribe(data => {
+        if (_.get(data, 'responseCode') === 'OK') {
+          this.noResult = false;
+          this.reportMetaData = _.get(data, 'result');
+          if (this.reportMetaData[0]) { this.renderReport(this.reportMetaData[0]); }
+        }
+      }, (err) => {
+        console.log(err);
+        this.noResultMessage = {
+          'messageText': 'messages.stmsg.m0131'
+        };
+        this.noResult = true;
+      });
   }
 
   setTelemetryInteractObject(val) {
     return {
       id: val,
-      type: 'view',
+      type: 'Report',
       ver: '1.0'
     };
   }
 
-  reportType(reportType) {
-    this.telemetryInteractDirective.telemetryInteractObject = this.setTelemetryInteractObject(_.get(this.currentReport, 'id'));
-    this.telemetryInteractDirective.telemetryInteractEdata = {
-      id: `report_${reportType}`,
+  setTelemetryInteractEdata(val) {
+    return {
+      id: val,
       type: 'click',
       pageid: this.activatedRoute.snapshot.data.telemetry.pageid
-    };
-    this.telemetryInteractDirective.onClick();
-  }
-
-  setTelemetryImpression() {
-    this.telemetryInteractEdata = {
-      id: 'report-view',
-      type: 'click',
-      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
-    };
-
-    this.telemetryInteractDownloadEdata = {
-      id: 'report-download',
-      type: 'click',
-      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
-    };
-
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      object: {
-        id: this.userService.userid,
-        type: 'user',
-        ver: '1.0'
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.router.url
-      }
     };
   }
-
   renderReport(report: any) {
     this.currentReport = report;
     this.isTableDataLoaded = false;
     const url = report.dataSource;
-    this.table = {};
+    this.tables = [];
     this.chartData = [];
     this.usageService.getData(url).subscribe((response) => {
       if (_.get(response, 'responseCode') === 'OK') {
@@ -137,13 +103,40 @@ export class UsageReportsComponent implements OnInit {
       });
       this.chartData.push(chartObj);
     });
-
   }
 
-  renderTable(table, data) {
-    this.table.header = _.get(table, 'columns') || _.get(data, _.get(table, 'columnsExpr'));
-    this.table.data = _.get(table, 'values') || _.get(data, _.get(table, 'valuesExpr'));
+  renderTable(tables, data) {
+    tables = _.isArray(tables) ? tables : [tables];
+    _.forEach(tables, table => {
+      const tableData: any = {};
+      tableData.id = _.get(table, 'id') || 'table';
+      tableData.name = _.get(table, 'name') || 'Table';
+      tableData.header = _.get(table, 'columns') || _.get(data, _.get(table, 'columnsExpr'));
+      tableData.data = _.get(table, 'values') || _.get(data, _.get(table, 'valuesExpr'));
+      this.tables.push(tableData);
+    });
     this.isTableDataLoaded = true;
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        object: {
+          id: this.userService.userid,
+          type: 'user',
+          ver: '1.0'
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.router.url,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 
   downloadCSV(url) {

@@ -39,7 +39,8 @@ describe('CourseProgressComponent', () => {
       'imsg': {
         'm0022': 'Stats for last 7 days',
         'm0044': 'Download failed!',
-        'm0043' : 'Your profile does not have a valid email ID.Please update your email ID'
+        'm0043' : 'Your profile does not have a valid email ID.Please update your email ID',
+        'm0045': 'Download has failed. Please try again after sometime'
       },
       'stmsg' : {
        'm0132': 'We have received your download request. The file will be sent to your registered email ID shortly.'
@@ -48,9 +49,10 @@ describe('CourseProgressComponent', () => {
   };
 
   const fakeActivatedRoute = {
-    'params': observableOf({ contentId: 'do_112470675618004992181' }),
-    'queryParams': observableOf({ batchIdentifier: '0124963192947507200', timePeriod: '7d' }),
+    'params': observableOf({ contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181'}),
+    'queryParams': observableOf({ batchIdentifier: '0124963192947507200', timePeriod: '7d'}),
     snapshot: {
+     'params': { contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181'},
       data: {
         telemetry: {
           env: 'course', pageid: 'course-stats', type: 'view',
@@ -63,7 +65,7 @@ describe('CourseProgressComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule.forRoot(), OrderModule,
-        CoreModule.forRoot(), DashboardModule,  TelemetryModule.forRoot()],
+        CoreModule, DashboardModule,  TelemetryModule.forRoot()],
       declarations: [],
       providers: [CourseProgressService,
         { provide: Router, useClass: RouterStub },
@@ -171,8 +173,7 @@ describe('CourseProgressComponent', () => {
       spyOn(courseService, 'downloadDashboardData').and.callFake(() => observableThrowError({}));
       spyOn(toasterService, 'error').and.callThrough();
       component.downloadReport();
-      expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.imsg.m0044 + '<br/>' + '<br/>' +
-      resourceService.messages.imsg.m0043);
+      expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.imsg.m0045 );
     }));
 
   it('should unsubscribe to userData observable', () => {

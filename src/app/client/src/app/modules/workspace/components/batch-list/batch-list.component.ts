@@ -1,17 +1,17 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
-  ResourceService, ILoaderMessage, INoResultMessage
+  ResourceService, ILoaderMessage, INoResultMessage, NavigationHelperService
 } from '@sunbird/shared';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil, map, filter } from 'rxjs/operators';
 import { Ibatch } from './../../interfaces/';
 import { WorkSpaceService, BatchService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 
@@ -23,7 +23,7 @@ import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata } from 
   selector: 'app-batch-list',
   templateUrl: './batch-list.component.html'
 })
-export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
+export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy, AfterViewInit {
 
   /**
   * To navigate to other pages
@@ -161,7 +161,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
-    config: ConfigService) {
+    config: ConfigService, public navigationhelperService: NavigationHelperService) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
@@ -190,7 +190,6 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
       this.closeUrl = '/workspace/content/batches/' + (this.queryParams.mentors ? 'assigned' : 'created');
       this.sectionName = res.params.section.replace(/\-/g, ' ');
       this.pageNumber = Number(res.params.pageNumber);
-      this.setTelemetryImpressionData();
       this.fetchBatchList();
       this.setInteractEventData();
       this.batchService.updateEvent
@@ -254,7 +253,9 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
 
   onCardClick (event) {
     const batchData = event.data;
-    this.batchService.setBatchData(batchData);
+    if (batchData.enrollmentType === 'open') {
+      this.batchService.setBatchData(batchData);
+    }
     this.route.navigate(['update/batch', batchData.identifier], {queryParamsHandling: 'merge', relativeTo: this.activatedRoute});
   }
 
@@ -290,7 +291,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
     _.forEach(this.batchList, (item, key) => {
       participants[item.id] = !_.isUndefined(item.participant) ? _.size(item.participant) : 0;
       userList.push(item.createdBy);
-      this.batchList[key].label = participants[item.id];
+      this.batchList[key].label = item.participantCount || 0;
     });
     userList = _.compact(_.uniq(userList));
     const req = {
@@ -328,7 +329,8 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
         uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
-        visits: this.inviewLogs
+        visits: this.inviewLogs,
+        duration: this.navigationhelperService.getPageLoadTime()
       }
     };
   }
@@ -360,6 +362,12 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy {
     this.telemetryImpression.edata.visits = this.inviewLogs;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.setTelemetryImpressionData();
+    });
   }
 
   ngOnDestroy() {

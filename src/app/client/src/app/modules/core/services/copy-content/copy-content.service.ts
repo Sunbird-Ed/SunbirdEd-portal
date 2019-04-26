@@ -1,7 +1,7 @@
 import { map } from 'rxjs/operators';
 import { ConfigService, ServerResponse, ContentData } from '@sunbird/shared';
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user/user.service';
 import { ContentService } from './../content/content.service';
@@ -10,7 +10,9 @@ import { FrameworkService } from './../framework/framework.service';
 /**
  * Service to copy content
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CopyContentService {
   /**
    * base Url for content api
@@ -79,13 +81,17 @@ export class CopyContentService {
     if (contentData.description === undefined) {
       contentData.description = '';
     }
+    let creator = userData.firstName;
+    if (!_.isEmpty(userData.lastName)) {
+      creator = userData.firstName + ' ' + userData.lastName;
+    }
     const req = {
       request: {
         content: {
           name: 'Copy of ' + contentData.name,
           description: contentData.description,
           code: contentData.code + '.copy',
-          creator: userData.firstName + ' ' + userData.lastName,
+          creator: creator,
           createdFor: userData.organisationIds,
           createdBy: userData.userId,
           organization: userData.organisationNames,

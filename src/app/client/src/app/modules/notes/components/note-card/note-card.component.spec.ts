@@ -14,7 +14,8 @@ import { response } from './note-card-component.spec.data';
 import { mockUserData } from './../../../core/services/user/user.mock.spec.data';
 import { NoteCardComponent } from './note-card.component';
 import { TimeAgoPipe } from 'time-ago-pipe';
-import * as _ from 'lodash';
+import { RouterTestingModule } from '@angular/router/testing';
+import * as _ from 'lodash-es';
 
 const mockResourceBundle = {
   'messages': {
@@ -53,7 +54,7 @@ describe('NoteCardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ OrderModule, HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot() ],
+      imports: [ OrderModule, HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],
       declarations: [ NoteCardComponent, TimeAgoPipe ],
       providers: [ NotesService,
         { provide: ResourceService, useValue: mockResourceBundle },

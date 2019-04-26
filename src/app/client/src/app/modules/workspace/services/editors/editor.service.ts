@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { map, switchMap, catchError } from 'rxjs/operators';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { WorkSpaceService } from './../work-space/workspace.service';
 
 /**
@@ -44,6 +44,16 @@ export class EditorService {
      * @param req OBJECT
      */
     create(req): Observable<ServerResponse> {
+      if (_.get(req, 'content.subject') && !_.isArray(_.get(req, 'content.subject'))) {
+        const subject = [];
+        subject.push(req.content.subject);
+        req.content.subject = subject;
+      }
+      if (_.get(req, 'content.medium') && !_.isArray(_.get(req, 'content.medium'))) {
+        const medium = [];
+        medium.push(req.content.medium);
+        req.content.medium = medium;
+      }
         const option = {
             url: this.configService.urlConFig.URLS.CONTENT.CREATE,
             data: {

@@ -1,8 +1,9 @@
 import { Component, OnInit, Output, Input, EventEmitter, OnDestroy, AfterViewInit } from '@angular/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { Subscription } from 'rxjs';
 import { ResourceService } from '@sunbird/shared';
-
+import * as  treePicker from './../../../../../assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker';
+$.fn.treePicker = treePicker;
 interface TopicTreeNode {
   id: string;
   name: string;
@@ -56,7 +57,7 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   private formatSelectedTopics(topics, unformatted, formated) {
     _.forEach(topics, (topic) => {
-      if (unformatted.includes(topic.name)) {
+      if (unformatted.includes(topic.name) && !topic.children) {
         formated.push({
           identifier: topic.identifier,
           name: topic.name
@@ -71,7 +72,7 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initTopicPicker(this.formatTopics(this.formTopic.range));
   }
   private initTopicPicker(data: Array<TopicTreeNode>) {
-    $('.topic-picker-selector').treePicker({
+    jQuery('.topic-picker-selector').treePicker({
       data: data,
       name: this.resourceService.frmelmnts.lbl.topics,
       noDataMessage: this.resourceService.messages.fmsg.m0089,
@@ -81,7 +82,7 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
       chooseAllText: this.resourceService.frmelmnts.lbl.chooseAll,
       searchText: this.resourceService.frmelmnts.prmpt.search,
       selectedText: this.resourceService.frmelmnts.lbl.selected,
-      picked: _.map(this.selectedNodes, 'id'),
+      picked: _.map(this.selectedNodes, 'identifier'),
       onSubmit: (selectedNodes) => {
         this.selectedNodes = selectedNodes;
         this.selectedTopics = _.map(selectedNodes, node => ({

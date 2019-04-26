@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { ResourceService, ServerResponse } from '@sunbird/shared';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Subscription, Subject } from 'rxjs';
 import { TenantService, OtpService, UserService } from '@sunbird/core';
@@ -76,7 +76,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
         this.enableSubmitBtn = true;
         this.infoMessage = '';
         this.errorMessage = err.error.params.status === 'ERROR_INVALID_OTP' ?
-          wrongOTPMessage : this.resourceService.messages.fmsg.m0085;
+          wrongOTPMessage : this.resourceService.messages.fmsg.m0051;
       }
     );
   }
@@ -96,7 +96,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
       },
       (err) => {
         this.infoMessage = '';
-        this.errorMessage = this.resourceService.messages.fmsg.m0085;
+        this.errorMessage = this.resourceService.messages.fmsg.m0051;
       }
     );
   }
@@ -134,7 +134,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
 
     this.telemetryInteractObject = {
       id: this.userService.userid,
-      type: 'user',
+      type: 'User',
       ver: '1.0'
     };
   }

@@ -1,13 +1,5 @@
-<sui-modal
-  [mustScroll]="true" 
-  [isClosable]="false"
-  [transitionDuration]="0"
-  [size]="'large'"
-  class="sb-modal custom-sui-modal"
-  appBodyScroll
-  (dismissed)="redirect();modal.deny();" 
-  #modal
-  >
+<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'large'"
+  class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.deny();" #modal>
 
   <!--Header-->
   <div class="sb-modal-header" [appTelemetryImpression]="telemetryImpression">
@@ -44,27 +36,19 @@
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button 
-      appTelemetryInteract 
-      [telemetryInteractObject]="telemetryInteractObject" 
-      [telemetryInteractEdata]="orgUploadInteractEdata" 
-      [disabled]="processId" 
-      class="sb-btn sb-btn-normal sb-btn-primary" 
-      (click)="openImageBrowser(inputbtn)"
-    >
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="orgUploadInteractEdata" [disabled]="processId"
+      class="sb-btn sb-btn-normal sb-btn-primary" (click)="openImageBrowser(inputbtn)">
       {{resourceService?.frmelmnts?.btn?.uploadorgscsv}}
     </button>
-    <button 
-      appTelemetryInteract 
-      [telemetryInteractObject]="telemetryInteractObject" 
-      [telemetryInteractEdata]="downloadSampleOrgCSVInteractEdata" 
-      class="sb-btn sb-btn-normal sb-btn-outline-gray mr-auto" 
-      (click)="downloadSample()"
-    >
-      {{resourceService?.frmelmnts?.btn?.smplcsv}}
-    </button>
-    <input #inputbtn type="file" class="d-none" accept=".csv" id="uploadorgscsv" onclick="this.value = null" (change)="uploadOrg($event.target.files)" autofocus required=""
-      />
+    <!-- <angular2csv class="sb-btn sb-btn-normal sb-btn-outline-gray mr-auto" [data]="config.appConfig.ADMIN_UPLOAD.SAMPLE_ORGANIZATION_CSV" 
+      filename="Sample_Organizations" [options]="csvOptions"
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="downloadSampleOrgCSVInteractEdata">
+      {{resourceService?.frmelmnts?.btn?.smplcsv}} TODO: use Blob object to generate csv file
+    </angular2csv> -->
+    <input #inputbtn type="file" class="d-none" accept=".csv" id="uploadorgscsv" onclick="this.value = null"
+      (change)="uploadOrg($event.target.files)" autofocus required="" />
   </div>
   <!--/Actions-->
 

@@ -2,11 +2,10 @@
 import {of as observableOf, throwError as observableThrowError,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { UpforreviewContentplayerComponent } from './upforreview-contentplayer.component';
-
+import { TelemetryModule , TelemetryService } from '@sunbird/telemetry';
 // Import NG testing module(s)
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { SharedModule,  ToasterService, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { PlayerService, UserService, LearnerService, ContentService, CoreModule } from '@sunbird/core';
 import * as mockData from './upforreview-content.component.spce.data';
@@ -35,10 +34,11 @@ describe('UpforreviewContentplayerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ UpforreviewContentplayerComponent ],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [HttpClientTestingModule, Ng2IziToastModule,
-      CoreModule.forRoot(),
+      imports: [HttpClientTestingModule,
+      CoreModule,
+      TelemetryModule,
       RouterTestingModule, SharedModule.forRoot()],
-      providers: [ ResourceService, ToasterService, NavigationHelperService,
+      providers: [ ResourceService, ToasterService, NavigationHelperService, TelemetryService,
       { provide: ResourceService, useValue: resourceBundle }
       ]
     })

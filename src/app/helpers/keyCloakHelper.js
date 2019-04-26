@@ -22,6 +22,7 @@ const getKeyCloakClient = (config, store) => {
 const deauthenticated = function (request) {
   delete request.session['roles']
   delete request.session['rootOrgId']
+  delete request.session.userId
   if (request.session) {
     request.session.sessionEvents = request.session.sessionEvents || []
     telemetryHelper.logSessionEnd(request)
@@ -30,6 +31,13 @@ const deauthenticated = function (request) {
 }
 const authenticated = function (request) {
   permissionsHelper.getPermissions(request)
+  try {
+    var userId = request.kauth.grant.access_token.content.sub.split(':')
+    request.session.userId = userId[userId.length - 1];
+    request.session.save();
+  } catch(err) {
+    console.log('userId conversation error', request.kauth.grant.access_token.content.sub, err);
+  }
   async.series({
     getUserData: function (callback) {
       permissionsHelper.getCurrentUserRoles(request, callback)

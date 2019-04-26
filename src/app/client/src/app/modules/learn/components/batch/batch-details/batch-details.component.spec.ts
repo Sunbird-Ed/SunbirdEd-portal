@@ -38,7 +38,7 @@ describe('BatchDetailsComponent', () => {
   let fixture: ComponentFixture<BatchDetailsComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), SuiModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, SuiModule],
       declarations: [BatchDetailsComponent],
       providers: [CourseBatchService, CourseProgressService, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
@@ -146,5 +146,12 @@ describe('BatchDetailsComponent', () => {
     spyOn(component.unsubscribe, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
+  it('should call isUnenrollDisabled and make the isUnenrollbtnDisabled false', () => {
+    component.courseProgressData = {progress: 0,
+      completedCount: 1, totalCount: 1, content: [], lastPlayedContentId: 'do_112501345261985792135'};
+    component.enrolledBatchInfo = {'endDate': '2019-08-28T18:30:00.000Z', 'enrollmentType': 'open'};
+    component.isUnenrollDisabled();
+    expect(component.isUnenrollbtnDisabled).toBeFalsy();
   });
 });

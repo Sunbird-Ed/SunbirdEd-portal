@@ -1,14 +1,14 @@
 import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-    ICard, ILoaderMessage, UtilService, BrowserCacheTtlService
+    ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService
 } from '@sunbird/shared';
 import { SearchService, OrgDetailsService, UserService, FormService } from '@sunbird/core';
 import { IPagination } from '@sunbird/announcement';
 import { PublicPlayerService } from '../../../../services';
 import { combineLatest, Subject, of } from 'rxjs';
-import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, debounceTime, catchError, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
@@ -17,7 +17,7 @@ import { CacheService } from 'ng2-cache-service';
     templateUrl: './explore-course.component.html',
     styleUrls: ['./explore-course.component.scss']
 })
-export class ExploreCourseComponent implements OnInit, OnDestroy {
+export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     public showLoader = true;
     public showLoginModal = false;
     public baseUrl: string;
@@ -46,10 +46,10 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
         public resourceService: ResourceService, public toasterService: ToasterService,
         public configService: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
         private publicPlayerService: PublicPlayerService, public userService: UserService, public cacheService: CacheService,
-        public formService: FormService, public browserCacheTtlService: BrowserCacheTtlService) {
+        public formService: FormService, public browserCacheTtlService: BrowserCacheTtlService,
+        public navigationhelperService: NavigationHelperService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.exploreCourse.filterType;
-        this.setTelemetryData();
     }
     ngOnInit() {
         combineLatest(
@@ -167,7 +167,8 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
                 type: this.activatedRoute.snapshot.data.telemetry.type,
                 pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
                 uri: this.router.url,
-                subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+                subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+                duration: this.navigationhelperService.getPageLoadTime()
             }
         };
         this.cardIntractEdata = {
@@ -202,6 +203,16 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
         }
         const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
         this.router.navigate([url], { queryParams: this.queryParams });
+        window.scroll({
+            top: 100,
+            left: 100,
+            behavior: 'smooth'
+        });
+    }
+    ngAfterViewInit () {
+        setTimeout(() => {
+            this.setTelemetryData();
+        });
     }
     ngOnDestroy() {
         this.unsubscribe$.next();

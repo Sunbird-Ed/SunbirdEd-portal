@@ -1,11 +1,12 @@
 import { combineLatest, Subject, of, Observable } from 'rxjs';
 import { PageApiService, OrgDetailsService, FormService, UserService } from '@sunbird/core';
-import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, HostListener, AfterViewInit } from '@angular/core';
 import {
-  ResourceService, ToasterService, INoResultMessage, ConfigService, UtilService, ICaraouselData, BrowserCacheTtlService, ServerResponse
+  ResourceService, ToasterService, INoResultMessage, ConfigService, UtilService, ICaraouselData, BrowserCacheTtlService, ServerResponse,
+  NavigationHelperService
 } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { PublicPlayerService } from './../../../../services';
@@ -15,13 +16,13 @@ import { takeUntil, map, mergeMap, first, filter, catchError } from 'rxjs/operat
   templateUrl: './public-course.component.html',
   styleUrls: ['./public-course.component.scss']
 })
-export class PublicCourseComponent implements OnInit, OnDestroy {
+export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public showLoader = true;
   public showLoginModal = false;
   public baseUrl: string;
   public noResultMessage: INoResultMessage;
-  public carouselData: Array<ICaraouselData> = [];
+  public carouselMasterData: Array<ICaraouselData> = [];
   public filterType: string;
   public queryParams: any;
   public hashTagId: string;
@@ -34,12 +35,20 @@ export class PublicCourseComponent implements OnInit, OnDestroy {
   public frameWorkName: string;
   public initFilters = false;
   public loaderMessage;
+  public pageSections: Array<ICaraouselData> = [];
 
+  @HostListener('window:scroll', []) onScroll(): void {
+    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
+    && this.pageSections.length < this.carouselMasterData.length) {
+        this.pageSections.push(this.carouselMasterData[this.pageSections.length]);
+    }
+  }
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
     public router: Router, private utilService: UtilService, private orgDetailsService: OrgDetailsService,
     private publicPlayerService: PublicPlayerService, private cacheService: CacheService,
-    private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService, public formService: FormService) {
+    private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService, public formService: FormService,
+    public navigationhelperService: NavigationHelperService) {
     this.router.onSameUrlNavigation = 'reload';
     this.filterType = this.configService.appConfig.exploreCourse.filterType;
     this.setTelemetryData();
@@ -108,7 +117,8 @@ export class PublicCourseComponent implements OnInit, OnDestroy {
       .subscribe(({params, queryParams}) => {
         this.showLoader = true;
         this.queryParams = { ...queryParams };
-        this.carouselData = [];
+        this.carouselMasterData = [];
+        this.pageSections = [];
         this.fetchPageData();
       });
   }
@@ -132,10 +142,19 @@ export class PublicCourseComponent implements OnInit, OnDestroy {
     this.pageApiService.getPageData(option).pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
         this.showLoader = false;
-        this.carouselData = this.prepareCarouselData(_.get(data, 'sections'));
+        this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
+        if (!this.carouselMasterData.length) {
+          return; // no page section
+        }
+        if (this.carouselMasterData.length >= 2) {
+          this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
+        } else if (this.carouselMasterData.length >= 1) {
+          this.pageSections = [this.carouselMasterData[0]];
+        }
       }, err => {
         this.showLoader = false;
-        this.carouselData = [];
+        this.carouselMasterData = [];
+        this.pageSections = [];
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
     });
   }
@@ -188,6 +207,11 @@ export class PublicCourseComponent implements OnInit, OnDestroy {
     const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], {queryParams: queryParams});
   }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.setTelemetryData();
+    });
+  }
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -201,7 +225,8 @@ export class PublicCourseComponent implements OnInit, OnDestroy {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         uri: this.router.url,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        duration: this.navigationhelperService.getPageLoadTime()
       }
     };
     this.sortIntractEdata = {

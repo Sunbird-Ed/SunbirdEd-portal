@@ -4,12 +4,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AnnouncementRoutingModule } from './announcement-routing.module';
 import { SuiModule } from 'ng2-semantic-ui';
-import { SharedModule, ResourceService, PaginationService, ToasterService, RouterNavigationService} from '@sunbird/shared';
-import { AnnouncementService} from '@sunbird/core';
+import { SharedModule, ResourceService, PaginationService, ToasterService, RouterNavigationService } from '@sunbird/shared';
+import { AnnouncementService } from '@sunbird/core';
 import { NgInviewModule } from 'angular-inport';
-import { OutboxComponent, DeleteComponent, DetailsComponent, GeoExplorerComponent,
-  DetailsPopupComponent, InboxComponent, CreateComponent, FileUploaderComponent } from './components';
-  import { GeoExplorerService, CreateService } from './services';
+import {
+  OutboxComponent, DeleteComponent, DetailsComponent, GeoExplorerComponent,
+  DetailsPopupComponent, InboxComponent, CreateComponent, FileUploaderComponent
+} from './components';
+import { GeoExplorerService, CreateService, FileUploadService } from './services';
 @NgModule({
   imports: [
     CommonModule,
@@ -20,8 +22,8 @@ import { OutboxComponent, DeleteComponent, DetailsComponent, GeoExplorerComponen
     NgInviewModule
   ],
   declarations: [OutboxComponent, DeleteComponent, DetailsComponent, GeoExplorerComponent, DetailsPopupComponent, InboxComponent,
-     CreateComponent, FileUploaderComponent],
+    CreateComponent, FileUploaderComponent],
   providers: [AnnouncementService, ResourceService, PaginationService, ToasterService, GeoExplorerService,
-     RouterNavigationService, CreateService]
+    RouterNavigationService, CreateService, FileUploadService]
 })
 export class AnnouncementModule { }

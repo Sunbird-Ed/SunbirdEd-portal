@@ -12,7 +12,7 @@ import { PublicDataService } from './../public-data/public-data.service';
 describe('ChannelService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
       providers: [ChannelService]
     });
   });

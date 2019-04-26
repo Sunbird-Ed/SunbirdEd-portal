@@ -15,14 +15,14 @@
         </div>
         <div class="two wide column">
           <h5 class="ui right floated basic icon circular button  mouse-pointer" (click)="close()">
-            <i class="ui remove icon" (click)="close()"></i>
+            <i appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeInteractEdata" class="ui remove icon" (click)="close()"></i>
           </h5>
         </div>
       </div>
 
       <div class="ui grid">
         <div [ngClass]="showCommentBoxClass" >
-          <app-player class="content-player" [playerConfig]="playerConfig" (contentProgressEvent)="contentProgressEvent($event)" (sceneChangeEvent)="handleSceneChangeEvent($event)"></app-player>
+          <app-player  class="content-player" [playerConfig]="playerConfig" (contentProgressEvent)="contentProgressEvent($event)" (sceneChangeEvent)="handleSceneChangeEvent($event)"></app-player>
         </div>
         <div class="four wide column" *ngIf="contentData.mimeType === 'application/vnd.ekstep.ecml-archive' && stageId">
           <app-review-comments [contentData]="contentData" [playerLoaded]="playerLoaded" [stageId]="stageId" (reviewCommentEvent)="handleReviewCommentEvent($event)"></app-review-comments>

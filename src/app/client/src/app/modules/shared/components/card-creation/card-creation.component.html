@@ -34,7 +34,7 @@
             </button>
           </span>
           <span *ngSwitchCase="'icon'">
-            <i class="{{data.action.right.class}}" (click)="onAction(data,data.action.right); $event.stopPropagation()">
+            <i class="{{data.action.right.class}}" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="telemetryInteractEdata" (click)="onAction(data,data.action.right); $event.stopPropagation()">
             </i>
             <span *ngIf="data.action.right.text">{{data.action.right.text}}</span>
           </span>

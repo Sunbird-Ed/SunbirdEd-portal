@@ -3,7 +3,7 @@ import { map } from 'rxjs/operators';
 import { Injectable, Input, EventEmitter } from '@angular/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { SearchParam, LearnerService, UserService, ContentService, SearchService } from '@sunbird/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 @Injectable()
 export class CourseBatchService {
@@ -21,6 +21,7 @@ export class CourseBatchService {
   batchSearch(requestParam: SearchParam): Observable<ServerResponse> {
     const option = {
       url: this.configService.urlConFig.URLS.BATCH.GET_BATCHS,
+      param : {...requestParam.params},
       data: {
         request: {
           filters: requestParam.filters,

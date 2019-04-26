@@ -17,7 +17,8 @@
               <a (click)="onShareLink();sharelinkModal=true;">
                 <i class="cursor-pointer large blue share alternate icon"></i>
               </a>
-              <span *ngIf="permissionService.permissionAvailable && courseStatus !== 'Unlisted'" appPermission
+              <span *ngIf="permissionService.permissionAvailable && courseStatus !== 'Unlisted'" appPermission appTelemetryInteract 
+              [telemetryInteractObject]="courseInteractObject" [telemetryInteractEdata]="{id:'copyContent' , type: 'click' , pageid:'course-consumption'}"
                 [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(courseHierarchy)" class="ui mouse-pointer content-font ml-10 ng-isolate-scope"
                 title="Copy content">
                 <i class="ui large blue clone outline icon"></i>
@@ -38,7 +39,8 @@
                 </button>
               </div>
               <div *ngIf="permissionService.permissionAvailable && !enrolledCourse" appPermission [permission]="dashboardPermission">
-                <button class="sb-btn sb-btn-primary sb-btn-normal width-100 mt-10" (click)="showDashboard()">{{resourceService?.frmelmnts?.btn?.viewCourseStatsDashboard}}</button>
+                <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject" [telemetryInteractEdata]="{id:'viewCourseDashboard' , type: 'click' , pageid:'course-consumption'}" 
+                class="sb-btn sb-btn-primary sb-btn-normal width-100 mt-10" (click)="showDashboard()">{{resourceService?.frmelmnts?.btn?.viewCourseStatsDashboard}}</button>
               </div>
             </div>
             <!-- course ended Error message starts -->

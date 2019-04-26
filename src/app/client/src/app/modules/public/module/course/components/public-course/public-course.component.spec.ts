@@ -7,7 +7,7 @@ import { PageApiService, OrgDetailsService, CoreModule, UserService, FormService
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicPlayerService } from './../../../../services';
 import { SuiModule } from 'ng2-semantic-ui';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './public-course.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -48,7 +48,7 @@ describe('PublicCourseComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
+      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [PublicCourseComponent],
       providers: [PublicPlayerService, { provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
@@ -125,7 +125,7 @@ describe('PublicCourseComponent', () => {
     expect(component.frameWorkName).toEqual('TPD');
     // expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
-    expect(component.carouselData.length).toEqual(1);
+    expect(component.carouselMasterData.length).toEqual(1);
   });
   it('should not navigate to landing page if fetching frameWork from form service fails and data driven filter returns data', () => {
     sendFormApi = false;
@@ -135,7 +135,7 @@ describe('PublicCourseComponent', () => {
     expect(component.frameWorkName).toEqual(undefined);
     // expect(component.dataDrivenFilters).toEqual({});
     expect(component.showLoader).toBeFalsy();
-    expect(component.carouselData.length).toEqual(1);
+    expect(component.carouselMasterData.length).toEqual(1);
   });
   it('should fetch content after getting hashTagId and filter data and throw error if page api fails', () => {
     sendPageApi = false;
@@ -146,7 +146,7 @@ describe('PublicCourseComponent', () => {
     expect(component.frameWorkName).toEqual('TPD');
     // expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
-    expect(component.carouselData.length).toEqual(0);
+    expect(component.carouselMasterData.length).toEqual(0);
     expect(toasterService.error).toHaveBeenCalled();
   });
   it('should unsubscribe from all observable subscriptions', () => {

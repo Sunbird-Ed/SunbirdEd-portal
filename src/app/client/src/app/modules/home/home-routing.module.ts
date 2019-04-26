@@ -9,7 +9,7 @@ const telemetryEnv = 'home';
 const objectType = 'home';
 const routes: Routes = [
   {
-     path: 'home', data: {
+     path: '', data: {
       telemetry: {
         env: telemetryEnv, pageid: 'home', uri: '/home', subtype: 'paginate',
         type: 'view', object: { type: objectType, ver: '1.0' }

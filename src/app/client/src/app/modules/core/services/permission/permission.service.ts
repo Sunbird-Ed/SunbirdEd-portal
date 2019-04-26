@@ -3,7 +3,7 @@ import { LearnerService } from './../learner/learner.service';
 import { UserService } from '../user/user.service';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { RolesAndPermissions, Roles } from './../../interfaces';
 
 /**

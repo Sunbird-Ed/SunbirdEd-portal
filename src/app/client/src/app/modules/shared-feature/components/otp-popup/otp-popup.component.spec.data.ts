@@ -64,7 +64,7 @@ export const testData = {
   resourceBundle: {
     'messages': {
       'fmsg': {
-        'm0085': 'There is some technical error',
+        'm0051': 'There is some technical error',
       }
     },
     'frmelmnts': {

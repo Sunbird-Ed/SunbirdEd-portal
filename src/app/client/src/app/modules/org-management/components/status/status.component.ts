@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { ResourceService, ToasterService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { OrgManagementService } from '../../services';
@@ -17,7 +17,7 @@ import { Subject } from 'rxjs';
   selector: 'app-status',
   templateUrl: './status.component.html'
 })
-export class StatusComponent implements OnInit, OnDestroy {
+export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('modal') modal;
   /**
 * reference for ActivatedRoute
@@ -77,7 +77,8 @@ export class StatusComponent implements OnInit, OnDestroy {
 * @param {ResourceService} resourceService To call resource service which helps to use language constant
 */
   constructor(orgManagementService: OrgManagementService, private router: Router, formBuilder: FormBuilder,
-    toasterService: ToasterService, resourceService: ResourceService, activatedRoute: ActivatedRoute, public userService: UserService) {
+    toasterService: ToasterService, resourceService: ResourceService, activatedRoute: ActivatedRoute, public userService: UserService,
+    public navigationhelperService: NavigationHelperService) {
     this.resourceService = resourceService;
     this.sbFormBuilder = formBuilder;
     this.orgManagementService = orgManagementService;
@@ -98,17 +99,6 @@ export class StatusComponent implements OnInit, OnDestroy {
     this.statusForm = this.sbFormBuilder.group({
       processId: ['', null]
     });
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: 'profile-bulk-upload-check-status',
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: this.router.url
-      }
-    };
     this.setInteractEventData();
   }
   /**
@@ -160,6 +150,22 @@ export class StatusComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+  ngAfterViewInit () {
+    setTimeout(() => {
+        this.telemetryImpression = {
+          context: {
+            env: this.activatedRoute.snapshot.data.telemetry.env
+          },
+          edata: {
+            type: this.activatedRoute.snapshot.data.telemetry.type,
+            pageid: 'profile-bulk-upload-check-status',
+            subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+            uri: this.router.url,
+            duration: this.navigationhelperService.getPageLoadTime()
+          }
+        };
+    });
+  }
   setInteractEventData() {
     this.checkStatusInteractEdata = {
       id: 'upload-status',
@@ -168,7 +174,7 @@ export class StatusComponent implements OnInit, OnDestroy {
     };
     this.telemetryInteractObject = {
       id: this.userService.userid,
-      type: 'user',
+      type: 'User',
       ver: '1.0'
     };
   }

@@ -1,7 +1,6 @@
 import { BatchCardComponent } from './batch-card.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -40,7 +39,7 @@ describe('BatchCardComponent', () => {
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SuiModule, FormsModule, ReactiveFormsModule,
-        HttpClientTestingModule, Ng2IziToastModule, TelemetryModule.forRoot(), CoreModule.forRoot()],
+        HttpClientTestingModule, TelemetryModule.forRoot(), CoreModule],
       providers: [PaginationService, ResourceService, ToasterService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },

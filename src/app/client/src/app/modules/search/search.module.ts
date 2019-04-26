@@ -13,7 +13,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { AvatarModule } from 'ngx-avatar';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
-
+// import { Angular2CsvModule } from 'angular2-csv'; Angular2CsvModule removed TODO: use Blob object to generate csv file
 
 @NgModule({
   imports: [

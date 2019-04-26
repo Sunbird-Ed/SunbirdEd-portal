@@ -1,20 +1,20 @@
 
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {combineLatest, Subject } from 'rxjs';
 import {takeUntil,  mergeMap } from 'rxjs/operators';
-import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { RouterNavigationService, ResourceService, ToasterService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { IImpressionEventInput } from '@sunbird/telemetry';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as moment from 'moment';
 @Component({
   selector: 'app-update-course-batch',
   templateUrl: './update-course-batch.component.html'
 })
-export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
+export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('updateBatchModal') private updateBatchModal;
   /**
@@ -114,7 +114,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     resourceService: ResourceService, userService: UserService,
     courseBatchService: CourseBatchService,
     toasterService: ToasterService,
-    courseConsumptionService: CourseConsumptionService) {
+    courseConsumptionService: CourseConsumptionService,
+    public navigationhelperService: NavigationHelperService) {
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
@@ -133,7 +134,6 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
         mergeMap((params) => {
           this.batchId = params.batchId;
           this.courseId = params.courseId;
-          this.setTelemetryImpressionData();
           return this.fetchBatchDetails();
         }),
         takeUntil(this.unsubscribe)
@@ -147,6 +147,16 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
         const userList = this.sortUsers(data.userDetails);
         this.participantList = userList.participantList;
         this.mentorList = userList.mentorList;
+        if (this.batchDetails.mentors) {
+          this.batchDetails.mentors.forEach(id => {
+            _.remove(this.mentorList, mentor => mentor.id === id);
+          });
+        }
+        if (this.batchDetails.participants) {
+          this.batchDetails.participants.forEach(id => {
+            _.remove(this.participantList, participant => participant.id === id);
+          });
+        }
         this.initializeUpdateForm();
         this.fetchParticipantDetails();
         this.initDropDown();
@@ -201,8 +211,13 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   * fetch mentors and participant details of current batch
   */
   private fetchParticipantDetails() {
-    if (this.batchDetails.participant || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
-      const userList = _.union(_.keys(this.batchDetails.participant), this.batchDetails.mentors);
+    let userList = [];
+    if (this.batchDetails.participants || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
+      if (this.batchDetails.enrollmentType !== 'open') {
+        userList = _.union(this.batchDetails.participants, this.batchDetails.mentors);
+      } else {
+        userList = this.batchDetails.mentors;
+      }
       const request = {
         filters: {
           identifier: userList
@@ -229,8 +244,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
     const users = this.sortUsers(res);
     const participantList = users.participantList;
     const mentorList = users.mentorList;
-    _.forEach(this.batchDetails.participant, (value, key) => {
-      const user = _.find(participantList, ['id', key]);
+    _.forEach(this.batchDetails.participants, (value, key) => {
+      const user = _.find(participantList, ['id', value]);
       if (user) {
         this.selectedParticipants.push(user);
       }
@@ -410,37 +425,40 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   }
 
   private getUserOtherDetail(userData) {
-    if (userData.email && userData.phone) {
-      return ' (' + userData.email + ', ' + userData.phone + ')';
+    if (userData.maskedEmail && userData.maskedPhone) {
+      return ' (' + userData.maskedEmail + ', ' + userData.maskedPhone + ')';
     }
-    if (userData.email && !userData.phone) {
-      return ' (' + userData.email + ')';
+    if (userData.maskedEmail && !userData.maskedPhone) {
+      return ' (' + userData.maskedEmail + ')';
     }
-    if (!userData.email && userData.phone) {
-      return ' (' + userData.phone + ')';
+    if (!userData.maskedEmail && userData.maskedPhone) {
+      return ' (' + userData.maskedPhone + ')';
     }
   }
-  // Create the telemetry impression event for update batch page
-  private setTelemetryImpressionData() {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.router.url
-      },
-      object: {
-        id: this.batchId,
-        type: this.activatedRoute.snapshot.data.telemetry.object.type,
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
-        rollup: {
-          l1: this.courseId,
-          l2: this.batchId
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.router.url,
+          duration: this.navigationhelperService.getPageLoadTime()
+        },
+        object: {
+          id: this.activatedRoute.snapshot.params.batchId,
+          type: this.activatedRoute.snapshot.data.telemetry.object.type,
+          ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
+          rollup: {
+            l1: this.activatedRoute.snapshot.params.courseId,
+            l2: this.activatedRoute.snapshot.params.batchId
+          }
         }
-      }
-    };
+      };
+    });
   }
   ngOnDestroy() {
     if (this.updateBatchModal && this.updateBatchModal.deny) {

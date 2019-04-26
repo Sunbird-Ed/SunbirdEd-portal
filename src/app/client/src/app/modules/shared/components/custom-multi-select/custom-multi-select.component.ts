@@ -1,6 +1,6 @@
 import { ResourceService } from './../../services/resource/resource.service';
 import { Component, OnInit, ChangeDetectorRef, Input,  EventEmitter, Output, OnChanges } from '@angular/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 @Component({
   selector: 'app-custom-multi-select',
   templateUrl: './custom-multi-select.component.html',

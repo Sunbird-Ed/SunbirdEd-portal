@@ -3,7 +3,6 @@ import { CollaboratingOnComponent } from './collaborating-on.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService , DateFilterXtimeAgoPipe} from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
@@ -55,7 +54,7 @@ describe('CollaboratingOnComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollaboratingOnComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, OrderModule, SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, OrderModule, SharedModule.forRoot()],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,

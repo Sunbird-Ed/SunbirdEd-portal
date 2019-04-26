@@ -1,6 +1,6 @@
 import { ToasterService } from '../../services/';
-import { ResourceService } from '../../services';
-import { Component, OnInit, Input } from '@angular/core';
+import { ResourceService, NavigationHelperService } from '../../services';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -13,7 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
  * Redirectcomponent is invoked when
  * the route learn/redirect is called
  */
-export class RedirectComponent implements OnInit {
+export class RedirectComponent implements OnInit, AfterViewInit {
   /**
    * To get the values of telemetry data
    * from activatedRoute
@@ -24,7 +24,7 @@ export class RedirectComponent implements OnInit {
    */
   telemetryImpression: IImpressionEventInput;
   constructor(public resourceService: ResourceService, activatedRoute: ActivatedRoute, public router: Router,
-     public toasterService: ToasterService) {
+     public toasterService: ToasterService, public navigationhelperService: NavigationHelperService) {
     this.activatedRoute = activatedRoute;
     this.router = router;
   }
@@ -32,16 +32,6 @@ export class RedirectComponent implements OnInit {
    * oninit the component opens new window tab with the redirectUrl values in the url
    */
   ngOnInit() {
-    this.telemetryImpression = {
-      context: {
-        env: 'redirect'
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: window.redirectUrl
-      }
-    };
     this.toasterService.warning(this.resourceService.messages.imsg.m0034);
     this.openWindow();
   }
@@ -49,6 +39,21 @@ export class RedirectComponent implements OnInit {
     setTimeout(() => {
       window.open(window.redirectUrl, '_self');
     }, 1500);
+  }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: 'redirect'
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: window.redirectUrl,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
   /**
    * Close the window on click of goBack button

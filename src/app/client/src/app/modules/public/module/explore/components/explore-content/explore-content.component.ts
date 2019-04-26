@@ -6,16 +6,16 @@ import { SearchService, PlayerService, OrgDetailsService, UserService, Framework
 import { IPagination } from '@sunbird/announcement';
 import { PublicPlayerService } from '../../../../services';
 import { combineLatest, Subject } from 'rxjs';
-import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, debounceTime, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 @Component({
     templateUrl: './explore-content.component.html'
 })
-export class ExploreContentComponent implements OnInit, OnDestroy {
+export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public showLoader = true;
     public showLoginModal = false;
@@ -44,10 +44,9 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
         public configService: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
         public navigationHelperService: NavigationHelperService, private publicPlayerService: PublicPlayerService,
         public userService: UserService, public frameworkService: FrameworkService,
-        public cacheService: CacheService) {
+        public cacheService: CacheService, public navigationhelperService: NavigationHelperService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.explore.filterType;
-        this.setTelemetryData();
     }
     ngOnInit() {
         this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug).pipe(
@@ -95,12 +94,16 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     private fetchContents() {
         let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
         filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-          const softConstraintData = {
-            filters: {channel: this.hashTagId,
-            board: [this.dataDrivenFilters.board]},
+          const softConstraintData: any = {
+            filters: {
+                channel: this.hashTagId,
+            },
             softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
             mode: 'soft'
           };
+          if (this.dataDrivenFilters.board) {
+            softConstraintData.board = [this.dataDrivenFilters.board];
+          }
           const manipulatedData = this.utilService.manipulateSoftConstraint( _.get(this.queryParams,
              'appliedFilters'), softConstraintData );
         const option = {
@@ -145,6 +148,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
         }
         const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
         this.router.navigate([url], { queryParams: this.queryParams });
+        window.scroll({
+            top: 100,
+            left: 100,
+            behavior: 'smooth'
+        });
     }
     private setTelemetryData() {
         this.inViewLogs = []; // set to empty every time filter or page changes
@@ -156,7 +164,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
                 type: this.activatedRoute.snapshot.data.telemetry.type,
                 pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
                 uri: this.router.url,
-                subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+                subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+                duration: this.navigationhelperService.getPageLoadTime()
             }
         };
         this.cardIntractEdata = {
@@ -190,6 +199,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
             this.telemetryImpression.edata.subtype = 'pageexit';
             this.telemetryImpression = Object.assign({}, this.telemetryImpression);
         }
+    }
+    ngAfterViewInit () {
+        setTimeout(() => {
+          this.setTelemetryData();
+        });
     }
     ngOnDestroy() {
         this.unsubscribe$.next();

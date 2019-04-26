@@ -12,12 +12,10 @@ import { UserSearchService } from './../../services';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
-import { Ng2IziToastModule } from 'ng2-izitoast';
+import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserSearchComponent } from './user-search.component';
 import { Response } from './user-search.component.spec.data';
-import { ProfileModule } from '@sunbird/profile';
 import { TelemetryService } from '@sunbird/telemetry';
 
 describe('UserSearchComponent', () => {
@@ -49,6 +47,9 @@ describe('UserSearchComponent', () => {
     'params': observableOf({ pageNumber: '1' }),
     'queryParams': observableOf({ OrgType: ['012352495007170560157'] }),
     snapshot: {
+      params: {
+        userId: '12421312'
+      },
       data: {
         telemetry: {
           env: 'profile', pageid: 'use-search', type: 'view', subtype: 'paginate'
@@ -61,7 +62,7 @@ describe('UserSearchComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, ProfileModule, CoreModule, SharedModule.forRoot(), Ng2IziToastModule],
+      imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
       declarations: [UserSearchComponent, UserFilterComponent],
       providers: [OrgDetailsService, FrameworkService, TelemetryService, ResourceService, SearchService, PaginationService, UserService,
         LearnerService, ContentService, ConfigService, ToasterService, UserSearchService,

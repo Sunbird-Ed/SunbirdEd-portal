@@ -14,9 +14,10 @@ declare module '*.json' {
   const sample: any;
   export default sample;
 }
-declare const Markdown;
 declare const EkTelemetry: any;
 declare const Fingerprint2: any;
+declare const iziToast: any;
+
 
 interface JQuery {
   treePicker(options?: any);
@@ -26,5 +27,3 @@ interface JQuery {
   DataTable(options?: any);
 }
 
-// TreeModel helps to manipulate and traverse through the tree model.
-declare const TreeModel: any;

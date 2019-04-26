@@ -6,7 +6,6 @@ const envHelper = require('./environmentVariablesHelper.js')
 const async = require('async')
 const _ = require('lodash')
 const telemetryHelper = require('./telemetryHelper')
-const configHelper = require('./configServiceSDKHelper.js')
 const appId = envHelper.APPID
 const defaultTenant = envHelper.DEFAULT_CHANNEL
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
@@ -72,7 +71,7 @@ module.exports = {
         let protocol = req.headers['x-forwarded-proto'] || req.protocol
         let baseUrl = protocol + '://' + host + (port === '' ? '' : ':' + port)
         let responseObj = {
-          titleName: configHelper.getConfig('sunbird_instance_name')
+          titleName: envHelper.sunbird_instance_name
         }
         if (tenantId) {
           async.parallel({
