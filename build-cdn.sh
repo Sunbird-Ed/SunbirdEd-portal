@@ -19,3 +19,4 @@ cd ..
 # Gzipping of assets
 ./node_modules/.bin/gulp gzip:editors client:gzip
 mv dist/index.html dist/index.${version}.${build_hash}.ejs
+chown -R jenkins ./
