@@ -137,7 +137,12 @@ function runApp() {
           const cdnFallBackScript = `<script type="text/javascript" src="${envHelper.PORTAL_CDN_URL}assets/cdnHelper.js"></script>
               <script>
                 try {
-                  getAllAngularRootElements();
+                  if(!cdnFileLoaded){
+                    var now = new Date();
+                    now.setMinutes(now.getMinutes() + 1);
+                    document.cookie = "cdnFailed=true;expires=" + now.toUTCString() + ";"
+                    window.location.href = window.location.href
+                  }
                 } catch (err) {
                   var now = new Date();
                   now.setMinutes(now.getMinutes() + 1);
