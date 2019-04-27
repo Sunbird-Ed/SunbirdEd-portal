@@ -1,6 +1,6 @@
 
 import { mergeMap, first, map, catchError } from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { PlayerService, CollectionHierarchyAPI, PermissionService, CopyContentService } from '@sunbird/core';
 import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
@@ -18,7 +18,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
   templateUrl: './collection-player.component.html',
   styleUrls: ['./collection-player.component.scss']
 })
-export class CollectionPlayerComponent implements OnInit, OnDestroy {
+export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
 	 * telemetryImpression
 	*/
@@ -67,6 +67,11 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
 
   public showCopyLoader: Boolean = false;
   /**
+   * Page Load Time, used this data in impression telemetry
+   */
+  public pageLoadDuration: Number;
+
+  /**
 	 * telemetryShareData
 	*/
   telemetryShareData: Array<ITelemetryShare>;
@@ -113,7 +118,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     private toasterService: ToasterService, private deviceDetectorService: DeviceDetectorService, private resourceService: ResourceService,
     public permissionService: PermissionService, public copyContentService: CopyContentService,
-    public contentUtilsServiceService: ContentUtilsServiceService, config: ConfigService, private configService: ConfigService) {
+    public contentUtilsServiceService: ContentUtilsServiceService, config: ConfigService, private configService: ConfigService,
+    public navigationhelperService: NavigationHelperService) {
     this.route = route;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
@@ -288,7 +294,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
         type: this.route.snapshot.data.telemetry.type,
         pageid: this.route.snapshot.data.telemetry.pageid,
         uri: this.router.url,
-        subtype: this.route.snapshot.data.telemetry.subtype
+        subtype: this.route.snapshot.data.telemetry.subtype,
+        duration: this.pageLoadDuration
       }
     };
     this.closeIntractEdata = {
@@ -357,6 +364,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       type: param.contentType,
       ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
     }];
+  }
+
+  ngAfterViewInit () {
+    this.pageLoadDuration = this.navigationhelperService.getPageLoadTime();
   }
 
   private setTelemetryStartEndData() {
