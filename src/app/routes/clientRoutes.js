@@ -146,9 +146,9 @@ const renderDefaultIndexPage = (req, res) => {
   } else {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
     res.locals = getLocals(req);
-    if(envHelper.hasCdnIndexFile && req.cookies.cdnFailed !== 'true'){ // assuming cdn works and send cdn ejs file
+    if(envHelper.hasCdnIndexFile && req.cookies.cdnFailed !== 'true'){ // assume cdn works and send cdn ejs file
       res.render(path.join(__dirname, '../dist', 'cdn_index.ejs'))
-    } else { // load cdn file if cdn fails or cdn is not enabled
+    } else { // load local file if cdn fails or cdn is not enabled
       res.render(path.join(__dirname, '../dist', 'index.ejs'))
     }
   }
