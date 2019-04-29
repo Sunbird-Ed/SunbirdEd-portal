@@ -116,3 +116,39 @@ app-card[lang="ur"] {
     
   }
 }
+
+//qr code card
+.sb-qr-card{
+  // border: 1px solid #dedede !important;
+  // margin-top: ($base-block-space * 3) + 3;
+}
+
+// QR Card
+
+.sb-card-qr {
+  border: 1px solid #dedede !important;
+  margin-bottom: ($base-block-space * 3);
+  .sb-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0px;
+    width:100%;
+    .caret {
+        height: ($base-block-space * 2) !important;
+        width: ($base-block-space * 2) !important;
+        background: $white;
+        color: $secondary-100 !important;
+        border-radius: 50%;
+        font-size: 14px;
+        margin-right: $base-block-space;
+        padding-left: 2px;
+        line-height: ($base-block-space * 2);
+    }
+}
+  &:hover {
+    .sb-btn {
+      background:$secondary-400;
+    }
+  }
+}

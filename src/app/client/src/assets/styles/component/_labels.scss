@@ -91,3 +91,13 @@
 .sb-label-error {
     @include label-theme($danger-color);
 }
+
+//qr code result label
+.sb-reult-label{
+    background: $orange;
+    padding: 0px ($base-block-space);
+    border-radius: ($base-block-space / 2);
+    height: ($base-block-space * 4);
+    font-size:$font-size-base;
+    line-height: ($base-block-space * 4);
+}

@@ -13,9 +13,14 @@
                   </h1>
                 </div>
                 <div class="two wide column">
-                    <h5 appTelemetryInteract [telemetryInteractCdata]="this.telemetryCdata" [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closePlayerInteractEdata" class="ui right floated basic icon circular button  mouse-pointer" (click)="close()">
+                    <!-- <h5 appTelemetryInteract [telemetryInteractCdata]="this.telemetryCdata" [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closePlayerInteractEdata" class="ui right floated basic icon circular button  mouse-pointer" (click)="close()">
                         <i class="ui remove icon"></i>
-                    </h5>
+                    </h5> -->
+
+                    <div _ngcontent-c8="" class="sb-cls-btn">
+                        <button _ngcontent-c8="" appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn mr-8" type="button"  (click)="close()">Close<i _ngcontent-c8="" class="close icon"></i></button>
+                    </div>
+
                 </div>
               </div>
             </div>

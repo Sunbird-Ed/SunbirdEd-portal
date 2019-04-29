@@ -7,15 +7,17 @@ html,
 body {
   height: 100%;
   font-size:$font-size-base;
+  
 }
 
 body {
-  background:$bg-body;
+  //background:$bg-body;
+  background:$primary-0;
   position: relative;
   font-family: $font-stack-en;
   letter-spacing: 0.2px;
   height: auto;
-  background: $white-color;
+  //background: $white-color;
   color: $body-color;
 }
 
