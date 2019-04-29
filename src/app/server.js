@@ -131,7 +131,7 @@ function runApp() {
     portal.server = app.listen(envHelper.PORTAL_PORT, () => {
       envHelper.defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId'); // needs to be added in envVariable file
       console.log(envHelper.defaultChannelId, 'is set as default channel id in evnHelper');
-      if (true || envHelper.PORTAL_CDN_URL) {
+      if (envHelper.PORTAL_CDN_URL) {
         const cdnUrl = `${envHelper.PORTAL_CDN_URL}index.${packageObj.version}.${packageObj.buildHash}.ejs`
         request.get(cdnUrl).then((data) => {
           const cdnFallBackScript = `<script type="text/javascript" src="${envHelper.PORTAL_CDN_URL}assets/cdnHelper.js"></script>
