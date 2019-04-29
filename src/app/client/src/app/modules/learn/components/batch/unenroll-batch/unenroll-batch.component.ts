@@ -80,10 +80,10 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy {
     this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
   }
   fetchParticipantsDetails() {
-    if (!_.isUndefined(this.batchDetails.participant)) {
+    if (!_.isUndefined(this.batchDetails.participants)) {
       const request = {
         filters: {
-          identifier: _.keys(this.batchDetails.participant)
+          identifier: this.batchDetails.participants
         }
       };
       this.courseBatchService.getUserList(request).pipe(
@@ -121,10 +121,9 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy {
       });
   }
   goBackToCoursePage() {
-    setTimeout(() => {
-      this.router.navigate(['/learn/course', this.batchDetails.courseId]);
+    this.router.navigate(['/learn/course', this.batchDetails.courseId]).then(() => {
       window.location.reload();
-    }, 2000);
+    });
   }
   setTelemetryData() {
     this.telemetryCdata = [{ 'type': 'batch', 'id': this.batchDetails.identifier}];

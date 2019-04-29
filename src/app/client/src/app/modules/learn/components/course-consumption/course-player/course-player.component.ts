@@ -146,7 +146,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           setTimeout(() => {
             this.setTelemetryStartEndData();
           }, 100);
-          if (this.enrolledBatchInfo.status && this.contentIds.length) {
+          if (_.hasIn(this.enrolledBatchInfo, 'status') && this.contentIds.length) {
             this.getContentState();
             this.subscribeToQueryParam();
           }

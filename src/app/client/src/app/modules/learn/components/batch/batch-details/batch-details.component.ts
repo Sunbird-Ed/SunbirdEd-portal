@@ -49,8 +49,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
   isUnenrollDisabled() {
     this.isUnenrollbtnDisabled = true;
-    if (this.courseProgressData && this.courseProgressData.progress) {
-      this.progress = this.courseProgressData.progress ? Math.round(this.courseProgressData.progress) : 0;
+    if (this.courseProgressData) {
+      this.progress = _.get(this.courseProgressData , 'progress') ? Math.round(this.courseProgressData.progress) : 0;
     } else {
       return;
     }
@@ -193,7 +193,9 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       });
   }
   batchUpdate(batch) {
-    this.courseBatchService.setUpdateBatchDetails(batch);
+    if (batch.enrollmentType === 'open') {
+      this.courseBatchService.setUpdateBatchDetails(batch);
+    }
     this.router.navigate(['update/batch', batch.identifier], { relativeTo: this.activatedRoute });
   }
   createBatch() {

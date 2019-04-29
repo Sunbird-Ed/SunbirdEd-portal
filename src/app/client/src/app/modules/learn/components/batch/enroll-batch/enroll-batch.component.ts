@@ -62,7 +62,6 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
             this.toasterService.error(this.resourceService.messages.fmsg.m0082);
             this.redirect();
           }
-          this.fetchParticipantsDetails();
         }, (err) => {
           this.toasterService.error(this.resourceService.messages.fmsg.m0054);
           this.redirect();
@@ -78,26 +77,6 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
   }
   redirect() {
     this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
-  }
-  fetchParticipantsDetails() {
-    if (!_.isUndefined(this.batchDetails.participant)) {
-      const request = {
-        filters: {
-          identifier: _.keys(this.batchDetails.participant)
-        }
-      };
-      this.courseBatchService.getUserList(request).pipe(
-        takeUntil(this.unsubscribe))
-        .subscribe((res) => {
-          this.batchDetails.participantDetails = res.result.response.content;
-          this.showEnrollDetails = true;
-        }, (err) => {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0056);
-          this.redirect();
-        });
-    } else {
-      this.showEnrollDetails = true;
-    }
   }
   enrollToCourse(batchId?: any) {
     this.setTelemetryData();
@@ -126,8 +105,9 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
         .subscribe(() => {
           this.disableSubmitBtn = false;
           this.toasterService.success(this.resourceService.messages.smsg.m0036);
-          this.router.navigate(['/learn/course', this.batchDetails.courseId, 'batch', this.batchDetails.identifier]);
-          window.location.reload();
+          this.router.navigate(['/learn/course', this.batchDetails.courseId, 'batch', this.batchDetails.identifier]).then(() => {
+            window.location.reload();
+          });
         }, (err) => {
           this.disableSubmitBtn = false;
           this.router.navigate(['/learn']);

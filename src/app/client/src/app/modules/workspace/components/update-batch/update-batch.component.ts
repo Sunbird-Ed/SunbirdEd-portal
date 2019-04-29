@@ -182,10 +182,10 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
   * fetch mentors and participant details
   */
   private fetchParticipantDetails() {
-    if (this.batchDetails.participant || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
+    if (this.batchDetails.participants || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
       const request = {
         filters: {
-          identifier: _.union(_.keys(this.batchDetails.participant), this.batchDetails.mentors)
+          identifier: _.union(this.batchDetails.participants, this.batchDetails.mentors)
         }
       };
       this.batchService.getUserList(request).pipe(takeUntil(this.unsubscribe))
@@ -208,8 +208,8 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
     const users = this.sortUsers(res);
     const participantList = users.participantList;
     const mentorList = users.mentorList;
-    _.forEach(this.batchDetails.participant, (value, key) => {
-      const user = _.find(participantList, ['id', key]);
+    _.forEach(this.batchDetails.participants, (value, key) => {
+      const user = _.find(participantList, ['id', value]);
       if (user) {
         this.selectedParticipants.push(user);
       }

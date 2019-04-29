@@ -170,6 +170,7 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
       name: 'User Courses',
       filters: this.filters,
       sort_by: { createdDate: this.config.appConfig.WORKSPACE.createdDate },
+      params: {fields: 'participants'}
     };
     this.pageApiService.getBatchPageData(option).pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
