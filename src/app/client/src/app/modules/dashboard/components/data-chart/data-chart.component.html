@@ -1,46 +1,40 @@
 <div *ngIf="chart">
   <canvas baseChart [datasets]="chart.datasets" [labels]="chart.labels" [options]="chart.options"
     [chartType]="chart.chartType" [colors]="chart.colors" [legend]="chart.legend"></canvas>
-  <form [formGroup]="chartFilters" *ngIf="filterDetails">
+  <form [formGroup]="chartFilters">
     <div class="ui segments">
       <div class="ui segment">
-        <div class="ui grid">
+        <div class="ui three column doubling stackable grid">
 
-          <div class="four wide column" *ngIf="chart.datasets.length>1">
-            <sui-multi-select class="selection" placeholder="Select Chart Type" [options]="chart.datasets"
-              labelField="label" formControlName="dataSet" #multiSelect>
-              <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option">
-              </sui-select-option>
-            </sui-multi-select>
-          </div>
-
-          <div class="four wide column" *ngFor="let filter of filterDetails">
-
-            <ng-container *ngIf="filter.type==='user_roles'">
-              <sui-select class="selection" placeholder="Select User Roles" formControlName="user_roles">
-                <sui-select-option *ngFor="let option of ['Student','Teacher','Undeclared']" [value]="option">
-                </sui-select-option>
-              </sui-select>
-            </ng-container>
-
-            <ng-container *ngIf="filter.type==='user_loc_district'">
-              <sui-select class="selection" placeholder="Select Region" formControlName="user_loc_district">
-                <sui-select-option *ngFor="let option of ['Delhi','Mumbai','Bengaluru']" [value]="option">
-                </sui-select-option>
-              </sui-select>
-            </ng-container>
-
-            <ng-container *ngIf="filter.type==='timeLine'">
+          <ng-container *ngIf="showTimeLine">
+            <div class="column">
               <div class="ui left icon input">
                 <i class="calendar icon"></i>
                 <input placeholder="Select timeline" suiDatepicker [pickerMode]="'date'" [pickerMinDate]="startDate"
                   [pickerMaxDate]="endDate" [pickerUseNativeOnMobile]="false" formControlName="timeLine">
               </div>
-            </ng-container>
+            </div>
+          </ng-container>
+
+          <div class="column" *ngIf="chart.datasets.length>1">
+            <sui-multi-select class="selection" placeholder="Select Chart" [options]="chart.datasets" labelField="label"
+              formControlName="dataSet" #multiSelect>
+              <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option">
+              </sui-select-option>
+            </sui-multi-select>
           </div>
 
-          <div class="four wide column">
-            <button class="ui primary button" (click)="resetFilter()">
+          <ng-container *ngIf="!showTimeLine">
+            <div class="column">
+              <sui-multi-select class="selection" [placeholder]="'Select '+ labelString" formControlName="labels">
+                <sui-select-option *ngFor="let label of chartData.labels" [value]="label">
+                </sui-select-option>
+              </sui-multi-select>
+            </div>
+          </ng-container>
+
+          <div class="column">
+            <button class="ui large primary button" (click)="resetFilter()">
               Reset Filter
             </button>
           </div>

@@ -3,8 +3,8 @@ import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/cor
 import * as _ from 'lodash-es';
 import * as moment from 'moment';
 import { FormGroup, FormControl } from '@angular/forms';
-import { combineLatest, of, iif } from 'rxjs';
-import { startWith, switchMap, tap, map, filter } from 'rxjs/operators';
+import { combineLatest, } from 'rxjs';
+import { startWith, tap } from 'rxjs/operators';
 @Component({
   selector: 'app-data-chart',
   templateUrl: './data-chart.component.html',
@@ -18,25 +18,26 @@ export class DataChartComponent implements OnInit, AfterViewInit {
   @ViewChild(BaseChartDirective) chartInfo: BaseChartDirective;
   startDate;
   endDate;
-  filterDetails = [{ type: 'timeLine' }];
+  labelString;
+  showTimeLine = false;
   constructor() { }
 
   ngOnInit() {
     this.chart = _.cloneDeep(this.chartData);
-    this.startDate = moment(this.chartData.labels[0], 'DD-MM-YYYY').toDate();
-    this.endDate = moment(this.chartData.labels[this.chartData.labels.length - 1], 'DD-MM-YYYY').toDate();
     this.chartFilters = new FormGroup({
+      labels: new FormControl(''),
       dataSet: new FormControl(''),
       timeLine: new FormControl(''),
-      context_did: new FormControl(''),
-      context_pdata_id: new FormControl(''),
-      user_type: new FormControl(''),
-      user_roles: new FormControl(''),
-      user_loc_district: new FormControl(''),
-      device_loc_district: new FormControl(''),
-      actor_type: new FormControl(''),
-      context_channel: new FormControl(''),
     });
+    this.labelString = _.get(this.chartData, 'options.scales.xAxes[0].scaleLabel.labelString') || 'labels';
+    if (_.get(this.chartData, 'chartType') === 'horizontalBar') {
+      this.labelString = _.get(this.chartData, 'options.scales.yAxes[0].scaleLabel.labelString') || 'labels';
+    }
+    if (/date/i.test(this.labelString)) {
+      this.showTimeLine = true;
+      this.startDate = moment(this.chartData.labels[0], 'DD-MM-YYYY').toDate();
+      this.endDate = moment(this.chartData.labels[this.chartData.labels.length - 1], 'DD-MM-YYYY').toDate();
+    }
   }
 
   ngAfterViewInit() {
@@ -44,10 +45,8 @@ export class DataChartComponent implements OnInit, AfterViewInit {
   }
 
   applyFilters() {
-    combineLatest(this.onUserDistrictChange(), this.onTimeLineChange(), this.onDeviceDistrictChange(),
-      this.onActorTypeChange(), this.onUserRolesChange(), this.onUserTypeChange(), this.onDataSetChange())
+    combineLatest(this.onLabelsChange(), this.onTimeLineChange(), this.onDataSetChange())
       .subscribe(value => {
-        // console.log(value);
         this.chartInfo.update();
       });
   }
@@ -80,24 +79,29 @@ export class DataChartComponent implements OnInit, AfterViewInit {
       );
   }
 
-  onUserDistrictChange = () => {
-    return this.chartFilters.get('user_loc_district').valueChanges.pipe(startWith(null));
-  }
+  onLabelsChange = () => {
+    return this.chartFilters.get('labels').valueChanges.pipe(
+      startWith(null),
+      tap(labels => {
+        if (!_.isNull(labels)) {
+          const indices = _.map(labels, label => {
+            return _.indexOf(this.chartData.labels, label);
+          });
+          const dataSets = [];
+          _.forEach(this.chartData.datasets, (dataset, i) => {
+            dataSets.push({
+              label: _.get(dataset, 'label'),
+              data: _.map(indices, index => dataset.data[index])
+            });
+          });
+          this.chart.labels = labels;
+          _.forEach(dataSets, (dataset, i) => {
+            this.chartInfo.datasets[i].data = dataSets[i].data;
+          });
+        }
+      })
+    );
 
-  onDeviceDistrictChange = () => {
-    return this.chartFilters.get('device_loc_district').valueChanges.pipe(startWith(null));
-  }
-
-  onActorTypeChange = () => {
-    return this.chartFilters.get('actor_type').valueChanges.pipe(startWith(null));
-  }
-
-  onUserRolesChange = () => {
-    return this.chartFilters.get('user_roles').valueChanges.pipe(startWith(null));
-  }
-
-  onUserTypeChange = () => {
-    return this.chartFilters.get('user_type').valueChanges.pipe(startWith(null));
   }
 
   onDataSetChange = () => {

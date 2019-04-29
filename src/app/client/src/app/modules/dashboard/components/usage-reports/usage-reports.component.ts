@@ -8,6 +8,7 @@ import { UserService } from '@sunbird/core';
 import { ToasterService, ResourceService, INoResultMessage, NavigationHelperService } from '@sunbird/shared';
 import { UUID } from 'angular2-uuid';
 import { ActivatedRoute, Router } from '@angular/router';
+import { stateDataWithUsers, CourseEnrollmentCharts } from './data';
 @Component({
   selector: 'app-usage-reports',
   templateUrl: './usage-reports.component.html',
@@ -21,6 +22,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   currentReport: any;
   slug: string;
   noResult: boolean;
+  showLoader = false;
   noResultMessage: INoResultMessage;
   private activatedRoute: ActivatedRoute;
   telemetryImpression: IImpressionEventInput;
@@ -71,13 +73,17 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
     };
   }
   renderReport(report: any) {
+    this.chartData = [];
+    this.tables = [];
     this.currentReport = report;
     this.isTableDataLoaded = false;
     const url = report.dataSource;
+    this.showLoader = true;
     this.downloadUrl = report.downloadUrl;
     this.usageService.getData(url).subscribe((response) => {
       if (_.get(response, 'responseCode') === 'OK') {
         const data = _.get(response, 'result');
+        this.showLoader = false;
         if (_.get(report, 'charts')) { this.createChartData(_.get(report, 'charts'), data); }
         if (_.get(report, 'table')) { this.renderTable(_.get(report, 'table'), data); }
       } else {
@@ -104,6 +110,9 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
       });
       this.chartData.push(chartObj);
     });
+    this.chartData.push(stateDataWithUsers);
+    this.chartData = [...this.chartData, ...CourseEnrollmentCharts];
+
   }
 
   renderTable(tables, data) {
