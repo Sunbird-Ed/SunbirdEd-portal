@@ -139,7 +139,7 @@ function runApp() {
                 try {
                   if(!cdnFileLoaded){
                     var now = new Date();
-                    now.setMinutes(now.getMinutes() + 1);
+                    now.setMinutes(now.getMinutes() + 5);
                     document.cookie = "cdnFailed=true;expires=" + now.toUTCString() + ";"
                     window.location.href = window.location.href
                   }
