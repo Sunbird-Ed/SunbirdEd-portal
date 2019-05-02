@@ -49,9 +49,22 @@
 		</a>
 	</ng-container>
 	<!--/Not Logged in user-->
+	<!-- offline container-->
+	<ng-container *ngIf="isOffline">
+		<a class="item" [routerLink]="'/'" appTelemetryInteract [telemetryInteractEdata]="myLibraryMenuInteractEdata">
+			{{resourceService.frmelmnts?.btn?.myLibrary}}
+		</a>
+		<a class="item" [routerLink]="'/'">
+			{{resourceService.frmelmnts?.btn?.browse}}
+		</a>
+		<a class="item" [routerLink]="'/'">
+			{{resourceService.frmelmnts?.btn?.settings}}
+		</a>
+	</ng-container>
+	<!-- offline container-->
 
 </div>
-<!--/Computer-->
+<!--Computer-->
 
 <!--Mobile-->
 <div class="mobile only">
@@ -116,14 +129,6 @@
 		</ng-container>
 		<!--/Not Logged in user-->
 
-		<!-- offline container-->
-		<ng-container *ngIf="isOffline">
-			<a class="item" [routerLink]="'/'" appTelemetryInteract
-				[telemetryInteractEdata]="myLibraryMenuInteractEdata">
-				{{resourceService.frmelmnts?.btn?.myLibrary}}
-			</a>
-		</ng-container>
-		<!-- offline container-->
 
 	</div>
 </div>

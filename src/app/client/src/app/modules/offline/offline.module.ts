@@ -1,11 +1,12 @@
+import { SuiModalModule } from 'ng2-semantic-ui';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { OfflineRoutingModule } from './offline-routing.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { ContentImportComponent } from './components/content-import/content-import.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ContentImportComponent, ContentImportHeaderComponent } from './components';
 
 @NgModule({
   imports: [
@@ -13,9 +14,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CommonModule,
     CoreModule,
     SharedModule,
-    OfflineRoutingModule
+    OfflineRoutingModule,
+    SuiModalModule
   ],
   providers: [DeviceDetectorService],
-  declarations: []
+  declarations: [
+    ContentImportComponent, ContentImportHeaderComponent
+  ],
+  entryComponents: [
+    ContentImportHeaderComponent
+  ]
 })
 export class OfflineModule { }

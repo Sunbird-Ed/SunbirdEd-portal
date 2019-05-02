@@ -1,3 +1,4 @@
+import { OfflineFileUploaderService } from './../../services/offline-file-uploader.service';
 import { Component, OnInit, AfterViewInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import { FineUploader, UIOptions } from 'fine-uploader';
 import { UUID } from 'angular2-uuid';
@@ -55,14 +56,15 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
 
   @ViewChild('modal') modal;
   @Output() closeImportModal = new EventEmitter<any>();
-
+  isUpload: EventEmitter<any> = new EventEmitter();
 
   constructor(
     config: ConfigService,
     tosterService: ToasterService,
     public resourceService: ResourceService,
     public activatedRoute: ActivatedRoute,
-    public router: Router
+    public router: Router,
+    public offlineFileUploaderService: OfflineFileUploaderService
 
   ) {
     // this.progress = 0;
@@ -74,7 +76,7 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
     const options = {
       containerName: 'attachments/announcement',
     };
-    this.initilizeFileUploader(options);
+    this.offlineFileUploaderService.initilizeFileUploader(options);
   }
 
   ngAfterViewInit() {
@@ -91,30 +93,30 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
    *
    * Default config contains http params - url and headers and allowed file extension(s) and size
    */
-  getDefaultOption(): any {
-    return {
-      request: {
-        // endpoint: this.config.urlConFig.URLS.LEARNER_PREFIX + this.config.urlConFig.URLS.CONTENT.UPLOAD_MEDIA,ent/v1/import
-        endpoint: 'api/content/v1/import',
-        folders: true,
-        inputName: 'file',
-        customHeaders: {
-          'Accept': 'application/json',
-          'X-msgid': UUID.UUID(),
-          'ts': moment().format(),
-        }
-      },
-      failedUploadTextDisplay: {
-        mode: 'default',
-        responseProperty: 'error'
-      },
-      fileValidation: {
-        itemLimit: 100,
-        allowedExtensions: ['ecar'],
-        stopOnFirstInvalidFile: false,
-      }
-    };
-  }
+  // getDefaultOption(): any {
+  //   return {
+  //     request: {
+  //       // endpoint: this.config.urlConFig.URLS.LEARNER_PREFIX + this.config.urlConFig.URLS.CONTENT.UPLOAD_MEDIA,ent/v1/import
+  //       endpoint: 'api/content/v1/import',
+  //       folders: true,
+  //       inputName: 'file',
+  //       customHeaders: {
+  //         'Accept': 'application/json',
+  //         'X-msgid': UUID.UUID(),
+  //         'ts': moment().format(),
+  //       }
+  //     },
+  //     failedUploadTextDisplay: {
+  //       mode: 'default',
+  //       responseProperty: 'error'
+  //     },
+  //     fileValidation: {
+  //       itemLimit: 100,
+  //       allowedExtensions: ['ecar'],
+  //       stopOnFirstInvalidFile: false,
+  //     }
+  //   };
+  // }
 
   removeFirstChild() {
     const dropArea = document.getElementsByClassName('qq-uploader-selector');
@@ -130,56 +132,58 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
    *
    * @param {object} componentConfig contains component specific config to override default one
    */
-  initilizeFileUploader(componentConfig: object) {
-    const self = this;
-    // Merge component and default option(s)
-    const options = _.merge({}, this.getDefaultOption(), componentConfig);
-    this.uiOptions = {
-      element: document.getElementById('qq-template-manual-trigger'),
-      template: 'qq-template-manual-trigger',
-      autoUpload: true,
-      request: options.request,
-      warnBeforeUnload: true,
-      callbacks: {
-        onComplete: (id, name, responseJSON, xhr) => {
-          if (responseJSON.responseCode === 'OK') {
+  // initilizeFileUploader(componentConfig: object) {
+  //   const self = this;
+  //   // Merge component and default option(s)
+  //   const options = _.merge({}, this.getDefaultOption(), componentConfig);
+  //   this.uiOptions = {
+  //     element: document.getElementById('qq-template-manual-trigger'),
+  //     template: 'qq-template-manual-trigger',
+  //     autoUpload: true,
+  //     request: options.request,
+  //     warnBeforeUnload: true,
+  //     callbacks: {
+  //       onComplete: (id, name, responseJSON, xhr) => {
+  //         if (responseJSON.responseCode === 'OK') {
 
-          }
-        },
-        onProgress: () => {
-          this.processingFiles = true;
-        },
-        onCancel: () => {
-          this.processingFiles = false;
+  //         }
+  //       },
+  //       onProgress: () => {
+  //         this.processingFiles = true;
+  //       },
+  //       onCancel: () => {
+  //         this.processingFiles = false;
 
-        },
-        onAllComplete: (id, name) => {
-          this.processingFiles = false;
-          const uploadingFailed = document.getElementsByClassName('qq-upload-fail');
-          const totalFiles = document.getElementsByClassName('qq-upload-list-selector');
-          const successFullyUploaded = document.getElementsByClassName('qq-upload-success');
-          if (uploadingFailed.length) {
-            this.tosterService.error(
-              `Content Import Failed: ${uploadingFailed.length} `
-            );
-          } else if (successFullyUploaded.length && uploadingFailed.length) {
-            this.tosterService.warning(
-              `Content Imported Scuessfully: ${successFullyUploaded.length} , Content Import Failed: ${uploadingFailed.length}`
-            );
-          } else if (successFullyUploaded.length) {
-            this.tosterService.success(
-              `Content Imported Scuessfully : ${successFullyUploaded.length}`
-            );
-          }
-        },
-      },
-    };
-    this.getWindowObject.cancelUploadFile = () => {
-      document.getElementById('hide-section-with-button').style.display = 'block';
-    };
+  //       },
+  //       onAllComplete: (id, name) => {
+  //         this.processingFiles = false;
+  //         const uploadingFailed = document.getElementsByClassName('qq-upload-fail');
+  //         const totalFiles = document.getElementsByClassName('qq-upload-list-selector');
+  //         const successFullyUploaded = document.getElementsByClassName('qq-upload-success');
+  //         if (uploadingFailed.length) {
+  //           this.tosterService.error(
+  //             `Content Import Failed: ${uploadingFailed.length} `
+  //           );
+  //         } else if (successFullyUploaded.length && uploadingFailed.length) {
+  //           this.tosterService.warning(
+  //             `Content Imported successfully
+  //             : ${successFullyUploaded.length} , Content Import Failed: ${uploadingFailed.length}`
+  //           );
+  //         } else if (successFullyUploaded.length) {
+  //           this.tosterService.success(
+  //             `Content Imported Scuessfully : ${successFullyUploaded.length}`
+  //           );
+  //           this.isUpload.emit('true');
+  //         }
+  //       },
+  //     },
+  //   };
+  //   this.getWindowObject.cancelUploadFile = () => {
+  //     document.getElementById('hide-section-with-button').style.display = 'block';
+  //   };
 
-    this.uploader = new FineUploader(this.uiOptions);
-  }
+  //   this.uploader = new FineUploader(this.uiOptions);
+  // }
 
   modalClose() {
     const progressUploads = document.getElementsByClassName('qq-in-progress');
@@ -187,13 +191,13 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
       const isProgress = confirm('Contents are being uploaded');
       if (isProgress) {
         this.modal.deny();
-        this.router.navigate(['/']);
+        this.router.navigateByUrl('/');
         return false;
       }
       return false;
     }
     this.modal.deny();
-    this.router.navigate(['/']);
+    this.router.navigateByUrl('/');
 
   }
   closeModal() {

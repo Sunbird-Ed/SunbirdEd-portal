@@ -1,9 +1,9 @@
 <div *ngIf="showQrmodal">
   <app-qr-code-modal (closeQrModal)="showQrmodal = false"></app-qr-code-modal>
 </div>
-<div *ngIf="showImportModal">
+<!-- <div *ngIf="showImportModal">
   <app-content-import (closeImportModal)="showImportModal = false"></app-content-import>
-</div>
+</div> -->
 <div class="ui fixed main menu bs-0 d-block" appStickyHeader>
 
   <!--Header White Section-->
@@ -113,14 +113,10 @@
       <!--/Search Box-->
 
       <!--Language Dropdown-->
-      <app-language-dropdown [languageRange]='languages' class="computer only"
+      <app-language-dropdown [languageRange]='languages' class="computer only ml-auto"
         *ngIf="languages && !router.isActive('workspace', false)">
       </app-language-dropdown>
       <!--/Language Dropdown-->
-      <button class="ui button qr-code-btn d-flex flex computer only mr-0" [routerLink]="['/import/content']"
-        *ngIf="isOffline">
-        {{resourceService.frmelmnts?.lbl?.importContent}}
-      </button>
     </div>
   </div>
   <!--/Computer-->
@@ -144,14 +140,11 @@
         *ngIf="languages && !router.isActive('workspace', false)">
       </app-language-dropdown>
       <!--/Language Dropdown-->
-      <button class="ui button qr-code-btn d-flex flex computer only mr-0" (click)="showImportModal = true;"
-        *ngIf="isOffline">
-        {{resourceService.frmelmnts?.lbl?.contentImport}}
-      </button>
-
     </div>
   </div>
   <!--/Mobile-->
 
   <!--/Header Blue Section-->
 </div>
+<extension-point
+  [name]="'content-import'"></extension-point>
