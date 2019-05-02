@@ -87,6 +87,7 @@
     "cassandra-session-store": "1.0.6",
     "codacy-coverage": "3.0.0",
     "compression": "1.7.2",
+    "cookie-parser": "^1.4.4",
     "dateformat": "^2.0.0",
     "ejs": "^2.5.6",
     "express": "^4.15.3",
