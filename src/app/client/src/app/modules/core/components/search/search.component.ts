@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { UserService } from './../../services';
 import { ResourceService, ConfigService, IUserProfile } from '@sunbird/shared';
 import { Subscription } from 'rxjs';
-
+import * as _ from 'lodash-es';
 /**
  * Main menu component
  */
@@ -191,5 +191,20 @@ export class SearchComponent implements OnInit {
     }
     this.setSearchPlaceHolderValue();
     this.showInput = true;
+  }
+
+
+  getInteractEdata(key) {
+    const searchInteractEdata = {
+      id: `search-${_.lowerCase(this.searchPlaceHolderValue)}-button`,
+      type: 'click',
+      pageid: this.route.url.split('/')[1]
+    };
+    if (key) {
+      searchInteractEdata['extra'] = {
+        query: key
+      };
+    }
+    return searchInteractEdata;
   }
 }
