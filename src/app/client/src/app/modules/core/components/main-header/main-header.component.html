@@ -102,7 +102,7 @@
           <!-- <i class="close icon"></i> [(ngModel)]="key"
             <div class="sb-loader"></div> -->
         </div>
-        <button class="sb-btn sb-btn-normal" (click)="onEnter(queryParam.key)"
+        <button appTelemetryInteract [telemetryInteractEdata]="getSearchButtonInteractEdata(queryParam.key)" class="sb-btn sb-btn-normal" (click)="onEnter(queryParam.key)"
           title="{{resourceService?.frmelmnts?.prmpt?.search}}" tabindex="0">Search</button>
       </div>
       <!--/Explore Pages-->
