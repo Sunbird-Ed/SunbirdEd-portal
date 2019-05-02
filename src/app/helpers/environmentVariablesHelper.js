@@ -70,7 +70,8 @@ let envVariables = {
   sunbird_portal_health_check_enabled: env.sunbird_health_check_enable || 'true',
   sunbird_learner_service_health_status: 'true',
   sunbird_content_service_health_status: 'true',
-  sunbird_portal_cassandra_db_health_status: 'true'
+  sunbird_portal_cassandra_db_health_status: 'true',
+  sunbird_portal_player_cdn_url: env.sunbird_portal_player_cdn_url
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
