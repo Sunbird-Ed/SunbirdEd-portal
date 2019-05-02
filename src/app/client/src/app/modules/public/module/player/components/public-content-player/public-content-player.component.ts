@@ -15,8 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-public-content-player',
-  templateUrl: './public-content-player.component.html',
-  styleUrls: ['./public-content-player.component.scss']
+  templateUrl: './public-content-player.component.html'
 })
 export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
