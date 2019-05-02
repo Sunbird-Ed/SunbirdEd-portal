@@ -4,6 +4,8 @@ const envHelper = require('./environmentVariablesHelper.js')
 const request = require('request-promise'); //  'request' npm package with Promise support
 const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
+const KafkaService = require('../helpers/kafkaHelperService');
+const uniqid = require('uniqid');
 
 let keycloak = getKeyCloakClient({
   clientId: envHelper.PORTAL_TRAMPOLINE_CLIENT_ID,
@@ -138,4 +140,50 @@ const handleGetUserByIdError = (error) => {
   }
   throw error.error || error.message || error;
 }
-module.exports = { keycloak, verifySignature, verifyToken, fetchUserWithExternalId, createUser, createSession, updatePhone, updateRoles };
+
+  // creating payload for kafka service
+const getDetails = (sessionDetails) => {
+  var jwtPayload = sessionDetails.jwtPayload;
+  var userDetails = sessionDetails.userDetails;
+  return {
+    'identifier': uniqid(),
+    'ets': (new Date).getTime(),
+    'operationType': 'UPDATE',
+    'eventType': 'transactional',
+    'objectType': 'user',
+    'event': {
+      'userExternalId': jwtPayload.sub || '',
+      'nameFromPayload': jwtPayload.name || '',
+      'channel': jwtPayload.state_id || '',
+      'orgExternalId': jwtPayload.school_id || '',
+      'roles': jwtPayload.roles || [],
+      'userId': userDetails.id || '',
+      'organisations': userDetails.organisations || [],
+      'firstName': userDetails.firstName
+    }
+  }
+};
+
+const ssoLogin = async (req) => {
+  var details = getDetails(req.session);
+  var kafkaTopic = envHelper.KAFKA_TOPIC;
+  KafkaService.sendRecord(details, kafkaTopic, function (err, res) {
+    if (err) {
+      console.log(err, null)
+    } else {
+      console.log(null, "Message successfully send to kafka service")
+    }
+  });
+};
+
+module.exports = {
+  keycloak,
+  verifySignature,
+  verifyToken,
+  fetchUserWithExternalId,
+  createUser,
+  createSession,
+  updatePhone,
+  updateRoles,
+  ssoLogin
+};
