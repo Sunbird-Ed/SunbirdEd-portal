@@ -1,1 +1,1 @@
-cdnFileLoaded = true
+var cdnFileLoaded = true
