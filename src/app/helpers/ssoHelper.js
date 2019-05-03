@@ -39,7 +39,7 @@ const verifyToken = (token) => {
     throw new Error('TOKEN_EXPIRED');
   } else if (!token.sub) {
     throw new Error('USER_ID_NOT_PRESENT');
-  } 
+  }
   return true;
 }
 const fetchUserWithExternalId = async (payload, req) => { // will be called from player docker to learner docker
@@ -166,11 +166,9 @@ const getKafkaPayloadData = (sessionDetails) => {
 const sendStateSsoKafkaMessage = async (req) => {
   var kafkaPayloadData = getKafkaPayloadData(req.session);
   var stateSsoTopic = envHelper.sunbird_state_sso_topic;
-  KafkaService.sendRecord(kafkaPayloadData, stateSsoTopic, function (err, res) {
+  KafkaService.sendMessage(kafkaPayloadData, stateSsoTopic, function (err, res) {
     if (err) {
       console.log(err, null)
-    } else {
-      console.log(null, "Message successfully send to kafka service")
     }
   });
 };
