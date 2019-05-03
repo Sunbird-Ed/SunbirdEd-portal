@@ -1,4 +1,4 @@
-<div class="data-driven-filter mt-15" *ngIf="showFilters">
+<div class="data-driven-filter  sb-explore-filter-container" *ngIf="showFilters">
       <sui-accordion [closeOthers]="false">
         <sui-accordion-panel [isOpen]="accordionDefaultOpen" [isDisabled]="true">
           <div *ngIf="isShowFilterLabel" title class="cursor-text filter-title">
@@ -38,7 +38,7 @@
                 <div class="twelve wide tablet ten wide computer column mobile-p-0">
                     <div class="ui grid">
                         <div *ngFor="let field of filtersDetails" class="six wide mobile three wide tablet three wide computer column">
-                          <div *ngIf="(field.inputType==='select' || field.inputType === 'multi-select') && field.code !== 'channel'" class="field large">
+                          <div *ngIf="(field.inputType==='select' || field.inputType === 'multi-select') && field.code !== 'channel'" class="field large ajlksdfjld">
                             <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
                               defaultSelectionText={{field.label}} zeroSelectionText= {{resourceService.frmelmnts.lbl.Select}} class="selection filterFieldSearch"
                               [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" #multiSelect>

@@ -40,9 +40,9 @@
                             <app-public-batch-details  [courseId]="courseId"
                                 [courseHierarchy]="courseHierarchy"></app-public-batch-details>
                             <br>
-                            <div class="rightSideSectionCards ui card" *ngIf="curriculum && curriculum.length > 0">
+                            <div class="rightSideSectionCards ui card sb-course-batch-card" *ngIf="curriculum && curriculum.length > 0">
+                                    <div class="header p-16">{{resourceService?.frmelmnts?.lbl?.curriculum}}</div>
                                 <div class="content">
-                                    <div class="header">{{resourceService?.frmelmnts?.lbl?.curriculum}}</div>
                                     <div class="description">
                                         <div class="ui list">
                                             <div class="item" *ngFor="let data of curriculum">
@@ -101,8 +101,8 @@
                                     <a href="mailto:{{courseHierarchy.orgDetails?.email}}?subject={{courseHierarchy.name}}">{{courseHierarchy.orgDetails?.email}}</a>
                                 </p>
                                 <div class="ui divider"></div>
-                                <p class="mb-5">{{resourceService.frmelmnts.lbl.coursecreatedon}}: {{courseHierarchy.createdOn | dateFormat}}</p>
-                                <p class="mb-5">{{resourceService.frmelmnts.lbl.updatedon}}: {{courseHierarchy.lastUpdatedOn | dateFormat}}</p>
+                                <p class="mb-5"><span>{{resourceService.frmelmnts.lbl.coursecreatedon}}</span>: {{courseHierarchy.createdOn | dateFormat}}</p>
+                                <p class="mb-5"><span>{{resourceService.frmelmnts.lbl.updatedon}}</span>: {{courseHierarchy.lastUpdatedOn | dateFormat}}</p>
                             </div>
                         </div>
                     </div>
