@@ -18,17 +18,17 @@ export class PlayerComponent implements OnInit, OnChanges {
   buildNumber: string;
   @Input() playerOption: any ;
   contentRatingModal = false;
+  playerCdnUrl: string;
   /**
  * Dom element reference of contentRatingModal
  */
   @ViewChild('modal') modal;
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
     public resourceService: ResourceService) {
-    try {
-      this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')).value;
-    } catch (error) {
-      this.buildNumber = '1.0';
-    }
+    this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
+        ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
+    this.playerCdnUrl = (<HTMLInputElement>document.getElementById('PlayerCdnUrl'))
+        ? (<HTMLInputElement>document.getElementById('PlayerCdnUrl')).value : undefined;
   }
   /**
    * showPlayer method will be called
@@ -45,20 +45,30 @@ export class PlayerComponent implements OnInit, OnChanges {
    * Initializes player with given config and emits player telemetry events
    * Emits event when content starts playing and end event when content was played/read completely
    */
-  showPlayer() {
-    const src = environment.isOffline ? this.configService.appConfig.PLAYER_CONFIG.localBaseUrl :
-      this.configService.appConfig.PLAYER_CONFIG.baseURL;
+  showPlayer(loadCdn = true) {
+    let src;
+    if (environment.isOffline) {
+      src = this.configService.appConfig.PLAYER_CONFIG.localBaseUrl;
+    } else {
+      src = this.playerCdnUrl && loadCdn ? this.playerCdnUrl : this.configService.appConfig.PLAYER_CONFIG.baseURL;
+    }
     const iFrameSrc = src + '&build_number=' + this.buildNumber;
     setTimeout(() => {
-      this.contentIframe.nativeElement.src = iFrameSrc;
-      this.contentIframe.nativeElement.onload = () => {
-        this.adjustPlayerHeight();
-        this.contentIframe.nativeElement.contentWindow.initializePreview(this.playerConfig);
+      const playerElement = this.contentIframe.nativeElement;
+      playerElement.src = iFrameSrc;
+      playerElement.onload = (event) => {
+        if (!_.get(playerElement, 'contentWindow.initializePreview') && loadCdn) {
+          console.log('cdn player load failed, loading local player');
+          this.showPlayer(false);
+        } else if (_.get(playerElement, 'contentWindow.initializePreview')) {
+          this.adjustPlayerHeight();
+          playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+          playerElement.contentWindow.initializePreview(this.playerConfig);
+        } else {
+          console.log('loading player failed');
+        }
       };
     }, 0);
-    this.contentIframe.nativeElement.addEventListener('renderer:telemetry:event', (event: any) => {
-      this.generateContentReadEvent(event);
-    });
   }
   /**
    * Adjust player height after load
