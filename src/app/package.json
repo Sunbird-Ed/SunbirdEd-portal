@@ -116,7 +116,6 @@
     "sb_cache_manager": "file:libs/sb_cache_manager",
     "sb_telemetry_util": "file:libs/sb_telemetry_util",
     "ua-parser-js": "^0.7.13",
-    "uniqid": "^5.0.3",
     "uuid": "^3.1.0",
     "webpack-bundle-analyzer": "^3.1.0"
   },

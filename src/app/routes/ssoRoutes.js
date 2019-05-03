@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const jwt = require('jsonwebtoken')
-const {verifySignature, verifyToken, fetchUserWithExternalId, createUser, createSession, updatePhone, updateRoles, ssoLogin} = require('./../helpers/ssoHelper');
+const {verifySignature, verifyToken, fetchUserWithExternalId, createUser, createSession, updatePhone, updateRoles, sendStateSsoKafkaMessage} = require('./../helpers/ssoHelper');
 const telemetryHelper = require('../helpers/telemetryHelper');
 const fs = require('fs');
 
@@ -109,7 +109,7 @@ module.exports = (app) => {
   })
 
   app.get(successUrl, async (req, res) => { // to support mobile sso flow
-    await ssoLogin(req);
+    sendStateSsoKafkaMessage(req);
     res.status(200).sendFile('./success_loader.html', {root: __dirname})
   });
 

@@ -3,7 +3,7 @@ const _ = require('lodash');
 const envHelper = require('./environmentVariablesHelper');
 
 const client = new kafka.KafkaClient({
-  kafkaHost: envHelper.KAFKA_HOST,
+  kafkaHost: envHelper.sunbird_kafka_host,
   maxAsyncRequests: 100
 });
 

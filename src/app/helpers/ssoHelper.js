@@ -5,7 +5,6 @@ const request = require('request-promise'); //  'request' npm package with Promi
 const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
 const KafkaService = require('../helpers/kafkaHelperService');
-const uniqid = require('uniqid');
 
 let keycloak = getKeyCloakClient({
   clientId: envHelper.PORTAL_TRAMPOLINE_CLIENT_ID,
@@ -142,11 +141,11 @@ const handleGetUserByIdError = (error) => {
 }
 
   // creating payload for kafka service
-const getDetails = (sessionDetails) => {
+const getKafkaPayloadData = (sessionDetails) => {
   var jwtPayload = sessionDetails.jwtPayload;
   var userDetails = sessionDetails.userDetails;
   return {
-    'identifier': uniqid(),
+    'identifier': uuid(),
     'ets': (new Date).getTime(),
     'operationType': 'UPDATE',
     'eventType': 'transactional',
@@ -164,10 +163,10 @@ const getDetails = (sessionDetails) => {
   }
 };
 
-const ssoLogin = async (req) => {
-  var details = getDetails(req.session);
-  var kafkaTopic = envHelper.KAFKA_TOPIC;
-  KafkaService.sendRecord(details, kafkaTopic, function (err, res) {
+const sendStateSsoKafkaMessage = async (req) => {
+  var kafkaPayloadData = getKafkaPayloadData(req.session);
+  var stateSsoTopic = envHelper.sunbird_state_sso_topic;
+  KafkaService.sendRecord(kafkaPayloadData, stateSsoTopic, function (err, res) {
     if (err) {
       console.log(err, null)
     } else {
@@ -185,5 +184,5 @@ module.exports = {
   createSession,
   updatePhone,
   updateRoles,
-  ssoLogin
+  sendStateSsoKafkaMessage
 };
