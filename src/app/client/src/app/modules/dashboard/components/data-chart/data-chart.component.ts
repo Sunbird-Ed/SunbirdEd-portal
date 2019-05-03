@@ -23,7 +23,7 @@ export class DataChartComponent implements OnInit, AfterViewInit {
   selectedTime;
   timeLineRangeoptions = [{ label: 'Last Seven Days', value: 7 }, { label: 'Last 15 Days', value: 15 },
   { label: 'Last 30 Days', value: 30 }];
-  timeLineRange = 7;
+  timeLineRange;
   constructor() { }
 
   ngOnInit() {
@@ -62,6 +62,9 @@ export class DataChartComponent implements OnInit, AfterViewInit {
         startWith(null),
         tap((time) => {
           if (!_.isNull(time)) {
+            if (!this.timeLineRange) {
+              this.chartFilters.get('timeLineRange').setValue(this.timeLineRangeoptions[0].value);
+            }
             this.selectedTime = time;
             const newDate = moment(time, 'YYYY-MM-DD').format('DD-MM-YYYY');
             const endIndex = _.findIndex(this.chartData.labels, (date) => date === newDate) + 1;
@@ -144,6 +147,7 @@ export class DataChartComponent implements OnInit, AfterViewInit {
 
   resetFilter() {
     this.selectedTime = null;
+    this.timeLineRange = null;
     this.chartFilters.reset();
     this.chart.labels = this.chartData.labels;
     _.forEach(this.chartData.datasets, (dataset, i) => {
