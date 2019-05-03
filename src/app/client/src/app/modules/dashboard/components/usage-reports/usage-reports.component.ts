@@ -8,7 +8,6 @@ import { UserService } from '@sunbird/core';
 import { ToasterService, ResourceService, INoResultMessage, NavigationHelperService } from '@sunbird/shared';
 import { UUID } from 'angular2-uuid';
 import { ActivatedRoute, Router } from '@angular/router';
-import { stateDataWithUsers, CourseEnrollmentCharts } from './data';
 @Component({
   selector: 'app-usage-reports',
   templateUrl: './usage-reports.component.html',
@@ -110,9 +109,6 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
       });
       this.chartData.push(chartObj);
     });
-    this.chartData.push(stateDataWithUsers);
-    this.chartData = [...this.chartData, ...CourseEnrollmentCharts];
-
   }
 
   renderTable(tables, data) {

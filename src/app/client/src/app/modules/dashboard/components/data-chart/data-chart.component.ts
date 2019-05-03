@@ -20,11 +20,16 @@ export class DataChartComponent implements OnInit, AfterViewInit {
   endDate;
   labelString;
   showTimeLine = false;
+  selectedTime;
+  timeLineRangeoptions = [{ label: 'Last Seven Days', value: 7 }, { label: 'Last 15 Days', value: 15 },
+  { label: 'Last 30 Days', value: 30 }];
+  timeLineRange = 7;
   constructor() { }
 
   ngOnInit() {
     this.chart = _.cloneDeep(this.chartData);
     this.chartFilters = new FormGroup({
+      timeLineRange: new FormControl(''),
       labels: new FormControl(''),
       dataSet: new FormControl(''),
       timeLine: new FormControl(''),
@@ -45,7 +50,7 @@ export class DataChartComponent implements OnInit, AfterViewInit {
   }
 
   applyFilters() {
-    combineLatest(this.onLabelsChange(), this.onTimeLineChange(), this.onDataSetChange())
+    combineLatest(this.onLabelsChange(), this.onTimeLineChange(), this.onDataSetChange(), this.onTimeLineRangeChange())
       .subscribe(value => {
         this.chartInfo.update();
       });
@@ -57,11 +62,10 @@ export class DataChartComponent implements OnInit, AfterViewInit {
         startWith(null),
         tap((time) => {
           if (!_.isNull(time)) {
-            let endIndex = this.chartData.labels.length;
-            let startIndex = 0;
+            this.selectedTime = time;
             const newDate = moment(time, 'YYYY-MM-DD').format('DD-MM-YYYY');
-            endIndex = _.findIndex(this.chartData.labels, (date) => date === newDate) + 1;
-            startIndex = (endIndex - 30 < 0) ? 0 : endIndex - 30;
+            const endIndex = _.findIndex(this.chartData.labels, (date) => date === newDate) + 1;
+            const startIndex = (endIndex - this.timeLineRange < 0) ? 0 : endIndex - this.timeLineRange;
             const labels = _.slice(this.chartData.labels, startIndex, endIndex);
             const dataSets = [];
             _.forEach(this.chartData.datasets, (dataset, i) => {
@@ -101,7 +105,6 @@ export class DataChartComponent implements OnInit, AfterViewInit {
         }
       })
     );
-
   }
 
   onDataSetChange = () => {
@@ -122,7 +125,25 @@ export class DataChartComponent implements OnInit, AfterViewInit {
       );
   }
 
+  onTimeLineRangeChange = () => {
+    return this.chartFilters.get('timeLineRange').valueChanges
+      .pipe(
+        startWith(null),
+        tap(range => {
+          if (!_.isNull(range)) {
+            this.timeLineRange = range;
+            if (this.selectedTime) {
+              this.chartFilters.get('timeLine').setValue(this.selectedTime);
+            } else {
+              this.chartFilters.get('timeLine').setValue(this.endDate);
+            }
+          }
+        })
+      );
+  }
+
   resetFilter() {
+    this.selectedTime = null;
     this.chartFilters.reset();
     this.chart.labels = this.chartData.labels;
     _.forEach(this.chartData.datasets, (dataset, i) => {
