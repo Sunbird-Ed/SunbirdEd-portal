@@ -101,6 +101,7 @@
   .dial-section-column {
     border-right:1px solid rgba(51, 51, 51,0.1);
     flex:50%;
+    padding-left: 0;
     h1 {
       color: $gray-800;	font-size: $font-size-md;	
     }

@@ -6,20 +6,18 @@
         <div [appTelemetryImpression]="telemetryImpression" class="twelve wide column">
           <div id="app-player-collection-renderer" *ngIf="showPlayer" class="row">
             <div class="twelve wide column">
-              <div class="ui grid">
-                <div class="twelve wide column">
-                  <h1 class="ui header small HomeAccordianHeading m-responsive-cp left floated header">{{contentTitle}}</h1>
-                  <h5 class="ui right floated basic icon circular button mouse-pointer" (click)="closeContentPlayer()" appTelemetryInteract [telemetryInteractCdata]="this.telemetryCdata" [telemetryInteractObject]="playerTelemetryInteractObject" [telemetryInteractEdata]="closePlayerInteractEdata">
-                    <i class="ui remove icon"></i>
-                  </h5>
+                <div class="sb-pageSection">
+                    <div  class="sb-pageSection-header">
+                        <h4 class="sb-pageSection-title m-0 mr-5"> {{contentTitle}}</h4>
+                        <button class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button"  (click)="closeContentPlayer()" appTelemetryInteract [telemetryInteractCdata]="this.telemetryCdata" [telemetryInteractObject]="playerTelemetryInteractObject" [telemetryInteractEdata]="closePlayerInteractEdata">Close <i class="close icon"></i></button>
+                    </div>
                 </div>
-              </div>
               <div class="ui grid">
                 <div class="twelve wide column">
                   <app-player class="content-player"  [playerOption] ="playerOption" [playerConfig]="playerConfig | async"></app-player>
                 </div>
               </div>
-              <div class="ui row pt-0">
+              <div class="ui row pt-0 my-20">
                 <div class="ui twelve column grid pr-0">
                   <div class="one wide tablet only one wide computer only column"></div>
                   <div class="six wide mobile only three wide tablet only three wide computer only column">
