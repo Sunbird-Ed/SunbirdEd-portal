@@ -93,11 +93,18 @@
 }
 
 //qr code result label
-.sb-reult-label{
-    background: $orange;
-    padding: 0px ($base-block-space);
+.sb-result-label,.sb-pageSection-count{
+    background: $tertiary-color;
+    padding: ($base-block-space/2) ($base-block-space);
     border-radius: ($base-block-space / 2);
-    height: ($base-block-space * 4);
-    font-size:$font-size-base;
-    line-height: ($base-block-space * 4);
+    font-size:($font-size-base + 2);
+    border: none;
+    height: auto;
+}
+.sb-section-title {
+    font-size: $font-size-md;
+    font-weight: 600;
+    line-height: ($base-block-space * 3);
+    color: $gray-800;
+    margin-bottom: 0px;
 }
