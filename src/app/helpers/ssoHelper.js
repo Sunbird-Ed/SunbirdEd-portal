@@ -4,7 +4,7 @@ const envHelper = require('./environmentVariablesHelper.js')
 const request = require('request-promise'); //  'request' npm package with Promise support
 const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
-const KafkaService = require('../helpers/kafkaHelperService');
+const kafkaService = require('../helpers/kafkaHelperService');
 
 let keycloak = getKeyCloakClient({
   clientId: envHelper.PORTAL_TRAMPOLINE_CLIENT_ID,
@@ -166,7 +166,7 @@ const getKafkaPayloadData = (sessionDetails) => {
 const sendStateSsoKafkaMessage = async (req) => {
   var kafkaPayloadData = getKafkaPayloadData(req.session);
   var stateSsoTopic = envHelper.sunbird_state_sso_topic;
-  KafkaService.sendMessage(kafkaPayloadData, stateSsoTopic, function (err, res) {
+  kafkaService.sendMessage(kafkaPayloadData, stateSsoTopic, function (err, res) {
     if (err) {
       console.log(err, null)
     }

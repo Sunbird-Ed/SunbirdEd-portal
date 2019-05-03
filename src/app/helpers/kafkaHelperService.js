@@ -20,17 +20,17 @@ function init() {
   });
 }
 
-if (envHelper.sunbird_kafka_host && envHelper.sunbird_state_sso_topic) {
+if (envHelper.sunbird_kafka_host) {
   init();
 }
 
-const KafkaService = {
+const kafkaService = {
 
   // send data to kafka
   sendMessage: (data, kafkaTopic, callback = () => {
   }) => {
 
-    if (!envHelper.sunbird_kafka_host && !envHelper.sunbird_state_sso_topic) {
+    if (!envHelper.sunbird_kafka_host) {
       return callback(new Error('KAFKA_NOT_INITIALIZED.'))
     }
 
@@ -53,4 +53,4 @@ const KafkaService = {
   }
 };
 
-module.exports = KafkaService;
+module.exports = kafkaService;
