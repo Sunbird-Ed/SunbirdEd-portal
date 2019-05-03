@@ -11,8 +11,9 @@
                         <sui-rating class="courseHeader-rating ui star rating black-divider pr-15" [isReadonly]="true"
                             [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
                         &nbsp;&nbsp;
-                        <a (click)="onShareLink()">
+                        <a (click)="onShareLink()"  class="mouse-pointer btn-bg p-5">
                             <i class="cursor-pointer large blue share alternate icon"></i>
+                            {{resourceService?.frmelmnts?.lbl?.share}}
                         </a>
                     </div>
                 </div>

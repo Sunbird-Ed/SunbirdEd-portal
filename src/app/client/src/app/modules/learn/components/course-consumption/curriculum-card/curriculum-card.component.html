@@ -1,9 +1,9 @@
-<div class="rightSideSectionCards ui card">
+<div class="rightSideSectionCards ui card sb-course-batch-card">
+        <div class="header p-16">{{resourceService?.frmelmnts?.lbl?.curriculum}}</div>
     <div class="content">
-        <div class="header">{{resourceService?.frmelmnts?.lbl?.curriculum}}</div>
         <div class="description">
             <div class="ui list">
-                <div class="item" *ngFor="let data of curriculum">
+                <div class="item p-0" *ngFor="let data of curriculum">
                     <div *ngIf="data.mimeType=='application/pdf'">
                         <div class="content curriculum-content">
                             <i class="sb-icon-doc mr-10"></i>
