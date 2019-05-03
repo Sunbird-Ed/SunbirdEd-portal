@@ -35,3 +35,9 @@
 @import "./pages/pages";
 @import "./vendors/vendors";
 @import "./utilities/utilities";
+
+
+.ui.grid > .column:not(.row) {
+    padding-top: 16px;
+    padding-bottom: 16px;
+}

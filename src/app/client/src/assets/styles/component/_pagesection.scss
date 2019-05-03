@@ -1,5 +1,5 @@
 .sb-pageSection {
-  @include margin($sb-page-sections-between-space);
+  // @include margin($sb-page-sections-between-space);
   .sb-pageSection-header {
     display: flex;
     align-items: center;
@@ -16,7 +16,20 @@
   .sb-pageSection-footer {
     color: $sb-page-sections-divider-color;
   }
+  .sb-cls-btn{
+    padding: $base-block-space;
+    height: auto;
+    cursor: pointer;
+  }
 }
 .last .sb-pageSection-footer {
   display: none !important;
+}
+.content-grid{
+  .sb-pageSection{
+    margin: 0 !important;
+    .sb-pageSection-title{
+      text-transform: none; 
+    }
+  }
 }

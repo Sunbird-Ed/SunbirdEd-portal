@@ -1,22 +1,23 @@
+<div class="container-fluid full-width">
+        <div class="ui segment br-0 p-0 prominent-filter">
+                <div class="ui container">
+                    <div class="twelve wide column mb-15">
+                            <app-data-driven-filter [pageId]="'view-all'" *ngIf="filterType" [filterEnv]="filterType"
+                            [viewAllMode]="true" [accordionDefaultOpen]=false [isShowFilterLabel]=true [hashTagId]="hashTagId"
+                            [formAction]="formAction" [frameworkName]="frameWorkName"></app-data-driven-filter>
+                    </div>
+                </div>
+        </div>
+    </div>
 <div class="ui container" [appTelemetryImpression]="telemetryImpression">
-    <div class="ui grid">
-        <div class="twelve wide column" *ngIf="showFilter">
-            <app-data-driven-filter [pageId]="'view-all'" *ngIf="filterType" [filterEnv]="filterType"
-                [viewAllMode]="true" [accordionDefaultOpen]=false [isShowFilterLabel]=true [hashTagId]="hashTagId"
-                [formAction]="formAction" [frameworkName]="frameWorkName"></app-data-driven-filter>
+    <div class="sb-pageSection m-0">
+        <div class="sb-pageSection-header">
+            <h4 class="sb-pageSection-title m-0 mr-5">{{sectionName}}</h4>
+            <!-- Need to show total count in view page -->
+            <!-- <span class="sb-pageSection-count sb-label sb-label-xs sb-label-warning ml-8">25</span> -->
+            <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button" [routerLink]="[closeUrl]">Close <i class="close icon"></i></button>
         </div>
-        <div class="twelve wide column">
-            <div class=" ui clearing segment content-player-header search-content-header">
-                <div class="ui left floated header">
-                    <p class="serch-allresult">{{sectionName}}</p>
-                </div>
-                <!-- <span class="sb-pageSection-count sb-label sb-label-xs sb-reult-label">{{sectionCount}}</span> -->
-
-                <div class="sb-cls-btn">
-                    <button  appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn mr-8" type="button"  [routerLink]="[closeUrl]">Close<i  class="close icon"></i></button>
-                </div>
-            </div>
-        </div>
+    </div>
         <div class="twelve wide column" *ngIf="!showLoader && !noResult">
             <div class="masonry-grid dynamic-section-card">
                 <div class="masonry-item" *ngFor="let content of searchList;let i = index;">
@@ -32,9 +33,9 @@
         <div class="twelve wide column" *ngIf="showLoader">
             <app-loader [data]='loaderMessage'></app-loader>
         </div>
-        <div class="twelve wide column right aligned" *ngIf="searchList && totalCount > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
+        <div class="twelve wide column right aligned py-0" *ngIf="searchList && totalCount > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
             <div class="sb-pagination-container flex-jc-flex-end" *ngIf="pager.pages.length">
-                <div class="sb-pagination">
+                <div class="sb-pagination my-0">
                 <a [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " (click)="navigateToPage(1) ">&laquo;</a>
                 <a [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " (click)="navigateToPage(pager.currentPage - 1)">&lt;</a>
                 <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)"
@@ -47,7 +48,6 @@
             </div>
           
         </div>
-    </div>
 </div>
 <sui-modal 
     [mustScroll]="true" 

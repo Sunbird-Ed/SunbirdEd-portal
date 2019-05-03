@@ -81,8 +81,15 @@
 .mb-15 {
   @include margin(null null 15px null);
 }
+
+.mb-16 {
+  @include margin(null null 16px null);
+}
 .mb-20 {
   @include margin(null null 20px null);
+}
+.mb-24 {
+  @include margin(null null 24px null);
 }
 .mb-30 {
   @include margin(null null 30px null);

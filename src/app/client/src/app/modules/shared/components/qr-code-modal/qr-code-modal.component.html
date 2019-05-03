@@ -28,15 +28,18 @@
         <p class="mb-10">
           {{resourceService.frmelmnts?.lbl?.startExploringContent}}
         </p>
-        <div class="ui fluid left icon input">
-          <input 
-            name="search" 
-            #dialCodeVal 
-            placeholder="{{resourceService.frmelmnts?.lbl?.enterDialCode}}" 
-            title="{{resourceService.frmelmnts?.lbl?.enterDialCode}}"
-            type="text">
-          <i class="search icon"></i>
+        <div class="sb-search-box no-btn">
+            <div class="input-div relative">
+                <i class="search icon"></i>
+                <input class="sb-search-input" name="search" 
+                #dialCodeVal 
+                placeholder="{{resourceService.frmelmnts?.lbl?.enterDialCode}}" 
+                title="{{resourceService.frmelmnts?.lbl?.enterDialCode}}"
+                type="text">
+            </div>
+            <button class="sb-btn sb-btn-normal">Search</button>
         </div>
+
         <p class="small mt-15">
           {{resourceService.frmelmnts?.lbl?.dialCodeDescription}}
         </p>
