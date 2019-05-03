@@ -276,3 +276,13 @@ input[type="button"] {
     margin-right: 0;
     margin-left: 8px;
 }
+
+.sb-cls-btn{
+    position: absolute;
+    right: 1rem;
+    .sb-btn{
+        background-color: $red-100;
+        border-color: $red-100;
+        border-radius: ($base-block-space - 5);
+    }
+}

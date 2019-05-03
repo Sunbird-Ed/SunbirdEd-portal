@@ -1,50 +1,66 @@
-<div class="ui container" [appTelemetryImpression]="telemetryImpression">
-  <div class="ui grid">
-    <div class="row">
-      <div class="six wide computer twelve wide mobile eight wide tablet column centered pt-10">
-        <div class="ui fluid icon input">
-          <input type="text" name="search" (keyup.enter)="navigateToSearch()" [(ngModel)]="searchKeyword" placeholder="{{resourceService.frmelmnts?.prmpt?.searchContent}}"
-            title="Search" />
-          <i class="search icon dialcode-search-icon cursor-pointer" tabindex="0" (click)="navigateToSearch()"></i>
+
+  <div class="ui container" [appTelemetryImpression]="telemetryImpression">
+    <div class="ui grid">
+      <div class="row">
+        <!-- <div class="six wide computer twelve wide mobile eight wide tablet column centered pt-10">
+          <div class="ui fluid icon input">
+            <input type="text" name="search" (keyup.enter)="navigateToSearch()" [(ngModel)]="searchKeyword" placeholder="{{resourceService.frmelmnts?.prmpt?.searchContent}}"
+              title="Search" />
+            <i class="search icon dialcode-search-icon cursor-pointer" tabindex="0" (click)="navigateToSearch()"></i>
+          </div>
+        </div> -->
+      </div>
+      <div class="row" *ngIf="showLoader">
+        <div class="twelve wide column">
+          <app-loader [data]='loaderMessage'></app-loader>
         </div>
       </div>
-    </div>
-    <div class="row" *ngIf="showLoader">
-      <div class="twelve wide column">
-        <app-loader [data]='loaderMessage'></app-loader>
-      </div>
-    </div>
-    <div *ngIf="!showLoader" class="row dial-code-section-bg">
-      <div class="twelve wide column">
-        <div class="ui tiny header"> {{resourceService.frmelmnts?.lbl?.dialCode}} '{{dialCode}}'
+      <div class="row dial-code-section-result">
+        <div *ngIf="!showLoader" class="dial-code-section-bg">
+          <div class="twelve wide column">
+            <div class="ui tiny header"> {{resourceService.frmelmnts?.lbl?.dialCode}} -
+                <div class="sb-label sb-reult-label mx-10">{{dialCode}}</div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!showLoader && searchResults.length > 0">
+          <div class="twelve wide column">
+            <div class="ui tiny header header-label"> {{resourceService.frmelmnts?.lbl?.linkedContents}} ({{searchResults.length}})
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!showLoader && searchResults.length > 0" class="sb-cls-btn">
+          <button type="button" class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn mr-8">Close<i class="close icon"></i></button>
         </div>
       </div>
-    </div>
-    <div *ngIf="!showLoader && searchResults.length > 0" class="row">
-      <div class="twelve wide column">
-        <div class="ui tiny header pt-30"> {{resourceService.frmelmnts?.lbl?.linkedContents}} ({{searchResults.length}})
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="twelve wide column">
+      <div class="row">
         <div *ngIf="!showLoader && searchResults.length" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="searchResults"
-          class="ui stackable four column grid dynamic-section-card ">
-          <div in-view-item [id]="i" [data]="content" class="column py-5 pl-10" *ngFor="let content of searchResults;let i = index;">
-            <app-dial-code-card appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"></app-dial-code-card>
+            class="ui stackable four column grid dynamic-section-card ">
+            <div in-view-item [id]="i" [data]="content" class="column py-5 pl-10" *ngFor="let content of searchResults;let i = index;">
+              <app-dial-code-card appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"></app-dial-code-card>
+            </div>
           </div>
-        </div>
-        <div *ngIf="!showLoader && !searchResults.length">
-          <div class="placeholder mt-40">
-            <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl}}" />
-            <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0121}}</h5>
-            <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>
+
+
+          <!-- <div class="masonry-grid dynamic-section-card ">
+              <div in-view-item [id]="i" [data]="content" class="masonry-item" *ngFor="let content of contentList;let i = index;">
+                  <app-card appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType || 'content',ver:'1.0'}"
+                  (clickEvent)="playContent($event)" [data]="content"></app-card>
+              </div>
+          </div> -->
+
+
+          <div *ngIf="!showLoader && !searchResults.length">
+            <div class="placeholder mt-40">
+              <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl}}" />
+              <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0121}}</h5>
+              <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>
+            </div>
           </div>
-        </div>
       </div>
     </div>
   </div>
-</div>
+  
 
 <div class="mobile-popup-dimmer" (click)="closeMobileAppPopup()" [ngClass]="{'bottom-0': showMobilePopup}">
   <div class="mobile-app-popup" [ngClass]="{'bottom-0': showMobilePopup}">
