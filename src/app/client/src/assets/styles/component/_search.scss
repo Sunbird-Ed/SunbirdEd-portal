@@ -1,16 +1,20 @@
 .sb-search-box {
   display: flex;
-  align-items: center;
+    align-items: center;
+    border: 1px solid $primary-300;
+    border-radius: 3px;
   &.large {
-    min-width: 492px;
+    max-width: 492px;
+    width:100%
   }
 
   &.medium {
-    min-width: 392px;
+    max-width: 392px;
+    width:100%
   }
 
   &.small {
-    min-width: 282px;
+    max-width: 282px;
     width: 100%;
   }
 
