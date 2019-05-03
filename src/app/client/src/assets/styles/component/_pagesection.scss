@@ -9,6 +9,7 @@
     font-size: $h5-font-size;
     display: inline;
     text-transform: lowercase;
+    font-weight: 600;
     &::first-letter{
       text-transform: uppercase;
     }
