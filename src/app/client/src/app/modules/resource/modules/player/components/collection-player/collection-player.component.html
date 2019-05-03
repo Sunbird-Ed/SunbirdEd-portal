@@ -53,10 +53,9 @@
          <div class="">
               <h4 class="sb-pageSection-title m-0 mr-5">{{collectionTitle}}</h4>
          </div>
-          <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button" (click)="closeCollectionPlayer()">Close <i class="close icon"></i></button>
+          <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" [telemetryInteractCdata]="telemetryCdata" class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button" (click)="closeCollectionPlayer()">Close <i class="close icon"></i></button>
       </div>
   </div>
-
   <div class="row pb-0" *ngIf="!loader">
     <div *ngIf="collectionStatus !== 'Unlisted'" class="twelve wide column">
       <div class="ui grid">

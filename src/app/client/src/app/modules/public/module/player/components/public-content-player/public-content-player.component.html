@@ -9,7 +9,7 @@
                      <div class="">
                           <h4 class="sb-pageSection-title m-0 mr-5" *ngIf="contentData.name"> {{contentData.name}}</h4>
                      </div>
-                      <button [telemetryInteractCdata]="this.telemetryCdata" [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closePlayerInteractEdata" class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button"  (click)="close()">Close <i class="close icon"></i></button>
+                      <button appTelemetryInteract [telemetryInteractCdata]="this.telemetryCdata" [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closePlayerInteractEdata" class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button"  (click)="close()">Close <i class="close icon"></i></button>
                   </div>
               </div>
             <div class="row pt-0" *ngIf="showPlayer">
