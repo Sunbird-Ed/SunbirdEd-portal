@@ -5,14 +5,23 @@
 .m-5 {
   @include margin(5px);
 }
+.m-8 {
+  @include margin(8px);
+}
 .m-10 {
   @include margin(10px);
 }
 .m-15 {
   @include margin(15px);
 }
+.m-16 {
+  @include margin(16px);
+}
 .m-20 {
   @include margin(20px);
+}
+.m-24 {
+  @include margin(24px);
 }
 
 /* Margin in top direction */
@@ -31,6 +40,9 @@
 .mt-5 {
   @include margin(5px null null null);
 }
+.mt-8 {
+  @include margin(8px null null null);
+}
 .mt-10 {
   @include margin(10px null null null);
 }
@@ -42,6 +54,9 @@
 }
 .mt-15 {
   @include margin(15px null null null);
+}
+.mt-16 {
+  @include margin(16px null null null);
 }
 .mt-20 {
   @include margin(20px null null null);
@@ -75,14 +90,23 @@
 .mb-5 {
   @include margin(null null 5px null);
 }
+.mb-8 {
+  @include margin(null null 8px null);
+}
 .mb-10 {
   @include margin(null null 10px null);
 }
 .mb-15 {
   @include margin(null null 15px null);
 }
+.mb-16 {
+  @include margin(null null 16px null);
+}
 .mb-20 {
   @include margin(null null 20px null);
+}
+.mb-24 {
+  @include margin(null null 24px null);
 }
 .mb-30 {
   @include margin(null null 30px null);
