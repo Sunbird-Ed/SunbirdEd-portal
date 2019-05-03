@@ -165,7 +165,7 @@ const getKafkaPayloadData = (sessionDetails) => {
 
 const sendStateSsoKafkaMessage = async (req) => {
   var kafkaPayloadData = getKafkaPayloadData(req.session);
-  var stateSsoTopic = envHelper.sunbird_state_sso_topic;
+  var stateSsoTopic = envHelper.sunbird_sso_kafka_topic;
   kafkaService.sendMessage(kafkaPayloadData, stateSsoTopic, function (err, res) {
     if (err) {
       console.log(err, null)
