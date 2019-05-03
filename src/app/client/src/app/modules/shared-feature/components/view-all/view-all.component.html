@@ -8,12 +8,13 @@
         <div class="twelve wide column">
             <div class=" ui clearing segment content-player-header search-content-header">
                 <div class="ui left floated header">
-                    <p class="serch-allresult"> {{sectionName}}</p>
+                    <p class="serch-allresult">{{sectionName}}</p>
                 </div>
-                <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="ui right floated basic icon circular button "
-                    [routerLink]="[closeUrl]">
-                    <i class="ui remove icon"></i>
-                </h5>
+                <!-- <span class="sb-pageSection-count sb-label sb-label-xs sb-reult-label">{{sectionCount}}</span> -->
+
+                <div class="sb-cls-btn">
+                    <button  appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn mr-8" type="button"  [routerLink]="[closeUrl]">Close<i  class="close icon"></i></button>
+                </div>
             </div>
         </div>
         <div class="twelve wide column" *ngIf="!showLoader && !noResult">
@@ -31,17 +32,20 @@
         <div class="twelve wide column" *ngIf="showLoader">
             <app-loader [data]='loaderMessage'></app-loader>
         </div>
-        <div class="twelve wide column right aligned p-16" *ngIf="searchList && totalCount > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
-            <div class="ui pagination menu" *ngIf="pager.pages.length">
-                <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">{{resourceService.frmelmnts?.lbl?.first}}</a>
-                <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">{{resourceService.frmelmnts?.lbl?.previous}}</a>
+        <div class="twelve wide column right aligned" *ngIf="searchList && totalCount > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
+            <div class="sb-pagination-container flex-jc-flex-end" *ngIf="pager.pages.length">
+                <div class="sb-pagination">
+                <a [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " (click)="navigateToPage(1) ">&laquo;</a>
+                <a [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " (click)="navigateToPage(pager.currentPage - 1)">&lt;</a>
                 <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)"
-                    class="item">{{page}}</a>
-                <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)"
-                    class="item">{{resourceService.frmelmnts?.lbl?.next}}</a>
+                    class="sb-item">{{page}}</a>
+                    <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)"
+                    class="sb-item">&gt;</a>
                 <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.totalPages)"
-                    class="item ">{{resourceService.frmelmnts?.lbl?.last}}</a>
+                    class="sb-item ">&raquo;</a>
+                </div>
             </div>
+          
         </div>
     </div>
 </div>
