@@ -889,12 +889,18 @@ ul.subList-padding {
 .videosegment.ui.segment {
   position: relative;
   //background: #fdfdfd !important;
-  background: $primary-0 !important;
+  background: $primary-0;
   box-shadow: 0 0 0;
-  margin: 1rem 0;
   padding: 0;
   border-radius: 0;
   border: 0;
+  margin: 0;
+  .sb-pageSection{
+    margin:0;
+    .sb-pageSection-title{
+      text-transform: none;
+    }
+  }
 }
 .tocplayer.ui.grid {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -912,6 +918,9 @@ ul.subList-padding {
 .courseupdate b {
   font-weight: 400;
 }
+.courseupdate span{
+  font-weight: 600;
+}
 .container-with-button {
   width: 100% !important;
   padding-right: 0px !important;
@@ -922,15 +931,6 @@ ul.subList-padding {
   margin-left: 5px;
 }
 
-.content-detail {
-  color: #7c7b7b;
-  font-size: 14px;
-  font-weight: 600;
-  text-align: right;
-  &::after{
-      content: attr(title) ": ";
-  }
-}
 .take-note-card {
   color: $primary-color;
   vertical-align: top;
@@ -1050,7 +1050,7 @@ ul.subList-padding {
   border: 0px solid #d8dee2;
 }
 .annannouncement-description {
-  margin-top: 11px;
+  //margin-top: 11px;
 }
 .homeCard.ui.card > .content {
   padding: 0;
@@ -1699,6 +1699,12 @@ i.edit.icon.editIcon-fontSize {
   float: right;
   font-size: 13px !important;
   padding-right: 12px;
+  font-weight: normal;
+  padding: 8px;
+  border-radius: 3px;
+  &:hover{
+    background-color: #EDF4F9;
+  }
 }
 .batchCardAlign {
   padding: 10px 15px;

@@ -80,7 +80,8 @@
                                 <div class="sb-pageSection" id="app-player-collection-renderer">
                                     <div  class="sb-pageSection-header">
                                         <h4 class="sb-pageSection-title m-0 mr-5"> {{contentTitle}}</h4>
-                                        <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button" (click)="closeContentPlayer()">Close <i class="close icon"></i></button>
+                                        <button appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="contentInteractObject"
+                                        [telemetryInteractCdata]="telemetryCdata" class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button" (click)="closeContentPlayer()">Close <i class="close icon"></i></button>
                                     </div>
                                 </div>
                                 <div class="ui warning message click-notify-xurl" *ngIf="showExtContentMsg">

@@ -118,3 +118,25 @@ input[type=number]::-webkit-outer-spin-button {
     margin-left: 20px;
   }
 }
+
+.sb-placeholder{
+  justify-content: center !important;
+}
+[dir="rtl"] {
+  .sb-explore-qr-container{
+    .dial-section-column {
+      border-right:0px solid rgba(51, 51, 51,0.1) !important;
+      border-left:1px solid rgba(51, 51, 51,0.1);
+    }
+  }
+  
+}
+
+[dir="ltr"] {
+  .sb-explore-qr-container{
+    .dial-section-column {
+      border-left:0px solid rgba(51, 51, 51,0.1);
+      border-right:1px solid rgba(51, 51, 51,0.1);
+    }
+  }
+}

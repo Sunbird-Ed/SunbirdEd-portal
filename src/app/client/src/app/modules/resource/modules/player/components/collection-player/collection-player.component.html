@@ -1,5 +1,5 @@
 <div class="ui container mt-30" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
-  <div class="ui grid">
+  <div class="content-grid">
     <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
       <div class="ui text centered inline loader mt-40">
         {{resourceService.frmelmnts.lbl.copycontent}}
@@ -7,21 +7,18 @@
     </div>
     <div class="row" *ngIf="showPlayer">
       <div class="twelve wide column">
-        <div class="ui grid" id="app-player-collection-renderer">
-          <div class="twelve wide column">
-            <h1 class="ui header small HomeAccordianHeading m-responsive-cp left floated header">
-              {{contentTitle}}
-            </h1>
-            <h5 appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="objectContentInteract" [telemetryInteractCdata]="telemetryCdata"
-              class="ui right floated basic icon circular button mouse-pointer" (click)="closeContentPlayer()">
-              <i class="ui remove icon"></i>
-            </h5>
+        <div id="app-player-collection-renderer">
+          <div class="sb-pageSection">
+              <div  class="sb-pageSection-header">
+                  <h4 class="sb-pageSection-title m-0 mr-5">  {{contentTitle}}</h4>
+                  <button class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button"  (click)="closeContentPlayer()" appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="objectContentInteract" [telemetryInteractCdata]="telemetryCdata">Close <i class="close icon"></i></button>
+              </div>
           </div>
           <div class="twelve wide column">
             <app-player class="content-player" [playerOption] ="playerOption"   [playerConfig]="playerConfig | async"></app-player>
           </div>
         </div>
-      <div class="ui row pt-0">
+      <div class="ui row pt-0 my-20">
         <div class="ui twelve column grid pr-0">
           <div class="one wide tablet only one wide computer only column"></div>
           <div class="six wide mobile only three wide tablet only three wide computer only column">
@@ -51,47 +48,44 @@
       <app-loader [data]="loaderMessage"></app-loader>
     </div>
   </div>
-  <div class="row" *ngIf="!loader" [appTelemetryImpression]="telemetryImpression">
-    <div class="twelve wide column">
-      <span class="ui HomeAccordianHeading m-responsive-cp left floated header">{{collectionTitle}}</span>
-      <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" [telemetryInteractCdata]="telemetryCdata" class="ui right floated basic icon circular button  mouse-pointer"
-        (click)="closeCollectionPlayer()">
-        <i class="ui remove icon"></i>
-      </h5>
-    </div>
+  <div class="sb-pageSection"  *ngIf="!loader" [appTelemetryImpression]="telemetryImpression">
+      <div  class="sb-pageSection-header">
+         <div class="">
+              <h4 class="sb-pageSection-title m-0 mr-5">{{collectionTitle}}</h4>
+         </div>
+          <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" [telemetryInteractCdata]="telemetryCdata" class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button" (click)="closeCollectionPlayer()">Close <i class="close icon"></i></button>
+      </div>
   </div>
   <div class="row pb-0" *ngIf="!loader">
     <div *ngIf="collectionStatus !== 'Unlisted'" class="twelve wide column">
       <div class="ui grid">
-        <div class="twelve wide column">
+        <div class="twelve wide column pt-0">
           <div class="player-badge-alignment">
             <sui-rating [ngClass]="{'collection-player-header-divider': badgeData}" class="courseHeader-rating ui star rating  pt-5"
               [isReadonly]="true" [maximum]="5"></sui-rating>
             <app-content-badge [data]="badgeData" class="ml-20 m-responsive-cp-badge-ml"></app-content-badge>
-            <span class="ml-auto">
+            <span>
               <!-- Temporarily disable flagging-->
               <!-- <a routerLink="flag" class="pr-10 blue-text-color-sunbird">
                 <i class="ui large blue flag outline icon"></i>
                 {{resourceService?.frmelmnts?.lbl?.report}}
               </a> -->
-              <a href="javascript:void(0)" (click)="onShareLink();sharelinkModal=true;" class="pr-10 blue-text-color-sunbird">
+              <a href="javascript:void(0)" (click)="onShareLink();sharelinkModal=true;" class="pr-10 blue-text-color-sunbird btn-bg p-5">
                 <i class="cursor-pointer large blue share alternate icon"></i>
                 {{resourceService?.frmelmnts?.lbl?.share}}
               </a>
               <span *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook'" appPermission
-                [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(collectionTreeNodes.data)" class="ui mouse-pointer content-font ml-10 blue-text-color-sunbird ">
+                [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(collectionTreeNodes.data)" class="ui mouse-pointer content-font ml-10 blue-text-color-sunbird btn-bg p-5">
                 <i class="ui large blue clone outline icon "></i>
                 {{resourceService?.frmelmnts?.lbl?.copy}}
               </span>
               <span *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook'" appPermission
-                [permission]="['BOOK_CREATOR']" (click)="copyContent(collectionTreeNodes.data)" class="ui mouse-pointer content-font ml-10 blue-text-color-sunbird ">
+                [permission]="['BOOK_CREATOR']" (click)="copyContent(collectionTreeNodes.data)" class="ui mouse-pointer content-font ml-10 blue-text-color-sunbird btn-bg p-5">
                 <i class="ui large blue clone outline icon blue-text-color-sunbird "></i>
                 {{resourceService?.frmelmnts?.lbl?.copy}}
               </span>
             </span>
           </div>
-        </div>
-        <div class="three wide column">
         </div>
       </div>
     </div>

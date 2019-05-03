@@ -1,32 +1,25 @@
-<div class="ui container">
-<div id="content-player" class="ui grid">
+<div class="ui container mt-15">
+<div id="content-player" class="content-grid ui stackable grid">
     <div class="twelve wide column">
         <div class='mt-5 videosegment ui segment'>
             <div class='content-player-body'>
                 <div *ngIf="showPlayer && contentData" class="videosegment  ui clearing segment">
-                    <div [appTelemetryImpression]="telemetryImpression" class="ui grid">
-                        <div class="row ">
-                            <div class="twelve wide column">
-                                <div class="ten wide column" id="player-auto-scroll">
-                                    <span class="ui HomeAccordianHeading left floated header" *ngIf="contentData.name">
-                                        {{contentData.name}}
-                                    </span>
-                                </div>
-                                <div class="two wide column">
-                                    <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" class="ui right floated basic icon circular button  mouse-pointer"
-                                        (click)="close()">
-                                        <i class="ui remove icon"></i>
-                                    </h5>
+                    <div [appTelemetryImpression]="telemetryImpression" class="content-grid">
+                        <div class="sb-pageSection">
+                                <div  class="sb-pageSection-header">
+                                   <div class="" id="player-auto-scroll">
+                                        <h4 class="sb-pageSection-title m-0 mr-5" *ngIf="contentData.name"> {{contentData.name}}y</h4>
+                                   </div>
+                                    <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button"  (click)="close()">Close <i class="close icon"></i></button>
                                 </div>
                             </div>
-                        </div>
                         <div *ngIf="contentStatus !== 'Unlisted'" class="row  pt-0">
                             <div class="twelve wide column">
                                 <div class="player-badge-alignment">
                                     <sui-rating [ngClass]="{'black-divider pr-15': badgeData}" class="courseHeader-rating ui star rating pt-5" [isReadonly]="true"
                                         [ngModel]="contentData.me_averageRating || 0" [maximum]="5"></sui-rating>&nbsp;&nbsp;
                                     <app-content-badge [data]="badgeData" class="ml-20 m-responsive-cp-badge-ml"></app-content-badge>
-                                    <span class="ml-auto">
+                                    <span class="">
                                         <!-- Temporarily disable flagging-->
                                         <!-- <a routerLink="flag" class="pr-10 blue-text-color-sunbird">
                                             <i class="ui large blue flag outline icon"></i>
