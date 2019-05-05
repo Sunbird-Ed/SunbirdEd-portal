@@ -1,4 +1,4 @@
-<div class="ui container mt-30" [appTelemetryImpression]="telemetryImpression" id="content-player">
+<div class="ui container mt-24" [appTelemetryImpression]="telemetryImpression" id="content-player">
   <div class="ui stackable grid" *ngIf="showPlayer && contentData">
 
       <div class="twelve wide column">
@@ -8,7 +8,9 @@
           <div class="sb-pageSection-header">
 
             <!--Title-->
-            <h1 class="sb-pageSection-title m-0 mr-5" *ngIf="contentData.name">{{contentData.name}}</h1>
+            <h1 class="sb-pageSection-title m-0 mr-5" *ngIf="contentData.name">
+              {{contentData.name}}
+            </h1>
             <!--/Title-->
 
             <!--Close Button-->
@@ -18,7 +20,7 @@
               [telemetryInteractObject]="telemetryInteractObject" 
               [telemetryInteractEdata]="closePlayerInteractEdata"
               (click)="close()"
-              class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn">
+              class="sb-btn sb-btn-normal sb-btn-error ml-auto">
                 {{resourceService.frmelmnts.btn.close}}
                 <i class="ui remove icon"></i>
             </button>
