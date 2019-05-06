@@ -95,6 +95,8 @@ module.exports = (app, keycloak) => {
     '/resources/*', '/myActivity', '/myActivity/*'], keycloak.protect(), indexPage(true))
 
   app.all('/:tenantName', renderTenantPage)
+
+  app.use('/program', express.static(path.join(__dirname, '../program')))
 }
 
 function getLocals(req) {
