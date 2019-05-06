@@ -19,7 +19,7 @@
                             [isReadonly]="true" 
                             [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"
                         ></sui-rating>
-                        <a (click)="onShareLink();sharelinkModal=true;" class="cursor-pointer btn-bg p-8 d-inline-block font-weight-bold mr-16">
+                        <a (click)="onShareLink();sharelinkModal=true;" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
                             <i class="blue share alternate icon"></i>
                             {{resourceService?.frmelmnts?.lbl?.share}}
                         </a>
@@ -37,7 +37,7 @@
                     </div>
                 </div>
             </div>
-            <div class="three wide column text-center">
+            <div class="three wide column right aligned">
               <div *ngIf="enrolledCourse">
                 <p class="mb-8">
                   {{resourceService?.messages?.stmsg?.m0108}} {{ progress }}%
