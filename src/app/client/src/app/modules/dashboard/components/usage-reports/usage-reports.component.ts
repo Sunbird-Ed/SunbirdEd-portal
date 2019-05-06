@@ -26,6 +26,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   telemetryImpression: IImpressionEventInput;
   telemetryInteractEdata: IInteractEventEdata;
   telemetryInteractDownloadEdata: IInteractEventEdata;
+  downloadUrl;
   @ViewChild(TelemetryInteractDirective) telemetryInteractDirective;
   constructor(private usageService: UsageService, private sanitizer: DomSanitizer,
     public userService: UserService, private toasterService: ToasterService,
@@ -73,8 +74,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
     this.currentReport = report;
     this.isTableDataLoaded = false;
     const url = report.dataSource;
-    this.tables = [];
-    this.chartData = [];
+    this.downloadUrl = report.downloadUrl;
     this.usageService.getData(url).subscribe((response) => {
       if (_.get(response, 'responseCode') === 'OK') {
         const data = _.get(response, 'result');
@@ -87,6 +87,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   }
 
   createChartData(charts, data) {
+    this.chartData = [];
     _.forEach(charts, chart => {
       const chartObj: any = {};
       chartObj.options = _.get(chart, 'options') || { responsive: true };
@@ -106,6 +107,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   }
 
   renderTable(tables, data) {
+    this.tables = [];
     tables = _.isArray(tables) ? tables : [tables];
     _.forEach(tables, table => {
       const tableData: any = {};
@@ -113,12 +115,13 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
       tableData.name = _.get(table, 'name') || 'Table';
       tableData.header = _.get(table, 'columns') || _.get(data, _.get(table, 'columnsExpr'));
       tableData.data = _.get(table, 'values') || _.get(data, _.get(table, 'valuesExpr'));
+      tableData.downloadUrl = _.get(table, 'downloadUrl') || this.downloadUrl;
       this.tables.push(tableData);
     });
     this.isTableDataLoaded = true;
   }
 
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.telemetryImpression = {
         context: {
@@ -139,8 +142,12 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  downloadCSV(url) {
-    this.usageService.getData(url).subscribe((response) => {
+  setDownloadUrl(url) {
+    this.downloadUrl = url;
+  }
+
+  downloadCSV() {
+    this.usageService.getData(this.downloadUrl).subscribe((response) => {
       if (_.get(response, 'responseCode') === 'OK') {
         const data = _.get(response, 'result');
         const blob = new Blob(

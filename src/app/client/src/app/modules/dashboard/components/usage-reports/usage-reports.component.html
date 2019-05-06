@@ -17,16 +17,19 @@
             <sui-tabset>
                 <!-- [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)" -->
                 <div class="ui top attached tabular menu">
-                    <a appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)" [telemetryInteractEdata]="setTelemetryInteractEdata('report-graph')"
-                        class="item" suiTabHeader="graph">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
+                    <a appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
+                        [telemetryInteractEdata]="setTelemetryInteractEdata('report-graph')" class="item"
+                        suiTabHeader="graph"
+                        (click)="setDownloadUrl(currentReport.downloadUrl)">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
                     <a appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
                         [telemetryInteractEdata]="setTelemetryInteractEdata('report_table_'+table.name)"
-                        *ngFor="let table of tables" class="item" [suiTabHeader]="table.id">{{table?.name}}</a>
+                        *ngFor="let table of tables" (click)="setDownloadUrl(table.downloadUrl)" class="item"
+                        [suiTabHeader]="table.id">{{table?.name}}</a>
                     <div class="right menu">
                         <a *ngIf="currentReport?.downloadUrl" class="ui item" appTelemetryInteract
                             [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
                             [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')"
-                            (click)="downloadCSV(currentReport.downloadUrl)">{{resourceService?.frmelmnts?.lbl?.downloadCsv}}</a>
+                            (click)="downloadCSV()">{{resourceService?.frmelmnts?.lbl?.downloadCsv}}</a>
                     </div>
                 </div>
                 <div class="ui bottom attached segment" suiTabContent="graph">
@@ -39,16 +42,17 @@
                         {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}}
                     </div>
                 </div>
-                <div *ngIf="isTableDataLoaded">
-                    <div *ngFor="let table of tables" class="ui bottom attached small segment"
-                        [suiTabContent]="table.id">
-                        <app-data-table [tableId]="table.id" [headerData]="table.header" [rowsData]="table.data">
-                        </app-data-table>
+                <ng-container *ngFor="let table of tables">
+                    <div class="ui bottom attached small segment" [suiTabContent]="table.id">
+                        <div *ngIf="isTableDataLoaded">
+                            <app-data-table [tableId]="table.id" [headerData]="table.header" [rowsData]="table.data">
+                            </app-data-table>
+                        </div>
                         <div class="ui warning message" *ngIf="!isTableDataLoaded">
                             {{resourceService?.frmelmnts?.lbl?.tableNotAvailable}}
                         </div>
                     </div>
-                </div>
+                </ng-container>
             </sui-tabset>
         </div>
     </div>
