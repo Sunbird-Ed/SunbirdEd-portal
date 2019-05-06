@@ -142,8 +142,8 @@ $success-color: $secondary-200;
 $warning-color: $tertiary-100;
 $danger-color: $red-100;
 // Settings for the `<body>` element.
-$bg-body: $primary-0;
-$body-color: $gray-800;
+$body-background-color: $primary-0;
+$default-text-color: $gray-800;
 $theme-colors: () !default;
 $theme-colors: map-merge(( "primary": $primary-color, "secondary": $secondary-color, "tertiary": $tertiary-color, "success": $success-color, "info": $info-color, "warning": $warning-color, "danger": $danger-color, "light": $gray-100, "dark": $gray), $theme-colors);
 // Style anchor elements.
@@ -218,6 +218,7 @@ $sb-search-close-btn-color: $white;
 // page section component
 $sb-page-section-font-size: $h5-font-size;
 $sb-page-section-header-content-space: 0 0 ($base-block-space * 3) 0;
+$sb-page-section-header-content-space-compact: 0 0 ($base-block-space) 0;
 $sb-page-sections-between-space: 0 0 ($base-block-space * 3) 0;
 $sb-page-sections-divider-color: $gray-0 !important;
 

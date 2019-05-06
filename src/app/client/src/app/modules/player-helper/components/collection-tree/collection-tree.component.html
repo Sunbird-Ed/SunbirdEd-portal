@@ -1,49 +1,54 @@
 <sui-accordion 
   *ngFor="let child of rootChildrens" 
-  class="ui styled accordion mt-10 width-100"
+  class="sb-collectionTree"
+  [ngClass]="child.extraClasses"
   >
   <sui-accordion-panel 
-    [ngClass]="child.extraClasses" 
+    [ngClass]="child.extraClasses"
     (click)="!child.folder && onNodeClick(child)"
-    [(isOpen)]="child.togglePanelIcon" 
+    [(isOpen)]="child.togglePanelIcon"
     [isDisabled]="(!child.children.length) || (!child.folder)"
     >
       <!--Accordion Title-->
-      <div title class="toc-title">
+      <div title class="sb-collectionTree-titleCover">
         <i 
           *ngIf="child.folder" 
-          class="mr-10" 
-          [class.sb-icon-folder]="child.togglePanelIcon" 
-          [class.sb-icon-collection]="!child.togglePanelIcon"
+          class="mr-16 sb-collectionTree-title-icon icon folder"
+          [class.outline]="child.togglePanelIcon" 
         ></i>
         <i 
-            *ngIf="!child.folder" 
-            class="mr-10" 
-            [ngClass]="child.icon"
+          *ngIf="!child.folder" 
+          class="mr-10" 
+          [ngClass]="child.icon"
         ></i>
-        <span 
+        <h3 
+          class="sb-collectionTree-title"
           [innerHTML]="child.title">
-        </span>
+        </h3>
         <i 
           *ngIf="child.folder && child.children.length" 
-          class="icon ml-auto" 
+          class="icon ml-auto mr-0 sb-collectionTree-title-toggle-icon" 
           [class.plus]="!child.togglePanelIcon" 
           [class.minus]="child.togglePanelIcon"
         ></i>
       </div>
       <!--/Accordion Title-->
+
       <!--Accordion Content-->
       <div 
         *ngIf="child.folder" 
         content
+        class="p-0 sb-collectionTree-contentCover"
         >
         <app-fancy-tree 
           (itemSelect)="onItemSelect($event)" 
           [nodes]="child.children" 
           [options]="{ showConnectors: true }"
+          class="sb-collectionTree-fancyTree"
         >
         </app-fancy-tree>
       </div>
       <!--/Accordion Content-->
+
   </sui-accordion-panel>
 </sui-accordion>
