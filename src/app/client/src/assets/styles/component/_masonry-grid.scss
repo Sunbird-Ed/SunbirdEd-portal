@@ -54,11 +54,11 @@
     }
 }
 @include respond-above(xxxl) {
-    [dir="ltr"] .masonry-item:nth-child(4n) {
+    [dir="ltr"] .masonry-item:nth-child(5n) {
         margin-right: 0;
     }
 
-    [dir="rtl"] .masonry-item:nth-child(4n) {
+    [dir="rtl"] .masonry-item:nth-child(5n) {
         margin-left: 0;
     }
 }
