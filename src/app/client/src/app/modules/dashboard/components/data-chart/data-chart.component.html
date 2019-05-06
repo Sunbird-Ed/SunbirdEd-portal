@@ -1,0 +1,48 @@
+<div *ngIf="chart">
+  <canvas baseChart [datasets]="chart.datasets" [labels]="chart.labels" [options]="chart.options"
+    [chartType]="chart.chartType" [colors]="chart.colors" [legend]="chart.legend"></canvas>
+  <form [formGroup]="chartFilters" class="ui form">
+    <div class="ui segment">
+      <div class="inline fields">
+        <ng-container *ngIf="showTimeLine">
+          <div class="field">
+            <sui-select  formControlName="timeLineRange" placeholder="Select Range" class="selection" [options]="timeLineRangeoptions" labelField="label" valueField="value" #select>
+              <sui-select-option *ngFor="let option of select.filteredOptions" [value]="option">
+              </sui-select-option>
+            </sui-select>
+          </div>
+          <div class="field">
+            <div class="ui left icon input">
+              <i class="calendar icon"></i>
+              <input placeholder="Select timeline" suiDatepicker [pickerMode]="'date'" [pickerMinDate]="startDate"
+                [pickerMaxDate]="endDate" [pickerUseNativeOnMobile]="false" formControlName="timeLine">
+            </div>
+          </div>
+        </ng-container>
+
+        <div class="field" *ngIf="chart.datasets.length>1">
+          <sui-multi-select class="selection" placeholder="Select Chart" [options]="chart.datasets" labelField="label"
+            formControlName="dataSet" #multiSelect>
+            <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option">
+            </sui-select-option>
+          </sui-multi-select>
+        </div>
+
+        <ng-container *ngIf="!showTimeLine">
+          <div class="field">
+            <sui-multi-select class="selection" [placeholder]="'Select '+ labelString" formControlName="labels">
+              <sui-select-option *ngFor="let label of chartData.labels" [value]="label">
+              </sui-select-option>
+            </sui-multi-select>
+          </div>
+        </ng-container>
+
+        <div class="field">
+          <button class="ui large primary button" (click)="resetFilter()">
+            Reset Filter
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
