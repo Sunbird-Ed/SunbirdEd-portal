@@ -1,6 +1,4 @@
-<div class="sb-meta-data-container sb-meta-data-row-facing">
-
-    <hr class="ui divider mt-24 mb-24"/>
+<div class="sb-meta-data-container sb-meta-data-row-facing mt-24">
 
     <ng-container *ngIf="metadata.description">
         <h4 class="sb-section-title text-capitalize mb-16 d-block">
@@ -18,7 +16,7 @@
                 {{resourceService.frmelmnts.lbl.readless}}
             </span>
         </div>
-        <hr class="ui divider mt-24 mb-24"/>
+        <div class="ui divider mt-24 mb-24"></div>
     </ng-container>
 
     <h4 class="sb-section-title text-capitalize mb-16 d-block">
@@ -32,7 +30,9 @@
         <dt>{{resourceService.frmelmnts.lbl.ownership}}</dt>
         <dd *ngIf="metadata.owner">
             <span class="d-inline-block mr-20">{{metadata.owner}}</span> &nbsp;
-            <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}">{{resourceService.frmelmnts.lbl.contentCredits}}</a>
+            <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}" class="cursor-pointer">
+                {{resourceService.frmelmnts.lbl.contentCredits}}
+            </a>
         </dd>
     </dl>
     <dl class="sb-meta-data" *ngIf="metadata.orgDetails && metadata.orgDetails.orgName">

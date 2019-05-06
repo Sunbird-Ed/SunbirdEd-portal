@@ -217,6 +217,9 @@
   .mr-15 {
     @include margin(null 15px null null);
   }
+  .mr-16 {
+    @include margin(null 16px null null);
+  }
   .mr-20 {
     @include margin(null 20px null null);
   }
@@ -248,6 +251,9 @@
   }
   .mr-15 {
     @include margin(null null null 15px);
+  }
+  .mr-16 {
+    @include margin(null null null 16px);
   }
   .mr-20 {
     @include margin(null null null 20px);

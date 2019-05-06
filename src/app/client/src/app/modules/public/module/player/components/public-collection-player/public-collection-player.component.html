@@ -27,7 +27,7 @@
       <!--/Content Title-->
 
       <!--Content Player-->
-      <app-player class="content-player"  [playerOption] ="playerOption" [playerConfig]="playerConfig | async"></app-player>
+      <app-player class="content-player" [playerOption] ="playerOption" [playerConfig]="playerConfig | async"></app-player>
       <!--/Content Player-->
 
       <!--Content Navigation-->
@@ -101,10 +101,10 @@
 
       <!--Content Coming soon-->
       <ng-template #dataCommingSoon>
-        <div class="placeholder mt-40">
+        <div class="mt-40 text-center">
           <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl }}" alt="{{resourceService?.messages?.stmsg?.m0121}}"/>
-          <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0121}}</h5>
-          <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>
+          <h5 class="mt-16">{{resourceService?.messages?.stmsg?.m0121}}</h5>
+          <p class="">{{resourceService?.messages?.stmsg?.m0122}}</p>
         </div> 
       </ng-template>
       <!--/Content Coming soon-->
