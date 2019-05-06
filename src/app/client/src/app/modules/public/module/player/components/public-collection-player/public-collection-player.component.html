@@ -31,23 +31,30 @@
       <!--/Content Player-->
 
       <!--Content Navigation-->
-      <div class="d-flex">
-        <button 
-          class="sb-btn sb-btn-normal sb-btn-primary" 
-          (click)="navigateToContent(prevPlaylistItem)"
-          [disabled]="prevPlaylistItem === undefined"
-        >
-          {{resourceService.frmelmnts.btn.previous}}
-          <small class="d-block">{{prevPlaylistItem?.title || resourceService.messages.stmsg.m0120}}</small>
-        </button>
-        <button 
-          class="sb-btn sb-btn-normal sb-btn-primary" 
-          (click)="navigateToContent(nextPlaylistItem)"
-          [disabled]="nextPlaylistItem === undefined"
-        >
-          {{resourceService.frmelmnts.btn.next}}
-          <small class="d-block">{{nextPlaylistItem?.title || resourceService.messages.stmsg.m0120}}</small>
-        </button>
+      <div class="ui twelve column grid mt-24">
+        <div class="one wide tablet only one wide computer only column"></div>
+        <div class="six wide mobile only six wide tablet only three wide computer only column">
+          <button 
+            class="ui blue button left floated fluid tocbutton toc-left-nav-btn-content" 
+            (click)="navigateToContent(prevPlaylistItem)"
+            [disabled]="prevPlaylistItem === undefined">
+            <span class="header">{{resourceService.frmelmnts.btn.previous}}</span>
+            <br>
+            <span class="font-white description text-ellipsis">{{prevPlaylistItem?.title || resourceService.messages.stmsg.m0120}}</span>
+          </button>
+        </div>
+        <div class="four wide tablet only four wide computer only column"></div>
+        <div class="six wide mobile only six wide tablet only three wide computer only column pr-0">
+          <button 
+            class="ui blue button right floated fluid toc-right-nav-btn-content"
+            (click)="navigateToContent(nextPlaylistItem)"
+            [disabled]="nextPlaylistItem === undefined"
+            >
+            <span class="header">{{resourceService.frmelmnts.btn.next}}</span>
+            <br>
+            <span class="font-white description text-ellipsis">{{nextPlaylistItem?.title || resourceService.messages.stmsg.m0120}}</span>
+          </button>
+        </div>
       </div>
       <!--/Content Navigation-->
     
