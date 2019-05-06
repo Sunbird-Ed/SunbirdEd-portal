@@ -13,7 +13,7 @@
 
 @include respond-above(xxxl) {
   .ui.container,.ui.grid.container {
-    width: 1524px;
+    width: 1524px !important;
   }
 }
 

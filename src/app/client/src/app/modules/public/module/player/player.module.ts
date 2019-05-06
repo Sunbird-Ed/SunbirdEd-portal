@@ -7,6 +7,7 @@ import { SharedModule } from '@sunbird/shared';
 import { BadgingModule } from '@sunbird/badge';
 import { CoreModule } from '@sunbird/core';
 import { PlayerHelperModule } from '@sunbird/player-helper';
+import { SuiModalModule } from 'ng2-semantic-ui';
 
 @NgModule({
     imports: [
@@ -16,7 +17,8 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
         SharedModule,
         BadgingModule,
         CoreModule,
-        PlayerHelperModule
+        PlayerHelperModule,
+        SuiModalModule
     ],
     providers: [],
     declarations: [PublicCollectionPlayerComponent, PublicContentPlayerComponent]
