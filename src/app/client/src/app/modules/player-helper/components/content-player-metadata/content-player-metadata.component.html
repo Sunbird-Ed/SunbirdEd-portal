@@ -1,248 +1,95 @@
-<div class="ui segment">
-    <div class="mb-20" *ngIf="metadata.description">
-        <div class="header mb-10">
+<div class="sb-meta-data-container sb-meta-data-row-facing mt-24">
+
+    <ng-container *ngIf="metadata.description">
+        <h4 class="sb-section-title text-capitalize mb-16 d-block">
             {{resourceService.frmelmnts.lbl.description}}
-        </div>
-        <div class="description" *ngIf="!readMore">
+        </h4>
+        <div *ngIf="!readMore">
             <span class="overflow-word-wrap">{{metadata.description | slice:0:150 }}&nbsp;</span>
-            <span class="ui expand-or-minimize mouse-pointer" (click)="readMore = !readMore" *ngIf="metadata.description.length > 150 && readMore === false">{{resourceService.frmelmnts.lbl.readmore}} </span>
+            <span class="ui expand-or-minimize mouse-pointer" (click)="readMore = !readMore" *ngIf="metadata.description.length > 150 && readMore === false">
+                {{resourceService.frmelmnts.lbl.readmore}}
+            </span>
         </div>
-        <div class="description" *ngIf="readMore">
+        <div *ngIf="readMore">
             <span class="overflow-word-wrap">{{metadata.description}}&nbsp;</span>
-            <span class="ui expand-or-minimize mouse-pointer" (click)="readMore = false">{{resourceService.frmelmnts.lbl.readless}}</span>
+            <span class="ui expand-or-minimize mouse-pointer" (click)="readMore = false">
+                {{resourceService.frmelmnts.lbl.readless}}
+            </span>
         </div>
-    </div>
-    <div class="header"> 
-        <span class="header">{{resourceService.frmelmnts.lbl.contentinformation}}</span>
-    </div>
-    <div class="ui middle aligned list">
-        <div class="item p-0 mb-5">
-            <div class="ui grid stackable m-0">
-                <div class="three wide column">
-                    <div class="content content-detail">
-                        {{resourceService.frmelmnts.lbl.title}}
-                    </div>
-                </div>
-                <div class="nine wide column">
-                    <div class="content overflow-word-wrap" *ngIf="metadata.name">
-                        {{metadata.name}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item p-0 mb-5">
-            <div class="ui grid stackable m-0">
-                <div class="three wide column">
-                    <div class="content content-detail">
-                        {{resourceService.frmelmnts.lbl.ownership}}
-                    </div>
-                </div>
-                <div class="nine wide column">
-                    <div class="content" *ngIf="metadata.owner">
-                        <span class="d-inline-block mr-20">{{metadata.owner}}</span>
-                        <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}">{{resourceService.frmelmnts.lbl.contentCredits}}</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item p-0 mb-5" *ngIf="metadata.orgDetails && metadata.orgDetails.orgName">
-            <div class="ui grid stackable m-0">
-                <div class="three wide column">
-                    <div class="content content-detail">
-                        {{resourceService.frmelmnts.lbl.organization}}
-                    </div>
-                </div>
-                <div class="nine wide column">
-                    <div class="content">
-                        <span class="d-inline-block mr-20">{{metadata.orgDetails?.orgName}}</span>
-                        <a ng-if="metadata.orgDetails?.email" href="mailto:{{metadata.orgDetails?.email}}?subject={{metadata.name}}">{{metadata.orgDetails?.email}}</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item p-0 mb-5">
-            <div class="ui grid stackable m-0">
-                <div class="three wide column">
-                    <div class="content content-detail">
-                        {{resourceService.frmelmnts.lbl.author}}
-                    </div>
-                </div>
-                <div class="nine wide column">
-                    <div class="content" *ngIf="metadata.creator">
-                        {{metadata.creator}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="item p-0 mb-5">
-            <div class="ui grid stackable m-0">
-                <div class="three wide column">
-                    <div class="content content-detail">
-                        {{resourceService.frmelmnts.lbl.medium}}
-                    </div>
-                </div>
-                <div class="nine wide column">
-                    <div class="content" *ngIf="metadata.medium">
-                        {{metadata.medium}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item p-0 mb-5">
-            <div class="ui grid stackable m-0">
-                <div class="three wide tablet computer only column">
-                    <div class="content content-detail">
-                        {{resourceService.frmelmnts.lbl.board}}
-                    </div>
-                </div>
-                <div class="nine wide tablet computer only column">
-                    <div class="content" *ngIf="metadata.board">
-                        {{metadata.board}}
-                    </div>
-                </div>
-                <div class="six wide mobile only column">
-                    <div class="content content-detail">
-                        {{resourceService.frmelmnts.lbl.board}}
-                    </div>
-                </div>
-                <div class="six wide mobile only column">
-                    <div class="content" *ngIf="metadata.board">
-                        {{metadata.board}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item p-0 mb-5">
-            <div class="ui grid stackable m-0">
-                <div class="three wide column">
-                    <div class="content content-detail">
-                        {{resourceService.frmelmnts.lbl.class}}
-                    </div>
-                </div>
-                <div class="nine wide column">
-                    <div class="content" *ngIf="metadata.gradeLevel">
-                        {{metadata.gradeLevel}}
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="ui divider mt-24 mb-24"></div>
+    </ng-container>
 
-        <div class="item p-0 mb-5">
-            <div class="ui grid stackable m-0">
-                <div class="three wide column">
-                    <div class="content content-detail">
-                        {{resourceService.frmelmnts.lbl.subject}}
-                    </div>
-                </div>
-                <div class="nine wide column">
-                    <div class="content" *ngIf="metadata.subject">
-                        {{metadata.subject}}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="item p-0 mb-5" *ngIf="metadata.createdOn">
-            <div class="ui grid stackable m-0">
-                <div class="three wide column">
-                    <div class="content content-detail">
-                        {{resourceService.frmelmnts.lbl.createdon}}
-                    </div>
-                </div>
-                <div class="nine wide column">
-                    <div class="content">
-                        {{metadata.createdOn | dateFormat }}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item p-0 mb-5" *ngIf="metadata.lastUpdatedOn">
-            <div class="ui grid stackable m-0">
-                <div class="three wide column">
-                    <div class="content content-detail">
-                        {{resourceService.frmelmnts.lbl.lastupdate}}
-                    </div>
-                </div>
-                <div class="nine wide column">
-                    <div class="content">
-                        {{metadata.lastUpdatedOn | dateFormat }}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item p-0 mb-5">
-            <div class="ui grid stackable m-0">
-                <div class="three wide column">
-                    <div class="content content-detail">
-                        {{resourceService.frmelmnts.lbl.keywords}}
-                    </div>
-                </div>
-                <div class="nine wide column">
-                    <div class="content" *ngIf="metadata.keywords">
-                        {{metadata.keywords}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item p-0 mb-5">
-            <div class="ui grid stackable m-0">
-                <div class="three wide column">
-                    <div class="content content-detail">
-                        {{resourceService.frmelmnts.lbl.resourcetype}}
-                    </div>
-                </div>
-                <div class="nine wide column">
-                    <div class="content" *ngIf="metadata.resourceType">
-                        {{metadata.resourceType}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item p-0 mb-5" *ngIf="metadata.status === 'Flagged' && metadata.flagReasons">
-            <div class="ui grid stackable m-0">
-                <div class="three wide column">
-                    <div class="content content-detail overflow-word-wrap">
-                        {{resourceService.frmelmnts.lbl.flaggedreason}}
-                    </div>
-                </div>
-                <div class="nine wide column">
-                    <div class="content">
-                        <div class="ui overflow-word-wrap">{{metadata.flagReasons}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item p-0 mb-5" *ngIf="metadata.status === 'Flagged' && metadata.flaggedBy">
-            <div class="ui grid stackable m-0">
-                <div class="three wide column">
-                    <div class="content content-detail">
-                        {{resourceService.frmelmnts.lbl.flaggedby}}
-                    </div>
-                </div>
-                <div class="nine wide column">
-                    <div class="content">
-                        {{metadata.flaggedBy}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item p-0 mb-5" *ngIf="metadata.status === 'Flagged' && metadata.flags">
-            <div class="ui grid stackable m-0">
-                <div class="three wide column">
-                    <div class="content content-detail overflow-word-wrap">
-                        {{resourceService.frmelmnts.lbl.flaggeddescription}}
-                    </div>
-                </div>
-                <div class="nine wide column">
-                    <div class="content">
-                        {{metadata.flags}}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <h4 class="sb-section-title text-capitalize mb-16 d-block">
+        {{resourceService.frmelmnts.lbl.contentinformation}}
+    </h4>
+    <dl class="sb-meta-data">
+        <dt>{{resourceService.frmelmnts.lbl.title}}</dt>
+        <dd *ngIf="metadata.name">{{metadata.name}}</dd>
+    </dl>
+    <dl class="sb-meta-data">
+        <dt>{{resourceService.frmelmnts.lbl.ownership}}</dt>
+        <dd *ngIf="metadata.owner">
+            <span class="d-inline-block mr-20">{{metadata.owner}}</span> &nbsp;
+            <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}" class="cursor-pointer">
+                {{resourceService.frmelmnts.lbl.contentCredits}}
+            </a>
+        </dd>
+    </dl>
+    <dl class="sb-meta-data" *ngIf="metadata.orgDetails && metadata.orgDetails.orgName">
+        <dt>{{resourceService.frmelmnts.lbl.organization}}</dt>
+        <dd>
+            <span class="d-inline-block mr-20">{{metadata.orgDetails?.orgName}}</span> &nbsp;
+            <a ng-if="metadata.orgDetails?.email" href="mailto:{{metadata.orgDetails?.email}}?subject={{metadata.name}}">{{metadata.orgDetails?.email}}</a>
+        </dd>
+    </dl>
+    <dl class="sb-meta-data">
+        <dt>{{resourceService.frmelmnts.lbl.author}}</dt>
+        <dd *ngIf="metadata.creator">{{metadata.creator}}</dd>
+    </dl>
+    <dl class="sb-meta-data">
+        <dt>{{resourceService.frmelmnts.lbl.medium}}</dt>
+        <dd *ngIf="metadata.medium">{{metadata.medium}}</dd>
+    </dl>
+    <dl class="sb-meta-data">
+        <dt>{{resourceService.frmelmnts.lbl.board}}</dt>
+        <dd *ngIf="metadata.board">{{metadata.board}}</dd>
+    </dl>
+    <dl class="sb-meta-data">
+        <dt>{{resourceService.frmelmnts.lbl.class}}</dt>
+        <dd *ngIf="metadata.gradeLevel">{{metadata.gradeLevel}}</dd>
+    </dl>
+    <dl class="sb-meta-data">
+        <dt>{{resourceService.frmelmnts.lbl.subject}}</dt>
+        <dd *ngIf="metadata.subject">{{metadata.subject}}</dd>
+    </dl>
+    <dl class="sb-meta-data" *ngIf="metadata.createdOn">
+        <dt>{{resourceService.frmelmnts.lbl.createdon}}</dt>
+        <dd>{{metadata.createdOn | dateFormat }}</dd>
+    </dl>
+    <dl class="sb-meta-data" *ngIf="metadata.lastUpdatedOn">
+        <dt>{{resourceService.frmelmnts.lbl.lastupdate}}</dt>
+        <dd>{{metadata.lastUpdatedOn | dateFormat }}</dd>
+    </dl>
+    <dl class="sb-meta-data">
+        <dt>{{resourceService.frmelmnts.lbl.keywords}}</dt>
+        <dd *ngIf="metadata.keywords">{{metadata.keywords}}</dd>
+    </dl>
+    <dl class="sb-meta-data">
+        <dt>{{resourceService.frmelmnts.lbl.resourcetype}}</dt>
+        <dd *ngIf="metadata.resourceType">{{metadata.resourceType}}</dd>
+    </dl>
+    <dl class="sb-meta-data" *ngIf="metadata.status === 'Flagged' && metadata.flagReasons">
+        <dt>{{resourceService.frmelmnts.lbl.flaggedreason}}</dt>
+        <dd>{{metadata.flagReasons}}</dd>
+    </dl>
+    <dl class="sb-meta-data" *ngIf="metadata.status === 'Flagged' && metadata.flaggedBy">
+        <dt>{{resourceService.frmelmnts.lbl.flaggedby}}</dt>
+        <dd>{{metadata.flaggedBy}}</dd>
+    </dl>
+    <dl class="sb-meta-data" *ngIf="metadata.status === 'Flagged' && metadata.flags">
+        <dt>{{resourceService.frmelmnts.lbl.flaggeddescription}}</dt>
+        <dd>{{metadata.flags}}</dd>
+    </dl>
     <app-content-credits [contentData]="metadata" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false">
   </app-content-credits>
 </div>

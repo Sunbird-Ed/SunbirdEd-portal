@@ -5,7 +5,7 @@
         <h4 class="sb-pageSection-title m-0 mr-5"> {{section.name}}</h4>
         <!--/Section Title-->
         <!--Count-->
-        <span class="sb-pageSection-count sb-label sb-label-xs sb-label-tertiary">{{section.count}}</span>
+        <span class="sb-pageSection-count sb-label sb-label-xs sb-label-error">{{section.count}}</span>
         <!--/Count-->
         <!--View all button-->
         <button class="sb-btn sb-btn-xs sb-btn-secondary ml-auto" type="button"
@@ -17,6 +17,7 @@
         <!--/View all button-->
     </div>
     <!--/Header-->
+
     <!--Content-->
     <div *ngIf="refresh" class="sb-pageSection-content">
         <ngx-slick (afterChange)="handleAfterChange($event)" appTelemetryInteract

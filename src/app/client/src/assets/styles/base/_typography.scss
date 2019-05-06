@@ -1,5 +1,8 @@
 /* typography styles */
-
+h1,h2,h3,h4,h5,h6{
+    margin: 0;
+    padding: 0;
+}
 h1 {
     font-size: $h1-font-size;
     line-height: ($h1-font-size + 8);
@@ -10,21 +13,64 @@ h2 {
 }
 h3 {
     font-size: $h3-font-size;
-    line-height: ($h3-font-size * 1.42857);
+    line-height: ($h3-font-size + 8);
 }
 h4 {
     font-size: $h4-font-size;
-    line-height: ($h4-font-size * 1.42857);
+    line-height: ($h4-font-size + 8); //* 1.42857
 }
 h5 {
     font-size: $h5-font-size;
-    line-height: ($h5-font-size * 1.42857);
+    line-height: ($h5-font-size + 8);
 }
 h6 {
     font-size: $h6-font-size;
-    line-height: ($h6-font-size * 1.42857);
+    line-height: ($h6-font-size + 8);
 }
 p {
     font-size: $p-font-size;
-    line-height: ($p-font-size * 1.42857); //1.618
+    line-height: ($p-font-size * 1.618); //* 1.618
+}
+.fmedium {
+    font-size: $font-size-md;
+}
+.fxsmall {
+    font-size: $font-size-sm;
+}
+.fxsmall {
+    font-size: $font-size-xs;
+}
+.sb-h1-title{
+
+}
+.sb-h2-title {
+
+}
+.sb-h3-title {
+
+}
+.sb-h4-title {
+
+}
+.sb-h5-title {
+
+}
+.sb-h6-title {
+
+}
+.sb-para {
+    
+}
+.sb-section-title,
+.sb-pageSection-title {
+    font-size: $h5-font-size;
+    display: inline;
+    text-transform: lowercase;
+    font-weight: 600;
+    &::first-letter{
+      text-transform: uppercase;
+    }
+    &.sb-pageSection-title-light {
+        color: $gray-400;
+    }
 }
