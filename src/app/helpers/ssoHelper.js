@@ -4,6 +4,7 @@ const envHelper = require('./environmentVariablesHelper.js')
 const request = require('request-promise'); //  'request' npm package with Promise support
 const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
+const kafkaService = require('../helpers/kafkaHelperService');
 
 let keycloak = getKeyCloakClient({
   clientId: envHelper.PORTAL_TRAMPOLINE_CLIENT_ID,
@@ -38,7 +39,7 @@ const verifyToken = (token) => {
     throw new Error('TOKEN_EXPIRED');
   } else if (!token.sub) {
     throw new Error('USER_ID_NOT_PRESENT');
-  } 
+  }
   return true;
 }
 const fetchUserWithExternalId = async (payload, req) => { // will be called from player docker to learner docker
@@ -138,4 +139,48 @@ const handleGetUserByIdError = (error) => {
   }
   throw error.error || error.message || error;
 }
-module.exports = { keycloak, verifySignature, verifyToken, fetchUserWithExternalId, createUser, createSession, updatePhone, updateRoles };
+
+  // creating payload for kafka service
+const getKafkaPayloadData = (sessionDetails) => {
+  var jwtPayload = sessionDetails.jwtPayload;
+  var userDetails = sessionDetails.userDetails;
+  return {
+    'identifier': uuid(),
+    'ets': (new Date).getTime(),
+    'operationType': 'UPDATE',
+    'eventType': 'transactional',
+    'objectType': 'user',
+    'event': {
+      'userExternalId': jwtPayload.sub || '',
+      'nameFromPayload': jwtPayload.name || '',
+      'channel': jwtPayload.state_id || '',
+      'orgExternalId': jwtPayload.school_id || '',
+      'roles': jwtPayload.roles || [],
+      'userId': userDetails.id || '',
+      'organisations': userDetails.organisations || [],
+      'firstName': userDetails.firstName
+    }
+  }
+};
+
+const sendStateSsoKafkaMessage = async (req) => {
+  var kafkaPayloadData = getKafkaPayloadData(req.session);
+  var stateSsoTopic = envHelper.sunbird_sso_kafka_topic;
+  kafkaService.sendMessage(kafkaPayloadData, stateSsoTopic, function (err, res) {
+    if (err) {
+      console.log(err, null)
+    }
+  });
+};
+
+module.exports = {
+  keycloak,
+  verifySignature,
+  verifyToken,
+  fetchUserWithExternalId,
+  createUser,
+  createSession,
+  updatePhone,
+  updateRoles,
+  sendStateSsoKafkaMessage
+};

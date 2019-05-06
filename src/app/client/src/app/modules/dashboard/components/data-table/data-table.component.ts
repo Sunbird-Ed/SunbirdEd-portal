@@ -14,7 +14,8 @@ export class DataTableComponent implements AfterViewInit {
 
     ngAfterViewInit() {
         setTimeout(() => {
-            $(`#${this.tableId}`).removeAttr('width').DataTable({
+             $(`#${this.tableId}`).removeAttr('width').DataTable({
+                retrieve: true,
                 'columnDefs': [
                     {
                         'targets': 0,
