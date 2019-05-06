@@ -68,7 +68,7 @@ describe('UsageReportsComponent', () => {
     spyOn(component, 'downloadCSV').and.callThrough();
     spyOn(toasterService, 'error').and.callThrough();
     component.ngOnInit();
-    component.downloadCSV(component.currentReport.downloadUrl);
+    component.downloadCSV();
     expect(usageService.getData).toHaveBeenCalled();
     });
 });
