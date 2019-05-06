@@ -101,6 +101,7 @@
     "joi": "^13.0.1",
     "js-md5": "^0.5.0",
     "jsonwebtoken": "^7.4.1",
+    "kafka-node": "^4.1.1",
     "keycloak-connect": "git+https://github.com/project-sunbird/keycloak-nodejs-connect.git",
     "lodash": "^4.17.4",
     "mobile-detect": "^1.4.2",
