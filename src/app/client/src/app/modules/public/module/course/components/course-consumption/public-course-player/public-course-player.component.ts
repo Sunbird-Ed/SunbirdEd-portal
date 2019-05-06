@@ -13,8 +13,7 @@ import * as TreeModel from 'tree-model';
 
 @Component({
   selector: 'app-public-course-player',
-  templateUrl: './public-course-player.component.html',
-  styleUrls: ['./public-course-player.component.css']
+  templateUrl: './public-course-player.component.html'
 })
 export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterViewInit {
 

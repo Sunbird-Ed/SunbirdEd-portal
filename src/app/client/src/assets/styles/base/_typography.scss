@@ -70,4 +70,7 @@ p {
     &::first-letter{
       text-transform: uppercase;
     }
+    &.sb-pageSection-title-light {
+        color: $gray-400;
+    }
 }

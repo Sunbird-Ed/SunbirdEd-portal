@@ -4,6 +4,9 @@
     display: flex;
     align-items: center;
     @include margin($sb-page-section-header-content-space);
+    &.sb-pageSection-header-compact{
+      @include margin($sb-page-section-header-content-space-compact);
+    }
   }
   .sb-pageSection-title {
     font-size: $h5-font-size;
