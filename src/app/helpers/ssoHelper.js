@@ -167,7 +167,7 @@ const getKafkaPayloadData = (sessionDetails) => {
 const getSsoUpdateWhileListChannels = async (req) => {
   // return cached value
   if (ssoWhiteListChannels) {
-    return !!(_.includes(ssoWhiteListChannels.result.response.value, req.session.jwtPayload.state_id));
+    return _.includes(_.get(ssoWhiteListChannels, 'result.response.value'), req.session.jwtPayload.state_id);
   }
 
   let options = {
@@ -183,31 +183,27 @@ const getSsoUpdateWhileListChannels = async (req) => {
     if (_.isString(response)) {
       const res = JSON.parse(response);
       ssoWhiteListChannels = res;
-      return !!(res.result && res.result.response && res.result.response.value && _.includes(res.result.response.value, req.session.jwtPayload.state_id));
+      return _.includes(_.get(res, 'result.response.value'), req.session.jwtPayload.state_id);
     } else {
       return false
     }
   } catch (error) {
-    console.log('error fetching whileList channels: getSsoUpdateWhileListChannels');
+    console.log('sso error fetching whileList channels: getSsoUpdateWhileListChannels');
+    return false;
   }
 };
 
 const sendSsoKafkaMessage = async (req) => {
-  try {
-    const ssoUpdataChannelLists = await getSsoUpdateWhileListChannels(req);
-    if (ssoUpdataChannelLists) {
-      var kafkaPayloadData = getKafkaPayloadData(req.session);
-      var stateSsoTopic = envHelper.sunbird_sso_kafka_topic;
-      kafkaService.sendMessage(kafkaPayloadData, stateSsoTopic, function (err, res) {
-        if (err) {
-          console.log(err, null)
-        } else {
-          console.log('MESSAGE_SUCCESSFULLY_SEND_TO_KAFKA', res)
-        }
-      });
-    }
-  } catch (e) {
-    console.log('error getting the sso update while list channel', e)
+  const ssoUpdataChannelLists = await getSsoUpdateWhileListChannels(req);
+  if (ssoUpdataChannelLists) {
+    var kafkaPayloadData = getKafkaPayloadData(req.session);
+    kafkaService.sendMessage(kafkaPayloadData, envHelper.sunbird_sso_kafka_topic, function (err, res) {
+      if (err) {
+        console.log('sso sending message to kafka errored', err)
+      } else {
+        console.log('sso kafka message send successfully')
+      }
+    });
   }
 };
 
