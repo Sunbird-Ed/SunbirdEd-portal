@@ -205,7 +205,7 @@ const sendSsoKafkaMessage = async (req) => {
       }
     });
   } else {
-    console.log('sso white list channels not matched or errored')
+    console.log('sso white list channels not matched or errored ')
   }
 };
 
