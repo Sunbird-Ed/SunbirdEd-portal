@@ -6,14 +6,14 @@
 }*/
 
 @include respond-above(lg) {
-  .ui.container {
-    width: 1216px;
+  .ui.container,.ui.grid.container {
+    width: 1216px !important;
   }
 }
 
 @include respond-above(xxxl) {
-  .ui.container {
-    width: 1524px;
+  .ui.container,.ui.grid.container {
+    width: 1524px !important;
   }
 }
 

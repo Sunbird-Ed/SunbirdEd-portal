@@ -1,13 +1,10 @@
 <div class="ui container">
-   <div class="ui grid m-0">
-      <div class="twelve wide column pb-0 px-0">
-          <div class=" ui clearing segment content-player-header search-content-header p-0">
-              <div class="d-flex flex-ai-center flex-jc-space-between">
-                  <p class="serch-allresult fs-1-143 font-weight-bold mb-0 pl-15" > {{sectionName}}</p>
-                  <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="ui right floated basic icon circular button mx-15 my-5" [routerLink]="[closeUrl]">
-                      <i class="ui remove icon"></i>
-                  </h5>
-              </div>
+   <div class="content-grid m-0">
+      <div class="sb-pageSection">
+          <div  class="sb-pageSection-header">
+                  <h4 class="sb-pageSection-title font-weight-bold m-0 mr-5"> {{sectionName}}
+                  </h4>
+              <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button" [routerLink]="[closeUrl]">Close <i class="close icon"></i></button>
           </div>
       </div>
     </div>

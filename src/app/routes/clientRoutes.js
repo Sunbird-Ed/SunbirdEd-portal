@@ -95,6 +95,8 @@ module.exports = (app, keycloak) => {
     '/resources/*', '/myActivity', '/myActivity/*'], keycloak.protect(), indexPage(true))
 
   app.all('/:tenantName', renderTenantPage)
+
+  app.use('/program', express.static(path.join(__dirname, '../program')))
 }
 
 function getLocals(req) {
@@ -124,6 +126,7 @@ function getLocals(req) {
   locals.googleCaptchaSiteKey = envHelper.sunbird_google_captcha_site_key
   locals.videoMaxSize = envHelper.sunbird_portal_video_max_size
   locals.reportsLocation = envHelper.sunbird_azure_report_container_name
+  locals.PlayerCdnUrl = envHelper.sunbird_portal_player_cdn_url
   return locals
 }
 
@@ -145,7 +148,11 @@ const renderDefaultIndexPage = (req, res) => {
   } else {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
     res.locals = getLocals(req);
-    res.render(path.join(__dirname, '../dist', 'index.ejs'))
+    if(envHelper.hasCdnIndexFile && req.cookies.cdnFailed !== 'true'){ // assume cdn works and send cdn ejs file
+      res.render(path.join(__dirname, '../dist', 'cdn_index.ejs'))
+    } else { // load local file if cdn fails or cdn is not enabled
+      res.render(path.join(__dirname, '../dist', 'index.ejs'))
+    }
   }
 }
 // renders tenant page from cdn or from local files based on tenantCdnUrl exists
