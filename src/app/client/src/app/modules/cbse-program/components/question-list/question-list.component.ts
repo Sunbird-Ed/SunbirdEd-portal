@@ -1,5 +1,4 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-question-list',
@@ -14,10 +13,6 @@ export class QuestionListComponent implements OnInit, AfterViewInit {
   constructor() { }
 
   ngOnInit() {
-    // const allEditors = document.querySelectorAll('.editor');
-    // console.log('allEditors ', allEditors.length)
-    // for (let i = 0; i < allEditors.length; ++i) {
-    // }
   }
 
   ngAfterViewInit() {
