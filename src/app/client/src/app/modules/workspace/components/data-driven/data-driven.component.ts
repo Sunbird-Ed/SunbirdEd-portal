@@ -267,7 +267,9 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     } else {
       requestData.mimeType = this.configService.urlConFig.URLS.CONTENT_COLLECTION;
     }
-    if (this.resourceType) {
+    if (data.resourceType) {
+      requestData.resourceType = data.resourceType;
+    } else if (this.resourceType) {
       requestData.resourceType = this.resourceType;
     }
     if (!_.isEmpty(this.userProfile.lastName)) {
