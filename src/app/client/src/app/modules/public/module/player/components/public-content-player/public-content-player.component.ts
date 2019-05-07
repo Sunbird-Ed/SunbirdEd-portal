@@ -135,10 +135,15 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    * @memberof ContentPlayerComponent
    */
   close() {
-    window.frames['contentPlayer'].contentDocument.body.onunload({});
-    setTimeout(() => {
-      this.navigationHelperService.navigateToResource('/explore');
-    }, 100);
+    try {
+      window.frames['contentPlayer'].contentDocument.body.onunload({});
+    } catch {
+
+    } finally {
+      setTimeout(() => {
+        this.navigationHelperService.navigateToResource('/explore');
+      }, 100);
+    }
   }
   deviceDetector() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
