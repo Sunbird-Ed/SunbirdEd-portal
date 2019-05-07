@@ -1,5 +1,4 @@
-import { ExtPluginService } from './../../../core/services/ext-plugin/ext-plugin.service';
-import { FormService } from '@sunbird/core';
+import { FormService, UserService, ExtPluginService } from '@sunbird/core';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
@@ -11,12 +10,24 @@ export class OnboardPopupComponent implements OnInit {
 
   @Input() userDetails: any;
 
-  @Input() PluginDetails: any;
+  @Input() programDetails: any;
 
-  constructor(public formService: FormService, public extPluginService: ExtPluginService) { }
+  constructor(public formService: FormService, public extPluginService: ExtPluginService, public userService: UserService) { }
 
   ngOnInit() {
-    console.log(this.PluginDetails);
+    this.getFormDetails().subscribe((formData) => {
+      console.log(formData);
+    }, error => {
+      console.log(error);
+    });
   }
 
+  private getFormDetails() {
+    const formServiceInputParams = {
+      formType: 'program',
+      formAction: 'onboarding',
+      contentType: this.programDetails.programId
+    };
+    return this.formService.getFormConfig(formServiceInputParams, this.userService.hashTagId);
+  }
 }
