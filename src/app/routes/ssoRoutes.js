@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const jwt = require('jsonwebtoken')
-const { verifySignature, verifyToken, fetchUserWithExternalId, createUser, createSession, updatePhone, updateRoles } = require('./../helpers/ssoHelper');
+const {verifySignature, verifyToken, fetchUserWithExternalId, createUser, createSession, updatePhone, updateRoles, sendSsoKafkaMessage} = require('./../helpers/ssoHelper');
 const telemetryHelper = require('../helpers/telemetryHelper');
 const fs = require('fs');
 
@@ -60,7 +60,7 @@ module.exports = (app) => {
         }
         await updatePhone(updatePhoneReq).catch(handleProfileUpdateError); // api need to be verified
         console.log('sso phone updated successfully and redirected to success page', jwtPayload.state_id, req.query.phone, jwtPayload, userDetails, createUserReq, updatePhoneReq, updateRolesReq, redirectUrl, errType);
-      } else { // create user and update roles
+      } else if (_.isEmpty(userDetails)) { // create user and update roles
         errType = 'CREATE_USER';
         createUserReq = {
           firstName: jwtPayload.name,
@@ -109,8 +109,9 @@ module.exports = (app) => {
   })
 
   app.get(successUrl, async (req, res) => { // to support mobile sso flow
-    res.status(200).sendFile('./success_loader.html', {root: __dirname })
-  })
+    sendSsoKafkaMessage(req);
+    res.status(200).sendFile('./success_loader.html', {root: __dirname})
+  });
 
   app.get('/v1/sso/success/redirect', async (req, res) => {
     let userDetails, jwtPayload, redirectUrl, errType;
@@ -212,7 +213,7 @@ const logErrorEvent = (req, type, error) => {
 const logAuditEvent = (req, profile) => {
   const edata = {
     props: ['phone'],
-    state: 'LOGGED_IN_USER', 
+    state: 'LOGGED_IN_USER',
     prevstate: 'ANONYMOUS_USER'
   }
   const context = {

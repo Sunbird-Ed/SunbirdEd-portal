@@ -1,12 +1,15 @@
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { ResourceService } from '../../services/index';
-
+import { CdnprefixPipe } from '../../pipes/cdnprefix.pipe';
 import { BrowserCompatibilityComponent } from './browser-compatibility.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ResourceService, ConfigService, BrowserCacheTtlService } from '../../services';
+import { CacheService } from 'ng2-cache-service';
+import { Response } from './browser-compatibility.component.spec.data';
 
-xdescribe('BrowserCompatibilityComponent', () => {
+describe('BrowserCompatibilityComponent', () => {
   let component: BrowserCompatibilityComponent;
   let fixture: ComponentFixture<BrowserCompatibilityComponent>;
   const mockDeviceDetector = {
@@ -15,11 +18,11 @@ xdescribe('BrowserCompatibilityComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule],
-      declarations: [ BrowserCompatibilityComponent ],
-      providers: [ ResourceService, DeviceDetectorService ]
+      imports: [SuiModule, HttpClientTestingModule],
+      declarations: [BrowserCompatibilityComponent, CdnprefixPipe],
+      providers: [ResourceService, DeviceDetectorService, ConfigService, CacheService, BrowserCacheTtlService]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
 
@@ -49,19 +52,20 @@ xdescribe('BrowserCompatibilityComponent', () => {
     expect(component.browserCompatible).not.toBe(true);
   });
 
-  it('should call showCompatibilityModal method and modal will not display if it is chrome browser', () => {
-    const deviceDetectorService = TestBed.get(DeviceDetectorService);
-    spyOn(deviceDetectorService, 'getDeviceInfo').and.returnValue(observableOf(mockDeviceDetector));
+  it('should call modalHandler method and modal will be displayed if it is not chrome browser or firefox', () => {
+    component.showModal = false;
+    component.deviceInfo = Response.deviceInfo;
+    spyOn(component, 'modalHandler').and.callThrough();
     component.ngOnInit();
-    expect(component.deviceInfo).toBe('chrome');
+    expect(component.modalHandler).toHaveBeenCalled();
   });
 
-  it('should call showCompatibilityModal method and modal will display if the browser is other than chrome', () => {
-      const mockDevice = {};
-      const deviceDetectorService = TestBed.get(DeviceDetectorService);
-      spyOn(deviceDetectorService, 'getDeviceInfo').and.returnValue(observableOf(mockDevice));
-      component.ngOnInit();
-      expect(component.deviceInfo).not.toBe('chrome');
-    });
-
+  it('should call modalHandler method and modal will be displayed if it is firefox and being called from workspace', () => {
+    component.showModal = true;
+    component.deviceInfo = Response.deviceInfo;
+    spyOn(component, 'modalHandler').and.callThrough();
+    component.ngOnInit();
+    expect(component.modalHandler).toHaveBeenCalled();
+  });
 });
+

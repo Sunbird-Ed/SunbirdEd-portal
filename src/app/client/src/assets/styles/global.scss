@@ -1,8 +1,3 @@
-// global styles
-
-// *{
-//   transition: all 300ms ease-in-out
-//   }
 html,
 body {
   height: 100%;
@@ -10,13 +5,12 @@ body {
 }
 
 body {
-  background:$bg-body;
+  background: $body-background-color;
   position: relative;
   font-family: $font-stack-en;
   letter-spacing: 0.2px;
   height: auto;
-  background: $white-color;
-  color: $body-color;
+  color: $default-text-color;
 }
 
 *[lang="en"] body {
@@ -30,7 +24,6 @@ body {
 *[lang="ur"] body {
   font-family: $font-stack-ur;
 }
-
 
 button,
 input,
@@ -123,5 +116,27 @@ input[type=number]::-webkit-outer-spin-button {
 *[dir="rtl"] {
   .notched.circle.loading.icon {
     margin-left: 20px;
+  }
+}
+
+.sb-placeholder{
+  justify-content: center !important;
+}
+[dir="rtl"] {
+  .sb-explore-qr-container{
+    .dial-section-column {
+      border-right:0px solid rgba(51, 51, 51,0.1) !important;
+      border-left:1px solid rgba(51, 51, 51,0.1);
+    }
+  }
+  
+}
+
+[dir="ltr"] {
+  .sb-explore-qr-container{
+    .dial-section-column {
+      border-left:0px solid rgba(51, 51, 51,0.1);
+      border-right:1px solid rgba(51, 51, 51,0.1);
+    }
   }
 }

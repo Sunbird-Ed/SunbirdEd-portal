@@ -1,8 +1,9 @@
 
 import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
-import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage } from '@sunbird/shared';
+import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
+NavigationHelperService} from '@sunbird/shared';
 import { SearchService, UserService, PermissionService } from '@sunbird/core';
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
@@ -15,7 +16,7 @@ import { ProfileService } from '@sunbird/profile';
   templateUrl: './user-search.component.html',
   styleUrls: ['./user-search.component.scss']
 })
-export class UserSearchComponent implements OnInit {
+export class UserSearchComponent implements OnInit, AfterViewInit {
   private searchService: SearchService;
   private resourceService: ResourceService;
   /**
@@ -134,7 +135,8 @@ export class UserSearchComponent implements OnInit {
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
     resourceService: ResourceService, toasterService: ToasterService,
     config: ConfigService, user: UserService, userSearchService: UserSearchService,
-    public permissionService: PermissionService, public profileService: ProfileService) {
+    public permissionService: PermissionService, public profileService: ProfileService,
+    public navigationhelperService: NavigationHelperService) {
     this.searchService = searchService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -314,18 +316,6 @@ export class UserSearchComponent implements OnInit {
       }
     });
     this.setInteractEventData();
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.route.url,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
-      }
-    };
-
     this.userSearchService.userDeleteEvent.subscribe(data => {
       _.each(this.searchList, (key, index) => {
         if (data && data === key.id) {
@@ -360,6 +350,22 @@ export class UserSearchComponent implements OnInit {
       type: 'click',
       pageid: 'user-search'
     };
+  }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.route.url,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
   inview(event) {
     _.forEach(event.inview, (inview, key) => {

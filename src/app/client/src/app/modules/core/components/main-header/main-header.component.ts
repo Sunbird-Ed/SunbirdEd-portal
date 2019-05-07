@@ -141,6 +141,20 @@ export class MainHeaderComponent implements OnInit {
     this.router.navigate([this.exploreRoutingUrl, 1], { queryParams: this.queryParam });
   }
 
+  getSearchButtonInteractEdata(key) {
+    const searchInteractEdata = {
+      id: `search-button`,
+      type: 'click',
+      pageid: this.router.url.split('/')[1]
+    };
+    if (key) {
+      searchInteractEdata['extra'] = {
+        query: key
+      };
+    }
+    return searchInteractEdata;
+  }
+
   getUrl() {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
       let currentRoute = this.activatedRoute.root;

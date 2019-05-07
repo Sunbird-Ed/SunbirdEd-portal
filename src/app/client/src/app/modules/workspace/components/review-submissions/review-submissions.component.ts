@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ToasterService,
-  ResourceService, ConfigService, IContents, ILoaderMessage, INoResultMessage
+  ResourceService, ConfigService, IContents, ILoaderMessage, INoResultMessage,
+  NavigationHelperService
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
@@ -19,7 +20,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
   selector: 'app-review-submissions',
   templateUrl: './review-submissions.component.html'
 })
-export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
+export class ReviewSubmissionsComponent extends WorkSpace implements OnInit, AfterViewInit {
   /**
   * state for content editior
  */
@@ -131,7 +132,8 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     config: ConfigService, resourceService: ResourceService,
-    toasterService: ToasterService) {
+    toasterService: ToasterService,
+    public navigationhelperService: NavigationHelperService) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
@@ -150,18 +152,6 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
       this.pageNumber = Number(params.pageNumber);
       this.fetchReviewContents(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
     });
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
-        visits: this.inviewLogs
-      }
-    };
   }
   /**
    * This method sets the make an api call to get all reviewContent with page No and offset
@@ -232,6 +222,24 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
     }
     this.pageNumber = page;
     this.route.navigate(['workspace/content/review', this.pageNumber]);
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
+          visits: this.inviewLogs,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
   /**
   * get inview  Data
