@@ -1,0 +1,16 @@
+<div class="sb-offline-imports">
+  <div class="ui container sb-offline-area d-flex">
+    <div class="sb-import-icon"><i class="qrcode icon fa-5x"></i></div>
+    <div class="sb-import-content">
+      <h4>Import content</h4>
+      <p>Upload .ecar files from a pen drive to import content </p>
+    </div>
+    <button class="sb-btn sb-btn-normal sb-btn-secondary ml-auto" (click)="showImportModal = true;">
+      Import Content
+    </button>
+  </div>
+</div>
+
+<div *ngIf="showImportModal">
+  <app-content-import (closeImportModal)="showImportModal = false"></app-content-import>
+</div>
