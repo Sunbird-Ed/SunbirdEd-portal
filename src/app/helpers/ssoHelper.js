@@ -5,6 +5,7 @@ const request = require('request-promise'); //  'request' npm package with Promi
 const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
 const kafkaService = require('../helpers/kafkaHelperService');
+let ssoWhiteListChannels;
 
 let keycloak = getKeyCloakClient({
   clientId: envHelper.PORTAL_TRAMPOLINE_CLIENT_ID,
@@ -163,14 +164,51 @@ const getKafkaPayloadData = (sessionDetails) => {
   }
 };
 
-const sendStateSsoKafkaMessage = async (req) => {
-  var kafkaPayloadData = getKafkaPayloadData(req.session);
-  var stateSsoTopic = envHelper.sunbird_sso_kafka_topic;
-  kafkaService.sendMessage(kafkaPayloadData, stateSsoTopic, function (err, res) {
-    if (err) {
-      console.log(err, null)
+const getSsoUpdateWhileListChannels = async (req) => {
+  // return cached value
+  if (ssoWhiteListChannels) {
+    return !!(_.includes(ssoWhiteListChannels.result.response.value, req.session.jwtPayload.state_id));
+  }
+
+  let options = {
+    method: 'GET',
+    url: envHelper.LEARNER_URL + 'data/v1/system/settings/get/ssoUpdateWhitelistChannels',
+    headers: {
+      'content-type': 'application/json',
+      'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
     }
-  });
+  };
+  try {
+    const response = await request(options);
+    if (_.isString(response)) {
+      const res = JSON.parse(response);
+      ssoWhiteListChannels = res;
+      return !!(res.result && res.result.response && res.result.response.value && _.includes(res.result.response.value, req.session.jwtPayload.state_id));
+    } else {
+      return false
+    }
+  } catch (error) {
+    console.log('error fetching whileList channels: getSsoUpdateWhileListChannels');
+  }
+};
+
+const sendSsoKafkaMessage = async (req) => {
+  try {
+    const ssoUpdataChannelLists = await getSsoUpdateWhileListChannels(req);
+    if (ssoUpdataChannelLists) {
+      var kafkaPayloadData = getKafkaPayloadData(req.session);
+      var stateSsoTopic = envHelper.sunbird_sso_kafka_topic;
+      kafkaService.sendMessage(kafkaPayloadData, stateSsoTopic, function (err, res) {
+        if (err) {
+          console.log(err, null)
+        } else {
+          console.log('MESSAGE_SUCCESSFULLY_SEND_TO_KAFKA', res)
+        }
+      });
+    }
+  } catch (e) {
+    console.log('error getting the sso update while list channel', e)
+  }
 };
 
 module.exports = {
@@ -182,5 +220,5 @@ module.exports = {
   createSession,
   updatePhone,
   updateRoles,
-  sendStateSsoKafkaMessage
+  sendSsoKafkaMessage
 };
