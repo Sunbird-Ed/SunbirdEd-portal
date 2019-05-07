@@ -16,8 +16,7 @@ import * as TreeModel from 'tree-model';
 
 @Component({
   selector: 'app-course-player',
-  templateUrl: './course-player.component.html',
-  styleUrls: ['./course-player.component.scss']
+  templateUrl: './course-player.component.html'
 })
 export class CoursePlayerComponent implements OnInit, OnDestroy {
 

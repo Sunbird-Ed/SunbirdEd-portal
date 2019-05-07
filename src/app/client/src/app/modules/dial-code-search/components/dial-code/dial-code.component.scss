@@ -158,6 +158,16 @@
 .bottom-0 {
   bottom: 0;
 }
+.dial-code-section-result{
+  align-items: center !important;
+  .header{
+    display: inline-flex;
+    align-items: center;
+  }
+  .header-label{
+    font-size: 12px;
+  }
+}
 @media screen and  (min-width: 240px) and (max-width: 768px) {
   .dial-section-input {
     margin-top: 2em;
@@ -169,7 +179,7 @@
   }
 }
 .dial-code-section-bg {
-  background: #fff;
+  //background: #fff;
 }
 @media only screen and (max-width: 767px) {
   .ui.container.public-responvive-container {    

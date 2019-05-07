@@ -18,7 +18,6 @@
 @import "./components/fine-uploader-new";
 @import "./components/fine-uploader-gallery";
 @import "./components/iziToast";
-@import "./components/ui.fancytree";
 @import "./components/angular2select-default.theme";
 @import "./components/filters";
 @import "./components/progress-bar";
@@ -35,3 +34,9 @@
 @import "./pages/pages";
 @import "./vendors/vendors";
 @import "./utilities/utilities";
+
+
+.ui.grid > .column:not(.row) {
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
