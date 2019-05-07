@@ -192,7 +192,10 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
    * @memberof ContentPlayerComponent
    */
   close() {
-    this.navigationHelperService.navigateToResource('/resources');
+    window.frames['contentPlayer'].contentDocument.body.onunload({});
+    setTimeout(() => {
+      this.navigationHelperService.navigateToResource('/resources');
+    }, 100);
   }
 
   /**
