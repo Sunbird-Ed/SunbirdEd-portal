@@ -52,7 +52,9 @@ export class DataChartComponent implements OnInit, AfterViewInit {
   applyFilters() {
     combineLatest(this.onLabelsChange(), this.onTimeLineChange(), this.onDataSetChange(), this.onTimeLineRangeChange())
       .subscribe(value => {
-        this.chartInfo.update();
+        if (this.chartInfo) {
+          this.chartInfo.update();
+        }
       });
   }
 
@@ -155,6 +157,8 @@ export class DataChartComponent implements OnInit, AfterViewInit {
       this.chartInfo.datasets[i].label = dataset.label;
       this.chartInfo.datasets[i].data = dataset.data;
     });
-    this.chartInfo.update();
+    if (this.chartInfo) {
+      this.chartInfo.update();
+    }
   }
 }
