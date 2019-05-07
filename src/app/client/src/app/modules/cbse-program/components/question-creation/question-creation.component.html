@@ -82,7 +82,7 @@
           </div>
     </div>
     <!-- <input type="button" (click)="createQuestion()"  value="Submit" class="ui button" /> -->
-    <button class="ui button" (click)="createQuestion()" type="submit">Submit</button>
+    <button class="ui button" (click)="createQuestion($event)" type="submit">Submit</button>
   </form>
   <sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImagePicker()" *ngIf="showImagePicker" [size]="'normal'"
 [isFullScreen]="false" [mustScroll]="true" #modal>
