@@ -12,6 +12,9 @@ const appRoutes: Routes = [
     path: 'search', loadChildren: 'app/modules/search/search.module#SearchModule'
   },
   {
+    path: 'workspace/program', loadChildren: 'app/modules/program/program.module#ProgramModule'
+  },
+  {
     path: 'workspace', loadChildren: 'app/modules/workspace/workspace.module#WorkspaceModule'
   },
   {
