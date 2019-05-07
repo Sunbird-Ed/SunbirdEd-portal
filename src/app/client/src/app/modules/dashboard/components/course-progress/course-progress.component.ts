@@ -359,6 +359,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     if (!_.isEmpty(_.trim(event))) {
       this.modelChanged.next(event);
     }
+    if (_.trim(event) === '') {
+      this.modelChanged.next(event);
+    }
   }
   searchBatch() {
     this.modelChanged.pipe(debounceTime(1000),
