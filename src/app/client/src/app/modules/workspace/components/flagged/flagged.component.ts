@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ToasterService,
-  ResourceService, ConfigService, IContents, ILoaderMessage, INoResultMessage
+  ResourceService, ConfigService, IContents, ILoaderMessage, INoResultMessage,
+  NavigationHelperService
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
@@ -18,7 +19,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
   selector: 'app-flagged',
   templateUrl: './flagged.component.html'
 })
-export class FlaggedComponent extends WorkSpace implements OnInit {
+export class FlaggedComponent extends WorkSpace implements OnInit, AfterViewInit {
   /**
   * state for content editior
  */
@@ -131,7 +132,7 @@ export class FlaggedComponent extends WorkSpace implements OnInit {
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     config: ConfigService, resourceService: ResourceService,
-    toasterService: ToasterService) {
+    toasterService: ToasterService, public navigationhelperService: NavigationHelperService) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
@@ -150,17 +151,6 @@ export class FlaggedComponent extends WorkSpace implements OnInit {
       this.pageNumber = Number(params.pageNumber);
       this.fetchFlaggedContents(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
     });
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
-        visits: this.inviewLogs
-      }
-    };
   }
   /**
    * This method sets the make an api call to get all reviewContent with page No and offset
@@ -232,6 +222,23 @@ export class FlaggedComponent extends WorkSpace implements OnInit {
     }
     this.pageNumber = page;
     this.route.navigate(['workspace/content/flagged', this.pageNumber]);
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
+          visits: this.inviewLogs,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
   /**
   * get inview  Data

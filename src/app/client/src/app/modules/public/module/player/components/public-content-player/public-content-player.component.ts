@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -15,10 +15,9 @@ import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-public-content-player',
-  templateUrl: './public-content-player.component.html',
-  styleUrls: ['./public-content-player.component.scss']
+  templateUrl: './public-content-player.component.html'
 })
-export class PublicContentPlayerComponent implements OnInit, OnDestroy {
+export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
 	 * telemetryImpression
 	*/
@@ -79,26 +78,6 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
     });
   }
   setTelemetryData() {
-    if (this.dialCode) {
-      this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
-    }
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: this.telemetryCdata
-      },
-      object: {
-        id: this.contentId,
-        type: 'content',
-        ver: '1.0'
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.router.url,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
-      }
-    };
     this.telemetryInteractObject = {
       id: this.contentId,
       type: 'Content',
@@ -163,6 +142,33 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
     if (deviceInfo.device === 'android' || deviceInfo.os === 'android') {
       this.showFooter = true;
     }
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+        this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
+        if (this.dialCode) {
+          this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
+        }
+        this.telemetryImpression = {
+          context: {
+            env: this.activatedRoute.snapshot.data.telemetry.env,
+            cdata: this.telemetryCdata
+          },
+          object: {
+            id: this.activatedRoute.snapshot.params.contentId,
+            type: 'Content',
+            ver: '1.0'
+          },
+          edata: {
+            type: this.activatedRoute.snapshot.data.telemetry.type,
+            pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+            uri: this.router.url,
+            subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+            duration: this.navigationHelperService.getPageLoadTime()
+          }
+        };
+    });
   }
 
   ngOnDestroy() {

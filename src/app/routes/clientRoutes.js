@@ -15,7 +15,7 @@ const setZipConfig = (req, res, type, encoding, dist = '../') => {
     if (pathMap[req.path + type] && pathMap[req.path + type] === 'notExist') {
       return false;
     }
-    if(pathMap[req.path + '.'+ type] === 'exist' || 
+    if(pathMap[req.path + '.'+ type] === 'exist' ||
       fs.existsSync(path.join(__dirname, dist) + req.path + '.' + type)){
         if (req.path.endsWith('.css')) {
           res.set('Content-Type', 'text/css');
@@ -62,6 +62,10 @@ module.exports = (app, keycloak) => {
 
   app.use(express.static(path.join(__dirname, '../tenant'), { index: false }))
 
+  app.use('/sunbird-plugins', express.static(path.join(__dirname, '../sunbird-plugins')))
+
+  app.use('/tenant', express.static(path.join(__dirname, '../tenant'), { index: false }))
+
   if (envHelper.DEFAULT_CHANNEL) {
     app.use(express.static(path.join(__dirname, '../tenant', envHelper.DEFAULT_CHANNEL)))
   }
@@ -86,7 +90,7 @@ module.exports = (app, keycloak) => {
   app.all('/app', (req, res) => res.redirect(envHelper.ANDROID_APP_URL))
 
   app.all(['/home', '/home/*', '/announcement', '/announcement/*', '/search', '/search/*',
-    '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*', 
+    '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
     '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
     '/resources/*', '/myActivity', '/myActivity/*'], keycloak.protect(), indexPage(true))
 
@@ -120,6 +124,7 @@ function getLocals(req) {
   locals.googleCaptchaSiteKey = envHelper.sunbird_google_captcha_site_key
   locals.videoMaxSize = envHelper.sunbird_portal_video_max_size
   locals.reportsLocation = envHelper.sunbird_azure_report_container_name
+  locals.PlayerCdnUrl = envHelper.sunbird_portal_player_cdn_url
   return locals
 }
 
@@ -141,7 +146,11 @@ const renderDefaultIndexPage = (req, res) => {
   } else {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
     res.locals = getLocals(req);
-    res.render(path.join(__dirname, '../dist', 'index.ejs'))
+    if(envHelper.hasCdnIndexFile && req.cookies.cdnFailed !== 'true'){ // assume cdn works and send cdn ejs file
+      res.render(path.join(__dirname, '../dist', 'cdn_index.ejs'))
+    } else { // load local file if cdn fails or cdn is not enabled
+      res.render(path.join(__dirname, '../dist', 'index.ejs'))
+    }
   }
 }
 // renders tenant page from cdn or from local files based on tenantCdnUrl exists

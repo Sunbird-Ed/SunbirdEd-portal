@@ -3,8 +3,8 @@
   [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter>
 
 <div class="ui container mt-24">
-  <div [appTelemetryImpression]="telemetryImpression" *ngIf="!showLoader" class="ui grid stackable my-0">
-    <div class="twelve wide column py-0" *ngFor="let section of pageSections;let last = last"
+  <div [appTelemetryImpression]="telemetryImpression" *ngIf="!showLoader" class="ui grid stackable my-0 py-20">
+    <div class="twelve wide column" *ngFor="let section of pageSections;let last = last"
       [ngClass]="{'last mb-30':last}">
       <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section"
         (viewAll)="viewAll($event)"></app-page-section>

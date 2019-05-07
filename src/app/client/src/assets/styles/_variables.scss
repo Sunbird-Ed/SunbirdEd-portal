@@ -134,7 +134,7 @@ $red-400: $red; // icon color, lable, notification bg
 
 $red-0: #FBCCD1; // toast bg
 $red-100: #FF6979; // buttong bg, toast
-$red-400: $red; // icon color, lable, notification bg
+$red-400: #E55A28; // icon color, lable, notification bg
 
 // Status Colors
 $info-color: $primary-400;
@@ -142,8 +142,8 @@ $success-color: $secondary-200;
 $warning-color: $tertiary-100;
 $danger-color: $red-100;
 // Settings for the `<body>` element.
-$bg-body: $primary-0;
-$body-color: $gray-800;
+$body-background-color: $primary-0;
+$default-text-color: $gray-800;
 $theme-colors: () !default;
 $theme-colors: map-merge(( "primary": $primary-color, "secondary": $secondary-color, "tertiary": $tertiary-color, "success": $success-color, "info": $info-color, "warning": $warning-color, "danger": $danger-color, "light": $gray-100, "dark": $gray), $theme-colors);
 // Style anchor elements.
@@ -218,14 +218,15 @@ $sb-search-close-btn-color: $white;
 // page section component
 $sb-page-section-font-size: $h5-font-size;
 $sb-page-section-header-content-space: 0 0 ($base-block-space * 3) 0;
-$sb-page-sections-between-space: 0 0 ($base-block-space * 5) 0;
+$sb-page-section-header-content-space-compact: 0 0 ($base-block-space) 0;
+$sb-page-sections-between-space: 0 0 ($base-block-space * 3) 0;
 $sb-page-sections-divider-color: $gray-0 !important;
 
 // card component
 $sb-card-width: 292px;
-$sb-card-height: 200px;
+$sb-card-height: 208px;
 $sb-card-hover-movement: 2px;
-$sb-card-body-height: 194px;
+$sb-card-body-height: 204px;
 $sb-card-progressbar-height: 4px;
 $sb-card-padding: ($base-block-space * 2) ($base-block-space * 2) ($base-block-space) ($base-block-space * 2);
 $sb-card-border-radius: ($base-block-space / 2);

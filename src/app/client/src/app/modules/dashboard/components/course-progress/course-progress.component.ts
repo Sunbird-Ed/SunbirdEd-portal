@@ -300,7 +300,12 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         this.dashboarData = apiResponse.result;
         this.showDownloadLink = apiResponse.result.showDownloadLink ? apiResponse.result.showDownloadLink : false;
         this.totalCount = apiResponse.result.count;
-        this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
+        if (this.totalCount >= 10000) {
+          this.pager = this.paginationService.getPager(10000, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
+        } else {
+          this.pager = this.paginationService.getPager(
+            apiResponse.result.count, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
+        }
       },
       err => {
         this.toasterService.error(err.error.params.errmsg);
@@ -332,12 +337,10 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     takeUntil(this.unsubscribe))
     .subscribe(
       (apiResponse: ServerResponse) => {
-        this.toasterService.success( this.resourceService .messages.stmsg.m0132);
+        window.open(_.get(apiResponse, 'result.signedUrl'), '_parent');
       },
       err => {
-        const errMsg = this.resourceService.messages.imsg.m0044 + '<br/>' + '<br/>' +
-        this.resourceService.messages.imsg.m0043;
-        this.toasterService.error(errMsg);
+        this.toasterService.error(this.resourceService.messages.imsg.m0045);
       }
     );
     this.setInteractEventData();

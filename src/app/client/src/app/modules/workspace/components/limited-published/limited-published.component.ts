@@ -1,12 +1,12 @@
 import { FormsModule } from '@angular/forms';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
   ResourceService, IContents, ILoaderMessage, INoResultMessage,
-  ContentUtilsServiceService, ITelemetryShare
+  ContentUtilsServiceService, ITelemetryShare, NavigationHelperService
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
@@ -24,7 +24,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
   templateUrl: './limited-published.component.html',
   styleUrls: ['./limited-published.component.scss']
 })
-export class LimitedPublishedComponent extends WorkSpace implements OnInit {
+export class LimitedPublishedComponent extends WorkSpace implements OnInit, AfterViewInit {
 
   @ViewChild('modalTemplate')
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
@@ -157,7 +157,8 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
-    config: ConfigService, contentUtilsServiceService: ContentUtilsServiceService) {
+    config: ConfigService, contentUtilsServiceService: ContentUtilsServiceService,
+    public navigationhelperService: NavigationHelperService) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
@@ -180,18 +181,6 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
       this.pageNumber = Number(params.pageNumber);
       this.fetchLimitedPublished(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
     });
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
-        visits: this.inviewLogs
-      }
-    };
   }
   /**
    * This method sets the make an api call to get all Unlisted with page No and offset
@@ -314,6 +303,23 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
     this.telemetryImpression.edata.visits = this.inviewLogs;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
+          visits: this.inviewLogs,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
   setTelemetryShareData(param) {
     this.telemetryShareData = [{

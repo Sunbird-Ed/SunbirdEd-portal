@@ -3,11 +3,10 @@ import { ResourceService, ServerResponse, ToasterService, ConfigService, UtilSer
 import { Router, ActivatedRoute } from '@angular/router';
 import { SearchService, SearchParam, PlayerService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { takeUntil, map, catchError, mergeMap } from 'rxjs/operators';
 import { Subject, forkJoin, of } from 'rxjs';
 import * as TreeModel from 'tree-model';
-import * as $ from 'jquery';
 
 @Component({
   selector: 'app-dial-code',
@@ -25,9 +24,6 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   private searchService: SearchService;
 
-  telemetryInteractObject: IInteractEventObject;
-  closeMobilePopup: IInteractEventEdata;
-  appMobileDownload: IInteractEventEdata;
   /**
    * reference of ToasterService
    */
@@ -82,12 +78,15 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   public unsubscribe$ = new Subject<void>();
 
   linkedContents: Array<any>;
-
+  showMobilePopup = false;
+  isRedirectToDikshaApp = false;
+  closeMobilePopupInteractData: any;
+  appMobileDownloadInteractData: any;
 
   constructor(resourceService: ResourceService, router: Router, activatedRoute: ActivatedRoute,
     searchService: SearchService, toasterService: ToasterService, public configService: ConfigService,
     public utilService: UtilService, public navigationhelperService: NavigationHelperService,
-    public playerService: PlayerService) {
+    public playerService: PlayerService, public telemetryService: TelemetryService) {
     this.resourceService = resourceService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -96,6 +95,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.setTelemetryData();
     this.instanceName = this.resourceService.instance;
     this.activatedRoute.params.subscribe(params => {
       this.searchKeyword = this.dialCode = params.dialCode;
@@ -104,26 +104,48 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.handleMobilePopupBanner();
   }
 
+  setTelemetryData () {
+    this.closeMobilePopupInteractData = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+      },
+      edata: {
+        id: 'mobile-popup-close',
+        type: 'click',
+        pageid: 'get-dial'
+      }
+    };
+
+    this.appMobileDownloadInteractData = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+      },
+      edata: {
+        id: 'app-download-mobile',
+        type: 'click',
+        pageid: 'get-dial'
+      }
+    };
+  }
+
   handleMobilePopupBanner () {
     setTimeout(() => {
-      $('.mobile-app-popup').css({ 'bottom': '0' });
-      $('.mobile-popup-dimmer').css({ 'bottom': '0' });
+      this.showMobilePopup = true;
     }, 500);
+  }
 
-    $('.app-download').click(function (event) {
-      const btnId = $(this).attr('id');
-      window.location.href = 'https://play.google.com/store/apps/details?id=in.gov.diksha.app';
-    });
+  closeMobileAppPopup () {
+    if (!this.isRedirectToDikshaApp) {
+      this.telemetryService.interact(this.closeMobilePopupInteractData);
+      (document.querySelector('.mobile-app-popup') as HTMLElement).style.bottom = '-999px';
+      (document.querySelector('.mobile-popup-dimmer') as HTMLElement).style.display = 'none';
+    }
+  }
 
-    $('.close-mobile-div').click(() => {
-      $('.mobile-app-popup').css({ 'bottom': '-999px' });
-      $('.mobile-popup-dimmer').css({ 'display': 'none' });
-    });
-
-    $('.mobile-popup-dimmer').click(() => {
-      $('.mobile-app-popup').css({ 'bottom': '-999px' });
-      $('.mobile-popup-dimmer').css({ 'display': 'none' });
-    });
+  redirectToDikshaApp () {
+    this.isRedirectToDikshaApp = true;
+    this.telemetryService.interact(this.appMobileDownloadInteractData);
+    window.location.href = 'https://play.google.com/store/apps/details?id=in.gov.diksha.app';
   }
 
   public searchDialCode() {
@@ -206,6 +228,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.router.navigate(['play/content', event.data.metaData.identifier], { queryParams: { dialCode: this.searchKeyword } });
     }
   }
+
   inview(event) {
     _.forEach(event.inview, (inview, key) => {
       const obj = _.find(this.inviewLogs, (o) => {
@@ -223,6 +246,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
+
   ngAfterViewInit () {
     setTimeout(() => {
       this.telemetryImpression = {

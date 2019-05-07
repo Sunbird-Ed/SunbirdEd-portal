@@ -20,8 +20,8 @@ export class FancyTreeComponent implements AfterViewInit {
       glyph: {
         preset: 'awesome4',
         map: {
-          folder: 'sb-icon-collection',
-          folderOpen: 'sb-icon-folder'
+          folder: 'icon folder sb-fancyTree-icon',
+          folderOpen: 'icon folder outline sb-fancyTree-icon'
         }
       },
       click: (event, data): boolean => {

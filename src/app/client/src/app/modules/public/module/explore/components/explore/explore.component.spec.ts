@@ -1,5 +1,5 @@
 import { BehaviorSubject, throwError, of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
 } from '@sunbird/shared';
 import { PageApiService, OrgDetailsService, CoreModule, UserService} from '@sunbird/core';
@@ -128,12 +128,15 @@ describe('ExploreComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
-  it('should call inview method for visits data', () => {
+  it('should call inview method for visits data', fakeAsync(() => {
     spyOn(component, 'prepareVisits').and.callThrough();
+    component.ngOnInit();
+    component.ngAfterViewInit();
+    tick(100);
     component.prepareVisits(Response.event);
     expect(component.prepareVisits).toHaveBeenCalled();
     expect(component.inViewLogs).toBeDefined();
-  });
+  }));
   it('should call playcontent when user is not loggedIn and content type is course', () => {
     const event = { data: { contentType : 'Course', metaData: { identifier: '0122838911932661768' } } };
     userService._authenticated = false;
