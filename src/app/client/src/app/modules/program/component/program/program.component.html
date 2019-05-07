@@ -1,8 +1,5 @@
 <div>
-  <div class="ui grid">
-    <div>
-       The code for program onboarding go here....
-    </div>
-  </div>
+  The code for program onboarding go here....
 </div>
-<router-outlet></router-outlet>
+<app-onboard-popup *ngIf="showOnboardPopup" [PluginDetails]='PluginDetails'></app-onboard-popup>
+
