@@ -12,6 +12,7 @@
   "URLS": {
     "LEARNER_PREFIX": "/learner/",
     "CONTENT_PREFIX": "/content/",
+    "ACTION_PREFIX": "/action/",
     "PUBLIC_PREFIX": "/api/",
     "EXT_PLUGIN_PREFIX": "/plugin/",
     "ANNOUNCEMENT_PREFIX": "/announcement/v1",
@@ -159,6 +160,9 @@
     "OTP": {
       "GENERATE": "otp/v1/generate",
       "VERIFY": "otp/v1/verify"
+    },
+    "ASSESSMENT": {
+      "CREATE": "assessment/v3/items/create"
     }
   }
 }
