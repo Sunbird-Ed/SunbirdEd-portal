@@ -7,7 +7,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { ProgramComponent} from './component';
-import {  } from './service/index';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
 
