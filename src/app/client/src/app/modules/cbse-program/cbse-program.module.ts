@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { CbseProgramRoutingModule } from './cbse-program-routing.module';
 import { QuestionListComponent } from './components/question-list/question-list.component';
@@ -16,6 +17,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     CbseProgramRoutingModule,
     SuiTabsModule,
     SuiModule,
+    ReactiveFormsModule, FormsModule,
     InfiniteScrollModule
   ]
 })

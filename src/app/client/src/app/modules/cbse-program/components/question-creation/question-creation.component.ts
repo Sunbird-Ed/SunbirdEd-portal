@@ -1,65 +1,51 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ActivatedRoute, Router } from '@angular/router';
 import {  ConfigService, ResourceService, IUserData, IUserProfile, ToasterService  } from '@sunbird/shared';
-import { PublicDataService, UserService } from '@sunbird/core';
+import { PublicDataService, UserService, ActionService } from '@sunbird/core';
+import { Validators, FormGroup, FormControl } from '@angular/forms';
+
 
 // tslint:disable-next-line:import-blacklist
 import * as _ from 'lodash';
-
 @Component({
   selector: 'app-question-creation',
   templateUrl: './question-creation.component.html',
   styleUrls: ['./question-creation.component.css']
 })
-export class QuestionCreationComponent implements OnInit {
+export class QuestionCreationComponent implements OnInit, AfterViewChecked  {
   public userProfile: IUserProfile;
   public publicDataService: PublicDataService;
   private toasterService: ToasterService;
   public resourceService: ResourceService;
+  questionMetaForm: FormGroup;
+  enableSubmitBtn = false;
   constructor(
-      private activatedRoute: ActivatedRoute,
-      private router: Router,
-      private userService: UserService,
-      private configService: ConfigService,
-      publicDataService: PublicDataService,
-      toasterService: ToasterService,
-      resourceService: ResourceService
-    ) {
-      this.userService = userService;
-      this.configService = configService;
-      this.publicDataService = publicDataService;
-      this.toasterService = toasterService;
-      this.resourceService = resourceService;
-    }
-    answer_editor: any;
-    question_editor: any;
-    editor: any;
-  /**
-   * list of images uploaded by me
-   */
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private userService: UserService,
+    private configService: ConfigService,
+    publicDataService: PublicDataService,
+    toasterService: ToasterService,
+    resourceService: ResourceService,
+    public actionService: ActionService
+  ) {
+    this.userService = userService;
+    this.configService = configService;
+    this.publicDataService = publicDataService;
+    this.toasterService = toasterService;
+    this.resourceService = resourceService;
+  }
+  answer_editor: any;
+  question_editor: any;
+  editor: any;
   myAssets = [];
-  /**
-   * list of all images
-   */
   allImages = [];
   showImagePicker: boolean;
   showImageUploadModal: boolean;
-  /**
-   * to show/hide error message
-   */
   showErrorMsg: boolean;
-
-  /**
-   * error message
-   */
   errorMsg: string;
-
-  /**
-   * topic name
-   */
   topicName: string;
-
   initializeImagePicker(editorType) {
     this.showImagePicker = true;
     this.editor = editorType === 'question' ? this.question_editor : this.answer_editor;
@@ -87,6 +73,7 @@ export class QuestionCreationComponent implements OnInit {
     this.showImageUploadModal = true;
   }
   ngOnInit() {
+    this.initializeFormFields();
     this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
@@ -127,7 +114,86 @@ export class QuestionCreationComponent implements OnInit {
         console.error( error.stack );
     } );
   }
+  initializeDropdown() {
+    (<any>$('.ui.checkbox')).checkbox();
+  }
+  ngAfterViewChecked() {
+    this.initializeDropdown();
+  }
 
+  initializeFormFields() {
+    this.questionMetaForm = new FormGroup({
+      learningOutcome: new FormControl('', Validators.required),
+      qlevel : new FormControl('', [Validators.required]),
+      bloomsLevel : new FormControl('', [Validators.required]),
+      max_score: new FormControl(null, [Validators.required])
+    });
+  }
+  enableSubmitButton() {
+    this.questionMetaForm.valueChanges.subscribe(val => {
+      this.enableSubmitBtn = (this.questionMetaForm.status === 'VALID');
+    });
+  }
+  validateAllFormFields(questionMetaForm: FormGroup) {
+  Object.keys(questionMetaForm.controls).forEach(field => {
+    const control = questionMetaForm.get(field);
+    if (control instanceof FormControl) {
+      control.markAsDirty({ onlySelf: true });
+    } else if (control instanceof FormGroup) {
+      this.validateAllFormFields(control);
+    }
+  });
+}
+  createQuestion(event) {
+    console.log(event);
+    console.log(this.questionMetaForm.value);
+    console.log(this.question_editor.getData());
+    console.log(this.answer_editor.getData());
+    if (this.questionMetaForm.valid) {
+      const req = {
+        url: this.configService.urlConFig.URLS.ASSESSMENT.CREATE,
+        data: {
+          'request': {
+            'assessment_item': {
+              'objectType': 'AssessmentItem',
+              'metadata': {
+                'createdBy': this.userProfile.userId,
+                // 'creator': `${this.userProfile.firstName} ${this.userProfile.lastName ? this.userProfile.lastName : ''}`,
+                'code': 'NA',
+                'type': 'la',
+                'category': 'LA',
+                'itemType': 'UNIT',
+                'version': 3,
+                'name': 'la_NCFCOPY',
+                'body': this.question_editor.getData(),
+                'answers': [this.answer_editor.getData()],
+                'learningOutcome': [this.questionMetaForm.value.learningOutcome],
+                'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
+                'qlevel': this.questionMetaForm.value.qlevel,
+                'max_score': Number(this.questionMetaForm.value.max_score),
+                // 'template': 'NA',
+                'template_id': 'NA',
+                // 'templateType': 'NA',
+                'framework': 'NCFCOPY',
+                'board': 'NCERT',
+                'medium': 'English',
+                'gradeLevel': [
+                  'Kindergarten'
+                ],
+                'subject': 'English',
+                'topic': ['Topic 1']
+              }
+            }
+          }
+        }
+      };
+      this.actionService.post(req).subscribe((res) => {
+        console.log('res ', res);
+      });
+    } else {
+      this.validateAllFormFields(this.questionMetaForm);
+    }
+  }
   /**
    * function to get images
    * @param offset page no
