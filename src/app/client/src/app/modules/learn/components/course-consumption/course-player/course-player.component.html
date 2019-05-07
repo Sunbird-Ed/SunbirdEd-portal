@@ -6,25 +6,31 @@
                 <div class="ui stackable grid">
                     <div class="row">
                         <div class='nine wide column'>
-                            <div class="ui header">
-                                <span class="content courseStructureHeading">
-                                    {{resourceService.frmelmnts.lbl.aboutthecourse}}
-                                </span>
-                                <div *ngIf="courseHierarchy.description" class="mt-10">
-                                    <p *ngIf="!readMore" class="courseStructureDesc"> {{ courseHierarchy.description | slice:0:200 }}&nbsp;
-                                        <span class="ui cardsKnowMore mouse-pointer" *ngIf="courseHierarchy.description && courseHierarchy.description.length > 200 && readMore === false"
-                                            (click)="readMore = !readMore;">{{resourceService.frmelmnts.lbl.readmore}}</span>
-                                    </p>
-                                    <p *ngIf="readMore" class="courseStructureDesc"> {{ courseHierarchy.description}}&nbsp;
-                                        <span class="ui cardsKnowMore mouse-pointer" (click)="readMore = false;">{{resourceService.frmelmnts.lbl.readless}}</span>
-                                    </p>
+
+                            <div class="sb-pageSection">
+                                <div class="sb-pageSection-header">
+                                    <h4 class="sb-pageSection-title sb-pageSection-title-light">{{resourceService.frmelmnts.lbl.aboutthecourse}}</h4>
+                                </div>
+                                <div class="sb-pageSection-content">
+                                    <div *ngIf="courseHierarchy.description">
+                                        <p *ngIf="!readMore">
+                                            {{ courseHierarchy.description | slice:0:200 }}&nbsp;
+                                            <span class="ui cardsKnowMore mouse-pointer" *ngIf="courseHierarchy.description && courseHierarchy.description.length > 200 && readMore === false" (click)="readMore = !readMore;">{{resourceService.frmelmnts.lbl.readmore}}</span>
+                                        </p>
+                                        <p *ngIf="readMore">
+                                            {{ courseHierarchy.description}}&nbsp;
+                                            <span class="ui cardsKnowMore mouse-pointer" (click)="readMore = false;">{{resourceService.frmelmnts.lbl.readless}}</span>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="ui header">
-                                <b class="content courseStructureHeading">
-                                    {{resourceService.frmelmnts.lbl.coursestructure}}
-                                </b>
+
+                            <div class="sb-pageSection mt-24">
+                                <div class="sb-pageSection-header">
+                                    <h4 class="sb-pageSection-title sb-pageSection-title-light">{{resourceService.frmelmnts.lbl.coursestructure}}</h4>
+                                </div>
                             </div>
+                            
                             <app-collection-tree *ngIf="collectionTreeNodes.data && collectionTreeNodes.data.children && collectionTreeNodes.data.children.length >0 ; else dataCommingSoon" (contentSelect)="navigateToContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"
                                     [contentStatus]="contentStatus"></app-collection-tree>
                             <ng-template #dataCommingSoon>
@@ -34,7 +40,6 @@
                                     <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>
                                 </div> 
                             </ng-template>
-                            <div class="ui fitted divider mb-20 mt-30"></div>
                         </div>
                         <div class='three wide column'>
                             <app-batch-details *ngIf="courseStatus !== 'Unlisted'" [courseId]="courseId" [batchId]="batchId" [enrolledCourse]="enrolledCourse" [enrolledBatchInfo]="enrolledBatchInfo"
