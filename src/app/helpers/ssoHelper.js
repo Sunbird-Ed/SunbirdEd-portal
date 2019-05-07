@@ -164,7 +164,7 @@ const getKafkaPayloadData = (sessionDetails) => {
   }
 };
 
-const getSsoUpdateWhileListChannels = async (req) => {
+const getSsoUpdateWhiteListChannels = async (req) => {
   // return cached value
   if (ssoWhiteListChannels) {
     return _.includes(_.get(ssoWhiteListChannels, 'result.response.value'), req.session.jwtPayload.state_id);
@@ -194,7 +194,7 @@ const getSsoUpdateWhileListChannels = async (req) => {
 };
 
 const sendSsoKafkaMessage = async (req) => {
-  const ssoUpdataChannelLists = await getSsoUpdateWhileListChannels(req);
+  const ssoUpdataChannelLists = await getSsoUpdateWhiteListChannels(req);
   if (ssoUpdataChannelLists) {
     var kafkaPayloadData = getKafkaPayloadData(req.session);
     kafkaService.sendMessage(kafkaPayloadData, envHelper.sunbird_sso_kafka_topic, function (err, res) {
@@ -204,6 +204,8 @@ const sendSsoKafkaMessage = async (req) => {
         console.log('sso kafka message send successfully')
       }
     });
+  } else {
+    console.log('sso white list channels not matched or errored')
   }
 };
 
