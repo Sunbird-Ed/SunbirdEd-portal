@@ -1,24 +1,16 @@
-// global styles
-
-// *{
-//   transition: all 300ms ease-in-out
-//   }
 html,
 body {
   height: 100%;
   font-size:$font-size-base;
-  
 }
 
 body {
-  //background:$bg-body;
-  background:$primary-0;
+  background: $body-background-color;
   position: relative;
   font-family: $font-stack-en;
   letter-spacing: 0.2px;
   height: auto;
-  //background: $white-color;
-  color: $body-color;
+  color: $default-text-color;
 }
 
 *[lang="en"] body {
@@ -32,7 +24,6 @@ body {
 *[lang="ur"] body {
   font-family: $font-stack-ur;
 }
-
 
 button,
 input,
