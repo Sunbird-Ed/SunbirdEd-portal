@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule, UserService, PermissionService } from '@sunbird/core';
 import { INoteData } from '@sunbird/notes';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, tick, fakeAsync  } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoursePlayerComponent } from './course-player.component';
 import { SharedModule, ResourceService, WindowScrollService, ToasterService } from '@sunbird/shared';
@@ -84,7 +84,7 @@ describe('CoursePlayerComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should fetch courseHierarchy from courseConsumptionService', () => {
+  it('should fetch courseHierarchy from courseConsumptionService', fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const windowScrollService = TestBed.get(WindowScrollService);
@@ -95,13 +95,13 @@ describe('CoursePlayerComponent', () => {
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     component.ngOnInit();
+    tick(150);
     expect(component.courseHierarchy).toBeDefined();
     expect(component.contributions).toBeDefined();
     expect(_.isString(component.contributions)).toBeTruthy();
-    component.ngOnDestroy();
-  });
+  }));
 
-  it('should set enrolledCourse to true if batchId is provided by activatedRoute', () => {
+  it('should set enrolledCourse to true if batchId is provided by activatedRoute', fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -113,11 +113,11 @@ describe('CoursePlayerComponent', () => {
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     component.ngOnInit();
+    tick(150);
     expect(component.enrolledCourse).toBeTruthy();
-    component.ngOnDestroy();
-  });
+  }));
 
-  it('should get content state if course is enrolled', () => {
+  it('should get content state if course is enrolled', fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -129,13 +129,13 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
+    tick(150);
     expect(component.enrolledCourse).toBeTruthy();
     expect(courseConsumptionService.getContentState).toHaveBeenCalled();
     expect(component.contentStatus).toBeDefined();
-    component.ngOnDestroy();
-  });
+  }));
 
-  it('should not play the content obtained from url if enrolled course and course is flagged', () => {
+  it('should not play the content obtained from url if enrolled course and course is flagged', fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -148,15 +148,15 @@ describe('CoursePlayerComponent', () => {
       and.returnValue(of(CourseHierarchyGetMockResponseFlagged.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponseFlagged.result));
     component.ngOnInit();
+    tick(150);
     expect(component.enrolledCourse).toBeTruthy();
     expect(component.contentId).toBeUndefined();
     expect(component.flaggedCourse).toBeTruthy();
     expect(component.playerConfig).toBeUndefined();
     expect(component.contentTitle).toBeUndefined();
     expect(component.enableContentPlayer).toBeFalsy();
-    component.ngOnDestroy();
-  });
-  it('should play the content obtained from url if enrolled course and should set prev and next playable content', () => {
+  }));
+  it('should play the content obtained from url if enrolled course and should set prev and next playable content', fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -169,6 +169,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
+    tick(150);
     expect(component.enrolledCourse).toBeTruthy();
     expect(component.contentId).toBeDefined();
     expect(component.prevPlaylistItem).toBeDefined();
@@ -176,10 +177,9 @@ describe('CoursePlayerComponent', () => {
     expect(component.playerConfig).toBeDefined();
     expect(component.contentTitle).toBeDefined();
     expect(component.enableContentPlayer).toBeTruthy();
-    component.ngOnDestroy();
-  });
+  }));
 
-  it('should play content if course status is unlisted', () => {
+  it('should play content if course status is unlisted', fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -192,14 +192,14 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
+    tick(150);
     expect(component.enrolledCourse).toBeFalsy();
     expect(component.contentId).toBeDefined();
     expect(component.playerConfig).toBeDefined();
     expect(component.enableContentPlayer).toBeTruthy();
-    component.ngOnDestroy();
-  });
+  }));
 
-  it('should not play content if course is not enrolled', () => {
+  it('should not play content if course is not enrolled', fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -212,14 +212,14 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
+    tick(150);
     expect(component.enrolledCourse).toBeFalsy();
     expect(component.contentId).toBeUndefined();
     expect(component.playerConfig).toBeUndefined();
     expect(component.enableContentPlayer).toBeFalsy();
-    component.ngOnDestroy();
-  });
+  }));
 
-  it('should play content for course creator', () => {
+  it('should play content for course creator', fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -234,13 +234,13 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
+    tick(150);
     expect(component.enrolledCourse).toBeFalsy();
     expect(component.contentId).toBeDefined();
     expect(component.playerConfig).toBeDefined();
     expect(component.enableContentPlayer).toBeTruthy();
-    component.ngOnDestroy();
-  });
-  it('should not play content if his not course creator', () => {
+  }));
+  it('should not play content if his not course creator', fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -255,13 +255,13 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
+    tick(150);
     expect(component.enrolledCourse).toBeFalsy();
     expect(component.contentId).toBeUndefined();
     expect(component.playerConfig).toBeUndefined();
     expect(component.enableContentPlayer).toBeFalsy();
-    component.ngOnDestroy();
-  });
-  it('should play content for course mentor', () => {
+  }));
+  it('should play content for course mentor', fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -277,15 +277,15 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
+    tick(150);
     expect(component.enrolledCourse).toBeFalsy();
     expect(component.permissionService.checkRolesPermissions)
       .toHaveBeenCalledWith(['COURSE_MENTOR', 'CONTENT_REVIEWER', 'CONTENT_CREATOR', 'CONTENT_CREATION']);
     expect(component.contentId).toBeDefined();
     expect(component.playerConfig).toBeDefined();
     expect(component.enableContentPlayer).toBeTruthy();
-    component.ngOnDestroy();
-  });
-  it('should not play content if not course mentor', () => {
+  }));
+  it('should not play content if not course mentor', fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -301,15 +301,15 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
+    tick(150);
     expect(component.enrolledCourse).toBeFalsy();
     expect(component.permissionService.checkRolesPermissions)
       .toHaveBeenCalledWith(['COURSE_MENTOR', 'CONTENT_REVIEWER', 'CONTENT_CREATOR', 'CONTENT_CREATION']);
     expect(component.contentId).toBeUndefined();
     expect(component.playerConfig).toBeUndefined();
     expect(component.enableContentPlayer).toBeFalsy();
-    component.ngOnDestroy();
-  });
-  it('should not play the content enrolled batch status is 0', () => {
+  }));
+  it('should not play the content enrolled batch status is 0', fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -322,26 +322,15 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
+    tick();
     expect(component.enrolledCourse).toBeTruthy();
     expect(component.contentId).toBeUndefined();
     expect(component.playerConfig).toBeUndefined();
     expect(component.contentTitle).toBeUndefined();
     expect(component.enableContentPlayer).toBeFalsy();
     enrolledBatch.result.response.status = 1;
-    component.ngOnDestroy();
-  });
-  it('should update createNoteData on recieving a note data from createEventEmitter', () => {
-    component.createEventEmitter(mockNote);
-    expect(component.createNoteData).toEqual(mockNote);
-  });
-
-  it('should unsubscribe from all observable subscriptions', () => {
-    component.ngOnInit();
-    spyOn(component.unsubscribe, 'complete');
-    component.ngOnDestroy();
-    expect(component.unsubscribe.complete).toHaveBeenCalled();
-  });
-  it('should not display error message if content id is not available in queryparams', () => {
+  }));
+  it('should not display error message if content id is not available in queryparams', fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const toasterService = TestBed.get(ToasterService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -350,10 +339,11 @@ describe('CoursePlayerComponent', () => {
     activatedRouteStub.changeParams({ courseStatus: 'Unlisted' });
     spyOn(toasterService, 'error').and.callThrough();
     component.ngOnInit();
+    tick(150);
     expect(toasterService.error).not.toHaveBeenCalled();
     expect(component.courseStatus).toEqual('Unlisted');
-  });
-  it('should make update contentState api call if the content is youTube and progress is greater than 20%', () => {
+  }));
+  it('should make update contentState api call if the content is youTube and progress is greater than 20%', fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const contentData = {model: { mimeType: 'video/x-youtube'}};
     const telemetryEvent = { detail: {
@@ -365,9 +355,10 @@ describe('CoursePlayerComponent', () => {
     component.batchId = '123';
     component.enrolledBatchInfo = {status: 1};
     component.contentProgressEvent(telemetryEvent);
+    tick(150);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
-  });
-  it('should make update contentState api call if the content is video/mp4 and progress is greater than 20%', () => {
+  }));
+  it('should make update contentState api call if the content is video/mp4 and progress is greater than 20%', fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const contentData = {model: { mimeType: 'video/mp4'}};
     const telemetryEvent = { detail: {
@@ -379,9 +370,10 @@ describe('CoursePlayerComponent', () => {
     component.batchId = '123';
     component.enrolledBatchInfo = {status: 1};
     component.contentProgressEvent(telemetryEvent);
+    tick(150);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
-  });
-  it('should not make update contentState api call if the content is youTube and progress is greater than 20%', () => {
+  }));
+  it('should not make update contentState api call if the content is youTube and progress is greater than 20%', fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const contentData = {model: { mimeType: 'video/x-youtube'}};
     const telemetryEvent = { detail: {
@@ -393,9 +385,10 @@ describe('CoursePlayerComponent', () => {
     component.batchId = '123';
     component.enrolledBatchInfo = {status: 1};
     component.contentProgressEvent(telemetryEvent);
+    tick(150);
     expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
-  });
-  it('should not make update contentState api call if the content is video/mp4 and progress is greater than 20%', () => {
+  }));
+  it('should not make update contentState api call if the content is video/mp4 and progress is greater than 20%', fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const contentData = {model: { mimeType: 'video/mp4'}};
     const telemetryEvent = { detail: {
@@ -407,9 +400,10 @@ describe('CoursePlayerComponent', () => {
     component.batchId = '123';
     component.enrolledBatchInfo = {status: 1};
     component.contentProgressEvent(telemetryEvent);
+    tick(150);
     expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
-  });
-  it('should make update contentState api call if the content is html and progress is greater than 0%', () => {
+  }));
+  it('should make update contentState api call if the content is html and progress is greater than 0%', fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const contentData = {model: { mimeType: 'application/vnd.ekstep.html-archive'}};
     const telemetryEvent = { detail: {
@@ -422,9 +416,10 @@ describe('CoursePlayerComponent', () => {
     component.enrolledBatchInfo = {status: 1};
     component.batchId = '123';
     component.contentProgressEvent(telemetryEvent);
+    tick(150);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
-  });
-  it('should make update contentState api call if the content is h5p and progress is greater than 0%', () => {
+  }));
+  it('should make update contentState api call if the content is h5p and progress is greater than 0%', fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const contentData = {model: { mimeType: 'application/vnd.ekstep.h5p-archive'}};
     const telemetryEvent = { detail: {
@@ -437,9 +432,11 @@ describe('CoursePlayerComponent', () => {
     component.enrolledBatchInfo = {status: 1};
     component.batchId = '123';
     component.contentProgressEvent(telemetryEvent);
+    tick(150);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
-  });
-  it('should make update contentState api call if the the content is not(html,h5p,video/youtub) and progress is equal to 100', () => {
+  }));
+  it('should make update contentState api call if the the content is not(html,h5p,video/youtub) and progress is equal to 100',
+  fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const contentData = {model: { mimeType: 'application/vnd.ekstep.eclm-archive'}};
     const playerDestroyData = { contentId: '123'};
@@ -453,9 +450,11 @@ describe('CoursePlayerComponent', () => {
     component.enrolledBatchInfo = {status: 1};
     component.batchId = '123';
     component.contentProgressEvent(telemetryEvent);
+    tick(150);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
-  });
-  it('should not make update contentState api call if the the content is not(html,h5p,video/youtub) and progress is equal to 100', () => {
+  }));
+  it('should not make update contentState api call if the the content is not(html,h5p,video/youtub) and progress is equal to 100',
+  fakeAsync(() => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const contentData = {model: { mimeType: 'application/vnd.ekstep.eclm-archive'}};
     const playerDestroyData = { contentId: '123'};
@@ -468,6 +467,7 @@ describe('CoursePlayerComponent', () => {
     component.courseProgressData = { content: [{ contentId: '123', status: 1}]};
     component.enrolledBatchInfo = {status: 1};
     component.contentProgressEvent(telemetryEvent);
+    tick(150);
     expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
-  });
+  }));
 });
