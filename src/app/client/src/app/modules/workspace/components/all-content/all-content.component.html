@@ -46,10 +46,15 @@
           </h5>
         </td>
         <td class="UpForReviewStatusOrange">{{content.status}}</td>
-        <td>
+        <td *ngIf="!(content.pkgVersion && content.pkgVersion > 0 && (content.status === 'Review' || content.status === 'Draft'))">
           <i appTelemetryInteract [telemetryInteractObject]="{id:content.identifier,type:content.contentType,ver:content.pkgVersion ? content.pkgVersion.toString(): '1.0' }"
           [telemetryInteractEdata]="{id:'deleteContent',type:'click',pageid:'AllContent'}"  class="trash large icon" (click)="deleteConfirmModal(content.identifier); $event.stopPropagation()">
           </i>
+        </td>
+        <td *ngIf="content.pkgVersion && content.pkgVersion > 0 && (content.status === 'Review' || content.status === 'Draft')" >
+          <span suiPopup popupText="{{resourceService?.frmelmnts?.lbl?.disablePopupText}}" [popupPlacement]="'right'">
+              <i class="disabled trash large icon"></i>
+          </span>
         </td>
         <td>
           <span *ngIf="content.lockInfo" suiPopup popupText="{{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':content?.lockInfo?.creatorInfo?.name | interpolate:'{contentName}':content?.name}}" [popupPlacement]="'top left'">
