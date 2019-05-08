@@ -9,6 +9,8 @@ import { SharedModule } from '@sunbird/shared';
 import { ProgramComponent} from './component';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { OnboardPopupComponent } from './component/onboard-popup/onboard-popup.component';
+import { CbseProgramModule } from '@sunbird/cbse-program';
 
 @NgModule({
   imports: [
@@ -21,10 +23,12 @@ import { TelemetryModule } from '@sunbird/telemetry';
     SharedModule,
     CoreModule,
     NgInviewModule,
-    TelemetryModule
+    TelemetryModule,
+    CbseProgramModule
   ],
   declarations: [
     ProgramComponent,
+    OnboardPopupComponent,
   ],
   providers: []
 })

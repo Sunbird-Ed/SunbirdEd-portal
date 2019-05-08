@@ -61,6 +61,9 @@
       ],
       "@sunbird/offline": [
         "app/modules/offline"
+      ],
+      "@sunbird/cbse-program": [
+        "app/modules/cbse-program"
       ]
     },
     "sourceMap": true,
