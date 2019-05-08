@@ -138,18 +138,25 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   private setCommingSoonMessage (node) {
     if (node.model && node.model.altMsg && node.model.altMsg.length) {
-      this.commingSoonMessage = this.getMessageFormTranslations(node.model.altMsg[0].translations);
+      this.commingSoonMessage = this.getMessageFormTranslations(node.model.altMsg[0].translations,
+        node.model.altMsg[0].value);
     } else if (node.model && node.parent && node.parent.model.altMsg && node.parent.model.altMsg.length) {
-      this.commingSoonMessage = this.getMessageFormTranslations(node.model.parent.model.altMsg[0].translations);
+      this.commingSoonMessage = this.getMessageFormTranslations(node.model.parent.model.altMsg[0].translations,
+        node.model.parent.model.altMsg[0].value);
     } else if (this.contentComingSoonDetails) {
-      this.commingSoonMessage = this.getMessageFormTranslations(this.contentComingSoonDetails.translations);
+      this.commingSoonMessage = this.getMessageFormTranslations(this.contentComingSoonDetails.translations,
+        this.contentComingSoonDetails.value);
     } else {
       this.commingSoonMessage  = this.resourceService.messages.stmsg.m0121;
     }
   }
 
-  private getMessageFormTranslations (translations) {
-    translations = JSON.parse(translations);
+  private getMessageFormTranslations (translations, value) {
+    try {
+      translations = JSON.parse(translations);
+    } catch (e) {
+      return value;
+    }
     if (translations[this.selectLanguage]) {
       return translations[this.selectLanguage];
     } else {
