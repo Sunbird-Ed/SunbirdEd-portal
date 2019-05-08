@@ -43,9 +43,7 @@ export class TextbookSearchComponent implements OnInit {
   }
 
   private setFilterInteractData(category) {
-    const fr = JSON.parse(this.frameworkDetails.frameworkdata[this.frameworkName].fw_hierarchy);
-    const frameworkData = fr.categories;
-    // const frameworkData = this.frameworkDetails.frameworkdata[this.frameworkName].categories;
+    const frameworkData = this.frameworkDetails.frameworkdata[this.frameworkName].categories;
     const frameworkClass = _.find(frameworkData, {code: 'gradeLevel'});
     setTimeout(() => {
       if (category === 'class') {
