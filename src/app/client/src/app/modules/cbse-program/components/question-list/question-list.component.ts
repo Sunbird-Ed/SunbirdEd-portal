@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-question-list',
@@ -6,6 +6,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
   styleUrls: ['./question-list.component.css']
 })
 export class QuestionListComponent implements OnInit, AfterViewInit {
+  @Input() selectedAttributes: any;
   public active: boolean[] = [];
   public tabs: { header: string; content: string }[] = [
       { header: 'Q1', content: '' }
@@ -13,6 +14,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit {
   constructor() { }
 
   ngOnInit() {
+    console.log('selectedAttributes', this.selectedAttributes);
   }
 
   ngAfterViewInit() {
