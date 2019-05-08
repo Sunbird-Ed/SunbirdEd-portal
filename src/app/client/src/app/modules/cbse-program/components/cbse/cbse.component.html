@@ -12,3 +12,10 @@
   </div>
   <app-chapter-list [selectedOptionsMethod]="selectedOptions"></app-chapter-list>
 </div>
+
+
+<div *ngIf="currentStage == 'createQuestion'">
+  <div class="ui container">
+    <app-question-list></app-question-list>
+  </div>
+</div>

@@ -12,7 +12,8 @@ import { QuestionCreationComponent } from './components/question-creation/questi
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ChapterListComponent } from './components/chapter-list/chapter-list.component';
 @NgModule({
-  declarations: [QuestionListComponent, TextbookSearchComponent, CbseComponent, QuestionCreationComponent, ChapterListComponent],
+  declarations: [QuestionListComponent, TextbookSearchComponent, CbseComponent, QuestionCreationComponent,
+    ChapterListComponent, QuestionListComponent],
   imports: [
     CommonModule,
     CbseProgramRoutingModule,

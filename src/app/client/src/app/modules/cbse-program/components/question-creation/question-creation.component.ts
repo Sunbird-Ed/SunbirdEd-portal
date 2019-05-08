@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter , OnChanges} from '@angular/core';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ActivatedRoute, Router } from '@angular/router';
 import {  ConfigService, ResourceService, IUserData, IUserProfile, ToasterService  } from '@sunbird/shared';
@@ -13,13 +13,21 @@ import * as _ from 'lodash';
   templateUrl: './question-creation.component.html',
   styleUrls: ['./question-creation.component.css']
 })
-export class QuestionCreationComponent implements OnInit, AfterViewChecked  {
+export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChanges {
   public userProfile: IUserProfile;
   public publicDataService: PublicDataService;
   private toasterService: ToasterService;
   public resourceService: ResourceService;
   questionMetaForm: FormGroup;
   enableSubmitBtn = false;
+  public isAssetBrowserReadOnly = false;
+  initialized = false;
+  public isQuestionFocused: boolean;
+  public isAnswerFocused: boolean;
+  @Input() tabIndex: any;
+  @Input() questionMetaData: any;
+  @Output() enableCreateButton = new EventEmitter < any > ();
+  @Output() questionStatus = new EventEmitter < any > ();
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -72,7 +80,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewChecked  {
     this.showImagePicker = false;
     this.showImageUploadModal = true;
   }
+
   ngOnInit() {
+    this.initialized = true;
     this.initializeFormFields();
     this.userService.userData$.subscribe(
       (user: IUserData) => {
@@ -80,52 +90,99 @@ export class QuestionCreationComponent implements OnInit, AfterViewChecked  {
           this.userProfile = user.userProfile;
         }
       });
-    ClassicEditor.create( document.querySelector( '#question_editor' ), {
-      toolbar: ['heading', '|', 'bold', '|', 'italic', '|',
-        'bulletedList', '|', 'numberedList', '|', 'insertTable', '|'],
-      image: {
-          toolbar: ['imageTextAlternative', '|', 'imageStyle:full', 'imageStyle:alignRight'],
-          styles: ['full', 'alignLeft', 'alignRight', 'side', 'alignCenter']
-        },
-      removePlugins: ['ImageCaption']
-    } )
-    .then( editor => {
-      this.question_editor = editor;
-      console.log( 'Editor was initialized', editor );
-    } )
-    .catch( error => {
-        console.error( error.stack );
-    } );
+  }
 
-    ClassicEditor.create( document.querySelector( '#answer_editor' ), {
-      toolbar: ['heading', '|', 'bold', '|', 'italic', '|',
-        'bulletedList', '|', 'numberedList', '|', 'insertTable', '|'],
-      image: {
-          toolbar: ['imageTextAlternative', '|', 'imageStyle:full', 'imageStyle:alignRight'],
-          styles: ['full', 'alignLeft', 'alignRight', 'side', 'alignCenter']
-        },
-      removePlugins: ['ImageCaption']
-    } )
-    .then( editor => {
-      this.answer_editor = editor;
-      console.log( 'Editor was initialized', editor );
-    } )
-    .catch( error => {
-        console.error( error.stack );
-    } );
-  }
-  initializeDropdown() {
-    (<any>$('.ui.checkbox')).checkbox();
-  }
-  ngAfterViewChecked() {
+  ngAfterViewInit() {
+    this.initializeEditors();
     this.initializeDropdown();
   }
+  ngOnChanges() {
+    if (this.initialized) {
+      if (this.questionMetaData.mode === 'edit') {
+        this.isEditorReadOnly(false);
+      } else {
+        this.isEditorReadOnly(true);
+      }
+    }
+  }
+  public isEditorReadOnly(state) {
+    this.question_editor.isReadOnly = state;
+    this.answer_editor.isReadOnly = state;
+    this.isAssetBrowserReadOnly = state;
+    console.log(this.isAssetBrowserReadOnly);
 
+  }
+  initializeEditors() {
+    ClassicEditor.create(document.querySelector('#question_editor'), {
+        toolbar: ['heading', '|', 'bold', '|', 'italic', '|',
+          'bulletedList', '|', 'numberedList', '|', 'insertTable', '|'
+        ],
+        image: {
+          toolbar: ['imageTextAlternative', '|', 'imageStyle:full', 'imageStyle:alignRight'],
+          styles: ['full', 'alignLeft', 'alignRight', 'side', 'alignCenter']
+        },
+        isReadOnly: false,
+        removePlugins: ['ImageCaption']
+      })
+      .then(editor => {
+        this.question_editor = editor;
+        console.log('Editor was initialized', editor);
+        this.focusTracker(this.question_editor);
+      })
+      .catch(error => {
+        console.error(error.stack);
+      });
+
+    ClassicEditor.create(document.querySelector('#answer_editor'), {
+        toolbar: ['heading', '|', 'bold', '|', 'italic', '|',
+          'bulletedList', '|', 'numberedList', '|', 'insertTable', '|'
+        ],
+        image: {
+          toolbar: ['imageTextAlternative', '|', 'imageStyle:full', 'imageStyle:alignRight'],
+          styles: ['full', 'alignLeft', 'alignRight', 'side', 'alignCenter']
+        },
+        isReadOnly: false,
+        removePlugins: ['ImageCaption']
+      })
+      .then(editor => {
+        this.answer_editor = editor;
+        console.log('Editor was initialized', editor);
+        this.focusTracker(this.answer_editor);
+      })
+      .catch(error => {
+        console.error(error.stack);
+      });
+    this.enableCreateButton.emit(false);
+  }
+  focusTracker(editor) {
+    editor.model.document.on('change', (eventInfo, batch) => {
+      const selectedElement = eventInfo.source.selection.getSelectedElement();
+      if (selectedElement && selectedElement.name === 'image') {
+        if (editor.sourceElement.id === 'question_editor') {
+          this.isQuestionFocused = true;
+        } else if (editor.sourceElement.id === 'answer_editor') {
+          this.isAnswerFocused = true;
+        }
+        console.log(this.isQuestionFocused, this.isAnswerFocused);
+      } else {
+        if (editor.sourceElement.id === 'question_editor') {
+          this.isQuestionFocused = false;
+        } else if (editor.sourceElement.id === 'answer_editor') {
+          this.isAnswerFocused = false;
+        }
+        console.log(this.isQuestionFocused, this.isAnswerFocused);
+      }
+    });
+  }
+
+  initializeDropdown() {
+    ( < any > $('.ui.checkbox')).checkbox();
+  }
   initializeFormFields() {
     this.questionMetaForm = new FormGroup({
       learningOutcome: new FormControl('', Validators.required),
-      qlevel : new FormControl('', [Validators.required]),
-      bloomsLevel : new FormControl('', [Validators.required]),
+      qlevel: new FormControl('', [Validators.required]),
+      bloomsLevel: new FormControl('', [Validators.required]),
       max_score: new FormControl(null, [Validators.required])
     });
   }
@@ -135,20 +192,27 @@ export class QuestionCreationComponent implements OnInit, AfterViewChecked  {
     });
   }
   validateAllFormFields(questionMetaForm: FormGroup) {
-  Object.keys(questionMetaForm.controls).forEach(field => {
-    const control = questionMetaForm.get(field);
-    if (control instanceof FormControl) {
-      control.markAsDirty({ onlySelf: true });
-    } else if (control instanceof FormGroup) {
-      this.validateAllFormFields(control);
-    }
-  });
-}
+    Object.keys(questionMetaForm.controls).forEach(field => {
+      const control = questionMetaForm.get(field);
+      if (control instanceof FormControl) {
+        control.markAsDirty({
+          onlySelf: true
+        });
+      } else if (control instanceof FormGroup) {
+        this.validateAllFormFields(control);
+      }
+    });
+  }
   createQuestion(event) {
-    console.log(event);
     console.log(this.questionMetaForm.value);
     console.log(this.question_editor.getData());
     console.log(this.answer_editor.getData());
+    this.questionMetaData = {
+      mode: '',
+      data: {
+
+      }
+    };
     if (this.questionMetaForm.valid) {
       const req = {
         url: this.configService.urlConFig.URLS.ASSESSMENT.CREATE,
@@ -157,14 +221,14 @@ export class QuestionCreationComponent implements OnInit, AfterViewChecked  {
             'assessment_item': {
               'objectType': 'AssessmentItem',
               'metadata': {
-                'createdBy': this.userProfile.userId,
+                'createdBy': '95e4942d-cbe8-477d-aebd-ad8e6de4bfc',
                 // 'creator': `${this.userProfile.firstName} ${this.userProfile.lastName ? this.userProfile.lastName : ''}`,
                 'code': 'NA',
-                'type': 'la',
-                'category': 'LA',
+                'type': 'VSA',
+                'category': 'VSA',
                 'itemType': 'UNIT',
                 'version': 3,
-                'name': 'la_NCFCOPY',
+                'name': 'vsa_NCFCOPY',
                 'body': this.question_editor.getData(),
                 'answers': [this.answer_editor.getData()],
                 'learningOutcome': [this.questionMetaForm.value.learningOutcome],
@@ -187,8 +251,17 @@ export class QuestionCreationComponent implements OnInit, AfterViewChecked  {
           }
         }
       };
+      this.questionStatus.emit('success');
       this.actionService.post(req).subscribe((res) => {
-        console.log('res ', res);
+        if (res.responseCode !== 'OK') {
+          console.log('Please try again');
+          this.questionStatus.emit('failed');
+        } else {
+          this.enableCreateButton.emit(true);
+          this.questionStatus.emit('success');
+          // this.question_editor.destroy();
+          // this.answer_editor.destroy();
+        }
       });
     } else {
       this.validateAllFormFields(this.questionMetaForm);
@@ -210,7 +283,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewChecked  {
             mediaType: ['image'],
             contentType: 'Asset',
             compatibilityLevel: {
-              min: 1, max: 2
+              min: 1,
+              max: 2
             },
             status: ['Live'],
             createdBy: this.userProfile.userId
@@ -255,7 +329,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewChecked  {
             mediaType: ['image'],
             contentType: 'Asset',
             compatibilityLevel: {
-              min: 1, max: 2
+              min: 1,
+              max: 2
             },
             status: ['Live']
           },
@@ -345,8 +420,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewChecked  {
           this.showImageUploadModal = false;
         });
       });
-      reader.onerror = (error: any) => {
-      };
+      reader.onerror = (error: any) => {};
     }
   }
 

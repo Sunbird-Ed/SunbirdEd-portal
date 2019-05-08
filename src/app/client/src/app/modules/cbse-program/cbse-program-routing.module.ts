@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CbseComponent, QuestionListComponent, TextbookSearchComponent } from './components';
+import { CbseComponent, TextbookSearchComponent, QuestionListComponent } from './components';
 const routes: Routes = [{
   path: 'cbse', component: CbseComponent
 },
@@ -9,6 +9,9 @@ const routes: Routes = [{
 },
 {
   path: 'textbook-search', component: TextbookSearchComponent
+},
+{
+  path: 'question-list', component: QuestionListComponent
 }];
 
 @NgModule({
