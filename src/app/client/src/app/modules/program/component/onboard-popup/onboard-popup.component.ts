@@ -1,5 +1,7 @@
 import { FormService, UserService, ExtPluginService } from '@sunbird/core';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import * as _ from 'lodash-es';
+import { ResourceService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-onboard-popup',
@@ -8,26 +10,46 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class OnboardPopupComponent implements OnInit {
 
-  @Input() userDetails: any;
-
   @Input() programDetails: any;
 
-  constructor(public formService: FormService, public extPluginService: ExtPluginService, public userService: UserService) { }
+  @Output() updateEvent = new EventEmitter<any>();
+
+  selectedOption: any = {};
+
+  formFieldOptions: Array<any>;
+
+  showButton = false;
+
+  constructor(public formService: FormService, public extPluginService: ExtPluginService, public userService: UserService,
+    public resourceService: ResourceService) { }
 
   ngOnInit() {
-    this.getFormDetails().subscribe((formData) => {
-      console.log(formData);
-    }, error => {
-      console.log(error);
-    });
+    console.log('program onboard form', this.programDetails);
+    this.formFieldOptions = _.get(this.programDetails, 'config.onBoardForm.fields');
   }
-
-  private getFormDetails() {
-    const formServiceInputParams = {
-      formType: 'program',
-      formAction: 'onboarding',
-      contentType: this.programDetails.programId
+  handleFieldChange(event) {
+    this.showButton = true;
+  }
+  handleSubmit(event) {
+    console.log('', this.selectedOption);
+    const req = {
+      // url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
+      url: `program/v1/add/participant`,
+      data: {
+        request : {
+          programId: this.programDetails.programId,
+          userId: this.userService.userid,
+          onBoardingData: this.selectedOption,
+          onBoarded: true
+        }
+    }
     };
-    return this.formService.getFormConfig(formServiceInputParams, this.userService.hashTagId);
+    this.extPluginService.post(req).subscribe((data) => {
+      console.log(data);
+      this.updateEvent.emit(true);
+    }, error => {
+      this.updateEvent.emit(false);
+      console.log('fetching program details failed', error);
+    });
   }
 }

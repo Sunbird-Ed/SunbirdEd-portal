@@ -79,7 +79,7 @@
     "@project-sunbird/discussion-service": "0.0.6",
     "@project-sunbird/ext-framework-server": "0.1.10",
     "@project-sunbird/form-service": "0.0.12",
-    "@project-sunbird/program": "0.0.1",
+    "@project-sunbird/program": "0.0.2",
     "@project-sunbird/review-comment": "0.0.8",
     "async": "^2.5.0",
     "asyncawait": "^1.0.7",

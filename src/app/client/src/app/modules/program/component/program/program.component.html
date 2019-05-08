@@ -1,5 +1,5 @@
-<div>
+<div *ngIf="!showLoader && !showOnboardPopup">
   The code for program onboarding go here....
 </div>
-<app-onboard-popup *ngIf="showOnboardPopup" [programDetails]='programDetails'></app-onboard-popup>
-
+<app-onboard-popup *ngIf="!showLoader && showOnboardPopup" [programDetails]='programDetails'
+  (updateEvent)="handleOnboardEvent($event)"></app-onboard-popup>
