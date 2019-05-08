@@ -6,7 +6,7 @@
 
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
-import { ICollectionTreeNodes, ICollectionTreeOptions, MimeTypeTofileType, IUserData } from '@sunbird/shared';
+import { ICollectionTreeNodes, ICollectionTreeOptions, MimeTypeTofileType } from '@sunbird/shared';
 import { ResourceService } from '@sunbird/shared';
 import { OrgDetailsService, UserService } from '@sunbird/core';
 import { Subscription, Subject } from 'rxjs';
