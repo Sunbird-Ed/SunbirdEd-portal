@@ -137,12 +137,13 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private setCommingSoonMessage (node) {
+    let altMessage = '';
     if (node.model && node.model.altMsg && node.model.altMsg.length) {
-      this.commingSoonMessage = this.getMessageFormTranslations(node.model.altMsg[0].translations,
-        node.model.altMsg[0].value);
+      altMessage = node.model.altMsg[0];
+      this.commingSoonMessage = this.getMessageFormTranslations(altMessage.translations, altMessage.value);
     } else if (node.model && node.parent && node.parent.model.altMsg && node.parent.model.altMsg.length) {
-      this.commingSoonMessage = this.getMessageFormTranslations(node.model.parent.model.altMsg[0].translations,
-        node.model.parent.model.altMsg[0].value);
+      altMessage = node.model.parent.model.altMsg[0];
+      this.commingSoonMessage = this.getMessageFormTranslations(altMessage.translations, altMessage.value);
     } else if (this.contentComingSoonDetails) {
       this.commingSoonMessage = this.getMessageFormTranslations(this.contentComingSoonDetails.translations,
         this.contentComingSoonDetails.value);
