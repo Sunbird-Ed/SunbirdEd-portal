@@ -11,7 +11,7 @@ export interface ICollectionTree {
 }
 
 export interface ICollectionTreeNodes {
-  data: ICollectionTree;
+  data: any;
 }
 
 export enum FileTypes {

@@ -126,6 +126,25 @@ export class OrgDetailsService {
     return this.learnerService.get(systemSetting);
   }
 
+  getCommingSoonMessage() {
+    const systemSetting = {
+      url: this.configService.urlConFig.URLS.SYSTEM_SETTING.COMMING_SOON_MESSAGE,
+    };
+    const contentComingSoon: any = this.cacheService.get('contentComingSoon');
+    if (contentComingSoon) {
+      return of(contentComingSoon);
+    } else {
+      return this.learnerService.get(systemSetting).pipe(mergeMap((data: ServerResponse) => {
+        this.cacheService.set('contentComingSoon', data.result.response, {
+          maxAge: this.browserCacheTtlService.browserCacheTtl
+        });
+        return of(data.result.response);
+      }), catchError((err) => {
+        return of({});
+      }));
+    }
+  }
+
   get getServerTimeDiff() {
     return this.timeDiff;
   }
