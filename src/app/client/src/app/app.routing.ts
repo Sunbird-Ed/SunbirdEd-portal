@@ -18,6 +18,9 @@ const appRoutes: Routes = [
     path: 'workspace', loadChildren: 'app/modules/workspace/workspace.module#WorkspaceModule'
   },
   {
+    path: 'workspace/program', loadChildren: 'app/modules/cbse-program/cbse-program.module#CbseProgramModule'
+  },
+  {
     path: 'home', loadChildren: 'app/modules/home/home.module#HomeModule'
   },
   {
