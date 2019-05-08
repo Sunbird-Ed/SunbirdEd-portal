@@ -1,7 +1,7 @@
 
 
 // tslint:disable-next-line:max-line-length
-export const commonMessage = {'value': '[{\'rootOrgId\':\'org_0012\',\'value\':\'Org specific coming soon message\',\'translations\':\'{\'en\':\'Coming soon message\'}\'},{\'rootOrgId\':\'b00bc992ef25f1a9a8d63291e20efc8d\',\'value\':\'Org specific coming soon message\',\'translations\':\'{\'en\':\'Coming soon message\'}\'}]'}
+export const commonMessage = {'value': '[{\'rootOrgId\':\'org_0012\',\'value\':\'Org specific coming soon message\',\'translations\':\'{\'en\':\'Coming soon message\'}\'},{\'rootOrgId\':\'b00bc992ef25f1a9a8d63291e20efc8d\',\'value\':\'Org specific coming soon message\',\'translations\':\'{\'en\':\'Coming soon message\'}\'}]'};
 
 
 export const nodes = {

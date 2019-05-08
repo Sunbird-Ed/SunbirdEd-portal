@@ -206,6 +206,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       redirectUrl = this.router.url.split('?')[0];
     }
+    redirectUrl = decodeURI(redirectUrl);
     this.router.navigate([redirectUrl], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
     this.hardRefreshFilter();
     this.setFilterInteractData();
@@ -227,6 +228,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       redirectUrl = this.router.url.split('?')[0];
     }
+    redirectUrl = decodeURI(redirectUrl);
     if (!_.isEmpty(queryParams)) {
       queryParams['appliedFilters'] = true;
       this.router.navigate([redirectUrl], { queryParams: queryParams });

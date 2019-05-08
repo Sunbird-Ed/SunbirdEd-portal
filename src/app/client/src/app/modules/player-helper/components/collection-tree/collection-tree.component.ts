@@ -131,7 +131,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
       }
       if (node.folder && !(node.children.length)) {
         this.setCommingSoonMessage(node);
-        node.title = node.model.name + '<strong> (' + this.commingSoonMessage + ')</strong>';
+        node.title = node.model.name + '<span> (' + this.commingSoonMessage + ')</span>';
         node.extraClasses = 'disabled';
       } else {
         node.title = node.model.name || 'Untitled File';

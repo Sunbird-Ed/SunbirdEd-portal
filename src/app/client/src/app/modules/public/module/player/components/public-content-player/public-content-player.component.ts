@@ -15,8 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-public-content-player',
-  templateUrl: './public-content-player.component.html',
-  styleUrls: ['./public-content-player.component.scss']
+  templateUrl: './public-content-player.component.html'
 })
 export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
@@ -136,7 +135,15 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    * @memberof ContentPlayerComponent
    */
   close() {
-    this.navigationHelperService.navigateToResource('/explore');
+    try {
+      window.frames['contentPlayer'].contentDocument.body.onunload({});
+    } catch {
+
+    } finally {
+      setTimeout(() => {
+        this.navigationHelperService.navigateToResource('/explore');
+      }, 100);
+    }
   }
   deviceDetector() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
