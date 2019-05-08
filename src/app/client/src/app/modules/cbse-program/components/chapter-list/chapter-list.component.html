@@ -1,0 +1,51 @@
+
+<div class="ui container">
+  <div class="mt-30">
+    <sui-accordion class="styled fluid" [closeOthers]="true">
+      <sui-accordion-panel [isOpen]="i === 0" *ngFor="let topic of topicList; let i = index">
+        <div title>
+          <i class="dropdown icon"></i>
+          {{topic.name}}
+        </div>
+        <div content>
+          <table class="ui celled table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Total</th>
+                <th>Created by me</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="Name">VSA</td>
+                <td data-label="Age">total</td>
+                <td data-label="Job">me</td>
+                <td data-label="Job"><a href="#">open</a></td>
+              </tr>
+              <tr>
+                  <td data-label="Name">SA</td>
+                  <td data-label="Age">total</td>
+                  <td data-label="Job">me</td>
+                  <td data-label="Job"><a href="#">open</a></td>
+              </tr>
+              <tr>
+                  <td data-label="Name">LA</td>
+                  <td data-label="Age">total</td>
+                  <td data-label="Job">me</td>
+                  <td data-label="Job"><a href="#">open</a></td>
+              </tr>
+              <tr>
+                  <td data-label="Name">MCQ</td>
+                  <td data-label="Age">total</td>
+                  <td data-label="Job">me</td>
+                  <td data-label="Job"><a href="#">open</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </sui-accordion-panel>
+    </sui-accordion>
+  </div>
+</div>

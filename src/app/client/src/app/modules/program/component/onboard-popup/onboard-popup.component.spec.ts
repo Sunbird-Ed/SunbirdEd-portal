@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OnboardPopupComponent } from './onboard-popup.component';
 
-describe('OnboardPopupComponent', () => {
+xdescribe('OnboardPopupComponent', () => {
   let component: OnboardPopupComponent;
   let fixture: ComponentFixture<OnboardPopupComponent>;
 

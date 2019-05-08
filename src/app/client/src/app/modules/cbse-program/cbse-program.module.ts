@@ -1,17 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { CbseProgramRoutingModule } from './cbse-program-routing.module';
-import { QuestionListComponent } from './components/question-list/question-list.component';
-import { TextbookSearchComponent } from './components/textbook-search/textbook-search.component';
-import { CbseComponent } from './components/cbse/cbse.component';
-import { SuiTabsModule } from 'ng2-semantic-ui';
-import { SuiModule } from 'ng2-semantic-ui/dist';
-import { QuestionCreationComponent } from './components/question-creation/question-creation.component';
+import { QuestionListComponent, TextbookSearchComponent, CbseComponent,
+  QuestionCreationComponent, ChapterListComponent } from './components';
+import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 @NgModule({
-  declarations: [QuestionListComponent, TextbookSearchComponent, CbseComponent, QuestionCreationComponent],
+  declarations: [QuestionListComponent, TextbookSearchComponent, CbseComponent, QuestionCreationComponent, ChapterListComponent],
   imports: [
     CommonModule,
     CbseProgramRoutingModule,
@@ -19,6 +15,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     SuiModule,
     ReactiveFormsModule, FormsModule,
     InfiniteScrollModule
-  ]
+  ],
+  exports: [ CbseComponent ]
 })
 export class CbseProgramModule { }

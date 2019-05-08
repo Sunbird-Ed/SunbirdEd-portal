@@ -1,5 +1,5 @@
 import { FormService, UserService, ExtPluginService } from '@sunbird/core';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
 import { ResourceService } from '@sunbird/shared';
 
@@ -8,7 +8,9 @@ import { ResourceService } from '@sunbird/shared';
   templateUrl: './onboard-popup.component.html',
   styleUrls: ['./onboard-popup.component.scss']
 })
-export class OnboardPopupComponent implements OnInit {
+export class OnboardPopupComponent implements OnInit, OnDestroy {
+
+  @ViewChild('modal') private modal;
 
   @Input() programDetails: any;
 
@@ -24,14 +26,12 @@ export class OnboardPopupComponent implements OnInit {
     public resourceService: ResourceService) { }
 
   ngOnInit() {
-    console.log('program onboard form', this.programDetails);
     this.formFieldOptions = _.get(this.programDetails, 'config.onBoardForm.fields');
   }
   handleFieldChange(event) {
     this.showButton = true;
   }
   handleSubmit(event) {
-    console.log('', this.selectedOption);
     const req = {
       // url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
       url: `program/v1/add/participant`,
@@ -45,11 +45,14 @@ export class OnboardPopupComponent implements OnInit {
     }
     };
     this.extPluginService.post(req).subscribe((data) => {
-      console.log(data);
       this.updateEvent.emit(true);
     }, error => {
       this.updateEvent.emit(false);
-      console.log('fetching program details failed', error);
     });
+  }
+  ngOnDestroy() {
+    if (this.modal && this.modal.deny) {
+      this.modal.deny();
+    }
   }
 }

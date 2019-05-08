@@ -10,11 +10,11 @@ import { tap } from 'rxjs/operators';
   selector: 'app-program-component',
   templateUrl: './program.component.html'
 })
-export class ProgramComponent implements OnInit, OnDestroy {
+export class ProgramComponent implements OnInit {
 
-  public unsubscribe = new Subject<void>();
   public programId: string;
   public programDetails: any;
+  public userProfile: any;
   public showLoader = true;
   public showOnboardPopup = false;
 
@@ -25,6 +25,7 @@ export class ProgramComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log(this.programId);
+    this.userProfile = this.userService.userProfile;
     this.fetchProgramDetails().subscribe((programDetails) => {
       console.log(this.programDetails);
       if (!this.programDetails.userDetails || !this.programDetails.userDetails.onBoarded) {
@@ -36,10 +37,6 @@ export class ProgramComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
-  }
   fetchProgramDetails() {
     const req = {
       // url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
@@ -53,7 +50,7 @@ export class ProgramComponent implements OnInit, OnDestroy {
   }
   handleOnboardEvent(event) {
     this.fetchProgramDetails().subscribe((programDetails) => {
-
+      this.showOnboardPopup = false;
     }, error => {
       // TODO: navigate to program list page
       console.log('fetching program details failed', error);
