@@ -55,7 +55,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
     */
     this.orgDetailsService.getCommingSoonMessage().pipe(takeUntil(this.unsubscribe$)).subscribe(
       (apiResponse) => {
-        if (apiResponse.value && apiResponse.value) {
+        if (apiResponse.value) {
           this.contentComingSoonDetails = _.find(JSON.parse(apiResponse.value), {rootOrgId: rootOrgId});
         }
       }
@@ -137,9 +137,9 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private setCommingSoonMessage (node) {
-    if (node.model && node.model.altMsg && node.model.altMsg.length) {
+    if (_.has(node, 'model.altMsg') && node.model.altMsg.length) {
       this.commingSoonMessage = this.getMessageFormTranslations(node.model.altMsg[0]);
-    } else if (node.model && node.parent && node.parent.model.altMsg && node.parent.model.altMsg.length) {
+    } else if (_.has(node, 'parent.model.altMsg') && node.parent.model.altMsg.length) {
       this.commingSoonMessage = this.getMessageFormTranslations(node.model.parent.model.altMsg[0]);
     } else if (this.contentComingSoonDetails) {
       this.commingSoonMessage = this.getMessageFormTranslations(this.contentComingSoonDetails);

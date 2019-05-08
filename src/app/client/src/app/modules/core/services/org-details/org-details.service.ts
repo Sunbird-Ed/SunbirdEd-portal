@@ -7,6 +7,7 @@ import { ContentService } from './../content/content.service';
 import { PublicDataService } from './../public-data/public-data.service';
 import { CacheService } from 'ng2-cache-service';
 import { LearnerService } from './../learner/learner.service';
+import * as _ from 'lodash-es';
 
 @Injectable({
   providedIn: 'root'
@@ -133,15 +134,15 @@ export class OrgDetailsService {
   }
 
   getCommingSoonMessage() {
-    const systemSetting = {
-      url: this.configService.urlConFig.URLS.SYSTEM_SETTING.COMMING_SOON_MESSAGE,
-    };
     const contentComingSoon: any = this.cacheService.get('contentComingSoon');
     if (contentComingSoon) {
       return of(contentComingSoon);
     } else {
+      const systemSetting = {
+        url: this.configService.urlConFig.URLS.SYSTEM_SETTING.COMMING_SOON_MESSAGE,
+      };
       return this.learnerService.get(systemSetting).pipe(map((data: ServerResponse) => {
-        if (data.result && data.result.response) {
+        if (_.has(data, 'result.response')) {
           this.cacheService.set('contentComingSoon', data.result.response, {
             maxAge: this.browserCacheTtlService.browserCacheTtl
           });
