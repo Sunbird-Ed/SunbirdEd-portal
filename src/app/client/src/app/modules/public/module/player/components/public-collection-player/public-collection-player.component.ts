@@ -292,13 +292,21 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     this.navigationHelperService.navigateToPreviousUrl('/explore');
   }
   closeContentPlayer() {
-    this.showPlayer = false;
-    delete this.queryParams.contentId;
-    const navigationExtras: NavigationExtras = {
-      relativeTo: this.route,
-      queryParams: this.queryParams
-    };
-    this.router.navigate([], navigationExtras);
+    try {
+      window.frames['contentPlayer'].contentDocument.body.onunload({});
+    } catch {
+
+    } finally {
+      setTimeout(() => {
+        this.showPlayer = false;
+        delete this.queryParams.contentId;
+        const navigationExtras: NavigationExtras = {
+          relativeTo: this.route,
+          queryParams: this.queryParams
+        };
+        this.router.navigate([], navigationExtras);
+      }, 100);
+    }
   }
   deviceDetector() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
