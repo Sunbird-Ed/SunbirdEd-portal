@@ -26,12 +26,22 @@
             </div>
       </div>
       <div class="row">
-        <div *ngIf="!showLoader && searchResults.length" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="searchResults"
-            class="ui stackable four column grid dynamic-section-card masonry-grid">
-            <div in-view-item [id]="i" [data]="content" class="column py-5 pl-10 masonry-item" *ngFor="let content of searchResults;let i = index;">
-              <app-dial-code-card appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"></app-dial-code-card>
+        <div infinite-scroll
+             [infiniteScrollDistance]="scrollDistance"
+             [infiniteScrollThrottle]="throttle"
+             (scrolled)="onScrollDown()">
+
+          <div *ngIf="!showLoader && itemsToDisplay.length" in-view-container (inview)="inview($event)"
+               [throttle]="[1000]" [trigger]="itemsToDisplay"
+               class="ui stackable four column grid dynamic-section-card masonry-grid">
+
+            <div in-view-item [id]="i" [data]="content" class="column py-5 pl-10 masonry-item"
+                 *ngFor="let content of itemsToDisplay;let i = index;">
+              <app-dial-code-card appContentDirection [dialCode]="dialCode" [data]="content"
+                                  (clickEvent)="getEvent($event)"></app-dial-code-card>
             </div>
           </div>
+        </div>
       </div>
       <div class="row sb-placeholder">
           <div *ngIf="!showLoader && !searchResults.length">

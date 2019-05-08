@@ -22,6 +22,16 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * reference of SearchService
    */
+
+  /**
+   * Initializing the infinite scroller
+   */
+  itemsToDisplay: any = [];
+  initiallyItemsToLoad = 50;
+  throttle = 50;
+  numOfItemsToAddOnScroll = 20;
+  scrollDistance = 2;
+
   private searchService: SearchService;
 
   /**
@@ -182,11 +192,22 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
         const metaData = this.configService.appConfig.GetPage.metaData;
         const dynamicFields = this.configService.appConfig.GetPage.dynamicFields;
         this.searchResults = this.utilService.getDataForCard(this.linkedContents, constantData, dynamicFields, metaData);
+        this.appendItems(0, this.initiallyItemsToLoad);
         this.showLoader = false;
       }, error => {
         this.showLoader = false;
         this.toasterService.error(this.resourceService.messages.fmsg.m0049);
       });
+  }
+
+  appendItems(startIndex, endIndex) {
+    this.itemsToDisplay.push(...this.searchResults.slice(startIndex, endIndex));
+  }
+
+  onScrollDown(ev) {
+    const startIndex = this.initiallyItemsToLoad;
+    this.initiallyItemsToLoad = this.initiallyItemsToLoad + this.numOfItemsToAddOnScroll;
+    this.appendItems(startIndex, this.initiallyItemsToLoad);
   }
 
   public getAllPlayableContent(collectionIds) {
