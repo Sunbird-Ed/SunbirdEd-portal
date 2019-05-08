@@ -137,33 +137,30 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private setCommingSoonMessage (node) {
-    let altMessage = '';
     if (node.model && node.model.altMsg && node.model.altMsg.length) {
-      altMessage = node.model.altMsg[0];
-      this.commingSoonMessage = this.getMessageFormTranslations(altMessage.translations, altMessage.value);
+      this.commingSoonMessage = this.getMessageFormTranslations(node.model.altMsg[0]);
     } else if (node.model && node.parent && node.parent.model.altMsg && node.parent.model.altMsg.length) {
-      altMessage = node.model.parent.model.altMsg[0];
-      this.commingSoonMessage = this.getMessageFormTranslations(altMessage.translations, altMessage.value);
+      this.commingSoonMessage = this.getMessageFormTranslations(node.model.parent.model.altMsg[0]);
     } else if (this.contentComingSoonDetails) {
-      this.commingSoonMessage = this.getMessageFormTranslations(this.contentComingSoonDetails.translations,
-        this.contentComingSoonDetails.value);
+      this.commingSoonMessage = this.getMessageFormTranslations(this.contentComingSoonDetails);
     } else {
       this.commingSoonMessage  = this.resourceService.messages.stmsg.m0121;
     }
   }
 
-  private getMessageFormTranslations (translations, value) {
+  private getMessageFormTranslations (commingsoonobj) {
     try {
-      translations = JSON.parse(translations);
+      const translations = JSON.parse(commingsoonobj.translations);
+      if (translations[this.selectLanguage]) {
+        return translations[this.selectLanguage];
+      } else {
+        return translations['en'];
+      }
     } catch (e) {
-      return value;
-    }
-    if (translations[this.selectLanguage]) {
-      return translations[this.selectLanguage];
-    } else {
-      return translations['en'];
+      return commingsoonobj.value;
     }
   }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
