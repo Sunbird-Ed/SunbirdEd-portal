@@ -7,7 +7,6 @@ import { UserService, ContentService, LearnerService, CoreModule } from '@sunbir
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { response } from './delete-note-component.spec.data';
 import { mockUserData } from './../../../core/services/user/user.mock.spec.data';
 import { DeleteNoteComponent } from './delete-note.component';
@@ -19,7 +18,7 @@ describe('DeleteNoteComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, FormsModule, SharedModule.forRoot(), CoreModule.forRoot()],
+      imports: [SuiModule, HttpClientTestingModule, FormsModule, SharedModule.forRoot(), CoreModule],
       declarations: [DeleteNoteComponent],
       providers: [NotesService]
     })

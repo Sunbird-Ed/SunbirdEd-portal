@@ -9,7 +9,7 @@ import { DashboardParams, DashboardData } from './../../interfaces';
 import { DashboardUtilsService } from './../dashboard-utils/dashboard-utils.service';
 
 
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 /**
  * Service to get course consumption dashboard

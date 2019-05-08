@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
+import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService,
+NavigationHelperService } from '@sunbird/shared';
 import { UserSearchService } from './../../services';
-import { BadgesService, BreadcrumbsService, LearnerService, UserService } from '@sunbird/core';
-import * as _ from 'lodash';
+import { BadgesService, LearnerService, UserService } from '@sunbird/core';
+import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
@@ -14,9 +15,9 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.css']
+  styleUrls: ['./user-profile.component.scss']
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, AfterViewInit {
   /**
 	 * Contains unique announcement id
 	 */
@@ -76,10 +77,7 @@ export class UserProfileComponent implements OnInit {
    * To navigate back to parent component
    */
   public routerNavigationService: RouterNavigationService;
-  /**
-   * To pass dynamic breadcrumb data.
-   */
-  public breadcrumbsService: BreadcrumbsService;
+
   router: Router;
 
   /**
@@ -116,7 +114,6 @@ export class UserProfileComponent implements OnInit {
   * @param {ResourceService} resourceService Reference of ResourceService
   * @param {ToasterService} toasterService Reference of ToasterService
   * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
-  * @param {BreadcrumbsService} breadcrumbsService Reference of BreadcrumbsService
   * @param {LearnerService} learnerService Reference of LearnerService
   * @param {ConfigService} config Reference of ConfigService
   * @param {UserService} userService Reference of contentService
@@ -128,18 +125,17 @@ export class UserProfileComponent implements OnInit {
     resourceService: ResourceService,
     toasterService: ToasterService,
     routerNavigationService: RouterNavigationService,
-    breadcrumbsService: BreadcrumbsService,
     learnerService: LearnerService,
     configService: ConfigService,
     userService: UserService,
-    router: Router) {
+    router: Router,
+    public navigationhelperService: NavigationHelperService) {
     this.userSearchService = userSearchService;
     this.badgesService = badgesService;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.routerNavigationService = routerNavigationService;
-    this.breadcrumbsService = breadcrumbsService;
     this.learnerService = learnerService;
     this.configService = configService;
     this.userService = userService;
@@ -157,7 +153,7 @@ export class UserProfileComponent implements OnInit {
       (apiResponse: ServerResponse) => {
         this.userDetails = apiResponse.result.response;
         this.formatEndorsementList();
-        this.breadcrumbsService.setBreadcrumbs([{ label: this.userDetails.firstName, url: '' }]);
+        // this.breadcrumbsService.setBreadcrumbs([{ label: this.userDetails.firstName, url: '' }]);
         this.populateBadgeDescription();
         this.showLoader = false;
       },
@@ -261,25 +257,31 @@ export class UserProfileComponent implements OnInit {
         this.activatedRoute.params.subscribe(params => {
           this.userId = params.userId;
           this.populateUserProfile();
-          this.telemetryImpression = {
-            context: {
-              env: this.activatedRoute.snapshot.data.telemetry.env
-            },
-            object: {
-              id: this.userId,
-              type: 'user',
-              ver: '1.0'
-            },
-            edata: {
-              type: this.activatedRoute.snapshot.data.telemetry.type,
-              pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-              uri: this.route.url,
-              subtype: this.activatedRoute.snapshot.data.telemetry.subtype
-            }
-          };
         });
         this.queryParams = this.activatedRoute.snapshot.queryParams;
       }
+    });
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        object: {
+          id: this.activatedRoute.snapshot.params.userId,
+          type: 'user',
+          ver: '1.0'
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.route.url,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
     });
   }
   /**

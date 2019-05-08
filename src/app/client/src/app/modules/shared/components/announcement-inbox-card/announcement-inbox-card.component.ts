@@ -1,15 +1,14 @@
 import { Announcement } from '../../interfaces/index';
 import { ResourceService } from '../../services/index';
 import { Component, Input } from '@angular/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as moment from 'moment';
 /**
  * AnnouncementInboxCard is a shared component contains announcement inbox card
  */
 @Component({
   selector: 'app-announcement-inbox-card',
-  templateUrl: './announcement-inbox-card.component.html',
-  styleUrls: ['./announcement-inbox-card.component.css']
+  templateUrl: './announcement-inbox-card.component.html'
 })
 export class AnnouncementInboxCardComponent {
   /**

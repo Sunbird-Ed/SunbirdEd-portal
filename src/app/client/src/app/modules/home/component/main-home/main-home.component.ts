@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { CoursesService, UserService, PlayerService } from '@sunbird/core';
-import { ResourceService, ToasterService, ServerResponse, ConfigService, UtilService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse, ConfigService, UtilService, NavigationHelperService } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 /**
  * This component contains 3 sub components
  * 1)ProfileCard: It displays user profile details.
@@ -17,11 +17,12 @@ import * as _ from 'lodash';
   styleUrls: ['./main-home.component.scss']
 })
 
-export class MainHomeComponent implements OnInit, OnDestroy {
+export class MainHomeComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
   * inviewLogs
  */
   inviewLogs = [];
+  @ViewChild('slickModal') slickModal;
   /**
 	 * telemetryImpression
 	*/
@@ -97,14 +98,14 @@ export class MainHomeComponent implements OnInit, OnDestroy {
         }
       },
       {
-        'breakpoint': 2000,
+        'breakpoint': 1920,
         'settings': {
           'slidesToShow': 4,
-          'slidesToScroll': 4
+          'slidesToScroll': 3
         }
       },
       {
-        'breakpoint': 1600,
+        'breakpoint': 1440,
         'settings': {
           'slidesToShow': 3.5,
           'slidesToScroll': 3
@@ -118,9 +119,9 @@ export class MainHomeComponent implements OnInit, OnDestroy {
         }
       },
       {
-        'breakpoint': 900,
+        'breakpoint': 992,
         'settings': {
-          'slidesToShow': 2.5,
+          'slidesToShow': 2.25,
           'slidesToScroll': 2
         }
       },
@@ -139,7 +140,21 @@ export class MainHomeComponent implements OnInit, OnDestroy {
         }
       },
       {
+        'breakpoint': 600,
+        'settings': {
+          'slidesToShow': 1.5,
+          'slidesToScroll': 1
+        }
+      },
+      {
         'breakpoint': 530,
+        'settings': {
+          'slidesToShow': 1.33,
+          'slidesToScroll': 1
+        }
+      },
+      {
+        'breakpoint': 498,
         'settings': {
           'slidesToShow': 1.25,
           'slidesToScroll': 1
@@ -148,12 +163,18 @@ export class MainHomeComponent implements OnInit, OnDestroy {
       {
         'breakpoint': 450,
         'settings': {
+          'slidesToShow': 1.15,
+          'slidesToScroll': 1
+        }
+      },
+      {
+        'breakpoint': 390,
+        'settings': {
           'slidesToShow': 1,
           'slidesToScroll': 1
         }
       }
-    ],
-    infinite: false
+    ]
   };
   /**The button clicked value for interact telemetry event */
   btnArrow: string;
@@ -167,7 +188,8 @@ export class MainHomeComponent implements OnInit, OnDestroy {
    */
   constructor(resourceService: ResourceService, private playerService: PlayerService,
     userService: UserService, courseService: CoursesService, toasterService: ToasterService,
-    route: Router, activatedRoute: ActivatedRoute, configService: ConfigService, utilService: UtilService) {
+    route: Router, activatedRoute: ActivatedRoute, configService: ConfigService, utilService: UtilService,
+    public navigationhelperService: NavigationHelperService) {
     this.userService = userService;
     this.courseService = courseService;
     this.resourceService = resourceService;
@@ -226,17 +248,7 @@ export class MainHomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // this.populateUserProfile();
     this.populateEnrolledCourse();
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
-      }
-    };
+    this.addSlideConfig();
   }
   /**
    *ngOnDestroy unsubscribe the subscription
@@ -249,7 +261,20 @@ export class MainHomeComponent implements OnInit, OnDestroy {
       this.courseSubscription.unsubscribe();
     }
   }
-
+  addSlideConfig() {
+    this.resourceService.languageSelected$
+        .subscribe(item => {
+          if (item.value === 'ur') {
+            this.slideConfig['rtl'] = true;
+          } else {
+            this.slideConfig['rtl'] = false;
+          }
+          if (this.slickModal) {
+            this.slickModal.unslick();
+            this.slickModal.initSlick(this.slideConfig);
+          }
+    });
+  }
   /**
    * get inview  Data
   */
@@ -331,5 +356,21 @@ export class MainHomeComponent implements OnInit, OnDestroy {
       type: 'user',
       ver: '1.0'
     };
+  }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.activatedRoute.snapshot.data.telemetry.uri,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 }

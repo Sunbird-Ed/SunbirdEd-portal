@@ -1,9 +1,9 @@
 
 import {filter} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute, RouterStateSnapshot } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute, RouterStateSnapshot, NavigationStart } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 interface UrlHistory {
   url: string;
   queryParams?: any;
@@ -23,6 +23,11 @@ export class NavigationHelperService {
    * Stores routing history
    */
   private _history: Array<UrlHistory> = [];
+
+
+  private pageStartTime: any;
+
+  private pageEndTime: any;
   /**
    * Name used to store previous url in session
    */
@@ -38,20 +43,25 @@ export class NavigationHelperService {
    * @memberof NavigationHelperService
    */
   private storeUrlHistory(): void {
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
-      const queryParams = this.activatedRoute.root.children[this.activatedRoute.root.children.length - 1].snapshot.queryParams;
-      const url = urlAfterRedirects.url.split('?')[0];
-      let history: UrlHistory;
-      if (_.isEmpty(queryParams)) {
-        history = {url};
-      } else {
-        history = {url, queryParams};
-      }
-      const previousUrl = this._history.pop();
-      if (previousUrl === undefined || (previousUrl && previousUrl.url === history.url )) {
-        this._history.push(history);
-      } else {
-        this._history.push(previousUrl, history);
+    this.router.events.subscribe(e => {
+      if (e instanceof NavigationStart) {
+        this.pageStartTime = Date.now();
+      } else if (e instanceof NavigationEnd) {
+        const urlAfterRedirects = e;
+        const queryParams = this.activatedRoute.root.children[this.activatedRoute.root.children.length - 1].snapshot.queryParams;
+        const url = urlAfterRedirects.url.split('?')[0];
+        let history: UrlHistory;
+        if (_.isEmpty(queryParams)) {
+          history = {url};
+        } else {
+          history = {url, queryParams};
+        }
+        const previousUrl = this._history.pop();
+        if (previousUrl === undefined || (previousUrl && previousUrl.url === history.url )) {
+          this._history.push(history);
+        } else {
+          this._history.push(previousUrl, history);
+        }
       }
     });
   }
@@ -71,6 +81,12 @@ export class NavigationHelperService {
     } else {
       this.router.navigate([defaultUrl]);
     }
+  }
+
+  public getPageLoadTime() {
+     this.pageEndTime = Date.now();
+     const loadTime = (this.pageEndTime - this.pageStartTime) / 1000;
+     return loadTime;
   }
 
   public navigateToWorkSpace(defaultUrl: string = '/home') {
@@ -97,6 +113,7 @@ export class NavigationHelperService {
    * Add callback function for window.onunload to store previous url.
    */
   initialize() {
+    this.pageStartTime = Date.now();
     this.storeUrlHistory();
     window.onunload = () => {
       if (this.history[this._history.length - 2]) {

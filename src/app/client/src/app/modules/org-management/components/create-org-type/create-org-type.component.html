@@ -1,21 +1,69 @@
-<sui-modal [isClosable]="true" (dismissed)="redirect();" #modal [appTelemetryImpression]="telemetryImpression">
-    <div *ngIf="createForm" class="header">{{resourceService?.frmelmnts?.lbl?.addorgtype}}</div>
-    <div *ngIf="!createForm" class="header">{{resourceService?.frmelmnts?.lbl?.updateorgtype}}</div>
-    <div class="content">
+<sui-modal
+    [mustScroll]="true" 
+    [isClosable]="true"
+    [transitionDuration]="0"
+    [size]="'normal'"
+    class="sb-modal"
+    appBodyScroll  
+    (dismissed)="redirect();"
+    #modal 
+    [appTelemetryImpression]="telemetryImpression"
+    >
+
+    <!--Header-->
+    <div 
+        *ngIf="createForm" 
+        class="sb-modal-header"
+    >
+        {{resourceService?.frmelmnts?.lbl?.addorgtype}}
+    </div>
+    <div 
+        *ngIf="!createForm" 
+        class="sb-modal-header">
+            {{resourceService?.frmelmnts?.lbl?.updateorgtype}}
+    </div>
+    <!--/Header-->
+
+    <!--Content-->
+    <div class="sb-modal-content">
         <div class="ui fluid icon input">
             <input *ngIf="createForm" class="form-control" [formControl]="orgName" type="text" placeholder="{{resourceService?.frmelmnts?.lbl?.addorgtype}}">
             <input *ngIf="!createForm" class="form-control" [formControl]="orgName" type="text" placeholder="{{resourceService?.frmelmnts?.lbl?.updateorgtype}}">
         </div>
     </div>
-    <div class="actions">
-        <div *ngIf="createForm" class="ui primary approve button" (click)="disableApproveBtn=true; addOrgType()" [class.disabled]="disableApproveBtn"
-        appTelemetryInteract [telemetryInteractObject]="{id:'addOrgType',type:'create-org-type',ver:'1.0'}" [telemetryInteractEdata]="addOrganizationType">
-         {{resourceService?.frmelmnts?.btn?.add}}</div>
-        <div *ngIf="!createForm" class="ui primary approve button" (click)="disableApproveBtn=true; updateOrgType()" [class.disabled]="disableApproveBtn"
-        appTelemetryInteract [telemetryInteractObject]="{id:'updateOrgType',type:'update-org-type',ver:'1.0'}" [telemetryInteractEdata]="updateOrganizationType">
-         {{resourceService?.frmelmnts?.btn?.update}}</div>
-        <div class="ui negative cancel button" (click)="modal.deny()"
-        appTelemetryInteract [telemetryInteractObject]="{id:'cancel',type:'org-type',ver:'1.0'}" [telemetryInteractEdata]="cancelModal">
-        {{resourceService?.frmelmnts?.btn?.cancel}}</div>
+    <!--/Content-->
+
+    <!--Actions-->
+    <div class="sb-modal-actions">
+        <button 
+            class="sb-btn sb-btn-normal sb-btn-primary"
+            *ngIf="createForm"
+            (click)="disableApproveBtn=true; addOrgType()" 
+            [class.disabled]="disabled"
+            appTelemetryInteract 
+            [telemetryInteractEdata]="addOrganizationType"
+        >
+            {{resourceService?.frmelmnts?.btn?.add}}
+        </button>
+        <button
+            class="sb-btn sb-btn-normal sb-btn-primary"
+            *ngIf="!createForm" 
+            (click)="disableApproveBtn=true; updateOrgType()" 
+            [class.disabled]="disabled"
+            appTelemetryInteract 
+            [telemetryInteractEdata]="updateOrganizationType"
+        >
+            {{resourceService?.frmelmnts?.btn?.update}}
+        </button>
+        <button
+            class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+            (click)="modal.deny()"
+            appTelemetryInteract 
+            [telemetryInteractEdata]="cancelModal"
+        >
+            {{resourceService?.frmelmnts?.btn?.cancel}}
+        </button>
     </div>
+    <!--/Actions-->
+
 </sui-modal>

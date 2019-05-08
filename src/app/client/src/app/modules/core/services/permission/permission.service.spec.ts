@@ -6,7 +6,6 @@ import { TestBed } from '@angular/core/testing';
 import { ConfigService, ToasterService, ResourceService, BrowserCacheTtlService } from '@sunbird/shared';
 import { PermissionService } from './permission.service';
 import { LearnerService, UserService, CoreModule } from '@sunbird/core';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 const mockUserRoles = {
   userRoles: ['PUBLIC']
@@ -19,7 +18,7 @@ const mockResource = {
 describe('PermissionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule.forRoot()],
+      imports: [HttpClientTestingModule, CoreModule],
       providers: [ResourceService, ToasterService, PermissionService, ConfigService, LearnerService, UserService,
         BrowserCacheTtlService]
     });

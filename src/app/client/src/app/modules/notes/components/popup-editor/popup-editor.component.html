@@ -1,8 +1,21 @@
-<sui-modal [isClosable]="true" (dismissed)="redirect()" #modal>
-  <div class="header cardsHeading" *ngIf="mode === 'create'">
-    <span class="ui header">{{resourceService?.frmelmnts?.pgttl?.takeanote}}</span>
+<sui-modal
+  [mustScroll]="true" 
+  [isClosable]="true"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll
+  (dismissed)="redirect()"
+  #modal>
+
+  <!--Header-->
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.pgttl?.takeanote}}
   </div>
-  <div class="content" *ngIf="mode === 'create'">
+  <!--/Header-->
+
+  <!--Content-->
+  <div class="sb-modal-content" *ngIf="mode === 'create'">
     <div class="ui fluid icon input">
       <input type="text" [(ngModel)]="noteData.title" placeholder={{resourceService?.frmelmnts?.lbl?.title}} name="title">
     </div>
@@ -21,15 +34,40 @@
       <textarea class="wmd-input" [(ngModel)]="updateData.note" id="wmd-input" placeholder={{resourceService?.frmelmnts?.lbl?.description}}></textarea>
     </div>
   </div>
+  <!--/Content-->
 
-
-  <div class="actions">
-    <button *ngIf="mode === 'create'" class="ui primary right floated button mb-15 mt-10 ng-binding" type="submit" (click)="modal.approve('done'); createNote();"
-      [disabled]="!noteData.title || !noteData.note" tabindex="3">SAVE</button>
-    <button *ngIf="mode === 'create'" class="ui secondary right floated button mb-15 mt-10 ng-binding" type="submit" (click)="clearNote()"
-      tabindex="4">CLEAR</button>
-
-    <button [disabled]="!updateData.title || !updateData.note" *ngIf="mode === 'update'" class="ui primary right floated button mb-15 mt-10 ng-binding" type="submit"
-      (click)="modal.approve('done'); updateNote()" tabindex="4">UPDATE</button>
+  <!--Actions-->
+  <div class="sb-modal-actions">
+    <button 
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="setTelemetryInteractEData('update-note')"
+      [disabled]="!updateData.title || !updateData.note" 
+      *ngIf="mode === 'update'" 
+      class="sb-btn sb-btn-normal sb-btn-primary ng-binding" 
+      type="submit"
+      (click)="modal.approve('done'); updateNote()" 
+    >
+      {{resourceService?.frmelmnts?.btn?.update}}
+    </button>
+    <button 
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="setTelemetryInteractEData('save-note')"  
+      *ngIf="mode === 'create'" 
+      class="sb-btn sb-btn-normal sb-btn-primary ng-binding" 
+      type="submit" 
+      (click)="modal.approve('done'); createNote();"
+      [disabled]="!noteData.title || !noteData.note" 
+    >
+      {{resourceService?.frmelmnts?.btn?.save}}
+    </button>
+    <button 
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="setTelemetryInteractEData('clear-note')"
+      *ngIf="mode === 'create'" 
+      class="sb-btn sb-btn-normal sb-btn-outline-primary ng-binding" 
+      type="submit" 
+      (click)="clearNote()"
+    >
+      {{resourceService?.frmelmnts?.btn?.clear}}
+    </button>
   </div>
+  <!--/Actions-->
+
 </sui-modal>

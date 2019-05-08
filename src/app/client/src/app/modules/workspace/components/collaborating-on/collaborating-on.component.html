@@ -6,7 +6,7 @@
   <app-no-result [data]="noResultMessage"></app-no-result>
 </div>
 
-<table class="ui sortable upForReviewTable table" *ngIf="collaboratingContent.length > 0 && !showLoader && !noResult ">
+<table class="ui single line sortable upForReviewTable table" *ngIf="collaboratingContent.length > 0 && !showLoader && !noResult ">
   <thead>
     <tr>
       <th (click)="sortColumns('name')" class="five wide UpReviewTableHeader sorted bl-0" [ngClass]="{'ascending':sortDirection === 'asc' && 
@@ -14,7 +14,7 @@
         {{ resourceService?.frmelmnts?.lbl?.content}}
       </th>
       <th (click)="sortColumns('creator')" class="four wide UpReviewTableHeader sorted bl-0" [ngClass]="{'ascending':sortDirection === 'asc' && 
-      column === 'creator','descending':sortDirection === 'desc' && column === 'creator'}">{{ resourceService?.frmelmnts?.lbl?.author}}
+      column === 'creator','descending':sortDirection === 'desc' && column === 'creator'}">{{ resourceService?.frmelmnts?.lbl?.creator}}
       </th>
       <th (click)="sortColumns('lastUpdatedOn')" class="four wide UpReviewTableHeader sorted bl-0" [ngClass]="{'ascending':sortDirection === 'asc' && 
       column === 'lastUpdatedOn','descending':sortDirection === 'desc' && column === 'lastUpdatedOn'}">
@@ -36,8 +36,8 @@
         <h5 class="ui image header">
           <img src="{{content.appIcon || 'assets/images/default.png' | cdnprefixurl}}" class="ui tiny image UpReviewTinyImage">
           <div class="content ">
-            <div class="UpReviewHeader">{{content.name | slice:0:40}}
-              <i *ngIf="content.name.length > 40">...</i>
+            <div class="UpReviewHeader" title="{{content.name}}">{{content.name | slice:0:25}}
+              <i *ngIf="content.name.length > 25">...</i>
             </div>
             <div class="UpReviewSubHeader">{{content.contentType}}
             </div>
@@ -60,9 +60,15 @@
         </h5>
       </td>
       <td class="UpForReviewStatusOrange">{{content.status}}</td>
-      <td class="cursor-pointer" (click)="contentClick(content)">
-        <i class="edit icon">
+      <td *ngIf= "content.status.toLowerCase() === 'draft' && !content.lockInfo">
+        <i appTelemetryInteract [telemetryInteractObject]="{id:content.identifier,type:content.contentType,ver:content.pkgVersion ? content.pkgVersion.toString(): '1.0' }"
+          [telemetryInteractEdata]="{id:'edit',type:'click',pageid:'CollaboratingOn'}"  (click)="contentClick(content)" class="edit icon cursor-pointer">
         </i>
+      </td>
+      <td *ngIf="content.lockInfo">
+        <span suiPopup popupText="{{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':content?.lockInfo?.creatorInfo?.name | interpolate:'{contentName}':content?.name}}" [popupPlacement]="'top left'">
+          <i class="lock icon large"  ></i>
+        </span>
       </td>
     </tr>
   </tbody>
@@ -83,12 +89,42 @@
 </div>
 
 <ng-template let-context let-modal="modal" #modalTemplate>
-  <div class="header"> {{resourceService?.frmelmnts?.lbl?.deletecontent}}</div>
-  <div class="content">
-    <p>{{resourceService?.frmelmnts?.lbl?.deleteconfirm}}</p>
-  </div>
-  <div class="actions">
-    <button class="ui red button" (click)="modal.deny('denied')">No</button>
-    <button class="ui primary button" (click)="modal.approve('approved')" autofocus>Yes</button>
+  <div class="sb-modal sb-error">
+    <div class="ui modal visible active small">
+      <i class="icon close" (click)="modal.deny('denied')" tabindex="0"></i>
+      
+      <!--Header-->
+      <div class="sb-modal-header">
+        {{resourceService?.frmelmnts?.lbl?.deletecontent}}
+      </div>
+      <!--/Header-->
+
+      <!--Content-->
+      <div class="sb-modal-content">
+        <p>{{resourceService?.frmelmnts?.lbl?.deleteconfirm}}</p>
+      </div>
+      <!--/Content-->
+
+      <!--Actions-->
+      <div class="sb-modal-actions">
+        <button 
+          class="sb-btn sb-btn-normal sb-btn-error" 
+          (click)="modal.approve('approved')" 
+          autofocus
+        >
+          {{resourceService?.frmelmnts?.btn?.yes}}
+        </button>
+        <button 
+          class="sb-btn sb-btn-normal sb-btn-outline-error" 
+          (click)="modal.deny('denied')"
+        >
+          {{resourceService?.frmelmnts?.btn?.no}}
+        </button>
+      </div>
+      <!--/Actions-->
+
+    </div>
   </div>
 </ng-template>
+
+<app-contentlock-info-popup [content]="lockPopupData" (closeEvent)="onCloseLockInfoPopup($event)" *ngIf="showLockedContentModal"></app-contentlock-info-popup>

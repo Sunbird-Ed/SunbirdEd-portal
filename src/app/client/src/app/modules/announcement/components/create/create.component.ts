@@ -1,28 +1,28 @@
 
-import {first, takeUntil, map, filter} from 'rxjs/operators';
-import { Subscription ,  Observable ,  Subject } from 'rxjs';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-import { ResourceService, FileUploadService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, ElementRef, ViewChildren, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { NgForm, FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { first, takeUntil, map, filter } from 'rxjs/operators';
+import { Subscription, Subject } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ResourceService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { GeoExplorerComponent } from './../geo-explorer/geo-explorer.component';
-import { FileUploaderComponent } from './../file-uploader/file-uploader.component';
 import { CreateService } from './../../services';
 import { UserService } from '@sunbird/core';
 import { IGeoLocationDetails, IAnnouncementDetails, IAttachementType } from './../../interfaces';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import {
   IEndEventInput, IStartEventInput, IInteractEventInput,
   IImpressionEventInput, IInteractEventObject, IInteractEventEdata
 } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { FileUploadService } from './../../services';
+
 /**
  * This component helps to create and resend announcement
  */
 @Component({
   selector: 'app-create',
-  templateUrl: './create.component.html',
-  styleUrls: ['./create.component.css'],
+  templateUrl: './create.component.html'
 })
 export class CreateComponent implements OnInit, OnDestroy {
 
@@ -198,29 +198,29 @@ export class CreateComponent implements OnInit, OnDestroy {
   setAnnouncementTypes(): void {
     this.showResendLoader = true;
     if (this.createService._announcementTypes) {
-      _.each(this.createService._announcementTypes, (key) => {
+      _.each(this.createService._announcementTypes, (key: any) => {
         this.announcementTypes.push(key.name);
       });
       this.showResendLoader = false;
     } else {
       this.createService.getAnnouncementTypes().pipe(
-      takeUntil(this.unsubscribe))
-      .subscribe(
-        (data: ServerResponse) => {
-          if (data.result.announcementTypes) {
-            _.each(data.result.announcementTypes, (key) => {
-              this.announcementTypes.push(key.name);
-            });
+        takeUntil(this.unsubscribe))
+        .subscribe(
+          (data: ServerResponse) => {
+            if (data.result.announcementTypes) {
+              _.each(data.result.announcementTypes, (key) => {
+                this.announcementTypes.push(key.name);
+              });
+            }
+            this.showResendLoader = false;
+          },
+          (err: ServerResponse) => {
+            this.toasterService.error(this.resource.messages.emsg.m0005);
+            this.showResendLoader = false;
+            this.createModal.deny();
+            this.redirectToOutbox();
           }
-          this.showResendLoader = false;
-        },
-        (err: ServerResponse) => {
-          this.toasterService.error(this.resource.messages.emsg.m0005);
-          this.showResendLoader = false;
-          this.createModal.deny();
-          this.redirectToOutbox();
-        }
-      );
+        );
     }
   }
 
@@ -309,7 +309,7 @@ export class CreateComponent implements OnInit, OnDestroy {
   saveAnnouncement() {
     this.announcementDetails.target = this.recipientsList;
     this.createService.saveAnnouncement(this.announcementDetails, this.identifier ? true : false).pipe(
-    takeUntil(this.unsubscribe))
+      takeUntil(this.unsubscribe))
       .subscribe(
         (res: ServerResponse) => {
           this.modalName = 'success';
@@ -348,12 +348,21 @@ export class CreateComponent implements OnInit, OnDestroy {
     this.route.navigate(['announcement/outbox/1']);
   }
   /**
+   * Used to close the creation modal.
+   *
+   * Function gets executed when user click close icon of announcement form
+   */
+  cancelCreation(): void {
+    this.modalName = 'cancel';
+  }
+
+  /**
    * Function used to detect form input value changes.
    * Set meta data modified flag to true when user enter new value
    */
   onFormValueChanges(): void {
     this.announcementForm.valueChanges.pipe(
-    takeUntil(this.unsubscribe),
+      takeUntil(this.unsubscribe),
       map((value) => {
         value.title = value.title.trim();
         value.from = value.from.trim();
@@ -430,22 +439,22 @@ export class CreateComponent implements OnInit, OnDestroy {
   getAnnouncementDetails() {
     this.showResendLoader = true;
     this.createService.resendAnnouncement(this.identifier).pipe(
-    takeUntil(this.unsubscribe))
-    .subscribe(
-      (res: ServerResponse) => {
-        this.setResendFormValues(res.result.announcement ? res.result.announcement : []);
-        this.enableSelectRecipientsBtn();
-        this.onFormValueChanges();
-        this.showResendLoader = false;
-        this.fileUpload.uploader.addInitialFiles(this.attachments);
-        this.fileUpload.attachedFiles = this.attachments;
-      },
-      (error: ServerResponse) => {
-        this.toasterService.error(this.resource.messages.emsg.m0005);
-        this.createModal.deny();
-        this.redirectToOutbox();
-      }
-    );
+      takeUntil(this.unsubscribe))
+      .subscribe(
+        (res: ServerResponse) => {
+          this.setResendFormValues(res.result.announcement ? res.result.announcement : []);
+          this.enableSelectRecipientsBtn();
+          this.onFormValueChanges();
+          this.showResendLoader = false;
+          this.fileUpload.uploader.addInitialFiles(this.attachments);
+          this.fileUpload.attachedFiles = this.attachments;
+        },
+        (error: ServerResponse) => {
+          this.toasterService.error(this.resource.messages.emsg.m0005);
+          this.createModal.deny();
+          this.redirectToOutbox();
+        }
+      );
   }
 
   /**
@@ -489,7 +498,7 @@ export class CreateComponent implements OnInit, OnDestroy {
         uaspec: {
           agent: deviceInfo.browser,
           ver: deviceInfo.browser_version,
-          system: deviceInfo.os_version ,
+          system: deviceInfo.os_version,
           platform: deviceInfo.os,
           raw: deviceInfo.userAgent
         }
@@ -514,10 +523,10 @@ export class CreateComponent implements OnInit, OnDestroy {
       }
     };
     this.fileUpload.uploadEvent.pipe(
-    takeUntil(this.unsubscribe))
-    .subscribe(uploadData => {
-      this.enableSelectRecipientsBtn();
-    });
+      takeUntil(this.unsubscribe))
+      .subscribe(uploadData => {
+        this.enableSelectRecipientsBtn();
+      });
     this.setInteractEventData();
   }
   ngOnDestroy() {
@@ -584,7 +593,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     };
     this.telemetryInteractObject = {
       id: '',
-      type: 'announcement',
+      type: 'Announcement',
       ver: '1.0'
     };
   }

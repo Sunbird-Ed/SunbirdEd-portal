@@ -12,7 +12,7 @@ import { CourseProgressComponent } from './course-progress.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
 import { ContentService, UserService, LearnerService, CoreModule } from '@sunbird/core';
-
+import { By } from '@angular/platform-browser';
 import {
   SharedModule, ResourceService, ConfigService, PaginationService,
   ToasterService, ServerResponse
@@ -27,7 +27,6 @@ import { TelemetryModule } from '@sunbird/telemetry';
 describe('CourseProgressComponent', () => {
   let component: CourseProgressComponent;
   let fixture: ComponentFixture<CourseProgressComponent>;
-
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -38,15 +37,22 @@ describe('CourseProgressComponent', () => {
         'm0005': 'Something went wrong, please try in some time....'
       },
       'imsg': {
-        'm0022': 'Stats for last 7 days'
+        'm0022': 'Stats for last 7 days',
+        'm0044': 'Download failed!',
+        'm0043' : 'Your profile does not have a valid email ID.Please update your email ID',
+        'm0045': 'Download has failed. Please try again after sometime'
+      },
+      'stmsg' : {
+       'm0132': 'We have received your download request. The file will be sent to your registered email ID shortly.'
       }
     }
   };
 
   const fakeActivatedRoute = {
-    'params': observableOf({ contentId: 'do_112470675618004992181' }),
-    'queryParams': observableOf({ batchIdentifier: '0124963192947507200', timePeriod: '7d' }),
+    'params': observableOf({ contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181'}),
+    'queryParams': observableOf({ batchIdentifier: '0124963192947507200', timePeriod: '7d'}),
     snapshot: {
+     'params': { contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181'},
       data: {
         telemetry: {
           env: 'course', pageid: 'course-stats', type: 'view',
@@ -59,7 +65,7 @@ describe('CourseProgressComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule.forRoot(), OrderModule,
-        CoreModule.forRoot(), DashboardModule, TelemetryModule],
+        CoreModule, DashboardModule,  TelemetryModule.forRoot()],
       declarations: [],
       providers: [CourseProgressService,
         { provide: Router, useClass: RouterStub },
@@ -150,14 +156,14 @@ describe('CourseProgressComponent', () => {
       expect(toasterService.error).toHaveBeenCalledWith(testData.mockUserData.dashboardError.error.params.errmsg);
     }));
 
-  it('spy on downloadDashboardData()', inject([UserService, CourseProgressService],
-    (userService, courseService) => {
+  it('spy on downloadDashboardData()', inject([UserService, CourseProgressService, ResourceService, ToasterService],
+    (userService, courseService, resourceService, toasterService) => {
       userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
       fixture.detectChanges();
       spyOn(courseService, 'downloadDashboardData')
         .and.returnValue(observableOf(testData.mockUserData.populateCourseDashboardDataRes));
       component.downloadReport();
-      expect(component.showDownloadModal).toEqual(true);
+      expect(component.showDownloadModal).toEqual(false);
     }));
 
   it('spy on downloadDashboardData() with error', inject([UserService, CourseProgressService, ResourceService, ToasterService],
@@ -167,10 +173,11 @@ describe('CourseProgressComponent', () => {
       spyOn(courseService, 'downloadDashboardData').and.callFake(() => observableThrowError({}));
       spyOn(toasterService, 'error').and.callThrough();
       component.downloadReport();
-      expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
+      expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.imsg.m0045 );
     }));
 
   it('should unsubscribe to userData observable', () => {
+    component.queryParams = {};
     component.ngOnInit();
     spyOn(component.userDataSubscription, 'unsubscribe');
     component.ngOnDestroy();
@@ -178,9 +185,23 @@ describe('CourseProgressComponent', () => {
   });
 
   it('should unsubscribe from all observable subscriptions', () => {
+    component.queryParams = { batchIdentifier: '0124963192947507200'};
     component.ngOnInit();
     spyOn(component.unsubscribe, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
+  it('should call setpage method and set proper page number', inject([Router, UserService, CourseProgressService],
+    (route, userService, courseService) => {
+      component.queryParams = { batchIdentifier: '0124963192947507200'};
+      component.pager = testData.mockUserData.pager;
+      component.pager.totalPages = 8;
+      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
+      fixture.detectChanges();
+      spyOn(courseService, 'getBatches').and.returnValue(observableOf(testData.mockUserData.getBatchRes));
+      component.populateBatchData();
+      component.navigateToPage(1);
+      fixture.detectChanges();
+      expect(route.navigate).toHaveBeenCalledWith([], { queryParams: component.queryParams });
+    }));
 });

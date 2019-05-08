@@ -1,6 +1,6 @@
-<div class="ui stackable grid mt-20" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
-    <div class="one wide column"></div>
-    <div class="ten wide column">
+<div class="ui container" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
+<div class="ui stackable grid mt-20">
+    <div class="twelve wide column">
         <div *ngIf="!enableContentPlayer && !loader">
             <div class="content" [appTelemetryImpression]="telemetryCourseImpression">
                 <div class="ui stackable grid">
@@ -37,12 +37,12 @@
                             <div class="ui fitted divider mb-20 mt-30"></div>
                         </div>
                         <div class='three wide column'>
-                            <app-batch-details *ngIf="courseStatus !== 'Unlisted'" [courseId]="courseId" [batchId]="batchId" [enrolledCourse]="enrolledCourse"
+                            <app-batch-details *ngIf="courseStatus !== 'Unlisted'" [courseId]="courseId" [batchId]="batchId" [enrolledCourse]="enrolledCourse" [enrolledBatchInfo]="enrolledBatchInfo"
                                 [courseHierarchy]="courseHierarchy" [courseProgressData]="courseProgressData"></app-batch-details>
                             <div *ngIf="enrolledCourse" class="my-15">
                                 <div>
                                     <br>
-                                    <span (click)="showNoteEditor=!showNoteEditor" class="cursor-pointer">
+                                    <span appTelemetryInteract [telemetryInteractObject]="contentInteractObject" [telemetryInteractEdata]="{id:'add-note' , type:'click' , pageid:'course-consumption'}" [telemetryInteractCdata]="telemetryCdata" (click)="showNoteEditor=!showNoteEditor" class="cursor-pointer">
                                         <i class="circular icon mr-10 plus"></i>&nbsp;{{resourceService.frmelmnts.lbl.addnote}}
                                         <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId, courseId:courseId}" (exitModal)="showNoteEditor=false"
                                             (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
@@ -56,24 +56,15 @@
                             <app-curriculum-card *ngIf="curriculum && curriculum.length > 0" [curriculum]="curriculum"></app-curriculum-card>
                             <br>
                             <div class="courseupdate">
-                                <b *ngIf="courseHierarchy.creator">{{resourceService.frmelmnts.lbl.courseCreatedBy}}: {{courseHierarchy.creator}}</b>
-                                <br>
-                                <b *ngIf="courseHierarchy.orgDetails?.orgName">{{courseHierarchy.orgDetails.orgName}}</b>
-                                <br>
-                                <b *ngIf="courseHierarchy.orgDetails?.email">
+                                <p class="mb-5" *ngIf="courseHierarchy.creator">{{resourceService.frmelmnts.lbl.courseCreatedBy}}: {{courseHierarchy.creator}}</p>
+                                <p class="mb-5" *ngIf="courseHierarchy.orgDetails?.orgName">{{courseHierarchy.orgDetails.orgName}}</p>
+                                <p class="mb-5"*ngIf="courseHierarchy.orgDetails?.email">
                                     <a href="mailto:{{courseHierarchy.orgDetails?.email}}?subject={{courseHierarchy.name}}">{{courseHierarchy.orgDetails?.email}}</a>
-                                </b>
-                                <br>
-
+                                </p>
                                 <div class="ui divider"></div>
-
-                                <b>{{resourceService.frmelmnts.lbl.coursecreatedon}}: {{courseHierarchy.createdOn | dateFormat}}</b>
-                                <br>
-                                <b>{{resourceService.frmelmnts.lbl.updatedon}}: {{courseHierarchy.lastUpdatedOn | dateFormat}}</b>
-                                <br>
-                                
+                                <p class="mb-5">{{resourceService.frmelmnts.lbl.coursecreatedon}}: {{courseHierarchy.createdOn | dateFormat}}</p>
+                                <p class="mb-5">{{resourceService.frmelmnts.lbl.updatedon}}: {{courseHierarchy.lastUpdatedOn | dateFormat}}</p>
                                 <!-- <a *ngIf="contributionsLength>0" popupTrigger="outsideClick" [popupPlacement]="'bottom left'" suiPopup popupText={{contributions}}>{{resourceService.frmelmnts.lbl.viewCredits}}</a> -->
-                                <br>
                             </div>
                         </div>
                     </div>
@@ -90,7 +81,7 @@
                                     <div class="twelve wide column">
                                         <span class="ui HomeAccordianHeading left floated header">{{contentTitle}}</span>
                                         <h5 appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="contentInteractObject"
-                                            class="ui right floated basic icon circular button mouse-pointer" (click)="closeContentPlayer()">
+                                         [telemetryInteractCdata]="telemetryCdata" class="ui right floated basic icon circular button mouse-pointer" (click)="closeContentPlayer()">
                                             <i class="ui remove icon"></i>
                                         </h5>
                                     </div>
@@ -102,7 +93,7 @@
                                 </div>
                                 <div class="ui grid">
                                     <div class="twelve wide column" [appTelemetryImpression]="telemetryContentImpression">
-                                        <app-player (contentProgressEvent)="contentProgressEvent($event)" class="content-player" [playerConfig]="playerConfig"></app-player>
+                                        <app-player (contentProgressEvent)="contentProgressEvent($event)" class="content-player" [playerConfig] ="playerConfig" [playerOption] = "playerOption"></app-player>
                                     </div>
                                 </div>
                             </div>
@@ -110,17 +101,17 @@
                         <div class="ui row pt-0">
                             <div class="ui twelve column grid pr-0">
                                 <div class="five wide mobile only three wide tablet only three wide computer only column">
-                                    <button class="ui blue button left floated fluid tocbutton toc-left-nav-btn-content" (click)="navigateToContent(prevPlaylistItem)"
+                                    <button appTelemetryInteract [telemetryInteractObject]="contentInteractObject" [telemetryInteractEdata]="{id: 'previous-button',type: 'click',pageid: 'course-consumption'}" class="ui blue button left floated fluid tocbutton toc-left-nav-btn-content" (click)="navigateToContent(prevPlaylistItem)"
                                         [disabled]="prevPlaylistItem === undefined">
                                         <span class="header">{{resourceService.frmelmnts.btn.previous}}</span>
                                         <br />
-                                        <span class="font-white description text-ellipsis" title="{{prevPlaylistItem?.title || noContentToPlay}}">{{prevPlaylistItem?.title || noContentToPlay}}</span>
+                                        <span class="font-white description text-ellipsis" title="{{prevPlaylistItem?.title || resourceService.frmelmnts.lbl.noContentToPlay}}">{{prevPlaylistItem?.title || resourceService.frmelmnts.lbl.noContentToPlay}}</span>
                                     </button>
                                 </div>
                                 <div class="two wide tablet only two wide computer only column"></div>
                                 <div class="two wide column center aligned" ng-if="toc.showNoteInLecture">
                                     <h2 class="ui center aligned icon tiny header toc-note">
-                                        <a class="ui take-note-card cursor-pointer" (click)="showNoteEditor=!showNoteEditor">
+                                        <a appTelemetryInteract [telemetryInteractObject]="contentInteractObject" [telemetryInteractEdata]="{id: 'takenote-button',type: 'click',pageid: 'course-consumption'}" [telemetryInteractCdata]="telemetryCdata" class="ui take-note-card cursor-pointer" (click)="showNoteEditor=!showNoteEditor">
                                             <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId, courseId:courseId}" (exitModal)="showNoteEditor=false"
                                                 (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
                                             <img src="{{'assets/images/takenote.png' |  cdnprefixurl}}">
@@ -130,11 +121,11 @@
                                 </div>
                                 <div class="two wide tablet only two wide computer only column"></div>
                                 <div class="five wide mobile only three wide tablet only three wide computer only column pr-0">
-                                    <button class="ui blue button right floated fluid toc-right-nav-btn-content" (click)="navigateToContent(nextPlaylistItem)"
+                                    <button appTelemetryInteract [telemetryInteractObject]="contentInteractObject" [telemetryInteractEdata]="{id: 'next-button',type: 'click',pageid: 'course-consumption'}" class="ui blue button right floated fluid toc-right-nav-btn-content" (click)="navigateToContent(nextPlaylistItem)"
                                         [disabled]="nextPlaylistItem === undefined">
                                         <span class="header">{{resourceService.frmelmnts.btn.next}}</span>
                                         <br />
-                                        <span class="font-white description text-ellipsis" title="{{nextPlaylistItem?.title || noContentToPlay}}">{{nextPlaylistItem?.title || noContentToPlay}}</span>
+                                        <span class="font-white description text-ellipsis" title="{{nextPlaylistItem?.title || resourceService.frmelmnts.lbl.noContentToPlay}}">{{nextPlaylistItem?.title || resourceService.frmelmnts.lbl.noContentToPlay}}</span>
                                     </button>
                                 </div>
                             </div>
@@ -159,7 +150,7 @@
         </div>
         <div *ngIf="showError">
         </div>
-        <div class="one wide column"></div>
     </div>
+</div>
 </div>
 <router-outlet></router-outlet>

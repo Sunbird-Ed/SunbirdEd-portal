@@ -2,10 +2,9 @@
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { DeleteComponent } from './../../../announcement/components/delete/delete.component';
 // Import NG testing module(s)
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject, tick, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 // Import services
 import { DraftComponent } from './draft.component';
@@ -56,12 +55,13 @@ describe('DraftComponent', () => {
       'smsg': {
         'm0006': 'Content deleted successfully...'
       }
-    }
+    },
+    languageSelected$: observableOf({})
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DraftComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(),
+      imports: [HttpClientTestingModule, RouterTestingModule, SharedModule.forRoot(),
         TelemetryModule.forRoot(), NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
@@ -80,8 +80,10 @@ describe('DraftComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
+  it('should call search api and returns result count more than 1', inject([SearchService, WorkSpaceService],
+    (searchService, workSpaceService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
+    spyOn(workSpaceService, 'getContentLockList').and.callFake(() => observableOf({result: {count: 0}}));
     component.fetchDrafts(9, 1);
     fixture.detectChanges();
     expect(component.draftList).toBeDefined();
@@ -159,7 +161,7 @@ describe('DraftComponent', () => {
     expect(component.showLoader).toBeFalsy();
   }));
 
-  it('should call navigateToContent to open content player when action type is onImage', inject([SuiModalService, Router],
+  it('should call navigateToContent to open content player when action type is onImage', inject([Router],
     (route) => {
       const params = {
         action: {
@@ -167,16 +169,19 @@ describe('DraftComponent', () => {
           eventName: 'onImage'
         }, data: { metaData: { identifier: 'do_2124341006465925121871' } }
       };
+      const userService = TestBed.get(UserService);
+      userService._userProfile = {};
       component.contentClick(params);
-      fixture.detectChanges();
       expect(component.pageNumber).toEqual(1);
     }));
-  it('should call inview method for visits data', () => {
+  it('should call inview method for visits data', fakeAsync(() => {
     spyOn(component, 'inview').and.callThrough();
+    component.ngAfterViewInit();
+    tick(100);
     component.inview(testData.event);
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
-  });
+  }));
   it('should call setpage method and page number should be default, i,e 1', inject([ConfigService, Router],
     (configService, route) => {
       component.pager = testData.pager;
@@ -192,6 +197,17 @@ describe('DraftComponent', () => {
       component.navigateToPage(1);
       fixture.detectChanges();
       expect(route.navigate).toHaveBeenCalledWith(['workspace/content/draft', component.pageNumber]);
+    }));
+  xit('should fetch drafts list freshly if all contents are deleted from single page',
+    inject([SuiModalService, ConfigService, Router, SearchService],
+    (modalService, configService, route) => {
+      spyOn(component, 'fetchDrafts').and.callThrough();
+      spyOn(component, 'delete').and.callFake(() => observableOf({}));
+      spyOn(modalService, 'open').and.callFake(() => observableOf({}));
+      spyOn(modalService, 'approve').and.callFake(() => observableOf({}));
+      component.draftList = testData.localSingleContentData;
+      component.deleteConfirmModal('do_112523105235623936168');
+      expect(component.fetchDrafts).toHaveBeenCalled();
     }));
 });
 

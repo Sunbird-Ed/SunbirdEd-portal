@@ -32,7 +32,8 @@ describe('OrganisationComponent', () => {
           env: 'profile', pageid: 'org-admin-dashboard', type: 'view',
           object: { type: 'profile', ver: '1.0' }
         }
-      }
+      },
+      params: {}
     }
   };
 
@@ -41,7 +42,7 @@ describe('OrganisationComponent', () => {
   }
   const creationDataset = 'creation';
   const consumptionDataset = 'consumption';
-  const dashboardBaseUrl = 'orgDashboard/organization';
+  const dashboardBaseUrl = 'dashBoard/organization';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

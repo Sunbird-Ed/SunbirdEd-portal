@@ -3,7 +3,6 @@ import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing'
 import { GenericEditorComponent } from './generic-editor.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { NavigationHelperService, ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
 import { ContentService, UserService, LearnerService, TenantService, CoreModule } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -31,7 +30,7 @@ describe('GenericEditorComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [GenericEditorComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, CoreModule.forRoot(), TelemetryModule.forRoot()],
+      imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, TelemetryModule.forRoot()],
       providers: [
         UserService, LearnerService, ContentService, EditorService,
         ResourceService, ToasterService, ConfigService,
@@ -51,13 +50,14 @@ describe('GenericEditorComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should fetch tenant and content details and set logo and collection details if success',
-  inject([ ToasterService, TenantService, WorkSpaceService, EditorService],
+  it('should fetch tenant and content details and set logo and collection details if api return data',
+    inject([ ToasterService, TenantService, WorkSpaceService, EditorService],
     ( toasterService, tenantService, workspaceService, editorService) => {
       tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData });
       spyOn(workspaceService, 'toggleWarning').and.callFake(() => { });
       spyOn(jQuery.fn, 'iziModal').and.callFake(() => { });
       spyOn(toasterService, 'error').and.callFake(() => {});
+      spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.successResult));
       spyOn(editorService, 'getOwnershipType').and.returnValue(observableOf(['CreatedBy', 'CreatedFor']));
       component.ngOnInit();
       expect(component.logo).toBeDefined();
@@ -71,6 +71,13 @@ describe('GenericEditorComponent', () => {
   it('should navigate to draft', inject([ NavigationHelperService], ( navigationHelperService) => () => {
     spyOn(navigationHelperService, 'navigateToWorkSpace').and.callFake(() => { });
     component.closeModal();
+    expect(component.redirectToWorkSpace).toHaveBeenCalled();
     expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('workspace/content/draft/1');
+  }));
+
+  it('should call retire method', inject([Router, NavigationHelperService], (router, navigationHelperService) => () => {
+    spyOn(component, 'retireLock');
+    component.closeModal();
+    expect(component.retireLock).toHaveBeenCalled();
   }));
 });

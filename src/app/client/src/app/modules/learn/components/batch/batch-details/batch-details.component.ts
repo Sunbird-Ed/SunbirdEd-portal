@@ -1,25 +1,25 @@
 
-import { takeUntil, map } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
-import { CourseBatchService } from './../../../services';
+import { CourseBatchService, CourseProgressService } from './../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { PermissionService, UserService } from '@sunbird/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { Subject } from 'rxjs';
 import * as moment from 'moment';
 @Component({
   selector: 'app-batch-details',
-  templateUrl: './batch-details.component.html',
-  styleUrls: ['./batch-details.component.css']
+  templateUrl: './batch-details.component.html'
 })
 export class BatchDetailsComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();
   batchStatus: Number;
   @Input() courseId: string;
   @Input() enrolledCourse: boolean;
+  @Input() enrolledBatchInfo: any;
   @Input() batchId: string;
   @Input() courseHierarchy: any;
   @Input() courseProgressData: any;
@@ -35,7 +35,6 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   showError = false;
   userNames = {};
   showBatchList = false;
-  enrolledBatchInfo: any;
   statusOptions = [
     { name: 'Ongoing', value: 1 },
     { name: 'Upcoming', value: 0 }
@@ -45,18 +44,18 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   isUnenrollbtnDisabled = true;
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
-    public router: Router, public activatedRoute: ActivatedRoute) {
+    public router: Router, public activatedRoute: ActivatedRoute, public courseProgressService: CourseProgressService) {
     this.batchStatus = this.statusOptions[0].value;
   }
   isUnenrollDisabled() {
     this.isUnenrollbtnDisabled = true;
-    if (this.courseProgressData && this.courseProgressData.progress) {
-      this.progress = this.courseProgressData.progress ? Math.round(this.courseProgressData.progress) : 0;
+    if (this.courseProgressData) {
+      this.progress = _.get(this.courseProgressData , 'progress') ? Math.round(this.courseProgressData.progress) : 0;
+    } else {
+      return;
     }
-    if ((!(this.enrolledBatchInfo.hasOwnProperty('endDate')) ||
-    (this.enrolledBatchInfo.endDate > this.todayDate)) &&
-    (this.enrolledBatchInfo.enrollmentType === 'open') &&
-    (this.progress !== 100)) {
+    if ((!this.enrolledBatchInfo.endDate || this.enrolledBatchInfo.endDate > this.todayDate ) &&
+    this.enrolledBatchInfo.enrollmentType === 'open' && this.progress !== 100) {
       this.isUnenrollbtnDisabled = false;
     }
   }
@@ -154,22 +153,21 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
      }
   }
   getEnrolledCourseBatchDetails() {
-    this.courseBatchService.getEnrolledBatchDetails(this.batchId).pipe(
+    if (this.enrolledBatchInfo.participant) {
+      const participant = [];
+      _.forIn(this.enrolledBatchInfo.participant, (value, key) => {
+        participant.push(key);
+      });
+      this.enrolledBatchInfo.participant = participant;
+    } else {
+      this.enrolledBatchInfo.participant = [];
+    }
+    this.isUnenrollDisabled();
+    this.courseProgressService.courseProgressData.pipe(
       takeUntil(this.unsubscribe))
-      .subscribe((data: ServerResponse) => {
-        this.enrolledBatchInfo = data;
-        if (this.enrolledBatchInfo.participant) {
-          const participant = [];
-          _.forIn(this.enrolledBatchInfo.participant, (value, key) => {
-            participant.push(key);
-          });
-          this.enrolledBatchInfo.participant = participant;
-        } else {
-          this.enrolledBatchInfo.participant = [];
-        }
+      .subscribe(courseProgressData => {
+        this.courseProgressData = courseProgressData;
         this.isUnenrollDisabled();
-      }, () => {
-        // handle error
       });
   }
   fetchUserDetails() {
@@ -194,7 +192,9 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       });
   }
   batchUpdate(batch) {
-    this.courseBatchService.setUpdateBatchDetails(batch);
+    if (batch.enrollmentType === 'open') {
+      this.courseBatchService.setUpdateBatchDetails(batch);
+    }
     this.router.navigate(['update/batch', batch.identifier], { relativeTo: this.activatedRoute });
   }
   createBatch() {

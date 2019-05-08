@@ -7,9 +7,12 @@ import { Injectable } from '@angular/core';
 import {
   ConfigService, ServerResponse, ContentDetails, PlayerConfig, ContentData, NavigationHelperService
 } from '@sunbird/shared';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
+import { environment } from '@sunbird/environment';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class PublicPlayerService {
   /**
    * stores content details
@@ -30,13 +33,13 @@ export class PublicPlayerService {
    * @param {string} id
    * @returns {Observable<{contentId: string, contentData: ContentData }>}
    */
-  getConfigByContent(id: string,  option: any = { }): Observable<PlayerConfig> {
+  getConfigByContent(id: string, option: any = {}): Observable<PlayerConfig> {
     return this.getContent(id).pipe(
       mergeMap((contentDetails) => {
         return observableOf(this.getConfig({
           contentId: contentDetails.result.content.identifier,
           contentData: contentDetails.result.content
-        }, option ));
+        }, option));
       }));
   }
 
@@ -62,19 +65,26 @@ export class PublicPlayerService {
    * @param {ContentDetails} contentDetails
    * @memberof PlayerService
    */
-  getConfig(contentDetails: ContentDetails,  option: any = { }): PlayerConfig {
+  getConfig(contentDetails: ContentDetails, option: any = {}): PlayerConfig {
     const configuration: any = this.configService.appConfig.PLAYER_CONFIG.playerConfig;
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = this.userService.anonymousSid;
     configuration.context.uid = 'anonymous';
+    configuration.context.timeDiff = this.orgDetailsService.getServerTimeDiff;
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     configuration.context.pdata.ver = buildNumber && buildNumber.value ?
-    buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+      buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     configuration.context.channel = _.get(this.orgDetailsService.orgDetails, 'hashTagId');
     configuration.context.pdata.id = this.userService.appId;
     configuration.metadata = contentDetails.contentData;
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
       {} : contentDetails.contentData.body;
+    if (environment.isOffline) {
+      configuration.data = '';
+    }
+    if (environment.isOffline && !navigator.onLine) {
+      configuration.metadata = _.omit(configuration.metadata, ['streamingUrl']);
+    }
     if (option.dialCode) {
       configuration.context.cdata = [{
         id: option.dialCode,
@@ -105,6 +115,17 @@ export class PublicPlayerService {
         }
       } else {
         this.router.navigate(['play/content', event.data.metaData.identifier]);
+      }
+    }, 0);
+  }
+
+  public playExploreCourse(courseId) {
+    this.navigationHelperService.storeResourceCloseUrl();
+    setTimeout(() => {
+      if (this.userService.loggedIn) {
+        this.router.navigate(['learn/course', courseId]);
+      } else {
+        this.router.navigate(['explore-course/course', courseId]);
       }
     }, 0);
   }

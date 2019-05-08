@@ -1,8 +1,8 @@
 import { Subscription } from 'rxjs';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
-import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
+import * as _ from 'lodash-es';
+import { ResourceService, ToasterService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
 import { OrgTypeService } from './../../services';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 
@@ -12,10 +12,9 @@ import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata } from 
  */
 @Component({
   selector: 'app-view-org-type',
-  templateUrl: './view-org-type.component.html',
-  styleUrls: ['./view-org-type.component.css']
+  templateUrl: './view-org-type.component.html'
 })
-export class ViewOrgTypeComponent implements OnInit, OnDestroy {
+export class ViewOrgTypeComponent implements OnInit, OnDestroy, AfterViewInit {
   public addOrganizationType: IInteractEventEdata;
   public updateOrganizationType: IInteractEventEdata;
   /**
@@ -78,7 +77,8 @@ export class ViewOrgTypeComponent implements OnInit, OnDestroy {
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
     toasterService: ToasterService,
-    orgTypeService: OrgTypeService) {
+    orgTypeService: OrgTypeService,
+    public navigationhelperService: NavigationHelperService) {
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
@@ -96,7 +96,7 @@ export class ViewOrgTypeComponent implements OnInit, OnDestroy {
     this.orgTypeSubscription = this.orgTypeService.orgTypeData$.subscribe((apiResponse) => {
       if (apiResponse && apiResponse.orgTypeData) {
         this.orgTypes = { ...apiResponse.orgTypeData.result.response };
-        this.orgTypes = _.sortBy(this.orgTypes, (orgTypeList) => orgTypeList.name.toLowerCase());
+        this.orgTypes = _.sortBy(this.orgTypes, (orgTypeList: any) => orgTypeList.name.toLowerCase());
         this.showLoader = false;
       } else if (apiResponse && apiResponse.err) {
         this.showLoader = false;
@@ -120,24 +120,12 @@ export class ViewOrgTypeComponent implements OnInit, OnDestroy {
 
     // Update event
     this.orgUpdateSubscription = this.orgTypeService.orgTypeUpdateEvent.subscribe(data => {
-      _.each(this.orgTypes, (key, index) => {
+      _.each(this.orgTypes, (key: any, index) => {
         if (data && data.id === key.id) {
           this.orgTypes[index].name = data.name;
         }
       });
     });
-
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: 'orgType',
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
-      }
-    };
   }
 
   setInteractEventData() {
@@ -151,6 +139,23 @@ export class ViewOrgTypeComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'view-organization-type'
     };
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: 'orgType',
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 
   ngOnDestroy() {

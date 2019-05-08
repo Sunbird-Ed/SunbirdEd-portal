@@ -1,16 +1,17 @@
 
 import { takeUntil } from 'rxjs/operators';
-import { ResourceService, ToasterService, FilterPipe, ServerResponse, RouterNavigationService } from '@sunbird/shared';
+import { ResourceService, ToasterService, FilterPipe, ServerResponse, RouterNavigationService,
+  NavigationHelperService } from '@sunbird/shared';
 import { NotesService } from '../../services';
 import { UserService, ContentService } from '@sunbird/core';
-import { Component, OnInit, Pipe, PipeTransform, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Pipe, PipeTransform, Input, OnDestroy, AfterViewInit } from '@angular/core';
 import { InlineEditorComponent } from '../inline-editor/inline-editor.component';
 import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
 import { INoteData, IdDetails } from '@sunbird/notes';
-import * as _ from 'lodash';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import * as _ from 'lodash-es';
+import { IInteractEventInput, IImpressionEventInput , IInteractEventObject, IInteractEventEdata} from '@sunbird/telemetry';
 
 import { Subject } from 'rxjs';
 /**
@@ -24,7 +25,7 @@ import { Subject } from 'rxjs';
   templateUrl: './note-list.component.html',
   styles: [' ::ng-deep .notedec ul li { list-style-type: disc; margin-bottom: 10px; }']
 })
-export class NoteListComponent implements OnInit, OnDestroy {
+export class NoteListComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * This variable holds the content and course id.
    */
@@ -123,7 +124,12 @@ export class NoteListComponent implements OnInit, OnDestroy {
   * telemetryImpression
   */
   telemetryImpression: IImpressionEventInput;
+  addNoteInteractEdata: IInteractEventEdata;
+  deleteNoteInteractEdata: IInteractEventEdata;
+  updateNoteInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
   public unsubscribe$ = new Subject<void>();
+
 
   /**
    * The constructor - Constructor for Note List Component.
@@ -145,7 +151,8 @@ export class NoteListComponent implements OnInit, OnDestroy {
     modalService: SuiModalService,
     toasterService: ToasterService,
     route: Router,
-    activatedRoute: ActivatedRoute) {
+    activatedRoute: ActivatedRoute,
+    public navigationhelperService: NavigationHelperService) {
     this.toasterService = toasterService;
     this.userService = userService;
     this.noteService = noteService;
@@ -171,34 +178,11 @@ export class NoteListComponent implements OnInit, OnDestroy {
       this.batchId = params.batchId;
     });
     this.getAllNotes();
-    let cdataId = '';
-    let cdataType = '';
-    if (this.activatedRoute.snapshot.params.courseId) {
-      cdataId = this.activatedRoute.snapshot.params.courseId;
-      cdataType = 'course';
-    } else if (this.activatedRoute.snapshot.params.contentId) {
-      cdataId = this.activatedRoute.snapshot.params.contentId;
-      cdataType = 'content';
-    } else {
-      cdataId = this.activatedRoute.snapshot.params.contentId;
-      cdataType = 'collection';
-    }
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: [
-          {
-            id: cdataId,
-            type: cdataType
-          }
-        ]
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.route.url
-      }
-    };
+
+
+    this.setInteractData();
+
+
   }
 
   /**
@@ -318,8 +302,66 @@ export class NoteListComponent implements OnInit, OnDestroy {
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
+
+  ngAfterViewInit () {
+    let cdataId = '';
+    let cdataType = '';
+    if (this.activatedRoute.snapshot.params.courseId) {
+      cdataId = this.activatedRoute.snapshot.params.courseId;
+      cdataType = 'course';
+    } else if (this.activatedRoute.snapshot.params.contentId) {
+      cdataId = this.activatedRoute.snapshot.params.contentId;
+      cdataType = 'content';
+    } else {
+      cdataId = this.activatedRoute.snapshot.params.contentId;
+      cdataType = 'collection';
+    }
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env,
+          cdata: [
+            {
+              id: cdataId,
+              type: cdataType
+            }
+          ]
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.route.url,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
+  }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  setInteractData() {
+    this.addNoteInteractEdata = {
+      id: 'add-note',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+    this.deleteNoteInteractEdata = {
+      id: 'delete-note',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+    this.updateNoteInteractEdata = {
+      id: 'update-note',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+    this.telemetryInteractObject = {
+      id: this.contentId || this.courseId,
+      type: this.activatedRoute.snapshot.data.telemetry.object.type,
+      ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+    };
   }
 }

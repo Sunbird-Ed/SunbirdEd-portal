@@ -65,7 +65,7 @@
                     </span>
                   </a>
                 </div>
-                <p class="ann-attachment-detail-heading" title="{{attachment.name}}">
+                <p class="ann-attachment-detail-heading mb-10" title="{{attachment.name}}">
                   {{attachment.name | slice:0:50}}
                   <span *ngIf="attachment.name.length > 50">...</span>
                 </p>
@@ -77,10 +77,8 @@
           </div>
         </div>
       </div>
-      <div class="ann-details-sent-date-bg" *ngIf="announcementDetails.createdDate && !announcementDetails.hideDate">
-        <span class="ng-binding announcement-description">
+      <div class="sb-modal-actions announcement-footer mt-10 flex-dr" *ngIf="announcementDetails.createdDate && !announcementDetails.hideDate">
           {{resourceService?.frmelmnts?.lbl?.anncmntdtlssenton}} {{announcementDetails.createdDate | dateFormat}}
-        </span>
       </div>
     </div>
   </div>

@@ -1,0 +1,49 @@
+<sui-accordion 
+  *ngFor="let child of rootChildrens" 
+  class="ui styled accordion mt-10 width-100"
+  >
+  <sui-accordion-panel 
+    [ngClass]="child.extraClasses" 
+    (click)="!child.folder && onNodeClick(child)"
+    [(isOpen)]="child.togglePanelIcon" 
+    [isDisabled]="(!child.children.length) || (!child.folder)"
+    >
+      <!--Accordion Title-->
+      <div title class="toc-title">
+        <i 
+          *ngIf="child.folder" 
+          class="mr-10" 
+          [class.sb-icon-folder]="child.togglePanelIcon" 
+          [class.sb-icon-collection]="!child.togglePanelIcon"
+        ></i>
+        <i 
+            *ngIf="!child.folder" 
+            class="mr-10" 
+            [ngClass]="child.icon"
+        ></i>
+        <span 
+          [innerHTML]="child.title">
+        </span>
+        <i 
+          *ngIf="child.folder && child.children.length" 
+          class="icon ml-auto" 
+          [class.plus]="!child.togglePanelIcon" 
+          [class.minus]="child.togglePanelIcon"
+        ></i>
+      </div>
+      <!--/Accordion Title-->
+      <!--Accordion Content-->
+      <div 
+        *ngIf="child.folder" 
+        content
+        >
+        <app-fancy-tree 
+          (itemSelect)="onItemSelect($event)" 
+          [nodes]="child.children" 
+          [options]="{ showConnectors: true }"
+        >
+        </app-fancy-tree>
+      </div>
+      <!--/Accordion Content-->
+  </sui-accordion-panel>
+</sui-accordion>

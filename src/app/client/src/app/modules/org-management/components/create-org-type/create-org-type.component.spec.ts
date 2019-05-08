@@ -3,13 +3,12 @@ import {throwError as observableThrowError, of as observableOf,  Observable ,  B
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { mockRes } from './create-org-type.component.spec.data';
 import { Component, OnInit } from '@angular/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CreateOrgTypeComponent, OrgTypeService, IorgTypeData } from '@sunbird/org-management';
 import { LearnerService } from '@sunbird/core';
@@ -43,7 +42,7 @@ describe('CreateOrgTypeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CreateOrgTypeComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule,
+      imports: [HttpClientTestingModule,
         SuiModule, RouterTestingModule, ReactiveFormsModule, FormsModule,
         SharedModule.forRoot(), TelemetryModule.forRoot()],
       providers: [HttpClientModule, OrgTypeService,

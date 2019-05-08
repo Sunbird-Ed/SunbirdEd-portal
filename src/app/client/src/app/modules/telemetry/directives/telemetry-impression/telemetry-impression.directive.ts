@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnInit, OnDestroy } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, OnDestroy, OnChanges } from '@angular/core';
 import { IImpressionEventInput } from '../../interfaces';
 import { TelemetryService } from '../../services';
 
@@ -8,7 +8,7 @@ import { TelemetryService } from '../../services';
 @Directive({
   selector: '[appTelemetryImpression]'
 })
-export class TelemetryImpressionDirective implements OnInit, OnDestroy {
+export class TelemetryImpressionDirective implements OnInit, OnDestroy, OnChanges {
   /**
    * Interact event input
   */
@@ -17,6 +17,8 @@ export class TelemetryImpressionDirective implements OnInit, OnDestroy {
    * reference of permissionService service.
   */
   public telemetryService: TelemetryService;
+  public eventTriggered = false;
+
   /**
   * Constructor to create injected service(s) object
   Default method of Draft Component class
@@ -26,7 +28,11 @@ export class TelemetryImpressionDirective implements OnInit, OnDestroy {
     this.telemetryService = telemetryService;
   }
   ngOnInit() {
-    if (this.appTelemetryImpression) {
+  }
+  /** this is written in on changes as impression from components are been initalized inside set timeout */
+  ngOnChanges() {
+    if (this.appTelemetryImpression && !this.eventTriggered) {
+      this.eventTriggered = true;
       this.telemetryService.impression(this.appTelemetryImpression);
     }
   }

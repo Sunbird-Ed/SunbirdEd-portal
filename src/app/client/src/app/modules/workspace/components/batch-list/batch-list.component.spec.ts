@@ -1,11 +1,9 @@
-
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
-import { BatchCardComponent } from './../batch-card/batch-card.component';
+import { BatchCardComponent } from '@sunbird/shared';
 import { BatchListComponent } from './batch-list.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SharedModule, PaginationService, ToasterService, ResourceService } from '@sunbird/shared';
@@ -15,7 +13,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as mockData from './batch-list.component.spec.data';
 const testData = mockData.mockRes;
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 
@@ -71,10 +69,10 @@ describe('BatchListComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BatchListComponent, BatchCardComponent],
+      declarations: [BatchListComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule,
-        Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(), CoreModule.forRoot(),
+        RouterTestingModule, SharedModule.forRoot(), CoreModule,
         TelemetryModule.forRoot(), NgInviewModule],
       providers: [PaginationService, WorkSpaceService, ResourceService, ToasterService, BatchService,
         { provide: ResourceService, useValue: resourceBundle },
@@ -91,6 +89,7 @@ describe('BatchListComponent', () => {
     component = fixture.componentInstance;
     childcomponent = childfixture.componentInstance;
   });
+
   it('should call  batch search api and returns result count more than 1', inject([SearchService], (searchService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
@@ -102,9 +101,7 @@ describe('BatchListComponent', () => {
     component.fetchBatchList();
     expect(component.batchList).toBeDefined();
     expect(component.batchList.length).toBeGreaterThan(1);
-    expect(component.showLoader).toBeFalsy();
   }));
-
 
   it('should call  batch search api and returns result count 0', inject([SearchService], (searchService) => {
     const userService = TestBed.get(UserService);
@@ -136,6 +133,7 @@ describe('BatchListComponent', () => {
     (route) => {
       const userService = TestBed.get(UserService);
       const learnerService = TestBed.get(LearnerService);
+      route.url = '/workspace/content/batches/view-all/Ongoing-Batches/1?status=0';
       spyOn(learnerService, 'get').and.returnValue(observableOf(testData.userSuccess.success));
       userService._userProfile = testData.userSuccess.success;
       userService._userProfile.roleOrgMap = roleOrgMap;
@@ -143,7 +141,8 @@ describe('BatchListComponent', () => {
       component.pager.totalPages = 8;
       component.navigateToPage(1);
       fixture.detectChanges();
-      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/batches', component.pageNumber]);
+      expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/batches/view-all/Ongoing-Batches', component.pageNumber],
+        {queryParams: component.queryParams, relativeTo: component.activatedRoute});
     }));
 
   it('should call  user search api and returns result count more than 1', inject([SearchService], (searchService) => {

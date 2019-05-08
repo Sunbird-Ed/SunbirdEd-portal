@@ -34,7 +34,7 @@
             </button>
           </span>
           <span *ngSwitchCase="'icon'">
-            <i class="{{data.action.right.class}}" (click)="onAction(data,data.action.right); $event.stopPropagation()">
+            <i class="{{data.action.right.class}}" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="telemetryInteractEdata" (click)="onAction(data,data.action.right); $event.stopPropagation()">
             </i>
             <span *ngIf="data.action.right.text">{{data.action.right.text}}</span>
           </span>
@@ -54,6 +54,9 @@
           </span>
         </a>
       </div>
+      <span *ngIf="data.lockInfo" suiPopup popupText="{{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':data?.lockInfo?.creatorInfo?.name | interpolate:'{contentName}':data?.name}}" [popupPlacement]="'top left'">
+        <i class="lock icon large"  ></i>
+      </span>
       <span *ngIf="data.rating">
           <sui-rating class="courseHeader-rating star left floated" [ngModel]="data.rating | number:0" [maximum]="5" [isReadonly]="true">
           </sui-rating>

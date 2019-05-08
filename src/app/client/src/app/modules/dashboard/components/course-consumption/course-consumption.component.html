@@ -1,6 +1,6 @@
+<div class="ui container">
 <div class="ui grid">
-  <div class="one wide column"></div>
-  <div class="ten wide column">
+  <div class="twelve wide column">
     <div class="ui grid mt-20">
       <div class="five wide column float-ContentLeft" *ngIf="myCoursesList && myCoursesList.length === 1">
         <span class="dashBoardSectionHeading">
@@ -17,7 +17,7 @@
         <sui-select class="selection" [(ngModel)]="selectedCourse" (ngModelChange)="onAfterCourseChange($event)" [options]="myCoursesList"
           labelField="name" [placeholder]="'Select Course '" [isSearchable]="true" #select>
           <sui-select-option [ngClass]="{'active': course.identifier === identifier }" *ngFor="let course of select.filteredOptions"
-            [value]="course" appTelemetryInteract [telemetryInteractObject]="{ id: course.identifier, type: 'course', ver: '1.0' }"
+            [value]="course" appTelemetryInteract [telemetryInteractObject]="{ id: course.identifier, type: 'Course', ver: '1.0' }"
             [telemetryInteractEdata]="{id:'courseDropdown',type:'click',pageid:'course-creator-dashboard'}">
           </sui-select-option>
         </sui-select>
@@ -98,4 +98,5 @@
       </div>
     </div>
   </div>
+</div>
 </div>

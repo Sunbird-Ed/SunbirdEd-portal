@@ -10,13 +10,14 @@ import { FormsModule } from '@angular/forms';
 import { response } from './inline-editor-component.spec.data';
 import { mockUserData } from './../../../core/services/user/user.mock.spec.data';
 import { InlineEditorComponent } from './inline-editor.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('InlineEditorComponent', () => {
   let component: InlineEditorComponent;
   let fixture: ComponentFixture<InlineEditorComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpClientTestingModule, FormsModule, SharedModule.forRoot(), CoreModule.forRoot()],
+      imports: [ HttpClientTestingModule, FormsModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],
       declarations: [InlineEditorComponent],
       providers: [NotesService]
     })

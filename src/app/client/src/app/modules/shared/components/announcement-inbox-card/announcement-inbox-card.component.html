@@ -1,6 +1,6 @@
-<div class="ui raised segment p-10 cursor-pointer mb-10" [ngClass]="{'ann-segment-left-border':announcement.read  === false}">
+<div class="ui raised segment cursor-pointer p-10 mb-20" [ngClass]="{'ann-segment-left-border':announcement.read  === false}">
   <div>
-    <p class="ui grey label annType" *ngIf="announcement.type">
+    <p class="ui grey label py-4 announcement-type" *ngIf="announcement.type">
       {{announcement.type | uppercase}}
     </p>
   </div>
@@ -18,17 +18,17 @@
     </span>
     <span *ngIf="announcement.description.length > 180">
       ...
-      <span class="blue-text-color-sunbird">
+      <span class="blue-text-color-sunbird expand-or-minimize">
         {{resourceService.frmelmnts?.lbl?.anncmntreadmore}}
       </span>
     </span>
   </div>
   <div class="pt-20" *ngIf="announcement.links && announcement.links.length > 0">
-    <div appTelemetryInteract [telemetryInteractObject]="{id:'',type:'announcement-list',ver:'1.0'}" [telemetryInteractEdata]="{id:'view-announcement',type:'click',pageid:'announcement-list'}" *ngFor="let links of announcement.links ;  let first = first; let last = last; let i = index" [ngClass]="{ first: first , last: last}">
+    <div appTelemetryInteract [telemetryInteractObject]="{id:announcement.id,type:'Announcement',ver:'1.0'}" [telemetryInteractEdata]="{id:'view-announcement',type:'click',pageid:'announcement-list'}" *ngFor="let links of announcement.links ;  let first = first; let last = last; let i = index" [ngClass]="{ first: first , last: last}">
       <div *ngIf="first">
         <i class="linkify icon opacity04">
         </i>
-        <span class="ann-link-or-attachment">
+        <span class="announcement-link-or-attachment">
           {{links | slice:0:70}}
           <span *ngIf="links.length > 70">
             ...
@@ -47,7 +47,7 @@
       <div *ngIf="first">
         <i class="file text outline icon opacity04">
         </i>
-        <span class="ann-link-or-attachment">
+        <span class="announcement-link-or-attachment">
           {{attachment.name | slice:0:30}}
         </span>
         <span class="announcement-meta-data">

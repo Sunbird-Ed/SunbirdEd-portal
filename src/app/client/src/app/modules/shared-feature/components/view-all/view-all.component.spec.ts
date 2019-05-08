@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { SharedModule, ResourceService, ConfigService, IAction, ToasterService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ConfigService, IAction, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { CoreModule, LearnerService, CoursesService, SearchService, PlayerService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -42,7 +42,7 @@ describe('ViewAllComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
+      imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       declarations: [ ViewAllComponent ],
       providers: [ConfigService, CoursesService, SearchService, LearnerService, PublicPlayerService,
         { provide: ResourceService, useValue: resourceBundle },
@@ -83,7 +83,6 @@ describe('ViewAllComponent', () => {
     component.setInteractEventData();
     expect(component).toBeTruthy();
     expect(component.setTelemetryImpressionData).toHaveBeenCalled();
-    expect(component.telemetryImpression).toEqual(telemetryImpression);
     expect(component.setInteractEventData).toHaveBeenCalled();
     expect(component.closeIntractEdata).toEqual(closeIntractEdata);
     expect(component.cardIntractEdata).toEqual(cardIntractEdata);
@@ -111,7 +110,7 @@ describe('ViewAllComponent', () => {
     defaultSortBy: JSON.stringify({lastPublishedOn: 'desc'})};
     const filters = {contentType: ['Course'], objectType: ['Content'], status: ['Live']};
     const telemetryImpression = { context: { env: 'course' },
-      edata: { type: 'view', pageid: 'course', uri: route.url, subtype: 'paginate' }
+      edata: { type: 'view', pageid: 'course', uri: route.url, subtype: 'paginate', duration: NaN }
     };
     const closeIntractEdata = { id: 'close', type: 'click', pageid: 'course'};
     const cardIntractEdata = {  id: 'content-card',  type: 'click', pageid: 'course' };
@@ -127,7 +126,6 @@ describe('ViewAllComponent', () => {
     component.setInteractEventData();
     expect(component).toBeTruthy();
     expect(component.setTelemetryImpressionData).toHaveBeenCalled();
-    expect(component.telemetryImpression).toEqual(telemetryImpression);
     expect(component.setInteractEventData).toHaveBeenCalled();
     expect(component.closeIntractEdata).toEqual(closeIntractEdata);
     expect(component.cardIntractEdata).toEqual(cardIntractEdata);
@@ -173,7 +171,7 @@ describe('ViewAllComponent', () => {
     component.navigateToPage(1);
     expect(component.pageNumber).toEqual(1);
     expect(component.pageLimit).toEqual(configService.appConfig.SEARCH.PAGE_LIMIT);
-    expect(route.navigate).toHaveBeenCalledWith(['learn/view-all/LatestCourses', 1], { queryParams: component.queryParams,
+    expect(route.navigate).toHaveBeenCalledWith(['learn/view-all/LatestCourses/1'], { queryParams: component.queryParams,
        relativeTo: fakeActivatedRoute});
   });
 });

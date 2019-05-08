@@ -6,13 +6,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 /**
  * Service to provide base CRUD methods to make api request.
  *
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class DataService {
   /**
    * Contains rootOrg Id
@@ -47,6 +49,28 @@ export class DataService {
   }
 
   /**
+   * for making get api calls which needs headers in response
+   *  headers are fetched to get server time using Date attribute in header
+   * @param requestParam interface
+   */
+  getWithHeaders(requestParam: RequestParam): Observable<ServerResponse> {
+    const httpOptions: HttpOptions = {
+      headers: requestParam.header ? requestParam.header : this.getHeader(),
+      params: requestParam.param,
+      observe: 'response'
+    };
+    return this.http.get(this.baseUrl + requestParam.url, httpOptions).pipe(
+      mergeMap(({body, headers}: any) => {
+        // replace ts time with header date , this value is used in telemetry
+        body.ts =  this.getDateDiff((headers.get('Date')));
+        if (body.responseCode !== 'OK') {
+          return observableThrowError(body);
+        }
+        return observableOf(body);
+      }));
+  }
+
+  /**
    * for making get api calls
    *
    * @param requestParam interface
@@ -66,11 +90,32 @@ export class DataService {
   }
 
   /**
-   * for making post api calls
+   * for making post api calls with headers in response object
    *
    * @param {RequestParam} requestParam interface
    *
    */
+  postWithHeaders(requestParam: RequestParam): Observable<any> {
+    const httpOptions: HttpOptions = {
+      headers: requestParam.header ? this.getHeader(requestParam.header) : this.getHeader(),
+      params: requestParam.param,
+      observe: 'response'
+    };
+    return this.http.post(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
+      mergeMap(({body, headers}: any) => {
+        // replace ts time with header date , this value is used in telemetry
+        body.ts =  this.getDateDiff((headers.get('Date')));
+        if (body.responseCode !== 'OK') {
+          return observableThrowError(body);
+        }
+        return observableOf(body);
+      }));
+  }
+
+  /**
+   * for making post api calls
+   * @param {RequestParam} requestParam interface
+  */
   post(requestParam: RequestParam): Observable<ServerResponse> {
     const httpOptions: HttpOptions = {
       headers: requestParam.header ? this.getHeader(requestParam.header) : this.getHeader(),
@@ -155,6 +200,16 @@ export class DataService {
       return { ...default_headers, ...headers };
     } else {
       return { ...default_headers };
+    }
+  }
+
+  private getDateDiff (serverdate): number {
+    const currentdate: any = new Date();
+    const serverDate: any = new Date(serverdate);
+    if (serverdate) {
+      return ( serverDate - currentdate ) / 1000;
+    } else {
+      return 0;
     }
   }
 }

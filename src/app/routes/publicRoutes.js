@@ -15,8 +15,10 @@ module.exports = function (app) {
         proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
         proxyReqPathResolver: proxyReqPathResolverMethod,
         userResDecorator: (proxyRes, proxyResData, req, res) => {
-            if(req.method === 'GET' && proxyRes.statusCode === 404) res.redirect('/')
+            const data = JSON.parse(proxyResData.toString('utf8'));
+            if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
             return proxyResData;
         }
     }))
 }
+

@@ -1,25 +1,26 @@
+import { combineLatest,  Subscription ,  Observable ,  Subject, of } from 'rxjs';
 
-import { combineLatest,  Subscription ,  Observable ,  Subject } from 'rxjs';
-
-import {first, takeUntil, map} from 'rxjs/operators';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, delay} from 'rxjs/operators';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { UserService } from '@sunbird/core';
-import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService,
+  NavigationHelperService } from '@sunbird/shared';
 import { CourseProgressService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-
+import { IPagination } from '@sunbird/announcement';
 /**
  * This component shows the course progress dashboard
  */
 @Component({
   selector: 'app-course-progress',
   templateUrl: './course-progress.component.html',
-  styleUrls: ['./course-progress.component.css']
+  styleUrls: ['./course-progress.component.scss']
 })
-export class CourseProgressComponent implements OnInit, OnDestroy {
+export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit {
+  modelChanged: Subject<string> = new Subject<string>();
   /**
    * Variable to gather and unsubscribe all observable subscriptions in this component.
    */
@@ -44,10 +45,14 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
 	 * This variable sets the user id
 	 */
   userId: string;
+    /**
+   * value typed
+   */
+  searchText: string;
   /**
 	 * This variable sets the dashboard result related to the given batch
 	 */
-  dashboarData: Array<ICourseProgressData>;
+  dashboarData: ICourseProgressData;
   /**
 	 * This variable is set to true when the length of batch is 0.
    * It helps to show a message div on html
@@ -68,7 +73,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   /**
 	 * This variable sets the order to true or false
 	 */
-  reverse: boolean;
+  reverse = true;
   /**
 	 * This variable sets the queryparams on url
 	 */
@@ -85,10 +90,34 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
 	 * This variable helps to show the warning div
 	 */
   showWarningDiv = false;
+   /**
+	 * This variable helps to show the csv downloadURl
+	 */
+  showDownloadLink = true;
   /**
    * To navigate to other pages
    */
   route: Router;
+   /**
+       * Contains page limit of inbox list
+    */
+   pageLimit: number;
+
+   /**
+     * Current page number of inbox list
+   */
+   pageNumber = 1;
+
+   /**
+     * totalCount of the list
+   */
+   totalCount: Number;
+
+   /**
+     * Contains returned object of the pagination service
+   * which is needed to show the pagination on inbox view
+     */
+   pager: IPagination;
   /**
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to parent component
@@ -111,9 +140,18 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   */
   public courseProgressService: CourseProgressService;
   /**
+  * For showing pagination on draft list
+  */
+   private paginationService: PaginationService;
+  /**
+    * To get url, app configs
+    */
+  public config: ConfigService;
+  /**
 	 * telemetryImpression object for course progress page
 	*/
   telemetryImpression: IImpressionEventInput;
+  telemetryCdata: Array<{}>;
   subscription: Subscription;
   /**
 	 * Constructor to create injected service(s) object
@@ -132,14 +170,19 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
     toasterService: ToasterService,
-    courseProgressService: CourseProgressService) {
+    courseProgressService: CourseProgressService,  paginationService: PaginationService,
+    config: ConfigService,
+    public navigationhelperService: NavigationHelperService) {
     this.user = user;
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.courseProgressService = courseProgressService;
+    this.paginationService = paginationService;
+    this.config = config;
     this.route.onSameUrlNavigation = 'ignore';
+    this.pageLimit = this.config.appConfig.DASHBOARD.PAGE_LIMIT;
   }
 
   /**
@@ -173,6 +216,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
           this.populateCourseDashboardData();
         } else if (this.batchlist.length === 1 && isBatchExist === undefined) {
           this.queryParams.batchIdentifier = this.batchlist[0].id;
+          this.selectedOption =  this.batchlist[0].id;
           this.populateCourseDashboardData();
         } else {
           this.showWarningDiv = true;
@@ -192,6 +236,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   */
   setBatchId(batchId: string): void {
     this.queryParams.batchIdentifier = batchId;
+    this.queryParams.pageNumber = this.pageNumber;
+    this.searchText = '';
     this.populateCourseDashboardData();
   }
 
@@ -233,20 +279,33 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   populateCourseDashboardData(): void {
     this.showWarningDiv = false;
     this.navigate();
-    this.setFilterDescription();
     this.showLoader = true;
-    const option = {
+    const option: any = {
       batchIdentifier: this.queryParams.batchIdentifier,
-      timePeriod: this.queryParams.timePeriod
+      limit: this.pageLimit,
+      offset: (this.pageNumber - 1) * (this.pageLimit),
     };
-    this.telemetryImpression.edata.uri = '/learn/course/' + this.courseId + '/dashboard?timePeriod='
-      + this.queryParams.timePeriod + '&batchIdentifier=' + this.queryParams.batchIdentifier;
+    if (this.order) {
+      option.sortBy = this.order;
+      option.sortOrder = this.reverse ? 'desc' : 'asc';
+    }
+    if (this.searchText) {
+      option.username = this.searchText;
+    }
     this.courseProgressService.getDashboardData(option).pipe(
     takeUntil(this.unsubscribe))
     .subscribe(
       (apiResponse: ServerResponse) => {
-        this.dashboarData = this.courseProgressService.parseDasboardResponse(apiResponse.result);
         this.showLoader = false;
+        this.dashboarData = apiResponse.result;
+        this.showDownloadLink = apiResponse.result.showDownloadLink ? apiResponse.result.showDownloadLink : false;
+        this.totalCount = apiResponse.result.count;
+        if (this.totalCount >= 10000) {
+          this.pager = this.paginationService.getPager(10000, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
+        } else {
+          this.pager = this.paginationService.getPager(
+            apiResponse.result.count, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
+        }
       },
       err => {
         this.toasterService.error(err.error.params.errmsg);
@@ -263,6 +322,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   setOrder(value: string): void {
     this.order = value;
     this.reverse = !this.reverse;
+    this.setInteractEventData();
+    this.populateCourseDashboardData();
   }
 
   /**
@@ -271,20 +332,41 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   downloadReport(): void {
     const option = {
       batchIdentifier: this.queryParams.batchIdentifier,
-      timePeriod: this.queryParams.timePeriod
     };
     this.courseProgressService.downloadDashboardData(option).pipe(
     takeUntil(this.unsubscribe))
     .subscribe(
       (apiResponse: ServerResponse) => {
-        this.showDownloadModal = true;
+        window.open(_.get(apiResponse, 'result.signedUrl'), '_parent');
       },
       err => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        this.toasterService.error(this.resourceService.messages.imsg.m0045);
       }
     );
+    this.setInteractEventData();
   }
 
+  navigateToPage(page: number): undefined | void {
+    if (page < 1 || page > this.pager.totalPages) {
+        return;
+    }
+    this.pageNumber = page;
+    this.queryParams.pageNumber = this.pageNumber;
+    this.navigate();
+    this.populateCourseDashboardData();
+  }
+  keyup(event) {
+      this.modelChanged.next(_.trim(event));
+  }
+  searchBatch() {
+    this.modelChanged.pipe(debounceTime(1000),
+    distinctUntilChanged(),
+    switchMap(search => of(search))
+    ).
+    subscribe(query => {
+      this.populateCourseDashboardData();
+    });
+  }
   /**
   * To method subscribes the user data to get the user id.
   * It also subscribes the activated route params to get the
@@ -305,35 +387,49 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
             this.courseId = bothParams.params.courseId;
             this.batchId = bothParams.params.batchId;
             this.queryParams = { ...bothParams.queryParams };
-            this.queryParams.timePeriod = this.queryParams.timePeriod || '7d';
-
-            // Create the telemetry impression event for course stats page
-            this.telemetryImpression = {
-              context: {
-                env: this.activatedRoute.snapshot.data.telemetry.env
-              },
-              edata: {
-                type: this.activatedRoute.snapshot.data.telemetry.type,
-                pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-                uri: '/learn/course/' + this.courseId + '/dashboard'
-              },
-              object: {
-                id: this.courseId,
-                type: this.activatedRoute.snapshot.data.telemetry.object.type,
-                ver: this.activatedRoute.snapshot.data.telemetry.object.ver
-              }
-            };
-            this.interactObject = { id: this.courseId, type: 'course', ver: '1.0' };
+            this.interactObject = { id: this.courseId, type: 'Course', ver: '1.0' };
             this.populateBatchData();
           });
       }
     });
+    this.searchBatch();
+    this.setInteractEventData();
   }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env,
+          cdata: [{ id: this.activatedRoute.snapshot.params.courseId, type: 'Course' }]
+        },
+        edata: {
+          uri: '/learn/course/' + this.courseId + '/dashboard&batchIdentifier=' + this.activatedRoute.snapshot.params.batchId,
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          duration: this.navigationhelperService.getPageLoadTime()
+        },
+        object: {
+          id: this.courseId,
+          type: this.activatedRoute.snapshot.data.telemetry.object.type,
+          ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+        }
+      };
+    });
+  }
+
   ngOnDestroy() {
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+  setInteractEventData() {
+    if (_.get(this.queryParams, 'batchIdentifier')) {
+      this.telemetryCdata = [{ 'type': 'batch', 'id': this.queryParams.batchIdentifier}];
+    } else {
+      this.telemetryCdata = [{ 'type': 'course', 'id': this.courseId}];
+    }
   }
 }

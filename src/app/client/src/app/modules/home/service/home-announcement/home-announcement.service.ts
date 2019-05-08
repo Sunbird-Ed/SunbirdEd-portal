@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import {  IAnnouncementSericeParam } from '@sunbird/announcement';
 import { ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 @Injectable()
 export class HomeAnnouncementService  extends DataService {

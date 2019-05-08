@@ -11,7 +11,7 @@ import { SharedModule } from '@sunbird/shared';
 describe('BatchService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule, CoreModule.forRoot(), SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, SharedModule.forRoot()],
       providers: [BatchService, ConfigService]
     });
   });
@@ -22,9 +22,9 @@ describe('BatchService', () => {
 
   it('should call setBatchData method to set the batch data  ', inject([BatchService],
     (batchService: BatchService) => {
-      batchService.setBatchData(Response.batchlistSucessData);
-      expect(batchService.batchDetails).toBeDefined();
-      expect(batchService).toBeTruthy();
-    }));
+    batchService.setBatchData(Response.batchlistSucessData);
+    expect(batchService.batchDetails).toBeDefined();
+    expect(batchService).toBeTruthy();
+  }));
 
 });

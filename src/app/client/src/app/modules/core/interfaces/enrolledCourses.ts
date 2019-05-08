@@ -49,4 +49,6 @@ export interface ICourses {
     * object type of IAction
     */
     action?: IAction;
+
+    batch?: any;
 }

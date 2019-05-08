@@ -1,10 +1,8 @@
 
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-// Import NG testing module(s)
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { PublishedComponent } from './published.component';
 // Import services
 import { SharedModule, PaginationService, ToasterService, ResourceService } from '@sunbird/shared';
@@ -56,7 +54,7 @@ describe('PublishedComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [PublishedComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(),
+      imports: [HttpClientTestingModule, RouterTestingModule, SharedModule.forRoot(),
         TelemetryModule.forRoot(), NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,

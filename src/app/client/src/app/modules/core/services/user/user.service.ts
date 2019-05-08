@@ -1,13 +1,15 @@
-import { ConfigService, ServerResponse, IUserProfile, IUserData, IOrganization } from '@sunbird/shared';
+import { ConfigService, ServerResponse, IUserProfile, IUserData, IOrganization, HttpOptions } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { HttpClient } from '@angular/common/http';
 import { PublicDataService } from './../public-data/public-data.service';
 import { skipWhile } from 'rxjs/operators';
+
 /**
  * Service to fetch user details from server
  *
@@ -24,6 +26,9 @@ export class UserService {
     * Contains session id
     */
   private _sessionId: string;
+
+  timeDiff: any;
+
   /**
    * Contains root org id
    */
@@ -144,8 +149,12 @@ export class UserService {
       url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${this.userid}`,
       param: this.config.urlConFig.params.userReadParam
     };
-    this.learnerService.get(option).subscribe(
+    this.learnerService.getWithHeaders(option).subscribe(
       (data: ServerResponse) => {
+        if (data.ts) {
+          // data.ts is taken from header and not from api response ts, and format in IST
+          this.timeDiff = data.ts;
+        }
         this.setUserProfile(data);
       },
       (err: ServerResponse) => {
@@ -169,7 +178,6 @@ export class UserService {
   public initialize(loggedIn) {
     if (loggedIn) {
       this.getUserProfile();
-      this.startSession(); // logs session start with device id
     }
   }
   /**
@@ -183,8 +191,11 @@ export class UserService {
     profileData.skills = _.get(profileData, 'skills' ) || [];
     hashTagIds.push(this._channel);
     let organisationIds = [];
+    if (profileData.rootOrgId) {
+      organisationIds.push(profileData.rootOrgId);
+    }
     profileData.rootOrgAdmin = false;
-    let userRoles = profileData.roles;
+    let userRoles = ['PUBLIC'];
     if (profileData.organisations) {
       _.forEach(profileData.organisations, (org) => {
         if (org.roles && _.isArray(org.roles)) {
@@ -206,13 +217,10 @@ export class UserService {
         }
       });
     }
-    if (profileData.rootOrgId) {
-      organisationIds.push(profileData.rootOrgId);
-    }
     this._dims = _.concat(organisationIds, this.channel);
     organisationIds = _.uniq(organisationIds);
     this._userProfile = profileData;
-    this._userProfile.userRoles = userRoles;
+    this._userProfile.userRoles = _.uniq(userRoles);
     this._userProfile.orgRoleMap = orgRoleMap;
     this._userProfile.organisationIds = organisationIds;
     this._userProfile.hashTagIds = _.uniq(hashTagIds);
@@ -265,6 +273,21 @@ export class UserService {
       );
   }
 
+  /**
+   * This method invokes learner service to update tnc accept
+   */
+  public acceptTermsAndConditions(requestBody) {
+    const options = {
+      url: this.config.urlConFig.URLS.USER.TNC_ACCEPT,
+      data: requestBody
+    };
+    return this.learnerService.post(options).pipe(map(
+      (res: ServerResponse) => {
+        this._userProfile.promptTnC = false;
+      }
+    ));
+  }
+
   get orgIdNameMap() {
     const mapOrgIdNameData = {};
     _.forEach(this.orgnisationsDetails, (orgDetails) => {
@@ -283,6 +306,10 @@ export class UserService {
 
   get hashTagId() {
     return this._hashTagId;
+  }
+
+  get getServerTimeDiff() {
+    return this.timeDiff;
   }
 
   get channel() {
@@ -319,10 +346,14 @@ export class UserService {
    * method to log session start
    */
   public startSession(): void {
-    const fingerPrint2 = new Fingerprint2();
-    fingerPrint2.get((result, components) => {
-      const url = `/v1/user/session/start/${result}`;
-      this.http.get(url).subscribe();
-    });
+    const deviceId = (<HTMLInputElement>document.getElementById('deviceId'))
+      ? (<HTMLInputElement>document.getElementById('deviceId')).value : '';
+    const url = `/v1/user/session/start/${deviceId}`;
+    this.http.get(url).subscribe();
   }
+
+  getUserByKey(key) {
+    return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_BY_KEY + '/' + key});
+  }
+
 }

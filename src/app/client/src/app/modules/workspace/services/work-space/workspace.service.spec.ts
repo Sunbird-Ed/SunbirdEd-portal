@@ -20,7 +20,7 @@ describe('WorkSpaceService', () => {
   };
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, HttpClientModule, CoreModule.forRoot(), SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, HttpClientModule, CoreModule, SharedModule.forRoot()],
       providers: [WorkSpaceService, CacheService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }]
@@ -29,20 +29,22 @@ describe('WorkSpaceService', () => {
   it('should  launch  content  editor when mime type is content-collection',
     inject([WorkSpaceService, Router], (workSpaceService, route) => {
       workSpaceService.navigateToContent(testData.sucessData.result.content[0], 'draft');
-      expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/content/', 'do_1124858179748904961134', 'draft', 'NCF']);
+      expect(route.navigate).
+      toHaveBeenCalledWith(['/workspace/content/edit/content/', 'do_1124858179748904961134', 'draft', 'NCF', 'Draft']);
     }));
 
   it('should  launch  collection  editor when mime type is ecml-archive',
     inject([WorkSpaceService, Router], (workSpaceService, route) => {
       workSpaceService.navigateToContent(testData.sucessData.result.content[1], 'review');
       expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/collection',
-        'do_1124858179748904961134', 'Resource', 'review', 'NCF']);
+        'do_1124858179748904961134', 'Resource', 'review', 'NCF', 'Draft']);
     }));
 
   it('should  launch  generic  editor when mime type is not matching ',
     inject([WorkSpaceService, Router], (workSpaceService, route) => {
       workSpaceService.navigateToContent(testData.sucessData.result.content[2], 'draft');
-      expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/generic/', 'do_1124858179748904961134', 'draft', 'NCF']);
+      expect(route.navigate)
+      .toHaveBeenCalledWith(['/workspace/content/edit/generic/', 'do_1124858179748904961134', 'draft', 'NCF', 'Draft']);
     }));
   it('should call delete api and get success response', inject([WorkSpaceService],
     (workSpaceService) => {

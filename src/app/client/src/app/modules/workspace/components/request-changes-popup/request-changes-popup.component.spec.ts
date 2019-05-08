@@ -83,7 +83,7 @@ describe('RequestChangesPopupComponent', () => {
 };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot()],
+      imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule],
       declarations: [RequestChangesPopupComponent],
       providers: [ToasterService, NavigationHelperService, WorkSpaceService, SuiModalService,
         { provide: Router, useClass: RouterStub },
@@ -162,6 +162,7 @@ describe('RequestChangesPopupComponent', () => {
   it('should validate modal when it validation passes', () => {
     component.reasons = ['Others'];
     component.comment = 'Test';
+    component.showDefaultConfig = true;
     component.validateModal();
     expect(component.isDisabled).toBe(false);
   });

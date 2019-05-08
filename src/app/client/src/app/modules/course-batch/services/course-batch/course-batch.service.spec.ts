@@ -25,14 +25,14 @@ const fakeActivatedRoute = {
     ],
     data: {
       telemetry: { env: 'course', pageid: 'batch-edit', type: 'view', object: { ver: '1.0', type: 'batch' } },
-      roles: 'coursebacthesRole'
+      roles: 'courseBatchRoles'
     }
   }
 };
 describe('CourseBatchService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       providers: [CourseBatchService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }]

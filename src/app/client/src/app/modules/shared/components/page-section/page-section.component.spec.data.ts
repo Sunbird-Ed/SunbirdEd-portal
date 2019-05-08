@@ -2,6 +2,7 @@ export const Response = {
     successData: {
         'name': 'Multiple Data',
         'length': 1,
+        'count': 1,
         'metaData': { identifier: 'do_4354432223' },
         'contents': [
             {
@@ -14,7 +15,8 @@ export const Response = {
     },
     defaultData: {
         'name': 'Multiple Data',
-        'length': 0
+        'length': 0,
+        'contents': []
     },
     playContentData: {
         action: {eventName: 'onImage'},

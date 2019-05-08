@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { ContentService, FormService } from '@sunbird/core';
 import {
   ResourceService, ConfigService, ToasterService, ServerResponse, RouterNavigationService,
@@ -15,8 +15,7 @@ import { Subject } from 'rxjs';
  */
 @Component({
   selector: 'app-request-changes-popup',
-  templateUrl: './request-changes-popup.component.html',
-  styleUrls: ['./request-changes-popup.component.css']
+  templateUrl: './request-changes-popup.component.html'
 })
 export class RequestChangesPopupComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
@@ -132,8 +131,9 @@ export class RequestChangesPopupComponent implements OnInit, OnDestroy {
    * If both the validation is passed it enables the request changes button
    */
   validateModal() {
-    if (this.reasons && this.reasons.length > 0 && this.comment && _.trim(this.comment).length > 0 ||
-    this.comment && _.trim(this.comment).length > 0 && this.showDefaultConfig) {
+    if (this.reasons && this.reasons.length > 0 && this.comment
+      && _.trim(this.comment).length > 0 && this.showDefaultConfig || (!this.rejectCheckListData && this.comment
+        && _.trim(this.comment).length > 0 && this.showDefaultConfig)) {
       this.isDisabled = false;
     } else {
       this.isDisabled = true;

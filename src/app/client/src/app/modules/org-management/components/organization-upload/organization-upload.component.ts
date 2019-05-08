@@ -1,13 +1,12 @@
-import { Component, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
-import { ResourceService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
+import { Component, ViewChild, ElementRef, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { ResourceService, ToasterService, ServerResponse, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OrgManagementService } from '../../services';
-import { Angular2Csv } from 'angular2-csv/Angular2-csv';
-import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { UserService } from '@sunbird/core';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 /**
  * This component helps to upload bulk organizations data (csv file)
  *
@@ -15,10 +14,9 @@ import * as _ from 'lodash';
  */
 @Component({
   selector: 'app-organization',
-  templateUrl: './organization-upload.component.html',
-  styleUrls: ['./organization-upload.component.css']
+  templateUrl: './organization-upload.component.html'
 })
-export class OrganizationUploadComponent implements OnInit, OnDestroy {
+export class OrganizationUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('inputbtn') inputbtn: ElementRef;
   @ViewChild('modal') modal;
   /**
@@ -69,8 +67,16 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
   downloadSampleOrgCSVInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   public unsubscribe$ = new Subject<void>();
+  csvOptions = {
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalseparator: '.',
+    showLabels: true,
+    headers: []
+  };
   constructor(orgManagementService: OrgManagementService, activatedRoute: ActivatedRoute, toasterService: ToasterService,
-    config: ConfigService, resourceService: ResourceService, public userService: UserService, private router: Router) {
+    config: ConfigService, resourceService: ResourceService, public userService: UserService, private router: Router,
+    public navigationhelperService: NavigationHelperService) {
     this.activatedRoute = activatedRoute;
     this.orgManagementService = orgManagementService;
     this.resourceService = resourceService;
@@ -114,17 +120,6 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
         ]
       }
     ];
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: 'profile-bulk-upload-organization-upload',
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: this.router.url
-      }
-    };
     this.setInteractEventData();
   }
   /**
@@ -135,19 +130,6 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
     this.fileName = '';
     this.processId = '';
     this.router.navigate([this.redirectUrl]);
-  }
-  /**
-* This method helps to download a sample csv file
-*/
-  public downloadSample() {
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalseparator: '.',
-      showLabels: true,
-      useBom: false
-    };
-    const csv = new Angular2Csv(this.config.appConfig.ADMIN_UPLOAD.SAMPLE_ORGANIZATION_CSV, 'Sample_Organizations', options);
   }
   /**
  * This method helps to call uploadOrg method to upload a csv file
@@ -190,6 +172,24 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: 'profile-bulk-upload-organization-upload',
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          uri: this.router.url,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
+  }
+
   setInteractEventData() {
     this.orgUploadInteractEdata = {
       id: 'upload-org',
@@ -203,7 +203,7 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
     };
     this.telemetryInteractObject = {
       id: this.userService.userid,
-      type: 'user',
+      type: 'User',
       ver: '1.0'
     };
   }

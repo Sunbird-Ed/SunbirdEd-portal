@@ -1,14 +1,14 @@
 
 import {takeUntil, first} from 'rxjs/operators';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Subscription ,  Subject } from 'rxjs';
 import { RendererService, OrganisationService, DownloadService } from './../../services';
 import { UserService, SearchService } from '@sunbird/core';
-import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { DashboardData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 /**
  * The organization component
@@ -18,13 +18,13 @@ import * as _ from 'lodash';
 @Component({
   selector: 'app-organization',
   templateUrl: './organization.component.html',
-  styleUrls: ['./organization.component.css']
+  styleUrls: ['./organization.component.scss']
 })
 
 /**
  * @class OrganisationComponent
  */
-export class OrganisationComponent implements OnDestroy {
+export class OrganisationComponent implements OnDestroy, AfterViewInit {
   /**
    * Variable to gather and unsubscribe all observable subscriptions in this component.
    */
@@ -170,7 +170,7 @@ export class OrganisationComponent implements OnDestroy {
    */
   constructor(downloadService: DownloadService, route: Router, activatedRoute: ActivatedRoute, userService: UserService,
     searchService: SearchService, rendererService: RendererService, orgService: OrganisationService, resourceService: ResourceService,
-    public toasterService: ToasterService) {
+    public toasterService: ToasterService, public navigationhelperService: NavigationHelperService) {
     this.downloadService = downloadService;
     this.activatedRoute = activatedRoute;
     this.searchService = searchService;
@@ -179,40 +179,15 @@ export class OrganisationComponent implements OnDestroy {
     this.orgService = orgService;
     this.userService = userService;
     this.route = route;
-    this.initTelemetryImpressionEvent();
     this.activatedRoute.params.subscribe(params => {
       if (params.id && params.timePeriod) {
         // this.datasetType = params.datasetType;
         this.showDashboard = false;
-        // update the impression event after an org is selected
-        this.telemetryImpression.edata.uri = '/orgDashboard/organization/' + params.datasetType
-          + '/' + params.id + '/' + params.timePeriod;
-        this.telemetryImpression.object = {
-          id: params.id,
-          type: 'org',
-          ver: '1.0'
-        };
-        this.interactObject = { id: params.id, type: 'organization', ver: '1.0' };
+        this.interactObject = { id: params.id, type: 'Organization', ver: '1.0' };
         this.getDashboardData(params.timePeriod, params.id);
       }
     });
     this.getMyOrganisations();
-  }
-
-  /**
-   * Function to initialise the telemetry impression event for org admin dashboard page
-   */
-  initTelemetryImpressionEvent() {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: '/orgDashboard'
-      }
-    };
   }
 
   /**
@@ -289,7 +264,7 @@ export class OrganisationComponent implements OnDestroy {
       return false;
     }
 
-    this.route.navigate(['orgDashboard/organization', this.datasetType, this.identifier, timePeriod]);
+    this.route.navigate(['dashBoard/organization', this.datasetType, this.identifier, timePeriod]);
   }
 
   /**
@@ -304,7 +279,7 @@ export class OrganisationComponent implements OnDestroy {
       return false;
     }
     this.showGraph = datasetType === 'creation' ? 1 : 0;
-    this.route.navigate(['orgDashboard/organization', datasetType, this.identifier, this.timePeriod]);
+    this.route.navigate(['dashBoard/organization', datasetType, this.identifier, this.timePeriod]);
   }
 
   /**
@@ -331,7 +306,7 @@ export class OrganisationComponent implements OnDestroy {
       return false;
     }
 
-    this.route.navigate(['orgDashboard/organization', this.datasetType, identifier, this.timePeriod]);
+    this.route.navigate(['dashBoard/organization', this.datasetType, identifier, this.timePeriod]);
   }
 
   /**
@@ -354,7 +329,7 @@ export class OrganisationComponent implements OnDestroy {
       this.myOrganizations = data.content;
       if (this.myOrganizations.length === 1) {
         this.identifier = this.myOrganizations[0].identifier;
-        this.route.navigate(['orgDashboard/organization', this.datasetType, this.identifier, this.timePeriod]);
+        this.route.navigate(['dashBoard/organization', this.datasetType, this.identifier, this.timePeriod]);
       }
       this.isMultipleOrgs = this.userService.userProfile.organisationIds.length > 1 ? true : false;
       this.showLoader = false;
@@ -416,7 +391,7 @@ export class OrganisationComponent implements OnDestroy {
             this.isMultipleOrgs = orgIds.length > 1 ? true : false;
             if (this.myOrganizations.length === 1) {
               this.identifier = this.myOrganizations[0].identifier;
-              this.route.navigate(['orgDashboard/organization', this.datasetType, this.identifier, this.timePeriod]);
+              this.route.navigate(['dashBoard/organization', this.datasetType, this.identifier, this.timePeriod]);
             }
           }
 
@@ -432,6 +407,30 @@ export class OrganisationComponent implements OnDestroy {
       );
     }
   }
+
+  ngAfterViewInit () {
+    const params = this.activatedRoute.snapshot.params;
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          uri: 'dashboard/organization/' + params.datasetType
+          + '/' + params.id + '/' + params.timePeriod,
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          duration: this.navigationhelperService.getPageLoadTime()
+        },
+        object: {
+          id: params.id,
+          type: 'org',
+          ver: '1.0'
+        }
+      };
+    });
+  }
+
   ngOnDestroy() {
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();

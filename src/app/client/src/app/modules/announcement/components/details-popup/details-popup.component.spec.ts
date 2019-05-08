@@ -3,7 +3,7 @@ import {throwError as observableThrowError, of as observableOf,  Observable } fr
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import * as testData from './details-popup.component.spec.data';
 import { Component, OnInit, NO_ERRORS_SCHEMA } from '@angular/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { HttpClient } from '@angular/common/http';
 import { TelemetryModule } from '@sunbird/telemetry';
 // Modules
@@ -11,10 +11,10 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-import { Ng2IziToastModule } from 'ng2-izitoast';
-
+import { CacheService } from 'ng2-cache-service';
 import { AnnouncementService } from '@sunbird/core';
-import { SharedModule, ResourceService, ToasterService, ConfigService, RouterNavigationService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService, ConfigService, BrowserCacheTtlService,
+  RouterNavigationService } from '@sunbird/shared';
 import { DetailsPopupComponent } from './details-popup.component';
 
 describe('DetailsPopupComponent', () => {
@@ -36,11 +36,11 @@ describe('DetailsPopupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DetailsPopupComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule,
+      imports: [HttpClientTestingModule,
         SuiModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
       providers: [HttpClientModule, AnnouncementService, RouterNavigationService,
-        ResourceService, ToasterService, ConfigService, HttpClient,
-        { provide: Router, useClass: RouterStub },
+        ResourceService, ToasterService, ConfigService, CacheService, BrowserCacheTtlService,
+         HttpClient, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -51,7 +51,6 @@ describe('DetailsPopupComponent', () => {
   beforeEach(async(() => {
     fixture = TestBed.createComponent(DetailsPopupComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   }));
 
   it('should create', () => {
@@ -78,7 +77,6 @@ describe('DetailsPopupComponent', () => {
           expect(apiResponse.params.status).toBe('successful');
         }
       );
-      fixture.detectChanges();
       expect(component.showLoader).toBe(false);
 
     }));
@@ -88,7 +86,6 @@ describe('DetailsPopupComponent', () => {
       announcementService.announcementDetailsObject = testData.mockRes.detailsObject;
       component.getDetails('92ca4110-19df-11e8-8773-d9334313c305');
       expect(component.showLoader).toBe(false);
-      fixture.detectChanges();
     }));
 
   it('should call get announcement by id api and get error response',

@@ -1,25 +1,27 @@
 
 import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService, ISort } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
-  ResourceService, ILoaderMessage, INoResultMessage, IContents
+  ResourceService, ILoaderMessage, INoResultMessage, IContents, NavigationHelperService
 } from '@sunbird/shared';
 import { Ibatch, IStatusOption } from './../../interfaces/';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+
 @Component({
   selector: 'app-all-content',
-  templateUrl: './all-content.component.html',
-  styleUrls: ['./all-content.component.css']
+  templateUrl: './all-content.component.html'
 })
-export class AllContentComponent extends WorkSpace implements OnInit {
+
+export class AllContentComponent extends WorkSpace implements OnInit, AfterViewInit {
+
   @ViewChild('modalTemplate')
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
@@ -47,6 +49,7 @@ export class AllContentComponent extends WorkSpace implements OnInit {
   */
   allContent: Array<IContents> = [];
 
+  // pageLoadTime = new PageLoadTime()
   /**
    * To show / hide loader
   */
@@ -63,6 +66,16 @@ export class AllContentComponent extends WorkSpace implements OnInit {
   noResult = false;
 
   /**
+   * lock popup data for locked contents
+  */
+  lockPopupData: object;
+
+  /**
+   * To show content locked modal
+  */
+  showLockedContentModal = false;
+
+  /**
    * To show / hide error
   */
   showError = false;
@@ -76,11 +89,6 @@ export class AllContentComponent extends WorkSpace implements OnInit {
     * For showing pagination on draft list
   */
   private paginationService: PaginationService;
-
-  /**
-    * Refrence of UserService
-  */
-  private userService: UserService;
 
   /**
   * To get url, app configs
@@ -165,17 +173,17 @@ export class AllContentComponent extends WorkSpace implements OnInit {
     * @param {ConfigService} config Reference of ConfigService
   */
   constructor(public searchService: SearchService,
+    public navigationhelperService: NavigationHelperService,
     public workSpaceService: WorkSpaceService,
     paginationService: PaginationService,
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
     config: ConfigService, public modalService: SuiModalService) {
-    super(searchService, workSpaceService);
+    super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
     this.activatedRoute = activatedRoute;
-    this.userService = userService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.config = config;
@@ -206,18 +214,6 @@ export class AllContentComponent extends WorkSpace implements OnInit {
         this.query = this.queryParams['query'];
         this.fecthAllContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
       });
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
-        visits: this.inviewLogs
-      }
-    };
   }
   /**
   * This method sets the make an api call to get all UpForReviewContent with page No and offset
@@ -251,7 +247,7 @@ export class AllContentComponent extends WorkSpace implements OnInit {
       query: _.toString(bothParams.queryParams.query),
       sort_by: this.sort
     };
-    this.search(searchParams).subscribe(
+    this.searchContentWithLockStatus(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
           this.allContent = data.result.content;
@@ -264,7 +260,7 @@ export class AllContentComponent extends WorkSpace implements OnInit {
           this.noResult = true;
           this.showLoader = false;
           this.noResultMessage = {
-            'messageText': this.resourceService.messages.stmsg.m0125
+            'messageText': 'messages.stmsg.m0126'
           };
         }
       },
@@ -278,8 +274,10 @@ export class AllContentComponent extends WorkSpace implements OnInit {
   }
   public deleteConfirmModal(contentIds) {
     const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
-    config.isClosable = true;
-    config.size = 'mini';
+    config.isClosable = false;
+    config.size = 'small';
+    config.transitionDuration = 0;
+    config.mustScroll = true;
     this.modalService
       .open(config)
       .onApprove(result => {
@@ -322,10 +320,44 @@ export class AllContentComponent extends WorkSpace implements OnInit {
     this.pageNumber = page;
     this.route.navigate(['workspace/content/allcontent', this.pageNumber], { queryParams: this.queryParams });
   }
+
   contentClick(content) {
-    if (content.status.toLowerCase() !== 'processing') {
-      this.workSpaceService.navigateToContent(content, this.state);
+    if (_.size(content.lockInfo)) {
+        this.lockPopupData = content;
+        this.showLockedContentModal = true;
+    } else {
+      const status = content.status.toLowerCase();
+      if (status === 'processing') {
+        return;
+      }
+      if (status === 'draft') { // only draft state contents need to be locked
+        this.workSpaceService.navigateToContent(content, this.state);
+      } else {
+        this.workSpaceService.navigateToContent(content, this.state);
+      }
     }
+  }
+
+  public onCloseLockInfoPopup () {
+    this.showLockedContentModal = false;
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
+          visits: this.inviewLogs,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 
   inview(event) {

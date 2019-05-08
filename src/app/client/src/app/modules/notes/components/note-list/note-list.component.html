@@ -1,13 +1,13 @@
+<div class="ui container">
 <div class="ui grid mt-30">
-  <div class="one wide column"></div>
-  <div class="ten wide column">
+  <div class="twelve wide column">
     <div class="ui segments">
       <div class="ui segment p-0">
         <div class="ui grid m-0 height-100" id="notesList">
           <div class="twelve wide column">
             <div class="ui container container-with-button px-0">
               <span class="ui header">{{resourceService?.frmelmnts?.lbl?.mynotes}}</span>
-              <i class=" circular icon mx-10 link " [ngClass]="!showCreateEditor ? 'plus' : 'remove'" (click)="showCreateEditor = !showCreateEditor">
+              <i appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="addNoteInteractEdata" class=" circular icon mx-10 link " [ngClass]="!showCreateEditor ? 'plus' : 'remove'" (click)="showCreateEditor = !showCreateEditor">
               </i>
               <div class="notesearch right-floated">
                 <div class="ui icon input">
@@ -22,10 +22,8 @@
               <div *ngIf="showCreateEditor === true" class="pt-20">
                 <app-inline-editor [ids]="{contentId:contentId, courseId:courseId}" [mode]="'create'" (updateEventEmitter)="updateEventEmitter($event)" (createEventEmitter)="createEventEmitter($event)"></app-inline-editor>
               </div>
-
             </div>
           </div>
-
         </div>
       </div>
       <div class="noteListSegment ui secondary segment" *ngIf="notesList.length > 0">
@@ -55,8 +53,8 @@
                 <div class="content notelistrightscroll pt-10">
                   <div class="ui row mr-15">
                     <div class="right-floated pt-10">
-                      <i class="large edit icon cursor-pointer" title={{resourceService?.frmelmnts?.lbl?.edit}} (click)="showUpdateEditor = true;"></i>
-                      <i class="right-floated large trash outline icon cursor-pointer" title={{resourceService?.frmelmnts?.lbl?.delete}} (click)="showDelete = true;">
+                      <i appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="updateNoteInteractEdata" class="large edit icon cursor-pointer" title={{resourceService?.frmelmnts?.lbl?.edit}} (click)="showUpdateEditor = true;"></i>
+                      <i appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="deleteNoteInteractEdata" class="right-floated large trash outline icon cursor-pointer" title={{resourceService?.frmelmnts?.lbl?.delete}} (click)="showDelete = true;">
                         <app-delete-note *ngIf="showDelete === true" [deleteNote]="selectedNote"  (exitModal)="showDelete = false" (deleteEventEmitter)="deleteEventEmitter($event)">
                         </app-delete-note>
                       </i>
@@ -90,6 +88,6 @@
       <app-loader></app-loader>
     </div>
   </div>
-  <div class="one wide column"></div>
+</div>
 </div>
 <router-outlet></router-outlet>

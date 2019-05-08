@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ResourceService } from '../../services/index';
 @Component({
   selector: 'app-browser-compatibility',
   templateUrl: './browser-compatibility.component.html',
-  styleUrls: ['./browser-compatibility.component.css']
+  styleUrls: ['./browser-compatibility.component.scss']
 })
 export class BrowserCompatibilityComponent implements OnInit {
   @ViewChild('modal') modal;
@@ -13,7 +14,9 @@ export class BrowserCompatibilityComponent implements OnInit {
   deviceInfo: any;
   hideFooter = true;
 
-  constructor(private _deviceDetectorService: DeviceDetectorService) { }
+  constructor(public resourceService: ResourceService, private _deviceDetectorService: DeviceDetectorService) {
+    this.resourceService = resourceService;
+  }
 
   ngOnInit() {
     this.showCompatibilityModal();
@@ -30,7 +33,7 @@ export class BrowserCompatibilityComponent implements OnInit {
 
   showCompatibilityModal() {
     this.deviceInfo = this._deviceDetectorService.getDeviceInfo();
-    if ( this.deviceInfo.browser !== 'chrome') {
+    if ( (this.deviceInfo.browser).toLowerCase() !== 'chrome') {
       this.showBrowserMsg = true;
       if ((localStorage.getItem('BrowserIncompatibleModel') !== 'shown')) {
         this.browserCompatible = true;
