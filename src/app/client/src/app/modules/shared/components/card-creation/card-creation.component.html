@@ -34,13 +34,10 @@
             </button>
           </span>
           <span *ngSwitchCase="'icon'">
-            <span *ngIf="!(data.metaData.pkgVersion && data.metaData.pkgVersion > 0 &&  data.metaData.status === 'Draft')">
+            <span [ngClass]="{disable:data.metaData.pkgVersion && data.metaData.pkgVersion > 0 &&  data.metaData.status === 'Draft'}">
                 <i class="{{data.action.right.class}}" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="telemetryInteractEdata" (click)="onAction(data,data.action.right); $event.stopPropagation()">
                 </i>
             </span>
-            <span *ngIf="(data.metaData.pkgVersion && data.metaData.pkgVersion > 0 &&  data.metaData.status === 'Draft')">
-                <i suiPopup popupText="{{resourceService?.frmelmnts?.lbl?.disablePopupText}}" [popupPlacement]="'right'" class="disabled trash large icon"></i>
-            </span>  
             <span *ngIf="data.action.right.text">{{data.action.right.text}}</span>
           </span>
         </a>
