@@ -10,8 +10,9 @@ import { SuiTabsModule } from 'ng2-semantic-ui';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { QuestionCreationComponent } from './components/question-creation/question-creation.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { ChapterListComponent } from './components/chapter-list/chapter-list.component';
 @NgModule({
-  declarations: [QuestionListComponent, TextbookSearchComponent, CbseComponent, QuestionCreationComponent],
+  declarations: [QuestionListComponent, TextbookSearchComponent, CbseComponent, QuestionCreationComponent, ChapterListComponent],
   imports: [
     CommonModule,
     CbseProgramRoutingModule,

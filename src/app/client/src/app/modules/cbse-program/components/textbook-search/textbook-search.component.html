@@ -1,3 +1,20 @@
-<p>
-  textbook-search works!
-</p>
+<div class="ui mt-30 container">
+  <div class="ui placeholder segment">
+    <p>SELECT TEXTBOOK</p>
+    <div class="mt-30">
+    <sui-select (ngModelChange)="setFilterInteractData('class')" class="selection" labelField="name" valueField="code" [(ngModel)]="selectedClass" #select>
+      <sui-select-option *ngFor="let option of filtersDetails.class" [value]="option">
+      </sui-select-option>
+    </sui-select>
+  </div>
+    <div class="mt-30">
+      <sui-select (ngModelChange)="setFilterInteractData('subject')" class="selection" labelField="name" valueField="code" [(ngModel)]="selectedSubject" #select>
+        <sui-select-option *ngFor="let option of filtersDetails.subject" [value]="option">
+        </sui-select-option>
+      </sui-select>
+    </div>
+    <div class="mt-30">
+      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="emitSelectedTextbook()">Search Textbook</button>
+    </div>
+  </div>
+</div>

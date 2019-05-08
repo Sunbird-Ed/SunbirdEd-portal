@@ -1,3 +1,14 @@
-<p>
-  cbse works!
-</p>
+
+<div *ngIf="currentStage == 'chooseClass'">
+  <app-textbook-search [hashTagId]="" [defaultSelectedOptions]="defaultSelectedOptions" (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-textbook-search>
+</div>
+
+<div *ngIf="currentStage == 'topicList'">
+  <div class="ui container">
+    <div class="mt-30 ui breadcrumb">
+      <i class="left angle icon divider"></i>
+      <a (click)="changeStage('previous')" class="section">{{selectedOptions.class}} | {{selectedOptions.subject}}</a>
+    </div>
+  </div>
+  <app-chapter-list [selectedOptionsMethod]="selectedOptions"></app-chapter-list>
+</div>
