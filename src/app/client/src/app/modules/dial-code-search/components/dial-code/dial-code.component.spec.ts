@@ -146,7 +146,7 @@ describe('DialCodeComponent', () => {
 
   it('should fetch more cards on scroll', () => {
     spyOn(component, 'appendItems').and.callThrough();
-    component.onScrollDown({});
+    component.onScrollDown();
     fixture.detectChanges();
     expect(component.appendItems).toHaveBeenCalledWith(50, 70);
     expect(component.initiallyItemsToLoad).toEqual(70);
