@@ -66,6 +66,9 @@
       ],
       "@sunbird/offline": [
         "app/modules/offline"
+      ],
+      "@sunbird/cbse-program": [
+        "app/modules/cbse-program"
       ]
     },
     "module": "es2015",

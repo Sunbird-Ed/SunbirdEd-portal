@@ -42,10 +42,8 @@ export class TextbookSearchComponent implements OnInit {
   this.fetchFrameWorkDetails();
   }
 
-  public setFilterInteractData(category) {
-    const fr = JSON.parse(this.frameworkDetails.frameworkdata[this.frameworkName].fw_hierarchy);
-    const frameworkData = fr.categories;
-    // const frameworkData = this.frameworkDetails.frameworkdata[this.frameworkName].categories;
+  private setFilterInteractData(category) {
+    const frameworkData = this.frameworkDetails.frameworkdata[this.frameworkName].categories;
     const frameworkClass = _.find(frameworkData, {code: 'gradeLevel'});
     setTimeout(() => {
       if (category === 'class') {
@@ -92,9 +90,7 @@ export class TextbookSearchComponent implements OnInit {
   }
 
   private filterTextbookForm() {
-    const fr = JSON.parse(this.frameworkDetails.frameworkdata[this.frameworkName].fw_hierarchy);
-    const frameworkData = fr.categories;
-    // const frameworkData = this.frameworkDetails.frameworkdata[this.frameworkName].categories;
+    const frameworkData = this.frameworkDetails.frameworkdata[this.frameworkName].categories;
     const frameworkClass = _.find(frameworkData, {code: 'gradeLevel'});
     const frameworkSubject = _.find(frameworkData, {code: 'subject'});
     _.map(frameworkClass.terms, (item) => {
