@@ -1,5 +1,5 @@
 import { throwError, of, Observable, BehaviorSubject } from 'rxjs';
-import { mergeMap, catchError, skipWhile } from 'rxjs/operators';
+import { mergeMap, map, catchError, skipWhile } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { ConfigService, ServerResponse, ToasterService, ResourceService, BrowserCacheTtlService } from '@sunbird/shared';
 import { Router } from '@angular/router';
@@ -18,6 +18,10 @@ export class OrgDetailsService {
   timeDiff: any;
 
   private _orgDetails$ = new BehaviorSubject<any>(undefined);
+  /**
+   * Contains root org id
+   */
+  public _rootOrgId: string;
 
   public readonly orgDetails$: Observable<any> = this._orgDetails$.asObservable()
   .pipe(skipWhile(data => data === undefined || data === null));
@@ -50,6 +54,7 @@ export class OrgDetailsService {
         }
         if (data.result.response.count > 0) {
           this.orgDetails = data.result.response.content[0];
+          this._rootOrgId = this.orgDetails.rootOrgId;
           this.setOrgDetailsToRequestHeaders();
           this._orgDetails$.next({ err: null, orgDetails: this.orgDetails });
           return of(data.result.response.content[0]);
@@ -58,6 +63,7 @@ export class OrgDetailsService {
           return this.publicDataService.post(option).pipe(mergeMap((responseData: ServerResponse) => {
             if (responseData.result.response.count > 0) {
               this.orgDetails = responseData.result.response.content[0];
+              this._rootOrgId = this.orgDetails.rootOrgId;
               this.setOrgDetailsToRequestHeaders();
               this._orgDetails$.next({ err: null, orgDetails: this.orgDetails });
               return of(responseData.result.response.content[0]);
@@ -134,19 +140,23 @@ export class OrgDetailsService {
     if (contentComingSoon) {
       return of(contentComingSoon);
     } else {
-      return this.learnerService.get(systemSetting).pipe(mergeMap((data: ServerResponse) => {
-        this.cacheService.set('contentComingSoon', data.result.response, {
-          maxAge: this.browserCacheTtlService.browserCacheTtl
-        });
-        return of(data.result.response);
-      }), catchError((err) => {
-        return of({});
+      return this.learnerService.get(systemSetting).pipe(map((data: ServerResponse) => {
+        if (data.result && data.result.response) {
+          this.cacheService.set('contentComingSoon', data.result.response, {
+            maxAge: this.browserCacheTtlService.browserCacheTtl
+          });
+          return data.result.response;
+        }
       }));
     }
   }
 
   get getServerTimeDiff() {
     return this.timeDiff;
+  }
+
+  get getRootOrgId() {
+    return this._rootOrgId;
   }
 
   fetchOrgs(filters) {

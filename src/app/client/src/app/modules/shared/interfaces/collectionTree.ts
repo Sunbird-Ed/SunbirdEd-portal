@@ -8,10 +8,14 @@ export interface ICollectionTree {
     id?: string;
     title: string;
     children?: ICollectionTree[];
+    mimeType?: string;
+    identifier?: string;
+    childNodes?: string[];
+    name?: string;
 }
 
 export interface ICollectionTreeNodes {
-  data: any;
+  data: ICollectionTree;
 }
 
 export enum FileTypes {

@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { of as observableOf, Observable } from 'rxjs';
 // Import services
-import { nodes, commonMessage } from './collection-tree.component.spec.data';
+import { nodes, commonMessageApiResp } from './collection-tree.component.spec.data';
 import { ResourceService, BrowserCacheTtlService, ConfigService, ToasterService } from '@sunbird/shared';
 import { UserService, OrgDetailsService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -87,12 +87,8 @@ describe('CollectionTreeComponent', () => {
     const userService = TestBed.get(UserService);
     component.nodes = nodes;
     const orgDetailsService = TestBed.get(OrgDetailsService);
-    orgDetailsService._orgDetails$.next({
-      err: {},
-      orgDetails: {rootOrgId: 'org_001'}
-    });
-    const data = commonMessage;
-    spyOn(orgDetailsService, 'getCommingSoonMessage').and.returnValue(observableOf(data));
+    spyOn(orgDetailsService, 'getCommingSoonMessage').and.returnValue(observableOf(commonMessageApiResp));
+    orgDetailsService._rootOrgId = 'org_001';
     component.ngOnInit();
     expect(component.commingSoonMessage).toEqual('Coming soon message');
   });
@@ -100,12 +96,8 @@ describe('CollectionTreeComponent', () => {
   it('should show default comming soon message if custom comming soon doesnt exists', () => {
     component.nodes = nodes;
     const orgDetailsService = TestBed.get(OrgDetailsService);
-    orgDetailsService._orgDetails$.next({
-      err: {},
-      orgDetails: {rootOrgId: 'org_001'}
-    });
-    const data = commonMessage;
-    spyOn(orgDetailsService, 'getCommingSoonMessage').and.returnValue(observableOf(data));
+    orgDetailsService._rootOrgId = 'org_002';
+    spyOn(orgDetailsService, 'getCommingSoonMessage').and.returnValue(observableOf(commonMessageApiResp));
     component.ngOnInit();
     expect(component.commingSoonMessage).toEqual('default comming soon');
   });

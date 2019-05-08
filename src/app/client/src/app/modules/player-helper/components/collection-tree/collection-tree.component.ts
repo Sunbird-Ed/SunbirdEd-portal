@@ -4,28 +4,27 @@
 *
 */
 
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
 import { ICollectionTreeNodes, ICollectionTreeOptions, MimeTypeTofileType, IUserData } from '@sunbird/shared';
 import { ResourceService } from '@sunbird/shared';
 import { OrgDetailsService, UserService } from '@sunbird/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import * as TreeModel from 'tree-model';
 @Component({
   selector: 'app-collection-tree',
   templateUrl: './collection-tree.component.html'
 })
-export class CollectionTreeComponent implements OnInit, OnChanges {
+export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() public nodes: ICollectionTreeNodes;
   @Input() public options: ICollectionTreeOptions;
   @Output() public contentSelect: EventEmitter<{id: string, title: string}> = new EventEmitter();
   @Input() contentStatus: any;
   private rootNode: any;
-  private rootOrgId: any;
   private selectLanguage: string;
-  private contentComingSoonObj: any;
-  private cmngSoonApiInprogress = false;
+  private contentComingSoonDetails: any;
   public rootChildrens: any;
   private languageSubscription: Subscription;
   private iconColor = {
@@ -34,6 +33,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     '2': 'fancy-tree-green'
   };
   public commingSoonMessage: string;
+  public unsubscribe$ = new Subject<void>();
   constructor(public orgDetailsService: OrgDetailsService,
     private userService: UserService, public resourceService?: ResourceService) {
     this.resourceService = resourceService;
@@ -41,25 +41,35 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
   }
   ngOnInit() {
     /*
-    * this.rootOrgId is required to select the custom comming soon messafe from systemsettings
+    * rootOrgId is required to select the custom comming soon messafe from systemsettings
     */
+    let rootOrgId: string;
     if (this.userService.loggedIn) {
-      this.rootOrgId = this.userService.rootOrgId;
+      rootOrgId = this.userService.rootOrgId;
     } else {
-      this.orgDetailsService.orgDetails$.subscribe(item => {
-        if (item.orgDetails && item.orgDetails.rootOrgId) {
-          this.rootOrgId = item.orgDetails.rootOrgId;
-        }
-      });
+      rootOrgId = this.orgDetailsService.getRootOrgId;
     }
-    this.languageSubscription = this.resourceService.languageSelected$.subscribe(item => {
+
+    /*
+    * fetching comming soon message at org level to show if content not exists in any of the folder
+    */
+    this.orgDetailsService.getCommingSoonMessage().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      (apiResponse) => {
+        if (apiResponse.value && apiResponse.value) {
+          this.contentComingSoonDetails = _.find(JSON.parse(apiResponse.value), {rootOrgId: rootOrgId});
+        }
+      }
+    );
+    this.languageSubscription = this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
       this.selectLanguage = item.value;
       this.initialize();
     });
   }
 
   ngOnChanges() {
-    this.initialize();
+    if (this.contentComingSoonDetails) {
+      this.initialize();
+    }
   }
 
   public onNodeClick(node: any) {
@@ -75,24 +85,10 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
   }
 
   private initialize() {
-    /*
-    * fetching comming soon message at org level to show if content not exists in any of the folder
-    */
-    if (!this.cmngSoonApiInprogress) {
-      this.cmngSoonApiInprogress = true;
-      this.orgDetailsService.getCommingSoonMessage().subscribe(
-        (apiResponse) => {
-          this.cmngSoonApiInprogress = false;
-          if (apiResponse.value && apiResponse.value) {
-            this.contentComingSoonObj = _.find(JSON.parse(apiResponse.value), {rootOrgId: this.rootOrgId});
-          }
-          this.rootNode = this.createTreeModel();
-          if (this.rootNode) {
-            this.rootChildrens = this.rootNode.children;
-            this.addNodeMeta();
-          }
-        }
-      );
+    this.rootNode = this.createTreeModel();
+    if (this.rootNode) {
+      this.rootChildrens = this.rootNode.children;
+      this.addNodeMeta();
     }
   }
 
@@ -145,8 +141,8 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
       this.commingSoonMessage = this.getMessageFormTranslations(node.model.altMsg[0].translations);
     } else if (node.model && node.parent && node.parent.model.altMsg && node.parent.model.altMsg.length) {
       this.commingSoonMessage = this.getMessageFormTranslations(node.model.parent.model.altMsg[0].translations);
-    } else if (this.contentComingSoonObj) {
-      this.commingSoonMessage = this.getMessageFormTranslations(this.contentComingSoonObj.translations);
+    } else if (this.contentComingSoonDetails) {
+      this.commingSoonMessage = this.getMessageFormTranslations(this.contentComingSoonDetails.translations);
     } else {
       this.commingSoonMessage  = this.resourceService.messages.stmsg.m0121;
     }
@@ -159,5 +155,9 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     } else {
       return translations['en'];
     }
+  }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
