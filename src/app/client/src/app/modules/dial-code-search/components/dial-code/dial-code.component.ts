@@ -204,7 +204,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.itemsToDisplay.push(...this.searchResults.slice(startIndex, endIndex));
   }
 
-  onScrollDown(ev) {
+  onScrollDown() {
     const startIndex = this.initiallyItemsToLoad;
     this.initiallyItemsToLoad = this.initiallyItemsToLoad + this.numOfItemsToAddOnScroll;
     this.appendItems(startIndex, this.initiallyItemsToLoad);
