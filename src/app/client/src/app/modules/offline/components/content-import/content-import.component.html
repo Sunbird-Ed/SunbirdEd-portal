@@ -21,14 +21,22 @@
                         class="qq-upload-button-selector sb-btn sb-btn-primary sb-btn-normal mb-10">{{resourceService.frmelmnts?.btn?.selectContentFiles}}</button> -->
 
                     <p class="grey-text" *ngIf="!processingFiles">
-                        1. Click <b> Select File(s)</b> to choose files from your pen drive.<br />
-                        2. Click <b> Open</b> in the Windows dialogue box.<br>
-                        3. After you get a message that the files are successfuly imported, click <b> Close </b>.<br>
-                        4. If the files are not imported successfuly, click <b> Retry</b> to try and upload the files
-                        once
-                        again, or click <b> Cancel</b> to halt the operation.
+                        {{resourceService.frmelmnts?.lbl?.one}} {{resourceService.frmelmnts?.lbl?.click}} <b>
+                            {{resourceService.frmelmnts?.btn?.selectContentFiles}}</b>
+                        {{resourceService.frmelmnts?.lbl?.choseFromPd}}<br />
+                        {{resourceService.frmelmnts?.lbl?.two}} {{resourceService.frmelmnts?.lbl?.click}} <b>
+                            {{resourceService.frmelmnts?.lbl?.open}}</b>
+                        {{resourceService.frmelmnts?.lbl?.inWindows}}<br>
+                        {{resourceService.frmelmnts?.lbl?.three}}
+                        {{resourceService.frmelmnts?.lbl?.afterSuccessfulImport}} <b>
+                            {{resourceService.frmelmnts?.btn?.close}} </b>.<br>
+                        {{resourceService.frmelmnts?.lbl?.four}}
+                        {{resourceService.frmelmnts?.lbl?.afterUnsuccessfulImport}} <b>
+                            {{resourceService.frmelmnts?.lbl?.retry}}</b>
+                        {{resourceService.frmelmnts?.lbl?.retryImport}} <b>
+                            {{resourceService.frmelmnts?.btn?.cancel}}</b>
+                        {{resourceService.frmelmnts?.lbl?.haltOperation}}
                     </p>
-
 
                     <ul class="qq-upload-list-selector qq-upload-list sb-file-uploads" id="file-uploading-list"
                         aria-live="polite" aria-relevant="additions removals">

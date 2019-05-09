@@ -50,6 +50,7 @@ export class MainMenuComponent implements OnInit {
   learnMenuIntractEdata: IInteractEventEdata;
   libraryMenuIntractEdata: IInteractEventEdata;
   myLibraryMenuInteractEdata: IInteractEventEdata;
+  browseEdata: IInteractEventEdata;
   workspaceMenuIntractEdata: IInteractEventEdata;
   helpMenuIntractEdata: IInteractEventEdata;
   exploreRoutingUrl: string;
@@ -103,6 +104,11 @@ export class MainMenuComponent implements OnInit {
       id: 'myLibrary-tab',
       type: 'click',
       pageid: 'library'
+    };
+    this.browseEdata = {
+      id: 'browse-tab',
+      type: 'click',
+      pageid: 'browse'
     };
     this.learnMenuIntractEdata = {
       id: 'learn-tab',

@@ -54,12 +54,12 @@
 		<a class="item" [routerLink]="'/'" appTelemetryInteract [telemetryInteractEdata]="myLibraryMenuInteractEdata">
 			{{resourceService.frmelmnts?.btn?.myLibrary}}
 		</a>
-		<a class="item" [routerLink]="'/'">
+		<a class="item" [routerLink]="'/'" appTelemetryInteract [telemetryInteractEdata]="browseEdata">
 			{{resourceService.frmelmnts?.btn?.browse}}
 		</a>
-		<a class="item" [routerLink]="'/'">
+		<!-- <a class="item" [routerLink]="'/'">
 			{{resourceService.frmelmnts?.btn?.settings}}
-		</a>
+		</a> -->
 	</ng-container>
 	<!-- offline container-->
 

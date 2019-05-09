@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ContentImportComponent } from './content-import.component';
+import { OfflineFileUploaderService } from '../../services';
+
 
 describe('ContentImportComponent', () => {
   let component: ContentImportComponent;
@@ -8,7 +10,8 @@ describe('ContentImportComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ContentImportComponent]
+      declarations: [ContentImportComponent],
+      providers: [ OfflineFileUploaderService ]
     })
       .compileComponents();
   }));
@@ -19,7 +22,11 @@ describe('ContentImportComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
-    expect(component).toBeTruthy();
+  it('should call ngoninit', () => {
+    const offlineFileUploaderService = TestBed.get(OfflineFileUploaderService);
+    spyOn(offlineFileUploaderService, 'initilizeFileUploader');
+    component.ngOnInit();
+    expect(offlineFileUploaderService.initilizeFileUploader).toHaveBeenCalled();
   });
+
 });

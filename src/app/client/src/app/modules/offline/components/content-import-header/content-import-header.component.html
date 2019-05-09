@@ -2,11 +2,11 @@
   <div class="ui container sb-offline-area d-flex">
     <div class="sb-import-icon"><i class="qrcode icon fa-5x"></i></div>
     <div class="sb-import-content">
-      <h4>Import content</h4>
-      <p>Upload .ecar files from a pen drive to import content </p>
+      <h4>{{resourceService?.frmelmnts?.lbl?.importContent}}</h4>
+      <p>{{resourceService?.frmelmnts?.lbl?.uploadEcarFromPd}} </p>
     </div>
     <button class="sb-btn sb-btn-normal sb-btn-secondary ml-auto" (click)="showImportModal = true;">
-      Import Content
+      {{resourceService?.frmelmnts?.lbl?.importContent}}
     </button>
   </div>
 </div>

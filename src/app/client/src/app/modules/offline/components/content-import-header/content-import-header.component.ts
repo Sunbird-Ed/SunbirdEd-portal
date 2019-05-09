@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ResourceService } from '@sunbird/shared'
 
 @Component({
     selector: 'app-content-import-header',
@@ -6,9 +7,8 @@ import { Component } from '@angular/core';
     styleUrls: ['./content-import-header.component.scss']
 })
 export class ContentImportHeaderComponent {
-
     showImportModal = false;
 
-    constructor() { }
+    constructor(public resourceService: ResourceService) { }
 
 }

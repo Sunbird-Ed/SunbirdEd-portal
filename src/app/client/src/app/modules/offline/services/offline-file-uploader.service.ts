@@ -87,12 +87,12 @@ export class OfflineFileUploaderService {
             );
           } else if (successFullyUploaded.length && uploadingFailed.length) {
             this.tosterService.warning(
-              `Content Imported successfully
+              `Content Imported Successfully
               : ${successFullyUploaded.length} , Content Import Failed: ${uploadingFailed.length}`
             );
           } else if (successFullyUploaded.length) {
             this.tosterService.success(
-              `Content Imported Scuessfully : ${successFullyUploaded.length}`
+              `Content Imported Successfully : ${successFullyUploaded.length}`
             );
             this.isUpload.emit('true');
           }
