@@ -6,7 +6,7 @@ import { ResourceService } from '@sunbird/shared';
 @Component({
   selector: 'app-onboard-popup',
   templateUrl: './onboard-popup.component.html',
-  styleUrls: ['./onboard-popup.component.scss']
+  styleUrls: ['./onboard-popup.component.css']
 })
 export class OnboardPopupComponent implements OnInit, OnDestroy {
 

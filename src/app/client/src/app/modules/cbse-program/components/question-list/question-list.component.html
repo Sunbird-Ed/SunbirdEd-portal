@@ -1,23 +1,26 @@
-  <div class="ui mt-30 middle aligned grid">
-    <div class="two wide stretched column">
-      <div class="ui vertical fluid tabular menu">
-        <div class="questionTab large ui button" (click)="getQuestion(tab.identifier)" *ngFor="let tab of questionTabs; let i = index">Question {{i + 1}}
-        </div>
-        <div class="link">
-          <button [disabled]="!enableCreateButton"   (click)="addTab()" class="ui primary button" >Create</button>
+  <div class="ui mt-30 two column grid">
+      <div class="two wide column">
+        <div class="ui placeholder segment">
+            <div class="ui vertical segments">
+                <div class="questionTab ui center tertiary header aligned segment" [ngClass]="{'active': tab.active}" (click)="getQuestion(tab.identifier, tab); activateClass(tab)" *ngFor="let tab of questionTabs; let i = index">
+                    <a class="item">
+                        Question {{i + 1}}
+                    </a>
+                </div>
+                <div class="questionTab ui center tertiary header aligned segment">
+                  <button [disabled]="!enableCreateButton" (click)="addTab()" class="ui primary fluid button" >Create</button>
+                </div>
+            </div>
         </div>
       </div>
-    </div>
-    <div *ngIf="emptyState" class="nine wide stretched column">
+      <div *ngIf="emptyState" class="ten wide column">
+          <div class="ui segment">
+              No Question - Click Create
+          </div>
+      </div>
+      <div *ngIf="!emptyState" class="ten wide column">
         <div class="ui segment">
-          <!-- <app-question-creation  [tabIndex]="i" (enableCreateButton)="createButtonHandler($event)"></app-question-creation> -->
-          No Question - Click Create
+            <app-question-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" (questionStatus)="questionStatusHandler($event)"></app-question-creation>
         </div>
       </div>
-    <div *ngIf="!emptyState" class="nine wide stretched column">
-      <div class="ui segment">
-        <!-- <app-question-creation  [tabIndex]="i" (enableCreateButton)="createButtonHandler($event)"></app-question-creation> -->
-        <app-question-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" (questionStatus)="questionStatusHandler($event)"></app-question-creation>
-      </div>
     </div>
-  </div>
