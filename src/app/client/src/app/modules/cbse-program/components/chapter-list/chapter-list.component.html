@@ -2,13 +2,13 @@
 <div class="ui container">
   <div class="mt-30">
     <sui-accordion class="styled fluid" [closeOthers]="true">
-      <sui-accordion-panel [isOpen]="i === 0" *ngFor="let topic of topicList; let i = index">
+      <sui-accordion-panel [isOpen]="i === 0" *ngFor="let textbook of textBookChapters; let i = index">
         <div title>
           <i class="dropdown icon"></i>
-          {{topic.name}}
+          {{textbook.name}}
         </div>
         <div content>
-          <table class="ui celled table">
+          <table class="ui selectable celled table">
             <thead>
               <tr>
                 <th></th>
@@ -19,28 +19,28 @@
             </thead>
             <tbody>
               <tr>
-                <td data-label="Name">VSA</td>
-                <td data-label="Age">total</td>
-                <td data-label="Job">me</td>
-                <td data-label="Job"><a href="#">open</a></td>
+                <td data-label="Name">{{textbook.vsa.name}}</td>
+                <td data-label="Age">{{textbook.vsa.total}}</td>
+                <td data-label="Job">{{textbook.vsa.me}}</td>
+                <td data-label="Job"><a (click)="emitQuestionTypeTopic('vsa', textbook.name)">open</a></td>
               </tr>
               <tr>
-                  <td data-label="Name">SA</td>
-                  <td data-label="Age">total</td>
-                  <td data-label="Job">me</td>
-                  <td data-label="Job"><a href="#">open</a></td>
+                <td data-label="Name">{{textbook.sa.name}}</td>
+                <td data-label="Age">{{textbook.sa.total}}</td>
+                <td data-label="Job">{{textbook.sa.me}}</td>
+                <td data-label="Job"><a (click)="emitQuestionTypeTopic('sa', textbook.name)">open</a></td>
               </tr>
               <tr>
-                  <td data-label="Name">LA</td>
-                  <td data-label="Age">total</td>
-                  <td data-label="Job">me</td>
-                  <td data-label="Job"><a href="#">open</a></td>
+                <td data-label="Name">{{textbook.la.name}}</td>
+                <td data-label="Age">{{textbook.la.total}}</td>
+                <td data-label="Job">{{textbook.la.me}}</td>
+                <td data-label="Job"><a (click)="emitQuestionTypeTopic('la', textbook.name)">open</a></td>
               </tr>
               <tr>
-                  <td data-label="Name">MCQ</td>
-                  <td data-label="Age">total</td>
-                  <td data-label="Job">me</td>
-                  <td data-label="Job"><a href="#">open</a></td>
+                <td data-label="Name">{{textbook.mcq.name}}</td>
+                <td data-label="Age">{{textbook.mcq.total}}</td>
+                <td data-label="Job">{{textbook.mcq.me}}</td>
+                <td data-label="Job"><a (click)="emitQuestionTypeTopic('mcq', textbook.name)">open</a></td>
               </tr>
             </tbody>
           </table>

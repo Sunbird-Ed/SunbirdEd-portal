@@ -162,7 +162,8 @@
       "VERIFY": "otp/v1/verify"
     },
     "ASSESSMENT": {
-      "CREATE": "assessment/v3/items/create"
+      "CREATE": "assessment/v3/items/create",
+      "READ": "assessment/v3/items/read"
     }
   }
 }

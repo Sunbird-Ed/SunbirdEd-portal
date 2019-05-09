@@ -1,66 +1,23 @@
-<p>
-  question-creation works!
-</p>
 <form class="ui form" [formGroup]="questionMetaForm">
-    <div class="field">
-      <label>Question</label>
-      <button type="button" (click)="initializeImagePicker('question')" class="ui icon button insert-image-btn">
-        <i class="image outline icon"></i>
-      </button>
-      <textarea class="question editor" id="question_editor" name="question" placeholder="Question"></textarea>
-    </div>
-    <div class="field">
-      <label>Answer</label>
-      <button type="button" (click)="initializeImagePicker('answer')" class="ui icon button insert-image-btn">
+    <button type="button" (click)="reinitializeEditor()">Edit <i class="pencil outline icon"></i></button>
+      <div class="field">
+        <label>Question</label>
+        <button type="button" [disabled]="isAssetBrowserReadOnly || isQuestionFocused" (click)="initializeImagePicker('question')" class="ui icon button insert-image-btn">
           <i class="image outline icon"></i>
-      </button>
-      <textarea class="answer editor" id="answer_editor" name="answer" placeholder="Answer"></textarea>
-    </div>
-    <div class="two fields">
-        <div class="field">
-          <label>Learning Outcome</label>
-          <select formControlName="learningOutcome" name="learningOutcome" class="ui fluid dropdown">
-              <option value="">Select</option>
-              <option value="remember">remember</option>
-              <option value="understand">understand</option>
-              <option value="apply">apply</option>
-              <option value="analyse">analyse</option>
-              <option value="evaluate">evaluate</option>
-              <option value="create">create</option>
-          </select>
-          <label class="ui basic red error label pt-0"
-                *ngIf="questionMetaForm.controls.learningOutcome.dirty && questionMetaForm.controls['learningOutcome'].errors">Enter
-                Learning Outcome</label>
-        </div>
-        <div class="inline fields">
-          <label>Difficulty:</label>
+        </button>
+        <textarea class="question editor" id="question_editor" name="question" placeholder="Question"></textarea>
+      </div>
+      <div class="field">
+        <label>Answer</label>
+        <button type="button" [disabled]="isAssetBrowserReadOnly || isAnswerFocused" (click)="initializeImagePicker('answer')" class="ui icon button insert-image-btn">
+            <i class="image outline icon"></i>
+        </button>
+        <textarea class="answer editor" id="answer_editor" name="answer" placeholder="Answer"></textarea>
+      </div>
+      <div class="two fields">
           <div class="field">
-            <div class="ui radio checkbox">
-              <input formControlName="qlevel" value="Easy" type="radio" name="qlevel" tabindex="0" class="hidden">
-              <label>Easy</label>
-            </div>
-          </div>
-          <div class="field">
-            <div class="ui radio checkbox">
-              <input formControlName="qlevel" value="Medium" type="radio" name="qlevel" tabindex="0" class="hidden">
-              <label>Medium</label>
-            </div>
-          </div>
-          <div class="field">
-            <div class="ui radio checkbox">
-              <input formControlName="qlevel" value="Hard" type="radio" name="qlevel" tabindex="0" class="hidden">
-              <label>Hard</label>
-            </div>
-          </div>
-          <label class="ui basic red error label pt-0"
-                *ngIf="questionMetaForm.controls.qlevel.dirty && questionMetaForm.controls['qlevel'].errors">Fill
-                difficultyLevel </label>
-        </div>
-    </div>
-    <div class="two fields">
-          <div class="field">
-            <label>Blooms Level</label>
-            <select formControlName="bloomsLevel" class="ui fluid dropdown" name="bloomsLevel">
+            <label>Learning Outcome</label>
+            <select formControlName="learningOutcome" name="learningOutcome" class="ui fluid dropdown">
                 <option value="">Select</option>
                 <option value="remember">remember</option>
                 <option value="understand">understand</option>
@@ -70,84 +27,126 @@
                 <option value="create">create</option>
             </select>
             <label class="ui basic red error label pt-0"
-                *ngIf="questionMetaForm.controls.bloomsLevel.dirty && questionMetaForm.controls['bloomsLevel'].errors">Fill
-                bloomsLevel </label>
+                  *ngIf="questionMetaForm.controls.learningOutcome.dirty && questionMetaForm.controls['learningOutcome'].errors">Enter
+                  Learning Outcome</label>
           </div>
-          <div class="field">
-            <label>Marks</label>
-            <input formControlName="max_score" type="text" name="max_score" placeholder="Marks">
+          <div class="inline fields">
+            <label>Difficulty:</label>
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input formControlName="qlevel" value="Easy" type="radio" name="qlevel" tabindex="0" class="hidden">
+                <label>Easy</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input formControlName="qlevel" value="Medium" type="radio" name="qlevel" tabindex="0" class="hidden">
+                <label>Medium</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input formControlName="qlevel" value="Hard" type="radio" name="qlevel" tabindex="0" class="hidden">
+                <label>Hard</label>
+              </div>
+            </div>
             <label class="ui basic red error label pt-0"
-                *ngIf="questionMetaForm.controls.max_score.dirty && questionMetaForm.controls['max_score'].errors">Fill marks
-            </label>
+                  *ngIf="questionMetaForm.controls.qlevel.dirty && questionMetaForm.controls['qlevel'].errors">Fill
+                  difficultyLevel </label>
           </div>
-    </div>
-    <!-- <input type="button" (click)="createQuestion()"  value="Submit" class="ui button" /> -->
-    <button class="ui button" (click)="createQuestion($event)" type="submit">Submit</button>
-  </form>
-  <sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImagePicker()" *ngIf="showImagePicker" [size]="'normal'"
-[isFullScreen]="false" [mustScroll]="true" #modal>
-<div class="header">Select Image</div>
-<div class="content">
-  <sui-tabset>
-    <div class="ui tabular menu">
-      <a class="item" (activate)="getMyImages(0)" suiTabHeader="1">My Images</a>
-      <a class="item" (activate)="getAllImages(0)" suiTabHeader="2">All Image</a>
-    </div>
-    <div class="ui segment asset_container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500"
-      [scrollWindow]="false" (scrolled)="lazyloadMyImages()" suiTabContent="1">
-      <div class="ui small middle aligned bordered images custom-image">
-        <img *ngFor="let data of myAssets" (click)="addImageInEditor(data.downloadUrl)" [src]="data.downloadUrl">
       </div>
-    </div>
-    <div class="ui segment asset_container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500"
-      [scrollWindow]="false" (scrolled)="lazyloadAllImages()" suiTabContent="2">
-      <div class="ui small middle aligned bordered images custom-image">
-        <img *ngFor="let data of allImages" (click)="addImageInEditor(data.downloadUrl)" [src]="data.downloadUrl">
+      <div class="two fields">
+            <div class="field">
+              <label>Blooms Level</label>
+              <select formControlName="bloomsLevel" class="ui fluid dropdown" name="bloomsLevel">
+                  <option value="">Select</option>
+                  <option value="remember">remember</option>
+                  <option value="understand">understand</option>
+                  <option value="apply">apply</option>
+                  <option value="analyse">analyse</option>
+                  <option value="evaluate">evaluate</option>
+                  <option value="create">create</option>
+              </select>
+              <label class="ui basic red error label pt-0"
+                  *ngIf="questionMetaForm.controls.bloomsLevel.dirty && questionMetaForm.controls['bloomsLevel'].errors">Fill
+                  bloomsLevel </label>
+            </div>
+            <div class="field">
+              <label>Marks</label>
+              <input formControlName="max_score" type="text" name="max_score" placeholder="Marks">
+              <label class="ui basic red error label pt-0"
+                  *ngIf="questionMetaForm.controls.max_score.dirty && questionMetaForm.controls['max_score'].errors">Fill marks
+              </label>
+            </div>
       </div>
-    </div>
-  </sui-tabset>
-</div>
-<div class="actions">
-  <div class="ui left floated buttons">
-    <button (click)="initiateImageUploadModal();" class="ui primary button">Upload and use</button>
-  </div>
-  <div class="ui buttons">
-    <button (click)="dismissImagePicker();" class="ui button">Cancel</button>
-    <!-- <div class="or"></div>
-    <button (click)="dismissImagePicker();" class="ui primary button">Save</button> -->
-  </div>
-</div>
-</sui-modal>
+      <!-- <input type="button" (click)="createQuestion()"  value="Submit" class="ui button" /> -->
+      <button class="ui button" (click)="createQuestion($event)" type="submit">Submit</button>
+    </form>
 
-<sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImageUploadModal()" *ngIf="showImageUploadModal"
-[size]="'normal'" [isFullScreen]="false" [mustScroll]="true" #modal3>
-<div class="header">Upload and Use</div>
-<div class="content">
-  <div class="ui grid">
-    <div class="one wide column"></div>
-    <div class="ten wide column">
-      <div>
-        <input (change)="uploadImage($event)" type="file" accept="image/jpeg, image/jpg, image/png" name="assetfile">
+    <sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImagePicker()" *ngIf="showImagePicker" [size]="'normal'"
+  [isFullScreen]="false" [mustScroll]="true" #modal>
+  <div class="header">Select Image</div>
+  <div class="content">
+    <sui-tabset>
+      <div class="ui tabular menu">
+        <a class="item" (activate)="getMyImages(0)" suiTabHeader="1">My Images</a>
+        <a class="item" (activate)="getAllImages(0)" suiTabHeader="2">All Image</a>
       </div>
-      <div class="ui info message">
-        <p>Allowed file types are: jpeg, jpg, png</p>
-        <p>Maximum allowed file size: 1 MB</p>
+      <div class="ui segment asset_container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500"
+        [scrollWindow]="false" (scrolled)="lazyloadMyImages()" suiTabContent="1">
+        <div class="ui small middle aligned bordered images custom-image">
+          <img *ngFor="let data of myAssets" (click)="addImageInEditor(data.downloadUrl)" [src]="data.downloadUrl">
+        </div>
       </div>
-      <div *ngIf="showErrorMsg" class="ui error message">
-        <p>{{errorMsg}}</p>
+      <div class="ui segment asset_container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500"
+        [scrollWindow]="false" (scrolled)="lazyloadAllImages()" suiTabContent="2">
+        <div class="ui small middle aligned bordered images custom-image">
+          <img *ngFor="let data of allImages" (click)="addImageInEditor(data.downloadUrl)" [src]="data.downloadUrl">
+        </div>
       </div>
+    </sui-tabset>
+  </div>
+  <div class="actions">
+    <div class="ui left floated buttons">
+      <button (click)="initiateImageUploadModal();" class="ui primary button">Upload and use</button>
     </div>
-    <div class="one wide column"></div>
+    <div class="ui buttons">
+      <button (click)="dismissImagePicker();" class="ui button">Cancel</button>
+      <!-- <div class="or"></div>
+      <button (click)="dismissImagePicker();" class="ui primary button">Save</button> -->
+    </div>
   </div>
-</div>
-<div class="actions">
-  <div class="ui left floated buttons">
-    <button (click)="dismissImageUploadModal();" class="ui primary button">Back</button>
+  </sui-modal>
+
+  <sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImageUploadModal()" *ngIf="showImageUploadModal"
+  [size]="'normal'" [isFullScreen]="false" [mustScroll]="true" #modal3>
+  <div class="header">Upload and Use</div>
+  <div class="content">
+    <div class="ui grid">
+      <div class="one wide column"></div>
+      <div class="ten wide column">
+        <div>
+          <input (change)="uploadImage($event)" type="file" accept="image/jpeg, image/jpg, image/png" name="assetfile">
+        </div>
+        <div class="ui info message">
+          <p>Allowed file types are: jpeg, jpg, png</p>
+          <p>Maximum allowed file size: 1 MB</p>
+        </div>
+        <div *ngIf="showErrorMsg" class="ui error message">
+          <p>{{errorMsg}}</p>
+        </div>
+      </div>
+      <div class="one wide column"></div>
+    </div>
   </div>
-  <div class="ui buttons">
-    <button (click)="dismissImageUploadModal();" class="ui button">Cancel</button>
-    <!-- <div class="or"></div>
-    <button (click)="dismissImageUploadModal();" class="ui primary button">Upload and use</button> -->
+  <div class="actions">
+    <div class="ui left floated buttons">
+      <button (click)="dismissImageUploadModal();" class="ui primary button">Back</button>
+    </div>
+    <div class="ui buttons">
+      <button (click)="dismissImageUploadModal();" class="ui button">Cancel</button>
+      <!-- <div class="or"></div>
+      <button (click)="dismissImageUploadModal();" class="ui primary button">Upload and use</button> -->
+    </div>
   </div>
-</div>
-</sui-modal>
+  </sui-modal>
