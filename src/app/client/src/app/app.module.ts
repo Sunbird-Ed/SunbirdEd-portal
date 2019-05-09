@@ -34,7 +34,7 @@ import { PluginModules } from './framework.config';
     DeviceDetectorModule.forRoot(),
     SharedFeatureModule,
     ...PluginModules,
-    AppRoutingModule  // don't add any module below this because it contains wildcard route
+    AppRoutingModule // don't add any module below this because it contains wildcard route
   ],
   entryComponents: [AppComponent],
   bootstrap: [AppComponent],
