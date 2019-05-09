@@ -3,7 +3,7 @@ import { ImportContentPlugin} from './modules/offline/plugin';
 
 export const WebExtensionsConfig = {
   plugins: [{
-    'id': 'offline',
+    'id': 'content-import',
     'ver': '1.0.0',
     'module': OfflineModule,
     'main': ImportContentPlugin
