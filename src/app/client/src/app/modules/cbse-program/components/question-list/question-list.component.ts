@@ -76,7 +76,9 @@ export class QuestionListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
 
   }
-
+  public activateClass(tab) {
+    tab.active = !tab.active;
+  }
   public getQuestion(questionId) {
     const req = {
         url: `${this.configService.urlConFig.URLS.ASSESSMENT.READ}/${questionId}`
