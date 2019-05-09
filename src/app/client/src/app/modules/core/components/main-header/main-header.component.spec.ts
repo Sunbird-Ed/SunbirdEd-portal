@@ -12,7 +12,6 @@ import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } 
 // import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
-import { PluginService } from '@project-sunbird/web-extensions';
 
 describe('MainHeaderComponent', () => {
   let component: MainHeaderComponent;
@@ -24,7 +23,7 @@ describe('MainHeaderComponent', () => {
         TelemetryModule.forRoot(), RouterTestingModule],
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [PluginService, ToasterService, TenantService, CacheService, BrowserCacheTtlService,
+      providers: [ToasterService, TenantService, CacheService, BrowserCacheTtlService,
         ResourceService, PermissionService,
         UserService, ConfigService, AnimationBuilder,
         LearnerService]

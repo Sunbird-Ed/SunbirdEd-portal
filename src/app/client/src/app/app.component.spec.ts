@@ -18,7 +18,6 @@ import { CacheService } from 'ng2-cache-service';
 import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } from '@angular/animations';
 
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { PluginService } from '@project-sunbird/web-extensions';
 
 class RouterStub {
   public navigationEnd = new NavigationEnd(0, '/explore', '/explore');
@@ -51,7 +50,7 @@ describe('AppComponent', () => {
         { provide: Router, useClass: RouterStub},
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         ToasterService, TenantService, CacheService, AnimationBuilder,
-        UserService, PluginService, ConfigService, LearnerService, BrowserCacheTtlService,
+        UserService, ConfigService, LearnerService, BrowserCacheTtlService,
         PermissionService, ResourceService, CoursesService, OrgDetailsService, ProfileService,
         TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, SearchService, ContentService],
       schemas: [NO_ERRORS_SCHEMA]

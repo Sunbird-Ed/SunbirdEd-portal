@@ -12,7 +12,6 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { BootstrapFramework, WebExtensionModule } from '@project-sunbird/web-extensions';
 import { WebExtensionsConfig } from './framework.config';
-
 import { CacheService } from 'ng2-cache-service';
 import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storage/cache-storage-abstract.service';
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
@@ -34,7 +33,7 @@ import { PluginModules } from './framework.config';
     TelemetryModule.forRoot(),
     DeviceDetectorModule.forRoot(),
     SharedFeatureModule,
-    PluginModules,
+    ...PluginModules,
     AppRoutingModule  // don't add any module below this because it contains wildcard route
   ],
   entryComponents: [AppComponent],

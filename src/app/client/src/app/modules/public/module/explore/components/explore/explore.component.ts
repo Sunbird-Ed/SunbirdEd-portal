@@ -12,6 +12,7 @@ import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
+import { environment } from '@sunbird/environment';
 @Component({
   templateUrl: './explore.component.html'
 })
@@ -34,6 +35,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public initFilters = false;
   public loaderMessage;
   public pageSections: Array<ICaraouselData> = [];
+  isOffline: boolean = environment.isOffline;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -68,10 +70,13 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.router.navigate(['']);
       }
     );
-    const self = this;
-    this.offlineFileUploaderService.isUpload.subscribe(() => {
-      self.fetchPageData();
-    });
+
+    if (this.isOffline) {
+      const self = this;
+      this.offlineFileUploaderService.isUpload.subscribe(() => {
+        self.fetchPageData();
+      });
+    }
   }
   public getFilters(filters) {
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
