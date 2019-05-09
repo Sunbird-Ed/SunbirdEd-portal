@@ -1,4 +1,7 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { FrameworkService } from '@sunbird/core';
+import * as _ from 'lodash-es';
+import { first } from 'rxjs/operators';
 
 interface ISelectedAttributes {
     framework?: string;
@@ -19,41 +22,41 @@ export class CbseComponent implements OnInit {
 
   @Input() programDetails: any;
   @Input() userProfile: any;
-  public selectedAttributes: ISelectedAttributes = {};
   public topicList: any;
-  public gradeLevelList: any;
-  public subjectList: any;
-  // public selectedQuestionTypeTopic: any;
+  public selectedAttributes: ISelectedAttributes = {};
   public stages: Array<string> = ['chooseClass', 'topicList', 'createQuestion'];
   public currentStage = 0;
-  public defaultSelectedOptions: any;
-  constructor() { }
+  constructor(public frameworkService: FrameworkService) { }
 
   ngOnInit() {
-    this.selectedAttributes.framework = this.programDetails.config.framework;
-    this.selectedAttributes.board = this.programDetails.config.scope.board[0];
-    this.selectedAttributes.medium = this.programDetails.config.scope.medium[0];
-    this.gradeLevelList = this.programDetails.config.scope.gradeLevel;
-    this.subjectList = this.programDetails.config.scope.subject;
-    console.log('programDetails', this.programDetails, this.userProfile);
+    this.selectedAttributes.framework = _.get(this.programDetails, 'config.framework');
+    this.selectedAttributes.board = _.get(this.programDetails, 'config.scope.board[0]');
+    this.selectedAttributes.medium = _.get(this.programDetails, 'config.scope.medium[0]');
+    this.fetchFrameWorkDetails();
   }
 
   public selectedTextbookHandler(event) {
-    console.log(event);
-    // this.selectedOptions = event
-    this.selectedAttributes.gradeLevel =  event.class;
+    this.selectedAttributes.gradeLevel =  event.gradeLevel;
     this.selectedAttributes.subject =  event.subject;
-    this.topicList = event.topics;
     this.navigate('next');
   }
 
   public selectedQuestionTypeTopic(event) {
-    // this.selectedQuestionTypeTopic = event;
     this.selectedAttributes.topic =  event.topic;
     this.selectedAttributes.questionType =  event.questionType;
     this.navigate('next');
   }
 
+  public fetchFrameWorkDetails() {
+    this.frameworkService.initialize(this.selectedAttributes.framework);
+    this.frameworkService.frameworkData$.pipe(first()).subscribe((frameworkDetails: any) => {
+      if (frameworkDetails && !frameworkDetails.err) {
+        const frameworkData = frameworkDetails.frameworkdata[this.selectedAttributes.framework].categories;
+        this.topicList = _.get(_.find(frameworkData, { code: 'topic' }), 'terms');
+      }
+    }
+    );
+  }
   navigate(step) {
     if (step === 'next') {
       this.currentStage = this.currentStage + 1;

@@ -1,11 +1,9 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { SuiAccordionModule } from 'ng2-semantic-ui';
 import { PublicDataService, UserService } from '@sunbird/core';
 import {  ConfigService, IUserData, IUserProfile } from '@sunbird/shared';
 import { first, map } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
-// tslint:disable-next-line:import-blacklist
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 @Component({
   selector: 'app-chapter-list',
@@ -17,36 +15,26 @@ export class ChapterListComponent implements OnInit {
   @Input() selectedAttributes: any;
   @Input() topicList: any;
   @Output() selectedQuestionTypeTopic = new EventEmitter<any>();
-  public userProfile: IUserProfile;
-
   questionCount = new Map();
   public textBookChapters: any;
   public publicDataService: PublicDataService;
-  constructor(
-    publicDataService: PublicDataService,
+  constructor(publicDataService: PublicDataService,
     private configService: ConfigService,
-    private userService: UserService
-  ) {
+    private userService: UserService) {
     this.userService = userService;
     this.publicDataService = publicDataService;
     this.configService = configService;
   }
   ngOnInit() {
-    this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        if (user && !user.err) {
-          this.userProfile = user.userProfile;
-        }
-    });
     const apiArray = [];
     apiArray.push(this.searchQuestionsByType('vsa'));
     apiArray.push(this.searchQuestionsByType('sa'));
     apiArray.push(this.searchQuestionsByType('la'));
     apiArray.push(this.searchQuestionsByType('mcq'));
-    apiArray.push(this.searchQuestionsByType('vsa', this.userProfile.userId));
-    apiArray.push(this.searchQuestionsByType('sa', this.userProfile.userId));
-    apiArray.push(this.searchQuestionsByType('la', this.userProfile.userId));
-    apiArray.push(this.searchQuestionsByType('mcq', this.userProfile.userId));
+    apiArray.push(this.searchQuestionsByType('vsa', this.userService.userid));
+    apiArray.push(this.searchQuestionsByType('sa', this.userService.userid));
+    apiArray.push(this.searchQuestionsByType('la', this.userService.userid));
+    apiArray.push(this.searchQuestionsByType('mcq', this.userService.userid));
     this.textBookChapters = [];
     forkJoin(apiArray).subscribe((data) => {
       console.log('forkjoin res', data);

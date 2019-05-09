@@ -1,7 +1,7 @@
 import { ExtPluginService, UserService } from '@sunbird/core';
 import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfigService, ResourceService } from '@sunbird/shared';
+import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -19,21 +19,20 @@ export class ProgramComponent implements OnInit {
   public showOnboardPopup = false;
 
   constructor(public resourceService: ResourceService, public configService: ConfigService, public activatedRoute: ActivatedRoute,
-    public extPluginService: ExtPluginService, public userService: UserService) {
+    public extPluginService: ExtPluginService, public userService: UserService, public toasterService: ToasterService) {
     this.programId = this.activatedRoute.snapshot.params.programId;
   }
 
   ngOnInit() {
-    console.log(this.programId);
     this.userProfile = this.userService.userProfile;
     this.fetchProgramDetails().subscribe((programDetails) => {
-      console.log(this.programDetails);
       if (!this.programDetails.userDetails || !this.programDetails.userDetails.onBoarded) {
         this.showOnboardPopup = true;
       }
     }, error => {
       // TODO: navigate to program list page
-      console.log('fetching program details failed', error);
+      const errorMes = typeof _.get(error, 'error.params.errmsg') === 'string' && _.get(error, 'error.params.errmsg');
+      this.toasterService.error(errorMes || 'Fetching program details failed');
     });
   }
 
@@ -53,6 +52,7 @@ export class ProgramComponent implements OnInit {
       this.showOnboardPopup = false;
     }, error => {
       // TODO: navigate to program list page
+      this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Fetching program details failed');
       console.log('fetching program details failed', error);
     });
   }
