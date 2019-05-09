@@ -47,7 +47,7 @@ export class CbseComponent implements OnInit {
     this.navigate('next');
   }
 
-  public slectedQuestionTypeTopic(event) {
+  public selectedQuestionTypeTopic(event) {
     // this.selectedQuestionTypeTopic = event;
     this.selectedAttributes.topic =  event.topic;
     this.selectedAttributes.questionType =  event.questionType;

@@ -50,8 +50,6 @@ export class TextbookSearchComponent implements OnInit {
       this.filtersDetails.subject.push({name: item, code: item});
     });
     this.fetchFrameWorkDetails();
-    const frameworkData = this.frameworkDetails.frameworkdata[this.frameworkName].categories;
-    this.topics = _.find(frameworkData, {code: 'topic'});
   }
 
   private setFilterInteractData() {
@@ -103,12 +101,14 @@ export class TextbookSearchComponent implements OnInit {
   //   });
   // }
 
-  private fetchFrameWorkDetails() {
+  public fetchFrameWorkDetails() {
      this.frameworkService.frameworkData$.pipe(first()).subscribe(
       (frameworkDetails: any) => {
         if (frameworkDetails && !frameworkDetails.err) {
           this.frameworkDetails = frameworkDetails;
           // this.filterTextbookForm();
+          const frameworkData = this.frameworkDetails.frameworkdata[this.frameworkName].categories;
+          this.topics = _.find(frameworkData, {code: 'topic'});
         }
       }
     );

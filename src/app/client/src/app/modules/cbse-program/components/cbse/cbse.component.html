@@ -10,9 +10,11 @@
       <a (click)="navigate('prev')" class="section">{{selectedAttributes.class}} | {{selectedAttributes.subject}}</a>
     </div>
   </div>
-  <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes" (selectedQuestionTypeTopic)="slectedQuestionTypeTopic($event)"></app-chapter-list>
+  <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes" (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list>
 </div>
 
 <div *ngIf="stages[currentStage] == 'createQuestion'">
-  <app-question-list [selectedAttributes]="selectedAttributes"></app-question-list>
+  <div class="ui container">
+      <app-question-list [selectedAttributes]="selectedAttributes"></app-question-list>
+  </div>
 </div>

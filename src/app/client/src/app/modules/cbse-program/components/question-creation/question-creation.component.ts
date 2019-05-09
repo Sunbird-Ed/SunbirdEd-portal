@@ -233,15 +233,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     });
   }
   createQuestion(event) {
-    console.log(this.questionMetaForm.value);
-    console.log(this.question_editor.getData());
-    console.log(this.answer_editor.getData());
-    this.questionMetaData = {
-      mode: '',
-      data: {
-
-      }
-    };
     if (this.questionMetaForm.valid) {
       const req = {
         url: this.configService.urlConFig.URLS.ASSESSMENT.CREATE,
