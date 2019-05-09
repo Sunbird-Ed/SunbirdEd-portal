@@ -1,6 +1,6 @@
 <div *ngIf="stages[currentStage] == 'chooseClass'">
-  <app-textbook-search [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
-    (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-textbook-search>
+  <app-select-textbook [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
+    (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-select-textbook>
 </div>
 <div *ngIf="stages[currentStage] == 'topicList'">
   <div class="ui container">

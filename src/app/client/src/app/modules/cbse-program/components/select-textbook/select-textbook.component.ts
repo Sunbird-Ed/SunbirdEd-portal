@@ -2,11 +2,11 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import * as _ from 'lodash-es';
 
 @Component({
-  selector: 'app-textbook-search',
-  templateUrl: './textbook-search.component.html',
-  styleUrls: ['./textbook-search.component.scss']
+  selector: 'app-select-textbook',
+  templateUrl: './select-textbook.component.html',
+  styleUrls: ['./select-textbook.component.scss']
 })
-export class TextbookSearchComponent implements OnInit {
+export class SelectTextbookComponent implements OnInit {
 
   @Input() config: any;
   @Input() selectedAttributes: any;

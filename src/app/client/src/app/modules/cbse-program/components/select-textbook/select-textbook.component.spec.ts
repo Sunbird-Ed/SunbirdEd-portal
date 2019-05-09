@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TextbookSearchComponent } from './textbook-search.component';
+import { SelectTextbookComponent } from './select-textbook.component';
 
 xdescribe('TextbookSearchComponent', () => {
-  let component: TextbookSearchComponent;
-  let fixture: ComponentFixture<TextbookSearchComponent>;
+  let component: SelectTextbookComponent;
+  let fixture: ComponentFixture<SelectTextbookComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TextbookSearchComponent ]
+      declarations: [ SelectTextbookComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TextbookSearchComponent);
+    fixture = TestBed.createComponent(SelectTextbookComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
