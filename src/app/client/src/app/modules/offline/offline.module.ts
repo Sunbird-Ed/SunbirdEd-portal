@@ -1,3 +1,4 @@
+import { OfflineFileUploaderService } from './services';
 import { SuiModalModule } from 'ng2-semantic-ui';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -8,6 +9,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ContentImportComponent, ContentImportHeaderComponent } from './components';
 
+
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -15,9 +17,9 @@ import { ContentImportComponent, ContentImportHeaderComponent } from './componen
     CoreModule,
     SharedModule,
     OfflineRoutingModule,
-    SuiModalModule
+    SuiModalModule,
   ],
-  providers: [DeviceDetectorService],
+  providers: [DeviceDetectorService, OfflineFileUploaderService],
   declarations: [
     ContentImportComponent, ContentImportHeaderComponent
   ],

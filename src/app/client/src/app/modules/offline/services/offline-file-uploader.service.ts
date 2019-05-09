@@ -2,11 +2,9 @@ import { Injectable } from '@angular/core';
 import { FineUploader, UIOptions } from 'fine-uploader';
 import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
-import { Component, OnInit, AfterViewInit, Output, ViewChild, EventEmitter } from '@angular/core';
-import { ConfigService, ToasterService, ResourceService } from '@sunbird/shared';
+import { Output, EventEmitter } from '@angular/core';
+import { ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
-
-
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +31,6 @@ export class OfflineFileUploaderService {
   getDefaultOption(): any {
     return {
       request: {
-        // endpoint: this.config.urlConFig.URLS.LEARNER_PREFIX + this.config.urlConFig.URLS.CONTENT.UPLOAD_MEDIA,ent/v1/import
         endpoint: 'api/content/v1/import',
         folders: true,
         inputName: 'file',
@@ -72,11 +69,6 @@ export class OfflineFileUploaderService {
       request: options.request,
       warnBeforeUnload: true,
       callbacks: {
-        onComplete: (id, name, responseJSON, xhr) => {
-          if (responseJSON.responseCode === 'OK') {
-
-          }
-        },
         onProgress: () => {
           this.processingFiles = true;
         },
@@ -114,8 +106,3 @@ export class OfflineFileUploaderService {
     this.uploader = new FineUploader(this.uiOptions);
   }
 }
-
-
-
-
-

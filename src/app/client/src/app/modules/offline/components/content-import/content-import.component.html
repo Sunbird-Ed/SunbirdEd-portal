@@ -4,7 +4,7 @@
     <div class="sb-file-upload-container">
         <!--Header-->
         <div class="sb-modal-header">
-            {{resourceService?.frmelmnts?.btn?.contentImport}} 
+            {{resourceService?.frmelmnts?.btn?.contentImport}}
         </div>
         <!--/Header-->
         <div class="sb-modal-content">
@@ -21,10 +21,11 @@
                         class="qq-upload-button-selector sb-btn sb-btn-primary sb-btn-normal mb-10">{{resourceService.frmelmnts?.btn?.selectContentFiles}}</button> -->
 
                     <p class="grey-text" *ngIf="!processingFiles">
-                       1. Click <b> Select File(s)</b> to choose files from your pen drive.<br/>
-                       2. Click <b> Open</b> in the Windows dialogue box.<br>
-                       3. After you get a message that the files are successfuly imported, click <b> Close </b>.<br>
-                       4. If the files are not imported successfuly, click <b> Retry</b> to try and upload the files once
+                        1. Click <b> Select File(s)</b> to choose files from your pen drive.<br />
+                        2. Click <b> Open</b> in the Windows dialogue box.<br>
+                        3. After you get a message that the files are successfuly imported, click <b> Close </b>.<br>
+                        4. If the files are not imported successfuly, click <b> Retry</b> to try and upload the files
+                        once
                         again, or click <b> Cancel</b> to halt the operation.
                     </p>
 
@@ -96,8 +97,8 @@
                 <div class="sb-modal-actions">
                     <button type="button" class="sb-btn sb-btn-primary sb-btn-normal"
                         (click)="modalClose()">Close</button>
-                    <button
-                        class="qq-upload-button-selector sb-btn sb-btn-primary sb-btn-normal" (click)="processingFiles = true">{{resourceService.frmelmnts?.btn?.selectContentFiles}}</button>
+                    <button class="qq-upload-button-selector sb-btn sb-btn-primary sb-btn-normal"
+                        (click)="processingFiles = true">{{resourceService.frmelmnts?.btn?.selectContentFiles}}</button>
                 </div>
             </div>
         </div>

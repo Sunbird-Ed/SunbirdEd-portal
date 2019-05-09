@@ -1,4 +1,4 @@
-import { OfflineFileUploaderService } from './../../../../../offline/services/offline-file-uploader.service';
+import { OfflineFileUploaderService } from '../../../../../offline/services';
 import { combineLatest, Subject } from 'rxjs';
 import { PageApiService, OrgDetailsService, UserService } from '@sunbird/core';
 import { PublicPlayerService } from './../../../../services';
@@ -70,7 +70,6 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     );
     const self = this;
     this.offlineFileUploaderService.isUpload.subscribe(() => {
-      console.log('upload compeleted');
       self.fetchPageData();
     });
   }
@@ -95,7 +94,6 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
   private fetchPageData() {
-    console.log('upload compeleted fetch data');
     const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
       if (_.includes(['sort_by', 'sortType', 'appliedFilters'], key)) {
         return false;
@@ -192,10 +190,10 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], { queryParams: queryParams });
   }
-  ngAfterViewInit () {
-      setTimeout(() => {
-        this.setTelemetryData();
-      });
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.setTelemetryData();
+    });
   }
   ngOnDestroy() {
     this.unsubscribe$.next();

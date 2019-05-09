@@ -1,8 +1,6 @@
-import { OfflineFileUploaderService } from './../../services/offline-file-uploader.service';
+import { OfflineFileUploaderService } from '../../services';
 import { Component, OnInit, AfterViewInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import { FineUploader, UIOptions } from 'fine-uploader';
-import { UUID } from 'angular2-uuid';
-import * as moment from 'moment';
 import * as _ from 'lodash-es';
 import { ConfigService, ToasterService, ResourceService } from '@sunbird/shared';
 import {

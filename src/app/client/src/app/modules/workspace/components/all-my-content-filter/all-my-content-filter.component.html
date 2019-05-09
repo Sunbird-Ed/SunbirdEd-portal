@@ -23,7 +23,7 @@
         <div class="field">
           <div class="content dropdown-content">
            <span class="ShowFilterSubTitle">{{resourceService?.frmelmnts?.lbl?.sortby}}:&nbsp;</span>
-            <div class="ui inline dropdown search-dropdown" id="sortByDropDown">
+            <div class="ui inline dropdown search-dropdown content-filter-sort" id="sortByDropDown">
               <sui-select class="inline" (selectedOptionChange)= "applySorting($event)" [(ngModel)]="sortByOption" [options]="sortingOptions"
               valueField="field"
           labelField="name"  #selectSort>

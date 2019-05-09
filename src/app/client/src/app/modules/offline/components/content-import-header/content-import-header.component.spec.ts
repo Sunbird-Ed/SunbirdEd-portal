@@ -1,3 +1,4 @@
+import { ContentImportComponent } from './../content-import/content-import.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ContentImportHeaderComponent } from './content-import-header.component';
@@ -8,7 +9,7 @@ describe('ContentImportHeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ContentImportHeaderComponent ]
+      declarations: [ ContentImportHeaderComponent, ContentImportComponent ]
     })
     .compileComponents();
   }));
