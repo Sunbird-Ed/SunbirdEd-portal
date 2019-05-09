@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ResourceService } from '@sunbird/shared'
+import { ResourceService } from '@sunbird/shared';
 
 @Component({
     selector: 'app-content-import-header',
