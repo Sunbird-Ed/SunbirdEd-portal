@@ -279,6 +279,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
           // this.question_editor.destroy();
           // this.answer_editor.destroy();
         }
+      }, error => {
+        this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
       });
     } else {
       this.validateAllFormFields(this.questionMetaForm);

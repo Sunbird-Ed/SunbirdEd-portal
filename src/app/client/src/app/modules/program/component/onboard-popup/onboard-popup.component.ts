@@ -11,15 +11,10 @@ import { ResourceService } from '@sunbird/shared';
 export class OnboardPopupComponent implements OnInit, OnDestroy {
 
   @ViewChild('modal') private modal;
-
   @Input() programDetails: any;
-
   @Output() updateEvent = new EventEmitter<any>();
-
   selectedOption: any = {};
-
   formFieldOptions: Array<any>;
-
   showButton = false;
 
   constructor(public formService: FormService, public extPluginService: ExtPluginService, public userService: UserService,

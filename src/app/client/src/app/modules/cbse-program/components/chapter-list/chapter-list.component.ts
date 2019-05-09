@@ -1,11 +1,9 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { SuiAccordionModule } from 'ng2-semantic-ui';
 import { PublicDataService, UserService } from '@sunbird/core';
 import {  ConfigService, IUserData, IUserProfile } from '@sunbird/shared';
 import { first, map } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
-// tslint:disable-next-line:import-blacklist
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 @Component({
   selector: 'app-chapter-list',
@@ -22,11 +20,9 @@ export class ChapterListComponent implements OnInit {
   questionCount = new Map();
   public textBookChapters: any;
   public publicDataService: PublicDataService;
-  constructor(
-    publicDataService: PublicDataService,
+  constructor(publicDataService: PublicDataService,
     private configService: ConfigService,
-    private userService: UserService
-  ) {
+    private userService: UserService) {
     this.userService = userService;
     this.publicDataService = publicDataService;
     this.configService = configService;

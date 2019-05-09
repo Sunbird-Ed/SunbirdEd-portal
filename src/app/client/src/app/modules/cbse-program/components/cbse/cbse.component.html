@@ -1,20 +1,20 @@
-
 <div *ngIf="stages[currentStage] == 'chooseClass'">
-  <app-textbook-search [defaultSelectedOptions]="defaultSelectedOptions" [selectedAttributes]="selectedAttributes" [gradeLevelList]="gradeLevelList" [subjectList]="subjectList" (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-textbook-search>
+  <app-textbook-search [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
+    (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-textbook-search>
 </div>
-
 <div *ngIf="stages[currentStage] == 'topicList'">
   <div class="ui container">
     <div class="mt-30 ui breadcrumb">
       <i class="left angle icon divider"></i>
-      <a (click)="navigate('prev')" class="section">{{selectedAttributes.class}} | {{selectedAttributes.subject}}</a>
+      <a (click)="navigate('prev')" class="section">{{selectedAttributes.gradeLevel}} |
+        {{selectedAttributes.subject}}</a>
     </div>
   </div>
-  <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes" (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list>
+  <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes"
+    (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list>
 </div>
-
 <div *ngIf="stages[currentStage] == 'createQuestion'">
   <div class="ui container">
-      <app-question-list [selectedAttributes]="selectedAttributes"></app-question-list>
+    <app-question-list [selectedAttributes]="selectedAttributes"></app-question-list>
   </div>
 </div>
