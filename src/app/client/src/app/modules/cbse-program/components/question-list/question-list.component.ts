@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-question-list',
@@ -8,6 +8,7 @@ import { Component, OnInit, AfterViewInit, Output, EventEmitter } from '@angular
 export class QuestionListComponent implements OnInit, AfterViewInit {
  @Output() questionFormMeta = new EventEmitter<any>();
   public  questionTabs = [];
+  @Input() selectedAttributes: any;
   public active: boolean[] = [];
   public emptyState = true;
   public questionMetaData: any;
@@ -19,7 +20,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit {
   constructor() { }
 
   ngOnInit() {
-
+    console.log('selectedAttributes', this.selectedAttributes);
   }
 
   ngAfterViewInit() {
