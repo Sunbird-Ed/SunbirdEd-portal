@@ -28,6 +28,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   @Input() questionMetaData: any;
   @Output() enableCreateButton = new EventEmitter < any > ();
   @Output() questionStatus = new EventEmitter < any > ();
+  @Input() selectedAttributes: any;
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -82,6 +83,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   }
 
   ngOnInit() {
+    console.log('questionMetaData ', this.questionMetaData);
     this.initialized = true;
     this.initializeFormFields();
     this.userService.userData$.subscribe(
@@ -90,6 +92,12 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
           this.userProfile = user.userProfile;
         }
       });
+      if (this.questionMetaData.data) {
+        this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
+        this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
+        this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
+        this.questionMetaForm.controls.max_score.setValue(this.questionMetaData.data.max_score);
+      }
   }
 
   ngAfterViewInit() {
@@ -102,6 +110,19 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.isEditorReadOnly(false);
       } else {
         this.isEditorReadOnly(true);
+      }
+      if (this.questionMetaData && this.questionMetaData.data) {
+        this.question_editor.setData(this.questionMetaData.data.body);
+        this.answer_editor.setData(this.questionMetaData.data.answers[0]);
+        console.log(this.questionMetaForm);
+        this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
+        this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
+        this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
+        this.questionMetaForm.controls.max_score.setValue(this.questionMetaData.data.max_score);
+      } else {
+        this.questionMetaForm.reset();
+        this.question_editor.setData('');
+        this.answer_editor.setData('');
       }
     }
   }
@@ -126,6 +147,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       })
       .then(editor => {
         this.question_editor = editor;
+        if (this.questionMetaData && this.questionMetaData.data) {
+          this.question_editor.setData(this.questionMetaData.data.body);
+        }
         console.log('Editor was initialized', editor);
         this.focusTracker(this.question_editor);
       })
@@ -146,6 +170,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       })
       .then(editor => {
         this.answer_editor = editor;
+        if (this.questionMetaData && this.questionMetaData.data) {
+          this.answer_editor.setData(this.questionMetaData.data.answers[0]);
+        }
         console.log('Editor was initialized', editor);
         this.focusTracker(this.answer_editor);
       })
@@ -153,6 +180,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         console.error(error.stack);
       });
     this.enableCreateButton.emit(false);
+    // this.question_editor.setData(this.questionMetaData.data.body);
+    // this.answer_editor.setData(this.questionMetaData.data.answers);
   }
   focusTracker(editor) {
     editor.model.document.on('change', (eventInfo, batch) => {
@@ -221,31 +250,29 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
             'assessment_item': {
               'objectType': 'AssessmentItem',
               'metadata': {
-                'createdBy': '95e4942d-cbe8-477d-aebd-ad8e6de4bfc',
-                // 'creator': `${this.userProfile.firstName} ${this.userProfile.lastName ? this.userProfile.lastName : ''}`,
-                'code': 'NA',
-                'type': 'VSA',
-                'category': 'VSA',
+                'createdBy': this.userProfile.userId,
+                'code': this.selectedAttributes.questionType,
+                'type': this.selectedAttributes.questionType,
+                'category': this.selectedAttributes.questionType.toUpperCase(),
                 'itemType': 'UNIT',
                 'version': 3,
-                'name': 'vsa_NCFCOPY',
+                'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
                 'body': this.question_editor.getData(),
                 'answers': [this.answer_editor.getData()],
                 'learningOutcome': [this.questionMetaForm.value.learningOutcome],
                 'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
                 'qlevel': this.questionMetaForm.value.qlevel,
                 'max_score': Number(this.questionMetaForm.value.max_score),
-                // 'template': 'NA',
                 'template_id': 'NA',
-                // 'templateType': 'NA',
-                'framework': 'NCFCOPY',
-                'board': 'NCERT',
-                'medium': 'English',
+                'framework': this.selectedAttributes.framework,
+                'board': this.selectedAttributes.board,
+                'medium': this.selectedAttributes.medium,
                 'gradeLevel': [
-                  'Kindergarten'
+                  this.selectedAttributes.gradeLevel
                 ],
-                'subject': 'English',
-                'topic': ['Topic 1']
+                'subject': this.selectedAttributes.subject,
+                'topic': [this.selectedAttributes.topic],
+                'status': 'Draft'
               }
             }
           }
@@ -255,10 +282,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.actionService.post(req).subscribe((res) => {
         if (res.responseCode !== 'OK') {
           console.log('Please try again');
-          this.questionStatus.emit('failed');
+          this.questionStatus.emit({'status': 'failed'});
         } else {
           this.enableCreateButton.emit(true);
-          this.questionStatus.emit('success');
+          this.questionStatus.emit({'status': 'success', 'identifier': res.result.node_id});
           // this.question_editor.destroy();
           // this.answer_editor.destroy();
         }
