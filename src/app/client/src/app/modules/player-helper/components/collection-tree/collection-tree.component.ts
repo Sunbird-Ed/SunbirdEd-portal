@@ -41,7 +41,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
   ngOnInit() {
     /*
-    * rootOrgId is required to select the custom comming soon messafe from systemsettings
+    * rootOrgId is required to select the custom comming soon message from systemsettings
     */
     let rootOrgId: string;
     if (this.userService.loggedIn) {
