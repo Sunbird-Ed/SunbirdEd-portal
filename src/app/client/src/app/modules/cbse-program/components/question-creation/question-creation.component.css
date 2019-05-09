@@ -1,18 +1,18 @@
 :host ::ng-deep .ck-editor__editable {
-    min-height: 300px;
+    /* min-height: 300px; */
   }
-  
+
   .custom-image img {
     border: 1px dotted;
     padding: 7px;
     margin: 6px;
     cursor: pointer;
   }
-  
+
   .resource-image {
     height: 180px !important;
   }
-  
+
   .asset_container {
     overflow-y: auto;
     overflow-x: hidden;
@@ -20,7 +20,7 @@
     max-height: 300px !important;
     padding: 5px;
   }
-  
+
   .insert-image-btn {
     position: absolute;
     z-index: 1;
@@ -28,11 +28,11 @@
     background-color: transparent;
     padding: 13px !important;
   }
-  
+
   .insert-image-btn>.icon {
     opacity: 1;
   }
-  
+
   .insert-image-btn:active {
     background-color: transparent;
   }
