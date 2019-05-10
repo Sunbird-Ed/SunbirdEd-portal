@@ -9,7 +9,6 @@ import * as _ from 'lodash';
   styleUrls: ['./question-list.component.css']
 })
 export class QuestionListComponent implements OnInit, AfterViewInit {
-  @Output() questionFormMeta = new EventEmitter<any>();
   @Input() selectedAttributes: any;
   public userProfile: IUserProfile;
   public  questionTabs = [];
@@ -100,13 +99,12 @@ export class QuestionListComponent implements OnInit, AfterViewInit {
   public createButtonHandler(event) {
     this.enableCreateButton = event;
   }
-  public addTab(): void {
+  public createNewQuestion(): void {
     this.emptyState = false;
     this.enableCreateButton = false;
-    this.editorMode = 'edit';
+    this.editorMode = 'create';
     this.questionMetaData = {
         mode : this.editorMode,
-        data : ''
     };
     // this.active.push(true);
     // console.log(this.tabs.length);

@@ -1,0 +1,28 @@
+<div *ngIf='!showTemplatePopup'>
+  <form class="ui form" >
+    <div class="field">
+      <label>Question</label>
+      <textarea class="question editor" id="question_editor" name="question" placeholder="Question"></textarea>
+    </div>
+    <div *ngFor="let option of mcqForm.options; let i=index">
+        <div class="fields">
+            <div class="ten wide field">
+                <label>Option {{i + 1}}:</label>
+                <input name="{{i}}" [(ngModel)]=option.body type="text">
+            </div>
+            <div class="two wide field">
+                <label for="fruit">Correct Answer</label>
+                <div class="field">
+                  <div class="ui radio checkbox">
+                    <input [(ngModel)]=mcqForm.answer value={{i}} type="radio" name="qlevel" tabindex="0" class="hidden">
+                  </div>
+                </div>
+            </div>
+      </div>
+    </div>
+
+    <button class="ui button" (click)="createQuestion($event)">Submit</button>
+  </form>
+</div>
+<app-mcq-template-selection *ngIf='showTemplatePopup' (templateSelection)="handleTemplateSelection($event)">
+</app-mcq-template-selection>

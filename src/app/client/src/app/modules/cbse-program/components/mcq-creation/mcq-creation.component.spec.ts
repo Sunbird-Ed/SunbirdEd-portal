@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TextbookSearchComponent } from './textbook-search.component';
+import { McqCreationComponent } from './mcq-creation.component';
 
-xdescribe('TextbookSearchComponent', () => {
-  let component: TextbookSearchComponent;
-  let fixture: ComponentFixture<TextbookSearchComponent>;
+describe('McqCreationComponent', () => {
+  let component: McqCreationComponent;
+  let fixture: ComponentFixture<McqCreationComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TextbookSearchComponent ]
+      declarations: [ McqCreationComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TextbookSearchComponent);
+    fixture = TestBed.createComponent(McqCreationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

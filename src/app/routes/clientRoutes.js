@@ -95,10 +95,15 @@ module.exports = (app, keycloak) => {
     '/resources/*', '/myActivity', '/myActivity/*'], keycloak.protect(), indexPage(true))
 
   app.all('/:tenantName', renderTenantPage)
-
-  app.use('/program', express.static(path.join(__dirname, '../program')))
+  app.get('/program/:templateId/:programId', renderProgramPage)
+  app.use('/program', express.static(path.join(__dirname, '../program'), { index: false }))
 }
-
+function renderProgramPage(req, res){
+  res.locals = {
+    programId: req.params.programId
+  }
+  res.render(path.join(__dirname, '../program/'+ req.params.templateId, 'index.ejs'))
+}
 function getLocals(req) {
   var locals = {}
   if(req.loggedInRoute){

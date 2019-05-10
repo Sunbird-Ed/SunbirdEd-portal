@@ -12,7 +12,7 @@
         <div class="ui">
           <div class="ui vertical segments">
               <div class="questionTab ui center header aligned segment">
-                  <button [disabled]="!enableCreateButton" (click)="addTab()" class="ui primary fluid button" >Create</button>
+                  <button [disabled]="!enableCreateButton" (click)="createNewQuestion()" class="ui primary fluid button" >Create</button>
                 </div>
           </div>
         </div>
@@ -23,8 +23,11 @@
           </div>
       </div>
       <div *ngIf="!emptyState" class="ten wide column">
-        <div class="ui segment">
-            <app-question-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" (questionStatus)="questionStatusHandler($event)"></app-question-creation>
+        <div *ngIf="selectedAttributes.questionType === 'mcq'">
+          <app-mcq-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" (questionStatus)="questionStatusHandler($event)"></app-mcq-creation>
+        </div>
+        <div *ngIf="selectedAttributes.questionType !== 'mcq'" class="ui segment">
+          <app-question-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" (questionStatus)="questionStatusHandler($event)"></app-question-creation>
         </div>
       </div>
     </div>

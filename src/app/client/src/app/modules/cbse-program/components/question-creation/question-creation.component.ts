@@ -26,7 +26,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   public isAnswerFocused: boolean;
   @Input() tabIndex: any;
   @Input() questionMetaData: any;
-  @Output() enableCreateButton = new EventEmitter < any > ();
   @Output() questionStatus = new EventEmitter < any > ();
   @Input() selectedAttributes: any;
   constructor(
@@ -274,11 +273,12 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
           console.log('Please try again');
           this.questionStatus.emit({'status': 'failed'});
         } else {
-          this.enableCreateButton.emit(true);
           this.questionStatus.emit({'status': 'success', 'identifier': res.result.node_id});
           // this.question_editor.destroy();
           // this.answer_editor.destroy();
         }
+      }, error => {
+        this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
       });
     } else {
       this.validateAllFormFields(this.questionMetaForm);
