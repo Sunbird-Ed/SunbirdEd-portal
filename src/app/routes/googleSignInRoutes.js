@@ -43,7 +43,7 @@ module.exports = (app) => {
         newUserDetails = await createUserWithMailId(googleProfile, req).catch(handleCreateUserError);
       }
       errType = 'KEYCLOAK_SESSION_CREATE';
-      keyCloakToken = await createSession(googleProfile.emailId, req, res);
+      keyCloakToken = await createSession(googleProfile.emailId, reqQuery, req, res);
       errType = 'UNHANDLED_ERROR';
       redirectUrl = reqQuery.redirect_uri.split('?')[0];
       if (reqQuery.client_id === 'android') {
