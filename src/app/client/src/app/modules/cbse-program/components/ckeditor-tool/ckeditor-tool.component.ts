@@ -71,18 +71,6 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
       }, this.editorConfig);
   }
   ngOnChanges() {
-    if (this.initialized) {
-      if (this.editorConfig.mode === 'create') {
-        this.isEditorReadOnly(false);
-      } else {
-        this.isEditorReadOnly(true);
-      }
-      if (this.editorDataInput) {
-        this.editorInstance.setData(this.editorDataInput);
-      } else {
-        this.editorInstance.setData('');
-      }
-    }
   }
 
   ngAfterViewInit() {

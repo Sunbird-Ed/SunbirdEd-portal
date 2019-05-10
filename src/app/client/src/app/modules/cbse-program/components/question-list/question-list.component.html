@@ -22,12 +22,15 @@
               No Question - Click Create
           </div>
       </div>
+
       <div *ngIf="!emptyState" class="ten wide column">
-        <div *ngIf="selectedAttributes.questionType === 'mcq'">
-          <app-mcq-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" (questionStatus)="questionStatusHandler($event)"></app-mcq-creation>
-        </div>
-        <div *ngIf="selectedAttributes.questionType !== 'mcq'" class="ui segment">
-          <app-question-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" (questionStatus)="questionStatusHandler($event)"></app-question-creation>
-        </div>
+          <div *ngIf="refresh">
+            <div *ngIf="selectedAttributes.questionType === 'mcq'">
+              <app-mcq-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" (questionStatus)="questionStatusHandler($event)"></app-mcq-creation>
+            </div>
+            <div *ngIf="selectedAttributes.questionType !== 'mcq'" class="ui segment">
+              <app-question-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" (questionStatus)="questionStatusHandler($event)"></app-question-creation>
+            </div>
+          </div>
       </div>
     </div>

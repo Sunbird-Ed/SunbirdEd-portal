@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
 import {  ConfigService, IUserProfile, IUserData } from '@sunbird/shared';
 import { UserService, PublicDataService, ActionService } from '@sunbird/core';
 // tslint:disable-next-line:import-blacklist
@@ -22,11 +22,13 @@ export class QuestionListComponent implements OnInit, AfterViewInit {
       { header: 'Q', content: '' }
   ];
   public publicDataService: PublicDataService;
+  public refresh = true;
   constructor(
     private configService: ConfigService,
     private userService: UserService,
     publicDataService: PublicDataService,
-    public actionService: ActionService
+    public actionService: ActionService,
+    private cdr: ChangeDetectorRef
   ) {
     this.configService = configService;
     this.userService = userService;
@@ -91,8 +93,16 @@ export class QuestionListComponent implements OnInit, AfterViewInit {
             mode : this.editorMode,
             data : res.result.assessment_item
         };
+        this.enableCreateButton = true;
+        this.hardRefreshFilter();
        console.log('Question res', res);
     });
+  }
+
+  private hardRefreshFilter() {
+    this.refresh = false;
+    this.cdr.detectChanges();
+    this.refresh = true;
   }
 
   public createButtonHandler(event) {
@@ -105,6 +115,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit {
     this.questionMetaData = {
         mode : this.editorMode,
     };
+    this.hardRefreshFilter();
     // this.active.push(true);
     // console.log(this.tabs.length);
     // console.log(document.querySelector( '#editor' ));
