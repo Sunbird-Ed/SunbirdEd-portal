@@ -6,15 +6,15 @@
         </button>
         <textarea class="question editor" id="question_editor" name="question" placeholder="Question"></textarea> -->
 
-        <app-ckeditor-tool [editorId]="'question_editor'"></app-ckeditor-tool>
+        <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'question')" [editorDataInput]="question" [editorId]="'question_editor'"></app-ckeditor-tool>
       </div>
       <div class="field">
-        <!-- <label>Answer</label>
-        <button type="button" [disabled]="isAssetBrowserReadOnly || isAnswerFocused" (click)="initializeImagePicker('answer')" class="ui icon button insert-image-btn">
+        <label>Answer</label>
+        <!-- <button type="button" [disabled]="isAssetBrowserReadOnly || isAnswerFocused" (click)="initializeImagePicker('answer')" class="ui icon button insert-image-btn">
             <i class="image outline icon"></i>
         </button>
         <textarea class="answer editor" id="answer_editor" name="answer" placeholder="Answer"></textarea> -->
-        <app-ckeditor-tool [editorId]="'answer_editor'"></app-ckeditor-tool>
+        <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'answer')" [editorDataInput]="answer" [editorId]="'answer_editor'"></app-ckeditor-tool>
       </div>
       <div class="two fields">
           <div class="field">
