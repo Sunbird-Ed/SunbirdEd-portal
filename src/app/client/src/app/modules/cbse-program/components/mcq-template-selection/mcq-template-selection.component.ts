@@ -1,3 +1,4 @@
+import { ConfigService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, OnDestroy, Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -11,18 +12,8 @@ export class McqTemplateSelectionComponent implements OnInit, OnDestroy {
   templateSelected;
   @ViewChild('modal') private modal;
   @Output() templateSelection = new EventEmitter<any>();
-  mcqTemplateConfig = [{
-      id: 1, url: 'assets/images/mcq_template/grid.png'
-    }, {
-      id: 2, url: 'assets/images/mcq_template/grid2.png'
-    }, {
-      id: 3, url: 'assets/images/mcq_template/vertical.png'
-    }, {
-      id: 4, url: 'assets/images/mcq_template/vertical2.png'
-    }, {
-      id: 5, url: 'assets/images/mcq_template/horizontal.png'
-  }];
-  constructor() { }
+  mcqTemplateConfig = this.configService.editorConfig.QUESTION_EDITOR.templateConfig;
+  constructor(public configService: ConfigService) { }
 
   ngOnInit() {
   }
