@@ -85,6 +85,9 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
         this.showLoader = false;
         if (_.get(report, 'charts')) { this.createChartData(_.get(report, 'charts'), data); }
         if (_.get(report, 'table')) { this.renderTable(_.get(report, 'table'), data); }
+        else {
+          this.renderTable({}, data)
+        }
       } else {
         console.log(response);
       }
