@@ -15,6 +15,12 @@
 </div>
 <div *ngIf="stages[currentStage] == 'createQuestion'">
   <div class="ui container">
-    <app-question-list [selectedAttributes]="selectedAttributes"></app-question-list>
+      <div class="ui container">
+          <div class="mt-30 ui breadcrumb">
+            <i class="left angle icon divider"></i>
+            <a (click)="navigate('prev')" class="section">{{selectedAttributes.topic}}</a>
+          </div>
+        </div>
+      <app-question-list [selectedAttributes]="selectedAttributes"></app-question-list>
   </div>
 </div>

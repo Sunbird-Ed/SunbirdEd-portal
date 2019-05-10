@@ -2,13 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { QuestionListComponent, SelectTextbookComponent, CbseComponent,
-  QuestionCreationComponent, ChapterListComponent, McqCreationComponent, McqTemplateSelectionComponent } from './components';
+  QuestionCreationComponent, ChapterListComponent, McqCreationComponent, McqTemplateSelectionComponent,
+  CkeditorToolComponent } from './components';
 import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [QuestionListComponent, SelectTextbookComponent, CbseComponent, QuestionCreationComponent, ChapterListComponent,
-    McqCreationComponent,
+    McqCreationComponent, CkeditorToolComponent ,
     McqTemplateSelectionComponent],
   imports: [
     CommonModule,

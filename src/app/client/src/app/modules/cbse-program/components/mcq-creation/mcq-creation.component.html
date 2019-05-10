@@ -5,10 +5,20 @@
       <textarea class="question editor" id="question_editor" name="question" placeholder="Question"></textarea>
     </div>
     <div *ngFor="let option of mcqForm.options; let i=index">
-      <label>
-        Option {{i + 1}}:
-        <input name="{{i}}" [(ngModel)]=option.body type="text">
-      </label>
+        <div class="fields">
+            <div class="ten wide field">
+                <label>Option {{i + 1}}:</label>
+                <input name="{{i}}" [(ngModel)]=option.body type="text">
+            </div>
+            <div class="two wide field">
+                <label>Correct Answer</label>
+                <div class="field">
+                  <div class="ui radio checkbox">
+                    <input [(ngModel)]=mcqForm.answer value={{i}} type="radio" name="correct_response" tabindex="0">
+                  </div>
+                </div>
+            </div>
+      </div>
     </div>
 
     <button class="ui button" (click)="createQuestion($event)">Submit</button>
