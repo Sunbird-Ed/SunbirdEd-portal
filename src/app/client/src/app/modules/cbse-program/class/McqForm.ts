@@ -4,7 +4,7 @@ export class McqOptions {
 }
 export class McqForm {
 
-  constructor(public questionBody: string, public options: Array<McqOptions>,
+  constructor(public question: string, public options: Array<McqOptions>,
     public templateId: string, public answer: string) {
     if (!options || !options.length) {
       this.options = [

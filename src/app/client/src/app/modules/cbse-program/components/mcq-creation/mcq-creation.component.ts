@@ -11,6 +11,7 @@ export class McqCreationComponent implements OnInit, AfterViewInit {
 
   @Input() selectedAttributes: any;
   @Input() questionMetaData: any;
+  @Input() editorDataInput: any;
   @Output() questionStatus = new EventEmitter<any>();
   showTemplatePopup = false;
   templateDetails = {};
@@ -35,10 +36,9 @@ export class McqCreationComponent implements OnInit, AfterViewInit {
     }
   }
   ngAfterViewInit() {
-    ( < any > $('.ui.checkbox')).checkbox();
   }
   initializeEditors() {
-
+    ( < any > $('.ui.checkbox')).checkbox();
   }
   handleTemplateSelection(event) {
     console.log(event);
@@ -52,5 +52,13 @@ export class McqCreationComponent implements OnInit, AfterViewInit {
   }
   createQuestion() {
     console.log(this.mcqForm);
+  }
+
+  public editorDataHandler(event, option) {
+    if (option) {
+      option.body = event;
+    } else {
+      this.mcqForm.question = event;
+    }
   }
 }
