@@ -5,7 +5,7 @@
       <h4>{{resourceService?.frmelmnts?.lbl?.importContent}}</h4>
       <p>{{resourceService?.frmelmnts?.lbl?.uploadEcarFromPd}} </p>
     </div>
-    <button [telemetryInteractEdata]="ContentImportIntractEdata" class="sb-btn sb-btn-normal sb-btn-secondary ml-auto" (click)="showImportModal = true;">
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="ContentImportIntractEdata" class="sb-btn sb-btn-normal sb-btn-secondary ml-auto" (click)="showImportModal = true;">
       {{resourceService?.frmelmnts?.lbl?.importContent}}
     </button>
   </div>
