@@ -2,13 +2,14 @@
   <form class="ui form" >
     <div class="field">
       <label>Question</label>
-      <textarea class="question editor" id="question_editor" name="question" placeholder="Question"></textarea>
+      <app-ckeditor-tool (editorDataOutput)="editorDataHandler($event)" [editorDataInput]="mcqForm.questionBody" [editorId]="'question_editor'"></app-ckeditor-tool>
     </div>
     <div *ngFor="let option of mcqForm.options; let i=index">
         <div class="fields">
             <div class="ten wide field">
                 <label>Option {{i + 1}}:</label>
-                <input name="{{i}}" [(ngModel)]=option.body type="text">
+                <app-ckeditor-tool (editorDataOutput)="editorDataHandler($event, option)" [editorDataInput]="option.body" [editorId]="'option_'+i"></app-ckeditor-tool>
+                <!-- <input name="{{i}}" [(ngModel)]=option.body type="text"> -->
             </div>
             <div class="two wide field">
                 <label>Correct Answer</label>
@@ -20,7 +21,6 @@
             </div>
       </div>
     </div>
-
     <button class="ui button" (click)="createQuestion($event)">Submit</button>
   </form>
 </div>
