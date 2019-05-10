@@ -26,7 +26,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   public isAnswerFocused: boolean;
   @Input() tabIndex: any;
   @Input() questionMetaData: any;
-  @Output() enableCreateButton = new EventEmitter < any > ();
   @Output() questionStatus = new EventEmitter < any > ();
   @Input() selectedAttributes: any;
   constructor(
@@ -179,7 +178,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       .catch(error => {
         console.error(error.stack);
       });
-    this.enableCreateButton.emit(false);
     // this.question_editor.setData(this.questionMetaData.data.body);
     // this.answer_editor.setData(this.questionMetaData.data.answers);
   }
@@ -274,7 +272,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
           console.log('Please try again');
           this.questionStatus.emit({'status': 'failed'});
         } else {
-          this.enableCreateButton.emit(true);
           this.questionStatus.emit({'status': 'success', 'identifier': res.result.node_id});
           // this.question_editor.destroy();
           // this.answer_editor.destroy();

@@ -53,8 +53,8 @@ export class CbseComponent implements OnInit {
       if (frameworkDetails && !frameworkDetails.err) {
         const frameworkData = frameworkDetails.frameworkdata[this.selectedAttributes.framework].categories;
         this.topicList = _.get(_.find(frameworkData, { code: 'topic' }), 'terms');
+          }
       }
-    }
     );
   }
   navigate(step) {
