@@ -168,8 +168,8 @@
                 </td>
                 <td>{{student.enrolledOn | dateFormat :'DD/MM/YYYY'}}</td>
 
-                <td *ngIf="student.progress === 100">{{resourceService?.frmelmnts?.lbl?.completed}}</td>
-                <td class="ui  header text-font" *ngIf="(student.progress !== 100 && student.progress >= 0)">{{student.progress}}%</td>
+                <td *ngIf="student.progress >= 100">{{resourceService?.frmelmnts?.lbl?.completed}}</td>
+                <td class="ui  header text-font" *ngIf="(student.progress < 100 && student.progress >= 0)">{{student.progress}}%</td>
                 <td class="ui  header text-font" *ngIf="student.progress ===null">-</td>
               </tr>
               <tr *ngIf="dashboarData && dashboarData.data.length === 0">

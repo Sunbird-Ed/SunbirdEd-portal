@@ -357,9 +357,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.populateCourseDashboardData();
   }
   keyup(event) {
-    if (!_.isEmpty(_.trim(event))) {
-      this.modelChanged.next(event);
-    }
+    this.modelChanged.next(_.trim(event));
   }
   searchBatch() {
     this.modelChanged.pipe(debounceTime(1000),
