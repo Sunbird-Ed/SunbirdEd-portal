@@ -76,7 +76,8 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
    * to unsubscribe
   */
   public unsubscribe$ = new Subject<void>();
-
+  telemetryCdata: Array<{}> = [];
+  closeIntractEdata: IInteractEventEdata;
   linkedContents: Array<any>;
   showMobilePopup = false;
   isRedirectToDikshaApp = false;
@@ -95,18 +96,23 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    this.setTelemetryData();
+
     this.instanceName = this.resourceService.instance;
     this.activatedRoute.params.subscribe(params => {
       this.searchKeyword = this.dialCode = params.dialCode;
+      this.setTelemetryData();
       this.searchDialCode();
     });
     this.handleMobilePopupBanner();
   }
 
   setTelemetryData () {
+    if (this.dialCode) {
+      this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
+    }
     this.closeMobilePopupInteractData = {
       context: {
+        cdata: this.telemetryCdata,
         env: this.activatedRoute.snapshot.data.telemetry.env,
       },
       edata: {
@@ -116,8 +122,15 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     };
 
+    this.closeIntractEdata = {
+      id: 'dialpage-close',
+      type: 'click',
+      pageid: 'get-dial',
+    };
+
     this.appMobileDownloadInteractData = {
       context: {
+        cdata: this.telemetryCdata,
         env: this.activatedRoute.snapshot.data.telemetry.env,
       },
       edata: {
@@ -254,11 +267,11 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
           env: this.activatedRoute.snapshot.data.telemetry.env,
           cdata: [{
             type: 'dialCode',
-            id: this.dialCode
+            id: this.activatedRoute.snapshot.params.dialCode
           }]
         },
         object: {
-          id: this.dialCode,
+          id: this.activatedRoute.snapshot.params.dialCode,
           type: 'dialCode',
           ver: '1.0'
         },

@@ -44,12 +44,12 @@
                     </div>
                     <ng-container *ngFor="let table of tables">
                         <div class="ui bottom attached small segment" [suiTabContent]="table.id">
-                            <div *ngIf="isTableDataLoaded">
+                            <div *ngIf="table.data">
                                 <app-data-table [tableId]="table.id" [headerData]="table.header"
                                     [rowsData]="table.data">
                                 </app-data-table>
                             </div>
-                            <div class="ui warning message" *ngIf="!isTableDataLoaded">
+                            <div class="ui warning message" *ngIf="!table.data">
                                 {{resourceService?.frmelmnts?.lbl?.tableNotAvailable}}
                             </div>
                         </div>

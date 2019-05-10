@@ -14,8 +14,8 @@ import { CacheService } from 'ng2-cache-service';
 import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storage/cache-storage-abstract.service';
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
-// import { BootstrapFramework, WebExtensionModule } from '@project-sunbird/web-extensions';
-// import { WebExtensionsConfig, PluginModules } from './framework.config';
+ import { BootstrapFramework, WebExtensionModule } from '@project-sunbird/web-extensions';
+ import { WebExtensionsConfig, PluginModules } from './framework.config';
 @NgModule({
   declarations: [
   ],
@@ -26,12 +26,11 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     HttpClientModule,
     SuiModule,
     SharedModule.forRoot(),
-    // WebExtensionModule.forRoot(),
+    WebExtensionModule.forRoot(),
     TelemetryModule.forRoot(),
     DeviceDetectorModule.forRoot(),
-    OfflineModule,
     SharedFeatureModule,
-    // ...PluginModules,
+    PluginModules,
     AppRoutingOfflineModule // don't add any module below this because it contains wildcard route
   ],
   entryComponents: [AppComponent],
@@ -42,7 +41,7 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
   ]
 })
 export class AppModuleOffline {
-  constructor() {
-    // bootstrapFramework.initialize(WebExtensionsConfig);
+  constructor(bootstrapFramework: BootstrapFramework) {
+    bootstrapFramework.initialize(WebExtensionsConfig);
   }
 }

@@ -45,7 +45,7 @@ const kafkaService = {
     const record = [
       {
         topic: kafkaTopic,
-        messages: data
+        messages: JSON.stringify(data)
       }
     ];
     // Send record to Kafka

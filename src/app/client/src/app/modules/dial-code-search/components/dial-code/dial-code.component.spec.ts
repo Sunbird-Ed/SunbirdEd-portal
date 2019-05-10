@@ -45,6 +45,9 @@ describe('DialCodeComponent', () => {
         telemetry: {
           env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
         }
+      },
+      params: {
+        dialCode: '61U24C'
       }
     }
   };
