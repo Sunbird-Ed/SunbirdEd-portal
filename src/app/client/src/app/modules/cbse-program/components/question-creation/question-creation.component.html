@@ -1,18 +1,20 @@
 <form class="ui form" [formGroup]="questionMetaForm">
-    <button type="button" (click)="reinitializeEditor()">Edit <i class="pencil outline icon"></i></button>
       <div class="field">
         <label>Question</label>
-        <button type="button" [disabled]="isAssetBrowserReadOnly || isQuestionFocused" (click)="initializeImagePicker('question')" class="ui icon button insert-image-btn">
+        <!-- <button type="button" [disabled]="isAssetBrowserReadOnly || isQuestionFocused" (click)="initializeImagePicker('question')" class="ui icon button insert-image-btn">
           <i class="image outline icon"></i>
         </button>
-        <textarea class="question editor" id="question_editor" name="question" placeholder="Question"></textarea>
+        <textarea class="question editor" id="question_editor" name="question" placeholder="Question"></textarea> -->
+
+        <app-ckeditor-tool [editorId]="'question_editor'"></app-ckeditor-tool>
       </div>
       <div class="field">
-        <label>Answer</label>
+        <!-- <label>Answer</label>
         <button type="button" [disabled]="isAssetBrowserReadOnly || isAnswerFocused" (click)="initializeImagePicker('answer')" class="ui icon button insert-image-btn">
             <i class="image outline icon"></i>
         </button>
-        <textarea class="answer editor" id="answer_editor" name="answer" placeholder="Answer"></textarea>
+        <textarea class="answer editor" id="answer_editor" name="answer" placeholder="Answer"></textarea> -->
+        <app-ckeditor-tool [editorId]="'answer_editor'"></app-ckeditor-tool>
       </div>
       <div class="two fields">
           <div class="field">

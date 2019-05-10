@@ -1,16 +1,20 @@
   <div class="ui mt-30 two column grid">
       <div class="two wide column">
-        <div class="ui placeholder segment">
+        <div class="ui questionsMenu">
             <div class="ui vertical segments">
-                <div class="questionTab ui center tertiary header aligned segment" [ngClass]="{'active': tab.active}" (click)="getQuestion(tab.identifier, tab); activateClass(tab)" *ngFor="let tab of questionTabs; let i = index">
+                <div class="questionTab ui center tertiary header aligned segment" [class.tertiary]="selectedQuestion == i" (click)="getQuestion(tab.identifier, tab); activateClass(i)" *ngFor="let tab of questionTabs; let i = index">
                     <a class="item">
                         Question {{i + 1}}
                     </a>
                 </div>
-                <div class="questionTab ui center tertiary header aligned segment">
+            </div>
+        </div>
+        <div class="ui">
+          <div class="ui vertical segments">
+              <div class="questionTab ui center header aligned segment">
                   <button [disabled]="!enableCreateButton" (click)="addTab()" class="ui primary fluid button" >Create</button>
                 </div>
-            </div>
+          </div>
         </div>
       </div>
       <div *ngIf="emptyState" class="ten wide column">

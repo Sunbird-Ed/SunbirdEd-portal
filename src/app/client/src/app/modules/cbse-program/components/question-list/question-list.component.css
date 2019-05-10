@@ -1,3 +1,6 @@
 .questionTab.button{
   border-bottom: 1px solid #cecece;
 }
+.questionsMenu{
+  overflow-y: auto; max-height:500px;
+}
