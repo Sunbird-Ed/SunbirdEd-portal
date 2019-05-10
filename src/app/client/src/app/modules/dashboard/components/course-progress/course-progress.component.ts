@@ -112,6 +112,10 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
      * totalCount of the list
    */
    totalCount: Number;
+  /**
+   *  to store the current batch when updated;
+   */
+   currentBatch: any;
 
    /**
      * Contains returned object of the pagination service
@@ -213,10 +217,12 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
           this.showNoBatch = true;
         } else if (isBatchExist) {
           this.selectedOption = this.queryParams.batchIdentifier;
+          this.currentBatch = isBatchExist;
           this.populateCourseDashboardData(isBatchExist);
         } else if (this.batchlist.length === 1 && isBatchExist === undefined) {
           this.queryParams.batchIdentifier = this.batchlist[0].id;
           this.selectedOption =  this.batchlist[0].id;
+          this.currentBatch = this.batchlist[0];
           this.populateCourseDashboardData(this.batchlist[0]);
         } else {
           this.showWarningDiv = true;
@@ -238,6 +244,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.queryParams.batchIdentifier = batch.id;
     this.queryParams.pageNumber = this.pageNumber;
     this.searchText = '';
+    this.currentBatch = batch;
     this.populateCourseDashboardData(batch);
   }
 
@@ -324,7 +331,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.order = value;
     this.reverse = !this.reverse;
     this.setInteractEventData();
-    this.populateCourseDashboardData();
+    if (this.currentBatch) {
+      this.populateCourseDashboardData(this.currentBatch);
+    }
   }
 
   /**
@@ -354,7 +363,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.pageNumber = page;
     this.queryParams.pageNumber = this.pageNumber;
     this.navigate();
-    this.populateCourseDashboardData();
+    if (this.currentBatch) {
+      this.populateCourseDashboardData(this.currentBatch);
+    }
   }
   keyup(event) {
     this.modelChanged.next(_.trim(event));
