@@ -11,11 +11,10 @@ export class McqCreationComponent implements OnInit, AfterViewInit {
 
   @Input() selectedAttributes: any;
   @Input() questionMetaData: any;
-  @Input() editorDataInput: any;
   @Output() questionStatus = new EventEmitter<any>();
   showTemplatePopup = false;
   templateDetails = {};
-  question_editor;
+  editorConfig;
   initEditor = false;
   isQuestionFocused = true;
   showImagePicker = false;
@@ -28,7 +27,7 @@ export class McqCreationComponent implements OnInit, AfterViewInit {
     console.log('mcqForm', this.mcqForm);
   }
   ngOnInit() {
-    console.log(this.questionMetaData);
+    this.editorConfig = { 'mode': 'create' };
     if (this.questionMetaData.mode === 'create') {
       this.showTemplatePopup = true;
     } else {
