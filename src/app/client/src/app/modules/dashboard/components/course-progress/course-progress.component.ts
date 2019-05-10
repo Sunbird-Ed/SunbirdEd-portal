@@ -213,11 +213,11 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
           this.showNoBatch = true;
         } else if (isBatchExist) {
           this.selectedOption = this.queryParams.batchIdentifier;
-          this.populateCourseDashboardData();
+          this.populateCourseDashboardData(isBatchExist);
         } else if (this.batchlist.length === 1 && isBatchExist === undefined) {
           this.queryParams.batchIdentifier = this.batchlist[0].id;
           this.selectedOption =  this.batchlist[0].id;
-          this.populateCourseDashboardData();
+          this.populateCourseDashboardData(this.batchlist[0]);
         } else {
           this.showWarningDiv = true;
         }
@@ -234,11 +234,11 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   *
 	* @param {string} batchId batch identifier
   */
-  setBatchId(batchId: string): void {
-    this.queryParams.batchIdentifier = batchId;
+  setBatchId(batch ?: any): void {
+    this.queryParams.batchIdentifier = batch.id;
     this.queryParams.pageNumber = this.pageNumber;
     this.searchText = '';
-    this.populateCourseDashboardData();
+    this.populateCourseDashboardData(batch);
   }
 
   /**
@@ -276,7 +276,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   /**
   * To method fetches the dashboard data with specific batch id and timeperiod
   */
-  populateCourseDashboardData(): void {
+  populateCourseDashboardData(batch ?: any): void {
     this.showWarningDiv = false;
     this.navigate();
     this.showLoader = true;
@@ -299,7 +299,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         this.showLoader = false;
         this.dashboarData = apiResponse.result;
         this.showDownloadLink = apiResponse.result.showDownloadLink ? apiResponse.result.showDownloadLink : false;
-        this.totalCount = apiResponse.result.count;
+        this.dashboarData.count = _.get(batch, 'participantCount');
+        this.totalCount = _.get(batch, 'participantCount');
         if (this.totalCount >= 10000) {
           this.pager = this.paginationService.getPager(10000, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
         } else {
@@ -356,7 +357,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.populateCourseDashboardData();
   }
   keyup(event) {
-      this.modelChanged.next(_.trim(event));
+    this.modelChanged.next(_.trim(event));
   }
   searchBatch() {
     this.modelChanged.pipe(debounceTime(1000),
