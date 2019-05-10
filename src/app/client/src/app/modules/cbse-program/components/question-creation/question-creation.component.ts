@@ -18,6 +18,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   public publicDataService: PublicDataService;
   private toasterService: ToasterService;
   public resourceService: ResourceService;
+  public editorConfig: any;
   questionMetaForm: FormGroup;
   enableSubmitBtn = false;
   public isAssetBrowserReadOnly = false;
@@ -44,8 +45,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     this.toasterService = toasterService;
     this.resourceService = resourceService;
   }
-  answer_editor: any;
-  question_editor: any;
+  answer: any;
+  question: any;
   editor: any;
   myAssets = [];
   allImages = [];
@@ -84,6 +85,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   ngOnInit() {
     console.log('questionMetaData ', this.questionMetaData);
     this.initialized = true;
+    this.editorConfig = { 'mode': 'create' };
     this.initializeFormFields();
     this.userService.userData$.subscribe(
       (user: IUserData) => {
@@ -91,7 +93,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
           this.userProfile = user.userProfile;
         }
       });
+      this.question = '';
+      this.answer = '';
       if (this.questionMetaData.data) {
+        this.question = this.questionMetaData.data.body;
+        this.answer = this.questionMetaData.data.answers[0];
         this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
         this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
         this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
@@ -110,10 +116,14 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       } else {
         // this.isEditorReadOnly(true);
       }
+      this.editorConfig = { 'mode': 'create' };
+      this.question = '';
+      this.answer = '';
       if (this.questionMetaData && this.questionMetaData.data) {
-        this.question_editor.setData(this.questionMetaData.data.body);
-        this.answer_editor.setData(this.questionMetaData.data.answers[0]);
-        console.log(this.questionMetaForm);
+        // this.question_editor.setData(this.questionMetaData.data.body);
+        // this.answer_editor.setData(this.questionMetaData.data.answers[0]);
+        this.question = this.questionMetaData.data.body;
+        this.answer = this.questionMetaData.data.answers[0];
         this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
         this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
         this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
@@ -247,8 +257,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 'itemType': 'UNIT',
                 'version': 3,
                 'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
-                'body': this.question_editor.getData(),
-                'answers': [this.answer_editor.getData()],
+                'body': this.question,
+                'answers': [this.answer],
                 'learningOutcome': [this.questionMetaForm.value.learningOutcome],
                 'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
                 'qlevel': this.questionMetaForm.value.qlevel,
@@ -283,6 +293,14 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     } else {
       this.validateAllFormFields(this.questionMetaForm);
     }
+  }
+  editorDataHandler(event, type) {
+    if (type === 'question') {
+      this.question = event;
+    } else {
+      this.answer = event;
+    }
+
   }
   // /**
   //  * function to get images

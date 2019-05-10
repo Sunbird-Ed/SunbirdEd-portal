@@ -15,8 +15,9 @@ import * as _ from 'lodash';
 export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   @ViewChild('editorTool') public editorTool: ElementRef;
   @Input() editorConfig: any;
-  @Input() questionMetaData: any;
+  @Input() editorDataInput: any;
   @Input() editorId: any;
+  @Output() editorDataOutput = new EventEmitter < any > ();
   public editorInstance: any;
   public isEditorFocused: boolean;
   public userProfile: IUserProfile;
@@ -49,23 +50,35 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   errorMsg: string;
 
   ngOnInit() {
+    this.initialized = true;
     this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
         }
       });
+
+      this.editorConfig = _.assign({
+        toolbar: ['heading', '|', 'bold', '|', 'italic', '|',
+          'bulletedList', '|', 'numberedList', '|', 'insertTable', '|'
+        ],
+        image: {
+          toolbar: ['imageTextAlternative', '|', 'imageStyle:full', 'imageStyle:side', 'imageStyle:alignRight', 'imageStyle:alignLeft'],
+          styles: ['full', 'alignLeft', 'alignRight', 'side', 'alignCenter']
+        },
+        isReadOnly: false,
+        removePlugins: ['ImageCaption']
+      }, this.editorConfig);
   }
   ngOnChanges() {
     if (this.initialized) {
-      if (this.questionMetaData.mode === 'edit') {
+      if (this.editorConfig.mode === 'create') {
         this.isEditorReadOnly(false);
       } else {
         this.isEditorReadOnly(true);
       }
-      if (this.questionMetaData && this.questionMetaData.data) {
-        this.editorInstance.setData(this.questionMetaData.data.body);
-        // this.answer_editor.setData(this.questionMetaData.data.answers[0]);
+      if (this.editorDataInput) {
+        this.editorInstance.setData(this.editorDataInput);
       } else {
         this.editorInstance.setData('');
       }
@@ -74,22 +87,11 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
 
   ngAfterViewInit() {
     this.initializeEditors();
-    this.editorConfig = {
-      toolbar: ['heading', '|', 'bold', '|', 'italic', '|',
-        'bulletedList', '|', 'numberedList', '|', 'insertTable', '|'
-      ],
-      image: {
-        toolbar: ['imageTextAlternative', '|', 'imageStyle:full', 'imageStyle:side', 'imageStyle:alignRight', 'imageStyle:alignLeft'],
-        styles: ['full', 'alignLeft', 'alignRight', 'side', 'alignCenter']
-      },
-      isReadOnly: false,
-      removePlugins: ['ImageCaption']
-    };
+
   }
 
   initializeImagePicker(editorType) {
     this.showImagePicker = true;
-    // this.editorInstance = editorType === 'question' ? this.question_editor : this.answer_editor;
   }
   /**
    * function to hide image picker
@@ -108,26 +110,21 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   public isEditorReadOnly(state) {
     this.editorInstance.isReadOnly = state;
     this.isAssetBrowserReadOnly = state;
-    console.log(this.isAssetBrowserReadOnly);
   }
 
   initializeEditors() {
     ClassicEditor.create(document.querySelector('#' + this.editorId), {
-        toolbar: ['heading', '|', 'bold', '|', 'italic', '|',
-          'bulletedList', '|', 'numberedList', '|', 'insertTable', '|'
-        ],
-        image: {
-          toolbar: ['imageTextAlternative', '|', 'imageStyle:full', 'imageStyle:side', 'imageStyle:alignRight', 'imageStyle:alignLeft'],
-          styles: ['full', 'alignLeft', 'alignRight', 'side', 'alignCenter']
-        },
-        isReadOnly: false,
-        removePlugins: ['ImageCaption']
+        toolbar: this.editorConfig.toolbar,
+        image: this.editorConfig.image,
+        isReadOnly: this.editorConfig.isReadOnly,
+        removePlugins: this.editorConfig.removePlugins
     })
     .then(editor => {
-      // editor.config = this.editorConfig;
       this.editorInstance = editor;
-      if (this.questionMetaData && this.questionMetaData.data) {
-        this.editorInstance.setData(this.questionMetaData.data.body);
+      if (this.editorDataInput) {
+        this.editorInstance.setData(this.editorDataInput);
+      } else {
+        this.editorInstance.setData('');
       }
       console.log('Editor was initialized', editor);
       this.focusTracker(this.editorInstance);
@@ -155,6 +152,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
         // }
         this.isEditorFocused = false;
       }
+      this.editorDataOutput.emit(editor.getData());
     });
   }
   /**

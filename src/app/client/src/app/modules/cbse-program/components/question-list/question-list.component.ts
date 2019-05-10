@@ -87,7 +87,6 @@ export class QuestionListComponent implements OnInit, AfterViewInit {
     };
     this.actionService.get(req).subscribe((res) => {
         this.emptyState = false;
-        this.editorMode = 'edit';
         this.questionMetaData = {
             mode : this.editorMode,
             data : res.result.assessment_item
