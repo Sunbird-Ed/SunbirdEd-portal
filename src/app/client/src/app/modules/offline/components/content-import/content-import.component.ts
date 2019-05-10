@@ -79,7 +79,7 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
   modalClose() {
     const progressUploads = document.getElementsByClassName('qq-in-progress');
     if (progressUploads.length) {
-      const isProgress = confirm('Contents are being uploaded');
+      const isProgress = confirm(this.resourceService.frmelmnts.lbl.contentsUploaded);
       if (isProgress) {
         this.modal.deny();
         this.router.navigateByUrl('/');
