@@ -392,5 +392,36 @@
                 "showEndPage": false
             }
         }
-    }
+    },
+    "QUESTION_EDITOR": {
+        "templateConfig": [
+            {
+                "id": 1,
+                "url": "assets/images/mcq_template/grid.png",
+                "templateClass": "sb-mcq-grid"
+            },
+            {
+                "id": 2,
+                "url": "assets/images/mcq_template/grid2.png",
+                "templateClass": "sb-mcq-grid2"
+            },
+            {
+                "id": 3,
+                "url": "assets/images/mcq_template/vertical.png",
+                "templateClass": "sb-mcq-vertical"
+            },
+            {
+                "id": 4,
+                "url": "assets/images/mcq_template/vertical2.png",
+                "templateClass": "sb-mcq-vertical2"
+            },
+            {
+                "id": 5,
+                "url": "assets/images/mcq_template/horizontal.png",
+                "templateClass": "sb-mcq-horizontal"
+            }
+        ]
+    },
+    "mcqBody": "<div class='{templateClass}'><div class='sb-mcq-title'>{question}</div><div class='sb-mcq-options'>{optionList}</div></div>",
+    "optionTemplate": "<div class='mcq-option'>{option}</div>"
 }
