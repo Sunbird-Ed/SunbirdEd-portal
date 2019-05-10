@@ -299,7 +299,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         this.showLoader = false;
         this.dashboarData = apiResponse.result;
         this.showDownloadLink = apiResponse.result.showDownloadLink ? apiResponse.result.showDownloadLink : false;
-        this.totalCount = batch.participantCount;
+        this.totalCount = _.get(batch, 'participantCount');
         if (this.totalCount >= 10000) {
           this.pager = this.paginationService.getPager(10000, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
         } else {
