@@ -12,6 +12,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit {
   @Input() selectedAttributes: any;
   public userProfile: IUserProfile;
   public  questionTabs = [];
+  public selectedQuestion: any;
   public active: boolean[] = [];
   public emptyState = true;
   public questionMetaData: any;
@@ -52,6 +53,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit {
                     'subject': this.selectedAttributes.subject,
                     'medium': this.selectedAttributes.medium,
                     'type': this.selectedAttributes.questionType,
+                    'topic': this.selectedAttributes.topic,
                     'createdBy': this.userProfile.userId,
                     'version': 3,
                     'status' : []
@@ -67,6 +69,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit {
         });
         if (this.questionTabs.length > 0) {
             this.getQuestion(this.questionTabs[0].identifier);
+            this.activateClass(0);
         }
         console.log('questionTabs ', this.questionTabs);
     });
@@ -76,7 +79,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit {
 
   }
   public activateClass(tab) {
-    tab.active = !tab.active;
+    this.selectedQuestion  = tab;
   }
   public getQuestion(questionId) {
     const req = {
