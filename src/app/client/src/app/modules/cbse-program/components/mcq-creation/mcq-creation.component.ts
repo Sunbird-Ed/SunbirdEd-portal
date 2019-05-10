@@ -35,7 +35,7 @@ export class McqCreationComponent implements OnInit, AfterViewInit {
     }
   }
   ngAfterViewInit() {
-
+    ( < any > $('.ui.checkbox')).checkbox();
   }
   initializeEditors() {
 
