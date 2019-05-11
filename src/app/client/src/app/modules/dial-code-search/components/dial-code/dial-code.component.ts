@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, ConfigService, UtilService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SearchService, SearchParam, PlayerService } from '@sunbird/core';
+import { SearchService, SearchParam, PlayerService, OrgDetailsService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { takeUntil, map, catchError, mergeMap } from 'rxjs/operators';
 import { Subject, forkJoin, of } from 'rxjs';
 import * as TreeModel from 'tree-model';
+
 
 @Component({
   selector: 'app-dial-code',
@@ -16,8 +17,8 @@ import * as TreeModel from 'tree-model';
 export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   inviewLogs: any = [];
   /**
-	 * telemetryImpression
-	*/
+   * telemetryImpression
+  */
   telemetryImpression: IImpressionEventInput;
   /**
    * reference of SearchService
@@ -82,8 +83,11 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   isRedirectToDikshaApp = false;
   closeMobilePopupInteractData: any;
   appMobileDownloadInteractData: any;
+  private selectLanguage: string;
+  commingSoonMessage: string;
 
-  constructor(resourceService: ResourceService, router: Router, activatedRoute: ActivatedRoute,
+  constructor(public orgDetailsService: OrgDetailsService, private userService: UserService,
+    resourceService: ResourceService, router: Router, activatedRoute: ActivatedRoute,
     searchService: SearchService, toasterService: ToasterService, public configService: ConfigService,
     public utilService: UtilService, public navigationhelperService: NavigationHelperService,
     public playerService: PlayerService, public telemetryService: TelemetryService) {
@@ -95,6 +99,9 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
+      this.selectLanguage = item.value;
+    });
     this.setTelemetryData();
     this.instanceName = this.resourceService.instance;
     this.activatedRoute.params.subscribe(params => {
@@ -182,11 +189,49 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
         const metaData = this.configService.appConfig.GetPage.metaData;
         const dynamicFields = this.configService.appConfig.GetPage.dynamicFields;
         this.searchResults = this.utilService.getDataForCard(this.linkedContents, constantData, dynamicFields, metaData);
-        this.showLoader = false;
+        if (this.linkedContents.length === 0) {
+          this.setCommingSoonMessage();
+        } else {
+          this.showLoader = false;
+        }
       }, error => {
         this.showLoader = false;
         this.toasterService.error(this.resourceService.messages.fmsg.m0049);
       });
+  }
+
+  public setCommingSoonMessage () {
+    /*
+    * rootOrgId is required to select the custom comming soon message from systemsettings
+    */
+    let rootOrgId: string;
+    if (this.userService.loggedIn) {
+      rootOrgId = this.userService.rootOrgId;
+    } else {
+      rootOrgId = this.orgDetailsService.getRootOrgId;
+    }
+    this.orgDetailsService.getCommingSoonMessage().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      (apiResponse) => {
+        if (apiResponse.value) {
+          const contentComingSoonDetails = _.find(JSON.parse(apiResponse.value), {rootOrgId: rootOrgId});
+          this.commingSoonMessage = this.getMessageFormTranslations(contentComingSoonDetails);
+        }
+        this.showLoader = false;
+      }
+    );
+  }
+
+  private getMessageFormTranslations (commingsoonobj) {
+    try {
+      const translations = JSON.parse(commingsoonobj.translations);
+      if (translations[this.selectLanguage]) {
+        return translations[this.selectLanguage];
+      } else {
+        return translations['en'];
+      }
+    } catch (e) {
+      return (commingsoonobj && commingsoonobj.value) || this.resourceService.messages.stmsg.m0122;
+    }
   }
 
   public getAllPlayableContent(collectionIds) {
