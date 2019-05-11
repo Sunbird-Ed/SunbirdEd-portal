@@ -1,63 +1,73 @@
 import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter, OnChanges } from '@angular/core';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { FormBuilder, FormGroup, FormControl, Validators, FormArray  } from '@angular/forms';
 import { McqForm } from './../../class/McqForm';
+import { ConfigService } from '@sunbird/shared';
+import * as _ from 'lodash-es';
+
 @Component({
   selector: 'app-mcq-creation',
   templateUrl: './mcq-creation.component.html',
   styleUrls: ['./mcq-creation.component.css']
 })
-export class McqCreationComponent implements OnInit, AfterViewInit {
+export class McqCreationComponent implements OnInit {
 
   @Input() selectedAttributes: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter<any>();
   showTemplatePopup = false;
-  templateDetails = {};
-  editorConfig;
+  templateDetails: any = {};
   initEditor = false;
   isQuestionFocused = true;
   showImagePicker = false;
   mcqForm: McqForm;
-  constructor(private fb: FormBuilder) {
-    this.initForm();
+  constructor(public configService: ConfigService) {
   }
   initForm() {
     this.mcqForm = new McqForm('', [], '1', '1');
+    ( < any > $('.ui.checkbox')).checkbox();
     console.log('mcqForm', this.mcqForm);
   }
   ngOnInit() {
-    this.editorConfig = { 'mode': 'create' };
     if (this.questionMetaData.mode === 'create') {
       this.showTemplatePopup = true;
     } else {
-      setTimeout(() => this.initializeEditors(), 50);
+      this.initForm();
     }
-  }
-  ngAfterViewInit() {
-  }
-  initializeEditors() {
-    ( < any > $('.ui.checkbox')).checkbox();
   }
   handleTemplateSelection(event) {
     console.log(event);
+    this.showTemplatePopup = false;
     if (event.type = 'submit') {
       this.templateDetails = event.template;
-      setTimeout(() => this.initializeEditors(), 50);
+      this.initForm();
     } else {
       this.questionStatus.emit({ type: 'close' });
     }
-    this.showTemplatePopup = false;
   }
   createQuestion() {
     console.log(this.mcqForm);
+    this.getHtml();
   }
 
-  public editorDataHandler(event, option) {
-    if (option) {
-      option.body = event;
+  getHtml() {
+    const { mcqBody, optionTemplate } = this.configService.editorConfig.QUESTION_EDITOR;
+    const optionsBody = _.map(this.mcqForm.options, data => optionTemplate.replace('{option}', data.body)).join('');
+    let templateClass;
+    if (this.questionMetaData.mode === 'create') {
+      templateClass =  this.templateDetails.templateClass;
     } else {
-      this.mcqForm.question = event;
+      templateClass = this.questionMetaData.templateClass; // TODO: need to be verified
     }
+    const mcqHtml = mcqBody.replace('{templateClass}', templateClass)
+    .replace('{question}', this.mcqForm.question).replace('{optionList}', optionsBody);
+    const responseDeclaration = {
+      responseValue: {
+        cardinality: 'single',
+        type: '',
+        'correct_response': {
+          value: this.mcqForm.answer
+        }
+      }
+    };
+    // make create api call
   }
 }
