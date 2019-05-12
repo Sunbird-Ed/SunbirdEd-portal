@@ -51,8 +51,18 @@
   &.disabled {
     pointer-events: none;
     border: $sb-collectionTree-disabled-border;
-    .sb-collectionTree-titleCover .sb-collectionTree-title-icon {
-      color: $sb-collectionTree-disabled-title-icon-color;
+
+    .sb-collectionTree-titleCover {
+      .sb-collectionTree-title-icon {
+        color: $sb-collectionTree-disabled-title-icon-color;
+      }
+
+      .appendedMessage {
+        unicode-bidi: plaintext;
+        display: inline-block;
+        margin: 0 4px
+      }
+
     }
   }
 
@@ -63,19 +73,19 @@
 
 .ui-fancytree,
 .ui-fancytree ul {
+  position: relative;
   margin: $sb-fancyTree-margin-ltr;
   padding: $sb-fancyTree-padding;
-  position: relative;
 
   &:before {
     position: absolute;
     display: block;
     content: ' ';
-    width: 1px;
-    height: calc(100% - 6px);
-    background-color: #80A7CE;
     top: -4px;
     left: 0;
+    height: calc(100% - 6px);
+    width: $sb-fancyTree-list-border-width;
+    background-color: $sb-fancyTree-list-border-color;
   }
 
   &:focus {
@@ -83,9 +93,9 @@
   }
 
   li {
-    margin: 0 0 (2 * $base-block-space) 0;
-    padding: 0 0 0 12px;
     position: relative;
+    margin: $sb-fancyTree-list-item-margin;
+    padding: $sb-fancyTree-list-item-padding-ltr;
 
     &:before {
       position: absolute;
@@ -93,9 +103,9 @@
       content: ' ';
       top: 10px;
       left: 0;
-      width: 14px;
-      height: 1px;
-      border-top: 1px solid #80A7CE;
+      width: $sb-fancyTree-list-item-border-text-spacing;
+      height: $sb-fancyTree-list-border-width;
+      background-color: $sb-fancyTree-list-border-color;
     }
 
     .fancytree-node {
@@ -104,31 +114,34 @@
       cursor: pointer;
 
       .sb-fancyTree-icon {
-        font-size: 20px;
-        line-height: 20px;
-        height: 20px;
         vertical-align: middle;
-        color: #FFA11D;
+        font-size: $sb-fancyTree-list-item-icon-size;
+        line-height: $sb-fancyTree-list-item-icon-size;
+        height: $sb-fancyTree-list-item-icon-size;
+        color: $sb-fancyTree-default-list-item-icon-color;
+        margin: 0;
 
         &.fancy-tree-green {	
-          color: $success-color;	
+          color: $sb-fancyTree-completed-list-item-icon-color;	
         }
 
         &.fancy-tree-blue {	
-          color: $primary-color;	
+          color: $sb-fancyTree-inprogress-list-item-icon-color;	
         }
       }
 
       .fancytree-title {
-        padding: 0 ($base-block-space);
-        font-size: 14px;
+        padding: $sb-fancyTree-list-item-title-padding;
+        font-size: $sb-fancyTree-list-item-title-font-size;
       }
 
       &.disabled{
         pointer-events: none;
+
         .sb-fancyTree-icon {
-          color: #ccc;
+          color: $sb-fancyTree-disabled-list-item-icon-color;
         }
+
       }
     }
   }
@@ -142,7 +155,7 @@
 *[dir="rtl"] {
   .ui-fancytree,
   .ui-fancytree ul {
-    margin: 0 10px 0 0;
+    margin: $sb-fancyTree-margin-rtl;
 
     &:before {
       right: 0;
@@ -150,7 +163,7 @@
     }
 
     li {
-      padding: 0 12px 0 0;
+      padding: $sb-fancyTree-list-item-padding-rtl;
 
       &:before {
         right: 0;
@@ -160,6 +173,7 @@
 
   }
 }
+
 
 .curriculum-content {
   font-size: 14px;

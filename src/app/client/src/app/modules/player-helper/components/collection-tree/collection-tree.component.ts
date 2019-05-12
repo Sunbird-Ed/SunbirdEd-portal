@@ -91,7 +91,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
         node.icon = `${node.icon} ${node.iconColor}`;
       }
       if (node.folder && !(node.children.length)) {
-        node.title = node.model.name + '<span> (' + this.resourceService.messages.stmsg.m0121 + ')</span>';
+        node.title = node.model.name + '<span class="appendedMessage"> (' + this.resourceService.messages.stmsg.m0121 + ')</span>';
         node.extraClasses = 'disabled';
       } else {
         node.title = node.model.name || 'Untitled File';
