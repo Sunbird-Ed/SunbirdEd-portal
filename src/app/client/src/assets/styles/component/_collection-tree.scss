@@ -57,10 +57,10 @@
         color: $sb-collectionTree-disabled-title-icon-color;
       }
 
-      .appendedMessage {
+      .commingSoonMessage {
         unicode-bidi: plaintext;
         display: inline-block;
-        margin: 0 4px
+        margin: $sb-fancyTree-list-item-title-commingSoonMessage-spacing;
       }
 
     }
