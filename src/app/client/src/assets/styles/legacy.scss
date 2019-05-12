@@ -1,4 +1,40 @@
 @import "variables";
+
+
+.curriculum-content {
+  font-size: 14px;
+  display: flex;
+  padding: 8px 0;
+}
+/* Semantic UI icons only applies on i tag*/
+span.icon {
+  display: inline-block;
+  opacity: 1;
+  margin: 0 .25rem 0 0;
+  width: 1.18em;
+  height: 1em;
+  font-family: Icons;
+  font-style: normal;
+  font-weight: 400;
+  text-decoration: inherit;
+  text-align: center;
+  speak: none;
+  font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+span.icon.folder:before {
+  content: "\f07b";
+}
+span.icon.folder.outline:before {
+  content: "\f114";
+}
+span.icon.play.circle:before {
+  content: "\f144";
+}
+
 /* placeholder if content is not there */
 .placeholder {
   align-items: center;
