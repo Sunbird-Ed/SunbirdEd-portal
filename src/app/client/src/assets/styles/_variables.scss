@@ -314,6 +314,38 @@ $sb-treePicker-nodes-childlist-margin: $base-block-space;
 $sb-treePicker-nodes-disabled-opacity: 0.3;
 $sb-treePicker-search-query-highlight-color: $yellow;
 
+// TOC or Collection Tree
+$sb-collectionTree-border-radius: 4px;
+$sb-collectionTree-border: 1px solid #80A7CE;
+$sb-collectionTree-padding: 16px;
+$sb-collectionTree-margin: 8px 0 0 0;
+$sb-collectionTree-background-color: #fff;
+$sb-collectionTree-title-color: #333;
+$sb-collectionTree-title-font-size: 14px;
+$sb-collectionTree-title-line-height: 20px;
+$sb-collectionTree-title-font-weight: 400;
+$sb-collectionTree-active-title-color: #024F9D;
+$sb-collectionTree-active-title-font-weight: bold;
+$sb-collectionTree-title-icon-color: #FFA11D;
+$sb-collectionTree-title-icon-font-size: 20px;
+$sb-collectionTree-title-icon-line-height: 20px;
+$sb-collectionTree-title-icon-height: 20px;
+$sb-collectionTree-title-icon-font-weight: 500;
+$sb-collectionTree-title-toggle-icon-color: #024F9D;
+$sb-collectionTree-title-toggle-icon-font-size: 12px;
+$sb-collectionTree-title-toggle-icon-line-height: 20px;
+$sb-collectionTree-title-toggle-icon-height: 20px;
+$sb-collectionTree-title-toggle-icon-font-weight: 500;
+$sb-collectionTree-disabled-border: 1px solid #ccc;
+$sb-collectionTree-disabled-title-icon-color: #ccc;
+
+
+// Fancy Tree
+$sb-fancyTree-margin-ltr: 0 0 0 10px;
+$sb-fancyTree-margin-rtl: 0 0 0 10px;
+$sb-fancyTree-padding: 16px 0 0 0;
+
+
 // To clean
 $text-lightDark: $gray-400;
 $text-gray: $gray-100;
