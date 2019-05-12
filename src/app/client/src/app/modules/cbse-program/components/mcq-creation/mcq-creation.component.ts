@@ -16,15 +16,11 @@ export class McqCreationComponent implements OnInit {
   showTemplatePopup = false;
   templateDetails: any = {};
   initEditor = false;
-  isQuestionFocused = true;
-  showImagePicker = false;
   mcqForm: McqForm;
   constructor(public configService: ConfigService) {
   }
   initForm() {
     this.mcqForm = new McqForm('', [], '1', '1');
-    ( < any > $('.ui.checkbox')).checkbox();
-    console.log('mcqForm', this.mcqForm);
   }
   ngOnInit() {
     if (this.questionMetaData.mode === 'create') {
