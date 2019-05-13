@@ -15,6 +15,7 @@ export class McqCreationComponent implements OnInit {
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter<any>();
   showTemplatePopup = false;
+  showForm = false;
   templateDetails: any = {};
   initEditor = false;
   mcqForm: McqForm;
@@ -34,12 +35,15 @@ export class McqCreationComponent implements OnInit {
   }
   initForm() {
     if (this.questionMetaData.data) {
-      const responseValue = JSON.parse(this.questionMetaData.data.responseDeclaration).responseValue;
-      this.mcqForm = new McqForm(this.questionMetaData.data.question, [],
-        this.questionMetaData.data.template_id, responseValue.correct_response.value);
+      const { question, responseDeclaration, template_id,
+        learningOutcome, qlevel, bloomsLevel, max_score } = this.questionMetaData.data;
+      const options = _.map(this.questionMetaData.data.options, option => ({body: option.value.body}));
+      this.mcqForm = new McqForm(question, options, template_id, _.get(responseDeclaration, 'responseValue.correct_response.value'),
+        learningOutcome[0], qlevel, bloomsLevel[0], max_score);
     } else {
       this.mcqForm = new McqForm('', [], '1', '1');
     }
+    this.showForm = true;
   }
   ngOnInit() {
     this.userService.userData$.subscribe(
@@ -116,18 +120,12 @@ export class McqCreationComponent implements OnInit {
       }
     };
     console.log('req ', req.data);
-    // this.actionService.post(req).subscribe((res) => {
-    //   if (res.responseCode !== 'OK') {
-    //     console.log('Please try again');
-    //     //this.questionStatus.emit({'status': 'failed'});
-    //   } else {
-    //     //this.questionStatus.emit({'status': 'success', 'identifier': res.result.node_id});
-    //     // this.question_editor.destroy();
-    //     // this.answer_editor.destroy();
-    //   }
-    // }, error => {
-    //   this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
-    // });
+    this.actionService.post(req).subscribe((res) => {
+      console.log(res);
+      this.questionStatus.emit({'status': 'success', 'identifier': res.result.node_id});
+    }, error => {
+      this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
+    });
   }
 
   getHtml() {
