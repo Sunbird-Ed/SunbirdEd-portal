@@ -7,7 +7,6 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { CommonModule } from '@angular/common';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
-import { OfflineModule } from '@sunbird/offline';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { CacheService } from 'ng2-cache-service';
@@ -26,12 +25,11 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     HttpClientModule,
     SuiModule,
     SharedModule.forRoot(),
-    // WebExtensionModule.forRoot(),
+    WebExtensionModule.forRoot(),
     TelemetryModule.forRoot(),
     DeviceDetectorModule.forRoot(),
-    OfflineModule,
     SharedFeatureModule,
-    // ...PluginModules,
+    PluginModules,
     AppRoutingOfflineModule // don't add any module below this because it contains wildcard route
   ],
   entryComponents: [AppComponent],
@@ -42,7 +40,7 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
   ]
 })
 export class AppModuleOffline {
-  constructor() {
-    // bootstrapFramework.initialize(WebExtensionsConfig);
+  constructor(bootstrapFramework: BootstrapFramework) {
+    bootstrapFramework.initialize(WebExtensionsConfig);
   }
 }

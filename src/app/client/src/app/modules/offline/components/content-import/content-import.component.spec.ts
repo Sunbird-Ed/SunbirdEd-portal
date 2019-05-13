@@ -1,6 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ContentImportComponent } from './content-import.component';
+import { OfflineFileUploaderService } from '../../services';
+import { SuiModalModule } from 'ng2-semantic-ui';
+import { SharedModule } from '@sunbird/shared';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ContentImportComponent', () => {
   let component: ContentImportComponent;
@@ -8,7 +12,9 @@ describe('ContentImportComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ContentImportComponent]
+      imports: [ SuiModalModule, SharedModule.forRoot(), HttpClientTestingModule ],
+      declarations: [ContentImportComponent],
+      providers: [ OfflineFileUploaderService ]
     })
       .compileComponents();
   }));
@@ -19,7 +25,4 @@ describe('ContentImportComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
-    expect(component).toBeTruthy();
-  });
 });
