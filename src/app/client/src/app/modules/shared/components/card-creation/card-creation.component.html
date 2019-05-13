@@ -34,8 +34,10 @@
             </button>
           </span>
           <span *ngSwitchCase="'icon'">
-            <i class="{{data.action.right.class}}" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="telemetryInteractEdata" (click)="onAction(data,data.action.right); $event.stopPropagation()">
-            </i>
+            <span [ngClass]="{disable:data.metaData.pkgVersion && data.metaData.pkgVersion > 0 &&  data.metaData.status === 'Draft'}">
+                <i class="{{data.action.right.class}}" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="telemetryInteractEdata" (click)="onAction(data,data.action.right); $event.stopPropagation()">
+                </i>
+            </span>
             <span *ngIf="data.action.right.text">{{data.action.right.text}}</span>
           </span>
         </a>

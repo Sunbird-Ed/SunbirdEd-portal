@@ -6,7 +6,7 @@ var producer, client;
 // initilize kafka client and producers
 function init() {
   client = new kafka.KafkaClient({
-    kafkaHost: envHelper.sunbird_kafka_host,
+    kafkaHost: envHelper.sunbird_processing_kafka_host,
     maxAsyncRequests: 100
   });
 
@@ -20,7 +20,7 @@ function init() {
   });
 }
 
-if (envHelper.sunbird_kafka_host) {
+if (envHelper.sunbird_processing_kafka_host) {
   init();
 }
 
@@ -30,7 +30,7 @@ const kafkaService = {
   sendMessage: (data, kafkaTopic, callback = () => {
   }) => {
 
-    if (!envHelper.sunbird_kafka_host) {
+    if (!envHelper.sunbird_processing_kafka_host) {
       return callback(new Error('KAFKA_NOT_INITIALIZED.'))
     }
 
@@ -45,7 +45,7 @@ const kafkaService = {
     const record = [
       {
         topic: kafkaTopic,
-        messages: data
+        messages: JSON.stringify(data)
       }
     ];
     // Send record to Kafka
