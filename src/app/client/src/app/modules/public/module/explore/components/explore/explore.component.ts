@@ -1,3 +1,4 @@
+import { OfflineFileUploaderService } from '../../../../../offline/services';
 import { combineLatest, Subject } from 'rxjs';
 import { PageApiService, OrgDetailsService, UserService } from '@sunbird/core';
 import { PublicPlayerService } from './../../../../services';
@@ -11,6 +12,7 @@ import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
+import { environment } from '@sunbird/environment';
 @Component({
   templateUrl: './explore.component.html'
 })
@@ -33,14 +35,16 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public initFilters = false;
   public loaderMessage;
   public pageSections: Array<ICaraouselData> = [];
+  isOffline: boolean = environment.isOffline;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
-    && this.pageSections.length < this.carouselMasterData.length) {
-        this.pageSections.push(this.carouselMasterData[this.pageSections.length]);
+      && this.pageSections.length < this.carouselMasterData.length) {
+      this.pageSections.push(this.carouselMasterData[this.pageSections.length]);
     }
   }
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
+    public offlineFileUploaderService: OfflineFileUploaderService,
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
     public router: Router, private utilService: UtilService, private orgDetailsService: OrgDetailsService,
     private publicPlayerService: PublicPlayerService, private cacheService: CacheService,
@@ -66,6 +70,13 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.router.navigate(['']);
       }
     );
+
+    if (this.isOffline) {
+      const self = this;
+      this.offlineFileUploaderService.isUpload.subscribe(() => {
+        self.fetchPageData();
+      });
+    }
   }
   public getFilters(filters) {
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
@@ -78,7 +89,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
-        takeUntil(this.unsubscribe$))
+      takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         this.showLoader = true;
         this.queryParams = { ...result[0], ...result[1] };
@@ -88,24 +99,26 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
   private fetchPageData() {
-    const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key)  => {
+    const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
       if (_.includes(['sort_by', 'sortType', 'appliedFilters'], key)) {
         return false;
       }
       return value.length;
     });
     const softConstraintData = {
-      filters: {channel: this.hashTagId,
-      board: [this.dataDrivenFilters.board]},
+      filters: {
+        channel: this.hashTagId,
+        board: [this.dataDrivenFilters.board]
+      },
       softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
       mode: 'soft'
     };
-    const manipulatedData = this.utilService.manipulateSoftConstraint( _.get(this.queryParams, 'appliedFilters'),
-    softConstraintData);
+    const manipulatedData = this.utilService.manipulateSoftConstraint(_.get(this.queryParams, 'appliedFilters'),
+      softConstraintData);
     const option = {
       source: 'web',
       name: 'Explore',
-      filters: _.get(this.queryParams, 'appliedFilters') ?  filters : _.get(manipulatedData, 'filters'),
+      filters: _.get(this.queryParams, 'appliedFilters') ? filters : _.get(manipulatedData, 'filters'),
       mode: _.get(manipulatedData, 'mode'),
       exists: [],
       params: this.configService.appConfig.ExplorePage.contentApiQueryParams
@@ -170,7 +183,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public viewAll(event) {
     const searchQuery = JSON.parse(event.searchQuery);
     const softConstraintsFilter = {
-      board : [this.dataDrivenFilters.board],
+      board: [this.dataDrivenFilters.board],
       channel: this.hashTagId,
     };
     searchQuery.request.filters.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
@@ -182,10 +195,10 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], { queryParams: queryParams });
   }
-  ngAfterViewInit () {
-      setTimeout(() => {
-        this.setTelemetryData();
-      });
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.setTelemetryData();
+    });
   }
   ngOnDestroy() {
     this.unsubscribe$.next();
@@ -211,9 +224,9 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
   private setNoResultMessage() {
-      this.noResultMessage = {
-        'message': 'messages.stmsg.m0007',
-        'messageText': 'messages.stmsg.m0006'
-      };
+    this.noResultMessage = {
+      'message': 'messages.stmsg.m0007',
+      'messageText': 'messages.stmsg.m0006'
+    };
   }
 }
