@@ -1,6 +1,6 @@
 <div *ngIf='!showTemplatePopup'>
 
-  <form class="ui form {{templateDetails.templateClass}}">
+  <form #mcqFormControl="ngForm" class="ui form {{templateDetails.templateClass}}">
     <div class="field mcq-title">
       <label>Question</label>
       <app-ckeditor-tool (editorDataOutput)="mcqForm.question = $event" [editorConfig]="questionMetaData"
@@ -18,14 +18,58 @@
             <label>Correct Answer</label>
             <div class="field">
               <div class="ui radio checkbox">
-                  <sui-radio-button name="'correct_response'" value={{i}} [(ngModel)]="mcqForm.answer"></sui-radio-button>
+                <sui-radio-button name="'correct_response'" value={{i}} [(ngModel)]="mcqForm.answer"></sui-radio-button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <button class="ui button" (click)="createQuestion($event)">Submit</button>
+    <div class="field">
+    <div class="two fields">
+      <div class="field">
+        <label>Learning Outcome</label>
+        <sui-select class="selection" #learningOutcome="ngModel" [(ngModel)]="mcqForm.learningOutcome" name="'learningOutcome'" required>
+          <sui-select-option *ngFor="let option of learningOutcomeOptions" [value]="option"></sui-select-option>
+        </sui-select>
+        <label class="ui basic red error label pt-0" *ngIf="(learningOutcome.touched || showFormError) && learningOutcome.invalid">Fill Learning Outcome</label>
+      </div>
+      <div class="inline fields">
+        <label>Difficulty:</label>
+        <div class="field">
+          <div class="ui radio checkbox">
+              <sui-radio-button #difficultyLevel="ngModel" name="'difficultyLevel'" value="Easy" [(ngModel)]="mcqForm.difficultyLevel" required>Easy</sui-radio-button>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui radio checkbox">
+            <sui-radio-button name="'difficultyLevel'" value="Medium" [(ngModel)]="mcqForm.difficultyLevel" required>Medium</sui-radio-button>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui radio checkbox">
+            <sui-radio-button name="'difficultyLevel'" value="Hard" [(ngModel)]="mcqForm.difficultyLevel" required>Hard</sui-radio-button>
+          </div>
+        </div>
+        <label class="ui basic red error label pt-0" *ngIf="(difficultyLevel.touched || showFormError) && difficultyLevel.invalid">Fill Difficulty Level </label>
+      </div>
+    </div>
+    <div class="two fields">
+      <div class="field">
+        <label>Blooms Level</label>
+        <sui-select class="selection" #bloomsLevel="ngModel" [(ngModel)]="mcqForm.bloomsLevel" name="'bloomsLevel'" required>
+          <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
+        </sui-select>
+        <label class="ui basic red error label pt-0" *ngIf="(bloomsLevel.touched || showFormError) && bloomsLevel.invalid">Fill Blooms Level </label>
+      </div>
+      <div class="field">
+        <label>Marks</label>
+        <input type="text" #marks="ngModel" name="'marks'" [(ngModel)]="mcqForm.marks" placeholder="Marks" required>
+        <label *ngIf="(marks.touched || showFormError) && marks.invalid" class="ui basic red error label pt-0">Marks is mandatory</label>
+      </div>
+    </div>
+    <button class="ui button" (click)="createQuestion($event, mcqFormControl)">Submit</button>
+  </div>
   </form>
 </div>
 

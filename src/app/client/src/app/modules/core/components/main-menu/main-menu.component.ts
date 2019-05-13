@@ -87,6 +87,9 @@ export class MainMenuComponent implements OnInit {
         }
       });
   }
+  getProgramUrl() {
+    return '/workspace/program/' + localStorage.getItem('programId');
+  }
   setInteractData() {
     this.homeMenuIntractEdata = {
       id: 'home-tab',
