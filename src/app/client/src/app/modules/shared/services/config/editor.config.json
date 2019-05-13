@@ -420,8 +420,8 @@
                 "url": "assets/images/mcq_template/horizontal.png",
                 "templateClass": "sb-mcq-horizontal"
             }
-        ]
-    },
-    "mcqBody": "<div class='{templateClass}'><div class='sb-mcq-title'>{question}</div><div class='sb-mcq-options'>{optionList}</div></div>",
-    "optionTemplate": "<div class='mcq-option'>{option}</div>"
+        ],
+        "mcqBody": "<div class='{templateClass}'><div class='sb-mcq-title'>{question}</div><div class='sb-mcq-options'>{optionList}</div></div>",
+        "optionTemplate": "<div class='mcq-option'>{option}</div>"
+    }
 }

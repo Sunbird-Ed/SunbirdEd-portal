@@ -3,9 +3,7 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ActivatedRoute, Router } from '@angular/router';
 import {  ConfigService, ResourceService, IUserData, IUserProfile, ToasterService  } from '@sunbird/shared';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
-
-// tslint:disable-next-line:import-blacklist
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 @Component({
   selector: 'app-ckeditor-tool',
@@ -13,7 +11,7 @@ import * as _ from 'lodash';
   styleUrls: ['./ckeditor-tool.component.css']
 })
 export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
-  @ViewChild('editorTool') public editorTool: ElementRef;
+  @ViewChild('editor') public editorRef: ElementRef;
   @Input() editorConfig: any;
   @Input() editorDataInput: any;
   @Input() editorId: any;
@@ -101,7 +99,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   initializeEditors() {
-    ClassicEditor.create(document.querySelector('#' + this.editorId), {
+    ClassicEditor.create(this.editorRef.nativeElement, {
         toolbar: this.editorConfig.toolbar,
         image: this.editorConfig.image,
         isReadOnly: this.editorConfig.isReadOnly,

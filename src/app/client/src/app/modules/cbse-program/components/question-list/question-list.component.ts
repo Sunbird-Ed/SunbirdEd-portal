@@ -1,8 +1,7 @@
 import { Component, OnInit, AfterViewInit, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
 import {  ConfigService, IUserProfile, IUserData } from '@sunbird/shared';
 import { UserService, PublicDataService, ActionService } from '@sunbird/core';
-// tslint:disable-next-line:import-blacklist
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 @Component({
   selector: 'app-question-list',
   templateUrl: './question-list.component.html',
