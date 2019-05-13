@@ -83,6 +83,9 @@ export class McqCreationComponent implements OnInit {
           'assessment_item': {
             'objectType': 'AssessmentItem',
             'metadata': {
+              'code': UUID.UUID(),
+              'template_id': this.templateDetails.templateClass,
+              'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
               'body': questionData.body,
               'responseDeclaration': questionData.responseDeclaration,
               'question': this.mcqForm.question,
