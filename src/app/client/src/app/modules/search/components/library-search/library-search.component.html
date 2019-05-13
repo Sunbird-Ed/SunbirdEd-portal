@@ -1,11 +1,9 @@
-<div class="container-fluid full-width">
-        <div class="ui segment br-0 p-0 prominent-filter">
-                <div class="ui container">
-                        <div class="twelve wide column mb-15">
-                                <app-data-driven-filter [enrichFilters]="facetsList" (dataDrivenFilter)="getFilters($event)" [pageId]="'library-search'" [ignoreQuery]="['key']" *ngIf="initFilters" [filterEnv]="filterType" [accordionDefaultOpen]=false [isShowFilterLabel]=true></app-data-driven-filter>
-                            </div>
+<div class="ui segment br-0 p-0 prominent-filter">
+    <div class="ui container">
+            <div class="twelve wide column mb-15">
+                    <app-data-driven-filter [enrichFilters]="facetsList" (dataDrivenFilter)="getFilters($event)" [pageId]="'library-search'" [ignoreQuery]="['key']" *ngIf="initFilters" [filterEnv]="filterType" [accordionDefaultOpen]=false [isShowFilterLabel]=true></app-data-driven-filter>
                 </div>
-          </div>
+    </div>
 </div>
 <div class="ui container">
     <div class="content-grid">
