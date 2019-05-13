@@ -68,6 +68,7 @@ export class FileUploadService {
         endpoint: this.config.urlConFig.URLS.LEARNER_PREFIX + this.config.urlConFig.URLS.CONTENT.UPLOAD_MEDIA,
         inputName: 'file',
         customHeaders: {
+          'Accept': 'application/json',
           'X-Consumer-ID': 'X-Consumer-ID',
           'X-Device-ID': 'X-Device-ID',
           'X-msgid': UUID.UUID(),
