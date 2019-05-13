@@ -1,7 +1,7 @@
 <div *ngIf='!showTemplatePopup && showForm'>
   <form #mcqFormControl="ngForm" class="ui form {{templateDetails.templateClass}}">
     <div class="mcq-submit-btn">
-      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="createQuestion($event, mcqFormControl)">Submit</button>
+      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="handleSubmit(mcqFormControl)">Submit</button>
     </div>
     <div class="field mcq-title">
       <label class="mb-16 fs-1-286">Question</label>

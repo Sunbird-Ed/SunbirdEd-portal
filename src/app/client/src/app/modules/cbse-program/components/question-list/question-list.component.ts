@@ -120,7 +120,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit {
     // console.log(this.tabs.length);
     // console.log(document.querySelector( '#editor' ));
  }
- public questionStatusHandler(result) {
+public questionStatusHandler(result) {
         if (result.status === 'failed') {
             console.log('FAILEEDDDDD');
         } else {
