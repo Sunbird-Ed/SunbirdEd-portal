@@ -33,7 +33,13 @@ export class McqCreationComponent implements OnInit {
       this.toasterService = toasterService;
   }
   initForm() {
-    this.mcqForm = new McqForm('', [], '1', '1', undefined, undefined, undefined, undefined);
+    if (this.questionMetaData.data) {
+      const responseValue = JSON.parse(this.questionMetaData.data.responseDeclaration).responseValue;
+      this.mcqForm = new McqForm(this.questionMetaData.data.question, [],
+        this.questionMetaData.data.template_id, responseValue.correct_response.value);
+    } else {
+      this.mcqForm = new McqForm('', [], '1', '1');
+    }
   }
   ngOnInit() {
     this.userService.userData$.subscribe(
@@ -42,6 +48,7 @@ export class McqCreationComponent implements OnInit {
           this.userProfile = user.userProfile;
         }
       });
+      console.log('questionMetaData ', this.questionMetaData);
     if (this.questionMetaData.mode === 'create') {
       this.showTemplatePopup = true;
     } else {
@@ -50,22 +57,27 @@ export class McqCreationComponent implements OnInit {
   }
   handleTemplateSelection(event) {
     console.log(event);
-    if (event.type === 'submit') {
+    this.showTemplatePopup = false;
+    if (event.type = 'submit') {
       this.templateDetails = event.template;
-      this.showTemplatePopup = false;
       console.log('templateDetails ', this.templateDetails);
       this.initForm();
     } else {
       this.questionStatus.emit({ type: 'close' });
     }
   }
-  createQuestion($event, formControl) {
-    console.log(this.mcqForm, formControl);
-    if (formControl.invalid) {
-      this.showFormError = true;
-      return;
-    }
-    this.getHtml();
+  createQuestion() {
+    console.log(this.mcqForm);
+    const questionData = this.getHtml();
+    const options = [];
+    const correct_answer = this.mcqForm.answer;
+    _.map(this.mcqForm.options, (opt, key) => {
+      if (Number(correct_answer) === key) {
+        options.push({'answer': true, value: {'type': 'text', 'body': opt.body}});
+      } else {
+        options.push({'answer': false, value: {'type': 'text', 'body': opt.body}});
+      }
+    });
     const req = {
       url: this.configService.urlConFig.URLS.ASSESSMENT.CREATE,
       data: {
@@ -80,13 +92,14 @@ export class McqCreationComponent implements OnInit {
               'itemType': 'UNIT',
               'version': 3,
               'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
-              'body': this.questionBody,
+              'body': questionData.body,
+              'responseDeclaration': questionData.responseDeclaration,
               'question': this.mcqForm.question,
-              'options': this.mcqForm.options,
-              'learningOutcome': [],
-              'bloomsLevel': [],
-              'qlevel': 'Easy',
-              'max_score': 2,
+              'options': options,
+              'learningOutcome': [this.mcqForm.learningOutcome],
+              'bloomsLevel': [this.mcqForm.bloomsLevel],
+              'qlevel': this.mcqForm.difficultyLevel,
+              'max_score': Number(this.mcqForm.marks),
               'template_id': this.templateDetails.templateClass,
               'framework': this.selectedAttributes.framework,
               'board': this.selectedAttributes.board,
@@ -96,7 +109,7 @@ export class McqCreationComponent implements OnInit {
               ],
               'subject': this.selectedAttributes.subject,
               'topic': [this.selectedAttributes.topic],
-              'status': 'Draft'
+              'status': 'Review'
             }
           }
         }
@@ -106,9 +119,9 @@ export class McqCreationComponent implements OnInit {
     // this.actionService.post(req).subscribe((res) => {
     //   if (res.responseCode !== 'OK') {
     //     console.log('Please try again');
-    //     this.questionStatus.emit({'status': 'failed'});
+    //     //this.questionStatus.emit({'status': 'failed'});
     //   } else {
-    //     this.questionStatus.emit({'status': 'success', 'identifier': res.result.node_id});
+    //     //this.questionStatus.emit({'status': 'success', 'identifier': res.result.node_id});
     //     // this.question_editor.destroy();
     //     // this.answer_editor.destroy();
     //   }
@@ -126,19 +139,21 @@ export class McqCreationComponent implements OnInit {
     } else {
       templateClass = this.questionMetaData.templateClass; // TODO: need to be verified
     }
-    this.questionBody = mcqBody.replace('{templateClass}', templateClass)
+    const questionBody = mcqBody.replace('{templateClass}', templateClass)
     .replace('{question}', this.mcqForm.question).replace('{optionList}', optionsBody);
     const responseDeclaration = {
       responseValue: {
         cardinality: 'single',
-        type: 'integer',
+        type: 'index',
         'correct_response': {
           value: this.mcqForm.answer
         }
       }
     };
-    console.log('mcqHtml ', this.questionBody);
-    console.log('responseDeclaration ', responseDeclaration);
+    return {
+      body : questionBody,
+      responseDeclaration: responseDeclaration
+    };
     // make create api call
   }
 }

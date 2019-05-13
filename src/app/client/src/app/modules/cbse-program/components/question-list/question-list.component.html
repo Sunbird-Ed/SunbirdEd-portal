@@ -3,6 +3,9 @@
         <div class="ui questionsMenu">
             <div class="ui vertical segments">
                 <div class="questionTab ui center tertiary header aligned segment" [class.tertiary]="selectedQuestion == i" (click)="getQuestion(tab.identifier, tab); activateClass(i)" *ngFor="let tab of questionTabs; let i = index">
+                    <div class="ui top right attached  yellow empty circular label m-5" *ngIf="tab.status === 'Draft' || tab.status === 'Review'" ></div>
+                    <div class="ui top right attached  green empty circular label m-5" *ngIf="tab.status === 'Live'"></div>
+                    <div class="ui top right attached  red empty circular label m-5" *ngIf="tab.status === 'Reject'"></div>
                     <a class="item">
                         Question {{i + 1}}
                     </a>

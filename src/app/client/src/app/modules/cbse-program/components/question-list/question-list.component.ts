@@ -66,9 +66,10 @@ export class QuestionListComponent implements OnInit, AfterViewInit {
     this.publicDataService.post(req).subscribe((res) => {
         console.log('res ', res.result.items, res.result.count);
         _.map(res.result.items, (item) => {
-            this.questionTabs.push({identifier: item.identifier});
+            this.questionTabs.push({identifier: item.identifier, status: item.status});
         });
         if (this.questionTabs.length > 0) {
+            this.editorMode = 'view';
             this.getQuestion(this.questionTabs[0].identifier);
             this.activateClass(0);
         }
@@ -126,7 +127,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit {
             this.editorMode = 'view';
             this.getQuestion(result.identifier);
             this.enableCreateButton = true;
-            this.questionTabs.push({identifier : result.identifier});
+            this.questionTabs.push({identifier : result.identifier, status: 'Review'});
             this.activateClass(this.questionTabs.length - 1);
         }
   }

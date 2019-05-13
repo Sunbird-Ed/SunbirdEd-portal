@@ -36,3 +36,9 @@
   .insert-image-btn:active {
     background-color: transparent;
   }
+
+  .submit-btn {
+    margin-left: auto;
+    padding-right: 16px;
+    margin-bottom: 16px;
+  }
