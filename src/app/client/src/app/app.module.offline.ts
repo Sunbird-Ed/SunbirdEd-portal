@@ -7,7 +7,6 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { CommonModule } from '@angular/common';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
-import { OfflineModule } from '@sunbird/offline';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { CacheService } from 'ng2-cache-service';
@@ -15,7 +14,7 @@ import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storag
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
  import { BootstrapFramework, WebExtensionModule } from '@project-sunbird/web-extensions';
- import { WebExtensionsConfig, PluginModules } from './framework.config';
+ import { WebExtensionsConfig, PluginModules } from './framework.config.offline';
 @NgModule({
   declarations: [
   ],
