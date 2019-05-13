@@ -15,7 +15,7 @@
           <div class="twelve wide field">
             <label class="mb-16 fs-1">Option {{i + 1}}:</label>
             <app-ckeditor-tool (editorDataOutput)="option.body = $event" [editorConfig]="questionMetaData"
-              [editorDataInput]="option.body"></app-ckeditor-tool>
+              [editorDataInput]="option.body" [setCharacterLimit]="160"></app-ckeditor-tool>
               <div class="mcq-checkbox-answer">
                   <label >Mark as right answer</label>
                   <sui-radio-button name="'correct_response'" value={{i}} [(ngModel)]="mcqForm.answer"></sui-radio-button>

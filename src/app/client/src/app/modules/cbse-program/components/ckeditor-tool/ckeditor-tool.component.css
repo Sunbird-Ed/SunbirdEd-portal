@@ -1,6 +1,12 @@
 :host ::ng-deep .ck-editor__editable {
   /* min-height: 300px; */
 }
+.editorWrapper{
+  border: 2px solid white;
+}
+.editorWrapper.hasError {
+  border: 2px solid red;
+}
 
 .custom-image img {
   border: 1px dotted;
