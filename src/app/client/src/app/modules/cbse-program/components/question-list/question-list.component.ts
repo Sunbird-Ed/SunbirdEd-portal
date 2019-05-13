@@ -127,6 +127,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit {
             this.getQuestion(result.identifier);
             this.enableCreateButton = true;
             this.questionTabs.push({identifier : result.identifier});
+            this.activateClass(this.questionTabs.length - 1);
         }
   }
   public removeTab(): void {

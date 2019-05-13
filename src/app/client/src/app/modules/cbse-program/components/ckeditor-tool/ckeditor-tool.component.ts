@@ -107,6 +107,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     })
     .then(editor => {
       this.editorInstance = editor;
+      this.isAssetBrowserReadOnly = this.editorConfig.isReadOnly;
       if (this.editorDataInput) {
         this.editorInstance.setData(this.editorDataInput);
       } else {
