@@ -1,5 +1,6 @@
+
 export const WebExtensionsConfig = {
   plugins: []
 };
 
-export const PluginModules = [];
+export const PluginModules = [ ];
