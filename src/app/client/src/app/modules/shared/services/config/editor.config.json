@@ -397,31 +397,26 @@
         "templateConfig": [
             {
                 "id": 1,
-                "url": "assets/images/mcq_template/grid.png",
-                "templateClass": "sb-mcq-grid"
+                "url": "assets/images/mcq_template/horizontal.png",
+                "templateClass": "mcq-vertical"
             },
             {
                 "id": 2,
-                "url": "assets/images/mcq_template/grid2.png",
-                "templateClass": "sb-mcq-grid2"
+                "url": "assets/images/mcq_template/vertical.png",
+                "templateClass": "mcq-horizontal"
             },
             {
                 "id": 3,
-                "url": "assets/images/mcq_template/vertical.png",
-                "templateClass": "sb-mcq-vertical"
+                "url": "assets/images/mcq_template/vertical2.png",
+                "templateClass": "mcq-horizontal mcq-split"
             },
             {
                 "id": 4,
-                "url": "assets/images/mcq_template/vertical2.png",
-                "templateClass": "sb-mcq-vertical2"
-            },
-            {
-                "id": 5,
-                "url": "assets/images/mcq_template/horizontal.png",
-                "templateClass": "sb-mcq-horizontal"
+                "url": "assets/images/mcq_template/grid2.png",
+                "templateClass": "mcq-grid mcq-split"
             }
         ],
-        "mcqBody": "<div class='{templateClass}'><div class='sb-mcq-title'>{question}</div><div class='sb-mcq-options'>{optionList}</div></div>",
-        "optionTemplate": "<div class='mcq-option'>{option}</div>"
+        "mcqBody": "<div class='{templateClass}'><div class='mcq-title'>{question}</div><div class='mcq-options'>{optionList}</div></div>",
+        "optionTemplate": "<div data-simple-choice-interaction data-response-variable='responseValue' class='mcq-option'>{option}</div>"
     }
 }

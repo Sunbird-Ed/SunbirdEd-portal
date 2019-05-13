@@ -21,10 +21,14 @@ export class ProgramComponent implements OnInit {
   constructor(public resourceService: ResourceService, public configService: ConfigService, public activatedRoute: ActivatedRoute,
     public extPluginService: ExtPluginService, public userService: UserService, public toasterService: ToasterService) {
     this.programId = this.activatedRoute.snapshot.params.programId;
+    localStorage.setItem('programId', this.programId);
   }
 
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
+    if (['null', null, undefined, 'undefined'].includes(this.programId)) {
+      console.log('no programId found'); // TODO: need to handle this case
+    }
     this.fetchProgramDetails().subscribe((programDetails) => {
       if (!this.programDetails.userDetails || !this.programDetails.userDetails.onBoarded) {
         this.showOnboardPopup = true;
