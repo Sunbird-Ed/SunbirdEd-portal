@@ -13,7 +13,7 @@
         </ngx-avatar>
       </div>
     </div>
-    <div class="fs-2-5 font-w-bold d-flex mb-15 text-ac relative position">{{userProfile.firstName | titlecase}} {{userProfile.lastName |
+    <div class="fs-2-5 font-w-bold d-flex mb-15 text-center relative position">{{userProfile.firstName | titlecase}} {{userProfile.lastName |
       titlecase}}
       <div class="computer only">
           <i  *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom left'" [popupInverted]="true" class="name-info"></i>  
@@ -26,7 +26,7 @@
       <div class="fs-1-16">{{resourceService?.frmelmnts?.lbl?.userId}} :</div>
       <div class="fs-1-16 ml-5">{{userProfile.userName}}</div>
     </div>
-    <div class="mb-15 text-ac profile-label-container" *ngIf="roles && roles.length > 0">
+    <div class="mb-15 text-center profile-label-container" *ngIf="roles && roles.length > 0">
       <span class="ui dodger-blue basic label mr-15 mt-5"
         *ngFor="let role of roles | slice:0:showMoreRolesLimit">{{role}}</span>
     </div>
@@ -41,7 +41,7 @@
         <i class="chevron up icon"></i>
       </span>
     </div>
-    <div class="fs-1-5 font-w-bold d-flex mb-10 text-ac org-info" *ngIf=" orgDetails && orgDetails.orgName">{{orgDetails.orgName}}   
+    <div class="fs-1-5 font-w-bold d-flex mb-10 text-center org-info" *ngIf=" orgDetails && orgDetails.orgName">{{orgDetails.orgName}}   
       <div class="computer only">
           <i suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupInverted]="true" [popupPlacement]="'bottom left'" class="info"></i>
       </div>
@@ -54,13 +54,13 @@
     <!-- add state and district -->
     <div class="ui container relative" *ngIf="isCustodianOrgUser">
       <div class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-        <div class="fs-1-16 text-ac">{{resourceService.frmelmnts.lbl.district}} :</div>
-        <div class="fs-1-16 ml-5 font-w-bold text-ac" [ngClass]="{'text-warm-grey': !district}">
+        <div class="fs-1-16 text-center">{{resourceService.frmelmnts.lbl.district}} :</div>
+        <div class="fs-1-16 ml-5 font-w-bold text-center" [ngClass]="{'text-warm-grey': !district}">
           {{district || resourceService.frmelmnts.lbl.addDistrict}} </div>
       </div>
       <div class="d-flex mb-5 flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-        <div class="fs-1-16 text-ac">{{resourceService.frmelmnts.lbl.state}} :</div>
-        <div class="fs-1-16 ml-5 font-w-bold text-ac" [ngClass]="{'text-warm-grey': !state}">
+        <div class="fs-1-16 text-center">{{resourceService.frmelmnts.lbl.state}} :</div>
+        <div class="fs-1-16 ml-5 font-w-bold text-center" [ngClass]="{'text-warm-grey': !state}">
           {{state || resourceService.frmelmnts.lbl.addState}}</div>
       </div>
       <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
@@ -87,16 +87,16 @@
 
     <div class="m-0 pl-0 mobile only" *ngIf="orgDetails && orgDetails.locations && !isCustodianOrgUser">
       <div class="mb-0 d-flex m-responsive-flex-dc mt-15" *ngIf="getLocationDetails(orgDetails.locations, 'block')">
-        <span class="fs-1-16 text-ac">{{resourceService.frmelmnts.lbl.block}} :</span>
-        <span class="fs-1-16 font-w-bold text-ac">{{getLocationDetails(orgDetails.locations, 'block')}}</span>
+        <span class="fs-1-16 text-center">{{resourceService.frmelmnts.lbl.block}} :</span>
+        <span class="fs-1-16 font-w-bold text-center">{{getLocationDetails(orgDetails.locations, 'block')}}</span>
       </div>
       <div class="mb-0 d-flex m-responsive-flex-dc mt-15" *ngIf="getLocationDetails(orgDetails.locations, 'district')">
-        <span class="fs-1-16 text-ac">{{resourceService.frmelmnts.lbl.district}} :</span>
-        <span class="fs-1-16 font-w-bold text-ac">{{getLocationDetails(orgDetails.locations, 'district')}}</span>
+        <span class="fs-1-16 text-center">{{resourceService.frmelmnts.lbl.district}} :</span>
+        <span class="fs-1-16 font-w-bold text-center">{{getLocationDetails(orgDetails.locations, 'district')}}</span>
       </div>
       <div class="mb-0 d-flex m-responsive-flex-dc mt-15" *ngIf="getLocationDetails(orgDetails.locations, 'state')">
-        <span class="fs-1-16 text-ac text-ac">{{resourceService.frmelmnts.lbl.state}} :</span>
-        <span class="fs-1-16 font-w-bold text-ac">{{getLocationDetails(orgDetails.locations, 'state')}}</span>
+        <span class="fs-1-16 text-center text-center">{{resourceService.frmelmnts.lbl.state}} :</span>
+        <span class="fs-1-16 font-w-bold text-center">{{getLocationDetails(orgDetails.locations, 'state')}}</span>
       </div>
     </div>
   </section>
@@ -169,22 +169,22 @@
     <div class="max-w-300 mobile only">
       <div class="mb-15 d-flex flex-ai-center flex-dc">
         <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.boards}}:</span>
-        <span class="fs-1-16 font-w-bold text-ac"
+        <span class="fs-1-16 font-w-bold text-center"
           *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board)}}</span>
       </div>
       <div class="mb-15 d-flex flex-ai-center flex-dc">
         <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.medium}} :</span>
-        <span class="fs-1-16 font-w-bold text-ac"
+        <span class="fs-1-16 font-w-bold text-center"
           *ngIf="userProfile.framework">{{convertToString(userProfile.framework.medium)}}</span>
       </div>
       <div class="mb-15 d-flex flex-ai-center flex-dc">
         <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.classes}} :</span>
-        <span class="fs-1-16 font-w-bold text-ac"
+        <span class="fs-1-16 font-w-bold text-center"
           *ngIf="userProfile.framework">{{convertToString(userProfile.framework.gradeLevel)}}</span>
       </div>
       <div class="mb-15 d-flex flex-ai-center flex-dc">
         <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.subjects}} :</span>
-        <span class="fs-1-16 font-w-bold text-ac"
+        <span class="fs-1-16 font-w-bold text-center"
           *ngIf="userProfile.framework">{{convertToString(userProfile.framework.subject)}}</span>
       </div>
       <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
@@ -238,7 +238,7 @@
             <ul class="pl-30 pr-30">
               <li class="d-flex flex-jc-space-between mb-20"
                 *ngFor="let data of attendedTraining | slice:0:courseLimit">
-                <span class="fs-1-16 color-3">{{data.courseName}}</span>
+                <span class="fs-1-16 sb-text-gray-800">{{data.courseName}}</span>
                 <span class="fs-1 color-4" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy' }}</span>
               </li>
               <div class=" mb-15 d-flex flex-jc-center relative" *ngIf="attendedTraining.length > 3">
@@ -270,7 +270,7 @@
   <div class="profile-bg-c-1 mobile only" *ngIf="attendedTraining && attendedTraining.length > 0">
     <ul class="px-20">
       <li class="d-flex flex-dc mb-20" *ngFor="let data of attendedTraining | slice:0:courseLimit">
-        <span class="fs-1-16 color-3">{{data.courseName}}</span>
+        <span class="fs-1-16 sb-text-gray-800">{{data.courseName}}</span>
         <span class="fs-1 color-4" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy'}}</span>
       </li>
       <div class=" mb-15 d-flex flex-jc-center relative" *ngIf="attendedTraining.length > 3">
