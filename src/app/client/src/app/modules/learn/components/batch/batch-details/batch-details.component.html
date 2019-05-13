@@ -62,7 +62,7 @@
         </div>
     </div>
     <div class="selectedBatchContent extra content">
-        <span class="right floated">
+        <span class="right floated" *ngIf="enrolledBatchInfo?.participantCount">
             {{enrolledBatchInfo?.participantCount}} {{resourceService.frmelmnts.lbl.learners}}
         </span>
         <span>
