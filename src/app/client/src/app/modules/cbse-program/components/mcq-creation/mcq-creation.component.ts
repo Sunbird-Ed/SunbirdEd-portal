@@ -99,7 +99,7 @@ export class McqCreationComponent implements OnInit {
               'learningOutcome': [this.mcqForm.learningOutcome],
               'bloomsLevel': [this.mcqForm.bloomsLevel],
               'qlevel': this.mcqForm.difficultyLevel,
-              'max_score': Number(this.mcqForm.marks),
+              'max_score': Number(this.mcqForm.max_score),
               'template_id': this.templateDetails.templateClass,
               'framework': this.selectedAttributes.framework,
               'board': this.selectedAttributes.board,

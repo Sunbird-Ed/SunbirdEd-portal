@@ -5,7 +5,8 @@ export class McqOptions {
 export class McqForm {
 
   constructor(public question: string, public options: Array<McqOptions>,
-    public templateId: string, public answer: string, learningOutcome?, difficultyLevel?, bloomsLevel?, max_score?) {
+    public templateId: string, public answer: string, public learningOutcome?,
+    public difficultyLevel?, public bloomsLevel?, public max_score?) {
     if (!options || !options.length) {
       this.options = [
         new McqOptions(''),
