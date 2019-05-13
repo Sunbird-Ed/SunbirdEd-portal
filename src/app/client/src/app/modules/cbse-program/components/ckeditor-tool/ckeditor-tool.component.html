@@ -1,7 +1,10 @@
 <button type="button" [disabled]="isAssetBrowserReadOnly || isEditorFocused" (click)="initializeImagePicker('question')" class="ui icon button insert-image-btn">
   <i class="image outline icon"></i>
 </button>
-<textarea class="editor" #editor name="question" placeholder=""></textarea>
+
+<div class="editorWrapper" [ngClass]="{'hasError': limitExceeded}">
+  <textarea class="editor" #editor name="question" placeholder=""></textarea>
+</div>
 
 <sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImagePicker()" *ngIf="showImagePicker" [size]="'normal'"
   [isFullScreen]="false" [mustScroll]="true" #modal>

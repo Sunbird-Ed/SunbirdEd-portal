@@ -9,8 +9,8 @@
       <div class="fields">
         <div class="ten wide field">
           <label>Option {{i + 1}}:</label>
-          <app-ckeditor-tool (editorDataOutput)="option.body = $event" [editorConfig]="questionMetaData"
-            [editorDataInput]="option.body"></app-ckeditor-tool>
+            <app-ckeditor-tool (editorDataOutput)="option.body = $event" [editorConfig]="questionMetaData"
+            [editorDataInput]="option.body" [setCharacterLimit]="160"></app-ckeditor-tool>
         </div>
         <div class="two wide field">
           <label>Correct Answer</label>
