@@ -2,11 +2,10 @@
     <app-qr-code-modal (closeQrModal)="showQrmodal = false"></app-qr-code-modal>
 </div>
 <div class="ui fixed main menu bs-0 d-block" appStickyHeader>
-
+    <extension-point [name]="'network-status-notify'" *ngIf="isOffline"></extension-point>
     <!--Header White Section-->
     <div class="ui container">
         <div class="ui grid padded width-100">
-
             <div class="six wide column p-0">
                 <!--Logo-->
                 <a class="d-flex logo" tabindex="0" title="{{tenantInfo.titleName}}" role="banner"
@@ -15,16 +14,13 @@
                 </a>
                 <!--/Logo-->
             </div>
-
             <div class="six wide column p-0 d-flex flex-jc-flex-end flex-ai-center">
                 <!--Hamburger Icon-->
                 <i class="large bars icon link primary-color mobile only" (click)="showSideBar()" tabindex="0"></i>
                 <!--/Hamburger Icon-->
-
                 <!--Main Menu-->
                 <app-main-menu class="d-flex computer only ml-auto"></app-main-menu>
                 <!--/Main Menu-->
-
                 <!--Avtar Dropdown-->
                 <a class="profile-avtar computer only p-0 ml-15" *ngIf="userService.loggedIn && !isOffline"
                     tabindex="0">
@@ -68,12 +64,10 @@
         </div>
     </div>
     <!--Header White Section-->
-
     <!--Header Blue Section-->
     <!--Computer-->
     <div class="bg-primary p-8" *ngIf="showExploreHeader || userService.loggedIn || isOffline">
         <div class="ui container d-flex flex-ai-center mx-0">
-
             <!--QR Button-->
             <button class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0" appTelemetryInteract
                 [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;"
@@ -82,18 +76,15 @@
                 <span>{{resourceService.frmelmnts?.lbl?.enterQrCode}}</span>
             </button>
             <!--/QR Button-->
-
             <!--Divider-->
             <span class="computer only mx-10 search-qrcode-divider">|</span>
             <!--/Divider-->
-
             <!--Search Box-->
             <!--Logged in Pages-->
             <app-search class="sb-search-box mr-auto" *ngIf="!showExploreHeader && !isOffline"
                 [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
             </app-search>
             <!--/Logged in Pages-->
-
             <!--Explore Pages-->
             <div class="sb-search-box mr-auto" *ngIf="showExploreHeader && !isOffline"
                 [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
@@ -112,7 +103,6 @@
             </div>
             <!--/Explore Pages-->
             <!--/Search Box-->
-
             <!--Language Dropdown-->
             <app-language-dropdown [languageRange]='languages' class="computer only ml-auto"
                 *ngIf="languages && !router.isActive('workspace', false)">
@@ -121,11 +111,9 @@
         </div>
     </div>
     <!--/Computer-->
-
     <!--Mobile-->
     <div class="p-10 mobile only" *ngIf="showExploreHeader || userService.loggedIn || isOffline">
         <div class="ui mobile-view container d-flex flex-jc-space-between mx-0">
-
             <!--QR Button-->
             <button class="ui button qr-code-btn d-flex flex-ai-center" appTelemetryInteract
                 [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;">
@@ -135,7 +123,6 @@
                 </span>
             </button>
             <!--/QR Button-->
-
             <!--Language Dropdown-->
             <app-language-dropdown [languageRange]='languages' class="mobile only"
                 *ngIf="languages && !router.isActive('workspace', false)">
@@ -144,7 +131,6 @@
         </div>
     </div>
     <!--/Mobile-->
-
     <!--/Header Blue Section-->
 </div>
 <extension-point [name]="'content-import'" *ngIf="isOffline"></extension-point>
