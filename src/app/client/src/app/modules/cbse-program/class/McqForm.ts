@@ -1,5 +1,5 @@
 export class McqOptions {
-  constructor(public body: string, public isCorrectAnswer: boolean) {
+  constructor(public body: string) {
   }
 }
 export class McqForm {
@@ -8,10 +8,10 @@ export class McqForm {
     public templateId: string, public answer: string) {
     if (!options || !options.length) {
       this.options = [
-        new McqOptions('', false),
-        new McqOptions('', false),
-        new McqOptions('', false),
-        new McqOptions('', false)
+        new McqOptions(''),
+        new McqOptions(''),
+        new McqOptions(''),
+        new McqOptions('')
       ];
     }
   }
