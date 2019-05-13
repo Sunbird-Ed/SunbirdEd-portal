@@ -26,11 +26,12 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     HttpClientModule,
     SuiModule,
     SharedModule.forRoot(),
-    WebExtensionModule.forRoot(),
+    // WebExtensionModule.forRoot(),
     TelemetryModule.forRoot(),
     DeviceDetectorModule.forRoot(),
+    OfflineModule,
     SharedFeatureModule,
-    PluginModules,
+    // ...PluginModules,
     AppRoutingOfflineModule // don't add any module below this because it contains wildcard route
   ],
   entryComponents: [AppComponent],
@@ -41,7 +42,7 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
   ]
 })
 export class AppModuleOffline {
-  constructor(bootstrapFramework: BootstrapFramework) {
-    bootstrapFramework.initialize(WebExtensionsConfig);
+  constructor() {
+    // bootstrapFramework.initialize(WebExtensionsConfig);
   }
 }
