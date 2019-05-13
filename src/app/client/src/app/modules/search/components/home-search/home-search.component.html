@@ -12,7 +12,7 @@
     <div class="sb-pageSection" *ngIf="!showLoader && contentList.length">
         <div  class="sb-pageSection-header">
                 <h4 class="sb-pageSection-title m-0 mr-5"> {{resourceService.frmelmnts?.lbl?.showingResults}}
-                    <span class="lower-case" *ngIf="this.queryParams.key">
+                    <span class="text-lowercase" *ngIf="this.queryParams.key">
                         {{resourceService.frmelmnts?.lbl?.forSearch  | interpolate:'{searchString}':this.queryParams?.key}}
                       </span>
                       {{resourceService.frmelmnts?.lbl?.inAll}}

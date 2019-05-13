@@ -1,48 +1,49 @@
 .sb-collectionTree {
   width: 100%;
-  border-radius: 4px;
-  padding: 16px;
-  margin: 8px 0 0 0;
-  background: #fff;
-  border: 1px solid #80A7CE;
+  border-radius: $sb-collectionTree-border-radius;
+  padding: $sb-collectionTree-padding;
+  margin: $sb-collectionTree-margin;
+  background: $sb-collectionTree-background-color;
+  border: $sb-collectionTree-border;
 
   .title {
     padding: 0 !important;
 
     .sb-collectionTree-titleCover {
-      color: #333;
-      font-size: 14px;
-      line-height: 24px;
       display: flex;
       flex-direction: row;
       align-items: center;
-    
-     .sb-collectionTree-title-icon {
-        font-size: 20px;
-        line-height: 20px;
-        height: 20px;
-        font-weight: 500;
-        color: #FFA11D;
-      }
 
       .sb-collectionTree-title {
-        font-size: 14px;
-        line-height: 20px;
+        color: $sb-collectionTree-title-color;
+        font-size: $sb-collectionTree-title-font-size;
+        line-height: $sb-collectionTree-title-line-height;
+        font-weight: $sb-collectionTree-title-font-weight;
+        unicode-bidi: plaintext;
+      }
+    
+     .sb-collectionTree-title-icon {
+        font-size: $sb-collectionTree-title-icon-font-size;
+        line-height: $sb-collectionTree-title-icon-line-height;
+        height: $sb-collectionTree-title-icon-height;
+        font-weight: $sb-collectionTree-title-icon-font-weight;
+        color: $sb-collectionTree-title-icon-color;
       }
 
       .sb-collectionTree-title-toggle-icon {
-        font-size: 12px;
-        line-height: 20px;
-        height: 20px;
-        color: #024F9D;
+        font-size: $sb-collectionTree-title-toggle-icon-font-size;
+        line-height: $sb-collectionTree-title-toggle-icon-line-height;
+        height: $sb-collectionTree-title-toggle-icon-height;
+        font-weight: $sb-collectionTree-title-toggle-icon-font-weight;
+        color: $sb-collectionTree-title-toggle-icon-color;
       }
     }
 
     &.active {
       .sb-collectionTree-titleCover {
-        color: #024F9D;
         .sb-collectionTree-title {
-          font-weight: bold;
+          color: $sb-collectionTree-active-title-color;
+          font-weight: $sb-collectionTree-active-title-font-weight;
         }
       }
     }
@@ -50,13 +51,19 @@
 
   &.disabled {
     pointer-events: none;
-    border: 1px solid #ccc;
+    border: $sb-collectionTree-disabled-border;
 
     .sb-collectionTree-titleCover {
       .sb-collectionTree-title-icon {
-        color: #ccc;
+        color: $sb-collectionTree-disabled-title-icon-color;
       }
     }
+  }
+
+  .commingSoonMessage {
+    unicode-bidi: plaintext;
+    display: inline-block;
+    margin: $sb-fancyTree-list-item-title-commingSoonMessage-spacing;
   }
 
   .content {
@@ -66,19 +73,19 @@
 
 .ui-fancytree,
 .ui-fancytree ul {
-  margin: 0 0 0 10px;
-  padding: 16px 0 0 0;
   position: relative;
+  margin: $sb-fancyTree-margin-ltr;
+  padding: $sb-fancyTree-padding;
 
   &:before {
     position: absolute;
     display: block;
     content: ' ';
-    width: 1px;
-    height: calc(100% - 6px);
-    border-left: 1px solid #80A7CE;
-    top: -4px;
+    top: -3px;
     left: 0;
+    height: 100%;
+    width: $sb-fancyTree-list-border-width;
+    background-color: $sb-fancyTree-list-border-color;
   }
 
   &:focus {
@@ -86,9 +93,9 @@
   }
 
   li {
-    margin: 0 0 (2 * $base-block-space) 0;
-    padding: 0 0 0 12px;
     position: relative;
+    margin: $sb-fancyTree-list-item-margin;
+    padding: $sb-fancyTree-list-item-padding-ltr;
 
     &:before {
       position: absolute;
@@ -96,9 +103,24 @@
       content: ' ';
       top: 10px;
       left: 0;
-      width: 14px;
-      height: 1px;
-      border-top: 1px solid #80A7CE;
+      width: $sb-fancyTree-list-item-border-text-spacing;
+      height: $sb-fancyTree-list-border-width;
+      background-color: $sb-fancyTree-list-border-color;
+    }
+
+    &:last-child {
+      margin: 0;
+
+      &:after {
+        position: absolute;
+        display: block;
+        content: ' ';
+        top: 11px;
+        left: 0;
+        height: 100%;
+        width: $sb-fancyTree-list-border-width;
+        background-color: $sb-collectionTree-background-color;
+      }
     }
 
     .fancytree-node {
@@ -107,31 +129,35 @@
       cursor: pointer;
 
       .sb-fancyTree-icon {
-        font-size: 20px;
-        line-height: 20px;
-        height: 20px;
         vertical-align: middle;
-        color: #FFA11D;
+        font-size: $sb-fancyTree-list-item-icon-size;
+        line-height: $sb-fancyTree-list-item-icon-size;
+        height: $sb-fancyTree-list-item-icon-size;
+        width: $sb-fancyTree-list-item-icon-size;
+        color: $sb-fancyTree-default-list-item-icon-color;
+        margin: 0;
 
         &.fancy-tree-green {	
-          color: $success-color;	
+          color: $sb-fancyTree-completed-list-item-icon-color;	
         }
 
         &.fancy-tree-blue {	
-          color: $primary-color;	
+          color: $sb-fancyTree-inprogress-list-item-icon-color;	
         }
       }
 
       .fancytree-title {
-        padding: 0 ($base-block-space);
-        font-size: 14px;
+        padding: $sb-fancyTree-list-item-title-padding;
+        font-size: $sb-fancyTree-list-item-title-font-size;
       }
 
       &.disabled{
         pointer-events: none;
+
         .sb-fancyTree-icon {
-          color: #ccc;
+          color: $sb-fancyTree-disabled-list-item-icon-color;
         }
+
       }
     }
   }
@@ -145,7 +171,7 @@
 *[dir="rtl"] {
   .ui-fancytree,
   .ui-fancytree ul {
-    margin: 0 10px 0 0;
+    margin: $sb-fancyTree-margin-rtl;
 
     &:before {
       right: 0;
@@ -153,7 +179,12 @@
     }
 
     li {
-      padding: 0 12px 0 0;
+      padding: $sb-fancyTree-list-item-padding-rtl;
+
+      &:last-child:after {
+        left: auto;
+        right: 0;
+      }
 
       &:before {
         right: 0;
@@ -162,38 +193,4 @@
     }
 
   }
-}
-
-.curriculum-content {
-  font-size: 14px;
-  display: flex;
-  padding: 8px 0;
-}
-
-span.icon {
-  display: inline-block;
-  opacity: 1;
-  margin: 0 .25rem 0 0;
-  width: 1.18em;
-  height: 1em;
-  font-family: Icons;
-  font-style: normal;
-  font-weight: 400;
-  text-decoration: inherit;
-  text-align: center;
-  speak: none;
-  font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-span.icon.folder:before {
-  content: "\f07b";
-}
-span.icon.folder.outline:before {
-  content: "\f114";
-}
-span.icon.play.circle:before {
-  content: "\f144";
 }
