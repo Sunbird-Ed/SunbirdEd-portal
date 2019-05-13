@@ -3,6 +3,7 @@ import { McqForm } from './../../class/McqForm';
 import {  ConfigService, IUserData, IUserProfile, ToasterService  } from '@sunbird/shared';
 import { UserService, ActionService } from '@sunbird/core';
 import * as _ from 'lodash-es';
+import { UUID } from 'angular2-uuid';
 
 @Component({
   selector: 'app-mcq-creation',
@@ -86,7 +87,7 @@ export class McqCreationComponent implements OnInit {
             'objectType': 'AssessmentItem',
             'metadata': {
               'createdBy': this.userProfile.userId,
-              'code': this.selectedAttributes.questionType,
+              'code': UUID.UUID(),
               'type': this.selectedAttributes.questionType,
               'category': this.selectedAttributes.questionType.toUpperCase(),
               'itemType': 'UNIT',

@@ -163,7 +163,8 @@
     },
     "ASSESSMENT": {
       "CREATE": "assessment/v3/items/create",
-      "READ": "assessment/v3/items/read"
+      "READ": "assessment/v3/items/read",
+      "UPDATE": "assessment/v3/items/update"
     }
   }
 }
