@@ -1,18 +1,14 @@
-:host ::ng-deep .ck-editor__editable {
-  /* min-height: 300px; */
-}
-
-.custom-image img {
+/* min-height: 300px;
+ */
+ .custom-image img {
   border: 1px dotted;
   padding: 7px;
   margin: 6px;
   cursor: pointer;
 }
-
 .resource-image {
   height: 180px !important;
 }
-
 .asset_container {
   overflow-y: auto;
   overflow-x: hidden;
@@ -20,7 +16,6 @@
   max-height: 300px !important;
   padding: 5px;
 }
-
 .insert-image-btn {
   position: absolute;
   z-index: 1;
@@ -28,11 +23,48 @@
   background-color: transparent;
   padding: 13px !important;
 }
-
-.insert-image-btn>.icon {
+.insert-image-btn > .icon {
   opacity: 1;
 }
-
 .insert-image-btn:active {
   background-color: transparent;
+}
+.mcq-horizontal, .mcq-vertical, .mcq-grid {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1440px;
+  margin: 0 auto;
+  align-items: center;
+}
+.mcq-horizontal .mcq-title, .mcq-vertical .mcq-title, .mcq-grid .mcq-title {
+  flex-basis: 100%;
+  padding: 16px;
+}
+.mcq-horizontal .mcq-options, .mcq-vertical .mcq-options, .mcq-grid .mcq-options {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 16px;
+}
+.mcq-horizontal .mcq-options .mcq-option, .mcq-vertical .mcq-options .mcq-option, .mcq-grid .mcq-options .mcq-option {
+  height: 100px;
+  /* background: blue; */
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.mcq-horizontal.mcq-split .mcq-title, .mcq-vertical.mcq-split .mcq-title, .mcq-grid.mcq-split .mcq-title {
+  flex-basis: 30%;
+}
+.mcq-horizontal.mcq-split .mcq-options, .mcq-vertical.mcq-split .mcq-options, .mcq-grid.mcq-split .mcq-options {
+  flex-basis: 70%;
+}
+.mcq-horizontal .mcq-options .mcq-option {
+  width: 20%;
+}
+.mcq-vertical .mcq-options .mcq-option {
+  width: 100%;
+}
+.mcq-grid .mcq-options .mcq-option {
+  width: 45%;
 }
