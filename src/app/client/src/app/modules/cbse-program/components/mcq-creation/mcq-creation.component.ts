@@ -19,6 +19,9 @@ export class McqCreationComponent implements OnInit {
   initEditor = false;
   mcqForm: McqForm;
   questionBody;
+  showFormError = false;
+  learningOutcomeOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
+  bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
   private toasterService: ToasterService;
   constructor(
     public configService: ConfigService,
@@ -30,7 +33,7 @@ export class McqCreationComponent implements OnInit {
       this.toasterService = toasterService;
   }
   initForm() {
-    this.mcqForm = new McqForm('', [], '1', '1');
+    this.mcqForm = new McqForm('', [], '1', '1', undefined, undefined, undefined, undefined);
   }
   ngOnInit() {
     this.userService.userData$.subscribe(
@@ -47,17 +50,21 @@ export class McqCreationComponent implements OnInit {
   }
   handleTemplateSelection(event) {
     console.log(event);
-    this.showTemplatePopup = false;
-    if (event.type = 'submit') {
+    if (event.type === 'submit') {
       this.templateDetails = event.template;
+      this.showTemplatePopup = false;
       console.log('templateDetails ', this.templateDetails);
       this.initForm();
     } else {
       this.questionStatus.emit({ type: 'close' });
     }
   }
-  createQuestion() {
-    console.log(this.mcqForm);
+  createQuestion($event, formControl) {
+    console.log(this.mcqForm, formControl);
+    if (formControl.invalid) {
+      this.showFormError = true;
+      return;
+    }
     this.getHtml();
     const req = {
       url: this.configService.urlConFig.URLS.ASSESSMENT.CREATE,

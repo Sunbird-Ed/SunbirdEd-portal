@@ -3,6 +3,7 @@
 
 	<!--Logged in user-->
 	<ng-container *ngIf="userService.loggedIn">
+		<a class="item" [routerLink]= "[getProgramUrl()]">{{'Program'}}</a>
 		<!-- <a class="item" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"
 			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" routerLink="/resources">
 			{{resourceService?.frmelmnts?.tab?.resources}}
