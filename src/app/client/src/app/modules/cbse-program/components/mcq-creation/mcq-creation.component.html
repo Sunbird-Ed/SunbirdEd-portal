@@ -8,12 +8,9 @@
       </div>
       <div class="ml-auto">
           <button class="sb-btn sb-btn-normal sb-btn-primary mcq-submit-btn" *ngIf="questionMetaData.data && ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)" (click)="handleSubmit(mcqFormControl)" type="submit">Update</button>
-          <button class="sb-btn sb-btn-normal sb-btn-primary mcq-submit-btn" *ngIf="!questionMetaData.data" (click)="createQuestion($event)" type="submit">Submit</button>
+          <button class="sb-btn sb-btn-normal sb-btn-primary mcq-submit-btn" *ngIf="!questionMetaData.data" (click)="handleSubmit(mcqFormControl)" type="submit">Submit</button>
       </div>
     </div>
-    <!-- <div class="mcq-submit-btn">
-      <button *ngIf="!questionMetaData.data || ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)"  class="sb-btn sb-btn-normal sb-btn-primary" (click)="handleSubmit(mcqFormControl)">Submit</button>
-    </div> -->
     <div class="field mcq-title">
       <label class="mb-16 fs-1-286">Question</label>
       <app-ckeditor-tool (editorDataOutput)="mcqForm.question = $event" [editorConfig]="questionMetaData"

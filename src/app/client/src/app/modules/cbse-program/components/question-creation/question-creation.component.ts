@@ -60,6 +60,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   showErrorMsg: boolean;
   errorMsg: string;
   topicName: string;
+  bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
   ngOnInit() {
     this.initialized = true;
     this.editorConfig = { 'mode': 'create' };
