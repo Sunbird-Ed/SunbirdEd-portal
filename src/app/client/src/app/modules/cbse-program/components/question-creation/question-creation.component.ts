@@ -25,6 +25,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   initialized = false;
   public isQuestionFocused: boolean;
   public isAnswerFocused: boolean;
+  public showPreview = false;
+  public previewData: any;
+  public previewConfig: any;
   @Input() tabIndex: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter < any > ();
@@ -132,6 +135,16 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.validateAllFormFields(control);
       }
     });
+  }
+  generatePreview() {
+    this.previewData = {
+        question: this.question,
+        answer: [this.answer]
+    };
+    this.previewConfig = {
+      type : this.selectedAttributes.questionType
+    };
+
   }
   createQuestion(event) {
     if (this.questionMetaForm.valid) {

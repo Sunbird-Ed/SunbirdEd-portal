@@ -1,9 +1,14 @@
-<form class="ui form" [formGroup]="questionMetaForm">
+<div class="btn-group">
+    <button type="button" (click)="showPreview= false;" class="sb-btn sb-btn-normal sb-btn-outline-primary">Edit</button>
+    <button type="button" (click)="showPreview= true; generatePreview()" class="sb-btn sb-btn-normal sb-btn-outline-primary active">Preview</button>
+</div>
+
+<form *ngIf="!showPreview" class="ui form" [formGroup]="questionMetaForm">
       <div class="d-flex flex-jc-space-around">
         <span class="ui basic" *ngIf="questionMetaData.data && questionMetaData.data.status === 'Live'"><a class="ui green empty circular label"></a> Published</span>
         <span class="ui basic" *ngIf="questionMetaData.data && (questionMetaData.data.status === 'Review' || questionMetaData.data.status === 'Draft')"><a class="ui yellow empty circular label"></a> Submitted for Review</span>
         <span class="ui basic" *ngIf="questionMetaData.data && questionMetaData.data.status === 'Reject'"><a class="ui red empty circular label"></a> Rejected</span>
-        <button class="sb-btn sb-btn-normal sb-btn-primary submit-btn" *ngIf="questionMetaData.data && questionMetaData.data.status !== 'Live'" (click)="createQuestion($event)" type="submit">Submit</button> 
+        <button class="sb-btn sb-btn-normal sb-btn-primary submit-btn" *ngIf="questionMetaData.data && questionMetaData.data.status !== 'Live'" (click)="createQuestion($event)" type="submit">Submit</button>
       </div>
       <div class="field">
         <label>Question</label>
@@ -148,3 +153,6 @@
     </div>
   </div>
   </sui-modal>
+
+
+  <app-question-preview *ngIf="showPreview" [previewConfig]="previewConfig" [previewData]="previewData"></app-question-preview>
