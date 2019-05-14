@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Pipe} from '@angular/core';
 import { config } from 'rxjs';
 
 @Component({
@@ -8,11 +8,13 @@ import { config } from 'rxjs';
 })
 export class QuestionPreviewComponent implements OnInit {
 
-  @Input() config: any;
-  @Input() data: any;
+  @Input() previewConfig: any;
+  @Input() previewData: any;
   constructor() { }
 
   ngOnInit() {
+    console.log(this.previewConfig);
+    console.log(this.previewData);
   }
 
 }

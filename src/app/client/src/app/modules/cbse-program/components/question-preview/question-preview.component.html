@@ -1,3 +1,7 @@
-<p>
-  question-preview works!
-</p>
+  <div class='mcq-horizontal'>
+    <div class='mcq-title' [innerHTML]="previewData.question">
+    </div>
+    <div class='mcq-options' [innerHTML]="previewData.answer">
+      {{previewData.answer}}
+    </div>
+  </div>
