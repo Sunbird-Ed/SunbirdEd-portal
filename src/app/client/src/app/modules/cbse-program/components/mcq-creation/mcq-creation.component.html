@@ -1,5 +1,5 @@
 <div *ngIf='!showTemplatePopup && showForm'>
-  <form #mcqFormControl="ngForm" class="ui form {{templateDetails.templateClass}}">
+  <form #mcqFormControl="ngForm" class="ui form mcq-vertical">
     <div class="d-flex">
       <div class="d-inline-block">
         <span *ngIf="questionMetaData.data && questionMetaData.data.status === 'Live'"><a class="ui green empty circular label"></a> Published</span>
