@@ -19,7 +19,6 @@ export class McqCreationComponent implements OnInit {
   templateDetails: any = {};
   initEditor = false;
   mcqForm: McqForm;
-  questionBody;
   showFormError = false;
   learningOutcomeOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
@@ -34,12 +33,11 @@ export class McqCreationComponent implements OnInit {
       this.mcqForm = new McqForm(question, options, template_id, _.get(responseDeclaration, 'responseValue.correct_response.value'),
         learningOutcome[0], qlevel, bloomsLevel[0], max_score);
     } else {
-      this.mcqForm = new McqForm('', [], '1', '1');
+      this.mcqForm = new McqForm('', [], undefined, '1');
     }
     this.showForm = true;
   }
   ngOnInit() {
-    console.log('questionMetaData ', this.questionMetaData);
     if (this.questionMetaData.mode === 'create') {
       this.showTemplatePopup = true;
     } else {
@@ -56,7 +54,8 @@ export class McqCreationComponent implements OnInit {
     }
   }
   handleSubmit(formControl) {
-    if (formControl.invalid) {
+    const optionValid = _.find(this.mcqForm.options, option => (option.body === undefined || option.body === ''));
+    if (formControl.invalid || optionValid) {
       this.showFormError = true;
       return;
     }
@@ -102,8 +101,7 @@ export class McqCreationComponent implements OnInit {
       }
     };
     this.actionService.patch(req).subscribe((res) => {
-      console.log(res);
-      this.questionStatus.emit({'status': 'success', 'identifier': res.result.node_id});
+      this.questionStatus.emit({'status': 'success', 'type': 'update', 'identifier': res.result.node_id});
     }, error => {
       this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
     });
@@ -157,7 +155,7 @@ export class McqCreationComponent implements OnInit {
     console.log('req ', req.data);
     this.actionService.post(req).subscribe((res) => {
       console.log(res);
-      this.questionStatus.emit({'status': 'success', 'identifier': res.result.node_id});
+      this.questionStatus.emit({'status': 'success', 'type': 'create',  'identifier': res.result.node_id});
     }, error => {
       this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
     });
@@ -165,7 +163,8 @@ export class McqCreationComponent implements OnInit {
 
   getHtml() {
     const { mcqBody, optionTemplate } = this.configService.editorConfig.QUESTION_EDITOR;
-    const optionsBody = _.map(this.mcqForm.options, data => optionTemplate.replace('{option}', data.body)).join('');
+    const optionsBody = _.map(this.mcqForm.options, data => optionTemplate.replace('{option}', data.body))
+      .map((data, index) => data.replace('{value}', index)).join('');
     let templateClass;
     if (this.questionMetaData.mode === 'create') {
       templateClass =  this.templateDetails.templateClass;

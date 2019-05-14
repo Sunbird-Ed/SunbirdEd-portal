@@ -13,6 +13,8 @@
         <div class="fields">
           <div class="twelve wide field">
             <label class="mb-16 fs-1">Option {{i + 1}}:</label>
+            <label *ngIf="showFormError && (option.body === undefined || option.body === '')" 
+            class="ui basic red error label pt-0">Fill this options</label>
             <app-ckeditor-tool (editorDataOutput)="option.body = $event" [editorConfig]="questionMetaData"
               [editorDataInput]="option.body" [setCharacterLimit]="160"></app-ckeditor-tool>
               <div class="mcq-checkbox-answer">
