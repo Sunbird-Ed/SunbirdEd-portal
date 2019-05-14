@@ -127,7 +127,8 @@ app-card[lang="ur"] {
 
 .sb-card-qr {
   border: 1px solid #dedede !important;
-  margin-bottom: ($base-block-space * 2);
+  // margin-bottom: ($base-block-space * 2);
+  height: auto;
   .sb-btn{
     display: flex;
     align-items: center;
