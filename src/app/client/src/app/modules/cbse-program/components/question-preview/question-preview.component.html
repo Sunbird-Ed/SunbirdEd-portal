@@ -1,7 +1,6 @@
-  <div class='text quml-responsive-div'>
-    <div class='text' [innerHTML]="previewData.question">
-    </div>
-    <div class='text' [innerHTML]="previewData.answer">
-      {{previewData.answer}}
-    </div>
+<div class='text quml-responsive-div'>
+  <div class='text' [innerHTML]="previewData.question | sanitizeHtml">
   </div>
+  <div class='text' [innerHTML]="previewData.answer | sanitizeHtml">
+  </div>
+</div>
