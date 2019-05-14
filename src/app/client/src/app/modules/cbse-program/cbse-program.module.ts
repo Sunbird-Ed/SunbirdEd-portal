@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SanitizeHtmlPipe } from './pipe/sanitize-html.pipe';
 import { QuestionListComponent, SelectTextbookComponent, CbseComponent,
   QuestionCreationComponent, ChapterListComponent, McqCreationComponent, McqTemplateSelectionComponent,
   CkeditorToolComponent, QuestionPreviewComponent } from './components';
@@ -12,7 +13,7 @@ import { SharedModule } from '@sunbird/shared';
   declarations: [QuestionListComponent, SelectTextbookComponent, CbseComponent, QuestionCreationComponent, ChapterListComponent,
     McqCreationComponent, CkeditorToolComponent ,
     McqTemplateSelectionComponent,
-    QuestionPreviewComponent],
+    QuestionPreviewComponent, SanitizeHtmlPipe],
   imports: [
     CommonModule,
     SuiTabsModule,
@@ -20,6 +21,6 @@ import { SharedModule } from '@sunbird/shared';
     ReactiveFormsModule, FormsModule, SharedModule,
     InfiniteScrollModule
   ],
-  exports: [ CbseComponent ]
+  exports: [ CbseComponent, SanitizeHtmlPipe ]
 })
 export class CbseProgramModule { }

@@ -65,8 +65,8 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
           'bulletedList', '|', 'numberedList', '|', 'insertTable', '|'
         ],
         image: {
-          toolbar: ['imageTextAlternative', '|', 'imageStyle:full', 'imageStyle:side', 'imageStyle:alignRight', 'imageStyle:alignLeft'],
-          styles: ['full', 'alignLeft', 'alignRight', 'side', 'alignCenter']
+          toolbar: ['imageTextAlternative', '|', 'imageStyle:full', 'imageStyle:alignRight', 'imageStyle:alignLeft'],
+          styles: ['full', 'alignLeft', 'alignRight', 'alignCenter']
         },
         isReadOnly: false,
         removePlugins: ['ImageCaption']
