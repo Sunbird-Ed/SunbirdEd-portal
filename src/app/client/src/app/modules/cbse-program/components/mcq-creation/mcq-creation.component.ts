@@ -11,7 +11,6 @@ import { UUID } from 'angular2-uuid';
   styleUrls: ['./mcq-creation.component.css']
 })
 export class McqCreationComponent implements OnInit {
-  public userProfile: IUserProfile;
   @Input() selectedAttributes: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter<any>();
@@ -24,15 +23,8 @@ export class McqCreationComponent implements OnInit {
   showFormError = false;
   learningOutcomeOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
-  private toasterService: ToasterService;
-  constructor(
-    public configService: ConfigService,
-    private userService: UserService,
-    public actionService: ActionService,
-    toasterService: ToasterService,
-    ) {
-      this.userService = userService;
-      this.toasterService = toasterService;
+  constructor( public configService: ConfigService, private userService: UserService,
+    public actionService: ActionService, public toasterService: ToasterService) {
   }
   initForm() {
     if (this.questionMetaData.data) {
@@ -47,13 +39,7 @@ export class McqCreationComponent implements OnInit {
     this.showForm = true;
   }
   ngOnInit() {
-    this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        if (user && !user.err) {
-          this.userProfile = user.userProfile;
-        }
-      });
-      console.log('questionMetaData ', this.questionMetaData);
+    console.log('questionMetaData ', this.questionMetaData);
     if (this.questionMetaData.mode === 'create') {
       this.showTemplatePopup = true;
     } else {
@@ -61,26 +47,76 @@ export class McqCreationComponent implements OnInit {
     }
   }
   handleTemplateSelection(event) {
-    console.log(event);
     this.showTemplatePopup = false;
-    if (event.type = 'submit') {
+    if (event.type === 'submit') {
       this.templateDetails = event.template;
-      console.log('templateDetails ', this.templateDetails);
       this.initForm();
     } else {
       this.questionStatus.emit({ type: 'close' });
     }
   }
+  handleSubmit(formControl) {
+    if (formControl.invalid) {
+      this.showFormError = true;
+      return;
+    }
+    if (this.questionMetaData.mode === 'create') {
+      this.createQuestion();
+    } else {
+      this.updateQuestion();
+    }
+  }
+  updateQuestion() {
+    const questionData = this.getHtml();
+    const correct_answer = this.mcqForm.answer;
+    const options = _.map(this.mcqForm.options, (opt, key) => {
+      if (Number(correct_answer) === key) {
+        return {'answer': true, value: {'type': 'text', 'body': opt.body}};
+      } else {
+        return {'answer': false, value: {'type': 'text', 'body': opt.body}};
+      }
+    });
+    const req = {
+      url: this.configService.urlConFig.URLS.ASSESSMENT.UPDATE + '/' + this.questionMetaData.data.identifier,
+      data: {
+        'request': {
+          'assessment_item': {
+            'objectType': 'AssessmentItem',
+            'metadata': {
+              'code': UUID.UUID(),
+              'template_id': this.questionMetaData.data.template_id,
+              'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
+              'body': questionData.body,
+              'responseDeclaration': questionData.responseDeclaration,
+              'question': this.mcqForm.question,
+              'options': options,
+              'learningOutcome': [this.mcqForm.learningOutcome],
+              'bloomsLevel': [this.mcqForm.bloomsLevel],
+              'qlevel': this.mcqForm.difficultyLevel,
+              'max_score': Number(this.mcqForm.max_score),
+              'status': 'Review',
+              'type': 'mcq',
+            }
+          }
+        }
+      }
+    };
+    this.actionService.patch(req).subscribe((res) => {
+      console.log(res);
+      this.questionStatus.emit({'status': 'success', 'identifier': res.result.node_id});
+    }, error => {
+      this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
+    });
+  }
   createQuestion() {
     console.log(this.mcqForm);
     const questionData = this.getHtml();
-    const options = [];
     const correct_answer = this.mcqForm.answer;
-    _.map(this.mcqForm.options, (opt, key) => {
+    const options = _.map(this.mcqForm.options, (opt, key) => {
       if (Number(correct_answer) === key) {
-        options.push({'answer': true, value: {'type': 'text', 'body': opt.body}});
+        return {'answer': true, value: {'type': 'text', 'body': opt.body}};
       } else {
-        options.push({'answer': false, value: {'type': 'text', 'body': opt.body}});
+        return {'answer': false, value: {'type': 'text', 'body': opt.body}};
       }
     });
     const req = {
@@ -90,7 +126,7 @@ export class McqCreationComponent implements OnInit {
           'assessment_item': {
             'objectType': 'AssessmentItem',
             'metadata': {
-              'createdBy': this.userProfile.userId,
+              'createdBy': this.userService.userid,
               'code': UUID.UUID(),
               'type': this.selectedAttributes.questionType,
               'category': this.selectedAttributes.questionType.toUpperCase(),
@@ -109,9 +145,7 @@ export class McqCreationComponent implements OnInit {
               'framework': this.selectedAttributes.framework,
               'board': this.selectedAttributes.board,
               'medium': this.selectedAttributes.medium,
-              'gradeLevel': [
-                this.selectedAttributes.gradeLevel
-              ],
+              'gradeLevel': [ this.selectedAttributes.gradeLevel],
               'subject': this.selectedAttributes.subject,
               'topic': [this.selectedAttributes.topic],
               'status': 'Review'
@@ -136,7 +170,7 @@ export class McqCreationComponent implements OnInit {
     if (this.questionMetaData.mode === 'create') {
       templateClass =  this.templateDetails.templateClass;
     } else {
-      templateClass = this.questionMetaData.templateClass; // TODO: need to be verified
+      templateClass = this.questionMetaData.data.template_id; // TODO: need to be verified
     }
     const questionBody = mcqBody.replace('{templateClass}', templateClass)
     .replace('{question}', this.mcqForm.question).replace('{optionList}', optionsBody);
@@ -153,6 +187,5 @@ export class McqCreationComponent implements OnInit {
       body : questionBody,
       responseDeclaration: responseDeclaration
     };
-    // make create api call
   }
 }
