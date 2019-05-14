@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { PublicDataService, UserService } from '@sunbird/core';
-import {  ConfigService, IUserData, IUserProfile } from '@sunbird/shared';
-import { first, map } from 'rxjs/operators';
+import { ConfigService } from '@sunbird/shared';
+import { map } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 import * as _ from 'lodash-es';
 
@@ -15,65 +15,32 @@ export class ChapterListComponent implements OnInit {
   @Input() selectedAttributes: any;
   @Input() topicList: any;
   @Output() selectedQuestionTypeTopic = new EventEmitter<any>();
-  questionCount = new Map();
-  public textBookChapters: any;
-  public publicDataService: PublicDataService;
-  constructor(publicDataService: PublicDataService,
-    private configService: ConfigService,
-    private userService: UserService) {
-    this.userService = userService;
-    this.publicDataService = publicDataService;
-    this.configService = configService;
+  public textBookChapters: Array<any> = [];
+  private questionType = ['vsa', 'sa', 'la', 'mcq'];
+  constructor(public publicDataService: PublicDataService, private configService: ConfigService, private userService: UserService) {
   }
   ngOnInit() {
-    const apiArray = [];
-    apiArray.push(this.searchQuestionsByType('vsa'));
-    apiArray.push(this.searchQuestionsByType('sa'));
-    apiArray.push(this.searchQuestionsByType('la'));
-    apiArray.push(this.searchQuestionsByType('mcq'));
-    apiArray.push(this.searchQuestionsByType('vsa', this.userService.userid));
-    apiArray.push(this.searchQuestionsByType('sa', this.userService.userid));
-    apiArray.push(this.searchQuestionsByType('la', this.userService.userid));
-    apiArray.push(this.searchQuestionsByType('mcq', this.userService.userid));
-    this.textBookChapters = [];
-    forkJoin(apiArray).subscribe((data) => {
-      console.log('forkjoin res', data);
-      _.map(this.topicList, (topic) => {
-        const topicObj = {
-          name: topic.name,
-          'vsa': {
-            'name': 'VSA',
-            'total': this.getCount(data[0], topic.name),
-            'me': this.getCount(data[4], topic.name)
-          },
-          'sa': {
-            'name': 'SA',
-            'total': this.getCount(data[1], topic.name),
-            'me': this.getCount(data[5], topic.name),
-          },
-          'la': {
-            'name': 'LA',
-            'total': this.getCount(data[2], topic.name),
-            'me': this.getCount(data[6], topic.name),
-          },
-          'mcq': {
-            'name': 'MCQ',
-            'total': this.getCount(data[3], topic.name),
-            'me': this.getCount(data[7], topic.name),
-          }
-        };
-        this.textBookChapters.push(topicObj);
+    const apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields)),
+    ...this.questionType.map(fields => this.searchQuestionsByType(fields, this.userService.userid))];
+    forkJoin(apiRequest).subscribe(data => {
+      this.textBookChapters = _.map(this.topicList, topic => {
+        const results = { name: topic.name };
+        _.forEach(this.questionType, (type: string, index) => {
+          results[type] = {
+            name: type.toUpperCase(),
+            total: this.getResultCount(data[index], topic.name),
+            me: this.getResultCount(data[index + this.questionType.length], topic.name)
+          };
+        });
+        return results;
       });
     }, error => {
-      // TODO:: handle error properly
-      console.log('error in fork', error);
+      console.log('error in fork', error); // TODO:: handle error properly
     });
   }
 
-  public getCount(data, topic) {
-    const topicData = _.find(data, (item) => {
-      return item.name === topic.toLowerCase();
-    });
+  public getResultCount(data, topic: string) {
+    const topicData = _.find(data, { name: topic.toLowerCase() });
     return topicData ? topicData.count : 0;
   }
 
@@ -91,7 +58,7 @@ export class ChapterListComponent implements OnInit {
             'medium': this.selectedAttributes.medium,
             'type': questionType,
             'version': 3,
-            'status' : []
+            'status': []
           },
           'limit': 0,
           'facets': ['topic']
@@ -101,17 +68,15 @@ export class ChapterListComponent implements OnInit {
     if (createdBy) {
       req.data.request.filters['createdBy'] = createdBy;
     }
-    return this.publicDataService.post(req).pipe(map((res) => {
-        return _.get(res, 'result.facets[0].values');
-    }));
+    return this.publicDataService.post(req).pipe(
+      map(res => _.get(res, 'result.facets[0].values')));
   }
 
   emitQuestionTypeTopic(type, topic) {
-    const selectedOptions = {
-        'questionType': type,
-        'topic': topic
-      };
-    this.selectedQuestionTypeTopic.emit(selectedOptions);
+    this.selectedQuestionTypeTopic.emit({
+      'questionType': type,
+      'topic': topic
+    });
   }
 
 }

@@ -57,7 +57,6 @@ export class ProgramComponent implements OnInit {
     }, error => {
       // TODO: navigate to program list page
       this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Fetching program details failed');
-      console.log('fetching program details failed', error);
     });
   }
 }
