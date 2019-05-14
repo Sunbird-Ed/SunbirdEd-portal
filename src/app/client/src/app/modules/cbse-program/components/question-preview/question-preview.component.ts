@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Pipe} from '@angular/core';
+import { Component, OnInit, Input, Pipe, HostListener } from '@angular/core';
 import { config } from 'rxjs';
 
 @Component({
@@ -15,6 +15,31 @@ export class QuestionPreviewComponent implements OnInit {
   ngOnInit() {
     console.log(this.previewConfig);
     console.log(this.previewData);
+  }
+
+  scroll(id) {
+    if (id === 'question') {
+      document.getElementById('answerBtn').style.display = 'block';
+      document.getElementById('questionBtn').style.display = 'none';
+    } else {
+      document.getElementById('questionBtn').style.display = 'block';
+      document.getElementById('answerBtn').style.display = 'none';
+    }
+    const el = document.getElementById(id);
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+
+  }
+
+  @HostListener('scroll', ['$event.target'])
+  onScroll(event: any) {
+    if (event.target.scrollTop > (event.target.firstChild.offsetHeight - event.target.firstChild.offsetTop )) {
+      document.getElementById('questionBtn').style.display = 'block';
+      document.getElementById('answerBtn').style.display = 'none';
+    } else if (event.target.scrollTop < (event.target.firstChild.offsetHeight - event.target.firstChild.offsetTop) ) {
+      document.getElementById('answerBtn').style.display = 'block';
+      document.getElementById('questionBtn').style.display = 'none';
+    }
+
   }
 
 }
