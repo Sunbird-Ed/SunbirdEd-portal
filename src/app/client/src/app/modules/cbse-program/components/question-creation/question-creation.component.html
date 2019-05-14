@@ -4,11 +4,17 @@
 </div>
 
 <form *ngIf="!showPreview" class="ui form" [formGroup]="questionMetaForm">
-      <div class="d-flex flex-jc-space-around">
-        <span class="ui basic" *ngIf="questionMetaData.data && questionMetaData.data.status === 'Live'"><a class="ui green empty circular label"></a> Published</span>
-        <span class="ui basic" *ngIf="questionMetaData.data && (questionMetaData.data.status === 'Review' || questionMetaData.data.status === 'Draft')"><a class="ui yellow empty circular label"></a> Submitted for Review</span>
-        <span class="ui basic" *ngIf="questionMetaData.data && questionMetaData.data.status === 'Reject'"><a class="ui red empty circular label"></a> Rejected</span>
-        <button class="sb-btn sb-btn-normal sb-btn-primary submit-btn" *ngIf="questionMetaData.data && questionMetaData.data.status !== 'Live'" (click)="createQuestion($event)" type="submit">Submit</button>
+
+    <div class="d-flex">
+        <div class="d-inline-block">
+          <span *ngIf="questionMetaData.data && questionMetaData.data.status === 'Live'"><a class="ui green empty circular label"></a> Published</span>
+          <span *ngIf="questionMetaData.data && (questionMetaData.data.status === 'Review' || questionMetaData.data.status === 'Draft')"><a class="ui yellow empty circular label"></a> Submitted for Review</span>
+          <span *ngIf="questionMetaData.data && questionMetaData.data.status === 'Reject'"><a class="ui red empty circular label"></a> Rejected</span>
+        </div>
+        <div class="ml-auto">
+            <button class="sb-btn sb-btn-normal sb-btn-primary submit-btn" *ngIf="questionMetaData.data && (questionMetaData.data.status === 'Draft' || questionMetaData.data.status === 'Review' || questionMetaData.data.status === 'Reject')" (click)="updateQuestion($event, questionMetaData.data.identifier)" type="submit">Update</button>
+            <button class="sb-btn sb-btn-normal sb-btn-primary submit-btn" *ngIf="!questionMetaData.data" (click)="createQuestion($event)" type="submit">Submit</button>
+        </div>
       </div>
       <div class="field">
         <label>Question</label>
@@ -16,7 +22,7 @@
       </div>
       <div class="field">
         <label>Answer</label>
-        <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'answer')" [editorDataInput]="answer" [editorId]="'answer_editor'"></app-ckeditor-tool>
+        <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'solution')" [editorDataInput]="solution" [editorId]="'answer_editor'"></app-ckeditor-tool>
       </div>
       <div class="two fields">
           <div class="field">
@@ -50,8 +56,8 @@
             </div>
             <div class="field">
               <div class="ui radio checkbox">
-                <input formControlName="qlevel" value="Hard" type="radio" name="qlevel" tabindex="0" class="hidden">
-                <label>Hard</label>
+                <input formControlName="qlevel" value="Difficult" type="radio" name="qlevel" tabindex="0" class="hidden">
+                <label>Difficult</label>
               </div>
             </div>
             <label class="ui basic red error label pt-0"

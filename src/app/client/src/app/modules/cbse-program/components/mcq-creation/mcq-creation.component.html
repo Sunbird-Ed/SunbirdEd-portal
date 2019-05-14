@@ -1,5 +1,4 @@
-<div *ngIf='!showTemplatePopup'>
-
+<div *ngIf='!showTemplatePopup && showForm'>
   <form #mcqFormControl="ngForm" class="ui form {{templateDetails.templateClass}}">
     <div class="mcq-submit-btn">
       <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="createQuestion($event, mcqFormControl)">Submit</button>
@@ -7,7 +6,7 @@
     <div class="field mcq-title">
       <label class="mb-16 fs-1-286">Question</label>
       <app-ckeditor-tool (editorDataOutput)="mcqForm.question = $event" [editorConfig]="questionMetaData"
-        [editorDataInput]="mcqForm.questionBody"></app-ckeditor-tool>
+        [editorDataInput]="mcqForm.question"></app-ckeditor-tool>
     </div>
     <div class="mcq-options">
       <div class="mcq-option" *ngFor="let option of mcqForm.options; let i=index">

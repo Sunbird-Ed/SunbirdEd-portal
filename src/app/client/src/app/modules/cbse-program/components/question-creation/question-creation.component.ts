@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {  ConfigService, ResourceService, IUserData, IUserProfile, ToasterService  } from '@sunbird/shared';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
+import { UUID } from 'angular2-uuid';
 
 
 // tslint:disable-next-line:import-blacklist
@@ -48,7 +49,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     this.toasterService = toasterService;
     this.resourceService = resourceService;
   }
-  answer: any;
+  solution: any;
   question: any;
   editor: any;
   myAssets = [];
@@ -70,10 +71,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         }
       });
       this.question = '';
-      this.answer = '';
+      this.solution = '';
       if (this.questionMetaData.data) {
         this.question = this.questionMetaData.data.body;
-        this.answer = this.questionMetaData.data.answers[0];
+        this.solution = this.questionMetaData.data.solutions && this.questionMetaData.data.solutions[0];
         this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
         this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
         this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
@@ -94,10 +95,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       }
       this.editorConfig = { 'mode': 'create' };
       this.question = '';
-      this.answer = '';
+      this.solution = '';
       if (this.questionMetaData && this.questionMetaData.data) {
        this.question = this.questionMetaData.data.body;
-        this.answer = this.questionMetaData.data.answers[0];
+        this.solution = this.questionMetaData.data.solutions && this.questionMetaData.data.solutions[0];
         this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
         this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
         this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
@@ -156,14 +157,14 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
               'objectType': 'AssessmentItem',
               'metadata': {
                 'createdBy': this.userProfile.userId,
-                'code': this.selectedAttributes.questionType,
+                'code': UUID.UUID(),
                 'type': this.selectedAttributes.questionType,
                 'category': this.selectedAttributes.questionType.toUpperCase(),
                 'itemType': 'UNIT',
                 'version': 3,
                 'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
                 'body': this.question,
-                'answers': [this.answer],
+                'solutions': [this.solution],
                 'learningOutcome': [this.questionMetaForm.value.learningOutcome],
                 'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
                 'qlevel': this.questionMetaForm.value.qlevel,
@@ -199,11 +200,46 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.validateAllFormFields(this.questionMetaForm);
     }
   }
+
+  updateQuestion(event, questionId) {
+    if (this.questionMetaForm.valid) {
+      console.log('this.questionMetaForm ', questionId, this.questionMetaForm);
+      const option = {
+        url: this.configService.urlConFig.URLS.ASSESSMENT.UPDATE + '/' + questionId,
+        data: {
+          'request': {
+            'assessment_item': {
+              'objectType': 'AssessmentItem',
+              'metadata': {
+                'body': this.question,
+                'solutions': [this.solution],
+                'learningOutcome': [this.questionMetaForm.value.learningOutcome],
+                'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
+                'qlevel': this.questionMetaForm.value.qlevel,
+                'max_score': Number(this.questionMetaForm.value.max_score),
+                'status': 'Review',
+                'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
+                'type': 'vsa',
+                'code': UUID.UUID(),
+                'template_id': 'NA'
+              }
+            }
+          }
+        }
+      };
+      this.actionService.patch(option).subscribe((res) => {
+        console.log('Question Update', res);
+      });
+    } else {
+      this.validateAllFormFields(this.questionMetaForm);
+    }
+  }
+
   editorDataHandler(event, type) {
     if (type === 'question') {
       this.question = event;
     } else {
-      this.answer = event;
+      this.solution = event;
     }
   }
 
