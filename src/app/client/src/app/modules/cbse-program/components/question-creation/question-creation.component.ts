@@ -1,14 +1,11 @@
 import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter , OnChanges, AfterViewChecked} from '@angular/core';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ActivatedRoute, Router } from '@angular/router';
 import {  ConfigService, ResourceService, IUserData, IUserProfile, ToasterService  } from '@sunbird/shared';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
+import * as _ from 'lodash-es';
 
-
-// tslint:disable-next-line:import-blacklist
-import * as _ from 'lodash';
 @Component({
   selector: 'app-question-creation',
   templateUrl: './question-creation.component.html',
@@ -184,12 +181,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         }
       };
       this.actionService.post(req).subscribe((res) => {
-        if (res.responseCode !== 'OK') {
-          console.log('Please try again');
-          this.questionStatus.emit({'status': 'failed'});
-        } else {
-          this.questionStatus.emit({'status': 'success', 'identifier': res.result.node_id});
-        }
+        this.questionStatus.emit({'status': 'success', 'type': 'create', 'identifier': res.result.node_id});
       }, error => {
         this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
       });
@@ -225,6 +217,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         }
       };
       this.actionService.patch(option).subscribe((res) => {
+        this.questionStatus.emit({'status': 'success', 'type': 'update', 'identifier': questionId});
         console.log('Question Update', res);
       });
     } else {
