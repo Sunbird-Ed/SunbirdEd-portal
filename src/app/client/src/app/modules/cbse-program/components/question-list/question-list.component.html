@@ -1,39 +1,39 @@
-  <div class="ui mt-30 two column grid">
-      <div class="two wide column">
-        <div class="ui questionsMenu">
-            <div class="ui vertical segments">
-                <div class="questionTab ui center tertiary header aligned segment" [class.tertiary]="selectedQuestion == i" (click)="getQuestion(tab.identifier, tab); activateClass(i)" *ngFor="let tab of questionTabs; let i = index">
-                    <div class="ui top right attached  yellow empty circular label m-5" *ngIf="tab.status === 'Draft' || tab.status === 'Review'" ></div>
-                    <div class="ui top right attached  green empty circular label m-5" *ngIf="tab.status === 'Live'"></div>
-                    <div class="ui top right attached  red empty circular label m-5" *ngIf="tab.status === 'Reject'"></div>
-                    <a class="item">
-                        Question {{i + 1}}
-                    </a>
-                </div>
-            </div>
+<div class="ui mt-30 two column grid">
+  <div class="two wide column">
+    <div class="ui questionsMenu">
+      <div class="ui vertical segments">
+        <div class="questionTab ui center tertiary header aligned segment" [class.tertiary]="selectedQuestionId === question.identifier"
+          (click)="getQuestion(question.identifier);selectedQuestionId = question.identifier" *ngFor="let question of questionList; let i = index">
+          <div class="ui top right attached  yellow empty circular label m-5" *ngIf="question.status === 'Draft' || question.status === 'Review'"></div>
+          <div class="ui top right attached  green empty circular label m-5" *ngIf="question.status === 'Live'"></div>
+          <div class="ui top right attached  red empty circular label m-5" *ngIf="question.status === 'Reject'"></div>
+          <a class="item"> Question {{i + 1}}</a>
         </div>
-        <div class="ui">
-          <div class="ui vertical segments">
-              <div class="questionTab ui center header aligned segment">
-                  <button [disabled]="!enableCreateButton" (click)="createNewQuestion()" class="ui primary fluid button" >Create</button>
-                </div>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="emptyState" class="ten wide column">
-          <div class="ui segment">
-              No Question - Click Create
-          </div>
-      </div>
-
-      <div *ngIf="!emptyState" class="ten wide column">
-          <div *ngIf="refresh">
-            <div *ngIf="selectedAttributes.questionType === 'mcq'">
-              <app-mcq-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" (questionStatus)="questionStatusHandler($event)"></app-mcq-creation>
-            </div>
-            <div *ngIf="selectedAttributes.questionType !== 'mcq'" class="ui segment">
-              <app-question-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" (questionStatus)="questionStatusHandler($event)"></app-question-creation>
-            </div>
-          </div>
       </div>
     </div>
+    <div class="ui">
+      <div class="ui vertical segments">
+        <div class="questionTab ui center header aligned segment">
+          <button [disabled]="questionMetaData && questionMetaData.mode === 'create'" (click)="createNewQuestion()"
+            class="ui primary fluid button">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!questionList.length" class="ten wide column">
+    <div class="ui segment">No Question - Click Create</div>
+  </div>
+  <div *ngIf="questionList.length && refresh && !showLoader" class="ten wide column">
+    <div *ngIf="selectedAttributes.questionType === 'mcq'">
+      <app-mcq-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData"
+        (questionStatus)="questionStatusHandler($event)"></app-mcq-creation>
+    </div>
+    <div *ngIf="selectedAttributes.questionType !== 'mcq'" class="ui segment">
+      <app-question-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData"
+        (questionStatus)="questionStatusHandler($event)"></app-question-creation>
+    </div>
+  </div>
+  <div class="ten wide column" >
+    <app-loader *ngIf='showLoader'></app-loader>
+  </div>
+</div>

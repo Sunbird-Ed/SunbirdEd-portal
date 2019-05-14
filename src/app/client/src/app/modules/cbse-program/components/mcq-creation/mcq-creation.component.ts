@@ -48,7 +48,7 @@ export class McqCreationComponent implements OnInit {
   }
   handleTemplateSelection(event) {
     this.showTemplatePopup = false;
-    if (event.type = 'submit') {
+    if (event.type === 'submit') {
       this.templateDetails = event.template;
       this.initForm();
     } else {
@@ -84,7 +84,7 @@ export class McqCreationComponent implements OnInit {
             'objectType': 'AssessmentItem',
             'metadata': {
               'code': UUID.UUID(),
-              'template_id': this.templateDetails.templateClass,
+              'template_id': this.questionMetaData.data.template_id,
               'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
               'body': questionData.body,
               'responseDeclaration': questionData.responseDeclaration,
@@ -94,18 +94,19 @@ export class McqCreationComponent implements OnInit {
               'bloomsLevel': [this.mcqForm.bloomsLevel],
               'qlevel': this.mcqForm.difficultyLevel,
               'max_score': Number(this.mcqForm.max_score),
-              'status': 'Review'
+              'status': 'Review',
+              'type': 'mcq',
             }
           }
         }
       }
     };
-      this.actionService.patch(req).subscribe((res) => {
-        console.log(res);
-        this.questionStatus.emit({'status': 'success', 'identifier': res.result.node_id});
-      }, error => {
-        this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
-      });
+    this.actionService.patch(req).subscribe((res) => {
+      console.log(res);
+      this.questionStatus.emit({'status': 'success', 'identifier': res.result.node_id});
+    }, error => {
+      this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
+    });
   }
   createQuestion() {
     console.log(this.mcqForm);

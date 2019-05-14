@@ -6,6 +6,7 @@ import { QuestionListComponent, SelectTextbookComponent, CbseComponent,
   CkeditorToolComponent, QuestionPreviewComponent } from './components';
 import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { SharedModule } from '@sunbird/shared';
 
 @NgModule({
   declarations: [QuestionListComponent, SelectTextbookComponent, CbseComponent, QuestionCreationComponent, ChapterListComponent,
@@ -16,7 +17,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     CommonModule,
     SuiTabsModule,
     SuiModule,
-    ReactiveFormsModule, FormsModule,
+    ReactiveFormsModule, FormsModule, SharedModule,
     InfiniteScrollModule
   ],
   exports: [ CbseComponent ]
