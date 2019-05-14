@@ -61,26 +61,19 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   errorMsg: string;
   topicName: string;
   ngOnInit() {
-    console.log('questionMetaData ', this.questionMetaData);
     this.initialized = true;
     this.editorConfig = { 'mode': 'create' };
     this.initializeFormFields();
-    this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        if (user && !user.err) {
-          this.userProfile = user.userProfile;
-        }
-      });
-      this.question = '';
-      this.solution = '';
-      if (this.questionMetaData.data) {
+    this.question = '';
+    this.solution = '';
+    if (this.questionMetaData.data) {
         this.question = this.questionMetaData.data.body;
         this.solution = this.questionMetaData.data.solutions && this.questionMetaData.data.solutions[0];
         this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
         this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
         this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
         this.questionMetaForm.controls.max_score.setValue(this.questionMetaData.data.max_score);
-      }
+    }
   }
 
   ngAfterViewInit() {
@@ -146,12 +139,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   generatePreview() {
     this.previewData = {
         question: this.question,
-        answer: [this.solution]
+        solution: [this.solution]
     };
     this.previewConfig = {
       type : this.selectedAttributes.questionType
     };
-
   }
   createQuestion(event) {
     if (this.questionMetaForm.valid) {
@@ -162,7 +154,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
             'assessment_item': {
               'objectType': 'AssessmentItem',
               'metadata': {
-                'createdBy': this.userProfile.userId,
+                'createdBy': this.userService.userid,
                 'code': UUID.UUID(),
                 'type': this.selectedAttributes.questionType,
                 'category': this.selectedAttributes.questionType.toUpperCase(),
@@ -196,8 +188,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
           this.questionStatus.emit({'status': 'failed'});
         } else {
           this.questionStatus.emit({'status': 'success', 'identifier': res.result.node_id});
-          // this.question_editor.destroy();
-          // this.answer_editor.destroy();
         }
       }, error => {
         this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
@@ -248,5 +238,4 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.solution = event;
     }
   }
-
 }
