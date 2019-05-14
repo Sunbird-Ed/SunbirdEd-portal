@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter , OnChanges} from '@angular/core';
+import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter , OnChanges, AfterViewChecked} from '@angular/core';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ActivatedRoute, Router } from '@angular/router';
 import {  ConfigService, ResourceService, IUserData, IUserProfile, ToasterService  } from '@sunbird/shared';
@@ -14,7 +14,7 @@ import * as _ from 'lodash';
   templateUrl: './question-creation.component.html',
   styleUrls: ['./question-creation.component.css']
 })
-export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChanges {
+export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChanges, AfterViewChecked {
   public userProfile: IUserProfile;
   public publicDataService: PublicDataService;
   private toasterService: ToasterService;
@@ -29,6 +29,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   public showPreview = false;
   public previewData: any;
   public previewConfig: any;
+  private prevShowPreview = true;
   @Input() tabIndex: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter < any > ();
@@ -101,7 +102,12 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       }
     }
   }
-
+  ngAfterViewChecked() {
+    if (!this.showPreview && this.prevShowPreview) {
+      this.initializeDropdown();
+    }
+    this.prevShowPreview = this.showPreview;
+  }
   initializeDropdown() {
     ( < any > $('.ui.checkbox')).checkbox();
   }
