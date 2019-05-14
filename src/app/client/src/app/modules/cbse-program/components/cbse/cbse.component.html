@@ -1,37 +1,37 @@
 <div class="ui segment">
-    <sui-tabset>
-        <div class="ui secondary menu">
-            <a class="item" suiTabHeader="1">Contribute</a>
-            <a class="item" suiTabHeader="2">Review</a>
+  <sui-tabset>
+    <div class="ui secondary menu">
+      <a class="item" suiTabHeader="1">Contribute</a>
+      <a class="item" suiTabHeader="2">Review</a>
+    </div>
+    <div class="ui segment" suiTabContent="1">
+      <div *ngIf="stages[currentStage] == 'chooseClass'">
+        <app-select-textbook [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
+          (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-select-textbook>
+      </div>
+      <div *ngIf="stages[currentStage] == 'topicList'">
+        <div class="ui container">
+          <div class="mt-30 ui breadcrumb">
+            <i class="left angle icon divider"></i>
+            <a (click)="navigate('prev')" class="section">{{selectedAttributes.gradeLevel}} |
+              {{selectedAttributes.subject}}</a>
+          </div>
         </div>
-        <div class="ui segment" suiTabContent="1">
-            <div *ngIf="stages[currentStage] == 'chooseClass'">
-                <app-select-textbook [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
-                  (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-select-textbook>
-              </div>
-              <div *ngIf="stages[currentStage] == 'topicList'">
-                <div class="ui container">
-                  <div class="mt-30 ui breadcrumb">
-                    <i class="left angle icon divider"></i>
-                    <a (click)="navigate('prev')" class="section">{{selectedAttributes.gradeLevel}} |
-                      {{selectedAttributes.subject}}</a>
-                  </div>
-                </div>
-                <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes"
-                  (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list>
-              </div>
-              <div *ngIf="stages[currentStage] == 'createQuestion'">
-                <div class="ui container">
-                    <div class="ui container">
-                        <div class="mt-30 ui breadcrumb">
-                          <i class="left angle icon divider"></i>
-                          <a (click)="navigate('prev')" class="section">{{selectedAttributes.topic}}</a>
-                        </div>
-                      </div>
-                    <app-question-list [selectedAttributes]="selectedAttributes"></app-question-list>
-                </div>
-              </div>
+        <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes"
+          (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list>
+      </div>
+      <div *ngIf="stages[currentStage] == 'createQuestion'">
+        <div class="ui container">
+          <div class="ui container">
+            <div class="mt-30 ui breadcrumb">
+              <i class="left angle icon divider"></i>
+              <a (click)="navigate('prev')" class="section">{{selectedAttributes.topic}}</a>
+            </div>
+          </div>
+          <app-question-list [selectedAttributes]="selectedAttributes"></app-question-list>
         </div>
-        <div class="ui segment" suiTabContent="2">Review coming soon!!!</div>
-    </sui-tabset>
+      </div>
+    </div>
+    <div class="ui segment" suiTabContent="2">Review coming soon!!!</div>
+  </sui-tabset>
 </div>

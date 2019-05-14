@@ -20,7 +20,6 @@ export class QuestionListComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('selectedAttributes ', this.selectedAttributes);
     this.fetchQuestionList();
   }
   fetchQuestionList() {

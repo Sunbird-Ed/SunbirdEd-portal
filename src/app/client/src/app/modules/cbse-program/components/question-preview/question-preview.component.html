@@ -1,6 +1,6 @@
-  <div class='mcq-horizontal'>
-    <div class='mcq-title' [innerHTML]="previewData.question | sanitizeHtml">
-    </div>
-    <div class='mcq-options' [innerHTML]="previewData.solution | sanitizeHtml">
-    </div>
+<div class='text quml-responsive-div'>
+  <div class='text' [innerHTML]="previewData.question | sanitizeHtml">
   </div>
+  <div class='text' [innerHTML]="previewData.answer | sanitizeHtml">
+  </div>
+</div>
