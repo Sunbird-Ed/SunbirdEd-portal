@@ -1,8 +1,19 @@
 <div *ngIf='!showTemplatePopup && showForm'>
   <form #mcqFormControl="ngForm" class="ui form {{templateDetails.templateClass}}">
-    <div class="mcq-submit-btn">
-      <button *ngIf="!questionMetaData.data || ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)"  class="sb-btn sb-btn-normal sb-btn-primary" (click)="handleSubmit(mcqFormControl)">Submit</button>
+    <div class="d-flex">
+      <div class="d-inline-block">
+        <span *ngIf="questionMetaData.data && questionMetaData.data.status === 'Live'"><a class="ui green empty circular label"></a> Published</span>
+        <span *ngIf="questionMetaData.data && (questionMetaData.data.status === 'Review' || questionMetaData.data.status === 'Draft')"><a class="ui yellow empty circular label"></a> Submitted for Review</span>
+        <span *ngIf="questionMetaData.data && questionMetaData.data.status === 'Reject'"><a class="ui red empty circular label"></a> Rejected</span>
+      </div>
+      <div class="ml-auto">
+          <button class="sb-btn sb-btn-normal sb-btn-primary mcq-submit-btn" *ngIf="questionMetaData.data && ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)" (click)="handleSubmit(mcqFormControl)" type="submit">Update</button>
+          <button class="sb-btn sb-btn-normal sb-btn-primary mcq-submit-btn" *ngIf="!questionMetaData.data" (click)="createQuestion($event)" type="submit">Submit</button>
+      </div>
     </div>
+    <!-- <div class="mcq-submit-btn">
+      <button *ngIf="!questionMetaData.data || ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)"  class="sb-btn sb-btn-normal sb-btn-primary" (click)="handleSubmit(mcqFormControl)">Submit</button>
+    </div> -->
     <div class="field mcq-title">
       <label class="mb-16 fs-1-286">Question</label>
       <app-ckeditor-tool (editorDataOutput)="mcqForm.question = $event" [editorConfig]="questionMetaData"
