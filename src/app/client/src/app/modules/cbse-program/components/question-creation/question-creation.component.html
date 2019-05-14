@@ -27,15 +27,9 @@
       <div class="two fields">
           <div class="field">
             <label>Learning Outcome</label>
-            <select formControlName="learningOutcome" name="learningOutcome" class="ui fluid dropdown">
-                <option value="">Select</option>
-                <option value="remember">remember</option>
-                <option value="understand">understand</option>
-                <option value="apply">apply</option>
-                <option value="analyse">analyse</option>
-                <option value="evaluate">evaluate</option>
-                <option value="create">create</option>
-            </select>
+            <sui-select class="selection" formControlName="learningOutcome" name="'learningOutcome'" required>
+                <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
+              </sui-select>
             <label class="ui basic red error label pt-0"
                   *ngIf="questionMetaForm.controls.learningOutcome.dirty && questionMetaForm.controls['learningOutcome'].errors">Enter
                   Learning Outcome</label>
@@ -68,15 +62,9 @@
       <div class="two fields">
             <div class="field">
               <label>Blooms Level</label>
-              <select formControlName="bloomsLevel" class="ui fluid dropdown" name="bloomsLevel">
-                  <option value="">Select</option>
-                  <option value="remember">remember</option>
-                  <option value="understand">understand</option>
-                  <option value="apply">apply</option>
-                  <option value="analyse">analyse</option>
-                  <option value="evaluate">evaluate</option>
-                  <option value="create">create</option>
-              </select>
+              <sui-select class="selection" formControlName="bloomsLevel" name="'bloomsLevel'" required>
+                <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
+              </sui-select>
               <label class="ui basic red error label pt-0"
                   *ngIf="questionMetaForm.controls.bloomsLevel.dirty && questionMetaForm.controls['bloomsLevel'].errors">Fill
                   bloomsLevel </label>
