@@ -28,7 +28,7 @@ export class DataChartComponent implements OnInit, AfterViewInit {
   timeLineRangeoptions;
   chartFiltersSubscription: Subscription;
   filters;
-  constructor(public resourceService:ResourceService) { }
+  constructor(public resourceService: ResourceService) { }
 
   ngOnInit() {
     this.chart = _.cloneDeep(this.chartData);
