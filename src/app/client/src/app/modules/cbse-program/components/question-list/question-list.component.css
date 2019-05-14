@@ -4,3 +4,6 @@
 .questionsMenu{
   overflow-y: auto; max-height:500px;
 }
+.emptyList{
+  border: none;
+}

@@ -1,7 +1,7 @@
   <div class="ui mt-30 two column grid">
       <div class="two wide column">
         <div class="ui questionsMenu">
-            <div class="ui vertical segments">
+            <div class="ui vertical segments" [class.emptyList]="questionTabs.length === 0">
                 <div class="questionTab ui center tertiary header aligned segment" [class.tertiary]="selectedQuestion == i" (click)="getQuestion(tab.identifier, tab); activateClass(i)" *ngFor="let tab of questionTabs; let i = index">
                     <div class="ui top right attached  yellow empty circular label m-5" *ngIf="tab.status === 'Draft' || tab.status === 'Review'" ></div>
                     <div class="ui top right attached  green empty circular label m-5" *ngIf="tab.status === 'Live'"></div>
