@@ -1,0 +1,26 @@
+.text {
+  margin: .25em 0 .5em;
+  font-size: 1em;
+  word-wrap: break-word;
+  color: rgba(0,0,0,.87);
+  line-height: 1.3;
+}
+
+.image-style-align-left {
+  margin: 0;
+  max-width: 100%;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.image-style-align-right {
+  margin: 0;
+  max-width: 100%;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  text-align: right;
+}
+
+.image-style-align-right img, .image-style-align-left img {
+  max-width: 50% !important;
+}
