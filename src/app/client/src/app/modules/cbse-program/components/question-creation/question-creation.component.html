@@ -1,6 +1,6 @@
 <div class="btn-group">
-    <button type="button" (click)="showPreview= false; initializeDropdown()" class="sb-btn sb-btn-normal sb-btn-outline-primary">Edit</button>
-    <button type="button" (click)="showPreview= true; generatePreview()" class="sb-btn sb-btn-normal sb-btn-outline-primary active">Preview</button>
+    <button type="button" [ngClass]="{'active':enableBtn === 'edit' }" (click)="showPreview= false; btnClick($event, 'edit'); initializeDropdown()" class="sb-btn sb-btn-normal sb-btn-outline-primary">Edit</button>
+    <button type="button" [ngClass]="{'active': enableBtn === 'preview' }" (click)="showPreview= true; btnClick($event, 'preview'); generatePreview()" class="sb-btn sb-btn-normal sb-btn-outline-primary">Preview</button>
 </div>
 
 <form *ngIf="!showPreview" class="ui form" [formGroup]="questionMetaForm">
