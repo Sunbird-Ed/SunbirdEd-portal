@@ -1,4 +1,3 @@
-
 <app-popup #frameWorkPopUp *ngIf="showFrameWorkPopUp && !isOffline" [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateFrameWork($event)"></app-popup>
 <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp && !isOffline">
 </app-tnc-popup>
