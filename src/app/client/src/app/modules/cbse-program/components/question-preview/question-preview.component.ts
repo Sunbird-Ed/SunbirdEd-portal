@@ -17,29 +17,18 @@ export class QuestionPreviewComponent implements OnInit {
     console.log(this.previewData);
   }
 
-  scroll(id) {
-    if (id === 'question') {
-      document.getElementById('answerBtn').style.display = 'block';
-      document.getElementById('questionBtn').style.display = 'none';
-    } else {
-      document.getElementById('questionBtn').style.display = 'block';
-      document.getElementById('answerBtn').style.display = 'none';
-    }
-    const el = document.getElementById(id);
-    el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-
-  }
-
   @HostListener('scroll', ['$event.target'])
   onScroll(event: any) {
-    if (event.target.scrollTop > (event.target.firstChild.offsetHeight - event.target.firstChild.offsetTop )) {
-      document.getElementById('questionBtn').style.display = 'block';
+    if (event === 'question' || event === 'answer') {
+      const el = document.getElementById(event);
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    } else if (event.target.scrollTop > (event.target.lastChild.offsetHeight / 2)) {
+      document.getElementById('questionBtn').style.display = 'inline-block';
       document.getElementById('answerBtn').style.display = 'none';
-    } else if (event.target.scrollTop < (event.target.firstChild.offsetHeight - event.target.firstChild.offsetTop) ) {
-      document.getElementById('answerBtn').style.display = 'block';
+    } else if (event.target.scrollTop < (event.target.firstChild.offsetHeight / 2) ) {
+      document.getElementById('answerBtn').style.display = 'inline-block';
       document.getElementById('questionBtn').style.display = 'none';
     }
 
   }
-
 }

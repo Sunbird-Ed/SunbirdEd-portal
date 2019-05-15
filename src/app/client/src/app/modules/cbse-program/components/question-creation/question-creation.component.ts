@@ -70,7 +70,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
         this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
         this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
-        this.questionMetaForm.controls.max_score.setValue(this.questionMetaData.data.max_score);
+        this.questionMetaForm.controls.maxScore.setValue(this.questionMetaData.data.maxScore);
     }
   }
 
@@ -94,7 +94,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
         this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
         this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
-        this.questionMetaForm.controls.max_score.setValue(this.questionMetaData.data.max_score);
+        this.questionMetaForm.controls.maxScore.setValue(this.questionMetaData.data.maxScore);
       } else {
         this.questionMetaForm.reset();
       }
@@ -114,7 +114,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       learningOutcome: new FormControl('', Validators.required),
       qlevel: new FormControl('', [Validators.required]),
       bloomsLevel: new FormControl('', [Validators.required]),
-      max_score: new FormControl(null, [Validators.required])
+      maxScore: new FormControl(null, [Validators.required])
     });
   }
   enableSubmitButton() {
@@ -164,8 +164,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 'learningOutcome': [this.questionMetaForm.value.learningOutcome],
                 'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
                 'qlevel': this.questionMetaForm.value.qlevel,
-                'max_score': Number(this.questionMetaForm.value.max_score),
-                'template_id': 'NA',
+                'maxScore': Number(this.questionMetaForm.value.maxScore),
+                'templateId': 'NA',
+                'programId': this.selectedAttributes.programId,
+                'program': this.selectedAttributes.program,
+                'channel': this.selectedAttributes.channel,
                 'framework': this.selectedAttributes.framework,
                 'board': this.selectedAttributes.board,
                 'medium': this.selectedAttributes.medium,
@@ -205,7 +208,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 'learningOutcome': [this.questionMetaForm.value.learningOutcome],
                 'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
                 'qlevel': this.questionMetaForm.value.qlevel,
-                'max_score': Number(this.questionMetaForm.value.max_score),
+                'maxScore': Number(this.questionMetaForm.value.maxScore),
                 'status': 'Review',
                 'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
                 'type': 'vsa',

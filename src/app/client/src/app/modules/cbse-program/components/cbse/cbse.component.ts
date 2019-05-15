@@ -5,12 +5,15 @@ import { first } from 'rxjs/operators';
 
 interface ISelectedAttributes {
     framework?: string;
+    channel?: string;
     board?: string;
     medium?: string;
     gradeLevel?: string;
     subject?: string;
     topic?: string;
     questionType?: string;
+    programId?: string;
+    program?: string;
 }
 
 @Component({
@@ -29,9 +32,12 @@ export class CbseComponent implements OnInit {
   constructor(public frameworkService: FrameworkService) { }
 
   ngOnInit() {
-    this.selectedAttributes.framework = _.get(this.programDetails, 'config.framework');
+    this.selectedAttributes.framework = _.get(this.programDetails, 'config.scope.framework');
+    this.selectedAttributes.channel = _.get(this.programDetails, 'config.scope.channel');
     this.selectedAttributes.board = _.get(this.programDetails, 'config.scope.board[0]');
     this.selectedAttributes.medium = _.get(this.programDetails, 'config.scope.medium[0]');
+    this.selectedAttributes.programId = _.get(this.programDetails, 'programId');
+    this.selectedAttributes.program = _.get(this.programDetails, 'name');
     this.fetchFrameWorkDetails();
   }
 

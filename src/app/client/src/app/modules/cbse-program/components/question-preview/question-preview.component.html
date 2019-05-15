@@ -1,97 +1,22 @@
-<html>
-<style>
-    .sb-question-dsp-container {
-         height: 100%;
-         padding-top: 50px;
-    }
-     .sb-question-dsp-container .sb-question-dsp-body {
-         max-width: 640px;
-         max-height: 360px;
-         min-height: 360px;
-         margin: 0 auto;
-         overflow: hidden;
-    }
-     .sb-question-dsp-container .sb-question-dsp-body .question-bg {
-         background-image: linear-gradient(-90deg, lightblue, white);
-    }
-     .sb-question-dsp-container .sb-question-dsp-body .answer-bg {
-         background-image: linear-gradient(-90deg, #fcf2d6, white);
-    }
-     .sb-question-dsp-container .sb-question-header {
-         display: flex;
-         align-items: center;
-         padding: 8px 16px;
-    }
-     .sb-question-dsp-container .sb-question-header .sb-question {
-         margin-right: auto;
-         font-size: 12px;
-         color: #024f9d;
-    }
-     .sb-question-dsp-container .sb-question-header .sb-question i.icon {
-         color: #e55a28;
-         padding-left: 8px;
-    }
-     .sb-question-dsp-container .sb-question-header .sb-mark {
-         font-size: 12px;
-         padding-right: 8px;
-         color: #024f9d;
-    }
-     .sb-question-dsp-container .sb-question-content {
-         width: 100%;
-         min-height: 72px;
-         max-height: calc(360px - 48px);
-         overflow-y: auto;
-    }
-     .sb-question-dsp-container .sb-question-content .page-section {
-         min-height: calc(360px - 48px);
-         padding: 24px 16px;
-    }
-     .sb-question-dsp-container .sb-question-content .sb-question-content-card {
-         background: white;
-         border-radius: 8px;
-         min-height: 72px;
-         font-weight: inherit;
-         font-size: 14px;
-         line-height: 20px;
-         box-shadow: 2px 5px 7px 0 rgba(0, 0, 0, 0.2);
-         border: 0.5px solid #f2f2f2;
-         padding: 16px;
-    }
-     .sb-question-dsp-container .sb-question-content .sb-answer {
-         font-size: 12px;
-         color: #333;
-         padding: 8px 0;
-    }
-    i.icon {
-        color: white;
-        background: #e55a28;
-        width: 16px;
-        height: 14px;
-        border-radius: 50%;
-        margin-left: 8px;
-        font-size: 10px;
-    }
-    </style>
-    <div class="sb-question-dsp-container quml-responsive-div">
-        <div class="sb-question-dsp-body">
-            <div class="sb-question-header question-bg">
-                <span class="sb-question"></span>
-                <span class="sb-mark">4 Marks</span>
-                <button type="button" class="sb-btn sb-btn-primary sb-btn-normal" id="questionBtn" (click)="scroll('question')" style="display: none;">Question</button>
-                <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal" id="answerBtn" (click)="scroll('answer')">Answer</button>
-            </div>
-            <div class="sb-question-content" (scroll)="onScroll($event)">
-                <div class="page-section question-bg" id="question">
-                    <div class="sb-question">Question<i class="star outline icon"></i></div>
-                    <div class="sb-question-content-card" [innerHTML]="previewData.question | sanitizeHtml"></div>
-                </div>
 
-              <div class="page-section answer-bg" id="answer">
-                  <div class="sb-answer">Answer</div>
-                  <div class="sb-question-content-card" [innerHTML]="previewData.solution | sanitizeHtml"></div>
-              </div>
-            </div>
-
+<div class="sb-question-dsp-container quml-responsive-div">
+    <div class="sb-question-dsp-body">
+        <div class="sb-question-header question-bg">
+            <span class="sb-question"></span>
+            <span class="sb-mark">4 Marks</span>
+            <button type="button" class="sb-btn sb-btn-primary sb-btn-normal" id="questionBtn" (click)="onScroll('question')" style="display: none;">Question</button>
+            <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal" id="answerBtn" (click)="onScroll('answer')">Solution</button>
         </div>
-      </div>
-</html>
+        <div class="sb-question-content" (scroll)="onScroll($event)">
+            <div class="page-section question-bg" id="question">
+                <div class="sb-question">Question<span class=" sb-star-icon"><i class="star outline icon"></i></span></div>
+                <div class="sb-question-content-card" [innerHTML]="previewData.question | sanitizeHtml"></div>
+            </div>
+
+            <div class="page-section answer-bg" id="answer">
+                <div class="sb-answer">Solution</div>
+                <div class="sb-question-content-card" [innerHTML]="previewData.solution | sanitizeHtml"></div>
+            </div>
+        </div>
+    </div>
+</div>
