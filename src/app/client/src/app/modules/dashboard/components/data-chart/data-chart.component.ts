@@ -1,3 +1,4 @@
+import { ResourceService } from '@sunbird/shared';
 import { BaseChartDirective } from 'ng2-charts';
 import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
 import * as _ from 'lodash-es';
@@ -27,7 +28,7 @@ export class DataChartComponent implements OnInit, AfterViewInit {
   timeLineRangeoptions;
   chartFiltersSubscription: Subscription;
   filters;
-  constructor() { }
+  constructor(public resourceService: ResourceService) { }
 
   ngOnInit() {
     this.chart = _.cloneDeep(this.chartData);
