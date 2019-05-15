@@ -28,10 +28,10 @@ export class McqCreationComponent implements OnInit {
   initForm() {
     if (this.questionMetaData.data) {
       const { question, responseDeclaration, template_id,
-        learningOutcome, qlevel, bloomsLevel, max_score } = this.questionMetaData.data;
+        learningOutcome, qlevel, bloomsLevel, maxScore } = this.questionMetaData.data;
       const options = _.map(this.questionMetaData.data.options, option => ({body: option.value.body}));
       this.mcqForm = new McqForm(question, options, template_id, _.get(responseDeclaration, 'responseValue.correct_response.value'),
-        learningOutcome[0], qlevel, bloomsLevel[0], max_score);
+        learningOutcome[0], qlevel, bloomsLevel[0], maxScore);
     } else {
       this.mcqForm = new McqForm('', [], undefined, undefined);
     }
@@ -83,7 +83,7 @@ export class McqCreationComponent implements OnInit {
             'objectType': 'AssessmentItem',
             'metadata': {
               'code': UUID.UUID(),
-              'template_id': this.questionMetaData.data.template_id,
+              'templateId': this.questionMetaData.data.template_id,
               'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
               'body': questionData.body,
               'responseDeclaration': questionData.responseDeclaration,
@@ -92,7 +92,7 @@ export class McqCreationComponent implements OnInit {
               'learningOutcome': [this.mcqForm.learningOutcome],
               'bloomsLevel': [this.mcqForm.bloomsLevel],
               'qlevel': this.mcqForm.difficultyLevel,
-              'max_score': Number(this.mcqForm.max_score),
+              'maxScore': Number(this.mcqForm.maxScore),
               'status': 'Review',
               'type': 'mcq',
             }
@@ -138,8 +138,11 @@ export class McqCreationComponent implements OnInit {
               'learningOutcome': [this.mcqForm.learningOutcome],
               'bloomsLevel': [this.mcqForm.bloomsLevel],
               'qlevel': this.mcqForm.difficultyLevel,
-              'max_score': Number(this.mcqForm.max_score),
-              'template_id': this.templateDetails.templateClass,
+              'maxScore': Number(this.mcqForm.maxScore),
+              'templateId': this.templateDetails.templateClass,
+              'programId': this.selectedAttributes.programId,
+              'program': this.selectedAttributes.program,
+              'channel': this.selectedAttributes.channel,
               'framework': this.selectedAttributes.framework,
               'board': this.selectedAttributes.board,
               'medium': this.selectedAttributes.medium,
