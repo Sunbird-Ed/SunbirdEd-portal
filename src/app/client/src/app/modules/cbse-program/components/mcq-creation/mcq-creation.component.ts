@@ -33,7 +33,7 @@ export class McqCreationComponent implements OnInit {
       this.mcqForm = new McqForm(question, options, template_id, _.get(responseDeclaration, 'responseValue.correct_response.value'),
         learningOutcome[0], qlevel, bloomsLevel[0], max_score);
     } else {
-      this.mcqForm = new McqForm('', [], undefined, '1');
+      this.mcqForm = new McqForm('', [], undefined, undefined);
     }
     this.showForm = true;
   }
@@ -55,7 +55,7 @@ export class McqCreationComponent implements OnInit {
   }
   handleSubmit(formControl) {
     const optionValid = _.find(this.mcqForm.options, option => (option.body === undefined || option.body === ''));
-    if (formControl.invalid || optionValid) {
+    if (formControl.invalid || optionValid || !this.mcqForm.answer || [undefined, ''].includes(this.mcqForm.question)) {
       this.showFormError = true;
       return;
     }
