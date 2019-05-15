@@ -41,6 +41,12 @@
                 border: 0.5px solid #dedede;
                 border-radius: 0 4px 4px 0;
             }
+
+            &.disabled {
+                pointer-events: none;
+                cursor: not-allowed;
+                opacity: 0.3;
+            }
         }
     
         .sb-item-active {

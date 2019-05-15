@@ -1,3 +1,5 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { SharedModule } from '@sunbird/shared';
 import { ChartsModule } from 'ng2-charts';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -12,7 +14,7 @@ describe('DataChartComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DataChartComponent],
-      imports: [ChartsModule, SuiModule, ReactiveFormsModule]
+      imports: [ChartsModule, SuiModule, ReactiveFormsModule , SharedModule.forRoot(), HttpClientTestingModule]
     })
       .compileComponents();
   }));
