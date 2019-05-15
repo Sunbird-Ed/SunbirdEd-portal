@@ -27,6 +27,9 @@ body {
 @include respond-above(sm) {
   body {
     padding-bottom: 170px;
+    .pusher {
+      padding-bottom: 170px !important;
+    }
   }
 }
 
