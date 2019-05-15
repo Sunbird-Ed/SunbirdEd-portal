@@ -1,16 +1,6 @@
 <div *ngIf='!showTemplatePopup && showForm'>
-  <form #mcqFormControl="ngForm" class="ui form mcq-vertical">
-    <div class="d-flex">
-      <div class="d-inline-block">
-        <span *ngIf="questionMetaData.data && questionMetaData.data.status === 'Live'"><a class="ui green empty circular label"></a> Published</span>
-        <span *ngIf="questionMetaData.data && (questionMetaData.data.status === 'Review' || questionMetaData.data.status === 'Draft')"><a class="ui yellow empty circular label"></a> Submitted for Review</span>
-        <span *ngIf="questionMetaData.data && questionMetaData.data.status === 'Reject'"><a class="ui red empty circular label"></a> Rejected</span>
-      </div>
-      <div class="ml-auto">
-          <button class="sb-btn sb-btn-normal sb-btn-primary mcq-submit-btn" *ngIf="questionMetaData.data && ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)" (click)="handleSubmit(mcqFormControl)" type="submit">Update</button>
-          <button class="sb-btn sb-btn-normal sb-btn-primary mcq-submit-btn" *ngIf="!questionMetaData.data" (click)="handleSubmit(mcqFormControl)" type="submit">Submit</button>
-      </div>
-    </div>
+  <app-question-creation-header (buttonType)="buttonTypeHandler($event)" [questionMetaData]="questionMetaData" ></app-question-creation-header>
+  <form #mcqFormControl="ngForm" class="ui form mcq-vertical" *ngIf="!showPreview">
     <div class="field mcq-title">
       <label class="mb-16 fs-1-286">Question</label>
       <label *ngIf="showFormError && [undefined, ''].includes(mcqForm.question)" 
@@ -82,6 +72,7 @@
     </div>
   </div>
   </form>
+  <app-question-preview *ngIf="showPreview" [questionMetaData]="questionMetaData"></app-question-preview>
 </div>
 
 <app-mcq-template-selection *ngIf='showTemplatePopup' (templateSelection)="handleTemplateSelection($event)">
