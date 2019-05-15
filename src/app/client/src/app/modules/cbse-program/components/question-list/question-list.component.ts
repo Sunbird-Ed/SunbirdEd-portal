@@ -1,7 +1,9 @@
 import { Component, OnInit, AfterViewInit, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
-import { ConfigService, IUserProfile, IUserData } from '@sunbird/shared';
+import { ConfigService, ToasterService, IUserData } from '@sunbird/shared';
 import { UserService, PublicDataService, ActionService } from '@sunbird/core';
+import { tap, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
+import { of } from 'rxjs';
 @Component({
   selector: 'app-question-list',
   templateUrl: './question-list.component.html',
@@ -11,18 +13,18 @@ export class QuestionListComponent implements OnInit {
   @Input() selectedAttributes: any;
   public questionList = [];
   public selectedQuestionId: any;
+  public questionReadApiDetails: any = {};
   public questionMetaData: any;
   public refresh = true;
-  public enableCreateButton = true;
   public showLoader = true;
   constructor(private configService: ConfigService, private userService: UserService, private publicDataService: PublicDataService,
-    public actionService: ActionService, private cdr: ChangeDetectorRef) {
+    public actionService: ActionService, private cdr: ChangeDetectorRef, public toasterService: ToasterService) {
   }
 
   ngOnInit() {
     this.fetchQuestionList();
   }
-  fetchQuestionList() {
+  private fetchQuestionList() {
     const req = {
       url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
       data: {
@@ -40,48 +42,54 @@ export class QuestionListComponent implements OnInit {
             'version': 3,
             'status': []
           },
-          'sort_by': { 'createdOn': 'ASC' }
+          'sort_by': { 'createdOn': 'desc' }
         }
       }
     };
-    this.publicDataService.post(req).subscribe((res) => {
+    this.publicDataService.post(req).pipe(tap(data => this.showLoader = false))
+    .subscribe((res) => {
       this.questionList = res.result.items;
       if (this.questionList.length) {
-        this.getQuestion(this.questionList[0].identifier);
         this.selectedQuestionId = this.questionList[0].identifier;
-        return;
+        this.handleQuestionTabChange(this.selectedQuestionId);
       }
-      this.showLoader = false;
     }, err => {
-      this.showLoader = false;
-      console.log('fetching question failed');
+      this.toasterService.error(_.get(err, 'error.params.errmsg') || 'Fetching question list failed');
     });
   }
-  public getQuestion(questionId) {
+  handleQuestionTabChange(questionId) {
+    this.selectedQuestionId = questionId;
     this.showLoader = true;
-    const req = {
-      url: `${this.configService.urlConFig.URLS.ASSESSMENT.READ}/${questionId}`
-    };
-    this.actionService.get(req).subscribe((res) => {
+    this.getQuestionDetails(questionId).pipe(tap(data => this.showLoader = false))
+    .subscribe((assessment_item) => {
       let editorMode;
-      if (['Draft', 'Review', 'Reject'].includes(res.result.assessment_item.status)) {
+      if (['Draft', 'Review', 'Reject'].includes(assessment_item.status)) {
         editorMode = 'edit';
       } else {
         editorMode = 'view';
       }
       this.questionMetaData = {
         mode: editorMode,
-        data: res.result.assessment_item
+        data: assessment_item
       };
-      this.enableCreateButton = true;
-      this.showLoader = false;
-    }, error => {
-      this.showLoader = false;
-      console.log('fetching questions failed');
+      this.refreshEditor();
+    }, err => {
+      this.toasterService.error(_.get(err, 'error.params.errmsg') || 'Fetching question failed');
     });
   }
+  public getQuestionDetails(questionId) {
+    if (this.questionReadApiDetails[questionId]) {
+      return of(this.questionReadApiDetails[questionId]);
+    }
+    const req = {
+      url: `${this.configService.urlConFig.URLS.ASSESSMENT.READ}/${questionId}`
+    };
+    return this.actionService.get(req).pipe(map( res => {
+      this.questionReadApiDetails[questionId] = res.result.assessment_item;
+      return res.result.assessment_item;
+    }));
+  }
   public createNewQuestion(): void {
-    this.enableCreateButton = false;
     this.questionMetaData = {
       mode: 'create'
     };
@@ -90,15 +98,19 @@ export class QuestionListComponent implements OnInit {
   public questionStatusHandler(event) {
     console.log('editor event', event);
     if (event.type === 'close') {
-      this.showLoader = true;
-      this.getQuestion(this.selectedQuestionId);
+      this.handleQuestionTabChange(this.selectedQuestionId);
       return;
     }
     if (event.status === 'failed') {
       console.log('failed');
     } else {
-      this.enableCreateButton = true;
-      this.fetchQuestionList();
+      if  (event.type === 'update') {
+        delete this.questionReadApiDetails[event.identifier];
+        this.handleQuestionTabChange(this.selectedQuestionId);
+      } else {
+        this.showLoader = true;
+        setTimeout(() => this.fetchQuestionList(), 2000);
+      }
     }
   }
   private refreshEditor() {
