@@ -1,292 +1,221 @@
-
-import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import {
-  ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ILoaderMessage, UtilService, ICard
+    PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
+    ICard, ILoaderMessage, UtilService, NavigationHelperService
 } from '@sunbird/shared';
-import { SearchService, CoursesService, PlayerService, ICourses, SearchParam, ISort } from '@sunbird/core';
-import { Component, OnInit, NgZone } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { SearchService, PlayerService, UserService, FrameworkService } from '@sunbird/core';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-
+import { combineLatest, Subject } from 'rxjs';
+import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import * as _ from 'lodash-es';
+import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { takeUntil, map, mergeMap, first, filter, debounceTime, tap, delay } from 'rxjs/operators';
+import { CacheService } from 'ng2-cache-service';
 @Component({
-  selector: 'app-library-search',
-  templateUrl: './library-search.component.html',
-  styleUrls: ['./library-search.component.css']
+    templateUrl: './library-search.component.html'
 })
-export class LibrarySearchComponent implements OnInit {
-  inviewLogs: any = [];
-  /**
-	 * telemetryImpression
-	*/
-  telemetryImpression: IImpressionEventInput;
-  closeIntractEdata: IInteractEventEdata;
-  cardIntractEdata: IInteractEventEdata;
-  sortIntractEdata: IInteractEventEdata;
-  /**
-   * To call searchService which helps to use list of courses
-   */
-  private searchService: SearchService;
-  /**
-  * To call resource service which helps to use language constant
-  */
-  private resourceService: ResourceService;
-  /**
-   * To get url, app configs
-   */
-  public config: ConfigService;
-  /**
-  * To show toaster(error, success etc) after any API calls
-  */
-  private toasterService: ToasterService;
-  /**
-   * To get enrolled courses details.
-   */
-  coursesService: CoursesService;
-  /**
-   * Contains list of published course(s) of logged-in user
-   */
-  searchList: Array<ICard> = [];
-  /**
-   * To navigate to other pages
-   */
-  private route: Router;
-  /**
-  * To send activatedRoute.snapshot to router navigation
-  * service for redirection to parent component
-  */
-  private activatedRoute: ActivatedRoute;
-  /**
-   * For showing pagination on inbox list
-   */
-  private paginationService: PaginationService;
-  /**
-    * To show / hide no result message when no result found
-   */
-  noResult = false;
-  /**
-   * no result  message
-  */
-  noResultMessage: INoResultMessage;
-  /**
-    * totalCount of the list
-  */
-  totalCount: Number;
-  /**
-   * Current page number of inbox list
-   */
-  pageNumber = 1;
-  /**
-    * Contains page limit of outbox list
-    */
-  pageLimit: number;
-  /**
-   * This variable hepls to show and hide page loader.
-   * It is kept true by default as at first when we comes
-   * to a page the loader should be displayed before showing
-   * any data
-   */
-  showLoader = true;
-  /**
-     * loader message
-    */
-  loaderMessage: ILoaderMessage;
-  /**
-   * Contains returned object of the pagination service
-   * which is needed to show the pagination on inbox view
-   */
-  pager: IPagination;
-  /**
-   *url value
-   */
-  queryParams: any;
+export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  public filterType: any;
+    public showLoader = true;
+    public noResultMessage: INoResultMessage;
+    public filterType: string;
+    public queryParams: any;
+    public hashTagId: string;
+    public unsubscribe$ = new Subject<void>();
+    public telemetryImpression: IImpressionEventInput;
+    public inViewLogs = [];
+    public sortIntractEdata: IInteractEventEdata;
+    public dataDrivenFilters: any = {};
+    public dataDrivenFilterEvent = new EventEmitter();
+    public initFilters = false;
+    public facets: Array<string>;
+    public facetsList: any;
+    public paginationDetails: IPagination;
+    public contentList: Array<ICard> = [];
+    public cardIntractEdata: IInteractEventEdata;
+    public loaderMessage: ILoaderMessage;
+    public sortingOptions;
+    public redirectUrl;
+    public frameworkData: object;
+    public closeIntractEdata;
 
-  public redirectUrl: string;
-  sortingOptions: Array<ISort>;
-  public facetArray: Array<string>;
-  public facets: any;
-  /**
-     * Constructor to create injected service(s) object
-     * Default method of Draft Component class
-     * @param {SearchService} searchService Reference of SearchService
-     * @param {Router} route Reference of Router
-     * @param {PaginationService} paginationService Reference of PaginationService
-     * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
-     * @param {ConfigService} config Reference of ConfigService
-     * @param {CoursesService} coursesService Reference of CoursesService
-     * @param {ResourceService} resourceService Reference of ResourceService
-     * @param {ToasterService} toasterService Reference of ToasterService
-   */
-  constructor(searchService: SearchService, route: Router, private playerService: PlayerService,
-    activatedRoute: ActivatedRoute, paginationService: PaginationService,
-    resourceService: ResourceService, toasterService: ToasterService,
-    config: ConfigService, public utilService: UtilService) {
-    this.searchService = searchService;
-    this.route = route;
-    this.activatedRoute = activatedRoute;
-    this.paginationService = paginationService;
-    this.resourceService = resourceService;
-    this.toasterService = toasterService;
-    this.config = config;
-    this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
-  }
-  /**
-   * This method sets the make an api call to get all search data with page No and offset
-   */
-  populateContentSearch(filters) {
-    this.showLoader = true;
-    this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
-    const requestParams = {
-      filters:  _.pickBy(filters, value => value.length > 0),
-      limit: this.pageLimit,
-      pageNumber: this.pageNumber,
-      query: this.queryParams.key,
-      softConstraints: { badgeAssertions: 1 },
-      sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType},
-      params : this.config.appConfig.Library.contentApiQueryParams,
-      facets: this.facetArray
-    };
-    this.searchService.contentSearch(requestParams).subscribe(
-      (apiResponse: ServerResponse) => {
-        this.facets = this.searchService.processFilterData(_.get(apiResponse, 'result.facets'));
-        if (apiResponse.result.count && apiResponse.result.content) {
-          this.showLoader = false;
-          this.noResult = false;
-          this.searchList = apiResponse.result.content;
-          this.totalCount = apiResponse.result.count;
-          this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
-          const constantData = this.config.appConfig.LibrarySearch.constantData;
-        const metaData = this.config.appConfig.LibrarySearch.metaData;
-        const dynamicFields = this.config.appConfig.LibrarySearch.dynamicFields;
-        this.searchList = this.utilService.getDataForCard(apiResponse.result.content, constantData, dynamicFields, metaData);
-      } else {
-          this.noResult = true;
-          this.showLoader = false;
-          this.noResultMessage = {
-            'message': this.resourceService.messages.stmsg.m0007,
-            'messageText': this.resourceService.messages.stmsg.m0006
-          };
-        }
-      },
-      err => {
-        this.facets = {};
-        this.showLoader = false;
-        this.noResult = true;
-        this.noResultMessage = {
-          'messageText': this.resourceService.messages.fmsg.m0077
-        };
-        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-      }
-    );
-  }
-  /**
-  * This method helps to navigate to different pages.
-  * If page number is less than 1 or page number is greater than total number
-  * of pages is less which is not possible, then it returns.
-  *
-  * @param {number} page Variable to know which page has been clicked
-  *
-  * @example navigateToPage(1)
-  */
-  navigateToPage(page: number): undefined | void {
-    if (page < 1 || page > this.pager.totalPages) {
-      return;
+    constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
+        public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
+        public resourceService: ResourceService, public toasterService: ToasterService,
+        public configService: ConfigService, public utilService: UtilService,
+        public navigationHelperService: NavigationHelperService, public userService: UserService,
+        public cacheService: CacheService, public frameworkService: FrameworkService,
+        public navigationhelperService: NavigationHelperService) {
+        this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
+        this.filterType = this.configService.appConfig.library.filterType;
+        this.redirectUrl = this.configService.appConfig.library.searchPageredirectUrl;
+        this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
     }
-    this.pageNumber = page;
-    this.route.navigate(['search/Library', this.pageNumber], {
-      queryParams: this.queryParams
-    });
-  }
-
-  getFilters(filters) {
-    this.facetArray =  filters.map(element => element.code);
-    this.setFilters();
-  }
-
-  setFilters () {
-    observableCombineLatest(
-      this.activatedRoute.params,
-      this.activatedRoute.queryParams,
-      (params: any, queryParams: any) => {
-        return {
-          params: params,
-          queryParams: queryParams
-        };
-      })
-      .subscribe(bothParams => {
-        if (bothParams.params.pageNumber) {
-          this.pageNumber = Number(bothParams.params.pageNumber);
-        }
-        this.queryParams = { ...bothParams.queryParams };
-        let filters = {};
-        if (!_.isEmpty(this.queryParams)) {
-          _.forOwn(this.queryParams, (queryValue, queryParam) => {
-            filters[queryParam] = queryValue;
+    ngOnInit() {
+        this.userService.userData$.subscribe(userData => {
+            if (userData && !userData.err) {
+                this.frameworkData = _.get(userData.userProfile, 'framework');
+            }
           });
-          filters = _.omit(filters, ['key', 'sort_by', 'sortType']);
-        }
-        if (this.queryParams.sort_by && this.queryParams.sortType) {
-          this.queryParams.sortType = this.queryParams.sortType.toString();
-        }
-        this.populateContentSearch(filters);
-      });
-  }
-
-  ngOnInit() {
-    this.filterType = this.config.appConfig.library.filterType;
-    this.redirectUrl = this.config.appConfig.library.searchPageredirectUrl;
-    this.setInteractEventData();
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.route.url,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
-      }
-    };
-  }
-  setInteractEventData() {
-    this.closeIntractEdata = {
-      id: 'search-close',
-      type: 'click',
-      pageid: 'library-search'
-    };
-    this.cardIntractEdata = {
-      id: 'content-card',
-      type: 'click',
-      pageid: 'library-search'
-    };
-    this.sortIntractEdata = {
-      id: 'sort',
-      type: 'click',
-      pageid: 'library-search'
-    };
-  }
-  playContent(event) {
-    this.playerService.playContent(event.data.metaData);
-  }
-  inview(event) {
-    _.forEach(event.inview, (inview, key) => {
-      const obj = _.find(this.inviewLogs, (o) => {
-        return o.objid === inview.data.metaData.identifier;
-      });
-      if (obj === undefined) {
-        this.inviewLogs.push({
-          objid: inview.data.metaData.identifier,
-          objtype: inview.data.metaData.contentType || 'content',
-          index: inview.id
+        this.initFilters = true;
+        this.dataDrivenFilterEvent.pipe(first()).
+            subscribe((filters: any) => {
+                this.dataDrivenFilters = filters;
+                this.fetchContentOnParamChange();
+                this.setNoResultMessage();
+            });
+    }
+    public getFilters(filters) {
+        this.facets = filters.map(element => element.code);
+        const defaultFilters = _.reduce(filters, (collector: any, element) => {
+            if (element.code === 'board') {
+                collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
+            }
+            return collector;
+        }, {});
+        this.dataDrivenFilterEvent.emit(defaultFilters);
+    }
+    private fetchContentOnParamChange() {
+        combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
+            .pipe(debounceTime(5), // wait for both params and queryParams event to change
+                tap(data => this.inView({ inview: [] })), // trigger pageexit if last filter resulted 0 contents
+                delay(10), // to trigger pageexit telemetry event
+                tap(data => {
+                this.setTelemetryData();
+                }),
+                map(result => ({ params: { pageNumber: Number(result[0].pageNumber) }, queryParams: result[1] })),
+                takeUntil(this.unsubscribe$)
+            ).subscribe(({ params, queryParams }) => {
+                this.showLoader = true;
+                this.paginationDetails.currentPage = params.pageNumber;
+                this.queryParams = { ...queryParams };
+                this.contentList = [];
+                this.fetchContents();
+            });
+    }
+    private fetchContents() {
+        let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
+        filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
+        const softConstraintData = {
+            filters: {channel: this.userService.hashTagId,
+            board: [this.dataDrivenFilters.board]},
+            softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
+            mode: 'soft'
+          };
+          const manipulatedData = this.utilService.manipulateSoftConstraint( _.get(this.queryParams, 'appliedFilters'),
+          softConstraintData, this.frameworkData );
+        const option = {
+            filters: _.get(this.queryParams, 'appliedFilters') ?  filters :
+            (_.get(manipulatedData, 'filters') ? _.get(manipulatedData, 'filters') : {}),
+            limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
+            pageNumber: this.paginationDetails.currentPage,
+            query: this.queryParams.key,
+            sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType },
+            mode: _.get(manipulatedData, 'mode'),
+            facets: this.facets,
+            params: this.configService.appConfig.Library.contentApiQueryParams
+        };
+        option.filters.contentType = filters.contentType ||
+        ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+        if (_.get(manipulatedData, 'filters')) {
+            option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
+          }
+        this.frameworkService.channelData$.subscribe((channelData) => {
+            if (!channelData.err) {
+               option.params.framework = _.get(channelData, 'channelData.defaultFramework');
+            }
         });
-      }
-    });
-    this.telemetryImpression.edata.visits = this.inviewLogs;
-    this.telemetryImpression.edata.subtype = 'pageexit';
-    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
-  }
+        this.searchService.contentSearch(option)
+            .subscribe(data => {
+                this.showLoader = false;
+                this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
+                this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
+                    this.configService.appConfig.SEARCH.PAGE_LIMIT);
+                const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
+                this.contentList = this.utilService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
+            }, err => {
+                this.showLoader = false;
+                this.contentList = [];
+                this.facetsList = [];
+                this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
+                    this.configService.appConfig.SEARCH.PAGE_LIMIT);
+                this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+            });
+    }
+    public navigateToPage(page: number): void {
+        if (page < 1 || page > this.paginationDetails.totalPages) {
+            return;
+        }
+        const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
+        this.router.navigate([url], { queryParams: this.queryParams });
+        window.scroll({
+            top: 100,
+            left: 100,
+            behavior: 'smooth'
+        });
+    }
+    private setTelemetryData() {
+        this.inViewLogs = [];
+        this.cardIntractEdata = {
+            id: 'content-card',
+            type: 'click',
+            pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+        };
+        this.closeIntractEdata = {
+            id: 'search-close',
+            type: 'click',
+            pageid: 'library-search'
+        };
+        this.sortIntractEdata = {
+            id: 'sort',
+            type: 'click',
+            pageid: 'library-search'
+        };
+    }
+    public playContent(event) {
+        this.playerService.playContent(event.data.metaData);
+    }
+    public inView(event) {
+        _.forEach(event.inview, (elem, key) => {
+            const obj = _.find(this.inViewLogs, { objid: elem.data.metaData.identifier });
+            if (!obj) {
+                this.inViewLogs.push({
+                    objid: elem.data.metaData.identifier,
+                    objtype: elem.data.metaData.contentType || 'content',
+                    index: elem.id
+                });
+            }
+        });
+        if (this.telemetryImpression) {
+        this.telemetryImpression.edata.visits = this.inViewLogs;
+        this.telemetryImpression.edata.subtype = 'pageexit';
+        this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+        }
+    }
+    ngAfterViewInit () {
+        setTimeout(() => {
+            this.telemetryImpression = {
+                context: {
+                    env: this.activatedRoute.snapshot.data.telemetry.env
+                },
+                edata: {
+                    type: this.activatedRoute.snapshot.data.telemetry.type,
+                    pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+                    uri: this.router.url,
+                    subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+                    duration: this.navigationhelperService.getPageLoadTime()
+                }
+            };
+        });
+    }
+    ngOnDestroy() {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
+    }
+    private setNoResultMessage() {
+      this.noResultMessage = {
+        'message': 'messages.stmsg.m0007',
+        'messageText': 'messages.stmsg.m0006'
+      };
+    }
 }

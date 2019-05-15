@@ -1,14 +1,15 @@
 
-import {takeUntil} from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { NotesService } from '../../services';
 import { UserService } from '@sunbird/core';
-import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnChanges, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
-import { NgModel } from '@angular/forms';
-import { NgIf } from '@angular/common';
 import { INoteData, IdDetails } from '@sunbird/notes';
-
 import { Subject } from 'rxjs';
+import { Markdown } from './../../../../../assets/libs/pagedown-core/pagedown';
+import { ActivatedRoute } from '@angular/router';
+import { IInteractEventObject } from '@sunbird/telemetry';
+
 
 /**
  * This component provides the editor popup to create and update notes.
@@ -17,7 +18,7 @@ import { Subject } from 'rxjs';
 @Component({
   selector: 'app-popup-editor',
   templateUrl: './popup-editor.component.html',
-  styleUrls: ['./popup-editor.component.css'],
+  styleUrls: ['./popup-editor.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 
@@ -86,6 +87,8 @@ export class PopupEditorComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   noteService: NotesService;
 
+  telemetryInteractObject: IInteractEventObject;
+
   public unsubscribe$ = new Subject<void>();
 
 
@@ -103,7 +106,8 @@ export class PopupEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     resourceService: ResourceService,
     userService: UserService,
     noteService: NotesService,
-    toasterService: ToasterService) {
+    toasterService: ToasterService,
+    private activatedRoute: ActivatedRoute) {
     this.noteService = noteService;
     this.userService = userService;
     this.toasterService = toasterService;
@@ -115,6 +119,11 @@ export class PopupEditorComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   ngOnInit() {
     this.updateData = { ...this.selectedNote };
+    this.telemetryInteractObject = {
+      id: this.ids.courseId || this.ids.contentId,
+      type: (this.ids.courseId) ? 'Course' : 'Content',
+      ver: '1.0'
+    };
   }
 
   /**
@@ -162,8 +171,7 @@ export class PopupEditorComponent implements OnInit, AfterViewInit, OnDestroy {
           updatedBy: this.userService.userid
         }
       };
-      this.noteService.create(requestData).pipe(
-        takeUntil(this.unsubscribe$))
+      this.noteService.create(requestData)
         .subscribe(
           (data: INoteData) => {
             if (data.id) {
@@ -206,5 +214,12 @@ export class PopupEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+  setTelemetryInteractEData(type) {
+    return {
+      id: type,
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
   }
 }

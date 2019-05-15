@@ -8,7 +8,6 @@ import { LearnerService, CoreModule } from '@sunbird/core';
 import { OrgManagementService } from '@sunbird/org-management';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceService, ToasterService, ConfigService, SharedModule } from '@sunbird/shared';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { StatusComponent } from './status.component';
 import { FormBuilder } from '@angular/forms';
 import { mockRes } from './status.component.spec.data';
@@ -34,7 +33,7 @@ describe('StatusComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [StatusComponent],
-      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, CoreModule.forRoot(), SharedModule.forRoot(),
+      imports: [SuiModule, HttpClientTestingModule, CoreModule, SharedModule.forRoot(),
         TelemetryModule.forRoot()],
       providers: [OrgManagementService, FormBuilder,
         { provide: Router, useClass: RouterStub },

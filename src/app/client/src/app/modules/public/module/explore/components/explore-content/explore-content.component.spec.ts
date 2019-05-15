@@ -1,242 +1,176 @@
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { Ng2IzitoastService } from 'ng2-izitoast';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule, ResourceService, ConfigService, IAction } from '@sunbird/shared';
-import { CoreModule, LearnerService, CoursesService, SearchService, OrgDetailsService} from '@sunbird/core';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ExploreContentComponent } from './explore-content.component';
-import { Response } from './explore-content.component.spec.data';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { BehaviorSubject, throwError, of } from 'rxjs';
+import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
+import { SearchService, OrgDetailsService, CoreModule, UserService} from '@sunbird/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicPlayerService } from './../../../../services';
+import { SuiModule } from 'ng2-semantic-ui';
+import * as _ from 'lodash-es';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Response } from './explore-content.component.spec.data';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TelemetryModule } from '@sunbird/telemetry';
+
 describe('ExploreContentComponent', () => {
   let component: ExploreContentComponent;
   let fixture: ComponentFixture<ExploreContentComponent>;
-  const resourceBundle = {
-    'messages': {
-      'stmsg': {
-        'm0007': 'Search for something else',
-        'm0006': 'No result'
-      },
-      'fmsg': {
-        'm0077': 'Fetching search result failed',
-        'm0051': 'Fetching other courses failed, please try again later...'
-      }
-    }
-  };
-  const mockQueryParma = {
-    'query': 'hello'
-  };
+  let toasterService, userService, searchService, orgDetailsService, activatedRoute;
+  const mockSearchData: any = Response.successData;
+  let sendOrgDetails = true;
+  let sendSearchResult = true;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
+    url = jasmine.createSpy('url');
   }
-  const fakeActivatedRoute = {
-    'params': observableOf({ pageNumber: '3' }),
-    'queryParams': observableOf({
-      sortType: 'desc', sort_by: 'lastUpdatedOn',
-      key: 'hello'
-    }),
-    snapshot: {
-      params: {
-        slug: 'ap'
-      },
-      data: {
-        telemetry: {
-          env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
-        }
-      }
+  const resourceBundle = {
+    'messages': {
+      'fmsg': {},
+      'emsg': {},
+      'stmsg': {}
     }
   };
+  class FakeActivatedRoute {
+    queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
+    paramsMock = new BehaviorSubject<any>({ pageNumber: '1' });
+    get params() { return this.paramsMock.asObservable(); }
+    get queryParams() { return this.queryParamsMock.asObservable(); }
+    snapshot = {
+      params: {slug: 'ap'},
+      data: {
+        telemetry: { env: 'resource', pageid: 'resource-search', type: 'view', subtype: 'paginate'}
+      }
+    };
+    public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
+    public changeParams(params) { this.paramsMock.next(params); }
+  }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
+      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [ExploreContentComponent],
-      providers: [ConfigService, SearchService, LearnerService, OrgDetailsService,
-        { provide: ResourceService, useValue: resourceBundle },
-        { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }, PublicPlayerService],
+      providers: [PublicPlayerService, { provide: ResourceService, useValue: resourceBundle },
+      { provide: Router, useClass: RouterStub },
+      { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
+
   beforeEach(() => {
     fixture = TestBed.createComponent(ExploreContentComponent);
     component = fixture.componentInstance;
-  });
-  it('should subscribe to searchService', () => {
-    component.slug = '123456567';
-    component.queryParams = mockQueryParma;
-    component.exploreRoutingUrl = 'explore';
-    const searchService = TestBed.get(SearchService);
-    const orgManagementService = TestBed.get(OrgDetailsService);
-    component.dataDrivenFilter = {};
-    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
-    component.searchList = Response.successData.result.content;
-    component.populateContentSearch();
-    expect(component.queryParams.sortType).toString();
-    expect(component.showLoader).toBeFalsy();
-    expect(component.searchList).toBeDefined();
-    expect(component.totalCount).toBeDefined();
-  });
-
-  it('should call searchService with badgeAssertions and channel', () => {
-    component.slug = '123456567';
-    component.hashTagId = '0123166367624478721';
-    component.queryParams = {
-      'key': 'hello'
-    };
-    component.filters = {
-      contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
-    };
-    component.dataDrivenFilter = {};
-    component.dataDrivenFilter['board'] = ['CBSE'];
-    const config = TestBed.get(ConfigService);
-    const requestParams = Response.requestParam;
-    requestParams['params'] = config.appConfig.ExplorePage.contentApiQueryParams;
-    const searchService = TestBed.get(SearchService);
-    const orgManagementService = TestBed.get(OrgDetailsService);
-    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
-    component.searchList = Response.successData.result.content;
-    component.populateContentSearch();
-    expect(searchService.contentSearch).toHaveBeenCalledWith(requestParams);
-    expect(component.queryParams.sortType).toString();
-    expect(component.showLoader).toBeFalsy();
-    expect(component.searchList).toBeDefined();
-    expect(component.totalCount).toBeDefined();
-  });
-  it('should throw error when searchService api throw error ', () => {
-    component.slug = '123456567';
-    const searchService = TestBed.get(SearchService);
-    const orgManagementService = TestBed.get(OrgDetailsService);
-    component.dataDrivenFilter = {};
-    spyOn(searchService, 'contentSearch').and.callFake(() => observableThrowError({}));
-    component.queryParams = mockQueryParma;
-    component.populateContentSearch();
-    expect(component.showLoader).toBeFalsy();
-    expect(component.noResult).toBeTruthy();
-  });
-  it('when count is 0 should show no result found', () => {
-    component.slug = '123456567';
-    const searchService = TestBed.get(SearchService);
-    const orgManagementService = TestBed.get(OrgDetailsService);
-    component.dataDrivenFilter = {};
-    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.noResult));
-    component.searchList = Response.noResult.result.content;
-    component.totalCount = Response.noResult.result.count;
-    component.queryParams = mockQueryParma;
-    component.populateContentSearch();
-    expect(component.showLoader).toBeFalsy();
-  });
-  it('should call compareObjects method', () => {
-    const objA = {
-      board: ['gradeLevel']
-    };
-    const objB = {
-      board: ['gradeLevel']
-    };
-    component.compareObjects(objA, objB);
-    expect(component.facets).toEqual(undefined);
-  });
-  it('should call navigateToPage method', () => {
-    const router = TestBed.get(Router);
-    const page = 3;
-    component.pager = {
-      currentPage: 3,
-      endIndex: 19,
-      endPage: 5,
-      pageSize: 20,
-      pages: [1, 2, 3, 4],
-      startIndex: 0,
-      startPage: 1,
-      totalItems: 45,
-      totalPages: 66
-    };
-    component.exploreRoutingUrl = 'explore';
-    component.queryParams = { key: 'abc' };
-    component.navigateToPage(page);
-    expect(component.pageNumber).toEqual(page);
-    expect(router.navigate).toHaveBeenCalledWith(['explore', 3], { queryParams: component.queryParams });
-  });
-  it('should call getChannelId method', () => {
-    const orgService = TestBed.get(OrgDetailsService);
-    spyOn(orgService, 'getOrgDetails').and.callFake(() => observableOf(Response.orgDetailsSuccessData));
-    component.getChannelId();
-    expect(component.hashTagId).toEqual(Response.orgDetailsSuccessData.hashTagId);
-  });
-  it('should call getChannelId method and return error', () => {
-    const router = TestBed.get(Router);
-    const orgService = TestBed.get(OrgDetailsService);
-    const response = {};
-    spyOn(orgService, 'getOrgDetails').and.callFake(() => observableThrowError(response));
-    spyOn(component, 'getChannelId').and.callThrough();
-    component.getChannelId();
-    expect(router.navigate).toHaveBeenCalledWith(['']);
-  });
-  it('should call playContent method in Public player service when triggered with appropriate arguments', () => {
-    const router = TestBed.get(Router);
-    const publicPlayerService = TestBed.get(PublicPlayerService);
-    component.queryParams = {};
-    const event = {
-      data: {
-        metaData:
-          { mimeType: 'application/vnd.ekstep.content-collection', identifier: '1234' }
+    toasterService = TestBed.get(ToasterService);
+    userService = TestBed.get(UserService);
+    searchService = TestBed.get(SearchService);
+    orgDetailsService = TestBed.get(OrgDetailsService);
+    activatedRoute = TestBed.get(ActivatedRoute);
+    sendOrgDetails = true;
+    sendSearchResult = true;
+    spyOn(orgDetailsService, 'getOrgDetails').and.callFake((options) => {
+      if (sendOrgDetails) {
+        return of({hashTagId: '123'});
       }
-    };
-    spyOn(publicPlayerService, 'playContent');
-    component.playContent(event);
-    expect(publicPlayerService.playContent).toHaveBeenCalledWith(event);
-  });
-  it('should call inview method', () => {
-    component.telemetryImpression = {
-      context: {
-        env: 'public'
-      },
-      edata: {
-        type: '',
-        pageid: '',
-        uri: '',
-        subtype: 'pageexit'
+      return throwError({});
+    });
+    spyOn(searchService, 'contentSearch').and.callFake((options) => {
+      if (sendSearchResult) {
+        return of(mockSearchData);
       }
-    };
-    const event = Response.inviewData;
-    component.inview(event);
-    expect(component.telemetryImpression.edata.subtype).toEqual('pageexit');
+      return throwError({});
+    });
   });
+  it('should emit filter data when getFilters is called with data', () => {
+    spyOn(component.dataDrivenFilterEvent, 'emit');
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({ board: 'NCRT'});
+  });
+  it('should emit filter data when getFilters is called with no data', () => {
+    spyOn(component.dataDrivenFilterEvent, 'emit');
+    component.getFilters([]);
+    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({});
+  });
+  it('should fetch hashTagId from API and filter details from data driven filter component', () => {
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    expect(component.hashTagId).toEqual('123');
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
+  });
+  it('should navigate to landing page if fetching org details fails and data driven filter dint returned data', () => {
+    sendOrgDetails = false;
+    component.ngOnInit();
+    expect(component.router.navigate).toHaveBeenCalledWith(['']);
+  });
+  it('should navigate to landing page if fetching org details fails and data driven filter returns data', () => {
+    sendOrgDetails = false;
+    component.ngOnInit();
+    component.getFilters([]);
+    expect(component.router.navigate).toHaveBeenCalledWith(['']);
+  });
+  it('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', fakeAsync(() => {
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    expect(component.hashTagId).toEqual('123');
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
+    expect(component.showLoader).toBeFalsy();
+    expect(component.contentList.length).toEqual(1);
+  }));
+  it('should fetch content only once for when component displays content for the first time', fakeAsync(() => {
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    expect(component.hashTagId).toEqual('123');
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
+    expect(component.showLoader).toBeFalsy();
+    expect(component.contentList.length).toEqual(1);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
+  }));
+  it('should fetch content once when queryParam changes after initial content has been displayed', fakeAsync(() => {
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
+    activatedRoute.changeQueryParams({board: ['NCRT']});
+    tick(100);
+    expect(component.contentList.length).toEqual(1);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
+  }));
+  it('should fetch content once when param changes after initial content has been displayed', fakeAsync(() => {
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
+    activatedRoute.changeParams({pageNumber: 2});
+    tick(100);
+    expect(component.contentList.length).toEqual(1);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
+  }));
+  it('should fetch content once when both queryParam and params changes after initial content has been displayed', fakeAsync(() => {
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
+    activatedRoute.changeQueryParams({board: ['NCRT']});
+    activatedRoute.changeParams({pageNumber: 2});
+    tick(100);
+    expect(component.contentList.length).toEqual(1);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
+  }));
+  it('should trow error when fetching content fails even after getting hashTagId and filter data', fakeAsync(() => {
+    sendSearchResult = false;
+    spyOn(toasterService, 'error').and.callFake(() => {});
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    expect(component.hashTagId).toEqual('123');
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
+    expect(component.showLoader).toBeFalsy();
+    expect(component.contentList.length).toEqual(0);
+    expect(toasterService.error).toHaveBeenCalled();
+  }));
   it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
     spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
-  });
-  it('should call getFilters with data', () => {
-    const searchService = TestBed.get(SearchService);
-    const filters = Response.filters;
-    const requestParams = Response.requestParam2;
-    const config = TestBed.get(ConfigService);
-    requestParams['params'] = config.appConfig.ExplorePage.contentApiQueryParams;
-    component.dataDrivenFilter = {};
-    component.hashTagId =   '0123166367624478721';
-    spyOn(component, 'populateContentSearch').and.callThrough();
-    spyOn(searchService, 'contentSearch').and.callThrough();
-    component.getFilters(filters);
-    expect(component.facetArray).toEqual([ 'board', 'medium', 'subject', 'gradeLevel' ]);
-    expect(component.dataDrivenFilter['board']).toBe('CBSE');
-    expect(component.populateContentSearch).toHaveBeenCalled();
-    expect(searchService.contentSearch).toHaveBeenCalledWith(requestParams);
-  });
-  it('should call getFilters with no data', () => {
-    const searchService = TestBed.get(SearchService);
-    const filters = [];
-    const config = TestBed.get(ConfigService);
-    const requestParams = Response.requestParam3;
-    requestParams['params'] = config.appConfig.ExplorePage.contentApiQueryParams;
-    component.dataDrivenFilter = {};
-    component.hashTagId =   '0123166367624478721';
-    spyOn(component, 'populateContentSearch').and.callThrough();
-    spyOn(searchService, 'contentSearch').and.callThrough();
-    component.getFilters(filters);
-    expect(component.populateContentSearch).toHaveBeenCalled();
-    expect(searchService.contentSearch).toHaveBeenCalledWith(requestParams);
   });
 });

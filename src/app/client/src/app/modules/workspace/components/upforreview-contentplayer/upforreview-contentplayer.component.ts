@@ -5,12 +5,11 @@ import {
   WindowScrollService, ToasterService, NavigationHelperService
 } from '@sunbird/shared';
 import { PlayerService, PermissionService, UserService } from '@sunbird/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-upforreview-contentplayer',
-  templateUrl: './upforreview-contentplayer.component.html',
-  styleUrls: ['./upforreview-contentplayer.component.css']
+  templateUrl: './upforreview-contentplayer.component.html'
 })
 export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
   public requestForChangesInteractEdata: IInteractEventEdata;
@@ -18,6 +17,7 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
   public reviewCommentsWarningYesInteractEdata: IInteractEventEdata;
   public reviewCommentsWarningNoInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
+  public closeInteractEdata: IInteractEventEdata;
 
   /**
    * To navigate to other pages
@@ -99,7 +99,6 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
   @ViewChild('publishWarningModal') publishWarningModal;
 
   showPublishWarningModal = false;
-
   /**
   * Constructor to create injected service(s) object
   Default method of Draft Component class
@@ -179,6 +178,7 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
             contentData: response.result.content
           };
           this.playerConfig = this.playerService.getConfig(contentDetails);
+          this.playerConfig.data = this.playerService.updateContentBodyForReviewer(this.playerConfig.data);
           this.contentData = response.result.content;
           this.setInteractEventData();
           this.showCommentBoxClass = this.contentData.mimeType ===
@@ -231,9 +231,14 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'upForReview-content-player'
     };
+    this.closeInteractEdata = {
+      id: 'close-button',
+      type: 'click',
+      pageid: 'upForReview-content-player'
+    };
     this.telemetryInteractObject = {
       id: this.contentId,
-      type: 'up-for-review',
+      type: this.contentData.contentType,
       ver: this.contentData.pkgVersion ? this.contentData.pkgVersion.toString() : '1.0'
     };
   }

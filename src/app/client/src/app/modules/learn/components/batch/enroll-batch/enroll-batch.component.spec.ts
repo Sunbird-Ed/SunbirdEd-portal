@@ -8,7 +8,7 @@ import { EnrollBatchComponent } from './enroll-batch.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import {SharedModule} from '@sunbird/shared';
 import {CoreModule} from '@sunbird/core';
-
+import { TelemetryModule } from '@sunbird/telemetry';
 describe('EnrollBatchComponent', () => {
   let component: EnrollBatchComponent;
   let fixture: ComponentFixture<EnrollBatchComponent>;
@@ -17,7 +17,7 @@ describe('EnrollBatchComponent', () => {
     TestBed.configureTestingModule({
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [SharedModule.forRoot(), CoreModule.forRoot(), SuiModule, LearnModule, RouterTestingModule,
+      imports: [SharedModule.forRoot(), TelemetryModule.forRoot(), CoreModule, SuiModule, LearnModule, RouterTestingModule,
         DashboardModule, HttpClientTestingModule],
     })
     .compileComponents();

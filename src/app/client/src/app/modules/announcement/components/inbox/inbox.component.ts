@@ -1,10 +1,10 @@
 
 import {takeUntil} from 'rxjs/operators';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { AnnouncementService } from '@sunbird/core';
-import { ResourceService, ConfigService, PaginationService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ConfigService, PaginationService, ToasterService, ServerResponse, NavigationHelperService} from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
 import { IEndEventInput, IStartEventInput, IImpressionEventInput, IInteractEventInput } from '@sunbird/telemetry';
 
@@ -15,10 +15,9 @@ import { Subject } from 'rxjs';
  */
 @Component({
   selector: 'app-inbox',
-  templateUrl: './inbox.component.html',
-  styleUrls: ['./inbox.component.css']
+  templateUrl: './inbox.component.html'
 })
-export class InboxComponent implements OnInit, OnDestroy {
+export class InboxComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public unsubscribe = new Subject<void>();
 
@@ -116,7 +115,8 @@ export class InboxComponent implements OnInit, OnDestroy {
     resourceService: ResourceService,
     paginationService: PaginationService,
     toasterService: ToasterService,
-    config: ConfigService) {
+    config: ConfigService,
+    public navigationhelperService: NavigationHelperService) {
     this.announcementService = announcementService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -241,17 +241,23 @@ export class InboxComponent implements OnInit, OnDestroy {
       this.pageNumber = Number(params.pageNumber);
       this.populateInboxData(this.config.appConfig.ANNOUNCEMENT.INBOX.PAGE_LIMIT, this.pageNumber);
     });
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: '/announcement/inbox/' + this.pageNumber
-      }
-    };
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+        this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          uri: '/announcement/inbox/' + this.pageNumber,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 
   ngOnDestroy() {

@@ -1,14 +1,13 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ResourceService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
-import { Angular2Csv } from 'angular2-csv';
+import { ResourceService, ToasterService, ServerResponse, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { OrgManagementService } from '../../services/org-management/org-management.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { UserService } from '@sunbird/core';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 /**
  * This component helps to upload bulk users data (csv file)
  *
@@ -16,10 +15,9 @@ import * as _ from 'lodash';
  */
 @Component({
   selector: 'app-user',
-  templateUrl: './user-upload.component.html',
-  styleUrls: ['./user-upload.component.css']
+  templateUrl: './user-upload.component.html'
 })
-export class UserUploadComponent implements OnInit, OnDestroy {
+export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('inputbtn') inputbtn: ElementRef;
   @ViewChild('modal') modal;
   /**
@@ -94,9 +92,17 @@ export class UserUploadComponent implements OnInit, OnDestroy {
 *
 * @param {ResourceService} resourceService To call resource service which helps to use language constant
 */
+  csvOptions = {
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalseparator: '.',
+    showLabels: true,
+    headers: []
+  };
   constructor(orgManagementService: OrgManagementService, config: ConfigService,
     formBuilder: FormBuilder, toasterService: ToasterService, private router: Router,
-    resourceService: ResourceService, activatedRoute: ActivatedRoute, public userService: UserService) {
+    resourceService: ResourceService, activatedRoute: ActivatedRoute, public userService: UserService,
+    public navigationhelperService: NavigationHelperService) {
     this.resourceService = resourceService;
     this.sbFormBuilder = formBuilder;
     this.orgManagementService = orgManagementService;
@@ -128,7 +134,7 @@ export class UserUploadComponent implements OnInit, OnDestroy {
       organisationId: ['', null]
     });
     this.userUploadInstructions = [
-      { instructions: this.resourceService.frmelmnts.instn.t0070},
+      { instructions: this.resourceService.frmelmnts.instn.t0070 },
       {
         instructions: this.resourceService.frmelmnts.instn.t0071,
         subinstructions: [
@@ -138,17 +144,6 @@ export class UserUploadComponent implements OnInit, OnDestroy {
         ]
       }];
     this.showLoader = false;
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: 'profile-bulk-upload-user-upload',
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: this.router.url
-      }
-    };
     this.setInteractEventData();
   }
   /**
@@ -159,19 +154,6 @@ export class UserUploadComponent implements OnInit, OnDestroy {
     this.fileName = '';
     this.processId = '';
     this.router.navigate([this.redirectUrl]);
-  }
-  /**
- * This method helps to download a sample csv file
- */
-  public downloadSampleCSV() {
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalseparator: '.',
-      showLabels: true,
-      useBom: false
-    };
-    const csv = new Angular2Csv(this.config.appConfig.ADMIN_UPLOAD.SAMPLE_USER_CSV, 'Sample_Users', options);
   }
   /**
   * This method helps to call uploadOrg method to upload a csv file
@@ -201,19 +183,19 @@ export class UserUploadComponent implements OnInit, OnDestroy {
       const fd = formData;
       this.fileName = file[0].name;
       this.orgManagementService.bulkUserUpload(fd).pipe(
-      takeUntil(this.unsubscribe$))
-      .subscribe(
-        (apiResponse: ServerResponse) => {
-          this.showLoader = false;
-          this.processId = apiResponse.result.processId;
-          this.toasterService.success(this.resourceService.messages.smsg.m0030);
-        },
-        err => {
-          this.showLoader = false;
-          const errorMsg =  _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
-           this.resourceService.messages.fmsg.m0051;
-          this.toasterService.error(errorMsg);
-        });
+        takeUntil(this.unsubscribe$))
+        .subscribe(
+          (apiResponse: ServerResponse) => {
+            this.showLoader = false;
+            this.processId = apiResponse.result.processId;
+            this.toasterService.success(this.resourceService.messages.smsg.m0030);
+          },
+          err => {
+            this.showLoader = false;
+            const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
+              this.resourceService.messages.fmsg.m0051;
+            this.toasterService.error(errorMsg);
+          });
     } else if (file[0] && !(file[0].name.match(/.(csv)$/i))) {
       this.showLoader = false;
       this.toasterService.error(this.resourceService.messages.stmsg.m0080);
@@ -232,6 +214,22 @@ export class UserUploadComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: 'profile-bulk-upload-user-upload',
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          uri: this.router.url,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
+  }
   setInteractEventData() {
     this.userUploadInteractEdata = {
       id: 'upload-user',
@@ -245,7 +243,7 @@ export class UserUploadComponent implements OnInit, OnDestroy {
     };
     this.telemetryInteractObject = {
       id: this.userService.userid,
-      type: 'user',
+      type: 'User',
       ver: '1.0'
     };
   }

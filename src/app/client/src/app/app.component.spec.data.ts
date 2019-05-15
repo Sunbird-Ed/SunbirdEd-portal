@@ -539,6 +539,7 @@ export const mockData = {
                     'https://sunbirddev.blob.core.windows.net/user/874ed8a5-782e-4f6c-8f36-e0288455901e/File-01242833565242982418.png',
                 'userName': 'ntptest102',
                 'rootOrgId': 'ORG_001',
+                'promptTnC': false,
                 'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
                 'emailVerified': null,
                 'firstName': 'Cretation',

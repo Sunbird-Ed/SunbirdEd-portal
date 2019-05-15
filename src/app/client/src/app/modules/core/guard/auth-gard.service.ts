@@ -4,6 +4,8 @@ import { PermissionService } from './../services';
 import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
 import { Observable } from 'rxjs';
 import { UserService } from './../services/user/user.service';
+import * as _ from 'lodash-es';
+
 /**
  * Service for Route Guards to restrict the access of route
  * based on roles and permission of logged in user.
@@ -58,7 +60,7 @@ export class AuthGuard implements CanActivate, CanLoad {
     getPermission(roles) {
         return Observable.create(observer => {
             if (roles === 'rootOrgAdmin') {
-                if (this.userService.userProfile.rootOrgAdmin) {
+                if (_.get(this.userService.userProfile, 'rootOrgAdmin')) {
                     observer.next(true);
                 } else {
                     this.navigateToHome(observer);

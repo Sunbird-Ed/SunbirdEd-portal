@@ -1,10 +1,11 @@
 
 import {takeUntil} from 'rxjs/operators';
-import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { AnnouncementService } from '@sunbird/core';
-import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe, ServerResponse,
+  NavigationHelperService } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 
@@ -17,10 +18,9 @@ import { Subject } from 'rxjs';
  */
 @Component({
   selector: 'app-outbox',
-  templateUrl: './outbox.component.html',
-  styleUrls: ['./outbox.component.css']
+  templateUrl: './outbox.component.html'
 })
-export class OutboxComponent implements OnInit, OnDestroy {
+export class OutboxComponent implements OnInit, OnDestroy, AfterViewInit {
   public unsubscribe = new Subject<void>();
   /**
 	 * inviewLogs
@@ -130,7 +130,8 @@ export class OutboxComponent implements OnInit, OnDestroy {
     resourceService: ResourceService,
     paginationService: PaginationService,
     toasterService: ToasterService,
-    config: ConfigService, private cdr: ChangeDetectorRef) {
+    config: ConfigService, private cdr: ChangeDetectorRef,
+    public navigationhelperService: NavigationHelperService) {
     this.announcementService = announcementService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -233,18 +234,6 @@ export class OutboxComponent implements OnInit, OnDestroy {
         }
       });
     });
-
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: '/announcement/outbox/' + this.pageNumber,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
-      }
-    };
     this.setInteractEventData();
   }
   setInteractEventData() {
@@ -273,6 +262,23 @@ export class OutboxComponent implements OnInit, OnDestroy {
       type: 'announcement',
       ver: '1.0'
     };
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: '/announcement/outbox/' + this.pageNumber,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 
   ngOnDestroy() {

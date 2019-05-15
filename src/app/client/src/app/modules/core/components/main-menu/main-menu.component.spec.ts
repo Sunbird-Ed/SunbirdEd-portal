@@ -3,8 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ConfigService, SharedModule } from '@sunbird/shared';
 import { MainMenuComponent } from './main-menu.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { WebExtensionModule } from '@project-sunbird/web-extensions';
+// import { WebExtensionModule } from '@project-sunbird/web-extensions';
+import { ActivatedRoute, Router } from '@angular/router';
 
 describe('MainMenuComponent', () => {
   let component: MainMenuComponent;
@@ -12,11 +12,13 @@ describe('MainMenuComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
+  class FakeActivatedRoute {
+  }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule, WebExtensionModule.forRoot(), CoreModule.forRoot(), SharedModule.forRoot()],
+      imports: [HttpClientModule, CoreModule, SharedModule.forRoot()],
       providers: [HttpClient, ResourceService, ConfigService, UserService,
-        LearnerService, ContentService,
+        LearnerService, ContentService, { provide: ActivatedRoute, useClass: FakeActivatedRoute },
         { provide: Router, useClass: RouterStub }]
     })
       .compileComponents();
@@ -25,7 +27,6 @@ describe('MainMenuComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MainMenuComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

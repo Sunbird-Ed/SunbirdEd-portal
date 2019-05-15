@@ -64,7 +64,7 @@
 }
 .ui.positive.button,
 .ui.positive.buttons .button {
-  background-color: $install-app-button;
+  background-color: $secondary-color;
 }
 .ui.positive.button:hover,
 .ui.positive.buttons .button:hover {
@@ -72,8 +72,8 @@
 }
 .ui.basic.positive.button,
 .ui.basic.positive.buttons .button {
-  border-color: $install-app-button !important;
-  color: $install-app-button !important;
+  border-color: $secondary-color !important;
+  color: $secondary-color !important;
 }
 .ui.basic.positive.button:hover,
 .ui.basic.positive.buttons .button:hover {

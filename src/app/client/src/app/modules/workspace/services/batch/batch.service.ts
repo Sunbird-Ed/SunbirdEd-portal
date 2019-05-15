@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { SearchParam, LearnerService, UserService, PlayerService } from '@sunbird/core';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 /**
  * Service for batch
  */
@@ -83,13 +83,23 @@ export class BatchService {
     };
     return this.learnerService.patch(option);
   }
-  getBatchDetails(bathId) {
-    const option = {
-      url: `${this.configService.urlConFig.URLS.BATCH.GET_DETAILS}/${bathId}`
-    };
-    return this.learnerService.get(option).pipe(map((date) => {
-      return date.result.response;
-    }));
+  /**
+   * this is set only for open batches, as participants will not be there
+  */
+  setBatchData(batchData): void {
+    this.batchDetails = batchData;
+  }
+  getBatchDetails(batchId) {
+    if (this.batchDetails && batchId === this.batchDetails.identifier) {
+      return observableOf(this.batchDetails);
+    } else {
+      const option = {
+        url: `${this.configService.urlConFig.URLS.BATCH.GET_DETAILS}/${batchId}`
+      };
+      return this.learnerService.get(option).pipe(map((date) => {
+        return date.result.response;
+      }));
+    }
   }
   updateBatchDetails(requestParam): Observable<ServerResponse> {
     const option = {
@@ -118,21 +128,12 @@ export class BatchService {
     };
     return this.learnerService.post(option);
   }
-  /**
-  * method setBatchData
-  */
-  setBatchData(batchData): void {
-    this.batchDetails = batchData;
+  getUpdateBatchDetails(batchId) {
+    return this.getBatchDetails(batchId).pipe(map((data) => {
+      return data;
+    }));
   }
-  getUpdateBatchDetails(bathId) {
-    if (this.batchDetails && bathId === this.batchDetails.identifier) {
-      return observableOf(this.batchDetails);
-    } else {
-      return this.getBatchDetails(bathId).pipe(map((date) => {
-        return date.result.response;
-      }));
-    }
-  }
+
   getCourseHierarchy(courseId) {
     if (this.courseHierarchy && this.courseHierarchy.identifier === courseId) {
       return observableOf(this.courseHierarchy);

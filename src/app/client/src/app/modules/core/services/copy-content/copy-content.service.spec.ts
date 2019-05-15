@@ -15,7 +15,7 @@ class RouterStub {
 describe('CopyContentService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       providers: [CopyContentService, UserService, ContentService, { provide: Router, useClass: RouterStub }]
     });
   });

@@ -8,7 +8,7 @@ import { UnEnrollBatchComponent } from './unenroll-batch.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import {SharedModule} from '@sunbird/shared';
 import {CoreModule} from '@sunbird/core';
-
+import { TelemetryModule } from '@sunbird/telemetry';
 describe('UnEnrollBatchComponent', () => {
   let component: UnEnrollBatchComponent;
   let fixture: ComponentFixture<UnEnrollBatchComponent>;
@@ -17,7 +17,7 @@ describe('UnEnrollBatchComponent', () => {
     TestBed.configureTestingModule({
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [SharedModule.forRoot(), CoreModule.forRoot(), SuiModule, LearnModule, RouterTestingModule,
+      imports: [SharedModule.forRoot(), TelemetryModule.forRoot(), CoreModule, SuiModule, LearnModule, RouterTestingModule,
         DashboardModule, HttpClientTestingModule],
     })
     .compileComponents();

@@ -1,16 +1,16 @@
 
 import {takeUntil} from 'rxjs/operators';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // Custom service(s)
 import { RendererService, CourseConsumptionService } from './../../services';
 import { UserService, SearchService } from '@sunbird/core';
-import { ResourceService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
 // Interface
 import { DashboardData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 import { Subject } from 'rxjs';
 
@@ -24,7 +24,7 @@ import { Subject } from 'rxjs';
   templateUrl: './course-consumption.component.html',
   styleUrls: ['./course-consumption.component.scss']
 })
-export class CourseConsumptionComponent implements OnDestroy {
+export class CourseConsumptionComponent implements OnDestroy, AfterViewInit {
   /**
    * Variable to gather and unsubscribe all observable subscriptions in this component.
    */
@@ -146,7 +146,7 @@ export class CourseConsumptionComponent implements OnDestroy {
    * @param {ResourceService} resourceService To get language constant
    */
   constructor(route: Router, consumption: CourseConsumptionService, activatedRoute: ActivatedRoute, searchService: SearchService,
-    rendererService: RendererService, resourceService: ResourceService) {
+    rendererService: RendererService, resourceService: ResourceService, public navigationhelperService: NavigationHelperService) {
     this.consumptionService = consumption;
     this.activatedRoute = activatedRoute;
     this.searchService = searchService;
@@ -154,21 +154,11 @@ export class CourseConsumptionComponent implements OnDestroy {
     this.resourceService = resourceService;
     this.route = route;
     // init the default impression event
-    this.initTelemetryImpressionEvent();
     this.activatedRoute.params.pipe(
     takeUntil(this.unsubscribe))
     .subscribe(params => {
-
       if (params.id && params.timePeriod) {
-
-        // update the impression event after a course is selected
-        this.telemetryImpression.edata.uri = '/activity/course/consumption/' + params.id + '/' + params.timePeriod;
-        this.telemetryImpression.object = {
-          id: params.id,
-          type: 'course',
-          ver: '1.0'
-        };
-        this.interactObject = { id: params.id, type: 'course', ver: '1.0' };
+        this.interactObject = { id: params.id, type: 'Course', ver: '1.0' };
         this.isMultipleCourses = false;
         this.showDashboard = true;
         this.getDashboardData(params.timePeriod, params.id);
@@ -242,7 +232,7 @@ export class CourseConsumptionComponent implements OnDestroy {
       if (this.myCoursesList.length === 1) {
         this.identifier = this.myCoursesList[0].identifier;
         this.courseName = this.myCoursesList[0].name;
-        this.route.navigate(['activity/course/consumption', this.identifier, this.timePeriod]);
+        this.route.navigate(['dashBoard/activity/course/consumption', this.identifier, this.timePeriod]);
       }
       this.validateIdentifier(this.identifier);
       this.showLoader = false;
@@ -258,7 +248,7 @@ export class CourseConsumptionComponent implements OnDestroy {
             if (data.result.content.length === 1) {
               this.identifier = data.result.content[0].identifier;
               this.courseName = data.result.content[0].name;
-              this.route.navigate(['activity/course/consumption', this.identifier, this.timePeriod]);
+              this.route.navigate(['dashBoard/activity/course/consumption', this.identifier, this.timePeriod]);
             } else {
               this.isMultipleCourses = true;
             }
@@ -287,7 +277,7 @@ export class CourseConsumptionComponent implements OnDestroy {
       return false;
     }
 
-    this.route.navigate(['activity/course/consumption', course.identifier, this.timePeriod]);
+    this.route.navigate(['dashBoard/activity/course/consumption', course.identifier, this.timePeriod]);
   }
 
   /**
@@ -304,7 +294,7 @@ export class CourseConsumptionComponent implements OnDestroy {
       return false;
     }
 
-    this.route.navigate(['activity/course/consumption', this.identifier, timePeriod]);
+    this.route.navigate(['dashBoard/activity/course/consumption', this.identifier, timePeriod]);
   }
 
   /**
@@ -316,22 +306,28 @@ export class CourseConsumptionComponent implements OnDestroy {
     step === 'next' ? this.showGraph++ : this.showGraph--;
   }
 
-  /**
-   * Function to initialise the telemetry impression event for course consumption dashboard page
-   */
-  initTelemetryImpressionEvent() {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: '/myActivity'
-      }
-    };
+  ngAfterViewInit () {
+    setTimeout(() => {
+      const params = this.activatedRoute.snapshot.params;
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          // update the impression event after a course is selected
+          uri: 'dashboard/activity/course/consumption/' + params.id + '/' + params.timePeriod,
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          duration: this.navigationhelperService.getPageLoadTime()
+        },
+        object: {
+          id: params.id,
+          type: 'Course',
+          ver: '1.0'
+        }
+      };
+    });
   }
-
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();

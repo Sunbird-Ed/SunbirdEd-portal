@@ -4,19 +4,23 @@ import { ICard } from '../../interfaces';
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
 @Component({
   selector: 'app-card',
-  templateUrl: './card.component.html',
-  styleUrls: ['./card.component.scss']
+  templateUrl: './card.component.html'
 })
 export class CardComponent {
-  /**
+/**
 * content is used to render IContents value on the view
 */
   @Input() data: ICard;
+  @Input() dialCode: string;
   @Input() customClass: string;
   @Output() clickEvent = new EventEmitter<any>();
+  telemetryCdata: Array<{}> = [];
 
   constructor(public resourceService: ResourceService) {
     this.resourceService = resourceService;
+    if (this.dialCode) {
+      this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
+    }
   }
 
   public onAction(data, action) {

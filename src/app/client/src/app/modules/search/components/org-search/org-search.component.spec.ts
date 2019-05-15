@@ -1,6 +1,6 @@
 
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   SharedModule, ServerResponse, PaginationService, ResourceService,
@@ -10,8 +10,7 @@ import { SearchService, UserService, LearnerService, ContentService } from '@sun
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
-import { Ng2IziToastModule } from 'ng2-izitoast';
+import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './org-search.component.spec.data';
 
@@ -33,7 +32,8 @@ describe('OrgSearchComponent', () => {
       'fmsg': {
         'm0077': 'Fetching serach result failed'
       }
-    }
+    },
+    languageSelected$: observableOf({})
   };
   const fakeActivatedRoute = {
     'params': observableOf({ pageNumber: '1' }),
@@ -51,7 +51,7 @@ describe('OrgSearchComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), Ng2IziToastModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), RouterTestingModule],
       declarations: [OrgSearchComponent],
       providers: [ResourceService, SearchService, PaginationService, UserService,
         LearnerService, ContentService, ConfigService, ToasterService,
@@ -123,12 +123,15 @@ describe('OrgSearchComponent', () => {
     expect(component.pageNumber).toEqual(3);
   });
 
-  it('should call inview method for visits data', () => {
+  it('should call inview method for visits data', fakeAsync(() => {
     spyOn(component, 'inview').and.callThrough();
+    component.ngOnInit();
+    component.ngAfterViewInit();
+    tick(100);
     component.inview(Response.event);
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
-  });
+  }));
 
   it('should call orgsearch with rootorgid', inject([SearchService], (searchService) => {
     const userService = TestBed.get(UserService);

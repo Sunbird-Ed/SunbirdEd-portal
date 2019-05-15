@@ -1,10 +1,10 @@
-<div class="ui grid mt-30">
-  <div class="one wide column"></div>
-  <div class="two wide column pt-0">
-    <app-workspacesidebar></app-workspacesidebar>
+<div class="ui container">
+  <div class="ui stackable grid mt-30" >
+    <div class="three wide column pt-0">
+      <app-workspacesidebar ></app-workspacesidebar>
+    </div>
+    <div class="nine wide column workspacesegment" >
+      <router-outlet></router-outlet>
+    </div>
   </div>
-  <div class="workspacesegment eight wide column">
-    <router-outlet></router-outlet>
-  </div>
-  <div class="one wide column"></div>
 </div>

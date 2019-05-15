@@ -7,16 +7,17 @@ import {
   SharedModule, ServerResponse, PaginationService, ResourceService,
   ConfigService, ToasterService, INoResultMessage
 } from '@sunbird/shared';
-import { SearchService, UserService, LearnerService, ContentService } from '@sunbird/core';
+import { SearchService, UserService, LearnerService, ContentService, CoreModule, OrgDetailsService, FrameworkService } from '@sunbird/core';
 import { UserSearchService } from './../../services';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
-import { Ng2IziToastModule } from 'ng2-izitoast';
+import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserSearchComponent } from './user-search.component';
 import { Response } from './user-search.component.spec.data';
+import { TelemetryService } from '@sunbird/telemetry';
+
 describe('UserSearchComponent', () => {
   let component: UserSearchComponent;
   let fixture: ComponentFixture<UserSearchComponent>;
@@ -32,7 +33,8 @@ describe('UserSearchComponent', () => {
       'fmsg': {
         'm0077': 'Fetching serach result failed'
       }
-    }
+    },
+    languageSelected$: observableOf({})
   };
   const mockQueryParma = {
     'Grades': ['Grade 1'],
@@ -45,6 +47,9 @@ describe('UserSearchComponent', () => {
     'params': observableOf({ pageNumber: '1' }),
     'queryParams': observableOf({ OrgType: ['012352495007170560157'] }),
     snapshot: {
+      params: {
+        userId: '12421312'
+      },
       data: {
         telemetry: {
           env: 'profile', pageid: 'use-search', type: 'view', subtype: 'paginate'
@@ -57,9 +62,9 @@ describe('UserSearchComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), Ng2IziToastModule],
+      imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
       declarations: [UserSearchComponent, UserFilterComponent],
-      providers: [ResourceService, SearchService, PaginationService, UserService,
+      providers: [OrgDetailsService, FrameworkService, TelemetryService, ResourceService, SearchService, PaginationService, UserService,
         LearnerService, ContentService, ConfigService, ToasterService, UserSearchService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
@@ -106,7 +111,6 @@ describe('UserSearchComponent', () => {
     spyOn(searchService, 'getOrganisationDetails').and.callFake(() => observableOf(Response.orgDetailsSearch));
     component.queryParams = mockQueryParma;
     spyOn(searchService, 'userSearch').and.callFake(() => observableThrowError({}));
-    component.populateOrgNameAndSetRoles();
     component.populateUserSearch();
     fixture.detectChanges();
     expect(component.searchList.length).toBeLessThanOrEqual(1);

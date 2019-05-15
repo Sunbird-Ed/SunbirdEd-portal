@@ -9,7 +9,11 @@ var request = require('request')
 var uuidv1 = require('uuid/v1')
 var envHelper = require('./environmentVariablesHelper.js')
 var cassandra = require('cassandra-driver')
+var fs = require('fs');
+var path = require('path');
+var dateFormat = require('dateformat')
 var contactPoints = envHelper.PORTAL_CASSANDRA_URLS
+var checksArrayObj = []
 var hcMessages = {
   LEARNER_SERVICE: {
     NAME: 'learnerservice.api',
@@ -41,7 +45,6 @@ function getHealthCheckObj (name, healthy, err, errMsg) {
 
 // Function help to get health check response
 function getHealthCheckResp (rsp, healthy, checksArrayObj) {
-  delete rsp.responseCode
   rsp.result = {}
   rsp.result.name = hcMessages.NAME
   rsp.result.version = hcMessages.API_VERSION
@@ -108,14 +111,19 @@ function checkCassandraDBHealth (callback) {
 function contentServiceHealthCheck (callback) {
   var options = {
     method: 'GET',
-    url: envHelper.content_Service_Local_BaseUrl + '/health',
+    url: envHelper.content_Service_Local_BaseUrl + '/service/health',
     headers: {
       'Content-Type': 'application/json'
     }
   }
   request(options, function (error, response, body) {
-    if (!error && body && body.responseCode === 'OK') {
-      console.log('response', response)
+    try {
+      if (typeof body === 'string') {
+        body = JSON.parse(body)
+      }
+      body.responseCode = body.responseCode.toLowerCase()
+    } catch (err) { }
+    if (!error && body && body.responseCode === 'ok') {
       callback(null, true)
     } else {
       callback(error, false)
@@ -125,13 +133,19 @@ function contentServiceHealthCheck (callback) {
 function learnerServiceHealthCheck (callback) {
   var options = {
     method: 'GET',
-    url: envHelper.learner_Service_Local_BaseUrl + '/health',
+    url: envHelper.learner_Service_Local_BaseUrl + '/service/health',
     headers: {
       'Content-Type': 'application/json'
     }
   }
   request(options, function (error, response, body) {
-    if (!error && body && body.responseCode === 'OK') {
+    try {
+      if (typeof body === 'string') {
+        body = JSON.parse(body)
+      }
+      body.responseCode = body.responseCode.toLowerCase()
+    } catch (err) { }
+    if (!error && body && body.responseCode === 'ok') {
       callback(null, true)
     } else {
       callback(error, false)
@@ -145,7 +159,7 @@ function learnerServiceHealthCheck (callback) {
  */
 function checkHealth (req, response) {
   var rspObj = req.rspObj
-  var checksArrayObj = []
+  checksArrayObj = []
   var isCSHealthy
   var isLSHealthy
   var isDbConnected
@@ -154,10 +168,12 @@ function checkHealth (req, response) {
       checkCassandraDBHealth(function (err, res) {
         if (err || res === false) {
           isDbConnected = false
+          envHelper.sunbird_portal_cassandra_db_health_status = 'false'
           checksArrayObj.push(getHealthCheckObj(hcMessages.CASSANDRA_DB.NAME, isDbConnected,
             hcMessages.CASSANDRA_DB.FAILED_CODE, hcMessages.CASSANDRA_DB.FAILED_MESSAGE))
         } else {
           isDbConnected = true
+          envHelper.sunbird_portal_cassandra_db_health_status = 'true'
           checksArrayObj.push(getHealthCheckObj(hcMessages.CASSANDRA_DB.NAME, isDbConnected, '', ''))
         }
         CB()
@@ -167,13 +183,16 @@ function checkHealth (req, response) {
       learnerServiceHealthCheck(function (err, res) {
         if (err) {
           isLSHealthy = false
+          envHelper.sunbird_learner_service_health_status = 'false'
           checksArrayObj.push(getHealthCheckObj(hcMessages.LEARNER_SERVICE.NAME,
             isLSHealthy, hcMessages.LEARNER_SERVICE.FAILED_CODE, hcMessages.LEARNER_SERVICE.FAILED_MESSAGE))
-        } else if (res && res.result && res.result.response && res.result.response.healthy) {
+        } else if (res && res === true) {
           isLSHealthy = true
+          envHelper.sunbird_learner_service_health_status = 'true'
           checksArrayObj.push(getHealthCheckObj(hcMessages.LEARNER_SERVICE.NAME, isLSHealthy, '', ''))
         } else {
           isLSHealthy = false
+          envHelper.sunbird_learner_service_health_status = 'false'
           checksArrayObj.push(getHealthCheckObj(hcMessages.LEARNER_SERVICE.NAME,
             isLSHealthy, hcMessages.LEARNER_SERVICE.FAILED_CODE, hcMessages.LEARNER_SERVICE.FAILED_MESSAGE))
         }
@@ -184,13 +203,16 @@ function checkHealth (req, response) {
       contentServiceHealthCheck(function (err, res) {
         if (err) {
           isCSHealthy = false
+          envHelper.sunbird_content_service_health_status = 'false'
           checksArrayObj.push(getHealthCheckObj(hcMessages.CONTENT_SERVICE.NAME,
             isLSHealthy, hcMessages.CONTENT_SERVICE.FAILED_CODE, hcMessages.CONTENT_SERVICE.FAILED_MESSAGE))
-        } else if (res && res.result && res.result.response && res.result.response.healthy) {
+        } else if (res && res === true) {
           isCSHealthy = true
+          envHelper.sunbird_content_service_health_status = 'true'
           checksArrayObj.push(getHealthCheckObj(hcMessages.CONTENT_SERVICE.NAME, isLSHealthy, '', ''))
         } else {
           isCSHealthy = false
+          envHelper.sunbird_content_service_health_status = 'false'
           checksArrayObj.push(getHealthCheckObj(hcMessages.CONTENT_SERVICE.NAME,
             isLSHealthy, hcMessages.CONTENT_SERVICE.FAILED_CODE, hcMessages.CONTENT_SERVICE.FAILED_MESSAGE))
         }
@@ -209,5 +231,69 @@ function checkHealth (req, response) {
   })
 }
 
+/**
+ * This function helps to check health for sunbird portal and returns 200
+ * @param {Object} req
+ * @param {Object} response
+ */
+function checkSunbirdPortalHealth (req, response) {
+  // fs.readFile(path.join(__dirname, '../client/src/assets/health-check.json'), (err, data) => {
+  //   if (data) {
+  //     var rspObj = req.rspObj
+  //     var rsp = successResponse(rspObj)
+  //     return response.status(200).send(getHealthCheckResp(rsp, true))
+  //   }
+  // });
+  var rspObj = req.rspObj
+  var rsp = successResponse(rspObj)
+  return response.status(200).send(getHealthCheckResp(rsp, true))
+}
+
+/**
+ * This function helps to check health of all dependency services of portal and returns 503 error if any service is down
+ * @param {Array} dependancyServices
+ */
+function checkDependantServiceHealth (dependancyServices) {
+  return function (req, res, next) {
+    if (envHelper.sunbird_portal_health_check_enabled === 'false') {
+      next()
+    } else {
+      var heathyServiceCount = 0
+      dependancyServices.forEach(service => {
+        if (service === 'LEARNER' && envHelper.sunbird_learner_service_health_status === 'true') {
+          heathyServiceCount++
+        } else if (service === 'CONTENT' && envHelper.sunbird_content_service_health_status === 'true') {
+          heathyServiceCount++
+        } else if (service === 'CASSANDRA' && envHelper.sunbird_portal_cassandra_db_health_status === 'true') {
+          heathyServiceCount++
+        }
+      });
+
+      if (dependancyServices.length !== heathyServiceCount) {
+        res.status(503)
+        res.send({
+          'id': 'api.error',
+          'ver': '1.0',
+          'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
+          'params': {
+            'resmsgid': uuidv1(),
+            'msgid': null,
+            'status': 'failed',
+            'err': 'SERVICE_UNAVAILABLE',
+            'errmsg': 'Service is unavailable'
+          },
+          'responseCode': 'SERVICE_UNAVAILABLE',
+          'result': { check: checksArrayObj}
+        })
+        res.end()
+      } else {
+        next()
+      }
+    }
+  }
+}
+
 module.exports.checkHealth = checkHealth
 module.exports.createAndValidateRequestBody = createAndValidateRequestBody
+module.exports.checkSunbirdPortalHealth = checkSunbirdPortalHealth
+module.exports.checkDependantServiceHealth = checkDependantServiceHealth

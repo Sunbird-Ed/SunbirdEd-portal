@@ -34,7 +34,8 @@ const routes: Routes = [
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Search', url: '' }],
       telemetry: {
         env: 'library', pageid: 'library-search', type: 'view', subtype: 'paginate'
-      }
+      },
+      softConstraints: {badgeAssertions: 98, board: 99, channel: 100}
     }
 
   },

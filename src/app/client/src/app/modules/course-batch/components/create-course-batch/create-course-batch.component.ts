@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { takeUntil, mergeMap, map } from 'rxjs/operators';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as moment from 'moment';
 import { Subject, combineLatest } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RouterNavigationService, ResourceService, ToasterService, ServerResponse, ILoaderMessage } from '@sunbird/shared';
+import { RouterNavigationService, ResourceService, ToasterService, ServerResponse, ILoaderMessage,
+  NavigationHelperService } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { CourseBatchService } from './../../services';
@@ -17,11 +18,10 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-create-course-batch',
-  templateUrl: './create-course-batch.component.html',
-  styleUrls: ['./create-course-batch.component.css']
+  templateUrl: './create-course-batch.component.html'
 })
 
-export class CreateCourseBatchComponent implements OnInit, OnDestroy {
+export class CreateCourseBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
   * To navigate to other pages
   */
@@ -129,7 +129,8 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
     route: Router,
     resourceService: ResourceService, userService: UserService,
     courseBatchService: CourseBatchService,
-    toasterService: ToasterService, private deviceDetectorService: DeviceDetectorService) {
+    toasterService: ToasterService, private deviceDetectorService: DeviceDetectorService,
+    public navigationhelperService: NavigationHelperService) {
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
@@ -229,16 +230,6 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
         });
   }
   private setTelemetryData() {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.router.url
-      }
-    };
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     this.telemetryStart = {
       context: {
@@ -288,7 +279,7 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
     };
     this.telemetryInteractObject = {
       id: this.courseId,
-      type: 'create-batch',
+      type: 'CourseBatch',
       ver: '1.0'
     };
     this.cancelInteractEdata = {
@@ -311,6 +302,23 @@ export class CreateCourseBatchComponent implements OnInit, OnDestroy {
     this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
     // }, 1000);
   }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.router.url,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
+  }
+
   /**
   * It takes form step  as a input and change the state
   *

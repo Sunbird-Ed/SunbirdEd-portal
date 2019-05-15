@@ -5,7 +5,6 @@ import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing'
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReviewSubmissionsComponent } from './review-submissions.component';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 
 // Import services
 import { SharedModule, PaginationService, ResourceService, ToasterService } from '@sunbird/shared';
@@ -50,7 +49,8 @@ const resourceBundle = {
       'm0008': 'no-results',
       'm0033': 'You dont have any content for review...'
     }
-  }
+  },
+  languageSelected$: observableOf({})
 };
 describe('ReviewSubmissionsComponent', () => {
   let component: ReviewSubmissionsComponent;
@@ -59,7 +59,7 @@ describe('ReviewSubmissionsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ReviewSubmissionsComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(),
+      imports: [HttpClientTestingModule, RouterTestingModule, SharedModule.forRoot(),
         TelemetryModule.forRoot(), NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,

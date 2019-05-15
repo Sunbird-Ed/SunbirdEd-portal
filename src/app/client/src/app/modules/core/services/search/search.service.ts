@@ -8,11 +8,13 @@ import { Observable } from 'rxjs';
 import { SearchParam } from './../../interfaces/search';
 import { LearnerService } from './../learner/learner.service';
 import { PublicDataService } from './../public-data/public-data.service';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 /**
  * Service to search content
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SearchService {
   /**
    * Contains searched content list
@@ -246,7 +248,8 @@ export class SearchService {
           query: requestParam.query,
           sort_by: requestParam.sort_by,
           exists: requestParam.exists,
-          softConstraints: requestParam.softConstraints || { badgeAssertions: 1 },
+          softConstraints: requestParam.softConstraints,
+          mode: requestParam.mode,
           facets: requestParam.facets && requestParam.facets
         }
       }

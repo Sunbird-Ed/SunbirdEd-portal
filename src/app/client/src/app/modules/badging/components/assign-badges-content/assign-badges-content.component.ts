@@ -4,13 +4,12 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ResourceService, IUserData, IUserProfile, ToasterService } from '@sunbird/shared';
 import { UserService, BadgesService } from '@sunbird/core';
 import { ContentBadgeService } from './../../services';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { ActivatedRoute } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-assign-badges-content',
-  templateUrl: './assign-badges-content.component.html',
-  styleUrls: ['./assign-badges-content.component.css']
+  templateUrl: './assign-badges-content.component.html'
 })
 export class AssignBadgesContentComponent implements OnInit, OnDestroy {
   showBadgeAssingModel: boolean;
@@ -117,11 +116,6 @@ export class AssignBadgesContentComponent implements OnInit, OnDestroy {
       id: 'assign-badge',
       type: 'click',
       pageid: 'content-badge'
-    };
-    this.telemetryInteractObject = {
-      id: '',
-      type: 'badge',
-      ver: '1.0'
     };
   }
 

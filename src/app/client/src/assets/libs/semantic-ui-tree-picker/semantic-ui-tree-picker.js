@@ -1,6 +1,6 @@
 var conceptModal;
 (function () {
-  $.fn.treePicker = function (options) {
+  module.exports = function (options) {
     var actionButtons, config, count, initialize, initializeNodeList, initializeNodes, loadNodes, modal, nodeClicked, nodeIsPicked, nodes, pickNode, picked, recursiveNodeSearch, renderList, renderTree, showPicked, showSearch, showTree, tabs, unpickNode, updatePickedIds, updatePickedNodes, widget;
     widget = $(this);
     picked = [];
@@ -8,21 +8,26 @@ var conceptModal;
     tabs = {};
     options.noDataMessage = options.noDataMessage ? options.noDataMessage : 'no results';
     $("#" + options.nodeName).length == 0 ? '' : $("#" + options.nodeName).remove();
-    modal = $("<div id=" + options.nodeName + " class=\"ui tree-picker small modal\">\n  <div class=\"header\">\n    " + options.name + "\n\n    <div class=\"ui menu\">\n      <a class=\"active tree item\">\n        <i class=\"list icon\"></i> " + options.name + "\n      </a>\n      <a class=\"picked item\">\n        <i class=\"checkmark icon\"></i> Selected " + options.name + "&nbsp<span class=\"count\"></span>\n      </a>\n    </div>\n  </div>\n  <div class=\"ui search form\">\n    <div class=\"field\">\n      <div class=\"ui icon input\">\n        <input type=\"text\" placeholder=\"Search\">\n        <i class=\"search icon\"></i>\n      </div>\n    </div>\n  </div>\n  <div class=\"content\">\n <div class=\"ui warning hidden message\"><div class=\"header\">" + options.noDataMessage + "</div></div> <div class=\"ui active inverted dimmer\"><div class=\"ui text loader\">Loading data</div></div>\n    <div class=\"tree-tab\">\n      <div style=\"height: 400px\"></div>\n    </div>\n\n    <div class=\"search-tab\">\n    </div>\n\n    <div class=\"picked-tab\">\n    </div>\n  </div>\n  <div class=\"actions\">\n    <a class=\"pick-search\"><i class=\"checkmark icon\"></i> Choose All</a>\n    <a class=\"unpick-search\"><i class=\"remove icon\"></i> Remove All</a>\n    <a class=\"unpick-picked\"><i class=\"remove icon\"></i> Remove All</a>\n    <a class=\"ui blue button accept\">Done</a>\n    <a class=\"ui button close\">Cancel</a>\n  </div>\n</div>").modal({
+
+    /*Modal HTML Starts*/
+    modalTemplate = "<div class=\"sb-modal\"><div id=\""+options.nodeName+"\" class=\"ui normal modal visible active sb-treePicker\"><!--Header--><i class=\"close icon js-close-modal\"></i><div class=\"sb-modal-header\">"+options.name+"</div> <!--/Header--><!--Content--><div class=\"sb-modal-content p-0\"><div class=\"sb-treePicker-body\"><!--Selection Section--><div class=\"sb-treePicker-selectionSection\"><!--Search Box--><div class=\"sb-search-box no-btn\"><div class=\"input-div relative\"><i class=\"search icon sb-search-icon\"></i><input class=\"sb-search-input\" type=\"text\" placeholder=\""+options.searchText+"\" /><i class=\"close icon js-clear d-none\"></i></div></div><!--/Search Box--><div class=\"tree-tab\"><div></div></div><div class=\"search-tab\"></div></div><!--/Selection Section--><!--Selected Section--><div class=\"sb-treePicker-selectedSection\"><div class=\"d-flex flex-ai-center\">"+options.selectedText + options.name +"<span class=\"sb-treePicker-selected-count ml-5\"></span><button class=\"unpick-picked ml-auto sb-btn sb-btn-outline-error sb-btn-xs sb-left-icon-btn\"><i class=\"trash icon\"></i>"+options.removeAllText+"</button></div><div class=\"picked-tab py-15\"></div></div><!--/Selected Section--></div></div><!--/Content--><!--Actions--><div class=\"sb-modal-actions\"><a class=\"pick-search d-none\"><i class=\"checkmark icon\"></i>"+options.chooseAllText+"</a><a class=\"unpick-search d-none\"><i class=\"remove icon\"></i>"+options.removeAllText+"</a><button class=\"sb-btn sb-btn-normal sb-btn-primary accept\">"+options.submitButtonText+"</button><button class=\"sb-btn sb-btn-normal sb-btn-outline-primary close js-close-modal\">"+options.cancelButtonText+"</button></div><!--/Actions--></div></div>";
+    /*Modal HTML Ends*/
+
+    modal = $(modalTemplate).modal({
       duration: 200,
       allowMultiple: true
     });
     conceptModal = modal;
-    count = $('.count', modal);
+    count = $('.sb-treePicker-selected-count', modal);
     tabs = {
       tree: $('.tree-tab', modal),
       search: $('.search-tab', modal),
       picked: $('.picked-tab', modal)
     };
     actionButtons = {
-      pickSearch: $('.actions .pick-search', modal),
-      unpickSearch: $('.actions .unpick-search', modal),
-      unpickPicked: $('.actions .unpick-picked', modal)
+      pickSearch: $('.sb-treePicker .pick-search', modal),
+      unpickSearch: $('.sb-treePicker .unpick-search', modal),
+      unpickPicked: $('.sb-treePicker .unpick-picked', modal)
     };
     config = {
       childrenKey: 'nodes',
@@ -48,11 +53,11 @@ var conceptModal;
       } else if (widget.attr("data-picked-ids")) {
         widget.attr("data-picked-ids").split(",");
       }
-
       if (config.picked) {
         if (nodes.length) {
           updatePickedNodes();
           widget.html(config.displayFormat(picked));
+          showPicked();
         } else {
           widget.html(config.displayFormat(config.picked));
         }
@@ -71,7 +76,7 @@ var conceptModal;
           } else {
               setTimeout(function() {
                   $('.ui.active.dimmer', modal).removeClass('active');
-                  $(".ui.tree-picker.small.modal .field").addClass("disabled");
+                  $(".ui.tree-picker.normal.modal .field").addClass("disabled");
                   $(".ui.tree-picker.modal .ui.warning.message").removeClass("hidden");
               }, config.apiResponseTimeout);
           }
@@ -80,18 +85,24 @@ var conceptModal;
           return initializeNodes(nodes);
         }
       });
-      $('.actions .accept', modal).on('click', function (e) {
+      /* On click of Done button*/
+      $('.sb-modal-actions .accept', modal).on('click', function (e) {
         modal.modal('hide');
         if (config.onSubmit) {
           config.onSubmit(picked);
         }
         return widget.html(config.displayFormat(picked));
       });
-      $('.actions .close', modal).on('click', function (e) {
+      /* On click of Close button*/
+      $('.sb-treePicker .js-close-modal', modal).on('click', function (e) {
         modal.modal('hide');
         if (config.onClose) {
           config.onClose();
         }
+      });
+      /* Clear Search field */
+      $('.sb-treePicker .js-clear').on('click', function (e) {
+        clearSearch();
       });
       actionButtons.pickSearch.on('click', function (e) {
         return $('.search-tab .node:not(.picked) .name').trigger('click');
@@ -102,13 +113,7 @@ var conceptModal;
       actionButtons.unpickPicked.on('click', function (e) {
         return $('.picked-tab .node.picked .name').trigger('click');
       });
-      $('.menu .tree', modal).on('click', function (e) {
-        return showTree();
-      });
-      $('.menu .picked', modal).on('click', function (e) {
-        return showPicked();
-      });
-      return $('.search input', modal).on('keyup', function (e) {
+      return $('.sb-search-input', modal).on('keyup', function (e) {
         return showSearch($(this).val());
       });
     };
@@ -129,8 +134,6 @@ var conceptModal;
       var tree;
       updatePickedNodes();
       tree = renderTree(nodes, {
-        height: '300px',
-        overflowY: 'auto'
       });
       tabs.tree.html(tree);
       return initializeNodeList(tree);
@@ -156,11 +159,7 @@ var conceptModal;
       }
     };
     showTree = function () {
-      $('.menu .item', modal).removeClass('active');
-      $('.menu .tree', modal).addClass('active');
       tabs.tree.show();
-      tabs.search.hide();
-      tabs.picked.hide();
       return modal.attr('data-mode', 'tree');
     };
     showSearch = function (query) {
@@ -170,44 +169,43 @@ var conceptModal;
         foundNodes = recursiveNodeSearch(nodes, function (node) {
           return node.name && node.name.toLowerCase().indexOf(query.toLowerCase()) > -1;
         });
-        _.forEach(foundNodes, function (value) {
+        foundNodes.forEach(function (value) {
           if (value.selectable === 'selectable') {
             formatedNodes.push(value);
           }
         });
         foundNodes = formatedNodes;
         list = renderList(foundNodes, {
-          height: '400px',
-          overflowY: 'auto'
         });
-        $('.menu .item', modal).removeClass('active');
         tabs.search.show().html(list);
         tabs.tree.hide();
-        tabs.picked.hide();
         modal.attr('data-mode', 'search');
+        $('.sb-treePicker .js-clear').removeClass('d-none');
         initializeNodeList(list);
         return $('.name', list).each(function () {
           var name, regex;
           name = $(this).text();
           regex = RegExp('(' + query + ')', 'gi');
-          name = name.replace(regex, "<strong class='search-query'>$1</strong>");
+          name = name.replace(regex, "<strong class='sb-treePicker-searchedQuery'>$1</strong>");
           return $(this).html(name);
         });
       } else {
+        $('.sb-treePicker .js-clear').addClass('d-none');
+        tabs.search.hide();
         return showTree();
       }
+    };
+    clearSearch = function(){
+      $('.sb-treePicker .sb-search-input').val('');
+      $('.sb-treePicker .js-clear').addClass('d-none');
+      tabs.search.hide();
+      return showTree();
     };
     showPicked = function () {
       var list;
       list = renderList(picked, {
-        height: '400px',
-        overflowY: 'auto'
       });
-      $('.menu .item', modal).removeClass('active');
-      $('.menu .picked', modal).addClass('active');
       tabs.picked.show().html(list);
-      tabs.tree.hide();
-      tabs.search.hide();
       modal.attr('data-mode', 'picked');
       return initializeNodeListForSelected(list);
     };
@@ -222,7 +220,8 @@ var conceptModal;
         if (config.hidden(node)) {
           continue;
         }
-        nodeElement = $("<div class=\"node\" data-id=\"" + node.id + "\" data-name=\"" + node.name + "\">\n  <div class=\"head " + node.selectable + "\">\n    <i class=\"add circle icon\"></i>\n    <i class=\"minus circle icon\"></i>\n    <i class=\"radio icon\"></i>\n    <a class=\"name\">" + node.name + "</a>\n    <i class=\"checkmark icon\"></i>\n  </div>\n  <div class=\"content\"></div>\n</div>").appendTo(tree);
+        nodeElementHtml = "<div class=\"node\" data-id=\""+node.id+"\" data-name=\""+node.name+"\"><div class=\"head "+node.selectable+"\"><i class=\"add icon\"></i><i class=\"minus icon\"></i><i class=\"square outline icon\"></i><i class=\"checkmark icon\"></i><span class=\"name\">"+node.name+"</span></div><div class=\"content\"></div></div>";
+        nodeElement = $(nodeElementHtml).appendTo(tree);
         if (config.disabled(node)) {
           nodeElement.addClass('disabled');
         }
@@ -245,11 +244,17 @@ var conceptModal;
         if (config.hidden(node)) {
           continue;
         }
-        nodeElement = $("<div class=\"node\" data-id=\"" + node.id + "\" data-name=\"" + node.name + "\">\n  <div class=\"head " + node.selectable + "\">\n    <a class=\"name\">" + node.name + "</a>\n    <i class=\"checkmark icon\"></i>\n  </div>\n  <div class=\"content\"></div>\n</div>").appendTo(list);
+        nodeElementhtml = "<div class=\"node childless\" data-id=\""+node.id+"\" data-name=\""+node.name+"\"><div class=\"head "+node.selectable+"\"><i class=\"square outline icon\"></i><i class=\"checkmark icon\"></i><a class=\"name\">"+node.name+"</a></div> <div class=\"content\"></div></div>";
+        nodeElement = $(nodeElementhtml).appendTo(list);
         if (config.disabled(node)) {
           nodeElement.addClass('disabled');
         }
-      }
+      };
+      /*No search result found*/
+      /*if (nodes.length === 0) {
+        emptyMessage = '<div class="empty">No results were found.</div>';
+        nodeElement = $(emptyMessage).appendTo(list);
+      }*/
       return list;
     };
     initializeNodeList = function (tree) {
@@ -260,6 +265,9 @@ var conceptModal;
         head = $('>.head', node);
         content = $('>.content', node);
         $('>.name', clickHead).on('click', function (e) {
+          return nodeClicked(node);
+        });
+        $('>.icon', clickHead).on('click', function (e) {
           return nodeClicked(node);
         });
         if (nodeIsPicked(node)) {
@@ -281,7 +289,6 @@ var conceptModal;
         return updatePickedIds();
       });
     };
-
     initializeNodeListForSelected = function (tree) {
       return $('.node', tree).each(function () {
         var content, head, node;
@@ -290,6 +297,9 @@ var conceptModal;
         head = $('>.head', node);
         content = $('>.content', node);
         $('>.name', clickHead).on('click', function (e) {
+          return nodeClicked(node);
+        });
+        $('>.icon', clickHead).on('click', function (e) {
           return nodeClicked(node);
         });
         if (nodeIsPicked(node)) {
@@ -304,7 +314,6 @@ var conceptModal;
         return updatePickedIds();
       });
     };
-
     nodeClicked = function (node) {
       if (!node.hasClass('disabled')) {
         if (config.singlePick) {
@@ -328,6 +337,8 @@ var conceptModal;
         name: node.attr('data-name')
       });
       updatePickedIds();
+      showPicked();
+      $(".node[data-id=" + id + "] .square.outline", modal).addClass('d-none');
       return $(".node[data-id=" + id + "]", modal).addClass('picked');
     };
     unpickNode = function (node) {
@@ -338,6 +349,7 @@ var conceptModal;
         return ("" + n.id) !== ("" + id);
       });
       updatePickedIds();
+      $(".node[data-id=" + id + "] .square.outline", modal).removeClass('d-none');
       return $(".node[data-id=" + id + "]", modal).removeClass('picked');
     };
     nodeIsPicked = function (node) {
@@ -377,6 +389,4 @@ var conceptModal;
     };
     return initialize();
   };
-
 }).call(this);
-//# sourceURL=semantic-ui-tree-picker.js

@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { ResourceService } from '../../services';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-qr-code-modal',
-  templateUrl: './qr-code-modal.component.html',
-  styleUrls: ['./qr-code-modal.component.css']
+  templateUrl: './qr-code-modal.component.html'
 })
 export class QrCodeModalComponent implements OnInit {
   @ViewChild('modal') modal;

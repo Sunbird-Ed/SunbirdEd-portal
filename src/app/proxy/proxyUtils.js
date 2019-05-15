@@ -7,15 +7,17 @@ const _ = require('lodash')
 
 const decorateRequestHeaders = function () {
   return function (proxyReqOpts, srcReq) {
-    var channel = _.get(srcReq, 'session.rootOrghashTagId') || _.get(srcReq, 'headers.X-Channel-Id')
-    if (channel) {
+    var channel = _.get(srcReq, 'session.rootOrghashTagId') || _.get(srcReq, 'headers.X-Channel-Id') || envHelper.DEFAULT_CHANNEL
+    if (channel && !srcReq.get('X-Channel-Id')) {
       proxyReqOpts.headers['X-Channel-Id'] = channel
     }
     if (srcReq.session) {
       var userId = srcReq.session.userId
       if (userId) { proxyReqOpts.headers['X-Authenticated-Userid'] = userId }
     }
-    proxyReqOpts.headers['X-App-Id'] = appId
+    if(!srcReq.get('X-App-Id')){
+      proxyReqOpts.headers['X-App-Id'] = appId
+    }
     if (srcReq.kauth && srcReq.kauth.grant && srcReq.kauth.grant.access_token &&
     srcReq.kauth.grant.access_token.token) {
       proxyReqOpts.headers['x-authenticated-user-token'] = srcReq.kauth.grant.access_token.token
@@ -58,7 +60,28 @@ function verifyToken () {
     }
   }
 }
-
+const handleSessionExpiry = (proxyRes, proxyResData, req, res, data) => {
+  if ((proxyRes.statusCode === 401 || proxyRes.statusCode === 403) && !req.session.userId) {
+      return {
+        id: 'app.error',
+        ver: '1.0',
+        ts: dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
+        params:
+        {
+            'resmsgid': uuidv1(),
+            'msgid': null,
+            'status': 'failed',
+            'err': 'SESSION_EXPIRED',
+            'errmsg': 'Session Expired'
+        },
+        responseCode: 'SESSION_EXPIRED',
+        result: { }
+    };
+  } else {
+    return proxyResData;
+  }
+}
 module.exports.decorateRequestHeaders = decorateRequestHeaders
 module.exports.decoratePublicRequestHeaders = decoratePublicRequestHeaders
 module.exports.verifyToken = verifyToken
+module.exports.handleSessionExpiry = handleSessionExpiry

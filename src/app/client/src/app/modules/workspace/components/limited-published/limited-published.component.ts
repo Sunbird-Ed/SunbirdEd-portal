@@ -1,16 +1,16 @@
 import { FormsModule } from '@angular/forms';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
   ResourceService, IContents, ILoaderMessage, INoResultMessage,
-  ContentUtilsServiceService, ITelemetryShare
+  ContentUtilsServiceService, ITelemetryShare, NavigationHelperService
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import {
   SuiModalService, TemplateModalConfig, ModalTemplate
 } from 'ng2-semantic-ui';
@@ -22,9 +22,9 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-limited-published',
   templateUrl: './limited-published.component.html',
-  styleUrls: ['./limited-published.component.css']
+  styleUrls: ['./limited-published.component.scss']
 })
-export class LimitedPublishedComponent extends WorkSpace implements OnInit {
+export class LimitedPublishedComponent extends WorkSpace implements OnInit, AfterViewInit {
 
   @ViewChild('modalTemplate')
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
@@ -84,11 +84,6 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
     * For showing pagination on unpublished list
   */
   private paginationService: PaginationService;
-
-  /**
-    * Refrence of UserService
-  */
-  private userService: UserService;
 
   /**
   * To get url, app configs
@@ -162,12 +157,12 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
-    config: ConfigService, contentUtilsServiceService: ContentUtilsServiceService) {
-    super(searchService, workSpaceService);
+    config: ConfigService, contentUtilsServiceService: ContentUtilsServiceService,
+    public navigationhelperService: NavigationHelperService) {
+    super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
     this.activatedRoute = activatedRoute;
-    this.userService = userService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.config = config;
@@ -176,8 +171,8 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
       'loaderMessage': this.resourceService.messages.stmsg.m0082,
     };
     this.noResultMessage = {
-      'message': this.resourceService.messages.stmsg.m0008,
-      'messageText': this.resourceService.messages.stmsg.m0083
+      'message': 'messages.stmsg.m0008',
+      'messageText': 'messages.stmsg.m0083'
     };
     this.state = 'limited-publish';
   }
@@ -186,18 +181,6 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
       this.pageNumber = Number(params.pageNumber);
       this.fetchLimitedPublished(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
     });
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
-        visits: this.inviewLogs
-      }
-    };
   }
   /**
    * This method sets the make an api call to get all Unlisted with page No and offset
@@ -255,8 +238,10 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
   }
   public deleteConfirmModal(contentIds) {
     const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
-    config.isClosable = true;
-    config.size = 'mini';
+    config.isClosable = false;
+    config.size = 'small';
+    config.transitionDuration = 0;
+    config.mustScroll = true;
     this.modalService
       .open(config)
       .onApprove(result => {
@@ -268,6 +253,9 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
           (data: ServerResponse) => {
             this.showLoader = false;
             this.limitedPublishList = this.removeContent(this.limitedPublishList, contentIds);
+            if (this.limitedPublishList.length === 0) {
+              this.fetchLimitedPublished(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
+            }
             this.toasterService.success(this.resourceService.messages.smsg.m0006);
           },
           (err: ServerResponse) => {
@@ -315,6 +303,23 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
     this.telemetryImpression.edata.visits = this.inviewLogs;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
+          visits: this.inviewLogs,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
   setTelemetryShareData(param) {
     this.telemetryShareData = [{

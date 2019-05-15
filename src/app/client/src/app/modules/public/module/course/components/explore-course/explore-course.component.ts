@@ -1,344 +1,164 @@
-import { combineLatest as observableCombineLatest ,  Subject } from 'rxjs';
 import {
-    ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-    ILoaderMessage, UtilService, ICard, NavigationHelperService, BrowserCacheTtlService
+    PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
+    ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService
 } from '@sunbird/shared';
-import { PublicPlayerService } from './../../../../services';
-import {
-    SearchService, CoursesService, PlayerService, ISort,
-    OrgDetailsService, UserService, FormService
-} from '@sunbird/core';
-import { Component, OnInit, NgZone, OnDestroy} from '@angular/core';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { SearchService, OrgDetailsService, UserService, FormService } from '@sunbird/core';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
+import { PublicPlayerService } from '../../../../services';
+import { combineLatest, Subject, of } from 'rxjs';
+import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil } from 'rxjs/operators';
-import { filter } from 'rxjs/operators';
+import { takeUntil, map, mergeMap, first, filter, debounceTime, catchError, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 
 @Component({
-  selector: 'app-explore-course',
-  templateUrl: './explore-course.component.html',
-  styleUrls: ['./explore-course.component.scss']
+    templateUrl: './explore-course.component.html',
+    styleUrls: ['./explore-course.component.scss']
 })
-export class ExploreCourseComponent implements OnInit, OnDestroy {
-    inviewLogs: any = [];
-    /**
-       * telemetryImpression
-      */
-    telemetryImpression: IImpressionEventInput;
-    /**
-     * To call searchService which helps to use list of courses
-     */
-    private searchService: SearchService;
-    /**
-    * To call resource service which helps to use language constant
-    */
-    private resourceService: ResourceService;
-    /**
-     * To get url, app configs
-     */
-    public config: ConfigService;
-    /**
-    * To show toaster(error, success etc) after any API calls
-    */
-    private toasterService: ToasterService;
-    /**
-     * To get enrolled courses details.
-     */
-    coursesService: CoursesService;
-    /**
-     * Contains channel id
-     */
-    hashTagId: any;
-    /**
-     * Contains list of published course(s) of logged-in user
-     */
-    searchList: Array<ICard> = [];
-    /**
-     * To navigate to other pages
-     */
-    private route: Router;
-    /**
-    * To send activatedRoute.snapshot to router navigation
-    * service for redirection to parent component
-    */
-    private activatedRoute: ActivatedRoute;
-    /**
-     * For showing pagination on inbox list
-     */
-    private paginationService: PaginationService;
-    /**
-    * Refrence of UserService
-    */
-    private userService: UserService;
-    /**
-      * To show / hide no result message when no result found
-     */
-    noResult = false;
-    /**
-     * Contains slug which comes from the url
-     */
-    slug = '';
-    selectedLanguage: string;
-    /**
-     * no result  message
-    */
-    noResultMessage: INoResultMessage;
-    /**
-      * totalCount of the list
-    */
-    totalCount: Number;
-    /**
-     * Current page number of inbox list
-     */
-    pageNumber = 1;
-    /**
-    * To show / hide login popup on click of content
-    */
-    showLoginModal = false;
-
-    /**
-    *baseUrl;
-    */
+export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit {
+    public showLoader = true;
+    public showLoginModal = false;
     public baseUrl: string;
-    /**
-      * Contains page limit of outbox list
-      */
-    pageLimit: number;
-    isSearchable = false;
-    tempPageNumber: number;
-    language = 'en';
-    /**
-     * This variable helps to show and hide page loader.
-     * It is kept true by default as at first when we comes
-     * to a page the loader should be displayed before showing
-     * any data
-     */
-    showLoader = true;
-    /**
-       * loader message
-      */
-    loaderMessage: ILoaderMessage;
-    /**
-     * Contains returned object of the pagination service
-     * which is needed to show the pagination on inbox view
-     */
-    pager: IPagination;
-    exploreRoutingUrl: string;
-    /**
-     *url value
-     */
-    queryParams: any;
-
-    public filters: any;
-
-    public filterType: any;
-
-    public redirectUrl: string;
-    public facetArray: Array<string>;
-    public facets: any;
-    sortingOptions: Array<ISort>;
+    public noResultMessage: INoResultMessage;
+    public filterType: string;
+    public queryParams: any;
+    public hashTagId: string;
     public unsubscribe$ = new Subject<void>();
-    cardIntractEdata: IInteractEventEdata;
-    dataDrivenFilter: object;
-    frameWorkName: string;
-    /**
-       * Constructor to create injected service(s) object
-       * Default method of Draft Component class
-       * @param {SearchService} searchService Reference of SearchService
-       * @param {Router} route Reference of Router
-       * @param {PaginationService} paginationService Reference of PaginationService
-       * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
-       * @param {ConfigService} config Reference of ConfigService
-       * @param {CoursesService} coursesService Reference of CoursesService
-       * @param {ResourceService} resourceService Reference of ResourceService
-       * @param {ToasterService} toasterService Reference of ToasterService
-     */
-    constructor(searchService: SearchService, route: Router, private playerService: PlayerService,
-        activatedRoute: ActivatedRoute, paginationService: PaginationService, private cacheService: CacheService,
-        resourceService: ResourceService, toasterService: ToasterService, private browserCacheTtlService: BrowserCacheTtlService,
-        config: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
-        private formService: FormService, public navigationHelperService: NavigationHelperService,
-        private publicPlayerService: PublicPlayerService,
-        userService: UserService) {
-        this.searchService = searchService;
-        this.route = route;
-        this.activatedRoute = activatedRoute;
-        this.paginationService = paginationService;
-        this.resourceService = resourceService;
-        this.toasterService = toasterService;
-        this.config = config;
-        this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
-        this.userService = userService;
-    }
-    /**
-     * This method sets the make an api call to get all search data with page No and offset
-     */
-    populateCourseSearch() {
-        this.showLoader = true;
-        this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
-        const filters = _.pickBy(this.filters, value => value.length > 0);
-        const requestParams = {
-            filters: filters,
-            limit: this.pageLimit,
-            pageNumber: this.pageNumber,
-            query: this.queryParams.key,
-            params : this.config.appConfig.ExplorePage.contentApiQueryParams
-        };
-        this.searchService.courseSearch(requestParams).pipe(
-            takeUntil(this.unsubscribe$))
-            .subscribe(
-                (apiResponse: ServerResponse) => {
-                    if (apiResponse.result.count && apiResponse.result.course && apiResponse.result.course.length > 0) {
-                        this.showLoader = false;
-                        this.noResult = false;
-                        this.searchList = apiResponse.result.course;
-                        this.totalCount = apiResponse.result.count;
-                        this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
-                        const constantData = this.config.appConfig.CoursePage.constantData;
-                        const metaData = this.config.appConfig.CoursePage.metaData;
-                        const dynamicFields = this.config.appConfig.CoursePage.dynamicFields;
-                        this.searchList = this.utilService.getDataForCard(apiResponse.result.course,
-                            constantData, dynamicFields, metaData);
-                    } else {
-                        this.noResult = true;
-                        this.showLoader = false;
-                        this.noResultMessage = {
-                            'message': this.resourceService.messages.stmsg.m0007,
-                            'messageText': this.resourceService.messages.stmsg.m0006
-                        };
-                    }
-                },
-                err => {
-                    this.showLoader = false;
-                    this.noResult = true;
-                    this.noResultMessage = {
-                        'messageText': this.resourceService.messages.fmsg.m0077
-                    };
-                    this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-                }
-            );
-    }
-    /**
-    * This method helps to navigate to different pages.
-    * If page number is less than 1 or page number is greater than total number
-    * of pages is less which is not possible, then it returns.
-    *
-    * @param {number} page Variable to know which page has been clicked
-    *
-    * @example navigateToPage(1)
-    */
-    navigateToPage(page: number): undefined | void {
-        if (page < 1 || page > this.pager.totalPages) {
-            return;
-        }
-        this.pageNumber = page;
-        this.route.navigate([this.exploreRoutingUrl, this.pageNumber], {
-            queryParams: this.queryParams
-        });
-    }
-    getChannelId() {
-        this.orgDetailsService.getOrgDetails(this.slug).pipe(
-            takeUntil(this.unsubscribe$))
-            .subscribe(
-                (apiResponse: any) => {
-                    this.hashTagId = apiResponse.hashTagId;
-                },
-                err => {
-                    this.route.navigate(['']);
-                }
-            );
-    }
+    public telemetryImpression: IImpressionEventInput;
+    public inViewLogs = [];
+    public sortIntractEdata: IInteractEventEdata;
+    public dataDrivenFilters: any = {};
+    public dataDrivenFilterEvent = new EventEmitter();
+    public initFilters = false;
+    public facets: Array<string>;
+    public facetsList: any;
+    public paginationDetails: IPagination;
+    public contentList: Array<ICard> = [];
+    public cardIntractEdata: IInteractEventEdata;
+    public loaderMessage: ILoaderMessage;
 
-    compareObjects(a, b) {
-        if (a !== undefined) {
-            a = _.omit(a, ['language']);
-        }
-        if (b !== undefined) {
-            b = _.omit(b, ['language']);
-        }
-        return _.isEqual(a, b);
-    }
+    public frameWorkName: string;
 
-    setFilters() {
-        observableCombineLatest(
-            this.activatedRoute.params,
-            this.activatedRoute.queryParams,
-            (params: any, queryParams: any) => {
-                return {
-                    params: params,
-                    queryParams: queryParams
-                };
-            }).pipe(
-                takeUntil(this.unsubscribe$))
-            .subscribe(bothParams => {
-                this.isSearchable = this.compareObjects(this.queryParams, bothParams.queryParams);
-                if (bothParams.params.pageNumber) {
-                    this.pageNumber = Number(bothParams.params.pageNumber);
-                }
-                this.queryParams = { ...bothParams.queryParams };
-                this.filters = {};
-                if (!_.isEmpty(this.queryParams)) {
-                    _.forOwn(this.queryParams, (queryValue, queryParam) => {
-                        this.filters[queryParam] = queryValue;
-                    });
-                    this.filters = _.omit(this.filters, ['key', 'sort_by', 'sortType']);
-                }
-                if (this.queryParams.sort_by && this.queryParams.sortType) {
-                    this.queryParams.sortType = this.queryParams.sortType.toString();
-                }
-                if (this.tempPageNumber !== this.pageNumber || !this.isSearchable ) {
-                    this.tempPageNumber = this.pageNumber;
-                    this.populateCourseSearch();
-                }
-            });
+    constructor(public searchService: SearchService, public router: Router,
+        public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
+        public resourceService: ResourceService, public toasterService: ToasterService,
+        public configService: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
+        private publicPlayerService: PublicPlayerService, public userService: UserService, public cacheService: CacheService,
+        public formService: FormService, public browserCacheTtlService: BrowserCacheTtlService,
+        public navigationhelperService: NavigationHelperService) {
+        this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
+        this.filterType = this.configService.appConfig.exploreCourse.filterType;
     }
-    getframeWorkData() {
+    ngOnInit() {
+        combineLatest(
+            this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug),
+            this.getFrameWork()
+        ).pipe(
+            mergeMap((data: any) => {
+                this.hashTagId = data[0].hashTagId;
+                if (data[1]) {
+                    this.initFilters = true;
+                    this.frameWorkName = data[1];
+                    return of({});
+                    // return this.dataDrivenFilterEvent;
+                } else {
+                    return of({});
+                }
+            }), first()
+        ).subscribe((filters: any) => {
+            this.dataDrivenFilters = filters;
+            this.fetchContentOnParamChange();
+            this.setNoResultMessage();
+            },
+            error => {
+                this.router.navigate(['']);
+            }
+        );
+    }
+    public getFilters(filters) {
+        this.facets = filters.map(element => element.code);
+        const defaultFilters = _.reduce(filters, (collector: any, element) => {
+            if (element.code === 'board') {
+            collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
+            }
+            return collector;
+        }, {});
+        this.dataDrivenFilterEvent.emit(defaultFilters);
+    }
+    private getFrameWork() {
         const framework = this.cacheService.get('framework' + 'search');
         if (framework) {
-          this.frameWorkName = framework;
+        return of(framework);
         } else {
-          const formServiceInputParams = {
+        const formServiceInputParams = {
             formType: 'framework',
             formAction: 'search',
             contentType: 'framework-code',
-          };
-          this.formService.getFormConfig(formServiceInputParams, this.hashTagId).subscribe(
-            (data: ServerResponse) => {
-              this.frameWorkName = _.find(data, 'framework').framework;
-              this.cacheService.set('framework' + 'search', this.frameWorkName ,
-                {maxAge: this.browserCacheTtlService.browserCacheTtl});
-            },
-            (err: ServerResponse) => {
-            this.toasterService.error(this.resourceService.messages.emsg.m0005);
-            }
-          );
+        };
+        return this.formService.getFormConfig(formServiceInputParams, this.hashTagId)
+            .pipe(map((data) => {
+                const frameWork = _.find(data, 'framework').framework;
+                this.cacheService.set('framework' + 'search', frameWork, { maxAge: this.browserCacheTtlService.browserCacheTtl});
+                return frameWork;
+            }), catchError((error) => {
+                return of(false);
+            }));
         }
-      }
-    ngOnInit() {
-            if (_.includes(this.route.url, '/explore-course')) {
-              const url  = this.route.url.split('/');
-              if (url.indexOf('explore-course') === 2) {
-                this.exploreRoutingUrl = url[1] + '/' + url[2];
-              } else {
-                this.exploreRoutingUrl = url[1];
-              }
-            }
-        this.filters = {};
-        this.dataDrivenFilter = {};
-        this.filterType = this.config.appConfig.exploreCourse.filterType;
-        this.redirectUrl = this.config.appConfig.exploreCourse.searchPageredirectUrl;
-        this.slug = this.activatedRoute.snapshot.params.slug;
-        this.getChannelId();
-        this.getframeWorkData();
-        this.activatedRoute.params.subscribe(params => {
-            this.setTelemetryData();
-        });
-        this.setFilters();
     }
-    setTelemetryData() {
+    private fetchContentOnParamChange() {
+        combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
+        .pipe( debounceTime(5), // wait for both params and queryParams event to change
+             tap(data => this.inView({inview: []})),
+             delay(10),
+             tap(data => this.setTelemetryData()),
+            map(result => ({params: { pageNumber: Number(result[0].pageNumber)}, queryParams: result[1]})),
+            takeUntil(this.unsubscribe$)
+        ).subscribe(({params, queryParams}) => {
+            this.showLoader = true;
+            this.paginationDetails.currentPage = params.pageNumber;
+            this.queryParams = { ...queryParams };
+            this.contentList = [];
+            this.fetchContents();
+        });
+    }
+    private fetchContents() {
+        let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
+        // filters.channel = this.hashTagId;
+        // filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
+        filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
+        const option = {
+            filters: filters,
+            limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
+            pageNumber: this.paginationDetails.currentPage,
+            query: this.queryParams.key,
+            // softConstraints: { badgeAssertions: 98, board: 99, channel: 100 },
+            facets: this.facets,
+            params: this.configService.appConfig.ExplorePage.contentApiQueryParams
+        };
+        if (this.frameWorkName) {
+            option.params.framework = this.frameWorkName;
+        }
+        this.searchService.courseSearch(option)
+        .subscribe(data => {
+            this.showLoader = false;
+            this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
+            this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
+                this.configService.appConfig.SEARCH.PAGE_LIMIT);
+            const { constantData, metaData, dynamicFields } = this.configService.appConfig.CoursePage;
+            this.contentList = this.utilService.getDataForCard(data.result.course, constantData, dynamicFields, metaData);
+        }, err => {
+            this.showLoader = false;
+            this.contentList = [];
+            this.facetsList = [];
+            this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
+                this.configService.appConfig.SEARCH.PAGE_LIMIT);
+            this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+        });
+    }
+    private setTelemetryData() {
+        this.inViewLogs = [];
         this.telemetryImpression = {
             context: {
                 env: this.activatedRoute.snapshot.data.telemetry.env
@@ -346,8 +166,9 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
             edata: {
                 type: this.activatedRoute.snapshot.data.telemetry.type,
                 pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-                uri: this.route.url,
-                subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+                uri: this.router.url,
+                subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+                duration: this.navigationhelperService.getPageLoadTime()
             }
         };
         this.cardIntractEdata = {
@@ -356,37 +177,54 @@ export class ExploreCourseComponent implements OnInit, OnDestroy {
             pageid: this.activatedRoute.snapshot.data.telemetry.pageid
         };
     }
-
     public playContent(event) {
-        if (!this.userService.loggedIn) {
-            this.showLoginModal = true;
-            this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
-        } else {
-            this.publicPlayerService.playContent(event);
-        }
+        this.publicPlayerService.playExploreCourse(event.data.metaData.identifier);
     }
-    inview(event) {
-        _.forEach(event.inview, (inview, key) => {
-            const obj = _.find(this.inviewLogs, (o) => {
-                return o.objid === inview.data.metaData.identifier;
-            });
-            if (obj === undefined) {
-                this.inviewLogs.push({
-                    objid: inview.data.metaData.identifier,
-                    objtype: inview.data.metaData.contentType || 'content',
-                    index: inview.id
+    public inView(event) {
+        _.forEach(event.inview, (elem, key) => {
+            const obj = _.find(this.inViewLogs, { objid: elem.data.metaData.identifier});
+            if (!obj) {
+                this.inViewLogs.push({
+                    objid: elem.data.metaData.identifier,
+                    objtype: elem.data.metaData.contentType || 'content',
+                    index: elem.id
                 });
             }
         });
-        this.telemetryImpression.edata.visits = this.inviewLogs;
-        this.telemetryImpression.edata.subtype = 'pageexit';
-        this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+        if (this.telemetryImpression) {
+            this.telemetryImpression.edata.visits = this.inViewLogs;
+            this.telemetryImpression.edata.subtype = 'pageexit';
+            this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+        }
+    }
+    public navigateToPage(page: number): void {
+        if (page < 1 || page > this.paginationDetails.totalPages) {
+            return;
+        }
+        const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
+        this.router.navigate([url], { queryParams: this.queryParams });
+        window.scroll({
+            top: 100,
+            left: 100,
+            behavior: 'smooth'
+        });
+    }
+    ngAfterViewInit () {
+        setTimeout(() => {
+            this.setTelemetryData();
+        });
     }
     ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }
     closeModal() {
-      this.showLoginModal = false;
+        this.showLoginModal = false;
+    }
+    private setNoResultMessage() {
+        this.noResultMessage = {
+            'message': 'messages.stmsg.m0007',
+            'messageText': 'messages.stmsg.m0006'
+        };
     }
 }

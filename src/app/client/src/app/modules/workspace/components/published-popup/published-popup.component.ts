@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { ContentService, UserService } from '@sunbird/core';
 import { ResourceService, ConfigService, ToasterService, ServerResponse,
   RouterNavigationService, NavigationHelperService } from '@sunbird/shared';
@@ -12,8 +12,7 @@ import { WorkSpaceService, ReviewCommentsService } from './../../services';
  */
 @Component({
   selector: 'app-published-popup',
-  templateUrl: './published-popup.component.html',
-  styleUrls: ['./published-popup.component.css']
+  templateUrl: './published-popup.component.html'
 })
 export class PublishedPopupComponent implements OnInit {
   @ViewChild('modal') modal;

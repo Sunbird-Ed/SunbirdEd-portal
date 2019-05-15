@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ToasterService,
-  ResourceService, ConfigService, IContents, ILoaderMessage, INoResultMessage
+  ResourceService, ConfigService, IContents, ILoaderMessage, INoResultMessage,
+  NavigationHelperService
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
@@ -17,10 +18,9 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-review-submissions',
-  templateUrl: './review-submissions.component.html',
-  styleUrls: ['./review-submissions.component.css']
+  templateUrl: './review-submissions.component.html'
 })
-export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
+export class ReviewSubmissionsComponent extends WorkSpace implements OnInit, AfterViewInit {
   /**
   * state for content editior
  */
@@ -73,11 +73,6 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
     * For showing pagination on draft list
   */
   private paginationService: PaginationService;
-
-  /**
-    * Refrence of UserService
-  */
-  private userService: UserService;
 
   /**
     * To get url, app configs
@@ -137,12 +132,12 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     config: ConfigService, resourceService: ResourceService,
-    toasterService: ToasterService) {
-    super(searchService, workSpaceService);
+    toasterService: ToasterService,
+    public navigationhelperService: NavigationHelperService) {
+    super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
     this.activatedRoute = activatedRoute;
-    this.userService = userService;
     this.config = config;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
@@ -157,18 +152,6 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
       this.pageNumber = Number(params.pageNumber);
       this.fetchReviewContents(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
     });
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
-        visits: this.inviewLogs
-      }
-    };
   }
   /**
    * This method sets the make an api call to get all reviewContent with page No and offset
@@ -204,8 +187,8 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
           this.showLoader = false;
           this.noResult = true;
           this.noResultMessage = {
-            'message': this.resourceService.messages.stmsg.m0008,
-            'messageText': this.resourceService.messages.stmsg.m0033
+            'message': 'messages.stmsg.m0008',
+            'messageText': 'messages.stmsg.m0033'
           };
         }
       },
@@ -239,6 +222,24 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
     }
     this.pageNumber = page;
     this.route.navigate(['workspace/content/review', this.pageNumber]);
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
+          visits: this.inviewLogs,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
   /**
   * get inview  Data

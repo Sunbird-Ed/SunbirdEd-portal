@@ -1,119 +1,181 @@
-
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { TelemetryModule } from '@sunbird/telemetry';
-import { Ng2IzitoastService } from 'ng2-izitoast';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule, ResourceService, ConfigService, IAction } from '@sunbird/shared';
-import { CoreModule, LearnerService, CoursesService, SearchService } from '@sunbird/core';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ActivatedRoute, Router } from '@angular/router';
-import * as _ from 'lodash';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HomeSearchComponent } from './home-search.component';
-import {Response} from './home-search.component.spec.data';
+import { BehaviorSubject, throwError, of } from 'rxjs';
+import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
+import { SearchService, CoursesService, CoreModule, LearnerService} from '@sunbird/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { SuiModule } from 'ng2-semantic-ui';
+import * as _ from 'lodash-es';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Response } from './home-search.component.spec.data';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { CacheService } from 'ng2-cache-service';
 
 describe('HomeSearchComponent', () => {
   let component: HomeSearchComponent;
   let fixture: ComponentFixture<HomeSearchComponent>;
-  const resourceBundle = {
-    'messages': {
-      'stmsg': {
-        'm0007': 'Search for something else',
-        'm0006': 'No result'
-      },
-      'fmsg': {
-        'm0051': 'Fetching other courses failed, please try again later...',
-        'm0077': 'Fetching serach result failed'
-      }
-    }
-  };
+  let toasterService, searchService, coursesService, activatedRoute, cacheService, learnerService;
+  const mockSearchData: any = Response.successData;
+  let sendEnrolledCourses = true;
+  let sendSearchResult = true;
+  let sendFormApi = true;
+
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
+    url = jasmine.createSpy('url');
   }
-  const fakeActivatedRoute = {
-    'params': observableOf({ pageNumber: '1' }),
-    'queryParams': observableOf({ subject: ['english'] }),
-    snapshot: {
-      data: {
-        telemetry: {
-          env: 'home', pageid: 'home-search', type: 'view', subtype: 'paginate'
-        }
-      }
+  const resourceBundle = {
+    'messages': {
+      'fmsg': {},
+      'emsg': {},
+      'stmsg': {}
     }
   };
-  const mockQueryParma = {
-    'curriculum': ['CBSE'],
-    'medium': ['Bengali'],
-    'subjects': ['Bengali'],
-    'query': 'hello'
-  };
+  class FakeActivatedRoute {
+    queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
+    paramsMock = new BehaviorSubject<any>({ pageNumber: '1' });
+    get params() { return this.paramsMock.asObservable(); }
+    get queryParams() { return this.queryParamsMock.asObservable(); }
+    snapshot = {
+      params: {slug: 'ap'},
+      data: {
+        telemetry: { env: 'resource', pageid: 'resource-search', type: 'view', subtype: 'paginate'}
+      }
+    };
+    public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
+    public changeParams(params) { this.paramsMock.next(params); }
+  }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
+      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [HomeSearchComponent],
-      providers: [ConfigService, SearchService, LearnerService,
-        { provide: ResourceService, useValue: resourceBundle },
-        { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
+      providers: [{ provide: ResourceService, useValue: resourceBundle },
+      { provide: Router, useClass: RouterStub },
+      { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
+
   beforeEach(() => {
     fixture = TestBed.createComponent(HomeSearchComponent);
     component = fixture.componentInstance;
+    toasterService = TestBed.get(ToasterService);
+    searchService = TestBed.get(SearchService);
+    activatedRoute = TestBed.get(ActivatedRoute);
+    cacheService = TestBed.get(CacheService);
+    learnerService = TestBed.get(LearnerService);
+    coursesService = TestBed.get(CoursesService);
+    sendEnrolledCourses = true;
+    sendSearchResult = true;
+    sendFormApi = true;
+    toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callFake(() => {});
+    spyOn(learnerService, 'get').and.callFake((options) => {
+      if (sendEnrolledCourses) {
+        return of({result: {courses: Response.enrolledCourses}});
+      }
+      return throwError({});
+    });
+    spyOn(searchService, 'compositeSearch').and.callFake((options) => {
+      if (sendSearchResult) {
+        return of(mockSearchData);
+      }
+      return throwError({});
+    });
+    spyOn(cacheService, 'get').and.callFake((options) => {
+      return undefined;
+    });
   });
-
-  it('should call search api', () => {
-    const searchService = TestBed.get(SearchService);
-    component.queryParams = mockQueryParma;
-    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.successData));
-    component.populateCompositeSearch();
-    fixture.detectChanges();
-    expect(component.searchList).toBeDefined();
-    expect(component.totalCount).toBeDefined();
-    expect(component.facets).toBeDefined();
+  it('should emit filter data when getFilters is called with data', () => {
+    spyOn(component.dataDrivenFilterEvent, 'emit');
+    coursesService.initialize();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({ board: 'NCRT'});
+  });
+  it('should emit filter data when getFilters is called with no data', () => {
+    spyOn(component.dataDrivenFilterEvent, 'emit');
+    coursesService.initialize();
+    component.getFilters([]);
+    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({});
+  });
+  it('should not throw error if fetching enrolled course fails', () => {
+    sendEnrolledCourses = false;
+    coursesService.initialize();
+    component.ngOnInit();
+    component.getFilters([]);
+    expect(toasterService.error).not.toHaveBeenCalled();
+    expect(component.enrolledSection.contents.length).toEqual(0);
+  });
+  it('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', fakeAsync(() => {
+    coursesService.initialize();
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    // expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
-    expect(component.noResult).toBeFalsy();
-  });
-  it('should call search api', () => {
-    const searchService = TestBed.get(SearchService);
-    component.queryParams = mockQueryParma;
-    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.successDataWithNoCount));
-    component.populateCompositeSearch();
-    fixture.detectChanges();
+    expect(component.contentList.length).toEqual(1);
+  }));
+  it('should fetch content only once for when component displays content for the first time', fakeAsync(() => {
+    coursesService.initialize();
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
-    expect(component.noResult).toBeTruthy();
-  });
-  it('should throw error when searchService api is not called', () => {
-    const searchService = TestBed.get(SearchService);
-    component.queryParams = mockQueryParma;
-    spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError({}));
-    component.populateCompositeSearch();
-    fixture.detectChanges();
+    expect(component.contentList.length).toEqual(1);
+    expect(searchService.compositeSearch).toHaveBeenCalledTimes(1);
+  }));
+  it('should fetch content once when queryParam changes after initial content has been displayed', fakeAsync(() => {
+    coursesService.initialize();
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    expect(searchService.compositeSearch).toHaveBeenCalledTimes(1);
+    activatedRoute.changeQueryParams({board: ['NCRT']});
+    tick(100);
+    expect(component.contentList.length).toEqual(1);
+    expect(searchService.compositeSearch).toHaveBeenCalledTimes(2);
+  }));
+  it('should fetch content once when param changes after initial content has been displayed', fakeAsync(() => {
+    coursesService.initialize();
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    expect(searchService.compositeSearch).toHaveBeenCalledTimes(1);
+    activatedRoute.changeParams({pageNumber: 2});
+    tick(100);
+    expect(component.contentList.length).toEqual(1);
+    expect(searchService.compositeSearch).toHaveBeenCalledTimes(2);
+  }));
+  it('should fetch content once when both queryParam and params changes after initial content has been displayed', fakeAsync(() => {
+    coursesService.initialize();
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    expect(searchService.compositeSearch).toHaveBeenCalledTimes(1);
+    activatedRoute.changeQueryParams({board: ['NCRT']});
+    activatedRoute.changeParams({pageNumber: 2});
+    tick(100);
+    expect(component.contentList.length).toEqual(1);
+    expect(searchService.compositeSearch).toHaveBeenCalledTimes(2);
+  }));
+  it('should trow error when fetching content fails even after getting hashTagId and filter data', fakeAsync(() => {
+    coursesService.initialize();
+    sendSearchResult = false;
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
-    expect(component.noResult).toBeTruthy();
-  });
-  it('should call navigateToPage method and page number', () => {
-    const configService = TestBed.get(ConfigService);
-    const route = TestBed.get(Router);
-    component.queryParams = mockQueryParma;
-    const queryParams = component.queryParams;
-    component.pager = Response.pager;
-    component.pageLimit = 20;
-    component.pager.totalPages = 7;
-    component.navigateToPage(3);
-    fixture.detectChanges();
-    expect(component.pageNumber).toEqual(3);
-    expect(component.pageLimit).toEqual(configService.appConfig.SEARCH.PAGE_LIMIT);
-    expect(route.navigate).toHaveBeenCalledWith(['search/All', 3], { queryParams:  queryParams });
-  });
-  it('should call getFilters with data', () => {
-    const searchService = TestBed.get(SearchService);
-    const filters = Response.filters;
-    spyOn(component, 'populateCompositeSearch').and.callThrough();
-    spyOn(searchService, 'contentSearch').and.callThrough();
-    component.getFilters(filters);
-    expect(component.facetArray).toEqual([ 'board', 'medium', 'subject', 'gradeLevel' ]);
+    expect(component.contentList.length).toEqual(0);
+    expect(toasterService.error).toHaveBeenCalled();
+  }));
+  it('should unsubscribe from all observable subscriptions', () => {
+    coursesService.initialize();
+    component.ngOnInit();
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 });

@@ -14,8 +14,7 @@ import { Subject } from 'rxjs';
  */
 @Component({
   selector: 'app-delete',
-  templateUrl: './delete.component.html',
-  styleUrls: ['./delete.component.css']
+  templateUrl: './delete.component.html'
 })
 export class DeleteComponent implements OnInit, OnDestroy {
 

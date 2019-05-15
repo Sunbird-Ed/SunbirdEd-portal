@@ -10,13 +10,15 @@ import {
   ContentDetails, PlayerConfig, ContentData, NavigationHelperService
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI } from '../../interfaces';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { environment } from '@sunbird/environment';
 import { PublicDataService } from './../public-data/public-data.service';
 /**
  * helper services to fetch content details and preparing content player config
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class PlayerService {
   /**
    * stores content details
@@ -81,6 +83,8 @@ export class PlayerService {
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = this.userService.sessionId;
     configuration.context.uid = this.userService.userid;
+    configuration.context.timeDiff = this.userService.getServerTimeDiff;
+    configuration.context.contextRollup = this.getRollUpData(this.userService.userProfile.organisationIds);
     configuration.context.channel = this.userService.channel;
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     configuration.context.pdata.ver = buildNumber && buildNumber.value ?
@@ -99,13 +103,8 @@ export class PlayerService {
     _.forEach(this.userService.userProfile.organisations, (org) => {
       if (org.hashTagId) {
         tags.push(org.hashTagId);
-      } else if (org.organisationId) {
-        tags.push(org.organisationId);
       }
     });
-    if (this.userService.channel) {
-      tags.push(this.userService.channel);
-    }
     configuration.context.tags = tags;
     configuration.context.app = [this.userService.channel];
     if (contentDetails.courseId) {
@@ -122,6 +121,20 @@ export class PlayerService {
     return configuration;
   }
 
+  /**
+   *
+   *
+   * @private
+   * @param {Array<string>} [data=[]]
+   * @returns
+   * @memberof TelemetryService
+   */
+  private getRollUpData(data: Array<string> = []) {
+    const rollUp = {};
+    data.forEach((element, index) => rollUp['l' + (index + 1)] = element);
+    return rollUp;
+  }
+
   public getCollectionHierarchy(identifier: string, option: any = { params: {} }): Observable<CollectionHierarchyAPI.Get> {
     const req = {
       url: `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`,
@@ -133,6 +146,44 @@ export class PlayerService {
     }));
   }
 
+  updateContentBodyForReviewer(data) {
+    // data object is body of the content after JSON.parse()
+    let parsedData;
+    try {
+      parsedData = JSON.parse(data);
+    } catch {
+      parsedData = null;
+    }
+    if (!parsedData) {
+      return data;
+    }
+    const questionSetPluginId = 'org.ekstep.questionset';
+    const questionPluginId = 'org.ekstep.question';
+    // checking content has questionset plugin dependency
+    const isQuestionSetPluginExist = parsedData.theme['plugin-manifest']['plugin'].filter((plugin) => {
+        return plugin.id !== questionSetPluginId;
+    });
+
+    if (isQuestionSetPluginExist) {
+        // checking each stage for questionset plugin
+        parsedData.theme['stage'].forEach((stage) =>  {
+            if (stage[questionSetPluginId]) {
+                // checking each questionset plugin inside a stage
+                stage[questionSetPluginId].forEach( (questionSetData) => {
+                    const questionSetConfigData = JSON.parse(questionSetData.config.__cdata);
+                    const actualNumberOfQuestions = questionSetData[questionPluginId].length;
+                    // ensuring total items (display items ) always equval to number of questions inside question set
+                    questionSetConfigData.total_items = actualNumberOfQuestions;
+                    // ensuring shuffle is always off for the reviewer
+                    questionSetConfigData.shuffle_questions = false;
+                    questionSetData.config.__cdata = JSON.stringify(questionSetConfigData);
+                });
+            }
+        });
+    }
+    return JSON.stringify(parsedData);
+  }
+
   playContent(content) {
     this.navigationHelperService.storeResourceCloseUrl();
     setTimeout(() => { // setTimeOut is used to trigger telemetry interact event as changeDetectorRef.detectChanges() not working.
@@ -140,7 +191,7 @@ export class PlayerService {
         if (content.contentType !== this.configService.appConfig.PLAYER_CONFIG.contentType.Course) {
           this.router.navigate(['/resources/play/collection', content.identifier]);
         } else if (content.batchId) {
-          this.router.navigate(['/learn/course', content.courseId, 'batch', content.batchId]);
+          this.router.navigate(['/learn/course', content.courseId || content.identifier, 'batch', content.batchId]);
         } else {
           this.router.navigate(['/learn/course', content.identifier]);
         }

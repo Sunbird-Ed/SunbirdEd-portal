@@ -7,7 +7,7 @@ import {
 import { ContentService, PublicDataService, UserService } from '@sunbird/core';
 import { IDeleteParam } from '../../interfaces/delteparam';
 import { Router } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 @Injectable()
 export class WorkSpaceService {
@@ -83,7 +83,11 @@ export class WorkSpaceService {
   * @param {string}  state - Present state
 */
   openCollectionEditor(content, state) {
-    this.route.navigate(['/workspace/content/edit/collection', content.identifier, content.contentType, state, content.framework]);
+    const navigationParams = ['/workspace/content/edit/collection', content.identifier, content.contentType, state, content.framework];
+    if (content.status) {
+      navigationParams.push(content.status);
+    }
+    this.route.navigate(navigationParams);
   }
 
   /**
@@ -93,7 +97,11 @@ export class WorkSpaceService {
   */
   openContent(content, state) {
     if (this.config.appConfig.WORKSPACE.states.includes(state)) {
-      this.route.navigate(['/workspace/content/edit/content/', content.identifier, state, content.framework]);
+      const navigationParams = ['/workspace/content/edit/content/', content.identifier, state, content.framework];
+      if (content.status) {
+        navigationParams.push(content.status);
+      }
+      this.route.navigate(navigationParams);
     } else {
       if (state === 'upForReview') {
         this.route.navigate(['workspace/content/upForReview/content', content.identifier]);
@@ -114,7 +122,11 @@ export class WorkSpaceService {
   */
   openGenericEditor(content, state) {
     if (this.config.appConfig.WORKSPACE.states.includes(state)) {
-      this.route.navigate(['/workspace/content/edit/generic/', content.identifier, state, content.framework]);
+      const navigationParams = ['/workspace/content/edit/generic/', content.identifier, state, content.framework];
+      if (content.status) {
+        navigationParams.push(content.status);
+      }
+      this.route.navigate(navigationParams);
     } else {
       if (state === 'review') {
         this.route.navigate(['workspace/content/review/content', content.identifier]);
@@ -134,7 +146,8 @@ export class WorkSpaceService {
       const card = {
         name: item.name,
         image: item.appIcon,
-        description: item.description
+        description: item.description,
+        lockInfo: item.lockInfo
       };
       _.forIn(staticData, (value, key1) => {
         card[key1] = value;
@@ -155,6 +168,7 @@ export class WorkSpaceService {
     });
     return <ICard[]>list;
   }
+
   toggleWarning(type?: string) {
     this.showWarning = sessionStorage.getItem('inEditor');
     if (this.showWarning === 'true') {
@@ -202,6 +216,44 @@ export class WorkSpaceService {
       }));
     }
   }
+
+  /**
+   * getLockList.
+   *
+   * @param {SearchParam} requestParam api request data
+  */
+  getContentLockList(requestParam): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.CONTENT.LOCK_LIST,
+      data: {
+        request: {
+          filters: requestParam.filters
+        }
+      }
+    };
+    return this.content.post(option);
+  }
+
+  lockContent(inputParams): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.CONTENT.LOCK_CREATE,
+      data: {
+        request: inputParams
+      }
+    };
+    return this.content.post(option);
+  }
+
+  retireLock(inputParams): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.CONTENT.LOCK_RETIRE,
+      data: {
+        request: inputParams
+      }
+    };
+    return this.content.delete(option);
+  }
+
   setData(data, name) {
     this.cacheService.set(name, data, {
       maxAge: this.browserCacheTtlService.browserCacheTtl

@@ -1,52 +1,73 @@
-<sui-modal [isClosable]="false" (dismissed)="alert($event)" #modal *ngIf="browserCompatible">
-  <div class="content">
-  <div class="ui center aligned segment">
-      <div class="ui grid">
-          <div class="one wide column"></div>
-              <div class="ten wide center aligned column pl-0 mt-30">
-                  <div class="ui header">Improve your Experience</div>
-                  <div class="content mt-30">
-                      <div class="font-weight-700 secondary-text-color-sunbird">You seem to have an incompatible browser or browser version.</div>
-                      <div class="font-weight-700 secondary-text-color-sunbird">For improved experience we suggest that you upgrade or install</div>
-                      <div class="ui grid mt-10">
-                          <div class="five wide column"></div>
-                          <div class="seven wide center aligned column pl-35">
-                              <img class="ui mini image center aligned content">
-                          </div>
-                      </div>
-                      <div class="ui tiny image">
-                              <img src="{{'assets/images/Chrome__logo.max-2800x2800.png' | cdnprefixurl}}">
-                          </div>
-                      <div class="ui header mb-0 mt-10">Chrome</div>
-                      <a target="_blank" href="https://www.google.com/chrome/">
-                          <p>Download</p>
-                      </a>
-                      <button class="compact ui large primary button mb-30 mt-30" (click)="hideCompatibilityModel()">OK</button>                                                                                                                                        
-                  </div>
-              </div>
-          <div class="one wide column"></div>
-          </div>
-      </div>
-  </div>
+<sui-modal
+    [mustScroll]="true" 
+    [isClosable]="true"
+    [transitionDuration]="0"
+    [size]="'normal'"
+    class="sb-modal"
+    appBodyScroll
+    (dismissed)="alert($event)" 
+    #modal 
+    *ngIf="browserCompatible"
+>
+
+    <!--Header-->
+	<div class="sb-modal-header">
+        {{resourceService.frmelmnts.lbl.improveYourExperience}}
+    </div>
+    <!--/Header-->
+
+    <!--Content-->
+    <div class="sb-modal-content">
+        <div class="ui center aligned">
+            <div class="ui grid">
+                <div class="twelve wide center aligned column">
+                    <div class="content">
+                        <div class="secondary-text-color-sunbird mb-10">{{resourceService.frmelmnts.lbl.incompatibleBrowser}}</div>
+                        <div class="secondary-text-color-sunbird mb-30">{{resourceService.frmelmnts.lbl.browserSuggestions}}</div>
+                        <div class="ui tiny image">
+                            <img src="{{'assets/images/chrome.png' | cdnprefixurl}}">
+                        </div>
+                        <div class="ui header mb-0 mt-10">Chrome</div>                                                                                                                                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Content-->
+    <!--Actions-->
+    <div class="sb-modal-actions">
+        <a 
+            class="sb-btn sb-btn-normal sb-btn-primary" 
+            target="_blank" 
+            href="https://www.google.com/chrome/"
+        >
+            {{resourceService.frmelmnts.btn.download}}
+        </a>
+        <button 
+            class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+            (click)="hideCompatibilityModel()"
+        >
+            {{resourceService.frmelmnts.btn.ok}}
+        </button>
+    </div>
+    <!--/Actions-->
 </sui-modal>
 
 <div class="twelve wide column" *ngIf="showBrowserMsg" >
-  <div class="ui footer basic segment" *ngIf="hideFooter">
-      <div class="ui grid">
-          <div class="three wide column"></div>
-          <div class="eight wide column">
-              <div class="ui large label">
-                  <i class="exclamation triangle icon"></i>
-                  <span>You seem to have an incompatible browser or browser version. For details
-                      <a class="cursor-pointer mr-10" (click)="openCompatibilityModel()">Click here</a>
-                      </span>
-                      <i class="close icon closeBtn-dial-code cursor-pointer" (click)="hideFooter = false"></i>
-              </div>
-          </div>
-          <div class="one wide column"></div>
-
-      </div>
-  </div>
+    <div class="ui basic segment" *ngIf="hideFooter">
+        <div class="ui grid">
+            <div class="twelve wide column center aligned">
+                <div class="ui large label">
+                    <i class="exclamation triangle icon"></i>
+                    <span>
+                        {{resourceService.frmelmnts.lbl.incompatibleBrowser}} {{resourceService.frmelmnts.lbl.forDetails}} 
+                        <a class="cursor-pointer mr-10" (click)="openCompatibilityModel()">{{resourceService.frmelmnts.lbl.clickHere}}</a>
+                    </span>
+                    <i class="close icon closeBtn-dial-code cursor-pointer" (click)="hideFooter = false"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 

@@ -4,7 +4,8 @@ import { CoreModule, UserService, SearchService, PlayerService , LearnerService,
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgInviewModule } from 'angular-inport';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ProfileService, ProfilePageComponent } from '@sunbird/profile';
+import { ProfileService } from '@sunbird/profile';
+import {ProfilePageComponent} from './profile-page.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SlickModule } from 'ngx-slick';
@@ -30,7 +31,7 @@ describe('ProfilePageComponent', () => {
     snapshot = {
       root: { firstChild : {data: { telemetry: { env: env} } } },
       data : {
-         telemetry: { env: env }
+          telemetry: { env: env }
       }
     };
   }
@@ -50,11 +51,12 @@ describe('ProfilePageComponent', () => {
         'm0001': 'api failed, please try again',
         'm0004': 'api failed, please try again'
       }
-    }
+    },
+    languageSelected$: observableOf({})
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule,  SharedModule.forRoot(), CoreModule.forRoot(),
+      imports: [HttpClientTestingModule,  SharedModule.forRoot(), CoreModule,
         TelemetryModule, NgInviewModule, SlickModule],
       declarations: [ ProfilePageComponent ],
       providers: [ProfileService, UserService, SearchService,
@@ -78,28 +80,28 @@ describe('ProfilePageComponent', () => {
     const userService = TestBed.get(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userData });
     spyOn(component, 'getOrgDetails').and.callThrough();
-    spyOn(component, 'getMyContent').and.callThrough();
-    spyOn(component, 'getAttendedTraining').and.callThrough();
+    spyOn(component, 'getContribution').and.callThrough();
+    spyOn(component, 'getTrainingAttended').and.callThrough();
     component.ngOnInit();
     expect(component).toBeTruthy();
     expect(component.userProfile).toEqual(Response.userData);
     expect(component.getOrgDetails).toHaveBeenCalled();
-    expect(component.getMyContent).toHaveBeenCalled();
-    expect(component.getAttendedTraining).toHaveBeenCalled();
+    expect(component.getContribution).toHaveBeenCalled();
+    expect(component.getTrainingAttended).toHaveBeenCalled();
   });
 
   it('should call search service to get my contributions data', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'searchContentByUserId').and.returnValue(observableOf(Response.success));
-    component.getMyContent();
+    component.getContribution();
     expect(component.contributions).toBeDefined();
   });
 
   it('should not call user search service when my contributions data count is zero', () => {
     const searchService = TestBed.get(SearchService);
-   searchService._searchedContentList = Response.zeroData.result;
+    searchService._searchedContentList = Response.zeroData.result;
     const response = searchService.searchedContentList;
-   component.getMyContent();
+    component.getContribution();
     expect(response.count).toEqual(0);
     expect(component.contributions).toBeDefined();
     expect(component.contributions).toEqual([]);
@@ -109,7 +111,7 @@ describe('ProfilePageComponent', () => {
     const playerService = TestBed.get(PlayerService);
     const event = { data: { metaData: { identifier: 'do_11262255104183500812' } } };
     spyOn(playerService, 'playContent').and.callFake(() => observableOf(Response.event.data.metaData));
-    component.onClickOfMyContributions(event);
+    component.openContent(event);
     expect(playerService.playContent).toHaveBeenCalled();
   });
 
@@ -118,7 +120,7 @@ describe('ProfilePageComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses});
     courseService.initialize();
-    component.getAttendedTraining();
+    component.getTrainingAttended();
     expect(component.attendedTraining).toBeDefined();
   });
 });

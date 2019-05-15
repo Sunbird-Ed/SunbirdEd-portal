@@ -1,13 +1,12 @@
 
-import {takeUntil} from 'rxjs/operators';
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
-import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
-import * as _ from 'lodash';
+import { ResourceService, ToasterService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
+import * as _ from 'lodash-es';
 import { IAnnouncementDetails } from '@sunbird/announcement';
 import { IImpressionEventInput } from '@sunbird/telemetry';
-
 import { Subject } from 'rxjs';
 /**
  * The details popup component checks for the announcement details object
@@ -16,17 +15,16 @@ import { Subject } from 'rxjs';
  */
 @Component({
   selector: 'app-details-popup',
-  templateUrl: './details-popup.component.html',
-  styleUrls: ['./details-popup.component.css']
+  templateUrl: './details-popup.component.html'
 })
-export class DetailsPopupComponent implements OnInit, OnDestroy {
+export class DetailsPopupComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public unsubscribe = new Subject<void>();
 
   @ViewChild('modal') modal;
-   /**
-	 * telemetryImpression
-	*/
+  /**
+  * telemetryImpression
+ */
   telemetryImpression: IImpressionEventInput;
   /**
 	 * Contains unique announcement id
@@ -68,11 +66,6 @@ export class DetailsPopupComponent implements OnInit, OnDestroy {
   private toasterService: ToasterService;
 
   /**
-   * To navigate back to parent component
-   */
-  public routerNavigationService: RouterNavigationService;
-
-  /**
 	 * Constructor to create injected service(s) object
 	 *
 	 * Default method of DetailsPopupComponent class
@@ -81,18 +74,17 @@ export class DetailsPopupComponent implements OnInit, OnDestroy {
    * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
    * @param {ResourceService} resourceService Reference of ResourceService
    * @param {ToasterService} toasterService Reference of ToasterService
-   * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
 	 */
   constructor(announcementService: AnnouncementService,
+    public router: Router,
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
     toasterService: ToasterService,
-    routerNavigationService: RouterNavigationService) {
+    public navigationhelperService: NavigationHelperService) {
     this.announcementService = announcementService;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
-    this.routerNavigationService = routerNavigationService;
   }
 
   /**
@@ -108,52 +100,60 @@ export class DetailsPopupComponent implements OnInit, OnDestroy {
       this.announcementService.announcementDetailsObject.id !== announcementId) {
       const option = { announcementId: this.announcementId };
       this.announcementService.getAnnouncementById(option).pipe(
-      takeUntil(this.unsubscribe)).subscribe(
-        (apiResponse: ServerResponse) => {
-          this.announcementDetails = apiResponse.result;
-          if (apiResponse.result.announcement) {
-            this.announcementDetails = apiResponse.result.announcement;
+        takeUntil(this.unsubscribe)).subscribe(
+          (apiResponse: ServerResponse) => {
+            this.announcementDetails = apiResponse.result;
+            if (apiResponse.result.announcement) {
+              this.announcementDetails = apiResponse.result.announcement;
+            }
+            this.showLoader = false;
+          },
+          err => {
+            this.toasterService.error(this.resourceService.messages.emsg.m0005);
+            this.showLoader = false;
+            this.navigateToParent();
           }
-          this.showLoader = false;
-        },
-        err => {
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
-          this.showLoader = false;
-          this.routerNavigationService.navigateToParentUrl(this.activatedRoute.snapshot);
-        }
-      );
+        );
     } else {
       this.showLoader = false;
       this.announcementDetails = this.announcementService.announcementDetailsObject;
     }
   }
-
+  navigateToParent() {
+    this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
+  }
   /**
    * This method calls the getDetails method to show details
    * of a particular announcement
 	 */
   ngOnInit() {
     this.activatedRoute.params.pipe(
-    takeUntil(this.unsubscribe))
-    .subscribe(params => {
-      this.announcementId = params.announcementId;
-    });
+      takeUntil(this.unsubscribe))
+      .subscribe(params => {
+        this.announcementId = params.announcementId;
+      });
     this.getDetails(this.announcementId);
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      object: {
-        id: this.announcementId,
-        type: this.activatedRoute.snapshot.data.telemetry.object.type,
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: '/announcement/outbox/' + this.announcementId,
-      }
-    };
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        object: {
+          id: this.announcementId,
+          type: this.activatedRoute.snapshot.data.telemetry.object.type,
+          ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: '/announcement/outbox/' + this.announcementId,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 
   ngOnDestroy() {

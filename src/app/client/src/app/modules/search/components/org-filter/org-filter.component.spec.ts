@@ -11,8 +11,7 @@ import { OrgTypeService } from '@sunbird/org-management';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IPagination } from '@sunbird/announcement';
-import * as _ from 'lodash';
-import { Ng2IziToastModule } from 'ng2-izitoast';
+import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { OrgFilterComponent } from './org-filter.component';
@@ -32,7 +31,7 @@ describe('OrgFilterComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), Ng2IziToastModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot()],
       declarations: [OrgFilterComponent, OrgSearchComponent],
       providers: [ResourceService, SearchService, PaginationService, UserService,
         LearnerService, ContentService, ConfigService, ToasterService, OrgTypeService,

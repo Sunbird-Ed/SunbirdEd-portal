@@ -1,166 +1,160 @@
-
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { Ng2IzitoastService } from 'ng2-izitoast';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule, ResourceService, ServerResponse, ConfigService, ToasterService} from '@sunbird/shared';
-import { PageApiService, LearnerService, CoursesService, UserService, CoreModule, PlayerService} from '@sunbird/core';
-import { ICaraouselData, IAction } from '@sunbird/shared';
+import { LearnPageComponent } from './learn-page.component';
+import { BehaviorSubject, throwError, of } from 'rxjs';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
+} from '@sunbird/shared';
+import { PageApiService, CoursesService, CoreModule, PlayerService, FormService, LearnerService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
-import { SlickModule } from 'ngx-slick';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {Response} from './learn-page.component.spec.data';
-import { LearnPageComponent } from './learn-page.component';
+import { Response } from './learn-page.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { NgInviewModule } from 'angular-inport';
-const resourceServiceMockData = {
-  messages : {
-    stmsg : { m0007: 'error',  m0006: 'error'},
-    emsg: { m0005: 'error'}, fmsg: {m0002: 'unable to fetch details'}
-  },
-  frmelmnts: {
-  }
-};
+import { CacheService } from 'ng2-cache-service';
+
+
 describe('LearnPageComponent', () => {
   let component: LearnPageComponent;
   let fixture: ComponentFixture<LearnPageComponent>;
+  let toasterService, formService, pageApiService, learnerService, cacheService, coursesService;
+  const mockPageSection: Array<any> = Response.successData.result.response.sections;
+  let sendEnrolledCourses = true;
+  let sendPageApi = true;
+  let sendFormApi = true;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
+    url = jasmine.createSpy('url');
   }
-  const fakeActivatedRoute = {
-    'params': observableOf({ pageNumber: '1' }),
-  'queryParams':  observableOf({ subject: ['English'], sortType: 'desc', sort_by : 'lastUpdatedOn' }),
-    snapshot: {
-      data: {
-        telemetry: {
-          env: 'course', pageid: 'course', type: 'view', subtype: 'paginate'
-        }
-      }
+  const resourceBundle = {
+    'messages': {
+      'fmsg': {},
+      'emsg': {},
+      'stmsg': {}
     }
   };
-
+  class FakeActivatedRoute {
+    queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
+    params = of({});
+    get queryParams() { return this.queryParamsMock.asObservable(); }
+    snapshot = {
+      params: {slug: 'ap'},
+      data: {
+        telemetry: { env: 'resource', pageid: 'resource-search', type: 'view', subtype: 'paginate'}
+      }
+    };
+    public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
+  }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SlickModule,
-         SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot(), NgInviewModule],
-      declarations: [ LearnPageComponent ],
-      providers: [{ provide: Router, useClass: RouterStub },
-         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
+      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
+      declarations: [LearnPageComponent],
+      providers: [{ provide: ResourceService, useValue: resourceBundle },
+      { provide: Router, useClass: RouterStub },
+      { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LearnPageComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    toasterService = TestBed.get(ToasterService);
+    formService = TestBed.get(FormService);
+    pageApiService = TestBed.get(PageApiService);
+    learnerService = TestBed.get(LearnerService);
+    cacheService = TestBed.get(CacheService);
+    coursesService = TestBed.get(CoursesService);
+    sendEnrolledCourses = true;
+    sendPageApi = true;
+    sendFormApi = true;
+    spyOn(learnerService, 'get').and.callFake((options) => {
+      if (sendEnrolledCourses) {
+        return of({result: {courses: Response.enrolledCourses}});
+      }
+      return throwError({});
+    });
+    spyOn(pageApiService, 'getPageData').and.callFake((options) => {
+      if (sendPageApi) {
+        return of({sections: mockPageSection});
+      }
+      return throwError({});
+    });
+    spyOn(formService, 'getFormConfig').and.callFake((options) => {
+      if (sendFormApi) {
+        return of([{framework: 'TPD'}]);
+      }
+      return throwError({});
+    });
+    spyOn(cacheService, 'get').and.callFake((options) => {
+      return undefined;
+    });
+    spyOn(toasterService, 'error').and.callFake(() => {});
   });
-  it('should subscribe to pageSectionService', () => {
-    const courseService = TestBed.get(CoursesService);
-    const pageSectionService = TestBed.get(PageApiService);
-    const learnerService = TestBed.get(LearnerService);
-    const resourceService = TestBed.get(ResourceService);
-    resourceService.messages = resourceServiceMockData.messages;
-    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    component.filters = { board: ['NCERT'], subject: [] };
-    spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.successData));
-    component.populatePageData();
-    fixture.detectChanges();
-     expect(component.showLoader).toBeFalsy();
-     expect(component.caraouselData).toBeDefined();
+  it('should emit filter data when getFilters is called with data', () => {
+    coursesService.initialize();
+    spyOn(component.dataDrivenFilterEvent, 'emit');
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({ board: 'NCRT'});
   });
-  it('should subscribe to pageSectionService for else', () => {
-    const courseService = TestBed.get(CoursesService);
-    const pageSectionService = TestBed.get(PageApiService);
-    const learnerService = TestBed.get(LearnerService);
-    const resourceService = TestBed.get(ResourceService);
-    resourceService.messages = resourceServiceMockData.messages;
-    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    component.filters = { board: ['NCERT'], subject: [] };
-    spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.noData));
-    component.populatePageData();
-    fixture.detectChanges();
-    expect(component.showLoader).toBeFalsy();
-    expect(component.noResult).toBeTruthy();
+  it('should emit filter data when getFilters is called with no data', () => {
+    coursesService.initialize();
+    spyOn(component.dataDrivenFilterEvent, 'emit');
+    component.getFilters([]);
+    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({});
   });
-  it('should subscribe to course service', () => {
-    const courseService = TestBed.get(CoursesService);
-    const learnerService = TestBed.get(LearnerService);
-    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses});
-    courseService.initialize();
-    component.populateEnrolledCourse();
-    expect(component.showLoader).toBeTruthy();
-    expect(component.queryParams.sortType).toString();
-    expect(component.queryParams.sortType).toBe('desc');
-  });
-  it('should take else path when enrolledCourses length is 0 ', () => {
-    const courseService = TestBed.get(CoursesService);
-    const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(observableOf(Response.noCourses));
-    courseService.getEnrolledCourses();
-    fixture.detectChanges();
-    component.populateEnrolledCourse();
-    fixture.detectChanges();
-    expect(component.queryParams.sortType).toString();
-    expect(component.queryParams.sortType).toBe('desc');
-    expect(component.showLoader).toBeTruthy();
-  });
-  it('should throw error when courseService api is not called ', () => {
-    const courseService = TestBed.get(CoursesService);
-    const learnerService = TestBed.get(LearnerService);
-    const resourceService = TestBed.get(ResourceService);
-    resourceService.messages = Response.resourceBundle.messages;
-    courseService._enrolledCourseData$.next({ err: Response.errorCourse, enrolledCourses: null});
-    courseService.initialize();
-    fixture.detectChanges();
-    component.populateEnrolledCourse();
-    expect(component.showLoader).toBeTruthy();
-  });
-  it('should unsubscribe from all observable subscriptions', () => {
+  it('should fetch hashTagId from API and filter details from data driven filter component', () => {
+    coursesService.initialize();
     component.ngOnInit();
-    spyOn(component.unsubscribe, 'complete');
-    component.ngOnDestroy();
-    expect(component.unsubscribe.complete).toHaveBeenCalled();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    expect(component.enrolledSection.contents.length).toEqual(1);
+    expect(component.frameWorkName).toEqual('TPD');
   });
-  it('should call inview method for visits data', () => {
-    spyOn(component, 'prepareVisits').and.callThrough();
-    component.prepareVisits(Response.event);
-    expect(component.prepareVisits).toHaveBeenCalled();
-    expect(component.inviewLogs).toBeDefined();
+  it('should not throw error if fetching enrolled course fails', () => {
+    sendEnrolledCourses = false;
+    coursesService.initialize();
+    component.ngOnInit();
+    expect(toasterService.error).not.toHaveBeenCalled();
+    expect(component.enrolledSection.contents.length).toEqual(0);
   });
-  it('should call inview method for visits data for else if condition', () => {
-    spyOn(component, 'prepareVisits').and.callThrough();
-    component.prepareVisits(Response.event1);
-    expect(component.prepareVisits).toHaveBeenCalled();
-    expect(component.inviewLogs).toBeDefined();
-  });
-  it('should call playcontent', () => {
-    const playerService = TestBed.get(PlayerService);
-    const event = { data: { metaData: { batchId: '0122838911932661768' } } };
-    spyOn(playerService, 'playContent').and.callFake(() => observableOf(event.data.metaData));
-    component.playContent(event);
-    expect(playerService.playContent).toHaveBeenCalled();
-  });
-  it('should throw error', () => {
-    const courseService = TestBed.get(CoursesService);
-    const pageSectionService = TestBed.get(PageApiService);
-    const learnerService = TestBed.get(LearnerService);
-    const resourceService = TestBed.get(ResourceService);
-    const toasterService = TestBed.get(ToasterService);
-    resourceService.messages = resourceServiceMockData.messages;
-    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    component.filters = { board: ['NCERT'], subject: [] };
-    component.enrolledCourses = Response.sameIdentifier.enrolledCourses;
-    spyOn(pageSectionService, 'getPageData').and.callFake(() => observableThrowError({}));
-    spyOn(toasterService, 'error').and.callThrough();
-    component.populatePageData();
-    fixture.detectChanges();
+  it('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', fakeAsync(() => {
+    coursesService.initialize();
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    expect(component.enrolledSection.contents.length).toEqual(1);
+    expect(component.frameWorkName).toEqual('TPD');
     expect(component.showLoader).toBeFalsy();
-    expect(component.noResult).toBeTruthy();
-    expect(component.noResultMessage).toBeTruthy();
-    expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0002);
+    expect(component.carouselMasterData.length).toEqual(1);
+  }));
+  it('should not throw error if fetching frameWork from form service fails', fakeAsync(() => {
+    coursesService.initialize();
+    sendFormApi = false;
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    expect(component.enrolledSection.contents.length).toEqual(1);
+    expect(component.frameWorkName).toEqual(undefined);
+    expect(component.showLoader).toBeFalsy();
+    expect(component.carouselMasterData.length).toEqual(1);
+  }));
+  it('should fetch content after getting hashTagId and filter data and throw error if page api fails', fakeAsync(() => {
+    sendPageApi = false;
+    coursesService.initialize();
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    expect(component.enrolledSection.contents.length).toEqual(1);
+    expect(component.frameWorkName).toEqual('TPD');
+    expect(component.showLoader).toBeFalsy();
+    expect(component.carouselMasterData.length).toEqual(0);
+    expect(toasterService.error).toHaveBeenCalled();
+  }));
+  it('should unsubscribe from all observable subscriptions', () => {
+    coursesService.initialize();
+    component.ngOnInit();
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 });

@@ -1,67 +1,7 @@
 {
   "Home": {
-    "contentApiQueryParams": {"orgdetails":"orgName,email"},
-    "enrolledCourses": {
-      "constantData": {
-        "action": {
-          "right": {
-            "class": "ui blue basic button",
-            "eventName": "Resume",
-            "displayType": "button",
-            "text": "Resume"
-          },
-          "onImage": {"eventName": "onImage"}
-        },
-        "telemetryInteractEdata": {"id":"courseId","type":"click","pageid":"home"},
-        "telemetryObjectType":"home"
-      },
-      "metaData": ["batchId", "courseId"],
-      "maxCount": "leafNodesCount",
-      "progress": "progress"
-    }
-  },
-  "ViewAll": {
-    "contentApiQueryParams": {"orgdetails":"orgName,email"},
-    "otherCourses": {
-        "constantData":{
-        "action": {
-            "onImage": {"eventName": "onImage" }
-          },
-          "ribbon": {"right":{"class": "ui black right ribbon label"},
-          "left": {"class":  "ui circular label  card-badges-image"} }
-         }
-      },"enrolledCourses": {
-        "constantData": {
-          "action": {
-            "right": {
-              "class": "ui blue basic button",
-              "eventName": "Resume",
-              "displayType": "button",
-              "text": "Resume"
-            },
-            "onImage": {
-              "eventName": "onImage"
-            }
-          }
-        },
-      "metaData": ["batchId", "courseId"]
-      },
-       "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-     "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"},
-     "PAGE_LIMIT": 20 
-  },
-  "CourseConsumption" : {
-    "contentApiQueryParams": {"orgdetails":"orgName,email"}
-  },
-  "Course": {
-    "contentApiQueryParams": {"orgdetails":"orgName,email"},
-    "otherCourse": {
-      "constantData": {
-        "action": {
-            "onImage": { "eventName": "onImage" }
-        }
-      },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]}
+    "contentApiQueryParams": {
+      "orgdetails": "orgName,email"
     },
     "enrolledCourses": {
       "constantData": {
@@ -72,87 +12,452 @@
             "displayType": "button",
             "text": "Resume"
           },
-          "onImage": {"eventName": "onImage"}
-        }
+          "onImage": {
+            "eventName": "onImage"
+          }
+        },
+        "telemetryInteractEdata": {
+          "id": "courseId",
+          "type": "click",
+          "pageid": "home"
+        },
+        "telemetryObjectType": "home"
       },
-      "metaData": ["batchId", "courseId"],
+      "metaData": [
+        "batchId",
+        "courseId"
+      ],
       "maxCount": "leafNodesCount",
       "progress": "progress"
     }
   },
-  "Library": {
-    "contentApiQueryParams": {"orgdetails":"orgName,email"},
-    "constantData":{
-      "action": {
-          "onImage": {"eventName": "onImage" }
+  "ViewAll": {
+    "contentApiQueryParams": {
+      "orgdetails": "orgName,email"
+    },
+    "otherCourses": {
+      "constantData": {
+        "action": {
+          "onImage": {
+            "eventName": "onImage"
+          }
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"},
-        "left": {"class":  "ui circular label  card-badges-image"} }
-       },
-       "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-       "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
+        "ribbon": {
+          "right": {
+            "class": "ui black right ribbon label"
+          },
+          "left": {
+            "class": "ui circular label  card-badges-image"
+          }
+        }
+      }
+    },
+    "enrolledCourses": {
+      "constantData": {
+        "action": {
+          "right": {
+            "class": "ui blue basic button",
+            "eventName": "Resume",
+            "displayType": "button",
+            "text": "Resume"
+          },
+          "onImage": {
+            "eventName": "onImage"
+          }
+        }
+      },
+      "metaData": [
+        "batchId",
+        "courseId"
+      ]
+    },
+    "metaData": {
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
+    },
+    "dynamicFields": {
+      "ribbon.right.name": "resourceType",
+      "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
+    },
+    "PAGE_LIMIT": 20
+  },
+  "CourseConsumption": {
+    "contentApiQueryParams": {
+      "orgdetails": "orgName,email"
+    }
+  },
+  "Course": {
+    "contentApiQueryParams": {
+      "orgdetails": "orgName,email"
+    },
+    "otherCourse": {
+      "constantData": {
+        "action": {
+          "onImage": {
+            "eventName": "onImage"
+          }
+        },
+        "ribbon": {
+          "right": {
+            "class": "ui black right ribbon label"
+          }
+        }
+      },
+      "metaData": {
+        "metaData": [
+          "identifier",
+          "mimeType",
+          "framework",
+          "contentType"
+        ]
+      },
+      "dynamicFields": {
+        "ribbon.right.name": "resourceType"
+      }
+    },
+    "enrolledCourses": {
+      "constantData": {
+        "action": {
+          "right": {
+            "class": "ui blue basic button",
+            "eventName": "Resume",
+            "displayType": "button",
+            "text": "Resume"
+          },
+          "onImage": {
+            "eventName": "onImage"
+          }
+        }
+      },
+      "metaData": [
+        "batchId",
+        "courseId"
+      ],
+      "maxCount": "leafNodesCount",
+      "progress": "progress"
+    }
+  },
+  "CourseBatchPageSection": {
+    "slickSize": 10,
+    "slideConfig": {
+      "slidesToShow": 4,
+      "slidesToScroll": 4,
+      "responsive": [
+        {
+          "breakpoint": 2800,
+          "settings": {
+            "slidesToShow": 4,
+            "slidesToScroll": 4
+          }
+        },
+        {
+          "breakpoint": 2200,
+          "settings": {
+            "slidesToShow": 4,
+            "slidesToScroll": 4
+          }
+        },
+        {
+          "breakpoint": 2000,
+          "settings": {
+            "slidesToShow": 3.01,
+            "slidesToScroll": 3.01
+          }
+        },
+        {
+          "breakpoint": 1600,
+          "settings": {
+            "slidesToShow": 3,
+            "slidesToScroll": 3
+          }
+        },
+        {
+          "breakpoint": 1200,
+          "settings": {
+            "slidesToShow": 2.5,
+            "slidesToScroll": 2.5
+          }
+        },
+        {
+          "breakpoint": 900,
+          "settings": {
+            "slidesToShow": 2.5,
+            "slidesToScroll": 2
+          }
+        },
+        {
+          "breakpoint": 750,
+          "settings": {
+            "slidesToShow": 2,
+            "slidesToScroll": 2
+          }
+        },
+        {
+          "breakpoint": 660,
+          "settings": {
+            "slidesToShow": 1.75,
+            "slidesToScroll": 1
+          }
+        },
+        {
+          "breakpoint": 530,
+          "settings": {
+            "slidesToShow": 1.25,
+            "slidesToScroll": 1
+          }
+        },
+        {
+          "breakpoint": 450,
+          "settings": {
+            "slidesToShow": 1,
+            "slidesToScroll": 1
+          }
+        }
+      ],
+      "infinite": false,
+      "rtl": false
+    }
+  },
+  "CoursePageSection": {
+    "contentApiQueryParams": {
+      "orgdetails": "orgName,email"
+    },
+    "slideConfig": {
+      "variableWidth": true,
+      "centerPadding": "16px",
+      "infinite": false,
+      "rtl": false
+    },
+    "course": {
+      "slickSize": 10,
+      "constantData": {
+        "action": {
+          "onImage": {
+            "eventName": "onImage"
+          }
+        }
+      },
+      "metaData": {
+        "metaData": [
+          "identifier",
+          "mimeType",
+          "framework",
+          "contentType"
+        ]
+      }
+    },
+    "enrolledCourses": {
+      "slickSize": 10,
+      "constantData": {
+        "action": {
+          "right": {
+            "class": "ui blue basic button",
+            "eventName": "Resume",
+            "displayType": "button",
+            "text": "Resume"
+          },
+          "onImage": {
+            "eventName": "onImage"
+          }
+        }
+      },
+      "metaData": {
+        "metaData": [
+          "batchId",
+          "courseId"
+        ]
+      },
+      "dynamicFields": {
+        "maxCount": "leafNodesCount",
+        "progress": "progress"
+      }
+    }
+  },
+  "Library": {
+    "slickSize": 10,
+    "contentApiQueryParams": {
+      "orgdetails": "orgName,email"
+    },
+    "constantData": {
+      "action": {
+        "onImage": {
+          "eventName": "onImage"
+        }
+      },
+      "ribbon": {
+        "right": {
+          "class": "ui black right ribbon label"
+        },
+        "left": {
+          "class": "ui circular label  card-badges-image"
+        }
+      }
+    },
+    "metaData": {
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
+    },
+    "dynamicFields": {
+      "ribbon.right.name": "resourceType",
+      "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
+    }
   },
   "PublicPlayer": {
-    "contentApiQueryParams": {"orgdetails":"orgName,email"}
+    "contentApiQueryParams": {
+      "orgdetails": "orgName,email"
+    }
   },
   "ContentPlayer": {
-    "contentApiQueryParams": {"orgdetails":"orgName,email"}
+    "contentApiQueryParams": {
+      "orgdetails": "orgName,email"
+    }
   },
   "ExplorePage": {
-    "contentApiQueryParams": {"orgdetails":"orgName,email"},
-    "constantData":{
+    "contentApiQueryParams": {
+      "orgdetails": "orgName,email"
+    },
+    "slickSize": 10,
+    "constantData": {
       "action": {
-          "onImage": {"eventName": "onImage" }
+        "onImage": {
+          "eventName": "onImage"
+        }
+      },
+      "ribbon": {
+        "right": {
+          "class": "ui black right ribbon label"
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"},
-        "left": {"class":  "ui circular label  card-badges-image"} }
-       },
-       "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-       "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
+        "left": {
+          "class": "ui circular label  card-badges-image"
+        }
+      }
+    },
+    "metaData": {
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
+    },
+    "dynamicFields": {
+      "ribbon.right.name": "resourceType",
+      "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
+    }
   },
   "CoursePage": {
-    "constantData":{
+    "slickSize": 10,
+    "constantData": {
       "action": {
-          "onImage": {"eventName": "onImage" }
+        "onImage": {
+          "eventName": "onImage"
+        }
+      },
+      "ribbon": {
+        "right": {
+          "class": "ui black right ribbon label"
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"},
-        "left": {"class":  "ui circular label  card-badges-image"} }
-       },
-       "metaData": {"metaData": ["identifier", "mimeType", "framework","contentType"]},
-       "dynamicFields": {"ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
+        "left": {
+          "class": "ui circular label  card-badges-image"
+        }
+      }
+    },
+    "metaData": {
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
+    },
+    "dynamicFields": {
+      "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
+    }
   },
-  "GetPage":{
-    "contentApiQueryParams": {"orgdetails":"orgName,email"},
-    "constantData":{
+  "GetPage": {
+    "contentApiQueryParams": {
+      "orgdetails": "orgName,email"
+    },
+    "constantData": {
       "action": {
-          "onImage": {"eventName": "onImage" }
+        "onImage": {
+          "eventName": "onImage"
+        }
+      },
+      "ribbon": {
+        "right": {
+          "class": "ui black right ribbon label"
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"},
-        "left": {"class":  "ui circular label  card-badges-image"} },
-        "telemetryInteractEdata": {"id":"dial-code-view-card","type":"click","pageid":"dial-code"},
-        "telemetryObjectType":"public"
-       },
-     "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-     "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
+        "left": {
+          "class": "ui circular label  card-badges-image"
+        }
+      },
+      "telemetryInteractEdata": {
+        "id": "dial-code-view-card",
+        "type": "click",
+        "pageid": "dial-code"
+      },
+      "telemetryObjectType": "public"
+    },
+    "metaData": {
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
+    },
+    "dynamicFields": {
+      "ribbon.right.name": "resourceType",
+      "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
+    }
   },
   "HomeSearch": {
-    "contentApiQueryParams": {"orgdetails":"orgName,email"},
-    "constantData":{
+    "contentApiQueryParams": {
+      "orgdetails": "orgName,email"
+    },
+    "constantData": {
       "action": {
-          "onImage": {"eventName": "onImage" }
+        "onImage": {
+          "eventName": "onImage"
         }
-       },
-       "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]}
+      }
+    },
+    "metaData": {
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
+    },
+    "dynamicFields": {
+      "ribbon.right.name": "resourceType",
+      "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
+    }
   },
   "CourseSearch": {
-    "contentApiQueryParams": {"orgdetails":"orgName,email"},
-    "otherCourses":{
-      "constantData":{
-      "action": {
-          "onImage": {"eventName": "onImage" }
+    "contentApiQueryParams": {
+      "orgdetails": "orgName,email"
+    },
+    "otherCourses": {
+      "constantData": {
+        "action": {
+          "onImage": {
+            "eventName": "onImage"
+          }
         }
-       }
-    },"enrolledCourses": {
+      }
+    },
+    "enrolledCourses": {
       "constantData": {
         "action": {
           "right": {
@@ -167,24 +472,51 @@
         }
       }
     },
-   "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]}
+    "metaData": {
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
+    }
   },
-  "LibrarySearch":{
-    "contentApiQueryParams": {"orgdetails":"orgName,email"},
-    "constantData":{
+  "LibrarySearch": {
+    "contentApiQueryParams": {
+      "orgdetails": "orgName,email"
+    },
+    "constantData": {
       "action": {
-          "onImage": {"eventName": "onImage" }
+        "onImage": {
+          "eventName": "onImage"
+        }
+      },
+      "ribbon": {
+        "right": {
+          "class": "ui black right ribbon label"
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"},
-        "left": {"class":  "ui circular label  card-badges-image"} }
-       },
-     "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-     "dynamicFields": {"ribbon.right.name": "resourceType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
+        "left": {
+          "class": "ui circular label  card-badges-image"
+        }
+      }
+    },
+    "metaData": {
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
+    },
+    "dynamicFields": {
+      "ribbon.right.name": "resourceType",
+      "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
+    }
   },
   "TELEMETRY": {
     "MAX_BATCH_SIZE": 10,
-    "VERSION":"1.8.0",
-    "PID":"sunbird-portal"
+    "VERSION": "1.8.0",
+    "PID": "sunbird-portal"
   },
   "FLAGREASONS": [
     {
@@ -276,7 +608,8 @@
       "webm": "video/webm",
       "xUrl": "text/x-url"
     },
-    "baseURL": "/content/preview/preview.html?webview=true"
+    "baseURL": "/content/preview/preview.html?webview=true",
+    "localBaseUrl": "/contentPlayer/preview/preview.html?offline=true"
   },
   "WORKSPACE": {
     "PAGE_LIMIT": 9,
@@ -315,59 +648,122 @@
       "allcontent",
       "collaborating-on"
     ],
+    "courseBatch": {
+      "PAGE_LIMIT": 12
+    },
     "Draft": {
       "constantData": {
         "action": {
           "right": {
-        "class": "trash large icon",
-       "eventName": "delete",
-       "displayType": "icon"},
-       "onImage": {
+            "class": "trash large icon",
+            "eventName": "delete",
+            "displayType": "icon"
+          },
+          "onImage": {
             "eventName": "onImage"
           }
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"}},
-        "telemetryInteractEdata": {"id":"draftContentId","type":"click","pageid":"DraftContent"},
-        "telemetryObjectType":"draft"
+        "ribbon": {
+          "right": {
+            "class": "ui black right ribbon label"
+          }
+        },
+        "telemetryInteractEdata": {
+          "id": "draftContentId",
+          "type": "click",
+          "pageid": "DraftContent"
+        },
+        "telemetryObjectType": "draft"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
-      "dynamicFields": {"ribbon.right.name": "contentType"}
+      "metaData": {
+        "metaData": [
+          "identifier",
+          "mimeType",
+          "framework",
+          "contentType",
+          "pkgVersion",
+          "status"
+        ]
+      },
+      "dynamicFields": {
+        "ribbon.right.name": "contentType"
+      }
     },
     "Published": {
       "constantData": {
         "action": {
           "right": {
-        "class": "trash large icon",
-       "eventName": "delete",
-       "displayType": "icon"},
-       "onImage": {
+            "class": "trash large icon",
+            "eventName": "delete",
+            "displayType": "icon"
+          },
+          "onImage": {
             "eventName": "onImage"
           }
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"}},
-        "telemetryInteractEdata": {"id":"published","type":"click","pageid":"published"},
-        "telemetryObjectType":"published"
+        "ribbon": {
+          "right": {
+            "class": "ui black right ribbon label"
+          }
+        },
+        "telemetryInteractEdata": {
+          "id": "published",
+          "type": "click",
+          "pageid": "published"
+        },
+        "telemetryObjectType": "published"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
-      "dynamicFields": {"ribbon.right.name": "contentType"}
+      "metaData": {
+        "metaData": [
+          "identifier",
+          "mimeType",
+          "framework",
+          "contentType",
+          "pkgVersion",
+          "status"
+        ]
+      },
+      "dynamicFields": {
+        "ribbon.right.name": "contentType"
+      }
     },
     "Uploaded": {
       "constantData": {
         "action": {
           "right": {
-        "class": "trash large icon",
-       "eventName": "delete",
-       "displayType": "icon"},
-       "onImage": {
+            "class": "trash large icon",
+            "eventName": "delete",
+            "displayType": "icon"
+          },
+          "onImage": {
             "eventName": "onImage"
           }
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"}},
-        "telemetryInteractEdata": {"id":"uploadedContent","type":"click","pageid":"UploadContent"},
-        "telemetryObjectType":"UploadContent"
+        "ribbon": {
+          "right": {
+            "class": "ui black right ribbon label"
+          }
+        },
+        "telemetryInteractEdata": {
+          "id": "uploadedContent",
+          "type": "click",
+          "pageid": "UploadContent"
+        },
+        "telemetryObjectType": "UploadContent"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
-      "dynamicFields": {"ribbon.right.name": "contentType"}
+      "metaData": {
+        "metaData": [
+          "identifier",
+          "mimeType",
+          "framework",
+          "contentType",
+          "pkgVersion",
+          "status"
+        ]
+      },
+      "dynamicFields": {
+        "ribbon.right.name": "contentType"
+      }
     },
     "Flagged": {
       "constantData": {
@@ -376,12 +772,31 @@
             "eventName": "onImage"
           }
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"}},
-        "telemetryInteractEdata": {"id":"flagged","type":"click","pageid":"Flagged"},
-        "telemetryObjectType":"UploadContent"
+        "ribbon": {
+          "right": {
+            "class": "ui black right ribbon label"
+          }
+        },
+        "telemetryInteractEdata": {
+          "id": "flagged",
+          "type": "click",
+          "pageid": "Flagged"
+        },
+        "telemetryObjectType": "UploadContent"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
-      "dynamicFields": {"ribbon.right.name": "contentType"}
+      "metaData": {
+        "metaData": [
+          "identifier",
+          "mimeType",
+          "framework",
+          "contentType",
+          "pkgVersion",
+          "status"
+        ]
+      },
+      "dynamicFields": {
+        "ribbon.right.name": "contentType"
+      }
     },
     "ReviewSubmission": {
       "constantData": {
@@ -390,36 +805,78 @@
             "eventName": "onImage"
           }
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"}},
-        "telemetryInteractEdata": {"id":"reviewSubmissionId","type":"click","pageid":"ReviewSubmission"},
-        "telemetryObjectType":"ReviewSubmission"
+        "ribbon": {
+          "right": {
+            "class": "ui black right ribbon label"
+          }
+        },
+        "telemetryInteractEdata": {
+          "id": "reviewSubmissionId",
+          "type": "click",
+          "pageid": "ReviewSubmission"
+        },
+        "telemetryObjectType": "ReviewSubmission"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
-      "dynamicFields": {"ribbon.right.name": "contentType"}
+      "metaData": {
+        "metaData": [
+          "identifier",
+          "mimeType",
+          "framework",
+          "contentType",
+          "pkgVersion",
+          "status"
+        ]
+      },
+      "dynamicFields": {
+        "ribbon.right.name": "contentType"
+      }
     },
     "LimitedPublishing": {
       "constantData": {
         "action": {
           "right": {
-        "class": "trash large icon",
-       "eventName": "delete",
-       "displayType": "icon"},
-       "left": {
-      "class": "linkify large icon float-ContentLeft limitedPublishingLinkIcon",
-       "eventName": "share",
-       "displayType": "icon"
-    },
-       "onImage": {
+            "class": "trash large icon",
+            "eventName": "delete",
+            "displayType": "icon"
+          },
+          "left": {
+            "class": "linkify large icon float-ContentLeft limitedPublishingLinkIcon",
+            "eventName": "share",
+            "displayType": "icon"
+          },
+          "onImage": {
             "eventName": "onImage"
           }
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"}},
-        "telemetryInteractEdata": {"id":"limitedPublish","type":"click","pageid":"LimitedPublish"},
-        "telemetryObjectType":"limitedPublish"
+        "ribbon": {
+          "right": {
+            "class": "ui black right ribbon label"
+          }
+        },
+        "telemetryInteractEdata": {
+          "id": "limitedPublish",
+          "type": "click",
+          "pageid": "LimitedPublish"
+        },
+        "telemetryObjectType": "limitedPublish"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
-      "dynamicFields": {"ribbon.right.name": "contentType"}
+      "metaData": {
+        "metaData": [
+          "identifier",
+          "mimeType",
+          "framework",
+          "contentType",
+          "pkgVersion",
+          "status"
+        ]
+      },
+      "dynamicFields": {
+        "ribbon.right.name": "contentType"
+      }
     }
+  },
+  "DASHBOARD": {
+    "PAGE_LIMIT": 200
   },
   "CONTENT_CONST": {
     "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"
@@ -564,25 +1021,24 @@
     "filterType": "upforreview",
     "inPageredirectUrl": "/workspace/content/upForReview/1"
   },
-  "flagReviewer":{
+  "flagReviewer": {
     "inPageredirectUrl": "/workspace/content/flagreviewer/1"
   },
-   "allmycontent": {
+  "allmycontent": {
     "filterType": "allmycontent",
     "inPageredirectUrl": "workspace/content/allcontent/1",
     "searchPageredirectUrl": "workspace/content/allcontent/1"
-   },
-   "collaboration": {
+  },
+  "collaboration": {
     "filterType": "collaboration",
     "inPageredirectUrl": "workspace/content/collaborating-on/1",
     "searchPageredirectUrl": "workspace/content/collaborating-on/1"
-   }, 
+  },
   "explore": {
     "filterType": "explore",
     "inPageredirectUrl": "/explore",
     "searchPageredirectUrl": "/explore/1"
   },
-
   "exploreCourse": {
     "filterType": "explore-course",
     "inPageredirectUrl": "/explore-course",
@@ -601,15 +1057,16 @@
     "studymaterial": "resource",
     "lessonplan": "lessonplan",
     "library": "library",
-    "allmycontent":"allmycontent",
+    "allmycontent": "allmycontent",
     "explore": "explore",
     "resourcebundle": "resourcebundle",
-    "upforreview" :"upforreview",
-    "collaboration":"collaboration",
+    "upforreview": "upforreview",
+    "collaboration": "collaboration",
     "framework": "framework",
-    "explore-course":"explore-course",
-    "framework-code":"framework-code",
-    "courses": "courses"
+    "explore-course": "explore-course",
+    "framework-code": "framework-code",
+    "courses": "courses",
+    "organization": "organization"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,
@@ -626,7 +1083,9 @@
     "setTime": 1500
   },
   "PROFILE": {
-    "contentApiQueryParams": {"orgdetails":"orgName,email"},
+    "contentApiQueryParams": {
+      "orgdetails": "orgName,email"
+    },
     "profileField": {
       "profileSummary": "profile/summary/edit",
       "jobProfile": "profile/experience/add",
@@ -660,7 +1119,7 @@
       "comments": "Please detail the required changes in the comments:"
     },
     "publish": {
-      "title" : "Are you sure you want to publish?"
+      "title": "Are you sure you want to publish?"
     },
     "read": {
       "title": "Review Comments",
@@ -668,18 +1127,33 @@
     }
   },
   "collectionTreeOptions": {
-    "fileIcon": "fa fa-file-o fa-lg",
+    "fileIcon": "sb-icon-content",
     "customFileIcon": {
-      "video": "fa fa-file-video-o fa-lg",
-      "pdf": "fa fa-file-pdf-o fa-lg",
-      "youtube": "fa fa-youtube fa-lg fancy_tree_red",
-      "H5P": "fa fa-html5 fa-lg",
-      "audio": "fa fa-file-audio-o fa-lg",
-      "ECML": "fa fa-file-code-o fa-lg",
-      "HTML": "fa fa-html5 fa-lg",
-      "collection": "fa fa-file-archive-o fa-lg",
-      "epub": "fa fa-file-text fa-lg",
-      "doc": "fa fa-file-text fa-lg"
+      "video": "sb-icon-video",
+      "pdf": "sb-icon-doc",
+      "youtube": "sb-icon-video",
+      "H5P": "sb-icon-content",
+      "audio": "sb-icon-mp3",
+      "ECML": "sb-icon-content",
+      "HTML": "sb-icon-content",
+      "collection": "sb-icon-collection",
+      "epub": "sb-icon-doc",
+      "doc": "sb-icon-doc"
     }
+  },
+  "mediumCode": {
+    "english": "en",
+    "hindi": "hi",
+    "telugu": "te",
+    "kannada": "kn",
+    "tamil": "ta",
+    "marathi": "mr",
+    "urdu": "ur",
+    "malayalam": "ml",
+    "bengali": "bn",
+    "assamese": "as",
+    "gujarati": "gu",
+    "punjabi": "pa",
+    "oriya": "or"
   }
 }

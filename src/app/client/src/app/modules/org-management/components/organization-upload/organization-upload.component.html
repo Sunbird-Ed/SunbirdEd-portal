@@ -1,15 +1,14 @@
-<sui-modal class="custom-sui-modal" [isClosable]="false" [mustScroll]="true" [size]="'large'" (dismissed)="redirect()" #modal>
-  <div class="header" [appTelemetryImpression]="telemetryImpression">
-    <div class="ui grid">
-      <div class="eleven wide column">
-        <span class="ui header">{{resourceService?.frmelmnts?.instn?.t0015}}</span>
-      </div>
-      <div class="one wide column">
-          <i class="close icon" (click)="modal.deny()" tabindex="0"></i>
-      </div>
-    </div>
+<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'large'"
+  class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.deny();" #modal>
+
+  <!--Header-->
+  <div class="sb-modal-header" [appTelemetryImpression]="telemetryImpression">
+    {{resourceService?.frmelmnts?.instn?.t0015}}
   </div>
-  <div class="content">
+  <!--/Header-->
+
+  <!--Content-->
+  <div class="sb-modal-content">
     <div *ngIf="showLoader">
       <app-loader></app-loader>
     </div>
@@ -33,22 +32,24 @@
       </ol>
     </div>
   </div>
-  <div class="actions">
-    <div class="ui grid">
-      <div class="four wide column">
-        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="downloadSampleOrgCSVInteractEdata" class="ui left floated button" (click)="downloadSample()">{{resourceService?.frmelmnts?.btn?.smplcsv}}</button>
-      </div>
-      <div class="four wide column">
-      </div>
-      <div class="four wide column">
-        <div>
-          <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="orgUploadInteractEdata" [disabled]="processId" class="ui primary right floated button" (click)="openImageBrowser(inputbtn)">
-            {{resourceService?.frmelmnts?.btn?.uploadorgscsv}}
-          </button>
-        </div>
-        <input #inputbtn type="file" style='display:none' accept=".csv" id="uploadorgscsv" onclick="this.value = null" (change)="uploadOrg($event.target.files)" autofocus required=""
-        />
-      </div>
-    </div>
+  <!--/Content-->
+
+  <!--Actions-->
+  <div class="sb-modal-actions">
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="orgUploadInteractEdata" [disabled]="processId"
+      class="sb-btn sb-btn-normal sb-btn-primary" (click)="openImageBrowser(inputbtn)">
+      {{resourceService?.frmelmnts?.btn?.uploadorgscsv}}
+    </button>
+    <!-- <angular2csv class="sb-btn sb-btn-normal sb-btn-outline-gray mr-auto" [data]="config.appConfig.ADMIN_UPLOAD.SAMPLE_ORGANIZATION_CSV" 
+      filename="Sample_Organizations" [options]="csvOptions"
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="downloadSampleOrgCSVInteractEdata">
+      {{resourceService?.frmelmnts?.btn?.smplcsv}} TODO: use Blob object to generate csv file
+    </angular2csv> -->
+    <input #inputbtn type="file" class="d-none" accept=".csv" id="uploadorgscsv" onclick="this.value = null"
+      (change)="uploadOrg($event.target.files)" autofocus required="" />
   </div>
+  <!--/Actions-->
+
 </sui-modal>

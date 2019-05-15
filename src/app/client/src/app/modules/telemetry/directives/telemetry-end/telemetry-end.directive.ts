@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnDestroy, DoCheck } from '@angular/core';
+import { Directive, ElementRef, Input, OnDestroy, DoCheck, HostListener } from '@angular/core';
 import { IEndEventInput } from '../../interfaces';
 import { TelemetryService } from '../../services';
 
@@ -23,7 +23,16 @@ export class TelemetryEndDirective implements OnDestroy {
   constructor(telemetryService: TelemetryService) {
     this.telemetryService = telemetryService;
   }
+
+  @HostListener('window:unload', ['$event'])
+  unloadHandler(event) {
+   this.endEvent();
+  }
+
   ngOnDestroy() {
+    this.endEvent();
+  }
+  endEvent () {
     if (this.appTelemetryEnd) {
       this.telemetryService.end(this.appTelemetryEnd);
     }

@@ -5,7 +5,7 @@ import { GeoExplorerService } from './../../services';
 import { LearnerService, UserService } from '@sunbird/core';
 import { ServerResponse } from '@sunbird/shared';
 import { IGeoLocationDetails } from './../../interfaces/geoLocationDetails';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 import { Subject } from 'rxjs';
 
@@ -16,8 +16,7 @@ import { Subject } from 'rxjs';
  */
 @Component({
   selector: 'app-geo-explorer',
-  templateUrl: './geo-explorer.component.html',
-  styleUrls: ['./geo-explorer.component.css']
+  templateUrl: './geo-explorer.component.html'
 })
 /**
  * @class GeoExplorerComponent

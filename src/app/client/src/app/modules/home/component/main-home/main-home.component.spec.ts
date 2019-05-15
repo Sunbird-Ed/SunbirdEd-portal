@@ -1,9 +1,8 @@
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject, tick, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { AnnouncementService, UserService, CoursesService, LearnerService, FrameworkService, ContentService,
   PlayerService } from '@sunbird/core';
 import { SharedModule, ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
@@ -49,18 +48,19 @@ class ActivatedRouteStub {
         'm0001': 'api failed, please try again',
         'm0004': 'api failed, please try again'
       }
-    }
+    },
+    languageSelected$: of({})
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule.forRoot(),
-       Ng2IziToastModule, NgInviewModule, TelemetryModule.forRoot()],
+      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule.forRoot(), NgInviewModule, TelemetryModule.forRoot()],
       declarations: [MainHomeComponent],
       providers: [UserService, CoursesService, ResourceService, LearnerService, AnnouncementService,
          ToasterService, FrameworkService, CacheService, ContentService, PlayerService,
          { provide: Router, useClass: RouterStub },
          { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-         { provide: ResourceService, useValue: resourceBundle }],
+         { provide: ResourceService, useValue: resourceBundle }
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents()
@@ -109,31 +109,37 @@ class ActivatedRouteStub {
     component.playContent(testData.metaData);
     expect(playerService.playContent).toHaveBeenCalled();
   });
-  it('should call inview method for visits data', () => {
+  it('should call inview method for visits data', fakeAsync(() => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => 'error');
     spyOn(component, 'inview').and.callThrough();
     component.ngOnInit();
+    component.ngAfterViewInit();
+    tick(100);
     component.inview(testData.inviewData);
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
-  });
-  it('should call inviewChange method for visits data', () => {
+  }));
+  it('should call inviewChange method for visits data', fakeAsync(() => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => 'error');
     spyOn(component, 'inviewChange').and.callThrough();
     component.ngOnInit();
+    component.ngAfterViewInit();
+    tick(100);
     component.inviewChange(testData.toDoList, testData.eventData2);
     expect(component.inviewChange).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
-  });
-  it('should call announcemnetInview method for visits data', () => {
+  }));
+  it('should call announcemnetInview method for visits data', fakeAsync(() => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => 'error');
     spyOn(component, 'anouncementInview').and.callThrough();
     component.ngOnInit();
+    component.ngAfterViewInit();
+    tick(100);
     component.anouncementInview(testData.announcementInview);
     expect(component.anouncementInview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
-  });
+  }));
 });

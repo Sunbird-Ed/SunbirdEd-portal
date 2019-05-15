@@ -2,11 +2,9 @@
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { DeleteComponent } from './../../../announcement/components/delete/delete.component';
 // Import NG testing module(s)
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject, tick, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
-
 import { LimitedPublishedComponent } from './limited-published.component';
 import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
@@ -61,12 +59,13 @@ describe('LimitedPublishedComponent', () => {
       'smsg': {
         'm0006': 'Content deleted successfully...'
       }
-    }
+    },
+    languageSelected$: observableOf({})
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [LimitedPublishedComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(),
+      imports: [HttpClientTestingModule, RouterTestingModule, SharedModule.forRoot(),
         TelemetryModule.forRoot(), NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
@@ -229,10 +228,12 @@ describe('LimitedPublishedComponent', () => {
       fixture.detectChanges();
       expect(component.pageNumber).toEqual(1);
     }));
-  it('should call inview method for visits data', () => {
+  it('should call inview method for visits data', fakeAsync(() => {
     spyOn(component, 'inview').and.callThrough();
+    component.ngAfterViewInit();
+    tick(100);
     component.inview(testData.event);
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
-  });
+  }));
 });

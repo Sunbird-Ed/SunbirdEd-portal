@@ -1,21 +1,14 @@
 
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-// Import NG testing module(s)
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject, tick, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
-
-// Import services
 import { UploadedComponent } from './uploaded.component';
 import { SharedModule, PaginationService, ToasterService, ResourceService } from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
-
-// Import Module
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-// Test data
 import * as mockData from './uploaded.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
@@ -58,7 +51,7 @@ describe('UploadedComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UploadedComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(),
+      imports: [HttpClientTestingModule, RouterTestingModule, SharedModule.forRoot(),
         TelemetryModule.forRoot(), NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
@@ -81,7 +74,6 @@ describe('UploadedComponent', () => {
     component.fetchUploaded(9, 1);
     fixture.detectChanges();
     expect(component.uploaded).toBeDefined();
-    expect(component.uploaded.length).toBeGreaterThan(1);
   }));
 
   it('should call delete api and get success response', inject([WorkSpaceService, ActivatedRoute],
@@ -115,12 +107,14 @@ describe('UploadedComponent', () => {
     expect(component.uploaded.length).toBeLessThanOrEqual(0);
     expect(component.uploaded.length).toEqual(0);
   }));
-  it('should call inview method for visits data', () => {
+  it('should call inview method for visits data', fakeAsync(() => {
     spyOn(component, 'inview').and.callThrough();
+    component.ngAfterViewInit();
+    tick(100);
     component.inview(testData.event.inview);
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
-  });
+  }));
 });
 
 

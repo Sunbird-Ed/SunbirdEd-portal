@@ -10,7 +10,7 @@ import * as testData from './course-progress.service.spec.data';
 describe('CourseProgressService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
       providers: [CourseProgressService]
     });
   });
@@ -43,13 +43,15 @@ describe('CourseProgressService', () => {
     spyOn(learnerService, 'post').and.returnValue(observableOf(testData.mockRes.courseProgressData.getBatchDetails));
     const params = {
       data: {
-        'period': '7d'
+        'limit': 200,
+        'offset': 0
       }
     };
     courseProgressService.getDashboardData(params).subscribe(
       apiResponse => {
-        expect(apiResponse.responseCode).toBe('OK');
-        expect(apiResponse.result.period).toBe('7d');
+        expect(apiResponse.response).toBe('SUCCESS');
+        expect(apiResponse.result.count).toBe(9);
+        expect(apiResponse.result.completedCount).toBe(2);
       }
     );
   });
@@ -60,8 +62,7 @@ describe('CourseProgressService', () => {
     spyOn(learnerService, 'post').and.returnValue(observableOf(testData.mockRes.downloadDashboardReport.getSuccessData));
     const params = {
       data: {
-        'period': '7d',
-        'format': 'csv'
+       'batchIdentifier': '01241050605165772817'
       }
     };
     courseProgressService.downloadDashboardData(params).subscribe(

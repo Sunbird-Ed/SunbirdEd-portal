@@ -54,7 +54,7 @@ describe('CourseConsumptionHeaderComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CourseConsumptionHeaderComponent ],
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub },
         CourseConsumptionService, CourseProgressService, { provide: Router, useClass: RouterStub }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -119,5 +119,21 @@ describe('CourseConsumptionHeaderComponent', () => {
     spyOn(component.unsubscribe, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
+  it('should call  getBatchStatus and return true if batch status is  "2" and course is not completed', () => {
+    component.enrolledBatchInfo = {status: 2};
+    component.progress = 50;
+    spyOn(component, 'getBatchStatus').and.callThrough();
+    const returnValue = component.getBatchStatus();
+    expect(component.getBatchStatus).toHaveBeenCalled();
+    expect(returnValue).toBe(true);
+  });
+  it('should call  getBatchStatus and return false if batch status is not  "2" and course is  completed', () => {
+    component.enrolledBatchInfo = {status: 1};
+    component.progress = 100;
+    spyOn(component, 'getBatchStatus').and.callThrough();
+    const returnValue = component.getBatchStatus();
+    expect(component.getBatchStatus).toHaveBeenCalled();
+    expect(returnValue).toBe(false);
   });
 });

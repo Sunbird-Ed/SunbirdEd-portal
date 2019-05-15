@@ -3,12 +3,8 @@ import {throwError as observableThrowError, of as observableOf,  Observable } fr
 import { FormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SharedModule, ToasterService } from '@sunbird/shared';
-
-// NG core testing module
-import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
-// SB scomponent(s) and service(s)
 import { GeoExplorerComponent } from './geo-explorer.component';
 import { LearnerService, UserService, CoreModule } from '@sunbird/core';
 import { GeoExplorerService } from './../../services/geo-explorer/geo-explorer.service';
@@ -16,7 +12,6 @@ import { GeoExplorerService } from './../../services/geo-explorer/geo-explorer.s
 
 // Test data
 import * as mockData from './geo-explorer.component.spec.data';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 const testData = <any>mockData.mockRes;
 
 describe('GeoExplorerComponent', () => {
@@ -27,7 +22,7 @@ describe('GeoExplorerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ GeoExplorerComponent ],
       providers: [ToasterService , GeoExplorerService, LearnerService, UserService],
-      imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule.forRoot(), Ng2IziToastModule, CoreModule.forRoot()]
+      imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule.forRoot(), CoreModule]
     })
     .compileComponents();
   }));

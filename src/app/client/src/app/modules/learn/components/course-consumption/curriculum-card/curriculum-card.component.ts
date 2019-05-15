@@ -2,8 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 @Component({
   selector: 'app-curriculum-card',
-  templateUrl: './curriculum-card.component.html',
-  styleUrls: ['./curriculum-card.component.css']
+  templateUrl: './curriculum-card.component.html'
 })
 export class CurriculumCardComponent {
   @Input() curriculum: any;

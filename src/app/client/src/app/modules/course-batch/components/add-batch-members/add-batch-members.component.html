@@ -32,7 +32,7 @@
                             (onSelect)="selectMentor($event)">
                             <c-search>
                                 <ng-template>
-                                    <input [attr.disabled]= "mentorList.length>0 ? null : true" type="text" (keyup)="getUserListWithQuery($event,'mentor')" placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}" style="border: none;width: 100%; height: 100%;outline: none;"
+                                    <input [attr.disabled]= "mentorList.length>0 ? null : true" type="text" (keyup)="getUserListWithQuery($event,'mentor')" placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}"
                                     />
                                 </ng-template>
                             </c-search>
@@ -48,7 +48,7 @@
                             (onSelect)="selectParticipants($event)" (onDeSelect)="OnParticipantsDeSelect($event)">
                             <c-search>
                                 <ng-template>
-                                    <input  [attr.disabled]= "participantList.length>0 ? null : true"type="text" (keyup)="getUserListWithQuery($event,'participant')" placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}" style="border: none;width: 100%; height: 100%;outline: none;"
+                                    <input  [attr.disabled]= "participantList.length>0 ? null : true"type="text" (keyup)="getUserListWithQuery($event,'participant')" placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}"
                                     />
                                 </ng-template>
                             </c-search>
@@ -127,12 +127,49 @@
     </div>
 </div>
 
-<sui-modal [isClosable]="false" *ngIf="removeModalFlag" [size]="mini" #removeModal>
-    <div class="header"> {{ resourceService?.frmelmnts?.btn?.removeMembers}}</div>
-    <div class="actions">
-        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="stopCreatingYesInteractEdata"
-            class="ui primary  button announcement-button" (click)="removeModalFlag = !removeModalFlag" [appTelemetryEnd]="telemetryEnd">{{ resourceService?.frmelmnts?.btn?.cancel}}</button>
-        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="stopCreatingNoInteractEdata"
-            class="ui gray button announcement-button" (click)="removeModal.deny(); remove()">Remove</button>
+<sui-modal
+    [mustScroll]="true" 
+    [isClosable]="false"
+    [transitionDuration]="0"
+    [size]="'small'"
+    class="sb-modal sb-error"
+    appBodyScroll
+    *ngIf="removeModalFlag" 
+    (dismissed)="removeModal.deny();remove()"
+    #removeModal >
+
+    <!--Header-->
+    <div class="sb-modal-header">
+        {{ resourceService?.frmelmnts?.btn?.removeMembers}}
     </div>
+    <!--/Header-->
+
+    <!--Content-->
+    <div class="sb-modal-content">
+        {{ resourceService?.frmelmnts?.btn?.removeMembers}}
+    </div>
+    <!--/Content-->
+
+    <!--Actions-->
+    <div class="sb-modal-actions">
+        <button 
+            appTelemetryInteract 
+            [telemetryInteractEdata]="stopCreatingNoInteractEdata"
+            class="sb-btn sb-btn-normal sb-btn-error" 
+            (click)="removeModal.deny();remove()"
+        >
+            {{resourceService?.frmelmnts?.btn?.remove}}
+        </button>
+        <button 
+            appTelemetryInteract 
+            [telemetryInteractEdata]="stopCreatingYesInteractEdata"
+            class="sb-btn sb-btn-normal sb-btn-outline-error" 
+            (click)="removeModalFlag = !removeModalFlag" 
+            [appTelemetryEnd]="telemetryEnd"
+        >
+            {{resourceService?.frmelmnts?.btn?.cancel}}
+        </button>
+        
+    </div>
+    <!--/Actions-->
 </sui-modal>

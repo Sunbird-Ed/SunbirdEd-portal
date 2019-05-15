@@ -1,0 +1,17 @@
+/* form element styles */
+
+#{$all-text-inputs} {
+    //border: 1px solid #ccc;
+  }
+  #{$all-text-inputs-active} {
+    // border: 1px solid #aaa;
+  }
+  #{$all-text-inputs-focus} {
+    // border: 1px solid #1565c0;
+  }
+  #{$all-text-inputs-hover} {
+    // border: 1px solid #aaa;
+  }
+  #{$all-text-inputs-invalid} {
+    // border: 1px solid #00f;
+  }

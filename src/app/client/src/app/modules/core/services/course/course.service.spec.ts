@@ -12,7 +12,7 @@ const testData = mockData.mockRes;
 describe('CoursesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
       providers: []
     });
   });

@@ -39,7 +39,8 @@ let PERMISSIONS_HELPER = {
     'org/upload': ['SYSTEM_ADMINISTRATION'],
     'upload/status/': ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'],
     'type/create': ['SYSTEM_ADMINISTRATION'],
-    'type/update': ['SYSTEM_ADMINISTRATION']
+    'type/update': ['SYSTEM_ADMINISTRATION'],
+    'portal/user/v1/update': ['ORG_ADMIN']
   },
 
   getPermissions: function (reqObj) {
@@ -59,7 +60,7 @@ let PERMISSIONS_HELPER = {
     const telemetryData = {reqObj: reqObj,
       options: options,
       uri: 'data/v1/role/read',
-      userId: reqObj.kauth.grant.access_token.content.sub}
+      userId: reqObj.session.userId}
     // telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
@@ -109,6 +110,7 @@ let PERMISSIONS_HELPER = {
         if (body.result.response.rootOrg && body.result.response.rootOrg.id) {
           reqObj.session.rootOrgId = body.result.response.rootOrg.id
           reqObj.session.rootOrghashTagId = body.result.response.rootOrg.hashTagId
+          reqObj.session.rootOrg = body.result.response.rootOrg
         }
       }
     } catch (e) {
@@ -117,7 +119,7 @@ let PERMISSIONS_HELPER = {
   },
 
   getCurrentUserRoles: function (reqObj, callback) {
-    var userId = reqObj.kauth.grant.access_token.content.sub
+    var userId = reqObj.session.userId
     var options = {
       method: 'GET',
       url: learnerURL + 'user/v1/read/' + userId,
@@ -143,7 +145,6 @@ let PERMISSIONS_HELPER = {
       telemetryData.statusCode = _.get(response, 'statusCode');
       reqObj.session.roles = []
       reqObj.session.orgs = []
-
       if (!error && body) {
         module.exports.setUserSessionData(reqObj, body)
       }

@@ -1,20 +1,20 @@
 import { takeUntil, mergeMap } from 'rxjs/operators';
 import { Subject, combineLatest } from 'rxjs';
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { BatchService } from '../../services';
 import { IImpressionEventInput } from '@sunbird/telemetry';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as moment from 'moment';
 @Component({
   selector: 'app-update-batch',
   templateUrl: './update-batch.component.html',
-  styleUrls: ['./update-batch.component.css']
+  styleUrls: ['./update-batch.component.scss']
 })
-export class UpdateBatchComponent implements OnInit, OnDestroy {
+export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('updateBatchModal') private updateBatchModal;
   /**
@@ -37,6 +37,10 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
   * participantList for users
   */
   public participantList = [];
+
+
+  public showFormInViewMode: boolean;
+
   /**
   * batchDetails for form
   */
@@ -96,7 +100,8 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
     route: Router,
     resourceService: ResourceService, userService: UserService,
     batchService: BatchService,
-    toasterService: ToasterService) {
+    toasterService: ToasterService,
+    public navigationhelperService: NavigationHelperService) {
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
@@ -127,6 +132,9 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
         });
         this.showUpdateModal = true;
         this.batchDetails = data.batchDetails;
+        if (this.batchDetails.createdBy !== this.userService.userid) {
+          this.showFormInViewMode = true;
+        }
         const userList = this.sortUsers(data.userDetails);
         this.participantList = userList.participantList;
         this.mentorList = userList.mentorList;
@@ -175,15 +183,18 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
   * fetch mentors and participant details
   */
   private fetchParticipantDetails() {
-    if (this.batchDetails.participant || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
+    if (this.batchDetails.participants || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
       const request = {
         filters: {
-          identifier: _.union(_.keys(this.batchDetails.participant), this.batchDetails.mentors)
+          identifier: _.union(this.batchDetails.participants, this.batchDetails.mentors)
         }
       };
       this.batchService.getUserList(request).pipe(takeUntil(this.unsubscribe))
         .subscribe((res) => {
           this.processParticipantDetails(res);
+          const userList = this.sortUsers(res);
+          this.participantList = userList.participantList;
+          this.mentorList = userList.mentorList;
         }, (err) => {
           if (err.error && err.error.params.errmsg) {
             this.toasterService.error(err.error.params.errmsg);
@@ -198,8 +209,8 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
     const users = this.sortUsers(res);
     const participantList = users.participantList;
     const mentorList = users.mentorList;
-    _.forEach(this.batchDetails.participant, (value, key) => {
-      const user = _.find(participantList, ['id', key]);
+    _.forEach(this.batchDetails.participants, (value, key) => {
+      const user = _.find(participantList, ['id', value]);
       if (user) {
         this.selectedParticipants.push(user);
       }
@@ -218,6 +229,10 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
     const mentorList = [];
     if (res.result.response.content && res.result.response.content.length > 0) {
       _.forEach(res.result.response.content, (userData) => {
+        if ( _.find(this.selectedMentors , {'id': userData.identifier }) ||
+        _.find(this.selectedParticipants , {'id': userData.identifier })) {
+          return;
+        }
         if (userData.identifier !== this.userService.userid) {
           const user = {
             id: userData.identifier,
@@ -299,9 +314,9 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
     this.disableSubmitBtn = true;
     let participants = [];
     let mentors = [];
+    mentors = $('#mentors').dropdown('get value') ? $('#mentors').dropdown('get value').split(',') : [];
     if (this.batchUpdateForm.value.enrollmentType !== 'open') {
       participants = $('#participant').dropdown('get value') ? $('#participant').dropdown('get value').split(',') : [];
-      mentors = $('#mentors').dropdown('get value') ? $('#mentors').dropdown('get value').split(',') : [];
     }
     const startDate = moment(this.batchUpdateForm.value.startDate).format('YYYY-MM-DD');
     const endDate = this.batchUpdateForm.value.endDate && moment(this.batchUpdateForm.value.endDate).format('YYYY-MM-DD');
@@ -315,13 +330,11 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
       createdFor: this.userService.userProfile.organisationIds,
       mentors: _.compact(mentors)
     };
-    if (this.batchUpdateForm.value.enrollmentType !== 'open') {
-      const selected = [];
-      _.forEach(this.selectedMentors, (value) => {
-        selected.push(value.id);
-      });
-      requestBody['mentors'] = _.concat(_.compact(requestBody['mentors']), selected);
-    }
+    const selected = [];
+    _.forEach(this.selectedMentors, (value) => {
+      selected.push(value.id);
+    });
+    requestBody['mentors'] = _.concat(_.compact(requestBody['mentors']), selected);
     this.batchService.updateBatch(requestBody).pipe(takeUntil(this.unsubscribe))
       .subscribe((response) => {
         if (participants && participants.length > 0) {
@@ -361,24 +374,24 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
         });
   }
   public redirect() {
-    this.router.navigate(['workspace/content/batches/1']);
+    this.router.navigate(['.'], { queryParamsHandling: 'merge', relativeTo: this.activatedRoute.parent });
   }
   private reload() {
     setTimeout(() => {
       this.batchService.updateEvent.emit({ event: 'update' });
-      this.router.navigate(['workspace/content/batches/1']);
+      this.router.navigate(['.'], { queryParamsHandling: 'merge', relativeTo: this.activatedRoute.parent });
     }, 1000);
   }
 
   private getUserOtherDetail(userData) {
-    if (userData.email && userData.phone) {
-      return ' (' + userData.email + ', ' + userData.phone + ')';
+    if (userData.maskedEmail && userData.maskedPhone) {
+      return ' (' + userData.maskedEmail + ', ' + userData.maskedPhone + ')';
     }
-    if (userData.email && !userData.phone) {
-      return ' (' + userData.email + ')';
+    if (userData.maskedEmail && !userData.maskedPhone) {
+      return ' (' + userData.maskedEmail + ')';
     }
-    if (!userData.email && userData.phone) {
-      return ' (' + userData.phone + ')';
+    if (!userData.maskedEmail && userData.maskedPhone) {
+      return ' (' + userData.maskedPhone + ')';
     }
   }
   // Create the telemetry impression event for update batch page
@@ -390,17 +403,23 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.router.url
+        uri: this.router.url,
+        duration: this.navigationhelperService.getPageLoadTime()
       },
       object: {
-        id: this.batchId,
+        id: this.activatedRoute.snapshot.params.batchId,
         type: this.activatedRoute.snapshot.data.telemetry.object.type,
         ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
         rollup: {
-          l1: this.batchId
+          l1: this.activatedRoute.snapshot.params.batchId
         }
       }
     };
+  }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.setTelemetryImpressionData();
+    });
   }
   ngOnDestroy() {
     if (this.updateBatchModal && this.updateBatchModal.deny) {
