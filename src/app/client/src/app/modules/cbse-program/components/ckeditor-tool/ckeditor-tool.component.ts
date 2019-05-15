@@ -28,6 +28,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   public resourceService: ResourceService;
   public isAssetBrowserReadOnly = false;
   public previousState: any;
+  public exceededState: any;
   public characterCount: Number;
   initialized = false;
   constructor(
@@ -163,9 +164,11 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
       this.limitExceeded = false;
     }
     if (this.characterCount > this.setCharacterLimit) {
+      this.exceededState = this.editorInstance.getData();
+      this.exceededState = this.exceededState.substring(0, 160);
       this.limitExceeded = true;
       setTimeout(() => {
-        this.editorInstance.setData(this.previousState);
+        this.editorInstance.setData(this.exceededState);
       }, 500);
     }
   }
@@ -338,7 +341,6 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
 
     while (!(child = forE.next()).done) {
       if (child.value.is('text')) {
-        console.log(child.value.data);
         chars += child.value.data.length;
       } else if (child.value.is('element')) {
         chars += this.countCharactersInElement(child.value);
