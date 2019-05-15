@@ -13,10 +13,14 @@
     </div>
     <div class="field mcq-title">
       <label class="mb-16 fs-1-286">Question</label>
+      <label *ngIf="showFormError && [undefined, ''].includes(mcqForm.question)" 
+      class="ui basic red error label pt-0">Fill Question</label>
       <app-ckeditor-tool (editorDataOutput)="mcqForm.question = $event" [editorConfig]="questionMetaData"
         [editorDataInput]="mcqForm.question"></app-ckeditor-tool>
     </div>
     <div class="mcq-options">
+        <label *ngIf="showFormError && !mcqForm.answer" 
+        class="ui basic red error label pt-0">Select one correct answer</label>
       <div class="mcq-option" *ngFor="let option of mcqForm.options; let i=index">
         <div class="fields">
           <div class="twelve wide field">
