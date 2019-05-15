@@ -5,7 +5,7 @@ body {
 }
 
 body {
-  background: $body-background-color;
+  background: $body-background-color !important;
   position: relative;
   font-family: $font-stack-en;
   letter-spacing: 0.2px;
@@ -13,6 +13,16 @@ body {
   color: $default-text-color;
   padding-bottom: 400px;
   min-height: 100vh;
+  &.pushable {
+    background: $body-background-color !important;
+    &>.pusher {
+      background: transparent !important;
+      padding-bottom: 400px !important;
+      &.dimmed {
+        height: 100vh;
+      }
+    }
+  }
 }
 @include respond-above(sm) {
   body {
