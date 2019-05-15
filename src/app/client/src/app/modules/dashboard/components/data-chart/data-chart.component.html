@@ -6,7 +6,7 @@
       <div class="inline fields">
         <ng-container *ngIf="showTimeLine">
           <div class="field">
-            <sui-select formControlName="timeLineRange" [placeholder]="resourceService?.frmelmnts.lbl.Select + ' Range'"
+            <sui-select formControlName="timeLineRange" [placeholder]="resourceService?.frmelmnts?.lbl?.Select + ' Range'"
               class="selection" [options]="timeLineRangeoptions" labelField="label" valueField="value" #select>
               <sui-select-option *ngFor="let option of select.filteredOptions" [value]="option">
               </sui-select-option>
@@ -15,7 +15,7 @@
           <div class="field">
             <div class="ui left icon input">
               <i class="calendar icon"></i>
-              <input [placeholder]="resourceService?.frmelmnts.lbl.Select + ' Timeline'" suiDatepicker
+              <input [placeholder]="resourceService?.frmelmnts?.lbl?.Select + ' Timeline'" suiDatepicker
                 [pickerMode]="'date'" [pickerMinDate]="startDate" [pickerMaxDate]="endDate"
                 [pickerUseNativeOnMobile]="false" formControlName="timeLine">
             </div>
@@ -25,7 +25,7 @@
         <ng-container *ngIf="showLabelsFilter">
           <div class="field">
             <sui-multi-select class="selection"
-              [placeholder]="resourceService?.frmelmnts.lbl.Select + ' ' + labelString" formControlName="labels">
+              [placeholder]="resourceService?.frmelmnts?.lbl?.Select + ' ' + labelString" formControlName="labels">
               <sui-select-option *ngFor="let label of chartData.labels" [value]="label">
               </sui-select-option>
             </sui-multi-select>
@@ -33,7 +33,7 @@
         </ng-container>
 
         <div class="field" *ngIf="chart.datasets.length>1">
-          <sui-multi-select class="selection" [placeholder]="resourceService?.frmelmnts.lbl.Select +  ' Chart'"
+          <sui-multi-select class="selection" [placeholder]="resourceService?.frmelmnts?.lbl?.Select +  ' Chart'"
             [options]="chart.datasets" labelField="label" formControlName="dataSet" #multiSelect>
             <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option">
             </sui-select-option>
