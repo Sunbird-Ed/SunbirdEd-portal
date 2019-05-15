@@ -11,7 +11,7 @@ body {
   letter-spacing: 0.2px;
   height: auto;
   color: $default-text-color;
-  padding-bottom: 360px;
+  padding-bottom: 400px;
   min-height: 100vh;
 }
 @include respond-above(sm) {
@@ -31,7 +31,6 @@ body {
 *[lang="ur"] body {
   font-family: $font-stack-ur;
 }
-
 
 
 .publicmenusection.ui.secondary.menu .active.item {
