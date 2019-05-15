@@ -1,5 +1,7 @@
 import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter, OnChanges, ViewChild, ElementRef} from '@angular/core';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import * as ClassicEditor from 'ckeditor-build-font';
+import * as ClassicEditor from '@project-sunbird/ckeditor-build-font';
 import { ActivatedRoute, Router } from '@angular/router';
 import {  ConfigService, ResourceService, IUserData, IUserProfile, ToasterService  } from '@sunbird/shared';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
@@ -62,8 +64,19 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
 
       this.editorConfig = _.assign({
         toolbar: ['heading', '|', 'bold', '|', 'italic', '|',
-          'bulletedList', '|', 'numberedList', '|', 'insertTable', '|'
+          'bulletedList', '|', 'numberedList', '|', 'insertTable', '|' , 'fontSize', '|'
         ],
+          fontSize: {
+            options: [
+                9,
+                11,
+                13,
+                15,
+                17,
+                19,
+                21
+            ]
+        },
         image: {
           toolbar: ['imageTextAlternative', '|', 'imageStyle:full', 'imageStyle:alignRight', 'imageStyle:alignLeft'],
           styles: ['full', 'alignLeft', 'alignRight', 'alignCenter']
@@ -104,7 +117,10 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
 
   initializeEditors() {
     ClassicEditor.create(this.editorRef.nativeElement, {
+        // plugins: this.editorConfig.plugins,
+        extraPlugins: ['Font'],
         toolbar: this.editorConfig.toolbar,
+        fontSize: this.editorConfig.fontSize,
         image: this.editorConfig.image,
         isReadOnly: this.editorConfig.isReadOnly,
         removePlugins: this.editorConfig.removePlugins
@@ -121,7 +137,6 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
       this.previousState = editor.getData();
       this.changeTracker(this.editorInstance);
       this.characterCount = this.countCharacters(this.editorInstance.model.document);
-      console.log(this.characterCount);
     })
     .catch(error => {
       console.error(error.stack);
@@ -146,14 +161,12 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     if (this.characterCount <= this.setCharacterLimit) {
       this.previousState = this.editorInstance.getData();
       this.limitExceeded = false;
-      console.log(this.characterCount, this.limitExceeded);
     }
     if (this.characterCount > this.setCharacterLimit) {
       this.limitExceeded = true;
       setTimeout(() => {
         this.editorInstance.setData(this.previousState);
       }, 500);
-      console.log(this.characterCount, this.limitExceeded);
     }
   }
   /**
