@@ -8,13 +8,11 @@ import { config } from 'rxjs';
 })
 export class QuestionPreviewComponent implements OnInit {
 
-  @Input() previewConfig: any;
-  @Input() previewData: any;
+  @Input() questionMetaData: any;
   constructor() { }
 
   ngOnInit() {
-    console.log(this.previewConfig);
-    console.log(this.previewData);
+    console.log(this.questionMetaData);
   }
 
   @HostListener('scroll', ['$event.target'])

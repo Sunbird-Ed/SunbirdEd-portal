@@ -1,21 +1,10 @@
-<div class="btn-group">
+<!-- <div class="btn-group">
     <button type="button" [ngClass]="{'active':enableBtn === 'edit' }" (click)="showPreview= false; btnClick($event, 'edit'); initializeDropdown()" class="sb-btn sb-btn-normal sb-btn-outline-primary">Edit</button>
     <button type="button" [ngClass]="{'active': enableBtn === 'preview' }" (click)="showPreview= true; btnClick($event, 'preview'); generatePreview()" class="sb-btn sb-btn-normal sb-btn-outline-primary">Preview</button>
-</div>
+</div> -->
+<app-question-creation-header (buttonType)="buttonTypeHandler($event)" [questionMetaData]="questionMetaData"  ></app-question-creation-header>
 
 <form *ngIf="!showPreview" class="ui form" [formGroup]="questionMetaForm">
-
-    <div class="d-flex">
-        <div class="d-inline-block">
-          <span *ngIf="questionMetaData.data && questionMetaData.data.status === 'Live'"><a class="ui green empty circular label"></a> Published</span>
-          <span *ngIf="questionMetaData.data && (questionMetaData.data.status === 'Review' || questionMetaData.data.status === 'Draft')"><a class="ui yellow empty circular label"></a> Submitted for Review</span>
-          <span *ngIf="questionMetaData.data && questionMetaData.data.status === 'Reject'"><a class="ui red empty circular label"></a> Rejected</span>
-        </div>
-        <div class="ml-auto">
-          <button class="sb-btn sb-btn-normal sb-btn-primary submit-btn" *ngIf="questionMetaData.data && ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)" (click)="updateQuestion($event, questionMetaData.data.identifier)" type="submit">Update</button>
-          <button class="sb-btn sb-btn-normal sb-btn-primary submit-btn" *ngIf="!questionMetaData.data" (click)="createQuestion($event)" type="submit">Submit</button>
-        </div>
-      </div>
       <div class="field">
         <label>Question</label>
         <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'question')" [editorDataInput]="question" [editorId]="'question_editor'"></app-ckeditor-tool>
@@ -149,4 +138,4 @@
   </sui-modal>
 
 
-  <app-question-preview *ngIf="showPreview" [previewConfig]="previewConfig" [previewData]="previewData"></app-question-preview>
+  <app-question-preview *ngIf="showPreview" [questionMetaData]="questionMetaData"></app-question-preview>

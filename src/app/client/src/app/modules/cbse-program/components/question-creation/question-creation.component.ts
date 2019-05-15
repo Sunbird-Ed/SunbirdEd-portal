@@ -1,4 +1,5 @@
-import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter , OnChanges, AfterViewChecked} from '@angular/core';
+import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter ,
+  OnChanges, AfterViewChecked, ChangeDetectorRef} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {  ConfigService, ResourceService, IUserData, IUserProfile, ToasterService  } from '@sunbird/shared';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
@@ -24,10 +25,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   public isQuestionFocused: boolean;
   public isAnswerFocused: boolean;
   public showPreview = false;
-  public previewData: any;
-  public previewConfig: any;
+  public refresh = true;
   private prevShowPreview = true;
-  public enableBtn = 'edit';
   @Input() tabIndex: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter < any > ();
@@ -40,7 +39,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     publicDataService: PublicDataService,
     toasterService: ToasterService,
     resourceService: ResourceService,
-    public actionService: ActionService
+    public actionService: ActionService, private cdr: ChangeDetectorRef
   ) {
     this.userService = userService;
     this.configService = configService;
@@ -135,22 +134,29 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       }
     });
   }
-  btnClick(event, button) {
-    this.enableBtn = button;
-    console.log(event, button);
+  buttonTypeHandler(event) {
+    if (event === 'preview') {
+      this.showPreview = true;
+    } else if (event === 'edit') {
+      this.refreshEditor();
+      this.showPreview = false;
+    }  else {
+      this.handleSubmit(this.questionMetaForm);
+    }
   }
-  generatePreview() {
-    this.previewData = {
-        question: this.question,
-        solution: [this.solution]
-    };
-    this.previewConfig = {
-      type : this.selectedAttributes.questionType
-    };
-  }
-  createQuestion(event) {
+  handleSubmit(questionMetaForm) {
     if (this.questionMetaForm.valid) {
-      const req = {
+      if (this.questionMetaData.mode === 'create') {
+        this.createQuestion();
+      } else {
+        this.updateQuestion();
+      }
+    } else {
+      this.validateAllFormFields(this.questionMetaForm);
+    }
+  }
+  createQuestion() {
+    const req = {
         url: this.configService.urlConFig.URLS.ASSESSMENT.CREATE,
         data: {
           'request': {
@@ -193,44 +199,37 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       }, error => {
         this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
       });
-    } else {
-      this.validateAllFormFields(this.questionMetaForm);
-    }
   }
 
-  updateQuestion(event, questionId) {
-    if (this.questionMetaForm.valid) {
-      console.log('this.questionMetaForm ', questionId, this.questionMetaForm);
-      const option = {
-        url: this.configService.urlConFig.URLS.ASSESSMENT.UPDATE + '/' + questionId,
-        data: {
-          'request': {
-            'assessment_item': {
-              'objectType': 'AssessmentItem',
-              'metadata': {
-                'body': this.question,
-                'solutions': [this.solution],
-                'learningOutcome': [this.questionMetaForm.value.learningOutcome],
-                'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
-                'qlevel': this.questionMetaForm.value.qlevel,
-                'maxScore': Number(this.questionMetaForm.value.maxScore),
-                'status': 'Review',
-                'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
-                'type': 'vsa',
-                'code': UUID.UUID(),
-                'template_id': 'NA'
-              }
+  updateQuestion() {
+    console.log(this.questionMetaData.data.identifier);
+    const option = {
+      url: this.configService.urlConFig.URLS.ASSESSMENT.UPDATE + '/' + this.questionMetaData.data.identifier,
+      data: {
+        'request': {
+          'assessment_item': {
+            'objectType': 'AssessmentItem',
+            'metadata': {
+              'body': this.question,
+              'solutions': [this.solution],
+              'learningOutcome': [this.questionMetaForm.value.learningOutcome],
+              'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
+              'qlevel': this.questionMetaForm.value.qlevel,
+              'maxScore': Number(this.questionMetaForm.value.maxScore),
+              'status': 'Review',
+              'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
+              'type': 'vsa',
+              'code': UUID.UUID(),
+              'template_id': 'NA'
             }
           }
         }
-      };
-      this.actionService.patch(option).subscribe((res) => {
-        this.questionStatus.emit({'status': 'success', 'type': 'update', 'identifier': questionId});
-        console.log('Question Update', res);
-      });
-    } else {
-      this.validateAllFormFields(this.questionMetaForm);
-    }
+      }
+    };
+    this.actionService.patch(option).subscribe((res) => {
+      this.questionStatus.emit({'status': 'success', 'type': 'update', 'identifier': this.questionMetaData.data.identifier});
+      console.log('Question Update', res);
+    });
   }
 
   editorDataHandler(event, type) {
@@ -239,5 +238,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     } else {
       this.solution = event;
     }
+  }
+  private refreshEditor() {
+    this.refresh = false;
+    this.cdr.detectChanges();
+    this.refresh = true;
   }
 }
