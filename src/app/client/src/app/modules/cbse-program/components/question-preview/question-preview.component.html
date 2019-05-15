@@ -1,22 +1,25 @@
 
 <div class="sb-question-dsp-container quml-responsive-div">
-    <div class="sb-question-dsp-body">
-        <div class="sb-question-header question-bg">
-            <span class="sb-question"></span>
-            <span class="sb-mark">4 Marks</span>
-            <button type="button" class="sb-btn sb-btn-primary sb-btn-normal" id="questionBtn" (click)="onScroll('question')" style="display: none;">Question</button>
-            <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal" id="answerBtn" (click)="onScroll('answer')">Solution</button>
+    <div class="sb-editor-image">
+        <div class="sb-question-dsp-body"*ngIf="questionMetaData.data.type !== 'mcq'">
+            <div class="sb-question-header question-bg">
+                <span class="sb-question"></span>
+                <span class="sb-mark">4 Marks</span>
+                <button type="button" class="sb-btn sb-btn-primary sb-btn-normal" id="questionBtn" (click)="onScroll('question')" style="display: none;">Question</button>
+                <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal" id="answerBtn" (click)="onScroll('answer')">Solution</button>
+            </div>
+            <div class="sb-question-content" (scroll)="onScroll($event)">
+                <div class="page-section question-bg" id="question">
+                    <div class="sb-question">Question<span class=" sb-star-icon"><i class="star outline icon"></i></span></div>
+                    <div class="sb-question-content-card" [innerHTML]="questionMetaData.data.body | sanitizeHtml"></div>
+                </div>
+                <div class="page-section answer-bg" id="answer">
+                    <div class="sb-answer">Solution</div>
+                    <div class="sb-question-content-card" [innerHTML]="questionMetaData.data.solutions[0] | sanitizeHtml"></div>
+                </div>
+            </div>
         </div>
-        <div class="sb-question-content" (scroll)="onScroll($event)">
-            <div class="page-section question-bg" id="question">
-                <div class="sb-question">Question<span class=" sb-star-icon"><i class="star outline icon"></i></span></div>
-                <div class="sb-question-content-card" [innerHTML]="previewData.question | sanitizeHtml"></div>
-            </div>
-
-            <div class="page-section answer-bg" id="answer">
-                <div class="sb-answer">Solution</div>
-                <div class="sb-question-content-card" [innerHTML]="previewData.solution | sanitizeHtml"></div>
-            </div>
+        <div class="sb-question-dsp-body"*ngIf="questionMetaData.data.type === 'mcq'" [innerHTML]="questionMetaData.data.body | sanitizeHtml">
         </div>
     </div>
 </div>
