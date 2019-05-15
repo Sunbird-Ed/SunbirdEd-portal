@@ -1,5 +1,19 @@
-:host ::ng-deep .ck-editor__editable {
-    /* min-height: 300px; */
+  .btn-group {
+    text-align: right;
+    margin-bottom: 8px;
+  }
+  .btn-group button:first-child {
+    border-right: none;
+    border-radius: 0;
+  }
+  .btn-group button:last-child {
+    border-left: none;
+    border-radius: 0;
+    margin-right: 0;
+  }
+  .btn-group button.active {
+    background: #024a93;
+    color: #ffffff;
   }
 
   .custom-image img {

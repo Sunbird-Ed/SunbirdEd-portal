@@ -27,6 +27,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   public previewData: any;
   public previewConfig: any;
   private prevShowPreview = true;
+  public enableBtn = 'edit';
   @Input() tabIndex: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter < any > ();
@@ -133,6 +134,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.validateAllFormFields(control);
       }
     });
+  }
+  btnClick(event, button) {
+    this.enableBtn = button;
+    console.log(event, button);
   }
   generatePreview() {
     this.previewData = {
