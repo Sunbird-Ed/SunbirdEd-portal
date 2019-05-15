@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter, OnChanges, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { McqForm } from './../../class/McqForm';
 import {  ConfigService, IUserData, IUserProfile, ToasterService  } from '@sunbird/shared';
 import { UserService, ActionService } from '@sunbird/core';
@@ -14,16 +14,19 @@ export class McqCreationComponent implements OnInit {
   @Input() selectedAttributes: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter<any>();
+  @ViewChild('mcqFormControl') private mcqFormControl;
   showTemplatePopup = false;
   showForm = false;
   templateDetails: any = {};
   initEditor = false;
   mcqForm: McqForm;
   showFormError = false;
+  public showPreview = false;
+  public refresh = true;
   learningOutcomeOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
   constructor( public configService: ConfigService, private userService: UserService,
-    public actionService: ActionService, public toasterService: ToasterService) {
+    public actionService: ActionService, public toasterService: ToasterService, private cdr: ChangeDetectorRef) {
   }
   initForm() {
     if (this.questionMetaData.data) {
@@ -63,6 +66,16 @@ export class McqCreationComponent implements OnInit {
       this.createQuestion();
     } else {
       this.updateQuestion();
+    }
+  }
+  buttonTypeHandler(event) {
+    if (event === 'preview') {
+      this.showPreview = true;
+    } else if (event === 'edit') {
+      this.refreshEditor();
+      this.showPreview = false;
+    }  else {
+      this.handleSubmit(this.mcqFormControl);
     }
   }
   updateQuestion() {
@@ -189,5 +202,10 @@ export class McqCreationComponent implements OnInit {
       body : questionBody,
       responseDeclaration: responseDeclaration
     };
+  }
+  private refreshEditor() {
+    this.refresh = false;
+    this.cdr.detectChanges();
+    this.refresh = true;
   }
 }
