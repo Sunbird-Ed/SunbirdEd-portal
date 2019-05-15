@@ -29,9 +29,11 @@ export class CbseComponent implements OnInit {
   public selectedAttributes: ISelectedAttributes = {};
   public stages: Array<string> = ['chooseClass', 'topicList', 'createQuestion'];
   public currentStage = 0;
+  public currentRole;
   constructor(public frameworkService: FrameworkService) { }
 
   ngOnInit() {
+    this.currentRole = _.get(this.programDetails, 'userDetails.roles[0]');
     this.selectedAttributes.framework = _.get(this.programDetails, 'config.scope.framework');
     this.selectedAttributes.channel = _.get(this.programDetails, 'config.scope.channel');
     this.selectedAttributes.board = _.get(this.programDetails, 'config.scope.board[0]');
@@ -52,7 +54,9 @@ export class CbseComponent implements OnInit {
     this.selectedAttributes.questionType =  event.questionType;
     this.navigate('next');
   }
+  handleRoleChange() {
 
+  }
   public fetchFrameWorkDetails() {
     this.frameworkService.initialize(this.selectedAttributes.framework);
     this.frameworkService.frameworkData$.pipe(first()).subscribe((frameworkDetails: any) => {
