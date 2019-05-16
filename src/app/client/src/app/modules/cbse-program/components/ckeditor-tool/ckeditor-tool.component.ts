@@ -19,6 +19,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() editorId: any;
   @Input() setCharacterLimit: any;
   @Output() editorDataOutput = new EventEmitter < any > ();
+  @Output() hasError = new EventEmitter < any > ();
   public editorInstance: any;
   public isEditorFocused: boolean;
   public limitExceeded: boolean;
@@ -27,7 +28,6 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   private toasterService: ToasterService;
   public resourceService: ResourceService;
   public isAssetBrowserReadOnly = false;
-  public previousState: any;
   public characterCount: Number;
   initialized = false;
   constructor(
@@ -134,7 +134,6 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
         this.editorInstance.setData('');
       }
       console.log('Editor was initialized', editor);
-      this.previousState = editor.getData();
       this.changeTracker(this.editorInstance);
       this.characterCount = this.countCharacters(this.editorInstance.model.document);
     })
@@ -147,27 +146,15 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     editor.model.document.on('change', (eventInfo, batch) => {
       if (this.setCharacterLimit && this.setCharacterLimit > 0) { this.checkCharacterLimit(eventInfo, batch); }
       const selectedElement = eventInfo.source.selection.getSelectedElement();
-      if (selectedElement && selectedElement.name === 'image') {
-        this.isEditorFocused = true;
-      } else {
-        this.isEditorFocused = false;
-      }
+      this.isEditorFocused = (selectedElement && selectedElement.name === 'image') ? true : false;
       this.editorDataOutput.emit(editor.getData());
     });
   }
 
   checkCharacterLimit(eventInfo, batch) {
     this.characterCount = this.countCharacters( this.editorInstance.model.document );
-    if (this.characterCount <= this.setCharacterLimit) {
-      this.previousState = this.editorInstance.getData();
-      this.limitExceeded = false;
-    }
-    if (this.characterCount > this.setCharacterLimit) {
-      this.limitExceeded = true;
-      setTimeout(() => {
-        this.editorInstance.setData(this.previousState);
-      }, 500);
-    }
+    this.limitExceeded = (this.characterCount <= this.setCharacterLimit) ? false : true;
+    this.hasError.emit(this.limitExceeded);
   }
   /**
    * function to get images
@@ -338,7 +325,6 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
 
     while (!(child = forE.next()).done) {
       if (child.value.is('text')) {
-        console.log(child.value.data);
         chars += child.value.data.length;
       } else if (child.value.is('element')) {
         chars += this.countCharactersInElement(child.value);
