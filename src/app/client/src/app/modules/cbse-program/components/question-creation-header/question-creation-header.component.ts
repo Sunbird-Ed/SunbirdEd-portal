@@ -6,13 +6,16 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
   styleUrls: ['./question-creation-header.component.css']
 })
 export class QuestionCreationHeaderComponent implements OnInit {
-  public enableBtn = 'edit';
+  public enableBtn;
+  public showPreview;
   @Input() questionMetaData: any;
   @Output() buttonType = new EventEmitter < any > ();
   @Input() disableSubmission: boolean;
   constructor() { }
 
   ngOnInit() {
+    this.enableBtn = 'edit';
+    this.showPreview = false;
   }
   btnClick(event, button) {
     this.enableBtn = button;
