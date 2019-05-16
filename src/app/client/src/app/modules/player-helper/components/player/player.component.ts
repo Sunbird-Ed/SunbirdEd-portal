@@ -34,12 +34,16 @@ export class PlayerComponent implements OnInit, OnChanges {
    * showPlayer method will be called
    */
   ngOnInit() {
-    this.showPlayer();
+    if (this.playerConfig) {
+      this.showPlayer();
+    }
   }
 
   ngOnChanges() {
     this.contentRatingModal = false;
-    this.showPlayer();
+    if (this.playerConfig) {
+      this.showPlayer();
+    }
   }
   /**
    * Initializes player with given config and emits player telemetry events
@@ -50,7 +54,12 @@ export class PlayerComponent implements OnInit, OnChanges {
     if (environment.isOffline) {
       src = this.configService.appConfig.PLAYER_CONFIG.localBaseUrl;
     } else {
-      src = this.playerCdnUrl && loadCdn ? this.playerCdnUrl : this.configService.appConfig.PLAYER_CONFIG.baseURL;
+      if (['application/vnd.ekstep.h5p-archive', 'application/vnd.ekstep.html-archive']
+      .includes(_.get(this.playerConfig, 'metadata.mimeType'))) {
+        src = this.configService.appConfig.PLAYER_CONFIG.baseURL;
+      } else {
+        src = this.playerCdnUrl && loadCdn ? this.playerCdnUrl : this.configService.appConfig.PLAYER_CONFIG.baseURL;
+      }
     }
     const iFrameSrc = src + '&build_number=' + this.buildNumber;
     setTimeout(() => {
