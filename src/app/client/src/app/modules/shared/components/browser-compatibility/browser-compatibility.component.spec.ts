@@ -35,14 +35,6 @@ describe('BrowserCompatibilityComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call openCompatibilityModel method and  browser compatibility modal will show', () => {
-    component.openCompatibilityModel();
-    expect(component.browserCompatible).toBe(true);
-  });
-  it('should call hideCompatibilityModel method and browser compatibility modal will close', () => {
-    component.hideCompatibilityModel();
-    expect(component.browserCompatible).toBe(false);
-  });
   it('should call hideCompatibilityModel method and browser compatibility modal will not close', () => {
     component.hideCompatibilityModel();
     expect(component.browserCompatible).not.toBe(true);
