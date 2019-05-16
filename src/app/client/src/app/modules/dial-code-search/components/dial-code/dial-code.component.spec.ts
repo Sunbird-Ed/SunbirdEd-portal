@@ -152,7 +152,7 @@ describe('DialCodeComponent', () => {
     component.onScrollDown();
     fixture.detectChanges();
     expect(component.appendItems).toHaveBeenCalledWith(50, 70);
-    expect(component.initiallyItemsToLoad).toEqual(70);
+    expect(component.itemsToLoad).toEqual(70);
   });
 
   it('should append the items to display list', () => {
