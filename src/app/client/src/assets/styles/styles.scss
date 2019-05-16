@@ -11,6 +11,8 @@
 @import "./fonts/notosans-oriya/notosansoriya.css";
 @import "./fonts/noto-nastaliqurdu/notonastaliqurdu.css";
 @import "./variables";
+@import "./mixins/mixins";
+@import "./semantic/semantic-overrides";
 @import "./semantic/semantic-rtl";
 @import "./components/slick";
 @import "./components/slick-theme";
@@ -24,13 +26,13 @@
 @import "./components/footer";
 @import "./global";
 // base structure
-@import "./mixins/mixins";
 @import "./base/base";
 @import "./component/component";
 @import "./layout/layout";
 @import "./pages/pages";
 @import "./vendors/vendors";
 @import "./utilities/utilities";
+
 .ui.grid > .column:not(.row) {
     padding-top: 16px;
     padding-bottom: 16px;

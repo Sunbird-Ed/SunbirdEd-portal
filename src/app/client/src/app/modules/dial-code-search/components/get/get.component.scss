@@ -1,5 +1,11 @@
 @import './variables';
 
+.sb-explore-qr-page-cover {
+  background: $white;
+  padding: ($base-block-space * 4) 0 0 0;
+  min-height: calc(100vh - 230px);
+}
+
 /*get dial code page responsive css*/
 .ui.footer.segment {
     position: fixed;
@@ -95,8 +101,6 @@
   justify-content: center;
   align-items: stretch;
   align-content: space-between;
-  padding-top: 32px;
-  padding-bottom: 32px;
 
   .dial-section-column {
     border-right:1px solid rgba(51, 51, 51,0.1);

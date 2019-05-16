@@ -104,9 +104,11 @@
   background: $primary-color;
   color: $white-color !important;
   padding: 34px 0;
-  margin-top: 100px;
   font-size: 14px;
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 
   a {
     color: $white-color !important;
@@ -119,15 +121,6 @@
       opacity: 1;
     }
   }
-
-  // .playStore-img {
-  //   width: 120px;
-  //   border-radius: 5px;
-
-  // &:hover {
-  //   width: 126px;
-  // }
-  // }
 
 }
 
@@ -184,7 +177,6 @@
     }
 
   .footer {
-    margin-top: 170px;
 
     .footerMenu {
       ul {
@@ -204,8 +196,4 @@
     }
   }
 
-}
-
-.footer-fix {
-  min-height: 90vh;
 }
