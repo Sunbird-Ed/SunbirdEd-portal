@@ -17,7 +17,11 @@ export class QuestionPreviewComponent implements OnInit {
 
   @HostListener('scroll', ['$event.target'])
   onScroll(event: any) {
-    if (event === 'question' || event === 'answer') {
+    if (event === 'question') {
+      $('.sb-question-content').animate( {
+        scrollTop: $('#' + event).offset().top
+      });
+    } else if (event === 'answer') {
       const el = document.getElementById(event);
       el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
     } else if (event.target.scrollTop > (event.target.lastChild.offsetHeight / 2)) {
@@ -27,6 +31,5 @@ export class QuestionPreviewComponent implements OnInit {
       document.getElementById('answerBtn').style.display = 'inline-block';
       document.getElementById('questionBtn').style.display = 'none';
     }
-
   }
 }
