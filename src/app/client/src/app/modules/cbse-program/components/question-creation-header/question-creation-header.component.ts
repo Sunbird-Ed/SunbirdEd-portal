@@ -9,6 +9,7 @@ export class QuestionCreationHeaderComponent implements OnInit {
   public enableBtn = 'edit';
   @Input() questionMetaData: any;
   @Output() buttonType = new EventEmitter < any > ();
+  @Input() disableSubmission: boolean;
   constructor() { }
 
   ngOnInit() {
