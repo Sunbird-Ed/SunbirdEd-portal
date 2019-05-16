@@ -9,11 +9,11 @@
     <span *ngIf="questionMetaData.data && questionMetaData.data.status === 'Reject'"><a class="ui red empty circular label"></a> Rejected</span>
   </div>
   <div class="ml-auto">
-      <button class="sb-btn sb-btn-normal sb-btn-primary submit-btn" [disabled]="disableSubmission" *ngIf="questionMetaData.data && ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)"
+      <button class="sb-btn sb-btn-normal sb-btn-primary submit-btn" *ngIf="questionMetaData.data && ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)"
        (click)="btnClick($event, 'update');" type="submit">
         <i class="save icon"></i>Update
       </button>
-      <button class="sb-btn sb-btn-normal sb-btn-primary submit-btn" [disabled]="disableSubmission" *ngIf="!questionMetaData.data" (click)="btnClick($event, 'create');" type="submit">
+      <button class="sb-btn sb-btn-normal sb-btn-primary submit-btn" *ngIf="!questionMetaData.data" (click)="btnClick($event, 'create');" type="submit">
         <i class="save icon"></i>Submit
       </button>
   </div>

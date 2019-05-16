@@ -1,5 +1,5 @@
 export class McqOptions {
-  constructor(public body: string) {
+  constructor(public body: string, length: number) {
   }
 }
 export class McqForm {
@@ -9,10 +9,10 @@ export class McqForm {
     public difficultyLevel?, public bloomsLevel?, public maxScore?) {
     if (!options || !options.length) {
       this.options = [
-        new McqOptions(''),
-        new McqOptions(''),
-        new McqOptions(''),
-        new McqOptions('')
+        new McqOptions('', 0),
+        new McqOptions('', 0),
+        new McqOptions('', 0),
+        new McqOptions('', 0)
       ];
     }
   }
