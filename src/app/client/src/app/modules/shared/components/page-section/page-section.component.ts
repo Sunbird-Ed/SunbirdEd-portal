@@ -53,6 +53,7 @@ export class PageSectionComponent implements OnInit, OnDestroy {
     this.slideConfig = this.cardType === 'batch'
       ? _.cloneDeep(this.config.appConfig.CourseBatchPageSection.slideConfig)
       : _.cloneDeep(this.config.appConfig.CoursePageSection.slideConfig);
+    console.log(this.slideConfig);
     this.resourceDataSubscription = this.resourceService.languageSelected$.subscribe(item => {
       this.selectedLanguageTranslation(item.value);
     });
