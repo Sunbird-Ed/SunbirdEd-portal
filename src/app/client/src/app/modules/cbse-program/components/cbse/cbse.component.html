@@ -1,8 +1,8 @@
 <div *ngIf='programDetails?.userDetails' class="ui pointing menu mb-0">
-  <a class="item" [class.active]="currentRole === 'CONTRIBUTOR'"
-    (click)="currentRole = 'CONTRIBUTOR';handleRoleChange()">Contribute</a>
+  <a class="item" [class.active]="selectedAttributes.currentRole === 'CONTRIBUTOR'"
+    (click)="selectedAttributes.currentRole = 'CONTRIBUTOR';handleRoleChange()">Contribute</a>
   <a class="item" *ngIf='true || programDetails?.userDetails?.roles.includes("REVIEWER")'
-    [class.active]="currentRole === 'REVIEWER'" (click)="currentRole = 'REVIEWER';handleRoleChange()">Review</a>
+    [class.active]="selectedAttributes.currentRole === 'REVIEWER'" (click)="selectedAttributes.currentRole = 'REVIEWER';handleRoleChange()">Review</a>
 </div>
 <div *ngIf='programDetails?.userDetails' class="ui segment mt-0">
   <div *ngIf="stages[currentStage] == 'chooseClass'">
