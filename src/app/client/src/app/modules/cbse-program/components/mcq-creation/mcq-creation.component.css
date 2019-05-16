@@ -43,7 +43,6 @@
 }
 .mcq-horizontal .mcq-title, .mcq-vertical .mcq-title, .mcq-grid .mcq-title {
   flex-basis: 100%;
-  padding: 16px;
   padding-top: 0;
 }
 .mcq-horizontal .mcq-options, .mcq-vertical .mcq-options, .mcq-grid .mcq-options {
@@ -51,7 +50,6 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  padding: 16px;
   padding-top: 0;
 }
 .mcq-horizontal .mcq-options .mcq-option, .mcq-vertical .mcq-options .mcq-option, .mcq-grid .mcq-options .mcq-option {

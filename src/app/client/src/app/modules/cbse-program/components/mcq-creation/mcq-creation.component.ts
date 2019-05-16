@@ -20,8 +20,10 @@ export class McqCreationComponent implements OnInit {
   templateDetails: any = {};
   initEditor = false;
   mcqForm: McqForm;
+  isEditorThrowingError: boolean;
   showFormError = false;
   public showPreview = false;
+  public setCharacterLimit = 160;
   public refresh = true;
   learningOutcomeOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
@@ -67,6 +69,9 @@ export class McqCreationComponent implements OnInit {
     } else {
       this.updateQuestion();
     }
+  }
+  handleEditorError(event) {
+    this.isEditorThrowingError = event;
   }
   buttonTypeHandler(event) {
     if (event === 'preview') {

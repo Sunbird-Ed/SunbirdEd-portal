@@ -4,6 +4,12 @@
 
 <div class="editorWrapper" [ngClass]="{'hasError': limitExceeded}">
   <textarea class="editor" #editor name="question" placeholder=""></textarea>
+  <div *ngIf="setCharacterLimit > 0">
+    <div class="characterCount">
+      <!-- <i class="icon help"></i> -->
+      Character Count: {{characterCount}} / {{setCharacterLimit}}
+    </div>
+  </div>
 </div>
 
 <sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImagePicker()" *ngIf="showImagePicker" [size]="'normal'"
