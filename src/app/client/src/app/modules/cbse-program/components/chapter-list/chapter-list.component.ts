@@ -52,10 +52,11 @@ export class ChapterListComponent implements OnInit {
           'filters': {
             'objectType': 'AssessmentItem',
             'board': this.selectedAttributes.board,
-            'framework': 'NCFCOPY',
+            'framework': this.selectedAttributes.framework,
             'gradeLevel': this.selectedAttributes.gradeLevel,
             'subject': this.selectedAttributes.subject,
             'medium': this.selectedAttributes.medium,
+            'programId': this.selectedAttributes.programId,
             'type': questionType,
             'version': 3,
             'status': []
