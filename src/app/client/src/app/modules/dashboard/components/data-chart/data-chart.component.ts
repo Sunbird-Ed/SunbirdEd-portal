@@ -40,9 +40,9 @@ export class DataChartComponent implements OnInit, AfterViewInit {
     });
     this.showFilters = _.get(this.chart, 'filters.display');
     this.filters = _.get(this.chart, 'filters.types');
-    this.labelString = _.get(this.chartData, 'options.scales.xAxes[0].scaleLabel.labelString') || 'labels';
+    this.labelString = _.get(this.chartData, 'options.scales.xAxes[0].scaleLabel.labelString') || 'Labels';
     if (_.get(this.chartData, 'chartType') === 'horizontalBar') {
-      this.labelString = _.get(this.chartData, 'options.scales.yAxes[0].scaleLabel.labelString') || 'labels';
+      this.labelString = _.get(this.chartData, 'options.scales.yAxes[0].scaleLabel.labelString') || 'Labels';
     }
     const dateIndex = _.findIndex(this.filters, (filter) => /date/i.test(filter.name));
     if (dateIndex !== -1) {
