@@ -45,6 +45,9 @@ describe('DialCodeComponent', () => {
         telemetry: {
           env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
         }
+      },
+      params: {
+        dialCode: '61U24C'
       }
     }
   };
@@ -143,4 +146,20 @@ describe('DialCodeComponent', () => {
     expect(component.searchResults).toEqual([]);
     expect(component.showLoader).toBeTruthy();
   });
+
+  it('should fetch more cards on scroll', () => {
+    spyOn(component, 'appendItems').and.callThrough();
+    component.onScrollDown();
+    fixture.detectChanges();
+    expect(component.appendItems).toHaveBeenCalledWith(50, 70);
+    expect(component.itemsToLoad).toEqual(70);
+  });
+
+  it('should append the items to display list', () => {
+    component.searchResults = ['one', 'two'];
+    component.appendItems(0, 1);
+    fixture.detectChanges();
+    expect(component.itemsToDisplay).toEqual(['one']);
+  });
+
 });

@@ -9,8 +9,7 @@ import { CacheService } from 'ng2-cache-service';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-popup',
-  templateUrl: './profile-framework-popup.component.html',
-  styleUrls: ['./profile-framework-popup.component.scss']
+  templateUrl: './profile-framework-popup.component.html'
 })
 export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;

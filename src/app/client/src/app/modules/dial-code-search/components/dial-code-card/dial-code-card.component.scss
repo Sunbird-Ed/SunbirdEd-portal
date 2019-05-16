@@ -16,4 +16,12 @@
     opacity: 1 !important;
     padding-left: 3px;
    }
-   
+   .play-btn{
+       height: 32px;
+       line-height: 32px;
+       font-size: 14px;
+       .sb-btn{
+           font-weight: 700;
+           text-transform: uppercase;
+       }
+   }
