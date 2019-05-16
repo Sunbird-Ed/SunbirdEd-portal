@@ -40,12 +40,5 @@ describe('BrowserCompatibilityComponent', () => {
     expect(component.browserCompatible).not.toBe(true);
   });
 
-  it('should call modalHandler method and modal will be displayed if it is firefox and being called from workspace', () => {
-    component.showModal = true;
-    component.deviceInfo = Response.deviceInfo;
-    spyOn(component, 'modalHandler').and.callThrough();
-    component.ngOnInit();
-    expect(component.modalHandler).toHaveBeenCalled();
-  });
 });
 
