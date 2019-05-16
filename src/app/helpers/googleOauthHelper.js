@@ -57,8 +57,13 @@ class GoogleOauth {
   }
 }
 const googleOauth = new GoogleOauth()
-const createSession = async (emailId, req, res) => {
-  const grant = await keycloak.grantManager.obtainDirectly(emailId);
+const createSession = async (emailId, reqQuery, req, res) => {
+  let grant;
+  if (reqQuery.client_id === 'android') {
+    grant = await keycloak.grantManager.obtainDirectly(emailId, undefined, undefined, 'offline_access')
+  } else {
+    grant = await keycloak.grantManager.obtainDirectly(emailId, undefined, undefined, 'openid')
+  }
   keycloak.storeGrant(grant, req, res)
   req.kauth.grant = grant
   keycloak.authenticated(req)

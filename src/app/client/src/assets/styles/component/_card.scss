@@ -5,11 +5,13 @@
   background-color: $sb-card-bg-color;
   border: $sb-card-border;
   border-radius: $sb-card-border-radius;
+  transition: box-shadow .3s ease-out, transform .3s ease-out, opacity .2s ease-out;
+  transition-delay: .1s;
   cursor: pointer;
   overflow: hidden;
   margin-top: $sb-card-hover-movement;
   &:hover {
-    transform: translateY(-$sb-card-hover-movement);
+    transform: translate(0, -$sb-card-hover-movement);
     box-shadow: $sb-card-box-shadow;
   }
   .sb-card-body {
@@ -127,7 +129,8 @@ app-card[lang="ur"] {
 
 .sb-card-qr {
   border: 1px solid #dedede !important;
-  margin-bottom: ($base-block-space * 2);
+  // margin-bottom: ($base-block-space * 2);
+  height: auto;
   .sb-btn{
     display: flex;
     align-items: center;
