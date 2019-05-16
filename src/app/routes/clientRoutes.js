@@ -10,7 +10,7 @@ tenantHelper = require('../helpers/tenantHelper.js'),
 defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState(),
 oneDayMS = 86400000,
 pathMap = {}
-
+programId = process.env.sunbird_cbse_programId
 const setZipConfig = (req, res, type, encoding, dist = '../') => {
     if (pathMap[req.path + type] && pathMap[req.path + type] === 'notExist') {
       return false;
@@ -75,7 +75,9 @@ module.exports = (app, keycloak) => {
     res.setHeader('Expires', new Date(Date.now() + oneDayMS).toUTCString())
     next()
   })
-
+  if (programId) {
+    app.all('/', (req, res) => res.redirect('/program/cbse/' + programId))
+  }
   app.all(['/', '/get', '/get/dial/:dialCode', '/explore',
     '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course',
     '/explore-course/*', '/:slug/explore-course', '/:slug/explore-course/*',
