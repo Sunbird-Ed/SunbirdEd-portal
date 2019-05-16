@@ -35,10 +35,33 @@ describe('BrowserCompatibilityComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should call openCompatibilityModel method and  browser compatibility modal will show', () => {
+    component.openCompatibilityModel();
+    expect(component.browserCompatible).toBe(true);
+  });
+  it('should call hideCompatibilityModel method and browser compatibility modal will close', () => {
+    component.hideCompatibilityModel();
+    expect(component.browserCompatible).toBe(false);
+  });
   it('should call hideCompatibilityModel method and browser compatibility modal will not close', () => {
     component.hideCompatibilityModel();
     expect(component.browserCompatible).not.toBe(true);
   });
 
+  it('should call modalHandler method and modal will be displayed if it is not chrome browser or firefox', () => {
+    component.showModal = false;
+    component.deviceInfo = Response.deviceInfo;
+    spyOn(component, 'modalHandler').and.callThrough();
+    component.ngOnInit();
+    expect(component.modalHandler).toHaveBeenCalled();
+  });
+
+  it('should call modalHandler method and modal will be displayed if it is firefox and being called from workspace', () => {
+    component.showModal = true;
+    component.deviceInfo = Response.deviceInfo;
+    spyOn(component, 'modalHandler').and.callThrough();
+    component.ngOnInit();
+    expect(component.modalHandler).toHaveBeenCalled();
+  });
 });
 
