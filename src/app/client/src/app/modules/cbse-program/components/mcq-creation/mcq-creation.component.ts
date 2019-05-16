@@ -24,6 +24,7 @@ export class McqCreationComponent implements OnInit {
   showFormError = false;
   public showPreview = false;
   public setCharacterLimit = 160;
+  public setImageLimit = 1;
   public refresh = true;
   learningOutcomeOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
