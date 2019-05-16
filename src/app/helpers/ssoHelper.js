@@ -78,8 +78,13 @@ const createUser = async (requestBody, req) => {
     }
   })
 }
-const createSession = async (loginId, req, res) => {
-  const grant = await keycloak.grantManager.obtainDirectly(loginId);
+const createSession = async (loginId, client_id, req, res) => {
+  let grant;
+  if (client_id === 'android') {
+    grant = await keycloak.grantManager.obtainDirectly(loginId, undefined, undefined, 'offline_access')
+  } else {
+    grant = await keycloak.grantManager.obtainDirectly(loginId, undefined, undefined, 'openid')
+  }
   keycloak.storeGrant(grant, req, res)
   req.kauth.grant = grant
   keycloak.authenticated(req)
