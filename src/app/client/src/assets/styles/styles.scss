@@ -10,7 +10,6 @@
 @import "./fonts/notosans-kannada/notosanskannada.css";
 @import "./fonts/notosans-oriya/notosansoriya.css";
 @import "./fonts/noto-nastaliqurdu/notonastaliqurdu.css";
-
 @import "./variables";
 @import "./semantic/semantic-rtl";
 @import "./components/slick";
@@ -19,13 +18,11 @@
 @import "./components/fine-uploader-gallery";
 @import "./components/iziToast";
 @import "./components/angular2select-default.theme";
-@import "./components/filters";
 @import "./components/progress-bar";
 @import "./legacy";
 @import "./components/header";
 @import "./components/footer";
 @import "./global";
-
 // base structure
 @import "./mixins/mixins";
 @import "./base/base";
@@ -34,9 +31,8 @@
 @import "./pages/pages";
 @import "./vendors/vendors";
 @import "./utilities/utilities";
-
-
 .ui.grid > .column:not(.row) {
     padding-top: 16px;
     padding-bottom: 16px;
 }
+@import "./components/filters"; //need to be below the mixin file since it uses the mixin
