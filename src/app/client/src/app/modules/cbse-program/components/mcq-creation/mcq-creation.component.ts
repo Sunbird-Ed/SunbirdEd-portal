@@ -59,7 +59,8 @@ export class McqCreationComponent implements OnInit {
     }
   }
   handleSubmit(formControl) {
-    const optionValid = _.find(this.mcqForm.options, option => (option.body === undefined || option.body === ''));
+    const optionValid = _.find(this.mcqForm.options, option =>
+      (option.body === undefined || option.body === '' || option.length > this.setCharacterLimit));
     if (formControl.invalid || optionValid || !this.mcqForm.answer || [undefined, ''].includes(this.mcqForm.question)) {
       this.showFormError = true;
       return;
