@@ -7,6 +7,7 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 })
 export class QuestionCreationHeaderComponent implements OnInit {
   public enableBtn;
+  public showPreview;
   @Input() questionMetaData: any;
   @Output() buttonType = new EventEmitter < any > ();
   @Input() disableSubmission: boolean;
@@ -14,6 +15,7 @@ export class QuestionCreationHeaderComponent implements OnInit {
 
   ngOnInit() {
     this.enableBtn = 'edit';
+    this.showPreview = false;
   }
   btnClick(event, button) {
     this.enableBtn = button;
