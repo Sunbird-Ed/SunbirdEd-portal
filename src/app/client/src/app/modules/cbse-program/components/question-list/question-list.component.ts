@@ -39,6 +39,7 @@ export class QuestionListComponent implements OnInit {
             'type': this.selectedAttributes.questionType,
             'topic': this.selectedAttributes.topic,
             'createdBy': this.userService.userid,
+            'programId': this.selectedAttributes.programId,
             'version': 3,
             'status': []
           },
@@ -48,7 +49,7 @@ export class QuestionListComponent implements OnInit {
     };
     this.publicDataService.post(req).pipe(tap(data => this.showLoader = false))
     .subscribe((res) => {
-      this.questionList = res.result.items;
+      this.questionList = res.result.items || [];
       if (this.questionList.length) {
         this.selectedQuestionId = this.questionList[0].identifier;
         this.handleQuestionTabChange(this.selectedQuestionId);
@@ -98,7 +99,10 @@ export class QuestionListComponent implements OnInit {
   public questionStatusHandler(event) {
     console.log('editor event', event);
     if (event.type === 'close') {
-      this.handleQuestionTabChange(this.selectedQuestionId);
+      this.questionMetaData = {};
+      if (this.questionList.length) {
+        this.handleQuestionTabChange(this.selectedQuestionId);
+      }
       return;
     }
     if (event.status === 'failed') {
