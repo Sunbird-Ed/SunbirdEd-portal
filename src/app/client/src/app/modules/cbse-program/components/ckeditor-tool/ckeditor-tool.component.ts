@@ -144,14 +144,14 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
 
   changeTracker(editor) {
     editor.model.document.on('change', (eventInfo, batch) => {
-      if (this.setCharacterLimit && this.setCharacterLimit > 0) { this.checkCharacterLimit(eventInfo, batch); }
+      if (this.setCharacterLimit && this.setCharacterLimit > 0) { this.checkCharacterLimit(); }
       const selectedElement = eventInfo.source.selection.getSelectedElement();
       this.isEditorFocused = (selectedElement && selectedElement.name === 'image') ? true : false;
-      this.editorDataOutput.emit(editor.getData());
+      this.editorDataOutput.emit({body: editor.getData(), length: this.characterCount });
     });
   }
 
-  checkCharacterLimit(eventInfo, batch) {
+  checkCharacterLimit() {
     this.characterCount = this.countCharacters( this.editorInstance.model.document );
     this.limitExceeded = (this.characterCount <= this.setCharacterLimit) ? false : true;
     this.hasError.emit(this.limitExceeded);
