@@ -1,4 +1,3 @@
-
 node('build-slave') {
     try {
         String ANSI_GREEN = "\u001B[32m"
@@ -30,7 +29,7 @@ node('build-slave') {
                 build_tag = params.github_release_tag
                 // Creating artifact version
                 commit_hash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                branch_name = sh(script: 'git name-rev --name-only HEAD | rev | cut -d "/" -f1| rev', returnStdout: true).trim()              
+                branch_name = sh(script: 'git name-rev --name-only HEAD | rev | cut -d "/" -f1| rev', returnStdout: true).trim()
                 artifact_version = branch_name + "_" + commit_hash
                 println(ANSI_BOLD + ANSI_YELLOW + "github_release_tag specified, building from github_release_tag: " + params.github_release_tag + ANSI_NORMAL)
             }

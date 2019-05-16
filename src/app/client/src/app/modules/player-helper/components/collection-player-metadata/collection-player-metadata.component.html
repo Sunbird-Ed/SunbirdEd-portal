@@ -1,98 +1,61 @@
-<div class="ui clearing divider">
+<div *ngIf="metaData" class="ui divider mt-24"> </div>
+
+<div *ngIf="metaData" class="sb-meta-data-container sb-meta-data-column d-flex flex-w-wrap mt-24">
+
+  <dl class="sb-meta-data" *ngIf="metaData.author">
+    <dt>{{resourceService?.frmelmnts?.lbl?.author}}</dt>
+    <dd>{{metaData.author}}</dd>
+  </dl>
+
+  <dl class="sb-meta-data" *ngIf="metaData.medium">
+    <dt>{{resourceService?.frmelmnts?.lbl?.medium}}</dt>
+    <dd>{{metaData.medium}}</dd>
+  </dl>
+
+  <dl class="sb-meta-data" *ngIf="metaData.gradeLevel">
+    <dt>{{resourceService?.frmelmnts?.lbl?.class}}</dt>
+    <dd>
+      <span class="d-inline-block" *ngFor="let gradeLevel of metaData.gradeLevel; let isLast=last;">
+        {{gradeLevel}}<span *ngIf="!isLast">,&nbsp;</span> 
+      </span>
+    </dd>
+  </dl>
+
+  <dl class="sb-meta-data" *ngIf="metaData.subject">
+    <dt>{{resourceService?.frmelmnts?.lbl?.subject}}</dt>
+    <dd>{{metaData.subject}}</dd>
+  </dl>
+
+  <dl class="sb-meta-data" *ngIf="metaData.lastUpdatedOn">
+    <dt>{{resourceService?.frmelmnts?.lbl?.lastupdate}}</dt>
+    <dd>{{metaData.lastUpdatedOn | dateFormat: 'MMMM Do YYYY'}}</dd>
+  </dl>
+
+  <dl class="sb-meta-data" *ngIf="metaData.createdOn">
+    <dt>{{resourceService?.frmelmnts?.lbl?.createdon}}</dt>
+    <dd>{{metaData.createdOn | dateFormat: 'MMMM Do YYYY'}}</dd>
+  </dl>
+
+  <dl class="sb-meta-data">
+    <dt>{{resourceService?.frmelmnts?.lbl?.ownership}}</dt>
+    <dd *ngIf="metaData.owner">
+      {{metaData.owner}} <br/>
+      <a (click)="showContentCreditsPopup()" title="{{resourceService?.frmelmnts?.lbl?.contentCredits}}" class="cursor-pointer d-inline-block mt-5">
+        {{resourceService?.frmelmnts?.lbl?.contentCredits}}
+      </a>
+    </dd>
+  </dl>
+
+  <dl class="sb-meta-data" *ngIf="metaData.orgDetails && metaData.orgDetails.orgName">
+    <dt>{{resourceService?.frmelmnts?.lbl?.organization}}</dt>
+    <dd>
+      {{metaData?.orgDetails?.orgName}} <br/>
+      <a *ngIf="metaData.orgDetails.email" href="mailto:{{metaData.orgDetails?.email}}?subject={{metaData.name}}" class="cursor-pointer d-inline-block mt-5">
+        {{metaData.orgDetails?.email}}
+      </a>
+    </dd>
+  </dl>
 </div>
-<div *ngIf="metaData" class="ui stackable grid">
-  <div *ngIf="metaData.author" class="three wide column">
-    <div class="ui list">
-      <div class="item">
-        <div class="content">
-          <div class="header">{{resourceService?.frmelmnts?.lbl?.author}}</div>
-          <div class="description pt-15">{{metaData.author}}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div *ngIf="metaData.medium" class="three wide column">
-    <div class="ui list">
-      <div class="item">
-        <div class="content">
-          <div class="header">{{resourceService?.frmelmnts?.lbl?.medium}}</div>
-          <div class="description pt-15">{{metaData.medium}}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div *ngIf="metaData.gradeLevel" class="three wide column">
-    <div class="ui list">  
-      <div class="item">
-          <div class="content">
-            <div class="header">{{resourceService?.frmelmnts?.lbl?.class}}</div>
-            <div class="description pt-15">
-              <span class="d-inline-block" *ngFor="let gradeLevel of metaData.gradeLevel; let isLast=last;">
-                {{gradeLevel}}<span *ngIf="!isLast">,&nbsp;</span> 
-              </span>
-            </div>
-          </div>
-      </div>
-    </div>
-  </div>
-  <div *ngIf="metaData.subject" class="three wide column">
-    <div class="ui list">
-      <div class="item">
-        <div class="content">
-          <div class="header">{{resourceService?.frmelmnts?.lbl?.subject}}</div>
-          <div class="description pt-15">{{metaData.subject}}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div *ngIf="metaData.lastUpdatedOn" class="three wide column">
-    <div class="ui list">
-      <div class="item">
-        <div class="content">
-          <div class="header">{{resourceService?.frmelmnts?.lbl?.lastupdate}}</div>
-          <div class="description pt-15">{{metaData.lastUpdatedOn | dateFormat: 'MMMM Do YYYY'}}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div *ngIf="metaData.createdOn" class="three wide column">
-    <div class="ui list">
-      <div class="item">
-        <div class="content">
-          <div class="header">{{resourceService?.frmelmnts?.lbl?.createdon}}</div>
-          <div class="description pt-15">{{metaData.createdOn | dateFormat: 'MMMM Do YYYY'}}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="three wide column">
-    <div class="ui list">
-      <div class="item">
-        <div class="content">
-          <div class="header">{{resourceService?.frmelmnts?.lbl?.ownership}}</div>
-          <div *ngIf="metaData.owner" class="description pt-15">
-            <div>{{metaData.owner}}</div>
-            <div class="mt-5"><a (click)="showContentCreditsPopup()" title="{{resourceService?.frmelmnts?.lbl?.contentCredits}}">{{resourceService?.frmelmnts?.lbl?.contentCredits}}</a></div>
-          </div>                                
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="three wide column" *ngIf="metaData.orgDetails && metaData.orgDetails.orgName" >
-    <div class="ui list">
-      <div class="item">
-        <div class="content">
-          <div class="header">{{resourceService?.frmelmnts?.lbl?.organization}}</div>
-          <div class="description pt-15">
-            <div>{{metaData?.orgDetails?.orgName}}</div>
-            <div class="mt-5" *ngIf="metaData.orgDetails?.email">
-              <a *ngIf="metaData.orgDetails.email" href="mailto:{{metaData.orgDetails?.email}}?subject={{metaData.name}}">{{metaData.orgDetails?.email}}</a>
-            </div>
-          </div>                                
-        </div>
-      </div>
-    </div>
-  </div>
-  <app-content-credits [contentData]="metaData" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false">
-  </app-content-credits>
-</div>
+
+<app-content-credits [contentData]="metaData" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false">
+</app-content-credits>

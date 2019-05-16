@@ -68,6 +68,7 @@ export class AppComponent implements OnInit {
   viewinBrowser = false;
   isOffline: boolean = environment.isOffline;
   sessionExpired = false;
+  instance: string;
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -77,6 +78,8 @@ export class AppComponent implements OnInit {
     private orgDetailsService: OrgDetailsService, private activatedRoute: ActivatedRoute,
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor) {
+      this.instance = (<HTMLInputElement>document.getElementById('instance'))
+        ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
   }
   /**
    * dispatch telemetry window unload event before browser closes

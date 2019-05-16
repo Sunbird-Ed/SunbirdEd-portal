@@ -5,6 +5,7 @@ const request = require('request-promise'); //  'request' npm package with Promi
 const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
 const kafkaService = require('../helpers/kafkaHelperService');
+let ssoWhiteListChannels;
 
 let keycloak = getKeyCloakClient({
   clientId: envHelper.PORTAL_TRAMPOLINE_CLIENT_ID,
@@ -77,8 +78,13 @@ const createUser = async (requestBody, req) => {
     }
   })
 }
-const createSession = async (loginId, req, res) => {
-  const grant = await keycloak.grantManager.obtainDirectly(loginId);
+const createSession = async (loginId, client_id, req, res) => {
+  let grant;
+  if (client_id === 'android') {
+    grant = await keycloak.grantManager.obtainDirectly(loginId, undefined, undefined, 'offline_access')
+  } else {
+    grant = await keycloak.grantManager.obtainDirectly(loginId, undefined, undefined, 'openid')
+  }
   keycloak.storeGrant(grant, req, res)
   req.kauth.grant = grant
   keycloak.authenticated(req)
@@ -163,14 +169,49 @@ const getKafkaPayloadData = (sessionDetails) => {
   }
 };
 
-const sendStateSsoKafkaMessage = async (req) => {
-  var kafkaPayloadData = getKafkaPayloadData(req.session);
-  var stateSsoTopic = envHelper.sunbird_sso_kafka_topic;
-  kafkaService.sendMessage(kafkaPayloadData, stateSsoTopic, function (err, res) {
-    if (err) {
-      console.log(err, null)
+const getSsoUpdateWhiteListChannels = async (req) => {
+  // return cached value
+  if (ssoWhiteListChannels) {
+    return _.includes(_.get(ssoWhiteListChannels, 'result.response.value'), req.session.jwtPayload.state_id);
+  }
+
+  let options = {
+    method: 'GET',
+    url: envHelper.LEARNER_URL + 'data/v1/system/settings/get/ssoUpdateWhitelistChannels',
+    headers: {
+      'content-type': 'application/json',
+      'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
     }
-  });
+  };
+  try {
+    const response = await request(options);
+    if (_.isString(response)) {
+      const res = JSON.parse(response);
+      ssoWhiteListChannels = res;
+      return _.includes(_.get(res, 'result.response.value'), req.session.jwtPayload.state_id);
+    } else {
+      return false
+    }
+  } catch (error) {
+    console.log('sso error fetching whileList channels: getSsoUpdateWhileListChannels');
+    return false;
+  }
+};
+
+const sendSsoKafkaMessage = async (req) => {
+  const ssoUpdataChannelLists = await getSsoUpdateWhiteListChannels(req);
+  if (ssoUpdataChannelLists) {
+    var kafkaPayloadData = getKafkaPayloadData(req.session);
+    kafkaService.sendMessage(kafkaPayloadData, envHelper.sunbird_sso_kafka_topic, function (err, res) {
+      if (err) {
+        console.log('sso sending message to kafka errored', err)
+      } else {
+        console.log('sso kafka message send successfully')
+      }
+    });
+  } else {
+    console.log('sso white list channels not matched or errored ')
+  }
 };
 
 module.exports = {
@@ -182,5 +223,5 @@ module.exports = {
   createSession,
   updatePhone,
   updateRoles,
-  sendStateSsoKafkaMessage
+  sendSsoKafkaMessage
 };

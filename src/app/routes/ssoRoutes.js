@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const jwt = require('jsonwebtoken')
-const {verifySignature, verifyToken, fetchUserWithExternalId, createUser, createSession, updatePhone, updateRoles, sendStateSsoKafkaMessage} = require('./../helpers/ssoHelper');
+const {verifySignature, verifyToken, fetchUserWithExternalId, createUser, createSession, updatePhone, updateRoles, sendSsoKafkaMessage} = require('./../helpers/ssoHelper');
 const telemetryHelper = require('../helpers/telemetryHelper');
 const fs = require('fs');
 
@@ -109,7 +109,7 @@ module.exports = (app) => {
   })
 
   app.get(successUrl, async (req, res) => { // to support mobile sso flow
-    sendStateSsoKafkaMessage(req);
+    sendSsoKafkaMessage(req);
     res.status(200).sendFile('./success_loader.html', {root: __dirname})
   });
 
@@ -123,7 +123,7 @@ module.exports = (app) => {
         throw 'some of the query params are missing';
       }
       errType = 'CREATE_SESSION';
-      await createSession(userDetails.userName, req, res);
+      await createSession(userDetails.userName, 'portal', req, res);
       redirectUrl = jwtPayload.redirect_url ? jwtPayload.redirect_url : '/resources';
       console.log('sso sign-in success callback, session created', jwtPayload.state_id, req.query, redirectUrl, errType);
     } catch (error) {
@@ -144,7 +144,7 @@ module.exports = (app) => {
       }
       userName = req.query.id;
       errType = 'CREATE_SESSION';
-      response = await createSession(userName, req, res);
+      response = await createSession(userName, 'android',req, res);
       console.log('sso sign in create session api success', req.query, response);
     } catch (error) {
       response = { error: getErrorMessage(error, errType) };

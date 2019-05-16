@@ -39,10 +39,10 @@ describe('BrowserCompatibilityComponent', () => {
     component.openCompatibilityModel();
     expect(component.browserCompatible).toBe(true);
   });
-  it('should call openCompatibilityModel method and browser compatibility modal will not show', () => {
-    component.openCompatibilityModel();
-    expect(component.browserCompatible).not.toBe(false);
-  });
+  /*it('should call openCompatibilityModel method and browser compatibility modal will not show', () => {
+    //component.openCompatibilityModel();
+    //expect(component.browserCompatible).not.toBe(false);
+  });*/
   it('should call hideCompatibilityModel method and browser compatibility modal will close', () => {
     component.hideCompatibilityModel();
     expect(component.browserCompatible).toBe(false);
