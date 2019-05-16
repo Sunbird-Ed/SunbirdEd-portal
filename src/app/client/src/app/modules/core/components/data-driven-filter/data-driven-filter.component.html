@@ -10,7 +10,7 @@
 
           </div>
           <div content>
-            <div *ngIf="filtersDetails && formInputData && showSearchedParam" class="twelve wide column content mb-15">
+            <div *ngIf="filtersDetails && formInputData && showSearchedParam" class="twelve wide column p-0 content mb-15">
               <span *ngFor="let field of filtersDetails">
                 <span class="padded chip mt-5 mr-10" *ngIf='formInputData[field.code] && formInputData[field.code].length > 0'>
                   {{field.label}}:
@@ -33,7 +33,7 @@
                 </span>
               </span>
             </div>
-            <div class="twelve wide column" *ngIf="refresh">
+            <div class="twelve wide column p-0" *ngIf="refresh">
               <form *ngIf="filtersDetails" class="ui form">
                 <div class="ui grid stackable top aligned">
                 <div class="twelve wide tablet twelve wide computer column pb-0">
