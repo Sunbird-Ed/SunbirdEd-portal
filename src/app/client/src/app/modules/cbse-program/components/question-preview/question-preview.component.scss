@@ -2,7 +2,7 @@
 	height: 100%;
 	padding-top: 50px;
 	.sb-editor-image {
-		background-image: url('/assets/images/editor-frame.png');
+		background-image: url('../../../../../assets/images/editor-frame.png');
 		background-repeat: no-repeat;
 		background-position: center;
 		background-size: cover;
@@ -94,7 +94,8 @@
 			max-width: 1440px;
 			margin: 0 auto;
 			align-items: center;
-			position: relative;
+			max-height: 370px;
+			overflow-y: auto;
 		}
 
 		.mcq-submit-btn {
@@ -103,29 +104,19 @@
 			margin-bottom: 16px;
 		}
 
-		.mcq-vertical .mcq-title {
-			position: absolute;
-			top: 0;
-			z-index: 1;
-			width: 100%;
-		}
 		.mcq-horizontal .mcq-title, .mcq-vertical .mcq-title, .mcq-grid .mcq-title {
 			flex-basis: 100%;
 			padding: 8px 16px;
 			background-image: linear-gradient(-90deg, #fcf2d6, white);
 			font-weight: 700;
-			position: relative;
-			height: 56px;
-
-			&::after {
-				content: "";
-				text-align: right;
-				position: absolute;
-				bottom: 0;
-				right: 0;
-				width: 70%;
-				height: 1.2em;
-				background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
+			p {
+				display: -webkit-box;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				-webkit-line-clamp: 2;
+				/* autoprefixer: off */
+				-webkit-box-orient: vertical;
+				/* autoprefixer: on */
 			}
 		}
 
@@ -135,10 +126,10 @@
 			flex-wrap: wrap;
 			justify-content: space-around;
 			padding: 16px;
-			padding-top: 64px;
-			max-height: calc(432px - 64px);
+			padding-top: 0;
+			max-height: calc(394px - 64px);
 			overflow-y: auto;
-			min-height: calc(432px - 64px);
+			min-height: calc(394px - 64px);
 			background-image: linear-gradient(-90deg, #fcf2d6, white);
 		}
 
@@ -159,10 +150,6 @@
 			flex-basis: 30%;
 		}
 
-		.mcq-vertical.mcq-split .mcq-title {
-			background: none;
-			position: initial;
-		}
 		.mcq-horizontal.mcq-split .mcq-options, .mcq-vertical.mcq-split .mcq-options, .mcq-grid.mcq-split .mcq-options {
 			flex-basis: 70%;
 		}

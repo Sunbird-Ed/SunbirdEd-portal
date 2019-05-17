@@ -327,13 +327,21 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     return false;
   }
   public closeContentPlayer() {
-    this.cdr.detectChanges();
-    if (this.enableContentPlayer === true) {
-      const navigationExtras: NavigationExtras = {
-        relativeTo: this.activatedRoute
-      };
-      this.enableContentPlayer = false;
-      this.router.navigate([], navigationExtras);
+    try {
+      window.frames['contentPlayer'].contentDocument.body.onunload({});
+    } catch {
+
+    } finally {
+      setTimeout(() => {
+        this.cdr.detectChanges();
+        if (this.enableContentPlayer === true) {
+          const navigationExtras: NavigationExtras = {
+            relativeTo: this.activatedRoute
+          };
+          this.enableContentPlayer = false;
+          this.router.navigate([], navigationExtras);
+        }
+      }, 100);
     }
   }
   public createEventEmitter(data) {

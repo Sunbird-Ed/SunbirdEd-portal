@@ -112,6 +112,10 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
      * totalCount of the list
    */
    totalCount: Number;
+  /**
+   *  to store the current batch when updated;
+   */
+   currentBatch: any;
 
    /**
      * Contains returned object of the pagination service
@@ -213,11 +217,13 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
           this.showNoBatch = true;
         } else if (isBatchExist) {
           this.selectedOption = this.queryParams.batchIdentifier;
-          this.populateCourseDashboardData();
+          this.currentBatch = isBatchExist;
+          this.populateCourseDashboardData(isBatchExist);
         } else if (this.batchlist.length === 1 && isBatchExist === undefined) {
           this.queryParams.batchIdentifier = this.batchlist[0].id;
           this.selectedOption =  this.batchlist[0].id;
-          this.populateCourseDashboardData();
+          this.currentBatch = this.batchlist[0];
+          this.populateCourseDashboardData(this.batchlist[0]);
         } else {
           this.showWarningDiv = true;
         }
@@ -234,11 +240,12 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   *
 	* @param {string} batchId batch identifier
   */
-  setBatchId(batchId: string): void {
-    this.queryParams.batchIdentifier = batchId;
+  setBatchId(batch ?: any): void {
+    this.queryParams.batchIdentifier = batch.id;
     this.queryParams.pageNumber = this.pageNumber;
     this.searchText = '';
-    this.populateCourseDashboardData();
+    this.currentBatch = batch;
+    this.populateCourseDashboardData(batch);
   }
 
   /**
@@ -276,7 +283,10 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   /**
   * To method fetches the dashboard data with specific batch id and timeperiod
   */
-  populateCourseDashboardData(): void {
+  populateCourseDashboardData(batch ?: any): void {
+    if (!batch && this.currentBatch) {
+      batch = this.currentBatch;
+    }
     this.showWarningDiv = false;
     this.navigate();
     this.showLoader = true;
@@ -299,7 +309,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         this.showLoader = false;
         this.dashboarData = apiResponse.result;
         this.showDownloadLink = apiResponse.result.showDownloadLink ? apiResponse.result.showDownloadLink : false;
-        this.totalCount = apiResponse.result.count;
+        this.dashboarData.count = _.get(batch, 'participantCount');
+        this.totalCount = _.get(batch, 'participantCount');
         if (this.totalCount >= 10000) {
           this.pager = this.paginationService.getPager(10000, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
         } else {
@@ -323,7 +334,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.order = value;
     this.reverse = !this.reverse;
     this.setInteractEventData();
-    this.populateCourseDashboardData();
+    if (this.currentBatch) {
+      this.populateCourseDashboardData(this.currentBatch);
+    }
   }
 
   /**
@@ -353,12 +366,12 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.pageNumber = page;
     this.queryParams.pageNumber = this.pageNumber;
     this.navigate();
-    this.populateCourseDashboardData();
+    if (this.currentBatch) {
+      this.populateCourseDashboardData(this.currentBatch);
+    }
   }
   keyup(event) {
-    if (!_.isEmpty(_.trim(event))) {
-      this.modelChanged.next(event);
-    }
+    this.modelChanged.next(_.trim(event));
   }
   searchBatch() {
     this.modelChanged.pipe(debounceTime(1000),

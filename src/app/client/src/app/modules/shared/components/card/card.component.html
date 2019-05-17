@@ -68,8 +68,8 @@
     <!--/Body-->
    
     <!--Progress Bar-->
-    <div class="sb-card-progressbar">
-      <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount" *ngIf="data.maxCount && data.progress > 0"></sui-progress>
+    <div class="sb-card-progressbar" *ngIf="data.maxCount && data.progress > 0">
+      <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount"></sui-progress>
     </div>
     <!--/Progress Bar-->
 </div>

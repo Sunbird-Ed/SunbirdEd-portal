@@ -9,6 +9,7 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
   SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
 import { GetComponent, DialCodeComponent, DialCodeCardComponent } from './components';
 import { FormsModule } from '@angular/forms';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { FormsModule } from '@angular/forms';
     DialCodeSearchRoutingModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule,
-    FormsModule
+    FormsModule,
+    InfiniteScrollModule
   ],
   declarations: [ GetComponent, DialCodeComponent, DialCodeCardComponent]
 })
