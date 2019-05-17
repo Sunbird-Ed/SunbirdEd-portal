@@ -19,6 +19,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   @Input() playerOption: any ;
   contentRatingModal = false;
   playerCdnUrl: string;
+  loadProxyPlayer = false;
   /**
  * Dom element reference of contentRatingModal
  */
@@ -58,7 +59,15 @@ export class PlayerComponent implements OnInit, OnChanges {
       .includes(_.get(this.playerConfig, 'metadata.mimeType'))) {
         src = this.configService.appConfig.PLAYER_CONFIG.baseURL;
       } else {
-        src = this.playerCdnUrl && loadCdn ? this.playerCdnUrl : this.configService.appConfig.PLAYER_CONFIG.baseURL;
+        if (this.playerCdnUrl && loadCdn) {
+          try {
+            document.domain = window.location.host; // to enable player to load from cdn;
+            console.log('setting domain in portal');
+          } catch {}
+          src = this.playerCdnUrl;
+        } else {
+          src = this.configService.appConfig.PLAYER_CONFIG.baseURL;
+        }
       }
     }
     const iFrameSrc = src + '&build_number=' + this.buildNumber;
@@ -66,15 +75,26 @@ export class PlayerComponent implements OnInit, OnChanges {
       const playerElement = this.contentIframe.nativeElement;
       playerElement.src = iFrameSrc;
       playerElement.onload = (event) => {
-        if (!_.get(playerElement, 'contentWindow.initializePreview') && loadCdn) {
-          console.log('cdn player load failed, loading local player');
-          this.showPlayer(false);
-        } else if (_.get(playerElement, 'contentWindow.initializePreview')) {
-          this.adjustPlayerHeight();
-          playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
-          playerElement.contentWindow.initializePreview(this.playerConfig);
-        } else {
-          console.log('loading player failed');
+        try {
+          if (!_.get(playerElement, 'contentWindow.initializePreview') && loadCdn) {
+            console.log('cdn player load failed, loading local player');
+            if (!this.loadProxyPlayer) {
+              this.loadProxyPlayer = true;
+              this.showPlayer(false);
+            }
+          } else if (_.get(playerElement, 'contentWindow.initializePreview')) {
+            this.adjustPlayerHeight();
+            playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+            playerElement.contentWindow.initializePreview(this.playerConfig);
+          } else {
+            console.log('loading player failed');
+          }
+        } catch (err) {
+          console.log('accessing content errored');
+          if (!this.loadProxyPlayer) {
+            this.loadProxyPlayer = true;
+            this.showPlayer(false);
+          }
         }
       };
     }, 0);
