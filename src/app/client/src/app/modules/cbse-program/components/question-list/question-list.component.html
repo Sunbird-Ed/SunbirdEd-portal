@@ -9,14 +9,11 @@
         <div class="questionTab ui center tertiary header aligned segment p-8"
           [class.tertiary]="selectedQuestionId === question.identifier"
           (click)="handleQuestionTabChange(question.identifier)" *ngFor="let question of questionList; let i = index">
-         
           <div class="item d-flex flex-ai-center">Question {{i + 1}} 
-              <span class="sb-status-label sb-bg-warning sb-shape-circle ml-auto" *ngIf="question.status === 'Draft' || question.status === 'Review'" ></span>
-              <span class="sb-status-label sb-bg-success sb-shape-circle ml-auto" *ngIf="question.status === 'Live'"></span>
-              <span class="sb-status-label sb-bg-error sb-shape-circle ml-auto" *ngIf="question.status === 'Reject'"></span>
-            </div>
-
-        
+            <span class="sb-status-label sb-bg-warning sb-shape-circle ml-auto" *ngIf="question.status === 'Draft' || question.status === 'Review'" ></span>
+            <span class="sb-status-label sb-bg-success sb-shape-circle ml-auto" *ngIf="question.status === 'Live'"></span>
+            <span class="sb-status-label sb-bg-error sb-shape-circle ml-auto" *ngIf="question.status === 'Reject'"></span>
+          </div>        
         </div>
       </div>
     </div>
@@ -24,7 +21,6 @@
 
   <div class="nine wide column bg-white">
     <div  *ngIf="!questionList.length && questionMetaData?.mode !== 'create'" class="ui segment">No Question - Click Create</div>
-
     <div *ngIf="(questionList.length || questionMetaData?.mode === 'create')&& refresh && !showLoader">
         <div *ngIf="selectedAttributes.questionType === 'mcq'">
           <app-mcq-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData"
@@ -36,6 +32,5 @@
         </div>
       </div>
       <app-loader *ngIf='showLoader'></app-loader>
-    </div>
   </div>
 </div>
