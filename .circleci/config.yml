@@ -19,14 +19,14 @@ jobs:
       - run:
           name: Installing angular cli
           command: 'npm install -g @angular/cli'
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+      #- restore_cache:
+          #key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: Installing npm deps
           command: 'npm install'
-      - save_cache: # special step to save the dependency cache
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths: ./node_modules
+      #- save_cache: # special step to save the dependency cache
+          #key: dependency-cache-{{ checksum "package.json" }}
+          #paths: ./node_modules
       - run:
           name: ng lint and building
           command: 'mkdir -p /tmp/logs && ng lint && ng build --prod | tee /tmp/logs/build.log'
