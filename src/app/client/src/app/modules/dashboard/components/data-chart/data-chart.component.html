@@ -68,14 +68,13 @@
         {{resourceService?.frmelmnts?.lbl?.graphStat}}
       </div>
       <div content>
-          <div class="ui mini statistic" *ngFor="let stat of avgStatistics">
-            <div class="value">
-              {{stat?.sum}}
-            </div>
-            <div class="label">
-              {{stat?.label}}
+        <div class="ui middle aligned divided list">
+          <div class="item" *ngFor="let stat of avgStatistics">
+            <div class="content">
+              <a class="header">{{stat?.label}} : {{stat?.sum}}</a>
             </div>
           </div>
+        </div>
       </div>
     </sui-accordion-panel>
   </sui-accordion>

@@ -78,7 +78,7 @@ export class DataChartComponent implements OnInit, AfterViewInit, OnDestroy {
         const total = _.sumBy(dataset.data, value => Number(value));
         const avgTotal = {};
         avgTotal['label'] = dataset.label;
-        avgTotal['sum'] = total;
+        avgTotal['sum'] = total.toFixed(2);
         stats.push(avgTotal);
       }
     });
