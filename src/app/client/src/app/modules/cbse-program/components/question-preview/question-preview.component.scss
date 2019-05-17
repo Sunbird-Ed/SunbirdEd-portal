@@ -24,7 +24,7 @@
 		.answer-bg {
 			background-image: linear-gradient(-90deg, #fcf2d6, white);
 		}
-		
+
 	}
 	.sb-question-header {
 		display: block;
@@ -97,17 +97,17 @@
 			max-height: 370px;
 			overflow-y: auto;
 		}
-		
+
 		.mcq-submit-btn {
 			margin-left: auto;
 			padding-right: 16px;
 			margin-bottom: 16px;
 		}
-		
+
 		.mcq-horizontal .mcq-title, .mcq-vertical .mcq-title, .mcq-grid .mcq-title {
 			flex-basis: 100%;
 			padding: 8px 16px;
-			background-image: linear-gradient(-90deg, #fcf2d6, white); 
+			background-image: linear-gradient(-90deg, #fcf2d6, white);
 			font-weight: 700;
 			p {
 				display: -webkit-box;
@@ -119,7 +119,7 @@
 				/* autoprefixer: on */
 			}
 		}
-		
+
 		.mcq-horizontal .mcq-options, .mcq-vertical .mcq-options, .mcq-grid .mcq-options {
 			flex-basis: 100%;
 			display: flex;
@@ -132,7 +132,7 @@
 			min-height: calc(394px - 64px);
 			background-image: linear-gradient(-90deg, #fcf2d6, white);
 		}
-		
+
 		.mcq-horizontal .mcq-options .mcq-option, .mcq-vertical .mcq-options .mcq-option, .mcq-grid .mcq-options .mcq-option {
 			margin-bottom: 16px;
 			height: auto;
@@ -145,27 +145,27 @@
 				font-size: 12px;
 			}
 		}
-		
+
 		.mcq-horizontal.mcq-split .mcq-title, .mcq-vertical.mcq-split .mcq-title, .mcq-grid.mcq-split .mcq-title {
 			flex-basis: 30%;
 		}
-		
+
 		.mcq-horizontal.mcq-split .mcq-options, .mcq-vertical.mcq-split .mcq-options, .mcq-grid.mcq-split .mcq-options {
 			flex-basis: 70%;
 		}
-		
+
 		.mcq-horizontal .mcq-options .mcq-option {
 			width: 20%;
 		}
-		
+
 		.mcq-vertical .mcq-options .mcq-option {
 			width: 100%;
 		}
-		
+
 		.mcq-grid .mcq-options .mcq-option {
 			width: 45%;
 		}
-		
+
 		.mcq-checkbox-answer {
 			background: #f2f2f2;
 			padding: 16px;
