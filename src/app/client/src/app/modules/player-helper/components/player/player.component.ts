@@ -1,15 +1,16 @@
 import { ConfigService } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
 import { environment } from '@sunbird/environment';
 import { Router } from '@angular/router';
 import { ToasterService, ResourceService } from '@sunbird/shared';
+const CONTENT_MIME_TYPE = ['application/vnd.ekstep.h5p-archive', 'application/vnd.ekstep.html-archive'];
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html'
 })
-export class PlayerComponent implements OnInit, OnChanges {
+export class PlayerComponent implements AfterViewInit, OnChanges {
   @Input() playerConfig: PlayerConfig;
   @Output() contentProgressEvent = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
@@ -33,42 +34,66 @@ export class PlayerComponent implements OnInit, OnChanges {
   /**
    * showPlayer method will be called
    */
-  ngOnInit() {
-    this.showPlayer();
+  ngAfterViewInit() {
+    if (this.playerConfig) {
+      this.showPlayer();
+    }
   }
 
   ngOnChanges() {
     this.contentRatingModal = false;
-    this.showPlayer();
+    if (this.playerConfig) {
+      this.showPlayer();
+    }
+  }
+  loadCdnPlayer() {
+    document.domain = window.location.hostname; // to enable player to load from cdn;
+    const iFrameSrc = this.playerCdnUrl + '&build_number=' + this.buildNumber;
+    setTimeout(() => {
+      const playerElement = this.contentIframe.nativeElement;
+      playerElement.src = iFrameSrc;
+      playerElement.onload = (event) => {
+        try {
+          playerElement.contentWindow.initializePreview(this.playerConfig);
+          this.adjustPlayerHeight();
+          playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+        } catch (err) {
+          console.log('loading cdn player failed');
+          this.loadDefaultPlayer();
+        }
+      };
+    }, 0);
+  }
+  loadDefaultPlayer(url = this.configService.appConfig.PLAYER_CONFIG.baseURL) {
+    const iFrameSrc = url + '&build_number=' + this.buildNumber;
+    setTimeout(() => {
+      const playerElement = this.contentIframe.nativeElement;
+      playerElement.src = iFrameSrc;
+      playerElement.onload = (event) => {
+        try {
+          this.adjustPlayerHeight();
+          playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+          playerElement.contentWindow.initializePreview(this.playerConfig);
+        } catch (err) {
+          console.log('loading default player failed');
+        }
+      };
+    }, 0);
   }
   /**
    * Initializes player with given config and emits player telemetry events
    * Emits event when content starts playing and end event when content was played/read completely
    */
-  showPlayer(loadCdn = true) {
-    let src;
+  showPlayer() {
     if (environment.isOffline) {
-      src = this.configService.appConfig.PLAYER_CONFIG.localBaseUrl;
-    } else {
-      src = this.playerCdnUrl && loadCdn ? this.playerCdnUrl : this.configService.appConfig.PLAYER_CONFIG.baseURL;
+      this.loadDefaultPlayer(this.configService.appConfig.PLAYER_CONFIG.localBaseUrl);
+      return;
     }
-    const iFrameSrc = src + '&build_number=' + this.buildNumber;
-    setTimeout(() => {
-      const playerElement = this.contentIframe.nativeElement;
-      playerElement.src = iFrameSrc;
-      playerElement.onload = (event) => {
-        if (!_.get(playerElement, 'contentWindow.initializePreview') && loadCdn) {
-          console.log('cdn player load failed, loading local player');
-          this.showPlayer(false);
-        } else if (_.get(playerElement, 'contentWindow.initializePreview')) {
-          this.adjustPlayerHeight();
-          playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
-          playerElement.contentWindow.initializePreview(this.playerConfig);
-        } else {
-          console.log('loading player failed');
-        }
-      };
-    }, 0);
+    if (this.playerCdnUrl && !CONTENT_MIME_TYPE.includes(_.get(this.playerConfig, 'metadata.mimeType'))) {
+      this.loadCdnPlayer();
+      return;
+    }
+    this.loadDefaultPlayer();
   }
   /**
    * Adjust player height after load
