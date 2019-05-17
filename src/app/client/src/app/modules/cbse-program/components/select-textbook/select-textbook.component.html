@@ -2,14 +2,14 @@
   <div class="ui placeholder segment">
     <p>SELECT TEXTBOOK</p>
     <div class="mt-30">
-      <sui-select class="selection" labelField="name" valueField="code" [(ngModel)]="selectedOptions.gradeLevel"
+      <sui-select class="selection" labelField="name" valueField="code" [isSearchable]="true" placeholder="Select class" [(ngModel)]="selectedOptions.gradeLevel"
         #select>
         <sui-select-option *ngFor="let option of filtersDetails.gradeLevel" [value]="option">
         </sui-select-option>
       </sui-select>
     </div>
     <div class="mt-30">
-      <sui-select class="selection" labelField="name" valueField="code" [(ngModel)]="selectedOptions.subject" #select>
+      <sui-select class="selection" labelField="name" valueField="code" placeholder="Select subject" [(ngModel)]="selectedOptions.subject" #select>
         <sui-select-option *ngFor="let option of filtersDetails.subject" [value]="option">
         </sui-select-option>
       </sui-select>
