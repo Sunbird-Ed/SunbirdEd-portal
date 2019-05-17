@@ -261,7 +261,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
     this.courseConsumptionService.getConfigByContent(data.id, options).pipe(first())
       .subscribe(config => {
-        config.context.objectRollup = this.objectRollUp;
+        if(config.context){
+          config.context.objectRollup = this.objectRollUp;
+        }
         this.setContentInteractData(config);
         this.loader = false;
         this.playerConfig = config;
