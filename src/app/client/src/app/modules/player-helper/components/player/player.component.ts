@@ -84,12 +84,12 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
    * Initializes player with given config and emits player telemetry events
    * Emits event when content starts playing and end event when content was played/read completely
    */
-  showPlayer(loadCdn = true) {
+  showPlayer() {
     if (environment.isOffline) {
       this.loadDefaultPlayer(this.configService.appConfig.PLAYER_CONFIG.localBaseUrl);
       return;
     }
-    if (this.playerCdnUrl || !CONTENT_MIME_TYPE.includes(_.get(this.playerConfig, 'metadata.mimeType'))) {
+    if (this.playerCdnUrl && !CONTENT_MIME_TYPE.includes(_.get(this.playerConfig, 'metadata.mimeType'))) {
       this.loadCdnPlayer();
       return;
     }
