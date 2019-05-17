@@ -7,6 +7,9 @@ input[type="button"] {
     width: 100%;
   }
 }
+.btn-block {
+    width: 100%;
+  }
 // base button styles
 .sb-btn {
     -webkit-tap-highlight-color: transparent;
@@ -108,6 +111,11 @@ input[type="button"] {
     @include btn-theme-bgwhite($gray-800);
 } 
 // default colored btns
+.sb-btn-primary,.sb-btn-info,.sb-btn-secondary,.sb-btn-success,.sb-btn-tertiary,.sb-btn-error{
+    &:hover,&:active {
+        color: $white-color;
+    }
+} 
 .sb-btn-primary,.sb-btn-info{
     @include btn-theme($primary-color);
     &:hover,&:active {
@@ -148,6 +156,12 @@ input[type="button"] {
     @include btn-theme($danger-color);
     &:hover,&:active {
         background: $red-400;
+    }
+}
+.sb-btn-gray{
+    @include btn-theme($gray-200);
+    &:hover,&:active {
+        background: $gray-400;
     }
 }
 
