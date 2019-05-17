@@ -43,10 +43,9 @@
             }
 
             &.disabled {
-                background-color: $gray-100;
-                border-color: $gray-100;
-                color: $gray-200;
+                pointer-events: none;
                 cursor: not-allowed;
+                opacity: 0.3;
             }
         }
     
@@ -62,4 +61,16 @@
             border-left: 0.5px solid #dedede;
         }
     }
+}
+
+[dir="rtl"] {
+    .sb-pagination-container .sb-pagination {
+        .sb-item:last-child {
+            border-radius: 4px 0 0 4px;
+        }
+        .sb-item:first-child {
+            border-radius: 0 4px 4px 0;
+        }
+    }
+    
 }
