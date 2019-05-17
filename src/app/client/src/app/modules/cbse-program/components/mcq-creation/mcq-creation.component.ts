@@ -23,6 +23,7 @@ export class McqCreationComponent implements OnInit {
   isEditorThrowingError: boolean;
   showFormError = false;
   public showPreview = false;
+  public previewData: any;
   public setCharacterLimit = 160;
   public setImageLimit = 1;
   public refresh = true;
@@ -78,6 +79,10 @@ export class McqCreationComponent implements OnInit {
   buttonTypeHandler(event) {
     if (event === 'preview') {
       this.showPreview = true;
+      this.previewData = {
+        data: this.getHtml(),
+        type: this.selectedAttributes.questionType
+      };
     } else if (event === 'edit') {
       this.refreshEditor();
       this.showPreview = false;

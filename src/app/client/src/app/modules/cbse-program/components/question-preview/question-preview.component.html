@@ -1,7 +1,7 @@
 
 <div class="sb-question-dsp-container quml-responsive-div">
     <div class="sb-editor-image">
-        <div class="sb-question-dsp-body"*ngIf="questionMetaData.data && questionMetaData.data.type !== 'mcq'">
+        <div class="sb-question-dsp-body"*ngIf="questionMetaData && questionMetaData.type !== 'mcq'">
             <div class="sb-question-header question-bg">
                 <span class="sb-question"></span>
                 <span class="sb-mark">4 Marks</span>
@@ -11,15 +11,15 @@
             <div class="sb-question-content" (scroll)="onScroll($event)">
                 <div class="page-section question-bg" id="question">
                     <div class="sb-question">Question<span class=" sb-star-icon"><i class="star outline icon"></i></span></div>
-                    <div class="sb-question-content-card" [innerHTML]="questionMetaData.data.body | sanitizeHtml"></div>
+                    <div class="sb-question-content-card" [innerHTML]="questionMetaData.body | sanitizeHtml"></div>
                 </div>
                 <div class="page-section answer-bg" id="answer">
                     <div class="sb-answer">Solution</div>
-                    <div class="sb-question-content-card" [innerHTML]="questionMetaData.data.solutions[0] | sanitizeHtml"></div>
+                    <div class="sb-question-content-card" [innerHTML]="questionMetaData.solutions[0] | sanitizeHtml"></div>
                 </div>
             </div>
         </div>
-        <div class="sb-question-dsp-body"*ngIf="questionMetaData.data && questionMetaData.data.type === 'mcq'" [innerHTML]="questionMetaData.data.body | sanitizeHtml">
+        <div class="sb-question-dsp-body"*ngIf="questionMetaData && questionMetaData.type === 'mcq'" [innerHTML]="questionMetaData.data.body | sanitizeHtml">
         </div>
     </div>
 </div>

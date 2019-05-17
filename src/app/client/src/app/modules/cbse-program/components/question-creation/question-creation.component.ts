@@ -27,6 +27,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   public showPreview = false;
   public refresh = true;
   private prevShowPreview = true;
+  public previewData: any;
   @Input() tabIndex: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter < any > ();
@@ -137,6 +138,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   buttonTypeHandler(event) {
     if (event === 'preview') {
       this.showPreview = true;
+      this.previewData = {
+        body: this.question,
+        solutions: [this.solution],
+        type: this.selectedAttributes.questionType
+      };
     } else if (event === 'edit') {
       this.refreshEditor();
       this.showPreview = false;
