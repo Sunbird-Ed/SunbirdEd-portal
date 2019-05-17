@@ -25,13 +25,15 @@ export class StickyHeaderDirective implements AfterViewInit, OnDestroy {
 
     const metadata = show ? this.fadeIn() : this.fadeOut();
 
-    const factory = this.builder.build(metadata);
-    const player = factory.create(this.el.nativeElement);
+    // const factory = this.builder.build(metadata);
+    // const player = factory.create(this.el.nativeElement);
 
-    player.play();
+    // player.play();
   }
 
-  constructor(private builder: AnimationBuilder, private el: ElementRef, private zone: NgZone,
+  // constructor(private builder: AnimationBuilder, private el: ElementRef, private zone: NgZone,
+  constructor(private el: ElementRef, private zone: NgZone,
+
     private cdr: ChangeDetectorRef) {}
 
   private fadeIn(): AnimationMetadata[] {
