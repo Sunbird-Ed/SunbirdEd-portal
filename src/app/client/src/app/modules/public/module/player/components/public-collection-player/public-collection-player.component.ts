@@ -7,7 +7,8 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {
   WindowScrollService, ToasterService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService
+  ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService,
+  ContentUtilsServiceService
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -88,7 +89,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
     public externalUrlPreviewService: ExternalUrlPreviewService, private configService: ConfigService,
-    public toasterService: ToasterService) {
+    public toasterService: ToasterService, private contentUtilsService: ContentUtilsServiceService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
@@ -257,7 +258,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
             if (content) {
-              this.setRollUpData(content);
+              this.objectRollUp = this.contentUtilsService.getContentRollup(content);
               this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') }, true);
             } else {
               // show toaster error
@@ -271,12 +272,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         this.toasterService.error(this.resourceService.messages.fmsg.m0004); // need to change message
         this.router.navigate(['/explore']);
       });
-  }
-
-  private setRollUpData (content) {
-    const nodes = content.getPath();
-    this.objectRollUp = {};
-    nodes.forEach((eachnode, index) => this.objectRollUp['l' + (index + 1)] = eachnode.model.identifier);
   }
   private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
     const inputParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
