@@ -54,8 +54,8 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
       playerElement.src = iFrameSrc;
       playerElement.onload = (event) => {
         try {
-          playerElement.contentWindow.initializePreview(this.playerConfig);
           this.adjustPlayerHeight();
+          playerElement.contentWindow.initializePreview(this.playerConfig);
           playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
         } catch (err) {
           console.log('loading cdn player failed');
@@ -72,8 +72,8 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
       playerElement.onload = (event) => {
         try {
           this.adjustPlayerHeight();
-          playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
           playerElement.contentWindow.initializePreview(this.playerConfig);
+          playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
         } catch (err) {
           console.log('loading default player failed');
         }
