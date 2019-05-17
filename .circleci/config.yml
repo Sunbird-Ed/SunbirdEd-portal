@@ -21,7 +21,6 @@ jobs:
           command: 'npm install -g @angular/cli'
       #- restore_cache:
           #key: dependency-cache-{{ checksum "package.json" }}
-
       - run:
           name: Installing npm deps
           command: 'npm install'
