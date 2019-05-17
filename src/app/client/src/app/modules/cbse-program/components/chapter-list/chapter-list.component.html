@@ -1,15 +1,15 @@
 
 <div class="ui container">
-  <div class="mt-30">
+  <div class="mt-16">
     <sui-accordion class="styled fluid" [closeOthers]="true">
       <sui-accordion-panel [isOpen]="i === 0" *ngFor="let textbook of textBookChapters; let i = index">
         <div title>
           <i class="dropdown icon"></i>
           {{textbook.name}}
         </div>
-        <div content>
-          <table class="ui selectable celled table">
-            <thead>
+        <div content class="sb-table-container my-0">
+          <table class="sb-table sb-table-fixed sb-table-hover">
+            <thead class="sb-table-header heading-large">
               <tr>
                 <th></th>
                 <th>Total</th>
@@ -17,7 +17,7 @@
                 <th></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="sb-table-body body-large">
               <tr>
                 <td data-label="Name">{{textbook.vsa.name}}</td>
                 <td data-label="Age">{{textbook.vsa.total}}</td>

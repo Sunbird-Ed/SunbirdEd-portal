@@ -7,13 +7,13 @@
 
 @include respond-above(lg) {
   .ui.container,.ui.grid.container {
-    width: 1216px !important;
+    width: 1216px;
   }
 }
 
 @include respond-above(xxxl) {
   .ui.container,.ui.grid.container {
-    width: 1524px !important;
+    width: 1524px;
   }
 }
 

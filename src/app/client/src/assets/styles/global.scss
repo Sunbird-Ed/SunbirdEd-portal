@@ -1,3 +1,4 @@
+
 html,
 body {
   height: 100%;
@@ -97,4 +98,7 @@ body {
   .image-style-align-right img, .image-style-align-left img {
     max-width: 100% !important;
   }
+}
+.no-bg {
+  background:none !important;
 }

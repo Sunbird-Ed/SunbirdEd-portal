@@ -1,33 +1,47 @@
-<div *ngIf='programDetails?.userDetails' class="ui pointing menu mb-0">
+
+<div *ngIf='programDetails?.userDetails' class="ui pointing secondary menu sb-bg-white">
   <a class="item" [class.active]="selectedAttributes.currentRole === 'CONTRIBUTOR'"
     (click)="selectedAttributes.currentRole = 'CONTRIBUTOR';handleRoleChange()">Contribute</a>
   <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("REVIEWER")'
     [class.active]="selectedAttributes.currentRole === 'REVIEWER'" (click)="selectedAttributes.currentRole = 'REVIEWER';handleRoleChange()">Review</a>
 </div>
-<div *ngIf='programDetails?.userDetails' class="ui segment mt-0">
+
+<div *ngIf='programDetails?.userDetails' class="ui segment no-bg m-0 w-300" style="margin-top:2px !important;">
+
   <div *ngIf="stages[currentStage] == 'chooseClass'">
     <app-select-textbook [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
       (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-select-textbook>
   </div>
-  <div *ngIf="stages[currentStage] == 'topicList'">
-    <div class="ui container">
-      <div class="mt-30 ui breadcrumb">
-        <i class="left angle icon divider"></i>
-        <a (click)="navigate('prev')" class="section">{{selectedAttributes.gradeLevel}} |
-          {{selectedAttributes.subject}}</a>
-      </div>
-    </div>
-    <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes"
-      (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list>
-  </div>
-  <div *ngIf="stages[currentStage] == 'createQuestion'">
-    <div class="ui container">
-      <div class="ui container">
-        <div class="mt-30 ui breadcrumb">
-          <i class="left angle icon divider"></i>
-          <a (click)="navigate('prev')" class="section">{{selectedAttributes.topic}}</a>
+
+  <div class="ui container" *ngIf="stages[currentStage] == 'topicList'">
+      <div class="sb-pageSection">
+        <div class="sb-pageSection-header">
+          <h4 class="sb-pageSection-title m-0 mr-8">Searched results for </h4>
+          <span
+            class="sb-pageSection-count sb-label sb-label-xs sb-label-warning mr-8">{{selectedAttributes.gradeLevel}}</span>
+          <span
+            class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.subject}}</span>
+          <button (click)="navigate('prev')" class="sb-btn sb-btn-xs sb-btn-error ml-auto">Close <i
+              class="close icon"></i></button>
         </div>
       </div>
-      <app-question-list [selectedAttributes]="selectedAttributes"></app-question-list>
+      <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes"
+      (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list>
     </div>
-  </div>
+
+
+    <div class="ui container" *ngIf="stages[currentStage] == 'createQuestion'">
+
+        <div class="sb-pageSection">
+            <div class="sb-pageSection-header">
+              <h4 class="sb-pageSection-title m-0 mr-8">Searched results for</h4>
+              <span
+                class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.topic}}</span>
+              <button (click)="navigate('prev')" class="sb-btn sb-btn-xs sb-btn-error ml-auto">Close <i
+                  class="close icon"></i></button>
+            </div>
+          </div>
+
+      <app-question-list [selectedAttributes]="selectedAttributes"></app-question-list>
+
+    </div>

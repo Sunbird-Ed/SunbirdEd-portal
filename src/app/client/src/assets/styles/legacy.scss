@@ -339,9 +339,9 @@ h4.ui.header.sectionHeading {
   font-weight:400;
 }
 .ui.secondary.pointing.menu {
-  background: #fdfdfd;
+  // background: #fdfdfd;
   margin: 0rem;
-  justify-content: center;
+  // justify-content: center;
 }
 .ui.dropdown .menu > .item.headerDropdownProfile {
   cursor: text;
@@ -475,11 +475,7 @@ i.large.icon.limitedPublishingLinkIcon {
   padding: 0.8em 0 0.8em 1em;
 }
 
-.ui.selection.dropdown {
-  border: 0;
-  border-bottom: 1px solid #333333;
-  border-radius: 0;
-}
+
 .ui.dropdown.genderSelectionDropDown {
   border: 0;
   border-bottom: 1px solid #333333;
