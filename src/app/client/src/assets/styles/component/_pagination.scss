@@ -43,10 +43,9 @@
             }
 
             &.disabled {
-                background-color: $gray-100;
-                border-color: $gray-100;
-                color: $gray-200;
+                pointer-events: none;
                 cursor: not-allowed;
+                opacity: 0.3;
             }
         }
     
