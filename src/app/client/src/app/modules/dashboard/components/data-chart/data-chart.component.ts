@@ -65,13 +65,13 @@ export class DataChartComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription = combineLatest(this.onLabelsChange(), this.onTimeLineChange(), this.onDataSetChange(), this.onTimeLineRangeChange())
       .subscribe(value => {
         if (this.chartInfo) {
-          this.calculateAverage(this.chartInfo.datasets);
+          this.calculateUsage(this.chartInfo.datasets);
           this.chartInfo.update();
         }
       });
   }
 
-  calculateAverage = (datasets) => {
+  calculateUsage = (datasets) => {
     const stats = [];
     _.forEach(datasets, dataset => {
       if (!dataset.hidden) {
