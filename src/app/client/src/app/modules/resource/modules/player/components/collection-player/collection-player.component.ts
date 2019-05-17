@@ -258,7 +258,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
             if (content) {
-              this.setRollUpData(content);
+              this.objectRollUp = this.contentUtilsServiceService.getContentRollup(content);
               this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
             } else {
               this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
@@ -271,12 +271,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       }, (error) => {
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
       });
-  }
-
-  private setRollUpData (content) {
-    const nodes = content.getPath();
-    this.objectRollUp = {};
-    nodes.forEach((eachnode, index) => this.objectRollUp['l' + (index + 1)] = eachnode.model.identifier);
   }
 
   setTelemetryData() {
