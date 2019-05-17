@@ -63,3 +63,15 @@
         }
     }
 }
+
+[dir="rtl"] {
+    .sb-pagination-container .sb-pagination {
+        .sb-item:last-child {
+            border-radius: 4px 0 0 4px;
+        }
+        .sb-item:first-child {
+            border-radius: 0 4px 4px 0;
+        }
+    }
+    
+}
