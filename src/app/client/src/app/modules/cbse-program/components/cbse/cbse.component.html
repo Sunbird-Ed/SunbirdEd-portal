@@ -1,8 +1,9 @@
+
 <div *ngIf='programDetails?.userDetails' class="ui pointing secondary menu sb-bg-white">
-  <a class="item active" [class.active]="currentRole === 'CONTRIBUTOR'"
-    (click)="currentRole = 'CONTRIBUTOR';handleRoleChange()">Contribute</a>
-  <a class="item" *ngIf='true || programDetails?.userDetails?.roles.includes("REVIEWER")'
-    [class.active]="currentRole === 'REVIEWER'" (click)="currentRole = 'REVIEWER';handleRoleChange()">Review</a>
+  <a class="item" [class.active]="selectedAttributes.currentRole === 'CONTRIBUTOR'"
+    (click)="selectedAttributes.currentRole = 'CONTRIBUTOR';handleRoleChange()">Contribute</a>
+  <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("REVIEWER")'
+    [class.active]="selectedAttributes.currentRole === 'REVIEWER'" (click)="selectedAttributes.currentRole = 'REVIEWER';handleRoleChange()">Review</a>
 </div>
 
 <div *ngIf='programDetails?.userDetails' class="ui segment no-bg m-0 w-300" style="margin-top:2px !important;">

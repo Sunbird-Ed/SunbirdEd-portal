@@ -23,9 +23,9 @@
   </div>
 
   <div class="nine wide column bg-white">
-    <div *ngIf="!questionList.length" class="ui segment">No Question - Click Create</div>
+    <div  *ngIf="!questionList.length && questionMetaData?.mode !== 'create'" class="ui segment">No Question - Click Create</div>
 
-    <div *ngIf="questionList.length && refresh && !showLoader">
+    <div *ngIf="(questionList.length || questionMetaData?.mode === 'create')&& refresh && !showLoader">
         <div *ngIf="selectedAttributes.questionType === 'mcq'">
           <app-mcq-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData"
             (questionStatus)="questionStatusHandler($event)"></app-mcq-creation>
@@ -36,5 +36,6 @@
         </div>
       </div>
       <app-loader *ngIf='showLoader'></app-loader>
+    </div>
   </div>
 </div>

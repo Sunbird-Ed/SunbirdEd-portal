@@ -1,9 +1,9 @@
 // Angular modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Modules
-import { ChartsModule } from 'ng2-charts/ng2-charts';
+import { ChartsModule } from 'ng2-charts';
 import { SuiModule } from 'ng2-semantic-ui';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -15,7 +15,8 @@ import {
 } from './services';
 import {
   OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent,
-  DataTableComponent } from './components';
+  DataTableComponent, DataChartComponent
+} from './components';
 // SB core and shared services
 import { SearchService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
@@ -26,13 +27,15 @@ import { OrderModule } from 'ngx-order-pipe';
     CommonModule,
     DashboardRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     ChartsModule,
     SuiModule,
     SharedModule,
     OrderModule,
     TelemetryModule
   ],
-  declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent, DataTableComponent],
+  declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
+    DataTableComponent, DataChartComponent],
   exports: [CourseProgressComponent, DataTableComponent],
   providers: [
     RendererService,

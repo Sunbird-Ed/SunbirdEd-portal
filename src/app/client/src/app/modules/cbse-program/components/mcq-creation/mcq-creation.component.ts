@@ -23,7 +23,9 @@ export class McqCreationComponent implements OnInit {
   isEditorThrowingError: boolean;
   showFormError = false;
   public showPreview = false;
+  public previewData: any;
   public setCharacterLimit = 160;
+  public setImageLimit = 1;
   public refresh = true;
   learningOutcomeOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
@@ -59,7 +61,8 @@ export class McqCreationComponent implements OnInit {
     }
   }
   handleSubmit(formControl) {
-    const optionValid = _.find(this.mcqForm.options, option => (option.body === undefined || option.body === ''));
+    const optionValid = _.find(this.mcqForm.options, option =>
+      (option.body === undefined || option.body === '' || option.length > this.setCharacterLimit));
     if (formControl.invalid || optionValid || !this.mcqForm.answer || [undefined, ''].includes(this.mcqForm.question)) {
       this.showFormError = true;
       return;
@@ -76,6 +79,10 @@ export class McqCreationComponent implements OnInit {
   buttonTypeHandler(event) {
     if (event === 'preview') {
       this.showPreview = true;
+      this.previewData = {
+        data: this.getHtml(),
+        type: this.selectedAttributes.questionType
+      };
     } else if (event === 'edit') {
       this.refreshEditor();
       this.showPreview = false;

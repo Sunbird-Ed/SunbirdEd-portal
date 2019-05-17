@@ -41,6 +41,13 @@
                 border: 0.5px solid #dedede;
                 border-radius: 0 4px 4px 0;
             }
+
+            &.disabled {
+                background-color: $gray-100;
+                border-color: $gray-100;
+                color: $gray-200;
+                cursor: not-allowed;
+            }
         }
     
         .sb-item-active {

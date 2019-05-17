@@ -20,8 +20,13 @@ export class ChapterListComponent implements OnInit {
   constructor(public publicDataService: PublicDataService, private configService: ConfigService, private userService: UserService) {
   }
   ngOnInit() {
-    const apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields)),
-    ...this.questionType.map(fields => this.searchQuestionsByType(fields, this.userService.userid))];
+    let apiRequest;
+    if (this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
+      apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields)),
+        ...this.questionType.map(fields => this.searchQuestionsByType(fields, this.userService.userid))];
+    } else if (this.selectedAttributes.currentRole === 'REVIEWER') {
+      apiRequest = this.questionType.map(fields => this.searchQuestionsByType(fields));
+    }
     forkJoin(apiRequest).subscribe(data => {
       this.textBookChapters = _.map(this.topicList, topic => {
         const results = { name: topic.name };
@@ -52,10 +57,11 @@ export class ChapterListComponent implements OnInit {
           'filters': {
             'objectType': 'AssessmentItem',
             'board': this.selectedAttributes.board,
-            'framework': 'NCFCOPY',
+            'framework': this.selectedAttributes.framework,
             'gradeLevel': this.selectedAttributes.gradeLevel,
             'subject': this.selectedAttributes.subject,
             'medium': this.selectedAttributes.medium,
+            'programId': this.selectedAttributes.programId,
             'type': questionType,
             'version': 3,
             'status': []

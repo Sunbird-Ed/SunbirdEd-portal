@@ -14,6 +14,7 @@ interface ISelectedAttributes {
     questionType?: string;
     programId?: string;
     program?: string;
+    currentRole?: string;
 }
 
 @Component({
@@ -29,17 +30,18 @@ export class CbseComponent implements OnInit {
   public selectedAttributes: ISelectedAttributes = {};
   public stages: Array<string> = ['chooseClass', 'topicList', 'createQuestion'];
   public currentStage = 0;
-  public currentRole;
   constructor(public frameworkService: FrameworkService) { }
 
   ngOnInit() {
-    this.currentRole = _.get(this.programDetails, 'userDetails.roles[0]');
-    this.selectedAttributes.framework = _.get(this.programDetails, 'config.scope.framework');
-    this.selectedAttributes.channel = _.get(this.programDetails, 'config.scope.channel');
-    this.selectedAttributes.board = _.get(this.programDetails, 'config.scope.board[0]');
-    this.selectedAttributes.medium = _.get(this.programDetails, 'config.scope.medium[0]');
-    this.selectedAttributes.programId = _.get(this.programDetails, 'programId');
-    this.selectedAttributes.program = _.get(this.programDetails, 'name');
+    this.selectedAttributes = {
+      currentRole: _.get(this.programDetails, 'userDetails.roles[0]'),
+      framework: _.get(this.programDetails, 'config.scope.framework'),
+      channel: _.get(this.programDetails, 'config.scope.channel'),
+      board: _.get(this.programDetails, 'config.scope.board[0]'),
+      medium: _.get(this.programDetails, 'config.scope.medium[0]'),
+      programId: _.get(this.programDetails, 'programId'),
+      program: _.get(this.programDetails, 'name')
+    };
     this.fetchFrameWorkDetails();
   }
 

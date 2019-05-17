@@ -1,6 +1,4 @@
 import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter, OnChanges, ViewChild, ElementRef} from '@angular/core';
-// import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-// import * as ClassicEditor from 'ckeditor-build-font';
 import * as ClassicEditor from '@project-sunbird/ckeditor-build-font';
 import { ActivatedRoute, Router } from '@angular/router';
 import {  ConfigService, ResourceService, IUserData, IUserProfile, ToasterService  } from '@sunbird/shared';
@@ -18,6 +16,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() editorDataInput: any;
   @Input() editorId: any;
   @Input() setCharacterLimit: any;
+  @Input() setImageLimit: any;
   @Output() editorDataOutput = new EventEmitter < any > ();
   @Output() hasError = new EventEmitter < any > ();
   public editorInstance: any;
@@ -78,7 +77,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
             ]
         },
         image: {
-          toolbar: ['imageTextAlternative', '|', 'imageStyle:full', 'imageStyle:alignRight', 'imageStyle:alignLeft'],
+          toolbar: ['imageStyle:alignLeft', 'imageStyle:full', 'imageStyle:alignRight'],
           styles: ['full', 'alignLeft', 'alignRight', 'alignCenter']
         },
         isReadOnly: false,
@@ -144,14 +143,18 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
 
   changeTracker(editor) {
     editor.model.document.on('change', (eventInfo, batch) => {
-      if (this.setCharacterLimit && this.setCharacterLimit > 0) { this.checkCharacterLimit(eventInfo, batch); }
+      if (this.setCharacterLimit && this.setCharacterLimit > 0) { this.checkCharacterLimit(); }
       const selectedElement = eventInfo.source.selection.getSelectedElement();
       this.isEditorFocused = (selectedElement && selectedElement.name === 'image') ? true : false;
-      this.editorDataOutput.emit(editor.getData());
+      if (this.setImageLimit && this.setImageLimit > 0) { this.checkImageLimit(); }
+      this.editorDataOutput.emit({body: editor.getData(), length: this.characterCount });
     });
   }
-
-  checkCharacterLimit(eventInfo, batch) {
+  checkImageLimit() {
+    const childNodes =  this.editorInstance.model.document.getRoot()._children._nodes;
+    this.isAssetBrowserReadOnly = _.keys(_.pickBy(childNodes, {name: 'image'})).length === this.setImageLimit ? true : false ;
+  }
+  checkCharacterLimit() {
     this.characterCount = this.countCharacters( this.editorInstance.model.document );
     this.limitExceeded = (this.characterCount <= this.setCharacterLimit) ? false : true;
     this.hasError.emit(this.limitExceeded);

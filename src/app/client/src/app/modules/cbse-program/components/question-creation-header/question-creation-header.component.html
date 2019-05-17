@@ -1,4 +1,3 @@
-
 <div class="d-flex" *ngIf="!showPreview">
   <div class="d-flex flex-ai-center">
     <span *ngIf="questionMetaData.data && questionMetaData.data.status === 'Live'"><a class="sb-status-label sb-bg-warning sb-shape-circle ui green empty circular label"></a> Published</span>
@@ -7,39 +6,12 @@
   </div>
 
   <div class="d-flex ml-auto">
-      <button class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8" [disabled]="disableSubmission" *ngIf="questionMetaData.data && ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)" (click)="btnClick($event, 'update');" type="submit">Update</button>
-      <button class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8" [disabled]="disableSubmission" *ngIf="!questionMetaData.data" (click)="btnClick($event, 'create');" type="submit">Submit</button>
+      <button class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8" *ngIf="questionMetaData.data && ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)" (click)="btnClick($event, 'update');" type="submit">Update</button>
+      <button class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8" *ngIf="!questionMetaData.data" (click)="btnClick($event, 'create');" type="submit">Submit</button>
 
       <div class="btn-group">
           <button type="button" [ngClass]="{'active':enableBtn === 'edit' }" (click)="showPreview= false; btnClick($event, 'edit'); " class="sb-btn sb-btn-xs sb-btn-outline-primary">Edit</button>
           <button type="button" [ngClass]="{'active': enableBtn === 'preview' }" (click)="showPreview= true; btnClick($event, 'preview'); " class="sb-btn sb-btn-xs sb-btn-outline-primary">Preview</button>
       </div>
-
-     
   </div>
 </div>
-
-<!-- <div class="d-flex" *ngIf="!showPreview">
-    <div class="d-inline-block">
-      <span *ngIf="questionMetaData.data && questionMetaData.data.status === 'Live'"><a class="ui green empty circular label"></a> Published</span>
-      <span *ngIf="questionMetaData.data && (questionMetaData.data.status === 'Review' || questionMetaData.data.status === 'Draft')"><a class="ui yellow empty circular label"></a> Submitted for Review</span>
-      <span *ngIf="questionMetaData.data && questionMetaData.data.status === 'Reject'"><a class="ui red empty circular label"></a> Rejected</span>
-    </div>
-    <div class="ml-auto">
-        <button class="sb-btn sb-btn-normal sb-btn-primary submit-btn" *ngIf="questionMetaData.data && ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)" (click)="handleSubmit(mcqFormControl)" type="submit">Update</button>
-        <button class="sb-btn sb-btn-normal sb-btn-primary submit-btn" *ngIf="!questionMetaData.data" (click)="handleSubmit(mcqFormControl)" type="submit">Submit</button>
-    </div>
-  </div> -->
-
-
-<!-- <div class="d-flex">
-    <div class="d-inline-block">
-      <span *ngIf="questionMetaData.data && questionMetaData.data.status === 'Live'"><a class="ui green empty circular label"></a> Published</span>
-      <span *ngIf="questionMetaData.data && (questionMetaData.data.status === 'Review' || questionMetaData.data.status === 'Draft')"><a class="ui yellow empty circular label"></a> Submitted for Review</span>
-      <span *ngIf="questionMetaData.data && questionMetaData.data.status === 'Reject'"><a class="ui red empty circular label"></a> Rejected</span>
-    </div>
-    <div class="ml-auto">
-      <button class="sb-btn sb-btn-normal sb-btn-primary submit-btn" *ngIf="questionMetaData.data && ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)" (click)="updateQuestion($event, questionMetaData.data.identifier)" type="submit">Update</button>
-      <button class="sb-btn sb-btn-normal sb-btn-primary submit-btn" *ngIf="!questionMetaData.data" (click)="createQuestion($event)" type="submit">Submit</button>
-    </div>
-  </div> -->
