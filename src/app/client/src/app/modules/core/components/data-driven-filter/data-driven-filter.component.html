@@ -9,8 +9,8 @@
             </span>
           </div>
           <div content>
-            <div *ngIf="filtersDetails && formInputData && showSearchedParam" class="twelve wide column p-0 content mb-15">
-              <span *ngFor="let field of filtersDetails">
+            <div *ngIf="filtersDetails && formInputData && showSearchedParam" class="twelve wide column pb-16 content">
+              <span class="d-inline-block" *ngFor="let field of filtersDetails">
                 <span class="padded chip mt-5 mr-10" *ngIf='formInputData[field.code] && formInputData[field.code].length > 0'>
                   {{field.label}}:
                   <span *ngFor="let item of formInputData[field.code]">
@@ -32,10 +32,10 @@
                 </span>
               </span>
             </div>
-            <div class="twelve wide column p-0" *ngIf="refresh">
+            <div class="twelve wide column pt-0" *ngIf="refresh">
               <form *ngIf="filtersDetails" class="ui form">
-                <div class="ui grid stackable top aligned">
-                <div class="twelve wide tablet twelve wide computer column pb-0">
+                <div class="ui grid stackable top aligned mt-0">
+                <div class="twelve wide tablet twelve wide computer column py-0">
                     <div class="sb-prominent-filter-container">
                         <div *ngFor="let field of filtersDetails" class="sb-prominent-filter-field">
                           <div *ngIf="(field.inputType==='select' || field.inputType === 'multi-select') && field.code !== 'channel'">
