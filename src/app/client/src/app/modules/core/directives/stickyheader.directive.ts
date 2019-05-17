@@ -53,10 +53,10 @@ export class StickyHeaderDirective implements AfterViewInit, OnDestroy {
       }),
       distinctUntilChanged(),
       share(),
-    );
-    const goingUp$ = scroll$.pipe(filter(direction => direction === Direction.Up));
+      takeUntil(this.unsubscribe));
+    const goingUp$ = scroll$.pipe(filter(direction => direction === Direction.Up), takeUntil(this.unsubscribe));
 
-    const goingDown$ = scroll$.pipe(filter(direction => direction === Direction.Down));
+    const goingDown$ = scroll$.pipe(filter(direction => direction === Direction.Down), takeUntil(this.unsubscribe));
 
     goingUp$.subscribe(() => {
       this.show = true;
