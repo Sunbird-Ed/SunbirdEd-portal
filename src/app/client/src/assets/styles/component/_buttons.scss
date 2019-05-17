@@ -108,7 +108,6 @@ input[type="button"] {
     @include btn-theme-bgwhite($gray-800);
 } 
 // default colored btns
-
 .sb-btn-primary,.sb-btn-info,.sb-btn-secondary,.sb-btn-success,.sb-btn-tertiary,.sb-btn-error{
     &:hover,&:active {
         color: $white-color;
@@ -116,7 +115,6 @@ input[type="button"] {
         border:1px solid transparent;
     }
  }
- 
 .sb-btn-primary,.sb-btn-info{
     @include btn-theme($primary-color);
     &:hover,&:active {
