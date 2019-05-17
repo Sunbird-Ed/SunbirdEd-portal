@@ -32,18 +32,18 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
         ? (<HTMLInputElement>document.getElementById('PlayerCdnUrl')).value : undefined;
   }
   /**
-   * showPlayer method will be called
+   * loadPlayer method will be called
    */
   ngAfterViewInit() {
     if (this.playerConfig) {
-      this.showPlayer();
+      this.loadPlayer();
     }
   }
 
   ngOnChanges() {
     this.contentRatingModal = false;
     if (this.playerConfig) {
-      this.showPlayer();
+      this.loadPlayer();
     }
   }
   loadCdnPlayer() {
@@ -84,7 +84,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
    * Initializes player with given config and emits player telemetry events
    * Emits event when content starts playing and end event when content was played/read completely
    */
-  showPlayer() {
+  loadPlayer() {
     if (environment.isOffline) {
       this.loadDefaultPlayer(this.configService.appConfig.PLAYER_CONFIG.localBaseUrl);
       return;
