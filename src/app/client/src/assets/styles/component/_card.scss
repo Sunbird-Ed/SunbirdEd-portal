@@ -181,19 +181,21 @@ app-card[lang="ur"] {
 
 .sb-card-qr {
   .sb-btn {
-  border: 1px solid #dedede !important;
-  // margin-bottom: ($base-block-space * 2);
-  height: auto;
-  .sb-btn{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 0px;
-    width:100%;
-  }
-  &:hover {
-    .sb-btn {
-      background:$secondary-400;
+    border: 1px solid #dedede !important;
+    // margin-bottom: ($base-block-space * 2);
+    height: auto;
+    .sb-btn{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0px;
+      width:100%;
+    }
+    &:hover {
+      .sb-btn {
+        background:$secondary-400;
+      }
     }
   }
+}
 }
