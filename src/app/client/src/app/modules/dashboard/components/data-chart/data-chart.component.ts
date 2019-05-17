@@ -83,7 +83,7 @@ export class DataChartComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
     const summation = _.sumBy(stats, stat => Number(stat.sum));
-    stats.push({ label: 'Total', sum: summation });
+    stats.push({ label: 'Total', sum: summation.toFixed(2) });
     this.avgStatistics = stats;
     this.cdr.detectChanges();
   }
