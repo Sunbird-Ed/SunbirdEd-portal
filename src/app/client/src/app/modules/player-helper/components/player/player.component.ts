@@ -58,7 +58,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
           playerElement.contentWindow.initializePreview(this.playerConfig);
           playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
         } catch (err) {
-          console.log('loading cdn player failed');
+          console.log('loading cdn player failed', err);
           this.loadDefaultPlayer();
         }
       };
@@ -75,7 +75,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
           playerElement.contentWindow.initializePreview(this.playerConfig);
           playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
         } catch (err) {
-          console.log('loading default player failed');
+          console.log('loading default player failed', err);
         }
       };
     }, 0);
