@@ -5,7 +5,8 @@ import { PlayerConfig } from '@sunbird/shared';
 import { environment } from '@sunbird/environment';
 import { Router } from '@angular/router';
 import { ToasterService, ResourceService } from '@sunbird/shared';
-const CONTENT_MIME_TYPE = ['application/vnd.ekstep.h5p-archive', 'application/vnd.ekstep.html-archive'];
+const CONTENT_MIME_TYPE = ['application/vnd.ekstep.h5p-archive', 'application/vnd.ekstep.html-archive',
+  'video/x-youtube', 'video/mp4', 'video/webm'];
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html'
