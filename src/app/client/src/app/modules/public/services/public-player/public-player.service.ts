@@ -92,6 +92,7 @@ export class PublicPlayerService {
       }];
     }
     configuration.config.host = window.location.host;
+    console.log(configuration.config.host);
     return configuration;
   }
   public getCollectionHierarchy(identifier: string, option: any = { params: {} }): Observable<CollectionHierarchyAPI.Get> {
