@@ -91,7 +91,7 @@ export class PublicPlayerService {
         type: 'dialCode'
       }];
     }
-    configuration.config.host = window.location.host;
+    configuration.config.host = window.location.origin;
     console.log(configuration.config.host);
     return configuration;
   }
