@@ -48,8 +48,6 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
     }
   }
   loadCdnPlayer() {
-    document.domain = window.location.hostname; // to enable player to load from cdn;
-    console.log('setting domain for proxy player', document.domain);
     const iFrameSrc = this.playerCdnUrl + '&build_number=' + this.buildNumber;
     setTimeout(() => {
       const playerElement = this.contentIframe.nativeElement;
@@ -67,8 +65,6 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
     }, 0);
   }
   loadDefaultPlayer(url = this.configService.appConfig.PLAYER_CONFIG.baseURL) {
-    document.domain = undefined;
-    console.log('unsetting domain for proxy player', document.domain);
     const iFrameSrc = url + '&build_number=' + this.buildNumber;
     setTimeout(() => {
       const playerElement = this.contentIframe.nativeElement;
@@ -93,10 +89,10 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
       this.loadDefaultPlayer(this.configService.appConfig.PLAYER_CONFIG.localBaseUrl);
       return;
     }
-    if (this.playerCdnUrl && !CONTENT_MIME_TYPE.includes(_.get(this.playerConfig, 'metadata.mimeType'))) {
-      this.loadCdnPlayer();
-      return;
-    }
+    // if (this.playerCdnUrl && !CONTENT_MIME_TYPE.includes(_.get(this.playerConfig, 'metadata.mimeType'))) {
+    //   this.loadCdnPlayer();
+    //   return;
+    // }
     this.loadDefaultPlayer();
   }
   /**
