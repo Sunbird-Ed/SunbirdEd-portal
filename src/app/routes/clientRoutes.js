@@ -124,7 +124,7 @@ function getLocals(req) {
   locals.googleCaptchaSiteKey = envHelper.sunbird_google_captcha_site_key
   locals.videoMaxSize = envHelper.sunbird_portal_video_max_size
   locals.reportsLocation = envHelper.sunbird_azure_report_container_name
-  locals.PlayerCdnEnabled = envHelper.sunbird_portal_player_cdn_enabled
+  locals.playerCdnEnabled = envHelper.sunbird_portal_player_cdn_enabled
   return locals
 }
 

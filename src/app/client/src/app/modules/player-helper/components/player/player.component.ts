@@ -28,8 +28,8 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
     public resourceService: ResourceService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
         ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
-    this.playerCdnEnabled = (<HTMLInputElement>document.getElementById('PlayerCdnEnabled'))
-        ? (<HTMLInputElement>document.getElementById('PlayerCdnEnabled')).value : undefined;
+    this.playerCdnEnabled = (<HTMLInputElement>document.getElementById('playerCdnEnabled'))
+        ? (<HTMLInputElement>document.getElementById('playerCdnEnabled')).value : undefined;
   }
   /**
    * loadPlayer method will be called
