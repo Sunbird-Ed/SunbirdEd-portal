@@ -109,6 +109,8 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.instanceName = this.resourceService.instance;
     this.activatedRoute.params.subscribe(params => {
+      this.itemsToDisplay = [];
+      this.searchResults = [];
       this.searchKeyword = this.dialCode = params.dialCode;
       this.setTelemetryData();
       this.searchDialCode();
