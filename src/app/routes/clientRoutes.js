@@ -149,7 +149,9 @@ const renderDefaultIndexPage = (req, res) => {
     if(envHelper.hasCdnIndexFile && req.cookies.cdnFailed !== 'true'){ // assume cdn works and send cdn ejs file
       res.render(path.join(__dirname, '../dist', 'cdn_index.ejs'))
     } else { // load local file if cdn fails or cdn is not enabled
-      console.log("CDN Failed - loading local files");
+      if(req.cookies.cdnFailed === 'true'){
+        console.log("CDN Failed - loading local files");
+      }
       res.render(path.join(__dirname, '../dist', 'index.ejs'))
     }
   }
