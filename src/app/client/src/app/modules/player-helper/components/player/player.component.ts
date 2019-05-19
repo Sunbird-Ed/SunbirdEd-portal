@@ -89,10 +89,10 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
       this.loadDefaultPlayer(this.configService.appConfig.PLAYER_CONFIG.localBaseUrl);
       return;
     }
-    if (this.playerCdnUrl && !CONTENT_MIME_TYPE.includes(_.get(this.playerConfig, 'metadata.mimeType'))) {
-      this.loadCdnPlayer();
-      return;
-    }
+    // if (this.playerCdnUrl && !CONTENT_MIME_TYPE.includes(_.get(this.playerConfig, 'metadata.mimeType'))) {
+    //   this.loadCdnPlayer();
+    //   return;
+    // }
     this.loadDefaultPlayer();
   }
   /**
