@@ -1,9 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ContentImportComponent } from './index';
+import { ContentImportComponent, BrowseComponent } from './index';
 
 
 const routes: Routes = [
+  {
+    path: 'browse', component: BrowseComponent, data: {
+      telemetry: {
+        env: 'offline', pageid: 'browse', type: 'view'
+      },
+    }
+  },
   {
     path: 'get', loadChildren: './../dial-code-search/dial-code-search.module#DialCodeSearchModule'
   },

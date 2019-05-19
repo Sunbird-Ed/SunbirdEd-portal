@@ -1,16 +1,50 @@
-<div class="sb-offline-imports">
-  <div class="ui container sb-offline-area d-flex">
-    <div class="sb-import-icon"><i class="qrcode icon fa-5x"></i></div>
-    <div class="sb-import-content">
-      <h4>{{resourceService?.frmelmnts?.lbl?.importContent}}</h4>
-      <p>{{resourceService?.frmelmnts?.lbl?.uploadEcarFromPd}} </p>
+<div class="ui grid sb-offline-import-content">
+  <div class="six wide column sb-offline-import-content-column">
+    <div class="sb-offline-imports sb-offline-import-content-border">
+      <div class="ui container sb-offline-area d-flex">
+        <div class="sb-import-icon">
+          <img src="../../../../../assets/images/offline-import-file.png" alt="offline import">
+        </div>
+        <div class="sb-import-content">
+          <h4 class="sb-import-content-title">{{resourceService?.frmelmnts?.lbl?.importContent}}</h4>
+          <p class="mt-8 mb-0 sb-import-content-meta">{{resourceService?.frmelmnts?.lbl?.uploadEcarFromPd}} </p>
+        </div>
+        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+          [telemetryInteractEdata]="ContentImportIntractEdata"
+          class="sb-btn sb-btn-normal sb-btn-secondary ml-auto sb-btn-bs" (click)="showImportModal = true;">
+          {{resourceService?.frmelmnts?.lbl?.importContent}}
+        </button>
+        <div *ngIf="showImportModal">
+          <app-content-import (closeImportModal)="showImportModal = false"></app-content-import>
+        </div>
+      </div>
     </div>
-    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="ContentImportIntractEdata" class="sb-btn sb-btn-normal sb-btn-secondary ml-auto" (click)="showImportModal = true;">
-      {{resourceService?.frmelmnts?.lbl?.importContent}}
-    </button>
   </div>
-</div>
+  <div class="six wide column sb-offline-import-content-column">
+    <div class="sb-offline-imports">
+      <div class="ui container sb-offline-area d-flex">
+        <div class="sb-import-icon sb-import-icon-watch-video">
+          <img src="../../../../../assets/images/offline-import-book.png" alt="offline watch video">
+        </div>
+        <div class="sb-import-content">
+          <h4 class="sb-import-content-title">{{resourceService?.frmelmnts?.lbl?.howToVideo}}</h4>
+          <dl class="mt-8 mb-0">
+            <div class="d-flex">
+              <dt class="sb-offline-import-description-list-key">{{resourceService.frmelmnts?.lbl?.subtopic}} :</dt>
+              <dd class="sb-offline-import-description-list-value">
+                {{resourceService.frmelmnts?.lbl?.limitsOfArtificialIntell}}</dd>
+            </div>
+          </dl>
+        </div>
+        <button class="sb-btn sb-btn-normal sb-btn-secondary ml-auto sb-btn-tertiary sb-btn-bs"
+          (click)="showVideoModal = true;">
+          {{resourceService.frmelmnts?.lbl?.watchVideo}}
+        </button>
+        <div *ngIf="showVideoModal">
+          <app-watch-video (closeVideoModal)="showVideoModal = false"></app-watch-video>
 
-<div *ngIf="showImportModal">
-  <app-content-import (closeImportModal)="showImportModal = false"></app-content-import>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

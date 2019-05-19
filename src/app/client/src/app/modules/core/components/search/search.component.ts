@@ -4,6 +4,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { UserService } from './../../services';
 import { ResourceService, ConfigService, IUserProfile } from '@sunbird/shared';
+import { environment } from '@sunbird/environment';
 import { Subscription } from 'rxjs';
 import * as _ from 'lodash-es';
 /**
@@ -57,6 +58,9 @@ export class SearchComponent implements OnInit {
   config: ConfigService;
   userProfile: IUserProfile;
 
+  isOffline: boolean = environment.isOffline;
+
+
   searchDropdownValues: Array<string> = ['All', 'Courses', 'Library'];
 
   searchPlaceHolderValue: string;
@@ -97,6 +101,7 @@ export class SearchComponent implements OnInit {
       'Courses': 'courses',
       'Users': 'users'
     };
+    console.log('offline' , this.isOffline);
   }
 
   ngOnInit() {
@@ -108,7 +113,7 @@ export class SearchComponent implements OnInit {
       if (userdata && !userdata.err) {
         this.userProfile = userdata.userProfile;
         if (this.userProfile.rootOrgAdmin) {
-            this.searchDropdownValues.push('Users');
+          this.searchDropdownValues.push('Users');
         }
       }
       this.setFilters();
@@ -122,7 +127,7 @@ export class SearchComponent implements OnInit {
       .subscribe(item => {
         this.setSearchPlaceHolderValue();
       }
-    );
+      );
   }
 
   /**
@@ -136,9 +141,9 @@ export class SearchComponent implements OnInit {
   /**
    * search input box placeholder value
    */
-  setSearchPlaceHolderValue () {
+  setSearchPlaceHolderValue() {
     const keyName = this.searchDisplayValueMappers[this.selectedOption];
-    this.searchPlaceHolderValue = this.resourceService.frmelmnts['tab'] ? this.resourceService.frmelmnts.tab[keyName]  : '';
+    this.searchPlaceHolderValue = this.resourceService.frmelmnts['tab'] ? this.resourceService.frmelmnts.tab[keyName] : '';
   }
 
   /**
@@ -176,9 +181,9 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  setDropdownSelectedOption (value) {
-    if ( value === 'Users' ) {
-      if ( !this.userProfile.rootOrgAdmin ) {
+  setDropdownSelectedOption(value) {
+    if (value === 'Users') {
+      if (!this.userProfile.rootOrgAdmin) {
         this.selectedOption = 'All';
       } else {
         this.selectedOption = value;

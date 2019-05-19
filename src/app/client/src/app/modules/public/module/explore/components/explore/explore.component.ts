@@ -14,6 +14,7 @@ import { takeUntil, map, mergeMap, first, filter } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 @Component({
+  selector: 'app-explore-component',
   templateUrl: './explore.component.html'
 })
 export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -36,6 +37,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public loaderMessage;
   public pageSections: Array<ICaraouselData> = [];
   isOffline: boolean = environment.isOffline;
+
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)

@@ -1,8 +1,10 @@
 import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } from '@angular/animations';
 
-import { AfterViewInit, Directive, ElementRef, Inject, OnDestroy, NgZone, ChangeDetectorRef, } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, Inject, OnDestroy, NgZone, ChangeDetectorRef, Input, } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, pairwise, share, throttleTime, takeUntil, tap } from 'rxjs/operators';
+import { environment } from '@sunbird/environment';
+
 
 enum Direction {
   Up = 'Up',
@@ -17,6 +19,8 @@ enum Direction {
 export class StickyHeaderDirective implements AfterViewInit, OnDestroy {
   player: AnimationPlayer;
   public unsubscribe = new Subject<void>();
+  isOffline: boolean = environment.isOffline;
+
 
   set show(show: boolean) {
     if (this.player) {
@@ -32,10 +36,10 @@ export class StickyHeaderDirective implements AfterViewInit, OnDestroy {
   }
 
   constructor(private builder: AnimationBuilder, private el: ElementRef, private zone: NgZone,
-    private cdr: ChangeDetectorRef) {}
+    private cdr: ChangeDetectorRef) { }
 
   private fadeIn(): AnimationMetadata[] {
-    return [style({ opacity: 0}), animate('400ms ease-in', style({ opacity: 1, transform: 'translateY(0)'}))];
+    return [style({ opacity: 0 }), animate('400ms ease-in', style({ opacity: 1, transform: 'translateY(0)' }))];
   }
 
   private fadeOut(): AnimationMetadata[] {
@@ -43,30 +47,34 @@ export class StickyHeaderDirective implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    if (this.isOffline) {
+      return false;
+    }
     this.zone.runOutsideAngular(() => {
-    const scroll$ = fromEvent(window, 'scroll').pipe(
-      throttleTime(10),
-      map( (window1) => window.pageYOffset),
-      pairwise(),
-      map(([y1, y2]): Direction => {
-        return (y2 < y1 ? ((y1 < 160 || y2 < 160) ? Direction.Up : Direction.None) : (y2 > 160 ? Direction.Down : Direction.None));
-      }),
-      distinctUntilChanged(),
-      share(),
-    );
-    const goingUp$ = scroll$.pipe(filter(direction => direction === Direction.Up));
+      const scroll$ = fromEvent(window, 'scroll').pipe(
+        throttleTime(10),
+        map((window1) => window.pageYOffset),
+        pairwise(),
+        map(([y1, y2]): Direction => {
+          return (y2 < y1 ? ((y1 < 160 || y2 < 160) ? Direction.Up : Direction.None) : (y2 > 160 ? Direction.Down : Direction.None));
+        }),
+        distinctUntilChanged(),
+        share(),
+      );
+      const goingUp$ = scroll$.pipe(filter(direction => direction === Direction.Up));
 
-    const goingDown$ = scroll$.pipe(filter(direction => direction === Direction.Down));
+      const goingDown$ = scroll$.pipe(filter(direction => direction === Direction.Down));
 
-    goingUp$.subscribe(() => {
-      this.show = true;
-      this.cdr.detectChanges();
+      goingUp$.subscribe(() => {
+        this.show = true;
+        this.cdr.detectChanges();
+      });
+      goingDown$.subscribe(() => {
+        this.show = false;
+        this.cdr.detectChanges();
+      });
     });
-    goingDown$.subscribe(() => {
-      this.show = false;
-      this.cdr.detectChanges();
-    });
-  });
+
   }
 
   ngOnDestroy() {
