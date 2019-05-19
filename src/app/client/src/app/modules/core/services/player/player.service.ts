@@ -118,7 +118,6 @@ export class PlayerService {
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
       {} : contentDetails.contentData.body;
     configuration.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
-    configuration.config.host = window.location.origin;
     return configuration;
   }
 

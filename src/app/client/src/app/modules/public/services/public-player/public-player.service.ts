@@ -91,8 +91,6 @@ export class PublicPlayerService {
         type: 'dialCode'
       }];
     }
-    configuration.config.host = window.location.origin;
-    console.log(configuration.config.host);
     return configuration;
   }
   public getCollectionHierarchy(identifier: string, option: any = { params: {} }): Observable<CollectionHierarchyAPI.Get> {
