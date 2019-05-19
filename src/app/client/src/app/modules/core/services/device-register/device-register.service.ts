@@ -16,7 +16,6 @@ export class DeviceRegisterService  {
   private deviceId: string;
   private deviceRegisterApi: string;
   private timer$: Observable<any>;
-  private channel: string;
   private timerSubscription: Subscription;
 
   constructor(public deviceDetectorService: DeviceDetectorService, public publicDataService: PublicDataService,
@@ -33,16 +32,15 @@ export class DeviceRegisterService  {
     && (<HTMLInputElement>document.getElementById('deviceRegisterApi')).value;
   }
 
-  public initialize(channel) {
-    this.registerDevice(channel);
+  public initialize() {
+    this.registerDevice();
     this.timer$ = timer(3.6e+6, 3.6e+6);
     this.timerSubscription = this.timer$.subscribe(t => {
-      this.registerDevice(this.channel);
+      this.registerDevice();
     });
   }
 
-  registerDevice(channel: string, deviceId?: string) {
-    this.channel = channel;
+  registerDevice() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo(); // call register api every 24hrs
     this.deviceId = (<HTMLInputElement>document.getElementById('deviceId'))
     && (<HTMLInputElement>document.getElementById('deviceId')).value;
@@ -61,8 +59,7 @@ export class DeviceRegisterService  {
           system: deviceInfo.os_version,
           platform: deviceInfo.os,
           raw: deviceInfo.userAgent
-        },
-        channel: channel
+        }
       }
     };
     const httpOptions: HttpOptions = {

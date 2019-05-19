@@ -5,8 +5,7 @@ import { PlayerConfig } from '@sunbird/shared';
 import { environment } from '@sunbird/environment';
 import { Router } from '@angular/router';
 import { ToasterService, ResourceService } from '@sunbird/shared';
-const CONTENT_MIME_TYPE = ['application/vnd.ekstep.h5p-archive', 'application/vnd.ekstep.html-archive',
-  'video/x-youtube', 'video/mp4', 'video/webm'];
+
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html'
@@ -20,7 +19,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
   buildNumber: string;
   @Input() playerOption: any ;
   contentRatingModal = false;
-  playerCdnUrl: string;
+  playerCdnEnabled: string;
   /**
  * Dom element reference of contentRatingModal
  */
@@ -29,8 +28,8 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
     public resourceService: ResourceService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
         ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
-    this.playerCdnUrl = (<HTMLInputElement>document.getElementById('PlayerCdnUrl'))
-        ? (<HTMLInputElement>document.getElementById('PlayerCdnUrl')).value : undefined;
+    this.playerCdnEnabled = (<HTMLInputElement>document.getElementById('playerCdnEnabled'))
+        ? (<HTMLInputElement>document.getElementById('playerCdnEnabled')).value : undefined;
   }
   /**
    * loadPlayer method will be called
@@ -48,7 +47,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
     }
   }
   loadCdnPlayer() {
-    const iFrameSrc = this.playerCdnUrl + '&build_number=' + this.buildNumber;
+    const iFrameSrc = this.configService.appConfig.PLAYER_CONFIG.cdnUrl + '&build_number=' + this.buildNumber;
     setTimeout(() => {
       const playerElement = this.contentIframe.nativeElement;
       playerElement.src = iFrameSrc;
@@ -89,10 +88,10 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
       this.loadDefaultPlayer(this.configService.appConfig.PLAYER_CONFIG.localBaseUrl);
       return;
     }
-    // if (this.playerCdnUrl && !CONTENT_MIME_TYPE.includes(_.get(this.playerConfig, 'metadata.mimeType'))) {
-    //   this.loadCdnPlayer();
-    //   return;
-    // }
+    if (_.toLower(this.playerCdnEnabled) === 'true') {
+      this.loadCdnPlayer();
+      return;
+    }
     this.loadDefaultPlayer();
   }
   /**

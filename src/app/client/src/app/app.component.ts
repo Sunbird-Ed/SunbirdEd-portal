@@ -111,7 +111,6 @@ export class AppComponent implements OnInit {
         this.tenantService.getTenantInfo(this.slug);
         this.setPortalTitleLogo();
         this.telemetryService.initialize(this.getTelemetryContext());
-        this.deviceRegisterService.initialize(this.channel);
         this.checkTncAndFrameWorkSelected();
         this.initApp = true;
       }, error => {
@@ -160,6 +159,7 @@ export class AppComponent implements OnInit {
   public setDeviceId(): Observable<string> {
     return new Observable(observer => this.telemetryService.getDeviceId(deviceId => {
         (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+        this.deviceRegisterService.initialize();
         observer.next(deviceId);
         observer.complete();
       }));
