@@ -93,6 +93,9 @@
   &:focus {
     outline: none;
   }
+  img {
+    transition: all 0.4s;
+  }
 
   .sb-icon-sort {
     height: 16px;
@@ -102,6 +105,10 @@
   .sb-icon-arrow-down {
     height: 10px;
     width: 10px;
+  }
+
+  &.rotate img {
+    transform: rotate(-180deg);
   }
 
 }

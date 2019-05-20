@@ -69,7 +69,7 @@
     <div class="bg-primary p-8" *ngIf="showExploreHeader || userService.loggedIn || isOffline">
         <div class="ui container d-flex flex-ai-center mx-0">
             <!--Explore Content-->
-            <span class="sb-toggle-btn" tabindex="0" title="Explore Content">
+            <span class="sb-toggle-btn" [ngClass]="{'rotate': toggleIcon}" tabindex="0" title="Explore Content" (click)="toggleIcon =! toggleIcon ">
                 <img src="assets/images/sort.svg" class="sb-icon-sort" alt="Toggle Icon">
                 Explore Content
                 <img src="assets/images/arrow-down.svg" class="sb-icon-arrow-down" alt="Toggle Icon">
