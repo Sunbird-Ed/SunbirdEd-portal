@@ -73,6 +73,7 @@ const createUser = async (requestBody, req) => {
     },
     json: true
   }
+  console.log('sso user create request', options);
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       return data;

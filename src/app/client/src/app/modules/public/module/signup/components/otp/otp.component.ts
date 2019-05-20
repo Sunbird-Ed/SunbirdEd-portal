@@ -119,7 +119,6 @@ export class OtpComponent implements OnInit {
       createRequest.request['email'] = this.signUpdata.controls.email.value;
       createRequest.request['emailVerified'] = true;
     }
-
     this.signupService.createUser(createRequest).subscribe(
       (resp: ServerResponse) => {
         const reqQuery = this.activatedRoute.snapshot.queryParams;
