@@ -78,3 +78,30 @@
   margin: 0 $base-block-space * 2;
   background: rgba(255, 255, 255, 0.4);
 }
+
+.sb-toggle-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  font-size: 12px;
+  color: $white-color;
+  margin: 0;
+  padding: 8px;
+  width: 160px;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+
+  .sb-icon-sort {
+    height: 16px;
+    width: 16px;
+  }
+
+  .sb-icon-arrow-down {
+    height: 10px;
+    width: 10px;
+  }
+
+}
