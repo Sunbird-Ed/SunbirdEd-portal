@@ -24,13 +24,13 @@
       <div class="ui segment asset_container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500"
         [scrollWindow]="false" (scrolled)="lazyloadMyImages()" suiTabContent="1">
         <div class="ui small middle aligned bordered images custom-image">
-          <img *ngFor="let data of myAssets" (click)="addImageInEditor(data.downloadUrl)" [src]="data.downloadUrl">
+          <img *ngFor="let data of myAssets" (click)="addImageInEditor(data.downloadUrl, data.identifier)" [src]="data.downloadUrl">
         </div>
       </div>
       <div class="ui segment asset_container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500"
         [scrollWindow]="false" (scrolled)="lazyloadAllImages()" suiTabContent="2">
         <div class="ui small middle aligned bordered images custom-image">
-          <img *ngFor="let data of allImages" (click)="addImageInEditor(data.downloadUrl)" [src]="data.downloadUrl">
+          <img *ngFor="let data of allImages" (click)="addImageInEditor(data.downloadUrl, data.identifier)" [src]="data.downloadUrl">
         </div>
       </div>
     </sui-tabset>

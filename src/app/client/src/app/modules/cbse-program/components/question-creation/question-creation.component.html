@@ -8,12 +8,12 @@
 <form *ngIf="!showPreview" class="ui form mt-8" [formGroup]="questionMetaForm">
   <div class="field">
     <label>Question</label>
-    <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event.body, 'question')"
+    <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'question')"
       [editorDataInput]="question" [editorId]="'question_editor'"></app-ckeditor-tool>
   </div>
   <div class="field">
     <label>Answer</label>
-    <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event.body, 'solution')"
+    <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'solution')"
       [editorDataInput]="solution" [editorId]="'answer_editor'"></app-ckeditor-tool>
   </div>
   <div class="two fields">

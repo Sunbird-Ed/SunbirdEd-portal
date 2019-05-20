@@ -17,7 +17,7 @@ export class ChapterListComponent implements OnInit {
   @Output() selectedQuestionTypeTopic = new EventEmitter<any>();
   public textBookChapters: Array<any> = [];
   private questionType = ['vsa', 'sa', 'la', 'mcq'];
-  collectionData: ContentData;
+  public collectionData;
   constructor(public publicDataService: PublicDataService, private configService: ConfigService, 
     private userService: UserService, public actionService: ActionService) {
   }
