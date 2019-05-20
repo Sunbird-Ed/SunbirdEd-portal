@@ -8,12 +8,12 @@
 
 <div *ngIf='programDetails?.userDetails' class="ui segment no-bg m-0 w-300" style="margin-top:2px !important;">
 
-  <div *ngIf="stages[currentStage] == 'chooseClass'">
+  <div *ngIf="stages[currentStage] === 'chooseClass'">
     <app-select-textbook [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
-      (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-select-textbook>
+      (selectedClassSubjectEvent)="selectedClassSubjectHandler($event)"></app-select-textbook>
   </div>
 
-  <div class="ui container" *ngIf="stages[currentStage] == 'topicList'">
+  <div class="ui container" *ngIf="stages[currentStage] === 'chooseTextbook' || stages[currentStage] === 'topicList' ">
       <div class="sb-pageSection">
         <div class="sb-pageSection-header">
           <h4 class="sb-pageSection-title m-0 mr-8">Searched results for </h4>
@@ -25,12 +25,18 @@
               class="close icon"></i></button>
         </div>
       </div>
-      <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes"
-      (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list>
+      <div *ngIf="stages[currentStage] === 'chooseTextbook'">
+          <app-textbook-list [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
+            (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-textbook-list>
+        </div>
+        <div *ngIf="stages[currentStage] === 'topicList'">
+            <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes"
+            (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list>
+        </div>
     </div>
 
 
-    <div class="ui container" *ngIf="stages[currentStage] == 'createQuestion'">
+    <div class="ui container" *ngIf="stages[currentStage] === 'createQuestion'">
 
         <div class="sb-pageSection">
             <div class="sb-pageSection-header">
