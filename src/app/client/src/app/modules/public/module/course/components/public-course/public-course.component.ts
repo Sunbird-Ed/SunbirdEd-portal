@@ -167,6 +167,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         return collector;
       }, []);
+      console.log(carouselData);
       return carouselData;
   }
   public prepareVisits(event) {
