@@ -13,7 +13,7 @@
       (selectedClassSubjectEvent)="selectedClassSubjectHandler($event)"></app-select-textbook>
   </div>
 
-  <div class="ui container" *ngIf="stages[currentStage] !== 'chooseClass'">
+  <div class="ui container" *ngIf="stages[currentStage] === 'chooseTextbook' || stages[currentStage] === 'topicList' ">
       <div class="sb-pageSection">
         <div class="sb-pageSection-header">
           <h4 class="sb-pageSection-title m-0 mr-8">Searched results for </h4>

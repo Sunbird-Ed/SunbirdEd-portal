@@ -52,13 +52,13 @@ export class ChapterListComponent implements OnInit {
       apiRequest = this.questionType.map(fields => this.searchQuestionsByType(fields));
     }
     forkJoin(apiRequest).subscribe(data => {
-      this.textBookChapters = _.map(textBookMetaData, data => {
-        const results = { name: data.name, topic:  data.topic };
+      this.textBookChapters = _.map(textBookMetaData, topicData => {
+        const results = { name: topicData.name, topic:  topicData.topic };
         _.forEach(this.questionType, (type: string, index) => {
           results[type] = {
             name: type.toUpperCase(),
-            total: this.getResultCount(data[index], data.topic),
-            me: this.getResultCount(data[index + this.questionType.length], data.topic)
+            total: this.getResultCount(data[index], topicData.topic),
+            me: this.getResultCount(data[index + this.questionType.length], topicData.topic)
           };
         });
         return results;
