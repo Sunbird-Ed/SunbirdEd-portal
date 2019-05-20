@@ -3,8 +3,8 @@
     [chartType]="chart.chartType" [colors]="chart.colors" [legend]="chart.legend"></canvas>
 
 
-  <sui-accordion class="styled fluid" [closeOthers]="false">
-    <sui-accordion-panel [isOpen]="true" *ngIf="showFilters">
+  <sui-accordion class="styled fluid" [closeOthers]="false" *ngIf="showFilters">
+    <sui-accordion-panel [isOpen]="true">
       <div title>
         <i class="dropdown icon"></i>
         {{resourceService?.frmelmnts?.lbl?.filters }}

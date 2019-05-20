@@ -65,15 +65,15 @@ export class DataChartComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription = combineLatest(this.onLabelsChange(), this.onTimeLineChange(), this.onDataSetChange(), this.onTimeLineRangeChange())
       .subscribe(value => {
         if (this.chartInfo) {
-          this.calculateUsage(this.chartInfo.datasets);
+          this.calculateUsage();
           this.chartInfo.update();
         }
       });
   }
 
-  calculateUsage = (datasets) => {
+  calculateUsage = () => {
     const stats = [];
-    _.forEach(datasets, dataset => {
+    _.forEach(this.chartInfo.datasets, dataset => {
       if (!dataset.hidden) {
         const total = _.sumBy(dataset.data, value => Number(value));
         const avgTotal = {};
@@ -82,8 +82,10 @@ export class DataChartComponent implements OnInit, AfterViewInit, OnDestroy {
         stats.push(avgTotal);
       }
     });
-    const summation = _.sumBy(stats, stat => Number(stat.sum));
-    stats.push({ label: 'Total', sum: summation.toFixed(2) });
+    if (stats.length > 1) {
+      const summation = _.sumBy(stats, stat => Number(stat.sum));
+      stats.push({ label: 'Total', sum: summation.toFixed(2) });
+    }
     this.avgStatistics = stats;
     this.cdr.detectChanges();
   }
