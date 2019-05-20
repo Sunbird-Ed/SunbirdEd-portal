@@ -5,7 +5,7 @@
       <sui-accordion-panel [isOpen]="i === 0" *ngFor="let textbook of textBookChapters; let i = index">
         <div title>
           <i class="dropdown icon"></i>
-          {{textbook.name}}
+          {{textbook.name}} ( {{textbook.topic}} )
         </div>
         <div content class="sb-table-container my-0">
           <table class="sb-table sb-table-fixed sb-table-hover">

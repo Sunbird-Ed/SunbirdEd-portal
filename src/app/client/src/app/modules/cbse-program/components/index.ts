@@ -8,3 +8,4 @@ export * from './mcq-template-selection/mcq-template-selection.component';
 export * from './ckeditor-tool/ckeditor-tool.component';
 export * from './question-preview/question-preview.component';
 export * from './question-creation-header/question-creation-header.component';
+export * from './textbook-list/textbook-list.component';

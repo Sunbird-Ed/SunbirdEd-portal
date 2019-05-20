@@ -10,7 +10,7 @@ export class SelectTextbookComponent implements OnInit {
 
   @Input() config: any;
   @Input() selectedAttributes: any;
-  @Output() selectedTextbookEvent = new EventEmitter<any>();
+  @Output() selectedClassSubjectEvent = new EventEmitter<any>();
   public filtersDetails: any;
   public selectedOptions: any = {};
 
@@ -28,6 +28,6 @@ export class SelectTextbookComponent implements OnInit {
   }
 
   emitSelectedTextbook() {
-    this.selectedTextbookEvent.emit(this.selectedOptions);
+    this.selectedClassSubjectEvent.emit(this.selectedOptions);
   }
 }
