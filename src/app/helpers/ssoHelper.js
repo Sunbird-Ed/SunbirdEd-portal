@@ -63,7 +63,7 @@ const fetchUserWithExternalId = async (payload, req) => { // will be called from
 const createUser = async (requestBody, req) => {
   const options = {
     method: 'POST',
-    url: envHelper.LEARNER_URL + 'user/v2/create?signupType=',
+    url: envHelper.LEARNER_URL + 'user/v2/create',
     headers: getHeaders(req),
     body: {
       params: {
