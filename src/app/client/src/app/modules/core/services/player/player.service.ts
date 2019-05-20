@@ -28,9 +28,12 @@ export class PlayerService {
    * stores collection/course details
    */
   collectionData: ContentData;
+  previewCdnUrl: string;
   constructor(public userService: UserService, public contentService: ContentService,
     public configService: ConfigService, public router: Router, public navigationHelperService: NavigationHelperService,
     public publicDataService: PublicDataService) {
+      this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
+      ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
   }
 
   /**
@@ -118,6 +121,7 @@ export class PlayerService {
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
       {} : contentDetails.contentData.body;
     configuration.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
+    configuration.config.previewCdnUrl = this.previewCdnUrl;
     return configuration;
   }
 
