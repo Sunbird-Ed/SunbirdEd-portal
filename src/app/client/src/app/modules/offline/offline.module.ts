@@ -1,6 +1,4 @@
 import { ExploreModule } from './../public/module/explore/explore.module';
-import { ExploreComponent } from './../public/module/explore/components/explore/explore.component';
-import { PublicModule } from './../public/public.module';
 import { OfflineFileUploaderService } from './services';
 import { SuiModalModule, SuiProgressModule } from 'ng2-semantic-ui';
 import { NgModule } from '@angular/core';
@@ -15,11 +13,12 @@ import {
   BrowseComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
-
+import { BrowserModule } from '@angular/platform-browser';
 
 
 @NgModule({
   imports: [
+    BrowserModule,
     BrowserAnimationsModule,
     CommonModule,
     CoreModule,
