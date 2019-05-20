@@ -104,6 +104,9 @@ export class OtpComponent implements OnInit {
 
   createUser() {
     const createRequest = {
+      params: {
+        signupType: 'self'
+      },
       'request': {
         'firstName': _.trim(this.signUpdata.controls.name.value),
         'password': _.trim(this.signUpdata.controls.password.value),

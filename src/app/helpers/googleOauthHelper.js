@@ -96,6 +96,9 @@ const createUserWithMailId = async (accountDetails, req) => {
     url: envHelper.LEARNER_URL + 'user/v2/create',
     headers: getHeaders(req),
     body: {
+      params: {
+        signupType: "google"
+      },
       request: {
         firstName: accountDetails.name,
         email: accountDetails.emailId,
