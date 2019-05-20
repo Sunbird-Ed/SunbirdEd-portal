@@ -422,7 +422,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   private setTelemetryContentImpression() {
     this.telemetryContentImpression = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
