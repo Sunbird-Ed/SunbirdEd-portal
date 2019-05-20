@@ -146,7 +146,7 @@ export class AppComponent implements OnInit {
   }
 
   /**
-   * once tnc is accpeted from tnc popup on submit this function is triggered
+   * once tnc is accepted from tnc popup on submit this function is triggered
    */
   public onAcceptTnc() {
     this.showTermsAndCondPopUp = false;
