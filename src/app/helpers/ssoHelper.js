@@ -66,10 +66,14 @@ const createUser = async (requestBody, req) => {
     url: envHelper.LEARNER_URL + 'user/v2/create',
     headers: getHeaders(req),
     body: {
+      params: {
+        signupType: "sso"
+      },
       request: requestBody
     },
     json: true
   }
+  console.log('sso user create request', options);
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       return data;
