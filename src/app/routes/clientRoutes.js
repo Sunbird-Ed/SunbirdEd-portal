@@ -155,6 +155,10 @@ const renderDefaultIndexPage = (req, res) => {
 // renders tenant page from cdn or from local files based on tenantCdnUrl exists
 const renderTenantPage = (req, res) => {
   const tenantName = _.lowerCase(req.params.tenantName) || envHelper.DEFAULT_CHANNEL
+  if(req.query.cdnFailed === 'true') {
+    loadTenantFromLocal(req, res)
+    return;
+  }
   if (envHelper.TENANT_CDN_URL) {
     request(`${envHelper.TENANT_CDN_URL}/${tenantName}/index.html`, (error, response, body) => {
       if (error || !body || response.statusCode !== 200) {
