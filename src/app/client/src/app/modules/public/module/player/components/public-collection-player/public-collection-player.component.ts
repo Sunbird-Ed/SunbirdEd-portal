@@ -24,6 +24,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 	 * telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
+  telemetryContentImpression: IImpressionEventInput;
   public queryParams: any;
   public collectionData: object;
 
@@ -73,6 +74,10 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   public playerTelemetryInteractObject: IInteractEventObject;
   public telemetryCourseEndEvent: IEndEventInput;
   public telemetryCourseStart: IStartEventInput;
+  /**
+   * Page Load Time, used this data in impression telemetry
+   */
+  public pageLoadDuration: Number;
 
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
@@ -130,26 +135,27 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   }
 
   ngAfterViewInit () {
-      setTimeout(() => {
-        this.telemetryImpression = {
-          context: {
-            env: this.route.snapshot.data.telemetry.env,
-            cdata: [{id: this.activatedRoute.snapshot.params.collectionId, type: 'Collection'}]
-          },
-          object: {
-            id: this.activatedRoute.snapshot.params.collectionId,
-            type: 'collection',
-            ver: '1.0'
-          },
-          edata: {
-            type: this.route.snapshot.data.telemetry.type,
-            pageid: this.route.snapshot.data.telemetry.pageid,
-            uri: this.router.url,
-            subtype: this.route.snapshot.data.telemetry.subtype,
-            duration: this.navigationHelperService.getPageLoadTime()
-          }
-        };
-      });
+    this.pageLoadDuration = this.navigationHelperService.getPageLoadTime();
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.route.snapshot.data.telemetry.env,
+          cdata: [{id: this.activatedRoute.snapshot.params.collectionId, type: 'Collection'}]
+        },
+        object: {
+          id: this.activatedRoute.snapshot.params.collectionId,
+          type: 'collection',
+          ver: '1.0'
+        },
+        edata: {
+          type: this.route.snapshot.data.telemetry.type,
+          pageid: this.route.snapshot.data.telemetry.pageid,
+          uri: this.router.url,
+          subtype: this.route.snapshot.data.telemetry.subtype,
+          duration: this.pageLoadDuration
+        }
+      };
+    });
   }
 
   ngOnDestroy() {
@@ -162,10 +168,30 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     this.playerConfig = this.getPlayerConfig(id).pipe(map((data) => {
       data.context.objectRollup = this.objectRollUp;
       this.playerTelemetryInteractObject.rollup = this.objectRollUp;
+      this.setTelemetryContentImpression(data);
       return data;
     }), catchError((err) => {
       return err;
     }), );
+  }
+
+  setTelemetryContentImpression (data) {
+    this.telemetryContentImpression = {
+      context: {
+        env: this.route.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.route.snapshot.data.telemetry.env,
+        pageid: this.route.snapshot.data.telemetry.env,
+        uri: this.router.url
+      },
+      object: {
+        id: data.metadata.identifier,
+        type: data.metadata.dataType || data.metadata.resourceType,
+        ver: data.metadata.pkgVersion ? data.metadata.pkgVersion.toString() : '1.0',
+        rollup: this.objectRollUp
+      }
+    };
   }
 
   public playContent(data: any): void {
@@ -312,29 +338,31 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 
   private setTelemetryStartEndData() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
-    this.telemetryCourseStart = {
-      context: {
-        env: this.route.snapshot.data.telemetry.env,
-        cdata: this.telemetryCdata
-      },
-      object: {
-        id: this.collectionId,
-        type: 'Collection',
-        ver: '1.0',
-      },
-      edata: {
-        type: this.route.snapshot.data.telemetry.type,
-        pageid: this.route.snapshot.data.telemetry.pageid,
-        mode: 'play',
-        uaspec: {
-          agent: deviceInfo.browser,
-          ver: deviceInfo.browser_version,
-          system: deviceInfo.os_version ,
-          platform: deviceInfo.os,
-          raw: deviceInfo.userAgent
+    setTimeout(() => {
+      this.telemetryCourseStart = {
+        context: {
+          env: this.route.snapshot.data.telemetry.env,
+          cdata: this.telemetryCdata
+        },
+        object: {
+          id: this.collectionId,
+          type: 'Collection',
+          ver: '1.0',
+        },
+        edata: {
+          type: this.route.snapshot.data.telemetry.type,
+          pageid: this.route.snapshot.data.telemetry.pageid,
+          mode: 'play',
+          uaspec: {
+            agent: deviceInfo.browser,
+            ver: deviceInfo.browser_version,
+            system: deviceInfo.os_version ,
+            platform: deviceInfo.os,
+            raw: deviceInfo.userAgent
+          }
         }
-      }
-    };
+      };
+    }, 50);
     this.telemetryCourseEndEvent = {
       object: {
         id: this.collectionId,

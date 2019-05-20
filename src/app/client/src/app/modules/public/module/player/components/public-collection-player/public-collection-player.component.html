@@ -2,7 +2,7 @@
   <div class="ui stackable grid">
 
     <!--Content Section-->
-    <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression" id="app-player-collection-renderer" *ngIf="showPlayer">
+    <div class="twelve wide column" [appTelemetryImpression]="telemetryContentImpression" id="app-player-collection-renderer" *ngIf="showPlayer">
 
       <!--Content Title-->
       <div class="sb-pageSection">
@@ -57,7 +57,6 @@
         </div>
       </div>
       <!--/Content Navigation-->
-    
     </div>
     <!--/Content Section-->
 
@@ -68,7 +67,7 @@
     <!--/Loader if collection data not ready-->
 
     <!--Collections-->
-    <div class="twelve wide column" *ngIf="!loader">
+    <div class="twelve wide column" *ngIf="!loader" [appTelemetryImpression]="telemetryImpression">
 
       <!--Collection Title-->
       <div class="sb-pageSection">
