@@ -6,7 +6,7 @@
       <label class="mb-16 fs-1-286">Question</label>
       <label *ngIf="showFormError && [undefined, ''].includes(mcqForm.question)"
         class="ui basic red error label pt-0">Fill Question</label>
-      <app-ckeditor-tool (editorDataOutput)="mcqForm.question = $event.body" [editorConfig]="questionMetaData"
+      <app-ckeditor-tool (editorDataOutput)="mcqForm.question = $event.body; getMedia($event.mediaobj);" [editorConfig]="questionMetaData"
         [editorDataInput]="mcqForm.question"></app-ckeditor-tool>
     </div>
     <div class="mcq-options">
@@ -17,7 +17,7 @@
             <label *ngIf="showFormError && (option.body === undefined || option.body === '')"
               class="ui basic red error label pt-0">Fill this options</label>
             <app-ckeditor-tool (hasError)="handleEditorError($event)"
-              (editorDataOutput)="option.body = $event.body; option.length = $event.length"
+              (editorDataOutput)="option.body = $event.body; option.length = $event.length; getMedia($event.mediaobj)"
               [editorConfig]="questionMetaData" [editorDataInput]="option.body" [setCharacterLimit]="setCharacterLimit"
               [setImageLimit]="setImageLimit"></app-ckeditor-tool>
             <div class="mcq-checkbox-answer">
