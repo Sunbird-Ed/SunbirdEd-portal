@@ -13,12 +13,10 @@ import {
   BrowseComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
-import { BrowserModule } from '@angular/platform-browser';
 
 
 @NgModule({
   imports: [
-    BrowserModule,
     BrowserAnimationsModule,
     CommonModule,
     CoreModule,

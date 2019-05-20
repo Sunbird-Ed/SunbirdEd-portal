@@ -1,7 +1,7 @@
 import { environment } from '@sunbird/environment';
 import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } from '@angular/animations';
 
-import { AfterViewInit, Directive, ElementRef, Inject, OnDestroy, NgZone, ChangeDetectorRef, } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, OnDestroy, NgZone, ChangeDetectorRef, } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, pairwise, share, throttleTime, takeUntil, tap } from 'rxjs/operators';
 
@@ -46,7 +46,6 @@ export class StickyHeaderDirective implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-
     if (this.isOffline) {
       return false;
     }
@@ -75,7 +74,6 @@ export class StickyHeaderDirective implements AfterViewInit, OnDestroy {
       });
     });
   }
-
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();

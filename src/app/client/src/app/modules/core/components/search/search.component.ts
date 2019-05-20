@@ -101,7 +101,6 @@ export class SearchComponent implements OnInit {
       'Courses': 'courses',
       'Users': 'users'
     };
-    console.log('offline' , this.isOffline);
   }
 
   ngOnInit() {
