@@ -123,7 +123,7 @@ module.exports = (app) => {
         throw 'some of the query params are missing';
       }
       errType = 'CREATE_SESSION';
-      await createSession(userDetails.userName, req, res);
+      await createSession(userDetails.userName, 'portal', req, res);
       redirectUrl = jwtPayload.redirect_url ? jwtPayload.redirect_url : '/resources';
       console.log('sso sign-in success callback, session created', jwtPayload.state_id, req.query, redirectUrl, errType);
     } catch (error) {
@@ -144,7 +144,7 @@ module.exports = (app) => {
       }
       userName = req.query.id;
       errType = 'CREATE_SESSION';
-      response = await createSession(userName, req, res);
+      response = await createSession(userName, 'android',req, res);
       console.log('sso sign in create session api success', req.query, response);
     } catch (error) {
       response = { error: getErrorMessage(error, errType) };

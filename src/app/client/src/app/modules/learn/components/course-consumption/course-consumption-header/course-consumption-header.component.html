@@ -10,7 +10,7 @@
             <div class="nine wide column">
                 <div class="sb-pageSection">
                     <div class="sb-pageSection-header sb-pageSection-header-compact">
-                        <h1 class="sb-pageSection-title">{{courseHierarchy.name}}</h1>
+                        <h1 class="sb-pageSection-title text-transform-inherit">{{courseHierarchy.name}}</h1>
                     </div>
                     <div class="sb-pageSection-content d-flex flex-ai-center">
                         <sui-rating 
@@ -69,7 +69,7 @@
 <div *ngIf="enrolledCourse">
   <div class="ui container">
     <div class="ui stackable padded grid" *ngIf="getBatchStatus() && batchEndDate">
-      <div class="twelve wide column p-0 mb-16">
+      <div class="twelve wide column p-0 py-16">
         <div class="ui info message compact">
           <div class="header">
             {{resourceService?.frmelmnts?.lbl?.expiredBatchWarning | interpolate:'{EndDate}':batchEndDate}}
@@ -78,7 +78,7 @@
       </div>
     </div>
   </div>
-  <div class="twelve wide column p-0">
+  <div class="twelve wide column p-0 py-16">
     <sui-progress class="ui tiny progress blue status" [ngClass]="{'expired':getBatchStatus()}" [value]="progress" [maximum]="100"></sui-progress>
   </div>
 </div>

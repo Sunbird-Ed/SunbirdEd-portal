@@ -305,11 +305,6 @@
                     "type": "plugin"
                 },
                 {
-                    "id": "org.ekstep.video",
-                    "ver": "1.5",
-                    "type": "plugin"
-                },
-                {
                     "id": "org.ekstep.reviewercomments",
                     "ver": "1.0",
                     "type": "plugin"

@@ -44,19 +44,24 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
     * rootOrgId is required to select the custom comming soon message from systemsettings
     */
     let rootOrgId: string;
-    if (this.userService.loggedIn) {
-      rootOrgId = this.userService.rootOrgId;
-    } else {
-      rootOrgId = this.orgDetailsService.getRootOrgId;
+    const contentLevelChannel = _.get(this.nodes, 'data.channel');
+    if (!rootOrgId) {
+      if (this.userService.loggedIn) {
+        rootOrgId = this.userService.rootOrgId;
+      } else {
+        rootOrgId = this.orgDetailsService.getRootOrgId;
+      }
     }
-
     /*
     * fetching comming soon message at org level to show if content not exists in any of the folder
     */
     this.orgDetailsService.getCommingSoonMessage().pipe(takeUntil(this.unsubscribe$)).subscribe(
       (apiResponse) => {
         if (apiResponse.value) {
-          this.contentComingSoonDetails = _.find(JSON.parse(apiResponse.value), {rootOrgId: rootOrgId});
+          this.contentComingSoonDetails = _.find(JSON.parse(apiResponse.value), {rootOrgId: contentLevelChannel});
+          if (!this.contentComingSoonDetails) {
+            this.contentComingSoonDetails = _.find(JSON.parse(apiResponse.value), {rootOrgId: rootOrgId});
+          }
         }
       }
     );
@@ -137,10 +142,15 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private setCommingSoonMessage (node) {
-    if (_.has(node, 'model.altMsg') && node.model.altMsg.length) {
-      this.commingSoonMessage = this.getMessageFormTranslations(node.model.altMsg[0]);
-    } else if (_.has(node, 'parent.model.altMsg') && node.parent.model.altMsg.length) {
-      this.commingSoonMessage = this.getMessageFormTranslations(node.model.parent.model.altMsg[0]);
+    const nodes = node.getPath();
+    const altMessages = [];
+    nodes.forEach((eachnode, index) => {
+      if (_.has(eachnode, 'model.altMsg') && node.model.altMsg.length) {
+        altMessages.push(node.model.altMsg[0]);
+      }
+    });
+    if (altMessages.length > 1) {
+      this.commingSoonMessage = this.getMessageFormTranslations(altMessages[altMessages.length - 1]);
     } else if (this.contentComingSoonDetails) {
       this.commingSoonMessage = this.getMessageFormTranslations(this.contentComingSoonDetails);
     } else {

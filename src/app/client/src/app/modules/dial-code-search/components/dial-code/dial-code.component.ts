@@ -23,6 +23,16 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * reference of SearchService
    */
+
+  /**
+   * Initializing the infinite scroller
+   */
+  itemsToDisplay: any = [];
+  itemsToLoad = 50;
+  throttle = 50;
+  numOfItemsToAddOnScroll = 20;
+  scrollDistance = 2;
+
   private searchService: SearchService;
 
   /**
@@ -77,7 +87,8 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
    * to unsubscribe
   */
   public unsubscribe$ = new Subject<void>();
-
+  telemetryCdata: Array<{}> = [];
+  closeIntractEdata: IInteractEventEdata;
   linkedContents: Array<any>;
   showMobilePopup = false;
   isRedirectToDikshaApp = false;
@@ -102,18 +113,24 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
       this.selectLanguage = item.value;
     });
-    this.setTelemetryData();
     this.instanceName = this.resourceService.instance;
     this.activatedRoute.params.subscribe(params => {
+      this.itemsToDisplay = [];
+      this.searchResults = [];
       this.searchKeyword = this.dialCode = params.dialCode;
+      this.setTelemetryData();
       this.searchDialCode();
     });
     this.handleMobilePopupBanner();
   }
 
   setTelemetryData () {
+    if (this.dialCode) {
+      this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
+    }
     this.closeMobilePopupInteractData = {
       context: {
+        cdata: this.telemetryCdata,
         env: this.activatedRoute.snapshot.data.telemetry.env,
       },
       edata: {
@@ -123,8 +140,15 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     };
 
+    this.closeIntractEdata = {
+      id: 'dialpage-close',
+      type: 'click',
+      pageid: 'get-dial',
+    };
+
     this.appMobileDownloadInteractData = {
       context: {
+        cdata: this.telemetryCdata,
         env: this.activatedRoute.snapshot.data.telemetry.env,
       },
       edata: {
@@ -192,6 +216,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.linkedContents.length === 0) {
           this.setCommingSoonMessage();
         } else {
+          this.appendItems(0, this.itemsToLoad);
           this.showLoader = false;
         }
       }, error => {
@@ -232,6 +257,16 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     } catch (e) {
       return (commingsoonobj && commingsoonobj.value) || this.resourceService.messages.stmsg.m0122;
     }
+  }
+
+  onScrollDown() {
+    const startIndex = this.itemsToLoad;
+    this.itemsToLoad = this.itemsToLoad + this.numOfItemsToAddOnScroll;
+    this.appendItems(startIndex, this.itemsToLoad);
+  }
+
+  appendItems (startIndex, endIndex) {
+    this.itemsToDisplay.push(...this.searchResults.slice(startIndex, endIndex));
   }
 
   public getAllPlayableContent(collectionIds) {
@@ -299,11 +334,11 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
           env: this.activatedRoute.snapshot.data.telemetry.env,
           cdata: [{
             type: 'dialCode',
-            id: this.dialCode
+            id: this.activatedRoute.snapshot.params.dialCode
           }]
         },
         object: {
-          id: this.dialCode,
+          id: this.activatedRoute.snapshot.params.dialCode,
           type: 'dialCode',
           ver: '1.0'
         },

@@ -41,6 +41,12 @@
                 border: 0.5px solid #dedede;
                 border-radius: 0 4px 4px 0;
             }
+
+            &.disabled {
+                pointer-events: none;
+                cursor: not-allowed;
+                opacity: 0.3;
+            }
         }
     
         .sb-item-active {
@@ -55,4 +61,16 @@
             border-left: 0.5px solid #dedede;
         }
     }
+}
+
+[dir="rtl"] {
+    .sb-pagination-container .sb-pagination {
+        .sb-item:last-child {
+            border-radius: 4px 0 0 4px;
+        }
+        .sb-item:first-child {
+            border-radius: 0 4px 4px 0;
+        }
+    }
+    
 }

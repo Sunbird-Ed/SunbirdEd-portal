@@ -1,0 +1,16 @@
+<div class="sb-offline-imports">
+  <div class="ui container sb-offline-area d-flex">
+    <div class="sb-import-icon"><i class="qrcode icon fa-5x"></i></div>
+    <div class="sb-import-content">
+      <h4>{{resourceService?.frmelmnts?.lbl?.importContent}}</h4>
+      <p>{{resourceService?.frmelmnts?.lbl?.uploadEcarFromPd}} </p>
+    </div>
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="ContentImportIntractEdata" class="sb-btn sb-btn-normal sb-btn-secondary ml-auto" (click)="showImportModal = true;">
+      {{resourceService?.frmelmnts?.lbl?.importContent}}
+    </button>
+  </div>
+</div>
+
+<div *ngIf="showImportModal">
+  <app-content-import (closeImportModal)="showImportModal = false"></app-content-import>
+</div>

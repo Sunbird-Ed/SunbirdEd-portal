@@ -6,7 +6,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash-es';
 import {
   WindowScrollService, ILoaderMessage, ConfigService, ICollectionTreeOptions, NavigationHelperService,
-  ToasterService, ResourceService, ExternalUrlPreviewService
+  ToasterService, ResourceService, ExternalUrlPreviewService, ContentUtilsServiceService
 } from '@sunbird/shared';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService } from './../../../services';
 import { INoteData } from '@sunbird/notes';
@@ -92,6 +92,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   public showExtContentMsg = false;
 
+  private objectRollUp: any;
+
   telemetryCdata: Array<{}>;
 
   public loaderMessage: ILoaderMessage = {
@@ -111,7 +113,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     private toasterService: ToasterService, private resourceService: ResourceService,
     private cdr: ChangeDetectorRef, public courseBatchService: CourseBatchService, public permissionService: PermissionService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService,
-    private courseProgressService: CourseProgressService, private deviceDetectorService: DeviceDetectorService) {
+    private courseProgressService: CourseProgressService, private deviceDetectorService: DeviceDetectorService,
+    private contentUtilsService: ContentUtilsServiceService) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
     this.playerOption = {
@@ -214,6 +217,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     .subscribe(({contentId}) => {
       if (contentId) {
         const content = this.findContentById(contentId);
+        this.objectRollUp = this.contentUtilsService.getContentRollup(content);
         const isExtContentMsg = this.coursesService.showExtContentMsg ? this.coursesService.showExtContentMsg : false;
         if (content) {
           this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') },
@@ -257,6 +261,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
     this.courseConsumptionService.getConfigByContent(data.id, options).pipe(first())
       .subscribe(config => {
+        if (config.context) {
+          config.context.objectRollup = this.objectRollUp;
+        }
         this.setContentInteractData(config);
         this.loader = false;
         this.playerConfig = config;
@@ -426,10 +433,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         id: this.contentId,
         type: 'content',
         ver: '1.0',
-        rollup: {
-          l1: this.courseId,
-          l2: this.contentId
-        }
+        rollup: this.objectRollUp
       }
     };
   }
@@ -438,7 +442,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       id: config.metadata.identifier,
       type: config.metadata.contentType || config.metadata.resourceType || 'Content',
       ver: config.metadata.pkgVersion ? config.metadata.pkgVersion.toString() : '1.0',
-      rollup: { l1: this.courseId, l2: this.contentId }
+      rollup: this.objectRollUp
     };
     this.closeContentIntractEdata = {
       id: 'content-close',
