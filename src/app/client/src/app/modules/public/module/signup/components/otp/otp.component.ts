@@ -105,6 +105,7 @@ export class OtpComponent implements OnInit {
   createUser() {
     const createRequest = {
       params: {
+        source: _.get(this.activatedRoute, 'snapshot.queryParams.client_id'),
         signupType: 'self'
       },
       'request': {
