@@ -72,14 +72,14 @@ describe('DialCodeComponent', () => {
     component = fixture.componentInstance;
   });
 
-  fit('should return matching contents for valid dialcode query', () => {
+  it('should return matching contents for valid dialcode query', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
     component.searchDialCode();
     fixture.detectChanges();
     expect(component.showLoader).toBeTruthy();
   });
-  fit('should return appropriate message on no contents', () => {
+  it('should return appropriate message on no contents', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.noData));
     component.searchDialCode();
@@ -87,7 +87,7 @@ describe('DialCodeComponent', () => {
     expect(component.showLoader).toBeFalsy();
     expect(component.searchResults).toEqual([]);
   });
-  fit('should return appropriate failure message on error throw', () => {
+  it('should return appropriate failure message on error throw', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'contentSearch').and.callFake(() => observableThrowError(new Error('Server error')));
     component.searchDialCode();
@@ -95,13 +95,13 @@ describe('DialCodeComponent', () => {
     expect(component.showLoader).toBeFalsy();
     expect(component.searchResults).toEqual([]);
   });
-  fit('should unsubscribe from all observable subscriptions', () => {
+  it('should unsubscribe from all observable subscriptions', () => {
     component.ngOnInit();
     spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
-  fit('should call getDataForCard Method to pass the data in Card ', () => {
+  it('should call getDataForCard Method to pass the data in Card ', () => {
     const searchService = TestBed.get(SearchService);
     const utilService = TestBed.get(UtilService);
     const config = TestBed.get(ConfigService);
@@ -120,7 +120,7 @@ describe('DialCodeComponent', () => {
     expect(component.showLoader).toBeTruthy();
   });
 
-  fit('should fetch more cards on scroll', () => {
+  it('should fetch more cards on scroll', () => {
     spyOn(component, 'appendItems').and.callThrough();
     component.onScrollDown();
     fixture.detectChanges();
