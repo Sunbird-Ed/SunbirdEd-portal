@@ -91,11 +91,10 @@ export class PublicPlayerService {
     if (option.dialCode) {
       configuration.context.cdata = [{
         id: option.dialCode,
-        type: 'dialCode'
+        type: 'DialCode'
       }];
     }
     configuration.config.previewCdnUrl = this.previewCdnUrl;
-    console.log('player config', configuration.config);
     return configuration;
   }
   public getCollectionHierarchy(identifier: string, option: any = { params: {} }): Observable<CollectionHierarchyAPI.Get> {

@@ -107,7 +107,8 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
       _.forEach(chart.datasets, dataset => {
         chartObj.datasets.push({
           label: dataset.label,
-          data: _.get(dataset, 'data') || _.get(data, _.get(dataset, 'dataExpr'))
+          data: _.get(dataset, 'data') || _.get(data, _.get(dataset, 'dataExpr')),
+          hidden: _.get(dataset, 'hidden') || false
         });
       });
       this.chartData.push(chartObj);

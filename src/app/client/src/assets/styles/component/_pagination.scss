@@ -32,34 +32,44 @@
             border: 0.5px solid #dedede;
             border-right: none;
             &:hover {
-                background: $gray-0;
+                border: 0.5px solid $primary-300;
             }
             &:first-child {
                 border-radius: 4px 0 0 4px;
             }
             &:last-child {
-                border: 0.5px solid #dedede;
+                border: $sb-card-border;
                 border-radius: 0 4px 4px 0;
+                &:hover{
+                    border: 0.5px solid $primary-300;
+                }
             }
 
             &.disabled {
-                background-color: $gray-100;
-                border-color: $gray-100;
-                color: $gray-200;
+                pointer-events: none;
                 cursor: not-allowed;
+                opacity: 0.3;
             }
         }
-    
-        .sb-item-active {
-            background-color: #dedede;
-        }
         .sb-item.active{
-            color: $blue;
             border: 0.5px solid $primary-300;
+            background: $primary-250;
         }
         .no-border {
             border: none;
             border-left: 0.5px solid #dedede;
         }
     }
+}
+
+[dir="rtl"] {
+    .sb-pagination-container .sb-pagination {
+        .sb-item:last-child {
+            border-radius: 4px 0 0 4px;
+        }
+        .sb-item:first-child {
+            border-radius: 0 4px 4px 0;
+        }
+    }
+    
 }
