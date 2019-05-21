@@ -82,7 +82,7 @@ export class PlayerService {
    * @memberof PlayerService
    */
   getConfig(contentDetails: ContentDetails): PlayerConfig {
-    const configuration: any = this.configService.appConfig.PLAYER_CONFIG.playerConfig;
+    const configuration: any = _.cloneDeep(this.configService.appConfig.PLAYER_CONFIG.playerConfig);
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = this.userService.sessionId;
     configuration.context.uid = this.userService.userid;
