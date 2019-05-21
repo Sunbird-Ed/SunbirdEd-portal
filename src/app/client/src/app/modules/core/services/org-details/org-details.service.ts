@@ -137,6 +137,9 @@ export class OrgDetailsService {
    * orgids should be ordered by preference based on comming soon obj will be returned
    */
   getCommingSoonMessage(orgids) {
+    if (!orgids) {
+      return of({});
+    }
     const contentComingSoon: any = this.cacheService.get('contentComingSoon');
     if (contentComingSoon) {
       return of(this.getCommingSoonMessageObj(contentComingSoon, orgids));
@@ -146,10 +149,14 @@ export class OrgDetailsService {
       };
       return this.learnerService.get(systemSetting).pipe(map((data: ServerResponse) => {
         if (_.has(data, 'result.response')) {
-          this.cacheService.set('contentComingSoon', data.result.response, {
+          let commingSoonData = {};
+          try {
+            commingSoonData = JSON.parse(data.result.response.value);
+          } catch (e) {}
+          this.cacheService.set('contentComingSoon', commingSoonData, {
             maxAge: this.browserCacheTtlService.browserCacheTtl
           });
-          return this.getCommingSoonMessageObj(data.result.response, orgids);
+          return this.getCommingSoonMessageObj(commingSoonData, orgids);
         } else {
           return {};
         }
@@ -159,16 +166,13 @@ export class OrgDetailsService {
 
   getCommingSoonMessageObj (data, orgids) {
     let commingSoonMessageObj = {};
-    try {
-      const response = JSON.parse(data.value);
+    if (data && data.length) {
       _.forEach(orgids, (eachrootorg) => {
-        commingSoonMessageObj = _.find(response, {rootOrgId: eachrootorg});
+        commingSoonMessageObj = _.find(data, {rootOrgId: eachrootorg});
         if (commingSoonMessageObj) {
           return false;
         }
       });
-    } catch (e) {
-      commingSoonMessageObj = {};
     }
     return commingSoonMessageObj;
   }
