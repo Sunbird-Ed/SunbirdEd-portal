@@ -43,7 +43,6 @@ export class CbseComponent implements OnInit {
       programId: _.get(this.programDetails, 'programId'),
       program: _.get(this.programDetails, 'name')
     };
-    this.fetchFrameWorkDetails();
   }
 
   public selectedClassSubjectHandler(event) {
