@@ -65,6 +65,7 @@ export class ResourceService {
   public initialize() {
     const range  = {value: 'en', label: 'English', dir: 'ltr'};
     this.getResource(this._cacheService.get('portalLanguage') || 'en', range);
+
   }
   /**
    * method to fetch resource bundle
