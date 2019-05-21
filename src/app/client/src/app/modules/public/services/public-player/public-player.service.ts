@@ -63,13 +63,18 @@ export class PublicPlayerService {
       return response;
     }));
   }
+  private getRollUpData(data: Array<string> = []) {
+    const rollUp = {};
+    data.forEach((element, index) => rollUp['l' + (index + 1)] = element);
+    return rollUp;
+  }
   /**
    * returns player config details.
    * @param {ContentDetails} contentDetails
    * @memberof PlayerService
    */
   getConfig(contentDetails: ContentDetails, option: any = {}): PlayerConfig {
-    const configuration: any = this.configService.appConfig.PLAYER_CONFIG.playerConfig;
+    const configuration: any = _.cloneDeep(this.configService.appConfig.PLAYER_CONFIG.playerConfig);
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = this.userService.anonymousSid;
     configuration.context.uid = 'anonymous';
@@ -80,6 +85,7 @@ export class PublicPlayerService {
     configuration.context.channel = _.get(this.orgDetailsService.orgDetails, 'hashTagId');
     configuration.context.pdata.id = this.userService.appId;
     configuration.metadata = contentDetails.contentData;
+    configuration.context.contextRollup = this.getRollUpData([_.get(this.orgDetailsService.orgDetails, 'hashTagId')]);
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
       {} : contentDetails.contentData.body;
     if (environment.isOffline) {

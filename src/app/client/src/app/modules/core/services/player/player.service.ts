@@ -82,12 +82,12 @@ export class PlayerService {
    * @memberof PlayerService
    */
   getConfig(contentDetails: ContentDetails): PlayerConfig {
-    const configuration: any = this.configService.appConfig.PLAYER_CONFIG.playerConfig;
+    const configuration: any = _.cloneDeep(this.configService.appConfig.PLAYER_CONFIG.playerConfig);
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = this.userService.sessionId;
     configuration.context.uid = this.userService.userid;
     configuration.context.timeDiff = this.userService.getServerTimeDiff;
-    configuration.context.contextRollup = this.getRollUpData(this.userService.userProfile.organisationIds);
+    configuration.context.contextRollup = this.getRollUpData(this.userService.userProfile.hashTagIds);
     configuration.context.channel = this.userService.channel;
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     configuration.context.pdata.ver = buildNumber && buildNumber.value ?
