@@ -2,22 +2,61 @@
 	height: 100%;
 	padding-top: 50px;
 	.sb-editor-image {
-	  background-image: url('../../../../../assets/images/editor-frame.png');
-	  background-repeat: no-repeat;
-	  background-position: center;
-	  background-size: cover;
-	  height: 416px;
-	  width: 834px;
+	  // // background-image: url('../../../../../assets/images/editor-frame.png');
+	  // // background-repeat: no-repeat;
+	  // // background-position: center;
+	  // // background-size: cover;
+	  // height: 416px;
+	  // width: 834px;
 	  margin: 0 auto;
 	}
+	.sb-editor-image {
+		height: 392px;
+    max-width: 800px;
+    border: 10px solid black;
+    border-radius: 15px;
+    margin: 0 auto;
+    position: relative;
+	}
+	.phone-sensors {
+    position: absolute;
+    z-index: 9;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: auto;
+    left: 0px;
+    background: black;
+    padding: 10px 5px 10px 0;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+.phone-sensors .sensor {
+	width: 8px;
+	height: 8px;
+	background: #252525;
+	border-radius: 50%;
+}
+.phone-sensors .speaker {
+	width: 5px;
+	height: 74px;
+	background: #252525;
+	border-radius: 10px;
+	margin: 10px 0 10px 1px;
+}
+.phone-sensors .sensor {
+	width: 8px;
+	height: 8px;
+	background: #252525;
+	border-radius: 50%;
+}
 	.sb-question-dsp-body {
-	  max-width: 688px;
+	  max-width: 800px;
 	  max-height: 392px;
 	  min-height: 392px;
 	  margin: 0 auto;
 	  overflow: hidden;
-	  padding-top: 24px;
-	  padding-right: 24px;
+	  padding-top: 0px;
+	  padding-right: 0px;
 	  .question-bg {
 		background-image: linear-gradient(-90deg, lightblue, white);
 	  }
@@ -115,7 +154,8 @@
 		background-image: linear-gradient(-90deg, #fcf2d6, white); 
 		font-weight: 700;
 		max-height: 56px;
-		overflow: hidden;
+		overflow: hidden;    padding: 5px 10px;
+    z-index: 999;
 	  }
 	  
 	  .mcq-horizontal .mcq-options, .mcq-vertical .mcq-options, .mcq-grid .mcq-options {
@@ -130,7 +170,14 @@
 		min-height: calc(376px - 64px);
 		background-image: linear-gradient(-90deg, #fcf2d6, white);
 	  }
-	  
+	  .mcq-vertical .mcq-options {
+			padding-top: 16px;
+		}
+		.mcq-vertical .mcq-title {
+			&.expand {
+				max-height: auto;
+			}
+		}
 	  .mcq-horizontal .mcq-options .mcq-option, .mcq-vertical .mcq-options .mcq-option, .mcq-grid .mcq-options .mcq-option {
 		margin-bottom: 16px;
 		height: 100%;

@@ -35,3 +35,22 @@
     transform: rotate(360deg);
 }
 }
+
+
+
+.ui.icon.message {
+  width: auto;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 16px;
+}
+.ui.message>.icon {
+  margin-right: 16px;
+}
+.ui.message .header+p {
+  margin-top: 0px;
+  font-size: 14px;
+}
+.ui.message .header:not(.ui) {
+  font-size: 16px;
+}
