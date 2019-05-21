@@ -310,7 +310,11 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       }));
   }
   closeCollectionPlayer() {
-    this.navigationHelperService.navigateToPreviousUrl('/explore');
+    if (this.dialCode) {
+      this.router.navigate(['/get/dial/', this.dialCode]);
+    } else {
+      this.navigationHelperService.navigateToPreviousUrl('/explore');
+    }
   }
   closeContentPlayer() {
     try {
