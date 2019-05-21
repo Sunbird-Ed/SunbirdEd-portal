@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DownloadManagerComponent } from './download-manager.component';
 
-describe('DownloadManagerComponent', () => {
+xdescribe('DownloadManagerComponent', () => {
   let component: DownloadManagerComponent;
   let fixture: ComponentFixture<DownloadManagerComponent>;
 
