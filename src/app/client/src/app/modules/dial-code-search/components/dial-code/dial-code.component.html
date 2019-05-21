@@ -1,13 +1,6 @@
 <div class="ui container" [appTelemetryImpression]="telemetryImpression">
   <div class="content-grid py-20">
     <div class="row">
-      <!-- <div class="six wide computer twelve wide mobile eight wide tablet column centered pt-10">
-          <div class="ui fluid icon input">
-            <input type="text" name="search" (keyup.enter)="navigateToSearch()" [(ngModel)]="searchKeyword" placeholder="{{resourceService.frmelmnts?.prmpt?.searchContent}}"
-              title="Search" />
-            <i class="search icon dialcode-search-icon cursor-pointer" tabindex="0" (click)="navigateToSearch()"></i>
-          </div>
-        </div> -->
     </div>
     <div class="row" *ngIf="showLoader">
       <div class="twelve wide column">
@@ -29,19 +22,14 @@
       </div>
     </div>
     <div class="row">
-      <div infinite-scroll
-           [infiniteScrollDistance]="scrollDistance"
-           [infiniteScrollThrottle]="throttle"
-           (scrolled)="onScrollDown()">
-
+      <div infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollThrottle]="throttle"
+        (scrolled)="onScrollDown()">
         <div *ngIf="!showLoader && itemsToDisplay.length" in-view-container (inview)="inview($event)"
-             [throttle]="[1000]" [trigger]="itemsToDisplay"
-             class="masonry-grid dynamic-section-card">
-
+          [throttle]="[1000]" [trigger]="itemsToDisplay" class="masonry-grid dynamic-section-card">
           <div in-view-item [id]="i" [data]="content" class="masonry-item"
-               *ngFor="let content of itemsToDisplay;let i = index;">
+            *ngFor="let content of itemsToDisplay;let i = index;">
             <app-dial-code-card appContentDirection [dialCode]="dialCode" [data]="content"
-                                (clickEvent)="getEvent($event)"></app-dial-code-card>
+              (clickEvent)="getEvent($event)"></app-dial-code-card>
           </div>
         </div>
       </div>
@@ -57,14 +45,9 @@
     </div>
   </div>
 </div>
-
-
 <div class="mobile-popup-dimmer" (click)="closeMobileAppPopup()" [ngClass]="{'bottom-0': showMobilePopup}">
   <div class="mobile-app-popup" [ngClass]="{'bottom-0': showMobilePopup}">
     <div class="download-diksha" (click)="redirectToDikshaApp()">
-      <!-- <button class="ui button close-mobile-div">
-        <i class="close icon"></i>
-      </button> -->
       <div class="diksha-logo p-15">
         <div class="mobile-circles">
           <div class="big-box border-round border-r50"></div>
@@ -74,7 +57,7 @@
         </div>
         <label class="d-block pb-10 text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile}}</label>
         <a id='app-download-mobile' class="d-block pb-10 text-center app-download">
-          <img class="playStore-img" src="../../../../../assets/images/google_playstore.png"
+          <img class="playStore-img" src="assets/images/google_playstore.png"
             alt="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile}}"
             title="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile}}">
         </a>

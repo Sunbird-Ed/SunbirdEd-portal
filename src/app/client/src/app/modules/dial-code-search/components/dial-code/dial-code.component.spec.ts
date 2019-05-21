@@ -70,17 +70,16 @@ describe('DialCodeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DialCodeComponent);
     component = fixture.componentInstance;
-    // fixture.detectChanges();
   });
 
-  it('should return matching contents for valid dialcode query', () => {
+  fit('should return matching contents for valid dialcode query', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
     component.searchDialCode();
     fixture.detectChanges();
     expect(component.showLoader).toBeTruthy();
   });
-  it('should return appropriate message on no contents', () => {
+  fit('should return appropriate message on no contents', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.noData));
     component.searchDialCode();
@@ -88,7 +87,7 @@ describe('DialCodeComponent', () => {
     expect(component.showLoader).toBeFalsy();
     expect(component.searchResults).toEqual([]);
   });
-  it('should return appropriate failure message on error throw', () => {
+  fit('should return appropriate failure message on error throw', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'contentSearch').and.callFake(() => observableThrowError(new Error('Server error')));
     component.searchDialCode();
@@ -96,39 +95,13 @@ describe('DialCodeComponent', () => {
     expect(component.showLoader).toBeFalsy();
     expect(component.searchResults).toEqual([]);
   });
-  it('should navigate to dialcode search when user enters data', () => {
-    const route = TestBed.get(Router);
-    component.searchKeyword = '61U24C';
-    component.navigateToSearch();
-    fixture.detectChanges();
-    expect(route.navigate).toHaveBeenCalledWith(['/get/dial', component.searchKeyword]);
-  });
-  it('should navigate to content player page for resource content types', () => {
-    const route = TestBed.get(Router);
-    const item = Response.event;
-    component.searchKeyword = '61U24C';
-    item.data.metaData.mimeType = 'application/vnd.ekstep.content';
-    component.getEvent(item);
-    fixture.detectChanges();
-    expect(route.navigate).toHaveBeenCalledWith(['play/content', item.data.metaData.identifier],
-     { queryParams: { dialCode: '61U24C'}});
-  });
-  it('should navigate to collection player page for collection types', () => {
-    const route = TestBed.get(Router);
-    const item = Response.event;
-    component.searchKeyword = '61U24C';
-    item.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
-    component.getEvent(item);
-    expect(route.navigate).toHaveBeenCalledWith(['play/collection', item.data.metaData.identifier],
-    { queryParams: { dialCode: '61U24C'}});
-  });
-  it('should unsubscribe from all observable subscriptions', () => {
+  fit('should unsubscribe from all observable subscriptions', () => {
     component.ngOnInit();
     spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
-  it('should call getDataForCard Method to pass the data in Card ', () => {
+  fit('should call getDataForCard Method to pass the data in Card ', () => {
     const searchService = TestBed.get(SearchService);
     const utilService = TestBed.get(UtilService);
     const config = TestBed.get(ConfigService);
@@ -147,7 +120,7 @@ describe('DialCodeComponent', () => {
     expect(component.showLoader).toBeTruthy();
   });
 
-  it('should fetch more cards on scroll', () => {
+  fit('should fetch more cards on scroll', () => {
     spyOn(component, 'appendItems').and.callThrough();
     component.onScrollDown();
     fixture.detectChanges();
