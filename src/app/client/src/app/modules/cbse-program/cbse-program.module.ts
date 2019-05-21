@@ -9,12 +9,13 @@ import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SharedModule } from '@sunbird/shared';
 import { QuestionCreationHeaderComponent } from './components/question-creation-header/question-creation-header.component';
+import { TextbookListComponent } from './components/textbook-list/textbook-list.component';
 
 @NgModule({
   declarations: [QuestionListComponent, SelectTextbookComponent, CbseComponent, QuestionCreationComponent, ChapterListComponent,
     McqCreationComponent, CkeditorToolComponent ,
     McqTemplateSelectionComponent,
-    QuestionPreviewComponent, SanitizeHtmlPipe, QuestionCreationHeaderComponent],
+    QuestionPreviewComponent, SanitizeHtmlPipe, QuestionCreationHeaderComponent, TextbookListComponent],
   imports: [
     CommonModule,
     SuiTabsModule,

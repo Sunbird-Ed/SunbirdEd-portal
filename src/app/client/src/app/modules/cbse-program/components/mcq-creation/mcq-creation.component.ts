@@ -27,6 +27,7 @@ export class McqCreationComponent implements OnInit {
   public setCharacterLimit = 160;
   public setImageLimit = 1;
   public refresh = true;
+  public mediaArr = [];
   learningOutcomeOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
   constructor( public configService: ConfigService, private userService: UserService,
@@ -39,6 +40,9 @@ export class McqCreationComponent implements OnInit {
       const options = _.map(this.questionMetaData.data.options, option => ({body: option.value.body}));
       this.mcqForm = new McqForm(question, options, template_id, _.get(responseDeclaration, 'responseValue.correct_response.value'),
         learningOutcome[0], qlevel, bloomsLevel[0], maxScore);
+      if (this.questionMetaData.data.media) {
+        this.mediaArr = this.questionMetaData.data.media;
+      }
     } else {
       this.mcqForm = new McqForm('', [], undefined, undefined);
     }
@@ -120,6 +124,7 @@ export class McqCreationComponent implements OnInit {
               'maxScore': Number(this.mcqForm.maxScore),
               'status': 'Review',
               'type': 'mcq',
+              'media': this.mediaArr
             }
           }
         }
@@ -174,7 +179,8 @@ export class McqCreationComponent implements OnInit {
               'gradeLevel': [ this.selectedAttributes.gradeLevel],
               'subject': this.selectedAttributes.subject,
               'topic': [this.selectedAttributes.topic],
-              'status': 'Review'
+              'status': 'Review',
+              'media': this.mediaArr
             }
           }
         }
@@ -204,7 +210,7 @@ export class McqCreationComponent implements OnInit {
     const responseDeclaration = {
       responseValue: {
         cardinality: 'single',
-        type: 'index',
+        type: 'integer',
         'correct_response': {
           value: this.mcqForm.answer
         }
@@ -214,6 +220,17 @@ export class McqCreationComponent implements OnInit {
       body : questionBody,
       responseDeclaration: responseDeclaration
     };
+  }
+
+  getMedia(media){
+    if (media) {
+      const value = _.find(this.mediaArr, ob => {
+        return ob.id === media.id;
+      });
+      if (value === undefined){
+        this.mediaArr.push(media);
+      }
+    }
   }
   private refreshEditor() {
     this.refresh = false;

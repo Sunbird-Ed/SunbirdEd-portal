@@ -28,6 +28,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   public refresh = true;
   private prevShowPreview = true;
   public previewData: any;
+  public mediaArr = [];
   @Input() tabIndex: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter < any > ();
@@ -72,6 +73,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
         this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
         this.questionMetaForm.controls.maxScore.setValue(this.questionMetaData.data.maxScore);
+        this.mediaArr = this.questionMetaData.data.media;
     }
   }
 
@@ -194,7 +196,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 ],
                 'subject': this.selectedAttributes.subject,
                 'topic': [this.selectedAttributes.topic],
-                'status': 'Review'
+                'status': 'Review',
+                'media': this.mediaArr
               }
             }
           }
@@ -226,7 +229,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
               'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
               'type': 'vsa',
               'code': UUID.UUID(),
-              'template_id': 'NA'
+              'template_id': 'NA',
+              'media': this.mediaArr
             }
           }
         }
@@ -240,9 +244,18 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
 
   editorDataHandler(event, type) {
     if (type === 'question') {
-      this.question = event;
+      this.question = event.body;
     } else {
-      this.solution = event;
+      this.solution = event.body;
+    }
+    if (event.mediaobj) {
+      const media = event.mediaobj;
+      const value = _.find(this.mediaArr, ob => {
+        return ob.id === media.id;
+      });
+      if (value === undefined){
+        this.mediaArr.push(event.mediaobj);
+      }
     }
   }
   private refreshEditor() {

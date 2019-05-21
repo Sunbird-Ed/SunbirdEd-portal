@@ -10,6 +10,7 @@ interface ISelectedAttributes {
     medium?: string;
     gradeLevel?: string;
     subject?: string;
+    textbook?: string;
     topic?: string;
     questionType?: string;
     programId?: string;
@@ -28,7 +29,7 @@ export class CbseComponent implements OnInit {
   @Input() userProfile: any;
   public topicList: any;
   public selectedAttributes: ISelectedAttributes = {};
-  public stages: Array<string> = ['chooseClass', 'topicList', 'createQuestion'];
+  public stages: Array<string> = ['chooseClass', 'chooseTextbook', 'topicList', 'createQuestion'];
   public currentStage = 0;
   constructor(public frameworkService: FrameworkService) { }
 
@@ -42,12 +43,16 @@ export class CbseComponent implements OnInit {
       programId: _.get(this.programDetails, 'programId'),
       program: _.get(this.programDetails, 'name')
     };
-    this.fetchFrameWorkDetails();
+  }
+
+  public selectedClassSubjectHandler(event) {
+    this.selectedAttributes.gradeLevel =  event.gradeLevel;
+    this.selectedAttributes.subject =  event.subject;
+    this.navigate('next');
   }
 
   public selectedTextbookHandler(event) {
-    this.selectedAttributes.gradeLevel =  event.gradeLevel;
-    this.selectedAttributes.subject =  event.subject;
+    this.selectedAttributes.textbook =  event;
     this.navigate('next');
   }
 

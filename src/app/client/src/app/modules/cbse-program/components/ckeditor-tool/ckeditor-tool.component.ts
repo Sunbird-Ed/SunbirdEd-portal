@@ -28,7 +28,10 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   public resourceService: ResourceService;
   public isAssetBrowserReadOnly = false;
   public characterCount: Number;
+  public mediaobj;
   initialized = false;
+  public assetProxyUrl = '/assets/public/';
+  public baseURL = 'http://dev.sunbirded.org';
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -147,7 +150,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
       const selectedElement = eventInfo.source.selection.getSelectedElement();
       this.isEditorFocused = (selectedElement && selectedElement.name === 'image') ? true : false;
       if (this.setImageLimit && this.setImageLimit > 0) { this.checkImageLimit(); }
-      this.editorDataOutput.emit({body: editor.getData(), length: this.characterCount });
+      this.editorDataOutput.emit({body: editor.getData(), length: this.characterCount, mediaobj: this.mediaobj });
     });
   }
   checkImageLimit() {
@@ -195,11 +198,21 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     });
   }
 
-  addImageInEditor(imageUrl) {
+  addImageInEditor(imageUrl, imageId) {
+    const src = this.getMediaOriginURL(imageUrl);
+    this.mediaobj = {
+      id: imageId,
+      type: 'image',
+      src: src,
+      baseUrl: this.baseURL
+    };
     this.editorInstance.model.change(writer => {
       const imageElement = writer.createElement('image', {
-        src: imageUrl
+        'src': src,
+        'alt': imageId,
+        'data-asset-variable': imageId
       });
+      writer.setAttribute('data-asset-variable', imageId, imageElement)
       this.editorInstance.model.insertContent(imageElement, this.editorInstance.model.document.selection);
     });
     this.showImagePicker = false;
@@ -307,7 +320,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
           data: formData
         };
         this.publicDataService.post(request).subscribe((response) => {
-          this.addImageInEditor(response.result.content_url);
+          this.addImageInEditor(response.result.content_url, response.result.identifier);
           this.showImagePicker = false;
           this.showImageUploadModal = false;
         });
@@ -334,6 +347,19 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
       }
     }
     return chars;
+  }
+
+  getMediaOriginURL(src) {
+    const replaceText = this.assetProxyUrl;
+    const aws_s3_urls = ['https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/',
+    'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/',
+    'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/']
+    _.forEach(aws_s3_urls, url => {
+      if (src.indexOf(url) !== -1) {
+        src = src.replace(url, replaceText);
+      }
+    });
+    return src;
   }
 
 }

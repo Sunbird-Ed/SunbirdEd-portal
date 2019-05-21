@@ -73,13 +73,25 @@
 }
 .mcq-checkbox-answer {
     background: #f2f2f2;
-    padding: 16px;
+    padding: 8px;
     display: flex;
     border: 1px solid #c4c4c4;
     border-top: none;
+    justify-content: center;
+    align-items: center;
 }
 .mcq-checkbox-answer label {
     font-weight: 700;
     padding-right: 8px;
-    font-size: 14px;
+    font-size: 12px;
+    margin-bottom: 0px;
+}
+
+.editorWrapper {
+  border:0px solid red;
+}
+
+.ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable, .ck.ck-editor__main>.ck-editor__editable.ck-rounded-corners {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }

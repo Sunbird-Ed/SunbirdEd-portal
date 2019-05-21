@@ -1,11 +1,16 @@
 <div class="sb-question-dsp-container quml-responsive-div">
     <div class="sb-editor-image">
+            <div class="phone-sensors">
+                    <div class="sensor"></div>
+                    <div class="speaker"></div>
+                    <div class="sensor"></div>
+                </div>
         <div class="sb-question-dsp-body" *ngIf="questionMetaData && questionMetaData.type !== 'mcq'">
             <div class="sb-question-header question-bg">
                 <span class="sb-question"></span>
                 <span class="sb-mark">4 Marks</span>
                 <button type="button" class="sb-btn sb-btn-primary sb-btn-normal" id="questionBtn" (click)="onScroll('question')" style="display: none;">Question</button>
-                <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal" id="answerBtn" (click)="onScroll('answer')">Solution</button>
+                <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal mr-0" id="answerBtn" (click)="onScroll('answer')">Solution</button>
             </div>
             <div class="sb-question-content" (scroll)="onScroll($event)">
                 <div class="page-section question-bg" id="question">

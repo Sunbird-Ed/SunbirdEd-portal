@@ -1,12 +1,13 @@
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal"
+<sui-modal [mustScroll]="false" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal"
   appBodyScroll (dismissed)="modal.deny(); templateSelection.emit({type: 'close'})" #modal>
   <div class="sb-modal-header">
     {{'Please select a Template to proceed'}}&lrm;
   </div>
   <div class="ui top segment">
-      <div class="ui small images">
-          <img *ngFor="let template of mcqTemplateConfig" (click)="showButton=true; templateSelected = template"
-            src="{{template.url}}">
+      <div class="ui d-flex flex-jc-center">
+          <a *ngFor="let template of mcqTemplateConfig" title="" [ngClass]="{'active': templateSelected === template}"class="template-items p-8 mr-8 relative" (click)="showButton=true; templateSelected = template"><img alt="" src="{{template.url}}">
+            <span *ngIf="templateSelected === template" class="template-item-selection"><i class="check circle icon"></i></span>
+          </a>
         </div>
   </div>
   <div class="sb-modal-actions">

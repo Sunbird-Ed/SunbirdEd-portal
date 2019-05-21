@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { PublicDataService, UserService } from '@sunbird/core';
-import { ConfigService } from '@sunbird/shared';
+import { PublicDataService, UserService, CollectionHierarchyAPI, ActionService } from '@sunbird/core';
+import { ConfigService, ServerResponse, ContentData } from '@sunbird/shared';
 import { map } from 'rxjs/operators';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import * as _ from 'lodash-es';
 
 @Component({
@@ -17,9 +17,33 @@ export class ChapterListComponent implements OnInit {
   @Output() selectedQuestionTypeTopic = new EventEmitter<any>();
   public textBookChapters: Array<any> = [];
   private questionType = ['vsa', 'sa', 'la', 'mcq'];
-  constructor(public publicDataService: PublicDataService, private configService: ConfigService, private userService: UserService) {
+  public collectionData;
+  constructor(public publicDataService: PublicDataService, private configService: ConfigService, 
+    private userService: UserService, public actionService: ActionService) {
   }
   ngOnInit() {
+    this.getCollectionHierarchy(this.selectedAttributes.textbook);
+  }
+
+  public getCollectionHierarchy(identifier: string) {
+    const req = {
+      url: 'content/v3/hierarchy/' + identifier, // `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`,
+      param: { 'mode': 'edit' }
+    };
+    this.actionService.get(req).subscribe((response) => {
+        this.collectionData = response.result.content;
+        const textBookMetaData = _.map(this.collectionData.children, data => {
+          return {
+            name : data.name,
+            topic: data.topic[0]
+          };
+        });
+        console.log('textBookMetaData', textBookMetaData);
+        this.showChapterList(textBookMetaData);
+    });
+  }
+
+  public showChapterList(textBookMetaData) {
     let apiRequest;
     if (this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
       apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields)),
@@ -28,13 +52,13 @@ export class ChapterListComponent implements OnInit {
       apiRequest = this.questionType.map(fields => this.searchQuestionsByType(fields));
     }
     forkJoin(apiRequest).subscribe(data => {
-      this.textBookChapters = _.map(this.topicList, topic => {
-        const results = { name: topic.name };
+      this.textBookChapters = _.map(textBookMetaData, topicData => {
+        const results = { name: topicData.name, topic:  topicData.topic };
         _.forEach(this.questionType, (type: string, index) => {
           results[type] = {
             name: type.toUpperCase(),
-            total: this.getResultCount(data[index], topic.name),
-            me: this.getResultCount(data[index + this.questionType.length], topic.name)
+            total: this.getResultCount(data[index], topicData.topic),
+            me: this.getResultCount(data[index + this.questionType.length], topicData.topic)
           };
         });
         return results;
