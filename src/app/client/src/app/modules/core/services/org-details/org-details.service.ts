@@ -133,10 +133,13 @@ export class OrgDetailsService {
     return this.learnerService.get(systemSetting);
   }
 
-  getCommingSoonMessage() {
+  /**
+   * orgids should be ordered by preference based on comming soon obj will be returned
+   */
+  getCommingSoonMessage(orgids) {
     const contentComingSoon: any = this.cacheService.get('contentComingSoon');
     if (contentComingSoon) {
-      return of(contentComingSoon);
+      return of(this.getCommingSoonMessageObj(contentComingSoon, orgids));
     } else {
       const systemSetting = {
         url: this.configService.urlConFig.URLS.SYSTEM_SETTING.COMMING_SOON_MESSAGE,
@@ -146,10 +149,28 @@ export class OrgDetailsService {
           this.cacheService.set('contentComingSoon', data.result.response, {
             maxAge: this.browserCacheTtlService.browserCacheTtl
           });
-          return data.result.response;
+          return this.getCommingSoonMessageObj(data.result.response, orgids);
+        } else {
+          return {};
         }
       }));
     }
+  }
+
+  getCommingSoonMessageObj (data, orgids) {
+    let commingSoonMessageObj = {};
+    try {
+      const response = JSON.parse(data.value);
+      _.forEach(orgids, (eachrootorg) => {
+        commingSoonMessageObj = _.find(response, {rootOrgId: eachrootorg});
+        if (commingSoonMessageObj) {
+          return false;
+        }
+      });
+    } catch (e) {
+      commingSoonMessageObj = {};
+    }
+    return commingSoonMessageObj;
   }
 
   get getServerTimeDiff() {

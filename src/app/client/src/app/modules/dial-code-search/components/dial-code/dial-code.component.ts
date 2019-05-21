@@ -43,9 +43,11 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   public appMobileDownloadInteractData: any;
   private selectLanguage: string;
   commingSoonMessage: string;
+  contentComingSoonDetails: any;
 
-  constructor(public orgDetailsService: OrgDetailsService, private userService: UserService, public resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
-    public searchService: SearchService, public toasterService: ToasterService, public configService: ConfigService,
+  constructor(public orgDetailsService: OrgDetailsService, private userService: UserService, public resourceService: ResourceService,
+    public router: Router, public activatedRoute: ActivatedRoute, public searchService: SearchService,
+    public toasterService: ToasterService, public configService: ConfigService,
     public utilService: UtilService, public navigationhelperService: NavigationHelperService,
     public playerService: PlayerService, public telemetryService: TelemetryService) {
 
@@ -54,6 +56,9 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
       this.selectLanguage = item.value;
+      if (this.linkedContents && this.linkedContents.length === 0) {
+        this.setCommingSoonMessage();
+      }
     });
     this.activatedRoute.params.subscribe(params => {
       this.itemsToDisplay = [];
@@ -122,31 +127,32 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       rootOrgId = this.orgDetailsService.getRootOrgId;
     }
-    this.orgDetailsService.getCommingSoonMessage().pipe(takeUntil(this.unsubscribe$)).subscribe(
+    this.orgDetailsService.getCommingSoonMessage([rootOrgId]).pipe(takeUntil(this.unsubscribe$)).subscribe(
       (apiResponse) => {
-        if (apiResponse.value) {
-          const contentComingSoonDetails = _.find(JSON.parse(apiResponse.value), {rootOrgId: rootOrgId});
-          this.commingSoonMessage = this.getMessageFormTranslations(contentComingSoonDetails);
-        }
-        if (!this.commingSoonMessage) {
-          this.commingSoonMessage = this.resourceService.messages.stmsg.m0122;
-        }
+        this.contentComingSoonDetails = apiResponse;
+        this.commingSoonMessage = this.getMessageFormTranslations();
         this.showLoader = false;
       }
     );
   }
 
-  private getMessageFormTranslations (commingsoonobj) {
+  private getMessageFormTranslations () {
+    let commingSoonMessage = '';
     try {
-      const translations = JSON.parse(commingsoonobj.translations);
+      const translations = JSON.parse(this.contentComingSoonDetails.translations);
       if (translations[this.selectLanguage]) {
-        return translations[this.selectLanguage];
+        commingSoonMessage =  translations[this.selectLanguage];
       } else {
-        return translations['en'];
+        commingSoonMessage = translations['en'];
       }
     } catch (e) {
-      return (commingsoonobj && commingsoonobj.value);
+      commingSoonMessage =  (this.contentComingSoonDetails && this.contentComingSoonDetails.value);
     }
+    // default message
+    if (!commingSoonMessage) {
+      commingSoonMessage = this.resourceService.messages.stmsg.m0122;
+    }
+    return commingSoonMessage;
   }
 
   public getAllPlayableContent(collectionIds) {

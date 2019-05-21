@@ -55,14 +55,9 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
     /*
     * fetching comming soon message at org level to show if content not exists in any of the folder
     */
-    this.orgDetailsService.getCommingSoonMessage().pipe(takeUntil(this.unsubscribe$)).subscribe(
+    this.orgDetailsService.getCommingSoonMessage([contentLevelChannel, rootOrgId]).pipe(takeUntil(this.unsubscribe$)).subscribe(
       (apiResponse) => {
-        if (apiResponse.value) {
-          this.contentComingSoonDetails = _.find(JSON.parse(apiResponse.value), {rootOrgId: contentLevelChannel});
-          if (!this.contentComingSoonDetails) {
-            this.contentComingSoonDetails = _.find(JSON.parse(apiResponse.value), {rootOrgId: rootOrgId});
-          }
-        }
+        this.contentComingSoonDetails = apiResponse;
       }
     );
     this.languageSubscription = this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
