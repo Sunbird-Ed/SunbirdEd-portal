@@ -1,7 +1,7 @@
 <div class="data-driven-filter  sb-explore-filter-container" *ngIf="showFilters">
       <sui-accordion [closeOthers]="false">
         <sui-accordion-panel [isOpen]="accordionDefaultOpen" [isDisabled]="true">
-          <div *ngIf="isShowFilterLabel" title class="cursor-text filter-title py-5">
+          <div *ngIf="isShowFilterLabel" title class="cursor-text filter-title py-8">
             <span appTelemetryInteract [telemetryInteractEdata]="filterInteractEdata" [telemetryInteractCdata]="telemetryCdata"(click)="accordionDefaultOpen = !accordionDefaultOpen" class="cursor-pointer">
               <i alt="Filter" class="icon filter"></i>
               {{resourceService.frmelmnts?.lbl?.filters}}
