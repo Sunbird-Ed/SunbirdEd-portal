@@ -241,6 +241,9 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
           const contentComingSoonDetails = _.find(JSON.parse(apiResponse.value), {rootOrgId: rootOrgId});
           this.commingSoonMessage = this.getMessageFormTranslations(contentComingSoonDetails);
         }
+        if (!this.commingSoonMessage) {
+          this.commingSoonMessage = this.resourceService.messages.stmsg.m0122;
+        }
         this.showLoader = false;
       }
     );
@@ -255,7 +258,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
         return translations['en'];
       }
     } catch (e) {
-      return (commingsoonobj && commingsoonobj.value) || this.resourceService.messages.stmsg.m0122;
+      return (commingsoonobj && commingsoonobj.value);
     }
   }
 

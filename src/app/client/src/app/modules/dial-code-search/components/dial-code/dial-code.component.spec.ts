@@ -2,7 +2,7 @@ import {throwError as observableThrowError, of as observableOf,  Observable } fr
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, UtilService, ConfigService } from '@sunbird/shared';
-import { SearchService } from '@sunbird/core';
+import { SearchService, OrgDetailsService } from '@sunbird/core';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -35,7 +35,8 @@ describe('DialCodeComponent', () => {
       'fmsg': {
         'm0049': 'Fetching serach result failed'
       }
-    }
+    },
+    languageSelected$: observableOf({})
   };
   const fakeActivatedRoute = {
     'params': observableOf({ dialCode: '61U24C' }),
@@ -59,7 +60,7 @@ describe('DialCodeComponent', () => {
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
       declarations: [DialCodeComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [SearchService, UtilService, ConfigService,
+      providers: [SearchService, UtilService, ConfigService, OrgDetailsService, 
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }]
@@ -82,10 +83,13 @@ describe('DialCodeComponent', () => {
   });
   it('should return appropriate message on no contents', () => {
     const searchService = TestBed.get(SearchService);
+    const orgDetailsService = TestBed.get(OrgDetailsService);
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.noData));
+    spyOn(orgDetailsService, 'getCommingSoonMessage').and.callFake(() => observableOf({value:{rootOrgId:'Org_001'}}));
+    spyOn(component, 'setCommingSoonMessage')
     component.searchDialCode();
     fixture.detectChanges();
-    expect(component.showLoader).toBeFalsy();
+    expect(component.setCommingSoonMessage).toHaveBeenCalled();
     expect(component.searchResults).toEqual([]);
   });
   it('should return appropriate failure message on error throw', () => {

@@ -12,6 +12,7 @@ export interface ICollectionTree {
     identifier?: string;
     childNodes?: string[];
     name?: string;
+    altMsg?: Array<{}>;
 }
 
 export interface ICollectionTreeNodes {

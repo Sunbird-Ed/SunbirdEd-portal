@@ -145,15 +145,16 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
     const nodes = node.getPath();
     const altMessages = [];
     nodes.forEach((eachnode, index) => {
-      if (_.has(eachnode, 'model.altMsg') && node.model.altMsg.length) {
-        altMessages.push(node.model.altMsg[0]);
+      if (_.has(eachnode, 'model.altMsg') && eachnode.model.altMsg.length) {
+        altMessages.push(eachnode.model.altMsg[0]);
       }
     });
-    if (altMessages.length > 1) {
+    if (altMessages.length > 0) {
       this.commingSoonMessage = this.getMessageFormTranslations(altMessages[altMessages.length - 1]);
     } else if (this.contentComingSoonDetails) {
       this.commingSoonMessage = this.getMessageFormTranslations(this.contentComingSoonDetails);
-    } else {
+    }
+    if (!this.commingSoonMessage) {
       this.commingSoonMessage  = this.resourceService.messages.stmsg.m0121;
     }
   }
@@ -164,7 +165,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
       if (translations[this.selectLanguage]) {
         return translations[this.selectLanguage];
       } else {
-        return translations['en'];
+        return translations['en'] || commingsoonobj.value;
       }
     } catch (e) {
       return commingsoonobj.value;
