@@ -60,7 +60,7 @@ describe('DialCodeComponent', () => {
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
       declarations: [DialCodeComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [SearchService, UtilService, ConfigService, OrgDetailsService, 
+      providers: [SearchService, UtilService, ConfigService, OrgDetailsService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }]
@@ -84,8 +84,8 @@ describe('DialCodeComponent', () => {
     const searchService = TestBed.get(SearchService);
     const orgDetailsService = TestBed.get(OrgDetailsService);
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.noData));
-    spyOn(orgDetailsService, 'getCommingSoonMessage').and.callFake(() => observableOf({value:{rootOrgId:'Org_001'}}));
-    spyOn(component, 'setCommingSoonMessage')
+    spyOn(orgDetailsService, 'getCommingSoonMessage').and.callFake(() => observableOf({value: {rootOrgId: 'Org_001'}}));
+    spyOn(component, 'setCommingSoonMessage');
     component.searchDialCode();
     fixture.detectChanges();
     expect(component.setCommingSoonMessage).toHaveBeenCalled();
