@@ -257,7 +257,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.loader = true;
     const options: any = { courseId: this.courseId };
     if (this.batchId) {
-      options.batchHashTagId = this.enrolledBatchInfo.hashTagId;
+      options.batchId = this.batchId;
     }
     this.courseConsumptionService.getConfigByContent(data.id, options).pipe(first())
       .subscribe(config => {
@@ -275,7 +275,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
         this.enableContentPlayer = true;
         this.contentTitle = data.title;
-        // this.breadcrumbsService.setBreadcrumbs([{ label: this.contentTitle, url: '' }]);
         this.windowScrollService.smoothScroll('app-player-collection-renderer', 500);
       }, (err) => {
         this.loader = false;

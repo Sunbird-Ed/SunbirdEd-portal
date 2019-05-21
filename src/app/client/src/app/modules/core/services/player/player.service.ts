@@ -52,8 +52,8 @@ export class PlayerService {
         if (option.courseId) {
           contentDetails.courseId = option.courseId;
         }
-        if (option.courseId && option.batchHashTagId) {
-          contentDetails.batchHashTagId = option.batchHashTagId;
+        if (option.courseId && option.batchId) {
+          contentDetails.batchId = option.batchId;
         }
         return observableOf(this.getConfig(contentDetails));
       }));
@@ -97,8 +97,8 @@ export class PlayerService {
     } else {
       const cloneDims = _.cloneDeep(this.userService.dims) || [];
       cloneDims.push(contentDetails.courseId);
-      if (contentDetails.batchHashTagId) {
-        cloneDims.push(contentDetails.batchHashTagId);
+      if (contentDetails.batchId) {
+        cloneDims.push(contentDetails.batchId);
       }
       configuration.context.dims = cloneDims;
     }
@@ -115,6 +115,10 @@ export class PlayerService {
         id: contentDetails.courseId,
         type: 'course'
       }];
+      if (contentDetails.batchId) {
+        configuration.context.cdata.push({ type: 'batch',
+        id: contentDetails.batchId} );
+      }
     }
     configuration.context.pdata.id = this.userService.appId;
     configuration.metadata = contentDetails.contentData;
