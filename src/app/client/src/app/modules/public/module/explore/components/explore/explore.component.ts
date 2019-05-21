@@ -14,6 +14,7 @@ import { takeUntil, map, mergeMap, first, filter } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 @Component({
+  selector: 'app-explore-component',
   templateUrl: './explore.component.html'
 })
 export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {

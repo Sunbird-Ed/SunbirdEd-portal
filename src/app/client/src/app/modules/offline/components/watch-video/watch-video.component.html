@@ -1,0 +1,21 @@
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal sb-file-upload-modal" appBodyScroll (dismissed)="closeModal();" #modal>
+  <div class="ui stackable grid">
+    <div class="column">
+      <div class="offline-watch-video mx-auto">
+        <div class="p-20">
+          <span class="offline-video-heading">{{resourceService.frmelmnts?.lbl?.howToVideo}}</span>
+          <span class="offline-video-title right-floated" ><i class="download icon"></i> {{resourceService.frmelmnts?.btn?.downloadPdf}}</span>
+        </div>
+        <video controls="" class="offline-video">
+          <source
+            src="https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/assets/do_312719162116210688118940/1e9id3spwfzvobzbuyonlibqgwl2r-de6_1_streamed.mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+  <div class="sb-modal-actions">
+    <button type="button" class="sb-btn sb-btn-primary sb-btn-normal"
+      (click)="modalClose()">{{resourceService.frmelmnts?.btn?.close}}</button>
+</div>
+</sui-modal>

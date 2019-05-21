@@ -1,7 +1,9 @@
 import { ResourceService } from '../../services/index';
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, HostListener } from '@angular/core';
 import { ICard } from '../../interfaces';
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
+import { environment } from '@sunbird/environment';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html'
@@ -15,12 +17,25 @@ export class CardComponent {
   @Input() customClass: string;
   @Output() clickEvent = new EventEmitter<any>();
   telemetryCdata: Array<{}> = [];
+  isOffline: boolean = environment.isOffline;
+  hover: Boolean;
+  isConnected: Boolean = navigator.onLine;
+  route: string;
 
-  constructor(public resourceService: ResourceService) {
+
+   @HostListener('mouseenter') onMouseEnter() {
+    this.hover = true;
+  }
+
+  @HostListener('mouseleave') onMouseLeave() {
+    this.hover = false;
+  }
+  constructor(public resourceService: ResourceService, private router: Router) {
     this.resourceService = resourceService;
     if (this.dialCode) {
       this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
     }
+    this.route = this.router.url;
   }
 
   public onAction(data, action) {
