@@ -8,6 +8,7 @@ import {
 } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-content-import',
   templateUrl: './content-import.component.html',
@@ -44,7 +45,6 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
   @ViewChild('modal') modal;
   @Output() closeImportModal = new EventEmitter<any>();
   isUpload: EventEmitter<any> = new EventEmitter();
-
   constructor(
     public config: ConfigService,
     public tosterService: ToasterService,

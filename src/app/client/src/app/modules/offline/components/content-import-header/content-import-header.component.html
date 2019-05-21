@@ -9,8 +9,7 @@
           <h4 class="sb-import-content-title">{{resourceService?.frmelmnts?.lbl?.importContent}}</h4>
           <p class="mt-8 mb-0 sb-import-content-meta">{{resourceService?.frmelmnts?.lbl?.uploadEcarFromPd}} </p>
         </div>
-        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-          [telemetryInteractEdata]="ContentImportIntractEdata"
+        <button
           class="sb-btn sb-btn-normal sb-btn-secondary ml-auto sb-btn-bs" (click)="showImportModal = true;">
           {{resourceService?.frmelmnts?.lbl?.importContent}}
         </button>
@@ -42,7 +41,6 @@
         </button>
         <div *ngIf="showVideoModal">
           <app-watch-video (closeVideoModal)="showVideoModal = false"></app-watch-video>
-
         </div>
       </div>
     </div>

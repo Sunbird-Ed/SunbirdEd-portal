@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WatchVideoComponent } from './watch-video.component';
+import { SuiModalModule } from 'ng2-semantic-ui';
 
 describe('WatchVideoComponent', () => {
   let component: WatchVideoComponent;
@@ -8,7 +9,8 @@ describe('WatchVideoComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WatchVideoComponent ]
+      declarations: [ WatchVideoComponent ],
+      imports: [ SuiModalModule],
     })
     .compileComponents();
   }));
