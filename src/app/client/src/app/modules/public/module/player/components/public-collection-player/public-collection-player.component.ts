@@ -7,7 +7,8 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {
   WindowScrollService, ToasterService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService
+  ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService,
+  ContentUtilsServiceService
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -23,6 +24,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 	 * telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
+  telemetryContentImpression: IImpressionEventInput;
   public queryParams: any;
   public collectionData: object;
 
@@ -72,6 +74,10 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   public playerTelemetryInteractObject: IInteractEventObject;
   public telemetryCourseEndEvent: IEndEventInput;
   public telemetryCourseStart: IStartEventInput;
+  /**
+   * Page Load Time, used this data in impression telemetry
+   */
+  public pageLoadDuration: Number;
 
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
@@ -88,7 +94,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
     public externalUrlPreviewService: ExternalUrlPreviewService, private configService: ConfigService,
-    public toasterService: ToasterService) {
+    public toasterService: ToasterService, private contentUtilsService: ContentUtilsServiceService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
@@ -129,26 +135,27 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   }
 
   ngAfterViewInit () {
-      setTimeout(() => {
-        this.telemetryImpression = {
-          context: {
-            env: this.route.snapshot.data.telemetry.env,
-            cdata: [{id: this.activatedRoute.snapshot.params.collectionId, type: 'Collection'}]
-          },
-          object: {
-            id: this.activatedRoute.snapshot.params.collectionId,
-            type: 'collection',
-            ver: '1.0'
-          },
-          edata: {
-            type: this.route.snapshot.data.telemetry.type,
-            pageid: this.route.snapshot.data.telemetry.pageid,
-            uri: this.router.url,
-            subtype: this.route.snapshot.data.telemetry.subtype,
-            duration: this.navigationHelperService.getPageLoadTime()
-          }
-        };
-      });
+    this.pageLoadDuration = this.navigationHelperService.getPageLoadTime();
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.route.snapshot.data.telemetry.env,
+          cdata: [{id: this.activatedRoute.snapshot.params.collectionId, type: 'Collection'}]
+        },
+        object: {
+          id: this.activatedRoute.snapshot.params.collectionId,
+          type: 'collection',
+          ver: '1.0'
+        },
+        edata: {
+          type: this.route.snapshot.data.telemetry.type,
+          pageid: this.route.snapshot.data.telemetry.pageid,
+          uri: this.router.url,
+          subtype: this.route.snapshot.data.telemetry.subtype,
+          duration: this.pageLoadDuration
+        }
+      };
+    });
   }
 
   ngOnDestroy() {
@@ -161,10 +168,30 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     this.playerConfig = this.getPlayerConfig(id).pipe(map((data) => {
       data.context.objectRollup = this.objectRollUp;
       this.playerTelemetryInteractObject.rollup = this.objectRollUp;
+      this.setTelemetryContentImpression(data);
       return data;
     }), catchError((err) => {
       return err;
     }), );
+  }
+
+  setTelemetryContentImpression (data) {
+    this.telemetryContentImpression = {
+      context: {
+        env: this.route.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.route.snapshot.data.telemetry.env,
+        pageid: this.route.snapshot.data.telemetry.env,
+        uri: this.router.url
+      },
+      object: {
+        id: data.metadata.identifier,
+        type: data.metadata.dataType || data.metadata.resourceType,
+        ver: data.metadata.pkgVersion ? data.metadata.pkgVersion.toString() : '1.0',
+        rollup: this.objectRollUp
+      }
+    };
   }
 
   public playContent(data: any): void {
@@ -257,7 +284,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
             if (content) {
-              this.setRollUpData(content);
+              this.objectRollUp = this.contentUtilsService.getContentRollup(content);
               this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') }, true);
             } else {
               // show toaster error
@@ -271,12 +298,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         this.toasterService.error(this.resourceService.messages.fmsg.m0004); // need to change message
         this.router.navigate(['/explore']);
       });
-  }
-
-  private setRollUpData (content) {
-    const nodes = content.getPath();
-    this.objectRollUp = {};
-    nodes.forEach((eachnode, index) => this.objectRollUp['l' + (index + 1)] = eachnode.model.identifier);
   }
   private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
     const inputParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
@@ -317,29 +338,31 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 
   private setTelemetryStartEndData() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
-    this.telemetryCourseStart = {
-      context: {
-        env: this.route.snapshot.data.telemetry.env,
-        cdata: this.telemetryCdata
-      },
-      object: {
-        id: this.collectionId,
-        type: 'Collection',
-        ver: '1.0',
-      },
-      edata: {
-        type: this.route.snapshot.data.telemetry.type,
-        pageid: this.route.snapshot.data.telemetry.pageid,
-        mode: 'play',
-        uaspec: {
-          agent: deviceInfo.browser,
-          ver: deviceInfo.browser_version,
-          system: deviceInfo.os_version ,
-          platform: deviceInfo.os,
-          raw: deviceInfo.userAgent
+    setTimeout(() => {
+      this.telemetryCourseStart = {
+        context: {
+          env: this.route.snapshot.data.telemetry.env,
+          cdata: this.telemetryCdata
+        },
+        object: {
+          id: this.collectionId,
+          type: 'Collection',
+          ver: '1.0',
+        },
+        edata: {
+          type: this.route.snapshot.data.telemetry.type,
+          pageid: this.route.snapshot.data.telemetry.pageid,
+          mode: 'play',
+          uaspec: {
+            agent: deviceInfo.browser,
+            ver: deviceInfo.browser_version,
+            system: deviceInfo.os_version ,
+            platform: deviceInfo.os,
+            raw: deviceInfo.userAgent
+          }
         }
-      }
-    };
+      };
+    }, 50);
     this.telemetryCourseEndEvent = {
       object: {
         id: this.collectionId,

@@ -1,6 +1,6 @@
 import { ResourceService } from '@sunbird/shared';
 import { BaseChartDirective } from 'ng2-charts';
-import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import * as moment from 'moment';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -11,7 +11,7 @@ import { startWith, tap } from 'rxjs/operators';
   templateUrl: './data-chart.component.html',
   styleUrls: ['./data-chart.component.scss']
 })
-export class DataChartComponent implements OnInit, AfterViewInit {
+export class DataChartComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() chartData: any;
   chart;
@@ -28,7 +28,9 @@ export class DataChartComponent implements OnInit, AfterViewInit {
   timeLineRangeoptions;
   chartFiltersSubscription: Subscription;
   filters;
-  constructor(public resourceService: ResourceService) { }
+  subscription: Subscription;
+  avgStatistics;
+  constructor(public resourceService: ResourceService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.chart = _.cloneDeep(this.chartData);
@@ -60,12 +62,32 @@ export class DataChartComponent implements OnInit, AfterViewInit {
   }
 
   applyFilters() {
-    combineLatest(this.onLabelsChange(), this.onTimeLineChange(), this.onDataSetChange(), this.onTimeLineRangeChange())
+    this.subscription = combineLatest(this.onLabelsChange(), this.onTimeLineChange(), this.onDataSetChange(), this.onTimeLineRangeChange())
       .subscribe(value => {
         if (this.chartInfo) {
+          this.calculateUsage();
           this.chartInfo.update();
         }
       });
+  }
+
+  calculateUsage = () => {
+    const stats = [];
+    _.forEach(this.chartInfo.datasets, dataset => {
+      if (!dataset.hidden) {
+        const total = _.sumBy(dataset.data, value => Number(value));
+        const avgTotal = {};
+        avgTotal['label'] = dataset.label;
+        avgTotal['sum'] = total.toFixed(2);
+        stats.push(avgTotal);
+      }
+    });
+    if (stats.length > 1) {
+      const summation = _.sumBy(stats, stat => Number(stat.sum));
+      stats.push({ label: 'Total', sum: summation.toFixed(2) });
+    }
+    this.avgStatistics = stats;
+    this.cdr.detectChanges();
   }
 
   onTimeLineChange = () => {
@@ -75,7 +97,6 @@ export class DataChartComponent implements OnInit, AfterViewInit {
         tap((time) => {
           if (!_.isNull(time)) {
             this.selectedTime = time;
-
             if (!this.timeLineRange) {
               this.chartFilters.get('timeLineRange').setValue(this.timeLineRangeoptions[0].value);
             }
@@ -161,15 +182,16 @@ export class DataChartComponent implements OnInit, AfterViewInit {
   resetFilter() {
     this.selectedTime = null;
     this.timeLineRange = null;
-    this.chartFilters.reset();
     this.chart.labels = this.chartData.labels;
     _.forEach(this.chartData.datasets, (dataset, i) => {
       this.chartInfo.datasets[i].hidden = false;
       this.chartInfo.datasets[i].label = dataset.label;
       this.chartInfo.datasets[i].data = dataset.data;
     });
-    if (this.chartInfo) {
-      this.chartInfo.update();
-    }
+    this.chartFilters.reset();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

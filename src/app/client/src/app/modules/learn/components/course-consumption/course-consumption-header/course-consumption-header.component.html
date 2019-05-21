@@ -1,4 +1,4 @@
-<div class="courseStructureHeader mt-10">
+<div class="courseStructureHeader mt-8">
   <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
     <div class="ui text centered inline loader mt-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
   </div>
@@ -69,7 +69,7 @@
 <div *ngIf="enrolledCourse">
   <div class="ui container">
     <div class="ui stackable padded grid" *ngIf="getBatchStatus() && batchEndDate">
-      <div class="twelve wide column p-0 mb-16">
+      <div class="twelve wide column p-0 py-16">
         <div class="ui info message compact">
           <div class="header">
             {{resourceService?.frmelmnts?.lbl?.expiredBatchWarning | interpolate:'{EndDate}':batchEndDate}}
@@ -78,7 +78,7 @@
       </div>
     </div>
   </div>
-  <div class="twelve wide column p-0">
+  <div class="twelve wide column p-0 py-16">
     <sui-progress class="ui tiny progress blue status" [ngClass]="{'expired':getBatchStatus()}" [value]="progress" [maximum]="100"></sui-progress>
   </div>
 </div>

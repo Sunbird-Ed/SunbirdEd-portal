@@ -1,7 +1,7 @@
 <div class="data-driven-filter  sb-explore-filter-container" *ngIf="showFilters">
       <sui-accordion [closeOthers]="false">
         <sui-accordion-panel [isOpen]="accordionDefaultOpen" [isDisabled]="true">
-          <div *ngIf="isShowFilterLabel" title class="cursor-text filter-title">
+          <div *ngIf="isShowFilterLabel" title class="cursor-text filter-title py-8">
             <span appTelemetryInteract [telemetryInteractEdata]="filterInteractEdata" [telemetryInteractCdata]="telemetryCdata"(click)="accordionDefaultOpen = !accordionDefaultOpen" class="cursor-pointer">
               <i alt="Filter" class="icon filter"></i>
               {{resourceService.frmelmnts?.lbl?.filters}}
@@ -9,8 +9,8 @@
             </span>
           </div>
           <div content>
-            <div *ngIf="filtersDetails && formInputData && showSearchedParam" class="twelve wide column content mb-15">
-              <span *ngFor="let field of filtersDetails">
+            <div *ngIf="filtersDetails && formInputData && showSearchedParam" class="twelve wide column pb-16 content">
+              <span class="d-inline-block" *ngFor="let field of filtersDetails">
                 <span class="padded chip mt-5 mr-10" *ngIf='formInputData[field.code] && formInputData[field.code].length > 0'>
                   {{field.label}}:
                   <span *ngFor="let item of formInputData[field.code]">
@@ -32,39 +32,38 @@
                 </span>
               </span>
             </div>
-            <div *ngIf="refresh">
+            <div class="twelve wide column pt-0" *ngIf="refresh">
               <form *ngIf="filtersDetails" class="ui form">
-                <div class="ui grid stackable top aligned">
-                <div class="twelve wide tablet ten wide computer column mobile-p-0">
-                    <div class="ui grid">
-                        <div *ngFor="let field of filtersDetails" class="six wide mobile three wide tablet three wide computer column">
-                          <div *ngIf="(field.inputType==='select' || field.inputType === 'multi-select') && field.code !== 'channel'" class="field large">
+                <div class="ui grid stackable top aligned mt-0">
+                <div class="twelve wide tablet twelve wide computer column py-0">
+                    <div class="sb-prominent-filter-container">
+                        <div *ngFor="let field of filtersDetails" class="sb-prominent-filter-field">
+                          <div *ngIf="(field.inputType==='select' || field.inputType === 'multi-select') && field.code !== 'channel'">
                             <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
-                              defaultSelectionText={{field.label}} zeroSelectionText= {{resourceService.frmelmnts.lbl.Select}} class="selection filterFieldSearch"
+                              defaultSelectionText={{field.label}} zeroSelectionText= {{resourceService.frmelmnts.lbl.Select}} class="ui selection multiselect-square-border dropdown multiple"
                               [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" #multiSelect>
                               <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
                             </sui-multi-select>
                           </div>
-                          <div *ngIf="field.code === 'channel'" class="field large">
+                          <div *ngIf="field.code === 'channel'">
                             <sui-multi-select (ngModelChange)="modelChange($event);setFilterInteractData()" id={{field.code}} name={{field.code}}
-                              defaultSelectionText={{field.name}} zeroSelectionText= {{resourceService.frmelmnts.lbl.Select}} class="selection filterFieldSearch"
+                              defaultSelectionText={{field.name}} zeroSelectionText= {{resourceService.frmelmnts.lbl.Select}} class="ui selection multiselect-square-border dropdown multiple"
                               [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" labelField="name" valueField="identifier"
                               #multiSelect>
                               <sui-select-option *ngFor="let option of field.range" [value]="option"></sui-select-option>
                             </sui-multi-select>
                           </div>
-                          <div *ngIf="field.code==='topic'" class="field">
+                          <div *ngIf="field.code==='topic'">
                             <app-topic-picker [selectedTopics]="formInputData[field.code]" [formTopic]="field" (topicChange)="handleTopicChange($event);setFilterInteractData()"></app-topic-picker>
                           </div>
                         </div>
+                        <div class="sb-prominent-filter-field">
+                            <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="applyFilters()" appTelemetryInteract
+                            [telemetryInteractEdata]="applyFilterInteractEdata">{{resourceService.frmelmnts?.btn?.apply}}</button>
+                          <button appTelemetryInteract [telemetryInteractEdata]="resetFilterInteractEdata"
+                          class="sb-btn sb-btn-normal sb-btn-outline-primary ml-10 mr-0" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</button>
+                        </div>
                       </div>
-                </div>
-                
-                <div class="twelve wide tablet two wide computer right aligned top aligned column filter-button">
-                  <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="applyFilters()" appTelemetryInteract
-                    [telemetryInteractEdata]="applyFilterInteractEdata">{{resourceService.frmelmnts?.btn?.apply}}</button>
-                  <button appTelemetryInteract [telemetryInteractEdata]="resetFilterInteractEdata"
-                  class="sb-btn sb-btn-normal sb-btn-outline-primary ml-10" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</button>
                 </div>
               </div>
               </form>

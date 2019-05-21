@@ -99,6 +99,7 @@ $primary-800: darken($primary-color,30%);  // hover
 $primary-0: #F3F7FA; // bg
 $primary-100: #EDF4F9; // default button bg
 $primary-200: #80A7CE; // divider
+$primary-250:#D3E7F4; //pagination bg color
 $primary-300: #7AB4EE; // outline, focus fields
 $primary-400: $primary-color; // button bg, heading, table titles, links, toggles 
 $primary-600: #005391; // on press
@@ -249,7 +250,7 @@ $sb-card-badge-width: 30px;
 $sb-card-meta-width: 172px;
 $sb-card-meta-color: $gray-400;
 $sb-card-meta-font-size: $font-size-sm;
-$sb-card-meta-line-height: 17px;
+$sb-card-meta-line-height: 18px;
 $sb-card-title-color: $primary-color;
 $sb-card-title-font-size: $h6-font-size;
 $sb-card-title-line-height: ($sb-card-title-font-size * 1.25);
