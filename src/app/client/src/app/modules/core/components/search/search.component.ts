@@ -139,7 +139,6 @@ export class SearchComponent implements OnInit {
   setSearchPlaceHolderValue () {
     const keyName = this.searchDisplayValueMappers[this.selectedOption];
     this.searchPlaceHolderValue = this.resourceService.frmelmnts['tab'] ? this.resourceService.frmelmnts.tab[keyName]  : '';
-    this.cdr.detectChanges();
   }
 
   /**
