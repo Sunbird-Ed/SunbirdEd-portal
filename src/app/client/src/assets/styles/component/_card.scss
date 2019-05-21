@@ -9,7 +9,7 @@
   transition-delay: .1s;
   cursor: pointer;
   overflow: hidden;
-  margin-top: $sb-card-hover-movement;
+  //margin-top: $sb-card-hover-movement;
   &:hover {
     transform: translate(0, -$sb-card-hover-movement);
     box-shadow: $sb-card-box-shadow;

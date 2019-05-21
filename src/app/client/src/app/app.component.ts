@@ -249,7 +249,6 @@ export class AppComponent implements OnInit {
           endpoint: this.configService.urlConFig.URLS.TELEMETRY.SYNC,
           apislug: this.configService.urlConFig.URLS.CONTENT_PREFIX,
           host: '',
-          uid: 'anonymous',
           sid: this.userService.anonymousSid,
           channel: this.orgDetails.hashTagId,
           env: 'home',

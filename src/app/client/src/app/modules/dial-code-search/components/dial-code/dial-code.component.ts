@@ -7,6 +7,7 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, Telem
 import { takeUntil, map, catchError, mergeMap } from 'rxjs/operators';
 import { Subject, forkJoin, of } from 'rxjs';
 import * as TreeModel from 'tree-model';
+const treeModel = new TreeModel();
 
 
 @Component({
@@ -15,214 +16,100 @@ import * as TreeModel from 'tree-model';
   styleUrls: ['./dial-code.component.scss']
 })
 export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
-  inviewLogs: any = [];
+  public inviewLogs: any = [];
   /**
-   * telemetryImpression
-  */
-  telemetryImpression: IImpressionEventInput;
-  /**
-   * reference of SearchService
-   */
-
+	 * telemetryImpression
+	*/
+  public telemetryImpression: IImpressionEventInput;
   /**
    * Initializing the infinite scroller
    */
-  itemsToDisplay: any = [];
-  itemsToLoad = 50;
-  throttle = 50;
-  numOfItemsToAddOnScroll = 20;
-  scrollDistance = 2;
-
-  private searchService: SearchService;
-
-  /**
-   * reference of ToasterService
-   */
-  private toasterService: ToasterService;
-
-  /**
-  * reference of ResourceService
-  */
-  public resourceService: ResourceService;
-  /**
-   * used to store insatnce name
-   */
-  public instanceName;
-  /**
-   * used to store searched keyword
-   */
+  public itemsToDisplay: any = [];
+  public itemsToLoad = 50;
+  public throttle = 50;
+  public numOfItemsToAddOnScroll = 20;
+  public scrollDistance = 2;
   public dialCode;
-  /**
-   * used to store searched keyword
-   */
-  public searchKeyword;
-  /**
-  * To navigate to other pages
-   */
-  public router: Router;
-
-  /**
-   * To send activatedRoute.snapshot to routerNavigationService
-   */
-  public activatedRoute: ActivatedRoute;
-
-  /**
-  * This variable hepls to show and hide page loader.
-  * It is kept true by default as at first when we comes
-  * to a page the loader should be displayed before showing
-  * any data
-  */
-  showLoader = true;
-
-  /**
-    * loader message
-   */
-  loaderMessage: any;
-
-  /**
-   * to store search results
-  */
-  searchResults: Array<any> = [];
-  /**
-   * to unsubscribe
-  */
+  public showLoader = true;
+  public loaderMessage: any;
+  public searchResults: Array<any> = [];
   public unsubscribe$ = new Subject<void>();
-  telemetryCdata: Array<{}> = [];
-  closeIntractEdata: IInteractEventEdata;
-  linkedContents: Array<any>;
-  showMobilePopup = false;
-  isRedirectToDikshaApp = false;
-  closeMobilePopupInteractData: any;
-  appMobileDownloadInteractData: any;
+  public telemetryCdata: Array<{}> = [];
+  public closeIntractEdata: IInteractEventEdata;
+  public linkedContents: Array<any>;
+  public showMobilePopup = false;
+  public isRedirectToDikshaApp = false;
+  public closeMobilePopupInteractData: any;
+  public appMobileDownloadInteractData: any;
   private selectLanguage: string;
   commingSoonMessage: string;
 
-  constructor(public orgDetailsService: OrgDetailsService, private userService: UserService,
-    resourceService: ResourceService, router: Router, activatedRoute: ActivatedRoute,
-    searchService: SearchService, toasterService: ToasterService, public configService: ConfigService,
+  constructor(public orgDetailsService: OrgDetailsService, private userService: UserService, public resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
+    public searchService: SearchService, public toasterService: ToasterService, public configService: ConfigService,
     public utilService: UtilService, public navigationhelperService: NavigationHelperService,
     public playerService: PlayerService, public telemetryService: TelemetryService) {
-    this.resourceService = resourceService;
-    this.router = router;
-    this.activatedRoute = activatedRoute;
-    this.searchService = searchService;
-    this.toasterService = toasterService;
+
   }
 
   ngOnInit() {
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
       this.selectLanguage = item.value;
     });
-    this.instanceName = this.resourceService.instance;
     this.activatedRoute.params.subscribe(params => {
       this.itemsToDisplay = [];
       this.searchResults = [];
-      this.searchKeyword = this.dialCode = params.dialCode;
+      this.dialCode = params.dialCode;
       this.setTelemetryData();
       this.searchDialCode();
     });
     this.handleMobilePopupBanner();
   }
 
-  setTelemetryData () {
-    if (this.dialCode) {
-      this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
-    }
-    this.closeMobilePopupInteractData = {
-      context: {
-        cdata: this.telemetryCdata,
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-      },
-      edata: {
-        id: 'mobile-popup-close',
-        type: 'click',
-        pageid: 'get-dial'
-      }
-    };
-
-    this.closeIntractEdata = {
-      id: 'dialpage-close',
-      type: 'click',
-      pageid: 'get-dial',
-    };
-
-    this.appMobileDownloadInteractData = {
-      context: {
-        cdata: this.telemetryCdata,
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-      },
-      edata: {
-        id: 'app-download-mobile',
-        type: 'click',
-        pageid: 'get-dial'
-      }
-    };
-  }
-
-  handleMobilePopupBanner () {
-    setTimeout(() => {
-      this.showMobilePopup = true;
-    }, 500);
-  }
-
-  closeMobileAppPopup () {
-    if (!this.isRedirectToDikshaApp) {
-      this.telemetryService.interact(this.closeMobilePopupInteractData);
-      (document.querySelector('.mobile-app-popup') as HTMLElement).style.bottom = '-999px';
-      (document.querySelector('.mobile-popup-dimmer') as HTMLElement).style.display = 'none';
-    }
-  }
-
-  redirectToDikshaApp () {
-    this.isRedirectToDikshaApp = true;
-    this.telemetryService.interact(this.appMobileDownloadInteractData);
-    window.location.href = 'https://play.google.com/store/apps/details?id=in.gov.diksha.app';
-  }
-
   public searchDialCode() {
     this.showLoader = true;
     const requestParams = {
       filters: {
-        'dialcodes': this.dialCode
+        dialcodes: this.dialCode
       }
     };
-    this.searchService.contentSearch(requestParams, false).pipe(
-      mergeMap(apiResponse => {
-        const linkedCollectionsIds = [];
-        this.linkedContents = [];
-        if (apiResponse.result.content && apiResponse.result.content.length > 0) {
-          _.forEach(apiResponse.result.content, (data) => {
-            if (data.mimeType === 'application/vnd.ekstep.content-collection') {
-              linkedCollectionsIds.push(data.identifier);
-            } else {
-              this.linkedContents.push(data);
-            }
-          });
-
-          if (linkedCollectionsIds.length) {
-            return this.getAllPlayableContent(linkedCollectionsIds);
-          } else {
-            return of([]);
-          }
+    this.searchService.contentSearch(requestParams, false).pipe(mergeMap(apiResponse => {
+      const linkedCollectionsIds = [];
+      this.linkedContents = [];
+      _.forEach(_.get(apiResponse, 'result.content'), (data) => {
+        if (data.mimeType === 'application/vnd.ekstep.content-collection') {
+          linkedCollectionsIds.push(data.identifier);
         } else {
-          return of([]);
+          this.linkedContents.push(data);
         }
-      }))
-      .subscribe(data => {
-        const constantData = this.configService.appConfig.GetPage.constantData;
-        const metaData = this.configService.appConfig.GetPage.metaData;
-        const dynamicFields = this.configService.appConfig.GetPage.dynamicFields;
-        this.searchResults = this.utilService.getDataForCard(this.linkedContents, constantData, dynamicFields, metaData);
-        if (this.linkedContents.length === 0) {
-          this.setCommingSoonMessage();
-        } else {
-          this.appendItems(0, this.itemsToLoad);
-          this.showLoader = false;
-        }
-      }, error => {
-        this.showLoader = false;
-        this.toasterService.error(this.resourceService.messages.fmsg.m0049);
       });
+      if (linkedCollectionsIds.length) {
+        return this.getAllPlayableContent(linkedCollectionsIds);
+      } else {
+        return of([]);
+      }
+    })).subscribe(data => {
+      const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
+      this.searchResults = this.utilService.getDataForCard(this.linkedContents, constantData, dynamicFields, metaData);
+      if (this.linkedContents.length === 0) {
+        this.setCommingSoonMessage();
+      } else {
+        this.appendItems(0, this.itemsToLoad);
+        this.showLoader = false;
+      }
+    }, error => {
+      this.showLoader = false;
+      this.toasterService.error(this.resourceService.messages.fmsg.m0049);
+    });
+  }
+
+  onScrollDown() {
+    const startIndex = this.itemsToLoad;
+    this.itemsToLoad = this.itemsToLoad + this.numOfItemsToAddOnScroll;
+    this.appendItems(startIndex, this.itemsToLoad);
+  }
+
+  appendItems (startIndex, endIndex) {
+    this.itemsToDisplay.push(...this.searchResults.slice(startIndex, endIndex));
   }
 
   public setCommingSoonMessage () {
@@ -262,28 +149,15 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  onScrollDown() {
-    const startIndex = this.itemsToLoad;
-    this.itemsToLoad = this.itemsToLoad + this.numOfItemsToAddOnScroll;
-    this.appendItems(startIndex, this.itemsToLoad);
-  }
-
-  appendItems (startIndex, endIndex) {
-    this.itemsToDisplay.push(...this.searchResults.slice(startIndex, endIndex));
-  }
-
   public getAllPlayableContent(collectionIds) {
-    const apiArray = [];
-    _.forEach(collectionIds, (data) => {
-      apiArray.push(this.getCollectionHierarchy(data));
-    });
+    const apiArray = _.map(collectionIds, collectionId => this.getCollectionHierarchy(collectionId));
     return forkJoin(apiArray).pipe(map((results) => {
-      const model = new TreeModel();
       _.forEach(results, (eachCollection) => {
         if (typeof eachCollection === 'object') {
-          const treeModel = model.parse(eachCollection);
-          treeModel.walk((node) => {
+          const parsedCollection = treeModel.parse(eachCollection);
+          parsedCollection.walk((node) => {
             if (_.get(node, 'model.mimeType') && node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
+              node.model.l1Parent = eachCollection.identifier;
               this.linkedContents.push(node.model);
             }
             return true;
@@ -294,21 +168,17 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public getCollectionHierarchy(collectionId) {
-    return this.playerService.getCollectionHierarchy(collectionId).pipe(map((res) =>
-    _.get(res, 'result.content')), catchError(e => of(undefined)));
-  }
-
-  public navigateToSearch() {
-    if (this.searchKeyword.length > 0) {
-      this.router.navigate(['/get/dial', this.searchKeyword]);
-    }
+    return this.playerService.getCollectionHierarchy(collectionId).pipe(
+      map((res) => _.get(res, 'result.content')), catchError(e => of(undefined)));
   }
 
   public getEvent(event) {
     if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-      this.router.navigate(['play/collection', event.data.metaData.identifier], { queryParams: { dialCode: this.searchKeyword } });
+      this.router.navigate(['play/collection', event.data.metaData.identifier],
+        { queryParams: { dialCode: this.dialCode, l1Parent: event.data.metaData.l1Parent } });
     } else {
-      this.router.navigate(['play/content', event.data.metaData.identifier], { queryParams: { dialCode: this.searchKeyword } });
+      this.router.navigate(['play/content', event.data.metaData.identifier],
+        { queryParams: { dialCode: this.dialCode, l1Parent: event.data.metaData.l1Parent } });
     }
   }
 
@@ -336,13 +206,13 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
         context: {
           env: this.activatedRoute.snapshot.data.telemetry.env,
           cdata: [{
-            type: 'dialCode',
+            type: 'DialCode',
             id: this.activatedRoute.snapshot.params.dialCode
           }]
         },
         object: {
           id: this.activatedRoute.snapshot.params.dialCode,
-          type: 'dialCode',
+          type: 'DialCode',
           ver: '1.0'
         },
         edata: {
@@ -355,8 +225,60 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       };
     });
   }
+  closeMobileAppPopup () {
+    if (!this.isRedirectToDikshaApp) {
+      this.telemetryService.interact(this.closeMobilePopupInteractData);
+      (document.querySelector('.mobile-app-popup') as HTMLElement).style.bottom = '-999px';
+      (document.querySelector('.mobile-popup-dimmer') as HTMLElement).style.display = 'none';
+    }
+  }
+
+  redirectToDikshaApp () {
+    this.isRedirectToDikshaApp = true;
+    this.telemetryService.interact(this.appMobileDownloadInteractData);
+    window.location.href = 'https://play.google.com/store/apps/details?id=in.gov.diksha.app';
+  }
+  setTelemetryData () {
+    if (this.dialCode) {
+      this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
+    }
+    this.closeMobilePopupInteractData = {
+      context: {
+        cdata: this.telemetryCdata,
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+      },
+      edata: {
+        id: 'mobile-popup-close',
+        type: 'click',
+        pageid: 'get-dial'
+      }
+    };
+
+    this.closeIntractEdata = {
+      id: 'dialpage-close',
+      type: 'click',
+      pageid: 'get-dial',
+    };
+
+    this.appMobileDownloadInteractData = {
+      context: {
+        cdata: this.telemetryCdata,
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+      },
+      edata: {
+        id: 'app-download-mobile',
+        type: 'click',
+        pageid: 'get-dial'
+      }
+    };
+  }
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+  handleMobilePopupBanner () {
+    setTimeout(() => {
+      this.showMobilePopup = true;
+    }, 500);
   }
 }
