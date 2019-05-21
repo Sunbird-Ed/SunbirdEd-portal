@@ -70,8 +70,8 @@
             </div>
         </div>
         <div class="selectedBatchContent extra py-10">
-            <span class="right floated">
-                {{enrolledBatchInfo?.participant?.length}} {{resourceService.frmelmnts.lbl.learners}}
+            <span class="right floated" *ngIf="enrolledBatchInfo?.participantCount>=0">
+                {{enrolledBatchInfo?.participantCount}} {{resourceService.frmelmnts.lbl.learners}}
             </span>
             <span>
                 {{enrolledBatchInfo?.mentors?.length}} {{resourceService.frmelmnts.lbl.mentors}}
