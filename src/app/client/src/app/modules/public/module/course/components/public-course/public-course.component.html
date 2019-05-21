@@ -3,7 +3,7 @@
     *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']" [accordionDefaultOpen]=true
     [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId"
     (prominentFilter)="getFilters($event)"></app-prominent-filter>
-  <div class="ui container mt-20">
+  <div class="ui container mt-24">
     <div class="ui grid">
       <div class="twelve wide column" *ngFor="let section of pageSections;let last = last"
         [ngClass]="{'last mb-30':last}">

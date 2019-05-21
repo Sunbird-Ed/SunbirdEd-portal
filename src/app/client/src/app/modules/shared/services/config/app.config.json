@@ -412,7 +412,8 @@
         "identifier",
         "mimeType",
         "framework",
-        "contentType"
+        "contentType",
+        "l1Parent"
       ]
     },
     "dynamicFields": {
@@ -609,7 +610,8 @@
       "xUrl": "text/x-url"
     },
     "baseURL": "/content/preview/preview.html?webview=true",
-    "localBaseUrl": "/contentPlayer/preview/preview.html?offline=true"
+    "localBaseUrl": "/contentPlayer/preview/preview.html?offline=true",
+    "cdnUrl": "/content/preview/preview_cdn.html?webview=true"
   },
   "WORKSPACE": {
     "PAGE_LIMIT": 9,

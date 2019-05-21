@@ -22,9 +22,12 @@ export class PublicPlayerService {
    * stores collection/course details
   */
   collectionData: ContentData;
+  previewCdnUrl: string;
   constructor(public userService: UserService, private orgDetailsService: OrgDetailsService,
     public configService: ConfigService, public router: Router,
     public publicDataService: PublicDataService, public navigationHelperService: NavigationHelperService) {
+      this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
+      ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
   }
 
   /**
@@ -91,6 +94,8 @@ export class PublicPlayerService {
         type: 'dialCode'
       }];
     }
+    configuration.config.previewCdnUrl = this.previewCdnUrl;
+    console.log('player config', configuration.config);
     return configuration;
   }
   public getCollectionHierarchy(identifier: string, option: any = { params: {} }): Observable<CollectionHierarchyAPI.Get> {

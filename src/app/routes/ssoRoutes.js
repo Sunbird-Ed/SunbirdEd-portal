@@ -95,7 +95,6 @@ module.exports = (app) => {
         }
         console.log('sso new user read details', userDetails);
         req.session.userDetails = userDetails;
-        logAuditEvent(req, createUserReq)
         console.log('sso user creation and role updated successfully and redirected to success page', jwtPayload.state_id, req.query.phone, jwtPayload, userDetails, createUserReq, updatePhoneReq, updateRolesReq, redirectUrl, errType);
       }
       redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
@@ -209,17 +208,6 @@ const logErrorEvent = (req, type, error) => {
     env: 'SSO_SIGN_IN'
   }
   telemetryHelper.logApiErrorEventV2(req, {edata, context});
-}
-const logAuditEvent = (req, profile) => {
-  const edata = {
-    props: ['phone'],
-    state: 'LOGGED_IN_USER',
-    prevstate: 'ANONYMOUS_USER'
-  }
-  const context = {
-    env: 'SSO_SIGN_IN'
-  }
-  telemetryHelper.logAuditEvent(req, {edata, context});
 }
 const getQueryParams = (queryObj) => {
   return '?' + Object.keys(queryObj).filter(key => queryObj[key])
