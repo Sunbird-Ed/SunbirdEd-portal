@@ -1,13 +1,15 @@
-<div class="ui grid sb-offline-import-content">
-  <div class="six wide column sb-offline-import-content-column">
-    <div class="sb-offline-imports sb-offline-import-content-border">
-      <div class="ui container sb-offline-area d-flex">
+<div class="sb-offline-import-content py-8">
+<div class="ui container grid p-0 m-0 relative">
+	<div class="sb-offline-brake"></div>
+  
+  <div class="six wide column sb-offline-imports p-0 pr-16">
+      <div class="sb-offline-area d-flex p-16">
         <div class="sb-import-icon">
-          <img src="../../../../../assets/images/offline-import-file.png" alt="offline import">
+          <img src="../../../../../assets/images/usb.svg" alt="offline import">
         </div>
         <div class="sb-import-content">
           <h4 class="sb-import-content-title">{{resourceService?.frmelmnts?.lbl?.importContent}}</h4>
-          <p class="mt-8 mb-0 sb-import-content-meta">{{resourceService?.frmelmnts?.lbl?.uploadEcarFromPd}} </p>
+          <p class="sb-import-content-meta">{{resourceService?.frmelmnts?.lbl?.uploadEcarFromPd}} </p>
         </div>
         <button
           class="sb-btn sb-btn-normal sb-btn-secondary ml-auto sb-btn-bs" (click)="showImportModal = true;">
@@ -17,23 +19,15 @@
           <app-content-import (closeImportModal)="showImportModal = false"></app-content-import>
         </div>
       </div>
-    </div>
   </div>
-  <div class="six wide column sb-offline-import-content-column">
-    <div class="sb-offline-imports">
-      <div class="ui container sb-offline-area d-flex">
+  <div class="six wide column sb-offline-imports sb-offline-video-demo p-0 pl-16">
+    <div class="sb-offline-area d-flex p-16">
         <div class="sb-import-icon sb-import-icon-watch-video">
           <img src="../../../../../assets/images/offline-import-book.png" alt="offline watch video">
         </div>
         <div class="sb-import-content">
           <h4 class="sb-import-content-title">{{resourceService?.frmelmnts?.lbl?.howToVideo}}</h4>
-          <dl class="mt-8 mb-0">
-            <div class="d-flex">
-              <dt class="sb-offline-import-description-list-key">{{resourceService.frmelmnts?.lbl?.subtopic}} :</dt>
-              <dd class="sb-offline-import-description-list-value">
-                {{resourceService.frmelmnts?.lbl?.limitsOfArtificialIntell}}</dd>
-            </div>
-          </dl>
+        <p class="mb-0 sb-import-content-meta">{{resourceService.frmelmnts?.lbl?.subtopic}} : {{resourceService.frmelmnts?.lbl?.limitsOfArtificialIntell}}</p>
         </div>
         <button class="sb-btn sb-btn-normal sb-btn-secondary ml-auto sb-btn-tertiary sb-btn-bs"
           (click)="showVideoModal = true;">
@@ -42,7 +36,8 @@
         <div *ngIf="showVideoModal">
           <app-watch-video (closeVideoModal)="showVideoModal = false"></app-watch-video>
         </div>
-      </div>
     </div>
   </div>
+
+</div>
 </div>

@@ -9,9 +9,9 @@ import { Router } from '@angular/router';
   templateUrl: './card.component.html'
 })
 export class CardComponent {
-/**
-* content is used to render IContents value on the view
-*/
+  /**
+  * content is used to render IContents value on the view
+  */
   @Input() data: ICard;
   @Input() dialCode: string;
   @Input() customClass: string;
@@ -23,7 +23,7 @@ export class CardComponent {
   route: string;
 
 
-   @HostListener('mouseenter') onMouseEnter() {
+  @HostListener('mouseenter') onMouseEnter() {
     this.hover = true;
   }
 
@@ -39,6 +39,9 @@ export class CardComponent {
   }
 
   public onAction(data, action) {
+    if (this.route === '/browse' && this.isOffline) {
+      return false;
+    }
     this.clickEvent.emit({ 'action': action, 'data': data });
   }
 }
