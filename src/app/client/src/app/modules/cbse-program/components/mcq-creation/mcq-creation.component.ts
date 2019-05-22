@@ -112,7 +112,7 @@ export class McqCreationComponent implements OnInit {
             'objectType': 'AssessmentItem',
             'metadata': {
               'code': UUID.UUID(),
-              'templateId': this.questionMetaData.data.template_id,
+              'templateId': this.questionMetaData.data.templateId,
               'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
               'body': questionData.body,
               'responseDeclaration': questionData.responseDeclaration,
@@ -123,7 +123,6 @@ export class McqCreationComponent implements OnInit {
               'qlevel': this.mcqForm.difficultyLevel,
               'maxScore': Number(this.mcqForm.maxScore),
               'status': 'Review',
-              'type': 'mcq',
               'media': this.mediaArr
             }
           }
@@ -180,7 +179,8 @@ export class McqCreationComponent implements OnInit {
               'subject': this.selectedAttributes.subject,
               'topic': [this.selectedAttributes.topic],
               'status': 'Review',
-              'media': this.mediaArr
+              'media': this.mediaArr,
+              'qumlVersion': 0.5
             }
           }
         }
@@ -203,7 +203,7 @@ export class McqCreationComponent implements OnInit {
     if (this.questionMetaData.mode === 'create') {
       templateClass =  this.templateDetails.templateClass;
     } else {
-      templateClass = this.questionMetaData.data.template_id; // TODO: need to be verified
+      templateClass = this.questionMetaData.data.templateId; // TODO: need to be verified
     }
     const questionBody = mcqBody.replace('{templateClass}', templateClass)
     .replace('{question}', this.mcqForm.question).replace('{optionList}', optionsBody);

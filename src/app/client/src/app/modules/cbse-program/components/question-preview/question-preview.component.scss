@@ -237,6 +237,19 @@
       padding-top: 16px;
     }
 
+    .mcq-vertical .mcq-title i.chevron,
+    .mcq-horizontal .mcq-title i.chevron,
+    .mcq-grid .mcq-title i.chevron{
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    .mcq-split .mcq-title i.chevron{
+      display: none !important;
+    }
+    
+
     .mcq-horizontal.mcq-split .mcq-options,
     .mcq-vertical.mcq-split .mcq-options,
     .mcq-grid.mcq-split .mcq-options {
