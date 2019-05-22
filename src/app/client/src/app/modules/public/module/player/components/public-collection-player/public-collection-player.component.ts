@@ -108,7 +108,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     };
   }
   ngOnInit() {
-    this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType') || 'Collection';
+    this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
     this.getContent();
     this.deviceDetector();
@@ -189,7 +189,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       },
       object: {
         id: data.metadata.identifier,
-        type: data.metadata.dataType || data.metadata.resourceType,
+        type: this.contentType || data.metadata.dataType || data.metadata.resourceType,
         ver: data.metadata.pkgVersion ? data.metadata.pkgVersion.toString() : '1.0',
         rollup: this.objectRollUp
       }
