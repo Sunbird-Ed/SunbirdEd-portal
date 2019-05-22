@@ -40,7 +40,7 @@ module.exports = (app) => {
       sunbirdProfile = await fetchUserByEmailId(googleProfile.emailId, req).catch(handleGetUserByIdError);
       if (!_.get(sunbirdProfile, 'result.response.userName') || !_.get(sunbirdProfile, 'result.response.firstName')) {
         errType = 'USER_CREATE_API';
-        newUserDetails = await createUserWithMailId(googleProfile, req).catch(handleCreateUserError);
+        newUserDetails = await createUserWithMailId(googleProfile, reqQuery.client_id, req).catch(handleCreateUserError);
       }
       errType = 'KEYCLOAK_SESSION_CREATE';
       keyCloakToken = await createSession(googleProfile.emailId, reqQuery, req, res);
