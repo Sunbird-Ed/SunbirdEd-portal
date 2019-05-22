@@ -2,7 +2,7 @@ body {
     margin: 0;
   }
   .program-cbse-login-section {
-    background-image: url('assets/program_cbse_login.jpeg');
+    background-image: url('../assets/program_cbse_login.jpeg');
     background-size: cover;
     background-repeat: no-repeat;
     width: 100%;
