@@ -70,7 +70,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    * @memberof ContentPlayerComponent
    */
   ngOnInit() {
-    this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType') || 'Content';
+    this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.contentId;
       this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
