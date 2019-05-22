@@ -5,6 +5,7 @@ import { DownloadManagerService } from '../../services';
 import { SuiModalModule, SuiProgressModule, SuiAccordionModule } from 'ng2-semantic-ui';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import {FileSizeModule} from 'ngx-filesize';
 
 describe('ContentImportComponent', () => {
   let component: DownloadManagerComponent;
@@ -12,7 +13,7 @@ describe('ContentImportComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ SuiModalModule, SharedModule.forRoot(), SuiProgressModule, SuiAccordionModule, HttpClientTestingModule ],
+      imports: [ SuiModalModule, SharedModule.forRoot(), SuiProgressModule, SuiAccordionModule, HttpClientTestingModule, FileSizeModule ],
       declarations: [DownloadManagerComponent],
       providers: [ DownloadManagerService ]
     })
