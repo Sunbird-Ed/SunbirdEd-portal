@@ -116,7 +116,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   }
   setTelemetryData() {
     if (this.dialCode) {
-      this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
+      this.telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
     }
     this.closeCollectionPlayerInteractEdata = {
       id: 'close-collection',
