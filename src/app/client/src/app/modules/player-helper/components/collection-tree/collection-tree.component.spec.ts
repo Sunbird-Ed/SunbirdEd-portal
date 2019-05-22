@@ -88,16 +88,16 @@ describe('CollectionTreeComponent', () => {
     component.nodes = nodes;
     const orgDetailsService = TestBed.get(OrgDetailsService);
     spyOn(orgDetailsService, 'getCommingSoonMessage').and.returnValue(observableOf(commonMessageApiResp));
-    orgDetailsService._rootOrgId = 'org_001';
+    orgDetailsService._rootOrgId = 'b00bc992ef25f1a9a8d63291e20efc8d';
     component.ngOnInit();
-    expect(component.commingSoonMessage).toEqual('Coming soon message');
+    expect(component.commingSoonMessage).toEqual('Org specific coming soon message');
   });
 
   it('should show default comming soon message if custom comming soon doesnt exists', () => {
     component.nodes = nodes;
     const orgDetailsService = TestBed.get(OrgDetailsService);
     orgDetailsService._rootOrgId = 'org_002';
-    spyOn(orgDetailsService, 'getCommingSoonMessage').and.returnValue(observableOf(commonMessageApiResp));
+    spyOn(orgDetailsService, 'getCommingSoonMessage').and.returnValue(observableOf({}));
     component.ngOnInit();
     expect(component.commingSoonMessage).toEqual('default comming soon');
   });
