@@ -26,10 +26,14 @@
 
 <div class="input-div relative" id="search-input-container">
   <i class="search icon"></i>
-  <input type="text" id="keyword" name="filter_search" class="sb-search-input" title="{{resourceService.frmelmnts?.lbl?.SearchIn}} {{searchPlaceHolderValue}}"
+  <input type="text" id="keyword" name="filter_search" class="sb-search-input"
+  title="{{resourceService.frmelmnts?.lbl?.SearchIn}} {{searchPlaceHolderValue}}"
     placeholder="{{resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}" [(ngModel)]="key"
-    (keyup.enter)="onEnter(key)" [disabled]="!showInput" [ngClass]="{'disabled': !showInput }" />
+    (keyup.enter)="onEnter(key)" [disabled]="!showInput && !isOffline"
+    [ngClass]="{'disabled': !showInput && !isOffline }" />
   <!-- <i class="close icon"></i>
   <div class="sb-loader"></div> -->
 </div>
-<button class="sb-btn sb-btn-normal" appTelemetryInteract [telemetryInteractEdata]="getInteractEdata(key)" [ngClass]="{'disabled': !showInput }" (click)="onEnter(key)" title="{{resourceService.frmelmnts?.lbl?.SearchIn}} {{searchPlaceHolderValue}}">Search</button>
+<button class="sb-btn sb-btn-normal" appTelemetryInteract [telemetryInteractEdata]="getInteractEdata(key)"
+  [ngClass]="{'disabled': !showInput  && !isOffline }" (click)="onEnter(key)"
+  title="{{resourceService.frmelmnts?.lbl?.SearchIn}} {{searchPlaceHolderValue}}">Search</button> 
