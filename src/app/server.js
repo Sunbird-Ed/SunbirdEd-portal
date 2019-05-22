@@ -134,7 +134,7 @@ function runApp() {
       if (envHelper.sunbird_portal_cdn_blob_url) {
         const cdnUrl = `${envHelper.sunbird_portal_cdn_blob_url}index.${packageObj.version}.${packageObj.buildHash}.ejs`
         request.get(cdnUrl).then((data) => {
-          const cdnFallBackScript = `<script type="text/javascript" src="${envHelper.sunbird_portal_cdn_blob_url}assets/cdnHelper.js"></script>
+          const cdnFallBackScript = `<script type="text/javascript" src="${envHelper.PORTAL_CDN_URL}assets/cdnHelper.js"></script>
               <script>
                 try {
                   if(!cdnFileLoaded){

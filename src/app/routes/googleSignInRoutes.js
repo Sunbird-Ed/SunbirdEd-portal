@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const { googleOauth, createSession, fetchUserByEmailId, createUserWithMailId } = require('./../helpers/googleOauthHelper');
 const telemetryHelper = require('../helpers/telemetryHelper')
-
+const googleDid = '2c010e13a76145d864e459f75a176171';
 module.exports = (app) => {
 
   app.get('/google/auth', (req, res) => {
@@ -70,7 +70,8 @@ const logImpressionEvent = (req) => {
     uri: '/google/auth',
   }
   const context = {
-    env: 'GOOGLE_SIGN_IN'
+    env: 'GOOGLE_SIGN_IN',
+    did: googleDid
   }
   telemetryHelper.logImpressionEvent(req, {edata, context});
 }
