@@ -9,6 +9,7 @@ import { ResourceService } from '@sunbird/shared';
 })
 export class ContentImportHeaderComponent implements OnInit {
     showImportModal = false;
+    showVideoModal = false;
     ContentImportIntractEdata: IInteractEventEdata;
     public telemetryInteractObject: IInteractEventObject;
 
