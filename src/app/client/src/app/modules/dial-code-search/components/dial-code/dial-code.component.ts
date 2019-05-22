@@ -54,6 +54,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    EkTelemetry.config.batchsize = 2;
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
       this.selectLanguage = item.value;
       if (this.linkedContents && this.linkedContents.length === 0) {
@@ -279,6 +280,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
   ngOnDestroy() {
+    EkTelemetry.config.batchsize = 10;
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

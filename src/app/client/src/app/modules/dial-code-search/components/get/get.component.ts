@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
@@ -8,7 +8,7 @@ import * as _ from 'lodash-es';
   templateUrl: './get.component.html',
   styleUrls: ['./get.component.scss']
 })
-export class GetComponent implements OnInit, AfterViewInit {
+export class GetComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
 	 * telemetryImpression
 	*/
@@ -38,6 +38,7 @@ export class GetComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    EkTelemetry.config.batchsize = 2;
     this.instanceName = this.resourceService.instance;
   }
 
@@ -62,6 +63,9 @@ export class GetComponent implements OnInit, AfterViewInit {
     if (this.searchKeyword) {
       this.router.navigate(['/get/dial', _.trim(this.searchKeyword)]);
     }
+  }
+  ngOnDestroy() {
+    EkTelemetry.config.batchsize = 10;
   }
 
 }
