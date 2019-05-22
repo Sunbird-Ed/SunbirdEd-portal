@@ -1,6 +1,6 @@
 import { ExploreModule } from './../public/module/explore/explore.module';
 import { OfflineFileUploaderService, DownloadManagerService } from './services';
-import { SuiModalModule, SuiProgressModule } from 'ng2-semantic-ui';
+import { SuiModalModule, SuiProgressModule, SuiAccordionModule } from 'ng2-semantic-ui';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoreModule } from '@sunbird/core';
@@ -26,7 +26,8 @@ import {FileSizeModule} from 'ngx-filesize';
     SuiProgressModule,
     WebExtensionModule,
     ExploreModule,
-    FileSizeModule
+    FileSizeModule,
+    SuiAccordionModule
   ],
   providers: [DeviceDetectorService, OfflineFileUploaderService, DownloadManagerService],
   declarations: [
