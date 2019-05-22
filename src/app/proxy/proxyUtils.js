@@ -61,7 +61,7 @@ function verifyToken () {
   }
 }
 const handleSessionExpiry = (proxyRes, proxyResData, req, res, data) => {
-  if ((proxyRes.statusCode === 401 || proxyRes.statusCode === 403) && !req.session.userId) {
+  if ((proxyRes.statusCode === 401) && !req.session.userId) {
       return {
         id: 'app.error',
         ver: '1.0',
