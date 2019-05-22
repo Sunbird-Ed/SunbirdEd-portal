@@ -52,6 +52,7 @@ module.exports = {
     context.did = req.session.deviceId
     context.rollup = telemetry.getRollUpData(dims)
     const actor = telemetry.getActorData(req.session.userId, 'user')
+    console.log('logging session start event', context.did);
     telemetry.start({
       edata: edata,
       context: context,
@@ -71,6 +72,7 @@ module.exports = {
     const context = telemetry.getContextData({ channel: channel, env: 'user' })
     context.sid = req.sessionID
     context.did = req.session.deviceId
+    console.log('logging session end event', context.did);
     context.rollup = telemetry.getRollUpData(dims)
     telemetry.end({
       edata: edata,
