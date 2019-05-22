@@ -411,7 +411,7 @@
                 "templateClass": "mcq-grid mcq-split"
             }
         ],
-        "mcqBody": "<div class='{templateClass}'><div class='mcq-title'>{question}</div><div class='mcq-options'>{optionList}</div></div>",
+        "mcqBody": "<div class='{templateClass}'><div class='mcq-title'>{question}<i class='chevron down icon'></i></div><div class='mcq-options'>{optionList}</div></div>",
         "optionTemplate": "<div data-simple-choice-interaction data-response-variable='responseValue' value={value} class='mcq-option'>{option}</div>"
     }
 }
