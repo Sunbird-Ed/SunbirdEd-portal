@@ -54,7 +54,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     private navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService,
     private frameworkService: FrameworkService) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
-    this.deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
+    const deviceId = (<HTMLInputElement>document.getElementById('deviceId'));
+    this.deviceId = deviceId ? deviceId.value : '';
     this.buildNumber = buildNumber ? buildNumber.value : '1.0';
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
   }
@@ -78,19 +79,19 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         this.setWindowConfig();
       }),
       delay(10)) // wait for iziModal lo load
-    .subscribe((data) => {
-      jQuery('#collectionEditor').iziModal('open'); // open iframe
-    },
-      (error) => {
-        if (error === 'NO_PERMISSION') {
-          this.toasterService.error(this.resourceService.messages.emsg.m0013);
-        } else if (['RESOURCE_SELF_LOCKED', 'RESOURCE_LOCKED'].includes(_.get(error, 'error.params.err'))) {
-          this.toasterService.error(_.replace(error.error.params.errmsg, 'resource', 'content'));
-        } else {
-          this.toasterService.error(this.resourceService.messages.emsg.m0004);
-        }
-        this.closeModal();
-      });
+      .subscribe((data) => {
+        jQuery('#collectionEditor').iziModal('open'); // open iframe
+      },
+        (error) => {
+          if (error === 'NO_PERMISSION') {
+            this.toasterService.error(this.resourceService.messages.emsg.m0013);
+          } else if (['RESOURCE_SELF_LOCKED', 'RESOURCE_LOCKED'].includes(_.get(error, 'error.params.err'))) {
+            this.toasterService.error(_.replace(error.error.params.errmsg, 'resource', 'content'));
+          } else {
+            this.toasterService.error(this.resourceService.messages.emsg.m0004);
+          }
+          this.closeModal();
+        });
   }
   private getDetails() {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
@@ -98,17 +99,21 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
       return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
-      this.editorService.getOwnershipType(), this.lockContent(), this.frameworkService.frameworkData$).
-      pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2], resource_framework: data[4].frameworkdata })));
+        this.editorService.getOwnershipType(), this.lockContent(), this.frameworkService.frameworkData$).
+        pipe(map(data => ({
+          tenantDetails: data[0].tenantData,
+          collectionDetails: data[1], ownershipType: data[2], resource_framework: data[4].frameworkdata
+        })));
     } else {
       return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
-      this.editorService.getOwnershipType(), this.frameworkService.frameworkData$).
-      pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2], resource_framework: data[3].frameworkdata })));
+        this.editorService.getOwnershipType(), this.frameworkService.frameworkData$).
+        pipe(map(data => ({
+          tenantDetails: data[0].tenantData,
+          collectionDetails: data[1], ownershipType: data[2], resource_framework: data[3].frameworkdata
+        })));
     }
   }
-  lockContent () {
+  lockContent() {
     const contentInfo = {
       contentType: this.routeParams.type,
       framework: this.routeParams.framework,
@@ -116,15 +121,15 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       mimeType: 'application/vnd.ekstep.content-collection'
     };
     const input = {
-      resourceId : contentInfo.identifier,
-      resourceType : 'Content',
-      resourceInfo : JSON.stringify(contentInfo),
-      creatorInfo : JSON.stringify({'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.identifier}),
-      createdBy : this.userService.userProfile.identifier
+      resourceId: contentInfo.identifier,
+      resourceType: 'Content',
+      resourceInfo: JSON.stringify(contentInfo),
+      creatorInfo: JSON.stringify({ 'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.identifier }),
+      createdBy: this.userService.userProfile.identifier
     };
     return this.workspaceService.lockContent(input).pipe(tap((data) => {
       this.queryParams = data.result;
-      this.router.navigate([], {relativeTo: this.activatedRoute, queryParams: data.result});
+      this.router.navigate([], { relativeTo: this.activatedRoute, queryParams: data.result });
     }));
   }
   private getCollectionDetails() {
@@ -188,8 +193,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         id: this.userService.userid,
         orgIds: this.userProfile.organisationIds,
         organisations: this.userService.orgIdNameMap,
-        name : !_.isEmpty(this.userProfile.lastName) ? this.userProfile.firstName + ' ' + this.userProfile.lastName :
-        this.userProfile.firstName
+        name: !_.isEmpty(this.userProfile.lastName) ? this.userProfile.firstName + ' ' + this.userProfile.lastName :
+          this.userProfile.firstName
       },
       did: this.deviceId,
       sid: this.userService.sessionId,
@@ -226,10 +231,10 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         ver: '1.1',
         type: 'plugin'
       }, {
-        id: 'org.ekstep.uploadfile',
-        ver: '1.0',
-        type: 'plugin'
-      });
+          id: 'org.ekstep.uploadfile',
+          ver: '1.0',
+          type: 'plugin'
+        });
       window.config.nodeDisplayCriteria = {
         contentType: ['TextBookUnit']
       };
@@ -302,8 +307,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  retireLock () {
-    const inputData = {'resourceId': this.routeParams.contentId, 'resourceType': 'Content'};
+  retireLock() {
+    const inputData = { 'resourceId': this.routeParams.contentId, 'resourceType': 'Content' };
     this.workspaceService.retireLock(inputData).subscribe(
       (data: ServerResponse) => {
         this.redirectToWorkSpace();
@@ -314,10 +319,10 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     );
   }
 
-  redirectToWorkSpace () {
+  redirectToWorkSpace() {
     if (this.routeParams.state === 'collaborating-on') {
       this.navigationHelperService.navigateToWorkSpace('/workspace/content/collaborating-on/1');
-    } else if ( this.routeParams.state === 'upForReview') {
+    } else if (this.routeParams.state === 'upForReview') {
       this.navigationHelperService.navigateToWorkSpace('/workspace/content/upForReview/1');
     } else {
       this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');

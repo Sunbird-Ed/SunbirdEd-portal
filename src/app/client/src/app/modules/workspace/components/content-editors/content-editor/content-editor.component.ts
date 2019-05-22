@@ -45,7 +45,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   ) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.buildNumber = buildNumber ? buildNumber.value : '1.0';
-    this.deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
+    const deviceId = (<HTMLInputElement>document.getElementById('deviceId'));
+    this.deviceId = deviceId ? deviceId.value : '';
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     this.videoMaxSize = (<HTMLInputElement>document.getElementById('videoMaxSize')) ?
       (<HTMLInputElement>document.getElementById('videoMaxSize')).value : '100';
@@ -55,7 +56,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     this.routeParams = this.activatedRoute.snapshot.params;
     this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.disableBrowserBackButton();
-    this.getDetails().pipe( first(),
+    this.getDetails().pipe(first(),
       tap(data => {
         if (data.tenantDetails) {
           this.logo = data.tenantDetails.logo;
@@ -88,17 +89,21 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType(), this.lockContent()).
-      pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2] })));
+        this.editorService.getOwnershipType(), this.lockContent()).
+        pipe(map(data => ({
+          tenantDetails: data[0].tenantData,
+          collectionDetails: data[1], ownershipType: data[2]
+        })));
     } else {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType()).
-      pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2] })));
+        this.editorService.getOwnershipType()).
+        pipe(map(data => ({
+          tenantDetails: data[0].tenantData,
+          collectionDetails: data[1], ownershipType: data[2]
+        })));
     }
   }
-  lockContent () {
+  lockContent() {
     const contentInfo = {
       contentType: this.routeParams.type,
       framework: this.routeParams.framework,
@@ -106,15 +111,15 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
       mimeType: 'application/vnd.ekstep.ecml-archive'
     };
     const input = {
-      resourceId : contentInfo.identifier,
-      resourceType : 'Content',
-      resourceInfo : JSON.stringify(contentInfo),
-      creatorInfo : JSON.stringify({'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.identifier}),
-      createdBy : this.userService.userProfile.identifier
+      resourceId: contentInfo.identifier,
+      resourceType: 'Content',
+      resourceInfo: JSON.stringify(contentInfo),
+      creatorInfo: JSON.stringify({ 'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.identifier }),
+      createdBy: this.userService.userProfile.identifier
     };
     return this.workspaceService.lockContent(input).pipe(tap((data) => {
       this.queryParams = data.result;
-      this.router.navigate([], {relativeTo: this.activatedRoute, queryParams: data.result});
+      this.router.navigate([], { relativeTo: this.activatedRoute, queryParams: data.result });
     }));
   }
   private getContentDetails() {
@@ -177,8 +182,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.context = {
       user: {
         id: this.userService.userid,
-        name : !_.isEmpty(this.userProfile.lastName) ? this.userProfile.firstName + ' ' + this.userProfile.lastName :
-        this.userProfile.firstName,
+        name: !_.isEmpty(this.userProfile.lastName) ? this.userProfile.firstName + ' ' + this.userProfile.lastName :
+          this.userProfile.firstName,
         orgIds: this.userProfile.organisationIds,
         organisations: this.userService.orgIdNameMap
       },
@@ -260,8 +265,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  retireLock () {
-    const inputData = {'resourceId': this.routeParams.contentId, 'resourceType': 'Content'};
+  retireLock() {
+    const inputData = { 'resourceId': this.routeParams.contentId, 'resourceType': 'Content' };
     this.workspaceService.retireLock(inputData).subscribe(
       (data: ServerResponse) => {
         this.redirectToWorkSpace();
@@ -272,7 +277,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     );
   }
 
-  redirectToWorkSpace () {
+  redirectToWorkSpace() {
     if (this.routeParams.state === 'collaborating-on') {
       this.navigationHelperService.navigateToWorkSpace('/workspace/content/collaborating-on/1');
     } else {
