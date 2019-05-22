@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, ConfigService, UtilService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SearchService, SearchParam, PlayerService, OrgDetailsService, UserService } from '@sunbird/core';
+import { SearchService, SearchParam, PlayerService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { takeUntil, map, catchError, mergeMap } from 'rxjs/operators';
@@ -41,11 +41,8 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   public isRedirectToDikshaApp = false;
   public closeMobilePopupInteractData: any;
   public appMobileDownloadInteractData: any;
-  private selectLanguage: string;
-  commingSoonMessage: string;
-  contentComingSoonDetails: any;
 
-  constructor(public orgDetailsService: OrgDetailsService, private userService: UserService, public resourceService: ResourceService,
+  constructor(public resourceService: ResourceService,
     public router: Router, public activatedRoute: ActivatedRoute, public searchService: SearchService,
     public toasterService: ToasterService, public configService: ConfigService,
     public utilService: UtilService, public navigationhelperService: NavigationHelperService,
@@ -55,12 +52,6 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     EkTelemetry.config.batchsize = 2;
-    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
-      this.selectLanguage = item.value;
-      if (this.linkedContents && this.linkedContents.length === 0) {
-        this.setCommingSoonMessage();
-      }
-    });
     this.activatedRoute.params.subscribe(params => {
       this.itemsToDisplay = [];
       this.searchResults = [];
@@ -96,12 +87,8 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     })).subscribe(data => {
       const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
       this.searchResults = this.utilService.getDataForCard(this.linkedContents, constantData, dynamicFields, metaData);
-      if (this.linkedContents.length === 0) {
-        this.setCommingSoonMessage();
-      } else {
-        this.appendItems(0, this.itemsToLoad);
-        this.showLoader = false;
-      }
+      this.appendItems(0, this.itemsToLoad);
+      this.showLoader = false;
     }, error => {
       this.showLoader = false;
       this.toasterService.error(this.resourceService.messages.fmsg.m0049);
@@ -116,44 +103,6 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   appendItems (startIndex, endIndex) {
     this.itemsToDisplay.push(...this.searchResults.slice(startIndex, endIndex));
-  }
-
-  public setCommingSoonMessage () {
-    /*
-    * rootOrgId is required to select the custom comming soon message from systemsettings
-    */
-    let rootOrgId: string;
-    if (this.userService.loggedIn) {
-      rootOrgId = this.userService.rootOrgId;
-    } else {
-      rootOrgId = this.orgDetailsService.getRootOrgId;
-    }
-    this.orgDetailsService.getCommingSoonMessage([rootOrgId]).pipe(takeUntil(this.unsubscribe$)).subscribe(
-      (apiResponse) => {
-        this.contentComingSoonDetails = apiResponse;
-        this.commingSoonMessage = this.getMessageFormTranslations();
-        this.showLoader = false;
-      }
-    );
-  }
-
-  private getMessageFormTranslations () {
-    let commingSoonMessage = '';
-    try {
-      const translations = JSON.parse(this.contentComingSoonDetails.translations);
-      if (translations[this.selectLanguage]) {
-        commingSoonMessage =  translations[this.selectLanguage];
-      } else {
-        commingSoonMessage = translations['en'];
-      }
-    } catch (e) {
-      commingSoonMessage =  (this.contentComingSoonDetails && this.contentComingSoonDetails.value);
-    }
-    // default message
-    if (!commingSoonMessage) {
-      commingSoonMessage = this.resourceService.messages.stmsg.m0122;
-    }
-    return commingSoonMessage;
   }
 
   public getAllPlayableContent(collectionIds) {

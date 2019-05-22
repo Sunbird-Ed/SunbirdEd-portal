@@ -35,11 +35,7 @@
       </div>
       <div class="row sb-placeholder">
           <div *ngIf="!showLoader && !searchResults.length">
-            <div class="placeholder mt-40">
-              <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl}}" />
-              <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0121}}</h5>
-              <p class="placeholder-content">{{commingSoonMessage}}</p>
-            </div>
+            <app-comming-soon></app-comming-soon>
           </div>
       </div>
     </div>

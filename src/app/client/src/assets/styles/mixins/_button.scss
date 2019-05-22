@@ -14,12 +14,18 @@
 	background-color: $white;
   color:($btn-color);
 	&:hover {
-		font-weight: bold;
+		//font-weight: bold;
     border-color: darken($btn-color, 2%);
 	}
 	&:active {
 		border-color: darken($btn-color, 8%);
 	}
+}
+@mixin btn-theme-links($btn-color) {
+  color:($btn-color);
+    &:hover,&:active {
+        // font-weight: bold;
+    }
 }
 @mixin trans($val...) {
 	-webkit-transition: $val;

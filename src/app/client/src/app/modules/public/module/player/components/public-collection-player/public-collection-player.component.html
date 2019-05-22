@@ -107,11 +107,7 @@
 
       <!--Content Coming soon-->
       <ng-template #dataCommingSoon>
-        <div class="mt-40 text-center">
-          <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl }}" alt="{{resourceService?.messages?.stmsg?.m0121}}"/>
-          <h5 class="mt-16">{{resourceService?.messages?.stmsg?.m0121}}</h5>
-          <p class="">{{resourceService?.messages?.stmsg?.m0122}}</p>
-        </div> 
+        <app-comming-soon [contentOrgId]="collectionTreeNodes.data.channel"></app-comming-soon>
       </ng-template>
       <!--/Content Coming soon-->
     </div>

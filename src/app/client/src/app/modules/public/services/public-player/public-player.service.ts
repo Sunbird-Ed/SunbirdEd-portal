@@ -121,10 +121,12 @@ export class PublicPlayerService {
         if (event.data.contentType === 'Course') {
           this.router.navigate(['learn/course', event.data.metaData.identifier]);
         } else {
-          this.router.navigate(['play/collection', event.data.metaData.identifier]);
+          this.router.navigate(['play/collection', event.data.metaData.identifier],
+          {queryParams: {contentType: event.data.metaData.contentType}});
         }
       } else {
-        this.router.navigate(['play/content', event.data.metaData.identifier]);
+        this.router.navigate(['play/content', event.data.metaData.identifier],
+        {queryParams: {contentType: event.data.metaData.contentType}});
       }
     }, 0);
   }

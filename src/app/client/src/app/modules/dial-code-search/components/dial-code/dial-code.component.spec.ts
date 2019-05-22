@@ -84,11 +84,9 @@ describe('DialCodeComponent', () => {
     const searchService = TestBed.get(SearchService);
     const orgDetailsService = TestBed.get(OrgDetailsService);
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.noData));
-    spyOn(orgDetailsService, 'getCommingSoonMessage').and.callFake(() => observableOf({value: {rootOrgId: 'Org_001'}}));
-    spyOn(component, 'setCommingSoonMessage');
     component.searchDialCode();
     fixture.detectChanges();
-    expect(component.setCommingSoonMessage).toHaveBeenCalled();
+    expect(component.showLoader).toBeFalsy();
     expect(component.searchResults).toEqual([]);
   });
   it('should return appropriate failure message on error throw', () => {
