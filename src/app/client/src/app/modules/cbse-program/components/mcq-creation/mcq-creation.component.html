@@ -31,10 +31,12 @@
       <div class="ui two column grid">
         <div class="column">
           <label>Learning Outcome</label>
-          <sui-select class="selection" #learningOutcome="ngModel" [(ngModel)]="mcqForm.learningOutcome"
-            name="'learningOutcome'" required>
-            <sui-select-option *ngFor="let option of learningOutcomeOptions" [value]="option"></sui-select-option>
-          </sui-select>
+          <div>
+            <sui-select class="selection width-100" #learningOutcome="ngModel" [(ngModel)]="mcqForm.learningOutcome"
+              name="'learningOutcome'" required>
+              <sui-select-option *ngFor="let option of learningOutcomeOptions" [value]="option"></sui-select-option>
+            </sui-select>
+          </div>
           <label class="ui basic red error label pt-0"
             *ngIf="(learningOutcome.touched || showFormError) && learningOutcome.invalid">Fill Learning Outcome</label>
         </div>
@@ -59,10 +61,12 @@
       </div>
       <div class="column">
           <label>Blooms Level</label>
-          <sui-select class="selection" #bloomsLevel="ngModel" [(ngModel)]="mcqForm.bloomsLevel" name="'bloomsLevel'"
-            required>
-            <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
-          </sui-select>
+          <div>
+            <sui-select class="selection width-100" #bloomsLevel="ngModel" [(ngModel)]="mcqForm.bloomsLevel" name="'bloomsLevel'"
+              required>
+              <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
+            </sui-select>
+          </div>
           <label class="ui basic red error label pt-0"
             *ngIf="(bloomsLevel.touched || showFormError) && bloomsLevel.invalid">Fill Blooms Level </label>
         </div>
