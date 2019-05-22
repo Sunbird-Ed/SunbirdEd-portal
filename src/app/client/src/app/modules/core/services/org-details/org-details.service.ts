@@ -160,7 +160,7 @@ export class OrgDetailsService {
         } else {
           return {};
         }
-      }),catchError((err) => {
+      }), catchError((err) => {
         return of({});
       }));
     }
