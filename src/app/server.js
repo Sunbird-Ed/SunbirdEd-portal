@@ -131,10 +131,10 @@ function runApp() {
     portal.server = app.listen(envHelper.PORTAL_PORT, () => {
       envHelper.defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId'); // needs to be added in envVariable file
       console.log(envHelper.defaultChannelId, 'is set as default channel id in evnHelper');
-      if (envHelper.PORTAL_CDN_URL) {
-        const cdnUrl = `${envHelper.PORTAL_CDN_URL}index.${packageObj.version}.${packageObj.buildHash}.ejs`
+      if (envHelper.sunbird_portal_cdn_blob_url) {
+        const cdnUrl = `${envHelper.sunbird_portal_cdn_blob_url}index.${packageObj.version}.${packageObj.buildHash}.ejs`
         request.get(cdnUrl).then((data) => {
-          const cdnFallBackScript = `<script type="text/javascript" src="${envHelper.PORTAL_CDN_URL}assets/cdnHelper.js"></script>
+          const cdnFallBackScript = `<script type="text/javascript" src="${envHelper.sunbird_portal_cdn_blob_url}assets/cdnHelper.js"></script>
               <script>
                 try {
                   if(!cdnFileLoaded){
@@ -156,7 +156,7 @@ function runApp() {
               envHelper.hasCdnIndexFile = true
             }
           })
-        }).catch(err => console.log(`Error while fetching ${envHelper.PORTAL_CDN_URL}index.${packageObj.version}.${packageObj.buildHash}.ejs file when CDN enabled`));
+        }).catch(err => console.log(`Error while fetching ${envHelper.sunbird_portal_cdn_blob_url}index.${packageObj.version}.${packageObj.buildHash}.ejs file when CDN enabled`));
       }
       console.log('app running on port ' + envHelper.PORTAL_PORT)
     })
