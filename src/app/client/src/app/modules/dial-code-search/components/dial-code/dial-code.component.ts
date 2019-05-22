@@ -189,7 +189,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   setTelemetryData () {
     if (this.dialCode) {
-      this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
+      this.telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
     }
     this.closeMobilePopupInteractData = {
       context: {
