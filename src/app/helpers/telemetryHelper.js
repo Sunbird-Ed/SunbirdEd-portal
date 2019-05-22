@@ -18,6 +18,8 @@ const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
 telemtryEventConfig['pdata']['id'] = appId
 telemtryEventConfig['pdata']['ver'] = packageObj.version
+telemtryEventConfig['pdata']['pid'] = appId
+
 module.exports = {
   /**
    * This function helps to get user spec

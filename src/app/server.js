@@ -157,6 +157,8 @@ function runApp() {
             }
           })
         }).catch(err => console.log(`Error while fetching ${envHelper.sunbird_portal_cdn_blob_url}index.${packageObj.version}.${packageObj.buildHash}.ejs file when CDN enabled`));
+      } else {
+        console.log('CDN is disabled');
       }
       console.log('app running on port ' + envHelper.PORTAL_PORT)
     })
