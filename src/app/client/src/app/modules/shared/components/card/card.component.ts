@@ -19,7 +19,7 @@ export class CardComponent {
   constructor(public resourceService: ResourceService) {
     this.resourceService = resourceService;
     if (this.dialCode) {
-      this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
+      this.telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
     }
   }
 

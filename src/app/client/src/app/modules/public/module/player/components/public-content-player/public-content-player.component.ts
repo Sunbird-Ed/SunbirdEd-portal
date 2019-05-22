@@ -158,7 +158,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   ngAfterViewInit () {
     setTimeout(() => {
         if (this.dialCode) {
-          this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
+          this.telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
         }
         this.telemetryImpression = {
           context: {
