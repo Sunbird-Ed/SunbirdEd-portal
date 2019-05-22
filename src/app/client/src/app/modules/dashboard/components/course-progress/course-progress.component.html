@@ -22,7 +22,7 @@
   <div class=" ui grid">
     <div class="twelve wide column">
       <div>
-        <div class="ui divider"></div>
+        <!-- <div class="ui divider"></div> -->
         <div id="dashoardFiltersHolder" *ngIf="batchlist && batchlist.length > 0">
           <div class="d-flex flex-jc-space-between flex-ai-center" [appTelemetryImpression]="telemetryImpression">
             <div class="d-flex w-300">
@@ -178,7 +178,7 @@
             </tbody>
           </table>
         </div>
-        <div class="d-flex flex-ai-center flex-jc-space-between mt-10">
+        <div class="d-flex flex-ai-center flex-jc-space-between">
           <div   *ngIf="dashboarData && dashboarData.data.length >0 && !showLoader " >showing  {{pager.startIndex+1}} - {{pager.endIndex+1}} of {{dashboarData.data.count}}  users</div>
           <div class="pb-10" *ngIf="dashboarData && dashboarData.data.length >0 && totalCount > config.appConfig.DASHBOARD.PAGE_LIMIT && !showLoader ">
             <div class="ui pagination menu mt-10 right-floated pt-0 mini" *ngIf="pager.pages.length ">
@@ -198,7 +198,7 @@
           {{resourceService?.frmelmnts?.lbl?.dashboardnobatchselecteddesc}}
         </div>
         <div class="ui grid" *ngIf="showNoBatch">
-          <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression">
+          <div class="twelve wide column py-0" [appTelemetryImpression]="telemetryImpression">
             <a (click)='redirect()' class="ui item basic icon circular float-ContentRight" data-tooltip="Close  Dashboard"
               appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'closeDashboard',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
               <i class="ui remove icon CloseButtonFont"></i>
