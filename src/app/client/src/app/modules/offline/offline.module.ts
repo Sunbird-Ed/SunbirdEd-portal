@@ -13,6 +13,7 @@ import {
   BrowseComponent, DownloadManagerComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
+import {FileSizeModule} from 'ngx-filesize';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { WebExtensionModule } from '@project-sunbird/web-extensions';
     SuiModalModule,
     SuiProgressModule,
     WebExtensionModule,
-    ExploreModule
+    ExploreModule,
+    FileSizeModule
   ],
   providers: [DeviceDetectorService, OfflineFileUploaderService, DownloadManagerService],
   declarations: [
