@@ -1,6 +1,6 @@
 .sb-question-dsp-container {
   height: 100%;
-  padding-top: 50px;
+  padding-top: 24px;
 
   .sb-editor-image {
     // // background-image: url('../../../../../assets/images/editor-frame.png');
@@ -153,7 +153,7 @@
       flex-wrap: wrap;
       max-width: 1440px;
       margin: 0 auto;
-      align-items: center;
+      align-items: stretch;
       position: relative;
       border-radius: 8px;
     }
@@ -178,7 +178,7 @@
     .mcq-grid .mcq-title {
       flex-basis: 100%;
       padding: 8px 16px;
-      background: #00C786;
+      background: white;
       font-weight: 700;
       max-height: 56px;
       overflow: hidden;
@@ -194,10 +194,10 @@
       justify-content: space-around;
       padding: 24px;
       padding-top: 64px;
-      max-height: calc(432px - 64px);
+      max-height: calc(436px - 64px);
       overflow-y: auto;
       min-height: calc(436px - 64px);
-      background-image: linear-gradient(-90deg, #fcf2d6, white);
+      background-image: linear-gradient(-90deg, lightblue, white);
     }
 
     // .mcq-vertical .mcq-options {
@@ -208,13 +208,14 @@
         max-height: 70%;
         overflow-y: auto;
       }
+
     }
 
     .mcq-horizontal .mcq-options .mcq-option,
     .mcq-vertical .mcq-options .mcq-option,
     .mcq-grid .mcq-options .mcq-option {
       margin-bottom: 16px;
-      height: 100%;
+      height: auto;
       box-shadow: 2px 5px 7px 0 rgba(0, 0, 0, 0.2);
       background: white;
       border-radius: 8px;
@@ -232,9 +233,9 @@
       flex-basis: 30%;
       background: none;
       position: initial;
-      max-height: calc(376px - 48px);
+      max-height: calc(416px - 48px);
       overflow-y: auto;
-      padding-top: 16px;
+      padding: 16px 0 16px 24px;
     }
 
     .mcq-vertical .mcq-title i.chevron,
