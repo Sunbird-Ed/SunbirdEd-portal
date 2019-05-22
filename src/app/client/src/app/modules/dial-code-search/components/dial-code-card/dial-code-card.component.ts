@@ -23,7 +23,7 @@ export class DialCodeCardComponent implements OnInit {
 
   ngOnInit() {
     if (this.dialCode) {
-      this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
+      this.telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
     }
   }
   public onAction(data, action) {

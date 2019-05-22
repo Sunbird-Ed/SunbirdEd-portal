@@ -82,31 +82,66 @@ input[type="button"] {
   font-size:$font-size-lg;
 }
 // default outline colored btns
-.sb-btn-outline-primary{
-    @include btn-theme-bgwhite($primary-color);
-} 
-.sb-btn-outline-secondary{
-    @include btn-theme-bgwhite($secondary-200);
-} 
-.sb-btn-outline-tertiary{
-    @include btn-theme-bgwhite($tertiary-color);
-}
 // status outline buttons
-.sb-btn-outline-info{
+
+.sb-btn-outline-primary, .sb-btn-outline-info{
     @include btn-theme-bgwhite($primary-color);
+    &:hover,&:active {
+        background: $primary-100;
+        color: $primary-800;
+        border-color: $primary-800;
+    }
 } 
-.sb-btn-outline-success{
+.sb-btn-outline-secondary, .sb-btn-outline-success{
     @include btn-theme-bgwhite($secondary-200);
+    color: $secondary-100;
+    border-color: $secondary-100;
+    &:hover,&:active {
+        background: $secondary-0;
+        color: $secondary-400;
+        border-color: $secondary-400;
+    }
 } 
-.sb-btn-outline-warning{
+.sb-btn-outline-tertiary, .sb-btn-outline-warning{
     @include btn-theme-bgwhite($tertiary-color);
+    color: $tertiary-100;
+    border-color: $tertiary-100;
+    &:hover,&:active {
+        background: $tertiary-0;
+        color: $tertiary-400;
+        border-color: $tertiary-400;
+    }
 }   
 .sb-btn-outline-error{
-    @include btn-theme-bgwhite($red);
+    @include btn-theme-bgwhite($red-400);
+    color: $red-100;
+    border-color: $red-100;
+    &:hover,&:active {
+        background: $red-0;
+        color: $red-400;
+        border-color: $red-400;
+    }
 } 
 .sb-btn-outline-gray{
     @include btn-theme-bgwhite($gray-800);
-} 
+    color: $gray-300;
+    border-color:$gray-300;
+    &:hover,&:active {
+        background: $gray-0;
+        color:$gray-800;
+        border-color: $gray-800;
+    }
+}
+.sb-btn-outline-white{
+    @include btn-theme-bgwhite( $white-color);
+    color: $primary-800;
+    border-color: $white-color;
+    &:hover,&:active {
+        background: $gray-0;
+        color: $primary-800;
+        border-color:  $white-color;
+    }
+}
 // default colored btns
 .sb-btn-primary,.sb-btn-info,.sb-btn-secondary,.sb-btn-success,.sb-btn-tertiary,.sb-btn-error{
     &:hover,&:active {
@@ -128,7 +163,7 @@ input[type="button"] {
     }
 }
 .sb-btn-tertiary,.sb-btn-warning{
-    @include btn-theme($tertiary-color);
+    @include btn-theme($tertiary-100);
     &:hover,&:active {
         background: $tertiary-400;
     }
