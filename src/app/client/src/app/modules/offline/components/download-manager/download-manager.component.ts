@@ -24,7 +24,6 @@ export class DownloadManagerComponent implements OnInit {
   }
 
   getDownloadList() {
-    this.contentId = '1234';
     const result = timer(1, 5000).pipe(
       switchMap(() => this.downloadManagerService.getDownloadList(this.contentId))
     );
@@ -35,11 +34,7 @@ export class DownloadManagerComponent implements OnInit {
         if (_.isEmpty(apiResponse.result.response.downloads.inprogress) && _.isEmpty(apiResponse.result.response.downloads.submitted)) {
           subscription.unsubscribe();
         }
-     },
-      err => {
-        // this.toasterService.error(this.resourceService.messages.emsg.m0005);
-      }
-    );
+      });
   }
 
   showProgressValue(progressSize, totalSize) {

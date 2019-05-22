@@ -1,4 +1,4 @@
-<sui-accordion class="styled fluid sb-single-pannel-accordion">
+<sui-accordion class="styled fluid sb-single-pannel-accordion" *ngIf="downloadResponse">
   <sui-accordion-panel>
     <div title class="p-0">
       <div class="sb-single-pannel-accordion-heading">
@@ -6,7 +6,7 @@
         <i class="chevron down icon d-flex flex-ai-center"></i>
       </div>
     </div>
-    <div content *ngIf="downloadResponse">
+    <div content>
 
       <div class="sb-single-pannel-accordion-list-item d-flex flex-ai-center flex-jc-space-between" *ngFor="let data of downloadResponse.inprogress;">
         <div class="">{{data.name}}</div>
@@ -19,8 +19,8 @@
       <div class="sb-single-pannel-accordion-list-item d-flex flex-ai-center flex-jc-space-between" *ngFor="let data of downloadResponse.submitted;">
         <div class="">{{data.name}}</div>
         <div class="d-flex flex-ai-center flex-jc-center">
-          <sui-progress [value]="showProgressValue(data.downloadedSize, data.totalSize)" [maximum]="100" class="mb-0 mr-32"></sui-progress>
-          <div class="">{{data.downloadedSize | filesize}}/{{data.totalSize | filesize}}</div>
+          <i class="check circle icon success-icon d-flex flex-ai-center"></i>
+          <div class="success-text">{{resourceService?.frmelmnts?.btn?.downloadNotStarted}}</div>
         </div>
       </div>
 

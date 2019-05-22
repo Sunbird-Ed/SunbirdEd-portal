@@ -40,6 +40,7 @@ import {FileSizeModule} from 'ngx-filesize';
     ContentImportHeaderComponent,
     BrowseComponent,
     NetworkStatusComponent,
+    DownloadManagerComponent,
     WatchVideoComponent,
     ContentImportHeaderComponent
   ]
