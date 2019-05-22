@@ -25,7 +25,7 @@ describe('ContentImportComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should return proper progress value', () => {
     const progressData = component.showProgressValue(50, 100);
     expect(progressData).toBe(50);
   });
