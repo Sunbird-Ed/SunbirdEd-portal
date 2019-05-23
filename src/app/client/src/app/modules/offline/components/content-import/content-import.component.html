@@ -101,9 +101,11 @@
                 </div>
 
                 <div class="sb-modal-actions">
-                    <button type="button" class="sb-btn sb-btn-primary sb-btn-normal"
+                    <button type="button" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+                    [telemetryInteractEdata]="ImportContentModalClose" class="sb-btn sb-btn-primary sb-btn-normal"
                         (click)="modalClose()">Close</button>
-                    <button class="qq-upload-button-selector sb-btn sb-btn-primary sb-btn-normal"
+                    <button  appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+                    [telemetryInteractEdata]="selectContentFilesEdata" class="qq-upload-button-selector sb-btn sb-btn-primary sb-btn-normal"
                         (click)="processingFiles = true">{{resourceService.frmelmnts?.btn?.selectContentFiles}}</button>
                 </div>
             </div>

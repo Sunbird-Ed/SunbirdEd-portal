@@ -11,6 +11,7 @@ export class ContentImportHeaderComponent implements OnInit {
     showImportModal = false;
     showVideoModal = false;
     ContentImportIntractEdata: IInteractEventEdata;
+    WatchVideoIntractEdata: IInteractEventEdata;
     public telemetryInteractObject: IInteractEventObject;
 
     constructor(public resourceService: ResourceService) { }
@@ -21,12 +22,17 @@ export class ContentImportHeaderComponent implements OnInit {
 
     setInteractData() {
         this.telemetryInteractObject = {
-            id: 'content-import',
+            id: '',
             type: 'content-import',
             ver: '1.0'
-          };
+        };
         this.ContentImportIntractEdata = {
-            id: 'content-import',
+            id: 'content-import-button',
+            type: 'click',
+            pageid: 'library'
+        };
+        this.WatchVideoIntractEdata = {
+            id: 'watch-video-button',
             type: 'click',
             pageid: 'library'
         };

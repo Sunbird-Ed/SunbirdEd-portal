@@ -4,25 +4,44 @@ import { Component, OnInit, AfterViewInit, Output, ViewChild, EventEmitter } fro
 import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 
 
- @Component({
+@Component({
   selector: 'app-watch-video',
   templateUrl: './watch-video.component.html',
   styleUrls: ['./watch-video.component.scss']
 })
 export class WatchVideoComponent {
 
-   @ViewChild('modal') modal;
+  @ViewChild('modal') modal;
   @Output() closeVideoModal = new EventEmitter<any>();
-  WatchVideoIntractEdata: IInteractEventEdata;
+  WatchModalCloseIntractEdata: IInteractEventEdata;
   DownloadPdfInteractEdata: IInteractEventEdata;
   CloaseVideoModal: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
   constructor(public resourceService: ResourceService, public router: Router, ) { }
 
-   closeModal() {
+  closeModal() {
     this.closeVideoModal.emit('success');
   }
   modalClose() {
     this.modal.deny();
+  }
+
+
+  setInteractData() {
+    this.telemetryInteractObject = {
+      id: '',
+      type: 'watch-video',
+      ver: '1.0'
+    };
+    this.WatchModalCloseIntractEdata = {
+      id: 'watch-video-close-button',
+      type: 'click',
+      pageid: 'library'
+    };
+    this.DownloadPdfInteractEdata = {
+      id: 'download-pdf-button',
+      type: 'click',
+      pageid : 'library'
+    };
   }
 }
