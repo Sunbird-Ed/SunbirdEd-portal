@@ -36,22 +36,22 @@
                             <a class="item" routerLink="profile">
                                 {{resourceService.frmelmnts?.lnk?.profile}}
                             </a>
-                            <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
+                            <!-- <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
                                 [permission]='adminDashboard' routerLink="dashBoard/organization">
                                 {{resourceService.frmelmnts?.lnk?.dashboard}}
                             </a>
                             <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
                                 [permission]='announcementRole' routerLink="announcement/outbox/1">
                                 {{resourceService.frmelmnts?.lnk?.announcement}}
-                            </a>
+                            </a> -->
                             <!-- <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='myActivityRole'
-                  routerLink="dashBoard/myActivity">
-                  {{resourceService.frmelmnts?.lnk?.myactivity}}
-                </a> -->
-                            <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
+                                routerLink="dashBoard/myActivity">
+                                {{resourceService.frmelmnts?.lnk?.myactivity}}
+                            </a> -->
+                            <!-- <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
                                 [permission]='orgSetupRole' routerLink="org/orgType">
                                 {{resourceService.frmelmnts?.lbl?.orgtypes}}
-                            </a>
+                            </a> -->
                             <a class="item" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
                                 (click)="logout()">
                                 {{resourceService.frmelmnts?.lnk?.logout}}
