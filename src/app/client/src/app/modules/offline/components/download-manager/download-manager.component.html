@@ -19,8 +19,8 @@
       <div class="sb-single-pannel-accordion-list-item d-flex flex-ai-center flex-jc-space-between" *ngFor="let data of downloadResponse.submitted;">
         <div class="">{{data.name}}</div>
         <div class="d-flex flex-ai-center flex-jc-center">
-          <i class="check circle icon success-icon d-flex flex-ai-center"></i>
-          <div class="success-text">{{resourceService?.frmelmnts?.btn?.downloadNotStarted}}</div>
+          <i class="history icon waiting-icon d-flex flex-ai-center"></i>
+          <div class="waiting-text">{{resourceService?.frmelmnts?.btn?.downloadPending}}</div>
         </div>
       </div>
 

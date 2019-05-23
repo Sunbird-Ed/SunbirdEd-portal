@@ -178,7 +178,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public playContent(event) {
 
     // For offline envirnoment content will not play. It will get downloaded
-    if (this.router.url === '/browse' && this.isOffline) {
+    if (this.router.url !== '/' && this.isOffline) {
       this.startDownload(event.data.metaData.identifier);
       return false;
     }

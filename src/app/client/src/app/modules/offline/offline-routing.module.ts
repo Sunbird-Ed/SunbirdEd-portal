@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ContentImportComponent, BrowseComponent } from './components';
-
+import {ViewAllComponent} from '@sunbird/shared-feature';
 
 const routes: Routes = [
   {
@@ -9,6 +9,17 @@ const routes: Routes = [
       telemetry: {
         env: 'offline', pageid: 'browse', type: 'view'
       },
+    }
+  },
+  {
+    path: 'browse/view-all/:section/:pageNumber', component: ViewAllComponent,
+    data: {
+      telemetry: {
+        env: 'offline', pageid: 'view-all', type: 'view', subtype: 'paginate'
+      },
+      filterType: 'explore',
+      softConstraints: {badgeAssertions: 98, board: 99, channel: 100},
+      applyMode: true
     }
   },
   {

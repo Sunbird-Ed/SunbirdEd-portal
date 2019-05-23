@@ -28,7 +28,7 @@ export class DownloadManagerComponent implements OnInit {
   }
 
   getDownloadList() {
-    const result = timer(1, 5000).pipe(
+    const result = timer(1, 2000).pipe(
       switchMap(() => this.downloadManagerService.getDownloadList())
     );
 
