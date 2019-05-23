@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Pipe, HostListener } from '@angular/core';
+import { Component, OnInit, Input, Pipe, HostListener, Sanitizer } from '@angular/core';
 import { config } from 'rxjs';
 
 @Component({
@@ -7,9 +7,8 @@ import { config } from 'rxjs';
   styleUrls: ['./question-preview.component.scss']
 })
 export class QuestionPreviewComponent implements OnInit {
-
   @Input() questionMetaData: any;
-  constructor() { }
+  constructor(private _sanitizer: Sanitizer) { }
 
   ngOnInit() {
     console.log(this.questionMetaData);
