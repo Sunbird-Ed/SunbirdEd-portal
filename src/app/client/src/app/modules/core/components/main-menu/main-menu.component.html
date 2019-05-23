@@ -3,7 +3,7 @@
 
 	<!--Logged in user-->
 	<ng-container *ngIf="userService.loggedIn">
-		<a class="item" [routerLink]= "[getProgramUrl()]">{{'Program'}}</a>
+		<a *ngIf="programId" class="item" [routerLink]= "'/workspace/program/' + programId">{{'Program'}}</a>
 		<!-- <a class="item" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"
 			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" routerLink="/resources">
 			{{resourceService?.frmelmnts?.tab?.resources}}
@@ -44,8 +44,8 @@
 			{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
 		<span class="item divider">|</span> -->
-		<a class="item font-weight-bold primary-color" href="/resources" appTelemetryInteract
-			[telemetryInteractEdata]="signInIntractEdata">
+		<a class="item font-weight-bold primary-color" 
+			[attr.href]="programId ? '/workspace/program/' + programId : '/profile'">
 			{{resourceService.frmelmnts?.btn?.signin}}
 		</a>
 	</ng-container>
@@ -107,7 +107,7 @@
 			<div class="item active">
 				<i class="close link icon" (click)="showSideBar()" tabindex="0"
 					title="{{resourceService?.frmelmnts?.btn?.close}}"></i>
-				<a href="/resources">
+				<a [attr.href]="programId ? '/workspace/program/' + programId : '/profile'">
 					{{resourceService.frmelmnts?.btn?.signin}}
 				</a>
 			</div>

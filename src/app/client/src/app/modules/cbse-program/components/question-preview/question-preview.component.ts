@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Pipe, HostListener, Sanitizer } from '@angular/core';
+import { Component, OnInit, Input, Pipe, HostListener, AfterViewInit } from '@angular/core';
 import { config } from 'rxjs';
 
 @Component({
@@ -6,12 +6,20 @@ import { config } from 'rxjs';
   templateUrl: './question-preview.component.html',
   styleUrls: ['./question-preview.component.scss']
 })
-export class QuestionPreviewComponent implements OnInit {
+export class QuestionPreviewComponent implements OnInit, AfterViewInit {
+
   @Input() questionMetaData: any;
-  constructor(private _sanitizer: Sanitizer) { }
+  constructor() { }
 
   ngOnInit() {
     console.log(this.questionMetaData);
+  }
+
+  ngAfterViewInit() {
+    $(document).on('click', '.mcq-title .chevron', (e) => {
+      $(e.target).parent().toggleClass('expand');
+      $(this).off('click');
+    });
   }
 
   @HostListener('scroll', ['$event.target'])

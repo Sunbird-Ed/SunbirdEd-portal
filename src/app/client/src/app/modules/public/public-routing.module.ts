@@ -8,18 +8,18 @@ const routes: Routes = [
     path: '', component: LandingPageComponent, canActivate: [LandingpageGuard],
     data: { telemetry: { env: 'public', pageid: 'landing-page', type: 'edit', subtype: 'paginate' } }
   },
-  {
-    path: 'explore', loadChildren: './module/explore/explore.module#ExploreModule'
-  },
-  {
-    path: ':slug/explore', loadChildren: './module/explore/explore.module#ExploreModule'
-  },
-  {
-    path: 'explore-course', loadChildren: './module/course/course.module#CourseModule'
-  },
-  {
-    path: ':slug/explore-course', loadChildren: './module/course/course.module#CourseModule'
-  },
+  // {
+  //   path: 'explore', loadChildren: './module/explore/explore.module#ExploreModule'
+  // },
+  // {
+  //   path: ':slug/explore', loadChildren: './module/explore/explore.module#ExploreModule'
+  // },
+  // {
+  //   path: 'explore-course', loadChildren: './module/course/course.module#CourseModule'
+  // },
+  // {
+  //   path: ':slug/explore-course', loadChildren: './module/course/course.module#CourseModule'
+  // },
   {
     path: ':slug/signup', loadChildren: './module/signup/signup.module#SignupModule'
   },
@@ -32,9 +32,10 @@ const routes: Routes = [
   {
     path: 'sign-in/sso', loadChildren: './module/sign-in/sso/sso.module#SsoModule'
   },
-  {
-    path: 'play', loadChildren: './module/player/player.module#PlayerModule'
-  }];
+  // {
+  //   path: 'play', loadChildren: './module/player/player.module#PlayerModule'
+  // }
+];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]

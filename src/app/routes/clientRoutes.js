@@ -10,7 +10,6 @@ tenantHelper = require('../helpers/tenantHelper.js'),
 defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState(),
 oneDayMS = 86400000,
 pathMap = {}
-programId = process.env.sunbird_cbse_programId
 const setZipConfig = (req, res, type, encoding, dist = '../') => {
     if (pathMap[req.path + type] && pathMap[req.path + type] === 'notExist') {
       return false;
@@ -75,13 +74,17 @@ module.exports = (app, keycloak) => {
     res.setHeader('Expires', new Date(Date.now() + oneDayMS).toUTCString())
     next()
   })
-  if (programId) {
-    app.all('/', (req, res) => res.redirect('/program/cbse/' + programId))
+
+  if (envHelper.cbse_programId) {
+    app.all('/', (req, res) => res.redirect('/program/cbse/' + envHelper.cbse_programId))
   }
-  app.all(['/', '/get', '/get/dial/:dialCode', '/explore',
-    '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course',
-    '/explore-course/*', '/:slug/explore-course', '/:slug/explore-course/*',
-    '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*'], indexPage(false))
+
+  app.all(['/' 
+    // ,'/get', '/get/dial/:dialCode', '/explore',
+    // '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course',
+    // '/explore-course/*', '/:slug/explore-course', '/:slug/explore-course/*',
+    // '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*'
+  ], indexPage(false))
 
   app.all('/:slug/get', (req, res) => res.redirect('/get'))
 
@@ -91,10 +94,12 @@ module.exports = (app, keycloak) => {
 
   app.all('/app', (req, res) => res.redirect(envHelper.ANDROID_APP_URL))
 
-  app.all(['/home', '/home/*', '/announcement', '/announcement/*', '/search', '/search/*',
-    '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
-    '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
-    '/resources/*', '/myActivity', '/myActivity/*'], keycloak.protect(), indexPage(true))
+  app.all([ '/workspace/*', '/profile', '/profile/*'
+    // '/home', '/home/*', '/announcement', '/announcement/*', '/search', '/search/*',
+    // '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
+    // '/workspace', '/learn', '/learn/*', '/resources',
+    // '/resources/*', '/myActivity', '/myActivity/*'
+  ], keycloak.protect(), indexPage(true))
 
   app.all('/:tenantName', renderTenantPage)
   app.get('/program/:templateId/:programId', renderProgramPage)
@@ -134,6 +139,7 @@ function getLocals(req) {
   locals.videoMaxSize = envHelper.sunbird_portal_video_max_size
   locals.reportsLocation = envHelper.sunbird_azure_report_container_name
   locals.PlayerCdnUrl = envHelper.sunbird_portal_player_cdn_url
+  locals.cbse_programId = envHelper.cbse_programId
   return locals
 }
 

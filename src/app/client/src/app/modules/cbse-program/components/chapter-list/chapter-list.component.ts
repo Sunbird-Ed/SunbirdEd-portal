@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { PublicDataService, UserService, CollectionHierarchyAPI, ActionService } from '@sunbird/core';
-import { ConfigService, ServerResponse, ContentData } from '@sunbird/shared';
+import { ConfigService, ServerResponse, ContentData, ToasterService } from '@sunbird/shared';
 import { map } from 'rxjs/operators';
 import { forkJoin, Observable } from 'rxjs';
 import * as _ from 'lodash-es';
@@ -18,8 +18,10 @@ export class ChapterListComponent implements OnInit {
   public textBookChapters: Array<any> = [];
   private questionType = ['vsa', 'sa', 'la', 'mcq'];
   public collectionData;
-  constructor(public publicDataService: PublicDataService, private configService: ConfigService, 
-    private userService: UserService, public actionService: ActionService) {
+  showLoader = true;
+  showError = false;
+  constructor(public publicDataService: PublicDataService, private configService: ConfigService,
+    private userService: UserService, public actionService: ActionService, public toasterService: ToasterService) {
   }
   ngOnInit() {
     this.getCollectionHierarchy(this.selectedAttributes.textbook);
@@ -31,15 +33,21 @@ export class ChapterListComponent implements OnInit {
       param: { 'mode': 'edit' }
     };
     this.actionService.get(req).subscribe((response) => {
-        this.collectionData = response.result.content;
-        const textBookMetaData = _.map(this.collectionData.children, data => {
-          return {
-            name : data.name,
-            topic: data.topic[0]
-          };
+      this.collectionData = response.result.content;
+      const textBookMetaData = [];
+        _.forEach(this.collectionData.children, data => {
+          if (data.topic && data.topic[0]) {
+            textBookMetaData.push({
+              name : data.name,
+              topic: data.topic[0]
+            });
+          }
         });
         console.log('textBookMetaData', textBookMetaData);
         this.showChapterList(textBookMetaData);
+    }, error => {
+      this.showLoader = false;
+      this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Fetching TextBook details failed');
     });
   }
 
@@ -51,7 +59,13 @@ export class ChapterListComponent implements OnInit {
     } else if (this.selectedAttributes.currentRole === 'REVIEWER') {
       apiRequest = this.questionType.map(fields => this.searchQuestionsByType(fields));
     }
+    if (!apiRequest) {
+      this.showLoader = false;
+      this.showError = true;
+      this.toasterService.error(`You don't have permission to access this page`);
+    }
     forkJoin(apiRequest).subscribe(data => {
+      this.showLoader = false;
       this.textBookChapters = _.map(textBookMetaData, topicData => {
         const results = { name: topicData.name, topic:  topicData.topic };
         _.forEach(this.questionType, (type: string, index) => {
@@ -64,7 +78,8 @@ export class ChapterListComponent implements OnInit {
         return results;
       });
     }, error => {
-      console.log('error in fork', error); // TODO:: handle error properly
+      this.showLoader = false;
+      this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Fetching TextBook details failed');
     });
   }
 
@@ -86,7 +101,8 @@ export class ChapterListComponent implements OnInit {
             'subject': this.selectedAttributes.subject,
             'medium': this.selectedAttributes.medium,
             'programId': this.selectedAttributes.programId,
-            'type': questionType,
+            'type': questionType === 'mcq' ? 'mcq' : 'reference',
+            'category': questionType.toUpperCase(),
             'version': 3,
             'status': []
           },

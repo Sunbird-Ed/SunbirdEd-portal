@@ -354,7 +354,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
 
   getMediaOriginURL(src) {
     const replaceText = this.assetProxyUrl;
-    const aws_s3_urls = ['https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/',
+    const aws_s3_urls =  this.userService.cloudStorageUrls || ['https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/',
     'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/',
     'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/'];
     _.forEach(aws_s3_urls, url => {

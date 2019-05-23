@@ -68,12 +68,15 @@
   <% if (videoMaxSize) { %>
   <input type="hidden" id="videoMaxSize" value="<%=videoMaxSize%>" />
   <% } %>
+  <% if (cbse_programId) { %>
+    <input type="hidden" id="cbse_programId" value="<%=cbse_programId%>" />
+  <% } %>
   <% if (reportsLocation) { %>
   <input type="hidden" id="reportsLocation" value="<%=reportsLocation%>" />
   <% } %>
   <% if (PlayerCdnUrl) { %>
     <input type="hidden" id="PlayerCdnUrl" value="<%=PlayerCdnUrl%>" />
-    <% } %>
+  <% } %>
   <app-root></app-root>
 </body>
 

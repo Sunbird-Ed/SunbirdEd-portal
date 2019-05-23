@@ -96,6 +96,7 @@ gulp.task('prepare:app:dist', () => {
         'helpers/**/*',
         'proxy/**/*',
         'resourcebundles/**/*',
+        'program/**/*',
         'cassandra_migration/**/*',
         'themes/**/*',
         'package.json',
