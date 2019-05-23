@@ -203,7 +203,8 @@
     // .mcq-vertical .mcq-options {
     // 	padding-top: 16px;
     // }
-    .mcq-vertical .mcq-title {
+    .mcq-vertical .mcq-title,
+    .mcq-horizontal .mcq-title{
       &.expand {
         max-height: 70%;
         overflow-y: auto;
