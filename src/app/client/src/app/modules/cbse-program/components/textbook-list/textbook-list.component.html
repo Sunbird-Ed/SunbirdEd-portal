@@ -1,8 +1,11 @@
-<div class="twelve wide column">
-      <div class="masonry-grid dynamic-section-card">
-<div class="masonry-item" *ngFor="let content of textbookList;let i = index;">
-          <app-card appContentDirection [data]="content" 
-          (clickEvent)="showTopics($event)"></app-card>
-        </div>
+<div *ngIf='!showLoader' class="twelve wide column">
+      <div *ngIf="textbookList.length" class="masonry-grid dynamic-section-card">
+            <div class="masonry-item" *ngFor="let content of textbookList;let i = index;">
+                  <app-card appContentDirection [data]="content" (clickEvent)="showTopics($event)"></app-card>
+            </div>
+      </div>
+      <div *ngIf="!textbookList.length" class="twelve wide column">
+            <app-no-result [data]="{ message: 'messages.stmsg.m0006'}"></app-no-result>
+      </div>
 </div>
-</div>
+<app-loader *ngIf='showLoader'></app-loader>
