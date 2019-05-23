@@ -1,6 +1,6 @@
 
-<div class="ui container">
-  <div class="mt-16">
+<div *ngIf='!showLoader && !showError' class="ui container">
+  <div *ngIf="textBookChapters.length" class="mt-16">
     <sui-accordion class="styled fluid" [closeOthers]="true">
       <sui-accordion-panel [isOpen]="i === 0" *ngFor="let textbook of textBookChapters; let i = index">
         <div title>
@@ -48,4 +48,8 @@
       </sui-accordion-panel>
     </sui-accordion>
   </div>
+  <div class="twelve wide column" *ngIf="!textBookChapters.length">
+    <app-no-result></app-no-result>
+  </div>
 </div>
+<app-loader *ngIf='showLoader && !showError'></app-loader>
