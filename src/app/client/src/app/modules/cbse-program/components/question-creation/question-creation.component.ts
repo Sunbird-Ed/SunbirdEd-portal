@@ -173,7 +173,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
               'metadata': {
                 'createdBy': this.userService.userid,
                 'code': UUID.UUID(),
-                'type': this.selectedAttributes.questionType,
+                'type': 'reference',
                 'category': this.selectedAttributes.questionType.toUpperCase(),
                 'itemType': 'UNIT',
                 'version': 3,
@@ -197,7 +197,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 'subject': this.selectedAttributes.subject,
                 'topic': [this.selectedAttributes.topic],
                 'status': 'Review',
-                'media': this.mediaArr
+                'media': this.mediaArr,
+                'qumlVersion': 0.5
               }
             }
           }
@@ -227,9 +228,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
               'maxScore': Number(this.questionMetaForm.value.maxScore),
               'status': 'Review',
               'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
-              'type': 'vsa',
               'code': UUID.UUID(),
               'template_id': 'NA',
+              'type': 'reference',
               'media': this.mediaArr
             }
           }

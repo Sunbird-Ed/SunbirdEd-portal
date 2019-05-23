@@ -77,8 +77,14 @@ body {
 }
 
 .quml-responsive-div{
+  figure {
+    text-align: center;
+  }
   img {
-    width: 100% !important;
+    // width: 100% !important;
+    width: inherit;
+    height: inherit;
+    max-width: 400px;
   }
   .image-style-align-left {
     margin: 0;

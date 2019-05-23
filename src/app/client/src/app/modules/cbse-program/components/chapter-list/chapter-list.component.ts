@@ -86,7 +86,8 @@ export class ChapterListComponent implements OnInit {
             'subject': this.selectedAttributes.subject,
             'medium': this.selectedAttributes.medium,
             'programId': this.selectedAttributes.programId,
-            'type': questionType,
+            'type': questionType === 'mcq' ? 'mcq' : 'reference',
+            'category': questionType.toUpperCase(),
             'version': 3,
             'status': []
           },
