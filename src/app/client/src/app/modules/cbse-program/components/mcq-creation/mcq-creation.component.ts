@@ -36,15 +36,15 @@ export class McqCreationComponent implements OnInit {
   initForm() {
     if (this.questionMetaData.data) {
       const { question, responseDeclaration, template_id,
-        learningOutcome, qlevel, bloomsLevel, maxScore } = this.questionMetaData.data;
+        learningOutcome, bloomsLevel, maxScore } = this.questionMetaData.data;
       const options = _.map(this.questionMetaData.data.options, option => ({body: option.value.body}));
       this.mcqForm = new McqForm(question, options, template_id, _.get(responseDeclaration, 'responseValue.correct_response.value'),
-        learningOutcome[0], qlevel, bloomsLevel[0], maxScore);
+        learningOutcome[0], bloomsLevel[0], maxScore);
       if (this.questionMetaData.data.media) {
         this.mediaArr = this.questionMetaData.data.media;
       }
     } else {
-      this.mcqForm = new McqForm('', [], undefined, undefined);
+      this.mcqForm = new McqForm('', [], undefined, undefined, undefined, undefined, 1);
     }
     this.showForm = true;
   }
@@ -120,7 +120,7 @@ export class McqCreationComponent implements OnInit {
               'options': options,
               'learningOutcome': [this.mcqForm.learningOutcome],
               'bloomsLevel': [this.mcqForm.bloomsLevel],
-              'qlevel': this.mcqForm.difficultyLevel,
+              // 'qlevel': this.mcqForm.difficultyLevel,
               'maxScore': Number(this.mcqForm.maxScore),
               'status': 'Review',
               'media': this.mediaArr
@@ -166,7 +166,7 @@ export class McqCreationComponent implements OnInit {
               'options': options,
               'learningOutcome': [this.mcqForm.learningOutcome],
               'bloomsLevel': [this.mcqForm.bloomsLevel],
-              'qlevel': this.mcqForm.difficultyLevel,
+              // 'qlevel': this.mcqForm.difficultyLevel,
               'maxScore': Number(this.mcqForm.maxScore),
               'templateId': this.templateDetails.templateClass,
               'programId': this.selectedAttributes.programId,

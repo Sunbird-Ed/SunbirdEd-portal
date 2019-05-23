@@ -40,25 +40,6 @@
           <label class="ui basic red error label pt-0"
             *ngIf="(learningOutcome.touched || showFormError) && learningOutcome.invalid">Fill Learning Outcome</label>
         </div>
-        <div class="column">
-          <label>Difficulty:</label>
-          <div class="d-flex">
-          <div class="ui radio checkbox sb-radio-btn sb-radio-primary mr-8">
-              <sui-radio-button #difficultyLevel="ngModel" name="'difficultyLevel'" value="Easy"
-                [(ngModel)]="mcqForm.difficultyLevel" required>Easy</sui-radio-button>
-            </div>
-            <div class="ui radio checkbox sb-radio-btn sb-radio-primary mr-8">
-                <sui-radio-button name="'difficultyLevel'" value="Medium" [(ngModel)]="mcqForm.difficultyLevel" required>
-                  Medium</sui-radio-button>
-              </div>
-              <div class="ui radio checkbox sb-radio-btn sb-radio-primary mr-8">
-                  <sui-radio-button name="'difficultyLevel'" value="Hard" [(ngModel)]="mcqForm.difficultyLevel" required>
-                    Hard</sui-radio-button>
-                </div>
-          <label class="ui basic red error label pt-0"
-            *ngIf="(difficultyLevel.touched || showFormError) && difficultyLevel.invalid">Fill Difficulty Level </label>
-        </div>
-      </div>
       <div class="column">
           <label>Blooms Level</label>
           <div>
