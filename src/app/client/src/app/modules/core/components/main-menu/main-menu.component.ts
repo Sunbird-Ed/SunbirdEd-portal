@@ -60,6 +60,8 @@ export class MainMenuComponent implements OnInit {
 
   signInIntractEdata: IInteractEventEdata;
   slug: string;
+  programId = (<HTMLInputElement>document.getElementById('cbse_programId'))
+  ? (<HTMLInputElement>document.getElementById('cbse_programId')).value : undefined;
   /*
   * constructor
   */
@@ -90,7 +92,9 @@ export class MainMenuComponent implements OnInit {
       });
   }
   getProgramUrl() {
-    return '/workspace/program/' + localStorage.getItem('programId');
+    const programId = (<HTMLInputElement>document.getElementById('cbse_programId'))
+        ? (<HTMLInputElement>document.getElementById('cbse_programId')).value : '';
+    return '/workspace/program/' + programId;
   }
   setInteractData() {
     this.homeMenuIntractEdata = {
