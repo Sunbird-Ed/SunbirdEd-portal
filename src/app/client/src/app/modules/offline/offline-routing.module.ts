@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ContentImportComponent, BrowseComponent } from './components';
 import {ViewAllComponent} from '@sunbird/shared-feature';
+import { ExploreContentComponent } from './../public/module/explore/components/explore-content/explore-content.component';
 
 const routes: Routes = [
   {
@@ -9,6 +10,14 @@ const routes: Routes = [
       telemetry: {
         env: 'offline', pageid: 'browse', type: 'view'
       },
+    }
+  },
+  {
+    path: 'browse/:pageNumber', component: ExploreContentComponent, data: {
+      telemetry: {
+        env: 'offline', pageid: 'browse-search', type: 'view', subtype: 'paginate'
+      },
+      softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 }
     }
   },
   {

@@ -189,6 +189,11 @@ export class MainHeaderComponent implements OnInit {
         } else {
           this.exploreRoutingUrl = url[1];
         }
+      } else if (_.includes(urlAfterRedirects.url, '/browse')) {
+        this.showExploreHeader = true;
+        const url = urlAfterRedirects.url.split('?')[0].split('/');
+        this.exploreRoutingUrl = url[1];
+        console.log('this.exploreRoutingUrl======', this.exploreRoutingUrl)
       } else {
         this.showExploreHeader = false;
       }

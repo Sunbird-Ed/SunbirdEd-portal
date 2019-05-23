@@ -36,6 +36,7 @@ export class DownloadManagerComponent implements OnInit {
       (apiResponse: any) => {
         this.downloadResponse = apiResponse.result.response.downloads;
         if (_.isEmpty(apiResponse.result.response.downloads.inprogress) && _.isEmpty(apiResponse.result.response.downloads.submitted)) {
+          this.toasterService.success(this.resourceService.messages.smsg.m0051);
           this.isOpen = false;
           subscription.unsubscribe();
         }

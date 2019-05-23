@@ -12,6 +12,9 @@ import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, debounceTime, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
+import { environment } from '@sunbird/environment';
+import { DownloadManagerService } from './../../../../../offline/services';
+
 @Component({
     templateUrl: './explore-content.component.html'
 })
@@ -37,6 +40,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     public contentList: Array<ICard> = [];
     public cardIntractEdata: IInteractEventEdata;
     public loaderMessage: ILoaderMessage;
+    isOffline: boolean = environment.isOffline;
 
     constructor(public searchService: SearchService, public router: Router,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -44,7 +48,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         public configService: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
         public navigationHelperService: NavigationHelperService, private publicPlayerService: PublicPlayerService,
         public userService: UserService, public frameworkService: FrameworkService,
-        public cacheService: CacheService, public navigationhelperService: NavigationHelperService) {
+        public cacheService: CacheService, public navigationhelperService: NavigationHelperService,
+        public downloadManagerService: DownloadManagerService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.explore.filterType;
     }
@@ -175,6 +180,13 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         };
     }
     public playContent(event) {
+
+        // For offline envirnoment content will not play. It will get downloaded
+        if (this.router.url !== '/' && this.isOffline) {
+            this.startDownload(event.data.metaData.identifier);
+            return false;
+        }
+
         if (!this.userService.loggedIn && event.data.contentType === 'Course') {
             this.showLoginModal = true;
             this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
@@ -214,5 +226,15 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
           'message': 'messages.stmsg.m0007',
           'messageText': 'messages.stmsg.m0006'
         };
+    }
+
+    startDownload(contentId) {
+        this.downloadManagerService.downloadContentId = contentId;
+        this.downloadManagerService.startDownload({}).subscribe(data => {
+            this.downloadManagerService.downloadContentId = '';
+        }, error => {
+            this.downloadManagerService.downloadContentId = '';
+            this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+        });
     }
 }
