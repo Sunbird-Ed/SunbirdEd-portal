@@ -127,7 +127,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.courseId = courseId;
         this.batchId = batchId;
         this.courseStatus = courseStatus;
-        this.telemetryCdata = [{id: this.courseId , type: 'Course'} , {id: this.batchId , type: 'CourseBatch'}];
+        this.telemetryCdata = [{id: this.courseId , type: 'Course'}];
+        if (this.batchId) {
+          this.telemetryCdata.push({id: this.batchId , type: 'CourseBatch'});
+        }
         this.setTelemetryCourseImpression();
         const inputParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
         if (this.batchId) {
@@ -358,7 +361,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
   private setTelemetryStartEndData() {
-    this.telemetryCdata = [{ 'type': 'Course', 'id': this.courseId }, { 'type': 'CourseBatch', 'id': this.batchId }];
+    this.telemetryCdata = [{ 'type': 'Course', 'id': this.courseId }];
+    if (this.batchId) {
+      this.telemetryCdata.push({id: this.batchId , type: 'CourseBatch'});
+    }
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     this.telemetryCourseStart = {
       context: {
