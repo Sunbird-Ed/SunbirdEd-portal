@@ -5,6 +5,7 @@ import { timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { DownloadManagerService } from './../../services';
+import { ConnectionService } from './../../services';
 
 @Component({
   selector: 'app-download-manager',
@@ -18,7 +19,8 @@ export class DownloadManagerComponent implements OnInit {
   isOpen = false;
 
   constructor(public downloadManagerService: DownloadManagerService,
-    public resourceService: ResourceService, public toasterService: ToasterService) { }
+    public resourceService: ResourceService, public toasterService: ToasterService,
+    public connectionService: ConnectionService) { }
 
   ngOnInit() {
     this.downloadManagerService.downloadEvent.subscribe((data) => {
@@ -39,6 +41,7 @@ export class DownloadManagerComponent implements OnInit {
           this.toasterService.success(this.resourceService.messages.smsg.m0051);
           this.isOpen = false;
           subscription.unsubscribe();
+
         }
       }, err => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0091);

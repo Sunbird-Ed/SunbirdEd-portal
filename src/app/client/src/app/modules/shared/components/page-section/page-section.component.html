@@ -33,11 +33,17 @@
                 <!--/Batch Card-->
                 <!--Course & Resourse Card-->
                 <ng-template #contentcard>
-                    <app-card appContentDirection [data]="content" appTelemetryInteract
+                    <app-card *ngIf="!isOffline" appContentDirection [data]="content" appTelemetryInteract
                         [telemetryInteractEdata]="cardIntractEdata"
                         [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:'1.0'}"
                         (clickEvent)="playContent($event)" [data]="content" class="d-block" [class.last-card]="mr-0">
                     </app-card>
+
+                    <app-offline-card *ngIf="isOffline" appContentDirection [data]="content" appTelemetryInteract
+                        [telemetryInteractEdata]="cardIntractEdata"
+                        [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:'1.0'}"
+                        (clickEvent)="playContent($event)" [data]="content" class="d-block" [class.last-card]="mr-0">
+                    </app-offline-card>
                 </ng-template>
                 <!--/Course & Resourse Card-->
             </div>
