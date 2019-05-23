@@ -5,7 +5,7 @@
       <div class="offline-watch-video mx-auto">
         <div class="p-20">
           <span class="offline-video-heading">{{resourceService.frmelmnts?.lbl?.howToVideo}}</span>
-          <span appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+          <span appTelemetryInteract
             [telemetryInteractEdata]="DownloadPdfInteractEdata" class="offline-video-title right-floated"><i class="download icon"></i>
             {{resourceService.frmelmnts?.btn?.downloadPdf}}</span>
         </div>
@@ -16,8 +16,8 @@
     </div>
   </div>
   <div class="sb-modal-actions">
-    <button type="button" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-      [telemetryInteractEdata]="WatchModalCloseIntractEdata" class="sb-btn sb-btn-primary sb-btn-normal"
-      (click)="modalClose()">{{resourceService.frmelmnts?.btn?.close}}</button>
+    <button type="button" appTelemetryInteract 
+       class="sb-btn sb-btn-primary sb-btn-normal"
+       [telemetryInteractEdata]="WatchModalCloseIntractEdata" (click)="modalClose()">{{resourceService.frmelmnts?.btn?.close}}</button>
   </div>
 </sui-modal>

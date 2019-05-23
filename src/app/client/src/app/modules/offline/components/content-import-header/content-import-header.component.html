@@ -11,7 +11,7 @@
           <h4 class="sb-import-content-title">{{resourceService?.frmelmnts?.lbl?.importContent}}</h4>
           <p class="sb-import-content-meta">{{resourceService?.frmelmnts?.lbl?.uploadEcarFromPd}} </p>
         </div>
-        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+        <button appTelemetryInteract
           [telemetryInteractEdata]="ContentImportIntractEdata"
           class="sb-btn sb-btn-normal sb-btn-secondary ml-auto sb-btn-bs" (click)="showImportModal = true;">
           {{resourceService?.frmelmnts?.lbl?.importContent}}
@@ -31,7 +31,7 @@
           <p class="mb-0 sb-import-content-meta">{{resourceService.frmelmnts?.lbl?.subtopic}} :
             {{resourceService.frmelmnts?.lbl?.limitsOfArtificialIntell}}</p>
         </div>
-        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+        <button appTelemetryInteract 
           [telemetryInteractEdata]="WatchVideoIntractEdata"
           class="sb-btn sb-btn-normal sb-btn-secondary ml-auto sb-btn-tertiary sb-btn-bs"
           (click)="showVideoModal = true;">

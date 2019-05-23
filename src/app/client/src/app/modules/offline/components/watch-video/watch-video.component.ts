@@ -28,11 +28,6 @@ export class WatchVideoComponent {
 
 
   setInteractData() {
-    this.telemetryInteractObject = {
-      id: '',
-      type: 'watch-video',
-      ver: '1.0'
-    };
     this.WatchModalCloseIntractEdata = {
       id: 'watch-video-close-button',
       type: 'click',
