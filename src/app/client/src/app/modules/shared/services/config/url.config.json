@@ -160,9 +160,10 @@
       "GENERATE": "otp/v1/generate",
       "VERIFY": "otp/v1/verify"
     },
-    "OFFLINE_DOWNLOAD": {
-      "ADD": "content/v1/download",
-      "LIST": "content/v1/download/list"
+    "OFFLINE": {
+      "DOWNLOAD": "content/v1/download",
+      "DOWNLOAD_LIST": "content/v1/download/list",
+      "EXPORT": "content/v1/export"
     }
   }
 }

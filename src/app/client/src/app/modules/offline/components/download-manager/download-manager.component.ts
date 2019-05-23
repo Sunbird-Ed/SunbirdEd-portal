@@ -15,11 +15,16 @@ export class DownloadManagerComponent implements OnInit {
 
   downloadResponse: any;
 
+  isOpen = false;
+
   constructor(public downloadManagerService: DownloadManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService) { }
 
   ngOnInit() {
-    this.getDownloadList();
+    this.downloadManagerService.downloadEvent.subscribe((data) => {
+      this.isOpen = true;
+      this.getDownloadList();
+    });
   }
 
   getDownloadList() {
@@ -31,8 +36,11 @@ export class DownloadManagerComponent implements OnInit {
       (apiResponse: any) => {
         this.downloadResponse = apiResponse.result.response.downloads;
         if (_.isEmpty(apiResponse.result.response.downloads.inprogress) && _.isEmpty(apiResponse.result.response.downloads.submitted)) {
+          this.isOpen = false;
           subscription.unsubscribe();
         }
+      }, err => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0091);
       });
   }
 

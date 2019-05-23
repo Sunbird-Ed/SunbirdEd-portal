@@ -1,5 +1,5 @@
 <sui-accordion class="styled fluid sb-single-pannel-accordion" *ngIf="downloadResponse">
-  <sui-accordion-panel>
+  <sui-accordion-panel [isOpen]="isOpen">
     <div title class="p-0">
       <div class="sb-single-pannel-accordion-heading">
         <span>{{resourceService?.frmelmnts?.btn?.downloadManager}}</span>
