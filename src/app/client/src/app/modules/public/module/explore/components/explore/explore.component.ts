@@ -13,6 +13,8 @@ import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
+import { DownloadManagerService } from './../../../../../offline/services';
+
 @Component({
   selector: 'app-explore-component',
   templateUrl: './explore.component.html'
@@ -50,7 +52,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     public router: Router, private utilService: UtilService, private orgDetailsService: OrgDetailsService,
     private publicPlayerService: PublicPlayerService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, public downloadManagerService: DownloadManagerService) {
     this.router.onSameUrlNavigation = 'reload';
     this.filterType = this.configService.appConfig.explore.filterType;
   }
@@ -174,6 +176,13 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   public playContent(event) {
+
+    // For offline envirnoment content will not play. It will get downloaded
+    if (this.router.url !== '/' && this.isOffline) {
+      this.startDownload(event.data.metaData.identifier);
+      return false;
+    }
+
     if (!this.userService.loggedIn && event.data.contentType === 'Course') {
       this.showLoginModal = true;
       this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
@@ -229,5 +238,16 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       'message': 'messages.stmsg.m0007',
       'messageText': 'messages.stmsg.m0006'
     };
+  }
+
+  startDownload (contentId) {
+    this.downloadManagerService.downloadContentId = contentId;
+    this.downloadManagerService.startDownload({}).subscribe(data => {
+      this.downloadManagerService.downloadContentId = '';
+    }, error => {
+      this.downloadManagerService.downloadContentId = '';
+      this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+    });
+
   }
 }

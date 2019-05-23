@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService } from '@sunbird/shared';
 import { PublicDataService } from '@sunbird/core';
 
@@ -9,17 +9,33 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DownloadManagerService {
 
+  downloadContentId: string;
+  downloadEvent = new EventEmitter();
+
   constructor(private configService: ConfigService, private publicDataService: PublicDataService,
     private http: HttpClient) { }
 
-  getDownloadList(contentId) {
-    return this.http.get('https://demo5889147.mockable.io/api/v1/download');
+  getDownloadList() {
+    const downloadListOptions = {
+      url: this.configService.urlConFig.URLS.OFFLINE.DOWNLOAD_LIST,
+      data: {}
+    };
+    return this.publicDataService.post(downloadListOptions);
+  }
 
-    // const downloadOptions = {
-    //   url: this.configService.urlConFig.URLS.CHANNEL.READ,
-    //   data: {}
-    // };
-    // return this.publicDataService.post(downloadOptions);
+  startDownload(data) {
+    this.downloadEvent.emit('Download started');
+    const downloadOptions = {
+      url: `${this.configService.urlConFig.URLS.OFFLINE.DOWNLOAD}/${this.downloadContentId}`,
+      data: data
+    };
+    return this.publicDataService.post(downloadOptions);
+  }
+
+  exportContent(contentId) {
+    const exportOptions = {
+      url: `${this.configService.urlConFig.URLS.OFFLINE.EXPORT}/${contentId}`
+    };
+    return this.publicDataService.get(exportOptions);
   }
 }
-

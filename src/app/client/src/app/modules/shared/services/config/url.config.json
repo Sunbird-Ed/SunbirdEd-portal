@@ -159,6 +159,11 @@
     "OTP": {
       "GENERATE": "otp/v1/generate",
       "VERIFY": "otp/v1/verify"
+    },
+    "OFFLINE": {
+      "DOWNLOAD": "content/v1/download",
+      "DOWNLOAD_LIST": "content/v1/download/list",
+      "EXPORT": "content/v1/export"
     }
   }
 }
