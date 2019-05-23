@@ -12,7 +12,7 @@ export class QuestionPreviewComponent implements OnInit, AfterViewInit, OnDestro
   constructor() { }
 
   ngOnInit() {
-    $(document).off('click', '.mcq-title .chevron');
+
   }
 
   ngAfterViewInit() {
@@ -40,5 +40,6 @@ export class QuestionPreviewComponent implements OnInit, AfterViewInit, OnDestro
     }
   }
   ngOnDestroy() {
+    $(document).off('click', '.mcq-title .chevron');
   }
 }
