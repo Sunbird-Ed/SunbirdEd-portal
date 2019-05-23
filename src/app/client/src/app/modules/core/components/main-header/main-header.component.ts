@@ -137,7 +137,20 @@ export class MainHeaderComponent implements OnInit {
     if (key && key.length) {
       this.queryParam.key = key;
     }
-    this.router.navigate([this.exploreRoutingUrl, 1], { queryParams: this.queryParam });
+    if (this.isOffline) {
+      this.routeToOffline();
+    } else {
+      this.router.navigate([this.exploreRoutingUrl, 1], { queryParams: this.queryParam });
+    }
+  }
+
+  /* This method searches only for offline module*/
+  routeToOffline() {
+    if (_.includes(this.router.url, 'browse')) {
+      this.router.navigate(['browse', 1], { queryParams: this.queryParam });
+    } else {
+      this.router.navigate(['search', 1], { queryParams: this.queryParam });
+    }
   }
 
   getSearchButtonInteractEdata(key) {
@@ -189,15 +202,7 @@ export class MainHeaderComponent implements OnInit {
         } else {
           this.exploreRoutingUrl = url[1];
         }
-      } 
-      
-      // else if (_.includes(urlAfterRedirects.url, '/browse')) {
-      //   this.showExploreHeader = true;
-      //   const url = urlAfterRedirects.url.split('?')[0].split('/');
-      //   this.exploreRoutingUrl = url[1];
-      // } 
-      
-      else {
+      } else {
         this.showExploreHeader = false;
       }
     });

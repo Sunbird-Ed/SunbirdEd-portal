@@ -32,6 +32,14 @@ const routes: Routes = [
     }
   },
   {
+    path: 'search/:pageNumber', component: ExploreContentComponent, data: {
+      telemetry: {
+        env: 'offline', pageid: 'library-search', type: 'view', subtype: 'paginate'
+      },
+      softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 }
+    }
+  },
+  {
     path: 'get', loadChildren: './../dial-code-search/dial-code-search.module#DialCodeSearchModule'
   },
   {
