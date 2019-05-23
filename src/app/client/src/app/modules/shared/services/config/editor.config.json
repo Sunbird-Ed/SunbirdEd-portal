@@ -403,7 +403,7 @@
             {
                 "id": 3,
                 "url": "assets/images/mcq_template/vertical2.png",
-                "templateClass": "mcq-horizontal mcq-split"
+                "templateClass": "mcq-vertical mcq-split"
             },
             {
                 "id": 4,
