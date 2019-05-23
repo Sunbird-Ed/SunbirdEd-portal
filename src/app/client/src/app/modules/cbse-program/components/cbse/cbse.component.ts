@@ -16,6 +16,7 @@ interface ISelectedAttributes {
     programId?: string;
     program?: string;
     currentRole?: string;
+    bloomsLevel?: Array<any>;
 }
 
 @Component({
@@ -40,6 +41,7 @@ export class CbseComponent implements OnInit {
       channel: _.get(this.programDetails, 'config.scope.channel'),
       board: _.get(this.programDetails, 'config.scope.board[0]'),
       medium: _.get(this.programDetails, 'config.scope.medium[0]'),
+      bloomsLevel: _.get(this.programDetails, 'config.scope.bloomsLevel'),
       programId: _.get(this.programDetails, 'programId'),
       program: _.get(this.programDetails, 'name')
     };

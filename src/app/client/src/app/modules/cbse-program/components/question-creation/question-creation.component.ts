@@ -66,6 +66,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     this.initializeFormFields();
     this.question = '';
     this.solution = '';
+    if (this.selectedAttributes.bloomsLevel) {
+      this.bloomsLevelOptions = this.selectedAttributes.bloomsLevel;
+    }
     if (this.questionMetaData.data) {
         this.question = this.questionMetaData.data.body;
         this.solution = this.questionMetaData.data.solutions && this.questionMetaData.data.solutions[0];
