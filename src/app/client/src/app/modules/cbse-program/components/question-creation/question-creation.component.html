@@ -26,49 +26,15 @@
         *ngIf="questionMetaForm.controls.learningOutcome.dirty && questionMetaForm.controls['learningOutcome'].errors">Enter
         Learning Outcome</label>
     </div>
-    <div class="">
-      <label class="d-block">Difficulty:</label>
-      <div class="d-flex mt-8">
-        <div class="sb-radio-btn sb-radio-primary mr-8 ml-8 d-flex flex-ai-center">
-          <input formControlName="qlevel" value="Easy" type="radio" id="low" name="qlevel" tabindex="0" class="hidden">
-          <label class="mb-0" for="low">Easy</label>
-        </div>
-        <div class="sb-radio-btn sb-radio-primary mr-8">
-          <input formControlName="qlevel" value="Medium" id="medium" type="radio" name="qlevel" tabindex="0" class="hidden">
-          <label  class="mb-0" for="medium">Medium</label>
-        </div>
-        <div class="sb-radio-btn sb-radio-primary mr-8">
-          <input formControlName="qlevel" id="difficult" value="Difficult" type="radio" name="qlevel" tabindex="0" class="hidden">
-          <label  class="mb-0" for="difficult">Difficult</label>
-        </div>
-      </div>
-      <label class="ui basic red error label pt-0"
-        *ngIf="questionMetaForm.controls.qlevel.dirty && questionMetaForm.controls['qlevel'].errors">Fill
-        difficultyLevel </label>
-    </div>
-  </div>
-  <div class="two fields">
     <div class="field">
-      <label>Blooms Level</label>
-      <sui-select class="selection" formControlName="bloomsLevel" name="'bloomsLevel'" required>
-        <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
-      </sui-select>
-      <label class="ui basic red error label pt-0"
-        *ngIf="questionMetaForm.controls.bloomsLevel.dirty && questionMetaForm.controls['bloomsLevel'].errors">Fill
-        bloomsLevel </label>
-    </div>
-
-    <div class="field sb-field-group">
-        <label>Marks</label>
-        <div class="sb-field">
-            <input class="sb-form-control required" formControlName="maxScore" type="text" name="maxScore" placeholder="Marks">
-        </div>
-        
-      <label class="ui basic red error label pt-0"
-      *ngIf="questionMetaForm.controls.maxScore.dirty && questionMetaForm.controls['maxScore'].errors">Fill marks
-    </label>
-        </div>
-
+        <label>Blooms Level</label>
+        <sui-select class="selection" formControlName="bloomsLevel" name="'bloomsLevel'" required>
+          <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
+        </sui-select>
+        <label class="ui basic red error label pt-0"
+          *ngIf="questionMetaForm.controls.bloomsLevel.dirty && questionMetaForm.controls['bloomsLevel'].errors">Fill
+          bloomsLevel </label>
+      </div>
   </div>
   <!-- <input type="button" (click)="createQuestion()"  value="Submit" class="ui button" /> -->
 </form>
