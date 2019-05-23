@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Pipe, HostListener, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, Pipe, HostListener, AfterViewInit, OnDestroy } from '@angular/core';
 import { config } from 'rxjs';
 
 @Component({
@@ -6,13 +6,13 @@ import { config } from 'rxjs';
   templateUrl: './question-preview.component.html',
   styleUrls: ['./question-preview.component.scss']
 })
-export class QuestionPreviewComponent implements OnInit, AfterViewInit {
+export class QuestionPreviewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() questionMetaData: any;
   constructor() { }
 
   ngOnInit() {
-    console.log(this.questionMetaData);
+    $(document).off('click', '.mcq-title .chevron');
   }
 
   ngAfterViewInit() {
@@ -38,5 +38,7 @@ export class QuestionPreviewComponent implements OnInit, AfterViewInit {
       document.getElementById('answerBtn').style.display = 'inline-block';
       document.getElementById('questionBtn').style.display = 'none';
     }
+  }
+  ngOnDestroy() {
   }
 }
