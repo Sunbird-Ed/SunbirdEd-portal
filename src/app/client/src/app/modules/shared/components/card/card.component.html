@@ -71,11 +71,11 @@
   <div class="sb-card-hover" *ngIf="hover && isOffline">
     <div class="sb-card-hover-content">
       <div>
-        <!-- <div class="d-flex flex-jc-center">
-          <button class="sb-btn sb-btn-outline-white sb-btn-normal">Open</button>
-        </div> -->
-        <button *ngIf="route === '/'" class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16" (click)="exportContent();">{{resourceService.frmelmnts?.btn?.export}}<i class="sign in alternate icon"></i></button>
-        <button *ngIf="route !== '/'" class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16"> {{resourceService.frmelmnts?.btn?.addToLibrary}}<i class="sign in alternate icon"></i></button>
+        <div *ngIf="route === '/'" class="d-flex flex-jc-center">
+          <button class="sb-btn sb-btn-outline-white sb-btn-normal">{{resourceService.frmelmnts?.lbl?.open}}</button>
+        </div>
+        <button *ngIf="route === '/'" class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">{{resourceService.frmelmnts?.btn?.export}}<i class="sign in alternate icon"></i></button>
+        <button *ngIf="route === '/browse'" class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16"> {{resourceService.frmelmnts?.btn?.addToLibrary}}<i class="sign in alternate icon"></i></button>
       </div>
     </div>
   </div>
