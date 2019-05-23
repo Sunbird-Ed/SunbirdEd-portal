@@ -89,7 +89,8 @@ export class PlayerService {
     configuration.context.timeDiff = this.userService.getServerTimeDiff;
     configuration.context.contextRollup = this.getRollUpData(this.userService.userProfile.hashTagIds);
     configuration.context.channel = this.userService.channel;
-    configuration.context.did = (<HTMLInputElement>document.getElementById('deviceId')).value;
+    const deviceId = (<HTMLInputElement>document.getElementById('deviceId'));
+    configuration.context.did = deviceId ? deviceId.value : '';
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     configuration.context.pdata.ver = buildNumber && buildNumber.value ?
     buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
