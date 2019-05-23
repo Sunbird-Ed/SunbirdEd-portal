@@ -67,7 +67,8 @@
             </span>
 
             <span class="course-completed ml-auto" *ngIf="dashboarData.reportUpdatedOn && dashboarData.reportUpdatedOn!==null">
-              <span class="font-italic">{{resourceService?.frmelmnts?.lbl?.reportUpdatedOn}}</span>&nbsp;:&nbsp;{{dashboarData.reportUpdatedOn | dateFormat :'DD/MM/YYYY'}}
+              <span class="font-italic">{{resourceService?.frmelmnts?.lbl?.reportUpdatedOn}}
+              </span>&nbsp;:&nbsp;{{dashboarData.reportUpdatedOn.slice(0, 10) | dateFormat :'DD/MM/YYYY'}}
             </span>
           </div>
         </div>
