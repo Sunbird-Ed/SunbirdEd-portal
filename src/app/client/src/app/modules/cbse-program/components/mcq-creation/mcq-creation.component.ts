@@ -49,6 +49,9 @@ export class McqCreationComponent implements OnInit {
     this.showForm = true;
   }
   ngOnInit() {
+    if (this.selectedAttributes.bloomsLevel) {
+      this.bloomsLevelOptions = this.selectedAttributes.bloomsLevel;
+    }
     if (this.questionMetaData.mode === 'create') {
       this.showTemplatePopup = true;
     } else {

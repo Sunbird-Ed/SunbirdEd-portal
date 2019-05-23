@@ -41,7 +41,7 @@
             *ngIf="(learningOutcome.touched || showFormError) && learningOutcome.invalid">Fill Learning Outcome</label>
         </div>
       <div class="column">
-          <label>Blooms Level</label>
+          <label>Learning Level</label>
           <div>
             <sui-select class="selection width-100" #bloomsLevel="ngModel" [(ngModel)]="mcqForm.bloomsLevel" name="'bloomsLevel'"
               required>
