@@ -413,7 +413,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       },
       object: {
         id: this.courseId,
-        type: 'course',
+        type: 'Course',
         ver: '1.0'
       }
     };

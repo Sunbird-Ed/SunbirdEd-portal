@@ -137,6 +137,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private setCommingSoonMessage (node) {
+    this.commingSoonMessage = '';
     const nodes = node.getPath();
     const altMessages = [];
     nodes.forEach((eachnode, index) => {

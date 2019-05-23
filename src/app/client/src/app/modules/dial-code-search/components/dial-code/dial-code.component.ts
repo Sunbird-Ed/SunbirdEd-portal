@@ -51,6 +51,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    EkTelemetry.config.batchsize = 2;
     this.activatedRoute.params.subscribe(params => {
       this.itemsToDisplay = [];
       this.searchResults = [];
@@ -228,6 +229,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
   ngOnDestroy() {
+    EkTelemetry.config.batchsize = 10;
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
