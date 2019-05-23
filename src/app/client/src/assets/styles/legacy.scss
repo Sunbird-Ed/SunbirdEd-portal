@@ -2478,3 +2478,10 @@ i.blue.icon{
     left: auto;
   }
 }
+
+/// don't delete,  this is for iframes
+.iziModal-isAttached{
+  body{
+    overflow: hidden;
+  }
+}
