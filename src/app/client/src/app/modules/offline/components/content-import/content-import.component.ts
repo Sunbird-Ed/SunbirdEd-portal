@@ -82,7 +82,7 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
       id: 'import-modal-close',
       type: 'click',
       pageid: 'library'
-    }
+    };
   }
 
   ngAfterViewInit() {
