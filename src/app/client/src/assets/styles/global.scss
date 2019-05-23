@@ -80,11 +80,15 @@ body {
   figure {
     text-align: center;
   }
+  // .mcq-vertical .mcq-title, .mcq-horizontal .mcq-title, .mcq-grid .mcq-title {
+  //   img {
+  //     max-width: 400px;
+  //   }
+  // }
   img {
-    // width: 100% !important;
+    max-width: 100%;
     width: inherit;
     height: inherit;
-    max-width: 400px;
   }
   .image-style-align-left {
     margin: 0;
