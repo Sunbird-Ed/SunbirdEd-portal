@@ -21,8 +21,8 @@
             class="sb-pageSection-count sb-label sb-label-xs sb-label-warning mr-8">{{selectedAttributes.gradeLevel}}</span>
           <span
             class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.subject}}</span>
-          <button (click)="navigate('prev')" class="sb-btn sb-btn-xs sb-btn-error ml-auto">Close <i
-              class="close icon"></i></button>
+          <button (click)="navigate('prev')" class="sb-btn sb-btn-xs sb-btn-error ml-auto">Back <i
+              class="chevron circle left icon"></i></button>
         </div>
       </div>
       <div *ngIf="stages[currentStage] === 'chooseTextbook'">
@@ -43,8 +43,8 @@
               <h4 class="sb-pageSection-title m-0 mr-8">Searched results for</h4>
               <span
                 class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.topic}}</span>
-              <button (click)="navigate('prev')" class="sb-btn sb-btn-xs sb-btn-error ml-auto">Close <i
-                  class="close icon"></i></button>
+              <button (click)="navigate('prev')" class="sb-btn sb-btn-xs sb-btn-error ml-auto">Back <i
+                  class="chevron circle left icon"></i></button>
             </div>
           </div>
 
