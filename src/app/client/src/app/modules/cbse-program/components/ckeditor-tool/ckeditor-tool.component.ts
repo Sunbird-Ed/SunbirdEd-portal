@@ -66,7 +66,8 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
 
       this.editorConfig = _.assign({
         toolbar: ['heading', '|', 'bold', '|', 'italic', '|',
-          'bulletedList', '|', 'numberedList', '|', 'insertTable', '|' , 'fontSize', '|'
+          'bulletedList', '|', 'numberedList', '|', 'insertTable', '|' , 'fontSize', '|',
+          'mathtype', '|',
         ],
           fontSize: {
             options: [
@@ -131,6 +132,9 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
       this.editorInstance = editor;
       this.isAssetBrowserReadOnly = this.editorConfig.isReadOnly;
       if (this.editorDataInput) {
+        this.editorDataInput = this.editorDataInput
+                      .replace(/(<img("[^"]*"|[^\/">])*)>/gi, '$1/>')
+                      .replace(/(<br("[^"]*"|[^\/">])*)>/gi, '$1/>');
         this.editorInstance.setData(this.editorDataInput);
       } else {
         this.editorInstance.setData('');
@@ -212,7 +216,6 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
         'alt': imageId,
         'data-asset-variable': imageId
       });
-      writer.setAttribute('data-asset-variable', imageId, imageElement)
       this.editorInstance.model.insertContent(imageElement, this.editorInstance.model.document.selection);
     });
     this.showImagePicker = false;
@@ -353,7 +356,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     const replaceText = this.assetProxyUrl;
     const aws_s3_urls =  this.userService.cloudStorageUrls || ['https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/',
     'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/',
-    'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/']
+    'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/'];
     _.forEach(aws_s3_urls, url => {
       if (src.indexOf(url) !== -1) {
         src = src.replace(url, replaceText);

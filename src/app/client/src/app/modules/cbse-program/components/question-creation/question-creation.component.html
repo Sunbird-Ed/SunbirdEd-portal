@@ -14,7 +14,7 @@
   <div class="field">
     <label>Answer</label>
     <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'solution')"
-      [editorDataInput]="solution" [editorId]="'answer_editor'"></app-ckeditor-tool>
+      [editorDataInput]="editorState.solutions" [editorId]="'answer_editor'"></app-ckeditor-tool>
   </div>
   <div class="two fields">
     <div class="field">
@@ -27,14 +27,14 @@
         Learning Outcome</label>
     </div>
     <div class="field">
-        <label>Learning Level</label>
-        <sui-select class="selection" formControlName="bloomsLevel" name="'bloomsLevel'" required>
-          <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
-        </sui-select>
-        <label class="ui basic red error label pt-0"
-          *ngIf="questionMetaForm.controls.bloomsLevel.dirty && questionMetaForm.controls['bloomsLevel'].errors">Fill
-          bloomsLevel </label>
-      </div>
+      <label>Learning Level</label>
+      <sui-select class="selection" formControlName="bloomsLevel" name="'bloomsLevel'" required>
+        <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
+      </sui-select>
+      <label class="ui basic red error label pt-0"
+        *ngIf="questionMetaForm.controls.bloomsLevel.dirty && questionMetaForm.controls['bloomsLevel'].errors">Fill
+        Learning </label>
+    </div>
   </div>
   <!-- <input type="button" (click)="createQuestion()"  value="Submit" class="ui button" /> -->
 </form>

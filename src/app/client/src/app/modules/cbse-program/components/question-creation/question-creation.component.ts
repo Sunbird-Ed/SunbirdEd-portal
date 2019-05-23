@@ -4,6 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {  ConfigService, ResourceService, IUserData, IUserProfile, ToasterService  } from '@sunbird/shared';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { forkJoin, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash-es';
 
@@ -38,6 +42,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     private router: Router,
     private userService: UserService,
     private configService: ConfigService,
+    private http: HttpClient,
     publicDataService: PublicDataService,
     toasterService: ToasterService,
     resourceService: ResourceService,
@@ -52,6 +57,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   solution: any;
   question: any;
   editor: any;
+  editorState: any;
+  body: any;
   myAssets = [];
   allImages = [];
   showImagePicker: boolean;
@@ -65,18 +72,21 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     this.editorConfig = { 'mode': 'create' };
     this.initializeFormFields();
     this.question = '';
-    this.solution = '';
+    this.editorState = {
+      solutions: ''
+    };
     if (this.selectedAttributes.bloomsLevel) {
       this.bloomsLevelOptions = this.selectedAttributes.bloomsLevel;
     }
     if (this.questionMetaData.data) {
-        this.question = this.questionMetaData.data.body;
-        this.solution = this.questionMetaData.data.solutions && this.questionMetaData.data.solutions[0];
+        this.question = this.questionMetaData.data.question;
+        this.editorState.solutions = this.questionMetaData.data.editorState.solutions
+               && this.questionMetaData.data.editorState.solutions[0];
         this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
         this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
         // this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
         // this.questionMetaForm.controls.maxScore.setValue(this.questionMetaData.data.maxScore);
-        this.mediaArr = this.questionMetaData.data.media;
+        this.mediaArr = this.questionMetaData.data.media || [];
     }
   }
 
@@ -93,10 +103,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       }
       this.editorConfig = { 'mode': 'create' };
       this.question = '';
-      this.solution = '';
+      this.editorState.solutions = '';
       if (this.questionMetaData && this.questionMetaData.data) {
-       this.question = this.questionMetaData.data.body;
-        this.solution = this.questionMetaData.data.solutions && this.questionMetaData.data.solutions[0];
+       this.question = this.questionMetaData.data.question;
+        this.editorState.solutions = this.questionMetaData.data.solutions && this.questionMetaData.data.editorState.solutions[0];
         this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
         this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
         // this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
@@ -143,11 +153,16 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   buttonTypeHandler(event) {
     if (event === 'preview') {
       this.showPreview = true;
-      this.previewData = {
-        body: this.question,
-        solutions: [this.solution],
-        type: this.selectedAttributes.questionType
-      };
+      forkJoin([this.getConvertedSVG(this.question), this.getConvertedSVG(this.editorState.solutions)])
+        .subscribe((res) => {
+          // this.body = res[0];
+          // this.solution = res[1];
+          this.previewData = {
+            body: res[0],
+            solutions: [res[1]],
+            type: this.selectedAttributes.questionType
+          };
+        });
     } else if (event === 'edit') {
       this.refreshEditor();
       this.showPreview = false;
@@ -167,7 +182,12 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     }
   }
   createQuestion() {
-    const req = {
+    forkJoin([this.getConvertedLatex(this.question), this.getConvertedLatex(this.editorState.solutions)])
+    .subscribe((res) => {
+      this.body = res[0];
+      this.solution = res[1];
+
+      const req = {
         url: this.configService.urlConFig.URLS.ASSESSMENT.CREATE,
         data: {
           'request': {
@@ -181,7 +201,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 'itemType': 'UNIT',
                 'version': 3,
                 'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
-                'body': this.question,
+                'body': this.body,
+                'editorState': {
+                  solutions: [this.editorState.solutions]
+                },
+                'question': this.question,
                 'solutions': [this.solution],
                 'learningOutcome': [this.questionMetaForm.value.learningOutcome],
                 'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
@@ -212,56 +236,123 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       }, error => {
         this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
       });
+    });
   }
 
   updateQuestion() {
-    console.log(this.questionMetaData.data.identifier);
-    const option = {
-      url: this.configService.urlConFig.URLS.ASSESSMENT.UPDATE + '/' + this.questionMetaData.data.identifier,
-      data: {
-        'request': {
-          'assessment_item': {
-            'objectType': 'AssessmentItem',
-            'metadata': {
-              'body': this.question,
-              'solutions': [this.solution],
-              'learningOutcome': [this.questionMetaForm.value.learningOutcome],
-              'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
-              // 'qlevel': this.questionMetaForm.value.qlevel,
-              // 'maxScore': Number(this.questionMetaForm.value.maxScore),
-              'status': 'Review',
-              'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
-              'code': UUID.UUID(),
-              'template_id': 'NA',
-              'type': 'reference',
-              'media': this.mediaArr
+    forkJoin([this.getConvertedLatex(this.question), this.getConvertedLatex(this.editorState.solutions)])
+      .subscribe((res) => {
+        this.body = res[0];
+        this.solution = res[1];
+        const option = {
+          url: this.configService.urlConFig.URLS.ASSESSMENT.UPDATE + '/' + this.questionMetaData.data.identifier,
+          data: {
+            'request': {
+              'assessment_item': {
+                'objectType': 'AssessmentItem',
+                'metadata': {
+                  'body': this.body,
+                  'solutions': [this.solution],
+                  'editorState': {
+                    solutions: [this.editorState.solutions]
+                  },
+                  'question': this.question,
+                  'learningOutcome': [this.questionMetaForm.value.learningOutcome],
+                  'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
+                  // 'qlevel': this.questionMetaForm.value.qlevel,
+                  // 'maxScore': Number(this.questionMetaForm.value.maxScore),
+                  'status': 'Review',
+                  'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
+                  'type': 'reference',
+                  'code': UUID.UUID(),
+                  'template_id': 'NA',
+                  'media': this.mediaArr
+                }
+              }
             }
           }
-        }
-      }
-    };
-    this.actionService.patch(option).subscribe((res) => {
-      this.questionStatus.emit({'status': 'success', 'type': 'update', 'identifier': this.questionMetaData.data.identifier});
-      console.log('Question Update', res);
-    });
+        };
+        this.actionService.patch(option).subscribe((res) => {
+          this.questionStatus.emit({'status': 'success', 'type': 'update', 'identifier': this.questionMetaData.data.identifier});
+          console.log('Question Update', res);
+        });
+      });
   }
 
   editorDataHandler(event, type) {
     if (type === 'question') {
       this.question = event.body;
     } else {
-      this.solution = event.body;
+      this.editorState.solutions = event.body;
     }
     if (event.mediaobj) {
       const media = event.mediaobj;
       const value = _.find(this.mediaArr, ob => {
         return ob.id === media.id;
       });
-      if (value === undefined){
+      if (value === undefined) {
         this.mediaArr.push(event.mediaobj);
       }
     }
   }
+
+  getConvertedLatex(body) {
+    const getLatex = (encodedMath) => {
+      return this.http.get('https://www.wiris.net/demo/editor/mathml2latex?mml=' + encodedMath, {
+        responseType: 'text'
+      });
+    };
+    let latexBody;
+    const isMathML = body.match(/((<math("[^"]*"|[^\/">])*)(.*?)<\/math>)/gi);
+    if (isMathML && isMathML.length > 0) {
+      latexBody = isMathML.map(math => {
+        const encodedMath = encodeURIComponent(math);
+        return getLatex(encodedMath);
+      });
+    }
+    if (latexBody) {
+      return forkJoin(latexBody).pipe(
+        map((res) => {
+          _.forEach(res, (latex, i) => {
+            body = latex.includes('Error') ? body : body.replace(isMathML[i], latex);
+          });
+          return body;
+        })
+      );
+    } else {
+      return of(body);
+    }
+  }
+
+  getConvertedSVG(body) {
+    const getLatex = (encodedMath) => {
+      return this.http.get('https://www.wiris.net/demo/editor/render?mml=' + encodedMath + '&backgroundColor=%23fff&format=svg', {
+        responseType: 'text'
+      });
+    };
+    let latexBody;
+    const isMathML = body.match(/((<math("[^"]*"|[^\/">])*)(.*?)<\/math>)/gi);
+    if (isMathML && isMathML.length > 0) {
+      latexBody = isMathML.map(math => {
+        const encodedMath = encodeURIComponent(math);
+        return getLatex(encodedMath);
+      });
+    }
+    if (latexBody) {
+      return forkJoin(latexBody).pipe(
+        map((res) => {
+          _.forEach(res, (latex, i) => {
+            body = latex.includes('Error') ? body : body.replace(isMathML[i], latex);
+          });
+          return body;
+        })
+      );
+    } else {
+      return of(body);
+    }
+  }
+
+
   private refreshEditor() {
     this.refresh = false;
     this.cdr.detectChanges();
