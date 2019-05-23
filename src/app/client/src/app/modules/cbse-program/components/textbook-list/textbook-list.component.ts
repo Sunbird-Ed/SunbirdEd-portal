@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ConfigService, UtilService } from '@sunbird/shared';
+import { ConfigService, UtilService, ToasterService } from '@sunbird/shared';
 import { PublicDataService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 
@@ -12,9 +12,10 @@ export class TextbookListComponent implements OnInit {
   @Input() config: any;
   @Input() selectedAttributes: any;
   @Output() selectedTextbookEvent = new EventEmitter<any>();
-  public textbookList;
+  public textbookList = [];
+  showLoader = true;
   constructor(private configService: ConfigService, public publicDataService: PublicDataService,
-     public utilService: UtilService) { }
+  public utilService: UtilService, public toasterService: ToasterService) { }
 
   ngOnInit() {
     const req = {
@@ -35,8 +36,12 @@ export class TextbookListComponent implements OnInit {
       }
     };
     this.publicDataService.post(req).subscribe((res) => {
+      this.showLoader = false;
       const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
       this.textbookList = this.utilService.getDataForCard(res.result.content, constantData, dynamicFields, metaData);
+    }, error => {
+      this.showLoader = false;
+      this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Fetching TextBook failed');
     });
   }
 
