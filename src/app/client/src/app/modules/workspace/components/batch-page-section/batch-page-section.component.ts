@@ -215,7 +215,7 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
             sections[sectionIndex].contents[contentIndex]['userName'] = (userNamesKeyById[content.createdBy].firstName || '')
             + ' ' + (userNamesKeyById[content.createdBy].lastName || '');
             sections[sectionIndex].contents[contentIndex]['metaData'] = {identifier: content.identifier};
-            sections[sectionIndex].contents[contentIndex]['label'] = _.size(content.participantCount) || 0;
+            sections[sectionIndex].contents[contentIndex]['label'] = content.participantCount || 0;
           });
         });
         this.carouselData = sections;
