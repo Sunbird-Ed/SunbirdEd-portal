@@ -13,7 +13,6 @@ import { DownloadManagerService } from './../../services';
 })
 export class DownloadManagerComponent implements OnInit {
 
-  @Input() contentId: string;
   downloadResponse: any;
 
   constructor(public downloadManagerService: DownloadManagerService,
@@ -25,7 +24,7 @@ export class DownloadManagerComponent implements OnInit {
 
   getDownloadList() {
     const result = timer(1, 5000).pipe(
-      switchMap(() => this.downloadManagerService.getDownloadList(this.contentId))
+      switchMap(() => this.downloadManagerService.getDownloadList())
     );
 
     const subscription = result.subscribe(
