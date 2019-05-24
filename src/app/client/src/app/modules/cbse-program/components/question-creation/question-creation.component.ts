@@ -66,11 +66,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   showErrorMsg: boolean;
   errorMsg: string;
   topicName: string;
+  learningOutcomeOptions = [];
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
   ngOnInit() {
     this.initialized = true;
     this.editorConfig = { 'mode': 'create' };
-    this.initializeFormFields();
     this.question = '';
     this.editorState = {
       solutions: ''
@@ -78,11 +78,18 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     if (this.selectedAttributes.bloomsLevel) {
       this.bloomsLevelOptions = this.selectedAttributes.bloomsLevel;
     }
+    const topicTerm =  _.find(this.selectedAttributes.topicList, { name: this.selectedAttributes.topic });
+    if (topicTerm.associations) {
+      this.learningOutcomeOptions = topicTerm.associations;
+    }
+    this.initializeFormFields();
     if (this.questionMetaData.data) {
         this.question = this.questionMetaData.data.question;
         this.editorState.solutions = this.questionMetaData.data.editorState.solutions
                && this.questionMetaData.data.editorState.solutions[0];
-        this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
+        if (this.questionMetaData.data.learningOutcome) {
+          this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
+        }
         this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
         // this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
         // this.questionMetaForm.controls.maxScore.setValue(this.questionMetaData.data.maxScore);
@@ -107,7 +114,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       if (this.questionMetaData && this.questionMetaData.data) {
        this.question = this.questionMetaData.data.question;
         this.editorState.solutions = this.questionMetaData.data.solutions && this.questionMetaData.data.editorState.solutions[0];
-        this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
+        if (this.questionMetaData.data.learningOutcome) {
+          this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
+        }
         this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
         // this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
         // this.questionMetaForm.controls.maxScore.setValue(this.questionMetaData.data.maxScore);
@@ -126,12 +135,16 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     ( < any > $('.ui.checkbox')).checkbox();
   }
   initializeFormFields() {
-    this.questionMetaForm = new FormGroup({
-      learningOutcome: new FormControl('', Validators.required),
-      // qlevel: new FormControl('', [Validators.required]),
-      bloomsLevel: new FormControl('', [Validators.required]),
-      // maxScore: new FormControl(null, [Validators.required])
-    });
+    if (this.learningOutcomeOptions.length > 0) {
+      this.questionMetaForm = new FormGroup({
+        learningOutcome: new FormControl('', Validators.required),
+        bloomsLevel: new FormControl('', [Validators.required]),
+      });
+    } else {
+      this.questionMetaForm = new FormGroup({
+        bloomsLevel: new FormControl('', [Validators.required])
+      });
+    }
   }
   enableSubmitButton() {
     this.questionMetaForm.valueChanges.subscribe(val => {
@@ -178,6 +191,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.updateQuestion();
       }
     } else {
+      this.showPreview = false;
       this.validateAllFormFields(this.questionMetaForm);
     }
   }
@@ -207,7 +221,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 },
                 'question': this.question,
                 'solutions': [this.solution],
-                'learningOutcome': [this.questionMetaForm.value.learningOutcome],
+                'learningOutcome': this.questionMetaForm.value.learningOutcome ? [this.questionMetaForm.value.learningOutcome] : [],
                 'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
                 // 'qlevel': this.questionMetaForm.value.qlevel,
                 // 'maxScore': Number(this.questionMetaForm.value.maxScore),
@@ -257,7 +271,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                     solutions: [this.editorState.solutions]
                   },
                   'question': this.question,
-                  'learningOutcome': [this.questionMetaForm.value.learningOutcome],
+                  'learningOutcome': this.questionMetaForm.value.learningOutcome ? [this.questionMetaForm.value.learningOutcome] : [],
                   'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
                   // 'qlevel': this.questionMetaForm.value.qlevel,
                   // 'maxScore': Number(this.questionMetaForm.value.maxScore),

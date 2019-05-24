@@ -17,6 +17,7 @@ interface ISelectedAttributes {
     program?: string;
     currentRole?: string;
     bloomsLevel?: Array<any>;
+    topicList?: Array<any>;
 }
 
 @Component({
@@ -28,7 +29,6 @@ export class CbseComponent implements OnInit {
 
   @Input() programDetails: any;
   @Input() userProfile: any;
-  public topicList: any;
   public selectedAttributes: ISelectedAttributes = {};
   public stages: Array<string> = ['chooseClass', 'chooseTextbook', 'topicList', 'createQuestion'];
   public currentStage = 0;
@@ -45,6 +45,7 @@ export class CbseComponent implements OnInit {
       programId: _.get(this.programDetails, 'programId'),
       program: _.get(this.programDetails, 'name')
     };
+    this.fetchFrameWorkDetails();
   }
 
   public selectedClassSubjectHandler(event) {
@@ -71,7 +72,7 @@ export class CbseComponent implements OnInit {
     this.frameworkService.frameworkData$.pipe(first()).subscribe((frameworkDetails: any) => {
       if (frameworkDetails && !frameworkDetails.err) {
         const frameworkData = frameworkDetails.frameworkdata[this.selectedAttributes.framework].categories;
-        this.topicList = _.get(_.find(frameworkData, { code: 'topic' }), 'terms');
+        this.selectedAttributes.topicList = _.get(_.find(frameworkData, { code: 'topic' }), 'terms');
       }
     });
   }
