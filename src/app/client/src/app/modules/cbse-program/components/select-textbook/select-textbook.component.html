@@ -1,15 +1,16 @@
 <div class="ui mt-30 container w-300 sb-box-container">
   <h4>SELECT TEXTBOOK</h4>
   <div class="mt-30">
-    <sui-select class="selection" labelField="name" valueField="code" [(ngModel)]="selectedOptions.gradeLevel"
-      #select>
-      <sui-select-option *ngFor="let option of filtersDetails.gradeLevel" [value]="option">
+    <sui-select class="selection" [placeholder]="'Select Class'" [isSearchable]=true labelField="name" valueField="code" [(ngModel)]="selectedOptions.gradeLevel"
+    [options]="filtersDetails.gradeLevel" #selectGradeLevel>
+      <sui-select-option *ngFor="let option of selectGradeLevel.filteredOptions" [value]="option">
       </sui-select-option>
     </sui-select>
   </div>
   <div class="mt-30">
-    <sui-select class="selection" labelField="name" valueField="code" [(ngModel)]="selectedOptions.subject" #select>
-      <sui-select-option *ngFor="let option of filtersDetails.subject" [value]="option">
+    <sui-select class="selection" [placeholder]="'Select Subject'" [isSearchable]=true labelField="name" valueField="code" [(ngModel)]="selectedOptions.subject" 
+    [options]="filtersDetails.subject" #selectSubject>
+      <sui-select-option *ngFor="let option of selectSubject.filteredOptions" [value]="option">
       </sui-select-option>
     </sui-select>
   </div>

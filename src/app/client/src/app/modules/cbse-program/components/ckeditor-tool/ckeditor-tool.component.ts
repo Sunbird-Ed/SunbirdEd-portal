@@ -302,7 +302,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     if (!this.showErrorMsg) {
       // reader.onload = (uploadEvent: any) => {
       const req = {
-        url: this.configService.urlConFig.URLS.CONTENT.CREATE_CONTENT,
+        url: this.configService.urlConFig.URLS.ASSET.CREATE,
         data: {
           'request': {
             content: {
@@ -318,13 +318,13 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
           }
         }
       };
-      this.publicDataService.post(req).subscribe((res) => {
+      this.actionService.post(req).subscribe((res) => {
         const imgId = res['result'].node_id;
         const request = {
-          url: `${this.configService.urlConFig.URLS.CONTENT.UPLOAD_IMAGE}/${imgId}`,
+          url: `${this.configService.urlConFig.URLS.ASSET.UPDATE}/${imgId}`,
           data: formData
         };
-        this.publicDataService.post(request).subscribe((response) => {
+        this.actionService.post(request).subscribe((response) => {
           this.addImageInEditor(response.result.content_url, response.result.identifier);
           this.showImagePicker = false;
           this.showImageUploadModal = false;

@@ -34,7 +34,7 @@ export class McqCreationComponent implements OnInit {
   public setImageLimit = 1;
   public refresh = true;
   public mediaArr = [];
-  learningOutcomeOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
+  learningOutcomeOptions = [];
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
   constructor( public configService: ConfigService, private http: HttpClient, private userService: UserService,
     public actionService: ActionService, public toasterService: ToasterService, private cdr: ChangeDetectorRef) {
@@ -42,10 +42,10 @@ export class McqCreationComponent implements OnInit {
   initForm() {
     if (this.questionMetaData.data) {
       const { question, responseDeclaration, templateId,
-        learningOutcome, bloomsLevel, maxScore } = this.questionMetaData.data;
+        learningOutcome, bloomsLevel } = this.questionMetaData.data;
       const options = _.map(this.questionMetaData.data.options, option => ({body: option.value.body}));
       this.mcqForm = new McqForm(question, options, templateId, _.get(responseDeclaration, 'responseValue.correct_response.value'),
-        learningOutcome[0], bloomsLevel[0], maxScore);
+      (learningOutcome && learningOutcome[0] ||  ''), bloomsLevel[0]);
       if (this.questionMetaData.data.media) {
         this.mediaArr = this.questionMetaData.data.media;
       }
@@ -57,6 +57,10 @@ export class McqCreationComponent implements OnInit {
   ngOnInit() {
     if (this.selectedAttributes.bloomsLevel) {
       this.bloomsLevelOptions = this.selectedAttributes.bloomsLevel;
+    }
+    const topicTerm =  _.find(this.selectedAttributes.topicList, { name: this.selectedAttributes.topic });
+    if (topicTerm.associations) {
+      this.learningOutcomeOptions = topicTerm.associations;
     }
     if (this.questionMetaData.mode === 'create') {
       this.showTemplatePopup = true;
@@ -97,7 +101,7 @@ export class McqCreationComponent implements OnInit {
       .subscribe((res) => {
         // this.body = res[0]; // question with latex
         optionSvgBody =  res.slice(1).map((option, i) => { // options with latex
-           return {body: res[i + 1]};
+            return {body: res[i + 1]};
         });
         this.previewData = {
           data: this.getHtml(res[0], optionSvgBody),
@@ -196,10 +200,10 @@ export class McqCreationComponent implements OnInit {
                   'responseDeclaration': questionData.responseDeclaration,
                   'question': this.mcqForm.question,
                   'options': options,
-                  'learningOutcome': [this.mcqForm.learningOutcome],
+                  'learningOutcome': this.mcqForm.learningOutcome ? [this.mcqForm.learningOutcome] : [],
                   'bloomsLevel': [this.mcqForm.bloomsLevel],
                   // 'qlevel': this.mcqForm.difficultyLevel,
-                  'maxScore': Number(this.mcqForm.maxScore),
+                  'maxScore': 1, // Number(this.mcqForm.maxScore),
                   'status': 'Review',
                   'media': this.mediaArr
                 }
@@ -249,10 +253,10 @@ export class McqCreationComponent implements OnInit {
                   'responseDeclaration': questionData.responseDeclaration,
                   'question': this.mcqForm.question,
                   'options': options,
-                  'learningOutcome': [this.mcqForm.learningOutcome],
+                  'learningOutcome': this.mcqForm.learningOutcome ? [this.mcqForm.learningOutcome] : [],
                   'bloomsLevel': [this.mcqForm.bloomsLevel],
                   // 'qlevel': this.mcqForm.difficultyLevel,
-                  'maxScore': Number(this.mcqForm.maxScore),
+                  'maxScore': 1, // Number(this.mcqForm.maxScore),
                   'templateId': this.templateDetails.templateClass,
                   'programId': this.selectedAttributes.programId,
                   'program': this.selectedAttributes.program,

@@ -17,6 +17,12 @@ export class ChapterListComponent implements OnInit {
   @Output() selectedQuestionTypeTopic = new EventEmitter<any>();
   public textBookChapters: Array<any> = [];
   private questionType = ['vsa', 'sa', 'la', 'mcq'];
+  private questionTypeName = {
+    vsa: 'Very Short Answer',
+    sa: 'Short Answer',
+    la: 'Long Answer',
+    mcq: 'Multiple Choice Question'
+  };
   public collectionData;
   showLoader = true;
   showError = false;
@@ -70,7 +76,7 @@ export class ChapterListComponent implements OnInit {
         const results = { name: topicData.name, topic:  topicData.topic };
         _.forEach(this.questionType, (type: string, index) => {
           results[type] = {
-            name: type.toUpperCase(),
+            name: type,
             total: this.getResultCount(data[index], topicData.topic),
             me: this.getResultCount(data[index + this.questionType.length], topicData.topic)
           };

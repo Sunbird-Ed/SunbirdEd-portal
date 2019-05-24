@@ -5,17 +5,17 @@
     <div class="field mcq-title">
       <label class="mb-16 fs-1-286">Question</label>
       <label *ngIf="showFormError && [undefined, ''].includes(mcqForm.question)"
-        class="ui basic red error label pt-0">Fill Question</label>
+        class="ui basic red error label pt-1">Fill Question</label>
       <app-ckeditor-tool (editorDataOutput)="mcqForm.question = $event.body; getMedia($event.mediaobj);" [editorConfig]="questionMetaData"
         [editorDataInput]="mcqForm.question"></app-ckeditor-tool>
     </div>
     <div class="mcq-options">
-      <label *ngIf="showFormError && !mcqForm.answer" class="ui basic red error label pt-0">Select one correct answer</label>
+      <label *ngIf="showFormError && !mcqForm.answer" class="ui basic red error label pt-1">Select one correct answer</label>
       <div class="mcq-option" *ngFor="let option of mcqForm.options; let i=index">
           <div class="twelve wide field">
             <label class="mb-8 fs-1">Option {{i + 1}}:</label>
             <label *ngIf="showFormError && (option.body === undefined || option.body === '')"
-              class="ui basic red error label pt-0">Fill this options</label>
+              class="ui basic red error label pt-1">Fill this option</label>
             <app-ckeditor-tool (hasError)="handleEditorError($event)"
               (editorDataOutput)="option.body = $event.body; option.length = $event.length; getMedia($event.mediaobj)"
               [editorConfig]="questionMetaData" [editorDataInput]="option.body" [setCharacterLimit]="setCharacterLimit"
@@ -24,41 +24,45 @@
               <label>Mark as right answer</label>
               <sui-radio-button name="'correct_response'" value={{i}} [(ngModel)]="mcqForm.answer"></sui-radio-button>
             </div>
-            <label *ngIf="showFormError && option.length > 160" class="ui basic red error label pt-0">please reduce the size</label>
+            <label *ngIf="showFormError && option.length > 160" class="ui basic red error label pt-1">please reduce the size</label>
           </div>
       </div>
     </div>
-      <div class="ui two column grid">
-        <div class="column">
-          <label>Learning Outcome</label>
-          <div>
-            <sui-select class="selection width-100" #learningOutcome="ngModel" [(ngModel)]="mcqForm.learningOutcome"
-              name="'learningOutcome'" required>
-              <sui-select-option *ngFor="let option of learningOutcomeOptions" [value]="option"></sui-select-option>
-            </sui-select>
-          </div>
-          <label class="ui basic red error label pt-0"
-            *ngIf="(learningOutcome.touched || showFormError) && learningOutcome.invalid">Fill Learning Outcome</label>
-        </div>
-      <div class="column">
-          <label>Learning Level</label>
-          <div>
-            <sui-select class="selection width-100" #bloomsLevel="ngModel" [(ngModel)]="mcqForm.bloomsLevel" name="'bloomsLevel'"
-              required>
-              <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
-            </sui-select>
-          </div>
-          <label class="ui basic red error label pt-0"
-            *ngIf="(bloomsLevel.touched || showFormError) && bloomsLevel.invalid">Fill Blooms Level </label>
-        </div>
+      <!-- <div class="ui row width-100">
         <div class="column">
           <label>Marks</label>
           <input type="text" #maxScore="ngModel" name="'maxScore'" [(ngModel)]="mcqForm.maxScore" placeholder="Marks"
             required>
           <label *ngIf="(maxScore.touched || showFormError) && maxScore.invalid"
-            class="ui basic red error label pt-0">Marks is mandatory</label>
+            class="ui basic red error label pt-1 mt-5 width-100">Marks is mandatory</label>
         </div>
-    </div>
+    </div> -->
+    <div class="ui two column grid width-100">
+        <div class="one column row" *ngIf="learningOutcomeOptions.length > 0">
+          <div class="column">
+              <label>Learning Outcome</label>
+              <div>
+                <sui-select class="selection width-100" #learningOutcome="ngModel" [(ngModel)]="mcqForm.learningOutcome"
+                  name="'learningOutcome'" required>
+                  <sui-select-option *ngFor="let option of learningOutcomeOptions" [value]="option.name"></sui-select-option>
+                </sui-select>
+              </div>
+              <label class="ui basic red error label pt-1 mt-5 width-100"
+                *ngIf="(learningOutcome.touched || showFormError) && learningOutcome.invalid">Fill Learning Outcome</label>
+          </div>
+        </div>
+        <div class="column">
+            <label>Learning Level</label>
+            <div>
+              <sui-select class="selection width-100" #bloomsLevel="ngModel" [(ngModel)]="mcqForm.bloomsLevel" name="'bloomsLevel'"
+                required>
+                <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
+              </sui-select>
+            </div>
+            <label class="ui basic red error label pt-1 mt-5 width-100"
+              *ngIf="(bloomsLevel.touched || showFormError) && bloomsLevel.invalid">Fill Learning Level </label>
+        </div>
+      </div>
   </form>
   <app-question-preview *ngIf="showPreview" [questionMetaData]="previewData"></app-question-preview>
 </div>
