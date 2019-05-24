@@ -28,29 +28,7 @@
           </div>
       </div>
     </div>
-      <div class="ui two column grid">
-        <div class="column">
-          <label>Learning Outcome</label>
-          <div>
-            <sui-select class="selection width-100" #learningOutcome="ngModel" [(ngModel)]="mcqForm.learningOutcome"
-              name="'learningOutcome'" required>
-              <sui-select-option *ngFor="let option of learningOutcomeOptions" [value]="option"></sui-select-option>
-            </sui-select>
-          </div>
-          <label class="ui basic red error label pt-1 mt-5 width-100"
-            *ngIf="(learningOutcome.touched || showFormError) && learningOutcome.invalid">Fill Learning Outcome</label>
-        </div>
-      <div class="column">
-          <label>Learning Level</label>
-          <div>
-            <sui-select class="selection width-100" #bloomsLevel="ngModel" [(ngModel)]="mcqForm.bloomsLevel" name="'bloomsLevel'"
-              required>
-              <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
-            </sui-select>
-          </div>
-          <label class="ui basic red error label pt-1 mt-5 width-100"
-            *ngIf="(bloomsLevel.touched || showFormError) && bloomsLevel.invalid">Fill Learning Level </label>
-        </div>
+      <!-- <div class="ui row width-100">
         <div class="column">
           <label>Marks</label>
           <input type="text" #maxScore="ngModel" name="'maxScore'" [(ngModel)]="mcqForm.maxScore" placeholder="Marks"
@@ -58,7 +36,33 @@
           <label *ngIf="(maxScore.touched || showFormError) && maxScore.invalid"
             class="ui basic red error label pt-1 mt-5 width-100">Marks is mandatory</label>
         </div>
-    </div>
+    </div> -->
+    <div class="ui two column grid width-100">
+        <div class="one column row" *ngIf="learningOutcomeOptions.length > 0">
+          <div class="column">
+              <label>Learning Outcome</label>
+              <div>
+                <sui-select class="selection width-100" #learningOutcome="ngModel" [(ngModel)]="mcqForm.learningOutcome"
+                  name="'learningOutcome'" required>
+                  <sui-select-option *ngFor="let option of learningOutcomeOptions" [value]="option.name"></sui-select-option>
+                </sui-select>
+              </div>
+              <label class="ui basic red error label pt-1 mt-5 width-100"
+                *ngIf="(learningOutcome.touched || showFormError) && learningOutcome.invalid">Fill Learning Outcome</label>
+          </div>
+        </div>
+        <div class="column">
+            <label>Learning Level</label>
+            <div>
+              <sui-select class="selection width-100" #bloomsLevel="ngModel" [(ngModel)]="mcqForm.bloomsLevel" name="'bloomsLevel'"
+                required>
+                <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
+              </sui-select>
+            </div>
+            <label class="ui basic red error label pt-1 mt-5 width-100"
+              *ngIf="(bloomsLevel.touched || showFormError) && bloomsLevel.invalid">Fill Learning Level </label>
+        </div>
+      </div>
   </form>
   <app-question-preview *ngIf="showPreview" [questionMetaData]="previewData"></app-question-preview>
 </div>

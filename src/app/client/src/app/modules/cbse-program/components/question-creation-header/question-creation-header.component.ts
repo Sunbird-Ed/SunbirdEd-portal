@@ -19,6 +19,11 @@ export class QuestionCreationHeaderComponent implements OnInit {
   }
   btnClick(event, button) {
     this.enableBtn = button;
+    if (button === 'create') {
+      this.enableBtn = 'edit';
+    } else {
+      this.enableBtn = button;
+    }
     this.buttonType.emit(button);
   }
 
