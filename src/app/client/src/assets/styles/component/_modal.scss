@@ -51,6 +51,9 @@
             max-width: $sb-modal-normal-width;
             .sb-modal-content {
                 max-height: 380px;
+                &.o-y-visible {
+                    max-height: inherit;
+                }
             }
         }
         &.large {
