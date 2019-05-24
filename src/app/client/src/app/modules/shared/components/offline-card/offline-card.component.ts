@@ -6,10 +6,11 @@ import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
 
 @Component({
-  selector: 'app-card',
-  templateUrl: './card.component.html'
+  selector: 'app-offline-card',
+  templateUrl: './offline-card.component.html',
+  styleUrls: ['./offline-card.component.scss']
 })
-export class CardComponent {
+export class OfflineCardComponent {
   /**
   * content is used to render IContents value on the view
   */
@@ -21,6 +22,8 @@ export class CardComponent {
   hover: Boolean;
   isConnected: Boolean = navigator.onLine;
   route: string;
+  checkOfflineRoutes: string;
+
 
   @HostListener('mouseenter') onMouseEnter() {
     this.hover = true;
@@ -35,9 +38,15 @@ export class CardComponent {
       this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
     }
     this.route = this.router.url;
+    if (_.includes(this.route, 'browse')) {
+      this.checkOfflineRoutes = 'browse';
+    } else if (!_.includes(this.route, 'browse')) {
+      this.checkOfflineRoutes = 'library';
+    }
   }
 
   public onAction(data, action) {
     this.clickEvent.emit({ 'action': action, 'data': data });
   }
 }
+
