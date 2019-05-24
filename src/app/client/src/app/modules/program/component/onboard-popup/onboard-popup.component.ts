@@ -23,7 +23,7 @@ export class OnboardPopupComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.formFieldOptions = _.get(this.programDetails, 'config.onBoardForm.fields');
   }
-  handleFieldChange(event) {
+  handleFieldChange(event, data) {
     this.showButton = true;
   }
   handleSubmit(event) {
