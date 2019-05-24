@@ -266,6 +266,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 'objectType': 'AssessmentItem',
                 'metadata': {
                   'body': this.body,
+                  'category': this.selectedAttributes.questionType.toUpperCase(),
                   'solutions': [this.solution],
                   'editorState': {
                     solutions: [this.editorState.solutions]
