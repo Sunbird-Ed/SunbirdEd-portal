@@ -111,7 +111,10 @@
       border: 0.5px solid #f2f2f2;
       padding: 16px;
     }
-
+    .sb-question-content-card p svg {
+      display: inline-block;
+      vertical-align: middle;
+    }
     .sb-question {
       margin-right: auto;
       font-size: 12px;
@@ -247,6 +250,13 @@
       right: 0;
     }
 
+    .mcq-vertical .mcq-title p svg,
+    .mcq-horizontal .mcq-title p svg,
+    .mcq-grid .mcq-title p svg{
+      display: inline-block;
+      vertical-align: middle;
+    }
+
     .mcq-split .mcq-title i.chevron{
       display: none !important;
     }
@@ -256,6 +266,13 @@
     .mcq-grid.mcq-split .mcq-options {
       flex-basis: 70%;
       padding-top: 16px;
+    }
+
+    .mcq-horizontal .mcq-options p svg,
+    .mcq-vertical .mcq-options p svg,
+    .mcq-grid .mcq-options p svg{
+      display: inline-block;
+      vertical-align: middle;
     }
 
     .mcq-horizontal .mcq-options .mcq-option {
@@ -269,7 +286,7 @@
     .mcq-grid .mcq-options .mcq-option {
       width: 45%;
     }
-    
+
     // .mcq-vertical .mcq-options .mcq-option, .mcq-horizontal .mcq-options .mcq-option, .mcq-grid .mcq-options .mcq-option {
     //   max-height: 80%;
     //   overflow-y: auto;
