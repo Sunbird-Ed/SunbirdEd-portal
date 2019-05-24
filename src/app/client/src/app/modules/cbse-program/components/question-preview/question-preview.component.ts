@@ -16,8 +16,10 @@ export class QuestionPreviewComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   ngAfterViewInit() {
-    $(document).on('click', '.mcq-title .chevron', (e) => {
-      $(e.target).parent().toggleClass('expand');
+    $(document).on('click', '.cheveron-helper .chevron', (e) => {
+      $('.mcq-title').toggleClass('expand');
+      $(e.target).toggleClass('icon-active');
+      console.log('icon', e.target);
       $(this).off('click');
     });
   }
@@ -40,6 +42,6 @@ export class QuestionPreviewComponent implements OnInit, AfterViewInit, OnDestro
     }
   }
   ngOnDestroy() {
-    $(document).off('click', '.mcq-title .chevron');
+    $(document).off('click', '.cheveron-helper .chevron');
   }
 }
