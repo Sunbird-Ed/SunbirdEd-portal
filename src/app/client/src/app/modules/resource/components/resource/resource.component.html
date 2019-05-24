@@ -2,9 +2,9 @@
   [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true
   [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter>
 
-<div class="ui container mt-24">
+<div class="ui container mt-8">
   <div [appTelemetryImpression]="telemetryImpression" *ngIf="!showLoader" class="ui grid stackable my-0">
-    <div class="twelve wide column py-0" *ngFor="let section of pageSections;let last = last"
+    <div class="twelve wide column" *ngFor="let section of pageSections;let last = last"
       [ngClass]="{'last mb-30':last}">
       <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section"
         (viewAll)="viewAll($event)"></app-page-section>
@@ -18,4 +18,4 @@
       <app-loader [data]='loaderMessage'></app-loader>
     </div>
   </div>
-</div>
+</div> 

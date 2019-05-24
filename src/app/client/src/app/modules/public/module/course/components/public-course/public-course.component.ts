@@ -13,8 +13,7 @@ import { PublicPlayerService } from './../../../../services';
 import { takeUntil, map, mergeMap, first, filter, catchError } from 'rxjs/operators';
 
 @Component({
-  templateUrl: './public-course.component.html',
-  styleUrls: ['./public-course.component.scss']
+  templateUrl: './public-course.component.html'
 })
 export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
 

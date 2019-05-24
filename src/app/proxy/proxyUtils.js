@@ -61,7 +61,7 @@ function verifyToken () {
   }
 }
 const handleSessionExpiry = (proxyRes, proxyResData, req, res, data) => {
-  if ((proxyRes.statusCode === 401 || proxyRes.statusCode === 403) && !req.session.userId) {
+  if ((proxyRes.statusCode === 401) && !req.session.userId) {
       return {
         id: 'app.error',
         ver: '1.0',
@@ -81,7 +81,21 @@ const handleSessionExpiry = (proxyRes, proxyResData, req, res, data) => {
     return proxyResData;
   }
 }
+// middleware to add CORS headers
+const addCorsHeaders =  (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE,OPTIONS')
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization,' +
+    'cid, user-id, x-auth, Cache-Control, X-Requested-With, *')
+
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200)
+  } else {
+    next()
+  };
+}
 module.exports.decorateRequestHeaders = decorateRequestHeaders
 module.exports.decoratePublicRequestHeaders = decoratePublicRequestHeaders
 module.exports.verifyToken = verifyToken
 module.exports.handleSessionExpiry = handleSessionExpiry
+module.exports.addCorsHeaders = addCorsHeaders

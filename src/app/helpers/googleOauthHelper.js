@@ -87,7 +87,7 @@ const fetchUserByEmailId = async (emailId, req) => {
     }
   })
 }
-const createUserWithMailId = async (accountDetails, req) => {
+const createUserWithMailId = async (accountDetails, client_id, req) => {
   if (!accountDetails.name || accountDetails.name === '') {
     throw new Error('USER_NAME_NOT_PRESENT');
   }
@@ -96,6 +96,10 @@ const createUserWithMailId = async (accountDetails, req) => {
     url: envHelper.LEARNER_URL + 'user/v2/create',
     headers: getHeaders(req),
     body: {
+      params: {
+        source: client_id,
+        signupType: "google"
+      },
       request: {
         firstName: accountDetails.name,
         email: accountDetails.emailId,
@@ -104,6 +108,7 @@ const createUserWithMailId = async (accountDetails, req) => {
     },
     json: true
   }
+  console.log('goggle user create request', options);
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       return data;
