@@ -65,7 +65,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
       });
 
       this.editorConfig = _.assign({
-        toolbar: ['bold', '|', 'italic',
+        toolbar: ['bold', '|', 'italic', '|', 'underline',
           '|', 'numberedList', '|' , 'fontSize', '|', 'ChemType', '|',
           'mathtype', '|',
         ],
@@ -77,7 +77,9 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
                 15,
                 17,
                 19,
-                21
+                21,
+                23,
+                25
             ]
         },
         image: {
