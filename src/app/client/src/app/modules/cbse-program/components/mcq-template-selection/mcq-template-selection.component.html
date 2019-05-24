@@ -3,12 +3,19 @@
   <div class="sb-modal-header">
     {{'Please select a Template to proceed'}}&lrm;
   </div>
-  <div class="ui top segment">
-      <div class="ui d-flex flex-jc-center">
-          <a *ngFor="let template of mcqTemplateConfig" title="" [ngClass]="{'active': templateSelected === template}"class="template-items p-8 mr-8 relative" (click)="showButton=true; templateSelected = template"><img alt="" src="{{template.url}}">
-            <span *ngIf="templateSelected === template" class="template-item-selection"><i class="check circle icon"></i></span>
-          </a>
-        </div>
+  <div class="sb-modal-content">
+    <div class="d-flex flex-jc-space-around flex-w-wrap">
+        <div class="sb-card mb-16 template-items p-8 mr-8 relative" [ngClass]="{'active': templateSelected === template}" *ngFor="let template of mcqTemplateConfig" (click)="showButton=true; templateSelected = template">
+          <span *ngIf="templateSelected === template" class="template-item-selection"><i class="check circle icon"></i></span>
+            <div class="sb-card-metas flex-jc-center mb-8">
+              <div class="sb-card-image">
+                <img src="{{template.url}}">
+              </div>
+            </div>
+            <span [innerHTML]="template.templateDescription" class="sb-card-title">
+            </span>
+          </div>
+    </div>
   </div>
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!showButton" (click)="handleSubmit()">
