@@ -11,32 +11,30 @@
       <div class="sb-single-pannel-accordion-list-item d-flex flex-ai-center flex-jc-space-between" *ngFor="let data of downloadResponse.inprogress;">
         <div class="">{{data.name}}</div>
         <div class="d-flex flex-ai-center flex-jc-center">
-          <sui-progress [value]="showProgressValue(data.downloadedSize, data.totalSize)" [maximum]="100" class="mb-0 mr-32"></sui-progress>
-          <div class="">{{data.downloadedSize | filesize}}/{{data.totalSize | filesize}}</div>
+          <sui-progress [value]="showProgressValue(data.downloadedSize, data.totalSize)" [maximum]="100" class="mb-0 mr-8"></sui-progress>
+          <div class="info-text">{{data.downloadedSize | filesize}}/{{data.totalSize | filesize}}</div>
+        </div>
+      </div>
+
+      <div class="sb-single-pannel-accordion-list-item d-flex flex-ai-center flex-jc-space-between" *ngFor="let data of downloadResponse.failed;">
+        <div class="">{{data.name}}</div>
+        <div class="d-flex flex-ai-center flex-jc-center  flex-jc-center sb-label sb-label-table sb-label-error-0">
+          <i class="exclamation triangle icon error-icon d-flex flex-ai-center"></i>
+          {{resourceService?.frmelmnts?.btn?.downloadFailed}}
         </div>
       </div>
 
       <div class="sb-single-pannel-accordion-list-item d-flex flex-ai-center flex-jc-space-between" *ngFor="let data of downloadResponse.submitted;">
         <div class="">{{data.name}}</div>
         <div class="d-flex flex-ai-center flex-jc-center">
-          <i class="history icon waiting-icon d-flex flex-ai-center"></i>
-          <div class="waiting-text">{{resourceService?.frmelmnts?.btn?.downloadPending}}</div>
-        </div>
-      </div>
-
-      <div class="sb-single-pannel-accordion-list-item d-flex flex-ai-center flex-jc-space-between" *ngFor="let data of downloadResponse.failed;">
-        <div class="">{{data.name}}</div>
-        <div class="d-flex flex-ai-center flex-jc-center">
-          <i class="exclamation triangle icon error-icon d-flex flex-ai-center"></i>
-          <div class="error-text">{{resourceService?.frmelmnts?.btn?.downloadFailed}}</div>
+          <div class="sb-label sb-label-table sb-label-warning-0">{{resourceService?.frmelmnts?.btn?.downloadPending}}</div>
         </div>
       </div>
 
       <div class="sb-single-pannel-accordion-list-item d-flex flex-ai-center flex-jc-space-between" *ngFor="let data of downloadResponse.completed;">
         <div class="">{{data.name}}</div>
-        <div class="d-flex flex-ai-center flex-jc-center">
-          <i class="check circle icon success-icon d-flex flex-ai-center"></i>
-          <div class="success-text">{{resourceService?.frmelmnts?.btn?.downloadCompleted}}</div>
+        <div class="d-flex flex-ai-center flex-jc-center  sb-label sb-label-table sb-label-success-0">
+          <i class="check circle icon success-icon d-flex flex-ai-center"></i>{{resourceService?.frmelmnts?.btn?.downloadCompleted}}
         </div>
       </div>
 
