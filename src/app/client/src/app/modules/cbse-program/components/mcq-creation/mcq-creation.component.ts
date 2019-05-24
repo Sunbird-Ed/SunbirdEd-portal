@@ -97,7 +97,7 @@ export class McqCreationComponent implements OnInit {
       .subscribe((res) => {
         // this.body = res[0]; // question with latex
         optionSvgBody =  res.slice(1).map((option, i) => { // options with latex
-           return {body: res[i + 1]};
+            return {body: res[i + 1]};
         });
         this.previewData = {
           data: this.getHtml(res[0], optionSvgBody),
