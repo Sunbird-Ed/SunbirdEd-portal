@@ -168,7 +168,7 @@
     },
     "ASSET":{
       "CREATE": "content/v3/create",
-      "UPDATE": "content/v3/update"
+      "UPDATE": "content/v3/upload"
     }
   }
 }
