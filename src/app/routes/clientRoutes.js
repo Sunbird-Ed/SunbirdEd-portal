@@ -38,11 +38,11 @@ module.exports = (app, keycloak) => {
   app.get(['*.js', '*.css'], (req, res, next) => {
     res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
     res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
-    if(req.get('Accept-Encoding').includes('br')){ // send br files
+    if(req.get('Accept-Encoding') && req.get('Accept-Encoding').includes('br')){ // send br files
       if(!setZipConfig(req, res, 'br', 'br') && req.get('Accept-Encoding').includes('gzip')){
         setZipConfig(req, res, 'gz', 'gzip') // send gzip if br file not found
       }
-    } else if(req.get('Accept-Encoding').includes('gzip')){
+    } else if(req.get('Accept-Encoding') && req.get('Accept-Encoding').includes('gzip')){
       setZipConfig(req, res, 'gz', 'gzip')
     }
     next();
@@ -85,7 +85,7 @@ module.exports = (app, keycloak) => {
 
   app.all('/app', (req, res) => res.redirect(envHelper.ANDROID_APP_URL))
 
-  app.all(['/home', '/home/*', '/announcement', '/announcement/*', '/search', '/search/*',
+  app.all(['/announcement', '/announcement/*', '/search', '/search/*',
     '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
     '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
     '/resources/*', '/myActivity', '/myActivity/*'], keycloak.protect(), indexPage(true))
