@@ -65,8 +65,8 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
       });
 
       this.editorConfig = _.assign({
-        toolbar: ['heading', '|', 'bold', '|', 'italic', '|',
-          'bulletedList', '|', 'numberedList', '|', 'insertTable', '|' , 'fontSize', '|',
+        toolbar: ['bold', '|', 'italic',
+          '|', 'numberedList', '|' , 'fontSize', '|', 'ChemType', '|',
           'mathtype', '|',
         ],
           fontSize: {
