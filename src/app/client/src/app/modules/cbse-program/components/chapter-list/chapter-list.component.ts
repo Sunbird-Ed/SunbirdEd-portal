@@ -21,7 +21,7 @@ export class ChapterListComponent implements OnInit {
     vsa: 'Very Short Answer',
     sa: 'Short Answer',
     la: 'Long Answer',
-    mcq: 'Multiple Choice Questions'
+    mcq: 'Multiple Choice Question'
   };
   public collectionData;
   showLoader = true;
