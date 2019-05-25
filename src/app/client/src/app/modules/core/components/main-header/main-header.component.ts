@@ -127,7 +127,9 @@ export class MainHeaderComponent implements OnInit {
   }
   navigateToHome() {
     if (this.userService.loggedIn) {
-      this.router.navigate(['resources']);
+      const programId = (<HTMLInputElement>document.getElementById('cbse_programId'))
+      ? (<HTMLInputElement>document.getElementById('cbse_programId')).value : '';
+      this.router.navigate(['/workspace/program/' + programId]);
     } else {
       window.location.href = this.slug ? this.slug : '';
     }

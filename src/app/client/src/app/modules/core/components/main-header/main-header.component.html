@@ -8,9 +8,9 @@
         <div class="ui grid padded width-100">
             <div class="six wide column p-0">
                 <!--Logo-->
-                <a class="d-flex logo" tabindex="0" title="{{tenantInfo.titleName}}" role="banner"
+                <a *ngIf="tenantInfo.logo" class="d-flex logo" tabindex="0" [attr.title]="'CBSE'" role="banner"
                     (click)="navigateToHome()">
-                    <img class="cursor-pointer" alt={{tenantInfo.titleName}} src="{{tenantInfo.logo}}">
+                    <img class="cursor-pointer" [attr.alt]="'CBSE'" src="{{tenantInfo.logo}}">
                 </a>
                 <!--/Logo-->
             </div>
