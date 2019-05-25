@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const { googleOauth, createSession, fetchUserByEmailId, createUserWithMailId } = require('./../helpers/googleOauthHelper');
 const telemetryHelper = require('../helpers/telemetryHelper')
-
+const googleDid = '2c010e13a76145d864e459f75a176171';
 module.exports = (app) => {
 
   app.get('/google/auth', (req, res) => {
@@ -40,17 +40,16 @@ module.exports = (app) => {
       sunbirdProfile = await fetchUserByEmailId(googleProfile.emailId, req).catch(handleGetUserByIdError);
       if (!_.get(sunbirdProfile, 'result.response.userName') || !_.get(sunbirdProfile, 'result.response.firstName')) {
         errType = 'USER_CREATE_API';
-        newUserDetails = await createUserWithMailId(googleProfile, req).catch(handleCreateUserError);
+        newUserDetails = await createUserWithMailId(googleProfile, reqQuery.client_id, req).catch(handleCreateUserError);
       }
       errType = 'KEYCLOAK_SESSION_CREATE';
-      keyCloakToken = await createSession(googleProfile.emailId, req, res);
+      keyCloakToken = await createSession(googleProfile.emailId, reqQuery, req, res);
       errType = 'UNHANDLED_ERROR';
       redirectUrl = reqQuery.redirect_uri.split('?')[0];
       if (reqQuery.client_id === 'android') {
         redirectUrl = redirectUrl + getQueryParams(keyCloakToken);
       }
       console.log('google sign in success', googleProfile, sunbirdProfile, newUserDetails, redirectUrl);
-      logAuditEvent(req, googleProfile)
     } catch (error) {
       if (reqQuery.error_callback) {
         const queryObj = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type', 'version']);
@@ -71,7 +70,8 @@ const logImpressionEvent = (req) => {
     uri: '/google/auth',
   }
   const context = {
-    env: 'GOOGLE_SIGN_IN'
+    env: 'GOOGLE_SIGN_IN',
+    did: googleDid
   }
   telemetryHelper.logImpressionEvent(req, {edata, context});
 }
@@ -94,17 +94,6 @@ const logErrorEvent = (req, type, error) => {
     env: 'GOOGLE_SIGN_IN'
   }
   telemetryHelper.logApiErrorEventV2(req, {edata, context});
-}
-const logAuditEvent = (req, profile) => {
-  const edata = {
-    props: ['email'],
-    state: 'LOGGED_IN_USER', 
-    prevstate: 'ANONYMOUS_USER'
-  }
-  const context = {
-    env: 'GOOGLE_SIGN_IN'
-  }
-  telemetryHelper.logAuditEvent(req, {edata, context});
 }
 const getQueryParams = (queryObj) => {
   return '?' + Object.keys(queryObj)

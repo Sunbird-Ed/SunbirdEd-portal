@@ -1,5 +1,5 @@
-<div class="rightSideSectionCards ui card">
-    <div class="header batchCardAlign">
+<div class="rightSideSectionCards ui card sb-course-batch-card">
+    <div class="header batchCardAlign p-16">
         <span class="header headerBatchCard">{{resourceService?.frmelmnts?.lbl?.batches}}</span>
         <a class="opacity-1 ml-auto">
             <sui-select (selectedOptionChange)="getAllBatchDetails()" class="batchCardDropDown" [(ngModel)]="batchStatus" [options]="statusOptions"
@@ -9,28 +9,24 @@
             </sui-select>
         </a>
     </div>
-    <div class="content batchcardListContent" id="batchcardList">
+    <div class="content" id="batchcardList">
         <div class="description annannouncement-description">
             <div *ngIf="showBatchList" class="ui divided list">
-                <div class="item pt-10" *ngFor="let batch of batchList">
+                <div class="item py-10" *ngFor="let batch of batchList">
                     <i class="calendar outline icon"></i>
-                    <div class="content pb-15 width-100">
+                    <div class="content width-100">
                         <button class="ui right floated tiny blue basic button enrollBtn" appTelemetryInteract [telemetryInteractEdata]="enrollBatchIntractEdata"
                             [telemetryInteractObject]="{id:batch.identifier,type:'CourseBatch',ver:'1',rollup:{l1:courseId}}" (click)="enrollBatch()">{{resourceService.frmelmnts.btn.enroll}}</button>
-                        <span class="header pb-5"> {{batch.startDate | dateFormat}} - </span>
+                        <span class="header"> {{batch.startDate | dateFormat}} - </span>
                         <span *ngIf="batch.endDate" class="header pb-5"> {{batch.endDate | dateFormat}} </span>
                     </div>
                 </div>
-                <div *ngIf="batchList.length <= 0">
-                    <div class="ui success message">
-                        <div class="header">{{resourceService.messages.stmsg.m0081}}</div>
-                    </div>
+                <div class="content my-15" *ngIf="batchList.length <= 0">
+                    <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
                 </div>
             </div>
             <div *ngIf="showError">
-                <div class="ui success message">
-                    <div class="header">{{resourceService.messages.stmsg.m0081}}</div>
-                </div>
+                <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
             </div>
         </div>
     </div>

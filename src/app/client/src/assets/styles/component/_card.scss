@@ -5,11 +5,13 @@
   background-color: $sb-card-bg-color;
   border: $sb-card-border;
   border-radius: $sb-card-border-radius;
+  transition: box-shadow .3s ease-out, transform .3s ease-out, opacity .2s ease-out;
+  transition-delay: .1s;
   cursor: pointer;
   overflow: hidden;
-  margin-top: $sb-card-hover-movement;
+  //margin-top: $sb-card-hover-movement;
   &:hover {
-    transform: translateY(-$sb-card-hover-movement);
+    transform: translate(0, -$sb-card-hover-movement);
     box-shadow: $sb-card-box-shadow;
   }
   .sb-card-body {
@@ -114,5 +116,78 @@ app-card[lang="ur"] {
       font-size: $sb-card-meta-org-font-size-ur;
     }
     
+  }
+}
+
+//qr code card
+.sb-qr-card{
+  // border: 1px solid #dedede !important;
+  // margin-top: ($base-block-space * 3) + 3;
+}
+
+// QR Card
+
+.sb-card-qr {
+  border: 1px solid #dedede !important;
+  // margin-bottom: ($base-block-space * 2);
+  height: auto;
+  .sb-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0px;
+    width:100%;
+    .caret {
+        height: ($base-block-space * 2) !important;
+        width: ($base-block-space * 2) !important;
+        background: $white;
+        color: $secondary-100 !important;
+        border-radius: 50%;
+        font-size: 14px;
+        margin-right: $base-block-space;
+        padding-left: 2px;
+        line-height: ($base-block-space * 2);
+    }
+}
+  &:hover {
+    .sb-btn {
+      background:$secondary-400;
+    }
+  }
+}
+
+
+
+// batch card
+.sb-course-batch-card {
+  border: 1px solid #80a7ce !important;
+  box-shadow: none !important;
+  .header{
+    font-weight: 600;
+  }
+  h5 {
+      font-weight: $font-weight-bold;
+  }
+  >.content {
+      border-top: 1px solid #d8d8d8;
+      padding: 0 1rem !important;
+  }
+  .sb-no-batch-found {
+      background-color: $tertiary-0;
+      border: 1px solid $tertiary-100;
+      padding: $base-block-space $base-block-space*2;
+      border-radius: $base-block-space/2;
+      font-size: $font-size-sm;
+  }
+  .no-border {
+      border: none;
+  }
+  .sb-curriculum-label {
+      font-size: $font-size-sm;
+  }
+  .item {
+      i.icon {
+          font-size: $h5-font-size;
+      }
   }
 }

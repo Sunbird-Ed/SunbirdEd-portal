@@ -15,8 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-public-content-player',
-  templateUrl: './public-content-player.component.html',
-  styleUrls: ['./public-content-player.component.scss']
+  templateUrl: './public-content-player.component.html'
 })
 export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
@@ -26,6 +25,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   /**
    * content id
    */
+  contentType: string;
   contentId: string;
   /**
    * contains player configuration
@@ -54,7 +54,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   telemetryCdata: Array<{}>;
   public telemetryInteractObject: IInteractEventObject;
   public closePlayerInteractEdata: IInteractEventEdata;
-
+  public objectRollup = {};
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
@@ -70,9 +70,15 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    * @memberof ContentPlayerComponent
    */
   ngOnInit() {
+    this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.contentId;
       this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
+      if (_.get(this.activatedRoute, 'snapshot.queryParams.l1Parent')) {
+        this.objectRollup = {
+          l1 : _.get(this.activatedRoute, 'snapshot.queryParams.l1Parent')
+        };
+      }
       this.setTelemetryData();
       this.getContent();
       this.deviceDetector();
@@ -81,7 +87,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   setTelemetryData() {
     this.telemetryInteractObject = {
       id: this.contentId,
-      type: 'Content',
+      type: this.contentType,
       ver: '1.0'
     };
     this.closePlayerInteractEdata = {
@@ -94,34 +100,28 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    * used to fetch content details and player config. On success launches player.
    */
   getContent() {
-    this.activatedRoute.queryParams.subscribe((queryParams) => {
-      this.dialCode = queryParams.dialCode;
-    });
     const options: any = { dialCode: this.dialCode };
     const params = {params: this.configService.appConfig.PublicPlayer.contentApiQueryParams};
-    this.playerService.getContent(this.contentId, params).pipe(
-      takeUntil(this.unsubscribe$))
-      .subscribe(
-        (response) => {
-          const contentDetails = {
-            contentId: this.contentId,
-            contentData: response.result.content
-          };
-          this.playerConfig = this.playerService.getConfig(contentDetails, options);
-          this.contentData = response.result.content;
-          if (this.contentData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
-            setTimeout(() => {
-              this.showExtContentMsg = true;
-            }, 5000);
-          }
-          this.showPlayer = true;
-          this.windowScrollService.smoothScroll('content-player');
-          this.badgeData = _.get(response, 'result.content.badgeAssertions');
-        },
-        (err) => {
-          this.showError = true;
-          this.errorMessage = this.resourceService.messages.stmsg.m0009;
-        });
+    this.playerService.getContent(this.contentId, params).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
+      const contentDetails = {
+        contentId: this.contentId,
+        contentData: response.result.content
+      };
+      this.playerConfig = this.playerService.getConfig(contentDetails, options);
+      this.playerConfig.context.objectRollup = this.objectRollup;
+      this.contentData = response.result.content;
+      if (this.contentData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
+        setTimeout(() => {
+          this.showExtContentMsg = true;
+        }, 5000);
+      }
+      this.showPlayer = true;
+      this.windowScrollService.smoothScroll('content-player');
+      this.badgeData = _.get(response, 'result.content.badgeAssertions');
+    }, (err) => {
+      this.showError = true;
+      this.errorMessage = this.resourceService.messages.stmsg.m0009;
+    });
   }
   /**
    * retry launching player with same content details
@@ -136,7 +136,19 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    * @memberof ContentPlayerComponent
    */
   close() {
-    this.navigationHelperService.navigateToResource('/explore');
+    try {
+      window.frames['contentPlayer'].contentDocument.body.onunload({});
+    } catch {
+
+    } finally {
+      setTimeout(() => {
+        if (this.dialCode) {
+          this.router.navigate(['/get/dial/', this.dialCode]);
+        } else {
+          this.navigationHelperService.navigateToResource('/explore');
+        }
+      }, 100);
+    }
   }
   deviceDetector() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
@@ -147,9 +159,8 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
 
   ngAfterViewInit () {
     setTimeout(() => {
-        this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
         if (this.dialCode) {
-          this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
+          this.telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
         }
         this.telemetryImpression = {
           context: {
@@ -158,8 +169,9 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
           },
           object: {
             id: this.activatedRoute.snapshot.params.contentId,
-            type: 'Content',
-            ver: '1.0'
+            type: this.contentType,
+            ver: '1.0',
+            rollup: this.objectRollup
           },
           edata: {
             type: this.activatedRoute.snapshot.data.telemetry.type,

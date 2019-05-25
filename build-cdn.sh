@@ -3,6 +3,7 @@
 # set -o errexit
 set -x
 
+chown -R jenkins /var/lib/jenkins
 su jenkins
 cd src/app
 version=$(jq '.version' package.json | sed 's/\"//g')
@@ -18,3 +19,4 @@ cd ..
 # Gzipping of assets
 ./node_modules/.bin/gulp gzip:editors client:gzip
 mv dist/index.html dist/index.${version}.${build_hash}.ejs
+chown -R jenkins ./

@@ -4,6 +4,8 @@ const envHelper = require('./environmentVariablesHelper.js')
 const request = require('request-promise'); //  'request' npm package with Promise support
 const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
+const kafkaService = require('../helpers/kafkaHelperService');
+let ssoWhiteListChannels;
 
 let keycloak = getKeyCloakClient({
   clientId: envHelper.PORTAL_TRAMPOLINE_CLIENT_ID,
@@ -38,7 +40,7 @@ const verifyToken = (token) => {
     throw new Error('TOKEN_EXPIRED');
   } else if (!token.sub) {
     throw new Error('USER_ID_NOT_PRESENT');
-  } 
+  }
   return true;
 }
 const fetchUserWithExternalId = async (payload, req) => { // will be called from player docker to learner docker
@@ -64,10 +66,14 @@ const createUser = async (requestBody, req) => {
     url: envHelper.LEARNER_URL + 'user/v2/create',
     headers: getHeaders(req),
     body: {
+      params: {
+        signupType: "sso"
+      },
       request: requestBody
     },
     json: true
   }
+  console.log('sso user create request', options);
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       return data;
@@ -76,8 +82,13 @@ const createUser = async (requestBody, req) => {
     }
   })
 }
-const createSession = async (loginId, req, res) => {
-  const grant = await keycloak.grantManager.obtainDirectly(loginId);
+const createSession = async (loginId, client_id, req, res) => {
+  let grant;
+  if (client_id === 'android') {
+    grant = await keycloak.grantManager.obtainDirectly(loginId, undefined, undefined, 'offline_access')
+  } else {
+    grant = await keycloak.grantManager.obtainDirectly(loginId, undefined, undefined, 'openid')
+  }
   keycloak.storeGrant(grant, req, res)
   req.kauth.grant = grant
   keycloak.authenticated(req)
@@ -138,4 +149,83 @@ const handleGetUserByIdError = (error) => {
   }
   throw error.error || error.message || error;
 }
-module.exports = { keycloak, verifySignature, verifyToken, fetchUserWithExternalId, createUser, createSession, updatePhone, updateRoles };
+
+  // creating payload for kafka service
+const getKafkaPayloadData = (sessionDetails) => {
+  var jwtPayload = sessionDetails.jwtPayload;
+  var userDetails = sessionDetails.userDetails;
+  return {
+    'identifier': uuid(),
+    'ets': (new Date).getTime(),
+    'operationType': 'UPDATE',
+    'eventType': 'transactional',
+    'objectType': 'user',
+    'event': {
+      'userExternalId': jwtPayload.sub || '',
+      'nameFromPayload': jwtPayload.name || '',
+      'channel': jwtPayload.state_id || '',
+      'orgExternalId': jwtPayload.school_id || '',
+      'roles': jwtPayload.roles || [],
+      'userId': userDetails.id || '',
+      'organisations': userDetails.organisations || [],
+      'firstName': userDetails.firstName
+    }
+  }
+};
+
+const getSsoUpdateWhiteListChannels = async (req) => {
+  // return cached value
+  if (ssoWhiteListChannels) {
+    return _.includes(_.get(ssoWhiteListChannels, 'result.response.value'), req.session.jwtPayload.state_id);
+  }
+
+  let options = {
+    method: 'GET',
+    url: envHelper.LEARNER_URL + 'data/v1/system/settings/get/ssoUpdateWhitelistChannels',
+    headers: {
+      'content-type': 'application/json',
+      'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
+    }
+  };
+  try {
+    const response = await request(options);
+    if (_.isString(response)) {
+      const res = JSON.parse(response);
+      ssoWhiteListChannels = res;
+      return _.includes(_.get(res, 'result.response.value'), req.session.jwtPayload.state_id);
+    } else {
+      return false
+    }
+  } catch (error) {
+    console.log('sso error fetching whileList channels: getSsoUpdateWhileListChannels');
+    return false;
+  }
+};
+
+const sendSsoKafkaMessage = async (req) => {
+  const ssoUpdataChannelLists = await getSsoUpdateWhiteListChannels(req);
+  if (ssoUpdataChannelLists) {
+    var kafkaPayloadData = getKafkaPayloadData(req.session);
+    kafkaService.sendMessage(kafkaPayloadData, envHelper.sunbird_sso_kafka_topic, function (err, res) {
+      if (err) {
+        console.log('sso sending message to kafka errored', err)
+      } else {
+        console.log('sso kafka message send successfully')
+      }
+    });
+  } else {
+    console.log('sso white list channels not matched or errored ')
+  }
+};
+
+module.exports = {
+  keycloak,
+  verifySignature,
+  verifyToken,
+  fetchUserWithExternalId,
+  createUser,
+  createSession,
+  updatePhone,
+  updateRoles,
+  sendSsoKafkaMessage
+};

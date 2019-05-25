@@ -21,11 +21,13 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   currentReport: any;
   slug: string;
   noResult: boolean;
+  showLoader = false;
   noResultMessage: INoResultMessage;
   private activatedRoute: ActivatedRoute;
   telemetryImpression: IImpressionEventInput;
   telemetryInteractEdata: IInteractEventEdata;
   telemetryInteractDownloadEdata: IInteractEventEdata;
+  downloadUrl;
   @ViewChild(TelemetryInteractDirective) telemetryInteractDirective;
   constructor(private usageService: UsageService, private sanitizer: DomSanitizer,
     public userService: UserService, private toasterService: ToasterService,
@@ -70,16 +72,21 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
     };
   }
   renderReport(report: any) {
+    this.chartData = [];
+    this.tables = [];
     this.currentReport = report;
     this.isTableDataLoaded = false;
     const url = report.dataSource;
-    this.tables = [];
-    this.chartData = [];
+    this.showLoader = true;
+    this.downloadUrl = report.downloadUrl;
     this.usageService.getData(url).subscribe((response) => {
       if (_.get(response, 'responseCode') === 'OK') {
         const data = _.get(response, 'result');
+        this.showLoader = false;
         if (_.get(report, 'charts')) { this.createChartData(_.get(report, 'charts'), data); }
-        if (_.get(report, 'table')) { this.renderTable(_.get(report, 'table'), data); }
+        if (_.get(report, 'table')) { this.renderTable(_.get(report, 'table'), data); } else {
+          this.renderTable({}, data);
+        }
       } else {
         console.log(response);
       }
@@ -87,6 +94,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   }
 
   createChartData(charts, data) {
+    this.chartData = [];
     _.forEach(charts, chart => {
       const chartObj: any = {};
       chartObj.options = _.get(chart, 'options') || { responsive: true };
@@ -94,11 +102,13 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
       chartObj.chartType = _.get(chart, 'chartType') || 'line';
       chartObj.labels = _.get(chart, 'labels') || _.get(data, _.get(chart, 'labelsExpr'));
       chartObj.legend = (_.get(chart, 'legend') === false) ? false : true;
+      chartObj.filters = _.get(chart, 'filters');
       chartObj.datasets = [];
       _.forEach(chart.datasets, dataset => {
         chartObj.datasets.push({
           label: dataset.label,
-          data: _.get(dataset, 'data') || _.get(data, _.get(dataset, 'dataExpr'))
+          data: _.get(dataset, 'data') || _.get(data, _.get(dataset, 'dataExpr')),
+          hidden: _.get(dataset, 'hidden') || false
         });
       });
       this.chartData.push(chartObj);
@@ -106,6 +116,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   }
 
   renderTable(tables, data) {
+    this.tables = [];
     tables = _.isArray(tables) ? tables : [tables];
     _.forEach(tables, table => {
       const tableData: any = {};
@@ -113,12 +124,13 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
       tableData.name = _.get(table, 'name') || 'Table';
       tableData.header = _.get(table, 'columns') || _.get(data, _.get(table, 'columnsExpr'));
       tableData.data = _.get(table, 'values') || _.get(data, _.get(table, 'valuesExpr'));
+      tableData.downloadUrl = _.get(table, 'downloadUrl') || this.downloadUrl;
       this.tables.push(tableData);
     });
     this.isTableDataLoaded = true;
   }
 
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.telemetryImpression = {
         context: {
@@ -139,8 +151,12 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  downloadCSV(url) {
-    this.usageService.getData(url).subscribe((response) => {
+  setDownloadUrl(url) {
+    this.downloadUrl = url;
+  }
+
+  downloadCSV() {
+    this.usageService.getData(this.downloadUrl).subscribe((response) => {
       if (_.get(response, 'responseCode') === 'OK') {
         const data = _.get(response, 'result');
         const blob = new Blob(

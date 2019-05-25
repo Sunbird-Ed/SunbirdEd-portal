@@ -2,7 +2,7 @@ export interface ContentDetails {
     contentId: string;
     contentData: ContentData;
     courseId?: string;
-    batchHashTagId?: string;
+    batchId?: string;
 }
 
 export interface ContentData {

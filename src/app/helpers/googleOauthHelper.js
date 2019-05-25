@@ -57,8 +57,13 @@ class GoogleOauth {
   }
 }
 const googleOauth = new GoogleOauth()
-const createSession = async (emailId, req, res) => {
-  const grant = await keycloak.grantManager.obtainDirectly(emailId);
+const createSession = async (emailId, reqQuery, req, res) => {
+  let grant;
+  if (reqQuery.client_id === 'android') {
+    grant = await keycloak.grantManager.obtainDirectly(emailId, undefined, undefined, 'offline_access')
+  } else {
+    grant = await keycloak.grantManager.obtainDirectly(emailId, undefined, undefined, 'openid')
+  }
   keycloak.storeGrant(grant, req, res)
   req.kauth.grant = grant
   keycloak.authenticated(req)
@@ -82,7 +87,7 @@ const fetchUserByEmailId = async (emailId, req) => {
     }
   })
 }
-const createUserWithMailId = async (accountDetails, req) => {
+const createUserWithMailId = async (accountDetails, client_id, req) => {
   if (!accountDetails.name || accountDetails.name === '') {
     throw new Error('USER_NAME_NOT_PRESENT');
   }
@@ -91,6 +96,10 @@ const createUserWithMailId = async (accountDetails, req) => {
     url: envHelper.LEARNER_URL + 'user/v2/create',
     headers: getHeaders(req),
     body: {
+      params: {
+        source: client_id,
+        signupType: "google"
+      },
       request: {
         firstName: accountDetails.name,
         email: accountDetails.emailId,
@@ -99,6 +108,7 @@ const createUserWithMailId = async (accountDetails, req) => {
     },
     json: true
   }
+  console.log('goggle user create request', options);
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       return data;
