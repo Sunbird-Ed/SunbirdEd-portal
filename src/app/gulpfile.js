@@ -13,6 +13,7 @@ const contentEditor = 'https://sunbirdpublic.blob.core.windows.net/sunbird-publi
 const collectionEditor = 'https://sunbirdpublic.blob.core.windows.net/sunbird-public-dev/artefacts/editor/collection-editor-iframe-2.0.0.zip'
 const genericEditor = 'https://sunbirdpublic.blob.core.windows.net/sunbird-public-dev/artefacts/editor/generic-editor-iframe-2.0.0.zip'
 const editorsDestPath = 'client/src/thirdparty/editors/'
+const portal_CDN_URL = process.env.sunbird_portal_cdn_blob_url
 
 gulp.task('clean:editors', () => {
     return gulp.src('./' + editorsDestPath, { read: false })
@@ -56,6 +57,14 @@ gulp.task('client:install', (cb) => {
         console.log(stderr)
         cb(err)
     })
+})
+
+gulp.task('client:build_cdn', (cb) => {
+  exec('npm run build-cdn --prefix  ./client -- --deployUrl ' +portal_CDN_URL, { maxBuffer: Infinity }, function (err, stdout, stderr) {
+      console.log(stdout)
+      console.log(stderr)
+      cb(err)
+  })
 })
 
 // To build angular code and rename index file
