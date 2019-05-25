@@ -33,6 +33,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   private prevShowPreview = true;
   public previewData: any;
   public mediaArr = [];
+  showFormError = false;
   @Input() tabIndex: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter < any > ();
@@ -184,13 +185,16 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     }
   }
   handleSubmit(questionMetaForm) {
-    if (this.questionMetaForm.valid) {
+    if (this.questionMetaForm.valid && this.question !== ''
+    && this.editorState.solutions !== '' ) {
+      this.showFormError = false;
       if (this.questionMetaData.mode === 'create') {
         this.createQuestion();
       } else {
         this.updateQuestion();
       }
     } else {
+      this.showFormError = true;
       this.showPreview = false;
       this.validateAllFormFields(this.questionMetaForm);
     }
