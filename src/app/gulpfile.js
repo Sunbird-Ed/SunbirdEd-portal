@@ -156,7 +156,7 @@ const cdnFallBackScript = `\n<script type="text/javascript" src="${process.env.s
 gulp.task('inject:cdnFallBack:script', () => {
     gulp.src('./dist/index.html')
         .pipe(inject.after('</app-root>', cdnFallBackScript))
-        .pipe(rename('cdn_index.ejs'))
+        .pipe(rename('index_cdn.ejs'))
         .pipe(gulp.dest('./dist'));
 });
 

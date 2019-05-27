@@ -10,7 +10,7 @@ tenantHelper = require('../helpers/tenantHelper.js'),
 defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState(),
 oneDayMS = 86400000,
 pathMap = {}
-const cdnIndexFile = fs.existsSync(path.join(__dirname, '../dist', 'cdn_index.ejs'))
+const cdnIndexFile = fs.existsSync(path.join(__dirname, '../dist', 'index_cdn.ejs'))
 console.log('CDN index file exist: ', cdnIndexFile);
 const setZipConfig = (req, res, type, encoding, dist = '../') => {
     if (pathMap[req.path + type] && pathMap[req.path + type] === 'notExist') {
@@ -144,7 +144,7 @@ const renderDefaultIndexPage = (req, res) => {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
     res.locals = getLocals(req);
     if(envHelper.PORTAL_CDN_URL && cdnIndexFile && req.cookies.cdnFailed !== 'true'){ // assume cdn works and send cdn ejs file
-      res.render(path.join(__dirname, '../dist', 'cdn_index.ejs'))
+      res.render(path.join(__dirname, '../dist', 'index_cdn.ejs'))
     } else { // load local file if cdn fails or cdn is not enabled
       if(req.cookies.cdnFailed === 'true'){
         console.log("CDN Failed - loading local files");
