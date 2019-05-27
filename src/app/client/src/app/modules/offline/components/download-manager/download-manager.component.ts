@@ -19,7 +19,6 @@ export class DownloadManagerComponent implements OnInit {
   isOpen = false;
   count = 0;
   localCount: 0;
-  isMultipleDownloadListCalled = false;
 
   constructor(public downloadManagerService: DownloadManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
@@ -47,11 +46,6 @@ export class DownloadManagerComponent implements OnInit {
         this.downloadResponse = apiResponse.result.response.downloads;
         this.localCount = apiResponse.result.response.downloads.inprogress.length + apiResponse.result.response.downloads.submitted.length;
 
-        if (this.isMultipleDownloadListCalled && this.localCount === 0) {
-          this.toasterService.success(this.resourceService.messages.smsg.m0051);
-          this.isMultipleDownloadListCalled = false;
-        }
-
         if (this.localCount > 0 && this.isConnected) {
           this.getDownloadListUsingTimer();
         }
@@ -59,7 +53,6 @@ export class DownloadManagerComponent implements OnInit {
   }
 
   private getDownloadListUsingTimer() {
-    this.isMultipleDownloadListCalled = true;
     this.isOpen = true;
     const result = timer(1, 2000).pipe(
       switchMap(() => this.downloadManagerService.getDownloadList())
