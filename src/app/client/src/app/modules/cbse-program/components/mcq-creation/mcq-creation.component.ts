@@ -206,7 +206,8 @@ export class McqCreationComponent implements OnInit {
                   // 'qlevel': this.mcqForm.difficultyLevel,
                   'maxScore': 1, // Number(this.mcqForm.maxScore),
                   'status': 'Review',
-                  'media': this.mediaArr
+                  'media': this.mediaArr,
+                  'type': 'mcq'
                 }
               }
             }
