@@ -7,13 +7,13 @@ const gulpSequence = require('gulp-sequence')
 const gzip = require('gulp-gzip')
 const exec = require('child_process').exec
 const brotli = require('gulp-brotli');
+const inject = require('gulp-inject-string');
 
 // To download editors
 const contentEditor = 'https://sunbirdpublic.blob.core.windows.net/sunbird-public-dev/artefacts/editor/content-editor-iframe-2.0.0.zip'
 const collectionEditor = 'https://sunbirdpublic.blob.core.windows.net/sunbird-public-dev/artefacts/editor/collection-editor-iframe-2.0.0.zip'
 const genericEditor = 'https://sunbirdpublic.blob.core.windows.net/sunbird-public-dev/artefacts/editor/generic-editor-iframe-2.0.0.zip'
 const editorsDestPath = 'client/src/thirdparty/editors/'
-const portal_CDN_URL = process.env.sunbird_portal_cdn_blob_url
 
 gulp.task('clean:editors', () => {
     return gulp.src('./' + editorsDestPath, { read: false })
@@ -57,14 +57,6 @@ gulp.task('client:install', (cb) => {
         console.log(stderr)
         cb(err)
     })
-})
-
-gulp.task('client:build_cdn', (cb) => {
-  exec('npm run build-cdn --prefix  ./client -- --deployUrl ' +portal_CDN_URL, { maxBuffer: Infinity }, function (err, stdout, stderr) {
-      console.log(stdout)
-      console.log(stderr)
-      cb(err)
-  })
 })
 
 // To build angular code and rename index file
@@ -146,6 +138,28 @@ gulp.task('deploy',
         'prepare:app:dist')
 )
 
+const cdnFallBackScript = `\n<script type="text/javascript" src="${process.env.sunbird_portal_cdn_url}assets/cdnHelper.js"></script>
+<script>
+    try {
+        if(!cdnFileLoaded){
+            var now = new Date();
+            now.setMinutes(now.getMinutes() + 5);
+            document.cookie = "cdnFailed=yes;expires=" + now.toUTCString() + ";"
+            window.location.href = window.location.href
+        }
+    } catch (err) {
+        var now = new Date();
+        now.setMinutes(now.getMinutes() + 5);
+        document.cookie = "cdnFailed=yes;expires=" + now.toUTCString() + ";"
+        window.location.href = window.location.href
+    }
+</script>`
+gulp.task('inject:cdnFallBack:script', () => {
+    gulp.src('./dist/index.html')
+        .pipe(inject.after('</app-root>', cdnFallBackScript))
+        .pipe(rename('index_cdn.ejs'))
+        .pipe(gulp.dest('./dist'));
+});
 
 // offline app preparation tasks
 
