@@ -144,13 +144,13 @@ const cdnFallBackScript = `\n<script type="text/javascript" src="${process.env.s
         if(!cdnFileLoaded){
             var now = new Date();
             now.setMinutes(now.getMinutes() + 5);
-            document.cookie = "cdnFailed=true;expires=" + now.toUTCString() + ";"
+            document.cookie = "cdnFailed=yes;expires=" + now.toUTCString() + ";"
             window.location.href = window.location.href
         }
     } catch (err) {
         var now = new Date();
         now.setMinutes(now.getMinutes() + 5);
-        document.cookie = "cdnFailed=true;expires=" + now.toUTCString() + ";"
+        document.cookie = "cdnFailed=yes;expires=" + now.toUTCString() + ";"
         window.location.href = window.location.href
     }
 </script>`
