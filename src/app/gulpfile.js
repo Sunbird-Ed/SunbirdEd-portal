@@ -7,7 +7,6 @@ const gulpSequence = require('gulp-sequence')
 const gzip = require('gulp-gzip')
 const exec = require('child_process').exec
 const brotli = require('gulp-brotli');
-const inject = require('gulp-inject-string');
 
 // To download editors
 const contentEditor = 'https://sunbirdpublic.blob.core.windows.net/sunbird-public-dev/artefacts/editor/content-editor-iframe-2.0.0.zip'
@@ -137,6 +136,7 @@ gulp.task('deploy',
         'clean:index:file',
         'prepare:app:dist')
 )
+
 const cdnFallBackScript = `\n<script type="text/javascript" src="${process.env.sunbird_portal_cdn_url}assets/cdnHelper.js"></script>
 <script>
     try {
