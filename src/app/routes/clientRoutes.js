@@ -123,7 +123,7 @@ function getLocals(req) {
   locals.cdnUrl = envHelper.PORTAL_CDN_URL
   locals.theme = envHelper.sunbird_theme
   locals.defaultPortalLanguage = envHelper.sunbird_default_language
-  locals.instance = process.env.sunbird_instance
+  locals.instance = 'CBSE' || process.env.sunbird_instance
   locals.appId = envHelper.APPID
   locals.defaultTenant = envHelper.DEFAULT_CHANNEL
   locals.exploreButtonVisibility = envHelper.sunbird_explore_button_visibility

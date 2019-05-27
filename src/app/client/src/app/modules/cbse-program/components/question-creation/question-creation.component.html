@@ -8,11 +8,15 @@
 <form *ngIf="!showPreview" class="ui form mt-8" [formGroup]="questionMetaForm">
   <div class="field">
     <label>Question</label>
+    <label *ngIf="showFormError && [undefined, ''].includes(question)"
+        class="ui basic red error label pt-1">Fill Question</label>
     <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'question')"
       [editorDataInput]="question" [editorId]="'question_editor'"></app-ckeditor-tool>
   </div>
   <div class="field">
     <label>Answer</label>
+    <label *ngIf="showFormError && [undefined, ''].includes(editorState.solutions)"
+        class="ui basic red error label pt-1">Fill Answer</label>
     <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'solution')"
       [editorDataInput]="editorState.solutions" [editorId]="'answer_editor'"></app-ckeditor-tool>
   </div>

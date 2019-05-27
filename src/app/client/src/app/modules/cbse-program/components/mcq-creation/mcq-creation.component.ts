@@ -41,16 +41,16 @@ export class McqCreationComponent implements OnInit {
   }
   initForm() {
     if (this.questionMetaData.data) {
-      const { question, responseDeclaration, templateId,
-        learningOutcome, bloomsLevel } = this.questionMetaData.data;
+      const { question, responseDeclaration, templateId, learningOutcome, bloomsLevel } = this.questionMetaData.data;
       const options = _.map(this.questionMetaData.data.options, option => ({body: option.value.body}));
-      this.mcqForm = new McqForm(question, options, templateId, _.get(responseDeclaration, 'responseValue.correct_response.value'),
-      (learningOutcome && learningOutcome[0] ||  ''), bloomsLevel[0]);
+      this.mcqForm = new McqForm({ question, options, answer: _.get(responseDeclaration, 'responseValue.correct_response.value'),
+        learningOutcome: (learningOutcome && learningOutcome[0] ||  ''),
+        bloomsLevel: bloomsLevel[0]}, {templateId});
       if (this.questionMetaData.data.media) {
         this.mediaArr = this.questionMetaData.data.media;
       }
     } else {
-      this.mcqForm = new McqForm('', [], undefined, undefined, undefined, undefined, 1);
+      this.mcqForm = new McqForm({question: '', options: []}, {});
     }
     this.showForm = true;
   }
@@ -175,7 +175,7 @@ export class McqCreationComponent implements OnInit {
         this.body = res[0]; // question with latex
         this.optionBody =  res.slice(1).map((option, i) => { // options with latex
           return {body: res[i + 1]};
-       });
+      });
 
         const questionData = this.getHtml(this.body, this.optionBody);
         const correct_answer = this.mcqForm.answer;
@@ -206,7 +206,8 @@ export class McqCreationComponent implements OnInit {
                   // 'qlevel': this.mcqForm.difficultyLevel,
                   'maxScore': 1, // Number(this.mcqForm.maxScore),
                   'status': 'Review',
-                  'media': this.mediaArr
+                  'media': this.mediaArr,
+                  'type': 'mcq'
                 }
               }
             }

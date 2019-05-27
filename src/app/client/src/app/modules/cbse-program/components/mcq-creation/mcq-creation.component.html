@@ -21,24 +21,21 @@
               [editorConfig]="questionMetaData" [editorDataInput]="option.body" [setCharacterLimit]="setCharacterLimit"
               [setImageLimit]="setImageLimit"></app-ckeditor-tool>
             <div class="mcq-checkbox-answer">
-              <label>Mark as right answer</label>
-              <sui-radio-button name="'correct_response'" value={{i}} [(ngModel)]="mcqForm.answer"></sui-radio-button>
+              <!-- <sui-radio-button name="'correct_response'" value={{i}} [(ngModel)]="mcqForm.answer"></sui-radio-button>
+              <label>Mark as right answer</label> -->
+              <button *ngIf='mcqForm.answer !== i.toString()' 
+              (click)="mcqForm.answer = i.toString()" class="mini ui button"> Mark as right answer </button>
+              <button *ngIf='mcqForm.answer === i.toString()' 
+              class="mini ui primary button"> Marked as right answer </button>
+              <button [disabled]="mcqForm.options.length < 3" (click)="mcqForm.deleteOption(i)" class="mini ui button"> Delete this option </button>
             </div>
             <label *ngIf="showFormError && option.length > 160" class="ui basic red error label pt-1">please reduce the size</label>
           </div>
       </div>
+      <button *ngIf='mcqForm.options.length < 4' class="ui primary button" (click)="mcqForm.addOptions()"> Add more Options </button>    
     </div>
-      <!-- <div class="ui row width-100">
-        <div class="column">
-          <label>Marks</label>
-          <input type="text" #maxScore="ngModel" name="'maxScore'" [(ngModel)]="mcqForm.maxScore" placeholder="Marks"
-            required>
-          <label *ngIf="(maxScore.touched || showFormError) && maxScore.invalid"
-            class="ui basic red error label pt-1 mt-5 width-100">Marks is mandatory</label>
-        </div>
-    </div> -->
     <div class="ui two column grid width-100">
-        <div class="one column row" *ngIf="learningOutcomeOptions.length > 0">
+        <div class="one column row" *ngIf="learningOutcomeOptions.length">
           <div class="column">
               <label>Learning Outcome</label>
               <div>

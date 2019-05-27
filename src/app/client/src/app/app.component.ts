@@ -265,7 +265,7 @@ export class AppComponent implements OnInit {
   private setPortalTitleLogo(): void {
     this.tenantService.tenantData$.subscribe(data => {
       if (!data.err) {
-        document.title = this.userService.rootOrgName || data.tenantData.titleName;
+        document.title = 'CBSE' || this.userService.rootOrgName || data.tenantData.titleName;
         document.querySelector('link[rel*=\'icon\']').setAttribute('href', data.tenantData.favicon);
       }
     });
@@ -283,6 +283,7 @@ export class AppComponent implements OnInit {
       this.utilService.toggleAppPopup();
       this.showAppPopUp = this.utilService.showAppPopUp;
     }, err => {
+      this.showFrameWorkPopUp = false;
       this.toasterService.warning(this.resourceService.messages.emsg.m0012);
       this.frameWorkPopUp.modal.deny();
       // this.router.navigate(['/resources']);
