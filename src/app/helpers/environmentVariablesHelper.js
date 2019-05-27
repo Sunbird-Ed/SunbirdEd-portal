@@ -71,7 +71,7 @@ let envVariables = {
   sunbird_learner_service_health_status: 'true',
   sunbird_content_service_health_status: 'true',
   sunbird_portal_cassandra_db_health_status: 'true',
-  sunbird_portal_player_cdn_url: env.sunbird_portal_player_cdn_url,
+  sunbird_portal_preview_cdn_url: env.sunbird_portal_preview_cdn_url,
   sunbird_processing_kafka_host: process.env.sunbird_processing_kafka_host,
   sunbird_sso_kafka_topic: process.env.sunbird_sso_kafka_topic
 }

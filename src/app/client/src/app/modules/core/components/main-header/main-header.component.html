@@ -3,6 +3,7 @@
 </div>
 <div class="ui fixed main menu bs-0 d-block" appStickyHeader>
     <extension-point [name]="'network-status-notify'" *ngIf="isOffline"></extension-point>
+    <extension-point [name]="'download-manager'" *ngIf="isOffline"></extension-point>
     <!--Header White Section-->
     <div class="ui container">
         <div class="ui grid padded width-100">
@@ -86,7 +87,7 @@
             </app-search>
             <!--/Logged in Pages-->
             <!--Explore Pages-->
-            <div class="sb-search-box mr-auto" *ngIf="showExploreHeader && !isOffline"
+            <div class="sb-search-box mr-auto" *ngIf="showExploreHeader || isOffline"
                 [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
                 <div class="input-div relative">
                     <i class="search icon"></i>

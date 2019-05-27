@@ -1,3 +1,4 @@
+import { environment } from '@sunbird/environment';
 import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } from '@angular/animations';
 
 import { AfterViewInit, Directive, ElementRef, Inject, OnDestroy, NgZone, ChangeDetectorRef, } from '@angular/core';
@@ -17,6 +18,7 @@ enum Direction {
 export class StickyHeaderDirective implements AfterViewInit, OnDestroy {
   player: AnimationPlayer;
   public unsubscribe = new Subject<void>();
+  isOffline: boolean = environment.isOffline;
 
   set show(show: boolean) {
     if (this.player) {
@@ -43,6 +45,9 @@ export class StickyHeaderDirective implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    if (this.isOffline) {
+      return false;
+    }
     this.zone.runOutsideAngular(() => {
     const scroll$ = fromEvent(window, 'scroll').pipe(
       throttleTime(10),
@@ -53,10 +58,10 @@ export class StickyHeaderDirective implements AfterViewInit, OnDestroy {
       }),
       distinctUntilChanged(),
       share(),
-    );
-    const goingUp$ = scroll$.pipe(filter(direction => direction === Direction.Up));
+      takeUntil(this.unsubscribe));
+    const goingUp$ = scroll$.pipe(filter(direction => direction === Direction.Up), takeUntil(this.unsubscribe));
 
-    const goingDown$ = scroll$.pipe(filter(direction => direction === Direction.Down));
+    const goingDown$ = scroll$.pipe(filter(direction => direction === Direction.Down), takeUntil(this.unsubscribe));
 
     goingUp$.subscribe(() => {
       this.show = true;

@@ -12,6 +12,9 @@ import * as _ from 'lodash-es';
 import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
+import { environment } from '@sunbird/environment';
+import { DownloadManagerService } from './../../../offline/services';
+
 @Component({
   selector: 'app-view-all',
   templateUrl: './view-all.component.html'
@@ -133,12 +136,14 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   public closeUrl: string;
   public sectionName: string;
   public unsubscribe = new Subject<void>();
+  isOffline: boolean = environment.isOffline;
+
   constructor(searchService: SearchService, router: Router, private playerService: PlayerService, private formService: FormService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService, private _cacheService: CacheService,
     resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
     configService: ConfigService, coursesService: CoursesService, public utilService: UtilService,
     private orgDetailsService: OrgDetailsService, userService: UserService, private browserCacheTtlService: BrowserCacheTtlService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, public downloadManagerService: DownloadManagerService) {
     this.searchService = searchService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -311,6 +316,16 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   playContent(event) {
+
+    // For offline envirnoment content will not play if action not open. It will get downloaded
+    if (_.includes(this.router.url, 'browse') && this.isOffline) {
+      this.startDownload(event.data.metaData.identifier);
+      return false;
+    } else if (event.action === 'export' && this.isOffline) {
+      this.exportOfflineContent(event.data.metaData.identifier);
+      return false;
+    }
+
     if (!this.userService.loggedIn && event.data.contentType === 'Course') {
       this.publicPlayerService.playExploreCourse(event.data.metaData.identifier);
     } else {
@@ -398,5 +413,23 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   closeModal() {
     this.showLoginModal = false;
+  }
+
+  startDownload (contentId) {
+    this.downloadManagerService.downloadContentId = contentId;
+    this.downloadManagerService.startDownload({}).subscribe(data => {
+      this.downloadManagerService.downloadContentId = '';
+    }, error => {
+      this.downloadManagerService.downloadContentId = '';
+      this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+    });
+  }
+
+  exportOfflineContent(contentId) {
+    this.downloadManagerService.exportContent(contentId).subscribe(data => {
+      this.toasterService.success(this.resourceService.messages.smsg.m0052);
+    }, error => {
+      this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+    });
   }
 }

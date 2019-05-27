@@ -1,0 +1,23 @@
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal sb-file-upload-modal" appBodyScroll (dismissed)="closeModal();" #modal>
+  <div class="ui stackable grid">
+    <div class="column">
+      <div class="offline-watch-video mx-auto">
+        <div class="p-20">
+          <span class="offline-video-heading">{{resourceService.frmelmnts?.lbl?.howToVideo}}</span>
+          <span appTelemetryInteract
+            [telemetryInteractEdata]="DownloadPdfInteractEdata" class="offline-video-title right-floated"><i class="download icon"></i>
+            {{resourceService.frmelmnts?.btn?.downloadPdf}}</span>
+        </div>
+        <video controls="" class="offline-video">
+          <source src="how-to-video.mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+  <div class="sb-modal-actions">
+    <button type="button" appTelemetryInteract 
+       class="sb-btn sb-btn-primary sb-btn-normal"
+       [telemetryInteractEdata]="WatchModalCloseIntractEdata" (click)="modalClose()">{{resourceService.frmelmnts?.btn?.close}}</button>
+  </div>
+</sui-modal>

@@ -70,7 +70,6 @@ describe('DialCodeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DialCodeComponent);
     component = fixture.componentInstance;
-    // fixture.detectChanges();
   });
 
   it('should return matching contents for valid dialcode query', () => {
@@ -96,32 +95,6 @@ describe('DialCodeComponent', () => {
     expect(component.showLoader).toBeFalsy();
     expect(component.searchResults).toEqual([]);
   });
-  it('should navigate to dialcode search when user enters data', () => {
-    const route = TestBed.get(Router);
-    component.searchKeyword = '61U24C';
-    component.navigateToSearch();
-    fixture.detectChanges();
-    expect(route.navigate).toHaveBeenCalledWith(['/get/dial', component.searchKeyword]);
-  });
-  it('should navigate to content player page for resource content types', () => {
-    const route = TestBed.get(Router);
-    const item = Response.event;
-    component.searchKeyword = '61U24C';
-    item.data.metaData.mimeType = 'application/vnd.ekstep.content';
-    component.getEvent(item);
-    fixture.detectChanges();
-    expect(route.navigate).toHaveBeenCalledWith(['play/content', item.data.metaData.identifier],
-     { queryParams: { dialCode: '61U24C'}});
-  });
-  it('should navigate to collection player page for collection types', () => {
-    const route = TestBed.get(Router);
-    const item = Response.event;
-    component.searchKeyword = '61U24C';
-    item.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
-    component.getEvent(item);
-    expect(route.navigate).toHaveBeenCalledWith(['play/collection', item.data.metaData.identifier],
-    { queryParams: { dialCode: '61U24C'}});
-  });
   it('should unsubscribe from all observable subscriptions', () => {
     component.ngOnInit();
     spyOn(component.unsubscribe$, 'complete');
@@ -146,4 +119,20 @@ describe('DialCodeComponent', () => {
     expect(component.searchResults).toEqual([]);
     expect(component.showLoader).toBeTruthy();
   });
+
+  it('should fetch more cards on scroll', () => {
+    spyOn(component, 'appendItems').and.callThrough();
+    component.onScrollDown();
+    fixture.detectChanges();
+    expect(component.appendItems).toHaveBeenCalledWith(50, 70);
+    expect(component.itemsToLoad).toEqual(70);
+  });
+
+  xit('should append the items to display list', () => {
+    component.searchResults = ['one', 'two'];
+    component.appendItems(0, 1);
+    fixture.detectChanges();
+    expect(component.itemsToDisplay).toEqual(['one']);
+  });
+
 });

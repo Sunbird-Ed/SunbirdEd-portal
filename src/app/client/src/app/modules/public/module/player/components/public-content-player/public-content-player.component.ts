@@ -53,7 +53,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   telemetryCdata: Array<{}>;
   public telemetryInteractObject: IInteractEventObject;
   public closePlayerInteractEdata: IInteractEventEdata;
-
+  public objectRollup = {};
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
@@ -72,6 +72,11 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.contentId;
       this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
+      if (_.get(this.activatedRoute, 'snapshot.queryParams.l1Parent')) {
+        this.objectRollup = {
+          l1 : _.get(this.activatedRoute, 'snapshot.queryParams.l1Parent')
+        };
+      }
       this.setTelemetryData();
       this.getContent();
       this.deviceDetector();
@@ -93,34 +98,28 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    * used to fetch content details and player config. On success launches player.
    */
   getContent() {
-    this.activatedRoute.queryParams.subscribe((queryParams) => {
-      this.dialCode = queryParams.dialCode;
-    });
     const options: any = { dialCode: this.dialCode };
     const params = {params: this.configService.appConfig.PublicPlayer.contentApiQueryParams};
-    this.playerService.getContent(this.contentId, params).pipe(
-      takeUntil(this.unsubscribe$))
-      .subscribe(
-        (response) => {
-          const contentDetails = {
-            contentId: this.contentId,
-            contentData: response.result.content
-          };
-          this.playerConfig = this.playerService.getConfig(contentDetails, options);
-          this.contentData = response.result.content;
-          if (this.contentData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
-            setTimeout(() => {
-              this.showExtContentMsg = true;
-            }, 5000);
-          }
-          this.showPlayer = true;
-          this.windowScrollService.smoothScroll('content-player');
-          this.badgeData = _.get(response, 'result.content.badgeAssertions');
-        },
-        (err) => {
-          this.showError = true;
-          this.errorMessage = this.resourceService.messages.stmsg.m0009;
-        });
+    this.playerService.getContent(this.contentId, params).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
+      const contentDetails = {
+        contentId: this.contentId,
+        contentData: response.result.content
+      };
+      this.playerConfig = this.playerService.getConfig(contentDetails, options);
+      this.playerConfig.context.objectRollup = this.objectRollup;
+      this.contentData = response.result.content;
+      if (this.contentData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
+        setTimeout(() => {
+          this.showExtContentMsg = true;
+        }, 5000);
+      }
+      this.showPlayer = true;
+      this.windowScrollService.smoothScroll('content-player');
+      this.badgeData = _.get(response, 'result.content.badgeAssertions');
+    }, (err) => {
+      this.showError = true;
+      this.errorMessage = this.resourceService.messages.stmsg.m0009;
+    });
   }
   /**
    * retry launching player with same content details
@@ -154,7 +153,6 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
 
   ngAfterViewInit () {
     setTimeout(() => {
-        this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
         if (this.dialCode) {
           this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
         }
@@ -166,7 +164,8 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
           object: {
             id: this.activatedRoute.snapshot.params.contentId,
             type: 'Content',
-            ver: '1.0'
+            ver: '1.0',
+            rollup: this.objectRollup
           },
           edata: {
             type: this.activatedRoute.snapshot.data.telemetry.type,

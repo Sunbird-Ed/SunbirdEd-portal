@@ -1,15 +1,14 @@
 .sb-card {
-  width: $sb-card-width;
   max-width: $sb-card-width;
-  height: $sb-card-height;
+  // max-width: $sb-card-width;
   background-color: $sb-card-bg-color;
   border: $sb-card-border;
   border-radius: $sb-card-border-radius;
-  transition: box-shadow .3s ease-out, transform .3s ease-out, opacity .2s ease-out;
-  transition-delay: .1s;
   cursor: pointer;
   overflow: hidden;
   margin-top: $sb-card-hover-movement;
+  transition: box-shadow .3s ease-out, transform .3s ease-out, opacity .2s ease-out;
+  transition-delay: .1s;
   &:hover {
     transform: translate(0, -$sb-card-hover-movement);
     box-shadow: $sb-card-box-shadow;
@@ -83,10 +82,31 @@
       border-radius: $sb-card-progressbar-border-radius;
     }
   }
+  .sb-card-hover {
+    position: absolute;
+    top: 0;
+    max-width: 292px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(2, 79, 157, 0.85);
+    display: none;
+    .sb-card-hover-content {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      justify-content: center;
+    }
+  }
+  &:hover {
+    .sb-card-hover {
+      display: block;
+    }
+    box-shadow: $sb-card-box-shadow;
+  }
 }
 app-card[lang="ta"] {
   .sb-card {
-    .sb-card-label  {
+    .sb-card-label {
       font-size: $sb-card-label-font-size-ta;
     }
     .sb-card-meta-item {
@@ -100,10 +120,9 @@ app-card[lang="ta"] {
     }
   }
 }
-
 app-card[lang="ur"] {
   .sb-card {
-    .sb-card-label  {
+    .sb-card-label {
       font-size: $sb-card-label-font-size-ur;
     }
     .sb-card-meta-item {
@@ -115,79 +134,82 @@ app-card[lang="ur"] {
     .sb-card-org {
       font-size: $sb-card-meta-org-font-size-ur;
     }
-    
   }
 }
-
-//qr code card
-.sb-qr-card{
-  // border: 1px solid #dedede !important;
-  // margin-top: ($base-block-space * 3) + 3;
-}
-
-// QR Card
-
-.sb-card-qr {
-  border: 1px solid #dedede !important;
-  // margin-bottom: ($base-block-space * 2);
-  height: auto;
-  .sb-btn{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 0px;
-    width:100%;
-    .caret {
-        height: ($base-block-space * 2) !important;
-        width: ($base-block-space * 2) !important;
-        background: $white;
-        color: $secondary-100 !important;
-        border-radius: 50%;
-        font-size: 14px;
-        margin-right: $base-block-space;
-        padding-left: 2px;
-        line-height: ($base-block-space * 2);
+// workspace cards
+.sb-wspace-card {
+  height: $base-block-space*16;
+  max-width: $sb-card-width;
+  @include border(border, 0.5px, $gray-0);
+  @include border(border-left, 4px, $white);
+  border-radius: $base-block-space/2;
+  background: $white;
+  padding: $base-block-space*2 $base-block-space*3;
+  margin: 0px 24px 24px 0px;
+  .sb-wspace-title {
+    margin-bottom: $base-block-space;
+    font-size: $h5-font-size;
+    font-weight: $font-weight-bold;
+  }
+  .sb-wspace-description {
+    font-size: $font-size-sm;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+  }
+  &:hover,
+  &.active {
+    .sb-wspace-title {
+      color: $blue;
     }
+    @include border(border-left, 4px, $secondary-200);
+    cursor: pointer;
+    box-shadow: 2px 5px 7px 0 rgba(0, 0, 0, 0.2);
+  }
 }
+// QR Card
+.sb-card-qr {
+  .sb-btn {
+    border-radius: 0px;
+    width: 100%;
+  }
   &:hover {
     .sb-btn {
-      background:$secondary-400;
+      background: $secondary-400;
     }
   }
 }
-
-
-
-// batch card
-.sb-course-batch-card {
-  border: 1px solid #80a7ce !important;
-  box-shadow: none !important;
-  .header{
+// Batch Card
+.ui.card.sb-batch-card{
+  border: 1px solid $primary-200;
+  box-shadow: none;
+}
+.sb-batch-card {
+  .sb-batch-card-title {
     font-weight: 600;
+    font-size: 1.18em;
   }
-  h5 {
-      font-weight: $font-weight-bold;
-  }
-  >.content {
-      border-top: 1px solid #d8d8d8;
-      padding: 0 1rem !important;
+  .item i.icon {
+    font-size: 16.002px;
   }
   .sb-no-batch-found {
-      background-color: $tertiary-0;
-      border: 1px solid $tertiary-100;
-      padding: $base-block-space $base-block-space*2;
-      border-radius: $base-block-space/2;
-      font-size: $font-size-sm;
+    background-color: $tertiary-0;
+    border: 1px solid $tertiary-100;
+    padding: ($base-block-space $base-block-space*2);
+    border-radius: 4px;
+    font-size: 11.9994px;
   }
-  .no-border {
-      border: none;
+}
+.ui.card.sb-batch-card{
+  .item{
+    padding: 10px 0;
+    .content >.header{
+      padding-bottom: 5px;
+    }
   }
-  .sb-curriculum-label {
-      font-size: $font-size-sm;
-  }
-  .item {
-      i.icon {
-          font-size: $h5-font-size;
-      }
-  }
+}
+.ui.card.sb-batch-card > .sb-batch-card-content{
+  padding: 0 1rem;
+  border-top: 1px solid rgba(34,36,38,.1);
 }

@@ -1,4 +1,4 @@
-import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
+import { IInteractEventEdata} from '@sunbird/telemetry';
 import { Component, OnInit } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 
@@ -9,8 +9,9 @@ import { ResourceService } from '@sunbird/shared';
 })
 export class ContentImportHeaderComponent implements OnInit {
     showImportModal = false;
+    showVideoModal = false;
     ContentImportIntractEdata: IInteractEventEdata;
-    public telemetryInteractObject: IInteractEventObject;
+    WatchVideoIntractEdata: IInteractEventEdata;
 
     constructor(public resourceService: ResourceService) { }
 
@@ -19,13 +20,13 @@ export class ContentImportHeaderComponent implements OnInit {
     }
 
     setInteractData() {
-        this.telemetryInteractObject = {
-            id: 'content-import',
-            type: 'content-import',
-            ver: '1.0'
-          };
         this.ContentImportIntractEdata = {
-            id: 'content-import',
+            id: 'content-import-button',
+            type: 'click',
+            pageid: 'library'
+        };
+        this.WatchVideoIntractEdata = {
+            id: 'watch-video-button',
             type: 'click',
             pageid: 'library'
         };
