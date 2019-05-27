@@ -16,6 +16,7 @@ cd client
 npm install
 npm run build-cdn -- --deployUrl $cdnUrl
 cd ..
+export sunbird_portal_cdn_url=$cdnUrl
 npm run inject-cdn-fallback
 # Gzipping of assets
 ./node_modules/.bin/gulp gzip:editors client:gzip
