@@ -67,7 +67,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
       this.editorConfig = _.assign({
         toolbar: ['bold', '|', 'italic', '|', 'underline',
           '|', 'numberedList', '|' , 'fontSize', '|', 'ChemType', '|',
-          'mathtype', '|',
+          'mathtype', '|', 'subscript', '|', 'superscript', '|',
         ],
           fontSize: {
             options: [
