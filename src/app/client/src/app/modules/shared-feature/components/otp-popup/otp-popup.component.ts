@@ -15,6 +15,8 @@ import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 export class OtpPopupComponent implements OnInit, OnDestroy {
 
   @Input() otpData: any;
+  @Input() hideClose: boolean;
+  @Input() popupElementRef: any;
   @Output() redirectToParent = new EventEmitter();
   @Output() verificationSuccess = new EventEmitter();
   public unsubscribe = new Subject<void>();

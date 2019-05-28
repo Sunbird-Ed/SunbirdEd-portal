@@ -19,7 +19,7 @@
         </div>
       </div>
       <div *ngIf="showOtpComp">
-        <app-otp-popup [otpData]="otpData" (verificationSuccess)="handleOtpValidationSuccess($event)" (redirectToParent)="handleOtpValidationFailed($event)">
+        <app-otp-popup [otpData]="otpData" hideClose="true" [popupElementRef]="modal" (verificationSuccess)="handleOtpValidationSuccess($event)" (redirectToParent)="handleOtpValidationFailed($event)">
         </app-otp-popup>
       </div>
     </div>

@@ -1,6 +1,6 @@
 <sui-modal 
   [mustScroll]="true" 
-  [isClosable]="true"
+  [isClosable]="false"
   [transitionDuration]="0"
   [size]="'normal'"
   class="sb-modal"
@@ -13,8 +13,11 @@
 
     <!--Header-->
     <div class="sb-modal-header" [ngSwitch]="contactType">
-      <span *ngSwitchCase="'email'" class="fs-1-286">{{resourceService?.frmelmnts?.lbl?.updateEmailId}}</span>
-      <span *ngSwitchCase="'phone'" class="fs-1-286">{{resourceService?.frmelmnts?.lbl?.updatePhoneNo}}</span>
+      <div class="d-flex flex-ai-center flex-jc-space-between">
+        <span *ngSwitchCase="'email'" class="fs-1-286">{{resourceService?.frmelmnts?.lbl?.updateEmailId}}</span>
+        <span *ngSwitchCase="'phone'" class="fs-1-286">{{resourceService?.frmelmnts?.lbl?.updatePhoneNo}}</span>
+        <i class="icon close d-flex flex-ai-center flex-jc-flex-end cursor-pointer outline-none" (click)="contactTypeModal.deny('denied')" tabindex="0"></i>
+      </div>
     </div>
     <!--/Header-->
 
@@ -63,7 +66,8 @@
     *ngIf="!showForm" 
     [otpData]="otpData" 
     (verificationSuccess)="updateProfile($event)" 
-    (redirectToParent)="showParentForm($event)">
+    (redirectToParent)="showParentForm($event)"
+    [popupElementRef]="contactTypeModal">
   </app-otp-popup>
 </sui-modal>
 

@@ -1,6 +1,8 @@
 <!--Header-->
-<div class="sb-modal-header">
-  &nbsp;
+<div class="sb-modal-header d-flex flex-ai-center flex-jc-flex-end">
+  <div *ngIf="!hideClose">
+      <i class="icon close d-flex flex-ai-center flex-jc-flex-end cursor-pointer outline-none" (click)="popupElementRef.deny('denied')" tabindex="0"></i>
+  </div>
 </div>
 <!--/Header-->
 
