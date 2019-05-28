@@ -5,7 +5,7 @@ import { timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { DownloadManagerService } from './../../services';
-import { ConnectionService } from './../../services/connection-service/connection.service';
+import { ConnectionService } from './../../services';
 
 @Component({
   selector: 'app-download-manager',
