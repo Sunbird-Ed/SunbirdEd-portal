@@ -249,10 +249,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-
-            // $( "p" ).removeClass( "myClass yourClass" )
-
-
         }, error => {
             this.toasterService.error(this.resourceService.messages.fmsg.m0091);
         });
