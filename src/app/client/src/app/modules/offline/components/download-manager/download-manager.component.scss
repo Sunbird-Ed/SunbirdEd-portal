@@ -12,6 +12,10 @@
     max-width: 90%;
 }
 
+.sb-download-manager-panel {
+    z-index: 999;
+}
+
   .sb-single-pannel-accordion-heading {
     background: $primary-color;
     padding: ($base-block-space * 2) ($base-block-space * 3);

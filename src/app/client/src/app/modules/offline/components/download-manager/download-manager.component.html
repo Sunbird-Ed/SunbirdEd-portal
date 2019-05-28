@@ -1,4 +1,4 @@
-<sui-accordion class="styled fluid sb-single-pannel-accordion" *ngIf="downloadResponse">
+<sui-accordion class="styled fluid sb-single-pannel-accordion sb-download-manager-panel">
   <sui-accordion-panel [isOpen]="isOpen">
     <div title class="p-0">
       <div class="sb-single-pannel-accordion-heading">
@@ -6,7 +6,7 @@
         <i class="chevron down icon d-flex flex-ai-center"></i>
       </div>
     </div>
-    <div content>
+    <div content *ngIf="downloadResponse">
 
       <div class="sb-single-pannel-accordion-list-item d-flex flex-ai-center flex-jc-space-between" *ngFor="let data of downloadResponse.inprogress;">
         <div class="">{{data.name}}</div>
