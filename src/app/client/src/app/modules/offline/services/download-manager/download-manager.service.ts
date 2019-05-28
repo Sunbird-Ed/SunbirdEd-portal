@@ -24,13 +24,13 @@ export class DownloadManagerService {
   }
 
   startDownload(data) {
-    this.toasterService.info(this.resourceService.messages.smsg.m0053);
     const downloadOptions = {
       url: `${this.configService.urlConFig.URLS.OFFLINE.DOWNLOAD}/${this.downloadContentId}`,
       data: data
     };
     return this.publicDataService.post(downloadOptions).pipe(
       map((result) => {
+        this.toasterService.info(this.resourceService.messages.smsg.m0053);
         this.downloadEvent.emit('Download started');
         return result;
       }),
