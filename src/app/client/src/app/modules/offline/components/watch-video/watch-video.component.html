@@ -5,9 +5,9 @@
       <div class="offline-watch-video mx-auto">
         <div class="p-20">
           <span class="offline-video-heading">{{resourceService.frmelmnts?.lbl?.howToVideo}}</span>
-          <span appTelemetryInteract
+          <a appTelemetryInteract
             [telemetryInteractEdata]="DownloadPdfInteractEdata" class="offline-video-title right-floated"><i class="download icon"></i>
-            {{resourceService.frmelmnts?.btn?.downloadPdf}}</span>
+            {{resourceService.frmelmnts?.btn?.downloadPdf}}</a>
         </div>
         <video controls="" class="offline-video">
           <source src="how-to-video.mp4">

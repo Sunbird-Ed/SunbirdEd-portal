@@ -51,16 +51,23 @@
 	<!--/Not Logged in user-->
 	<!-- offline container-->
 	<ng-container *ngIf="isOffline">
-		<a class="item" [routerLink]="'/'" appTelemetryInteract [telemetryInteractEdata]="myLibraryMenuInteractEdata">
-			{{resourceService.frmelmnts?.btn?.myLibrary}}
-		</a>
-		<a class="item" [class.active]="router.isActive('/browse')" [routerLink]="'/browse'" appTelemetryInteract [telemetryInteractEdata]="browseEdata">
+			<!-- <a class="item" [routerLink]="'/'"  [ngClass]=" router.isActive('/') && !(router.isActive('/browse'))? 'active' : 'inactive'" appTelemetryInteract [telemetryInteractEdata]="myLibraryMenuInteractEdata">
+			 {{resourceService.frmelmnts?.btn?.myLibrary}}
+			</a>
+			<a class="item"  [ngClass]=" router.isActive('/browse')? 'active' : 'inactive'" [routerLink]="'/browse'" appTelemetryInteract [telemetryInteractEdata]="browseEdata">
 			{{resourceService.frmelmnts?.btn?.browse}}
-		</a>
+			</a> -->
+			<a class="item" [routerLink]="'/'" [class.active]="router.isActive('/') && !(router.isActive('/browse'))" appTelemetryInteract [telemetryInteractEdata]="myLibraryMenuInteractEdata">
+				{{resourceService.frmelmnts?.btn?.myLibrary}}
+			   </a>
+			   <a class="item"  [class.active]="router.isActive('/browse')" [routerLink]="'/browse'" appTelemetryInteract [telemetryInteractEdata]="browseEdata">
+			   {{resourceService.frmelmnts?.btn?.browse}}
+			   </a>
 		<!-- <a class="item" [routerLink]="'/'">
 			{{resourceService.frmelmnts?.btn?.settings}}
 		</a> -->
 	</ng-container>
+
 	<!-- offline container-->
 
 </div>
