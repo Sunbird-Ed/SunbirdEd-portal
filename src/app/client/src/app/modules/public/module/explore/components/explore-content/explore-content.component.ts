@@ -243,7 +243,16 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
 
     exportOfflineContent(contentId) {
         this.downloadManagerService.exportContent(contentId).subscribe(data => {
-            this.toasterService.success(this.resourceService.messages.smsg.m0052);
+            const link = document.createElement('a');
+            link.href = data.result.response.url;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // $( "p" ).removeClass( "myClass yourClass" )
+
+
         }, error => {
             this.toasterService.error(this.resourceService.messages.fmsg.m0091);
         });
