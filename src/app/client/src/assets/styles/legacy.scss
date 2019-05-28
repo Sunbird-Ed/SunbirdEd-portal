@@ -2478,3 +2478,10 @@ i.blue.icon{
     left: auto;
   }
 }
+
+/// don't delete,  this is for iframes, hide the background scroll
+.iziModal-isAttached{
+  body{
+    overflow: hidden;
+  }
+}
