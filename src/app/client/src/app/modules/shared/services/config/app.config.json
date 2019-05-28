@@ -230,7 +230,8 @@
       "variableWidth": true,
       "centerPadding": "16px",
       "infinite": false,
-      "rtl": false
+      "rtl": false,
+      "slidesToShow": 4
     },
     "course": {
       "slickSize": 10,
