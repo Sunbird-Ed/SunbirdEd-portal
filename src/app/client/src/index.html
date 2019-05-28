@@ -74,6 +74,9 @@
   <% if (previewCdnUrl) { %>
     <input type="hidden" id="previewCdnUrl" value="<%=previewCdnUrl%>" />
     <% } %>
+    <% if (cdnWorking) { %>
+      <input type="hidden" id="cdnWorking" value="<%=cdnWorking%>" />
+      <% } %
   <app-root></app-root>
 </body>
 
