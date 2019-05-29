@@ -11,7 +11,8 @@ import * as _ from 'lodash-es';
   styleUrls: ['./offline-card.component.scss']
 
 })
-export class OfflineCardComponent implements OnChanges{
+
+export class OfflineCardComponent implements OnChanges {
   /**
   * content is used to render IContents value on the view
   */
@@ -24,7 +25,7 @@ export class OfflineCardComponent implements OnChanges{
   isConnected: Boolean = navigator.onLine;
   route: string;
   checkOfflineRoutes: string;
-  contentId: any;
+  contentId: string;
   isDownloadStarted: Boolean;
 
   @HostListener('mouseenter') onMouseEnter() {
@@ -35,7 +36,6 @@ export class OfflineCardComponent implements OnChanges{
     this.hover = false;
   }
   constructor(public resourceService: ResourceService, private router: Router,
-    public offlineContentService: OfflineContentService,
     private cdr: ChangeDetectorRef) {
     this.resourceService = resourceService;
     if (this.dialCode) {
@@ -47,13 +47,10 @@ export class OfflineCardComponent implements OnChanges{
     } else if (!_.includes(this.route, 'browse')) {
       this.checkOfflineRoutes = 'library';
     }
-    this.offlineContentService.downloadStatus.subscribe((res) => {
-      this.isDownloadStarted = res.isDownloadStarted;
-      this.contentId = res.contentId;
-    });
   }
 
   public onAction(data, action) {
+    this.contentId = data.metaData.identifier;
     this.clickEvent.emit({ 'action': action, 'data': data });
   }
 
