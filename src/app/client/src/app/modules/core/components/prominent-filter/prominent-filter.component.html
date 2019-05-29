@@ -7,17 +7,17 @@
               <label class="prominent-filter-heading">
                 {{resourceService.frmelmnts?.lbl?.explorecontentfrom}}
               </label>
-              <i class="mobile only large angle down icon link right-floated pl-15" 
+              <i class="mobile only large angle down icon link right-floated" 
                 [ngStyle]="{'transform': collapse === true ? 'rotate(0deg)' : 'rotate(180deg)'}"
                 (click)="collapse = !collapse"
                 title="{{collapse==true?'Expand':'Collapse'}}" popupInverted
                 >
               </i>
             </div>
-            <div class="ui active width-100" [suiCollapse]="collapse">
+            <div class="ui active width-100 mt-16" [suiCollapse]="collapse">
               <form class="ui form">
-                <div class="ui grid stackable top aligned my-0">
-                  <div class="twelve wide tablet twelve wide computer column py-0">
+                <div class="ui grid top aligned padded">
+                  <div class="twelve wide tablet twelve wide computer column px-0 py-16">
                     <div class="sb-prominent-filter-container" *ngIf="formFieldProperties">
                       <ng-container *ngIf="formFieldProperties.length <= 4">
                         <div class="sb-prominent-filter-field" *ngFor="let field of formFieldProperties">
