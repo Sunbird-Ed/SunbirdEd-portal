@@ -41,6 +41,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     public cardIntractEdata: IInteractEventEdata;
     public loaderMessage: ILoaderMessage;
     isOffline: boolean = environment.isOffline;
+    showExportLoader = false;
+    contentName: string;
 
     constructor(public searchService: SearchService, public router: Router,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -180,12 +182,13 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         };
     }
     public playContent(event) {
-
         // For offline envirnoment content will not play if action not open. It will get downloaded
         if (_.includes(this.router.url, 'browse') && this.isOffline) {
             this.startDownload(event.data.metaData.identifier);
             return false;
         } else if (event.action === 'export' && this.isOffline) {
+            this.showExportLoader = true;
+            this.contentName = event.data.name;
             this.exportOfflineContent(event.data.metaData.identifier);
             return false;
         }
@@ -249,7 +252,9 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            this.showExportLoader = false;
         }, error => {
+            this.showExportLoader = false;
             this.toasterService.error(this.resourceService.messages.fmsg.m0091);
         });
     }

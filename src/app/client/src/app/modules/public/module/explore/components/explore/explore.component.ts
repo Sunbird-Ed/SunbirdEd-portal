@@ -39,6 +39,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public loaderMessage;
   public pageSections: Array<ICaraouselData> = [];
   isOffline: boolean = environment.isOffline;
+  showExportLoader = false;
+  contentName: string;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -182,6 +184,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.startDownload(event.data.metaData.identifier);
       return false;
     } else if (event.action === 'export' && this.isOffline) {
+      this.showExportLoader = true;
+      this.contentName = event.data.name;
       this.exportOfflineContent(event.data.metaData.identifier);
       return false;
     }
@@ -253,7 +257,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  exportOfflineContent (contentId) {
+  exportOfflineContent(contentId) {
     this.downloadManagerService.exportContent(contentId).subscribe(data => {
       const link = document.createElement('a');
       link.href = data.result.response.url;
@@ -261,7 +265,9 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      this.showExportLoader = false;
     }, error => {
+      this.showExportLoader = false;
       this.toasterService.error(this.resourceService.messages.fmsg.m0091);
     });
   }
