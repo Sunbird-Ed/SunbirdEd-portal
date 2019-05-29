@@ -62,7 +62,7 @@
       </div>
     </sui-accordion-panel>
 
-    <sui-accordion-panel *ngIf="avgStatistics">
+    <sui-accordion-panel *ngIf="showGraphStatistics && avgStatistics">
       <div title>
         <i class="dropdown icon"></i>
         {{resourceService?.frmelmnts?.lbl?.graphStat}}
@@ -78,5 +78,4 @@
       </div>
     </sui-accordion-panel>
   </sui-accordion>
-
 </div>

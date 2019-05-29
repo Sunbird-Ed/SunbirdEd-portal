@@ -29,6 +29,7 @@ export class DataChartComponent implements OnInit, AfterViewInit, OnDestroy {
   chartFiltersSubscription: Subscription;
   filters;
   subscription: Subscription;
+  showGraphStatistics = false;
   avgStatistics;
   constructor(public resourceService: ResourceService, private cdr: ChangeDetectorRef) { }
 
@@ -41,6 +42,7 @@ export class DataChartComponent implements OnInit, AfterViewInit, OnDestroy {
       timeLine: new FormControl(''),
     });
     this.showFilters = _.get(this.chart, 'filters.display');
+    this.showGraphStatistics = _.get(this.chart, 'filters.showGraphStatistics');
     this.filters = _.get(this.chart, 'filters.types');
     this.labelString = _.get(this.chartData, 'options.scales.xAxes[0].scaleLabel.labelString') || 'Labels';
     if (_.get(this.chartData, 'chartType') === 'horizontalBar') {
