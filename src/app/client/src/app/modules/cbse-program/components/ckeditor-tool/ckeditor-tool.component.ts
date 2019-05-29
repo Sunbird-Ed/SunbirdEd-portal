@@ -31,7 +31,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   public mediaobj;
   initialized = false;
   public assetProxyUrl = '/assets/public/';
-  public baseURL = 'http://dev.sunbirded.org';
+  public baseURL = 'https://programs.diksha.gov.in';
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
