@@ -1,8 +1,8 @@
-<div class="sb-card disable-card" *ngIf="data" appTelemetryInteract [telemetryInteractObject]="{id:data.metaData.identifier,type:data.telemetryObjectType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion.toString():'1.0'}"
+<div class="sb-card bs-0 sb-card-qr" *ngIf="data" (click)="onAction(data,data.action.onImage)" appTelemetryInteract
+  [telemetryInteractObject]="{id:data.metaData.identifier,type:data.telemetryObjectType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion.toString():'1.0'}"
   [telemetryInteractEdata]="data.telemetryInteractEdata" [telemetryInteractCdata]="telemetryCdata" tabindex="0">
   <!--Body-->
-  <div class="sb-card-body">
-
+  <div class="sb-card-body br-top">
     <!--Metas-->
     <div class="sb-card-metas">
       <!--Image-->
@@ -29,8 +29,8 @@
         <div class="d-flex mb-auto">
           <div class="sb-card-label" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">
             {{data.ribbon.right.name}}</div>
-          <img src="{{data.ribbon.left.image}}" class="sb-card-badge ml-auto" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image"
-            alt="{{data.ribbon.left.name}}">
+          <img src="{{data.ribbon.left.image}}" class="sb-card-badge ml-auto"
+            *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image" alt="{{data.ribbon.left.name}}">
         </div>
         <div class="sb-card-meta-item ellipsis" *ngIf="data.subject" title="{{data.subject}}">
           {{resourceService.frmelmnts.lbl.subject}} : {{data.subject}}
@@ -63,10 +63,18 @@
   <!--/Body-->
 
   <!--Progress Bar-->
-  <div class="sb-card-progressbar">
-    <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount" *ngIf="data.maxCount && data.progress > 0"></sui-progress>
+  <div class="sb-card-progressbar" *ngIf="data.maxCount && data.progress > 0">
+    <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount"
+      ></sui-progress>
   </div>
   <!--/Progress Bar-->
+
+  <div class="btn-div play-btn">
+    <button class="sb-btn p-0 sb-btn-secondary">
+        <i class="caret right icon"></i> {{resourceService?.frmelmnts?.lbl?.playContent}}
+      </button>
+  </div>
+
   <div class="sb-card-hover" *ngIf="hover">
     <div class="sb-card-hover-content">
       <div>
