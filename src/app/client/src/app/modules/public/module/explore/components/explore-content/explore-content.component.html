@@ -2,7 +2,10 @@
 <div class="ui segment br-0 p-0 prominent-filter">
       <div class="ui container">
             <div class="twelve wide column mb-15">
-                <app-prominent-filter [pageId]="'explore-page'" *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']"
+                <app-data-driven-filter [pageId]="'explore-search'" *ngIf="initFilters && !isOffline" [filterEnv]="filterType"
+                [enrichFilters]="facetsList" [ignoreQuery]="['key']" [accordionDefaultOpen]=true
+                [isShowFilterLabel]=true [hashTagId]="hashTagId" [showSearchedParam]=true (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
+                <app-prominent-filter [pageId]="'explore-page'" *ngIf="initFilters && isOffline" [filterEnv]="filterType" [ignoreQuery]="['key']"
                 [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true
                 [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter>
             </div>
