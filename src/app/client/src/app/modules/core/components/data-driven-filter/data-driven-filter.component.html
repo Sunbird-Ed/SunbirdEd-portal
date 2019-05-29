@@ -12,7 +12,7 @@
             <div *ngIf="filtersDetails && formInputData && showSearchedParam" class="twelve wide column pb-16 content">
               <span class="d-inline-block" *ngFor="let field of filtersDetails">
                 <span class="padded chip mt-5 mr-10" *ngIf='formInputData[field.code] && formInputData[field.code].length > 0'>
-                  <!-- {{field.label}} -->
+                  {{field.label}}
                   <span *ngFor="let item of formInputData[field.code]">
                     <a class="ui label mt-5 mr-5" *ngIf='!item?.name && field.code !== "channel"'>
                       {{item}}
