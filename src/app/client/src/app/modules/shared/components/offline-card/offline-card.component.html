@@ -72,11 +72,18 @@
       <div>
         <div (click)="onAction(data,data.action.onImage)" *ngIf="checkOfflineRoutes === 'library'" class="d-flex flex-jc-center">
           <button class="sb-btn sb-btn-outline-white sb-btn-normal">{{resourceService.frmelmnts?.lbl?.open}}</button>
-        </div>
-        <button (click)="onAction(data,'export')" *ngIf="checkOfflineRoutes === 'library'" class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">{{resourceService.frmelmnts?.btn?.export}}<i
-            class="sign in alternate icon"></i></button>
-        <button (click)="onAction(data,'browse')" *ngIf="checkOfflineRoutes === 'browse'" class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">
-        {{resourceService.frmelmnts?.btn?.addToLibrary}}<i class="sign in alternate icon"></i></button>
+          </div>
+          <button (click)="onAction(data,'export')" *ngIf="checkOfflineRoutes === 'library'"
+            class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">{{resourceService.frmelmnts?.btn?.export}}<i
+              class="sign in alternate icon"></i></button>
+          <button (click)="onAction(data,'browse')" *ngIf="checkOfflineRoutes === 'browse' && data?.addedToLibrary !== true"
+            class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">
+            {{resourceService.frmelmnts?.btn?.addToLibrary}}
+            <i class="sign in alternate icon"></i></button>
+          <button *ngIf="data?.addedToLibrary === true && checkOfflineRoutes === 'browse' "
+            class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16" disabled>
+            Added To Library
+            <i class="sign in alternate icon"></i></button>
       </div>
     </div>
   </div>

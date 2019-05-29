@@ -1,6 +1,7 @@
 export interface ICard {
     name: string;
     image?: string;
+    addedToLibrary?: boolean;
     imageVisibility?: boolean;
     description?: string;
     subject?: string;
