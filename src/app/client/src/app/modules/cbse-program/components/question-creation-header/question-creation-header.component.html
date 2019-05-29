@@ -4,8 +4,8 @@
     <span class="ml-auto" *ngIf="questionMetaData.data && questionMetaData.data.status === 'Live'"><i class="sb-status-label sb-bg-success sb-shape-circle"></i> Published</span>
     <span class="ml-auto" *ngIf="questionMetaData.data && questionMetaData.data.status === 'Reject'"><i class="sb-status-label sb-bg-error sb-shape-circle"></i> Rejected</span>
   </div>
-  <div class="d-flex ui blue message py-8 my-0">Please only use&nbsp;&nbsp;<b>Add Image</b>(<i class="image outline icon mr-0 py-2"></i>)&nbsp;&nbsp;button to upload images</div>
-  <div class="d-flex">
+  <div class="d-flex ui blue message py-8 my-0" *ngIf="!showPreview" >Please only use&nbsp;&nbsp;<b>Add Image</b>(<i class="image outline icon mr-0 py-2"></i>)&nbsp;&nbsp;button to upload images</div>
+  <div class="d-flex" [ngClass]="{'ml-auto':showPreview === true }">
       <button class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8" *ngIf="!showPreview && questionMetaData.data && ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)" (click)="btnClick($event, 'update');" type="submit">Update</button>
       <button class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8" *ngIf="!showPreview && !questionMetaData.data" (click)="btnClick($event, 'create');" type="submit">Submit</button>
       <div class="btn-group">
