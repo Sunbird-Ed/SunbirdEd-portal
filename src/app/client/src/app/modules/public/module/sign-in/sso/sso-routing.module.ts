@@ -14,7 +14,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'update-phone', component: UpdatePhoneComponent,
+    path: 'update/contact', component: UpdatePhoneComponent,
     data: {
       telemetry: {
         env: telemetryEnv, pageid: 'update-phone', uri: '/update-phone', type: 'view', mode: 'self', uuid: uuid

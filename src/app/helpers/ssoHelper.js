@@ -50,7 +50,6 @@ const fetchUserWithExternalId = async (payload, req) => { // will be called from
     headers: getHeaders(req),
     json: true
   }
-  console.log('sso fetching user with', options.url);
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       console.log('sso fetching user', data.result);
@@ -97,7 +96,7 @@ const createSession = async (loginId, client_id, req, res) => {
     refresh_token: grant.refresh_token.token
   }
 }
-const updatePhone = (requestBody, req) => { // will be called from player docker to learner docker
+const updateContact = (requestBody, req) => { // will be called from player docker to learner docker
   const options = {
     method: 'PATCH',
     url: envHelper.learner_Service_Local_BaseUrl + '/private/user/v1/update',
@@ -225,7 +224,7 @@ module.exports = {
   fetchUserWithExternalId,
   createUser,
   createSession,
-  updatePhone,
+  updateContact,
   updateRoles,
   sendSsoKafkaMessage
 };
