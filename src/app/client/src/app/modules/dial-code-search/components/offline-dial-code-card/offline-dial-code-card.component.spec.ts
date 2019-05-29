@@ -7,6 +7,7 @@ import { Response } from './offline-dial-code-card.component.spec.data';
 import { CacheService } from 'ng2-cache-service';
 import { OfflineDialCodeCardComponent } from './offline-dial-code-card.component';
 import { CdnprefixPipe } from './../../../shared/pipes/cdnprefix.pipe';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('OfflineDialCodeCardComponent', () => {
   let component: OfflineDialCodeCardComponent;
@@ -14,7 +15,7 @@ describe('OfflineDialCodeCardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule],
       declarations: [ OfflineDialCodeCardComponent, CdnprefixPipe ],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService],
       schemas: [NO_ERRORS_SCHEMA]
