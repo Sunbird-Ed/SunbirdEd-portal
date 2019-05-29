@@ -14,6 +14,7 @@ import {
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import {FileSizeModule} from 'ngx-filesize';
+import { OrderModule } from 'ngx-order-pipe';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import {FileSizeModule} from 'ngx-filesize';
     WebExtensionModule,
     ExploreModule,
     FileSizeModule,
-    SuiAccordionModule
+    SuiAccordionModule,
+    OrderModule
   ],
   providers: [DeviceDetectorService, OfflineFileUploaderService, DownloadManagerService],
   declarations: [
