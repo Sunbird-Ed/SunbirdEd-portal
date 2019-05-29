@@ -38,15 +38,14 @@
                 <div class="twelve wide tablet twelve wide computer column py-0">
                     <div class="sb-prominent-filter-container">
                         <div *ngFor="let field of filtersDetails" class="sb-prominent-filter-field">
-                          <span class="padded chip mt-5 mr-10" >{{field.label}}</span>
-                          <div class="mt-5" *ngIf="(field.inputType==='select' || field.inputType === 'multi-select') && field.code !== 'channel'">
+                          <div *ngIf="(field.inputType==='select' || field.inputType === 'multi-select') && field.code !== 'channel'">
                             <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
                               defaultSelectionText={{field.label}} zeroSelectionText= {{resourceService.frmelmnts.lbl.Select}} class="ui selection multiselect-square-border dropdown multiple"
                               [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" #multiSelect>
                               <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
                             </sui-multi-select>
                           </div>
-                          <div class="mt-5" *ngIf="field.code === 'channel'">
+                          <div *ngIf="field.code === 'channel'">
                             <sui-multi-select (ngModelChange)="modelChange($event);setFilterInteractData()" id={{field.code}} name={{field.code}}
                               defaultSelectionText={{field.name}} zeroSelectionText= {{resourceService.frmelmnts.lbl.Select}} class="ui selection multiselect-square-border dropdown multiple"
                               [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" labelField="name" valueField="identifier"
@@ -54,7 +53,7 @@
                               <sui-select-option *ngFor="let option of field.range" [value]="option"></sui-select-option>
                             </sui-multi-select>
                           </div>
-                          <div class="mt-5" *ngIf="field.code==='topic'">
+                          <div *ngIf="field.code==='topic'">
                             <app-topic-picker [selectedTopics]="formInputData[field.code]" [formTopic]="field" (topicChange)="handleTopicChange($event);setFilterInteractData()"></app-topic-picker>
                           </div>
                         </div>
