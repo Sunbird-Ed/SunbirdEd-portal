@@ -9,7 +9,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
-  SuiProgressModule, SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
+  SuiProgressModule, SuiRatingModule, SuiCollapseModule, SuiDimmerModule } from 'ng2-semantic-ui';
 
 @NgModule({
   imports: [
@@ -20,7 +20,7 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
     TelemetryModule,
     RouterModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
-    SuiProgressModule, SuiRatingModule, SuiCollapseModule,
+    SuiProgressModule, SuiRatingModule, SuiCollapseModule, SuiDimmerModule,
     FormsModule,
     ReactiveFormsModule
   ],

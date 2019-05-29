@@ -6,14 +6,16 @@ import { SuiModalModule, SuiProgressModule, SuiAccordionModule } from 'ng2-seman
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {FileSizeModule} from 'ngx-filesize';
+import { OrderModule } from 'ngx-order-pipe';
 
-describe('ContentImportComponent', () => {
+describe('DownloadManagerComponent', () => {
   let component: DownloadManagerComponent;
   let fixture: ComponentFixture<DownloadManagerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ SuiModalModule, SharedModule.forRoot(), SuiProgressModule, SuiAccordionModule, HttpClientTestingModule, FileSizeModule ],
+      imports: [ SuiModalModule, SharedModule.forRoot(), SuiProgressModule, SuiAccordionModule, HttpClientTestingModule,
+        FileSizeModule, OrderModule ],
       declarations: [DownloadManagerComponent],
       providers: [ DownloadManagerService ]
     })
