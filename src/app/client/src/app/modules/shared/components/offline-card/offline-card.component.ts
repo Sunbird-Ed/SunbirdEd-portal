@@ -26,7 +26,6 @@ export class OfflineCardComponent implements OnChanges {
   route: string;
   checkOfflineRoutes: string;
   contentId: string;
-  isDownloadStarted: Boolean;
 
   @HostListener('mouseenter') onMouseEnter() {
     this.hover = true;

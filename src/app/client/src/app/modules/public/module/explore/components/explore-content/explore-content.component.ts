@@ -241,7 +241,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
             _.find(this.contentList, (ele) => {
                 if (ele.metaData.identifier === contentId) {
                     ele['addedToLibrary'] = true;
-
                 }
             });
         }, error => {
