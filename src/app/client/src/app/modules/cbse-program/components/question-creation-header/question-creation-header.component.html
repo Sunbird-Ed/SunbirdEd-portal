@@ -1,14 +1,13 @@
-<div class="d-flex">
+<div class="d-flex flex-ai-center flex-jc-space-between">
   <div class="d-flex flex-ai-center" *ngIf="!showPreview">
     <span class="ml-auto" *ngIf="questionMetaData.data && (questionMetaData.data.status === 'Review' || questionMetaData.data.status === 'Draft')"><i class="sb-status-label sb-bg-warning sb-shape-circle"></i> In Review</span>
     <span class="ml-auto" *ngIf="questionMetaData.data && questionMetaData.data.status === 'Live'"><i class="sb-status-label sb-bg-success sb-shape-circle"></i> Published</span>
     <span class="ml-auto" *ngIf="questionMetaData.data && questionMetaData.data.status === 'Reject'"><i class="sb-status-label sb-bg-error sb-shape-circle"></i> Rejected</span>
   </div>
-
-  <div class="d-flex ml-auto">
+  <div class="d-flex ui blue message py-8">Please use&nbsp;&nbsp;<b>Add Image</b>(<i class="image outline icon mr-0 py-2"></i>)&nbsp;&nbsp;to upload and use images</div>
+  <div class="d-flex">
       <button class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8" *ngIf="!showPreview && questionMetaData.data && ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)" (click)="btnClick($event, 'update');" type="submit">Update</button>
       <button class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8" *ngIf="!showPreview && !questionMetaData.data" (click)="btnClick($event, 'create');" type="submit">Submit</button>
-
       <div class="btn-group">
           <button type="button" [ngClass]="{'active':enableBtn === 'edit' }" (click)="showPreview= false; btnClick($event, 'edit'); " class="sb-btn sb-btn-xs sb-btn-outline-primary">Edit</button>
           <button type="button" [ngClass]="{'active': enableBtn === 'preview' }" (click)="showPreview= true; btnClick($event, 'preview'); " class="sb-btn sb-btn-xs sb-btn-outline-primary">Preview</button>
