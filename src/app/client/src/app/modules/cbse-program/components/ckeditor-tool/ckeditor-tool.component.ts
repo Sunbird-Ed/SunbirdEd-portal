@@ -325,7 +325,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
           data: formData
         };
         this.actionService.post(request).subscribe((response) => {
-          this.addImageInEditor(response.result.content_url, response.result.identifier);
+          this.addImageInEditor(response.result.content_url, response.result.node_id);
           this.showImagePicker = false;
           this.showImageUploadModal = false;
         });
