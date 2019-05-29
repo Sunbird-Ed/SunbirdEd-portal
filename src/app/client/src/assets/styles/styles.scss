@@ -26,6 +26,7 @@
 @import "./components/header";
 @import "./components/footer";
 @import "./global";
+
 // base structure
 @import "./base/base";
 @import "./component/component";
@@ -33,7 +34,3 @@
 @import "./pages/pages";
 @import "./vendors/vendors";
 @import "./utilities/utilities";
-.ui.grid > .column:not(.row) {
-    padding-top: 16px;
-    padding-bottom: 16px;
-}

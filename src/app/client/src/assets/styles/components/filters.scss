@@ -1,5 +1,8 @@
 .data-driven-filter,
 .prominent-filter {
+
+  padding: 16px 0 0 0 !important;
+
   .prominent-filter-heading {
     font-weight: bold;
     font-size: 16px;
@@ -13,9 +16,6 @@
     width: 100%;
     max-width: 100%;
 
-    // @media screen and (min-width: 768px) {
-    //   max-width: 180px;
-    // }
     label {
       font-size: 13px;
     }
@@ -192,7 +192,8 @@
 
     .sb-prominent-filter-container .sb-prominent-filter-field:last-child {
       padding-right: 16px;
-      margin-right: auto;margin-left:0px;
+      margin-right: auto;
+      margin-left:0px;
       text-align: left;
     }
   }
@@ -220,7 +221,8 @@
 
     .sb-prominent-filter-container .sb-prominent-filter-field:last-child {
       padding-right: 16px;
-      margin-right: auto;    margin-left: 0;
+      margin-right: auto;
+      margin-left: 0;
       text-align: left;
     }
   }
@@ -250,7 +252,8 @@
 
     .sb-prominent-filter-container .sb-prominent-filter-field:last-child {
       padding-right: 16px;
-      margin-right: auto;    margin-left: 0;
+      margin-right: auto;
+      margin-left: 0;
       text-align: left;
     }
   }
@@ -260,6 +263,9 @@
 
 
 @include respond-below(sm) {
+  .prominent-filter {
+    padding: 0 !important;
+  }
   .sb-prominent-filter-container .sb-prominent-filter-field {
     width: 50%;
 
@@ -281,9 +287,9 @@
 
     .sb-prominent-filter-container .sb-prominent-filter-field:last-child {
       padding-right: 16px;
-      margin-right: auto;    margin-left: 0;
+      margin-right: auto;
+      margin-left: 0;
       text-align: left;
     }
   }
-
 }

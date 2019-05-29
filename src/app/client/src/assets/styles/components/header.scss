@@ -28,6 +28,11 @@
       padding: $base-block-space 0;
     }
   }
+  @include respond-below(sm) {
+    .container {
+      margin: 0 !important;
+    }
+  }
 }
 
 .searchbox {
