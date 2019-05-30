@@ -10,6 +10,7 @@ const routes: Routes = [
       telemetry: {
         env: 'offline', pageid: 'browse', type: 'view'
       },
+      softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 }
     }
   },
   {

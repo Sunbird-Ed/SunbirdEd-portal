@@ -1,5 +1,5 @@
 import { ResourceService } from '../../services/index';
-import { Component, OnInit, Input, EventEmitter, Output, HostListener } from '@angular/core';
+import { Component, Input, EventEmitter, Output, HostListener, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { ICard } from '../../interfaces';
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
 import { Router } from '@angular/router';
@@ -9,8 +9,10 @@ import * as _ from 'lodash-es';
   selector: 'app-offline-card',
   templateUrl: './offline-card.component.html',
   styleUrls: ['./offline-card.component.scss']
+
 })
-export class OfflineCardComponent {
+
+export class OfflineCardComponent implements OnChanges {
   /**
   * content is used to render IContents value on the view
   */
@@ -25,7 +27,6 @@ export class OfflineCardComponent {
   checkOfflineRoutes: string;
   contentId: string;
 
-
   @HostListener('mouseenter') onMouseEnter() {
     this.hover = true;
   }
@@ -33,7 +34,8 @@ export class OfflineCardComponent {
   @HostListener('mouseleave') onMouseLeave() {
     this.hover = false;
   }
-  constructor(public resourceService: ResourceService, private router: Router) {
+  constructor(public resourceService: ResourceService, private router: Router,
+    private cdr: ChangeDetectorRef) {
     this.resourceService = resourceService;
     if (this.dialCode) {
       this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
@@ -49,6 +51,10 @@ export class OfflineCardComponent {
   public onAction(data, action) {
     this.contentId = data.metaData.identifier;
     this.clickEvent.emit({ 'action': action, 'data': data });
+  }
+
+  ngOnChanges () {
+    this.cdr.detectChanges();
   }
 }
 
