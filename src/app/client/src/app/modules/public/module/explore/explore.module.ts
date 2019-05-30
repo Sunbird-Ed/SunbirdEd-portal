@@ -9,7 +9,7 @@ import { NgInviewModule } from 'angular-inport';
 import { ExploreComponent } from './components/explore/explore.component';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
-  SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
+  SuiRatingModule, SuiCollapseModule, SuiDimmerModule } from 'ng2-semantic-ui';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 
 @NgModule({
@@ -22,7 +22,7 @@ import { WebExtensionModule } from '@project-sunbird/web-extensions';
     ExploreRoutingModule,
     SharedFeatureModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
-    SuiRatingModule, SuiCollapseModule, WebExtensionModule
+    SuiRatingModule, SuiCollapseModule, SuiDimmerModule, WebExtensionModule
   ],
   declarations: [ ExploreContentComponent, ExploreComponent],
   exports: [ExploreComponent]
