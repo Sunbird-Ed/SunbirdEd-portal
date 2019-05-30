@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
 
 @Component({
@@ -13,8 +14,10 @@ export class SelectTextbookComponent implements OnInit {
   @Output() selectedClassSubjectEvent = new EventEmitter<any>();
   public filtersDetails: any;
   public selectedOptions: any = {};
+  telemetryImpression = {};
+  telemetryInteract = {};
 
-  constructor() { }
+  constructor(public router: Router) { }
 
   ngOnInit() {
     this.filtersDetails = {
@@ -25,9 +28,28 @@ export class SelectTextbookComponent implements OnInit {
       gradeLevel: this.selectedAttributes.gradeLevel,
       subject: this.selectedAttributes.subject
     };
+    this.setTelemetryImpression();
+    this.telemetryInteract = {
+      id: 'search-textbook',
+      type: 'click',
+      pageid: 'search-textbooks'
+    };
   }
 
   emitSelectedTextbook() {
     this.selectedClassSubjectEvent.emit(this.selectedOptions);
+  }
+
+  private setTelemetryImpression() {
+    this.telemetryImpression = {
+      context: {
+        env: 'cbse_program'
+      },
+      edata: {
+        type: 'view',
+        pageid: 'search_textbook',
+        uri: this.router.url,
+      }
+    };
   }
 }

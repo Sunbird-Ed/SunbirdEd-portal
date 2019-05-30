@@ -69,6 +69,7 @@ export class AppComponent implements OnInit {
   isOffline: boolean = environment.isOffline;
   sessionExpired = false;
   instance: string;
+  programId;
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -80,6 +81,9 @@ export class AppComponent implements OnInit {
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor) {
       this.instance = (<HTMLInputElement>document.getElementById('instance'))
         ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
+      if((<HTMLInputElement>document.getElementById('cbse_programId'))){
+        this.programId = (<HTMLInputElement>document.getElementById('cbse_programId')).value;
+      }
   }
   /**
    * dispatch telemetry window unload event before browser closes
@@ -213,7 +217,7 @@ export class AppComponent implements OnInit {
           userId: this.userProfile.userId,
           rootOrgId: this.userProfile.rootOrgId,
           rootOrg: this.userProfile.rootOrg,
-          organisationIds: this.userProfile.hashTagIds
+          organisationIds: [...this.userProfile.hashTagIds, this.programId]
         },
         config: {
           pdata: {
