@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ConnectionService } from './../../services/connection-service/connection.service';
 import { ActivatedRoute } from '@angular/router';
+import {ResourceService} from '@sunbird/shared';
+
 
 @Component({
   selector: 'app-browse',
@@ -11,7 +13,14 @@ export class BrowseComponent implements OnInit {
 
   isConnected = navigator.onLine;
 
-  constructor(private connectionService: ConnectionService) { }
+    /**
+   * reference of resourceService service.
+   */
+  public resourceService: ResourceService;
+
+  constructor(private connectionService: ConnectionService, resourceService: ResourceService) {
+    this.resourceService = resourceService;
+  }
 
   ngOnInit() {
     this.connectionService.monitor().subscribe(isConnected => {

@@ -28,8 +28,11 @@
           [throttle]="[1000]" [trigger]="itemsToDisplay" class="masonry-grid dynamic-section-card">
           <div in-view-item [id]="i" [data]="content" class="masonry-item"
             *ngFor="let content of itemsToDisplay;let i = index;">
-            <app-dial-code-card appContentDirection [dialCode]="dialCode" [data]="content"
-              (clickEvent)="getEvent($event)"></app-dial-code-card>
+
+            <app-dial-code-card *ngIf="!isOffline" appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"></app-dial-code-card>
+
+            <app-offline-dial-code-card *ngIf="isOffline" appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"></app-offline-dial-code-card>
+
           </div>
         </div>
       </div>
@@ -67,3 +70,9 @@
     </div>
   </div>
 </div>
+
+<sui-dimmer *ngIf="isOffline" class="page offline content" [isDimmed]="showExportLoader" [isClickable]="false">
+  <div class="ui active centered inline loader"></div>
+  <h2 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentName}}
+  </h2>
+</sui-dimmer>
