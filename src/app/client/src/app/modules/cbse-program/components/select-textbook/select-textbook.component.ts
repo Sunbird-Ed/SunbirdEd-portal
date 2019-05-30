@@ -32,7 +32,8 @@ export class SelectTextbookComponent implements OnInit {
     this.telemetryInteract = {
       id: 'search-textbook',
       type: 'click',
-      pageid: 'search-textbooks'
+      pageid: 'search-textbooks',
+      extra: this.selectedOptions
     };
   }
 
