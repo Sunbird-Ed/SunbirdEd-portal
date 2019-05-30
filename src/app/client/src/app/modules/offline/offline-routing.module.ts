@@ -43,6 +43,9 @@ const routes: Routes = [
     path: 'get', loadChildren: './../dial-code-search/dial-code-search.module#DialCodeSearchModule'
   },
   {
+    path: 'browse/get', loadChildren: './../dial-code-search/dial-code-search.module#DialCodeSearchModule'
+  },
+  {
     path: '', loadChildren: './../public/module/explore/explore.module#ExploreModule'
   },
   {

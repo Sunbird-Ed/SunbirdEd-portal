@@ -23,6 +23,7 @@ export class OfflineCardComponent {
   isConnected: Boolean = navigator.onLine;
   route: string;
   checkOfflineRoutes: string;
+  contentId: string;
 
 
   @HostListener('mouseenter') onMouseEnter() {
@@ -46,6 +47,7 @@ export class OfflineCardComponent {
   }
 
   public onAction(data, action) {
+    this.contentId = data.metaData.identifier;
     this.clickEvent.emit({ 'action': action, 'data': data });
   }
 }

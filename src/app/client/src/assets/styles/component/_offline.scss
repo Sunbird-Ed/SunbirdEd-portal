@@ -155,5 +155,9 @@ color: rgba(255, 255, 255, 0.5);
     color: $gray;  
     font-size: 12px;    
     line-height: 18px;
-  }
+  }  
+
+  .ui.dimmer.page.offline.content{
+    background-color: rgba(0, 0, 0, 0.7) !important;
+ }
 }
