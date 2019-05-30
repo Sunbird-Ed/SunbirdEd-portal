@@ -226,9 +226,7 @@
       text-align: left;
     }
   }
-
 }
-
 
 @include respond-between(sm, md) {
   .sb-prominent-filter-container .sb-prominent-filter-field {
