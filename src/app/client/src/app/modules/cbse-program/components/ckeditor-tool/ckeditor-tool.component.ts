@@ -31,7 +31,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   public mediaobj;
   initialized = false;
   public assetProxyUrl = '/assets/public/';
-  public baseURL = 'http://dev.sunbirded.org';
+  public baseURL = 'https://programs.diksha.gov.in';
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -347,7 +347,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
           data: formData
         };
         this.actionService.post(request).subscribe((response) => {
-          this.addImageInEditor(response.result.content_url, response.result.identifier);
+          this.addImageInEditor(response.result.content_url, response.result.node_id);
           this.showImagePicker = false;
           this.showImageUploadModal = false;
         });
