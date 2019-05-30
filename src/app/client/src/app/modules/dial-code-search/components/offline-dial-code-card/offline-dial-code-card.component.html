@@ -1,4 +1,4 @@
-<div class="sb-card bs-0 sb-card-qr disable-card" *ngIf="data" appTelemetryInteract
+<div class="sb-card bs-0 disable-card" *ngIf="data" appTelemetryInteract
   [telemetryInteractObject]="{id:data.metaData.identifier,type:data.telemetryObjectType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion.toString():'1.0'}"
   [telemetryInteractEdata]="data.telemetryInteractEdata" [telemetryInteractCdata]="telemetryCdata" tabindex="0">
   <!--Body-->
@@ -69,11 +69,11 @@
   </div>
   <!--/Progress Bar-->
 
-  <div class="btn-div play-btn">
+  <!-- <div class="btn-div play-btn">
     <button class="sb-btn p-0 sb-btn-secondary">
         <i class="caret right icon"></i> {{resourceService?.frmelmnts?.lbl?.playContent}}
       </button>
-  </div>
+  </div> -->
 
   <div class="sb-card-hover" *ngIf="hover">
     <div class="sb-card-hover-content">
