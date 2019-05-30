@@ -423,6 +423,11 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     this.downloadManagerService.downloadContentId = contentId;
     this.downloadManagerService.startDownload({}).subscribe(data => {
       this.downloadManagerService.downloadContentId = '';
+      _.find(this.searchList, (ele) => {
+        if (ele.metaData.identifier === contentId) {
+          ele['addedToLibrary'] = true;
+        }
+      });
     }, error => {
       this.downloadManagerService.downloadContentId = '';
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
