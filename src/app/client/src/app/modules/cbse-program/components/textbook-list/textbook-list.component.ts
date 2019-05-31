@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ConfigService, UtilService, ToasterService } from '@sunbird/shared';
 import { PublicDataService } from '@sunbird/core';
+import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
 
 @Component({
@@ -14,8 +15,10 @@ export class TextbookListComponent implements OnInit {
   @Output() selectedTextbookEvent = new EventEmitter<any>();
   public textbookList = [];
   showLoader = true;
+  telemetryImpression = {};
+  telemetryInteract = {};
   constructor(private configService: ConfigService, public publicDataService: PublicDataService,
-  public utilService: UtilService, public toasterService: ToasterService) { }
+  public utilService: UtilService, public toasterService: ToasterService, public router: Router) { }
 
   ngOnInit() {
     const req = {
@@ -46,7 +49,20 @@ export class TextbookListComponent implements OnInit {
   }
 
   showTopics(event) {
+    console.log(event);
+
     this.selectedTextbookEvent.emit(event.data.metaData.identifier);
   }
-
+  private setTelemetryImpression() {
+    this.telemetryImpression = {
+      context: {
+        env: 'cbse_program'
+      },
+      edata: {
+        type: 'view',
+        pageid: 'texbook-list',
+        uri: this.router.url,
+      }
+    };
+  }
 }

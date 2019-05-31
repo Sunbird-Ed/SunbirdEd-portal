@@ -10,7 +10,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SharedModule } from '@sunbird/shared';
 import { QuestionCreationHeaderComponent } from './components/question-creation-header/question-creation-header.component';
 import { TextbookListComponent } from './components/textbook-list/textbook-list.component';
-
+import { TelemetryModule } from '@sunbird/telemetry';
 @NgModule({
   declarations: [QuestionListComponent, SelectTextbookComponent, CbseComponent, QuestionCreationComponent, ChapterListComponent,
     McqCreationComponent, CkeditorToolComponent ,
@@ -21,7 +21,8 @@ import { TextbookListComponent } from './components/textbook-list/textbook-list.
     SuiTabsModule,
     SuiModule,
     ReactiveFormsModule, FormsModule, SharedModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    TelemetryModule
   ],
   exports: [ CbseComponent, SanitizeHtmlPipe ]
 })

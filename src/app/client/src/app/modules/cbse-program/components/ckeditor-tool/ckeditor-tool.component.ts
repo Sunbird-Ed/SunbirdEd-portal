@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter, OnChanges, ViewChild, ElementRef} from '@angular/core';
 import * as ClassicEditor from '@project-sunbird/ckeditor-build-font';
 import { ActivatedRoute, Router } from '@angular/router';
-import {  ConfigService, ResourceService, IUserData, IUserProfile, ToasterService  } from '@sunbird/shared';
+import {  ConfigService, ResourceService,  IUserData, IUserProfile, ToasterService  } from '@sunbird/shared';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 
@@ -31,7 +31,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   public mediaobj;
   initialized = false;
   public assetProxyUrl = '/assets/public/';
-  public baseURL = 'http://dev.sunbirded.org';
+  public baseURL = 'https://programs.diksha.gov.in';
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -129,34 +129,56 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
         image: this.editorConfig.image,
         isReadOnly: this.editorConfig.isReadOnly,
         removePlugins: this.editorConfig.removePlugins
-    })
-    .then(editor => {
-      this.editorInstance = editor;
-      this.isAssetBrowserReadOnly = this.editorConfig.isReadOnly;
-      if (this.editorDataInput) {
-        this.editorDataInput = this.editorDataInput
-                      .replace(/(<img("[^"]*"|[^\/">])*)>/gi, '$1/>')
-                      .replace(/(<br("[^"]*"|[^\/">])*)>/gi, '$1/>');
-        this.editorInstance.setData(this.editorDataInput);
-      } else {
-        this.editorInstance.setData('');
-      }
-      console.log('Editor was initialized', editor);
-      this.changeTracker(this.editorInstance);
-      this.characterCount = this.countCharacters(this.editorInstance.model.document);
-    })
-    .catch(error => {
-      console.error(error.stack);
-    });
+      })
+      .then(editor => {
+        this.editorInstance = editor;
+        this.isAssetBrowserReadOnly = this.editorConfig.isReadOnly;
+        if (this.editorDataInput) {
+          this.editorDataInput = this.editorDataInput
+            .replace(/(<img("[^"]*"|[^\/">])*)>/gi, '$1/>')
+            .replace(/(<br("[^"]*"|[^\/">])*)>/gi, '$1/>');
+          this.editorInstance.setData(this.editorDataInput);
+        } else {
+          this.editorInstance.setData('');
+        }
+        console.log('Editor was initialized');
+        this.changeTracker(this.editorInstance);
+        this.pasteTracker(this.editorInstance);
+        this.characterCount = this.countCharacters(this.editorInstance.model.document);
+      })
+      .catch(error => {
+        console.error(error.stack);
+      });
   }
-
   changeTracker(editor) {
     editor.model.document.on('change', (eventInfo, batch) => {
-      if (this.setCharacterLimit && this.setCharacterLimit > 0) { this.checkCharacterLimit(); }
+      if (this.setCharacterLimit && this.setCharacterLimit > 0) {
+        this.checkCharacterLimit();
+      }
       const selectedElement = eventInfo.source.selection.getSelectedElement();
       this.isEditorFocused = (selectedElement && selectedElement.name === 'image') ? true : false;
-      if (this.setImageLimit && this.setImageLimit > 0) { this.checkImageLimit(); }
-      this.editorDataOutput.emit({body: editor.getData(), length: this.characterCount, mediaobj: this.mediaobj });
+      if (this.setImageLimit && this.setImageLimit > 0) {
+        this.checkImageLimit();
+      }
+      this.editorDataOutput.emit({
+        body: editor.getData(),
+        length: this.characterCount,
+        mediaobj: this.mediaobj
+      });
+    });
+  }
+  pasteTracker(editor) {
+    editor.editing.view.document.on('clipboardInput', (evt, data) => {
+      const dataTransfer = data.dataTransfer;
+      const urlMatch =
+        // tslint:disable-next-line:max-line-length
+        /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}|file:\/\/\/+[^\s]{0,})/gi;
+      const regex = new RegExp(urlMatch);
+      const getUrl = dataTransfer.getData('text/html').match(regex);
+      if (getUrl && getUrl.length > 0) {
+        this.toasterService.error('No external link allowed');
+        evt.stop();
+      }
     });
   }
   checkImageLimit() {
@@ -325,7 +347,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
           data: formData
         };
         this.actionService.post(request).subscribe((response) => {
-          this.addImageInEditor(response.result.content_url, response.result.identifier);
+          this.addImageInEditor(response.result.content_url, response.result.node_id);
           this.showImagePicker = false;
           this.showImageUploadModal = false;
         });

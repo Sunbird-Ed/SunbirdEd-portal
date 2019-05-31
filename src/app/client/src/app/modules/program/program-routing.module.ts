@@ -4,7 +4,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProgramComponent} from './component';
 
 const routes: Routes = [
-  { path: ':programId', component: ProgramComponent }
+  {
+    path: ':programId', component: ProgramComponent,
+    data: {
+      telemetry: { env: 'cbse_program', pageid: 'program', type: 'view', subtype: 'paginate' }
+    }
+  }
 ];
 
 @NgModule({
