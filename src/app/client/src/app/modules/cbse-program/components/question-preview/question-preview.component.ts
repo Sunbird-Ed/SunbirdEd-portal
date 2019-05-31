@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Pipe, HostListener, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Pipe, HostListener, AfterViewInit, OnDestroy, OnChanges } from '@angular/core';
 import { config } from 'rxjs';
 
 @Component({
@@ -6,12 +6,16 @@ import { config } from 'rxjs';
   templateUrl: './question-preview.component.html',
   styleUrls: ['./question-preview.component.scss']
 })
-export class QuestionPreviewComponent implements OnInit, AfterViewInit, OnDestroy {
+export class QuestionPreviewComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
 
   @Input() questionMetaData: any;
   constructor() { }
 
   ngOnInit() {
+
+  }
+  
+  ngOnChanges(){
 
   }
 

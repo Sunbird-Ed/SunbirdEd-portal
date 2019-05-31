@@ -30,7 +30,7 @@
             (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-textbook-list>
         </div>
         <div *ngIf="stages[currentStage] === 'topicList'">
-            <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes"
+            <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes" [role]="role"
             (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list>
         </div>
     </div>
@@ -48,6 +48,6 @@
             </div>
           </div>
 
-      <app-question-list [selectedAttributes]="selectedAttributes"></app-question-list>
+      <app-question-list (statusEmitter)="handleRefresEvent($event)" [selectedAttributes]="selectedAttributes" [role]="role"></app-question-list>
 
     </div>

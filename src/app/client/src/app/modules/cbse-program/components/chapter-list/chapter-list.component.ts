@@ -1,36 +1,52 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges, OnDestroy } from '@angular/core';
 import { PublicDataService, UserService, CollectionHierarchyAPI, ActionService } from '@sunbird/core';
 import { ConfigService, ServerResponse, ContentData, ToasterService } from '@sunbird/shared';
 import { map } from 'rxjs/operators';
 import { forkJoin, Observable } from 'rxjs';
 import * as _ from 'lodash-es';
+import { isNull } from 'util';
 
 @Component({
   selector: 'app-chapter-list',
   templateUrl: './chapter-list.component.html',
   styleUrls: ['./chapter-list.component.scss']
 })
-export class ChapterListComponent implements OnInit {
+export class ChapterListComponent implements OnInit,OnChanges{
 
   @Input() selectedAttributes: any;
   @Input() topicList: any;
+  @Input() role: any;
   @Output() selectedQuestionTypeTopic = new EventEmitter<any>();
+
   public textBookChapters: Array<any> = [];
   private questionType = ['vsa', 'sa', 'la', 'mcq'];
+  private textBookMeta: any;
   private questionTypeName = {
     vsa: 'Very Short Answer',
     sa: 'Short Answer',
     la: 'Long Answer',
     mcq: 'Multiple Choice Question'
   };
+  private labels: Array<string>;
   public collectionData;
   showLoader = true;
   showError = false;
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
     private userService: UserService, public actionService: ActionService, public toasterService: ToasterService) {
   }
+  private labelsHandler(){
+    this.labels = (this.role.currentRole == 'REVIEWER') ? ['Draft', 'Live'] : ['Total','Created by me'] ;   
+    console.log(this.labels);
+  }
   ngOnInit() {
+    this.labelsHandler();
     this.getCollectionHierarchy(this.selectedAttributes.textbook);
+  }
+  ngOnChanges(changed: any){
+    this.labelsHandler();
+    if(this.textBookMeta){
+      this.showChapterList( this.textBookMeta);
+    }
   }
 
   public getCollectionHierarchy(identifier: string) {
@@ -49,6 +65,7 @@ export class ChapterListComponent implements OnInit {
             });
           }
         });
+        this.textBookMeta = textBookMetaData;
         console.log('textBookMetaData', textBookMetaData);
         this.showChapterList(textBookMetaData);
     }, error => {
@@ -63,7 +80,8 @@ export class ChapterListComponent implements OnInit {
       apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields)),
         ...this.questionType.map(fields => this.searchQuestionsByType(fields, this.userService.userid))];
     } else if (this.selectedAttributes.currentRole === 'REVIEWER') {
-      apiRequest = this.questionType.map(fields => this.searchQuestionsByType(fields));
+      apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields,"",'Review')),
+      ...this.questionType.map(fields => this.searchQuestionsByType(fields,"",'Live')) ];
     }
     if (!apiRequest) {
       this.showLoader = false;
@@ -71,7 +89,7 @@ export class ChapterListComponent implements OnInit {
       this.toasterService.error(`You don't have permission to access this page`);
     }
     forkJoin(apiRequest).subscribe(data => {
-      this.showLoader = false;
+      this.showLoader = true;
       this.textBookChapters = _.map(textBookMetaData, topicData => {
         const results = { name: topicData.name, topic:  topicData.topic };
         _.forEach(this.questionType, (type: string, index) => {
@@ -81,6 +99,7 @@ export class ChapterListComponent implements OnInit {
             me: this.getResultCount(data[index + this.questionType.length], topicData.topic)
           };
         });
+        this.showLoader = false;
         return results;
       });
     }, error => {
@@ -94,7 +113,7 @@ export class ChapterListComponent implements OnInit {
     return topicData ? topicData.count : 0;
   }
 
-  public searchQuestionsByType(questionType: string, createdBy?: string) {
+  public searchQuestionsByType(questionType: string, createdBy?: string , status?: any) {
     const req = {
       url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
       data: {
@@ -119,6 +138,9 @@ export class ChapterListComponent implements OnInit {
     };
     if (createdBy) {
       req.data.request.filters['createdBy'] = createdBy;
+    }
+    if(status){
+      req.data.request.filters['status'] = status;
     }
     return this.publicDataService.post(req).pipe(
       map(res => _.get(res, 'result.facets[0].values')));

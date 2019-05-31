@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Output, EventEmitter, Input, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { ConfigService, ToasterService, IUserData } from '@sunbird/shared';
 import { UserService, PublicDataService, ActionService } from '@sunbird/core';
 import { tap, map } from 'rxjs/operators';
@@ -9,22 +9,36 @@ import { of } from 'rxjs';
   templateUrl: './question-list.component.html',
   styleUrls: ['./question-list.component.css']
 })
-export class QuestionListComponent implements OnInit {
+export class QuestionListComponent implements OnInit,OnChanges{
   @Input() selectedAttributes: any;
+  @Input() role: any;
+
   public questionList = [];
   public selectedQuestionId: any;
   public questionReadApiDetails: any = {};
   public questionMetaData: any;
   public refresh = true;
   public showLoader = true;
+  public enableRoleChange: boolean = false;
   constructor(private configService: ConfigService, private userService: UserService, private publicDataService: PublicDataService,
     public actionService: ActionService, private cdr: ChangeDetectorRef, public toasterService: ToasterService) {
   }
+  ngOnChanges(changedProps: any){
 
-  ngOnInit() {
-    this.fetchQuestionList();
+    // console.log('changes detected in question list',this.role);
+    if(this.enableRoleChange){
+      this.fetchQuestionWithRole()
+    }
   }
-  private fetchQuestionList() {
+  ngOnInit() {
+    console.log('changes detected in question list',this.role);
+    this.fetchQuestionWithRole()
+    this.enableRoleChange = true;
+  }
+  private fetchQuestionWithRole(){
+    (this.role.currentRole == "REVIEWER") ? this.fetchQuestionList(true): this.fetchQuestionList();
+  }
+  private fetchQuestionList(isReviewer?: boolean ) {
     const req = {
       url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
       data: {
@@ -48,6 +62,9 @@ export class QuestionListComponent implements OnInit {
         }
       }
     };
+    if(isReviewer){
+      delete req.data.request.filters.createdBy;
+    }
     this.publicDataService.post(req).pipe(tap(data => this.showLoader = false))
     .subscribe((res) => {
       this.questionList = res.result.items || [];
@@ -117,6 +134,10 @@ export class QuestionListComponent implements OnInit {
         setTimeout(() => this.fetchQuestionList(), 2000);
       }
     }
+  }
+  
+  handleRefresEvent(){
+    this.refreshEditor();
   }
   private refreshEditor() {
     this.refresh = false;
