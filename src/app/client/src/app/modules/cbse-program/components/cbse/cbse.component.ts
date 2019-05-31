@@ -1,8 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { FrameworkService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { first } from 'rxjs/operators';
-
+import {Subject} from 'rxjs';
+ 
 interface ISelectedAttributes {
     framework?: string;
     channel?: string;
@@ -32,7 +33,10 @@ export class CbseComponent implements OnInit {
   public selectedAttributes: ISelectedAttributes = {};
   public stages: Array<string> = ['chooseClass', 'chooseTextbook', 'topicList', 'createQuestion'];
   public currentStage = 0;
+  public role: any = {};
   constructor(public frameworkService: FrameworkService) { }
+
+
 
   ngOnInit() {
     this.selectedAttributes = {
@@ -45,6 +49,7 @@ export class CbseComponent implements OnInit {
       programId: _.get(this.programDetails, 'programId'),
       program: _.get(this.programDetails, 'name')
     };
+    this.role.currentRole= this.selectedAttributes.currentRole;
     this.fetchFrameWorkDetails();
   }
 
@@ -64,9 +69,9 @@ export class CbseComponent implements OnInit {
     this.selectedAttributes.questionType =  event.questionType;
     this.navigate('next');
   }
-  handleRoleChange() {
-
-  }
+  handleRoleChange() {  
+    this.role = Object.assign({},{currentRole :this.selectedAttributes.currentRole});
+  } 
   public fetchFrameWorkDetails() {
     this.frameworkService.initialize(this.selectedAttributes.framework);
     this.frameworkService.frameworkData$.pipe(first()).subscribe((frameworkDetails: any) => {

@@ -38,6 +38,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter < any > ();
   @Input() selectedAttributes: any;
+  @Input() role: any;
+  @Output() statusEmitter = new EventEmitter < string > ();
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -96,6 +98,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         // this.questionMetaForm.controls.maxScore.setValue(this.questionMetaData.data.maxScore);
         this.mediaArr = this.questionMetaData.data.media || [];
     }
+    if(this.role.currentRole == 'REVIEWER'){
+      this.showPreview = true;
+      this.buttonTypeHandler('preview')
+    }
   }
 
   ngAfterViewInit() {
@@ -124,6 +130,12 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       } else {
         this.questionMetaForm.reset();
       }
+    }
+    if(this.role.currentRole == 'REVIEWER'){
+      this.showPreview = true;
+      // this.buttonTypeHandler('preview')
+    }else{      
+      this.showPreview = false;
     }
   }
   ngAfterViewChecked() {
@@ -163,6 +175,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.validateAllFormFields(control);
       }
     });
+  }
+  handleReviewrStatus(event){
+    this.updateQuestion([{key:'status', value: event}])
   }
   buttonTypeHandler(event) {
     if (event === 'preview') {
@@ -256,8 +271,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       });
     });
   }
+  /**
+   * @param optionalParams  {Array of Objects }  -Key and Value to add in metadata
+   */
 
-  updateQuestion() {
+  updateQuestion(optionalParams?: Array<Object>) {
     forkJoin([this.getConvertedLatex(this.question), this.getConvertedLatex(this.editorState.solutions)])
       .subscribe((res) => {
         this.body = res[0];
@@ -291,9 +309,18 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
             }
           }
         };
+        if(optionalParams){
+          _.forEach(optionalParams,(param) =>{
+            option.data.request.assessment_item.metadata[param.key] = param.value;
+            console.log(option.data.request.assessment_item.metadata[param.key]);
+          })
+        }
         this.actionService.patch(option).subscribe((res) => {
           this.questionStatus.emit({'status': 'success', 'type': 'update', 'identifier': this.questionMetaData.data.identifier});
           console.log('Question Update', res);
+          if(res.responseCode  == "OK"){
+            this.statusEmitter.emit('refreshQuestionList');
+          }
         });
       });
   }
