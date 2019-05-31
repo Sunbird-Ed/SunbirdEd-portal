@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, Output, EventEmitter, Input, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { ConfigService, ToasterService, IUserData } from '@sunbird/shared';
 import { UserService, PublicDataService, ActionService } from '@sunbird/core';
+import { TelemetryService } from '@sunbird/telemetry';
 import { tap, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { of } from 'rxjs';
@@ -21,7 +22,8 @@ export class QuestionListComponent implements OnInit,OnChanges{
   public showLoader = true;
   public enableRoleChange: boolean = false;
   constructor(private configService: ConfigService, private userService: UserService, private publicDataService: PublicDataService,
-    public actionService: ActionService, private cdr: ChangeDetectorRef, public toasterService: ToasterService) {
+    public actionService: ActionService, private cdr: ChangeDetectorRef, public toasterService: ToasterService,
+    public telemetryService: TelemetryService) {
   }
   ngOnChanges(changedProps: any){
 
@@ -62,7 +64,7 @@ export class QuestionListComponent implements OnInit,OnChanges{
         }
       }
     };
-    if(isReviewer){
+    if (isReviewer) {
       delete req.data.request.filters.createdBy;
     }
     this.publicDataService.post(req).pipe(tap(data => this.showLoader = false))
@@ -74,6 +76,17 @@ export class QuestionListComponent implements OnInit,OnChanges{
       }
     }, err => {
       this.toasterService.error(_.get(err, 'error.params.errmsg') || 'Fetching question list failed');
+      const telemetryErrorData = {
+        context: {
+          env: 'cbse_program'
+        },
+        edata: {
+          err: err.status.toString(),
+          errtype: 'PROGRAMPORTAL',
+          stacktrace: _.get(err, 'error.params.errmsg') || 'Fetching question list failed'
+        }
+      };
+      this.telemetryService.error(telemetryErrorData);
     });
   }
   handleQuestionTabChange(questionId) {
@@ -94,6 +107,17 @@ export class QuestionListComponent implements OnInit,OnChanges{
       this.refreshEditor();
     }, err => {
       this.toasterService.error(_.get(err, 'error.params.errmsg') || 'Fetching question failed');
+      const telemetryErrorData = {
+        context: {
+          env: 'cbse_program'
+        },
+        edata: {
+          err: err.status.toString(),
+          errtype: 'PROGRAMPORTAL',
+          stacktrace: _.get(err, 'error.params.errmsg') || 'Fetching question list failed'
+        }
+      };
+      this.telemetryService.error(telemetryErrorData);
     });
   }
   public getQuestionDetails(questionId) {

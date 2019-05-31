@@ -3,6 +3,7 @@ import { PublicDataService, UserService, CollectionHierarchyAPI, ActionService }
 import { ConfigService, ServerResponse, ContentData, ToasterService } from '@sunbird/shared';
 import { map } from 'rxjs/operators';
 import { forkJoin, Observable } from 'rxjs';
+import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { isNull } from 'util';
 
@@ -27,12 +28,14 @@ export class ChapterListComponent implements OnInit,OnChanges{
     la: 'Long Answer',
     mcq: 'Multiple Choice Question'
   };
+  telemetryImpression = {};
   private labels: Array<string>;
   public collectionData;
   showLoader = true;
   showError = false;
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
-    private userService: UserService, public actionService: ActionService, public toasterService: ToasterService) {
+    private userService: UserService, public actionService: ActionService,
+    public toasterService: ToasterService, public router: Router) {
   }
   private labelsHandler(){
     this.labels = (this.role.currentRole == 'REVIEWER') ? ['Draft', 'Live'] : ['Total','Created by me'] ;   
@@ -40,6 +43,16 @@ export class ChapterListComponent implements OnInit,OnChanges{
   }
   ngOnInit() {
     this.labelsHandler();
+    this.telemetryImpression = {
+      context: {
+        env: 'cbse_program'
+      },
+      edata: {
+        type: 'view',
+        pageid: 'chapter_list',
+        uri: this.router.url,
+      }
+    };
     this.getCollectionHierarchy(this.selectedAttributes.textbook);
   }
   ngOnChanges(changed: any){
@@ -66,7 +79,6 @@ export class ChapterListComponent implements OnInit,OnChanges{
           }
         });
         this.textBookMeta = textBookMetaData;
-        console.log('textBookMetaData', textBookMetaData);
         this.showChapterList(textBookMetaData);
     }, error => {
       this.showLoader = false;

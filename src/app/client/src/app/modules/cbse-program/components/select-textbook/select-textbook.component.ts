@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import {  ToasterService  } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 
 @Component({
@@ -17,7 +18,7 @@ export class SelectTextbookComponent implements OnInit {
   telemetryImpression = {};
   telemetryInteract = {};
 
-  constructor(public router: Router) { }
+  constructor(public router: Router, private toasterService: ToasterService) { }
 
   ngOnInit() {
     this.filtersDetails = {
@@ -38,7 +39,12 @@ export class SelectTextbookComponent implements OnInit {
   }
 
   emitSelectedTextbook() {
-    this.selectedClassSubjectEvent.emit(this.selectedOptions);
+    if (this.selectedOptions.gradeLevel === undefined || this.selectedOptions.subject === undefined) {
+      this.toasterService.error('Please select Class & Subject');
+    } else {
+      this.selectedClassSubjectEvent.emit(this.selectedOptions);
+    }
+
   }
 
   private setTelemetryImpression() {

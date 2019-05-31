@@ -21,8 +21,9 @@
             class="sb-pageSection-count sb-label sb-label-xs sb-label-warning mr-8">{{selectedAttributes.gradeLevel}}</span>
           <span
             class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.subject}}</span>
-          <button (click)="navigate('prev')" class="sb-btn sb-btn-xs sb-btn-error ml-auto">Back <i
-              class="chevron circle left icon"></i></button>
+          <button (click)="navigate('prev')" 
+          appTelemetryInteract [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage]}"
+          class="sb-btn sb-btn-xs sb-btn-error ml-auto">Back <i class="chevron circle left icon"></i></button>
         </div>
       </div>
       <div *ngIf="stages[currentStage] === 'chooseTextbook'">
@@ -41,13 +42,11 @@
         <div class="sb-pageSection">
             <div class="sb-pageSection-header">
               <h4 class="sb-pageSection-title m-0 mr-8">Searched results for</h4>
-              <span
-                class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.topic}}</span>
-              <button (click)="navigate('prev')" class="sb-btn sb-btn-xs sb-btn-error ml-auto">Back <i
-                  class="chevron circle left icon"></i></button>
+              <span class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.topic}}</span>
+              <button (click)="navigate('prev')" 
+              appTelemetryInteract [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage]}"
+              class="sb-btn sb-btn-xs sb-btn-error ml-auto">Back <i class="chevron circle left icon"></i></button>
             </div>
-          </div>
-
+        </div>
       <app-question-list (statusEmitter)="handleRefresEvent($event)" [selectedAttributes]="selectedAttributes" [role]="role"></app-question-list>
-
     </div>

@@ -2,11 +2,13 @@
   <div class="three wide column p-0 pr-16">
     <div class="ui questionsMenu">
       <button *ngIf="role.currentRole != 'REVIEWER'" [disabled]="questionMetaData && questionMetaData.mode === 'create'" (click)="createNewQuestion()"
-        class="ui primary fluid button">Create</button>
+      appTelemetryInteract [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'question_list',extra:{type:'reference',category:selectedAttributes.questionType.toUpperCase(),topic:selectedAttributes.topic}}"
+      class="ui primary fluid button">Create</button>
       <div class="ui vertical segments" style="max-height:50vh;overflow-y:auto;">
         <div class="questionTab ui center tertiary header aligned segment p-8"
           [class.tertiary]="selectedQuestionId === question.identifier"
-          (click)="handleQuestionTabChange(question.identifier)" *ngFor="let question of questionList; let i = index">
+          (click)="handleQuestionTabChange(question.identifier)" *ngFor="let question of questionList; let i = index"
+          appTelemetryInteract [telemetryInteractEdata]="{id:'question_tab',type:'click',pageid:'question_list',extra:{type:'reference',identifier:question.identifier}}">
           <div class="item d-flex flex-ai-center">Question {{i + 1}}
             <span class="sb-status-label sb-bg-warning sb-shape-circle ml-auto"
               *ngIf="question.status === 'Draft' || question.status === 'Review'"></span>
