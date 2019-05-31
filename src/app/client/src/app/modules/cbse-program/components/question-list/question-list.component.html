@@ -27,7 +27,7 @@
       Create</div>
     <div *ngIf="(questionList.length || questionMetaData?.mode === 'create')&& refresh && !showLoader">
       <div *ngIf="selectedAttributes.questionType === 'mcq'">
-        <app-mcq-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData"
+        <app-mcq-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" [role] = "role"
           (questionStatus)="questionStatusHandler($event)"></app-mcq-creation>
       </div>
       <div *ngIf="selectedAttributes.questionType !== 'mcq'" class="ui segment">

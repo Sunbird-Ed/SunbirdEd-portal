@@ -5,7 +5,7 @@ import { Component, OnInit, Output, Input, EventEmitter, OnChanges } from '@angu
   templateUrl: './question-creation-header.component.html',
   styleUrls: ['./question-creation-header.component.css']
 })
-export class QuestionCreationHeaderComponent implements OnInit,OnChanges {
+export class QuestionCreationHeaderComponent implements OnInit {
   public enableBtn;
   public showPreview;
   @Input() role: any;
@@ -15,9 +15,6 @@ export class QuestionCreationHeaderComponent implements OnInit,OnChanges {
   @Input() disableSubmission: boolean;
   constructor() { }
 
-  ngOnChanges(){
-    
-  }
   ngOnInit() {
     this.enableBtn = 'edit';
     this.showPreview = false;

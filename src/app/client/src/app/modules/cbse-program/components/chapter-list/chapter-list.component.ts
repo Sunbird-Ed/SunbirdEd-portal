@@ -2,17 +2,16 @@ import { Component, OnInit, Input, EventEmitter, Output, OnChanges, OnDestroy } 
 import { PublicDataService, UserService, CollectionHierarchyAPI, ActionService } from '@sunbird/core';
 import { ConfigService, ServerResponse, ContentData, ToasterService } from '@sunbird/shared';
 import { map } from 'rxjs/operators';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { isNull } from 'util';
 
 @Component({
   selector: 'app-chapter-list',
   templateUrl: './chapter-list.component.html',
   styleUrls: ['./chapter-list.component.scss']
 })
-export class ChapterListComponent implements OnInit,OnChanges{
+export class ChapterListComponent implements OnInit, OnChanges {
 
   @Input() selectedAttributes: any;
   @Input() topicList: any;
@@ -38,7 +37,7 @@ export class ChapterListComponent implements OnInit,OnChanges{
     public toasterService: ToasterService, public router: Router) {
   }
   private labelsHandler(){
-    this.labels = (this.role.currentRole == 'REVIEWER') ? ['Draft', 'Live'] : ['Total','Created by me'] ;   
+    this.labels = (this.role.currentRole === 'REVIEWER') ? ['Draft', 'Live'] : ['Total', 'Created by me'] ;
     console.log(this.labels);
   }
   ngOnInit() {
@@ -55,9 +54,9 @@ export class ChapterListComponent implements OnInit,OnChanges{
     };
     this.getCollectionHierarchy(this.selectedAttributes.textbook);
   }
-  ngOnChanges(changed: any){
+  ngOnChanges(changed: any) {
     this.labelsHandler();
-    if(this.textBookMeta){
+    if (this.textBookMeta) {
       this.showChapterList( this.textBookMeta);
     }
   }
@@ -151,7 +150,7 @@ export class ChapterListComponent implements OnInit,OnChanges{
     if (createdBy) {
       req.data.request.filters['createdBy'] = createdBy;
     }
-    if(status){
+    if (status) {
       req.data.request.filters['status'] = status;
     }
     return this.publicDataService.post(req).pipe(
