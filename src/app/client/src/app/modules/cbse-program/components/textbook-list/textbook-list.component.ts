@@ -3,6 +3,8 @@ import { ConfigService, UtilService, ToasterService } from '@sunbird/shared';
 import { PublicDataService } from '@sunbird/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
+import { TelemetryService } from '@sunbird/telemetry';
+
 
 @Component({
   selector: 'app-textbook-list',
@@ -18,7 +20,8 @@ export class TextbookListComponent implements OnInit {
   telemetryImpression = {};
   telemetryInteract = {};
   constructor(private configService: ConfigService, public publicDataService: PublicDataService,
-  public utilService: UtilService, public toasterService: ToasterService, public router: Router) { }
+  public utilService: UtilService, public toasterService: ToasterService, public router: Router,
+  public telemetryService: TelemetryService) { }
 
   ngOnInit() {
     const req = {
@@ -42,9 +45,36 @@ export class TextbookListComponent implements OnInit {
       this.showLoader = false;
       const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
       this.textbookList = this.utilService.getDataForCard(res.result.content, constantData, dynamicFields, metaData);
+      this.telemetryInteract = {
+        id: 'content-card',
+        type: 'click',
+        pageid: 'textbooklist'
+      };
+      this.telemetryImpression = {
+        context: {
+          env: 'cbse_program'
+        },
+        edata: {
+          type: 'view',
+          pageid: 'textbooklist',
+          uri: this.router.url,
+        }
+      };
+
     }, error => {
       this.showLoader = false;
       this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Fetching TextBook failed');
+      const telemetryErrorData = {
+        context: {
+          env: 'cbse_program'
+        },
+        edata: {
+          err: error.status.toString(),
+          errtype: 'PROGRAMPORTAL',
+          stacktrace: _.get(error, 'error.params.errmsg') || 'Fetching TextBook failed'
+        }
+      };
+      this.telemetryService.error(telemetryErrorData);
     });
   }
 

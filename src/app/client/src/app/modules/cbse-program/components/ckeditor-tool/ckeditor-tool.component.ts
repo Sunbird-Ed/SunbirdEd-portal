@@ -143,7 +143,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
         }
         console.log('Editor was initialized');
         this.changeTracker(this.editorInstance);
-        this.pasteTracker(this.editorInstance);
+        // this.pasteTracker(this.editorInstance);
         this.characterCount = this.countCharacters(this.editorInstance.model.document);
       })
       .catch(error => {

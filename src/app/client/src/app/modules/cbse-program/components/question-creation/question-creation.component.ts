@@ -3,6 +3,7 @@ import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter ,
 import { ActivatedRoute, Router } from '@angular/router';
 import {  ConfigService, ResourceService, IUserData, IUserProfile, ToasterService  } from '@sunbird/shared';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
+import { TelemetryService } from '@sunbird/telemetry';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
@@ -48,7 +49,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     private http: HttpClient,
     publicDataService: PublicDataService,
     toasterService: ToasterService,
-    resourceService: ResourceService,
+    resourceService: ResourceService, public telemetryService: TelemetryService,
     public actionService: ActionService, private cdr: ChangeDetectorRef
   ) {
     this.userService = userService;
@@ -268,6 +269,17 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.questionStatus.emit({'status': 'success', 'type': 'create', 'identifier': res.result.node_id});
       }, error => {
         this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
+        const telemetryErrorData = {
+          context: {
+            env: 'cbse_program'
+          },
+          edata: {
+            err: error.status.toString(),
+            errtype: 'PROGRAMPORTAL',
+            stacktrace: _.get(error, 'error.params.errmsg') || 'Question creation failed'
+          }
+        };
+        this.telemetryService.error(telemetryErrorData);
       });
     });
   }
@@ -309,18 +321,30 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
             }
           }
         };
-        if(optionalParams){
-          _.forEach(optionalParams,(param) =>{
+        if (optionalParams) {
+          _.forEach(optionalParams, (param) => {
             option.data.request.assessment_item.metadata[param.key] = param.value;
             console.log(option.data.request.assessment_item.metadata[param.key]);
-          })
+          });
         }
         this.actionService.patch(option).subscribe((res) => {
           this.questionStatus.emit({'status': 'success', 'type': 'update', 'identifier': this.questionMetaData.data.identifier});
-          console.log('Question Update', res);
-          if(res.responseCode  == "OK"){
+          if (res.responseCode === 'OK' ) {
             this.statusEmitter.emit('refreshQuestionList');
           }
+        }, error => {
+            this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question update failed');
+            const telemetryErrorData = {
+              context: {
+                env: 'cbse_program'
+              },
+              edata: {
+                err: error.status.toString(),
+                errtype: 'PROGRAMPORTAL',
+                stacktrace: _.get(error, 'error.params.errmsg') || 'Question update failed'
+              }
+            };
+            this.telemetryService.error(telemetryErrorData);
         });
       });
   }

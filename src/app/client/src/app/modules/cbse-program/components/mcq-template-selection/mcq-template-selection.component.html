@@ -5,7 +5,9 @@
   </div>
   <div class="sb-modal-content">
     <div class="d-flex flex-jc-space-around flex-w-wrap">
-        <div class="sb-card mb-16 template-items p-8 mr-8 relative" [ngClass]="{'active': templateSelected === template}" *ngFor="let template of mcqTemplateConfig" (click)="showButton=true; templateSelected = template">
+        <div class="sb-card mb-16 template-items p-8 mr-8 relative" 
+        appTelemetryInteract [telemetryInteractEdata]="{id:'template-card',type:'click',pageid:'card_selection',extra:{template:template}}"
+        [ngClass]="{'active': templateSelected === template}" *ngFor="let template of mcqTemplateConfig" (click)="showButton=true; templateSelected = template">
           <span *ngIf="templateSelected === template" class="template-item-selection"><i class="check circle icon"></i></span>
             <div class="sb-card-metas flex-jc-center mb-8">
               <div class="sb-card-image">
@@ -18,7 +20,8 @@
     </div>
   </div>
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!showButton" (click)="handleSubmit()">
+    <button appTelemetryInteract [telemetryInteractEdata]="{id:'submit_btn',type:'click',pageid:'template_selection',extra:{selectedtemplate:templateSelected}}"
+    class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!showButton" (click)="handleSubmit()">
       {{'Submit'}}
     </button>
   </div>

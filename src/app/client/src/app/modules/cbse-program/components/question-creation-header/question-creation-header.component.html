@@ -6,16 +6,28 @@
   </div>
   <div class="d-flex ui blue message py-8 my-0" *ngIf="!showPreview" >Please only use&nbsp;&nbsp;<b>Add Image</b>(<i class="image outline icon mr-0 py-2"></i>)&nbsp;&nbsp;button to upload images</div>
   <div class="d-flex" [ngClass]="{'ml-auto':showPreview === true }" *ngIf="role.currentRole != 'REVIEWER'">
-      <button class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8" *ngIf="!showPreview && questionMetaData.data && ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)" (click)="btnClick($event, 'update');" type="submit">Update</button>
-      <button class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8" *ngIf="!showPreview && !questionMetaData.data" (click)="btnClick($event, 'create');" type="submit">Submit</button>
+      <button class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8" 
+      appTelemetryInteract [telemetryInteractEdata]="{id:'update_btn',type:'click',pageid:'question_create'}"
+      *ngIf="!showPreview && questionMetaData.data && ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)" (click)="btnClick($event, 'update');" type="submit">Update</button>
+      <button class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8" 
+      appTelemetryInteract [telemetryInteractEdata]="{id:'submit_btn',type:'click',pageid:'question_create'}"
+      *ngIf="!showPreview && !questionMetaData.data" (click)="btnClick($event, 'create');" type="submit">Submit</button>
       <div class="btn-group">
-          <button type="button" [ngClass]="{'active':enableBtn === 'edit' }" (click)="showPreview= false; btnClick($event, 'edit'); " class="sb-btn sb-btn-xs sb-btn-outline-primary">Edit</button>
-          <button type="button" [ngClass]="{'active': enableBtn === 'preview' }" (click)="showPreview= true; btnClick($event, 'preview'); " class="sb-btn sb-btn-xs sb-btn-outline-primary">Preview</button>
+          <button type="button" [ngClass]="{'active':enableBtn === 'edit' }" 
+          appTelemetryInteract [telemetryInteractEdata]="{id:'edit_btn',type:'click',pageid:'question_create'}"
+          (click)="showPreview= false; btnClick($event, 'edit'); " class="sb-btn sb-btn-xs sb-btn-outline-primary">Edit</button>
+          <button type="button" [ngClass]="{'active': enableBtn === 'preview' }" 
+          appTelemetryInteract [telemetryInteractEdata]="{id:'preview_btn',type:'click',pageid:'question_create'}"
+          (click)="showPreview= true; btnClick($event, 'preview'); " class="sb-btn sb-btn-xs sb-btn-outline-primary">Preview</button>
       </div>
   </div>
 
   <div class="d-flex ml-auto"  *ngIf="role.currentRole === 'REVIEWER' && questionMetaData.data.status != 'Live'">    
-        <button type="button" class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8"  (click)="reviewerBtnclick($event, 'Live'); " >LIVE</button>
-        <button type="button" class="sb-btn sb-btn-xs sb-btn-secondary sb-btn-error mr-8 "  (click)="reviewerBtnclick($event, 'Reject'); " >REJECT</button>
+        <button type="button" class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8"  
+        appTelemetryInteract [telemetryInteractEdata]="{id:'live_btn',type:'click',pageid:'question_create'}"
+        (click)="reviewerBtnclick($event, 'Live'); " >LIVE</button>
+        <button type="button" class="sb-btn sb-btn-xs sb-btn-secondary sb-btn-error mr-8 " 
+        appTelemetryInteract [telemetryInteractEdata]="{id:'reject_btn',type:'click',pageid:'question_create'}"
+        (click)="reviewerBtnclick($event, 'Reject'); " >REJECT</button>
 </div>
 </div>

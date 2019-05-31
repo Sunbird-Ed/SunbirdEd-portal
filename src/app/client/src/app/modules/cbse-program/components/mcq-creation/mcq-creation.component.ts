@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter, OnChange
 import { McqForm } from './../../class/McqForm';
 import {  ConfigService, IUserData, IUserProfile, ToasterService  } from '@sunbird/shared';
 import { UserService, ActionService } from '@sunbird/core';
+import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { UUID } from 'angular2-uuid';
 import { HttpClientModule } from '@angular/common/http';
@@ -36,8 +37,10 @@ export class McqCreationComponent implements OnInit {
   public mediaArr = [];
   learningOutcomeOptions = [];
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
-  constructor( public configService: ConfigService, private http: HttpClient, private userService: UserService,
-    public actionService: ActionService, public toasterService: ToasterService, private cdr: ChangeDetectorRef) {
+  constructor( public configService: ConfigService, private http: HttpClient,
+    private userService: UserService, public actionService: ActionService,
+    public toasterService: ToasterService, private cdr: ChangeDetectorRef,
+    public telemetryService: TelemetryService) {
   }
   initForm() {
     if (this.questionMetaData.data) {
@@ -217,6 +220,17 @@ export class McqCreationComponent implements OnInit {
           this.questionStatus.emit({'status': 'success', 'type': 'update', 'identifier': res.result.node_id});
         }, error => {
           this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
+          const telemetryErrorData = {
+            context: {
+              env: 'cbse_program'
+            },
+            edata: {
+              err: error.status.toString(),
+              errtype: 'PROGRAMPORTAL',
+              stacktrace: _.get(error, 'error.params.errmsg') || 'Question creation failed'
+            }
+          };
+          this.telemetryService.error(telemetryErrorData);
         });
       });
   }
@@ -283,6 +297,17 @@ export class McqCreationComponent implements OnInit {
           this.questionStatus.emit({'status': 'success', 'type': 'create',  'identifier': res.result.node_id});
         }, error => {
           this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
+          const telemetryErrorData = {
+            context: {
+              env: 'cbse_program'
+            },
+            edata: {
+              err: error.status.toString(),
+              errtype: 'PROGRAMPORTAL',
+              stacktrace: _.get(error, 'error.params.errmsg') || 'Question update failed'
+            }
+          };
+          this.telemetryService.error(telemetryErrorData);
         });
       });
   }
