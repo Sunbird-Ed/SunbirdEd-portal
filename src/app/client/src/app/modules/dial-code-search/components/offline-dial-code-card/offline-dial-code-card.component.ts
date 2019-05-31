@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, HostListener } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, HostListener, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { ResourceService, ICard } from '@sunbird/shared';
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
 import { Router } from '@angular/router';
@@ -9,7 +9,7 @@ import * as _ from 'lodash-es';
   templateUrl: './offline-dial-code-card.component.html',
   styleUrls: ['./offline-dial-code-card.component.scss']
 })
-export class OfflineDialCodeCardComponent implements OnInit {
+export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
   /**
   * content is used to render IContents value on the view
   */
@@ -32,7 +32,8 @@ export class OfflineDialCodeCardComponent implements OnInit {
   @HostListener('mouseleave') onMouseLeave() {
     this.hover = false;
   }
-  constructor(public resourceService: ResourceService, private router: Router) {
+  constructor(public resourceService: ResourceService, private router: Router,
+    private cdr: ChangeDetectorRef) {
     this.resourceService = resourceService;
   }
 
@@ -51,6 +52,10 @@ export class OfflineDialCodeCardComponent implements OnInit {
   public onAction(data, action) {
     this.contentId = data.metaData.identifier;
     this.clickEvent.emit({ 'action': action, 'data': data });
+  }
+
+  ngOnChanges () {
+    this.cdr.detectChanges();
   }
 }
 
