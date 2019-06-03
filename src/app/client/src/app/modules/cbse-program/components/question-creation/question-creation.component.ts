@@ -221,9 +221,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     .subscribe((res) => {
       this.body = res[0];
       this.solution = res[1];
-      let creator = this.userProfile.firstName;
-      if (!_.isEmpty(this.userProfile.lastName)) {
-        creator = this.userProfile.firstName + ' ' + this.userProfile.lastName;
+      let creator = this.userService.userProfile.firstName;
+      if (!_.isEmpty(this.userService.userProfile.lastName)) {
+        creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
       }
       const req = {
         url: this.configService.urlConFig.URLS.ASSESSMENT.CREATE,
