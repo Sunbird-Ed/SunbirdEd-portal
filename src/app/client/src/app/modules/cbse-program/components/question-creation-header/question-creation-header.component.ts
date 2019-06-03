@@ -10,8 +10,10 @@ export class QuestionCreationHeaderComponent implements OnInit {
   public showPreview;
   showrejectCommentPopup = false;
   showFormError = false;
+  public reviewerCommentModal = false;
   @Input() role: any;
   @Input() questionMetaData: any;
+  @Input() rejectComment: any;
   @Output() buttonType = new EventEmitter < any > ();
   @Output() questionStatus = new EventEmitter < any > ();
   @Input() disableSubmission: boolean;
@@ -53,5 +55,13 @@ export class QuestionCreationHeaderComponent implements OnInit {
       this.showFormError = true;
     }
   }
+
+  openReviewerCommentModal() {
+    this.reviewerCommentModal = true;
+   }
+
+   closeReviewerCommentModal() {
+     this.reviewerCommentModal = false;
+   }
 
 }

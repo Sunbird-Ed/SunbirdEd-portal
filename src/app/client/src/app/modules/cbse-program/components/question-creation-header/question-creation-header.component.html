@@ -2,7 +2,11 @@
   <div class="d-flex flex-ai-center" *ngIf="!showPreview">
     <span class="ml-auto" *ngIf="questionMetaData.data && (questionMetaData.data.status === 'Review' || questionMetaData.data.status === 'Draft')"><i class="sb-status-label sb-bg-warning sb-shape-circle"></i> In Review</span>
     <span class="ml-auto" *ngIf="questionMetaData.data && questionMetaData.data.status === 'Live'"><i class="sb-status-label sb-bg-success sb-shape-circle"></i> Published</span>
-    <span class="ml-auto" *ngIf="questionMetaData.data && questionMetaData.data.status === 'Reject'"><i class="sb-status-label sb-bg-error sb-shape-circle"></i> Rejected</span>
+    <span class="ml-auto" *ngIf="questionMetaData.data && questionMetaData.data.status === 'Reject'"><i class="sb-status-label sb-bg-error sb-shape-circle"></i> Rejected
+      <div class="ui icon button"  (click)="openReviewerCommentModal()">
+        <i class="comment icon"></i>
+      </div>
+    </span>
   </div>
   <div class="d-flex ui blue message py-8 my-0" *ngIf="!showPreview && role.currentRole != 'REVIEWER'">
   Please only use&nbsp;&nbsp;<b>Add Image</b>(<i class="image outline icon mr-0 py-2"></i>)&nbsp;&nbsp;button to upload images</div>
@@ -61,4 +65,23 @@
         class="ui primary button">Add Comment</button>
     </div>
   </div>
+  </sui-modal>
+  <sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="closeReviewerCommentModal()" *ngIf="reviewerCommentModal" [size]="'normal'"
+  [isFullScreen]="false" [mustScroll]="true" #modal>
+      <div class="header">
+          <div class="ui two column grid">
+              <div class="row">
+                  <div class="column">
+                      <span>Request changes</span>
+                  </div>
+                  <div class="column right aligned">
+                      <i class="cursor-pointer close link icon" (click)="closeReviewerCommentModal();" 
+                      appTelemetryInteract [telemetryInteractEdata]="{id:'cancel',type:'click',pageid:'reviewer_comment_modal'}"></i>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="content">
+          <p>{{rejectComment}}</p>
+      </div>
   </sui-modal>

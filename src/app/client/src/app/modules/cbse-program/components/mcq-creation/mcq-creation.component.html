@@ -1,5 +1,5 @@
 <div *ngIf='!showTemplatePopup && showForm' class="p-24">
-  <app-question-creation-header (buttonType)="buttonTypeHandler($event)" [questionMetaData]="questionMetaData"
+  <app-question-creation-header (buttonType)="buttonTypeHandler($event)" [rejectComment]="rejectComment" [questionMetaData]="questionMetaData"
     [disableSubmission]="isEditorThrowingError" (questionStatus)="handleReviewrStatus($event)" [role]="role"></app-question-creation-header>
   <form #mcqFormControl="ngForm" class="ui form mcq-vertical mt-8" *ngIf="!showPreview">
     <div class="field mcq-title">
