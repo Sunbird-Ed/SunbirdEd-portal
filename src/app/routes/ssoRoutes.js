@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const jwt = require('jsonwebtoken')
-const {verifySignature, verifyToken, fetchUserWithExternalId, createUser, createSession, updateContact, updateRoles, sendSsoKafkaMessage} = require('./../helpers/ssoHelper');
+const {verifySignature, verifyToken, fetchUserWithExternalId, createUser, createSession, updateContact, updateRoles, sendSsoKafkaMessage, migrateUser} = require('./../helpers/ssoHelper');
 const telemetryHelper = require('../helpers/telemetryHelper');
 const fs = require('fs');
 
@@ -43,64 +43,39 @@ module.exports = (app) => {
   });
 
   app.get('/v1/sso/contact/verified', async (req, res) => {
-    let userDetails, jwtPayload, redirectUrl, errType, createUserReq, updateContactDetailsReq, updateRolesReq;
+    let userDetails, jwtPayload, redirectUrl, errType;
     jwtPayload = req.session.jwtPayload; // fetch from session
     userDetails = req.session.userDetails; // fetch from session
     try {
-      if (_.isEmpty(jwtPayload) || !req.query.type || !req.query.value || !['phone', 'email'].includes(req.query.type)) {
+      if (_.isEmpty(jwtPayload) && ((!['phone', 'email'].includes(req.query.type) && !req.query.value) || req.query.userId)) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
       }
-      if (req.query.userExist && req.query.userExist.toLowerCase() === 'yes') {
-        // make migrate api call
-      } else if(!_.isEmpty(userDetails) && !userDetails[req.query.type]) { // existing user without phone
-        errType = 'UPDATE_CONTACT_DETAILS';
-        if(req.query.type === 'phone'){
-          updateContactDetailsReq = {
-            userId: userDetails.id,
-            phone: req.query.value,
-            phoneVerified: true
-          }
-        } else {
-          updateContactDetailsReq = {
-            userId: userDetails.id,
-            email: req.query.value,
-            emailVerified: true
-          }
+      if (_.isEmpty(userDetails) && req.query.userId) { // migrate user to sso org
+        errType = 'MIGRATE_USER';
+        await migrateUser(req, jwtPayload)
+        await delay();
+        userDetails = await fetchUserWithExternalId(jwtPayload, req); // to get userName
+        if(_.isEmpty(userDetails)){
+          errType = 'USER_DETAILS_EMPTY';
+          throw 'USER_DETAILS_IS_EMPTY';
         }
-        await updateContact(updateContactDetailsReq, req).catch(handleProfileUpdateError); // api need to be verified
-        console.log('sso phone updated successfully and redirected to success page', jwtPayload.state_id, req.query.phone, jwtPayload, userDetails, createUserReq, updateContactDetailsReq, updateRolesReq, redirectUrl, errType);
+        req.session.userDetails = userDetails;
+        console.log('sso migrate user successfully and redirected to success page', jwtPayload.state_id, req.query.phone, jwtPayload, userDetails, redirectUrl, errType);
+
+      } else if(!_.isEmpty(userDetails) && !userDetails[req.query.type]) { // existing user without phone
+
+        errType = 'UPDATE_CONTACT_DETAILS';
+        await updateContact(req, userDetails).catch(handleProfileUpdateError); // api need to be verified
+        console.log('sso phone updated successfully and redirected to success page', jwtPayload.state_id, req.query.phone, jwtPayload, userDetails, redirectUrl, errType);
+
       } else if (_.isEmpty(userDetails)) { // create user and update roles
         errType = 'CREATE_USER';
-        createUserReq = {
-          firstName: jwtPayload.name,
-          channel: jwtPayload.state_id,
-          orgExternalId: jwtPayload.school_id,
-          externalIds: [{
-            id: jwtPayload.sub,
-            provider: jwtPayload.state_id,
-            idType: jwtPayload.state_id
-          }]
-        }
-        if(req.query.type === 'phone'){
-          createUserReq.phone = req.query.value;
-          createUserReq.phoneVerified = true
-        } else {
-          createUserReq.email = req.query.value;
-          createUserReq.emailVerified = true
-        }
-        const newUserID = await createUser(createUserReq, req).catch(handleProfileUpdateError);
+        const newUserDetails = await createUser(req, jwtPayload).catch(handleProfileUpdateError);
         await delay();
-        console.log('sso new user create response', newUserID);
         if (jwtPayload.roles && jwtPayload.roles.length) {
           errType = 'UPDATE_USER_ROLES';
-          updateRolesReq = {
-            userId: newUserID.result.userId,
-            externalId: jwtPayload.school_id,
-            provider: jwtPayload.state_id,
-            roles: jwtPayload.roles
-          }
-          await updateRoles(updateRolesReq, req).catch(handleProfileUpdateError);
+          await updateRoles(req, newUserDetails.result.userId, jwtPayload).catch(handleProfileUpdateError);
         }
         errType = 'FETCH_USER_AFTER_CREATE';
         userDetails = await fetchUserWithExternalId(jwtPayload, req); // to get userName
@@ -109,12 +84,12 @@ module.exports = (app) => {
           throw 'USER_DETAILS_IS_EMPTY';
         }
         req.session.userDetails = userDetails;
-        console.log('sso user creation and role updated successfully and redirected to success page', jwtPayload.state_id, req.query.phone, jwtPayload, userDetails, createUserReq, updateContactDetailsReq, updateRolesReq, redirectUrl, errType);
+        console.log('sso user creation and role updated successfully and redirected to success page', jwtPayload.state_id, req.query.phone, jwtPayload, userDetails, redirectUrl, errType);
       }
       redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
     } catch (error) {
       redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
-      console.log('sso user creation/phone update failed, redirected to error page', jwtPayload.state_id, errType, req.query.phone, error, userDetails, jwtPayload, redirectUrl, createUserReq, updateContactDetailsReq, updateRolesReq);
+      console.log('sso user creation/phone update failed, redirected to error page', jwtPayload.state_id, errType, req.query.phone, error, userDetails, jwtPayload, redirectUrl);
       logErrorEvent(req, errType, error);
     } finally {
       res.redirect(redirectUrl || errorUrl);
