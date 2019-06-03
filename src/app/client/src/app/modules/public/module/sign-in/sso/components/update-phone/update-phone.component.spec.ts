@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UpdatePhoneComponent } from './update-phone.component';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -24,7 +25,7 @@ describe('UpdatePhoneComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(),
+      imports: [SharedModule.forRoot(), CoreModule, FormsModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(),
         RouterTestingModule],
       declarations: [ UpdatePhoneComponent ],
       schemas: [NO_ERRORS_SCHEMA],
