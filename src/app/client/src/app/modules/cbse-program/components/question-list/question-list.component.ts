@@ -20,12 +20,12 @@ export class QuestionListComponent implements OnInit,OnChanges{
   public questionMetaData: any;
   public refresh = true;
   public showLoader = true;
-  public enableRoleChange: boolean = false;
+  public enableRoleChange = false;
   constructor(private configService: ConfigService, private userService: UserService, private publicDataService: PublicDataService,
     public actionService: ActionService, private cdr: ChangeDetectorRef, public toasterService: ToasterService,
     public telemetryService: TelemetryService) {
   }
-  ngOnChanges(changedProps: any){
+  ngOnChanges(changedProps: any) {
     if (this.enableRoleChange) {
       this.fetchQuestionWithRole();
     }
@@ -64,6 +64,9 @@ export class QuestionListComponent implements OnInit,OnChanges{
     };
     if (isReviewer) {
       delete req.data.request.filters.createdBy;
+      if (this.selectedAttributes.selectedSchoolForReview) {
+        req.data.request.filters['organisation'] = this.selectedAttributes.selectedSchoolForReview;
+      }
       req.data.request.filters.status = ['Review'];
     }
     this.publicDataService.post(req).pipe(tap(data => this.showLoader = false))

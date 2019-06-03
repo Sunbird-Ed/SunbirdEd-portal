@@ -43,15 +43,15 @@
       </form>
   </div>
   <div class="actions">
-    <div class="ui left floated buttons">
-      <button (click)="addComment();" 
-      appTelemetryInteract [telemetryInteractEdata]="{id:'addComment',type:'click',pageid:'question_create'}"
-      class="ui primary button">Add Comment</button>
-    </div>
-    <div class="ui buttons">
+    <!-- <div class="ui left floated buttons">
       <button (click)="dismissCommentPopup();" 
-      appTelemetryInteract [telemetryInteractEdata]="{id:'cancel',type:'click',pageid:'question_create'}"
-      class="ui button">Cancel</button>
+        appTelemetryInteract [telemetryInteractEdata]="{id:'cancel',type:'click',pageid:'question_create'}"
+        class="ui button">Cancel</button>
+    </div> -->
+    <div class="ui buttons">
+      <button (click)="addComment();" 
+        appTelemetryInteract [telemetryInteractEdata]="{id:'addComment',type:'click',pageid:'question_create'}"
+        class="ui primary button">Add Comment</button>
     </div>
   </div>
   </sui-modal>

@@ -23,8 +23,9 @@
   </div>
 
   <div class="nine wide column bg-white p-0">
-    <div *ngIf="!questionList.length && questionMetaData?.mode !== 'create'" class="ui segment">No Question - Click
+    <div *ngIf="!questionList.length && questionMetaData?.mode !== 'create' && role.currentRole === 'CONTRIBUTOR'" class="ui segment">No Question - Click
       Create</div>
+    <div *ngIf="!questionList.length && role.currentRole === 'REVIEWER'" class="ui segment">No Questions for Review </div>
     <div *ngIf="(questionList.length || questionMetaData?.mode === 'create')&& refresh && !showLoader">
       <div *ngIf="selectedAttributes.questionType === 'mcq'">
         <app-mcq-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" [role] = "role"

@@ -17,6 +17,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
   @Input() topicList: any;
   @Input() role: any;
   @Output() selectedQuestionTypeTopic = new EventEmitter<any>();
+  @Input() selectedSchool: any;
 
   public textBookChapters: Array<any> = [];
   private questionType = ['vsa', 'sa', 'la', 'mcq'];
@@ -36,9 +37,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
     private userService: UserService, public actionService: ActionService,
     public toasterService: ToasterService, public router: Router) {
   }
-  private labelsHandler(){
+  private labelsHandler() {
     this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] : ['Total', 'Created by me'] ;
-    console.log(this.labels);
   }
   ngOnInit() {
     this.labelsHandler();
@@ -57,7 +57,13 @@ export class ChapterListComponent implements OnInit, OnChanges {
   ngOnChanges(changed: any) {
     this.labelsHandler();
     if (this.textBookMeta) {
-      this.showChapterList( this.textBookMeta);
+      if (changed.selectedSchool &&
+        changed.selectedSchool.currentValue !== changed.selectedSchool.previousValue) {
+          this.selectedAttributes.selectedSchoolForReview = changed.selectedSchool.currentValue;
+        this.showChapterList(this.textBookMeta);
+      } else {
+        this.showChapterList(this.textBookMeta);
+      }
     }
   }
 
@@ -91,8 +97,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
       apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields)),
         ...this.questionType.map(fields => this.searchQuestionsByType(fields, this.userService.userid))];
     } else if (this.selectedAttributes.currentRole === 'REVIEWER') {
-      apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields,"",'Review')),
-      ...this.questionType.map(fields => this.searchQuestionsByType(fields,"",'Live')) ];
+      apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields, '', 'Review')),
+      ...this.questionType.map(fields => this.searchQuestionsByType(fields, '', 'Live')) ];
     }
     if (!apiRequest) {
       this.showLoader = false;
@@ -152,6 +158,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
     }
     if (status) {
       req.data.request.filters['status'] = status;
+      req.data.request.filters['organisation'] = this.selectedAttributes.selectedSchoolForReview;
     }
     return this.publicDataService.post(req).pipe(
       map(res => _.get(res, 'result.facets[0].values')));

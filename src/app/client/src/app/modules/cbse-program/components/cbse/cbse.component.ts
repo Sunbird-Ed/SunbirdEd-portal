@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { FrameworkService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { first } from 'rxjs/operators';
@@ -19,7 +19,8 @@ interface ISelectedAttributes {
     currentRole?: string;
     bloomsLevel?: Array<any>;
     topicList?: Array<any>;
-    school?: string;
+    onBoardSchool?: string;
+    selectedSchoolForReview?: string;
 }
 
 @Component({
@@ -27,17 +28,17 @@ interface ISelectedAttributes {
   templateUrl: './cbse.component.html',
   styleUrls: ['./cbse.component.scss']
 })
-export class CbseComponent implements OnInit {
+export class CbseComponent implements OnInit, OnDestroy {
 
+  @ViewChild('modal') private modal;
   @Input() programDetails: any;
   @Input() userProfile: any;
+  formFieldOptions: Array<any>;
   public selectedAttributes: ISelectedAttributes = {};
   public stages: Array<string> = ['chooseClass', 'chooseTextbook', 'topicList', 'createQuestion'];
   public currentStage = 0;
   public role: any = {};
   constructor(public frameworkService: FrameworkService) { }
-
-
 
   ngOnInit() {
     this.selectedAttributes = {
@@ -49,9 +50,10 @@ export class CbseComponent implements OnInit {
       bloomsLevel: _.get(this.programDetails, 'config.scope.bloomsLevel'),
       programId: _.get(this.programDetails, 'programId'),
       program: _.get(this.programDetails, 'name'),
-      school: _.get(this.programDetails, 'userDetails.onBoardingData.school')
+      onBoardSchool: _.get(this.programDetails, 'userDetails.onBoardingData.school')
     };
-    this.role.currentRole= this.selectedAttributes.currentRole;
+    this.role.currentRole = this.selectedAttributes.currentRole;
+    this.formFieldOptions = _.get(this.programDetails, 'config.onBoardForm.fields');
     this.fetchFrameWorkDetails();
   }
 
@@ -73,7 +75,7 @@ export class CbseComponent implements OnInit {
   }
   handleRoleChange() {
     this.role = Object.assign({},{currentRole :this.selectedAttributes.currentRole});
-  } 
+  }
   public fetchFrameWorkDetails() {
     this.frameworkService.initialize(this.selectedAttributes.framework);
     this.frameworkService.frameworkData$.pipe(first()).subscribe((frameworkDetails: any) => {
@@ -88,6 +90,11 @@ export class CbseComponent implements OnInit {
       this.currentStage = this.currentStage + 1;
     } else if (step === 'prev') {
       this.currentStage = this.currentStage - 1;
+    }
+  }
+  ngOnDestroy() {
+    if (this.modal && this.modal.deny) {
+      this.modal.deny();
     }
   }
 }
