@@ -98,14 +98,4 @@ describe('MainHeaderComponent', () => {
     component.ngOnInit();
     expect(cacheService.exists('portalLanguage')).toEqual(false);
   });
-  it('Should call navigateToHome and redirect to tenant page if user is not  authenticated ', () => {
-    const userService = TestBed.get(UserService);
-    spyOn(component, 'navigateToHome').and.callThrough();
-    userService._authenticated = false;
-    fixture.whenStable().then(() => {
-      const anchor = fixture.debugElement.nativeElement.querySelector('a');
-      anchor.click();
-      expect(window.location.href).toBe(' http://localhost:9876/context.html ');
-    });
-  });
 });
