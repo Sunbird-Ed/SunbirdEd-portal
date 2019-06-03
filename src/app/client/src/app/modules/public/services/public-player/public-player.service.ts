@@ -85,7 +85,7 @@ export class PublicPlayerService {
     if (environment.isOffline) {
       configuration.data = '';
     }
-    if (environment.isOffline && !navigator.onLine) {
+    if (environment.isOffline) {
       configuration.metadata = _.omit(configuration.metadata, ['streamingUrl']);
     }
     if (option.dialCode) {
@@ -95,7 +95,6 @@ export class PublicPlayerService {
       }];
     }
     configuration.config.previewCdnUrl = this.previewCdnUrl;
-    console.log('player config', configuration.config);
     return configuration;
   }
   public getCollectionHierarchy(identifier: string, option: any = { params: {} }): Observable<CollectionHierarchyAPI.Get> {
