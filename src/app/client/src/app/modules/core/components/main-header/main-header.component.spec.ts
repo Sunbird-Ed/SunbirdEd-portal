@@ -12,7 +12,6 @@ import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } 
 // import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
-import { Router } from '@angular/router';
 
 describe('MainHeaderComponent', () => {
   let component: MainHeaderComponent;
@@ -99,15 +98,14 @@ describe('MainHeaderComponent', () => {
     component.ngOnInit();
     expect(cacheService.exists('portalLanguage')).toEqual(false);
   });
-  it('Should call navigateToHome and redirect to resource if user is loggedIn ', () => {
+  it('Should call navigateToHome and redirect to tenant page if user is not  authenticated ', () => {
     const userService = TestBed.get(UserService);
-    const router = TestBed.get(Router);
     spyOn(component, 'navigateToHome').and.callThrough();
-    userService._authenticated = true;
+    userService._authenticated = false;
     fixture.whenStable().then(() => {
       const anchor = fixture.debugElement.nativeElement.querySelector('a');
       anchor.click();
-      expect(router.navigate).toHaveBeenCalledWith(['resources']);
+      expect(window.location.href).toBe('http://localhost:9876/context.html');
     });
   });
 });
