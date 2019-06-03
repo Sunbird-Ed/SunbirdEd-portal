@@ -26,19 +26,17 @@ export class QuestionListComponent implements OnInit,OnChanges{
     public telemetryService: TelemetryService) {
   }
   ngOnChanges(changedProps: any){
-
-    // console.log('changes detected in question list',this.role);
-    if(this.enableRoleChange){
-      this.fetchQuestionWithRole()
+    if (this.enableRoleChange) {
+      this.fetchQuestionWithRole();
     }
   }
   ngOnInit() {
     console.log('changes detected in question list',this.role);
-    this.fetchQuestionWithRole()
+    this.fetchQuestionWithRole();
     this.enableRoleChange = true;
   }
-  private fetchQuestionWithRole(){
-    (this.role.currentRole == "REVIEWER") ? this.fetchQuestionList(true): this.fetchQuestionList();
+  private fetchQuestionWithRole() {
+    (this.role.currentRole === 'REVIEWER') ? this.fetchQuestionList(true) : this.fetchQuestionList();
   }
   private fetchQuestionList(isReviewer?: boolean ) {
     const req = {
@@ -66,6 +64,7 @@ export class QuestionListComponent implements OnInit,OnChanges{
     };
     if (isReviewer) {
       delete req.data.request.filters.createdBy;
+      req.data.request.filters.status = ['Review'];
     }
     this.publicDataService.post(req).pipe(tap(data => this.showLoader = false))
     .subscribe((res) => {
@@ -153,6 +152,9 @@ export class QuestionListComponent implements OnInit,OnChanges{
       if  (event.type === 'update') {
         delete this.questionReadApiDetails[event.identifier];
         this.handleQuestionTabChange(this.selectedQuestionId);
+      } if  (event.type === 'Reject' || event.type === 'Live') {
+        this.showLoader = true;
+        setTimeout(() => this.fetchQuestionList(true), 2000);
       } else {
         this.showLoader = true;
         setTimeout(() => this.fetchQuestionList(), 2000);

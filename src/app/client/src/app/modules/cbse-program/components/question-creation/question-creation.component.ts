@@ -71,6 +71,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   errorMsg: string;
   topicName: string;
   learningOutcomeOptions = [];
+  updateStatus = 'update';
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
   ngOnInit() {
     this.initialized = true;
@@ -99,9 +100,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         // this.questionMetaForm.controls.maxScore.setValue(this.questionMetaData.data.maxScore);
         this.mediaArr = this.questionMetaData.data.media || [];
     }
-    if(this.role.currentRole == 'REVIEWER'){
+    if (this.role.currentRole === 'REVIEWER') {
       this.showPreview = true;
-      this.buttonTypeHandler('preview')
+      this.buttonTypeHandler('preview');
     }
   }
 
@@ -132,10 +133,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.questionMetaForm.reset();
       }
     }
-    if(this.role.currentRole == 'REVIEWER'){
+    if (this.role.currentRole === 'REVIEWER') {
       this.showPreview = true;
       // this.buttonTypeHandler('preview')
-    }else{      
+    } else {
       this.showPreview = false;
     }
   }
@@ -177,8 +178,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       }
     });
   }
-  handleReviewrStatus(event){
-    this.updateQuestion([{key:'status', value: event}])
+  handleReviewrStatus(event) {
+    this.updateQuestion([{key: 'status', value: event.status}, {key: 'rejectComment', value: event.rejectComment}]);
   }
   buttonTypeHandler(event) {
     if (event === 'preview') {
@@ -220,7 +221,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     .subscribe((res) => {
       this.body = res[0];
       this.solution = res[1];
-
+      let creator = this.userProfile.firstName;
+      if (!_.isEmpty(this.userProfile.lastName)) {
+        creator = this.userProfile.firstName + ' ' + this.userProfile.lastName;
+      }
       const req = {
         url: this.configService.urlConFig.URLS.ASSESSMENT.CREATE,
         data: {
@@ -229,6 +233,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
               'objectType': 'AssessmentItem',
               'metadata': {
                 'createdBy': this.userService.userid,
+                'creator': creator,
+                'createdFor': this.selectedAttributes.school ? [this.selectedAttributes.school] : [],
                 'code': UUID.UUID(),
                 'type': 'reference',
                 'category': this.selectedAttributes.questionType.toUpperCase(),
@@ -324,14 +330,13 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         if (optionalParams) {
           _.forEach(optionalParams, (param) => {
             option.data.request.assessment_item.metadata[param.key] = param.value;
-            console.log(option.data.request.assessment_item.metadata[param.key]);
+            if (param.key === 'status') {
+              this.updateStatus = param.value;
+            }
           });
         }
         this.actionService.patch(option).subscribe((res) => {
-          this.questionStatus.emit({'status': 'success', 'type': 'update', 'identifier': this.questionMetaData.data.identifier});
-          if (res.responseCode === 'OK' ) {
-            this.statusEmitter.emit('refreshQuestionList');
-          }
+          this.questionStatus.emit({'status': 'success', 'type': this.updateStatus, 'identifier': this.questionMetaData.data.identifier});
         }, error => {
             this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question update failed');
             const telemetryErrorData = {
