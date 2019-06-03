@@ -7,10 +7,10 @@ import { ResourceService, ToasterService, NavigationHelperService } from '@sunbi
 import * as _ from 'lodash-es';
 
 @Component({
-  templateUrl: './update-phone.component.html',
-  styleUrls: ['./update-phone.component.scss']
+  templateUrl: './update-contact.component.html',
+  styleUrls: ['./update-contact.component.scss']
 })
-export class UpdatePhoneComponent implements OnInit, AfterViewInit {
+export class UpdateContactComponent implements OnInit, AfterViewInit {
   @ViewChild('contactDetailsForm') private contactDetailsForm;
   public telemetryImpression;
   public submitPhoneInteractEdata;
@@ -127,9 +127,9 @@ export class UpdatePhoneComponent implements OnInit, AfterViewInit {
   public handleOtpValidationSuccess() {
     let query: any = {
       type: this.contactForm.type,
-      value: this[this.contactForm.type]
+      value: this.contactForm.value
     };
-    if (_.isEmpty(this.userDetails)) {
+    if (!_.isEmpty(this.userDetails)) {
       query = {
         userId: this.userDetails.id
       };
