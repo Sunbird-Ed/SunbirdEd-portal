@@ -89,10 +89,12 @@ describe('PublicContentPlayerComponent', () => {
   });
   it('should call tryAgain method', () => {
     const windowScrollService = TestBed.get(WindowScrollService);
+    const playerService = TestBed.get(PublicPlayerService);
     spyOn(windowScrollService, 'smoothScroll');
+    spyOn(playerService, 'getContent').and.returnValue(observableOf(serverRes.result));
     spyOn(component, 'tryAgain').and.callThrough();
     spyOn(component, 'getContent').and.callThrough();
-    component.ngOnInit();
+    component.contentId = 'd0_33567325';
     component.tryAgain();
     expect(component.showError).toBeFalsy();
     expect(component.getContent).toHaveBeenCalled();
