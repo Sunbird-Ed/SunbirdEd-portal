@@ -1,8 +1,8 @@
-<div class="sb-card disable-card" *ngIf="data" appTelemetryInteract [telemetryInteractObject]="{id:data.metaData.identifier,type:data.telemetryObjectType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion.toString():'1.0'}"
+<div class="sb-card bs-0 disable-card" *ngIf="data" appTelemetryInteract
+  [telemetryInteractObject]="{id:data.metaData.identifier,type:data.telemetryObjectType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion.toString():'1.0'}"
   [telemetryInteractEdata]="data.telemetryInteractEdata" [telemetryInteractCdata]="telemetryCdata" tabindex="0">
   <!--Body-->
-  <div class="sb-card-body">
-
+  <div class="sb-card-body br-top">
     <!--Metas-->
     <div class="sb-card-metas">
       <!--Image-->
@@ -29,8 +29,8 @@
         <div class="d-flex mb-auto">
           <div class="sb-card-label" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">
             {{data.ribbon.right.name}}</div>
-          <img src="{{data.ribbon.left.image}}" class="sb-card-badge ml-auto" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image"
-            alt="{{data.ribbon.left.name}}">
+          <img src="{{data.ribbon.left.image}}" class="sb-card-badge ml-auto"
+            *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image" alt="{{data.ribbon.left.name}}">
         </div>
         <div class="sb-card-meta-item ellipsis" *ngIf="data.subject" title="{{data.subject}}">
           {{resourceService.frmelmnts.lbl.subject}} : {{data.subject}}
@@ -63,28 +63,33 @@
   <!--/Body-->
 
   <!--Progress Bar-->
-  <div class="sb-card-progressbar">
-    <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount" *ngIf="data.maxCount && data.progress > 0"></sui-progress>
+  <div class="sb-card-progressbar" *ngIf="data.maxCount && data.progress > 0">
+    <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount"
+      ></sui-progress>
   </div>
   <!--/Progress Bar-->
+
+  <!-- <div class="btn-div play-btn">
+    <button class="sb-btn p-0 sb-btn-secondary">
+        <i class="caret right icon"></i> {{resourceService?.frmelmnts?.lbl?.playContent}}
+      </button>
+  </div> -->
+
   <div class="sb-card-hover" *ngIf="hover">
     <div class="sb-card-hover-content">
       <div>
-        <div (click)="onAction(data,data.action.onImage)" *ngIf="checkOfflineRoutes === 'library'"
-          class="d-flex flex-jc-center">
+        <div (click)="onAction(data,data.action.onImage)" *ngIf="checkOfflineRoutes === 'library'" class="d-flex flex-jc-center">
           <button class="sb-btn sb-btn-outline-white sb-btn-normal">{{resourceService.frmelmnts?.lbl?.open}}</button>
-        </div>
-        <button (click)="onAction(data,'export')" *ngIf="checkOfflineRoutes === 'library'"
-          class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">{{resourceService.frmelmnts?.btn?.export}}<i
-            class="sign in alternate icon"></i></button>
-        <button id="download_{{data.metaData.identifier}}" [ngClass]="{'disable': contentId === data.metaData.identifier}"
-          (click)="onAction(data,'browse')" *ngIf="checkOfflineRoutes === 'browse' && data?.addedToLibrary !== true"
-          class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">
-          {{resourceService.frmelmnts?.btn?.addToLibrary}}<i class="sign in alternate icon"></i></button>
-        <button *ngIf="data?.addedToLibrary === true && checkOfflineRoutes === 'browse' "
-          class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16" disabled>
-          {{resourceService.frmelmnts?.btn?.addedToLibrary}}
-          <i class="sign in alternate icon"></i></button>
+          </div>
+          <button (click)="onAction(data,'export')" *ngIf="checkOfflineRoutes === 'library'" class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">{{resourceService.frmelmnts?.btn?.export}}<i
+              class="sign in alternate icon"></i></button>
+          <button id="download_{{data.metaData.identifier}}" [ngClass]="{'disable': contentId === data.metaData.identifier}" (click)="onAction(data,'browse')"
+            *ngIf="checkOfflineRoutes === 'browse' && data?.addedToLibrary !== true" class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">
+            {{resourceService.frmelmnts?.btn?.addToLibrary}}<i class="sign in alternate icon"></i></button>
+          <button *ngIf="data?.addedToLibrary === true && checkOfflineRoutes === 'browse' " class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16"
+            disabled>
+            {{resourceService.frmelmnts?.btn?.addedToLibrary}}
+            <i class="sign in alternate icon"></i></button>
       </div>
     </div>
   </div>

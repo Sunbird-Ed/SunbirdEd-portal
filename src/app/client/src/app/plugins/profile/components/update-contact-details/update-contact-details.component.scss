@@ -39,3 +39,19 @@
 .height-200 {
     height: 200px !important;
 }
+
+.sb-field.ui.input{
+    display: block;
+    .icon{
+        left: 5px;
+        top: 9px;
+    }
+    .sb-form-control{
+        border: $sb-input-border-normal;
+        line-height: 1.5;
+        padding: 0.5714rem;
+        &:hover {
+            border: $sb-input-border-hover; 
+        }
+    }
+}

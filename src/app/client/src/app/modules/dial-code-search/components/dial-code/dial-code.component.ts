@@ -7,6 +7,9 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, Telem
 import { takeUntil, map, catchError, mergeMap } from 'rxjs/operators';
 import { Subject, forkJoin, of } from 'rxjs';
 import * as TreeModel from 'tree-model';
+import { environment } from '@sunbird/environment';
+import { DownloadManagerService } from './../../../offline/services';
+
 const treeModel = new TreeModel();
 
 @Component({
@@ -40,11 +43,15 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   public isRedirectToDikshaApp = false;
   public closeMobilePopupInteractData: any;
   public appMobileDownloadInteractData: any;
+  isOffline: boolean = environment.isOffline;
+  showExportLoader = false;
+  contentName: string;
 
   constructor(public resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
     public searchService: SearchService, public toasterService: ToasterService, public configService: ConfigService,
     public utilService: UtilService, public navigationhelperService: NavigationHelperService,
-    public playerService: PlayerService, public telemetryService: TelemetryService) {
+    public playerService: PlayerService, public telemetryService: TelemetryService,
+    public downloadManagerService: DownloadManagerService) {
   }
 
   ngOnInit() {
@@ -122,6 +129,18 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public getEvent(event) {
+
+    // For offline envirnoment content will not play if action not open. It will get downloaded
+    if (_.includes(this.router.url, 'browse') && this.isOffline) {
+      this.startDownload(event.data.metaData.identifier);
+      return false;
+    } else if (event.action === 'export' && this.isOffline) {
+      this.showExportLoader = true;
+      this.contentName = event.data.name;
+      this.exportOfflineContent(event.data.metaData.identifier);
+      return false;
+    }
+
     if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
       this.router.navigate(['play/collection', event.data.metaData.identifier],
         { queryParams: { dialCode: this.dialCode, l1Parent: event.data.metaData.l1Parent } });
@@ -229,5 +248,35 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     setTimeout(() => {
       this.showMobilePopup = true;
     }, 500);
+  }
+
+  startDownload (contentId) {
+    this.downloadManagerService.downloadContentId = contentId;
+    this.downloadManagerService.startDownload({}).subscribe(data => {
+      this.downloadManagerService.downloadContentId = '';
+      _.find(this.itemsToDisplay, (ele) => {
+        if (ele.metaData.identifier === contentId) {
+          ele['addedToLibrary'] = true;
+        }
+      });
+    }, error => {
+      this.downloadManagerService.downloadContentId = '';
+      this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+    });
+  }
+
+  exportOfflineContent(contentId) {
+    this.downloadManagerService.exportContent(contentId).subscribe(data => {
+      const link = document.createElement('a');
+      link.href = data.result.response.url;
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      this.showExportLoader = false;
+    }, error => {
+      this.showExportLoader = false;
+      this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+    });
   }
 }
