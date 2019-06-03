@@ -15,12 +15,28 @@
 
   <div class="ui container" *ngIf="stages[currentStage] === 'chooseTextbook' || stages[currentStage] === 'topicList' ">
       <div class="sb-pageSection">
-        <div class="sb-pageSection-header">
-          <h4 class="sb-pageSection-title m-0 mr-8">Searched results for </h4>
-          <span
-            class="sb-pageSection-count sb-label sb-label-xs sb-label-warning mr-8">{{selectedAttributes.gradeLevel}}</span>
-          <span
-            class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.subject}}</span>
+        <div class="sb-pageSection-header d-flex flex-jc-space-between">
+          <div>
+              <h4 class="sb-pageSection-title m-0 mr-8">Searched results for </h4>
+              <span
+                class="sb-pageSection-count sb-label sb-label-xs sb-label-warning mr-8">{{selectedAttributes.gradeLevel}}</span>
+              <span
+                class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.subject}}</span>
+          </div>
+          <div *ngIf="stages[currentStage] === 'topicList' && role.currentRole === 'REVIEWER'">
+            <div *ngFor="let field of formFieldOptions">
+                <div *ngIf="field.inputType ==='select' && field.code === 'school'" class="field d-flex flex-jc-center flex-as-center">
+                  <label>{{field.label}}</label>
+                  <div class="field">
+                    <sui-select [isSearchable]="true" id={{field.code}} name={{field.code}} class="selection" 
+                      [(ngModel)]="selectedSchoolForReview" labelField="name" valueField="name"
+                      [options]="field.range" #select>
+                      <sui-select-option *ngFor="let option of select.filteredOptions" [value]="option"></sui-select-option>
+                    </sui-select>
+                  </div>
+                </div>
+              </div> 
+          </div>      
           <button (click)="navigate('prev')" 
           appTelemetryInteract [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage]}"
           class="sb-btn sb-btn-xs sb-btn-error ml-auto">Back <i class="chevron circle left icon"></i></button>
@@ -31,14 +47,13 @@
             (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-textbook-list>
         </div>
         <div *ngIf="stages[currentStage] === 'topicList'">
-            <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes" [role]="role"
+            <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes" [selectedSchool]="selectedSchoolForReview" [role]="role"
             (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list>
         </div>
     </div>
 
 
     <div class="ui container" *ngIf="stages[currentStage] === 'createQuestion'">
-
         <div class="sb-pageSection">
             <div class="sb-pageSection-header">
               <h4 class="sb-pageSection-title m-0 mr-8">Searched results for</h4>

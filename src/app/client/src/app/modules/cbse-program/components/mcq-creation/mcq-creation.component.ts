@@ -292,7 +292,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
                 'metadata': {
                   'createdBy': this.userService.userid,
                   'creator': creator,
-                  'createdFor': this.selectedAttributes.school ? [this.selectedAttributes.school] : [],
+                  'organisation': this.selectedAttributes.onBoardSchool ? [this.selectedAttributes.onBoardSchool] : [],
                   'code': UUID.UUID(),
                   'type': this.selectedAttributes.questionType,
                   'category': this.selectedAttributes.questionType.toUpperCase(),
