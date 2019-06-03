@@ -1,36 +1,36 @@
 const express = require('express'),
-fs = require('fs'),
-request = require('request'),
-compression = require('compression'),
-MobileDetect = require('mobile-detect'),
-_ = require('lodash'),
-path = require('path'),
-envHelper = require('../helpers/environmentVariablesHelper.js'),
-tenantHelper = require('../helpers/tenantHelper.js'),
-defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState(),
-oneDayMS = 86400000,
-pathMap = {}
+  fs = require('fs'),
+  request = require('request'),
+  compression = require('compression'),
+  MobileDetect = require('mobile-detect'),
+  _ = require('lodash'),
+  path = require('path'),
+  envHelper = require('../helpers/environmentVariablesHelper.js'),
+  tenantHelper = require('../helpers/tenantHelper.js'),
+  defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState(),
+  oneDayMS = 86400000,
+  pathMap = {}
 
 const setZipConfig = (req, res, type, encoding, dist = '../') => {
-    if (pathMap[req.path + type] && pathMap[req.path + type] === 'notExist') {
-      return false;
+  if (pathMap[req.path + type] && pathMap[req.path + type] === 'notExist') {
+    return false;
+  }
+  if (pathMap[req.path + '.' + type] === 'exist' ||
+    fs.existsSync(path.join(__dirname, dist) + req.path + '.' + type)) {
+    if (req.path.endsWith('.css')) {
+      res.set('Content-Type', 'text/css');
+    } else if (req.path.endsWith('.js')) {
+      res.set('Content-Type', 'text/javascript');
     }
-    if(pathMap[req.path + '.'+ type] === 'exist' ||
-      fs.existsSync(path.join(__dirname, dist) + req.path + '.' + type)){
-        if (req.path.endsWith('.css')) {
-          res.set('Content-Type', 'text/css');
-        } else if (req.path.endsWith('.js')) {
-          res.set('Content-Type', 'text/javascript');
-        }
-        req.url = req.url + '.' + type;
-        res.set('Content-Encoding', encoding);
-        pathMap[req.path + type] = 'exist';
-        return true
-    } else {
-      pathMap[req.path + type] = 'notExist';
-      console.log('zip file not exist for: ', req.url, type)
-      return false;
-    }
+    req.url = req.url + '.' + type;
+    res.set('Content-Encoding', encoding);
+    pathMap[req.path + type] = 'exist';
+    return true
+  } else {
+    pathMap[req.path + type] = 'notExist';
+    console.log('zip file not exist for: ', req.url, type)
+    return false;
+  }
 }
 module.exports = (app, keycloak) => {
   app.set('view engine', 'ejs')
@@ -38,11 +38,11 @@ module.exports = (app, keycloak) => {
   app.get(['*.js', '*.css'], (req, res, next) => {
     res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
     res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
-    if(req.get('Accept-Encoding').includes('br')){ // send br files
-      if(!setZipConfig(req, res, 'br', 'br') && req.get('Accept-Encoding').includes('gzip')){
+    if (req.get('Accept-Encoding').includes('br')) { // send br files
+      if (!setZipConfig(req, res, 'br', 'br') && req.get('Accept-Encoding').includes('gzip')) {
         setZipConfig(req, res, 'gz', 'gzip') // send gzip if br file not found
       }
-    } else if(req.get('Accept-Encoding').includes('gzip')){
+    } else if (req.get('Accept-Encoding').includes('gzip')) {
       setZipConfig(req, res, 'gz', 'gzip')
     }
     next();
@@ -54,7 +54,7 @@ module.exports = (app, keycloak) => {
       res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
       res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
       next()
-  })
+    })
 
   app.use(express.static(path.join(__dirname, '../dist'), { extensions: ['ejs'], index: false }))
 
@@ -76,10 +76,10 @@ module.exports = (app, keycloak) => {
     next()
   })
 
-  app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
+  app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode', '/get/dial/:dialCode', '/explore',
     '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course',
     '/explore-course/*', '/:slug/explore-course', '/:slug/explore-course/*',
-    '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*'], indexPage(false))
+    '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*'], redirectTologgedInPage, indexPage(false))
 
   app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode))
 
@@ -95,7 +95,7 @@ module.exports = (app, keycloak) => {
 
 function getLocals(req) {
   var locals = {}
-  if(req.loggedInRoute){
+  if (req.loggedInRoute) {
     locals.userId = _.get(req, 'session.userId') ? req.session.userId : null
     locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'session.userId') ? req.sessionID : null
   } else {
@@ -125,7 +125,7 @@ function getLocals(req) {
 }
 
 const indexPage = (loggedInRoute) => {
-  return function(req, res){
+  return function (req, res) {
     if (envHelper.DEFAULT_CHANNEL && req.path === '/') {
       renderTenantPage(req, res)
     } else {
@@ -142,20 +142,21 @@ const renderDefaultIndexPage = (req, res) => {
   } else {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
     res.locals = getLocals(req);
-    if(envHelper.hasCdnIndexFile && req.cookies.cdnFailed !== 'true'){ // assume cdn works and send cdn ejs file
+    if (envHelper.hasCdnIndexFile && req.cookies.cdnFailed !== 'true') { // assume cdn works and send cdn ejs file
       res.render(path.join(__dirname, '../dist', 'cdn_index.ejs'))
     } else { // load local file if cdn fails or cdn is not enabled
-      if(req.cookies.cdnFailed === 'true'){
+      if (req.cookies.cdnFailed === 'true') {
         console.log("CDN Failed - loading local files");
       }
       res.render(path.join(__dirname, '../dist', 'index.ejs'))
     }
   }
 }
+
 // renders tenant page from cdn or from local files based on tenantCdnUrl exists
 const renderTenantPage = (req, res) => {
   const tenantName = _.lowerCase(req.params.tenantName) || envHelper.DEFAULT_CHANNEL
-  if(req.query.cdnFailed === 'true') {
+  if (req.query.cdnFailed === 'true') {
     loadTenantFromLocal(req, res)
     return;
   }
@@ -176,6 +177,30 @@ const loadTenantFromLocal = (req, res) => {
   const tenantName = _.lowerCase(req.params.tenantName) || envHelper.DEFAULT_CHANNEL
   if (tenantName && fs.existsSync(path.join(__dirname, './../tenant', tenantName, 'index.html'))) {
     res.sendFile(path.join(__dirname, './../tenant', tenantName, 'index.html'))
+  } else {
+    renderDefaultIndexPage(req, res)
+  }
+}
+const redirectTologgedInPage = (req, res) => {
+  let redirectRoutes = { '/explore': '/resources', '/explore/1': '/search/Library/1', '/explore-course': '/learn', '/explore-course/1': '/search/Courses/1' };
+  if (req.params.slug) {
+    redirectRoutes = {
+      [`/${req.params.slug}/explore`]: '/resources',
+      [`/${req.params.slug}/explore-course`]: '/learn'
+    }
+  }
+  if (_.get(req, 'sessionID') && _.get(req, 'session.userId')) {
+    if (_.get(redirectRoutes, req.originalUrl)) {
+      const routes = _.get(redirectRoutes, req.originalUrl);
+      res.redirect(routes)
+    } else {
+      if (_.get(redirectRoutes,`/${req.originalUrl.split('/')[1]}`)) {
+        const routes = _.get(redirectRoutes,`/${req.originalUrl.split('/')[1]}`);
+        res.redirect(routes)
+      } else {
+        renderDefaultIndexPage(req, res)
+      }
+    }
   } else {
     renderDefaultIndexPage(req, res)
   }
