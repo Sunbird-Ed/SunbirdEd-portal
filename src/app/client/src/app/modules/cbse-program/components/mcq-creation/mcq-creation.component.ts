@@ -249,6 +249,11 @@ export class McqCreationComponent implements OnInit, OnChanges {
           });
         }
         this.actionService.patch(req).subscribe((res) => {
+          if (this.updateStatus === 'Live') {
+            this.toasterService.success('Question Accepted');
+          } else if (this.updateStatus === 'Reject') {
+            this.toasterService.success('Question Rejected');
+          }
           this.questionStatus.emit({'status': 'success', 'type': this.updateStatus, 'identifier': res.result.node_id});
         }, error => {
           this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');

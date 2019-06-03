@@ -341,6 +341,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
           });
         }
         this.actionService.patch(option).subscribe((res) => {
+          if (this.updateStatus === 'Live') {
+            this.toasterService.success('Question Accepted');
+          } else if (this.updateStatus === 'Reject') {
+            this.toasterService.success('Question Rejected');
+          }
           this.questionStatus.emit({'status': 'success', 'type': this.updateStatus, 'identifier': this.questionMetaData.data.identifier});
         }, error => {
             this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question update failed');

@@ -28,12 +28,12 @@
   </div>
 
   <div class="d-flex ml-auto"  *ngIf="role.currentRole === 'REVIEWER' && questionMetaData.data.status != 'Live' && questionMetaData.data.status != 'Reject' ">    
-        <button type="button" class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8"  
-        appTelemetryInteract [telemetryInteractEdata]="{id:'live_btn',type:'click',pageid:'question_create'}"
-        (click)="reviewerBtnclick($event, 'Live'); " >Live</button>
         <button type="button" class="sb-btn sb-btn-xs sb-btn-secondary sb-btn-error mr-8 " 
         appTelemetryInteract [telemetryInteractEdata]="{id:'reject_btn',type:'click',pageid:'question_create'}"
         (click)="reviewerBtnclick($event, 'Reject'); " >Reject</button>
+        <button type="button" class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8"  
+        appTelemetryInteract [telemetryInteractEdata]="{id:'live_btn',type:'click',pageid:'question_create'}"
+        (click)="reviewerBtnclick($event, 'Live'); " >Accept</button>
 </div>
 </div>
 <sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissCommentPopup()" *ngIf="showrejectCommentPopup" [size]="'normal'"
