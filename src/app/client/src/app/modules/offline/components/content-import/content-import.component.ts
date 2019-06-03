@@ -118,8 +118,4 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
   closeModal() {
     this.closeImportModal.emit('success');
   }
-  openFileBrowser() {
-    const element: HTMLElement = document.getElementById('selectFile') as HTMLElement;
-    element.click();
-  }
 }
