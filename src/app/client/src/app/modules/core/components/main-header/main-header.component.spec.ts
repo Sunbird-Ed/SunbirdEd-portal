@@ -105,7 +105,7 @@ describe('MainHeaderComponent', () => {
     fixture.whenStable().then(() => {
       const anchor = fixture.debugElement.nativeElement.querySelector('a');
       anchor.click();
-      expect(window.location.href).toBe('http://localhost:9876/context.html');
+      expect(window.location.href).toBe(' http://localhost:9876/context.html ');
     });
   });
 });
