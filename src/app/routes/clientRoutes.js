@@ -202,4 +202,4 @@ const redirectTologgedInPage = (req, res) => {
   } else {
     renderDefaultIndexPage(req, res)
   }
-}	
+}
