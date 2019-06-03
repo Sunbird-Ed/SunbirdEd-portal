@@ -2464,7 +2464,6 @@ i.blue.icon{
     max-width: 100vw;
   }
 }
-
 .click-notify-xurl {
   position: absolute;
   z-index: 12 !important;
@@ -2476,12 +2475,5 @@ i.blue.icon{
   .ui.dropdown .menu{
     right:0;
     left: auto;
-  }
-}
-
-/// don't delete,  this is for iframes, hide the background scroll
-.iziModal-isAttached{
-  body{
-    overflow: hidden;
   }
 }
