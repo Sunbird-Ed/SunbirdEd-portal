@@ -93,6 +93,7 @@ describe('PublicContentPlayerComponent', () => {
     spyOn(component, 'tryAgain').and.callThrough();
     spyOn(component, 'getContent').and.callThrough();
     component.tryAgain();
+    fixture.detectChanges();
     expect(component.showError).toBeFalsy();
     expect(component.getContent).toHaveBeenCalled();
   });
