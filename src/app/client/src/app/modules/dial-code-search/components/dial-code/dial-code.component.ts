@@ -76,7 +76,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       const linkedCollectionsIds = [];
       this.linkedContents = [];
       _.forEach(_.get(apiResponse, 'result.content'), (data) => {
-        if (data.mimeType === 'application/vnd.ekstep.content-collection') {
+        if (data.mimeType === 'application/vnd.ekstep.content-collection' && data.contentType !== 'Course') {
           linkedCollectionsIds.push(data.identifier);
         } else {
           this.linkedContents.push(data);
@@ -126,6 +126,10 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   public getCollectionHierarchy(collectionId) {
     return this.playerService.getCollectionHierarchy(collectionId).pipe(
       map((res) => _.get(res, 'result.content')), catchError(e => of(undefined)));
+  }
+
+  public playCourse (event) {
+    // this.publicPlayerService.playExploreCourse(event.data.metaData.identifier);
   }
 
   public getEvent(event) {
