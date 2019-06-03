@@ -19,6 +19,7 @@ interface ISelectedAttributes {
     currentRole?: string;
     bloomsLevel?: Array<any>;
     topicList?: Array<any>;
+    school?: string;
 }
 
 @Component({
@@ -47,7 +48,8 @@ export class CbseComponent implements OnInit {
       medium: _.get(this.programDetails, 'config.scope.medium[0]'),
       bloomsLevel: _.get(this.programDetails, 'config.scope.bloomsLevel'),
       programId: _.get(this.programDetails, 'programId'),
-      program: _.get(this.programDetails, 'name')
+      program: _.get(this.programDetails, 'name'),
+      school: _.get(this.programDetails, 'userDetails.onBoardingData.school')
     };
     this.role.currentRole= this.selectedAttributes.currentRole;
     this.fetchFrameWorkDetails();
@@ -69,7 +71,7 @@ export class CbseComponent implements OnInit {
     this.selectedAttributes.questionType =  event.questionType;
     this.navigate('next');
   }
-  handleRoleChange() {  
+  handleRoleChange() {
     this.role = Object.assign({},{currentRole :this.selectedAttributes.currentRole});
   } 
   public fetchFrameWorkDetails() {

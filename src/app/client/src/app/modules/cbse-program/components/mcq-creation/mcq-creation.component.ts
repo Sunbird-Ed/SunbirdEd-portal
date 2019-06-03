@@ -21,6 +21,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
   @Output() questionStatus = new EventEmitter<any>();
   @Input() role: any;
   @ViewChild('mcqFormControl') private mcqFormControl;
+  public userProfile: IUserProfile;
   showTemplatePopup = false;
   showForm = false;
   templateDetails: any = {};
@@ -94,7 +95,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
     }
   }
   handleReviewrStatus (event) {
-    this.updateQuestion([{key: 'status', value: event}]);
+    this.updateQuestion([{key: 'status', value: event.status}, {key: 'rejectComment', value: event.rejectComment}]);
   }
   handleSubmit(formControl) {
     const optionValid = _.find(this.mcqForm.options, option =>
@@ -238,7 +239,9 @@ export class McqCreationComponent implements OnInit, OnChanges {
         if (optionalParams) {
           _.forEach(optionalParams, (param) => {
             req.data.request.assessment_item.metadata[param.key] = param.value;
-            this.updateStatus = param.value;
+            if (param.key === 'status') {
+              this.updateStatus = param.value;
+            }
           });
         }
         this.actionService.patch(req).subscribe((res) => {
@@ -276,6 +279,10 @@ export class McqCreationComponent implements OnInit, OnChanges {
             return {'answer': false, value: {'type': 'text', 'body': opt.body}};
           }
         });
+        let creator = this.userProfile.firstName;
+        if (!_.isEmpty(this.userProfile.lastName)) {
+          creator = this.userProfile.firstName + ' ' + this.userProfile.lastName;
+        }
         const req = {
           url: this.configService.urlConFig.URLS.ASSESSMENT.CREATE,
           data: {
@@ -284,6 +291,8 @@ export class McqCreationComponent implements OnInit, OnChanges {
                 'objectType': 'AssessmentItem',
                 'metadata': {
                   'createdBy': this.userService.userid,
+                  'creator': creator,
+                  'createdFor': this.selectedAttributes.school ? [this.selectedAttributes.school] : [],
                   'code': UUID.UUID(),
                   'type': this.selectedAttributes.questionType,
                   'category': this.selectedAttributes.questionType.toUpperCase(),
@@ -316,9 +325,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
             }
           }
         };
-        console.log('req ', req.data);
         this.actionService.post(req).subscribe((res) => {
-          console.log(res);
           this.questionStatus.emit({'status': 'success', 'type': 'create',  'identifier': res.result.node_id});
         }, error => {
           this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');

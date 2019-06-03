@@ -37,7 +37,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
     public toasterService: ToasterService, public router: Router) {
   }
   private labelsHandler(){
-    this.labels = (this.role.currentRole === 'REVIEWER') ? ['Draft', 'Live'] : ['Total', 'Created by me'] ;
+    this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] : ['Total', 'Created by me'] ;
     console.log(this.labels);
   }
   ngOnInit() {

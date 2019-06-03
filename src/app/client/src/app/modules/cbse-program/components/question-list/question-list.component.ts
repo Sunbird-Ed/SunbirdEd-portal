@@ -64,7 +64,7 @@ export class QuestionListComponent implements OnInit,OnChanges{
     };
     if (isReviewer) {
       delete req.data.request.filters.createdBy;
-      req.data.request.filters.status = ['Live', 'Review'];
+      req.data.request.filters.status = ['Review'];
     }
     this.publicDataService.post(req).pipe(tap(data => this.showLoader = false))
     .subscribe((res) => {

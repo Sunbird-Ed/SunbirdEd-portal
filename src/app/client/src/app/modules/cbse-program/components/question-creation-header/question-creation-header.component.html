@@ -32,3 +32,26 @@
         (click)="reviewerBtnclick($event, 'Reject'); " >Reject</button>
 </div>
 </div>
+<sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissCommentPopup()" *ngIf="showrejectCommentPopup" [size]="'normal'"
+  [isFullScreen]="false" [mustScroll]="true" #modal>
+  <div class="header">Request changes</div>
+  <div class="content">
+      <form #FormControl="ngForm" class="ui form">
+          <textarea class="wmd-input width-100" id="wmd-input" [(ngModel)]="rejectComment" placeholder="Add comment" name="rejectComment" required></textarea>
+          <label class="ui basic red error label pt-1 mt-5 width-100"
+              *ngIf="showFormError">Fill comments </label>
+      </form>
+  </div>
+  <div class="actions">
+    <div class="ui left floated buttons">
+      <button (click)="addComment();" 
+      appTelemetryInteract [telemetryInteractEdata]="{id:'addComment',type:'click',pageid:'question_create'}"
+      class="ui primary button">Add Comment</button>
+    </div>
+    <div class="ui buttons">
+      <button (click)="dismissCommentPopup();" 
+      appTelemetryInteract [telemetryInteractEdata]="{id:'cancel',type:'click',pageid:'question_create'}"
+      class="ui button">Cancel</button>
+    </div>
+  </div>
+  </sui-modal>

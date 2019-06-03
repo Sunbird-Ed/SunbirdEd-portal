@@ -178,8 +178,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       }
     });
   }
-  handleReviewrStatus(event){
-    this.updateQuestion([{key:'status', value: event}])
+  handleReviewrStatus(event) {
+    this.updateQuestion([{key: 'status', value: event.status}, {key: 'rejectComment', value: event.rejectComment}]);
   }
   buttonTypeHandler(event) {
     if (event === 'preview') {
@@ -221,7 +221,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     .subscribe((res) => {
       this.body = res[0];
       this.solution = res[1];
-
+      let creator = this.userProfile.firstName;
+      if (!_.isEmpty(this.userProfile.lastName)) {
+        creator = this.userProfile.firstName + ' ' + this.userProfile.lastName;
+      }
       const req = {
         url: this.configService.urlConFig.URLS.ASSESSMENT.CREATE,
         data: {
@@ -230,6 +233,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
               'objectType': 'AssessmentItem',
               'metadata': {
                 'createdBy': this.userService.userid,
+                'creator': creator,
+                'createdFor': this.selectedAttributes.school ? [this.selectedAttributes.school] : [],
                 'code': UUID.UUID(),
                 'type': 'reference',
                 'category': this.selectedAttributes.questionType.toUpperCase(),
@@ -325,7 +330,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         if (optionalParams) {
           _.forEach(optionalParams, (param) => {
             option.data.request.assessment_item.metadata[param.key] = param.value;
-            this.updateStatus = param.value;
+            if (param.key === 'status') {
+              this.updateStatus = param.value;
+            }
           });
         }
         this.actionService.patch(option).subscribe((res) => {
