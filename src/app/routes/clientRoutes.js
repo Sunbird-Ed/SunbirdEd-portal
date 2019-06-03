@@ -76,14 +76,10 @@ module.exports = (app, keycloak) => {
     next()
   })
 
-  app.all(['/', '/get', '/get/dial/:dialCode', '/explore',
+  app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
     '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course',
     '/explore-course/*', '/:slug/explore-course', '/:slug/explore-course/*',
     '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*'], indexPage(false))
-
-  app.all('/:slug/get', (req, res) => res.redirect('/get'))
-
-  app.all('/:slug/get/dial/:dialCode', (req, res) => res.redirect('/get/dial/:dialCode'))
 
   app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode))
 
@@ -124,6 +120,7 @@ function getLocals(req) {
   locals.googleCaptchaSiteKey = envHelper.sunbird_google_captcha_site_key
   locals.videoMaxSize = envHelper.sunbird_portal_video_max_size
   locals.reportsLocation = envHelper.sunbird_azure_report_container_name
+  locals.previewCdnUrl = envHelper.sunbird_portal_preview_cdn_url
   return locals
 }
 
@@ -145,12 +142,23 @@ const renderDefaultIndexPage = (req, res) => {
   } else {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
     res.locals = getLocals(req);
-    res.render(path.join(__dirname, '../dist', 'index.ejs'))
+    if(envHelper.hasCdnIndexFile && req.cookies.cdnFailed !== 'true'){ // assume cdn works and send cdn ejs file
+      res.render(path.join(__dirname, '../dist', 'cdn_index.ejs'))
+    } else { // load local file if cdn fails or cdn is not enabled
+      if(req.cookies.cdnFailed === 'true'){
+        console.log("CDN Failed - loading local files");
+      }
+      res.render(path.join(__dirname, '../dist', 'index.ejs'))
+    }
   }
 }
 // renders tenant page from cdn or from local files based on tenantCdnUrl exists
 const renderTenantPage = (req, res) => {
   const tenantName = _.lowerCase(req.params.tenantName) || envHelper.DEFAULT_CHANNEL
+  if(req.query.cdnFailed === 'true') {
+    loadTenantFromLocal(req, res)
+    return;
+  }
   if (envHelper.TENANT_CDN_URL) {
     request(`${envHelper.TENANT_CDN_URL}/${tenantName}/index.html`, (error, response, body) => {
       if (error || !body || response.statusCode !== 200) {

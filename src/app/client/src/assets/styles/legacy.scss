@@ -1,4 +1,48 @@
 @import "variables";
+
+.color-4 {
+  color: #979797;
+}
+.text-gray{
+  color: #9F9F9F !important;
+}
+.line-height-1-3 {
+  line-height: 1.3em !important;
+}
+.curriculum-content {
+  font-size: 14px;
+  display: flex;
+  padding: 8px 0;
+}
+/* Semantic UI icons only applies on i tag*/
+span.icon {
+  display: inline-block;
+  opacity: 1;
+  margin: 0 .25rem 0 0;
+  width: 1.18em;
+  height: 1em;
+  font-family: Icons;
+  font-style: normal;
+  font-weight: 400;
+  text-decoration: inherit;
+  text-align: center;
+  speak: none;
+  font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+span.icon.folder:before {
+  content: "\f07b";
+}
+span.icon.folder.outline:before {
+  content: "\f114";
+}
+span.icon.play.circle:before {
+  content: "\f144";
+}
+
 /* placeholder if content is not there */
 .placeholder {
   align-items: center;
@@ -197,12 +241,7 @@
 .height-100 {
   height: 100% !important;
 }
-.lower-case {
-  text-transform: lowercase !important;
-}
-.cursor-pointer {
-  cursor: pointer !important;
-}
+
 .cursor-pointerText {
   cursor: text;
   pointer-events: none !important;
@@ -436,11 +475,11 @@ i.large.icon.limitedPublishingLinkIcon {
   padding: 0.8em 0 0.8em 1em;
 }
 
-.ui.selection.dropdown {
-  border: 0;
-  border-bottom: 1px solid #333333;
-  border-radius: 0;
-}
+// .ui.selection.dropdown {
+//   border: 0;
+//   border-bottom: 1px solid #333333;
+//   border-radius: 0;
+// }
 .ui.dropdown.genderSelectionDropDown {
   border: 0;
   border-bottom: 1px solid #333333;
@@ -888,12 +927,19 @@ ul.subList-padding {
 }
 .videosegment.ui.segment {
   position: relative;
-  background: #fdfdfd !important;
+  //background: #fdfdfd !important;
+  background: $primary-0;
   box-shadow: 0 0 0;
-  margin: 1rem 0;
   padding: 0;
   border-radius: 0;
   border: 0;
+  margin: 0;
+  .sb-pageSection{
+    margin:0;
+    .sb-pageSection-title{
+      text-transform: none;
+    }
+  }
 }
 .tocplayer.ui.grid {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -911,6 +957,9 @@ ul.subList-padding {
 .courseupdate b {
   font-weight: 400;
 }
+.courseupdate span{
+  font-weight: 600;
+}
 .container-with-button {
   width: 100% !important;
   padding-right: 0px !important;
@@ -921,11 +970,6 @@ ul.subList-padding {
   margin-left: 5px;
 }
 
-.content-detail {
-  color: #7c7b7b;
-  font-size: 14px;
-  font-weight: 600;
-}
 .take-note-card {
   color: $primary-color;
   vertical-align: top;
@@ -1038,15 +1082,14 @@ ul.subList-padding {
 }
 .ui.segment {
   position: relative;
-  background: #ffffff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  box-shadow: none;
   margin: 1rem 0;
   padding: 20px 20px;
   border-radius: 4px;
-  border: 1px solid #d8dee2;
+  border: 0px solid #d8dee2;
 }
 .annannouncement-description {
-  margin-top: 11px;
+  //margin-top: 11px;
 }
 .homeCard.ui.card > .content {
   padding: 0;
@@ -1058,7 +1101,7 @@ ul.subList-padding {
   color: #717171;
 }
 .search-content-header {
-  background: transparent;
+  background: transparent !important;
   box-shadow: none;
 }
 #search-suggestions {
@@ -1695,6 +1738,12 @@ i.edit.icon.editIcon-fontSize {
   float: right;
   font-size: 13px !important;
   padding-right: 12px;
+  font-weight: normal;
+  padding: 8px;
+  border-radius: 3px;
+  &:hover{
+    background-color: #EDF4F9;
+  }
 }
 .batchCardAlign {
   padding: 10px 15px;
@@ -2406,6 +2455,7 @@ i.blue.icon{
   .ui.floated.header{
     margin: 5px 0 0 5px !important;
     font-size: 1.143rem !important;
+    font-weight: 600;
   }
 }
 @media screen and (max-width:768px){
@@ -2426,5 +2476,12 @@ i.blue.icon{
   .ui.dropdown .menu{
     right:0;
     left: auto;
+  }
+}
+
+/// don't delete,  this is for iframes
+.iziModal-isAttached{
+  body{
+    overflow: hidden;
   }
 }

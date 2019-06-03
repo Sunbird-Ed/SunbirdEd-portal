@@ -207,7 +207,7 @@ export interface ITelemetry {
   'env': string;
   'apislug': string;
   'channel': string;
-  'uid': string;
+  'uid'?: string;
   'endpoint': string;
   'did'?: string;
   'authtoken'?: string;

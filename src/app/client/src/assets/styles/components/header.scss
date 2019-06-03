@@ -76,18 +76,25 @@
   font-size: 22px;
 }
 
-.ui.sidebar.visible {
-  &.right {
+.ui.sidebar.right {
+  &.visible.uncover {
+    z-index: 4;
+    border: 0;
+    box-shadow: none;
+    transition: none;
+
     & ~ .fixed,
     & ~ .pusher {
       transform: translate3d(0, 0, 0) !important;
-      height: 100vh;
+    }
+    &.animating {
+      transition: none;
+      visibility: visible;
     }
   }
-
-  &.uncover {
-    z-index: 4;
-    border: 0;
+  &.animating {
+    transition: none;
+    visibility: hidden;
   }
 }
 

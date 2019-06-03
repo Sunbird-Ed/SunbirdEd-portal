@@ -68,6 +68,7 @@ export class AppComponent implements OnInit {
   viewinBrowser = false;
   isOffline: boolean = environment.isOffline;
   sessionExpired = false;
+  instance: string;
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -77,6 +78,8 @@ export class AppComponent implements OnInit {
     private orgDetailsService: OrgDetailsService, private activatedRoute: ActivatedRoute,
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor) {
+      this.instance = (<HTMLInputElement>document.getElementById('instance'))
+        ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
   }
   /**
    * dispatch telemetry window unload event before browser closes
@@ -108,7 +111,6 @@ export class AppComponent implements OnInit {
         this.tenantService.getTenantInfo(this.slug);
         this.setPortalTitleLogo();
         this.telemetryService.initialize(this.getTelemetryContext());
-        this.deviceRegisterService.initialize(this.channel);
         this.checkTncAndFrameWorkSelected();
         this.initApp = true;
       }, error => {
@@ -144,7 +146,7 @@ export class AppComponent implements OnInit {
   }
 
   /**
-   * once tnc is accpeted from tnc popup on submit this function is triggered
+   * once tnc is accepted from tnc popup on submit this function is triggered
    */
   public onAcceptTnc() {
     this.showTermsAndCondPopUp = false;
@@ -157,6 +159,7 @@ export class AppComponent implements OnInit {
   public setDeviceId(): Observable<string> {
     return new Observable(observer => this.telemetryService.getDeviceId(deviceId => {
         (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+        this.deviceRegisterService.initialize();
         observer.next(deviceId);
         observer.complete();
       }));
@@ -242,11 +245,10 @@ export class AppComponent implements OnInit {
             ver: version,
             pid: this.configService.appConfig.TELEMETRY.PID
           },
-          batchsize: 2,
+          batchsize: 10,
           endpoint: this.configService.urlConFig.URLS.TELEMETRY.SYNC,
           apislug: this.configService.urlConFig.URLS.CONTENT_PREFIX,
           host: '',
-          uid: 'anonymous',
           sid: this.userService.anonymousSid,
           channel: this.orgDetails.hashTagId,
           env: 'home',
@@ -294,10 +296,14 @@ export class AppComponent implements OnInit {
     this.cacheService.set('showFrameWorkPopUp', 'installApp');
   }
   changeLanguageAttribute() {
-    this.resourceService.languageSelected$
-      .subscribe(item => {
-        this._document.documentElement.lang = item.value;
-        this._document.documentElement.dir = item.dir;
-      });
+    this.resourceService.languageSelected$.subscribe(item => {
+      if (item.value && item.dir) {
+          this._document.documentElement.lang = item.value;
+          this._document.documentElement.dir = item.dir;
+        } else {
+          this._document.documentElement.lang = 'en';
+          this._document.documentElement.dir = 'ltr';
+        }
+    });
   }
 }

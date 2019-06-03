@@ -15,7 +15,7 @@
   <!--/Header-->
 
   <!--Content-->
-  <div class="sb-modal-content">
+  <div class="sb-modal-content o-y-visible">
     <form class="ui form" [formGroup]="userDetailsForm">
         <label class="ui basic blue error label p-0" *ngIf="userDetailsForm.controls.name.touched && userDetailsForm.controls['name'].errors && userDetailsForm.controls['name'].errors.required">{{resourceService?.frmelmnts?.lbl?.nameRequired}}</label>
         <label class="ui basic blue error label p-0" *ngIf="userDetailsForm.controls.name.touched && userDetailsForm.controls['name'].errors && userDetailsForm.controls['name'].errors.pattern">{{resourceService?.frmelmnts?.lbl?.enterValidName}}</label>
@@ -61,7 +61,7 @@
       [disabled]="!enableSubmitBtn" 
       (click)="onSubmitForm()"
     >
-      {{resourceService?.frmelmnts?.btn?.submitbtn}}
+      {{resourceService?.frmelmnts?.btn?.submit}}
     </button>
   </div>
   <!--/Actions-->
