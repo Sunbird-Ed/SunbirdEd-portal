@@ -64,6 +64,7 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
       containerName: 'attachments/announcement',
     };
     this.offlineFileUploaderService.initilizeFileUploader(options);
+    $('input[type=file]').trigger('click');
     this.setInteractData();
   }
 
@@ -88,7 +89,6 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.removeFirstChild();
   }
-
   get getWindowObject(): any {
     return window;
   }
@@ -117,5 +117,9 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
 
   closeModal() {
     this.closeImportModal.emit('success');
+  }
+  openFileBrowser() {
+    const element: HTMLElement = document.getElementById('selectFile') as HTMLElement;
+    element.click();
   }
 }
