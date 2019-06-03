@@ -37,6 +37,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
   public setImageLimit = 1;
   public refresh = true;
   public mediaArr = [];
+  public rejectComment: any;
   learningOutcomeOptions = [];
   updateStatus = 'update';
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
@@ -83,6 +84,9 @@ export class McqCreationComponent implements OnInit, OnChanges {
       this.showPreview = true;
     } else {
       this.showPreview = false;
+    }
+    if(this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status=== 'Reject' && this.questionMetaData.data.rejectComment){
+      this.rejectComment = this.questionMetaData.data.rejectComment;
     }
   }
   handleTemplateSelection(event) {

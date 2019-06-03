@@ -72,6 +72,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   topicName: string;
   learningOutcomeOptions = [];
   updateStatus = 'update';
+  public rejectComment: any;
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
   ngOnInit() {
     this.initialized = true;
@@ -138,6 +139,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       // this.buttonTypeHandler('preview')
     } else {
       this.showPreview = false;
+    }
+    if (this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status=== 'Reject' &&
+    this.questionMetaData.data.rejectComment) {
+      this.rejectComment = this.questionMetaData.data.rejectComment;
     }
   }
   ngAfterViewChecked() {
