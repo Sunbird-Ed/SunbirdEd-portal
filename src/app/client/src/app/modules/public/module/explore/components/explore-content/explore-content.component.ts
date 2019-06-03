@@ -238,13 +238,10 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.downloadManagerService.downloadContentId = contentId;
         this.downloadManagerService.startDownload({}).subscribe(data => {
             this.downloadManagerService.downloadContentId = '';
-            _.find(this.contentList, (ele) => {
-                if (ele.metaData.identifier === contentId) {
-                    ele['addedToLibrary'] = true;
-                }
-            });
+            this.changeAddToLibrary(this.contentList, contentId, true);
         }, error => {
             this.downloadManagerService.downloadContentId = '';
+            this.changeAddToLibrary(this.contentList, contentId, false);
             this.toasterService.error(this.resourceService.messages.fmsg.m0090);
         });
     }
@@ -261,6 +258,13 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         }, error => {
             this.showExportLoader = false;
             this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+        });
+    }
+    changeAddToLibrary(contentList, contentId, boolean) {
+        _.find(contentList, (ele) => {
+            if (ele.metaData.identifier === contentId) {
+                ele['addedToLibrary'] = boolean;
+            }
         });
     }
 }

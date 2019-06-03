@@ -45,7 +45,7 @@ export class StickyHeaderDirective implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    if (this.isOffline) {
+    if (!this.isOffline) {
       return false;
     }
     this.zone.runOutsideAngular(() => {
