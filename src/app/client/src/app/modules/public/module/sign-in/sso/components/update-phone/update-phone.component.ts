@@ -19,7 +19,7 @@ export class UpdatePhoneComponent implements OnInit, AfterViewInit {
   public userBlocked = false;
   public disableSubmitBtn = true;
   public otpData = {};
-  public userExist = 'no';
+  public userDetails: any = {};
   public showError = false;
   public validationPattern = {
     phone: /^[6-9]\d{9}$/,
@@ -66,11 +66,11 @@ export class UpdatePhoneComponent implements OnInit, AfterViewInit {
   private checkUserExist() {
     const uri = this.contactForm.type + '/' + this.contactForm.value;
     this.userService.getUserByKey(uri).subscribe(data => {
-        this.userExist = 'yes';
+        this.userDetails = data.result.response;
         this.disableSubmitBtn = false;
       }, err => {
         if (_.get(err, 'error.params.status') && err.error.params.status === 'USER_ACCOUNT_BLOCKED') {
-          this.userBlocked =  true; // this.resourceService.frmelmnts.lbl.blockedUserError;
+          this.userBlocked =  true;
           return;
         }
         this.disableSubmitBtn = false;
@@ -99,7 +99,7 @@ export class UpdatePhoneComponent implements OnInit, AfterViewInit {
       value: '',
       type: type
     };
-    this.userExist = 'no';
+    this.userDetails = {};
     this.userBlocked = false;
   }
   private prepareOtpData() {
@@ -125,13 +125,17 @@ export class UpdatePhoneComponent implements OnInit, AfterViewInit {
       .join('&');
   }
   public handleOtpValidationSuccess() {
-    const contactDetails = {
+    let query: any = {
       type: this.contactForm.type,
-      value: this[this.contactForm.type],
-      userExist: this.userExist
+      value: this[this.contactForm.type]
     };
+    if (_.isEmpty(this.userDetails)) {
+      query = {
+        userId: this.userDetails.id
+      };
+    }
     window.location.href = `/v1/sso/contact/verified` +
-    this.getQueryParams({ ...this.activatedRoute.snapshot.queryParams, ...contactDetails});
+    this.getQueryParams({ ...this.activatedRoute.snapshot.queryParams, ...query});
   }
   private setTelemetryData() {
     this.submitPhoneInteractEdata = {
