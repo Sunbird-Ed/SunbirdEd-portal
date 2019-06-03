@@ -10,7 +10,8 @@ tenantHelper = require('../helpers/tenantHelper.js'),
 defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState(),
 oneDayMS = 86400000,
 pathMap = {}
-
+const cdnIndexFileExist = fs.existsSync(path.join(__dirname, '../dist', 'index_cdn.ejs'))
+console.log('CDN index file exist: ', cdnIndexFileExist);
 const setZipConfig = (req, res, type, encoding, dist = '../') => {
     if (pathMap[req.path + type] && pathMap[req.path + type] === 'notExist') {
       return false;
@@ -38,11 +39,11 @@ module.exports = (app, keycloak) => {
   app.get(['*.js', '*.css'], (req, res, next) => {
     res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
     res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
-    if(req.get('Accept-Encoding').includes('br')){ // send br files
+    if(req.get('Accept-Encoding') && req.get('Accept-Encoding').includes('br')){ // send br files
       if(!setZipConfig(req, res, 'br', 'br') && req.get('Accept-Encoding').includes('gzip')){
         setZipConfig(req, res, 'gz', 'gzip') // send gzip if br file not found
       }
-    } else if(req.get('Accept-Encoding').includes('gzip')){
+    } else if(req.get('Accept-Encoding') && req.get('Accept-Encoding').includes('gzip')){
       setZipConfig(req, res, 'gz', 'gzip')
     }
     next();
@@ -85,7 +86,7 @@ module.exports = (app, keycloak) => {
 
   app.all('/app', (req, res) => res.redirect(envHelper.ANDROID_APP_URL))
 
-  app.all(['/home', '/home/*', '/announcement', '/announcement/*', '/search', '/search/*',
+  app.all(['/announcement', '/announcement/*', '/search', '/search/*',
     '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
     '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
     '/resources/*', '/myActivity', '/myActivity/*'], keycloak.protect(), indexPage(true))
@@ -142,12 +143,13 @@ const renderDefaultIndexPage = (req, res) => {
   } else {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
     res.locals = getLocals(req);
-    if(envHelper.hasCdnIndexFile && req.cookies.cdnFailed !== 'true'){ // assume cdn works and send cdn ejs file
-      res.render(path.join(__dirname, '../dist', 'cdn_index.ejs'))
+    console.log("envHelper.PORTAL_CDN_URL", envHelper.PORTAL_CDN_URL, "cdnIndexFileExist", cdnIndexFileExist, "req.cookies.cdnFailed", req.cookies.cdnFailed);
+    if(envHelper.PORTAL_CDN_URL && cdnIndexFileExist && req.cookies.cdnFailed !== 'yes'){ // assume cdn works and send cdn ejs file
+      res.locals.cdnWorking = 'yes';
+      res.render(path.join(__dirname, '../dist', 'index_cdn.ejs'))
     } else { // load local file if cdn fails or cdn is not enabled
-      if(req.cookies.cdnFailed === 'true'){
-        console.log("CDN Failed - loading local files");
-      }
+      console.log("CDN Failed - loading local files", "envHelper.PORTAL_CDN_URL");
+      res.locals.cdnWorking = 'no';
       res.render(path.join(__dirname, '../dist', 'index.ejs'))
     }
   }
