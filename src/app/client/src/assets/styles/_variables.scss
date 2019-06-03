@@ -232,7 +232,6 @@ $sb-field-disabled-background: $gray-0;
 $sb-field-disabled-border: $input-border-width solid $gray-0;
 $sb-field-disabled-opacity: 0.45;
 
-
 /* sb-input */
 $sb-input-background-color: $white-color;
 $sb-input-font-size: 0.8571rem;
@@ -251,29 +250,21 @@ $sb-error-text: $red-400;
 $sb-success-text: $secondary-200;
 $sb-label-font-size: 0.8571rem;
 
+// Buttons
 
-
-
-// buttons
-
-/* dashed button */
+// Dashed Buttons
 $sb-btn-dashed-border: $input-border-width solid $primary-color;
 $sb-btn-dashed-background-color: $white-color;
 $sb-btn-dashed-color: $primary-400;
 
-/*button groups*/
+// Button groups
 $sb-btn-group-border-width: 1px;
 $sb-btn-group-border-color: $gray-100; 
 $sb-btn-group-btn-background: $white-color;
 $sb-btn-group-btn-color: $primary-400;
 $sb-btn-group-btn-active-background-color: $primary-100;
 
-
-
-
-
-// dropdown
-
+// Dropdown
 $sb-dropdown-border-color: $gray-200;
 $sb-dropdown-border-focus: $primary-600;
 $sb-dropdown-border-hover: $primary-300;
@@ -291,17 +282,14 @@ $sb-multiple-dropdown-text-margin: .23238095em 0 .23238095em .64285714em;
 $sb-multiple-dropdown-text-font-size: 11px;
 $sb-selection-line-height: 18px;
 
-
-
-
-//tabs
+// Tabs
 $sb-tabs-border-active-color: $primary-600;
 $sb-tabs-color: $primary-600;
 $sb-pointing-tabs-border: #dededf; //TODO design team need to add this in color scheme
 $sb-pointing-tabs-min-width: 2.285714em;
 $sb-pointing-tabs-border-radius: 4px;
 
-// radio buttons 
+// Radio buttons 
 $sb-radio-btn-border: 1px; //width of the border
 $sb-radio-btn-border-radius: 100%;
 $sb-radio-btn-disabled-opacity: 0.5;
@@ -311,8 +299,7 @@ $sb-radio-btn-label-color: $gray-200;
 $sb-radio-btn-backgroud-before-checked: $white-color;
 $sb-radio-btn-backgroud-after-checked: $primary-300;
 
-
-//checkbox
+// Checkbox
 $sb-checkbox-border-width: 1px; 
 $sb-checkbox-background-color: $secondary-100;
 $sb-checkbox-label-font-size: 0.8571rem;
@@ -320,14 +307,15 @@ $sb-checkbox-border-radius:4px;
 $sb-checkbox-after-checked-color: $white-color;
 $sb-checkbox-before-checked-background-color: $white-color;
 $sb-radio-btn-border-color: $primary-300;
-// page section component
+
+// Page section component
 $sb-page-section-font-size: $h5-font-size;
 $sb-page-section-header-content-space: 0 0 ($base-block-space * 3) 0;
 $sb-page-section-header-content-space-compact: 0 0 ($base-block-space) 0;
 $sb-page-sections-between-space: 0 0 ($base-block-space * 3) 0;
 $sb-page-sections-divider-color: $gray-0 !important;
 
-// card component
+// Card component
 $sb-card-width: 292px;
 $sb-card-height: 208px;
 $sb-card-body-height: 204px;
@@ -363,12 +351,12 @@ $sb-card-title-font-weight: $font-weight-bold;
 $sb-card-title-spacing: ($base-block-space * 2) 0 ($base-block-space * 1) 0;
 $sb-card-meta-org-font-size: $h6-font-size;
 $sb-card-progressbar-border-radius: 0 4px 4px 4px;
-//Tamil
+// Tamil
 $sb-card-label-font-size-ta: 9px;
 $sb-card-meta-font-size-ta: 10px;
 $sb-card-title-font-size-ta: $font-size-sm;
 $sb-card-meta-org-font-size-ta: $font-size-sm;
-//Urdu
+// Urdu
 $sb-card-label-font-size-ur: 9px;
 $sb-card-meta-font-size-ur: 10px;
 $sb-card-title-font-size-ur: $font-size-sm;
@@ -444,7 +432,6 @@ $sb-collectionTree-title-toggle-icon-font-weight: 500;
 $sb-collectionTree-disabled-border: 1px solid $gray-100;
 $sb-collectionTree-disabled-title-icon-color: $gray-100;
 
-
 // Fancy Tree
 $sb-fancyTree-margin-ltr: 0 0 0 ($base-block-space * 1.25);
 $sb-fancyTree-margin-rtl: 0 ($base-block-space * 1.25) 0 0;
@@ -463,7 +450,6 @@ $sb-fancyTree-disabled-list-item-icon-color: $gray-100;
 $sb-fancyTree-list-item-title-padding: 0 ($base-block-space);
 $sb-fancyTree-list-item-title-font-size: $h6-font-size;
 $sb-fancyTree-list-item-title-commingSoonMessage-spacing: 0 ($base-block-space / 2);
-
 
 /* circular list*/
 $sb-circular-list-item-padding-ltr:  ($base-block-space * 1)  0  ($base-block-space * 1)  ($base-block-space * 4);
@@ -504,7 +490,6 @@ $multiline-list-value-font-size: 11px;
 $multiline-list-value-font-color: $gray-400;
 
 // bordered-list--adds border around the list
-
 $sb-bordered-list-border: 1px solid $gray-100;
 $sb-bordered-list-border-radius: 4px 4px 0 0;
 $sb-bordered-list-item-font-size:($base-block-space * 2);
@@ -547,17 +532,15 @@ $sb-label-status-indicator-margin-right: 4px;
 $sb-label-status-indicator-success-background: $secondary-color;
 $sb-label-status-indicator-error-background: $tertiary-color;
 
+// Filters
+
+
+
 // To clean
-$text-lightDark: $gray-400;
 $text-gray: $gray-100;
 $signup-btn-bg-not-active-color: $gray-200;
 $signup-thankyou-text-color: $gray-400;
 $form-input-border-color: $gray-300;
-$menuitem-color: $gray-800;
-$dull-color: $gray-100;
 $qr-btn:  $gray-100;
 $signup-btn-bg-active-color: $secondary-400;
 $form-input-border-active-color: $primary-400;
-
-$primary-border: 0.5px solid #dedede;
-$primary-background: $gray-100;
