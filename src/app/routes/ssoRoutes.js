@@ -53,8 +53,7 @@ module.exports = (app) => {
       }
       if (_.isEmpty(userDetails) && req.query.userId) { // migrate user to sso org
         errType = 'MIGRATE_USER';
-        await migrateUser(req, jwtPayload)
-        await delay();
+        await migrateUser(req, jwtPayload).catch(handleProfileUpdateError)
         userDetails = await fetchUserWithExternalId(jwtPayload, req); // to get userName
         if(_.isEmpty(userDetails)){
           errType = 'USER_DETAILS_EMPTY';
@@ -72,7 +71,6 @@ module.exports = (app) => {
       } else if (_.isEmpty(userDetails)) { // create user and update roles
         errType = 'CREATE_USER';
         const newUserDetails = await createUser(req, jwtPayload).catch(handleProfileUpdateError);
-        await delay();
         if (jwtPayload.roles && jwtPayload.roles.length) {
           errType = 'UPDATE_USER_ROLES';
           await updateRoles(req, newUserDetails.result.userId, jwtPayload).catch(handleProfileUpdateError);
@@ -146,12 +144,14 @@ module.exports = (app) => {
   app.get(errorUrl, (req, res) => {
     res.status(200).sendFile('./error_loader.html', {root: __dirname })
   })
+
   app.get('/v1/sso/error/redirect', async (req, res) => {
     const redirect_uri = encodeURIComponent(`https://${req.get('host')}/resources?auth_callback=1`);
     const redirectUrl = `/auth/realms/sunbird/protocol/openid-connect/auth?client_id=portal&redirect_uri=${redirect_uri}&scope=openid&response_type=code&version=2&error_message=` + req.query.error_message;
     res.redirect(redirectUrl); // should go to error page
   })
 }
+
 const handleProfileUpdateError = (error) => {
   if (_.get(error, 'error.params')) {
     throw error.error.params;
@@ -160,13 +160,6 @@ const handleProfileUpdateError = (error) => {
   } else {
     throw 'unhandled exception while getting userDetails';
   }
-}
-const delay = (duration = 1000) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve();
-    }, duration)
-  });
 }
 
 const getErrorMessage = (error, errorType) => {
@@ -178,6 +171,7 @@ const getErrorMessage = (error, errorType) => {
     return 'Your account could not be signed in to DIKSHA due to technical issue. Please try again after some time';
   }
 }
+
 const logErrorEvent = (req, type, error) => {
   let stacktrace;
   if(error instanceof Error){
@@ -198,6 +192,7 @@ const logErrorEvent = (req, type, error) => {
   }
   telemetryHelper.logApiErrorEventV2(req, {edata, context});
 }
+
 const getQueryParams = (queryObj) => {
   return '?' + Object.keys(queryObj).filter(key => queryObj[key])
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(queryObj[key])}`)

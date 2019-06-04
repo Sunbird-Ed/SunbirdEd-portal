@@ -6,7 +6,7 @@ const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
 const kafkaService = require('../helpers/kafkaHelperService');
 let ssoWhiteListChannels;
-
+const privateBaseUrl = '/private/user/'
 let keycloak = getKeyCloakClient({
   clientId: envHelper.PORTAL_TRAMPOLINE_CLIENT_ID,
   bearerOnly: true,
@@ -46,10 +46,11 @@ const verifyToken = (token) => {
 const fetchUserWithExternalId = async (payload, req) => { // will be called from player docker to learner docker
   const options = {
     method: 'GET',
-    url: `${envHelper.learner_Service_Local_BaseUrl}/private/user/v1/read/${payload.sub}?provider=${payload.state_id}&idType=${payload.state_id}`,
+    url: `${envHelper.learner_Service_Local_BaseUrl}${privateBaseUrl}v1/read/${payload.sub}?provider=${payload.state_id}&idType=${payload.state_id}`,
     headers: getHeaders(req),
     json: true
   }
+  console.log('sso fetch user with external id', options);
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       console.log('sso fetching user', data.result);
@@ -129,7 +130,7 @@ const updateContact = (req, userDetails) => { // will be called from player dock
   }
   const options = {
     method: 'PATCH',
-    url: envHelper.learner_Service_Local_BaseUrl + '/private/user/v1/update',
+    url: envHelper.learner_Service_Local_BaseUrl + privateBaseUrl +'v1/update',
     headers: getHeaders(req),
     body: {
       request: requestBody
@@ -154,7 +155,7 @@ const updateRoles = (req, userId, jwtPayload) => { // will be called from player
   }
   const options = {
     method: 'POST',
-    url: envHelper.learner_Service_Local_BaseUrl + '/private/user/v1/assign/role',
+    url: envHelper.learner_Service_Local_BaseUrl + privateBaseUrl +'v1/assign/role',
     headers: getHeaders(req),
     body: {
       request: requestBody
@@ -174,7 +175,6 @@ const migrateUser = (req, jwtPayload) => { // will be called from player docker 
   const requestBody = {
     userId: req.query.userId,          
     channel:jwtPayload.state_id,
-    // orgId: "orgId",
     orgExternalId: jwtPayload.school_id,
     externalIds: [{
         id: jwtPayload.sub,
@@ -186,14 +186,14 @@ const migrateUser = (req, jwtPayload) => { // will be called from player docker 
 
   const options = {
     method: 'PATCH',
-    url: envHelper.learner_Service_Local_BaseUrl + '/private/user/v1/migrate',
+    url: envHelper.learner_Service_Local_BaseUrl + privateBaseUrl +'v1/migrate',
     headers: getHeaders(req),
     body: {
       request: requestBody
     },
     json: true
   }
-  console.log('sso migrate user request', requestBody);
+  console.log('sso migrate user request', options);
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       return data;
