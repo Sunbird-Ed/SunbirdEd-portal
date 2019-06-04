@@ -83,9 +83,8 @@
           </div>
           <button (click)="onAction(data,'export')" *ngIf="checkOfflineRoutes === 'library'" class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">{{resourceService.frmelmnts?.btn?.export}}<i
               class="sign in alternate icon"></i></button>
-              <button id="download_{{data.metaData.identifier}}" [ngClass]="{'disable': contentId === data.metaData.identifier &&  data?.addedToLibrary !== false}"
-              (click)="onAction(data,'browse')" *ngIf="checkOfflineRoutes === 'browse' && data?.addedToLibrary !== true"
-              class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">
+              <button id="download_{{data.metaData.identifier}}" [ngClass]="{'disable': contentId === data.metaData.identifier &&  data?.addedToLibrary !== false}" (click)="onAction(data,'browse')" 
+              *ngIf="checkOfflineRoutes === 'browse' && data?.addedToLibrary !== true" class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16"> 
               {{resourceService.frmelmnts?.btn?.addToLibrary}}<i class="sign in alternate icon"></i></button>
           <button *ngIf="data?.addedToLibrary === true && checkOfflineRoutes === 'browse' " class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16 disable">
             {{resourceService.frmelmnts?.btn?.addedToLibrary}}

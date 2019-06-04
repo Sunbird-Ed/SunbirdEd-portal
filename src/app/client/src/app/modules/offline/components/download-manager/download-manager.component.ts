@@ -28,7 +28,7 @@ export class DownloadManagerComponent implements OnInit {
     // Call download list initailly
     this.getDownloadList();
 
-// Subscribe connection service to check online/offline and call download list
+    // Subscribe connection service to check online/offline and call download list
     this.connectionService.monitor().subscribe(isConnected => {
       this.isConnected = isConnected;
       this.getDownloadList();
