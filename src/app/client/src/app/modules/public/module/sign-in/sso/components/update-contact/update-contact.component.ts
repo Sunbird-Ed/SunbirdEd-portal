@@ -69,6 +69,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
         this.userDetails = data.result.response;
         this.disableSubmitBtn = false;
       }, err => {
+        this.userDetails = {};
         if (_.get(err, 'error.params.status') && err.error.params.status === 'USER_ACCOUNT_BLOCKED') {
           this.userBlocked =  true;
           return;
