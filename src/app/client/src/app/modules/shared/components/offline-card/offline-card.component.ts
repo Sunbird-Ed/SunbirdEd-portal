@@ -26,6 +26,7 @@ export class OfflineCardComponent implements OnChanges {
   route: string;
   checkOfflineRoutes: string;
   contentId: string;
+  showAddingToLibraryButton: boolean;
 
   @HostListener('mouseenter') onMouseEnter() {
     this.hover = true;
@@ -50,7 +51,7 @@ export class OfflineCardComponent implements OnChanges {
 
   public onAction(data, action) {
     this.contentId = data.metaData.identifier;
-    data.showButton = true;
+    data.showAddingToLibraryButton = true;
     this.clickEvent.emit({ 'action': action, 'data': data });
   }
 

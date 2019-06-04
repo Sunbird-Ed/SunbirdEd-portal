@@ -292,7 +292,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         _.find(downloadListdata.result.response.downloads.completed, (completed) => {
           if (pageData.metaData.identifier === completed.contentId) {
             pageData['addedToLibrary'] = true;
-            pageData['showButton'] = false;
+            pageData['showAddingToLibraryButton'] = false;
           }
         });
 
@@ -300,7 +300,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         _.find(downloadListdata.result.response.downloads.failed, (failed) => {
           if (pageData.metaData.identifier === failed.contentId) {
             pageData['addedToLibrary'] = false;
-            pageData['showButton'] = false;
+            pageData['showAddingToLibraryButton'] = false;
           }
         });
       });
