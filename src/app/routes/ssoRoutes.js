@@ -54,6 +54,7 @@ module.exports = (app) => {
       if (_.isEmpty(userDetails) && req.query.userId) { // migrate user to sso org
         errType = 'MIGRATE_USER';
         await migrateUser(req, jwtPayload).catch(handleProfileUpdateError)
+        await delay();
         userDetails = await fetchUserWithExternalId(jwtPayload, req); // to get userName
         if(_.isEmpty(userDetails)){
           errType = 'USER_DETAILS_EMPTY';
@@ -61,16 +62,14 @@ module.exports = (app) => {
         }
         req.session.userDetails = userDetails;
         console.log('sso migrate user successfully and redirected to success page', jwtPayload.state_id, req.query.phone, jwtPayload, userDetails, redirectUrl, errType);
-
       } else if(!_.isEmpty(userDetails) && !userDetails[req.query.type]) { // existing user without phone
-
         errType = 'UPDATE_CONTACT_DETAILS';
         await updateContact(req, userDetails).catch(handleProfileUpdateError); // api need to be verified
         console.log('sso phone updated successfully and redirected to success page', jwtPayload.state_id, req.query.phone, jwtPayload, userDetails, redirectUrl, errType);
-
       } else if (_.isEmpty(userDetails)) { // create user and update roles
         errType = 'CREATE_USER';
         const newUserDetails = await createUser(req, jwtPayload).catch(handleProfileUpdateError);
+        await delay();
         if (jwtPayload.roles && jwtPayload.roles.length) {
           errType = 'UPDATE_USER_ROLES';
           await updateRoles(req, newUserDetails.result.userId, jwtPayload).catch(handleProfileUpdateError);
@@ -110,7 +109,7 @@ module.exports = (app) => {
       }
       errType = 'CREATE_SESSION';
       await createSession(userDetails.userName, 'portal', req, res);
-      redirectUrl = jwtPayload.redirect_url ? jwtPayload.redirect_url : '/resources';
+      redirectUrl = jwtPayload.redirect_uri ? jwtPayload.redirect_url : '/resources';
       console.log('sso sign-in success callback, session created', jwtPayload.state_id, req.query, redirectUrl, errType);
     } catch (error) {
       redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
@@ -170,6 +169,14 @@ const getErrorMessage = (error, errorType) => {
   } else {
     return 'Your account could not be signed in to DIKSHA due to technical issue. Please try again after some time';
   }
+}
+
+const delay = (duration = 1000) => {	
+  return new Promise((resolve, reject) => {	
+    setTimeout(() => {	
+      resolve();	
+    }, duration)	
+  });	
 }
 
 const logErrorEvent = (req, type, error) => {
