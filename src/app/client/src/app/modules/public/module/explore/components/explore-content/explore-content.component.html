@@ -47,7 +47,7 @@
       <app-loader [data]='loaderMessage'></app-loader>
     </div>
     <div class="twelve wide column right aligned py-0"
-      *ngIf="paginationDetails.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && (isOffline && router.url.includes('browse'))">
+      *ngIf="paginationDetails.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !isOffline">
       <div class="sb-pagination-container flex-jc-flex-end" *ngIf="paginationDetails.pages.length">
         <div class="sb-pagination my-0">
           <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item "
@@ -63,6 +63,23 @@
         </div>
       </div>
     </div>
+    <div class="twelve wide column right aligned py-0"
+    *ngIf="paginationDetails.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && (isOffline && router.url.includes('browse'))">
+    <div class="sb-pagination-container flex-jc-flex-end" *ngIf="paginationDetails.pages.length">
+      <div class="sb-pagination my-0">
+        <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item "
+          (click)="navigateToPage(1) ">&laquo;</a>
+        <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item "
+          (click)="navigateToPage(paginationDetails.currentPage - 1)">&lt;</a>
+        <a *ngFor="let page of paginationDetails.pages" [ngClass]="{active:paginationDetails.currentPage===page}"
+          (click)="navigateToPage(page)" class="sb-item">{{page}}</a>
+        <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}"
+          (click)="navigateToPage(paginationDetails.currentPage + 1)" class="sb-item">&gt;</a>
+        <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}"
+          (click)="navigateToPage(paginationDetails.totalPages)" class="sb-item ">&raquo;</a>
+      </div>
+    </div>
+  </div>
   </div>
 </div>
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"

@@ -241,10 +241,17 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
   private setNoResultMessage() {
-    this.noResultMessage = {
-      'message': 'messages.stmsg.m0007',
-      'messageText': 'messages.stmsg.m0006'
-    };
+    if (!this.isOffline) {
+      this.noResultMessage = {
+        'message': 'messages.stmsg.m0007',
+        'messageText': 'messages.stmsg.m0006'
+      };
+    } else {
+      this.noResultMessage = {
+        'message': 'messages.stmsg.m0007',
+        'messageText': 'messages.stmsg.m0133'
+      };
+    }
   }
 
   startDownload (contentId) {

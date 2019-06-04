@@ -34,6 +34,21 @@
         <div class="twelve wide column" *ngIf="showLoader">
             <app-loader [data]='loaderMessage'></app-loader>
         </div>
+        <div class="twelve wide column right aligned py-0" *ngIf="searchList && totalCount > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult && !isOffline">
+            <div class="sb-pagination-container flex-jc-flex-end" *ngIf="pager.pages.length">
+                <div class="sb-pagination my-0">
+                <a [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " (click)="navigateToPage(1) ">&laquo;</a>
+                <a [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " (click)="navigateToPage(pager.currentPage - 1)">&lt;</a>
+                <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)"
+                    class="sb-item">{{page}}</a>
+                    <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)"
+                    class="sb-item">&gt;</a>
+                <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.totalPages)"
+                    class="sb-item ">&raquo;</a>
+                </div>
+            </div>
+          
+        </div>
         <div class="twelve wide column right aligned py-0" *ngIf="searchList && totalCount > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult && (isOffline && router.url.includes('browse'))">
             <div class="sb-pagination-container flex-jc-flex-end" *ngIf="pager.pages.length">
                 <div class="sb-pagination my-0">
