@@ -241,25 +241,27 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
   private setNoResultMessage() {
-    this.noResultMessage = {
-      'message': 'messages.stmsg.m0007',
-      'messageText': 'messages.stmsg.m0006'
-    };
+    if (!this.isOffline) {
+      this.noResultMessage = {
+        'message': 'messages.stmsg.m0007',
+        'messageText': 'messages.stmsg.m0006'
+      };
+    } else {
+      this.noResultMessage = {
+        'message': 'messages.stmsg.m0007',
+        'messageText': 'messages.stmsg.m0133'
+      };
+    }
   }
 
   startDownload (contentId) {
     this.downloadManagerService.downloadContentId = contentId;
     this.downloadManagerService.startDownload({}).subscribe(data => {
       this.downloadManagerService.downloadContentId = '';
-      _.forEach(this.pageSections, (pageData) => {
-        _.find(pageData.contents, (ele) => {
-          if (ele.metaData.identifier === contentId) {
-            ele['addedToLibrary'] = true;
-          }
-        });
-      });
+      this.changeAddToLibrary(this.pageSections, contentId, true);
     }, error => {
       this.downloadManagerService.downloadContentId = '';
+      this.changeAddToLibrary(this.pageSections, contentId, false);
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
     });
   }
@@ -278,4 +280,13 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.toasterService.error(this.resourceService.messages.fmsg.m0091);
     });
   }
+  changeAddToLibrary(contentList, contentId, boolean) {
+  _.forEach(contentList, (pageData) => {
+    _.find(pageData.contents, (ele) => {
+      if (ele.metaData.identifier === contentId) {
+        ele['addedToLibrary'] = boolean;
+      }
+    });
+  });
+}
 }
