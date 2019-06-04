@@ -5,11 +5,11 @@
         <div class="d-flex flex-jc-center mb-30">
           <img class="image centered" alt={{tenantInfo.tenantName}} height="45" src="{{tenantInfo.logo}}">
         </div>
-        <h6 class="text-center mb-24">{{resourceService.frmelmnts.lbl.mobileNumberInfoText}}</h6>
+        <h6 class="text-center mb-24">{{resourceService.frmelmnts.lbl.mobileEmailInfoText}}</h6>
         <div class="width-300 mx-auto mt-30">
           <form #contactDetailsForm="ngForm">
-            <div class="inline fields" id="Mandatory">
-              <div class="field mb-16">
+            <div class="inline fields d-flex flex-w-wrap" id="Mandatory">
+              <div class="field mb-16 mr-16">
                 <div class="ui radio checkbox" (click)="resetForm('phone')">
                   <input type="radio" value="phone" [(ngModel)]="contactForm.type" name='type'>
                   <label for="phoneNumber">{{resourceService.frmelmnts.lbl.phoneNumber}}</label>
