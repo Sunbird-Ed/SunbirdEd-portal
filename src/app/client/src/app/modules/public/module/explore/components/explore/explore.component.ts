@@ -274,10 +274,10 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   changeAddToLibrary(contentList, contentId, boolean) {
-  _.forEach(this.pageSections, (pageData) => {
+  _.forEach(contentList, (pageData) => {
     _.find(pageData.contents, (ele) => {
       if (ele.metaData.identifier === contentId) {
-        ele['addedToLibrary'] = true;
+        ele['addedToLibrary'] = boolean;
       }
     });
   });

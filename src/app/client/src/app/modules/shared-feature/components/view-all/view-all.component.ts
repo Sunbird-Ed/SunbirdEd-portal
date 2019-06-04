@@ -448,7 +448,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   changeAddToLibrary(contentList, contentId, boolean) {
       _.find(contentList, (ele) => {
         if (ele.metaData.identifier === contentId) {
-          ele['addedToLibrary'] = true;
+          ele['addedToLibrary'] = boolean;
         }
       });
   }
