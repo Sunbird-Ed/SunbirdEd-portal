@@ -64,7 +64,7 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
       containerName: 'attachments/announcement',
     };
     this.offlineFileUploaderService.initilizeFileUploader(options);
-    $('input[type=file]').trigger('click');
+    this.openFileBrowser();
     this.setInteractData();
   }
 
@@ -91,6 +91,10 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
   }
   get getWindowObject(): any {
     return window;
+  }
+
+  openFileBrowser() {
+    $('#selectFile > input[type=file]').trigger('click');
   }
 
   removeFirstChild() {
