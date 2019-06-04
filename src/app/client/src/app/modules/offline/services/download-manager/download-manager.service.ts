@@ -11,6 +11,7 @@ export class DownloadManagerService {
 
   downloadContentId: string;
   downloadEvent = new EventEmitter();
+  downloadListEvent = new EventEmitter();
 
   constructor(private configService: ConfigService, private publicDataService: PublicDataService,
     public toasterService: ToasterService, public resourceService: ResourceService) { }
@@ -20,7 +21,14 @@ export class DownloadManagerService {
       url: this.configService.urlConFig.URLS.OFFLINE.DOWNLOAD_LIST,
       data: {}
     };
-    return this.publicDataService.post(downloadListOptions);
+    return this.publicDataService.post(downloadListOptions).pipe(
+      map((result) => {
+        this.downloadListEvent.emit(result);
+        return result;
+      }),
+      catchError((err) => {
+        return observableThrowError(err);
+      }));
   }
 
   startDownload(data) {
