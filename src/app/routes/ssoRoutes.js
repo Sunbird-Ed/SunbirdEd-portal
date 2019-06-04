@@ -60,6 +60,10 @@ module.exports = (app) => {
           errType = 'USER_DETAILS_EMPTY';
           throw 'USER_DETAILS_IS_EMPTY';
         }
+        if (jwtPayload.roles && jwtPayload.roles.length) {
+          errType = 'UPDATE_USER_ROLES';
+          await updateRoles(req, newUserDetails.result.userId, jwtPayload).catch(handleProfileUpdateError);
+        }
         req.session.userDetails = userDetails;
         console.log('sso migrate user successfully and redirected to success page', jwtPayload.state_id, req.query.phone, jwtPayload, userDetails, redirectUrl, errType);
       } else if(!_.isEmpty(userDetails) && !userDetails[req.query.type]) { // existing user without phone
