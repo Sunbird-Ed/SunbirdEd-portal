@@ -113,7 +113,7 @@ module.exports = (app) => {
       }
       errType = 'CREATE_SESSION';
       await createSession(userDetails.userName, 'portal', req, res);
-      redirectUrl = jwtPayload.redirect_uri ? jwtPayload.redirect_url : '/resources';
+      redirectUrl = jwtPayload.redirect_uri ? jwtPayload.redirect_uri : '/resources';
       console.log('sso sign-in success callback, session created', jwtPayload.state_id, req.query, redirectUrl, errType);
     } catch (error) {
       redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
