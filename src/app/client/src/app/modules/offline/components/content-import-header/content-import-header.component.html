@@ -11,10 +11,9 @@
           <h4 class="sb-import-content-title">{{resourceService?.frmelmnts?.lbl?.importContent}}</h4>
           <p class="sb-import-content-meta">{{resourceService?.frmelmnts?.lbl?.uploadEcarFromPd}} </p>
         </div>
-        <button appTelemetryInteract
-          [telemetryInteractEdata]="ContentImportIntractEdata"
+        <button appTelemetryInteract [telemetryInteractEdata]="ContentImportIntractEdata"
           class="sb-btn sb-btn-normal sb-btn-secondary ml-auto sb-btn-bs" (click)="showImportModal = true;">
-          {{resourceService?.frmelmnts?.lbl?.importContent}}
+          {{resourceService?.frmelmnts?.lbl?.uploadContent}}
         </button>
         <div *ngIf="showImportModal">
           <app-content-import (closeImportModal)="showImportModal = false"></app-content-import>
