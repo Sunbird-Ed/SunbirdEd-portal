@@ -1,15 +1,15 @@
 .sb-prominent-filter {
-  background: #fff;
-  padding: 8px 0;
+  background: $sb-prominent-filter-background-color;
+  padding: $sb-prominent-filter-padding;
 
   .sb-prominent-filter-header {
-    font-weight: bold;
-    margin: 8px 0 16px 0;
+    font-weight: $sb-prominent-filter-header-font-weight;
+    margin: $sb-prominent-filter-header-margin;
   }
 
   .sb-data-driven-filter-header {
-    font-weight: bold;
-    color: $primary-color;
+    font-weight: $sb-prominent-filter-header-font-weight;
+    color: $sb-prominent-filter-header-color;
   }
 
   .sb-prominent-filter-container {
@@ -22,7 +22,7 @@
       margin: 0;
       margin-bottom: $base-block-space*2;
       padding-right: $base-block-space*2;
-      width: 20%;
+      width: $sb-prominent-filter-field-width;
 
       &:last-child {
         margin-top: auto;
@@ -38,7 +38,7 @@
         color: $gray-800;
         font-weight: normal;
         font-size: 14px;
-        margin-bottom: 8px;
+        margin-bottom: $base-block-space;
       }
 
       .topic-picker-selector {
