@@ -610,7 +610,7 @@
       "xUrl": "text/x-url"
     },
     "baseURL": "/content/preview/preview.html?webview=true",
-    "localBaseUrl": "/contentPlayer/preview/preview.html",
+    "localBaseUrl": "/contentPlayer/preview/preview.html?",
     "cdnUrl": "/content/preview/preview_cdn.html?webview=true"
   },
   "WORKSPACE": {
