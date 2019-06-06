@@ -116,7 +116,7 @@ const createSession = async (loginId, client_id, req, res) => {
   }
 }
 const updateContact = (req, userDetails) => { // will be called from player docker to learner docker
-  const requestBody = {
+  let requestBody = {
     userId: userDetails.id,
     phone: req.query.value,
     phoneVerified: true
