@@ -9,8 +9,8 @@
     <div class="content-grid mt-24">
        <div class="sb-pageSection">
             <div  class="sb-pageSection-header" *ngIf="!showLoader && contentList.length && this.queryParams.key">
-                <h4 class="sb-pageSection-title m-0 mr-5">{{resourceService.frmelmnts?.lbl?.showingResultsFor |
-                        interpolate:'{searchString}':this.queryParams.key}}</h4>
+                <h4 class="sb-pageSection-title m-0 mr-5" [innerHTML] = "resourceService.frmelmnts?.lbl?.showingResultsFor |
+                    interpolate:'{searchString}':this.queryParams.key"></h4>
                         <!-- <span class="sb-pageSection-count sb-label sb-label-xs sb-label-warning ml-8">25</span> -->
                 <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"  class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button" [routerLink]="['/resources']">Close <i class="close icon"></i></button>
             </div>
