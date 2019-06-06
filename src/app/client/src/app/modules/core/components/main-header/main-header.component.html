@@ -3,7 +3,6 @@
 </div>
 <div class="ui fixed main menu bs-0 d-block" appStickyHeader>
     <extension-point [name]="'network-status-notify'" *ngIf="isOffline"></extension-point>
-    <extension-point [name]="'download-manager'" *ngIf="isOffline"></extension-point>
     <!--Header White Section-->
     <div class="ui container">
         <div class="ui grid padded width-100">
@@ -113,7 +112,7 @@
     </div>
     <!--/Computer-->
     <!--Mobile-->
-    <div class="p-10 mobile only" *ngIf="showExploreHeader || userService.loggedIn || isOffline">
+    <div class="p-8 mobile only" *ngIf="showExploreHeader || userService.loggedIn || isOffline">
         <div class="ui mobile-view container d-flex flex-jc-space-between mx-0">
             <!--QR Button-->
             <button class="ui button qr-code-btn d-flex flex-ai-center" appTelemetryInteract

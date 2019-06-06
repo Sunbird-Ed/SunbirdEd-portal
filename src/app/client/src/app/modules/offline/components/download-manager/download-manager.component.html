@@ -1,14 +1,14 @@
-<sui-accordion class="styled fluid sb-single-pannel-accordion" *ngIf="downloadResponse">
+<sui-accordion class="styled fluid sb-single-pannel-accordion sb-download-manager-panel">
   <sui-accordion-panel [isOpen]="isOpen">
     <div title class="p-0">
-      <div class="sb-single-pannel-accordion-heading">
+      <div class="sb-single-pannel-accordion-heading" (click)="modalStatus()">
         <span>{{resourceService?.frmelmnts?.btn?.downloadManager}}</span>
         <i class="chevron down icon d-flex flex-ai-center"></i>
       </div>
     </div>
-    <div content>
+    <div content *ngIf="downloadResponse">
 
-      <div class="sb-single-pannel-accordion-list-item d-flex flex-ai-center flex-jc-space-between" *ngFor="let data of downloadResponse.inprogress;">
+      <div class="sb-single-pannel-accordion-list-item d-flex flex-ai-center flex-jc-space-between" *ngFor="let data of downloadResponse.inprogress | orderBy:'createdOn': true">
         <div class="">{{data.name}}</div>
         <div class="d-flex flex-ai-center flex-jc-center">
           <sui-progress [value]="showProgressValue(data.downloadedSize, data.totalSize)" [maximum]="100" class="mb-0 mr-8"></sui-progress>
@@ -16,7 +16,7 @@
         </div>
       </div>
 
-      <div class="sb-single-pannel-accordion-list-item d-flex flex-ai-center flex-jc-space-between" *ngFor="let data of downloadResponse.failed;">
+      <div class="sb-single-pannel-accordion-list-item d-flex flex-ai-center flex-jc-space-between" *ngFor="let data of downloadResponse.failed | orderBy:'createdOn': true">
         <div class="">{{data.name}}</div>
         <div class="d-flex flex-ai-center flex-jc-center  flex-jc-center sb-label sb-label-table sb-label-error-0">
           <i class="exclamation triangle icon error-icon d-flex flex-ai-center"></i>
@@ -24,14 +24,14 @@
         </div>
       </div>
 
-      <div class="sb-single-pannel-accordion-list-item d-flex flex-ai-center flex-jc-space-between" *ngFor="let data of downloadResponse.submitted;">
+      <div class="sb-single-pannel-accordion-list-item d-flex flex-ai-center flex-jc-space-between" *ngFor="let data of downloadResponse.submitted | orderBy:'createdOn': true">
         <div class="">{{data.name}}</div>
         <div class="d-flex flex-ai-center flex-jc-center">
           <div class="sb-label sb-label-table sb-label-warning-0">{{resourceService?.frmelmnts?.btn?.downloadPending}}</div>
         </div>
       </div>
 
-      <div class="sb-single-pannel-accordion-list-item d-flex flex-ai-center flex-jc-space-between" *ngFor="let data of downloadResponse.completed;">
+      <div class="sb-single-pannel-accordion-list-item d-flex flex-ai-center flex-jc-space-between" *ngFor="let data of downloadResponse.completed | orderBy:'createdOn': true">
         <div class="">{{data.name}}</div>
         <div class="d-flex flex-ai-center flex-jc-center  sb-label sb-label-table sb-label-success-0">
           <i class="check circle icon success-icon d-flex flex-ai-center"></i>{{resourceService?.frmelmnts?.btn?.downloadCompleted}}
