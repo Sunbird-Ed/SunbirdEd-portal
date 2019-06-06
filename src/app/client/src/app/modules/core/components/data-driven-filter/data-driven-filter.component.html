@@ -2,19 +2,24 @@
   <sui-accordion [closeOthers]="false">
     <sui-accordion-panel [isOpen]="accordionDefaultOpen" [isDisabled]="true">
 
-      <div *ngIf="isShowFilterLabel" title class="sb-data-driven-filter-header">
-        <span appTelemetryInteract [telemetryInteractEdata]="filterInteractEdata" [telemetryInteractCdata]="telemetryCdata"(click)="accordionDefaultOpen = !accordionDefaultOpen" class="cursor-pointer">
-          <i alt="Filter" class="icon filter"></i>
-          {{resourceService.frmelmnts?.lbl?.filters}}
-          <i class="dropdown icon vertical-align-middle"></i>
-        </span>
+      <!--Toggle Header-->
+      <div *ngIf="isShowFilterLabel" title class="sb-data-driven-filter-header" appTelemetryInteract [telemetryInteractEdata]="filterInteractEdata" [telemetryInteractCdata]="telemetryCdata" (click)="accordionDefaultOpen = !accordionDefaultOpen">
+        <i class="icon filter"></i>
+        {{resourceService.frmelmnts?.lbl?.filters}}
+        <i class="dropdown icon"></i>
       </div>
+      <!--/Toggle Header-->
 
+      <!--Toggle Content-->
       <div content>
+
+        <!--Selected Filters list-->
         <div *ngIf="filtersDetails && formInputData && showSearchedParam" class="twelve wide column pb-16 content">
-          <span class="d-inline-block" *ngFor="let field of filtersDetails">
+          <div *ngFor="let field of filtersDetails">
             <span class="padded chip mt-5 mr-10" *ngIf='formInputData[field.code] && formInputData[field.code].length > 0'>
+
               {{field.label}}:
+
               <span *ngFor="let item of formInputData[field.code]">
                 <a class="ui label mt-5 mr-5" *ngIf='!item?.name && field.code !== "channel"'>
                   {{item}}
@@ -25,19 +30,22 @@
                   <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
                 </a>
               </span>
+
               <span *ngFor="let item of channelInputLabel">
                 <a class="ui label mt-5 mr-5" *ngIf='item?.name && field.code === "channel"'>
                   {{item.name}}
                   <i class="delete icon" (click)="removeFilterSelection(field.code,item.identifier)"></i>
                 </a>
               </span>
+
             </span>
-          </span>
+          </div>
         </div>
-        <div class="twelve wide column pt-0" *ngIf="refresh">
-          <form *ngIf="filtersDetails" class="ui form">
-            <div class="ui grid stackable top aligned mt-0">
-              <div class="twelve wide tablet twelve wide computer column py-0">
+        <!--/Selected Filters list-->
+
+        <!--Filters-->
+        <div class="twelve wide column pt-0" *ngIf="refresh && filtersDetails">
+  
                 <div class="sb-prominent-filter-container">
                   <div *ngFor="let field of filtersDetails" class="sb-prominent-filter-field">
                     <div *ngIf="(field.inputType==='select' || field.inputType === 'multi-select') && field.code !== 'channel'">
@@ -56,6 +64,7 @@
                       <app-topic-picker [selectedTopics]="formInputData[field.code]" [formTopic]="field" (topicChange)="handleTopicChange($event);setFilterInteractData()"></app-topic-picker>
                     </div>
                   </div>
+                  
                   <div class="sb-prominent-filter-field">
                     <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="applyFilters()" appTelemetryInteract [telemetryInteractEdata]="applyFilterInteractEdata">
                       {{resourceService.frmelmnts?.btn?.apply}}
@@ -66,11 +75,13 @@
                     </button>
                   </div>
                 </div>
-              </div>
-            </div>
-          </form>
+ 
         </div>
+        <!--Filters-->
+
       </div>
+      <!--/Toggle Content-->
+
     </sui-accordion-panel>
   </sui-accordion>
 </div>
