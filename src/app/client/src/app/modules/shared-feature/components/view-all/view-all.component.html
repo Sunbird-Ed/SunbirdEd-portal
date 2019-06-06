@@ -1,12 +1,6 @@
-<div class="ui segment br-0 p-0 prominent-filter">
-    <div class="ui container">
-        <div class="twelve wide column mb-15">
-                <app-data-driven-filter [pageId]="'view-all'" *ngIf="filterType" [filterEnv]="filterType"
-                [viewAllMode]="true" [accordionDefaultOpen]=false [isShowFilterLabel]=true [hashTagId]="hashTagId"
-                [formAction]="formAction" [frameworkName]="frameWorkName"></app-data-driven-filter>
-        </div>
-    </div>
-</div>
+<app-data-driven-filter [pageId]="'view-all'" *ngIf="filterType" [filterEnv]="filterType"
+    [viewAllMode]="true" [accordionDefaultOpen]=false [isShowFilterLabel]=true [hashTagId]="hashTagId"
+    [formAction]="formAction" [frameworkName]="frameWorkName"></app-data-driven-filter>
 <div class="ui container" [appTelemetryImpression]="telemetryImpression">
     <div class="sb-pageSection mt-24">
         <div class="sb-pageSection-header" *ngIf="!showLoader">
