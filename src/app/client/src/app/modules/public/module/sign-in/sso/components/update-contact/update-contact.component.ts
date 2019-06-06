@@ -1,10 +1,11 @@
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { TenantService, UserService, OtpService } from '@sunbird/core';
+import { TenantService, UserService, OtpService, OrgDetailsService } from '@sunbird/core';
 import { first, delay } from 'rxjs/operators';
 import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
+import { map } from 'rxjs/operators';
+import { combineLatest, of } from 'rxjs';
 
 @Component({
   templateUrl: './update-contact.component.html',
@@ -17,10 +18,12 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
   public tenantInfo: any = {};
   public showOtpComp = false;
   public userBlocked = false;
+  public userExist = false;
   public disableSubmitBtn = true;
   public otpData = {};
   public userDetails: any = {};
   public showError = false;
+  public custodianOrgDetails;
   public validationPattern = {
     phone: /^[6-9]\d{9}$/,
     email: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$/
@@ -31,7 +34,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
   };
   constructor(public activatedRoute: ActivatedRoute, private tenantService: TenantService, public resourceService: ResourceService,
     public userService: UserService, public otpService: OtpService, public toasterService: ToasterService,
-    public navigationhelperService: NavigationHelperService) { }
+    public navigationHelperService: NavigationHelperService, private orgDetailsService: OrgDetailsService) { }
 
   ngOnInit() {
     this.setTenantInfo();
@@ -48,7 +51,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
           type: this.activatedRoute.snapshot.data.telemetry.type,
           pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
           uri: this.activatedRoute.snapshot.data.telemetry.uri,
-          duration: this.navigationhelperService.getPageLoadTime()
+          duration: this.navigationHelperService.getPageLoadTime()
         }
       };
     });
@@ -65,9 +68,16 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
   }
   private checkUserExist() {
     const uri = this.contactForm.type + '/' + this.contactForm.value;
-    this.userService.getUserByKey(uri).subscribe(data => {
-        this.userDetails = data.result.response;
-        this.disableSubmitBtn = false;
+    combineLatest(this.userService.getUserByKey(uri), this.getCustodianOrgDetails())
+    .subscribe(data => {
+        if (_.get(data[0], 'result.response.rootOrg.rootOrgId') === _.get(data[1], 'result.response.value')) {
+          this.userDetails = data[1].result.response;
+          this.disableSubmitBtn = false;
+          this.userExist = false;
+          this.userBlocked =  false;
+        } else {
+          this.userExist = true;
+        }
       }, err => {
         this.userDetails = {};
         if (_.get(err, 'error.params.status') && err.error.params.status === 'USER_ACCOUNT_BLOCKED') {
@@ -76,6 +86,15 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
         }
         this.disableSubmitBtn = false;
     });
+  }
+  private getCustodianOrgDetails() {
+    if (this.custodianOrgDetails) {
+      return of(this.custodianOrgDetails);
+    }
+    return this.orgDetailsService.getCustodianOrg().pipe(map((custodianOrgDetails) => {
+      this.custodianOrgDetails = custodianOrgDetails;
+      return custodianOrgDetails;
+    }));
   }
   public handleSubmitEvent() {
     const request = {
@@ -101,6 +120,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
       type: type
     };
     this.userDetails = {};
+    this.userExist = false;
     this.userBlocked = false;
   }
   private prepareOtpData() {
