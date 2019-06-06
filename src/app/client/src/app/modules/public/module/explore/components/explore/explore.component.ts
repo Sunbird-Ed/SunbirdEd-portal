@@ -241,15 +241,15 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
   private setNoResultMessage() {
-    if (!this.isOffline) {
+    if (this.isOffline && !(this.router.url.includes('/browse'))) {
       this.noResultMessage = {
         'message': 'messages.stmsg.m0007',
-        'messageText': 'messages.stmsg.m0006'
+        'messageText': 'messages.stmsg.m0133'
       };
     } else {
       this.noResultMessage = {
         'message': 'messages.stmsg.m0007',
-        'messageText': 'messages.stmsg.m0133'
+        'messageText': 'messages.stmsg.m0006'
       };
     }
   }
