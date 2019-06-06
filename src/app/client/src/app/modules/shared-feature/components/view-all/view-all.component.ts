@@ -50,7 +50,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * To navigate to other pages
    */
-  private router: Router;
+  public router: Router;
   /**
   * To send activatedRoute.snapshot to router navigation
   * service for redirection to parent component
@@ -137,6 +137,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   public sectionName: string;
   public unsubscribe = new Subject<void>();
   isOffline: boolean = environment.isOffline;
+  showExportLoader = false;
+  contentName: string;
 
   constructor(searchService: SearchService, router: Router, private playerService: PlayerService, private formService: FormService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService, private _cacheService: CacheService,
@@ -322,6 +324,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       this.startDownload(event.data.metaData.identifier);
       return false;
     } else if (event.action === 'export' && this.isOffline) {
+      this.showExportLoader = true;
+      this.contentName = event.data.name;
       this.exportOfflineContent(event.data.metaData.identifier);
       return false;
     }
@@ -419,17 +423,33 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     this.downloadManagerService.downloadContentId = contentId;
     this.downloadManagerService.startDownload({}).subscribe(data => {
       this.downloadManagerService.downloadContentId = '';
+      this.changeAddToLibrary(this.searchList, contentId, true);
     }, error => {
       this.downloadManagerService.downloadContentId = '';
+      this.changeAddToLibrary(this.searchList, contentId, false);
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
     });
   }
 
   exportOfflineContent(contentId) {
     this.downloadManagerService.exportContent(contentId).subscribe(data => {
-      this.toasterService.success(this.resourceService.messages.smsg.m0052);
+      const link = document.createElement('a');
+      link.href = data.result.response.url;
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      this.showExportLoader = false;
     }, error => {
+      this.showExportLoader = false;
       this.toasterService.error(this.resourceService.messages.fmsg.m0091);
     });
+  }
+  changeAddToLibrary(contentList, contentId, boolean) {
+      _.find(contentList, (ele) => {
+        if (ele.metaData.identifier === contentId) {
+          ele['addedToLibrary'] = boolean;
+        }
+      });
   }
 }

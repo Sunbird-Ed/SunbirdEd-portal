@@ -41,6 +41,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     public cardIntractEdata: IInteractEventEdata;
     public loaderMessage: ILoaderMessage;
     isOffline: boolean = environment.isOffline;
+    showExportLoader = false;
+    contentName: string;
 
     constructor(public searchService: SearchService, public router: Router,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -180,12 +182,13 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         };
     }
     public playContent(event) {
-
         // For offline envirnoment content will not play if action not open. It will get downloaded
         if (_.includes(this.router.url, 'browse') && this.isOffline) {
             this.startDownload(event.data.metaData.identifier);
             return false;
         } else if (event.action === 'export' && this.isOffline) {
+            this.showExportLoader = true;
+            this.contentName = event.data.name;
             this.exportOfflineContent(event.data.metaData.identifier);
             return false;
         }
@@ -225,27 +228,50 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.unsubscribe$.complete();
     }
     private setNoResultMessage() {
-        this.noResultMessage = {
-          'message': 'messages.stmsg.m0007',
-          'messageText': 'messages.stmsg.m0006'
-        };
+        if (!this.isOffline) {
+            this.noResultMessage = {
+                'message': 'messages.stmsg.m0007',
+                'messageText': 'messages.stmsg.m0006'
+              };
+        } else {
+            this.noResultMessage = {
+                'message': 'messages.stmsg.m0007',
+                'messageText': 'messages.stmsg.m0133'
+              };
+        }
     }
 
     startDownload(contentId) {
         this.downloadManagerService.downloadContentId = contentId;
         this.downloadManagerService.startDownload({}).subscribe(data => {
             this.downloadManagerService.downloadContentId = '';
+            this.changeAddToLibrary(this.contentList, contentId, true);
         }, error => {
             this.downloadManagerService.downloadContentId = '';
+            this.changeAddToLibrary(this.contentList, contentId, false);
             this.toasterService.error(this.resourceService.messages.fmsg.m0090);
         });
     }
 
     exportOfflineContent(contentId) {
         this.downloadManagerService.exportContent(contentId).subscribe(data => {
-            this.toasterService.success(this.resourceService.messages.smsg.m0052);
+            const link = document.createElement('a');
+            link.href = data.result.response.url;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            this.showExportLoader = false;
         }, error => {
+            this.showExportLoader = false;
             this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+        });
+    }
+    changeAddToLibrary(contentList, contentId, boolean) {
+        _.find(contentList, (ele) => {
+            if (ele.metaData.identifier === contentId) {
+                ele['addedToLibrary'] = boolean;
+            }
         });
     }
 }

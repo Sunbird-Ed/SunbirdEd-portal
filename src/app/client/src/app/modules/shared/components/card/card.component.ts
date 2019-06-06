@@ -22,13 +22,6 @@ export class CardComponent {
   isConnected: Boolean = navigator.onLine;
   route: string;
 
-  @HostListener('mouseenter') onMouseEnter() {
-    this.hover = true;
-  }
-
-  @HostListener('mouseleave') onMouseLeave() {
-    this.hover = false;
-  }
   constructor(public resourceService: ResourceService, private router: Router) {
     this.resourceService = resourceService;
     if (this.dialCode) {

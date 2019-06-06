@@ -286,5 +286,9 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     }
     sessionStorage.setItem('inEditor', 'false');
     this.workspaceService.toggleWarning();
+    const removeIzi = document.querySelector('.iziModal-isAttached');
+    if (removeIzi) {
+      removeIzi.classList.remove('iziModal-isAttached');
+    }
   }
 }

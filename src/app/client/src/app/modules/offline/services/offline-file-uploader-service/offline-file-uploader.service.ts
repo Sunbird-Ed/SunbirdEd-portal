@@ -44,11 +44,6 @@ export class OfflineFileUploaderService {
         mode: 'default',
         responseProperty: 'error'
       },
-      fileValidation: {
-        itemLimit: 100,
-        allowedExtensions: ['ecar'],
-        stopOnFirstInvalidFile: false,
-      }
     };
   }
 
@@ -68,6 +63,9 @@ export class OfflineFileUploaderService {
       autoUpload: true,
       request: options.request,
       warnBeforeUnload: true,
+      validation: {
+        acceptFiles: ['.ecar'],
+      },
       callbacks: {
         onProgress: () => {
           this.processingFiles = true;
