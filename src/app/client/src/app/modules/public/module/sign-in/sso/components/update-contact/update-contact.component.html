@@ -39,6 +39,8 @@
                 {{resourceService.frmelmnts.lbl.validEmail}}</label>
             <label *ngIf="disableSubmitBtn && userBlocked" class="ui basic error label" >
               {{resourceService.frmelmnts.lbl.blockedUserError}}</label>
+            <label *ngIf="disableSubmitBtn && userExist" class="ui basic error label" >
+              {{ contactForm.type === 'phone' ? resourceService.frmelmnts.lbl.uniquePhone : resourceService.frmelmnts.lbl.uniqueEmail}}</label>
             <div class="text-center">
               <button [disabled]="disableSubmitBtn" appTelemetryInteract [telemetryInteractEdata]="submitPhoneInteractEdata" appTelemetryInteract
               [telemetryInteractEdata]="submitPhoneInteractEdata" [ngClass]="{'grey':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}"
