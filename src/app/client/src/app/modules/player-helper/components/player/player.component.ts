@@ -20,6 +20,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
   @Input() playerOption: any ;
   contentRatingModal = false;
   previewCdnUrl: string;
+  isCdnWorking: string;
   /**
  * Dom element reference of contentRatingModal
  */
@@ -30,6 +31,8 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
         ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
         ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
+    this.isCdnWorking  = (<HTMLInputElement>document.getElementById('cdnWorking'))
+    ? (<HTMLInputElement>document.getElementById('cdnWorking')).value : 'no';
   }
   /**
    * loadPlayer method will be called
@@ -88,7 +91,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
       this.loadDefaultPlayer(this.configService.appConfig.PLAYER_CONFIG.localBaseUrl);
       return;
     }
-    if (this.previewCdnUrl && this.previewCdnUrl !== '') {
+    if (this.previewCdnUrl !== ''  && (this.isCdnWorking).toLowerCase() === 'yes') {
       this.loadCdnPlayer();
       return;
     }

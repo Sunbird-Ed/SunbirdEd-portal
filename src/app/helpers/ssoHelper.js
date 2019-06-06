@@ -6,7 +6,7 @@ const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
 const kafkaService = require('../helpers/kafkaHelperService');
 let ssoWhiteListChannels;
-
+const privateBaseUrl = '/private/user/'
 let keycloak = getKeyCloakClient({
   clientId: envHelper.PORTAL_TRAMPOLINE_CLIENT_ID,
   bearerOnly: true,
@@ -46,11 +46,11 @@ const verifyToken = (token) => {
 const fetchUserWithExternalId = async (payload, req) => { // will be called from player docker to learner docker
   const options = {
     method: 'GET',
-    url: `${envHelper.learner_Service_Local_BaseUrl}/private/user/v1/read/${payload.sub}?provider=${payload.state_id}&idType=${payload.state_id}`,
+    url: `${envHelper.learner_Service_Local_BaseUrl}${privateBaseUrl}v1/read/${payload.sub}?provider=${payload.state_id}&idType=${payload.state_id}`,
     headers: getHeaders(req),
     json: true
   }
-  console.log('sso fetching user with', options.url);
+  console.log('sso fetch user with external id', options);
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       console.log('sso fetching user', data.result);
@@ -60,7 +60,24 @@ const fetchUserWithExternalId = async (payload, req) => { // will be called from
     }
   }).catch(handleGetUserByIdError);
 }
-const createUser = async (requestBody, req) => {
+const createUser = async (req, jwtPayload) => {
+  const requestBody = {
+    firstName: jwtPayload.name,
+    channel: jwtPayload.state_id,
+    orgExternalId: jwtPayload.school_id,
+    externalIds: [{
+      id: jwtPayload.sub,
+      provider: jwtPayload.state_id,
+      idType: jwtPayload.state_id
+    }]
+  }
+  if(req.query.type === 'phone'){
+    requestBody.phone = req.query.value;
+    requestBody.phoneVerified = true
+  } else {
+    requestBody.email = req.query.value;
+    requestBody.emailVerified = true
+  }
   const options = {
     method: 'POST',
     url: envHelper.LEARNER_URL + 'user/v2/create',
@@ -73,9 +90,10 @@ const createUser = async (requestBody, req) => {
     },
     json: true
   }
-  console.log('sso user create request', options);
+  console.log('sso user create user request', requestBody);
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
+      console.log('sso new user create response', data);
       return data;
     } else {
       throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
@@ -97,16 +115,29 @@ const createSession = async (loginId, client_id, req, res) => {
     refresh_token: grant.refresh_token.token
   }
 }
-const updatePhone = (requestBody, req) => { // will be called from player docker to learner docker
+const updateContact = (req, userDetails) => { // will be called from player docker to learner docker
+  let requestBody = {
+    userId: userDetails.id,
+    phone: req.query.value,
+    phoneVerified: true
+  }
+  if(req.query.type === 'email'){
+    requestBody = {
+      userId: userDetails.id,
+      email: req.query.value,
+      emailVerified: true
+    } 
+  }
   const options = {
-    method: 'POST',
-    url: envHelper.learner_Service_Local_BaseUrl + '/private/user/v1/update',
+    method: 'PATCH',
+    url: envHelper.learner_Service_Local_BaseUrl + privateBaseUrl +'v1/update',
     headers: getHeaders(req),
     body: {
       request: requestBody
     },
     json: true
   }
+  console.log('sso update contact api request', requestBody);
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       return data;
@@ -115,16 +146,54 @@ const updatePhone = (requestBody, req) => { // will be called from player docker
     }
   })
 }
-const updateRoles = (requestBody, req) => { // will be called from player docker to learner docker
+const updateRoles = (req, userId, jwtPayload) => { // will be called from player docker to learner docker
+  const requestBody = {
+    userId: userId,
+    externalId: jwtPayload.school_id,
+    provider: jwtPayload.state_id,
+    roles: jwtPayload.roles
+  }
   const options = {
     method: 'POST',
-    url: envHelper.learner_Service_Local_BaseUrl + '/private/user/v1/assign/role',
+    url: envHelper.learner_Service_Local_BaseUrl + privateBaseUrl +'v1/assign/role',
     headers: getHeaders(req),
     body: {
       request: requestBody
     },
     json: true
   }
+  console.log('sso update role api request', requestBody);
+  return request(options).then(data => {
+    if (data.responseCode === 'OK') {
+      return data;
+    } else {
+      throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
+    }
+  })
+}
+const migrateUser = (req, jwtPayload) => { // will be called from player docker to learner docker
+  const requestBody = {
+    userId: req.query.userId,          
+    channel:jwtPayload.state_id,
+    orgExternalId: jwtPayload.school_id,
+    externalIds: [{
+        id: jwtPayload.sub,
+        provider: jwtPayload.state_id,
+        idType: jwtPayload.state_id,
+        operation: 'ADD'
+      }]
+  }
+
+  const options = {
+    method: 'PATCH',
+    url: envHelper.learner_Service_Local_BaseUrl + privateBaseUrl +'v1/migrate',
+    headers: getHeaders(req),
+    body: {
+      request: requestBody
+    },
+    json: true
+  }
+  console.log('sso migrate user request', options);
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       return data;
@@ -225,7 +294,8 @@ module.exports = {
   fetchUserWithExternalId,
   createUser,
   createSession,
-  updatePhone,
+  updateContact,
   updateRoles,
-  sendSsoKafkaMessage
+  sendSsoKafkaMessage,
+  migrateUser
 };
