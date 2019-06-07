@@ -1,7 +1,7 @@
 <sui-accordion class="styled fluid sb-single-pannel-accordion sb-download-manager-panel">
-  <sui-accordion-panel [isOpen]="isOpen">
+  <sui-accordion-panel [(isOpen)]="isOpen">
     <div title class="p-0">
-      <div class="sb-single-pannel-accordion-heading" (click)="modalStatus()">
+      <div class="sb-single-pannel-accordion-heading">
         <span>{{resourceService?.frmelmnts?.btn?.downloadManager}}</span>
         <i class="chevron down icon d-flex flex-ai-center"></i>
       </div>

@@ -71,9 +71,4 @@ export class DownloadManagerComponent implements OnInit {
   showProgressValue(progressSize, totalSize) {
     return (progressSize / totalSize) * 100;
   }
-  modalStatus() {
-  setTimeout(() => {
-    this.isOpen = false;
-  }, 500);
-  }
 }
