@@ -33,7 +33,7 @@
             [data]="content"></app-card>
 
           <app-offline-card *ngIf="isOffline" appContentDirection [data]="content" appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"
-            [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType || 'content',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}" (clickEvent)="playContent($event)"
+            [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType || 'content',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}" [telemetryInteractCdata]="{id:content.metaData.identifier,type:content.metaData.contentType}" (clickEvent)="playContent($event)"
             [data]="content"></app-offline-card>
             
         </div>
