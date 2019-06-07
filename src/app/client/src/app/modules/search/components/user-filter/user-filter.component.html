@@ -39,7 +39,7 @@
 
       <div class="sb-prominent-filter-field">
         <label>{{resourceService.frmelmnts?.lbl?.district}}</label>
-        <sui-select [(ngModel)]="selectedDistrict" (ngModelChange)="onDistrictChange($event)" [isSearchable]="true" class="multiselect-square-border selection"
+        <sui-select [(ngModel)]="selectedDistrict" (ngModelChange)="onDistrictChange($event)" [isSearchable]="true" class="selection"
           [options]="allDistricts" labelField="name" valueField="id" name="district" placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}"
           #districtDiv>
           <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100" [value]="district"></sui-select-option>
@@ -48,7 +48,7 @@
 
       <div class="sb-prominent-filter-field">
         <label>{{resourceService.frmelmnts?.lbl?.block}}</label>
-        <sui-select [(ngModel)]="selectedBlock" (ngModelChange)="onBlockChange($event)" [isSearchable]="true" class="multiselect-square-border selection" [options]="allBlocks"
+        <sui-select [(ngModel)]="selectedBlock" (ngModelChange)="onBlockChange($event)" [isSearchable]="true" class="selection" [options]="allBlocks"
           labelField="name" valueField="id" name="block" placeholder="{{resourceService.frmelmnts?.lbl?.selectBlock}}"
           #blockDiv>
           <sui-select-option *ngFor="let block of blockDiv.filteredOptions | slice:0:100" [value]="block"></sui-select-option>
@@ -57,7 +57,7 @@
 
       <div class="sb-prominent-filter-field">
         <label>{{resourceService.frmelmnts?.lbl?.school}}</label>
-        <sui-select [(ngModel)]="selectedSchool" (ngModelChange)="onSchoolChange($event)" [isSearchable]="true" class="multiselect-square-border selection"
+        <sui-select [(ngModel)]="selectedSchool" (ngModelChange)="onSchoolChange($event)" [isSearchable]="true" class="selection"
           [options]="allSchools" labelField="orgName" valueField="identifier" name="school" placeholder="{{resourceService.frmelmnts?.lbl?.selectSchool}}"
           #schoolDiv>
           <sui-select-option *ngFor="let school of schoolDiv.filteredOptions | slice:0:100" [value]="school"></sui-select-option>

@@ -539,7 +539,19 @@ $sb-prominent-filter-header-font-weight: bold;
 $sb-prominent-filter-header-margin: ($base-block-space) 0 ($base-block-space*2) 0;
 $sb-prominent-filter-header-color: $primary-color;
 $sb-prominent-filter-field-width: 20%;
-
+$sb-prominent-filter-field-margin: 0 0 ($base-block-space*2) 0;
+$sb-prominent-filter-field-padding: 0 ($base-block-space*2) 0 0;
+$sb-prominent-filter-field-label-font-size: 14px;
+$sb-prominent-filter-field-label-font-weight: normal;
+$sb-prominent-filter-field-label-color: $gray-800;
+$sb-prominent-filter-field-label-margin: 0 0 $base-block-space 0;
+$sb-prominent-filter-field-font-size: 13px;
+$sb-prominent-filter-field-color: #4a4a4a;
+$sb-prominent-filter-field-border: 1px solid #e4e4e4;
+$sb-prominent-filter-field-border-radius: 3px;
+$sb-prominent-filter-field-height: 35px;
+$sb-prominent-filter-field-width: 100%;
+$sb-prominent-filter-topic-picker-padding: 10px;
 
 // To clean
 $text-gray: $gray-100;
