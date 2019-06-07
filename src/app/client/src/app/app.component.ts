@@ -131,7 +131,7 @@ export class AppComponent implements OnInit {
       },
       edata: {
         type: 'cdn_failed',
-        level: 'error',
+        level: 'ERROR',
         message: 'cdn failed, loading files from portal',
         pageid: this.router.url.split('?')[0]
       }
