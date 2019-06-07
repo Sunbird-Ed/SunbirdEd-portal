@@ -12,6 +12,7 @@ import { DownloadManagerService } from './../../../offline/services';
 
 const treeModel = new TreeModel();
 
+
 @Component({
   selector: 'app-dial-code',
   templateUrl: './dial-code.component.html',
@@ -52,9 +53,11 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     public utilService: UtilService, public navigationhelperService: NavigationHelperService,
     public playerService: PlayerService, public telemetryService: TelemetryService,
     public downloadManagerService: DownloadManagerService) {
+
   }
 
   ngOnInit() {
+    EkTelemetry.config.batchsize = 2;
     this.activatedRoute.params.subscribe(params => {
       this.itemsToDisplay = [];
       this.searchResults = [];
@@ -105,14 +108,17 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.toasterService.error(this.resourceService.messages.fmsg.m0049);
     });
   }
-  appendItems(startIndex, endIndex) {
-    this.itemsToDisplay.push(...this.searchResults.slice(startIndex, endIndex));
-  }
+
   onScrollDown() {
     const startIndex = this.itemsToLoad;
     this.itemsToLoad = this.itemsToLoad + this.numOfItemsToAddOnScroll;
     this.appendItems(startIndex, this.itemsToLoad);
   }
+
+  appendItems (startIndex, endIndex) {
+    this.itemsToDisplay.push(...this.searchResults.slice(startIndex, endIndex));
+  }
+
   public getAllPlayableContent(collectionIds) {
     const apiArray = _.map(collectionIds, collectionId => this.getCollectionHierarchy(collectionId));
     return forkJoin(apiArray).pipe(map((results) => {
@@ -216,7 +222,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   setTelemetryData () {
     if (this.dialCode) {
-      this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
+      this.telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
     }
     this.closeMobilePopupInteractData = {
       context: {
@@ -249,6 +255,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
   ngOnDestroy() {
+    EkTelemetry.config.batchsize = 10;
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

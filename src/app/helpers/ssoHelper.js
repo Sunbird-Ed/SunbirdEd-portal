@@ -99,7 +99,7 @@ const createSession = async (loginId, client_id, req, res) => {
 }
 const updatePhone = (requestBody, req) => { // will be called from player docker to learner docker
   const options = {
-    method: 'POST',
+    method: 'PATCH',
     url: envHelper.learner_Service_Local_BaseUrl + '/private/user/v1/update',
     headers: getHeaders(req),
     body: {
