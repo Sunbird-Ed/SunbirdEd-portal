@@ -20,6 +20,7 @@ export class UpdatePhoneComponent implements OnInit, AfterViewInit {
   public showOtpComp = false;
   public enableSubmitBtn = false;
   public showUniqueError;
+  instance: string;
   otpData = {};
   constructor(public activatedRoute: ActivatedRoute, private tenantService: TenantService, public resourceService: ResourceService,
     public userService: UserService, public otpService: OtpService, public toasterService: ToasterService,
@@ -29,6 +30,7 @@ export class UpdatePhoneComponent implements OnInit, AfterViewInit {
     this.setTenantInfo();
     this.initializeForm();
     this.setTelemetryData();
+    this.instance = _.upperCase(this.resourceService.instance);
   }
   private initializeForm() {
     this.phoneNumber = undefined;

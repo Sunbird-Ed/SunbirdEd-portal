@@ -29,7 +29,7 @@ export class GetComponent implements OnInit, AfterViewInit {
   * To navigate to other pages
    */
   public router: Router;
-
+  instance: string;
 
   constructor(resourceService: ResourceService, router: Router, public activatedRoute: ActivatedRoute,
     public navigationhelperService: NavigationHelperService) {
@@ -38,7 +38,7 @@ export class GetComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.instanceName = this.resourceService.instance;
+    this.instance = _.upperCase(this.resourceService.instance);
   }
 
   ngAfterViewInit () {
