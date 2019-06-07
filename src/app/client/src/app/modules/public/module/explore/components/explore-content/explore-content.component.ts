@@ -228,7 +228,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.unsubscribe$.complete();
     }
     private setNoResultMessage() {
-        if (!this.isOffline && !(this.router.url.includes('/browse'))) {
+        if (this.isOffline && !(this.router.url.includes('/browse'))) {
             this.noResultMessage = {
               'message': 'messages.stmsg.m0007',
               'messageText': 'messages.stmsg.m0133'
