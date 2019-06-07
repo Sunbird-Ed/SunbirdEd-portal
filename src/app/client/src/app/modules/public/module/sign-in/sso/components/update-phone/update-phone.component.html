@@ -6,7 +6,7 @@
           <img class="image centered" alt={{tenantInfo.tenantName}} height="45" src="{{tenantInfo.logo}}">
         </div>
         <div class="width-300 mx-auto mt-60">
-          <div class="line-height-1-3 font-w-bold text-center mb-50 mt-60 mb-50">{{resourceService.frmelmnts.lbl.mobileNumberInfoText}}</div>
+          <div class="line-height-1-3 font-w-bold text-center mb-50 mt-60 mb-50">{{resourceService.frmelmnts.lbl.mobileNumberInfoText | interpolate:'{instance}': resourceService.instance.toUpperCase() }}</div>
           <label class="ui basic blue error label pt-0" *ngIf="phoneForm.controls.phone.touched && phoneForm.controls.phone.errors">{{resourceService.frmelmnts.lbl.validPhone}}</label>
           <label class="ui basic blue error label pt-0" *ngIf="showUniqueError">{{showUniqueError}}</label>
           <div [formGroup]="phoneForm" class="ui left icon input d-flex">

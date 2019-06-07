@@ -2,7 +2,7 @@
   <div class="ui container stackable two column grid sb-explore-qr-container">
     <div class="column dial-section-column pr-60">
       <h4>
-        {{resourceService?.frmelmnts?.lbl?.exploreContentOn | interpolate:'{instance}':instanceName}}
+        {{resourceService?.frmelmnts?.lbl?.exploreContentOn | interpolate:'{instance}': resourceService.instance.toUpperCase()}}
       </h4>
       <p>
         {{resourceService?.frmelmnts?.lbl?.startExploringContentBySearch}}
