@@ -50,9 +50,9 @@
 </form>
 
 <sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImagePicker()" *ngIf="showImagePicker"
-  [size]="'normal'" [isFullScreen]="false" [mustScroll]="true" #modal>
-  <div class="header">Select Image</div>
-  <div class="content">
+  [size]="'normal'" class="sb-modal" [isFullScreen]="false" [mustScroll]="true" #modal>
+  <div class="sb-modal-header">Select Image</div>
+  <div class="sb-modal-content">
     <sui-tabset>
       <div class="ui tabular menu">
         <a class="item" (activate)="getMyImages(0)" suiTabHeader="1">My Images</a>
@@ -72,7 +72,7 @@
       </div>
     </sui-tabset>
   </div>
-  <div class="actions">
+  <div class="sb-modal-actions">
     <div class="ui left floated buttons">
       <button (click)="initiateImageUploadModal();" class="ui primary button">Upload and use</button>
     </div>
@@ -85,9 +85,9 @@
 </sui-modal>
 
 <sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImageUploadModal()" *ngIf="showImageUploadModal"
-  [size]="'normal'" [isFullScreen]="false" [mustScroll]="true" #modal3>
-  <div class="header">Upload and Use</div>
-  <div class="content">
+  [size]="'normal'" [isFullScreen]="false" [mustScroll]="true" class="sb-modal" #modal3>
+  <div class="sb-modal-header">Upload and Use</div>
+  <div class="sb-modal-content">
     <div class="ui grid">
       <div class="one wide column"></div>
       <div class="ten wide column">
@@ -105,7 +105,7 @@
       <div class="one wide column"></div>
     </div>
   </div>
-  <div class="actions">
+  <div class="sb-modal-actions">
     <div class="ui left floated buttons">
       <button (click)="dismissImageUploadModal();" class="ui primary button">Back</button>
     </div>

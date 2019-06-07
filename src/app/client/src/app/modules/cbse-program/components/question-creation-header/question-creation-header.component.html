@@ -36,9 +36,9 @@
         (click)="reviewerBtnclick($event, 'Live'); " >Accept</button>
 </div>
 </div>
-<sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissCommentPopup()" *ngIf="showrejectCommentPopup" [size]="'normal'"
+<sui-modal [isClosable]="false" class="sb-modal" [isInverted]="true" (dismissed)="dismissCommentPopup()" *ngIf="showrejectCommentPopup" [size]="'normal'"
   [isFullScreen]="false" [mustScroll]="true" #modal>
-  <div class="header">
+  <div class="sb-modal-header">
       <div class="ui two column grid">
           <div class="row">
               <div class="column">
@@ -51,14 +51,14 @@
           </div>
       </div>
   </div>
-  <div class="content">
+  <div class="sb-modal-content">
       <form #FormControl="ngForm" class="ui form">
           <textarea class="wmd-input width-100" id="wmd-input" [(ngModel)]="rejectComment" placeholder="Add comment" name="rejectComment" required></textarea>
           <label class="ui basic red error label pt-1 mt-5 width-100"
               *ngIf="showFormError">Fill comments </label>
       </form>
   </div>
-  <div class="actions">
+  <div class="sb-modal-actions">
     <div class="ui buttons">
       <button (click)="addComment();" 
         appTelemetryInteract [telemetryInteractEdata]="{id:'addComment',type:'click',pageid:'question_create'}"
@@ -66,9 +66,9 @@
     </div>
   </div>
   </sui-modal>
-  <sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="closeReviewerCommentModal()" *ngIf="reviewerCommentModal" [size]="'normal'"
+  <sui-modal [isClosable]="false" class="sb-modal" [isInverted]="true" (dismissed)="closeReviewerCommentModal()" *ngIf="reviewerCommentModal" [size]="'normal'"
   [isFullScreen]="false" [mustScroll]="true" #modal>
-      <div class="header">
+      <div class="sb-modal-header">
           <div class="ui two column grid">
               <div class="row">
                   <div class="column">
@@ -81,7 +81,7 @@
               </div>
           </div>
       </div>
-      <div class="content">
+      <div class="sb-modal-content">
           <p>{{rejectComment}}</p>
       </div>
   </sui-modal>

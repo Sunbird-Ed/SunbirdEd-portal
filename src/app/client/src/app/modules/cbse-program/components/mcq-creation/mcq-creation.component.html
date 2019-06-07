@@ -24,10 +24,10 @@
               <!-- <sui-radio-button name="'correct_response'" value={{i}} [(ngModel)]="mcqForm.answer"></sui-radio-button>
               <label>Mark as right answer</label> -->
               <button *ngIf='mcqForm.answer !== i.toString()' 
-              (click)="mcqForm.answer = i.toString()" class="sb-btn sb-btn-normal sb-btn-gray mr-8"> Mark as right answer </button>
+              (click)="mcqForm.answer = i.toString()" class="sb-btn sb-btn-normal sb-btn-gray mr-auto"> Mark as right answer </button>
               <button *ngIf='mcqForm.answer === i.toString()' 
-              class="sb-btn sb-btn-normal sb-btn-primary mr-8"> Marked as right answer </button>
-              <button [disabled]="mcqForm.options.length < 3" (click)="mcqForm.deleteOption(i)" class="sb-btn sb-btn-normal sb-btn-tertiary"> Delete this option </button>
+              class="sb-btn sb-btn-normal sb-btn-primary mr-auto"> Marked as right answer </button>
+              <button [disabled]="mcqForm.options.length < 3" (click)="mcqForm.deleteOption(i)" class="ui icon button delete-btn"><i class="trash alternate outline icon"></i></button>
             </div>
             <label *ngIf="showFormError && option.length > 160" class="ui basic red error label pt-1">please reduce the size</label>
           </div>

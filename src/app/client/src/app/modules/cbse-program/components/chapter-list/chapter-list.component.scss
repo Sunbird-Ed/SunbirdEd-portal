@@ -1,6 +1,9 @@
 .sb-table .sb-table-body td {
     padding: 16px 24px;
     text-align: center;
+    &:first-child {
+        text-align: left;
+    }
 }
 
 .sb-table .sb-table-header.heading-large tr th {

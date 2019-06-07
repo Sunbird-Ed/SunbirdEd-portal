@@ -198,7 +198,7 @@
 }
 
 .sb-table-hover {
-  tr:hover {
+  tbody tr:hover {
     background: $secondary-0;
     color: rgba($gray-0, .95);
   }
