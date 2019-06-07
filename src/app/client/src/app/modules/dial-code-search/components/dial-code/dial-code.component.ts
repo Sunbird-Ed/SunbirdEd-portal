@@ -46,7 +46,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   isOffline: boolean = environment.isOffline;
   showExportLoader = false;
   contentName: string;
-
+  instance: string;
   constructor(public resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
     public searchService: SearchService, public toasterService: ToasterService, public configService: ConfigService,
     public utilService: UtilService, public navigationhelperService: NavigationHelperService,
@@ -63,6 +63,14 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.searchDialCode();
     });
     this.handleMobilePopupBanner();
+
+    if (this.isOffline) {
+      this.downloadManagerService.downloadListEvent.subscribe((data) => {
+        this.updateCardData(data);
+      });
+    }
+    this.instance = _.upperCase(this.resourceService.instance);
+
   }
 
   public searchDialCode() {
@@ -254,10 +262,8 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.downloadManagerService.downloadContentId = contentId;
     this.downloadManagerService.startDownload({}).subscribe(data => {
       this.downloadManagerService.downloadContentId = '';
-      this.changeAddToLibrary(this.itemsToDisplay, contentId, true);
     }, error => {
       this.downloadManagerService.downloadContentId = '';
-      this.changeAddToLibrary(this.itemsToDisplay, contentId, false);
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
     });
   }
@@ -276,11 +282,25 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.toasterService.error(this.resourceService.messages.fmsg.m0091);
     });
   }
-  changeAddToLibrary(contentList, contentId, boolean) {
-      _.find(contentList, (ele) => {
-        if (ele.metaData.identifier === contentId) {
-          ele['addedToLibrary'] = boolean;
+
+  updateCardData(downloadListdata) {
+    _.each(this.itemsToDisplay, (contents) => {
+
+      // If download is completed card should show added to library
+      _.find(downloadListdata.result.response.downloads.completed, (completed) => {
+        if (contents.metaData.identifier === completed.contentId) {
+          contents['addedToLibrary'] = true;
+          contents['showAddingToLibraryButton'] = false;
         }
       });
-}
+
+      // If download failed, card should show again add to library
+      _.find(downloadListdata.result.response.downloads.failed, (failed) => {
+        if (contents.metaData.identifier === failed.contentId) {
+          contents['addedToLibrary'] = false;
+          contents['showAddingToLibraryButton'] = false;
+        }
+      });
+    });
+  }
 }

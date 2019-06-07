@@ -36,7 +36,7 @@ export class OtpComponent implements OnInit {
   generateVerifyOtpErrorInteractEdata: any;
   createUserErrorInteractEdata: any;
   telemetryCdata: Array<{}>;
-
+  instance: string;
   constructor(public resourceService: ResourceService, public signupService: SignupService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
     public deviceDetectorService: DeviceDetectorService) { }
@@ -50,6 +50,8 @@ export class OtpComponent implements OnInit {
     this.unabletoVerifyErrorMessage = this.mode === 'phone' ? this.resourceService.frmelmnts.lbl.unableToVerifyPhone :
       this.resourceService.frmelmnts.lbl.unableToVerifyEmail;
     this.setInteractEvent();
+    this.instance = _.upperCase(this.resourceService.instance);
+
   }
 
   verifyOTP() {

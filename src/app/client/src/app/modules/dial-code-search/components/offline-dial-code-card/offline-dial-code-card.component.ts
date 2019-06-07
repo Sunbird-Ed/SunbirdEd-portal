@@ -23,7 +23,7 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
   route: string;
   checkOfflineRoutes: string;
   contentId: string;
-
+  showAddingToLibraryButton: boolean;
 
   @HostListener('mouseenter') onMouseEnter() {
     this.hover = true;
@@ -51,6 +51,7 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
 
   public onAction(data, action) {
     this.contentId = data.metaData.identifier;
+    data.showAddingToLibraryButton = true;
     this.clickEvent.emit({ 'action': action, 'data': data });
   }
 
