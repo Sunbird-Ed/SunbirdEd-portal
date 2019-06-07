@@ -19,9 +19,9 @@
     justify-content: flex-start;
 
     .sb-prominent-filter-field {
-      margin: $sb-prominent-filter-field-margin;
-      padding: $sb-prominent-filter-field-padding;
-      width: $sb-prominent-filter-field-width;
+      margin: 0 0 $sb-prominent-filter-field-bottom-spacing 0;
+      padding: 0 $sb-prominent-filter-field-side-spacing 0 0;
+      width: $sb-prominent-filter-field-width-above-lg;
 
       &:last-child {
         margin-top: auto;
@@ -34,20 +34,20 @@
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
-        font-weight: $sb-prominent-filter-field-label-font-weight;
-        color: $sb-prominent-filter-field-label-color;
-        font-size: $sb-prominent-filter-field-label-font-size;
         margin: $sb-prominent-filter-field-label-margin;
+        font-weight: $sb-prominent-filter-field-label-font-weight;
+        font-size: $sb-prominent-filter-field-label-font-size;
+        color: $sb-prominent-filter-field-label-color;
       }
 
       .topic-picker-selector {
-        font-size: $sb-prominent-filter-field-font-size !important;
-        color: $sb-prominent-filter-field-color !important;
-        border: $sb-prominent-filter-field-border !important;
-        border-radius: $sb-prominent-filter-field-border-radius !important;
+        font-size: $sb-prominent-filter-field-font-size;
+        color: $sb-prominent-filter-field-color;
+        border: $sb-prominent-filter-field-border;
+        border-radius: $sb-prominent-filter-field-border-radius;
         width: $sb-prominent-filter-field-width;
         height: $sb-prominent-filter-field-height;
-        padding: $sb-prominent-filter-topic-picker-padding;
+        padding: $sb-prominent-filter-field-input-padding;
       }
 
       .ui.selection.dropdown {
@@ -60,36 +60,35 @@
         padding: 0;
         
         .item {
-          padding: 12px !important;
-          color: $sb-prominent-filter-field-color !important;
-          font-size: $sb-prominent-filter-field-font-size !important;
           display: flex;
           flex-direction: row;
           align-items: center;
-          width: 100%;
+          width: $sb-prominent-filter-field-width;
+          padding: $sb-prominent-filter-dropdown-font-size;
+          color: $sb-prominent-filter-field-color;
+          font-size: $sb-prominent-filter-field-font-size;
 
           &.header {
-            font-weight: 500;
             margin: 0;
+            font-weight: $sb-prominent-filter-dropdown-header-font-weight;
           }
 
           &.active {
-            color: $primary-color !important;
-            font-weight: 700;
+            color: $sb-prominent-filter-dropdown-item-active-color;
+            font-weight: $sb-prominent-filter-dropdown-item-active-font-weight;
           }
+
         }
 
-        &.multiple {
-          .text {
-            text-transform: lowercase;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            color: $sb-prominent-filter-field-color !important;
-            margin: 0;
-            padding: 10px;
-            &::first-letter {
-              text-transform: uppercase;
-            }
+        .text {
+          text-transform: lowercase;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          color: $sb-prominent-filter-field-color;
+          margin: 0;
+          padding: $sb-prominent-filter-field-input-padding;
+          &::first-letter {
+            text-transform: uppercase;
           }
         }
 
@@ -103,7 +102,7 @@
 
 @include respond-above(lg) {
   .sb-prominent-filter .sb-prominent-filter-container .sb-prominent-filter-field {
-    width: 20%;
+    width: $sb-prominent-filter-field-width-above-lg;
 
     &:nth-child(5n+5) {
       padding-right: 0;
@@ -113,13 +112,13 @@
   *[dir="rtl"] {
     .sb-prominent-filter .sb-prominent-filter-container .sb-prominent-filter-field{
       &:nth-child(5n+5) {
-        padding-right: 16px;
+        padding-right: $sb-prominent-filter-field-side-spacing;
       }
       &:nth-child(5n+1) {
         padding-right: 0;
       }
       &:last-child {
-        padding-right: 16px;
+        padding-right: $sb-prominent-filter-field-side-spacing;
         margin-right: auto;
         margin-left: 0;
         text-align: left;
@@ -130,7 +129,7 @@
 
 @include respond-between(md, lg) {
   .sb-prominent-filter .sb-prominent-filter-container .sb-prominent-filter-field {
-    width: 25%;
+    width: $sb-prominent-filter-field-width-above-md;
 
     &:nth-child(4n+4) {
       padding-right: 0;
@@ -140,13 +139,13 @@
   *[dir="rtl"] {
     .sb-prominent-filter .sb-prominent-filter-container .sb-prominent-filter-field {
       &:nth-child(4n+4) {
-        padding-right: 16px;
+        padding-right: $sb-prominent-filter-field-side-spacing;
       }
       &:nth-child(4n+1) {
         padding-right: 0;
       }
       &:last-child {
-        padding-right: 16px;
+        padding-right: $sb-prominent-filter-field-side-spacing;
         margin-right: auto;
         margin-left: 0;
         text-align: left;
@@ -157,7 +156,7 @@
 
 @include respond-between(sm, md) {
   .sb-prominent-filter .sb-prominent-filter-container .sb-prominent-filter-field {
-    width: 33.3333%;
+    width: $sb-prominent-filter-field-width-above-sm;
 
     &:nth-child(3n+3) {
       padding-right: 0;
@@ -167,13 +166,13 @@
   *[dir="rtl"] {
     .sb-prominent-filter .sb-prominent-filter-container .sb-prominent-filter-field {
       &:nth-child(3n+3) {
-        padding-right: 16px;
+        padding-right: $sb-prominent-filter-field-side-spacing;
       }
       &:nth-child(3n+1) {
         padding-right: 0;
       }
       &:last-child {
-        padding-right: 16px;
+        padding-right: $sb-prominent-filter-field-side-spacing;
         margin-right: auto;
         margin-left: 0;
         text-align: left;
@@ -184,7 +183,7 @@
 
 @include respond-below(sm) {
   .sb-prominent-filter .sb-prominent-filter-container .sb-prominent-filter-field {
-    width: 50%;
+    width: $sb-prominent-filter-field-width-below-sm;
 
     &:nth-child(2n+2) {
       padding-right: 0;
@@ -194,13 +193,13 @@
   *[dir="rtl"] {
     .sb-prominent-filter .sb-prominent-filter-container .sb-prominent-filter-field {
       &:nth-child(2n+2) {
-        padding-right: 16px;
+        padding-right: $sb-prominent-filter-field-side-spacing;
       }
       &:nth-child(2n+1) {
         padding-right: 0;
       }
       &:last-child {
-        padding-right: 16px;
+        padding-right: $sb-prominent-filter-field-side-spacing;
         margin-right: auto;
         margin-left: 0;
         text-align: left;
