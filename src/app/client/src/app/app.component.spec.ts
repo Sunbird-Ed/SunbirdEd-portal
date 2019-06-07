@@ -22,6 +22,7 @@ import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 class RouterStub {
   public navigationEnd = new NavigationEnd(0, '/explore', '/explore');
   public navigate = jasmine.createSpy('navigate');
+  public url = '';
   public events = new Observable(observer => {
     observer.next(this.navigationEnd);
     observer.complete();
