@@ -9,7 +9,11 @@ envHelper = require('../helpers/environmentVariablesHelper.js'),
 tenantHelper = require('../helpers/tenantHelper.js'),
 defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState(),
 oneDayMS = 86400000,
-pathMap = {}
+pathMap = {},
+cdnIndexFileExist = fs.existsSync(path.join(__dirname, '../dist', 'index_cdn.ejs')),
+proxyUtils = require('../proxy/proxyUtils.js')
+
+console.log('CDN index file exist: ', cdnIndexFileExist);
 
 const setZipConfig = (req, res, type, encoding, dist = '../') => {
     if (pathMap[req.path + type] && pathMap[req.path + type] === 'notExist') {
@@ -33,6 +37,7 @@ const setZipConfig = (req, res, type, encoding, dist = '../') => {
     }
 }
 module.exports = (app, keycloak) => {
+
   app.set('view engine', 'ejs')
 
   app.get(['*.js', '*.css'], (req, res, next) => {
@@ -95,7 +100,7 @@ module.exports = (app, keycloak) => {
 
 function getLocals(req) {
   var locals = {}
-  if(req.loggedInRoute){
+  if(req.includeUserDetail){
     locals.userId = _.get(req, 'session.userId') ? req.session.userId : null
     locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'session.userId') ? req.sessionID : null
   } else {
@@ -125,11 +130,14 @@ function getLocals(req) {
 }
 
 const indexPage = (loggedInRoute) => {
-  return function(req, res){
+  return async (req, res) => {
     if (envHelper.DEFAULT_CHANNEL && req.path === '/') {
       renderTenantPage(req, res)
     } else {
-      req.loggedInRoute = loggedInRoute
+      req.includeUserDetail = true
+      if(!loggedInRoute) { // for public route, if user token is valid then send user details
+        await proxyUtils.validateUserToken(req, res).catch(err => req.includeUserDetail = false)
+      }
       renderDefaultIndexPage(req, res)
     }
   }
