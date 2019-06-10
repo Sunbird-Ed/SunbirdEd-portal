@@ -69,7 +69,7 @@ export class ResourceService {
   /**
    * method to fetch resource bundle
   */
-  public getResource(language = 'en', range?: any): void {
+  public getResource(language = 'en', range: any = {}): void {
     const resourcebundles: any | null = this.cacheService.get('resourcebundles' + language);
     if (resourcebundles) {
       this.messages = resourcebundles.messages;
