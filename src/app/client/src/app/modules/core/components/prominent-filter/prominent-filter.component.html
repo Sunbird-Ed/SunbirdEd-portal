@@ -27,11 +27,11 @@
       </div>
 
       <div class="sb-prominent-filter-field">
-        <button class="sb-btn sb-btn-normal sb-btn-primary" appTelemetryInteract [telemetryInteractEdata]="applyFilterInteractEdata" (click)="applyFilters()">
-          {{resourceService.frmelmnts?.btn?.submit}}
-        </button>
-        <button class="sb-btn sb-btn-normal sb-btn-outline-primary ml-8" appTelemetryInteract [telemetryInteractEdata]="resetFilterInteractEdata" (click)="resetFilters()">
+        <button class="sb-btn sb-btn-normal sb-btn-outline-primary" appTelemetryInteract [telemetryInteractEdata]="resetFilterInteractEdata" (click)="resetFilters()">
           {{resourceService.frmelmnts?.btn?.reset}}
+        </button>
+        <button class="sb-btn sb-btn-normal sb-btn-primary ml-8" appTelemetryInteract [telemetryInteractEdata]="applyFilterInteractEdata" (click)="applyFilters()">
+          {{resourceService.frmelmnts?.btn?.submit}}
         </button>
       </div>
 

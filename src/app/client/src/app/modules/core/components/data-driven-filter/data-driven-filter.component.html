@@ -66,11 +66,11 @@
             </div>
 
             <div class="sb-prominent-filter-field">
-              <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="applyFilters()" appTelemetryInteract [telemetryInteractEdata]="applyFilterInteractEdata">
-                {{resourceService.frmelmnts?.btn?.apply}}
-              </button>
-              <button class="sb-btn sb-btn-normal sb-btn-outline-primary ml-8" (click)="resetFilters()" appTelemetryInteract [telemetryInteractEdata]="resetFilterInteractEdata">
+              <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="resetFilters()" appTelemetryInteract [telemetryInteractEdata]="resetFilterInteractEdata">
                 {{resourceService.frmelmnts?.btn?.reset}}
+              </button>
+              <button class="sb-btn sb-btn-normal sb-btn-primary ml-8" (click)="applyFilters()" appTelemetryInteract [telemetryInteractEdata]="applyFilterInteractEdata">
+                {{resourceService.frmelmnts?.btn?.apply}}
               </button>
             </div>
   

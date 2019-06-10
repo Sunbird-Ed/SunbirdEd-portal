@@ -70,13 +70,13 @@
       </div>
 
       <div class="sb-prominent-filter-field">
-        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata" 
-          class="sb-btn sb-btn-normal sb-btn-primary" (click)="applyFilters()">
-            {{resourceService.frmelmnts?.btn?.submit}}
-        </button>
         <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="resetInteractEdata" 
-          class="sb-btn sb-btn-normal sb-btn-outline-primary ml-8" (click)="resetFilters()">
+          class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="resetFilters()">
             {{resourceService.frmelmnts?.btn?.reset}}
+        </button>
+        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata" 
+          class="sb-btn sb-btn-normal sb-btn-primary ml-8" (click)="applyFilters()">
+            {{resourceService.frmelmnts?.btn?.submit}}
         </button>
       </div>
 
