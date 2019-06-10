@@ -10,7 +10,7 @@
           (click)="handleQuestionTabChange(question.identifier)" *ngFor="let question of questionList; let i = index"
           appTelemetryInteract [telemetryInteractEdata]="{id:'question_tab',type:'click',pageid:'question_list',extra:{type:'reference',identifier:question.identifier}}">
           <div class="item d-flex flex-ai-center">Question {{i + 1}}
-            <!-- <i class="trash alternate outline icon ml-auto d-flex flex-ai-center"></i> -->
+            <!-- <i class="trash alternate outline icon ml-auto d-flex flex-ai-center cursor-pointer"></i> -->
             <span class="sb-status-label sb-bg-warning sb-shape-circle ml-auto"
               *ngIf="question.status === 'Draft' || question.status === 'Review'"></span>
             <span class="sb-status-label sb-bg-success sb-shape-circle ml-auto"
