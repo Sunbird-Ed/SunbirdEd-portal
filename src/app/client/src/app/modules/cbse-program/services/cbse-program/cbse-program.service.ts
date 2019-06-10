@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ConfigService } from '@sunbird/shared';
-import { ActionService, UserService } from '@sunbird/core';
+import { ActionService } from '@sunbird/core';
 import { map, mergeMap, catchError, tap } from 'rxjs/operators';
 import { forkJoin, of } from 'rxjs';
 import * as _ from 'lodash-es';
@@ -11,15 +11,9 @@ import { UUID } from 'angular2-uuid';
 })
 export class CbseProgramService {
 
-  private userProfile;
-  private contentType;
   // creators of all the contents
   creators:Array<string>;
-
-  private 
-
-  constructor(private configService: ConfigService, public actionService: ActionService,
-    private userService: UserService) { }
+  constructor(private configService: ConfigService, public actionService: ActionService) { }
 
   getQuestionDetails(questionId) {
     const req = {
