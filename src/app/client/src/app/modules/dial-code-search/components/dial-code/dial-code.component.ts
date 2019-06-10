@@ -77,7 +77,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       const linkedCollectionsIds = [];
       this.linkedContents = [];
       _.forEach(_.get(apiResponse, 'result.content'), (data) => {
-        if (data.mimeType === 'application/vnd.ekstep.content-collection' && data.contentType !== 'Course') {
+        if (data.mimeType === 'application/vnd.ekstep.content-collection' && data.contentType.toLowerCase() !== 'course') {
           linkedCollectionsIds.push(data.identifier);
         } else {
           this.linkedContents.push(data);
