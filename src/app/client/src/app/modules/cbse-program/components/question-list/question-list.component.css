@@ -7,3 +7,6 @@
 .emptyList{
   border: none;
 }
+i.icon.trash {
+  color: #FF6979;
+}

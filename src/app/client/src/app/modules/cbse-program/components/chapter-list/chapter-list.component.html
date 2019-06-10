@@ -1,13 +1,13 @@
 
 <div *ngIf='!showLoader && !showError' class="ui container" [appTelemetryImpression]="telemetryImpression">
   <div *ngIf="textBookChapters.length" class="mt-16">
-    <sui-accordion class="styled fluid" [closeOthers]="true">
+    <sui-accordion class="styled fluid sb-accordion" [closeOthers]="true">
       <sui-accordion-panel [isOpen]="i === 0" *ngFor="let textbook of textBookChapters; let i = index">
-        <div title>
-          <i class="dropdown icon"></i>
+        <div title class="sb-accordion-title">
           {{textbook.name}} ( {{textbook.topic}} )
+          <i class="chevron down icon right-floated d-flex flex-ai-center"></i>
         </div>
-        <div content class="sb-table-container my-0">
+        <div content class="sb-table-container my-0 sb-accordion-content">
           <table class="sb-table sb-table-fixed sb-table-hover">
             <thead class="sb-table-header heading-large">
               <tr>

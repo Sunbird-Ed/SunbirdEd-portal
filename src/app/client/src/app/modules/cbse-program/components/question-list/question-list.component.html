@@ -3,18 +3,19 @@
     <div class="ui questionsMenu">
       <button *ngIf="role.currentRole != 'REVIEWER'" [disabled]="questionMetaData && questionMetaData.mode === 'create'" (click)="createNewQuestion()"
       appTelemetryInteract [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'question_list',extra:{type:'reference',category:selectedAttributes.questionType.toUpperCase(),topic:selectedAttributes.topic}}"
-      class="ui primary fluid button">Create</button>
+      class="sb-btn sb-btn-primary sb-btn-normal width-100">Create</button>
       <div class="ui vertical segments" style="max-height:50vh;overflow-y:auto;">
         <div class="questionTab ui center tertiary header aligned segment p-8"
           [class.tertiary]="selectedQuestionId === question.identifier"
           (click)="handleQuestionTabChange(question.identifier)" *ngFor="let question of questionList; let i = index"
           appTelemetryInteract [telemetryInteractEdata]="{id:'question_tab',type:'click',pageid:'question_list',extra:{type:'reference',identifier:question.identifier}}">
           <div class="item d-flex flex-ai-center">Question {{i + 1}}
-            <span class="sb-status-label sb-bg-warning sb-shape-circle ml-auto"
+            <i class="trash alternate outline icon ml-auto d-flex flex-ai-center"></i>
+            <span class="sb-status-label sb-bg-warning sb-shape-circle"
               *ngIf="question.status === 'Draft' || question.status === 'Review'"></span>
-            <span class="sb-status-label sb-bg-success sb-shape-circle ml-auto"
+            <span class="sb-status-label sb-bg-success sb-shape-circle"
               *ngIf="question.status === 'Live'"></span>
-            <span class="sb-status-label sb-bg-error sb-shape-circle ml-auto"
+            <span class="sb-status-label sb-bg-error sb-shape-circle"
               *ngIf="question.status === 'Reject'"></span>
           </div>
         </div>

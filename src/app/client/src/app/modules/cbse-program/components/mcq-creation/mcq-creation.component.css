@@ -95,3 +95,13 @@
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
+
+.delete-btn {
+  background-color: transparent;
+  color: #FF6979;
+}
+
+.delete-btn:hover {
+  background-color: #e0e1e2;
+  color: #FF6979;
+}
