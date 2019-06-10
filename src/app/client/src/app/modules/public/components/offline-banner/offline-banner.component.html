@@ -1,0 +1,18 @@
+<div *ngIf="showBanner && !isOffline" class="ui fluid container computer only">
+  <div class="ui container sb-banner sb-fix-bottom mt-24" [ngClass]="{ 'sb-fix-bottom' : toggleStyle }" (scroll)="scrollHandler($event)">
+    <div class="sb-banner-content">
+      <div class="sb-banner-content-right">
+        <div class="sb-banner-heading cursor-pointer">{{resourceService?.frmelmnts?.lbl?.downloadDikshaLite}}</div>
+        <dl class="mt-8 mb-0">
+          <div class="d-flex">
+            <dt class="description-list-key">{{resourceService?.frmelmnts?.lbl?.versionKey}}</dt>
+            <dd class="description-list-value">{{desktopAppVersion}}</dd>
+          </div>
+        </dl>
+      </div>
+      <div class="sb-banner-content-left">
+        <button class="sb-btn sb-btn-primary sb-btn-normal" (click)="navigateToDownloadApkPage()">{{resourceService?.frmelmnts?.btn?.downloadDikshaForWindows}}&#x200E;</button>
+      </div>
+    </div>
+  </div>
+</div>

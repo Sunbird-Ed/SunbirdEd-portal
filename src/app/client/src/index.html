@@ -73,7 +73,19 @@
   <% } %>
   <% if (previewCdnUrl) { %>
     <input type="hidden" id="previewCdnUrl" value="<%=previewCdnUrl%>" />
-    <% } %>
+  <% } %>
+  <% if (offlineDesktopAppTenant) { %>
+    <input type="hidden" id="offlineDesktopAppTenant" value="<%=offlineDesktopAppTenant%>" />
+  <% } %>
+  <% if (offlineDesktopAppVersion) { %>
+    <input type="hidden" id="offlineDesktopAppVersion" value="<%=offlineDesktopAppVersion%>" />
+  <% } %>
+  <% if (offlineDesktopAppReleaseDate) { %>
+    <input type="hidden" id="offlineDesktopAppReleaseDate" value="<%=offlineDesktopAppReleaseDate%>" />
+  <% } %>
+  <% if (offlineDesktopAppSupportedLanguage) { %>
+    <input type="hidden" id="offlineDesktopAppSupportedLanguage" value="<%=offlineDesktopAppSupportedLanguage%>" />
+  <% } %>
   <app-root></app-root>
 </body>
 

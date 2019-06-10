@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LandingPageComponent } from './components';
 import { LandingpageGuard } from './services';
+import { OfflineApplicationDownloadComponent } from './components/offline-application-download/offline-application-download.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,9 @@ const routes: Routes = [
   },
   {
     path: 'play', loadChildren: './module/player/player.module#PlayerModule'
+  },
+  {
+    path: 'download-apk', component: OfflineApplicationDownloadComponent
   }];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
