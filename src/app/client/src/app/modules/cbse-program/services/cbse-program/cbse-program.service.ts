@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ConfigService } from '@sunbird/shared';
-import { ActionService } from '@sunbird/core';
-import { map, mergeMap, catchError } from 'rxjs/operators';
+import { ActionService, UserService } from '@sunbird/core';
+import { map, mergeMap, catchError, tap } from 'rxjs/operators';
 import { forkJoin, of } from 'rxjs';
 import * as _ from 'lodash-es';
 import { themeObject, stageObject, questionSetObject, questionObject, questionSetConfigCdataObject } from './data';
@@ -11,7 +11,15 @@ import { UUID } from 'angular2-uuid';
 })
 export class CbseProgramService {
 
-  constructor(private configService: ConfigService, public actionService: ActionService) { }
+  private userProfile;
+  private contentType;
+  // creators of all the contents
+  creators:Array<string>;
+
+  private 
+
+  constructor(private configService: ConfigService, public actionService: ActionService,
+    private userService: UserService) { }
 
   getQuestionDetails(questionId) {
     const req = {
@@ -24,14 +32,14 @@ export class CbseProgramService {
     const theme = _.cloneDeep(themeObject);
     const stage = _.cloneDeep(stageObject);
     const questionSet = _.cloneDeep(questionSetObject);
-
+    this.creators = [];
     stage.id = UUID.UUID();
     theme.startStage = stage.id;
     questionSet.id = UUID.UUID();
     questionSet.data.__cdata.push({ identifier: questionSet.id });
     const questionSetConfigCdata = questionSetConfigCdataObject;
 
-    of(collections)
+    return of(collections)
       .pipe(mergeMap((collectionIds: Array<string>) => {
         if (collectionIds.length > 0) {
           return forkJoin(_.map(collectionIds, (collectionId: string) => {
@@ -40,6 +48,7 @@ export class CbseProgramService {
             };
             return this.actionService.get(req).pipe(
               map(res => {
+                this.creators.push(_.get(res, 'result.assessment_item.createdBy'))
                 const question = _.cloneDeep(questionObject);
                 const questionConfigCdata: any = {};
                 question.id = UUID.UUID();
@@ -65,14 +74,18 @@ export class CbseProgramService {
           }));
         }
       }))
-      .subscribe((questions) => {
-        theme.manifest.media = _.flattenDeep(_.map(questions, question => {
-          return _.map(question.data.__cdata, cdata => cdata.media);
-        }));
-        questionSet.config.__cdata.push(questionSetConfigCdata);
-        questionSet['org.ekstep.question'] = questions;
-        stage['org.ekstep.questionset'].push(questionSet);
-        theme.stage.push(stage);
-      });
+      .pipe(
+        map(questions => {
+          theme.manifest.media = _.flattenDeep(_.map(questions, question => {
+            return _.map(question.data.__cdata, cdata => cdata.media);
+          }));
+          questionSet.config.__cdata.push(questionSetConfigCdata);
+          questionSet['org.ekstep.question'] = questions;
+          stage['org.ekstep.questionset'].push(questionSet);
+          theme.stage.push(stage);
+          return theme;
+        })
+      )
   }
+
 }

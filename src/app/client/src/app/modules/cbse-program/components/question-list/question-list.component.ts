@@ -5,12 +5,14 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { tap, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { of } from 'rxjs';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { CbseProgramService } from '../../services';
 @Component({
   selector: 'app-question-list',
   templateUrl: './question-list.component.html',
   styleUrls: ['./question-list.component.css']
 })
-export class QuestionListComponent implements OnInit,OnChanges{
+export class QuestionListComponent implements OnInit, OnChanges {
   @Input() selectedAttributes: any;
   @Input() role: any;
 
@@ -21,9 +23,10 @@ export class QuestionListComponent implements OnInit,OnChanges{
   public refresh = true;
   public showLoader = true;
   public enableRoleChange = false;
+  public selectedQuestions: FormGroup;
   constructor(private configService: ConfigService, private userService: UserService, private publicDataService: PublicDataService,
     public actionService: ActionService, private cdr: ChangeDetectorRef, public toasterService: ToasterService,
-    public telemetryService: TelemetryService) {
+    public telemetryService: TelemetryService, private fb: FormBuilder, private cbseService: CbseProgramService) {
   }
   ngOnChanges(changedProps: any) {
     if (this.enableRoleChange) {
@@ -31,14 +34,17 @@ export class QuestionListComponent implements OnInit,OnChanges{
     }
   }
   ngOnInit() {
-    console.log('changes detected in question list',this.role);
+    console.log('changes detected in question list', this.role);
     this.fetchQuestionWithRole();
     this.enableRoleChange = true;
+    this.selectedQuestions = this.fb.group({
+      questions: this.fb.array([])
+    });
   }
   private fetchQuestionWithRole() {
     (this.role.currentRole === 'REVIEWER') ? this.fetchQuestionList(true) : this.fetchQuestionList();
   }
-  private fetchQuestionList(isReviewer?: boolean ) {
+  private fetchQuestionList(isReviewer?: boolean) {
     const req = {
       url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
       data: {
@@ -69,58 +75,62 @@ export class QuestionListComponent implements OnInit,OnChanges{
       }
       req.data.request.filters.status = ['Review'];
     }
+    if (this.role.currentRole === "PUBLISHER") {
+      delete req.data.request.filters.createdBy;
+      req.data.request.filters.status = ['Live'];
+    }
     this.publicDataService.post(req).pipe(tap(data => this.showLoader = false))
-    .subscribe((res) => {
-      this.questionList = res.result.items || [];
-      if (this.questionList.length) {
-        this.selectedQuestionId = this.questionList[0].identifier;
-        this.handleQuestionTabChange(this.selectedQuestionId);
-      }
-    }, err => {
-      this.toasterService.error(_.get(err, 'error.params.errmsg') || 'Fetching question list failed');
-      const telemetryErrorData = {
-        context: {
-          env: 'cbse_program'
-        },
-        edata: {
-          err: err.status.toString(),
-          errtype: 'PROGRAMPORTAL',
-          stacktrace: _.get(err, 'error.params.errmsg') || 'Fetching question list failed'
+      .subscribe((res) => {
+        this.questionList = res.result.items || [];
+        if (this.questionList.length) {
+          this.selectedQuestionId = this.questionList[0].identifier;
+          this.handleQuestionTabChange(this.selectedQuestionId);
         }
-      };
-      this.telemetryService.error(telemetryErrorData);
-    });
+      }, err => {
+        this.toasterService.error(_.get(err, 'error.params.errmsg') || 'Fetching question list failed');
+        const telemetryErrorData = {
+          context: {
+            env: 'cbse_program'
+          },
+          edata: {
+            err: err.status.toString(),
+            errtype: 'PROGRAMPORTAL',
+            stacktrace: _.get(err, 'error.params.errmsg') || 'Fetching question list failed'
+          }
+        };
+        this.telemetryService.error(telemetryErrorData);
+      });
   }
   handleQuestionTabChange(questionId) {
     this.selectedQuestionId = questionId;
     this.showLoader = true;
     this.getQuestionDetails(questionId).pipe(tap(data => this.showLoader = false))
-    .subscribe((assessment_item) => {
-      let editorMode;
-      if (['Draft', 'Review', 'Reject'].includes(assessment_item.status)) {
-        editorMode = 'edit';
-      } else {
-        editorMode = 'view';
-      }
-      this.questionMetaData = {
-        mode: editorMode,
-        data: assessment_item
-      };
-      this.refreshEditor();
-    }, err => {
-      this.toasterService.error(_.get(err, 'error.params.errmsg') || 'Fetching question failed');
-      const telemetryErrorData = {
-        context: {
-          env: 'cbse_program'
-        },
-        edata: {
-          err: err.status.toString(),
-          errtype: 'PROGRAMPORTAL',
-          stacktrace: _.get(err, 'error.params.errmsg') || 'Fetching question list failed'
+      .subscribe((assessment_item) => {
+        let editorMode;
+        if (['Draft', 'Review', 'Reject'].includes(assessment_item.status)) {
+          editorMode = 'edit';
+        } else {
+          editorMode = 'view';
         }
-      };
-      this.telemetryService.error(telemetryErrorData);
-    });
+        this.questionMetaData = {
+          mode: editorMode,
+          data: assessment_item
+        };
+        this.refreshEditor();
+      }, err => {
+        this.toasterService.error(_.get(err, 'error.params.errmsg') || 'Fetching question failed');
+        const telemetryErrorData = {
+          context: {
+            env: 'cbse_program'
+          },
+          edata: {
+            err: err.status.toString(),
+            errtype: 'PROGRAMPORTAL',
+            stacktrace: _.get(err, 'error.params.errmsg') || 'Fetching question list failed'
+          }
+        };
+        this.telemetryService.error(telemetryErrorData);
+      });
   }
   public getQuestionDetails(questionId) {
     if (this.questionReadApiDetails[questionId]) {
@@ -152,10 +162,10 @@ export class QuestionListComponent implements OnInit,OnChanges{
     if (event.status === 'failed') {
       console.log('failed');
     } else {
-      if  (event.type === 'update') {
+      if (event.type === 'update') {
         delete this.questionReadApiDetails[event.identifier];
         this.handleQuestionTabChange(this.selectedQuestionId);
-      } if  (event.type === 'Reject' || event.type === 'Live') {
+      } if (event.type === 'Reject' || event.type === 'Live') {
         this.showLoader = true;
         setTimeout(() => this.fetchQuestionList(true), 2000);
       } else {
@@ -164,13 +174,48 @@ export class QuestionListComponent implements OnInit,OnChanges{
       }
     }
   }
-  
-  handleRefresEvent(){
+
+  handleRefresEvent() {
     this.refreshEditor();
   }
   private refreshEditor() {
     this.refresh = false;
     this.cdr.detectChanges();
     this.refresh = true;
+  }
+
+  selectQuestions(questionId: string, isChecked: Boolean) {
+    const selectedQuestionsArray = <FormArray>this.selectedQuestions.controls.questions;
+    if (isChecked) {
+      selectedQuestionsArray.push(new FormControl(questionId));
+    } else {
+      let index = selectedQuestionsArray.controls.findIndex(x => x.value == questionId)
+      selectedQuestionsArray.removeAt(index);
+    }
+  }
+
+  publishQuestions() {
+    let questionIds = this.selectedQuestions.value;
+    this.cbseService.getECMLJSON(questionIds.questions).subscribe((theme) => {
+      // theme object 
+      console.log(theme);
+      // preparing request object
+      let data: any = {};
+      data.name = `${this.selectedAttributes.questionType}-${this.selectedAttributes.topic}`;
+      data.description = '';
+      data.icon = '';
+      data.contentType = 'resource';
+      data.board = this.selectedAttributes.board;
+      data.medium = this.selectedAttributes.medium;
+      data.subject = this.selectedAttributes.subject;
+      data.class = this.selectedAttributes.gradeLevel;
+      data.topic = this.selectedAttributes.topic;
+      data.creators = _.uniq(this.cbseService.creators);
+      data.contributors = ''
+      data.creditTo =  ''
+      console.log(data);
+    })
+
+
   }
 }
