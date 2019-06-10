@@ -246,15 +246,15 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
   private setNoResultMessage() {
-    if (!this.isOffline) {
+    if (this.isOffline && !(this.router.url.includes('/browse'))) {
       this.noResultMessage = {
         'message': 'messages.stmsg.m0007',
-        'messageText': 'messages.stmsg.m0006'
+        'messageText': 'messages.stmsg.m0133'
       };
     } else {
       this.noResultMessage = {
         'message': 'messages.stmsg.m0007',
-        'messageText': 'messages.stmsg.m0133'
+        'messageText': 'messages.stmsg.m0006'
       };
     }
   }
@@ -265,6 +265,12 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.downloadManagerService.downloadContentId = '';
     }, error => {
       this.downloadManagerService.downloadContentId = '';
+      _.each(this.pageSections, (pageSection) => {
+        _.each(pageSection.contents, (pageData) => {
+          pageData['addedToLibrary'] = false;
+          pageData['showAddingToLibraryButton'] = false;
+        });
+      });
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
     });
   }

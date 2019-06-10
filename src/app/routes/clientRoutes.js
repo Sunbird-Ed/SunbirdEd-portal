@@ -86,7 +86,7 @@ module.exports = (app, keycloak) => {
   app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
     '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course',
     '/explore-course/*', '/:slug/explore-course', '/:slug/explore-course/*',
-    '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*'], loadExperimentApp, indexPage(false))
+    '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*'], loadExperimentApp, redirectTologgedInPage, indexPage(false))
 
   app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode))
 
@@ -205,3 +205,27 @@ const loadTenantFromLocal = (req, res) => {
     renderDefaultIndexPage(req, res)
   }
 }
+const redirectTologgedInPage = (req, res) => {
+	let redirectRoutes = { '/explore': '/resources', '/explore/1': '/search/Library/1', '/explore-course': '/learn', '/explore-course/1': '/search/Courses/1' };
+	if (req.params.slug) {
+		redirectRoutes = {
+			[`/${req.params.slug}/explore`]: '/resources',
+			[`/${req.params.slug}/explore-course`]: '/learn'
+		}
+	}
+	if (_.get(req, 'sessionID') && _.get(req, 'session.userId')) {
+		if (_.get(redirectRoutes, req.originalUrl)) {
+			const routes = _.get(redirectRoutes, req.originalUrl);
+			res.redirect(routes)
+		} else {
+			if (_.get(redirectRoutes, `/${req.originalUrl.split('/')[1]}`)) {
+				const routes = _.get(redirectRoutes, `/${req.originalUrl.split('/')[1]}`);
+				res.redirect(routes)
+			} else {
+				renderDefaultIndexPage(req, res)
+			}
+		}
+	} else {
+		renderDefaultIndexPage(req, res)
+	}
+} 

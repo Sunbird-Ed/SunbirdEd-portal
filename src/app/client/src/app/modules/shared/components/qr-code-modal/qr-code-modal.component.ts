@@ -13,12 +13,15 @@ export class QrCodeModalComponent implements OnInit {
   isOffline: boolean = environment.isOffline;
   @ViewChild('modal') modal;
   @Output() closeQrModal = new EventEmitter<any>();
+  instance: string;
   public submitDialCodeInteractEdata: IInteractEventEdata;
   public closeDialCodeInteractEdata: IInteractEventEdata;
   constructor(public router: Router, public resourceService: ResourceService) { }
 
   ngOnInit() {
     this.setInteractEventData();
+    this.instance = _.upperCase(this.resourceService.instance);
+
   }
   setInteractEventData() {
     this.closeDialCodeInteractEdata = {

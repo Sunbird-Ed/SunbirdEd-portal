@@ -1,5 +1,5 @@
-<p *ngIf="mode === 'phone' && !showSignUpLink" class="line-height-1-3 grey text text-center mb-50">{{resourceService.frmelmnts.instn.t0081}}</p>
-<p *ngIf="mode === 'email' && !showSignUpLink" class="line-height-1-3 grey text text-center mb-50">{{resourceService.frmelmnts.instn.t0082}}</p>
+<p *ngIf="mode === 'phone' && !showSignUpLink" class="line-height-1-3 grey text text-center mb-50">{{resourceService.frmelmnts.instn.t0081 | interpolate:'{instance}': instance}}</p>
+<p *ngIf="mode === 'email' && !showSignUpLink" class="line-height-1-3 grey text text-center mb-50">{{resourceService.frmelmnts.instn.t0082 | interpolate:'{instance}': instance}}</p>
 <div *ngIf="showSignUpLink" class="orange text fs-1 text-center mb-50 line-height-1-3">{{unabletoVerifyErrorMessage}}<br>  Please
   <span (click)="redirectToSignUp()" class="fs-1 blue text font-weight-bold cursor-pointer" role="button" tabindex="0">{{resourceService.frmelmnts.lbl.signUp}}</span>
   again</div>

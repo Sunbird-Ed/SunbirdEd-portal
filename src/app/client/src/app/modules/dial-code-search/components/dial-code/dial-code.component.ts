@@ -46,7 +46,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   isOffline: boolean = environment.isOffline;
   showExportLoader = false;
   contentName: string;
-
+  instance: string;
   constructor(public resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
     public searchService: SearchService, public toasterService: ToasterService, public configService: ConfigService,
     public utilService: UtilService, public navigationhelperService: NavigationHelperService,
@@ -69,6 +69,8 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.updateCardData(data);
       });
     }
+    this.instance = _.upperCase(this.resourceService.instance);
+
   }
 
   public searchDialCode() {
@@ -262,6 +264,10 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.downloadManagerService.downloadContentId = '';
     }, error => {
       this.downloadManagerService.downloadContentId = '';
+      _.each(this.itemsToDisplay, (contents) => {
+        contents['addedToLibrary'] = false;
+        contents['showAddingToLibraryButton'] = false;
+      });
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
     });
   }
