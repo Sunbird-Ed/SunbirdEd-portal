@@ -1,3 +1,4 @@
+import { InterpolatePipe } from './../../pipes';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -12,7 +13,7 @@ describe('InstallAppComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
           imports: [HttpClientTestingModule],
-          declarations: [ InstallAppComponent ],
+          declarations: [ InstallAppComponent, InterpolatePipe ],
           providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService],
           schemas: [NO_ERRORS_SCHEMA]
         })

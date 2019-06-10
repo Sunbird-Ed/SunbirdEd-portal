@@ -81,8 +81,13 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.offlineFileUploaderService.isUpload.subscribe(() => {
         self.fetchPageData();
       });
+
+      this.downloadManagerService.downloadListEvent.subscribe((data) => {
+        this.updateCardData(data);
+      });
     }
   }
+
   public getFilters(filters) {
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
       if (element.code === 'board') {
@@ -241,23 +246,23 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
   private setNoResultMessage() {
-    this.noResultMessage = {
-      'message': 'messages.stmsg.m0007',
-      'messageText': 'messages.stmsg.m0006'
-    };
+    if (this.isOffline && !(this.router.url.includes('/browse'))) {
+      this.noResultMessage = {
+        'message': 'messages.stmsg.m0007',
+        'messageText': 'messages.stmsg.m0133'
+      };
+    } else {
+      this.noResultMessage = {
+        'message': 'messages.stmsg.m0007',
+        'messageText': 'messages.stmsg.m0006'
+      };
+    }
   }
 
   startDownload (contentId) {
     this.downloadManagerService.downloadContentId = contentId;
     this.downloadManagerService.startDownload({}).subscribe(data => {
       this.downloadManagerService.downloadContentId = '';
-      _.forEach(this.pageSections, (pageData) => {
-        _.find(pageData.contents, (ele) => {
-          if (ele.metaData.identifier === contentId) {
-            ele['addedToLibrary'] = true;
-          }
-        });
-      });
     }, error => {
       this.downloadManagerService.downloadContentId = '';
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
@@ -278,4 +283,28 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.toasterService.error(this.resourceService.messages.fmsg.m0091);
     });
   }
+
+  updateCardData(downloadListdata) {
+    _.each(this.pageSections, (pageSection) => {
+      _.each(pageSection.contents, (pageData) => {
+
+        // If download is completed card should show added to library
+        _.find(downloadListdata.result.response.downloads.completed, (completed) => {
+          if (pageData.metaData.identifier === completed.contentId) {
+            pageData['addedToLibrary'] = true;
+            pageData['showAddingToLibraryButton'] = false;
+          }
+        });
+
+        // If download failed, card should show again add to library
+        _.find(downloadListdata.result.response.downloads.failed, (failed) => {
+          if (pageData.metaData.identifier === failed.contentId) {
+            pageData['addedToLibrary'] = false;
+            pageData['showAddingToLibraryButton'] = false;
+          }
+        });
+      });
+    });
+  }
+
 }

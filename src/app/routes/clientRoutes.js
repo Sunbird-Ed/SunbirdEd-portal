@@ -9,7 +9,11 @@ envHelper = require('../helpers/environmentVariablesHelper.js'),
 tenantHelper = require('../helpers/tenantHelper.js'),
 defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState(),
 oneDayMS = 86400000,
-pathMap = {}
+pathMap = {},
+cdnIndexFileExist = fs.existsSync(path.join(__dirname, '../dist', 'index_cdn.ejs')),
+proxyUtils = require('../proxy/proxyUtils.js')
+
+console.log('CDN index file exist: ', cdnIndexFileExist);
 
 const setZipConfig = (req, res, type, encoding, dist = '../') => {
     if (pathMap[req.path + type] && pathMap[req.path + type] === 'notExist') {
@@ -33,6 +37,7 @@ const setZipConfig = (req, res, type, encoding, dist = '../') => {
     }
 }
 module.exports = (app, keycloak) => {
+
   app.set('view engine', 'ejs')
 
   app.get(['*.js', '*.css'], (req, res, next) => {
@@ -79,7 +84,7 @@ module.exports = (app, keycloak) => {
   app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
     '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course',
     '/explore-course/*', '/:slug/explore-course', '/:slug/explore-course/*',
-    '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*'], indexPage(false))
+    '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*'],redirectTologgedInPage, indexPage(false))
 
   app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode))
 
@@ -95,7 +100,7 @@ module.exports = (app, keycloak) => {
 
 function getLocals(req) {
   var locals = {}
-  if(req.loggedInRoute){
+  if(req.includeUserDetail){
     locals.userId = _.get(req, 'session.userId') ? req.session.userId : null
     locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'session.userId') ? req.sessionID : null
   } else {
@@ -125,11 +130,14 @@ function getLocals(req) {
 }
 
 const indexPage = (loggedInRoute) => {
-  return function(req, res){
+  return async (req, res) => {
     if (envHelper.DEFAULT_CHANNEL && req.path === '/') {
       renderTenantPage(req, res)
     } else {
-      req.loggedInRoute = loggedInRoute
+      req.includeUserDetail = true
+      if(!loggedInRoute) { // for public route, if user token is valid then send user details
+        await proxyUtils.validateUserToken(req, res).catch(err => req.includeUserDetail = false)
+      }
       renderDefaultIndexPage(req, res)
     }
   }
@@ -180,3 +188,27 @@ const loadTenantFromLocal = (req, res) => {
     renderDefaultIndexPage(req, res)
   }
 }
+const redirectTologgedInPage = (req, res) => {
+	let redirectRoutes = { '/explore': '/resources', '/explore/1': '/search/Library/1', '/explore-course': '/learn', '/explore-course/1': '/search/Courses/1' };
+	if (req.params.slug) {
+		redirectRoutes = {
+			[`/${req.params.slug}/explore`]: '/resources',
+			[`/${req.params.slug}/explore-course`]: '/learn'
+		}
+	}
+	if (_.get(req, 'sessionID') && _.get(req, 'session.userId')) {
+		if (_.get(redirectRoutes, req.originalUrl)) {
+			const routes = _.get(redirectRoutes, req.originalUrl);
+			res.redirect(routes)
+		} else {
+			if (_.get(redirectRoutes, `/${req.originalUrl.split('/')[1]}`)) {
+				const routes = _.get(redirectRoutes, `/${req.originalUrl.split('/')[1]}`);
+				res.redirect(routes)
+			} else {
+				renderDefaultIndexPage(req, res)
+			}
+		}
+	} else {
+		renderDefaultIndexPage(req, res)
+	}
+} 

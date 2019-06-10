@@ -71,5 +71,4 @@ export class DownloadManagerComponent implements OnInit {
   showProgressValue(progressSize, totalSize) {
     return (progressSize / totalSize) * 100;
   }
-
 }

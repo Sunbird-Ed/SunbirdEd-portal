@@ -72,19 +72,20 @@
       <div>
         <div (click)="onAction(data,data.action.onImage)" *ngIf="checkOfflineRoutes === 'library'"
           class="d-flex flex-jc-center">
-          <button class="sb-btn sb-btn-outline-white sb-btn-normal">{{resourceService.frmelmnts?.lbl?.open}}</button>
-        </div>
-        <button (click)="onAction(data,'export')" *ngIf="checkOfflineRoutes === 'library'"
-          class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">{{resourceService.frmelmnts?.btn?.export}}<i
-            class="sign in alternate icon"></i></button>
-        <button id="download_{{data.metaData.identifier}}" [ngClass]="{'disable': contentId === data.metaData.identifier}"
-          (click)="onAction(data,'browse')" *ngIf="checkOfflineRoutes === 'browse' && data?.addedToLibrary !== true"
-          class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">
-          {{resourceService.frmelmnts?.btn?.addToLibrary}}<i class="sign in alternate icon"></i></button>
-        <button *ngIf="data?.addedToLibrary === true && checkOfflineRoutes === 'browse' "
-          class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16" disabled>
-          {{resourceService.frmelmnts?.btn?.addedToLibrary}}
-          <i class="sign in alternate icon"></i></button>
+          <button class="sb-btn sb-btn-outline-white sb-btn-normal">{{resourceService.frmelmnts?.lbl?.open}} <i class="play icon"></i>
+            </button>
+          </div>
+          <button (click)="onAction(data,'export')" *ngIf="checkOfflineRoutes === 'library'" class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">{{resourceService.frmelmnts?.btn?.export}}<i
+              class="copy icon"></i></button>
+          <button id="download_{{data.metaData.identifier}}" (click)="onAction(data,'browse')" *ngIf="checkOfflineRoutes === 'browse' && data?.addedToLibrary !== true && data?.showAddingToLibraryButton !== true"
+            class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">
+            {{resourceService.frmelmnts?.btn?.addToLibrary}}<i class="download icon"></i></button>
+          <button *ngIf="checkOfflineRoutes === 'browse' && contentId === data.metaData.identifier && data?.showAddingToLibraryButton === true"
+            class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16 disable">
+            {{resourceService.frmelmnts?.btn?.addingToLibrary}}</button>
+          <button *ngIf="data?.addedToLibrary === true && checkOfflineRoutes === 'browse' " class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16 disable">
+            {{resourceService.frmelmnts?.btn?.addedToLibrary}}
+          </button>
       </div>
     </div>
   </div>
