@@ -432,6 +432,10 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       this.downloadManagerService.downloadContentId = '';
     }, error => {
       this.downloadManagerService.downloadContentId = '';
+      _.each(this.searchList, (contents) => {
+        contents['addedToLibrary'] = false;
+        contents['showAddingToLibraryButton'] = false;
+      });
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
     });
   }
