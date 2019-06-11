@@ -11,7 +11,9 @@ defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState(),
 oneDayMS = 86400000,
 pathMap = {},
 cdnIndexFileExist = fs.existsSync(path.join(__dirname, '../dist', 'index_cdn.ejs')),
-proxyUtils = require('../proxy/proxyUtils.js')
+proxyUtils = require('../proxy/proxyUtils.js'),
+experimentHelper = require('../helpers/experimentHelper.js'),
+ejs = require('ejs');
 
 console.log('CDN index file exist: ', cdnIndexFileExist);
 
@@ -84,7 +86,7 @@ module.exports = (app, keycloak) => {
   app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
     '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course',
     '/explore-course/*', '/:slug/explore-course', '/:slug/explore-course/*',
-    '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*'],redirectTologgedInPage, indexPage(false))
+    '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*'], loadExperimentApp, redirectTologgedInPage, indexPage(false))
 
   app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode))
 
@@ -93,7 +95,7 @@ module.exports = (app, keycloak) => {
   app.all(['/announcement', '/announcement/*', '/search', '/search/*',
     '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
     '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
-    '/resources/*', '/myActivity', '/myActivity/*'], keycloak.protect(), indexPage(true))
+    '/resources/*', '/myActivity', '/myActivity/*'], keycloak.protect(), loadExperimentApp, indexPage(true))
 
   app.all('/:tenantName', renderTenantPage)
 }
@@ -129,6 +131,42 @@ function getLocals(req) {
   return locals
 }
 
+const loadExperimentApp = async (req, res, next) => {
+  // if(req.query.experimentId){
+  //   let experimentFile;
+  //   try {
+  //     experimentFile = fs.readFileSync(path.join(__dirname, './../dist_experiment', req.query.experimentId, 'index.html'));
+  //   } catch(err) {
+  //     console.log(err)
+  //   }
+  //   console.log('experiment found loading experiment index file', req.query.experimentId,  experimentFile.toString());
+  //   if(!experimentFile){
+  //     next()
+  //     return;
+  //   }
+  //   res.locals = getLocals(req);
+  //   let renderedFile = ejs.render(experimentFile.toString(), res.locals)
+  //   res.send(renderedFile);
+  //   return;
+  // }
+  const indexFile = await experimentHelper.getExperimentIndexFile(req, res)
+  if(indexFile && indexFile.data){
+    // res.header('Access-Control-Allow-Origin', "*");
+    // res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    // res.header('Access-Control-Allow-Headers', 'Content-Type');
+    console.log('experiment found loading experiment index file', req.path);
+    res.locals = getLocals(req);
+    let renderedFile = ejs.render(indexFile.data, res.locals)
+    res.send(renderedFile);
+  } 
+  // else if(indexFile && !_.isEmpty(indexFile.redirectionParam)) {
+
+  // } 
+  else {
+    console.log('experiment not found loading default app');
+    next()
+  }
+};
 const indexPage = (loggedInRoute) => {
   return async (req, res) => {
     if (envHelper.DEFAULT_CHANNEL && req.path === '/') {
