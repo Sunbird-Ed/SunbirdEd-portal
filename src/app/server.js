@@ -47,7 +47,7 @@ app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
 app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '10mb' }), require('./helpers/announcement')(keycloak)) // announcement api routes
 
-app.all('/logoff', endSession, (req, res) => { 
+app.all('/logoff', endSession, (req, res) => {
   res.cookie('connect.sid', '', { expires: new Date() }); res.redirect('/logout')
 })
 
@@ -130,39 +130,11 @@ function runApp() {
   fetchDefaultChannelDetails((channelError, channelRes, channelData) => {
     portal.server = app.listen(envHelper.PORTAL_PORT, () => {
       envHelper.defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId'); // needs to be added in envVariable file
-      console.log(envHelper.defaultChannelId, 'is set as default channel id in evnHelper');
-      if (envHelper.PORTAL_CDN_URL) {
-        const cdnUrl = `${envHelper.PORTAL_CDN_URL}index.${packageObj.version}.${packageObj.buildHash}.ejs`
-        request.get(cdnUrl).then((data) => {
-          const cdnFallBackScript = `<script type="text/javascript" src="${envHelper.PORTAL_CDN_URL}assets/cdnHelper.js"></script>
-              <script>
-                try {
-                  if(!cdnFileLoaded){
-                    var now = new Date();
-                    now.setMinutes(now.getMinutes() + 5);
-                    document.cookie = "cdnFailed=true;expires=" + now.toUTCString() + ";"
-                    window.location.href = window.location.href
-                  }
-                } catch (err) {
-                  var now = new Date();
-                  now.setMinutes(now.getMinutes() + 5);
-                  document.cookie = "cdnFailed=true;expires=" + now.toUTCString() + ";"
-                  window.location.href = window.location.href
-                }
-              </script>`
-          data = data.replace('</app-root>', '</app-root>' + cdnFallBackScript)
-          fs.writeFile(path.join(__dirname, 'dist', 'cdn_index.ejs'), data, (err, data) => {
-            if(!err){
-              envHelper.hasCdnIndexFile = true
-            }
-          })
-        }).catch(err => console.log(`Error while fetching ${envHelper.PORTAL_CDN_URL}index.${packageObj.version}.${packageObj.buildHash}.ejs file when CDN enabled`));
-      }
       console.log('app running on port ' + envHelper.PORTAL_PORT)
     })
   })
 }
-const fetchDefaultChannelDetails = async (callback) => {
+const fetchDefaultChannelDetails = (callback) => {
   const options = {
     method: 'POST',
     url: envHelper.LEARNER_URL + '/org/v1/search',

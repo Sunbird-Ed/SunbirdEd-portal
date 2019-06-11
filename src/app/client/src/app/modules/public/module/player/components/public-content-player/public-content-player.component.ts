@@ -25,6 +25,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   /**
    * content id
    */
+  contentType: string;
   contentId: string;
   /**
    * contains player configuration
@@ -69,6 +70,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    * @memberof ContentPlayerComponent
    */
   ngOnInit() {
+    this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.contentId;
       this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
@@ -85,7 +87,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   setTelemetryData() {
     this.telemetryInteractObject = {
       id: this.contentId,
-      type: 'Content',
+      type: this.contentType,
       ver: '1.0'
     };
     this.closePlayerInteractEdata = {
@@ -140,7 +142,11 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
 
     } finally {
       setTimeout(() => {
-        this.navigationHelperService.navigateToResource('/explore');
+        if (this.dialCode) {
+          this.router.navigate(['/get/dial/', this.dialCode]);
+        } else {
+          this.navigationHelperService.navigateToResource('/explore');
+        }
       }, 100);
     }
   }
@@ -154,7 +160,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   ngAfterViewInit () {
     setTimeout(() => {
         if (this.dialCode) {
-          this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
+          this.telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
         }
         this.telemetryImpression = {
           context: {
@@ -163,7 +169,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
           },
           object: {
             id: this.activatedRoute.snapshot.params.contentId,
-            type: 'Content',
+            type: this.contentType,
             ver: '1.0',
             rollup: this.objectRollup
           },

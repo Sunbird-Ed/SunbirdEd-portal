@@ -8,6 +8,11 @@ export interface ICollectionTree {
     id?: string;
     title: string;
     children?: ICollectionTree[];
+    mimeType?: string;
+    identifier?: string;
+    childNodes?: string[];
+    name?: string;
+    altMsg?: Array<{}>;
 }
 
 export interface ICollectionTreeNodes {

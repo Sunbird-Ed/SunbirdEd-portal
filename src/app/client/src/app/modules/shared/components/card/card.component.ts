@@ -25,7 +25,7 @@ export class CardComponent {
   constructor(public resourceService: ResourceService, private router: Router) {
     this.resourceService = resourceService;
     if (this.dialCode) {
-      this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
+      this.telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
     }
     this.route = this.router.url;
   }

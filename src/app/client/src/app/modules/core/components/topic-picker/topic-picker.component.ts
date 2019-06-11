@@ -107,5 +107,8 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
     }));
   }
   ngOnDestroy() {
+    if (this.resourceDataSubscription) {
+      this.resourceDataSubscription.unsubscribe();
+    }
   }
 }
