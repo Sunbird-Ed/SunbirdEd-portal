@@ -104,7 +104,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         this.showLoader = true;
-        this.queryParams = { ...result[0], ...result[1] };
+        this.queryParams = { ...result[1] };
         this.carouselMasterData = [];
         this.pageSections = [];
         this.fetchPageData();

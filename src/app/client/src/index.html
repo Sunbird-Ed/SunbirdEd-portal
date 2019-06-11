@@ -86,6 +86,10 @@
   <% if (offlineDesktopAppSupportedLanguage) { %>
     <input type="hidden" id="offlineDesktopAppSupportedLanguage" value="<%=offlineDesktopAppSupportedLanguage%>" />
   <% } %>
+    <% } %>
+    <% if (cdnWorking) { %>
+      <input type="hidden" id="cdnWorking" value="<%=cdnWorking%>" />
+      <% } %>
   <app-root></app-root>
 </body>
 

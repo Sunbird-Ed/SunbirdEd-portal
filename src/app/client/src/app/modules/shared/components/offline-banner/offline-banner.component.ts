@@ -2,7 +2,7 @@ import { Router } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
 import { distinctUntilChanged, map, takeUntil, debounceTime } from 'rxjs/operators';
 import { fromEvent, Subject } from 'rxjs';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService } from './../../services';
 import { environment } from '@sunbird/environment';
 
 @Component({
@@ -36,7 +36,6 @@ export class OfflineBannerComponent implements OnInit {
 
   /** determines whether to show the banner for offline desktop apk download or not */
   ngOnInit() {
-    console.log('org list', this.orgList);
     if (this.orgList.includes(this.slug)) {
       this.showBanner = true;
     } else {
@@ -46,7 +45,7 @@ export class OfflineBannerComponent implements OnInit {
 
   ngAfterViewInit() {
     const downscroll$ = fromEvent(window, 'scroll').pipe(
-      debounceTime(150),
+      debounceTime(10),
       map((scrollHeight) => (window.scrollY)),
       distinctUntilChanged(),
       map((windowHeight) => ((window.innerHeight + window.scrollY) > (document.body.scrollHeight - 318)))

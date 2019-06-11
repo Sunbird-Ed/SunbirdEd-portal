@@ -77,7 +77,9 @@ let envVariables = {
   sunbird_portal_offline_tenant: env.sunbird_portal_offline_tenant || '',
   sunbird_portal_offline_supported_languages: env.sunbird_portal_offline_supported_languages || 'English, Hindi, Tamil, Bengali',
   sunbird_portal_offline_app_release_date: env.sunbird_portal_offline_app_release_date || '10/6/2019',
-  sunbird_portal_offline_app_version: env.sunbird_portal_offline_app_version || '0.0.1'
+  sunbird_portal_offline_app_version: env.sunbird_portal_offline_app_version || '0.0.1',
+  sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
+
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
