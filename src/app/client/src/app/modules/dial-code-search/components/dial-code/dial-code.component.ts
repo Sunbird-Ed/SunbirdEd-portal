@@ -218,7 +218,11 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   redirectToDikshaApp () {
     this.isRedirectToDikshaApp = true;
     this.telemetryService.interact(this.appMobileDownloadInteractData);
-    window.location.href = 'https://play.google.com/store/apps/details?id=in.gov.diksha.app';
+    let applink = this.configService.appConfig.UrlLinks.downloadDikshaApp;
+    const slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
+    const utm_source = slug ? `diksha-${slug}` : 'diksha';
+    applink = `${applink}&utm_source=${utm_source}&utm_medium=search&utm_campaign=dial&utm_term=${this.dialCode}`;
+    window.location.href = applink.replace(/\s+/g, '');
   }
   setTelemetryData () {
     if (this.dialCode) {
