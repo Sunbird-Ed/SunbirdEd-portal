@@ -10,9 +10,6 @@ import { UUID } from 'angular2-uuid';
   providedIn: 'root'
 })
 export class CbseProgramService {
-
-  // creators of all the contents
-  creators:Array<string>;
   constructor(private configService: ConfigService, public actionService: ActionService) { }
 
   getQuestionDetails(questionId) {
@@ -26,7 +23,6 @@ export class CbseProgramService {
     const theme = _.cloneDeep(themeObject);
     const stage = _.cloneDeep(stageObject);
     const questionSet = _.cloneDeep(questionSetObject);
-    this.creators = [];
     stage.id = UUID.UUID();
     theme.startStage = stage.id;
     questionSet.id = UUID.UUID();
@@ -42,7 +38,6 @@ export class CbseProgramService {
             };
             return this.actionService.get(req).pipe(
               map(res => {
-                this.creators.push(_.get(res, 'result.assessment_item.createdBy'))
                 const question = _.cloneDeep(questionObject);
                 const questionConfigCdata: any = {};
                 question.id = UUID.UUID();
@@ -60,7 +55,8 @@ export class CbseProgramService {
                   questionSetConfigCdata.shuffle_questions = true;
                 }
                 questionConfigCdata.questionCount = 0;
-                question.data.__cdata.push(questionConfigCdata);
+                question.data.__cdata.push(JSON.stringify(questionConfigCdata));
+                question.config.__cdata = JSON.stringify(question.config.__cdata);
                 return question;
               }),
               catchError(err => of(err))
@@ -70,16 +66,17 @@ export class CbseProgramService {
       }))
       .pipe(
         map(questions => {
-          theme.manifest.media = _.flattenDeep(_.map(questions, question => {
-            return _.map(question.data.__cdata, cdata => cdata.media);
+          const questionMedia = _.flattenDeep(_.map(questions, question => {
+            return _.map(question.data.__cdata, cdata => cdata.media ? cdata.media : [] );
           }));
-          questionSet.config.__cdata.push(questionSetConfigCdata);
+          theme.manifest.media = _.merge(theme.manifest.media, questionMedia);
+          questionSet.config.__cdata = JSON.stringify(questionSetConfigCdata);
+          questionSet.data.__cdata = JSON.stringify(questionSet.data.__cdata);
           questionSet['org.ekstep.question'] = questions;
           stage['org.ekstep.questionset'].push(questionSet);
           theme.stage.push(stage);
-          return theme;
+          return { 'theme': theme };
         })
       )
   }
-
 }

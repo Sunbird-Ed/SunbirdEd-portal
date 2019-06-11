@@ -13,7 +13,7 @@
           [telemetryInteractEdata]="{id:'question_tab',type:'click',pageid:'question_list',extra:{type:'reference',identifier:question.identifier}}">
           <div class="item d-flex flex-ai-center">
             <div class="sb-checkbox sb-checkbox-primary">
-              <input *ngIf="role.currentRole === 'PUBLISHER'" (change)="selectQuestions(question.identifier, $event.target.checked)" type="checkbox">
+              <input *ngIf="role.currentRole === 'PUBLISHER'" [(ngModel)]="question.isSelected" (change)="checkIfAllSelected();" type="checkbox">
               <label for="check1"> Question {{i + 1}}</label>
             </div>
             <!-- <i class="trash alternate outline icon ml-auto d-flex flex-ai-center"></i> -->
@@ -26,7 +26,15 @@
           </div>
         </div>
       </div>
-      <button *ngIf="role.currentRole === 'PUBLISHER'" (click)="publishQuestions()">Publish Questions</button>
+      <div class="d-flex flex-ai-center" *ngIf="role.currentRole === 'PUBLISHER'">
+        <div class="sb-checkbox sb-checkbox-primary" >
+          <input type="checkbox" [(ngModel)]="selectedAll" (change)="selectAll();">
+          <label for="check1">Select All</label>
+        </div>
+        <button class="sb-btn sb-btn-primary sb-btn-normal ml-auto" (click)="publishQuestions()">Publish
+          Questions</button>
+      </div>
+
     </div>
   </div>
 

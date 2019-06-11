@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, Output, EventEmitter, Input, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { ConfigService, ToasterService, IUserData } from '@sunbird/shared';
-import { UserService, PublicDataService, ActionService } from '@sunbird/core';
+import { UserService, PublicDataService, ActionService, ContentService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { tap, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
@@ -23,10 +23,18 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public refresh = true;
   public showLoader = true;
   public enableRoleChange = false;
-  public selectedQuestions: FormGroup;
+  selectedAll: any;
+  private questionTypeName = {
+    vsa: 'Very Short Answer',
+    sa: 'Short Answer',
+    la: 'Long Answer',
+    mcq: 'Multiple Choice Question'
+  };
+
   constructor(private configService: ConfigService, private userService: UserService, private publicDataService: PublicDataService,
     public actionService: ActionService, private cdr: ChangeDetectorRef, public toasterService: ToasterService,
-    public telemetryService: TelemetryService, private fb: FormBuilder, private cbseService: CbseProgramService) {
+    public telemetryService: TelemetryService, private fb: FormBuilder, private cbseService: CbseProgramService,
+    public contentService: ContentService) {
   }
   ngOnChanges(changedProps: any) {
     if (this.enableRoleChange) {
@@ -37,9 +45,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     console.log('changes detected in question list', this.role);
     this.fetchQuestionWithRole();
     this.enableRoleChange = true;
-    this.selectedQuestions = this.fb.group({
-      questions: this.fb.array([])
-    });
+    this.selectedAll = false;
   }
   private fetchQuestionWithRole() {
     (this.role.currentRole === 'REVIEWER') ? this.fetchQuestionList(true) : this.fetchQuestionList();
@@ -82,6 +88,9 @@ export class QuestionListComponent implements OnInit, OnChanges {
     this.publicDataService.post(req).pipe(tap(data => this.showLoader = false))
       .subscribe((res) => {
         this.questionList = res.result.items || [];
+        _.forEach(this.questionList, (question) => {
+          question.isSelected = false;
+        });
         if (this.questionList.length) {
           this.selectedQuestionId = this.questionList[0].identifier;
           this.handleQuestionTabChange(this.selectedQuestionId);
@@ -139,7 +148,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     const req = {
       url: `${this.configService.urlConFig.URLS.ASSESSMENT.READ}/${questionId}`
     };
-    return this.actionService.get(req).pipe(map( res => {
+    return this.actionService.get(req).pipe(map(res => {
       this.questionReadApiDetails[questionId] = res.result.assessment_item;
       return res.result.assessment_item;
     }));
@@ -184,37 +193,61 @@ export class QuestionListComponent implements OnInit, OnChanges {
     this.refresh = true;
   }
 
-  selectQuestions(questionId: string, isChecked: Boolean) {
-    const selectedQuestionsArray = <FormArray>this.selectedQuestions.controls.questions;
-    if (isChecked) {
-      selectedQuestionsArray.push(new FormControl(questionId));
-    } else {
-      let index = selectedQuestionsArray.controls.findIndex(x => x.value == questionId)
-      selectedQuestionsArray.removeAt(index);
-    }
+  selectAll() {
+    _.forEach(this.questionList, (question) => {
+      question.isSelected = this.selectedAll;
+    })
+  }
+
+  checkIfAllSelected() {
+    this.selectedAll = this.questionList.every(function (question: any) {
+      return question.selected == true;
+    })
   }
 
   publishQuestions() {
-    let questionIds = this.selectedQuestions.value;
-    this.cbseService.getECMLJSON(questionIds.questions).subscribe((theme) => {
-      // theme object 
-      console.log(theme);
-      // preparing request object
-      let data: any = {};
-      data.name = `${this.selectedAttributes.questionType}-${this.selectedAttributes.topic}`;
-      data.description = '';
-      data.icon = '';
-      data.contentType = 'resource';
-      data.board = this.selectedAttributes.board;
-      data.medium = this.selectedAttributes.medium;
-      data.subject = this.selectedAttributes.subject;
-      data.class = this.selectedAttributes.gradeLevel;
-      data.topic = this.selectedAttributes.topic;
-      data.creators = _.uniq(this.cbseService.creators);
-      data.contributors = ''
-      data.creditTo =  ''
-      console.log(data);
-    })
+    let selectedQuestions = _.filter(this.questionList, (question) => _.get(question, 'isSelected'));
+    let selectedQuestionIds = _.map(selectedQuestions, (question) => _.get(question, 'identifier'))
+    if (selectedQuestionIds.length > 0) {
+      this.cbseService.getECMLJSON(selectedQuestionIds).subscribe((theme) => {
+        console.log(JSON.stringify(theme));
+        let creator = this.userService.userProfile.firstName;
+        if (!_.isEmpty(this.userService.userProfile.lastName)) {
+          creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
+        }
+        const option = {
+          url: this.configService.urlConFig.URLS.CONTENT.CREATE,
+          data: {
+            'request': {
+              'content': {
+                'name': `${this.questionTypeName[this.selectedAttributes.questionType]}-${this.selectedAttributes.topic}`,
+                'contentType': 'Resource',
+                'mimeType': 'application/vnd.ekstep.ecml-archive',
+                'programId': this.selectedAttributes.programId,
+                'program': this.selectedAttributes.program,
+                'framework': this.selectedAttributes.framework,
+                'board': this.selectedAttributes.board,
+                'medium': [this.selectedAttributes.medium],
+                'gradeLevel': [this.selectedAttributes.gradeLevel],
+                'subject': [this.selectedAttributes.subject],
+                'topic': [this.selectedAttributes.topic],
+                'createdBy': this.userService.userid,
+                'creator': creator,
+                'body': JSON.stringify(theme),
+                'resourceType': 'Learn',
+                'description': `${this.questionTypeName[this.selectedAttributes.questionType]}-${this.selectedAttributes.topic}`
+              }
+            }
+          }
+        };
+        this.contentService.post(option).subscribe((res) => {
+          console.log('res ', res);
+        });
+      })
+    } else {
+      this.toasterService.error('Please select some questions to Publish');
+    }
+
 
 
   }
