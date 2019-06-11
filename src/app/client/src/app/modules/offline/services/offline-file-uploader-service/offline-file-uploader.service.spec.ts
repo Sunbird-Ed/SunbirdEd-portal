@@ -1,13 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 
 import { OfflineFileUploaderService } from './offline-file-uploader.service';
-import { ToasterService, ResourceService } from '@sunbird/shared';
+import { SharedModule } from '@sunbird/shared';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+
 
 describe('OfflineFileUploaderService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [],
-      providers: [ToasterService, ResourceService]
+      imports: [SharedModule.forRoot(), HttpClientTestingModule],
+      providers: []
     });
   });
 
