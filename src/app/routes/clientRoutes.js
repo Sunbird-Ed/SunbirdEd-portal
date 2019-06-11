@@ -158,6 +158,8 @@ const loadExperimentApp = async (req, res, next) => {
     res.locals = getLocals(req);
     let renderedFile = ejs.render(indexFile.data, res.locals)
     res.send(renderedFile);
+  } else if(indexFile && !_.isEmpty(indexFile.redirectionParam)) {
+
   } else {
     console.log('experiment not found loading default app');
     next()
