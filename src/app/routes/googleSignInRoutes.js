@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const { googleOauth, createSession, fetchUserByEmailId, createUserWithMailId } = require('./../helpers/googleOauthHelper');
 const telemetryHelper = require('../helpers/telemetryHelper')
-
+const googleDid = '2c010e13a76145d864e459f75a176171';
 module.exports = (app) => {
 
   app.get('/google/auth', (req, res) => {
@@ -40,7 +40,7 @@ module.exports = (app) => {
       sunbirdProfile = await fetchUserByEmailId(googleProfile.emailId, req).catch(handleGetUserByIdError);
       if (!_.get(sunbirdProfile, 'result.response.userName') || !_.get(sunbirdProfile, 'result.response.firstName')) {
         errType = 'USER_CREATE_API';
-        newUserDetails = await createUserWithMailId(googleProfile, req).catch(handleCreateUserError);
+        newUserDetails = await createUserWithMailId(googleProfile, reqQuery.client_id, req).catch(handleCreateUserError);
       }
       errType = 'KEYCLOAK_SESSION_CREATE';
       keyCloakToken = await createSession(googleProfile.emailId, reqQuery, req, res);
@@ -70,7 +70,8 @@ const logImpressionEvent = (req) => {
     uri: '/google/auth',
   }
   const context = {
-    env: 'GOOGLE_SIGN_IN'
+    env: 'GOOGLE_SIGN_IN',
+    did: googleDid
   }
   telemetryHelper.logImpressionEvent(req, {edata, context});
 }
