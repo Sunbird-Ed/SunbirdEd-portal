@@ -156,6 +156,7 @@ const loadExperimentApp = async (req, res, next) => {
     // res.header('Access-Control-Allow-Headers', 'Content-Type');
     console.log('experiment found loading experiment index file', req.path);
     res.locals = getLocals(req);
+    res.locals.cdnWorking = 'no';
     let renderedFile = ejs.render(indexFile.data, res.locals)
     res.send(renderedFile);
   } 
