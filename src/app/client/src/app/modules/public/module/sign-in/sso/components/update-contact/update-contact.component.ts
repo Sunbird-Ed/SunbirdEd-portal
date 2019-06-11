@@ -71,7 +71,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
     combineLatest(this.userService.getUserByKey(uri), this.getCustodianOrgDetails())
     .subscribe(data => {
         if (_.get(data[0], 'result.response.rootOrg.rootOrgId') === _.get(data[1], 'result.response.value')) {
-          this.userDetails = data[1].result.response;
+          this.userDetails = data[0].result.response;
           this.disableSubmitBtn = false;
           this.userExist = false;
           this.userBlocked =  false;
