@@ -55,7 +55,7 @@ export class CbseProgramService {
                   questionSetConfigCdata.shuffle_questions = true;
                 }
                 questionConfigCdata.questionCount = 0;
-                question.data.__cdata.push(JSON.stringify(questionConfigCdata));
+                question.data.__cdata = JSON.stringify(questionConfigCdata);
                 question.config.__cdata = JSON.stringify(question.config.__cdata);
                 return question;
               }),
@@ -67,7 +67,7 @@ export class CbseProgramService {
       .pipe(
         map(questions => {
           const questionMedia = _.flattenDeep(_.map(questions, question => {
-            return _.map(question.data.__cdata, cdata => cdata.media ? cdata.media : [] );
+            return _.map(question.data.__cdata, cdata => cdata.media ? cdata.media : []);
           }));
           theme.manifest.media = _.merge(theme.manifest.media, questionMedia);
           questionSet.config.__cdata = JSON.stringify(questionSetConfigCdata);
