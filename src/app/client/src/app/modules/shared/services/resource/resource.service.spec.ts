@@ -14,9 +14,6 @@ describe('ResourceService', () => {
     });
   });
 
- it('should be created', inject([ResourceService, CacheService], (service: ResourceService, cacheService: CacheService) => {
-    expect(service).toBeTruthy();
-  }));
   it('should call get resource method   when resourcebundle is not cached',
    inject([ResourceService, CacheService, HttpClient ],
     (resourceService: ResourceService , cacheService: CacheService, http ) => {
