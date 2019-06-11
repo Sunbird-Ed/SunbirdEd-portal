@@ -132,23 +132,23 @@ function getLocals(req) {
 }
 
 const loadExperimentApp = async (req, res, next) => {
-  if(req.query.experimentId){
-    let experimentFile;
-    try {
-      experimentFile = fs.readFileSync(path.join(__dirname, './../dist_experiment', req.query.experimentId, 'index.html'));
-    } catch(err) {
-      console.log(err)
-    }
-    console.log('experiment found loading experiment index file', req.query.experimentId,  experimentFile.toString());
-    if(!experimentFile){
-      next()
-      return;
-    }
-    res.locals = getLocals(req);
-    let renderedFile = ejs.render(experimentFile.toString(), res.locals)
-    res.send(renderedFile);
-    return;
-  }
+  // if(req.query.experimentId){
+  //   let experimentFile;
+  //   try {
+  //     experimentFile = fs.readFileSync(path.join(__dirname, './../dist_experiment', req.query.experimentId, 'index.html'));
+  //   } catch(err) {
+  //     console.log(err)
+  //   }
+  //   console.log('experiment found loading experiment index file', req.query.experimentId,  experimentFile.toString());
+  //   if(!experimentFile){
+  //     next()
+  //     return;
+  //   }
+  //   res.locals = getLocals(req);
+  //   let renderedFile = ejs.render(experimentFile.toString(), res.locals)
+  //   res.send(renderedFile);
+  //   return;
+  // }
   const indexFile = await experimentHelper.getExperimentIndexFile(req, res)
   if(indexFile && indexFile.data){
     // res.header('Access-Control-Allow-Origin', "*");
@@ -158,9 +158,11 @@ const loadExperimentApp = async (req, res, next) => {
     res.locals = getLocals(req);
     let renderedFile = ejs.render(indexFile.data, res.locals)
     res.send(renderedFile);
-  } else if(indexFile && !_.isEmpty(indexFile.redirectionParam)) {
+  } 
+  // else if(indexFile && !_.isEmpty(indexFile.redirectionParam)) {
 
-  } else {
+  // } 
+  else {
     console.log('experiment not found loading default app');
     next()
   }
