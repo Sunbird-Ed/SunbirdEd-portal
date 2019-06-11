@@ -14,6 +14,8 @@ import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
+import { ConnectionService } from './../../../../../offline/services';
+import { environment } from '@sunbird/environment';
 
 @Component({
   selector: 'app-public-collection-player',
@@ -90,11 +92,15 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 	*/
   public dialCode: string;
   playerOption: any;
+  isOffline: boolean = environment.isOffline;
+  isConnected = navigator.onLine;
+
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
     public externalUrlPreviewService: ExternalUrlPreviewService, private configService: ConfigService,
-    public toasterService: ToasterService, private contentUtilsService: ContentUtilsServiceService) {
+    public toasterService: ToasterService, private contentUtilsService: ContentUtilsServiceService,
+    private connectionService: ConnectionService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
@@ -111,7 +117,23 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     this.getContent();
     this.deviceDetector();
     this.setTelemetryData();
+    if (this.isOffline && _.includes(this.router.url, '/browse')) {
+      this.checkOnlineStatus();
+    }
   }
+
+  checkOnlineStatus() {
+    let connected = true;
+    this.connectionService.monitor().subscribe(isConnected => {
+        this.isConnected = isConnected;
+        if (!this.isConnected) {
+            connected = false;
+            this.router.navigate(['/browse']);
+        } else if (!connected) {
+            this.router.navigate(['/browse/play/collection/', this.activatedRoute.snapshot.params.collectionId]);
+        }
+      });
+}
   setTelemetryData() {
     if (this.dialCode) {
       this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];

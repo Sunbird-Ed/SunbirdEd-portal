@@ -13,7 +13,7 @@ import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
-import { DownloadManagerService } from './../../../offline/services';
+import { DownloadManagerService, ConnectionService } from './../../../offline/services';
 
 @Component({
   selector: 'app-view-all',
@@ -139,13 +139,14 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   isOffline: boolean = environment.isOffline;
   showExportLoader = false;
   contentName: string;
-
+  isConnected = navigator.onLine;
   constructor(searchService: SearchService, router: Router, private playerService: PlayerService, private formService: FormService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService, private _cacheService: CacheService,
     resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
     configService: ConfigService, coursesService: CoursesService, public utilService: UtilService,
     private orgDetailsService: OrgDetailsService, userService: UserService, private browserCacheTtlService: BrowserCacheTtlService,
-    public navigationhelperService: NavigationHelperService, public downloadManagerService: DownloadManagerService) {
+    public navigationhelperService: NavigationHelperService, public downloadManagerService: DownloadManagerService,
+    private connectionService: ConnectionService) {
     this.searchService = searchService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -203,11 +204,28 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     if (this.isOffline) {
+      if (_.includes(this.router.url, '/browse')) {
+        this.checkOnlineStatus();
+      }
       this.downloadManagerService.downloadListEvent.subscribe((data) => {
         this.updateCardData(data);
       });
     }
   }
+  checkOnlineStatus() {
+    let connected = true;
+    this.connectionService.monitor().subscribe(isConnected => {
+        this.isConnected = isConnected;
+        if (!this.isConnected) {
+            connected = false;
+            this.router.navigate(['/browse']);
+        } else if (!connected && this.activatedRoute.snapshot.params) {
+            this.router.navigate(['/browse/view-all', this.activatedRoute.snapshot.params.section,
+            this.activatedRoute.snapshot.params.pageNumber], { queryParams: this.activatedRoute.snapshot.queryParams});
+        }
+      });
+
+}
   getContents(data) {
     this.getContentList(data).subscribe((response: any) => {
       this.showLoader = false;
@@ -327,7 +345,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   playContent(event) {
 
     // For offline envirnoment content will not play if action not open. It will get downloaded
-    if (_.includes(this.router.url, 'browse') && this.isOffline) {
+    if (_.includes(this.router.url, 'browse') && event.action === 'download' && this.isOffline) {
       this.startDownload(event.data.metaData.identifier);
       return false;
     } else if (event.action === 'export' && this.isOffline) {

@@ -12,6 +12,8 @@ import {
 import { PublicPlayerService } from '../../../../services';
 import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
+import { environment } from '@sunbird/environment';
+import { ConnectionService } from './../../../../../offline/services';
 
 @Component({
   selector: 'app-public-content-player',
@@ -54,11 +56,14 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   public telemetryInteractObject: IInteractEventObject;
   public closePlayerInteractEdata: IInteractEventEdata;
   public objectRollup = {};
+  isOffline: boolean = environment.isOffline;
+  isConnected = navigator.onLine;
+
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
     public navigationHelperService: NavigationHelperService, public router: Router, private deviceDetectorService: DeviceDetectorService,
-    private configService: ConfigService
+    private configService: ConfigService,  private connectionService: ConnectionService
   ) {
     this.playerOption = {
       showContentRating: true
@@ -81,7 +86,29 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       this.getContent();
       this.deviceDetector();
     });
+
+    if (this.isOffline && _.includes(this.router.url, '/browse')) {
+      this.checkOnlineStatus();
+    }
+
   }
+
+  checkOnlineStatus() {
+    let connected = true;
+    this.connectionService.monitor().subscribe(isConnected => {
+        this.isConnected = isConnected;
+        console.log(this.activatedRoute);
+        if (!this.isConnected) {
+            connected = false;
+            this.router.navigate(['/browse']);
+            console.log('offline', this.activatedRoute);
+        } else if (!connected) {
+          console.log('player route', this.activatedRoute.snapshot);
+          console.log('online', this.activatedRoute);
+            this.router.navigate(['/browse/play/content', this.activatedRoute.snapshot.params.contentId]);
+        }
+      });
+}
   setTelemetryData() {
     this.telemetryInteractObject = {
       id: this.contentId,

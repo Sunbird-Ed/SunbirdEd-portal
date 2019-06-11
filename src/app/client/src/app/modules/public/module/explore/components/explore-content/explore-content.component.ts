@@ -13,7 +13,7 @@ import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, debounceTime, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
-import { DownloadManagerService } from './../../../../../offline/services';
+import { DownloadManagerService, ConnectionService } from './../../../../../offline/services';
 
 @Component({
     templateUrl: './explore-content.component.html'
@@ -43,6 +43,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     isOffline: boolean = environment.isOffline;
     showExportLoader = false;
     contentName: string;
+    isConnected = navigator.onLine;
 
     constructor(public searchService: SearchService, public router: Router,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -51,7 +52,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         public navigationHelperService: NavigationHelperService, private publicPlayerService: PublicPlayerService,
         public userService: UserService, public frameworkService: FrameworkService,
         public cacheService: CacheService, public navigationhelperService: NavigationHelperService,
-        public downloadManagerService: DownloadManagerService) {
+        public downloadManagerService: DownloadManagerService,
+        private connectionService: ConnectionService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.explore.filterType;
     }
@@ -73,10 +75,30 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         );
 
         if (this.isOffline) {
+
+            if (_.includes(this.router.url, '/browse')) {
+                this.checkOnlineStatus();
+              }
+
             this.downloadManagerService.downloadListEvent.subscribe((data) => {
                 this.updateCardData(data);
             });
         }
+    }
+
+    checkOnlineStatus() {
+        let connected = true;
+        this.connectionService.monitor().subscribe(isConnected => {
+            this.isConnected = isConnected;
+            console.log(this.activatedRoute);
+            if (!this.isConnected) {
+                connected = false;
+                this.router.navigate(['/browse']);
+            } else if (!connected && this.activatedRoute.snapshot.params.pageNumber) {
+                this.router.navigate(['/browse', this.activatedRoute.snapshot.params.pageNumber]);
+            }
+          });
+
     }
     public getFilters(filters) {
         this.facets = filters.map(element => element.code);
@@ -189,7 +211,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     }
     public playContent(event) {
         // For offline envirnoment content will not play if action not open. It will get downloaded
-        if (_.includes(this.router.url, 'browse') && this.isOffline) {
+        if (_.includes(this.router.url, 'browse') && event.action === 'download' && this.isOffline) {
             this.startDownload(event.data.metaData.identifier);
             return false;
         } else if (event.action === 'export' && this.isOffline) {

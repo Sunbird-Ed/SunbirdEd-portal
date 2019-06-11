@@ -13,7 +13,7 @@ import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
-import { DownloadManagerService } from './../../../../../offline/services';
+import { DownloadManagerService, ConnectionService } from './../../../../../offline/services';
 
 @Component({
   selector: 'app-explore-component',
@@ -41,6 +41,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   isOffline: boolean = environment.isOffline;
   showExportLoader = false;
   contentName: string;
+  isConnected = navigator.onLine;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -54,7 +55,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     public router: Router, private utilService: UtilService, private orgDetailsService: OrgDetailsService,
     private publicPlayerService: PublicPlayerService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService,
-    public navigationhelperService: NavigationHelperService, public downloadManagerService: DownloadManagerService) {
+    public navigationhelperService: NavigationHelperService, public downloadManagerService: DownloadManagerService,
+    private connectionService: ConnectionService) {
     this.router.onSameUrlNavigation = 'reload';
     this.filterType = this.configService.appConfig.explore.filterType;
   }
@@ -185,7 +187,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public playContent(event) {
 
     // For offline envirnoment content will not play if action not open. It will get downloaded
-    if (_.includes(this.router.url, 'browse') && this.isOffline) {
+    if (_.includes(this.router.url, 'browse') && event.action === 'download' && this.isOffline) {
       this.startDownload(event.data.metaData.identifier);
       return false;
     } else if (event.action === 'export' && this.isOffline) {

@@ -115,10 +115,18 @@ export class PublicPlayerService {
         if (event.data.contentType === 'Course') {
           this.router.navigate(['learn/course', event.data.metaData.identifier]);
         } else {
-          this.router.navigate(['play/collection', event.data.metaData.identifier]);
+          if (_.includes(this.router.url, '/browse')) {
+            this.router.navigate(['browse/play/collection', event.data.metaData.identifier]);
+          } else {
+            this.router.navigate(['play/collection', event.data.metaData.identifier]);
+          }
         }
       } else {
-        this.router.navigate(['play/content', event.data.metaData.identifier]);
+        if (_.includes(this.router.url, '/browse')) {
+        this.router.navigate(['browse/play/content', event.data.metaData.identifier]);
+        } else {
+          this.router.navigate(['play/content', event.data.metaData.identifier]);
+        }
       }
     }, 0);
   }
