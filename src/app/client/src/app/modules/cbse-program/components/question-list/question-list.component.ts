@@ -210,9 +210,9 @@ export class QuestionListComponent implements OnInit, OnChanges {
     let selectedQuestionsData = _.reduce(selectedQuestions, (final, question) => {
       final.ids.push(_.get(question, 'identifier'));
       final.contributors.push(_.get(question, 'creator'));
-      _.union(final.contentCredits, { 'schoolName': _.get(question, 'organisation') });
+      _.union(final.attributions, _.get(question, 'organisation'));
       return final;
-    }, { ids: [], contributors: [], contentCredits: [] });
+    }, { ids: [], contributors: [], attributions: [] });
 
     if (selectedQuestionsData.ids.length > 0) {
       const questions = [];
@@ -246,8 +246,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
                 'resourceType': 'Learn',
                 'description': `${this.questionTypeName[this.selectedAttributes.questionType]}-${this.selectedAttributes.topic}`,
                 'questions': questions,
-                'contributors': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'contributors'))), ','),
-                'contentCredits': _.uniqWith(_.get(selectedQuestionsData, _.isEqual))
+                'contributors': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'contributors'))), ', '),
+                'attributions': _.compact(_.get(selectedQuestionsData, 'attributions'))
               }
             }
           }
