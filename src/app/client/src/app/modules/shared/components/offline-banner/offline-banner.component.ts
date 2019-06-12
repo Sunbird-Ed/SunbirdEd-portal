@@ -24,7 +24,7 @@ export class OfflineBannerComponent implements OnInit {
 
   /* list of states for which banner to be shown */
   public orgList = (<HTMLInputElement>document.getElementById('offlineDesktopAppTenant')) ?
-  (<HTMLInputElement>document.getElementById('offlineDesktopAppTenant')).value.toLocaleLowerCase().split(',') : [];
+  (<HTMLInputElement>document.getElementById('offlineDesktopAppTenant')).value.toLowerCase().split(',') : [];
 
   /* stores the offline desktop app version from envHelper variable */
   public desktopAppVersion = (<HTMLInputElement>document.getElementById('offlineDesktopAppVersion')) ?
