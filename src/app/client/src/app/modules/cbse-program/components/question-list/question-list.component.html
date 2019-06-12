@@ -12,10 +12,17 @@
           appTelemetryInteract
           [telemetryInteractEdata]="{id:'question_tab',type:'click',pageid:'question_list',extra:{type:'reference',identifier:question.identifier}}">
           <div class="item d-flex flex-ai-center">
-            <div class="sb-checkbox sb-checkbox-primary">
-              <input *ngIf="role.currentRole === 'PUBLISHER'" [(ngModel)]="question.isSelected" (change)="checkIfAllSelected();" type="checkbox">
-              <label for="check1"> Question {{i + 1}}</label>
-            </div>
+            <ng-container *ngIf="role.currentRole === 'PUBLISHER' else nonPublisher">
+              <div class="sb-checkbox sb-checkbox-primary">
+                <input [(ngModel)]="question.isSelected" (change)="checkIfAllSelected();" type="checkbox">
+                <label for="check1" class="mb-0"> Question {{i + 1}}</label>
+              </div>
+            </ng-container>
+            <ng-template #nonPublisher>
+              <div>
+                <label for="check1" class="mb-0 fs-0-92 font-weight-normal"> Question {{i + 1}}</label>
+              </div>
+            </ng-template>
             <!-- <i class="trash alternate outline icon ml-auto d-flex flex-ai-center"></i> -->
             <span class="sb-status-label sb-bg-warning sb-shape-circle ml-auto"
               *ngIf="question.status === 'Draft' || question.status === 'Review'"></span>
@@ -27,7 +34,7 @@
         </div>
       </div>
       <div class="d-flex flex-ai-center" *ngIf="role.currentRole === 'PUBLISHER'">
-        <div class="sb-checkbox sb-checkbox-primary" >
+        <div class="sb-checkbox sb-checkbox-primary">
           <input type="checkbox" [(ngModel)]="selectedAll" (change)="selectAll();">
           <label for="check1">Select All</label>
         </div>

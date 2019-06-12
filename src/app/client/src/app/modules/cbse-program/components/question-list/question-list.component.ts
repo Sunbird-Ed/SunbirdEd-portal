@@ -210,7 +210,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     let selectedQuestionsData = _.reduce(selectedQuestions, (final, question) => {
       final.ids.push(_.get(question, 'identifier'));
       final.contributors.push(_.get(question, 'creator'));
-      _.union(final.contentCredits, {'schoolName':_.get(question, 'organisation')});
+      _.union(final.contentCredits, { 'schoolName': _.get(question, 'organisation') });
       return final;
     }, { ids: [], contributors: [], contentCredits: [] });
 
@@ -247,7 +247,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
                 'description': `${this.questionTypeName[this.selectedAttributes.questionType]}-${this.selectedAttributes.topic}`,
                 'questions': questions,
                 'contributors': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'contributors'))), ','),
-                'contentCredits': _.uniq(_.get(selectedQuestionsData, 'contentCredits'))
+                'contentCredits': _.uniqWith(_.get(selectedQuestionsData, _.isEqual))
               }
             }
           }
