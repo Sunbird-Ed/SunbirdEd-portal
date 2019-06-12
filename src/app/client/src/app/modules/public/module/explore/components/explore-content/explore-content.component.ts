@@ -90,7 +90,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         let connected = true;
         this.connectionService.monitor().subscribe(isConnected => {
             this.isConnected = isConnected;
-            console.log(this.activatedRoute);
             if (!this.isConnected) {
                 connected = false;
                 this.router.navigate(['/browse']);
