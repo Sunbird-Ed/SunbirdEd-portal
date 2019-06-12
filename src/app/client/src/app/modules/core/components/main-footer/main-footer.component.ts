@@ -33,7 +33,7 @@ export class MainFooterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.instance = _.upperCase(this.resourceService.instance); 
+    this.instance = _.upperCase(this.resourceService.instance);
   }
 
   redirectToDikshaApp () {
