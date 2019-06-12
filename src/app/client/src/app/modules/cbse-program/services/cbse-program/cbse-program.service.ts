@@ -71,7 +71,7 @@ export class CbseProgramService {
           const questionMedia = _.flattenDeep(_.map(questions, question => {
             return JSON.parse(question.data.__cdata).media ? JSON.parse(question.data.__cdata).media : [];
           }));
-          theme.manifest.media = _.merge(theme.manifest.media, questionMedia);
+          theme.manifest.media = _.concat(theme.manifest.media, questionMedia);
           questionSet.config.__cdata = JSON.stringify(questionSetConfigCdata);
           questionSet.data.__cdata = JSON.stringify(questionSet.data.__cdata);
           questionSet['org.ekstep.question'] = questions;
