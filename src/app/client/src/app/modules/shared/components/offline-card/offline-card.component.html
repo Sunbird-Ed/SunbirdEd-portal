@@ -83,7 +83,7 @@
           <button *ngIf="checkOfflineRoutes === 'browse' && contentId === data.metaData.identifier && data?.showAddingToLibraryButton === true"
             class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16 disable">
             {{resourceService.frmelmnts?.btn?.addingToLibrary}}</button>
-          <button *ngIf="data?.addedToLibrary === true && checkOfflineRoutes === 'browse' " class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16" disabled>
+          <button *ngIf="data?.addedToLibrary === true && checkOfflineRoutes === 'browse' " class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16 disable">
             {{resourceService.frmelmnts?.btn?.addedToLibrary}}
           </button>
       </div>
