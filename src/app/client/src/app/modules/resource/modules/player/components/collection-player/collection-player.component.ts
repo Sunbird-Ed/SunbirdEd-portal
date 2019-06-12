@@ -127,6 +127,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     };
   }
   ngOnInit() {
+    this.contentType = _.get(this.route, 'snapshot.queryParams.contentType');
     this.getContent();
   }
 
@@ -150,7 +151,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         },
         object: {
           id: content.metadata.identifier,
-          type: content.metadata.contentType || content.metadata.resourceType || content,
+          type: this.contentType || content.metadata.resourceType || content,
           ver: content.metadata.pkgVersion ? content.metadata.pkgVersion.toString() : '1.0',
           rollup: this.objectRollUp
         }
@@ -162,7 +163,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       };
       this.objectContentInteract = {
         id: content.metadata.identifier,
-        type: content.metadata.contentType || content.metadata.resourceType || 'content',
+        type: this.contentType || content.metadata.resourceType || 'content',
         ver: content.metadata.pkgVersion ? content.metadata.pkgVersion.toString() : '1.0',
         rollup: this.objectRollUp
       };
@@ -188,9 +189,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       relativeTo: this.route
     };
     if (id) {
-      navigationExtras.queryParams = { 'contentId': id };
+      navigationExtras.queryParams = { 'contentId': id, contentType: this.contentType };
     } else if (content) {
-      navigationExtras.queryParams = { 'contentId': content.id };
+      navigationExtras.queryParams = { 'contentId': content.id, contentType: this.contentType };
     }
     this.router.navigate([], navigationExtras);
   }
@@ -240,7 +241,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       first(),
       mergeMap((params) => {
         this.collectionId = params.collectionId;
-        this.telemetryCdata = [{id: this.collectionId, type: 'Collection'}];
+        this.telemetryCdata = [{ id: this.collectionId, type: this.contentType }];
         this.collectionStatus = params.collectionStatus;
         return this.getCollectionHierarchy(params.collectionId);
       }), )
@@ -277,7 +278,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     };
     this.collectionInteractObject = {
       id: this.collectionId,
-      type: this.collectionData.contentType,
+      type: this.contentType,
       ver: this.collectionData.pkgVersion ? this.collectionData.pkgVersion.toString() : '1.0'
     };
   }
@@ -305,7 +306,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.showPlayer = false;
     this.triggerContentImpression = false;
     const navigationExtras: NavigationExtras = {
-      relativeTo: this.route
+      relativeTo: this.route,
+      queryParams: { contentType: this.contentType }
     };
     this.router.navigate([], navigationExtras);
   }
@@ -338,16 +340,16 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     }];
   }
 
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.telemetryImpression = {
         context: {
           env: this.route.snapshot.data.telemetry.env,
-          cdata: [{id: this.route.snapshot.params.collectionId, type: 'Collection'}]
+          cdata: [{ id: this.route.snapshot.params.collectionId, type: this.contentType }]
         },
         object: {
           id: this.collectionId,
-          type: 'Collection',
+          type: this.contentType,
           ver: '1.0'
         },
         edata: {
@@ -371,7 +373,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         },
         object: {
           id: this.collectionId,
-          type: 'Collection',
+          type: this.contentType,
           ver: '1.0',
         },
         edata: {
@@ -391,7 +393,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.telemetryCourseEndEvent = {
       object: {
         id: this.collectionId,
-        type: 'Collection',
+        type: this.contentType,
         ver: '1.0',
       },
       context: {
