@@ -38,7 +38,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
     public toasterService: ToasterService, public router: Router) {
   }
   private labelsHandler() {
-    this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] : ['Total', 'Created by me'] ;
+    this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] : (this.role.currentRole === "PUBLISHER") ? ['Total', 'Accepted'] : ['Total', 'Created by me'];
   }
   ngOnInit() {
     this.labelsHandler();
@@ -59,7 +59,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
     if (this.textBookMeta) {
       if (changed.selectedSchool &&
         changed.selectedSchool.currentValue !== changed.selectedSchool.previousValue) {
-          this.selectedAttributes.selectedSchoolForReview = changed.selectedSchool.currentValue;
+        this.selectedAttributes.selectedSchoolForReview = changed.selectedSchool.currentValue;
         this.showChapterList(this.textBookMeta);
       } else {
         this.showChapterList(this.textBookMeta);
@@ -75,16 +75,16 @@ export class ChapterListComponent implements OnInit, OnChanges {
     this.actionService.get(req).subscribe((response) => {
       this.collectionData = response.result.content;
       const textBookMetaData = [];
-        _.forEach(this.collectionData.children, data => {
-          if (data.topic && data.topic[0]) {
-            textBookMetaData.push({
-              name : data.name,
-              topic: data.topic[0]
-            });
-          }
-        });
-        this.textBookMeta = textBookMetaData;
-        this.showChapterList(textBookMetaData);
+      _.forEach(this.collectionData.children, data => {
+        if (data.topic && data.topic[0]) {
+          textBookMetaData.push({
+            name : data.name,
+            topic: data.topic[0]
+          });
+        }
+      });
+      this.textBookMeta = textBookMetaData;
+      this.showChapterList(textBookMetaData);
     }, error => {
       this.showLoader = false;
       this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Fetching TextBook details failed');
@@ -95,11 +95,15 @@ export class ChapterListComponent implements OnInit, OnChanges {
     let apiRequest;
     if (this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
       apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields)),
-        ...this.questionType.map(fields => this.searchQuestionsByType(fields, this.userService.userid))];
+      ...this.questionType.map(fields => this.searchQuestionsByType(fields, this.userService.userid))];
     } else if (this.selectedAttributes.currentRole === 'REVIEWER') {
       apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields, '', 'Review')),
-      ...this.questionType.map(fields => this.searchQuestionsByType(fields, '', 'Live')) ];
+      ...this.questionType.map(fields => this.searchQuestionsByType(fields, '', 'Live'))];
+    } else if (this.selectedAttributes.currentRole === 'PUBLISHER') {
+      apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields)),
+      ...this.questionType.map(fields => this.searchQuestionsByType(fields, '', 'Live'))];
     }
+
     if (!apiRequest) {
       this.showLoader = false;
       this.showError = true;

@@ -1,15 +1,28 @@
 <div class="ui twelve column grid p-0 m-0">
   <div class="three wide column p-0 pr-16">
     <div class="ui questionsMenu">
-      <button *ngIf="role.currentRole != 'REVIEWER'" [disabled]="questionMetaData && questionMetaData.mode === 'create'" (click)="createNewQuestion()"
-      appTelemetryInteract [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'question_list',extra:{type:'reference',category:selectedAttributes.questionType.toUpperCase(),topic:selectedAttributes.topic}}"
-      class="sb-btn sb-btn-primary sb-btn-normal width-100">Create</button>
+      <button *ngIf="role.currentRole != 'REVIEWER'" [disabled]="questionMetaData && questionMetaData.mode === 'create'"
+        (click)="createNewQuestion()" appTelemetryInteract
+        [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'question_list',extra:{type:'reference',category:selectedAttributes.questionType.toUpperCase(),topic:selectedAttributes.topic}}"
+        class="sb-btn sb-btn-primary sb-btn-normal width-100">Create</button>
       <div class="ui vertical segments" style="max-height:50vh;overflow-y:auto;">
         <div class="questionTab ui center tertiary header aligned segment p-8"
           [class.tertiary]="selectedQuestionId === question.identifier"
           (click)="handleQuestionTabChange(question.identifier)" *ngFor="let question of questionList; let i = index"
-          appTelemetryInteract [telemetryInteractEdata]="{id:'question_tab',type:'click',pageid:'question_list',extra:{type:'reference',identifier:question.identifier}}">
-          <div class="item d-flex flex-ai-center">Question {{i + 1}}
+          appTelemetryInteract
+          [telemetryInteractEdata]="{id:'question_tab',type:'click',pageid:'question_list',extra:{type:'reference',identifier:question.identifier}}">
+          <div class="item d-flex flex-ai-center">
+            <ng-container *ngIf="role.currentRole === 'PUBLISHER' else nonPublisher">
+              <div class="sb-checkbox sb-checkbox-primary">
+                <input [(ngModel)]="question.isSelected" (change)="checkIfAllSelected();" type="checkbox">
+                <label for="check1" class="mb-0"> Question {{i + 1}}</label>
+              </div>
+            </ng-container>
+            <ng-template #nonPublisher>
+              <div>
+                <label for="check1" class="mb-0 fs-0-92 font-weight-normal"> Question {{i + 1}}</label>
+              </div>
+            </ng-template>
             <!-- <i class="trash alternate outline icon ml-auto d-flex flex-ai-center"></i> -->
             <span class="sb-status-label sb-bg-warning sb-shape-circle ml-auto"
               *ngIf="question.status === 'Draft' || question.status === 'Review'"></span>
@@ -20,21 +33,32 @@
           </div>
         </div>
       </div>
+      <div class="d-flex flex-ai-center" *ngIf="role.currentRole === 'PUBLISHER'">
+        <div class="sb-checkbox sb-checkbox-primary">
+          <input type="checkbox" [(ngModel)]="selectedAll" (change)="selectAll();">
+          <label for="check1">Select All</label>
+        </div>
+        <button class="sb-btn sb-btn-primary sb-btn-normal ml-auto" (click)="publishQuestions()">Publish
+          Questions</button>
+      </div>
+
     </div>
   </div>
 
   <div class="nine wide column bg-white p-0">
-    <div *ngIf="!questionList.length && questionMetaData?.mode !== 'create' && role.currentRole === 'CONTRIBUTOR'" class="ui segment">No Question - Click
+    <div *ngIf="!questionList.length && questionMetaData?.mode !== 'create' && role.currentRole === 'CONTRIBUTOR'"
+      class="ui segment">No Question - Click
       Create</div>
-    <div *ngIf="!questionList.length && role.currentRole === 'REVIEWER'" class="ui segment">No Questions for Review </div>
+    <div *ngIf="!questionList.length && role.currentRole === 'REVIEWER'" class="ui segment">No Questions for Review
+    </div>
     <div *ngIf="(questionList.length || questionMetaData?.mode === 'create')&& refresh && !showLoader">
       <div *ngIf="selectedAttributes.questionType === 'mcq'">
-        <app-mcq-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" [role] = "role"
+        <app-mcq-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" [role]="role"
           (questionStatus)="questionStatusHandler($event)"></app-mcq-creation>
       </div>
       <div *ngIf="selectedAttributes.questionType !== 'mcq'" class="ui segment">
-        <app-question-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" [role] = "role"
-        (questionStatus)="questionStatusHandler($event)">
+        <app-question-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData"
+          [role]="role" (questionStatus)="questionStatusHandler($event)">
         </app-question-creation>
       </div>
     </div>
