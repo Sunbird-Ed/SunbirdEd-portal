@@ -5,7 +5,7 @@ import {
   UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
   NavigationHelperService, ConfigService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { Component, HostListener, OnInit, ViewChild, Inject } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy } from '@angular/core';
 import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
   SessionExpiryInterceptor } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -22,7 +22,7 @@ import { DOCUMENT } from '@angular/platform-browser';
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
   /**
    * user profile details.
@@ -69,6 +69,7 @@ export class AppComponent implements OnInit {
   isOffline: boolean = environment.isOffline;
   sessionExpired = false;
   instance: string;
+  resourceDataSubscription: any;
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -245,7 +246,7 @@ export class AppComponent implements OnInit {
             ver: version,
             pid: this.configService.appConfig.TELEMETRY.PID
           },
-          batchsize: 2,
+          batchsize: 10,
           endpoint: this.configService.urlConFig.URLS.TELEMETRY.SYNC,
           apislug: this.configService.urlConFig.URLS.CONTENT_PREFIX,
           host: '',
@@ -296,7 +297,7 @@ export class AppComponent implements OnInit {
     this.cacheService.set('showFrameWorkPopUp', 'installApp');
   }
   changeLanguageAttribute() {
-    this.resourceService.languageSelected$.subscribe(item => {
+    this.resourceDataSubscription = this.resourceService.languageSelected$.subscribe(item => {
       if (item.value && item.dir) {
           this._document.documentElement.lang = item.value;
           this._document.documentElement.dir = item.dir;
@@ -305,5 +306,10 @@ export class AppComponent implements OnInit {
           this._document.documentElement.dir = 'ltr';
         }
     });
+  }
+  ngOnDestroy() {
+    if (this.resourceDataSubscription) {
+      this.resourceDataSubscription.unsubscribe();
+    }
   }
 }

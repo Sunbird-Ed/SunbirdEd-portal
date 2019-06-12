@@ -10,6 +10,7 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
 import { GetComponent, DialCodeComponent, DialCodeCardComponent, OfflineDialCodeCardComponent } from './components';
 import { FormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { PlayerHelperModule } from '@sunbird/player-helper';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule, SuiDimmerModule,
     SuiRatingModule, SuiCollapseModule,
     FormsModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    PlayerHelperModule
   ],
   declarations: [ GetComponent, DialCodeComponent, DialCodeCardComponent, OfflineDialCodeCardComponent]
 })

@@ -105,7 +105,7 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
       },
       object: {
         id: this.activatedRoute.snapshot.params.courseId,
-        type: 'course',
+        type: 'Course',
         ver: '1.0'
       }
     };
