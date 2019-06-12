@@ -1,14 +1,9 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, HostListener, AfterViewInit } from '@angular/core';
 
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import mediumZoom from 'medium-zoom';
-// import * as $ from 'jquery';
 import * as html2pdf from 'html2pdf.js';
-
-// declare var $: any;
-// declare var jQuery: any;
-
 
 @Component({
   selector: 'app-offline-help-center',
@@ -16,9 +11,8 @@ import * as html2pdf from 'html2pdf.js';
   styleUrls: ['./offline-help-center.component.scss']
 })
 
-export class OfflineHelpCenterComponent implements OnInit {
+export class OfflineHelpCenterComponent implements AfterViewInit {
   images: any;
-
   constructor() { }
   isShow: boolean;
   topPosToStartShowing = 100;
@@ -59,10 +53,7 @@ export class OfflineHelpCenterComponent implements OnInit {
     html2pdf().from(element).set(opt).save();
   }
 
-  ngOnInit() {
-  }
-
   ngAfterViewInit() {
-    mediumZoom('[data-zoomable]');
+    // mediumZoom('[data-zoomable]');
   }
 }
