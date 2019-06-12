@@ -37,7 +37,7 @@ const routes: Routes = [
     path: 'play', loadChildren: './module/player/player.module#PlayerModule'
   },
   {
-   path: 'download-apk', component: OfflineApplicationDownloadComponent
+   path: 'download-offlineapp', component: OfflineApplicationDownloadComponent
   }];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

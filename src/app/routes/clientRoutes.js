@@ -129,7 +129,8 @@ function getLocals(req) {
   locals.offlineDesktopAppTenant = envHelper.sunbird_portal_offline_tenant
   locals.offlineDesktopAppVersion = envHelper.sunbird_portal_offline_app_version
   locals.offlineDesktopAppReleaseDate = envHelper.sunbird_portal_offline_app_release_date
-  locals.offlineDesktopAppSupportedLanguage = envHelper.sunbird_portal_offline_supported_languages
+  locals.offlineDesktopAppSupportedLanguage = envHelper.sunbird_portal_offline_supported_languages,
+  locals.offlineDesktopAppDownloadUrl = envHelper.sunbird_portal_offline_app_download_url
   return locals
 }
 

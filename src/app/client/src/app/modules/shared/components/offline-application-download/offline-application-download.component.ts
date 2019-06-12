@@ -1,5 +1,7 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { ResourceService } from './../../services';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-offline-application-download',
@@ -7,6 +9,8 @@ import { ResourceService } from './../../services';
   styleUrls: ['./offline-application-download.component.scss']
 })
 export class OfflineApplicationDownloadComponent implements OnInit {
+
+  public telemetryImpression: IImpressionEventInput;
 
   /* it stores the release date of the offline desktop app from env variable.*/
   public desktopAppReleaseDate = (<HTMLInputElement>document.getElementById('offlineDesktopAppReleaseDate')) ?
@@ -20,9 +24,34 @@ export class OfflineApplicationDownloadComponent implements OnInit {
   public desktopAppSupportedLanguage = (<HTMLInputElement>document.getElementById('offlineDesktopAppSupportedLanguage')) ?
   (<HTMLInputElement>document.getElementById('offlineDesktopAppSupportedLanguage')).value : '';
 
-  constructor( public resourceService: ResourceService) { }
+  public appDownloadUrl = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')) ?
+  (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : '';
+
+  constructor( public resourceService: ResourceService, public router: Router) { }
 
   ngOnInit() {
   }
 
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.setTelemetryData();
+    });
+  }
+
+  setTelemetryData() {
+    this.telemetryImpression = {
+      context: {
+        env: 'download-app'
+      },
+      edata: {
+        type: 'view',
+        pageid: 'offline-application-download',
+        uri: this.router.url
+      }
+    };
+  }
+
+  downloadApp() {
+    window.open(this.appDownloadUrl);
+  }
 }
