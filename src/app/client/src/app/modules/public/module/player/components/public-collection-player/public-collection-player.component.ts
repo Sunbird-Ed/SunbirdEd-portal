@@ -37,6 +37,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   private collectionId: string;
 
   private contentId: string;
+  private contentType: string ;
   /**
    * Refrence of Content service
    * @private
@@ -113,6 +114,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     };
   }
   ngOnInit() {
+    this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
     this.getContent();
     this.deviceDetector();
@@ -136,7 +138,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 }
   setTelemetryData() {
     if (this.dialCode) {
-      this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
+      this.telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
     }
     this.closeCollectionPlayerInteractEdata = {
       id: 'close-collection',
@@ -150,7 +152,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     };
     this.telemetryInteractObject = {
       id: this.activatedRoute.snapshot.params.collectionId,
-      type: 'Content',
+      type: this.contentType,
       ver: '1.0'
     };
     this.playerTelemetryInteractObject = { ...this.telemetryInteractObject };
@@ -162,11 +164,11 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       this.telemetryImpression = {
         context: {
           env: this.route.snapshot.data.telemetry.env,
-          cdata: [{id: this.activatedRoute.snapshot.params.collectionId, type: 'Collection'}]
+          cdata: [{id: this.activatedRoute.snapshot.params.collectionId, type: this.contentType}]
         },
         object: {
           id: this.activatedRoute.snapshot.params.collectionId,
-          type: 'collection',
+          type: this.contentType,
           ver: '1.0'
         },
         edata: {
@@ -209,7 +211,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       },
       object: {
         id: data.metadata.identifier,
-        type: data.metadata.dataType || data.metadata.resourceType,
+        type: this.contentType || data.metadata.dataType || data.metadata.resourceType,
         ver: data.metadata.pkgVersion ? data.metadata.pkgVersion.toString() : '1.0',
         rollup: this.objectRollUp
       }
@@ -291,7 +293,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       first(),
       mergeMap((params) => {
         this.collectionId = params.collectionId;
-        this.telemetryCdata = [{id: this.collectionId, type: 'Collection'}];
+        this.telemetryCdata = [{id: this.collectionId, type: this.contentType}];
         this.setTelemetryData();
         this.setTelemetryStartEndData();
         return this.getCollectionHierarchy(params.collectionId);
@@ -332,7 +334,11 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       }));
   }
   closeCollectionPlayer() {
-    this.navigationHelperService.navigateToPreviousUrl('/explore');
+    if (this.dialCode) {
+      this.router.navigate(['/get/dial/', this.dialCode]);
+    } else {
+      this.navigationHelperService.navigateToPreviousUrl('/explore');
+    }
   }
   closeContentPlayer() {
     try {
@@ -368,7 +374,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         },
         object: {
           id: this.collectionId,
-          type: 'Collection',
+          type: this.contentType,
           ver: '1.0',
         },
         edata: {
@@ -388,7 +394,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     this.telemetryCourseEndEvent = {
       object: {
         id: this.collectionId,
-        type: 'Collection',
+        type: this.contentType,
         ver: '1.0',
       },
       context: {

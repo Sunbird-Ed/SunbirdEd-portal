@@ -7,7 +7,7 @@
         dd {
             line-height: ($font-size-normal+8);
             font-size: $font-size-normal;
-            text-transform: lowercase;
+            text-transform: inherit;
             padding: ($base-block-space/2) ($base-block-space/2);
         }
 

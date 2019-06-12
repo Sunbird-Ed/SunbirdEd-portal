@@ -27,9 +27,15 @@ color:($btn-color);
 			// font-weight: bold;
 	}
 }
+@mixin btn-theme-links($btn-color) {
+  color:($btn-color);
+    &:hover,&:active {
+        // font-weight: bold;
+    }
+}
 @mixin trans($val...) {
 	-webkit-transition: $val;
-	-moz-transition: $val; 
-	-o-transition: $val; 
-	transition: $val; 
+	-moz-transition: $val;
+	-o-transition: $val;
+	transition: $val;
 }

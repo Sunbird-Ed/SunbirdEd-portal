@@ -127,7 +127,7 @@ export class MainHeaderComponent implements OnInit {
   }
   navigateToHome() {
     if (this.userService.loggedIn) {
-      this.router.navigate(['resources']);
+      this.router.navigate([this.router.url]);
     } else {
       window.location.href = this.slug ? this.slug : '';
     }

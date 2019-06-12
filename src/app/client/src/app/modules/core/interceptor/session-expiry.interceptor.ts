@@ -17,7 +17,7 @@ export class SessionExpiryInterceptor implements HttpInterceptor {
     return SessionExpiryInterceptor.singletonInstance; // creating singleton instance
   }
   handleSessionExpiry(event) {
-    if ([401, 403, '401', '403'].includes(event.status) && this.userService.loggedIn
+    if ([401, '401'].includes(event.status) && this.userService.loggedIn
       && event.error.responseCode === 'SESSION_EXPIRED') {
       this.sessionExpired = true;
       return of(undefined); // to help stop event propagation

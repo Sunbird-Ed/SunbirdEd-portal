@@ -104,7 +104,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         this.showLoader = true;
-        this.queryParams = { ...result[0], ...result[1] };
+        this.queryParams = { ...result[1] };
         this.carouselMasterData = [];
         this.pageSections = [];
         this.fetchPageData();
@@ -267,6 +267,12 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.downloadManagerService.downloadContentId = '';
     }, error => {
       this.downloadManagerService.downloadContentId = '';
+      _.each(this.pageSections, (pageSection) => {
+        _.each(pageSection.contents, (pageData) => {
+          pageData['addedToLibrary'] = false;
+          pageData['showAddingToLibraryButton'] = false;
+        });
+      });
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
     });
   }
