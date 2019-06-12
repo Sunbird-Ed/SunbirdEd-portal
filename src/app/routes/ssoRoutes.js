@@ -58,7 +58,7 @@ module.exports = (app) => {
           phone: req.query.phone,
           phoneVerified: true
         }
-        await updatePhone(updatePhoneReq).catch(handleProfileUpdateError); // api need to be verified
+        await updatePhone(updatePhoneReq, req).catch(handleProfileUpdateError); // api need to be verified
         console.log('sso phone updated successfully and redirected to success page', jwtPayload.state_id, req.query.phone, jwtPayload, userDetails, createUserReq, updatePhoneReq, updateRolesReq, redirectUrl, errType);
       } else if (_.isEmpty(userDetails)) { // create user and update roles
         errType = 'CREATE_USER';
