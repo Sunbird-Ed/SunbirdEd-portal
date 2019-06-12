@@ -1,4 +1,7 @@
 {
+  "UrlLinks": {
+    "downloadDikshaApp": "https://play.google.com/store/apps/details?id=in.gov.diksha.app"
+  },
   "Home": {
     "contentApiQueryParams": {
       "orgdetails": "orgName,email"
