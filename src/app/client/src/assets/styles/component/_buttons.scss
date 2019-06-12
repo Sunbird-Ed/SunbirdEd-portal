@@ -32,7 +32,7 @@ input[type="button"] {
         background-color: $gray-100;
         color:$gray-200;
         border:1px solid $gray-100;
-        cursor: not-allowed;
+        cursor: auto;
     }
     &+.sb-btn {
         //margin:0 $base-block-space 0 0;
@@ -498,7 +498,7 @@ input[type="button"] {
     background-color: $gray-100;
     border:1px solid $gray-100;
     color:$gray-200;
-    cursor: not-allowed;
+    cursor:auto;
 }
 .sb-btn-outline-disabled,
 .sb-btn-outline-primary[disabled],
