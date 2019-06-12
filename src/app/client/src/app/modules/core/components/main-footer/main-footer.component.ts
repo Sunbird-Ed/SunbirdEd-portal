@@ -3,6 +3,7 @@ import { ResourceService, ConfigService } from '@sunbird/shared';
 import { environment } from '@sunbird/environment';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+import { combineLatest as observableCombineLatest } from 'rxjs';
 import * as _ from 'lodash-es';
 
 @Component({
@@ -32,18 +33,22 @@ export class MainFooterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.instance = _.upperCase(this.resourceService.instance);
+    this.instance = _.upperCase(this.resourceService.instance); 
   }
 
   redirectToDikshaApp () {
     let applink = this.configService.appConfig.UrlLinks.downloadDikshaApp;
     const sendUtmParams = _.get(this.activatedRoute, 'firstChild.firstChild.snapshot.data.sendDowndAppUtmParams');
     if (sendUtmParams) {
-      this.activatedRoute.firstChild.firstChild.params.subscribe(params => {
+      observableCombineLatest(this.activatedRoute.firstChild.firstChild.params, this.activatedRoute.queryParams,
+      (params, queryParams) => {
+        return { ...params, ...queryParams };
+      }).subscribe((params) => {
         const slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
         const utm_source = slug ? `diksha-${slug}` : 'diksha';
         if (params.dialCode) {
-          applink = `${applink}&utm_source=${utm_source}&utm_medium=search&utm_campaign=dial&utm_term=${params.dialCode}`;
+          const source = params.source || 'search';
+          applink = `${applink}&utm_source=${utm_source}&utm_medium=${source}&utm_campaign=dial&utm_term=${params.dialCode}`;
         } else {
           applink = `${applink}&utm_source=${utm_source}&utm_medium=get&utm_campaign=redirection`;
         }

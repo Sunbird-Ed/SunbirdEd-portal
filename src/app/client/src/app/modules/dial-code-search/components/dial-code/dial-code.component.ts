@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { combineLatest as observableCombineLatest } from 'rxjs';
 import { ResourceService, ServerResponse, ToasterService, ConfigService, UtilService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SearchService, SearchParam, PlayerService } from '@sunbird/core';
@@ -44,6 +45,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   public isRedirectToDikshaApp = false;
   public closeMobilePopupInteractData: any;
   public appMobileDownloadInteractData: any;
+  public dialSearchSource: string;
   isOffline: boolean = environment.isOffline;
   showExportLoader = false;
   contentName: string;
@@ -58,7 +60,11 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     EkTelemetry.config.batchsize = 2;
-    this.activatedRoute.params.subscribe(params => {
+    observableCombineLatest(this.activatedRoute.params, this.activatedRoute.queryParams,
+    (params, queryParams) => {
+      return { ...params, ...queryParams };
+    }).subscribe((params) => {
+      this.dialSearchSource = params.source || 'search';
       this.itemsToDisplay = [];
       this.searchResults = [];
       this.dialCode = params.dialCode;
@@ -221,7 +227,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     let applink = this.configService.appConfig.UrlLinks.downloadDikshaApp;
     const slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
     const utm_source = slug ? `diksha-${slug}` : 'diksha';
-    applink = `${applink}&utm_source=${utm_source}&utm_medium=search&utm_campaign=dial&utm_term=${this.dialCode}`;
+    applink = `${applink}&utm_source=${utm_source}&utm_medium=${this.dialSearchSource}&utm_campaign=dial&utm_term=${this.dialCode}`;
     window.location.href = applink.replace(/\s+/g, '');
   }
   setTelemetryData () {
