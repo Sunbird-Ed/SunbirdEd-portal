@@ -38,7 +38,7 @@ export class MainFooterComponent implements OnInit {
 
   redirectToDikshaApp () {
     let applink = this.configService.appConfig.UrlLinks.downloadDikshaApp;
-    const sendUtmParams = _.get(this.activatedRoute, 'firstChild.firstChild.snapshot.data.sendDowndAppUtmParams');
+    const sendUtmParams = _.get(this.activatedRoute, 'firstChild.firstChild.snapshot.data.sendUtmParams');
     if (sendUtmParams) {
       observableCombineLatest(this.activatedRoute.firstChild.firstChild.params, this.activatedRoute.queryParams,
       (params, queryParams) => {
