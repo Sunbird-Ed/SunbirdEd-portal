@@ -194,7 +194,7 @@ export let questionObject = {
   'pluginVer': '1.0',
   'templateId': 'qumltemplate',
   'data': {
-    '__cdata': []
+    '__cdata': {}
   },
   'config': {
     '__cdata': { 'max_score': 1, 'partial_scoring': true, 'isShuffleOption': false, responseDeclaration: {}}

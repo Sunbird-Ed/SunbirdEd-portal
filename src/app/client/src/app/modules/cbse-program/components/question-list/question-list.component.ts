@@ -207,10 +207,19 @@ export class QuestionListComponent implements OnInit, OnChanges {
 
   publishQuestions() {
     let selectedQuestions = _.filter(this.questionList, (question) => _.get(question, 'isSelected'));
-    let selectedQuestionIds = _.map(selectedQuestions, (question) => _.get(question, 'identifier'))
-    if (selectedQuestionIds.length > 0) {
-      this.cbseService.getECMLJSON(selectedQuestionIds).subscribe((theme) => {
-        console.log(JSON.stringify(theme));
+    let selectedQuestionsData = _.reduce(selectedQuestions, (final, question) => {
+      final.ids.push(_.get(question, 'identifier'));
+      final.contributors.push(_.get(question, 'creator'));
+      _.union(final.contentCredits, {'schoolName':_.get(question, 'organisation')});
+      return final;
+    }, { ids: [], contributors: [], contentCredits: [] });
+
+    if (selectedQuestionsData.ids.length > 0) {
+      const questions = [];
+      _.forEach(_.get(selectedQuestionsData, 'ids'), (value) => {
+        questions.push({ 'identifier': value });
+      });
+      this.cbseService.getECMLJSON(selectedQuestionsData.ids).subscribe((theme) => {
         let creator = this.userService.userProfile.firstName;
         if (!_.isEmpty(this.userService.userProfile.lastName)) {
           creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
@@ -235,7 +244,10 @@ export class QuestionListComponent implements OnInit, OnChanges {
                 'creator': creator,
                 'body': JSON.stringify(theme),
                 'resourceType': 'Learn',
-                'description': `${this.questionTypeName[this.selectedAttributes.questionType]}-${this.selectedAttributes.topic}`
+                'description': `${this.questionTypeName[this.selectedAttributes.questionType]}-${this.selectedAttributes.topic}`,
+                'questions': questions,
+                'contributors': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'contributors'))), ','),
+                'contentCredits': _.uniq(_.get(selectedQuestionsData, 'contentCredits'))
               }
             }
           }
@@ -247,8 +259,5 @@ export class QuestionListComponent implements OnInit, OnChanges {
     } else {
       this.toasterService.error('Please select some questions to Publish');
     }
-
-
-
   }
 }

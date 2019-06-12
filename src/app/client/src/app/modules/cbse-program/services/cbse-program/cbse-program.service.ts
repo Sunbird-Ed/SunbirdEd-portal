@@ -52,8 +52,10 @@ export class CbseProgramService {
                 }
                 if (_.get(res, 'result.assessment_item.type') === 'mcq') {
                   questionSetConfigCdata.show_feedback = true;
-                  questionSetConfigCdata.shuffle_questions = true;
+                  questionSetConfigCdata.shuffle_questions = false;
+                  questionConfigCdata.responseDeclaration = _.get(res, 'result.assessment_item.responseDeclaration');
                 }
+                questionSetConfigCdata.total_items = collectionIds.length;
                 questionConfigCdata.questionCount = 0;
                 question.data.__cdata = JSON.stringify(questionConfigCdata);
                 question.config.__cdata = JSON.stringify(question.config.__cdata);
@@ -67,7 +69,7 @@ export class CbseProgramService {
       .pipe(
         map(questions => {
           const questionMedia = _.flattenDeep(_.map(questions, question => {
-            return _.map(question.data.__cdata, cdata => cdata.media ? cdata.media : []);
+            return JSON.parse(question.data.__cdata).media ? JSON.parse(question.data.__cdata).media : [];
           }));
           theme.manifest.media = _.merge(theme.manifest.media, questionMedia);
           questionSet.config.__cdata = JSON.stringify(questionSetConfigCdata);
@@ -77,6 +79,6 @@ export class CbseProgramService {
           theme.stage.push(stage);
           return { 'theme': theme };
         })
-      )
+      );
   }
 }
