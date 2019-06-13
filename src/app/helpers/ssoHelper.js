@@ -98,7 +98,7 @@ const createUser = async (req, jwtPayload) => {
   logger.info({msg:'sso user create user request', additionalInfo:{requestBody: requestBody }})
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
-      logger.info({msg:'sso new user create response', data})
+      logger.info({msg:'sso new user create response', additionalInfo:{data}})
       return data;
     } else {
       throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
