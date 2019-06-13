@@ -41,6 +41,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   isOffline: boolean = environment.isOffline;
   showExportLoader = false;
   contentName: string;
+  public slug: string;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -62,6 +63,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug).pipe(
       mergeMap((orgDetails: any) => {
+        this.slug = orgDetails.slug;
         this.hashTagId = orgDetails.hashTagId;
         this.initFilters = true;
         return this.dataDrivenFilterEvent;
