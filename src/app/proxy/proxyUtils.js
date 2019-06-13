@@ -57,7 +57,7 @@ function verifyToken () {
       await validateUserToken(req, res)
       next()
     } catch (error) {
-      const responseCode = _.get(req, 'kauth.grant.access_token.token') ? 'SESSION_EXPIRED' || 'UNAUTHORIZED_ACCESS';
+      const responseCode = _.get(req, 'kauth.grant.access_token.token') ? 'SESSION_EXPIRED' : 'UNAUTHORIZED_ACCESS';
       res.status(401)
       res.send({
         'id': 'api.error',

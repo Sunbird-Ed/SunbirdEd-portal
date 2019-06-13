@@ -57,7 +57,7 @@ describe('PublicBatchDetailsComponent', () => {
     const courseBatchService = TestBed.get(SearchService);
     component.courseId = 'do_1125083286221291521153';
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
-    spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
+    spyOn(courseBatchService, 'batchSearch').and.returnValue(observableOf(allBatchDetails));
     component.ngOnInit();
     const searchParams: any = {
       filters: {
@@ -79,7 +79,7 @@ describe('PublicBatchDetailsComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableThrowError(allBatchDetails));
+    spyOn(courseBatchService, 'batchSearch').and.returnValue(observableThrowError(allBatchDetails));
     component.ngOnInit();
     const searchParams: any = {
       filters: {
