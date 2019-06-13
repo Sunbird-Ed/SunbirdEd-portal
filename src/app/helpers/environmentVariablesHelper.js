@@ -74,6 +74,11 @@ let envVariables = {
   sunbird_portal_preview_cdn_url: env.sunbird_portal_preview_cdn_url,
   sunbird_processing_kafka_host: process.env.sunbird_processing_kafka_host,
   sunbird_sso_kafka_topic: process.env.sunbird_sso_kafka_topic,
+  sunbird_portal_offline_tenant: env.sunbird_portal_offline_tenant,
+  sunbird_portal_offline_supported_languages: env.sunbird_portal_offline_supported_languages,
+  sunbird_portal_offline_app_release_date: env.sunbird_portal_offline_app_release_date,
+  sunbird_portal_offline_app_version: env.sunbird_portal_offline_app_version,
+  sunbird_portal_offline_app_download_url: env.sunbird_portal_offline_app_download_url,
   sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
 
 }

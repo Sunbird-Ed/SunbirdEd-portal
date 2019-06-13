@@ -126,6 +126,11 @@ function getLocals(req) {
   locals.videoMaxSize = envHelper.sunbird_portal_video_max_size
   locals.reportsLocation = envHelper.sunbird_azure_report_container_name
   locals.previewCdnUrl = envHelper.sunbird_portal_preview_cdn_url
+  locals.offlineDesktopAppTenant = envHelper.sunbird_portal_offline_tenant
+  locals.offlineDesktopAppVersion = envHelper.sunbird_portal_offline_app_version
+  locals.offlineDesktopAppReleaseDate = envHelper.sunbird_portal_offline_app_release_date
+  locals.offlineDesktopAppSupportedLanguage = envHelper.sunbird_portal_offline_supported_languages,
+  locals.offlineDesktopAppDownloadUrl = envHelper.sunbird_portal_offline_app_download_url
   return locals
 }
 
