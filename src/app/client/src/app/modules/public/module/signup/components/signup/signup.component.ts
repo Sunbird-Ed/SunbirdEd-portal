@@ -30,7 +30,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   tenantDataSubscription: Subscription;
   logo: string;
   tenantName: string;
-
+  resourceDataSubscription: any;
   telemetryStart: IStartEventInput;
   telemetryImpression: IImpressionEventInput;
   submitInteractEdata: IInteractEventEdata;
@@ -68,7 +68,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getCacheLanguage() {
-    this.resourceService.languageSelected$
+    this.resourceDataSubscription = this.resourceService.languageSelected$
       .subscribe(item => {
         this.resourceService.getResource(item.value);
       }
@@ -291,6 +291,9 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();
+    if (this.resourceDataSubscription) {
+      this.resourceDataSubscription.unsubscribe();
+    }
   }
 
   setInteractEventData() {

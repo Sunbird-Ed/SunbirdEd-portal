@@ -1,5 +1,7 @@
 import { Component, OnInit, EventEmitter , Output } from '@angular/core';
 import { ResourceService } from '../../services/index';
+import * as _ from 'lodash-es';
+
 @Component({
   selector: 'app-install-app',
   templateUrl: './install-app.component.html',
@@ -8,6 +10,7 @@ import { ResourceService } from '../../services/index';
 export class InstallAppComponent implements OnInit {
   showPopUp = true;
   @Output() viewInBrowser = new EventEmitter<any>();
+  instance: string;
   /**
   * To call resource service which helps to use language constant
   */
@@ -17,6 +20,8 @@ export class InstallAppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.instance = _.upperCase(this.resourceService.instance);
+
   }
   closePopUp() {
     this.showPopUp = false;

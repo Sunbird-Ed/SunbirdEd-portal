@@ -74,3 +74,57 @@ body {
     }
   }
 }
+// don't delete this 
+.iziModal-isAttached{
+  body{
+    overflow: hidden;
+  }
+}
+
+.sb-banner {
+  padding: $sb-banner-padding;
+  border-radius:4px;
+  background-color: $sb-banner-background-color;
+  box-shadow: $sb-banner-box-shadow;
+  &.sb-fix-bottom {
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    margin: 0 auto;
+    z-index: 999;
+    border-radius: $sb-banner-border-radius;
+  }
+}
+.sb-banner-content {
+  display: flex;
+  align-items: center;
+}
+.sb-banner-heading {
+  color: $sb-banner-heading-color;
+  font-weight: bold;
+  font-size: $sb-banner-heading-font-size;
+}
+.sb-banner-content-left {
+  display: flex;
+}
+[dir="ltr"] {  
+  .sb-banner-close-icon.close.icon {
+    width: $sb-banner-close-icon-width;
+    margin-left: $sb-banner-close-icon-margin-left;
+    font-size: $sb-banner-close-icon-font-size;
+  }
+  .sb-banner-content-left {
+    margin-left:auto;
+  }
+}
+[dir="rtl"] {
+  .sb-banner-close-icon.close.icon {
+    width: $sb-banner-close-icon-width;
+    margin-right: $sb-banner-close-icon-margin-right;
+    font-size: $sb-banner-close-icon-font-size;
+  }
+  .sb-banner-content-left {
+    margin-right:auto;
+  }
+}

@@ -15,8 +15,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-collection-player',
-  templateUrl: './collection-player.component.html',
-  styleUrls: ['./collection-player.component.scss']
+  templateUrl: './collection-player.component.html'
 })
 export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   /**

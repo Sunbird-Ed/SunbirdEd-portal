@@ -14,7 +14,7 @@
           <span class="sb-pageSection-count sb-label sb-label-xs sb-label-error mr-5">{{dialCode}}</span>
           <span class="header-label">{{resourceService.frmelmnts?.lbl?.linkedContents}}
             ({{searchResults.length}})</span>
-          <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"
+          <button *ngIf="!isOffline" appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"
             [telemetryInteractCdata]="telemetryCdata"
             class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn computer only" type="button" routerLink="/get">Close
             <i class="close icon"></i></button>
@@ -28,8 +28,13 @@
           [throttle]="[1000]" [trigger]="itemsToDisplay" class="masonry-grid dynamic-section-card">
           <div in-view-item [id]="i" [data]="content" class="masonry-item"
             *ngFor="let content of itemsToDisplay;let i = index;">
-            <app-dial-code-card appContentDirection [dialCode]="dialCode" [data]="content"
-              (clickEvent)="getEvent($event)"></app-dial-code-card>
+
+            <app-card *ngIf="!isOffline && content.contentType.toLowerCase() === 'course'" appContentDirection (clickEvent)="playCourse($event)" [dialCode]="dialCode" [data]="content"></app-card>
+
+            <app-dial-code-card *ngIf="!isOffline && content.contentType.toLowerCase() !== 'course'" appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"></app-dial-code-card>
+
+            <app-offline-dial-code-card *ngIf="isOffline" appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"></app-offline-dial-code-card>
+
           </div>
         </div>
       </div>
@@ -51,11 +56,11 @@
           <div class="small-box border-round border-r50 ml-20 mr-10"></div>
           <div class="small-box border-round border-r50"></div>
         </div>
-        <label class="d-block pb-10 text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile}}</label>
+        <label class="d-block pb-10 text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile | interpolate:'{instance}': instance}}</label>
         <a id='app-download-mobile' class="d-block pb-10 text-center app-download">
           <img class="playStore-img" src="assets/images/google_playstore.png"
-            alt="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile}}"
-            title="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile}}">
+            alt="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile | interpolate:'{instance}':instance}}"
+            title="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile | interpolate:'{instance}':instance}}">
         </a>
         <p class="d-block text-center pt-10">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}
         </p>
@@ -63,3 +68,9 @@
     </div>
   </div>
 </div>
+
+<sui-dimmer *ngIf="isOffline" class="page offline content" [isDimmed]="showExportLoader" [isClickable]="false">
+  <div class="ui active centered inline loader"></div>
+  <h2 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentName}}
+  </h2>
+</sui-dimmer>

@@ -335,6 +335,10 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     }
     sessionStorage.setItem('inEditor', 'false');
     this.workspaceService.toggleWarning();
+    const removeIzi = document.querySelector('.iziModal-isAttached');
+    if (removeIzi) {
+      removeIzi.classList.remove('iziModal-isAttached');
+    }
   }
   /**
    * to assign the value to Editor Config

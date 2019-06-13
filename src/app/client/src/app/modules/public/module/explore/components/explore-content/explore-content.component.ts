@@ -12,6 +12,9 @@ import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, debounceTime, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
+import { environment } from '@sunbird/environment';
+import { DownloadManagerService } from './../../../../../offline/services';
+
 @Component({
     templateUrl: './explore-content.component.html'
 })
@@ -37,6 +40,9 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     public contentList: Array<ICard> = [];
     public cardIntractEdata: IInteractEventEdata;
     public loaderMessage: ILoaderMessage;
+    isOffline: boolean = environment.isOffline;
+    showExportLoader = false;
+    contentName: string;
 
     constructor(public searchService: SearchService, public router: Router,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -44,7 +50,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         public configService: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
         public navigationHelperService: NavigationHelperService, private publicPlayerService: PublicPlayerService,
         public userService: UserService, public frameworkService: FrameworkService,
-        public cacheService: CacheService, public navigationhelperService: NavigationHelperService) {
+        public cacheService: CacheService, public navigationhelperService: NavigationHelperService,
+        public downloadManagerService: DownloadManagerService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.explore.filterType;
     }
@@ -64,6 +71,12 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
                 this.router.navigate(['']);
             }
         );
+
+        if (this.isOffline) {
+            this.downloadManagerService.downloadListEvent.subscribe((data) => {
+                this.updateCardData(data);
+            });
+        }
     }
     public getFilters(filters) {
         this.facets = filters.map(element => element.code);
@@ -175,6 +188,17 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         };
     }
     public playContent(event) {
+        // For offline envirnoment content will not play if action not open. It will get downloaded
+        if (_.includes(this.router.url, 'browse') && this.isOffline) {
+            this.startDownload(event.data.metaData.identifier);
+            return false;
+        } else if (event.action === 'export' && this.isOffline) {
+            this.showExportLoader = true;
+            this.contentName = event.data.name;
+            this.exportOfflineContent(event.data.metaData.identifier);
+            return false;
+        }
+
         if (!this.userService.loggedIn && event.data.contentType === 'Course') {
             this.showLoginModal = true;
             this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
@@ -210,9 +234,66 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.unsubscribe$.complete();
     }
     private setNoResultMessage() {
-        this.noResultMessage = {
-          'message': 'messages.stmsg.m0007',
-          'messageText': 'messages.stmsg.m0006'
-        };
+        if (this.isOffline && !(this.router.url.includes('/browse'))) {
+            this.noResultMessage = {
+              'message': 'messages.stmsg.m0007',
+              'messageText': 'messages.stmsg.m0133'
+            };
+          } else {
+            this.noResultMessage = {
+              'message': 'messages.stmsg.m0007',
+              'messageText': 'messages.stmsg.m0006'
+            };
+          }
+    }
+
+    startDownload(contentId) {
+        this.downloadManagerService.downloadContentId = contentId;
+        this.downloadManagerService.startDownload({}).subscribe(data => {
+            this.downloadManagerService.downloadContentId = '';
+        }, error => {
+            this.downloadManagerService.downloadContentId = '';
+            _.each(this.contentList, (contents) => {
+                contents['addedToLibrary'] = false;
+                contents['showAddingToLibraryButton'] = false;
+            });
+            this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+        });
+    }
+
+    exportOfflineContent(contentId) {
+        this.downloadManagerService.exportContent(contentId).subscribe(data => {
+            const link = document.createElement('a');
+            link.href = data.result.response.url;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            this.showExportLoader = false;
+        }, error => {
+            this.showExportLoader = false;
+            this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+        });
+    }
+
+    updateCardData(downloadListdata) {
+        _.each(this.contentList, (contents) => {
+
+            // If download is completed card should show added to library
+            _.find(downloadListdata.result.response.downloads.completed, (completed) => {
+                if (contents.metaData.identifier === completed.contentId) {
+                    contents['addedToLibrary'] = true;
+                    contents['showAddingToLibraryButton'] = false;
+                }
+            });
+
+            // If download failed, card should show again add to library
+            _.find(downloadListdata.result.response.downloads.failed, (failed) => {
+                if (contents.metaData.identifier === failed.contentId) {
+                    contents['addedToLibrary'] = false;
+                    contents['showAddingToLibraryButton'] = false;
+                }
+            });
+        });
     }
 }

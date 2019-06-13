@@ -1,5 +1,4 @@
 /* buttons sytle guide */
-// Specificity overrides
 input[type="submit"],
 input[type="reset"],
 input[type="button"] {
@@ -17,8 +16,8 @@ input[type="button"] {
     color: $white-color;
     cursor: pointer;
     min-width:($base-block-space * 8);
-    line-height: inherit;
     @include border-radius(3px);
+    position:relative;
     text: {
         transform: capitalize;
         decoration: none;
@@ -36,26 +35,41 @@ input[type="button"] {
         cursor: not-allowed;
     }
     &+.sb-btn {
-        margin:0 $base-block-space 0 0;
+        //margin:0 $base-block-space 0 0;
     }
+    &:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 3px;
+        height: 3px;
+        background: $primary-600;
+        opacity: 0;
+        border-radius: 50%;
+        transform: scale(1, 1) translate(-50%);
+        transform-origin: 50% 50%;
+      }
+
+    //   @keyframes ripple {
+    //     0% {
+    //       transform: scale(0, 0);
+    //       opacity: 1;
+    //     }
+    //     100% {
+    //       opacity: 0;
+    //       transform: scale(50, 50);
+    //     }
+    //   }
+    //   &:focus:not(:active)::after {
+    //     animation: ripple 1s ease-in-out;
+    //   }
+
 }
 
-[dir="rtl"] .sb-btn+.sb-btn{
-    margin: 0 0 0 $base-block-space;
-}
-// button link
-.sb-btn-link {
-    background:none;
-    border:0;
-    color:$primary-color;
-    text-decoration: underline;
-    &:hover {
-        font-weight:$font-weight-bold;
-    }
-    
-}
+
 // button sizes
-.sb-btn-xs, .sb-btn-normal, .sb-btn-sm,.sb-btn-md {
+.sb-btn-xs, .sb-btn-normal, .sb-btn-sm, .sb-btn-md {
     padding: ($base-block-space * 1) ($base-block-space * 2);
 }
 .sb-btn-xs {
@@ -78,9 +92,10 @@ input[type="button"] {
 }
 .sb-btn-lg {
   height:($base-block-space * 7);
-  padding: ($base-block-space * 3);
+  padding: ($base-block-space * 2) ($base-block-space * 3);
   font-size:$font-size-lg;
 }
+
 // default outline colored btns
 // status outline buttons
 
@@ -91,7 +106,7 @@ input[type="button"] {
         color: $primary-800;
         border-color: $primary-800;
     }
-} 
+}
 .sb-btn-outline-secondary, .sb-btn-outline-success{
     @include btn-theme-bgwhite($secondary-200);
     color: $secondary-100;
@@ -101,7 +116,7 @@ input[type="button"] {
         color: $secondary-400;
         border-color: $secondary-400;
     }
-} 
+}
 .sb-btn-outline-tertiary, .sb-btn-outline-warning{
     @include btn-theme-bgwhite($tertiary-color);
     color: $tertiary-100;
@@ -111,7 +126,7 @@ input[type="button"] {
         color: $tertiary-400;
         border-color: $tertiary-400;
     }
-}   
+}
 .sb-btn-outline-error{
     @include btn-theme-bgwhite($red-400);
     color: $red-100;
@@ -121,7 +136,7 @@ input[type="button"] {
         color: $red-400;
         border-color: $red-400;
     }
-} 
+}
 .sb-btn-outline-gray{
     @include btn-theme-bgwhite($gray-800);
     color: $gray-300;
@@ -146,16 +161,16 @@ input[type="button"] {
 .sb-btn-primary,.sb-btn-info,.sb-btn-secondary,.sb-btn-success,.sb-btn-tertiary,.sb-btn-error{
     &:hover,&:active {
         color: $white-color;
-        border:0px;
         border:1px solid transparent;
     }
- }
+}
+
 .sb-btn-primary,.sb-btn-info{
     @include btn-theme($primary-color);
     &:hover,&:active {
         background: $primary-800;
     }
-} 
+}
 .sb-btn-secondary,.sb-btn-success{
     @include btn-theme($secondary-200);
     &:hover,&:active {
@@ -173,7 +188,7 @@ input[type="button"] {
     &:hover,&:active {
         background: $secondary-400;
     }
-} 
+}
 .sb-btn-info{
     @include btn-theme($info-color);
     &:hover,&:active {
@@ -185,104 +200,292 @@ input[type="button"] {
     &:hover,&:active {
         background: $tertiary-400;
     }
-} 
+}
 .sb-btn-error{
     @include btn-theme($danger-color);
     &:hover,&:active {
         background: $red-400;
     }
 }
+.sb-btn-gray{
+    @include btn-theme($gray-200);
+    &:hover,&:active {
+        background: $gray-400;
+    }
+}
 
-// to cleanup
-.ui.dodger-blue.basic.label {
-    border: 1px solid $primary-color !important;	
-    border-radius: 4px;
-    color: $primary-color;
+// button links colored
+.sb-btn-link-primary, .sb-btn-link-info{
+    @include btn-theme-links($primary-color);
+    &:hover,&:active {
+        background: $primary-100;
+    }
+}
+.sb-btn-link-secondary, .sb-btn-link-success{
+    @include btn-theme-links($secondary-200);
+    &:hover,&:active {
+        background: $secondary-0;
+    }
+}
+.sb-btn-link-tertiary,.sb-btn-link-warning{
+    @include btn-theme-links($tertiary-color);
+    &:hover,&:active {
+        background: $tertiary-0;
+    }
+}
+// status outline buttons
+.sb-btn-link-error{
+    @include btn-theme-links($red-400);
+    &:hover,&:active {
+        background: $red-0;
+    }
+}
+.sb-btn-link-gray{
+    @include btn-theme-links($gray-800);
+    &:hover,&:active {
+        background: $gray-0;
+    }
+}
+
+// button link
+.sb-btn-link {
+    background:none;
+    border:0;
+    &:hover {
+        font-weight:$font-weight-bold;
+    }
+
+}
+
+ .sb-btn-loading-spinner {
+    padding: ($base-block-space * 1)  ($base-block-space * 2)  ($base-block-space * 1)  ($base-block-space * 1);
+  }
+
+  @keyframes spinner-border {
+    to { transform: rotate(360deg); }
+  }
+
+
+.loading-spinner {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 8px;
+    border-width: .2em;
+    display: inline-block;
+    vertical-align: text-bottom;
+    border: .15em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    -webkit-animation: spinner-border .75s linear infinite;
+    animation: spinner-border .75s linear infinite;
+}
+
+.sb-btn-loading:before {
+    position: absolute;
+    content: '';
+    top: 50%;
+    left: 50%;
+    margin: -.64285714em 0 0 -.64285714em;
+    width: 1.28571429em;
+    height: 1.28571429em;
+    border-radius: 500rem;
+    border: 0.2em solid rgba(0, 0, 0, 0.15);
+}
+
+.sb-btn-loading:after {
+    position: absolute;
+    content: '';
+    top: 50%;
+    left: 50%;
+    margin: -.64285714em 0 0 -.64285714em;
+    width: 1.28571429em;
+    height: 1.28571429em;
+    -webkit-animation: button-spin .6s linear;
+    animation: button-spin .6s linear;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    border-radius: 500rem;
+    border-color: #fff transparent transparent;
+    border-style: solid;
+    border-width: .2em;
+    -webkit-box-shadow: 0 0 0 1px transparent;
+    box-shadow: 0 0 0 1px transparent;
+}
+
+// Buttons with icon
+
+*[dir="ltr"] {
+    .sb-right-icon-btn {
+        padding: ($base-block-space * 1)  ($base-block-space * 1)  ($base-block-space * 1)  ($base-block-space * 2);
+        i.icon{
+            margin-left: $base-block-space;
+            margin-right: 0;
+        }
+    }
+    .sb-left-icon-btn {
+        padding: ($base-block-space * 1)  ($base-block-space * 2)  ($base-block-space * 1)  ($base-block-space * 1);
+        i.icon{
+            margin-right: $base-block-space;
+        }
+    }
+}
+*[dir="rtl"] {
+    .sb-right-icon-btn {
+        padding: ($base-block-space * 1)  ($base-block-space * 1)  ($base-block-space * 1)  ($base-block-space * 2);
+        i.icon{
+            margin-left: 0;
+            margin-right: $base-block-space;
+        }
+    }
+    .sb-left-icon-btn {
+        padding: ($base-block-space * 1)  ($base-block-space * 2)  ($base-block-space * 1)  ($base-block-space * 1);
+        i.icon{
+            margin-left: $base-block-space;
+        }
+    }
+}
+.sb-left-icon-btn.sb-btn-xs {
+    padding: ($base-block-space * 0)  ($base-block-space * 1)  ($base-block-space * 0)  ($base-block-space * 1);
+}
+
+//Buttons toggle
+
+.ui.toggle.checkbox.sb-toggle {
+    min-height: ($base-block-space * 3);
+    position: relative;
+    display: inline-block;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    outline: 0;
+    vertical-align: baseline;
+    font-style: normal;
+    min-height: ($base-block-space * 2);
     font-size: 1rem;
-    font-weight: 300;
-    padding: 4px 16px;
+    min-width: ($base-block-space * 2);
+    input {
+        width: ($base-block-space * 8);;
+        height: ($base-block-space * 3);
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        outline: 0;
+        z-index: 3;
+        &:focus:checked~label:before,
+        &:focus:checked~.box:before,
+        &:checked~.box:before,
+        &:checked~label:before {
+            background-color: #024f9d !important;
+        }
+    }
+    label {
+        min-height: ($base-block-space * 2);
+        padding-left: ($base-block-space * 9);
+        color: rgba(0,0,0,.87);
+        position: relative;
+        display: block;
+        outline: 0;
+        font-size: 1rem;
+        &:before {
+            display: block;
+            position: absolute;
+            content: '';
+            z-index: 1;
+            transform: none;
+            border: none;
+            top: 1px;
+            left: 0;
+            background: rgba(0,0,0,.05);
+            box-shadow: none;
+            width:($base-block-space * 8);
+            height: ($base-block-space * 3);
+            border-radius: 500rem;
+            @include btn-theme($primary-color);
+            transition: border .1s ease,opacity .1s ease,transform .1s ease,box-shadow .1s ease,-webkit-transform .1s ease;
+
+        }
+        &:after {
+            background: #fff linear-gradient(transparent,rgba(0,0,0,.05));
+            position: absolute;
+            content: ''!important;
+            opacity: 1;
+            z-index: 2;
+            border: none;
+            width: (($base-block-space * 3) - 2);
+            height: (($base-block-space * 3) - 2);
+            top: 2px;
+            left: 0;
+            border-radius: 500rem;
+            -webkit-transition: background .3s ease,left .3s ease;
+            transition: background .3s ease,left .3s ease;
+        }
+    }
+    input~label:after {
+        left: 0.1rem;
+        box-shadow: none;
+    }
+    input:checked~label:after {
+        left: (($base-block-space * 5) + 1);
+        box-shadow: none;
+    }
+
 
 }
-.ui.semi-circular.dodger-blue.basic.label {
-    border: 1px solid $primary-color !important;
-    border-radius: 18.5px;
-    color: $primary-color;
-    font-size: 1.16rem;
-    padding: 10px 27px;
+
+
+// button groups
+
+.btn-group {
+    border: $sb-btn-group-border-width solid $sb-btn-group-border-color;
+    display: inline-flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-direction: row;
+    flex-direction: row;
+    font-size: 0;
+    vertical-align: baseline;
+    .sb-btn {
+        background: $sb-btn-group-btn-background;
+        border-left: $sb-btn-group-border-width solid $sb-btn-group-border-color;
+        flex: 1 0 auto;
+        margin: 0;
+        border-radius: 0;
+        margin: 0;
+        border:0;
+        color: $sb-btn-group-btn-color;
+        min-width: ($base-block-space * 5);
+        &:first-child {
+            border-left: none;
+            margin-left: 0;
+        }
+        &:active, &.active {
+            background-color: $sb-btn-group-btn-active-background-color;
+            color: $sb-btn-group-btn-color;
+        }
+        .icon {
+            margin: 0;
+            vertical-align: top;
+        }
+
+    }
+
 }
 
-.ui.semi-circular.dodger-blue.button {
-    border: 1px solid $primary-color;
-    border-radius: 18.5px;
-    background: $primary-color;
-    color: #fff;
-    font-size: 1rem;    
-    font-weight: 100;
-    padding: 6px 27px;
-}
 
-.circular-placeholder {
-	border: 6px solid #fff;
-	background-color: #fff;
-    box-shadow: 0 0 6px 0 rgba(0,0,0,0.38);
-    border-radius: 100%;
-    height: 92px;
-    width: 92px;
+//dashed buttons
+.sb-btn-dashed {
+  border-style: dashed;
+  border-width: 1px;
 }
-.ui.button.rounded{
-    border-radius: 20px;
+.sb-btn-dashed-primary,.sb-btn-dashed-info {
+    background-color: $sb-btn-dashed-background-color;
+    border-color:$primary-400;
+    color: $sb-btn-dashed-color;
+    &:hover,&:active{
+    background-color: $primary-0;
+    }
 }
-.ui.explore.blue.button {  
-    background-color: $primary-color;
-    padding: 10px 30px;
-}
-.ui.explore.blue.button:hover {  
-    opacity: 0.8;
-}
-.ui.explore.blue.button:active {  
-    opacity: 0.9;
-}
-.ui.basic.explore.blue.button {  
-    background-color: #fff;
-    border: 0.5px solid $primary-color;
-    box-shadow: none;
-    color: $primary-color;
-    font-weight: 700;
-    height:36px;
-    padding: 10px 30px;
-}
-.ui.basic.explore.blue.button:hover {  
-    opacity: 0.8;
-}
-.ui.basic.explore.blue.button:active {  
-    opacity: 0.9;
-}
-.ui.blue.button,
-.ui.blue.buttons .button{
-    background-color: $primary-color !important;
-    color: #fff !important;
-}
-.ui.primary.button, 
-.ui.primary.buttons .button{
-    background-color: $primary-color !important;
-    color: #fff !important;
-}
-.ui.basic.primary.button,
-.ui.basic.primary.buttons .button{
-    color: $primary-color !important;
-    background: transparent !important;
-}
-.ui.basic.blue.button,
-.ui.basic.blue.buttons .button{
-    color: $primary-color !important;
-    background: transparent !important;
-}
-.ui.red.label, 
-.ui.red.labels .label{
-    background: $danger-color !important;
-    border-color: $danger-color !important;
-}
-
 // disabled button
 .sb-btn-disabled,
 .sb-btn-primary[disabled],
@@ -311,13 +514,4 @@ input[type="button"] {
     color:$gray-100;
     cursor: not-allowed;
     font-weight: normal;
-}
-
-.ui[class*="right floated"].sb-btn {
-    float: right;
-    margin-right: 0;
-    margin-left: 8px;
-}
-.btn-bg:hover{
-background: $primary-100;
 }

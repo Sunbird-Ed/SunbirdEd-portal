@@ -36,13 +36,13 @@
         cursor: pointer;
         cursor: hand;
     }
-    
+
 }
 
 /**[dir="ltr"] .slick-list{
     &:after{
         background: linear-gradient(270deg, rgba(243, 247, 250, 0.501961) 0%, rgba(255,255,255,0) 100%);
-        right: 0; 
+        right: 0;
     }
 }
 *[dir="rtl"] .slick-list{
@@ -65,7 +65,8 @@
     left: 0;
     top: 0;
     display: block;
-    padding-top: 3px;
+    padding-top:3px;
+
     &:before,
     &:after {
         content: "";
