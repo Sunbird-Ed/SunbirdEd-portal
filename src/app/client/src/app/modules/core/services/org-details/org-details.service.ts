@@ -130,7 +130,7 @@ export class OrgDetailsService {
     const systemSetting = {
       url: this.configService.urlConFig.URLS.SYSTEM_SETTING.CUSTODIAN_ORG,
     };
-    return this.learnerService.get(systemSetting);
+    return this.publicDataService.get(systemSetting);
   }
 
   /**
@@ -147,7 +147,7 @@ export class OrgDetailsService {
       const systemSetting = {
         url: this.configService.urlConFig.URLS.SYSTEM_SETTING.COMMING_SOON_MESSAGE,
       };
-      return this.learnerService.get(systemSetting).pipe(map((data: ServerResponse) => {
+      return this.publicDataService.get(systemSetting).pipe(map((data: ServerResponse) => {
         if (_.has(data, 'result.response')) {
           let commingSoonData = {};
           try {
