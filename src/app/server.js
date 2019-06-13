@@ -139,7 +139,7 @@ function runApp() {
   fetchDefaultChannelDetails((channelError, channelRes, channelData) => {
     portal.server = app.listen(envHelper.PORTAL_PORT, () => {
       envHelper.defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId'); // needs to be added in envVariable file
-      logger.info({msg: `app running on port ' ${envHelper.PORTAL_PORT}`})
+      logger.info({msg: `app running on port ${envHelper.PORTAL_PORT}`})
     })
   })
 }
@@ -173,5 +173,5 @@ telemetry.init({
   authtoken: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
 })
 
-process.on('unhandledRejection', (reason, p) => logger.info({msg:`Unhandled Rejection at: Promise, ${p} , reason: ${reason} `}) );
+process.on('unhandledRejection', (reason, p) => logger.info({msg:'Unhandled Rejection at:', additionalInfo: { promise: p, reason: reason }}));
 exports.close = () => portal.server.close()
