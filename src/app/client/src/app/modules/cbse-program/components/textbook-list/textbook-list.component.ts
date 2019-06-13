@@ -36,7 +36,8 @@ export class TextbookListComponent implements OnInit {
             'subject': this.selectedAttributes.subject,
             'medium': this.selectedAttributes.medium,
             'programId': this.selectedAttributes.programId,
-            'status': ['Draft']
+            'status': ['Draft'],
+            'contentType': 'TextBook'
           }
         }
       }

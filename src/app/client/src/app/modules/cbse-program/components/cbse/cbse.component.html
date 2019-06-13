@@ -5,6 +5,8 @@
       (click)="selectedAttributes.currentRole = 'CONTRIBUTOR';handleRoleChange()">Contribute</a>
     <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("REVIEWER")'
       [class.active]="selectedAttributes.currentRole === 'REVIEWER'" (click)="selectedAttributes.currentRole = 'REVIEWER';handleRoleChange()">Review</a>
+    <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("PUBLISHER")'
+      [class.active]="selectedAttributes.currentRole === 'PUBLISHER'" (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange()">Publish</a>
   </div>
 </div>
 
