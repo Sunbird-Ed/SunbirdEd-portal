@@ -100,6 +100,6 @@ export class FrameworkService {
     const systemSetting = {
       url: this.configService.urlConFig.URLS.COURSE_FRAMEWORK.COURSE_FRAMEWORKID,
     };
-    return this.learnerService.get(systemSetting);
+    return this.publicDataService.get(systemSetting);
   }
 }
