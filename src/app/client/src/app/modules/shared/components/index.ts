@@ -13,3 +13,5 @@ export * from './install-app/install-app.component';
 export * from './contentlock-info-popup/contentlock-info-popup.component';
 export * from './batch-card/batch-card.component';
 export * from './offline-card/offline-card.component';
+export * from './offline-banner/offline-banner.component';
+export * from './offline-application-download/offline-application-download.component';
