@@ -1,11 +1,5 @@
-<div class="ui segment br-0 p-0 prominent-filter">
-  <div class="ui container">
-        <div class="twelve wide column mb-15">
-            <app-data-driven-filter (dataDrivenFilter)="getFilters($event)" [pageId]="'home-page'" [ignoreQuery]="['key']" [accordionDefaultOpen]=false
-            [isShowFilterLabel]=true *ngIf="initFilters" [filterEnv]="filterType"></app-data-driven-filter>
-        </div>
-  </div>
-</div>
+<app-data-driven-filter (dataDrivenFilter)="getFilters($event)" [pageId]="'home-page'" [ignoreQuery]="['key']" [accordionDefaultOpen]=false
+  [isShowFilterLabel]=true *ngIf="initFilters" [filterEnv]="filterType"></app-data-driven-filter>
 
 <div class="ui container">
   <div class="content-grid">

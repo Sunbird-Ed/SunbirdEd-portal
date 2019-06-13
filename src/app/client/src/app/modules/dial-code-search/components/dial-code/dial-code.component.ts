@@ -3,6 +3,7 @@ import { combineLatest as observableCombineLatest } from 'rxjs';
 import { ResourceService, ServerResponse, ToasterService, ConfigService, UtilService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SearchService, SearchParam, PlayerService } from '@sunbird/core';
+import { PublicPlayerService } from '@sunbird/public';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { takeUntil, map, catchError, mergeMap } from 'rxjs/operators';
@@ -54,8 +55,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     public searchService: SearchService, public toasterService: ToasterService, public configService: ConfigService,
     public utilService: UtilService, public navigationhelperService: NavigationHelperService,
     public playerService: PlayerService, public telemetryService: TelemetryService,
-    public downloadManagerService: DownloadManagerService) {
-
+    public downloadManagerService: DownloadManagerService, public publicPlayerService: PublicPlayerService) {
   }
 
   ngOnInit() {
@@ -93,7 +93,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       const linkedCollectionsIds = [];
       this.linkedContents = [];
       _.forEach(_.get(apiResponse, 'result.content'), (data) => {
-        if (data.mimeType === 'application/vnd.ekstep.content-collection') {
+        if (data.mimeType === 'application/vnd.ekstep.content-collection' && data.contentType.toLowerCase() !== 'course') {
           linkedCollectionsIds.push(data.identifier);
         } else {
           this.linkedContents.push(data);
@@ -146,6 +146,10 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   public getCollectionHierarchy(collectionId) {
     return this.playerService.getCollectionHierarchy(collectionId).pipe(
       map((res) => _.get(res, 'result.content')), catchError(e => of(undefined)));
+  }
+
+  public playCourse (event) {
+    this.publicPlayerService.playExploreCourse(event.data.metaData.identifier);
   }
 
   public getEvent(event) {
