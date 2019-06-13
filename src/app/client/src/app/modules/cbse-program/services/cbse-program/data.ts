@@ -6,14 +6,14 @@ export let themeObject = {
   'manifest': {
     'media': [
       {
-        'id': '4d259590-2a2c-4ee1-951b-d59a1dcd086d',
+        'id': 'org.ekstep.navigation_js',
         'plugin': 'org.ekstep.navigation',
         'ver': '1.0',
         'src': '/content-plugins/org.ekstep.navigation-1.0/renderer/controller/navigation_ctrl.js',
         'type': 'js'
       },
       {
-        'id': '196ecb6a-91eb-4c75-b27e-7a941d8174ea',
+        'id': 'org.ekstep.navigation_html',
         'plugin': 'org.ekstep.navigation',
         'ver': '1.0',
         'src': '/content-plugins/org.ekstep.navigation-1.0/renderer/templates/navigation.html',
@@ -48,21 +48,21 @@ export let themeObject = {
         'type': 'json'
       },
       {
-        'id': '20e31b94-2898-47cb-899a-b28d987a1777',
+        'id': 'org.ekstep.questionset_telemetry_logger_js',
         'plugin': 'org.ekstep.questionset',
         'ver': '1.0',
         'src': '/content-plugins/org.ekstep.questionset-1.0/renderer/utils/telemetry_logger.js',
         'type': 'js'
       },
       {
-        'id': 'ec820cd8-5b93-421a-b820-8455c7578309',
+        'id': 'org.ekstep.questionset_audio_plugin_js',
         'plugin': 'org.ekstep.questionset',
         'ver': '1.0',
         'src': '/content-plugins/org.ekstep.questionset-1.0/renderer/utils/html_audio_plugin.js',
         'type': 'js'
       },
       {
-        'id': 'c892ea88-7807-4dc6-9526-c95a6e0e3480',
+        'id': 'org.ekstep.questionset_feedback_popup_js',
         'plugin': 'org.ekstep.questionset',
         'ver': '1.0',
         'src': '/content-plugins/org.ekstep.questionset-1.0/renderer/utils/qs_feedback_popup.js',
@@ -97,14 +97,14 @@ export let themeObject = {
         'type': 'image'
       },
       {
-        'id': '489aaa4c-d49b-4c02-bb8b-a66509e9b0c2',
+        'id': 'org.ekstep.questionunit_js',
         'plugin': 'org.ekstep.questionunit',
         'ver': '1.0',
         'src': '/content-plugins/org.ekstep.questionunit-1.0/renderer/components/js/components.js',
         'type': 'js'
       },
       {
-        'id': 'ec2b2899-33e6-4706-ab10-923ce290a64a',
+        'id': 'org.ekstep.questionunit_css',
         'plugin': 'org.ekstep.questionunit',
         'ver': '1.0',
         'src': '/content-plugins/org.ekstep.questionunit-1.0/renderer/components/css/components.css',
@@ -123,6 +123,27 @@ export let themeObject = {
         'ver': '1.0',
         'src': '/content-plugins/org.ekstep.questionunit-1.0/manifest.json',
         'type': 'json'
+      },
+      {
+          'id': 'org.sunbird.questionunit.quml_manifest',
+          'plugin': 'org.sunbird.questionunit.quml',
+          'ver': '1.0',
+          'src': '/content-plugins/org.sunbird.questionunit.quml-1.0/manifest.json',
+          'type': 'json'
+      },
+      {
+          'id': 'org.sunbird.questionunit.quml',
+          'plugin': 'org.sunbird.questionunit.quml',
+          'ver': '1.0',
+          'src': '/content-plugins/org.sunbird.questionunit.quml-1.0/renderer/plugin.js',
+          'type': 'plugin'
+      },
+      {
+          'id': 'org.sunbird.questionunit.quml_css',
+          'plugin': 'org.sunbird.questionunit.quml',
+          'ver': '1.0',
+          'src': '/content-plugins/org.sunbird.questionunit.quml-1.0/renderer/styles/style.css',
+          'type': 'css'
       }
     ]
   },
@@ -151,6 +172,12 @@ export let themeObject = {
         'ver': '1.0',
         'type': 'plugin',
         'depends': 'org.ekstep.questionset.quiz,org.ekstep.iterator'
+      },
+      {
+        'id': 'org.sunbird.questionunit.quml',
+        'ver': '1.0',
+        'type': 'plugin',
+        'depends': 'org.ekstep.questionunit'
       }
     ]
   },
