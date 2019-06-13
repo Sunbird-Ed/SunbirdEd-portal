@@ -229,7 +229,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
           data: {
             'request': {
               'content': {
-                'name': `${this.questionTypeName[this.selectedAttributes.questionType]}-${this.selectedAttributes.topic}`,
+                'name': `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`,
                 'contentType': 'Resource',
                 'mimeType': 'application/vnd.ekstep.ecml-archive',
                 'programId': this.selectedAttributes.programId,
@@ -243,8 +243,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
                 'createdBy': this.userService.userid,
                 'creator': creator,
                 'body': JSON.stringify(theme),
-                'resourceType': 'Learn',
-                'description': `${this.questionTypeName[this.selectedAttributes.questionType]}-${this.selectedAttributes.topic}`,
+                'resourceType': 'Practice',
+                'description': `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`,
                 'questions': questions,
                 'contributors': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'contributors'))), ', '),
                 'attributions': _.compact(_.get(selectedQuestionsData, 'attributions'))

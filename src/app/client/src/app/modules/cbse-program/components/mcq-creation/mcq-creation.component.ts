@@ -377,7 +377,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
     return {
       body : questionBody,
       responseDeclaration: responseDeclaration,
-      correct_response: this.mcqForm.answer,
+      correct_response: parseInt(this.mcqForm.answer) + 1,
       learningOutcome: this.questionMetaData.data.learningOutcome ? this.questionMetaData.data.learningOutcome[0] : '',
       learningLevel : this.mcqForm.bloomsLevel || ''
     };
