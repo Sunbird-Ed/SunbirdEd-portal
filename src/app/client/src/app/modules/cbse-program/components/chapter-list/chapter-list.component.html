@@ -1,5 +1,5 @@
 
-<div *ngIf='!showLoader && !showError' class="ui container" [appTelemetryImpression]="telemetryImpression">
+<div *ngIf='!showLoader && !showError' class="ui container sb-chapter-list" [appTelemetryImpression]="telemetryImpression">
   <div *ngIf="textBookChapters.length" class="mt-16">
     <sui-accordion class="styled fluid sb-accordion" [closeOthers]="true">
       <sui-accordion-panel [isOpen]="i === 0" *ngFor="let textbook of textBookChapters; let i = index">
