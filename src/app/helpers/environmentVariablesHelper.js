@@ -80,6 +80,7 @@ let envVariables = {
   sunbird_portal_offline_app_version: env.sunbird_portal_offline_app_version,
   sunbird_portal_offline_app_download_url: env.sunbird_portal_offline_app_download_url,
   sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
+  sunbird_portal_log_level: env.sunbird_portal_log_level || 'debug'
 
 }
 
