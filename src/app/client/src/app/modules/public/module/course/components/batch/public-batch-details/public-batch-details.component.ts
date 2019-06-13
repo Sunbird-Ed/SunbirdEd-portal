@@ -34,7 +34,7 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
   signInInteractEdata: IInteractEventEdata;
   enrollBatchIntractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
-  constructor(private searchService: SearchService, private cacheService: CacheService,
+  constructor(public searchService: SearchService, private cacheService: CacheService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public router: Router, public userService: UserService) {
     this.batchStatus = this.statusOptions[0].value;
