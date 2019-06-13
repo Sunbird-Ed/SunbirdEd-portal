@@ -86,7 +86,7 @@ module.exports = (app, keycloak) => {
     '/explore-course/*', '/:slug/explore-course', '/:slug/explore-course/*',
     '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*'],redirectTologgedInPage, indexPage(false))
 
-  app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode))
+  app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode + '?source=scan'))
 
   app.all('/app', (req, res) => res.redirect(envHelper.ANDROID_APP_URL))
 
