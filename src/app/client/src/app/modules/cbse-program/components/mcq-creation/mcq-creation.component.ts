@@ -376,7 +376,10 @@ export class McqCreationComponent implements OnInit, OnChanges {
     };
     return {
       body : questionBody,
-      responseDeclaration: responseDeclaration
+      responseDeclaration: responseDeclaration,
+      correct_response: this.mcqForm.answer,
+      learningOutcome: this.questionMetaData.data.learningOutcome ? this.questionMetaData.data.learningOutcome[0] : '',
+      learningLevel : this.mcqForm.bloomsLevel || ''
     };
   }
 

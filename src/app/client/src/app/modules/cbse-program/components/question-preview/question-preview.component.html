@@ -26,4 +26,11 @@
         <div class="sb-question-dsp-body" *ngIf="questionMetaData && questionMetaData.type === 'mcq'" [innerHTML]="questionMetaData.data.body | sanitizeHtml">
         </div>
     </div>
+    <div *ngIf="questionMetaData && questionMetaData.type === 'mcq'">
+        <div class="ui one column grid mt-24">
+                <div class="column"><label class="mb-0 font-weight-bold fs-1-143">Correct Option :</label><span class="ml-8 font-weight-normal" style="overflow-wrap: break-word"> {{questionMetaData?.data?.correct_response}}</span></div>
+                <div class="column"><label class="mb-0 font-weight-bold fs-1-143">Learning Outcome :</label><span class="ml-8 font-weight-normal" style="overflow-wrap: break-word">{{questionMetaData?.data?.learningOutcome}}</span></div>
+                <div class="column"><label class="mb-0 font-weight-bold fs-1-143">Learning Level :</label><span class="ml-8 font-weight-normal" style="overflow-wrap: break-word">{{questionMetaData?.data?.learningLevel}}</span></div>
+            </div>
+     </div>
 </div>
