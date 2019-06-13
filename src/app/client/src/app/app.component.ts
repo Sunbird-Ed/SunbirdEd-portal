@@ -112,6 +112,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.tenantService.getTenantInfo(this.slug);
         this.setPortalTitleLogo();
         this.telemetryService.initialize(this.getTelemetryContext());
+        this.logCdnStatus();
         this.checkTncAndFrameWorkSelected();
         this.initApp = true;
       }, error => {
@@ -119,7 +120,25 @@ export class AppComponent implements OnInit, OnDestroy {
       });
     this.changeLanguageAttribute();
   }
-
+  logCdnStatus() {
+    const isCdnWorking  = (<HTMLInputElement>document.getElementById('cdnWorking'))
+    ? (<HTMLInputElement>document.getElementById('cdnWorking')).value : 'no';
+    if (isCdnWorking !== 'no') {
+      return;
+    }
+    const event = {
+      context: {
+        env: 'app'
+      },
+      edata: {
+        type: 'cdn_failed',
+        level: 'ERROR',
+        message: 'cdn failed, loading files from portal',
+        pageid: this.router.url.split('?')[0]
+      }
+    };
+    this.telemetryService.log(event);
+  }
   /**
    * checks if user has accepted the tnc and show tnc popup.
    */
