@@ -1,5 +1,4 @@
 .sb-pageSection {
-  // @include margin($sb-page-sections-between-space);
   .sb-pageSection-header {
     display: flex;
     align-items: center;
@@ -11,11 +10,13 @@
   .sb-pageSection-title {
     font-size: $h5-font-size;
     display: inline;
-    text-transform: lowercase;
     font-weight: 600;
     line-height: normal;
-    &::first-letter{
-      text-transform: uppercase;
+    &.sb-pageSection-sentenceCase {
+      text-transform: lowercase;
+      &::first-letter {
+          text-transform: uppercase;
+      }
     }
   }
   .sb-pageSection-footer {
