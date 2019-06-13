@@ -74,13 +74,13 @@ export class McqCreationComponent implements OnInit, OnChanges {
     } else {
       this.initForm();
     }
-    if (this.role.currentRole === 'REVIEWER') {
+    if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
       this.showPreview = true;
       this.buttonTypeHandler('preview');
     }
   }
   ngOnChanges() {
-    if (this.role.currentRole === 'REVIEWER') {
+    if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
       this.showPreview = true;
     } else {
       this.showPreview = false;
@@ -378,7 +378,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
       body : questionBody,
       responseDeclaration: responseDeclaration,
       correct_response: parseInt(this.mcqForm.answer) + 1,
-      learningOutcome: this.questionMetaData.data.learningOutcome ? this.questionMetaData.data.learningOutcome[0] : '',
+      learningOutcome: (this.questionMetaData.data && this.questionMetaData.data.learningOutcome) ? this.questionMetaData.data.learningOutcome[0] : '',
       learningLevel : this.mcqForm.bloomsLevel || ''
     };
   }

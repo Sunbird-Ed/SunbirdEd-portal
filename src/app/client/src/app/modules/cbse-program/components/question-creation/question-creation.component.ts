@@ -101,7 +101,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         // this.questionMetaForm.controls.maxScore.setValue(this.questionMetaData.data.maxScore);
         this.mediaArr = this.questionMetaData.data.media || [];
     }
-    if (this.role.currentRole === 'REVIEWER') {
+    if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
       this.showPreview = true;
       this.buttonTypeHandler('preview');
     }
@@ -134,7 +134,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.questionMetaForm.reset();
       }
     }
-    if (this.role.currentRole === 'REVIEWER') {
+    if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
       this.showPreview = true;
       // this.buttonTypeHandler('preview')
     } else {
