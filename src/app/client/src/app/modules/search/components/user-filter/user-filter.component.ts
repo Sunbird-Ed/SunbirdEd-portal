@@ -11,8 +11,7 @@ import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-user-filter',
-  templateUrl: './user-filter.component.html',
-  styleUrls: ['./user-filter-component.scss']
+  templateUrl: './user-filter.component.html'
 })
 
 export class UserFilterComponent implements OnInit {

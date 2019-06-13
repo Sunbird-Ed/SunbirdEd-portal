@@ -39,6 +39,12 @@
   .profile-label-container {
     max-width: 600px !important;
   }
+  
+  .profile-label-container {
+    .ui.basic.label:hover {
+      border: 1px solid #fdfdfd !important;
+    }
+  }
 
   @media only screen and (max-width: 767px) {
     .profile-label-container {

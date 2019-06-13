@@ -743,6 +743,7 @@ h5.ui.header {
   border-top: none;
   border-left: none;
   border-bottom: 1px solid rgba(51, 51, 51, 0.33);
+  border-radius: 0;
 }
 .ann-fileupload-list {
   overflow-x: hidden;
@@ -934,12 +935,6 @@ ul.subList-padding {
   border-radius: 0;
   border: 0;
   margin: 0;
-  .sb-pageSection{
-    margin:0;
-    .sb-pageSection-title{
-      text-transform: none;
-    }
-  }
 }
 .tocplayer.ui.grid {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
