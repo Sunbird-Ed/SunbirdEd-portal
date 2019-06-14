@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PublicDataService } from '@sunbird/core';
+import { LearnerService } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
 
 @Injectable({
@@ -7,14 +7,14 @@ import { ConfigService } from '@sunbird/shared';
 })
 export class SignupService {
 
-  constructor(private publicDataService: PublicDataService, public configService: ConfigService) { }
+  constructor(private learnerService: LearnerService, public configService: ConfigService) { }
 
   generateOTP(data) {
     const options = {
       url: this.configService.urlConFig.URLS.OTP.GENERATE,
       data: data
     };
-    return this.publicDataService.post(options);
+    return this.learnerService.post(options);
   }
 
   verifyOTP(data) {
@@ -22,14 +22,14 @@ export class SignupService {
       url: this.configService.urlConFig.URLS.OTP.VERIFY,
       data: data
     };
-    return this.publicDataService.post(options);
+    return this.learnerService.post(options);
   }
 
   getUserByKey(data) {
     const options = {
       url: this.configService.urlConFig.URLS.USER.GET_USER_BY_KEY + '/' + data,
     };
-    return this.publicDataService.get(options);
+    return this.learnerService.get(options);
   }
 
   createUser(data) {
@@ -37,6 +37,6 @@ export class SignupService {
       url: this.configService.urlConFig.URLS.USER.CREATE_V2,
       data: data
     };
-    return this.publicDataService.post(options);
+    return this.learnerService.post(options);
   }
 }

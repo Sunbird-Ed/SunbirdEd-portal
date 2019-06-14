@@ -4,12 +4,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { PublicBatchDetailsComponent } from './public-batch-details.component';
 import { SharedModule, ResourceService } from '@sunbird/shared';
-import { CoreModule, SearchService } from '@sunbird/core';
+import { CoreModule, PermissionService } from '@sunbird/core';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { allBatchDetails } from './public-batch-details.component.data';
 import { UserService } from '@sunbird/core';
+import { CourseBatchService } from '@sunbird/learn';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
@@ -41,7 +42,7 @@ describe('PublicBatchDetailsComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, SuiModule],
       declarations: [PublicBatchDetailsComponent],
-      providers: [SearchService, UserService, { provide: Router, useClass: RouterStub },
+      providers: [CourseBatchService, UserService, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -54,10 +55,10 @@ describe('PublicBatchDetailsComponent', () => {
   });
 
   it('should fetch only open batchs of course by courseid', () => {
-    const courseBatchService = TestBed.get(SearchService);
+    const courseBatchService = TestBed.get(CourseBatchService);
     component.courseId = 'do_1125083286221291521153';
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
-    spyOn(courseBatchService, 'batchSearch').and.returnValue(observableOf(allBatchDetails));
+    spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
     component.ngOnInit();
     const searchParams: any = {
       filters: {
@@ -70,16 +71,16 @@ describe('PublicBatchDetailsComponent', () => {
     searchParams.filters.enrollmentType = 'open';
     expect(component.batchList).toBeDefined();
     expect(component.showBatchList).toBeTruthy();
-    expect(component.searchService.batchSearch).toHaveBeenCalledWith(searchParams);
+    expect(component.courseBatchService.getAllBatchDetails).toHaveBeenCalledWith(searchParams);
   });
   it('should throw error when fetching all batch details fails', () => {
-    const courseBatchService = TestBed.get(SearchService);
+    const courseBatchService = TestBed.get(CourseBatchService);
     component.courseId = 'do_1125083286221291521153';
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    spyOn(courseBatchService, 'batchSearch').and.returnValue(observableThrowError(allBatchDetails));
+    spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableThrowError(allBatchDetails));
     component.ngOnInit();
     const searchParams: any = {
       filters: {
@@ -93,7 +94,7 @@ describe('PublicBatchDetailsComponent', () => {
     expect(component.showError).toBeTruthy();
   });
   it('should show login modal if user is not loggedin on click of enroll button', () => {
-      const courseBatchService = TestBed.get(SearchService);
+      const courseBatchService = TestBed.get(CourseBatchService);
       const userService = TestBed.get(UserService);
       component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
       component.ngOnInit();
