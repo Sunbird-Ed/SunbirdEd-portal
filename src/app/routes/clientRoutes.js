@@ -7,13 +7,14 @@ _ = require('lodash'),
 path = require('path'),
 envHelper = require('../helpers/environmentVariablesHelper.js'),
 tenantHelper = require('../helpers/tenantHelper.js'),
+logger = require('sb_logger_util_v2'),
 defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState(),
 oneDayMS = 86400000,
 pathMap = {},
 cdnIndexFileExist = fs.existsSync(path.join(__dirname, '../dist', 'index_cdn.ejs')),
 proxyUtils = require('../proxy/proxyUtils.js')
 
-console.log('CDN index file exist: ', cdnIndexFileExist);
+logger.info({msg:`CDN index file exist: ${cdnIndexFileExist}`});
 
 const setZipConfig = (req, res, type, encoding, dist = '../') => {
     if (pathMap[req.path + type] && pathMap[req.path + type] === 'notExist') {
@@ -32,7 +33,11 @@ const setZipConfig = (req, res, type, encoding, dist = '../') => {
         return true
     } else {
       pathMap[req.path + type] = 'notExist';
-      console.log('zip file not exist for: ', req.url, type)
+      logger.info({msg:'zip file not exist' ,
+      additionalInfo: {
+        url: req.url,
+        type: type
+      }})
       return false;
     }
 }
@@ -155,13 +160,24 @@ const renderDefaultIndexPage = (req, res) => {
   } else {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
     res.locals = getLocals(req);
-    console.log("envHelper.PORTAL_CDN_URL", envHelper.PORTAL_CDN_URL, "cdnIndexFileExist", cdnIndexFileExist, "req.cookies.cdnFailed", req.cookies.cdnFailed);
+    logger.info({
+      msg:'cdn parameters:',
+      additionalInfo: {
+        PORTAL_CDN_URL: envHelper.PORTAL_CDN_URL,
+        cdnIndexFileExist: cdnIndexFileExist,
+        cdnFailedCookies: req.cookies.cdnFailed
+      }
+    })
     if(envHelper.PORTAL_CDN_URL && cdnIndexFileExist && req.cookies.cdnFailed !== 'yes'){ // assume cdn works and send cdn ejs file
       res.locals.cdnWorking = 'yes';
       res.render(path.join(__dirname, '../dist', 'index_cdn.ejs'))
     } else { // load local file if cdn fails or cdn is not enabled
       if(req.cookies.cdnFailed === 'yes'){
-        console.log("CDN Failed - loading local files", cdnIndexFileExist, envHelper.PORTAL_CDN_URL);
+        logger.info({msg:'CDN Failed - loading local files',
+      additionalInfo: {
+        cdnIndexFileExist: cdnIndexFileExist,
+        PORTAL_CDN_URL: envHelper.PORTAL_CDN_URL
+      }})
       }
       res.locals.cdnWorking = 'no';
       res.render(path.join(__dirname, '../dist', 'index.ejs'))

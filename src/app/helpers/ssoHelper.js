@@ -5,6 +5,7 @@ const request = require('request-promise'); //  'request' npm package with Promi
 const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
 const kafkaService = require('../helpers/kafkaHelperService');
+const logger = require('sb_logger_util_v2');
 let ssoWhiteListChannels;
 const privateBaseUrl = '/private/user/'
 let keycloak = getKeyCloakClient({
@@ -50,11 +51,15 @@ const fetchUserWithExternalId = async (payload, req) => { // will be called from
     headers: getHeaders(req),
     json: true
   }
-  console.log('sso fetch user with external id', options);
+  logger.info({msg:'sso fetch user with external id', additionalInfo:{options: options}})
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
-      console.log('sso fetching user', data.result);
-      return _.get(data, 'result.response');
+      logger.info({msg: 'sso fetching user',
+      additionalInfo: {
+        result: data.result
+        }
+      })
+      return _.get(data, 'result.response')
     } else {
       throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
     }
@@ -90,10 +95,10 @@ const createUser = async (req, jwtPayload) => {
     },
     json: true
   }
-  console.log('sso user create user request', requestBody);
+  logger.info({msg:'sso user create user request', additionalInfo:{requestBody: requestBody }})
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
-      console.log('sso new user create response', data);
+      logger.info({msg:'sso new user create response', additionalInfo:{data}})
       return data;
     } else {
       throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
@@ -137,7 +142,7 @@ const updateContact = (req, userDetails) => { // will be called from player dock
     },
     json: true
   }
-  console.log('sso update contact api request', requestBody);
+  logger.info({msg:'sso update contact api request', additionalInfo:{requestBody: requestBody}})
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       return data;
@@ -162,7 +167,7 @@ const updateRoles = (req, userId, jwtPayload) => { // will be called from player
     },
     json: true
   }
-  console.log('sso update role api request', requestBody);
+  logger.info({msg:'sso update role api request', additionalInfo:{requestBody: requestBody}})
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       return data;
@@ -193,7 +198,7 @@ const migrateUser = (req, jwtPayload) => { // will be called from player docker 
     },
     json: true
   }
-  console.log('sso migrate user request', options);
+  logger.info({msg: 'sso migrate user request', additionalInfo:{options: options}})
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       return data;
@@ -266,7 +271,7 @@ const getSsoUpdateWhiteListChannels = async (req) => {
       return false
     }
   } catch (error) {
-    console.log('sso error fetching whileList channels: getSsoUpdateWhileListChannels');
+    logger.error({msg: 'sso error fetching whileList channels: getSsoUpdateWhileListChannels'});
     return false;
   }
 };
@@ -277,13 +282,13 @@ const sendSsoKafkaMessage = async (req) => {
     var kafkaPayloadData = getKafkaPayloadData(req.session);
     kafkaService.sendMessage(kafkaPayloadData, envHelper.sunbird_sso_kafka_topic, function (err, res) {
       if (err) {
-        console.log('sso sending message to kafka errored', err)
+        logger.error({msg: 'sso sending message to kafka errored', err})
       } else {
-        console.log('sso kafka message send successfully')
+        logger.info({msg: 'sso kafka message send successfully'})
       }
     });
   } else {
-    console.log('sso white list channels not matched or errored ')
+    logger.error({msg: 'sso white list channels not matched or errored'})
   }
 };
 
