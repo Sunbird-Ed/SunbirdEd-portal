@@ -11,7 +11,7 @@
           (click)="handleQuestionTabChange(question.identifier)" *ngFor="let question of questionList; let i = index"
           appTelemetryInteract
           [telemetryInteractEdata]="{id:'question_tab',type:'click',pageid:'questionlist',extra:{type:'reference',identifier:question.identifier}}">
-          <div class="item d-flex flex-ai-center">
+          <div class="item d-flex flex-ai-center cursor-pointer">
             <ng-container *ngIf="role.currentRole === 'PUBLISHER' else nonPublisher">
               <div class="sb-checkbox sb-checkbox-primary">
                 <input [(ngModel)]="question.isSelected" (change)="checkIfAllSelected();" type="checkbox">
