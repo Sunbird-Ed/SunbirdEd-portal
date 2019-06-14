@@ -157,7 +157,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
       return forkJoin(latexBody).pipe(
         map((res) => {
           _.forEach(res, (latex, i) => {
-            body = latex.includes('Error') ? body : body.replace(isMathML[i], latex);
+            body = latex.includes('Error') ? body : body.replace(isMathML[i], '<div class="mathText">' + latex + '</div>');
           });
           return body;
         })
