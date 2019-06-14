@@ -255,7 +255,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
         this.contentService.post(option).subscribe((res) => {
           console.log('res ', res);
         });
-      })
+      });
     } else {
       this.toasterService.error('Please select some questions to Publish');
     }
