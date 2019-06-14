@@ -66,6 +66,7 @@ export class MainHeaderComponent implements OnInit {
   slug: string;
   isOffline: boolean = environment.isOffline;
   languages: Array<any>;
+  showOfflineHelpCentre = false;
 
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
@@ -105,6 +106,18 @@ export class MainHeaderComponent implements OnInit {
     this.setInteractEventData();
     this.cdr.detectChanges();
     this.setWindowConfig();
+
+    // This subscription is only for offline and it checks whether the page is offline
+    // help centre so that it can load its own header/footer
+    if (this.isOffline) {
+      this.router.events.subscribe((val) => {
+        if (_.includes(this.router.url, 'help-center')) {
+          this.showOfflineHelpCentre = true;
+        } else {
+          this.showOfflineHelpCentre = false;
+        }
+      });
+    }
   }
   getLanguage(channelId) {
     const isCachedDataExists = this._cacheService.get(this.languageFormQuery.filterEnv + this.languageFormQuery.formAction);

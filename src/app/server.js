@@ -24,6 +24,7 @@ const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
 const frameworkConfig = require('./framework.config.js');
 const cookieParser = require('cookie-parser')
+const logger = require('sb_logger_util_v2');
 let keycloak = getKeyCloakClient({
   'realm': envHelper.PORTAL_REALM,
   'auth-server-url': envHelper.PORTAL_AUTH_SERVER_URL,
@@ -31,6 +32,14 @@ let keycloak = getKeyCloakClient({
   'resource': envHelper.PORTAL_AUTH_SERVER_CLIENT,
   'public-client': true
 })
+const logLevel = envHelper.sunbird_portal_log_level;
+
+logger.init({
+  logLevel
+})
+
+logger.debug({ msg: `logger initialized with LEVEL= ${logLevel}` })
+
 const app = express()
 
 app.use(cookieParser())
@@ -118,8 +127,8 @@ function endSession(request, response, next) {
 }
 
 if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
-  console.error('please set environment variable sunbird_environment, ' +
-    'sunbird_instance  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird')
+  logger.error({msg: `please set environment variable sunbird_environment,sunbird_instance
+  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird`})
   process.exit(1)
 }
 function runApp() {
@@ -130,7 +139,7 @@ function runApp() {
   fetchDefaultChannelDetails((channelError, channelRes, channelData) => {
     portal.server = app.listen(envHelper.PORTAL_PORT, () => {
       envHelper.defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId'); // needs to be added in envVariable file
-      console.log('app running on port ' + envHelper.PORTAL_PORT)
+      logger.info({msg: `app running on port ${envHelper.PORTAL_PORT}`})
     })
   })
 }
@@ -164,5 +173,5 @@ telemetry.init({
   authtoken: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
 })
 
-process.on('unhandledRejection', (reason, p) => console.log("Unhandled Rejection at: Promise ", p, " reason: ", reason));
+process.on('unhandledRejection', (reason, p) => logger.info({msg:'Unhandled Rejection at:', additionalInfo: { promise: p, reason: reason }}));
 exports.close = () => portal.server.close()
