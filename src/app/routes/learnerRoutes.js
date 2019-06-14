@@ -58,7 +58,6 @@ module.exports = function (app) {
     }))
 
   app.all('/learner/data/v1/role/read',
-    proxyUtils.verifyToken(),
     permissionsHelper.checkPermission(),
     proxy(learnerURL, {
       limit: reqDataLimitOfContentUpload,
