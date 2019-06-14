@@ -17,7 +17,7 @@ module.exports = function (app) {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
       proxyReqPathResolver: (req) => {
         return '/private/user/v1/update';
-      }, 
+      },
       userResDecorator: (proxyRes, proxyResData, req, res) => {
         try {
             const data = JSON.parse(proxyResData.toString('utf8'));
@@ -86,7 +86,6 @@ module.exports = function (app) {
 
   app.all('/learner/*',
     healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
-    proxyUtils.verifyToken(),
     permissionsHelper.checkPermission(),
     proxy(learnerURL, {
       limit: reqDataLimitOfContentUpload,
