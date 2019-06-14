@@ -12,27 +12,27 @@
   Please only use&nbsp;&nbsp;<b>Add Image</b>(<i class="image outline icon mr-0 py-2"></i>)&nbsp;&nbsp;button to upload images</div>
   <div class="d-flex" [ngClass]="{'ml-auto':showPreview === true }" *ngIf="role.currentRole != 'REVIEWER'">
       <button class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8" 
-      appTelemetryInteract [telemetryInteractEdata]="{id:'update_btn',type:'click',pageid:'question_create'}"
+      appTelemetryInteract [telemetryInteractEdata]="{id:'update_btn',type:'click',pageid:'questioncreate'}"
       *ngIf="!showPreview && questionMetaData.data && ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)" (click)="btnClick($event, 'update');" type="submit">Update</button>
       <button class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8" 
-      appTelemetryInteract [telemetryInteractEdata]="{id:'submit_btn',type:'click',pageid:'question_create'}"
+      appTelemetryInteract [telemetryInteractEdata]="{id:'submit_btn',type:'click',pageid:'questioncreate'}"
       *ngIf="!showPreview && !questionMetaData.data" (click)="btnClick($event, 'create');" type="submit">Submit</button>
       <div class="btn-group" *ngIf="role.currentRole != 'PUBLISHER'">
           <button type="button" [ngClass]="{'active':enableBtn === 'edit' }" 
-          appTelemetryInteract [telemetryInteractEdata]="{id:'edit_btn',type:'click',pageid:'question_create'}"
+          appTelemetryInteract [telemetryInteractEdata]="{id:'edit_btn',type:'click',pageid:'questioncreate'}"
           (click)="showPreview= false; btnClick($event, 'edit'); " class="sb-btn sb-btn-xs sb-btn-outline-primary">Edit</button>
           <button type="button" [ngClass]="{'active': enableBtn === 'preview' }" 
-          appTelemetryInteract [telemetryInteractEdata]="{id:'preview_btn',type:'click',pageid:'question_create'}"
+          appTelemetryInteract [telemetryInteractEdata]="{id:'preview_btn',type:'click',pageid:'questioncreate'}"
           (click)="showPreview= true; btnClick($event, 'preview'); " class="sb-btn sb-btn-xs sb-btn-outline-primary">Preview</button>
       </div>
   </div>
 
   <div class="d-flex ml-auto"  *ngIf="role.currentRole === 'REVIEWER' && questionMetaData.data.status != 'Live' && questionMetaData.data.status != 'Reject' ">    
         <button type="button" class="sb-btn sb-btn-xs sb-btn-secondary sb-btn-error mr-8 " 
-        appTelemetryInteract [telemetryInteractEdata]="{id:'reject_btn',type:'click',pageid:'question_create'}"
+        appTelemetryInteract [telemetryInteractEdata]="{id:'reject_btn',type:'click',pageid:'questioncreate'}"
         (click)="reviewerBtnclick($event, 'Reject'); " >Reject</button>
         <button type="button" class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8"  
-        appTelemetryInteract [telemetryInteractEdata]="{id:'live_btn',type:'click',pageid:'question_create'}"
+        appTelemetryInteract [telemetryInteractEdata]="{id:'live_btn',type:'click',pageid:'questioncreate'}"
         (click)="reviewerBtnclick($event, 'Live'); " >Accept</button>
 </div>
 </div>
@@ -46,7 +46,7 @@
               </div>
               <div class="column right aligned">
                   <i class="cursor-pointer close link icon" (click)="dismissCommentPopup();" 
-                  appTelemetryInteract [telemetryInteractEdata]="{id:'cancel',type:'click',pageid:'question_create'}"></i>
+                  appTelemetryInteract [telemetryInteractEdata]="{id:'cancel',type:'click',pageid:'questioncreate'}"></i>
               </div>
           </div>
       </div>
@@ -61,7 +61,7 @@
   <div class="sb-modal-actions">
     <div class="ui buttons">
       <button (click)="addComment();" 
-        appTelemetryInteract [telemetryInteractEdata]="{id:'addComment',type:'click',pageid:'question_create'}"
+        appTelemetryInteract [telemetryInteractEdata]="{id:'add_comment',type:'click',pageid:'questioncreate'}"
         class="ui primary button">Add Comment</button>
     </div>
   </div>
@@ -76,7 +76,7 @@
                   </div>
                   <div class="column right aligned">
                       <i class="cursor-pointer close link icon" (click)="closeReviewerCommentModal();" 
-                      appTelemetryInteract [telemetryInteractEdata]="{id:'cancel',type:'click',pageid:'reviewer_comment_modal'}"></i>
+                      appTelemetryInteract [telemetryInteractEdata]="{id:'cancel',type:'click',pageid:'reviewercommentmodal'}"></i>
                   </div>
               </div>
           </div>

@@ -3,14 +3,14 @@
     <div class="ui questionsMenu">
       <button *ngIf="role.currentRole != 'REVIEWER'" [disabled]="questionMetaData && questionMetaData.mode === 'create'"
         (click)="createNewQuestion()" appTelemetryInteract
-        [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'question_list',extra:{type:'reference',category:selectedAttributes.questionType.toUpperCase(),topic:selectedAttributes.topic}}"
+        [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'questionlist',extra:{type:'reference',category:selectedAttributes.questionType.toUpperCase(),topic:selectedAttributes.topic}}"
         class="sb-btn sb-btn-primary sb-btn-normal width-100">Create</button>
       <div class="ui vertical segments" style="max-height:50vh;overflow-y:auto;">
         <div class="questionTab ui center tertiary header aligned segment p-8"
           [class.tertiary]="selectedQuestionId === question.identifier"
           (click)="handleQuestionTabChange(question.identifier)" *ngFor="let question of questionList; let i = index"
           appTelemetryInteract
-          [telemetryInteractEdata]="{id:'question_tab',type:'click',pageid:'question_list',extra:{type:'reference',identifier:question.identifier}}">
+          [telemetryInteractEdata]="{id:'question_tab',type:'click',pageid:'questionlist',extra:{type:'reference',identifier:question.identifier}}">
           <div class="item d-flex flex-ai-center">
             <ng-container *ngIf="role.currentRole === 'PUBLISHER' else nonPublisher">
               <div class="sb-checkbox sb-checkbox-primary">
@@ -35,11 +35,13 @@
       </div>
       <div class="d-flex flex-ai-center" *ngIf="role.currentRole === 'PUBLISHER'">
         <div class="sb-checkbox sb-checkbox-primary">
-          <input type="checkbox" [(ngModel)]="selectedAll" (change)="selectAll();">
+          <input type="checkbox" [(ngModel)]="selectedAll" appTelemetryInteract [telemetryInteractEdata]="{id:'select_all_questions',type:'click',pageid:'questionlist'}"
+          (change)="selectAll();">
           <label for="check1">Select All</label>
         </div>
-        <button class="sb-btn sb-btn-primary sb-btn-normal ml-auto" (click)="publishQuestions()">Publish
-          Questions</button>
+        <button class="sb-btn sb-btn-primary sb-btn-normal ml-auto"
+        appTelemetryInteract [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:'questionlist'}"
+        (click)="publishQuestions()">Publish Questions</button>
       </div>
 
     </div>

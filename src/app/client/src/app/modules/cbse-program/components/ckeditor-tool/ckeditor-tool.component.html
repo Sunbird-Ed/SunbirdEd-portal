@@ -1,5 +1,5 @@
 <button type="button" 
-appTelemetryInteract [telemetryInteractEdata]="{id:'add_image',type:'click',pageid:'question_create'}"
+appTelemetryInteract [telemetryInteractEdata]="{id:'add_image',type:'click',pageid:'questioncreate'}"
 data-tooltip="Add image" data-position="bottom center" data-variation="mini" data-inverted="" title="Add image" [disabled]="isAssetBrowserReadOnly || isEditorFocused" (click)="initializeImagePicker('question')" class="ui icon button insert-image-btn">
   <i class="image outline icon"></i>
 </button>
@@ -40,12 +40,12 @@ data-tooltip="Add image" data-position="bottom center" data-variation="mini" dat
   <div class="actions">
     <div class="ui left floated buttons">
       <button (click)="initiateImageUploadModal();" 
-      appTelemetryInteract [telemetryInteractEdata]="{id:'upload_image',type:'click',pageid:'question_create'}"
+      appTelemetryInteract [telemetryInteractEdata]="{id:'upload_image',type:'click',pageid:'questioncreate'}"
       class="ui primary button">Upload and use</button>
     </div>
     <div class="ui buttons">
       <button (click)="dismissImagePicker();" 
-      appTelemetryInteract [telemetryInteractEdata]="{id:'cancelUpload_image',type:'click',pageid:'question_create'}"
+      appTelemetryInteract [telemetryInteractEdata]="{id:'cancelUpload_image',type:'click',pageid:'questioncreate'}"
       class="ui button">Cancel</button>
       <!-- <div class="or"></div>
       <button (click)="dismissImagePicker();" class="ui primary button">Save</button> -->
