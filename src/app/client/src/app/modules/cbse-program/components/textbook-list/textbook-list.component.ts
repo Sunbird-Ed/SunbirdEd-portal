@@ -47,7 +47,7 @@ export class TextbookListComponent implements OnInit {
       const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
       this.textbookList = this.utilService.getDataForCard(res.result.content, constantData, dynamicFields, metaData);
       this.telemetryInteract = {
-        id: 'content-card',
+        id: 'content_card',
         type: 'click',
         pageid: 'textbooklist'
       };

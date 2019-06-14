@@ -48,7 +48,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
       },
       edata: {
         type: 'view',
-        pageid: 'chapter_list',
+        pageid: 'chapterlist',
         uri: this.router.url,
       }
     };

@@ -31,9 +31,9 @@ export class SelectTextbookComponent implements OnInit {
     };
     this.setTelemetryImpression();
     this.telemetryInteract = {
-      id: 'search-textbook',
+      id: 'search_textbook',
       type: 'click',
-      pageid: 'search-textbooks',
+      pageid: 'searchtextbooks',
       extra: this.selectedOptions
     };
   }
@@ -54,7 +54,7 @@ export class SelectTextbookComponent implements OnInit {
       },
       edata: {
         type: 'view',
-        pageid: 'search_textbook',
+        pageid: 'searchtextbook',
         uri: this.router.url,
       }
     };

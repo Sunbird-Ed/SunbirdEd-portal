@@ -42,7 +42,7 @@
               </div> 
           </div>      
           <button (click)="navigate('prev')" 
-          appTelemetryInteract [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage]}"
+          appTelemetryInteract [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage].toLowerCase()}"
           class="sb-btn sb-btn-xs sb-btn-error">Back <i class="chevron circle left icon"></i></button>
         </div>
       </div>
@@ -69,7 +69,7 @@
                 <span><b>Selected School:</b> <span style="font-style: italic">{{selectedSchoolForReview}}</span></span>
               </div>
               <button (click)="navigate('prev')" 
-              appTelemetryInteract [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage]}"
+              appTelemetryInteract [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage].toLowerCase()}"
               class="sb-btn sb-btn-xs sb-btn-error">Back <i class="chevron circle left icon"></i></button>
             </div>
         </div>
