@@ -12,6 +12,7 @@ const telemetry = new Telemetry()
 const appId = envHelper.APPID
 const fs = require('fs')
 const path = require('path')
+const logger = require('sb_logger_util_v2');
 const contentURL = envHelper.CONTENT_URL
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
@@ -52,7 +53,7 @@ module.exports = {
     context.did = req.session.deviceId
     context.rollup = telemetry.getRollUpData(dims)
     const actor = telemetry.getActorData(req.session.userId, 'user')
-    console.log('logging session start event', context.did);
+    logger.info({msg:`logging session start event ${context.did}`})
     telemetry.start({
       edata: edata,
       context: context,
@@ -72,7 +73,7 @@ module.exports = {
     const context = telemetry.getContextData({ channel: channel, env: 'user' })
     context.sid = req.sessionID
     context.did = req.session.deviceId
-    console.log('logging session end event', context.did);
+    logger.info({msg:`logging session start event ${context.did}`})
     context.rollup = telemetry.getRollUpData(dims)
     telemetry.end({
       edata: edata,
@@ -98,7 +99,7 @@ module.exports = {
     context.sid = req.sessionID
     context.rollup = telemetry.getRollUpData(dims)
     const actor = telemetry.getActorData(payload.sub, 'user')
-    console.log('logSSOStartEvent')
+    logger.info({msg: 'logSSOStartEvent'})
     telemetry.start({
       edata: edata,
       context: context,
@@ -111,7 +112,7 @@ module.exports = {
    * This function helps to generate SSO end event
    */
   logSSOEndEvent: function (req) {
-    console.log('logSSOEndEvent')
+    logger.info({msg: 'logSSOEndEvent'})
     const payload = jwt.decode(req.query['token'])
     const edata = telemetry.endEventData('sso')
     const actor = telemetry.getActorData(payload['sub'], 'user')
@@ -171,7 +172,7 @@ module.exports = {
       }
       context.rollup = telemetry.getRollUpData(dims)
       const actor = telemetry.getActorData(req.userId, 'user')
-      console.log('logAPICallEvent')
+      logger.info({msg: 'logAPICallEvent'})
       telemetry.log({
         edata: edata,
         context: context,
@@ -202,7 +203,7 @@ module.exports = {
     context.rollup = telemetry.getRollUpData(dims)
     const object = telemetry.getObjectData({ id: req.userId, type: 'user' })
     const actor = telemetry.getActorData(req.userId, 'user')
-    console.log('logAPICallEvent')
+    logger.info({msg: 'logAPICallEvent'})
     telemetry.log({
       edata: edata,
       context: context,
@@ -307,7 +308,7 @@ module.exports = {
       type: 'user'
     }
     if(!channel){
-      console.log('logApiErrorEventV2 failed due to no channel')
+      logger.error({msg: 'logApiErrorEventV2 failed due to no channel'})
       return;
     }
     telemetry.error({
@@ -341,7 +342,7 @@ module.exports = {
       type: 'user'
     }
     if(!channel){
-      console.log('logAuditEvent failed due to no channel')
+      logger.error({msg: 'logAuditEvent failed due to no channel'})
       return;
     }
     telemetry.audit({
@@ -377,10 +378,10 @@ module.exports = {
       type: 'user'
     }
     if(!channel){
-      console.log('logAuditEvent failed due to no channel')
+      logger.error({msg: 'logAuditEvent failed due to no channel'})
       return;
     }
-    console.log(edata, context, object, actor);
+    logger.info({msg:'logImpressionEvent', additionalInfo: {edata, context, object, actor}})
     telemetry.impression({
       edata: _.pickBy(edata, value => !_.isEmpty(value)),
       context: _.pickBy(context, value => !_.isEmpty(value)),
@@ -396,7 +397,7 @@ module.exports = {
       if (req.session['sessionEvents'].length >= parseInt(telemetryPacketSize, 10)) {
         module.exports.sendTelemetry(req, req.session['sessionEvents'], function (err, status) {
           if (err) {
-            console.log('telemetry sync error from  portal', err)
+            logger.error({msg:'telemetry sync error from  portal', err})
           }
           req.session['sessionEvents'] = []
           req.session.save()
@@ -439,10 +440,10 @@ module.exports = {
     request(options, function (error, response, body) {
       if (_.isFunction(callback)) {
         if (error) {
-          console.log('telemetry sync error while syncing  portal', error)
+          logger.error({msg: 'telemetry sync error while syncing  portal', error})
           callback(error, false)
         } else if (body && body.params && body.params.err) {
-          console.log('telemetry sync error while syncing  portal', body.params.err)
+          logger.error({msg: 'telemetry sync error while syncing  portal', additionalInfo: {error: body.params.err}})
           callback(body, false)
         } else {
           callback(null, true)

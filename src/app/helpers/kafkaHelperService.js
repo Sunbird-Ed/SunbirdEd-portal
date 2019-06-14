@@ -1,6 +1,7 @@
 const kafka = require('kafka-node');
 const _ = require('lodash');
 const envHelper = require('./environmentVariablesHelper');
+const logger = require('sb_logger_util_v2');
 var producer, client;
 
 // initilize kafka client and producers
@@ -12,7 +13,7 @@ function init() {
 
   producer = new kafka.HighLevelProducer(client);
   producer.on('ready', function () {
-    console.log('Kafka Producer is connected and ready.');
+    logger.info({msg: 'Kafka Producer is connected and ready.'})
   });
 
   producer.on('error', function (error) {

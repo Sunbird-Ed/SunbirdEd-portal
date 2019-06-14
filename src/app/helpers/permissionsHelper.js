@@ -7,6 +7,7 @@ const learnerURL = envHelper.LEARNER_URL
 const enablePermissionCheck = envHelper.ENABLE_PERMISSION_CHECK
 const apiAuthToken = envHelper.PORTAL_API_AUTH_TOKEN
 const telemetryHelper = require('./telemetryHelper')
+const logger = require('sb_logger_util_v2');
 
 let PERMISSIONS_HELPER = {
   ROLES_URLS: {
@@ -114,7 +115,7 @@ let PERMISSIONS_HELPER = {
         }
       }
     } catch (e) {
-      console.log(e)
+      logger.error({msg: 'exception caught', additionalInfo:{error: e}})
     }
   },
 

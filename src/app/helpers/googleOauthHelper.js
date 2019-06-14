@@ -8,6 +8,7 @@ const envHelper = require('./environmentVariablesHelper.js')
 const request = require('request-promise'); //  'request' npm package with Promise support
 const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
+const logger = require('sb_logger_util_v2');
 
 let keycloak = getKeyCloakClient({
   resource: envHelper.KEYCLOAK_GOOGLE_CLIENT.clientId,
@@ -108,7 +109,7 @@ const createUserWithMailId = async (accountDetails, client_id, req) => {
     },
     json: true
   }
-  console.log('goggle user create request', options);
+  logger.info({msg:'goggle user create request', additionalInfo:{options: options}})
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       return data;

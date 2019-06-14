@@ -5,6 +5,7 @@ const expressCassandra = require('express-cassandra')
 const contactPoints = envHelper.PORTAL_CASSANDRA_URLS
 const consistency = getConsistencyLevel(envHelper.PORTAL_CASSANDRA_CONSISTENCY_LEVEL)
 const replicationStrategy = getReplicationStrategy(envHelper.PORTAL_CASSANDRA_REPLICATION_STRATEGY)
+const logger = require('sb_logger_util_v2');
 
 function getCassandraStoreInstance  () {
   return new CassandraStore({
@@ -34,7 +35,7 @@ function getReplicationStrategy (replicationStrategy) {
   try{
     return JSON.parse(replicationStrategy)
   }catch(e){
-    console.log("err in getReplicationStrategy",e)
+    logger.error({msg:'err in getReplicationStrategy', additionalInfo:{error: e}})
     return {"class":"SimpleStrategy","replication_factor":1}
   }
 }

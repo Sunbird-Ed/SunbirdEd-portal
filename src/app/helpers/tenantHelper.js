@@ -13,6 +13,7 @@ telemtryEventConfig['pdata']['id'] = appId
 const successResponseStatusCode = 200
 const request = require('request');
 const CacheManager = require('sb_cache_manager')
+const logger = require('sb_logger_util_v2');
 const cacheManager = new CacheManager({ ttl: Number(envHelper.RESPONSE_CACHE_TTL) * 60, store: envHelper.CACHE_STORE })
 
 module.exports = {
@@ -56,7 +57,7 @@ module.exports = {
     let tenantId = req.params.tenantId || envHelper.DEFAULT_CHANNEL
     req.tenantId = tenantId
     cacheManager.get(tenantId, (err, cacheData) => {
-      if (err) console.log('error while fetching the tenant cache data', err);
+      if (err) logger.error({msg: 'error while fetching the tenant cache data', err});
       if (cacheData) {
         let newCacheData = { ...cacheData };
         newCacheData.ts = dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo');
@@ -135,21 +136,21 @@ module.exports = {
       'result': result
     }
     cacheManager.set({ key: tenantId, value: response }, (err, resp) => {
-      if (err) console.log('Error while setting the tenant cache', err);
+      if (err) logger.error({msg: 'Error while setting the tenant cache', err});
       res.send(response)
       res.end()
     })
   },
   getDefaultTenantIndexState: function () {
     if (!defaultTenant) {
-      console.log('DEFAULT_CHANNEL env not set');
+      logger.error({msg:'DEFAULT_CHANNEL env not set'})
       return false;
     }
     try {
       var stats = fs.statSync(path.join(__dirname, '../tenant', defaultTenant, 'index.html'))
       return stats.isFile()
     } catch (e) {
-      console.log('DEFAULT_CHANNEL_index_file_stats_error ', e)
+      logger.error({msg:'DEFAULT_CHANNEL_index_file_stats_error', additionalInfo: {error: e}})
       return false;
     }
   }

@@ -4,6 +4,7 @@ const learnerURL = envHelper.LEARNER_URL
 const learnerAuthorization = envHelper.PORTAL_API_AUTH_TOKEN
 const telemetryHelper = require('./telemetryHelper')
 const _ = require('lodash')
+const logger = require('sb_logger_util_v2');
 
 module.exports = {
   updateLoginTime: function (req, callback) {
@@ -47,9 +48,11 @@ module.exports = {
         if (error) {
           telemetryData.resp = body
           telemetryHelper.logAPIErrorEvent(telemetryData)
-          console.log('Update login time failed due to', error)
+          logger.error({msg: 'Update login time failed due to', error})
           callback(null, true)
-          console.log('Update login time failed due to', body.params.err)
+          logger.error({msg:'Update login time failed due to', additionalInfo: {
+            err: body.params.err
+          }})
         } else if (body && body.params && body.params.err) {
           telemetryData.resp = body
           telemetryHelper.logAPIErrorEvent(telemetryData)

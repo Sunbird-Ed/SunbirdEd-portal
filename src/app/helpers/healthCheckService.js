@@ -33,6 +33,7 @@ var hcMessages = {
   NAME: 'PortalHealthCheckService',
   API_VERSION: '1.0'
 }
+const logger = require('sb_logger_util_v2');
 // Function return to get health check object
 function getHealthCheckObj (name, healthy, err, errMsg) {
   return {
@@ -103,7 +104,7 @@ function checkCassandraDBHealth (callback) {
       callback(null, true)
     })
     .catch(function (err) {
-      console.log('cassandra err:', err)
+      logger.error({msg:'cassandra err:', err})
       client.shutdown()
       callback(err, false)
     })
@@ -222,10 +223,10 @@ function checkHealth (req, response) {
   ], function () {
     var rsp = successResponse(rspObj)
     if (isCSHealthy && isDbConnected && isLSHealthy) {
-      console.log('Portal service is healthy')
+      logger.info({msg:'Portal service is healthy'})
       return response.status(200).send(getHealthCheckResp(rsp, true, checksArrayObj))
     } else {
-      console.log({ rsp: checksArrayObj })
+      logger.info({msg:'Portal service is not healthy', additionalInfo:{rsp: checksArrayObj}})
       return response.status(200).send(getHealthCheckResp(rsp, false, checksArrayObj))
     }
   })

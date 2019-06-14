@@ -7,6 +7,7 @@ const async = require('async')
 const telemetryHelper = require('./telemetryHelper.js')
 const userHelper = require('./userHelper.js')
 let memoryStore = null
+const logger = require('sb_logger_util_v2');
 
 if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
   memoryStore = new session.MemoryStore()
@@ -36,7 +37,11 @@ const authenticated = function (request) {
     request.session.userId = userId[userId.length - 1];
     request.session.save();
   } catch(err) {
-    console.log('userId conversation error', request.kauth.grant.access_token.content.sub, err);
+    logger.error({
+      msg: 'userId conversation error',
+      err,
+      additionalInfo: { errorInfo: request.kauth.grant.access_token.content.sub}
+    })
   }
   async.series({
     getUserData: function (callback) {
@@ -50,7 +55,7 @@ const authenticated = function (request) {
     }
   }, function (err, results) {
     if (err) {
-      console.log('err', err)
+      logger.error({msg:'error', err})
     }
   })
 }

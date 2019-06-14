@@ -7,6 +7,7 @@ const _ = require('lodash')
 const telemetryHelper = require('./telemetryHelper.js')
 const envHelper = require('./environmentVariablesHelper.js')
 const { getKeyCloakClient } = require('./keyCloakHelper')
+const logger = require('sb_logger_util_v2');
 const echoAPI = envHelper.PORTAL_ECHO_API_URL
 const createUserFlag = envHelper.PORTAL_AUTOCREATE_TRAMPOLINE_USER
 const learnerURL = envHelper.LEARNER_URL
@@ -37,12 +38,12 @@ module.exports = {
           self.getUserChannel(req, jwtPayload, callback)
         },
         logSSOStartEvent: function (callback) {
-          console.log('SSO start event')
+          logger.info({msg:'SSO start event'})
           telemetryHelper.logSSOStartEvent(req)
           callback()
         },
         verifySignature: function (callback) {
-          console.log('echoAPI : ' + echoAPI)
+          logger.info({msg: 'echoAPI :', additionalInfo:{echoAPI: echoAPI}})
           var options = {
             method: 'GET',
             url: echoAPI + '/test',
@@ -67,16 +68,20 @@ module.exports = {
             if (error) {
               telemetryData.resp = body
               telemetryHelper.logAPIErrorEvent(telemetryData)
-              console.log('echo API error', error)
+              logger.error({msg: 'echo API error', error})
               callback(error, response)
             } else if (body === '/test') {
               self.errorMsg = undefined
-              console.log('echo API succesful with token:', req.query['token'])
+              logger.info({msg:'echo API succesful with token:', additionalInfo:{token: req.query['token']}})
               callback(null, response)
             } else {
               telemetryData.resp = body
               telemetryHelper.logAPIErrorEvent(telemetryData)
-              console.log('echo returned invalid response', body, ' for token ', req.query['token'])
+              logger.error({msg: 'echo returned invalid response',
+              additionalInfo: {
+                body: body,
+                token: req.query['token']
+              }})
               callback(body, response)
             }
           })
@@ -106,23 +111,23 @@ module.exports = {
             self.userName = _.get(userData, 'result.response.userName')
             if (!err) {
               self.errorMsg = undefined
-              console.log('user already exists')
+              logger.info({msg: 'user already exists'})
               callback(null, self.userName)
             } else {
               // create User
-              console.log('create User Flag', createUserFlag, 'type of', typeof createUserFlag)
+              logger.info({msg: `create User Flag ${createUserFlag} type of ${typeof createUserFlag}`})
               if (createUserFlag === 'true') {
                 self.createUser(req, self.payload, function (error, status) {
                   if (error) {
-                    console.log('create user failed', error)
+                    logger.error({msg:'create user failed', error})
                     callback(error, null)
                   } else if (status) {
                     self.errorMsg = undefined
-                    console.log('create user successful')
+                    logger.info({msg:'create user successful'})
                     self.userName = self.payload['sub'] + (self.payload['iss'] ? '@' + self.payload['iss'] : '')
                     callback(null, self.userName)
                   } else {
-                    console.log('unable to create user')
+                    logger.info({msg:'unable to create user'})
                     callback(new Error('unable to create user'), null)
                   }
                 })
@@ -142,7 +147,7 @@ module.exports = {
               try {
                 keycloak.authenticated(req)
               } catch (err) {
-                console.log(err)
+                logger.error({msg:'error at getGrantFromUserName', err})
                 callback(err, null)
                 return
               };
@@ -160,7 +165,7 @@ module.exports = {
                   userId: userName,
                   err: err
                 })
-                console.log('grant failed', err, userName)
+                logger.error({msg:'grant failed', err, additionalInfo: {userName: userName}})
                 callback(err, null)
               })
         }
@@ -168,10 +173,19 @@ module.exports = {
       function (err, results) {
         telemetryHelper.logSSOEndEvent(req)
         if (err) {
-          console.log('trampoline service sign in failed', jwtPayload['iss'], jwtPayload, err)
+          logger.error({msg: 'trampoline service sign in failed',
+          err,
+          additionaInfo: {
+            iss: jwtPayload['iss'],
+            jwtPayload: jwtPayload
+          }})
           res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '?error=' + Buffer.from(self.errorMsg).toString('base64'))
         } else {
-          console.log('trampoline service sign in successfully', jwtPayload['iss'], jwtPayload)
+          logger.info({msg: 'trampoline service sign in successfully',
+          additionaInfo: {
+            iss: jwtPayload['iss'],
+            jwtPayload: jwtPayload
+          }})
           if (self.payload['redirect_uri']) {
             res.redirect(self.payload['redirect_uri'])
           } else {
@@ -210,7 +224,10 @@ module.exports = {
 
     request(options, function (error, response, body) {
       telemetryData.statusCode = _.get(response, 'statusCode')
-      console.log('check user exists', response.statusCode, 'for Login Id :', loginId)
+      logger.info({msg:'check user exists for', additionalInfo:{
+        statusCode: response.statusCode,
+        loginId: loginId
+      }})
       if (body.responseCode === 'OK') {
         callback(null, body)
       } else {
@@ -294,7 +311,13 @@ module.exports = {
     }
 
     request(options, function (error, response, body) {
-      console.log('get user channel ', response.statusCode, 'for Login Id :', loginId, 'error', error)
+      logger.info({
+      msg:'get user channel',
+      additionalInfo : {
+        statusCode: response.statusCode ,
+        loginId: loginId,
+        error: error
+      }})
 
       if (body.responseCode === 'OK') {
         req['headers']['X-Channel-Id'] = _.get(req, 'headers.X-Channel-Id') ||
