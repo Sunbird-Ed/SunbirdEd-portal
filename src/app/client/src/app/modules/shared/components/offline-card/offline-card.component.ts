@@ -1,5 +1,5 @@
 import { ResourceService } from '../../services/index';
-import { Component, Input, EventEmitter, Output, HostListener, OnChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, EventEmitter, Output, HostListener, OnChanges, ChangeDetectorRef, DoCheck } from '@angular/core';
 import { ICard } from '../../interfaces';
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ import * as _ from 'lodash-es';
 
 })
 
-export class OfflineCardComponent implements OnChanges {
+export class OfflineCardComponent implements OnChanges, DoCheck {
   /**
   * content is used to render IContents value on the view
   */
@@ -27,7 +27,9 @@ export class OfflineCardComponent implements OnChanges {
   checkOfflineRoutes: string;
   contentId: string;
   showAddingToLibraryButton: boolean;
-
+  @Input() firstOfflineCard;
+  @Input() firstPageSection;
+  shepeheredClass = true;
   @HostListener('mouseenter') onMouseEnter() {
     this.hover = true;
   }
@@ -59,6 +61,16 @@ export class OfflineCardComponent implements OnChanges {
 
   ngOnChanges () {
     this.cdr.detectChanges();
+  }
+  ngDoCheck () {
+    const tour_5 = document.querySelector('.tour-5.shepherd-modal-target.highlight');
+    const tour_8 = document.querySelector('.tour-8.shepherd-modal-target.highlight');
+    const tour_10 = document.querySelector('.tour-10.shepherd-modal-target.highlight');
+    this.firstOfflineCard && this.firstPageSection && document.getElementById('cardhover') &&
+    document.querySelector('.shepherd-buttons') ? this.shepeheredClass = true : this.shepeheredClass = false;
+    (!!tour_5 || !!tour_8) || (!!tour_8 ||  !!tour_10) && this.shepeheredClass ?
+    // tslint:disable-next-line:no-unused-expression
+  document.getElementById('cardhover').style.display = 'block' : '' ;
   }
 }
 

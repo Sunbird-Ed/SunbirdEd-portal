@@ -32,6 +32,8 @@ export class PageSectionComponent implements OnInit, OnDestroy {
 
   @Output() viewAll = new EventEmitter<any>();
 
+  @Input() firstPageSection;
+
   private resourceDataSubscription: Subscription;
 
   slideConfig: object = {};

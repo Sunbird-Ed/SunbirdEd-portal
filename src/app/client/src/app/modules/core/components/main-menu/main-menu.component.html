@@ -51,10 +51,10 @@
 	<!--/Not Logged in user-->
 	<!-- offline container-->
 	<ng-container *ngIf="isOffline">
-			<a class="item" [routerLink]="'/'" [ngClass]="(router.isActive('/') && !(router.isActive('/browse'))) ? 'active': ''" appTelemetryInteract [telemetryInteractEdata]="myLibraryMenuInteractEdata">
+			<a class="item tour-1" [routerLink]="'/'" [ngClass]="(router.isActive('/') && !(router.isActive('/browse'))) ? 'active': ''" appTelemetryInteract [telemetryInteractEdata]="myLibraryMenuInteractEdata">
 				{{resourceService.frmelmnts?.btn?.myLibrary}}
 			   </a>
-			   <a class="item"  [ngClass]="router.isActive('/browse')? 'active': ''" [routerLink]="'/browse'" appTelemetryInteract [telemetryInteractEdata]="browseEdata">
+			   <a class="item tour-8"  [ngClass]="router.isActive('/browse')? 'active': ''" [routerLink]="'/browse'" appTelemetryInteract [telemetryInteractEdata]="browseEdata">
 			   {{resourceService.frmelmnts?.btn?.browse}}
 			   </a>
 		<!-- <a class="item" [routerLink]="'/'">
