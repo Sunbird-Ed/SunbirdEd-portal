@@ -12,6 +12,7 @@ var cassandra = require('cassandra-driver')
 var fs = require('fs');
 var path = require('path');
 var dateFormat = require('dateformat')
+const logger = require('sb_logger_util_v2');
 var contactPoints = envHelper.PORTAL_CASSANDRA_URLS
 var checksArrayObj = []
 var hcMessages = {
@@ -33,7 +34,6 @@ var hcMessages = {
   NAME: 'PortalHealthCheckService',
   API_VERSION: '1.0'
 }
-const logger = require('sb_logger_util_v2');
 // Function return to get health check object
 function getHealthCheckObj (name, healthy, err, errMsg) {
   return {

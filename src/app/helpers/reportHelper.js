@@ -35,7 +35,7 @@ function azureBlobStream() {
     return function (req, res, next) {
         blobService.getBlobToText(envHelper.sunbird_azure_report_container_name, req.params.slug + '/' + req.params.filename, function (error, text) {
             if (error && error.statusCode === 404) {
-                logger.error({msg:'Error with status code 404 - ', error});
+                logger.error({msg:'Error with status code 404 inside azureBolbStream() while executing blobService.getBlobToText ', error});
                 res.status(404).send({
                     'id': 'api.report',
                     'ver': '1.0',

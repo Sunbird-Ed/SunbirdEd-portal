@@ -115,7 +115,7 @@ let PERMISSIONS_HELPER = {
         }
       }
     } catch (e) {
-      logger.error({msg: 'exception caught', additionalInfo:{error: e}})
+      logger.error({msg: 'exception caught inside setUserSessionData()', additionalInfo:{error: e}})
     }
   },
 
