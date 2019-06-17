@@ -172,7 +172,7 @@ export class SearchService {
       }
     };
     const objectType = requestParam && requestParam.filters && requestParam.filters.objectType;
-    return this.publicDataService.post(option);
+    return this.content.post(option);
   }
   /**
    * User Search.
@@ -229,7 +229,7 @@ export class SearchService {
         }
       }
     };
-    return this.publicDataService.post(option);
+    return this.content.post(option);
   }
   /**
    * Content Search.
@@ -287,7 +287,7 @@ export class SearchService {
         }
       }
     };
-    return this.publicDataService.post(option);
+    return this.learnerService.post(option);
   }
   /**
    * getUserList.

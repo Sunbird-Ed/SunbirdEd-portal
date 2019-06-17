@@ -1,12 +1,13 @@
 
 import { takeUntil } from 'rxjs/operators';
+import { CourseBatchService } from '@sunbird/learn';
 import { Router } from '@angular/router';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import * as moment from 'moment';
-import { UserService, SearchService } from '@sunbird/core';
+import { UserService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 
@@ -34,8 +35,8 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
   signInInteractEdata: IInteractEventEdata;
   enrollBatchIntractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
-  constructor(public searchService: SearchService, private cacheService: CacheService,
-    public resourceService: ResourceService, public toasterService: ToasterService,
+  constructor(private browserCacheTtlService: BrowserCacheTtlService, private cacheService: CacheService,
+    public resourceService: ResourceService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
     public router: Router, public userService: UserService) {
     this.batchStatus = this.statusOptions[0].value;
   }
@@ -62,7 +63,7 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
       sort_by: { createdDate: 'desc' }
     };
     searchParams.filters.enrollmentType = 'open';
-    this.searchService.batchSearch(searchParams).pipe(
+    this.courseBatchService.getAllBatchDetails(searchParams).pipe(
       takeUntil(this.unsubscribe))
       .subscribe((data: ServerResponse) => {
         if (data.result.response.content && data.result.response.content.length > 0) {
