@@ -295,7 +295,16 @@
 .m-24 {
   @include margin(24px);
 }
+.m-32 {
+  @include margin(24px);
+}
+.m-40 {
+  @include margin(48px);
+}
 .m-48 {
+  @include margin(48px);
+}
+.m-64 {
   @include margin(48px);
 }
 /* Margin in top direction */
@@ -339,7 +348,7 @@
   @include margin(192px null null null);
 }
 
- /* Margin in bottom direction */
+/* Margin in bottom direction */
 .mb-auto {
   @include margin(null null auto null);
 }
@@ -385,7 +394,7 @@
   @include margin(null 24px);
 }
 
- /* Margin in vertical direction */
+/* Margin in vertical direction */
 .my-auto {
   @include margin(auto null);
 }
@@ -405,7 +414,7 @@
   @include margin(24px null);
 }
 
- /* Margin in left direction if ltr but will be right in rtl */
+/* Margin in left direction if ltr but will be right in rtl */
 *[dir="ltr"]{
   .ml-auto {
     @include margin(null null null auto);
@@ -447,7 +456,7 @@
   }
 }
 
- /* Margin in right direction if ltr but will be left in rtl */
+/* Margin in right direction if ltr but will be left in rtl */
 *[dir="ltr"]{
   .mr-auto {
     @include margin(null auto null null);
