@@ -33,13 +33,16 @@
             @include position(absolute, 0 0 null null); //bourbon
         }
         .sb-modal-actions {
-          padding: $sb-modal-actions-padding;
+            padding: $sb-modal-actions-padding;
             background: $sb-modal-actions-bg;
             border-top: 1px solid $gray-100;
             min-height: $sb-modal-actions-height;
             display: flex;
             flex-direction: row-reverse;
             align-items: center;
+            .sb-btn+.sb-btn{
+                @include margin(0 $base-block-space 0 0);
+            }
         }
         .small {
             color: $gray-400;
@@ -71,7 +74,7 @@
             .sb-modal-header {
                 height: $sb-modal-fs-header-height;
                 width: auto;
-                border-radius: 0px;
+                border-radius: 0;
                 display: flex;
                 justify-content: space-between;
             }
@@ -100,9 +103,18 @@
     }
 }
 
-[dir="rtl"] .sb-modal .ui.modal>.close {
-    right: auto;
-    left: 0;
+[dir="rtl"] .sb-modal {
+    .ui.modal {
+        &>.close {
+            right: auto;
+            left: 0;
+        }
+        .sb-modal-actions {
+            .sb-btn+.sb-btn{
+                @include margin(0 0 0 $base-block-space);
+            }
+        }
+    }
 }
 
 @include respond-below(sm) {
