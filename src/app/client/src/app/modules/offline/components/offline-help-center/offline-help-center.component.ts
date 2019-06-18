@@ -4,6 +4,9 @@ import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import mediumZoom from 'medium-zoom';
 import * as html2pdf from 'html2pdf.js';
+import { IImpressionEventInput } from '@sunbird/telemetry';
+import { ActivatedRoute } from '@angular/router';
+import { NavigationHelperService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-offline-help-center',
@@ -14,8 +17,9 @@ import * as html2pdf from 'html2pdf.js';
 export class OfflineHelpCenterComponent implements AfterViewInit, OnInit {
   images: any;
   activeTab: any;
+  public telemetryImpression: IImpressionEventInput;
 
-  constructor() { }
+  constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService) { }
   isShow: boolean;
   topPosToStartShowing = 100;
 
@@ -131,6 +135,18 @@ export class OfflineHelpCenterComponent implements AfterViewInit, OnInit {
     }
     /* download animation ends */
     this.activeTab = 'browse';
+
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: '/help-centre',
+        duration: this.navigationHelperService.getPageLoadTime()
+      }
+    };
   }
   tabClicked(tab) {
     this.activeTab = tab;
