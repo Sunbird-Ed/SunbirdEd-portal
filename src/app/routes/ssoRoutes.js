@@ -1,12 +1,13 @@
 const _ = require('lodash');
 const jwt = require('jsonwebtoken')
-const {verifySignature, verifyToken, fetchUserWithExternalId, createUser, createSession, updatePhone, updateRoles, sendSsoKafkaMessage} = require('./../helpers/ssoHelper');
+const {verifySignature, verifyToken, fetchUserWithExternalId, createUser, createSession, updateContact, updateRoles, sendSsoKafkaMessage, migrateUser} = require('./../helpers/ssoHelper');
 const telemetryHelper = require('../helpers/telemetryHelper');
 const fs = require('fs');
 
 const successUrl = '/sso/sign-in/success';
-const updatePhoneUrl = '/sign-in/sso/update-phone';
+const updateContactUrl = '/sign-in/sso/update/contact';
 const errorUrl = '/sso/sign-in/error';
+const logger = require('sb_logger_util_v2')
 
 module.exports = (app) => {
 
@@ -26,66 +27,104 @@ module.exports = (app) => {
       errType = 'USER_FETCH_API';
       userDetails = await fetchUserWithExternalId(jwtPayload, req);
       req.session.userDetails = userDetails;
-      if(!_.isEmpty(userDetails) && userDetails.phone) {
+      if(!_.isEmpty(userDetails) && (userDetails.phone || userDetails.email)) {
         redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
-        console.log('sso session create v2 api, successfully redirected to success page', jwtPayload.state_id, jwtPayload, req.query, userDetails, redirectUrl);
+        logger.info({
+          msg: 'sso session create v2 api, successfully redirected to success page',
+          additionalInfo: {
+            state_id: jwtPayload.state_id,
+            jwtPayload: jwtPayload,
+            query: req.query,
+            userDetails: userDetails,
+            redirectUrl: redirectUrl
+          }
+        })
       } else {
-        redirectUrl = updatePhoneUrl; // verify phone then create user
-        console.log('sso session create v2 api, successfully redirected to update phone page', jwtPayload.state_id, jwtPayload, req.query, userDetails, redirectUrl);
+        redirectUrl = updateContactUrl; // verify phone then create user
+        logger.info({
+          msg:'sso session create v2 api, successfully redirected to update phone page',
+        additionalInfo: {
+          state_id: jwtPayload.state_id,
+          jwtPayload: jwtPayload,
+          query: req.query,
+          userDetails: userDetails,
+          redirectUrl: redirectUrl
+        }})
       }
     } catch (error) {
       redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
-      console.log('sso session create v2 api failed', errType,  error, jwtPayload, req.query, userDetails, redirectUrl);
+      logger.error({
+        msg: 'sso session create v2 api failed',
+        error,
+        additionalInfo: {
+          errorType: errType,
+          jwtPayload: jwtPayload,
+          query: req.query,
+          userDetails: userDetails,
+          redirectUrl: redirectUrl
+        }
+      })
       logErrorEvent(req, errType, error);
     } finally {
       res.redirect(redirectUrl || errorUrl);
     }
   });
 
-  app.get('/v1/sso/phone/verified', async (req, res) => {
-    let userDetails, jwtPayload, redirectUrl, errType, createUserReq, updatePhoneReq, updateRolesReq;
+  app.get('/v1/sso/contact/verified', async (req, res) => {
+    let userDetails, jwtPayload, redirectUrl, errType;
     jwtPayload = req.session.jwtPayload; // fetch from session
     userDetails = req.session.userDetails; // fetch from session
     try {
-      if (_.isEmpty(jwtPayload) || !req.query.phone) {
+      if (_.isEmpty(jwtPayload) && ((!['phone', 'email'].includes(req.query.type) && !req.query.value) || req.query.userId)) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
       }
-      if(!_.isEmpty(userDetails) && !userDetails.phone) { // existing user without phone
-        errType = 'UPDATE_PHONE';
-        updatePhoneReq = {
-          userId: userDetails.id,
-          phone: req.query.phone,
-          phoneVerified: true
-        }
-        await updatePhone(updatePhoneReq, req).catch(handleProfileUpdateError); // api need to be verified
-        console.log('sso phone updated successfully and redirected to success page', jwtPayload.state_id, req.query.phone, jwtPayload, userDetails, createUserReq, updatePhoneReq, updateRolesReq, redirectUrl, errType);
-      } else if (_.isEmpty(userDetails)) { // create user and update roles
-        errType = 'CREATE_USER';
-        createUserReq = {
-          firstName: jwtPayload.name,
-          phone: req.query.phone,
-          phoneVerified: true,
-          channel: jwtPayload.state_id,
-          orgExternalId: jwtPayload.school_id,
-          externalIds: [{
-            id: jwtPayload.sub,
-            provider: jwtPayload.state_id,
-            idType: jwtPayload.state_id
-          }]
-        }
-        const newUserID = await createUser(createUserReq, req).catch(handleProfileUpdateError);
+      if (_.isEmpty(userDetails) && req.query.userId) { // migrate user to sso org
+        errType = 'MIGRATE_USER';
+        await migrateUser(req, jwtPayload).catch(handleProfileUpdateError)
         await delay();
-        console.log('sso new user create response', newUserID);
+        userDetails = await fetchUserWithExternalId(jwtPayload, req); // to get userName
+        if(_.isEmpty(userDetails)){
+          errType = 'USER_DETAILS_EMPTY';
+          throw 'USER_DETAILS_IS_EMPTY';
+        }
         if (jwtPayload.roles && jwtPayload.roles.length) {
           errType = 'UPDATE_USER_ROLES';
-          updateRolesReq = {
-            userId: newUserID.result.userId,
-            externalId: jwtPayload.school_id,
-            provider: jwtPayload.state_id,
-            roles: jwtPayload.roles
+          await updateRoles(req, req.query.userId, jwtPayload).catch(handleProfileUpdateError);
+        }
+        req.session.userDetails = userDetails;
+        logger.info({
+          msg: 'sso migrate user successfully and redirected to success page',
+          additionalInfo: {
+            state_id: jwtPayload.state_id,
+            phone: req.query.phone,
+            jwtPayload: jwtPayload,
+            userDetails: userDetails,
+            redirectUrl: redirectUrl,
+            errType: errType
           }
-          await updateRoles(updateRolesReq, req).catch(handleProfileUpdateError);
+        })
+      } else if(!_.isEmpty(userDetails) && !userDetails[req.query.type]) { // existing user without phone
+        errType = 'UPDATE_CONTACT_DETAILS';
+        await updateContact(req, userDetails).catch(handleProfileUpdateError); // api need to be verified
+        logger.info({
+          msg: 'sso phone updated successfully and redirected to success page',
+          additionalInfo: {
+            state_id: jwtPayload.state_id,
+            phone: req.query.phone,
+            jwtPayload: jwtPayload,
+            userDetails: userDetails,
+            redirectUrl: redirectUrl,
+            errType: errType
+          }
+        })
+      } else if (_.isEmpty(userDetails)) { // create user and update roles
+        errType = 'CREATE_USER';
+        const newUserDetails = await createUser(req, jwtPayload).catch(handleProfileUpdateError);
+        await delay();
+        if (jwtPayload.roles && jwtPayload.roles.length) {
+          errType = 'UPDATE_USER_ROLES';
+          await updateRoles(req, newUserDetails.result.userId, jwtPayload).catch(handleProfileUpdateError);
         }
         errType = 'FETCH_USER_AFTER_CREATE';
         userDetails = await fetchUserWithExternalId(jwtPayload, req); // to get userName
@@ -93,14 +132,34 @@ module.exports = (app) => {
           errType = 'USER_DETAILS_EMPTY';
           throw 'USER_DETAILS_IS_EMPTY';
         }
-        console.log('sso new user read details', userDetails);
         req.session.userDetails = userDetails;
-        console.log('sso user creation and role updated successfully and redirected to success page', jwtPayload.state_id, req.query.phone, jwtPayload, userDetails, createUserReq, updatePhoneReq, updateRolesReq, redirectUrl, errType);
+        logger.info({
+          msg: 'sso user creation and role updated successfully and redirected to success page',
+          additionalInfo: {
+            state_id: jwtPayload.state_id,
+            phone: req.query.phone,
+            jwtPayload: jwtPayload,
+            userDetails: userDetails,
+            redirectUrl: redirectUrl,
+            errType: errType
+          }
+        })
       }
       redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
     } catch (error) {
       redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
-      console.log('sso user creation/phone update failed, redirected to error page', jwtPayload.state_id, errType, req.query.phone, error, userDetails, jwtPayload, redirectUrl, createUserReq, updatePhoneReq, updateRolesReq);
+      logger.error({
+        msg: 'sso user creation/phone update failed, redirected to error page',
+        error,
+        additionalInfo: {
+          state_Id: jwtPayload.state_id,
+          errType: errType,
+          phone: req.query.phone,
+          userDetails: userDetails,
+          jwtPayload: jwtPayload,
+          redirectUrl: redirectUrl,
+        }
+      })
       logErrorEvent(req, errType, error);
     } finally {
       res.redirect(redirectUrl || errorUrl);
@@ -123,11 +182,29 @@ module.exports = (app) => {
       }
       errType = 'CREATE_SESSION';
       await createSession(userDetails.userName, 'portal', req, res);
-      redirectUrl = jwtPayload.redirect_url ? jwtPayload.redirect_url : '/resources';
-      console.log('sso sign-in success callback, session created', jwtPayload.state_id, req.query, redirectUrl, errType);
+      redirectUrl = jwtPayload.redirect_uri ? jwtPayload.redirect_uri : '/resources';
+      logger.info({
+        msg: 'sso sign-in success callback, session created',
+        additionalInfo: {
+          state_Id: jwtPayload.state_id,
+          query: req.query,
+          redirectUrl: redirectUrl,
+          errType: errType
+        }
+      })
     } catch (error) {
       redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
-      console.log('sso sign-in success callback, create session error', jwtPayload.state_id, errType, error, req.query, jwtPayload, redirectUrl);
+      logger.error({
+        msg: 'sso sign-in success callback, create session error',
+        error,
+        additionalInfo: {
+          state_id: jwtPayload.state_id,
+          query: req.query,
+          jwtPayload: jwtPayload,
+          redirectUrl: redirectUrl,
+          errType: errType
+        }
+      })
       logErrorEvent(req, errType, error);
     } finally {
       res.redirect(redirectUrl || errorUrl);
@@ -144,10 +221,23 @@ module.exports = (app) => {
       userName = req.query.id;
       errType = 'CREATE_SESSION';
       response = await createSession(userName, 'android',req, res);
-      console.log('sso sign in create session api success', req.query, response);
+      logger.info({
+        msg: 'sso sign in create session api success',
+        additionalInfo: {
+          query: req.query,
+          response: response
+        }
+      })
     } catch (error) {
       response = { error: getErrorMessage(error, errType) };
-      console.log('sso sign in create session api failed', errType, error, req.query);
+      logger.error({
+        msg: 'sso sign in create session api failed',
+        error,
+        additionalInfo: {
+          errType: errType,
+          query: req.query
+        }
+      })
       logErrorEvent(req, errType, error);
     } finally {
       res.json(response);
@@ -157,12 +247,14 @@ module.exports = (app) => {
   app.get(errorUrl, (req, res) => {
     res.status(200).sendFile('./error_loader.html', {root: __dirname })
   })
+
   app.get('/v1/sso/error/redirect', async (req, res) => {
     const redirect_uri = encodeURIComponent(`https://${req.get('host')}/resources?auth_callback=1`);
     const redirectUrl = `/auth/realms/sunbird/protocol/openid-connect/auth?client_id=portal&redirect_uri=${redirect_uri}&scope=openid&response_type=code&version=2&error_message=` + req.query.error_message;
     res.redirect(redirectUrl); // should go to error page
   })
 }
+
 const handleProfileUpdateError = (error) => {
   if (_.get(error, 'error.params')) {
     throw error.error.params;
@@ -171,13 +263,6 @@ const handleProfileUpdateError = (error) => {
   } else {
     throw 'unhandled exception while getting userDetails';
   }
-}
-const delay = (duration = 1000) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve();
-    }, duration)
-  });
 }
 
 const getErrorMessage = (error, errorType) => {
@@ -189,6 +274,15 @@ const getErrorMessage = (error, errorType) => {
     return 'Your account could not be signed in to DIKSHA due to technical issue. Please try again after some time';
   }
 }
+
+const delay = (duration = 1000) => {	
+  return new Promise((resolve, reject) => {	
+    setTimeout(() => {	
+      resolve();	
+    }, duration)	
+  });	
+}
+
 const logErrorEvent = (req, type, error) => {
   let stacktrace;
   if(error instanceof Error){
@@ -209,6 +303,7 @@ const logErrorEvent = (req, type, error) => {
   }
   telemetryHelper.logApiErrorEventV2(req, {edata, context});
 }
+
 const getQueryParams = (queryObj) => {
   return '?' + Object.keys(queryObj).filter(key => queryObj[key])
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(queryObj[key])}`)
