@@ -87,6 +87,7 @@
           color: $sb-prominent-filter-field-color;
           margin: 0;
           padding: $sb-prominent-filter-field-input-padding;
+          font-size: $sb-prominent-filter-field-font-size;
           &::first-letter {
             text-transform: uppercase;
           }
