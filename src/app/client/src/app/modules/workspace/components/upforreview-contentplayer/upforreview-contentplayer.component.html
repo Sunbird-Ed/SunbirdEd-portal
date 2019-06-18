@@ -5,9 +5,9 @@
       <app-loader [data]="loaderMessage"></app-loader>
     </div>
 
-    <div class="row mt-10" *ngIf="!showLoader && contentData">
+    <div class="row mt-20" *ngIf="!showLoader && contentData">
 
-      <div class="videosegment  ui clearing segment">
+      <!-- <div class="videosegment  ui clearing segment">
         <div class="ten wide column">
           <span class="ui HomeAccordianHeading left floated header">
             {{contentData.name}}
@@ -18,29 +18,42 @@
             <i appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeInteractEdata" class="ui remove icon" (click)="close()"></i>
           </h5>
         </div>
+      </div> -->
+      <div class="sb-pageSection">
+        <div class="sb-pageSection-header">
+          <h1 class="sb-pageSection-title m-0 mr-8"> {{contentData.name}} </h1>
+          <button class="sb-btn sb-btn-normal sb-btn-error ml-auto mouse-pointer" (click)="close()"> Close
+              <i class="ui remove icon"></i>
+            </button>
+        </div>
       </div>
 
       <div class="ui grid">
-        <div [ngClass]="showCommentBoxClass" >
-          <app-player  class="content-player" [playerConfig]="playerConfig" (contentProgressEvent)="contentProgressEvent($event)" (sceneChangeEvent)="handleSceneChangeEvent($event)"></app-player>
+        <div [ngClass]="showCommentBoxClass">
+          <app-player class="content-player" [playerConfig]="playerConfig"
+            (contentProgressEvent)="contentProgressEvent($event)" (sceneChangeEvent)="handleSceneChangeEvent($event)">
+          </app-player>
         </div>
         <div class="four wide column" *ngIf="contentData.mimeType === 'application/vnd.ekstep.ecml-archive' && stageId">
-          <app-review-comments [contentData]="contentData" [playerLoaded]="playerLoaded" [stageId]="stageId" (reviewCommentEvent)="handleReviewCommentEvent($event)"></app-review-comments>
+          <app-review-comments [contentData]="contentData" [playerLoaded]="playerLoaded" [stageId]="stageId"
+            (reviewCommentEvent)="handleReviewCommentEvent($event)"></app-review-comments>
         </div>
       </div>
     </div>
 
-    <div class="row mt-10" *ngIf="!showLoader">
-      <div class="mt-20 videosegment ui clearing segment">
+    <div class="row d-flex" *ngIf="!showLoader">
+      <div class="mt-20 videosegment ui clearing segment ml-auto">
         <div *ngIf="permissionService.permissionAvailable && contentData && 
           (contentData.status === 'Review' || contentData.status === 'FlagReview') && userId !== contentData.createdBy"
           appPermission [permission]="['CONTENT_REVIEWER', 'CONTENT_REVIEW','BOOK_REVIEWER','FLAG_REVIEWER']">
-          <button (click)="checkComments()" class="ui right floated sb-btn sb-btn-primary sb-btn-normal"
-          appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="publishInteractEdata">
+          <button (click)="checkComments()" class="ui right floated sb-btn sb-btn-primary sb-btn-normal mr-5"
+            appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+            [telemetryInteractEdata]="publishInteractEdata">
             {{resourceService?.frmelmnts?.btn?.publish}}
           </button>
           <button [routerLink]="['requestchanges']" class="ui right floated sb-btn sb-btn-primary sb-btn-normal"
-          appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="requestForChangesInteractEdata">
+            appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+            [telemetryInteractEdata]="requestForChangesInteractEdata">
             {{resourceService?.frmelmnts?.btn?.requestChanges}}
           </button>
         </div>
@@ -75,16 +88,8 @@
 </div>
 <!-- publish warning modal -->
 
-<sui-modal
-  [mustScroll]="true" 
-  [isClosable]="true"
-  [transitionDuration]="0"
-  [size]="'small'"
-  class="sb-modal"
-  appBodyScroll
-  *ngIf="showPublishWarningModal" 
-  #publishWarningModal
-  >
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+  appBodyScroll *ngIf="showPublishWarningModal" #publishWarningModal>
   <!--Header-->
   <div class="sb-modal-header">
     &nbsp;
@@ -110,26 +115,17 @@
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button 
-      class="sb-btn sb-btn-normal sb-btn-primary" 
-      type="button " 
-      (click)="showPublishWarningModal = false; goToPublish();"
-      appTelemetryInteract 
-      [telemetryInteractObject]="telemetryInteractObject" 
-      [telemetryInteractEdata]="reviewCommentsWarningYesInteractEdata"
-    >
+    <button class="sb-btn sb-btn-normal sb-btn-primary" type="button "
+      (click)="showPublishWarningModal = false; goToPublish();" appTelemetryInteract
+      [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="reviewCommentsWarningYesInteractEdata">
       {{resourceService?.frmelmnts?.btn?.yes}}
     </button>
-    <button 
-      class="sb-btn sb-btn-normal sb-btn-outline-primary" 
-      type="button " 
-      (click)="showPublishWarningModal = false"
-      appTelemetryInteract 
-      [telemetryInteractObject]="telemetryInteractObject" 
-      [telemetryInteractEdata]="reviewCommentsWarningNoInteractEdata"
-      >
-        {{resourceService?.frmelmnts?.btn?.no}}
-      </button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" type="button " (click)="showPublishWarningModal = false"
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="reviewCommentsWarningNoInteractEdata">
+      {{resourceService?.frmelmnts?.btn?.no}}
+    </button>
   </div>
   <!--Actions-->
 
