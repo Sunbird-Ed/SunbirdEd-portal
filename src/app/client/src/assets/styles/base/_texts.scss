@@ -1,6 +1,15 @@
-a:focus {
-  outline:0px;
- }
+@import "../../assets/styles/base/variables";
+a {
+  color: $primary-color;
+
+  &:hover {
+    opacity:0.8;
+    color: $primary-color;
+  }
+  &:focus {
+    outline: 0;
+}
+}
 .text-capitalize {
   text-transform: capitalize;
 }
@@ -8,22 +17,16 @@ a:focus {
   text-transform: uppercase !important;
 }
 .text-lowercase {
-  text-transform: uppercase !important;
+  text-transform: lowercase !important;
 }
 .text-center {
   text-align: center !important;
 }
-
 .ellipsis{
   white-space: nowrap; 
   overflow: hidden;
   text-overflow: ellipsis;
-}
-.break-word {
-  word-break: break-word;
-}
-.white-space-nowrap {
-  white-space: nowrap !important;
+  cursor: pointer;
 }
 .font-weight-bold {
   font-weight: bold !important;;
@@ -46,14 +49,6 @@ a:focus {
 .va-middle {
   vertical-align: middle;
 }
-a {
-  color: $primary-color;
-
-  &:hover {
-    opacity:0.8;
-    color: $primary-color;
-  }
-}
 
 *[dir="ltr"] {
   .text-right {
@@ -71,4 +66,33 @@ a {
   .text-left {
     text-align: right;
   }
+}
+
+.break-word {
+  word-break: break-word;
+}
+.white-space-nowrap {
+  white-space: nowrap !important;
+}
+.form-text {
+  display: block;
+  margin-top: .25rem;
+}
+.text-disabled {
+  color: #F2F2F2;
+}
+.text-error {
+  color: #FF4558;
+}
+.text-success {
+  color: #07BC81;
+}
+.sb-info-text {
+  color: $gray-400;
+  font-size: 12px;
+}
+.sb-break-line {
+  height: 1px;
+  background-color:$gray-100;
+  border: 0px;
 }
