@@ -5,7 +5,7 @@
       <app-loader [data]="loaderMessage"></app-loader>
     </div>
 
-    <div class="row mt-20" *ngIf="!showLoader && contentData">
+    <div class="row mt-24" *ngIf="!showLoader && contentData">
 
       <!-- <div class="videosegment  ui clearing segment">
         <div class="ten wide column">
@@ -46,7 +46,7 @@
         <div *ngIf="permissionService.permissionAvailable && contentData && 
           (contentData.status === 'Review' || contentData.status === 'FlagReview') && userId !== contentData.createdBy"
           appPermission [permission]="['CONTENT_REVIEWER', 'CONTENT_REVIEW','BOOK_REVIEWER','FLAG_REVIEWER']">
-          <button (click)="checkComments()" class="ui right floated sb-btn sb-btn-primary sb-btn-normal mr-5"
+          <button (click)="checkComments()" class="ui right floated sb-btn sb-btn-primary sb-btn-normal mr-8"
             appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
             [telemetryInteractEdata]="publishInteractEdata">
             {{resourceService?.frmelmnts?.btn?.publish}}
