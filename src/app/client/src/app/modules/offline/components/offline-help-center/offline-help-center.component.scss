@@ -1,20 +1,22 @@
 @import "variables";
-ul li {
-  margin-bottom: 0px;
-  position: relative;
+
+ul li {		
+  margin-bottom: 0px;		
+  position: relative;		
 }
+
 .sb-tab-section{
   width: 100%;
 }
 .sb-subheader {
   background: #005da2;
   height:60px;
-  background: #005da2;
-    height: 60px;
-    position: fixed;
-    top: 72px;
-    width: 100%;
-    z-index: 9;
+  background: #005da2;		
+  height: 60px;		
+  position: fixed;		
+  top: 72px;		
+  width: 100%;		
+  z-index: 9;
 }
 .sb-two-column-table {
   table-layout: fixed;
@@ -145,7 +147,8 @@ ul li {
 }
 .help-center-content-paragraph {
   margin-bottom: 24px;
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 24px;
 }
 .help-center-content-subtitle {
   margin-top: 20px;
@@ -163,6 +166,7 @@ ul li {
     position: relative;
   }
   .help-center-list {
+    list-style: inherit;
     margin: 12px 0 0 0;
     padding-left: 40px;
     font-size: 14px;
@@ -273,3 +277,72 @@ ul li {
     padding-right: 70px;
   }
 }
+
+  //download button animation
+
+  .sb-btn-download {
+    transition: all 1.2s ease-in-out;
+    
+    i::after {
+      content: "\f019";
+      font-size: 13px;
+      color: #fff;
+    }
+    
+    &:hover {
+      animation: pulse 0.2s 2 both;
+    }
+    
+    &.loading {
+      i {
+        animation: loading 2s infinite linear;
+        
+        &::after {
+          content: "\f1ce";
+        }        
+      }
+    }
+    
+    &.success {
+      i::after {
+        content: "\f00c";
+        color: transparent;
+        animation: change-icon 1s 0.6s linear both;
+      }
+    }
+  }
+  
+  @keyframes loading {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+  }
+  
+  @keyframes change-icon {
+    0% {
+      color: transparent;
+    }
+    
+    100% {
+      color: #fff;
+    }
+  }
+  
+  @keyframes pulse {
+    from {
+      transform: scale3d(1, 1, 1);
+    }
+  
+    50% {
+      transform: scale3d(1.05, 1.05, 1.05);
+    }
+  
+    to {
+      transform: scale3d(1, 1, 1);
+    }
+  }
