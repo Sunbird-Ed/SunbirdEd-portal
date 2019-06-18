@@ -51,7 +51,7 @@
 	<!--/Not Logged in user-->
 	<!-- offline container-->
 	<ng-container *ngIf="isOffline">
-			<a class="item" [routerLink]="'/'" [ngClass]="(router.isActive('/') && !(router.isActive('/browse'))) ? 'active': ''" appTelemetryInteract
+			<a class="item" [routerLink]="'/'" [ngClass]="(router.isActive('/') && !(router.isActive('/browse') || router.isActive('/help-center')) ) ? 'active': ''" appTelemetryInteract
 			 [telemetryInteractEdata]="myLibraryMenuInteractEdata">
 				{{resourceService.frmelmnts?.btn?.myLibrary}}
 			</a>
