@@ -7,6 +7,7 @@ import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {FileSizeModule} from 'ngx-filesize';
 import { OrderModule } from 'ngx-order-pipe';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('DownloadManagerComponent', () => {
   let component: DownloadManagerComponent;
@@ -15,7 +16,7 @@ describe('DownloadManagerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ SuiModalModule, SharedModule.forRoot(), SuiProgressModule, SuiAccordionModule, HttpClientTestingModule,
-        FileSizeModule, OrderModule ],
+        RouterTestingModule, FileSizeModule, OrderModule ],
       declarations: [DownloadManagerComponent],
       providers: [ DownloadManagerService ]
     })
