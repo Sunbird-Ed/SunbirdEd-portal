@@ -114,19 +114,19 @@
           class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.phone"
           appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
           [telemetryInteractEdata]="editMobileInteractEdata">
-          <i class="phone icon mr-5 pr-30"></i> {{resourceService?.frmelmnts?.lbl?.addPhoneNo}}
+          <i class="phone icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addPhoneNo}}
         </div>
       </div>
       <div (click)="showContactPopup=true;contactType='email'"
         class="ui semi-circular dodger-blue basic label cursor-pointer" *ngIf="userProfile.email" appTelemetryInteract
         [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editEmailInteractEdata">
-        <i class="mail icon mr-5"></i> {{userProfile.email}}
+        <i class="mail blue icon mr-5"></i> {{userProfile.email}}
       </div>
       <div (click)="showContactPopup=true;contactType='email'"
         class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.email"
         appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
         [telemetryInteractEdata]="editEmailInteractEdata">
-        <i class="mail icon mr-5 pr-30"></i> {{resourceService?.frmelmnts?.lbl?.addEmailID}}
+        <i class="mail icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addEmailID}}
       </div>
     </div>
   </section>
