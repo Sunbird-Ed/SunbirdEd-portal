@@ -7,3 +7,6 @@
 .bl-0{
     border-left: none !important;
 }
+.b-0{
+    @include border(border,0px,$gray-400);
+}
