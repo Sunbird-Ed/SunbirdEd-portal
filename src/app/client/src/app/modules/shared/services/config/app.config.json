@@ -385,6 +385,11 @@
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
   },
+  "dialPage": {
+    "contentApiQueryParams": {
+      "orgdetails": "orgName,email"
+    }
+  },
   "GetPage": {
     "contentApiQueryParams": {
       "orgdetails": "orgName,email"
