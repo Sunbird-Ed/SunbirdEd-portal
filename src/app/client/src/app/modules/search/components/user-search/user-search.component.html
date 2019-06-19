@@ -6,9 +6,7 @@
         <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && !noResult">
           <div class="ui left floated header  ">
             <p class="serch-allresult">{{resourceService.frmelmnts?.lbl?.showingResults}} 
-              <span class="text-lowercase" *ngIf="this.queryParams.key">
-                "{{resourceService.frmelmnts?.lbl?.forSearch  | interpolate:'{searchString}':this.queryParams?.key}}"
-              </span>
+              <span class="text-lowercase" *ngIf="this.queryParams.key" appHighlightText [config]="{'resourcePath': 'frmelmnts.lbl.forSearch', 'key': '{searchString}', 'value': queryParams?.key}"></span>
               {{resourceService.frmelmnts?.lbl?.inUsers}}
             </p>
           </div>
