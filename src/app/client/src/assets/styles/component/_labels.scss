@@ -144,7 +144,8 @@
     color: $gray-400;
 }
 //qr code result label
-.sb-result-label,.sb-pageSection-count{
+.sb-result-label,
+.sb-pageSection-count{
     background: $tertiary-color;
     padding: ($base-block-space/2) ($base-block-space);
     border-radius: ($base-block-space / 2);
@@ -235,9 +236,9 @@
         }
     }
  }
- .sb-label-status-error {
+.sb-label-status-error {
     color: $sb-label-status-error-color;  
-  }
-  .sb-label-status-success {
+}
+.sb-label-status-success {
     color: $sb-label-status-success-color;  
-  }
+}

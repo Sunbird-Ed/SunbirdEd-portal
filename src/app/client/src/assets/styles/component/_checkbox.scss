@@ -126,7 +126,6 @@
   input[type=checkbox] {   
     outline: 0;
   }
-
 }
 
 .sb-radio-btn-checkbox {
@@ -159,7 +158,6 @@
     input:checked~label:after {
       background-color: $sb-checkbox-warning-background;
     }
-
   }
 
   &.sb-radio-btn-error {

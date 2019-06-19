@@ -12,7 +12,8 @@
 .shepherd-element .shepherd-content {
     background-color: $gray-800;
     padding: 16px;
-    // max-width:454px;width:454px;
+    // max-width:454px;
+    //width:454px;
 }
 
 .tippy-popper.shepherd-popper[x-placement^=top] .tippy-arrow {
@@ -25,7 +26,7 @@
 
 .shepherd-element .shepherd-content footer .shepherd-buttons li .shepherd-button {
     &.sb-btn-outline-gray {
-        border: 0px solid $gray-100;
+        border: 0 solid $gray-100;
     }
 }
 
@@ -52,7 +53,7 @@
 }
 
 .shepherd-element .shepherd-content footer {
-    padding: 0px;
+    padding: 0;
 }
 
 .shepherd-element .shepherd-content .shepherd-text p:last-child {

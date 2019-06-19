@@ -1,9 +1,9 @@
 @import "../../assets/styles/base/variables";
+
 a {
   color: $primary-color;
-
   &:hover {
-    opacity:0.8;
+    opacity: 0.8;
     color: $primary-color;
   }
   &:focus {
@@ -11,7 +11,7 @@ a {
 }
 }
 .text-capitalize {
-  text-transform: capitalize;
+  text-transform: capitalize !important;
 }
 .text-uppercase {
   text-transform: uppercase !important;
@@ -19,14 +19,26 @@ a {
 .text-lowercase {
   text-transform: lowercase !important;
 }
-.text-center {
-  text-align: center !important;
+.text-sentencecase {
+  text-transform: lowercase !important;
+  &::first-letter {
+    text-transform: uppercase !important;
+  }
+}
+.text-inherit {
+  text-transform: inherit !important;
 }
 .ellipsis{
   white-space: nowrap; 
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
+}
+.break-word {
+  word-break: break-word;
+}
+.white-space-nowrap {
+  white-space: nowrap !important;
 }
 .font-weight-bold {
   font-weight: bold !important;;
@@ -49,6 +61,9 @@ a {
 .va-middle {
   vertical-align: middle;
 }
+.text-center {
+  text-align: center !important;
+}
 
 *[dir="ltr"] {
   .text-right {
@@ -66,33 +81,4 @@ a {
   .text-left {
     text-align: right;
   }
-}
-
-.break-word {
-  word-break: break-word;
-}
-.white-space-nowrap {
-  white-space: nowrap !important;
-}
-.form-text {
-  display: block;
-  margin-top: .25rem;
-}
-.text-disabled {
-  color: #F2F2F2;
-}
-.text-error {
-  color: #FF4558;
-}
-.text-success {
-  color: #07BC81;
-}
-.sb-info-text {
-  color: $gray-400;
-  font-size: 12px;
-}
-.sb-break-line {
-  height: 1px;
-  background-color:$gray-100;
-  border: 0px;
 }

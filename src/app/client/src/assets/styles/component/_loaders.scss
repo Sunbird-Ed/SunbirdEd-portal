@@ -1,71 +1,64 @@
 .sb-loader {
-    position: fixed;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  &:after {
+    content: '';
+    width: $base-block-space * 4;
+    height: $base-block-space * 4;
+    border-radius: 50%;
+    border: 2px solid;
+    border-color: $teal $teal transparent;
+    animation: loader 0.5s infinite;
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-  
-    &:after {
-      content: '';
-      width: $base-block-space * 4;
-      height: $base-block-space * 4;
-      border-radius: 50%;
-      border: 2px solid;
-      border-color: $teal $teal transparent;
-      animation: loader 0.5s infinite;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-  
-    &.dimmer {
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      z-index: 9999;
-    }
+  }
+  &.dimmer {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+  }
 }
-   
-   @keyframes loader {
-    0% {
-      transform: rotate(0deg);
-    }
-   
-    100% {
-      transform: rotate(360deg);
-    }
-   }
-
-
-
-
-   /* diksha offline loader */
-   .center {
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 18vmin;
-    transform: translate(-50%, -50%);
+@keyframes loader {
+  0% {
+    transform: rotate(0deg);
   }
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  100% {
+    transform: rotate(360deg);
   }
-  body {
-    background: #fff;
-  }
-  .diksha-opening-txt {
-    text-align: center;
-    position: absolute;
-    bottom: -40px;
-    right: 0px;
-    left: 0px;
-    font-size: 16px;
-    font-weight:bold;
-  }
-  @-webkit-keyframes move-dot {
+}
+
+/* diksha offline loader */
+.center {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18vmin;
+  transform: translate(-50%, -50%);
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background: #fff;
+}
+.diksha-opening-txt {
+  text-align: center;
+  position: absolute;
+  bottom: -40px;
+  right: 0;
+  left: 0;
+  font-size: 16px;
+  font-weight:bold;
+}
+@-webkit-keyframes move-dot {
     0% {
       -webkit-transform: translateY(-50%) translateX(0) scale(1);
               transform: translateY(-50%) translateX(0) scale(1);

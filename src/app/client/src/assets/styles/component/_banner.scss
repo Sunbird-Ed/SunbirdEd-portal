@@ -3,11 +3,12 @@
   border-radius: 4px;
   background-color: $sb-banner-background-color;
   box-shadow: $sb-banner-box-shadow;
-  &.sb-fix-bottom, &.fixed {
+  &.sb-fix-bottom,
+  &.fixed {
     position: fixed;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
+    left: 0;
+    right: 0;
+    bottom: 0;
     margin: 0 auto;
     z-index: 999;
     border-radius: $sb-banner-border-radius;
@@ -15,9 +16,9 @@
 }
 #sb-fix-bottom {
   position: fixed;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   margin: 0 auto;
   z-index: 999;
   border-radius: $sb-banner-border-radius;
