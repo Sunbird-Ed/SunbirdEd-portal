@@ -44,14 +44,15 @@
   } 
   .ui.selection.dropdown{
     width:100%;
-    height: ($base-block-space * 4) + 1;
+    min-height: ($base-block-space * 4);
     font-size: 13px;
-    padding: .22619048em 2.1em .22619048em .35714286em;
+    padding: ($base-block-space / 2) ($base-block-space * 1);
+    line-height: 1;
     .text{
       text-overflow: ellipsis;
       overflow: hidden;
       line-height: 1.5;
-      margin: 5px;
+      margin: 1px 0;
     }
     .menu>.item {
       padding: 7px 5px;
@@ -61,20 +62,28 @@
       height: auto;
     }
   }
+  .ui.multiple.dropdown {
+    .label {
+      margin-bottom: 0;;
+      margin-top: 3px;
+      font-size: 12px;
+    }
+  }
 }
 .sb-form-control {
   background-color: $sb-input-background-color;
   background-clip: padding-box;
-  border: $sb-input-border-normal;
+  border: 1px solid #999;
   border-radius: $sb-input-border-radius;
   color: $sb-input-color;
   display: block;
   font-size: $sb-input-font-size;
   line-height: $sb-input-line-height;
   max-width:100%;
-  padding: $sb-input-padding;
+  padding: 7px 8px;
   position: relative;
   width: 100%;
+  min-height:  ($base-block-space * 4);
   &.sb-fluid {
    width:100%
   }

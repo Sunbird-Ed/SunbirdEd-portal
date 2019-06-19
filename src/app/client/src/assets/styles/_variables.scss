@@ -139,7 +139,7 @@ $red-100: #FF6979; // buttong bg, toast
 $red-400: $red; // icon color, lable, notification 
 
 // input border width
-$input-border-width: 0.5px; 
+$input-border-width: 1px; 
 
 // Status Colors
 $info-color: $primary-400;
@@ -253,7 +253,7 @@ $sb-label-font-size: 0.8571rem;
 // Buttons
 
 // Dashed Buttons
-$sb-btn-dashed-border: $input-border-width solid $primary-color;
+$sb-btn-dashed-border: 0.5 solid $primary-color;
 $sb-btn-dashed-background-color: $white-color;
 $sb-btn-dashed-color: $primary-400;
 
