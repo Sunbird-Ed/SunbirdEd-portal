@@ -73,7 +73,7 @@ module.exports = {
     const context = telemetry.getContextData({ channel: channel, env: 'user' })
     context.sid = req.sessionID
     context.did = req.session.deviceId
-    logger.info({msg:`logging session start event ${context.did}`})
+    logger.info({msg:`logging session end event ${context.did}`})
     context.rollup = telemetry.getRollUpData(dims)
     telemetry.end({
       edata: edata,

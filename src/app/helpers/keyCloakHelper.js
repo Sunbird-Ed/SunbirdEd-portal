@@ -55,7 +55,7 @@ const authenticated = function (request) {
     }
   }, function (err, results) {
     if (err) {
-      logger.error({msg:'error while executing async.series()', err})
+      logger.error({msg:'error while executing async.series() in keyCloakHelper', err})
     }
   })
 }
