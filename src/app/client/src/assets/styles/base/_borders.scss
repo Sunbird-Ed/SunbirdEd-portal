@@ -28,6 +28,3 @@
 .b-8 {
     @include border(border,8px,$gray-400);
 }
-.b-0{
-    @include border(border,0 ,$gray-400);
-}

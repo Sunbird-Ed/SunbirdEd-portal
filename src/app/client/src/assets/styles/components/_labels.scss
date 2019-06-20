@@ -241,4 +241,26 @@
 }
 .sb-label-status-success {
     color: $sb-label-status-success-color;  
+  }
+
+  
+  // cbse 
+  .sb-status-label {
+    width:8px;
+    height: 8px;display: inline-block;
+    &.sb-shape-circle {
+        border-radius: 100%;
+    }
+    &.sb-bg-warning {
+      background:  $tertiary-100;
+    }
+    &.sb-bg-success {
+      background:  $secondary-color; 
+    }
+    &.sb-bg-error {
+      background:  $red;
+    }
+    &.sb-bg-primary{
+        background: $primary-color;
+    }
 }

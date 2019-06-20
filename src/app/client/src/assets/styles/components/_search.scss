@@ -47,7 +47,7 @@
       }
   }
   .input-div {
-    width: 90%;
+    flex: 2 1 auto;
   }
 
   .sb-search-input {
@@ -69,7 +69,6 @@
     min-width: auto;
     white-space: nowrap;
     border-radius: 0 3px 3px 0;
-    width:10%;
     color: $blue;
     font-size: $sb-search-btn-font-size;
     font-weight: bold;
