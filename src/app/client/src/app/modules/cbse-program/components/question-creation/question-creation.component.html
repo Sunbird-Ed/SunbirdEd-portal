@@ -25,7 +25,7 @@
           <div class="column">
               <label>Learning Outcome</label>
               <div>
-                  <sui-select class="selection width-100" formControlName="learningOutcome" name="'learningOutcome'" required>
+                  <sui-select class="selection width-100" formControlName="learningOutcome" name="'learningOutcome'">
                       <sui-select-option *ngFor="let option of learningOutcomeOptions" [value]="option.name"></sui-select-option>
                     </sui-select>
                     <label class="ui basic red error label pt-0"
@@ -37,7 +37,7 @@
       <div class="column">
         <label>Learning Level</label>
         <div>
-          <sui-select class="selection width-100" formControlName="bloomsLevel" name="'bloomsLevel'" required>
+          <sui-select class="selection width-100" formControlName="bloomsLevel" name="'bloomsLevel'">
             <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
           </sui-select>
           <label class="ui basic red error label pt-0"

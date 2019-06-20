@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter, OnChanges, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { McqForm } from './../../class/McqForm';
-import {  ConfigService, IUserData, IUserProfile, ToasterService  } from '@sunbird/shared';
+import { ConfigService, IUserData, IUserProfile, ToasterService } from '@sunbird/shared';
 import { UserService, ActionService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
@@ -41,7 +41,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
   learningOutcomeOptions = [];
   updateStatus = 'update';
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
-  constructor( public configService: ConfigService, private http: HttpClient,
+  constructor(public configService: ConfigService, private http: HttpClient,
     private userService: UserService, public actionService: ActionService,
     public toasterService: ToasterService, private cdr: ChangeDetectorRef,
     public telemetryService: TelemetryService) {
@@ -49,15 +49,17 @@ export class McqCreationComponent implements OnInit, OnChanges {
   initForm() {
     if (this.questionMetaData.data) {
       const { question, responseDeclaration, templateId, learningOutcome, bloomsLevel } = this.questionMetaData.data;
-      const options = _.map(this.questionMetaData.data.options, option => ({body: option.value.body}));
-      this.mcqForm = new McqForm({ question, options, answer: _.get(responseDeclaration, 'responseValue.correct_response.value'),
-        learningOutcome: (learningOutcome && learningOutcome[0] ||  ''),
-        bloomsLevel: bloomsLevel[0]}, {templateId});
+      const options = _.map(this.questionMetaData.data.options, option => ({ body: option.value.body }));
+      this.mcqForm = new McqForm({
+        question, options, answer: _.get(responseDeclaration, 'responseValue.correct_response.value'),
+        learningOutcome: (learningOutcome && learningOutcome[0] || ''),
+        bloomsLevel: (bloomsLevel && bloomsLevel[0] || '')
+      }, { templateId });
       if (this.questionMetaData.data.media) {
         this.mediaArr = this.questionMetaData.data.media;
       }
     } else {
-      this.mcqForm = new McqForm({question: '', options: []}, {});
+      this.mcqForm = new McqForm({ question: '', options: [] }, {});
     }
     this.showForm = true;
   }
@@ -65,7 +67,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
     if (this.selectedAttributes.bloomsLevel) {
       this.bloomsLevelOptions = this.selectedAttributes.bloomsLevel;
     }
-    const topicTerm =  _.find(this.selectedAttributes.topicList, { name: this.selectedAttributes.topic });
+    const topicTerm = _.find(this.selectedAttributes.topicList, { name: this.selectedAttributes.topic });
     if (topicTerm.associations) {
       this.learningOutcomeOptions = topicTerm.associations;
     }
@@ -85,7 +87,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
     } else {
       this.showPreview = false;
     }
-    if(this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status=== 'Reject' && this.questionMetaData.data.rejectComment){
+    if (this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status === 'Reject' && this.questionMetaData.data.rejectComment) {
       this.rejectComment = this.questionMetaData.data.rejectComment;
     }
   }
@@ -98,8 +100,8 @@ export class McqCreationComponent implements OnInit, OnChanges {
       this.questionStatus.emit({ type: 'close' });
     }
   }
-  handleReviewrStatus (event) {
-    this.updateQuestion([{key: 'status', value: event.status}, {key: 'rejectComment', value: event.rejectComment}]);
+  handleReviewrStatus(event) {
+    this.updateQuestion([{ key: 'status', value: event.status }, { key: 'rejectComment', value: event.rejectComment }]);
   }
   handleSubmit(formControl) {
     const optionValid = _.find(this.mcqForm.options, option =>
@@ -122,27 +124,27 @@ export class McqCreationComponent implements OnInit, OnChanges {
     if (event === 'preview') {
       this.showPreview = true;
       forkJoin([this.getConvertedSVG(this.mcqForm.question), ...this.mcqForm.options.map(option => this.getConvertedSVG(option.body))])
-      .subscribe((res) => {
-        // this.body = res[0]; // question with latex
-        optionSvgBody =  res.slice(1).map((option, i) => { // options with latex
-            return {body: res[i + 1]};
+        .subscribe((res) => {
+          // this.body = res[0]; // question with latex
+          optionSvgBody = res.slice(1).map((option, i) => { // options with latex
+            return { body: res[i + 1] };
+          });
+          this.previewData = {
+            data: this.getHtml(res[0], optionSvgBody),
+            type: this.selectedAttributes.questionType
+          };
         });
-        this.previewData = {
-          data: this.getHtml(res[0], optionSvgBody),
-          type: this.selectedAttributes.questionType
-        };
-      });
     } else if (event === 'edit') {
       this.refreshEditor();
       this.showPreview = false;
-    }  else {
+    } else {
       this.handleSubmit(this.mcqFormControl);
     }
   }
   getConvertedLatex(body) {
     const getLatex = (encodedMath) => {
       return this.http.get('https://www.wiris.net/demo/editor/mathml2latex?mml=' + encodedMath, {
-        responseType : 'text'
+        responseType: 'text'
       });
     };
     let latexBody;
@@ -200,43 +202,53 @@ export class McqCreationComponent implements OnInit, OnChanges {
     forkJoin([this.getConvertedLatex(this.mcqForm.question), ...this.mcqForm.options.map(option => this.getConvertedLatex(option.body))])
       .subscribe((res) => {
         this.body = res[0]; // question with latex
-        this.optionBody =  res.slice(1).map((option, i) => { // options with latex
-          return {body: res[i + 1]};
-      });
+        this.optionBody = res.slice(1).map((option, i) => { // options with latex
+          return { body: res[i + 1] };
+        });
 
         const questionData = this.getHtml(this.body, this.optionBody);
         const correct_answer = this.mcqForm.answer;
         const options = _.map(this.mcqForm.options, (opt, key) => {
           if (Number(correct_answer) === key) {
-            return {'answer': true, value: {'type': 'text', 'body': opt.body}};
+            return { 'answer': true, value: { 'type': 'text', 'body': opt.body } };
           } else {
-            return {'answer': false, value: {'type': 'text', 'body': opt.body}};
+            return { 'answer': false, value: { 'type': 'text', 'body': opt.body } };
           }
         });
+
+        let assessmentItem = {
+          'objectType': 'AssessmentItem',
+          'metadata': {
+            'code': UUID.UUID(),
+            'category': this.selectedAttributes.questionType.toUpperCase(),
+            'templateId': this.questionMetaData.data.templateId,
+            'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
+            'body': questionData.body,
+            'responseDeclaration': questionData.responseDeclaration,
+            'question': this.mcqForm.question,
+            'options': options,
+            // 'qlevel': this.mcqForm.difficultyLevel,
+            'maxScore': 1, // Number(this.mcqForm.maxScore),
+            'status': 'Review',
+            'media': this.mediaArr,
+            'type': 'mcq'
+          }
+        }
+
+        if (this.mcqForm.learningOutcome) {
+          assessmentItem["metadata"]["learningOutcome"] = [this.mcqForm.learningOutcome]
+        }
+
+        if (this.mcqForm.bloomsLevel) {
+          assessmentItem["metadata"]["bloomsLevel"] = [this.mcqForm.bloomsLevel]
+        }
+
+
         const req = {
           url: this.configService.urlConFig.URLS.ASSESSMENT.UPDATE + '/' + this.questionMetaData.data.identifier,
           data: {
             'request': {
-              'assessment_item': {
-                'objectType': 'AssessmentItem',
-                'metadata': {
-                  'code': UUID.UUID(),
-                  'category': this.selectedAttributes.questionType.toUpperCase(),
-                  'templateId': this.questionMetaData.data.templateId,
-                  'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
-                  'body': questionData.body,
-                  'responseDeclaration': questionData.responseDeclaration,
-                  'question': this.mcqForm.question,
-                  'options': options,
-                  'learningOutcome': this.mcqForm.learningOutcome ? [this.mcqForm.learningOutcome] : [],
-                  'bloomsLevel': [this.mcqForm.bloomsLevel],
-                  // 'qlevel': this.mcqForm.difficultyLevel,
-                  'maxScore': 1, // Number(this.mcqForm.maxScore),
-                  'status': 'Review',
-                  'media': this.mediaArr,
-                  'type': 'mcq'
-                }
-              }
+              'assessment_item': assessmentItem
             }
           }
         };
@@ -254,7 +266,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
           } else if (this.updateStatus === 'Reject') {
             this.toasterService.success('Question Rejected');
           }
-          this.questionStatus.emit({'status': 'success', 'type': this.updateStatus, 'identifier': res.result.node_id});
+          this.questionStatus.emit({ 'status': 'success', 'type': this.updateStatus, 'identifier': res.result.node_id });
         }, error => {
           this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
           const telemetryErrorData = {
@@ -275,67 +287,75 @@ export class McqCreationComponent implements OnInit, OnChanges {
     forkJoin([this.getConvertedLatex(this.mcqForm.question), ...this.mcqForm.options.map(option => this.getConvertedLatex(option.body))])
       .subscribe((res) => {
         this.body = res[0]; // question with latex
-        this.optionBody =  res.slice(1).map((option, i) => { // options with latex
-          return {body: res[i + 1]};
-       });
+        this.optionBody = res.slice(1).map((option, i) => { // options with latex
+          return { body: res[i + 1] };
+        });
         console.log(this.mcqForm);
         const questionData = this.getHtml(this.body, this.optionBody);
         const correct_answer = this.mcqForm.answer;
         const options = _.map(this.mcqForm.options, (opt, key) => {
           if (Number(correct_answer) === key) {
-            return {'answer': true, value: {'type': 'text', 'body': opt.body}};
+            return { 'answer': true, value: { 'type': 'text', 'body': opt.body } };
           } else {
-            return {'answer': false, value: {'type': 'text', 'body': opt.body}};
+            return { 'answer': false, value: { 'type': 'text', 'body': opt.body } };
           }
         });
         let creator = this.userService.userProfile.firstName;
         if (!_.isEmpty(this.userService.userProfile.lastName)) {
           creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
         }
+
+        let assessmentItem = {
+          'objectType': 'AssessmentItem',
+          'metadata': {
+            'createdBy': this.userService.userid,
+            'creator': creator,
+            'organisation': this.selectedAttributes.onBoardSchool ? [this.selectedAttributes.onBoardSchool] : [],
+            'code': UUID.UUID(),
+            'type': this.selectedAttributes.questionType,
+            'category': this.selectedAttributes.questionType.toUpperCase(),
+            'itemType': 'UNIT',
+            'version': 3,
+            'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
+            'body': questionData.body,
+            'responseDeclaration': questionData.responseDeclaration,
+            'question': this.mcqForm.question,
+            'options': options,
+            // 'qlevel': this.mcqForm.difficultyLevel,
+            'maxScore': 1, // Number(this.mcqForm.maxScore),
+            'templateId': this.templateDetails.templateClass,
+            'programId': this.selectedAttributes.programId,
+            'program': this.selectedAttributes.program,
+            'channel': this.selectedAttributes.channel,
+            'framework': this.selectedAttributes.framework,
+            'board': this.selectedAttributes.board,
+            'medium': this.selectedAttributes.medium,
+            'gradeLevel': [this.selectedAttributes.gradeLevel],
+            'subject': this.selectedAttributes.subject,
+            'topic': [this.selectedAttributes.topic],
+            'status': 'Review',
+            'media': this.mediaArr,
+            'qumlVersion': 0.5
+          }
+        }
+
+        if (this.mcqForm.learningOutcome) {
+          assessmentItem["learningOutcome"] = [this.mcqForm.learningOutcome]
+        }
+
+        if (this.mcqForm.bloomsLevel) {
+          assessmentItem["bloomsLevel"] = [this.mcqForm.bloomsLevel]
+        }
         const req = {
           url: this.configService.urlConFig.URLS.ASSESSMENT.CREATE,
           data: {
             'request': {
-              'assessment_item': {
-                'objectType': 'AssessmentItem',
-                'metadata': {
-                  'createdBy': this.userService.userid,
-                  'creator': creator,
-                  'organisation': this.selectedAttributes.onBoardSchool ? [this.selectedAttributes.onBoardSchool] : [],
-                  'code': UUID.UUID(),
-                  'type': this.selectedAttributes.questionType,
-                  'category': this.selectedAttributes.questionType.toUpperCase(),
-                  'itemType': 'UNIT',
-                  'version': 3,
-                  'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
-                  'body': questionData.body,
-                  'responseDeclaration': questionData.responseDeclaration,
-                  'question': this.mcqForm.question,
-                  'options': options,
-                  'learningOutcome': this.mcqForm.learningOutcome ? [this.mcqForm.learningOutcome] : [],
-                  'bloomsLevel': [this.mcqForm.bloomsLevel],
-                  // 'qlevel': this.mcqForm.difficultyLevel,
-                  'maxScore': 1, // Number(this.mcqForm.maxScore),
-                  'templateId': this.templateDetails.templateClass,
-                  'programId': this.selectedAttributes.programId,
-                  'program': this.selectedAttributes.program,
-                  'channel': this.selectedAttributes.channel,
-                  'framework': this.selectedAttributes.framework,
-                  'board': this.selectedAttributes.board,
-                  'medium': this.selectedAttributes.medium,
-                  'gradeLevel': [ this.selectedAttributes.gradeLevel],
-                  'subject': this.selectedAttributes.subject,
-                  'topic': [this.selectedAttributes.topic],
-                  'status': 'Review',
-                  'media': this.mediaArr,
-                  'qumlVersion': 0.5
-                }
-              }
+              'assessment_item': assessmentItem
             }
           }
         };
         this.actionService.post(req).subscribe((res) => {
-          this.questionStatus.emit({'status': 'success', 'type': 'create',  'identifier': res.result.node_id});
+          this.questionStatus.emit({ 'status': 'success', 'type': 'create', 'identifier': res.result.node_id });
         }, error => {
           this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
           const telemetryErrorData = {
@@ -359,12 +379,12 @@ export class McqCreationComponent implements OnInit, OnChanges {
       .map((data, index) => data.replace('{value}', index)).join('');
     let templateClass;
     if (this.questionMetaData.mode === 'create') {
-      templateClass =  this.templateDetails.templateClass;
+      templateClass = this.templateDetails.templateClass;
     } else {
       templateClass = this.questionMetaData.data.templateId; // TODO: need to be verified
     }
     const questionBody = mcqBody.replace('{templateClass}', templateClass)
-    .replace('{question}', question).replace('{optionList}', optionsBody); // passion question which has latex
+      .replace('{question}', question).replace('{optionList}', optionsBody); // passion question which has latex
     const responseDeclaration = {
       responseValue: {
         cardinality: 'single',
@@ -375,11 +395,11 @@ export class McqCreationComponent implements OnInit, OnChanges {
       }
     };
     return {
-      body : questionBody,
+      body: questionBody,
       responseDeclaration: responseDeclaration,
       correct_response: parseInt(this.mcqForm.answer) + 1,
       learningOutcome: (this.questionMetaData.data && this.questionMetaData.data.learningOutcome) ? this.questionMetaData.data.learningOutcome[0] : '',
-      learningLevel : this.mcqForm.bloomsLevel || ''
+      learningLevel: this.mcqForm.bloomsLevel || ''
     };
   }
 
@@ -388,7 +408,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
       const value = _.find(this.mediaArr, ob => {
         return ob.id === media.id;
       });
-      if (value === undefined){
+      if (value === undefined) {
         this.mediaArr.push(media);
       }
     }
