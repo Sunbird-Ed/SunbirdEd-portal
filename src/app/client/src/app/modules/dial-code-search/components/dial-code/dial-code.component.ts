@@ -90,7 +90,8 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     const requestParams = {
       filters: {
         dialcodes: this.dialCode
-      }
+      },
+      params: this.configService.appConfig.dialPage.contentApiQueryParams
     };
     this.searchService.contentSearch(requestParams, false).pipe(mergeMap(apiResponse => {
       const linkedCollectionsIds = [];

@@ -5,34 +5,34 @@ $border-color: #CCCCCC;
 
 @mixin border($var-direction: "border", $var-width: $border-width, $var-color: $border-color) {
     @if $var-direction == 'border'{
-        border: $var-width solid $var-color;
+        border: $var-width solid $var-color !important;
     }
     @if $var-direction == 'border-bottom'{
-        border-bottom: $var-width solid $var-color;
+        border-bottom: $var-width solid $var-color !important;
     }
     @if $var-direction == 'border-top'{
-        border-top: $var-width solid $var-color;
+        border-top: $var-width solid $var-color !important;
     }
     @if $var-direction == 'border-right'{
-        border-right: $var-width solid $var-color;
+        border-right: $var-width solid $var-color !important;
     }
     @if $var-direction == 'border-left'{
-        border-left: $var-width solid $var-color;
+        border-left: $var-width solid $var-color !important;
     }
     @if $var-direction == 'border-tb'{
-        border-bottom: $var-width solid $var-color;
-        border-top:    $var-width solid $var-color;
+        border-bottom: $var-width solid $var-color !important;
+        border-top:    $var-width solid $var-color !important;
     }
     @if $var-direction == 'border-lr'{
-        border-left:  $var-width solid $var-color;
-        border-right: $var-width solid $var-color;
+        border-left: $var-width solid $var-color !important;
+        border-right: $var-width solid $var-color !important;
     }
     @if $var-direction == 'border-no-top'{
-        border:     $var-width solid $var-color;
+        border: $var-width solid $var-color !important;
         border-top: none;
     }
     @if $var-direction == 'border-no-bottom'{
-        border:        $var-width solid $var-color;
-        border-bottom: none;
+        border:        $var-width solid $var-color !important;
+        border-bottom: none !important;
     }
 }
