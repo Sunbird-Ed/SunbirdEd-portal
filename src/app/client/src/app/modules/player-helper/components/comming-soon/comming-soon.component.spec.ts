@@ -17,17 +17,6 @@ describe('CommingSoonComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [SuiModule , HttpClientTestingModule, SharedModule.forRoot()],
-      declarations: [CommingSoonComponent],
-      providers: [ResourceService, UserService, OrgDetailsService, CacheService, BrowserCacheTtlService,
-      { provide: ResourceService, useValue: resourceBundle }, { provide: Router, useClass: RouterStub },],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
-  }));
-
   const resourceBundle = {
     'messages': {
       'stmsg': {
@@ -40,7 +29,16 @@ describe('CommingSoonComponent', () => {
     },
     languageSelected$: observableOf({})
   };
-
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [SuiModule , HttpClientTestingModule, SharedModule.forRoot()],
+      declarations: [CommingSoonComponent],
+      providers: [ResourceService, UserService, OrgDetailsService, CacheService, BrowserCacheTtlService,
+      { provide: ResourceService, useValue: resourceBundle }, { provide: Router, useClass: RouterStub }, ],
+      schemas: [NO_ERRORS_SCHEMA]
+    })
+      .compileComponents();
+  }));
   beforeEach(() => {
     fixture = TestBed.createComponent(CommingSoonComponent);
     component = fixture.componentInstance;
