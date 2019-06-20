@@ -103,7 +103,7 @@ describe('CourseConsumptionPageComponent', () => {
     expect(component.enrolledBatchInfo).toBeDefined();
     expect(component.batchId).toBeTruthy();
   }));
-  fit('should navigate to course consumption page if course is present in enrolled list, if batchId is not in activated route', fakeAsync(() => {
+  it('should navigate to course consumption page if course is present in enrolled list, if batchId is not in activated route', fakeAsync(() => {
     activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_212347136096788480178'};
     spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
@@ -122,7 +122,7 @@ describe('CourseConsumptionPageComponent', () => {
     expect(component.toasterService.error).toHaveBeenCalled();
     expect(component.navigationHelperService.navigateToResource).toHaveBeenCalledWith('/learn');
   });
-  fit('should fetch course details if it not enrolled course and should not fetch enrolled batch details', fakeAsync(() => {
+  it('should fetch course details if it not enrolled course and should not fetch enrolled batch details', fakeAsync(() => {
     activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_123'};
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
