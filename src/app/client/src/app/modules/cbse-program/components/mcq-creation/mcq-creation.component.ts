@@ -216,9 +216,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
           }
         });
 
-        let assessmentItem = {
-          'objectType': 'AssessmentItem',
-          'metadata': {
+        let metadata = {
             'code': UUID.UUID(),
             'category': this.selectedAttributes.questionType.toUpperCase(),
             'templateId': this.questionMetaData.data.templateId,
@@ -233,14 +231,13 @@ export class McqCreationComponent implements OnInit, OnChanges {
             'media': this.mediaArr,
             'type': 'mcq'
           }
-        }
 
         if (this.mcqForm.learningOutcome) {
-          assessmentItem["metadata"]["learningOutcome"] = [this.mcqForm.learningOutcome]
+          metadata["learningOutcome"] = [this.mcqForm.learningOutcome]
         }
 
         if (this.mcqForm.bloomsLevel) {
-          assessmentItem["metadata"]["bloomsLevel"] = [this.mcqForm.bloomsLevel]
+          metadata["bloomsLevel"] = [this.mcqForm.bloomsLevel]
         }
 
 
@@ -248,7 +245,10 @@ export class McqCreationComponent implements OnInit, OnChanges {
           url: this.configService.urlConFig.URLS.ASSESSMENT.UPDATE + '/' + this.questionMetaData.data.identifier,
           data: {
             'request': {
-              'assessment_item': assessmentItem
+              'assessment_item': {
+                'objectType': 'AssessmentItem',
+                'metadata': metadata
+              }
             }
           }
         };
@@ -305,9 +305,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
           creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
         }
 
-        let assessmentItem = {
-          'objectType': 'AssessmentItem',
-          'metadata': {
+        let metadata = {
             'createdBy': this.userService.userid,
             'creator': creator,
             'organisation': this.selectedAttributes.onBoardSchool ? [this.selectedAttributes.onBoardSchool] : [],
@@ -337,20 +335,22 @@ export class McqCreationComponent implements OnInit, OnChanges {
             'media': this.mediaArr,
             'qumlVersion': 0.5
           }
-        }
 
         if (this.mcqForm.learningOutcome) {
-          assessmentItem["learningOutcome"] = [this.mcqForm.learningOutcome]
+          metadata["learningOutcome"] = [this.mcqForm.learningOutcome]
         }
 
         if (this.mcqForm.bloomsLevel) {
-          assessmentItem["bloomsLevel"] = [this.mcqForm.bloomsLevel]
+          metadata["bloomsLevel"] = [this.mcqForm.bloomsLevel]
         }
         const req = {
           url: this.configService.urlConFig.URLS.ASSESSMENT.CREATE,
           data: {
             'request': {
-              'assessment_item': assessmentItem
+              'assessment_item':  {
+                'objectType': 'AssessmentItem',
+                'metadata': metadata
+              }
             }
           }
         };
