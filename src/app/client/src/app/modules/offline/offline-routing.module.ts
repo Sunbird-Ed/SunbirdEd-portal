@@ -14,6 +14,9 @@ const routes: Routes = [
     }
   },
   {
+    path: 'browse/play', loadChildren: './../public/module/player/player.module#PlayerModule'
+  },
+  {
     path: 'help-center', component: OfflineHelpCenterComponent, data: {
       telemetry: {
         env: 'offline', pageid: 'help-center', type: 'view'
