@@ -99,7 +99,7 @@
                 </div>
                 <button appTelemetryInteract [telemetryInteractEdata]="getSearchButtonInteractEdata(queryParam.key)"
                     class="sb-btn sb-btn-normal" (click)="onEnter(queryParam.key)"
-                    title="{{resourceService?.frmelmnts?.prmpt?.search}}" tabindex="0">Search</button>
+                    title="{{resourceService?.frmelmnts?.prmpt?.search}}" tabindex="0">{{resourceService.frmelmnts?.lbl?.search}}</button>
             </div>
             <!--/Explore Pages-->
             <!--/Search Box-->
