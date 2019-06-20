@@ -103,7 +103,7 @@ describe('CourseConsumptionPageComponent', () => {
     expect(component.enrolledBatchInfo).toBeDefined();
     expect(component.batchId).toBeTruthy();
   }));
-  fit('should navigate to course consumption page if course is present in enrolled list, if batchId is not in activated route', () => {
+  fit('should navigate to course consumption page if course is present in enrolled list, if batchId is not in activated route', fakeAsync(() => {
     activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_212347136096788480178'};
     spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
@@ -114,7 +114,7 @@ describe('CourseConsumptionPageComponent', () => {
     expect(component.router.navigate).toHaveBeenCalledWith(['learn/course/do_212347136096788480178/batch/do_112498388508524544160']);
     expect(component.enrolledBatchInfo).toBeDefined();
     expect(component.courseHierarchy).toBeDefined();
-  });
+  }));
   it('should navigate to course view page if fetching enrolled course fails', () => {
     spyOn(learnerService, 'get').and.returnValue(throwError(enrolledCourse.courseSuccessEnroll));
     courseService.initialize();
@@ -122,7 +122,7 @@ describe('CourseConsumptionPageComponent', () => {
     expect(component.toasterService.error).toHaveBeenCalled();
     expect(component.navigationHelperService.navigateToResource).toHaveBeenCalledWith('/learn');
   });
-  fit('should fetch course details if it not enrolled course and should not fetch enrolled batch details', () => {
+  fit('should fetch course details if it not enrolled course and should not fetch enrolled batch details', fakeAsync(() => {
     activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_123'};
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
@@ -130,7 +130,7 @@ describe('CourseConsumptionPageComponent', () => {
     component.ngOnInit();
     tick(100);
     expect(component.courseHierarchy).toBeDefined();
-  });
+  }));
   it('should navigate to course view page if batchId/courseId combination dint match any enrolled course list', () => {
     activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_123',  batchId: '123'};
     spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
