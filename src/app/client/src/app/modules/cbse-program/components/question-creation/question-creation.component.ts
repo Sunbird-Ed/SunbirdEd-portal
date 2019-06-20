@@ -157,12 +157,12 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   initializeFormFields() {
     if (this.learningOutcomeOptions.length > 0) {
       this.questionMetaForm = new FormGroup({
-        learningOutcome: new FormControl('', Validators.required),
-        bloomsLevel: new FormControl('', [Validators.required]),
+        learningOutcome: new FormControl(''),
+        bloomsLevel: new FormControl(''),
       });
     } else {
       this.questionMetaForm = new FormGroup({
-        bloomsLevel: new FormControl('', [Validators.required])
+        bloomsLevel: new FormControl('')
       });
     }
   }
