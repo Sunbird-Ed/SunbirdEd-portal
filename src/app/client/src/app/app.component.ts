@@ -73,7 +73,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   sessionExpired = false;
   instance: string;
   resourceDataSubscription: any;
-  addRemoveBtn;
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
