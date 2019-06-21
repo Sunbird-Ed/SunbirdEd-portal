@@ -47,7 +47,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
           }
         }
         return this.getDetails(paramsObj);
-      }), delay(100), takeUntil(this.unsubscribe$))
+      }), delay(200), takeUntil(this.unsubscribe$))
       .subscribe(({ courseHierarchy, enrolledBatchDetails }: any) => {
         this.enrolledBatchInfo = enrolledBatchDetails;
         this.courseHierarchy = courseHierarchy;
