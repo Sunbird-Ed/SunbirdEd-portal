@@ -5,7 +5,7 @@ import {
   UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
   NavigationHelperService, ConfigService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, DoCheck, AfterViewInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit } from '@angular/core';
 import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
   SessionExpiryInterceptor } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -25,7 +25,7 @@ import { steps as defaultSteps, defaultStepOptions} from './shepherd-data';
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit, OnDestroy, DoCheck, AfterViewInit {
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
   /**
    * user profile details.
@@ -330,13 +330,6 @@ export class AppComponent implements OnInit, OnDestroy, DoCheck, AfterViewInit {
           this._document.documentElement.dir = 'ltr';
         }
     });
-  }
-
-  ngDoCheck() {
-    this.addRemoveBtn = document.querySelector('.shepherd-button');
-    if (this.addRemoveBtn) {
-      this.addRemoveBtn.classList.remove('shepherd-button');
-    }
   }
 
   ngAfterViewInit() {

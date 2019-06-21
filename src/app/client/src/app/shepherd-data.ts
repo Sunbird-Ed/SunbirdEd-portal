@@ -1,6 +1,6 @@
 export const builtInButtons = {
     skip: {
-        classes: 'sb-btn sb-btn-xs sb-btn-secondary cancel-button',
+        classes: 'sb-btn sb-btn-xs sb-btn-link sb-btn-link-tertiary skip-button',
         text: 'Skip',
         type: 'cancel'
     },
