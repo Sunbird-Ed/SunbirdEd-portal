@@ -98,7 +98,7 @@ describe('CourseConsumptionPageComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     courseService.initialize();
     component.ngOnInit();
-    tick(100);
+    tick(200);
     expect(component.courseHierarchy).toBeDefined();
     expect(component.enrolledBatchInfo).toBeDefined();
     expect(component.batchId).toBeTruthy();
@@ -111,7 +111,7 @@ describe('CourseConsumptionPageComponent', () => {
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch));
     courseService.initialize();
     component.ngOnInit();
-    tick(100);
+    tick(200);
     expect(component.router.navigate).toHaveBeenCalledWith(['learn/course/do_212347136096788480178/batch/do_112498388508524544160']);
     expect(component.enrolledBatchInfo).toBeDefined();
     expect(component.courseHierarchy).toBeDefined();
@@ -129,7 +129,7 @@ describe('CourseConsumptionPageComponent', () => {
     spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
     courseService.initialize();
     component.ngOnInit();
-    tick(100);
+    tick(200);
     expect(component.courseHierarchy).toBeDefined();
   }));
   it('should navigate to course view page if batchId/courseId combination dint match any enrolled course list', () => {
