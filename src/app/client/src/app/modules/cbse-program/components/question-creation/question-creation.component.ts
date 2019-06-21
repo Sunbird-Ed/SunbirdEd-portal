@@ -270,7 +270,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 'topic': [this.selectedAttributes.topic],
                 'status': 'Review',
                 'media': this.mediaArr,
-                'qumlVersion': 0.5
+                'qumlVersion': 0.5,
+                'textBookUnitIdentifier':this.selectedAttributes.textBookUnitIdentifier
               }
             }
           }
@@ -399,7 +400,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       return forkJoin(latexBody).pipe(
         map((res) => {
           _.forEach(res, (latex, i) => {
-            body = latex.includes('Error') ? body : body.replace(isMathML[i], '<div class="mathText">' + latex + '</div>');
+            body = latex.includes('Error') ? body : body.replace(isMathML[i], '<div class="mathText">'+latex+'</div>');
           });
           return body;
         })

@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 import {Subject} from 'rxjs';
  
 interface ISelectedAttributes {
+    textBookUnitIdentifier?: any;
     framework?: string;
     channel?: string;
     board?: string;
@@ -71,6 +72,7 @@ export class CbseComponent implements OnInit, OnDestroy {
   public selectedQuestionTypeTopic(event) {
     this.selectedAttributes.topic =  event.topic;
     this.selectedAttributes.questionType =  event.questionType;
+    this.selectedAttributes.textBookUnitIdentifier =  event.textBookUnitIdentifier;
     this.navigate('next');
   }
   handleRoleChange() {

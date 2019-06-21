@@ -79,7 +79,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
         if (data.topic && data.topic[0]) {
           textBookMetaData.push({
             name : data.name,
-            topic: data.topic[0]
+            topic: data.topic[0],
+            identifier: data.identifier
           });
         }
       });
@@ -112,7 +113,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
     forkJoin(apiRequest).subscribe(data => {
       this.showLoader = true;
       this.textBookChapters = _.map(textBookMetaData, topicData => {
-        const results = { name: topicData.name, topic:  topicData.topic };
+        const results = { name: topicData.name, topic:  topicData.topic, identifier:topicData.identifier  };
         _.forEach(this.questionType, (type: string, index) => {
           results[type] = {
             name: type,
@@ -121,6 +122,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
           };
         });
         this.showLoader = false;
+        //text book-unit-id added
+        results.identifier =  topicData.identifier;
         return results;
       });
     }, error => {
@@ -168,10 +171,11 @@ export class ChapterListComponent implements OnInit, OnChanges {
       map(res => _.get(res, 'result.facets[0].values')));
   }
 
-  emitQuestionTypeTopic(type, topic) {
+  emitQuestionTypeTopic(type, topic, topicIdentifier) {
     this.selectedQuestionTypeTopic.emit({
       'questionType': type,
-      'topic': topic
+      'topic': topic,
+      'textBookUnitIdentifier':topicIdentifier,
     });
   }
 
