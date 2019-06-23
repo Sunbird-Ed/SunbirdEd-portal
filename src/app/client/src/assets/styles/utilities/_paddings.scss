@@ -278,6 +278,9 @@
 .pt-40 {
   @include padding(40px null null null);
 }
+.pt-48 {
+  @include padding(48px null null null);
+}
 .pt-64 {
   @include padding(64px null null null);
 }

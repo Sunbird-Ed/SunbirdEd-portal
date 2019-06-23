@@ -1,11 +1,12 @@
 
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ToasterService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { DownloadManagerService } from './../../services';
 import { ConnectionService } from './../../services';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-download-manager',
@@ -22,7 +23,9 @@ export class DownloadManagerComponent implements OnInit {
 
   constructor(public downloadManagerService: DownloadManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
-    public connectionService: ConnectionService) { }
+    public connectionService: ConnectionService,
+    public configService: ConfigService,
+    public router: Router) { }
 
   ngOnInit() {
     // Call download list initailly
@@ -71,9 +74,12 @@ export class DownloadManagerComponent implements OnInit {
   showProgressValue(progressSize, totalSize) {
     return (progressSize / totalSize) * 100;
   }
-  modalStatus() {
-  setTimeout(() => {
-    this.isOpen = false;
-  }, 500);
+
+  openContent(contentId, mimeType) {
+    if (mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+      this.router.navigate(['play/collection', contentId]);
+    } else {
+      this.router.navigate(['play/content', contentId]);
+    }
   }
 }

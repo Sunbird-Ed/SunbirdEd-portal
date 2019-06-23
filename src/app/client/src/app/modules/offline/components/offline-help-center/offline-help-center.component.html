@@ -1,0 +1,293 @@
+<sui-tabset class="sb-tab-section p-0">
+    <div class="sb-subheader">
+        <div class="ui container d-flex flex-ai-center">
+            <ul class="sb-subheader-list disable-scrollbars">
+                <li class="sb-subheader-list-item" (click)='tabClicked("browse")'>
+                    <a class="sb-subheader-list-item-link active" title="Browse" suiTabHeader="1">
+                        <i class="globe icon"></i>
+                        <span class="sb-subheader-list-item-text">Browse</span>
+                    </a>
+                </li>
+                <li class="sb-subheader-list-item" (click)='tabClicked("search")'>
+                    <a class="sb-subheader-list-item-link" title="Search" suiTabHeader="2">
+                        <i class="search icon"></i>
+                        <span class="sb-subheader-list-item-text">Search</span>
+                    </a>
+                </li>
+                <li class="sb-subheader-list-item" (click)='tabClicked("download")'>
+                    <a class="sb-subheader-list-item-link" title="Download" suiTabHeader="3">
+                        <i class="download icon"></i>
+                        <span class="sb-subheader-list-item-text">Download</span>
+                    </a>
+                </li>
+                <li class="sb-subheader-list-item" (click)='tabClicked("play")'>
+                    <a class="sb-subheader-list-item-link" title="Play" suiTabHeader="4">
+                        <i class="play icon"></i>
+                        <span class="sb-subheader-list-item-text">Play</span>
+                    </a>
+                </li>
+                <li class="sb-subheader-list-item" (click)='tabClicked("upload")'>
+                    <a class="sb-subheader-list-item-link" title="Upload" suiTabHeader="5">
+                        <i class="upload icon"></i>
+                        <span class="sb-subheader-list-item-text">Upload</span>
+                    </a>
+                </li>
+            </ul>
+            <button type="button" data-html2canvas-ignore class="sb-btn sb-btn-tertiary sb-btn-normal ml-auto sb-btn-download-pdf sb-btn-download"
+                (click)="generatepdf()" id="nopdf">
+                <i class="icon"></i> Download PDF
+            </button>
+        </div>
+    </div>
+
+    <div class="suiTabContainer download-pdf pt-48">
+        <div class="ui" suiTabContent="1">
+            <div class="ui fluid container mt-48 sb-help-page-section" id="browser-cover">
+                <div class="help-center-fixed-content d-flex flex-ai-center flex-jc-space-between sb-help-page-title">
+                    <h1 class="help-center-content-title mt-0">Browsing for Content</h1>
+                </div>
+
+                <div class="help-center-fixed-content">
+                    <h2 class="help-center-content-subtitle">Overview</h2>
+                    <p class="help-center-content-paragraph">
+                        DIKSHA has a lot of digital content that is related to topics in your textbook.
+                    </p>
+                    <p class="help-center-content-paragraph">
+                        To look for content that is relevant to you, use the
+                        <b>‘Browse Online’</b> feature. You can browse for content only when you are connected to the Internet.
+                    </p>
+                </div>
+                <div class="help-center-download-steps">
+                    <h3 class="help-center-fixed-content help-center-content-extra">Browsing Online</h3>
+                    <div class="ui container help-center-image-section text-center d-flex">
+                        <img src="../../../../../assets/images/browse-online.jpg" class="help-center-image " alt="help-center" data-zoomable />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="ui" suiTabContent="2">
+            <div class="ui fluid container mt-48 sb-help-page-section" id="search-cover">
+                <div class="help-center-fixed-content d-flex flex-ai-center flex-jc-space-between sb-help-page-title">
+                    <h1 class="help-center-content-title mt-0">
+                        Searching for Content
+                    </h1>
+                </div>
+                <div class="help-center-fixed-content">
+                    <h2 class="help-center-content-subtitle">Overview</h2>
+                    <p class="help-center-content-paragraph">
+                        DIKSHA has a lot of digital content that is related to topics in your textbook.
+                    </p>
+                    <p class="help-center-content-paragraph">
+                        To search for content that is relevant to you, use the
+                        <b>‘Search’</b> feature. You can search for content when you are online or offline. You can search
+                        for content using the following options:
+                    </p>
+                    <ul class="help-center-list help-center-list-content">
+                        <li class="help-center-list-content">Search Bar</li>
+                        <li class="help-center-list-content">Filter Options</li>
+                        <li class="help-center-list-content">QR Codes</li>
+                    </ul>
+                </div>
+                <div class="help-center-download-steps">
+                    <h3 class="help-center-fixed-content help-center-content-extra">Using Search Bar</h3>
+                    <div class="ui container help-center-image-section text-center d-flex">
+                        <img src="../../../../../assets/images/search-bar.jpg" class="help-center-image " alt="help-center" data-zoomable />
+                    </div>
+                </div>
+                <div class="help-center-download-steps">
+                    <h3 class="help-center-fixed-content help-center-content-extra">Search Results</h3>
+                    <div class="ui container help-center-image-section text-center d-flex">
+                        <img src="../../../../../assets/images/search-bar.jpg" class="help-center-image " alt="help-center" data-zoomable />
+                    </div>
+                </div>
+                <div class="help-center-fixed-content">
+                    <h2 class="help-center-content-subtitle">
+                        Searching for Specific Content
+                    </h2>
+                    <p class="help-center-content-paragraph">
+                        You can bring down the search results by using the various filter options available.
+                    </p>
+                    <p class="help-center-content-paragraph">
+                        You can use the filter options such as
+                        <b>Board, Medium, Class, Subject</b> or <b>Content Types</b> and find specific content files.
+                    </p>
+                    <p class="help-center-content-paragraph">
+                        For example, you can search for a Biology (Subject), textbook (Content Type), for Class IV, in English (Medium) under CBSE
+                        (Board)
+                    </p>
+                </div>
+                <div class="help-center-download-steps">
+                    <div class="ui container help-center-image-section text-center d-flex">
+                        <img src="../../../../../assets/images/explore-content.jpg" class="help-center-image " alt="help-center" data-zoomable />
+                    </div>
+                </div>
+                <div class="help-center-download-steps">
+                    <h3 class="help-center-fixed-content help-center-content-extra">Search Results</h3>
+                    <div class="ui container help-center-image-section text-center d-flex">
+                        <img src="../../../../../assets/images/explore-search-result.jpg" class="help-center-image " alt="help-center" data-zoomable
+                        />
+                    </div>
+                </div>
+                <div class="help-center-fixed-content">
+                    <h2 class="help-center-content-subtitle">Using QR Codes</h2>
+                    <p class="help-center-content-paragraph">
+                        QR code is the 6 digit code printed on the textbook. You can use this 6 digit code to search and find content linked with
+                        the textbook.
+                    </p>
+                </div>
+                <div class="help-center-download-steps">
+                    <div class="ui container help-center-image-section text-center d-flex">
+                        <img src="../../../../../assets/images/enter-qr-code.jpg" class="help-center-image " alt="help-center" data-zoomable />
+                    </div>
+                </div>
+                <div class="help-center-download-steps">
+                    <div class="ui container help-center-image-section text-center d-flex">
+                        <img src="../../../../../assets/images/enter-qr-modal.jpg" class="help-center-image " alt="help-center" data-zoomable />
+                    </div>
+                </div>
+                <div class="help-center-download-steps">
+                    <h3 class="help-center-fixed-content help-center-content-extra">Search Results</h3>
+                    <div class="ui container help-center-image-section text-center d-flex">
+                        <img src="../../../../../assets/images/qr-search-results.jpg" class="help-center-image " alt="help-center" data-zoomable
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui" suiTabContent="3">
+            <div class="ui fluid container mt-48 sb-help-page-section" id="download-cover">
+                <div class="help-center-fixed-content d-flex flex-ai-center flex-jc-space-between sb-help-page-title">
+                    <h1 class="help-center-content-title mt-0">Downloading Content</h1>
+                </div>
+                <div class="help-center-fixed-content">
+                    <h2 class="help-center-content-subtitle">Overview</h2>
+                    <p class="help-center-content-paragraph">
+                        After you find content, use the <b>‘Download to My library’</b>
+                        option to download the content files to your library. You can play the downloaded content files at any time, even when you
+                        are offline.
+                    </p>
+                    <p class="help-center-content-paragraph">
+                        You can also copy the downloaded content to your pendrive. All the files that you copy to your pendrive or computer are saved
+                        with a
+                        <b>.ecar</b> extension. For example, <b>MATHS_01.ecar</b>
+                    </p>
+                </div>
+                <div class="help-center-download-steps">
+                    <div class="ui container help-center-image-section text-center d-flex">
+                        <img src="../../../../../assets/images/download-to-library.jpg" class="help-center-image " alt="help-center" data-zoomable
+                        />
+                    </div>
+                </div>
+                <div class="help-center-download-steps">
+                    <div class="ui container help-center-image-section text-center d-flex">
+                        <img src="../../../../../assets/images/view-downloads.jpg" class="help-center-image " alt="help-center" data-zoomable />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui" suiTabContent="4">
+            <div class="ui fluid container mt-48 sb-help-page-section" id="play-cover">
+                <div class="help-center-fixed-content d-flex flex-ai-center flex-jc-space-between sb-help-page-title">
+                    <h1 class="help-center-content-title mt-0">My Library</h1>
+                </div>
+                <div class="help-center-fixed-content">
+                    <h2 class="help-center-content-subtitle">Overview</h2>
+                    <p class="help-center-content-paragraph">
+                        The <b>‘My Library’</b> feature holds all the files that you have downloaded when you are online.
+                        You can play the content in your Library when you are online or offline.
+                    </p>
+                    <p class="help-center-content-paragraph">
+                        You can also copy the downloaded files from your Library to a pendrive or any other external device.
+                    </p>
+                </div>
+                <div class="help-center-download-steps">
+                    <h3 class="help-center-fixed-content help-center-content-extra">
+                        Playing content from My Library
+                    </h3>
+                    <div class="ui container help-center-image-section text-center d-flex">
+                        <img src="../../../../../assets/images/play.jpg" class="help-center-image " alt="help-center" data-zoomable />
+                    </div>
+                </div>
+                <div class="help-center-download-steps">
+                    <h2 class="help-center-fixed-content help-center-content-extra">
+                        Copying content from My Library
+                    </h2>
+                    <div class="ui container help-center-image-section text-center d-flex">
+                        <img src="../../../../../assets/images/copyto-pendrive.jpg" class="help-center-image " alt="help-center" data-zoomable />
+                    </div>
+                    <div class="ui container help-center-image-section text-center d-flex">
+                        <img src="../../../../../assets/images/copyto-pendrive_2.jpg" class="help-center-image " alt="help-center" data-zoomable
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui" suiTabContent="5">
+            <div class="ui fluid container mt-48 sb-help-page-section" id="upload-cover">
+                <div class="help-center-fixed-content d-flex flex-ai-center flex-jc-space-between sb-help-page-title">
+                    <h1 class="help-center-content-title mt-0">
+                        Uploading Content from Pen Drive
+                    </h1>
+                </div>
+                <div class="help-center-fixed-content">
+                    <h2 class="help-center-content-subtitle">Overview</h2>
+                    <p class="help-center-content-paragraph">
+                        The “Upload” feature allows you to upload content to the DIKSHA desktop application. You can upload DIKSHA content files
+                        (.ecar files) that you have copied in your ped drives.
+                    </p>
+                    <p class="help-center-content-paragraph">
+                        For example, you can download and copy content files to your pen drive when you are online. You can upload these files from
+                        your pen drive to the desktop application and play the content files when there is no Internet.
+                    </p>
+                </div>
+                <div class="help-center-download-steps">
+                    <h2 class="help-center-fixed-content help-center-content-extra">
+                        Inserting the Pen Drive
+                    </h2>
+                    <div class="ui container help-center-image-section text-center d-flex">
+                        <img src="../../../../../assets/images/pendrive.jpg" class="help-center-image " alt="help-center" data-zoomable />
+                    </div>
+                </div>
+                <div class="help-center-download-steps">
+                    <h2 class="help-center-fixed-content help-center-content-extra">
+                        Uploading Content
+                    </h2>
+                    <div class="ui container help-center-image-section text-center d-flex">
+                        <img src="../../../../../assets/images/upload-content.jpg" class="help-center-image " alt="help-center" data-zoomable />
+                    </div>
+                    <div class="ui container help-center-image-section text-center d-flex">
+                        <img src="../../../../../assets/images/upload-content_2.jpg" class="help-center-image " alt="help-center" data-zoomable />
+                    </div>
+                </div>
+                <div class="help-center-download-steps">
+                    <div class="ui container help-center-image-section text-center d-flex">
+                        <img src="../../../../../assets/images/upload-status.jpg" class="help-center-image " alt="help-center" data-zoomable />
+                    </div>
+                </div>
+                <div class="help-center-fixed-content">
+                    <h2 class="help-center-content-subtitle">Unsuccessful Upload</h2>
+                    <p class="help-center-content-paragraph">
+                        Files may not get uploaded successfully if they are corrupted
+                    </p>
+                    <span>If you face this problem:</span>
+                    <ol class="help-center-list help-center-list-content">
+                        <li class="help-center-list-content">Connect to the Internet</li>
+                        <li class="help-center-list-content">
+                            Browse for the content file
+                        </li>
+                        <li class="help-center-list-content">
+                            Download it to My Library
+                        </li>
+                        <li class="help-center-list-content">
+                            Copy it to your pen drive
+                        </li>
+                        <li class="help-center-list-content">
+                            Upload the content file from your pen drive
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</sui-tabset>

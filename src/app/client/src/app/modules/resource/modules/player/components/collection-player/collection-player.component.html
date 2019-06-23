@@ -10,7 +10,7 @@
         <div id="app-player-collection-renderer">
           <div class="sb-pageSection">
               <div class="sb-pageSection-header">
-                <h4 class="sb-pageSection-title m-0 mr-5">{{contentTitle}}</h4>
+                <h4 class="sb-pageSection-title m-0 mr-8">{{contentTitle}}</h4>
                 <button class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button"  (click)="closeContentPlayer()" appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="objectContentInteract" [telemetryInteractCdata]="telemetryCdata">Close <i class="close icon"></i></button>
               </div>
           </div>
@@ -88,11 +88,7 @@
       <app-collection-tree *ngIf="collectionTreeNodes.data && collectionTreeNodes.data.children && collectionTreeNodes.data.children.length >0 ; else dataCommingSoon" (contentSelect)="OnPlayContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions">        
       </app-collection-tree>
       <ng-template #dataCommingSoon>
-        <div class="placeholder mt-40">
-            <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl }}"/>
-            <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0121}}</h5>
-            <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>
-        </div> 
+        <app-comming-soon [contentOrgId]="collectionTreeNodes.data.channel"></app-comming-soon>
     </ng-template>
     </div>
   </div>

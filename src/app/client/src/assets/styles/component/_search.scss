@@ -64,7 +64,8 @@
   .sb-btn {
     background: $sb-search-btn-bg;
     border: 0;
-    width: $base-block-space * 9;
+    min-width: auto;
+    white-space: nowrap;
     border-radius: 0 3px 3px 0;
     color: $blue;
     font-size: $sb-search-btn-font-size;

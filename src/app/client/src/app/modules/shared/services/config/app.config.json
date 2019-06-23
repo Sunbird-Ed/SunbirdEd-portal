@@ -1,4 +1,7 @@
 {
+  "UrlLinks": {
+    "downloadDikshaApp": "https://play.google.com/store/apps/details?id=in.gov.diksha.app"
+  },
   "Home": {
     "contentApiQueryParams": {
       "orgdetails": "orgName,email"
@@ -380,6 +383,11 @@
     },
     "dynamicFields": {
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
+    }
+  },
+  "dialPage": {
+    "contentApiQueryParams": {
+      "orgdetails": "orgName,email"
     }
   },
   "GetPage": {

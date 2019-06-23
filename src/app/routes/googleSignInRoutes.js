@@ -1,7 +1,8 @@
 const _ = require('lodash');
 const { googleOauth, createSession, fetchUserByEmailId, createUserWithMailId } = require('./../helpers/googleOauthHelper');
 const telemetryHelper = require('../helpers/telemetryHelper')
-
+const googleDid = '2c010e13a76145d864e459f75a176171';
+const logger = require('sb_logger_util_v2')
 module.exports = (app) => {
 
   app.get('/google/auth', (req, res) => {
@@ -40,7 +41,7 @@ module.exports = (app) => {
       sunbirdProfile = await fetchUserByEmailId(googleProfile.emailId, req).catch(handleGetUserByIdError);
       if (!_.get(sunbirdProfile, 'result.response.userName') || !_.get(sunbirdProfile, 'result.response.firstName')) {
         errType = 'USER_CREATE_API';
-        newUserDetails = await createUserWithMailId(googleProfile, req).catch(handleCreateUserError);
+        newUserDetails = await createUserWithMailId(googleProfile, reqQuery.client_id, req).catch(handleCreateUserError);
       }
       errType = 'KEYCLOAK_SESSION_CREATE';
       keyCloakToken = await createSession(googleProfile.emailId, reqQuery, req, res);
@@ -49,14 +50,14 @@ module.exports = (app) => {
       if (reqQuery.client_id === 'android') {
         redirectUrl = redirectUrl + getQueryParams(keyCloakToken);
       }
-      console.log('google sign in success', googleProfile, sunbirdProfile, newUserDetails, redirectUrl);
+      logger.info({msg:'google sign in success',additionalInfo: {googleProfile, sunbirdProfile, newUserDetails, redirectUrl}});
     } catch (error) {
       if (reqQuery.error_callback) {
         const queryObj = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type', 'version']);
         queryObj.error_message = getErrorMessage(error);
         redirectUrl = reqQuery.error_callback + getQueryParams(queryObj);
       }
-      console.log('google sign in failed', errType, error, googleProfile, sunbirdProfile, newUserDetails, redirectUrl);
+      logger.error({msg:'google sign in failed', error, additionalInfo: {errType, googleProfile, sunbirdProfile, newUserDetails, redirectUrl}})
       logErrorEvent(req, errType, error);
     } finally {
       res.redirect(redirectUrl || '/resources');
@@ -70,7 +71,8 @@ const logImpressionEvent = (req) => {
     uri: '/google/auth',
   }
   const context = {
-    env: 'GOOGLE_SIGN_IN'
+    env: 'GOOGLE_SIGN_IN',
+    did: googleDid
   }
   telemetryHelper.logImpressionEvent(req, {edata, context});
 }

@@ -1,4 +1,4 @@
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
@@ -20,16 +20,19 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
   @Input() playerOption: any ;
   contentRatingModal = false;
   previewCdnUrl: string;
+  isCdnWorking: string;
   /**
  * Dom element reference of contentRatingModal
  */
   @ViewChild('modal') modal;
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
-    public resourceService: ResourceService) {
+    public resourceService: ResourceService, public navigationHelperService: NavigationHelperService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
         ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
         ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
+    this.isCdnWorking  = (<HTMLInputElement>document.getElementById('cdnWorking'))
+    ? (<HTMLInputElement>document.getElementById('cdnWorking')).value : 'no';
   }
   /**
    * loadPlayer method will be called
@@ -75,6 +78,10 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
           playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
         } catch (err) {
           console.log('loading default player failed', err);
+          const prevUrls = this.navigationHelperService.history;
+          if (this.isCdnWorking.toLowerCase() === 'yes' && prevUrls[prevUrls.length - 2]) {
+            history.back();
+          }
         }
       };
     }, 0);
@@ -88,7 +95,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
       this.loadDefaultPlayer(this.configService.appConfig.PLAYER_CONFIG.localBaseUrl);
       return;
     }
-    if (this.previewCdnUrl && this.previewCdnUrl !== '') {
+    if (this.previewCdnUrl !== ''  && (this.isCdnWorking).toLowerCase() === 'yes') {
       this.loadCdnPlayer();
       return;
     }

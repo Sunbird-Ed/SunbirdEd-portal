@@ -1,6 +1,7 @@
 import { IInteractEventEdata} from '@sunbird/telemetry';
 import { Component, OnInit } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
+import * as _ from 'lodash-es';
 
 @Component({
     selector: 'app-content-import-header',
@@ -12,11 +13,13 @@ export class ContentImportHeaderComponent implements OnInit {
     showVideoModal = false;
     ContentImportIntractEdata: IInteractEventEdata;
     WatchVideoIntractEdata: IInteractEventEdata;
-
+    instance: string;
     constructor(public resourceService: ResourceService) { }
 
     ngOnInit() {
         this.setInteractData();
+        this.instance = _.upperCase(this.resourceService.instance);
+
     }
 
     setInteractData() {

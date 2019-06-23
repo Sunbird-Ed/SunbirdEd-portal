@@ -7,6 +7,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { SignupService } from './services';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { SharedModule } from '@sunbird/shared';
+
 
 @NgModule({
   imports: [
@@ -16,7 +18,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
     FormsModule,
     ReactiveFormsModule,
     RecaptchaModule,
-    TelemetryModule
+    TelemetryModule,
+    SharedModule
   ],
   declarations: [SignupComponent, OtpComponent],
   providers: [SignupService]

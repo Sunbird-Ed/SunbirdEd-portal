@@ -10,7 +10,7 @@
 
   <!--Header-->
   <div class="sb-modal-header">
-      {{resourceService.frmelmnts?.lbl?.exploreContentOn  | interpolate:'{instance}':resourceService.instance.toUpperCase()}}
+      {{resourceService.frmelmnts?.lbl?.exploreContentOn  | interpolate:'{instance}': instance}}
   </div>
   <!--/Header-->
 
@@ -35,7 +35,7 @@
                 #dialCodeVal 
                 placeholder="{{resourceService.frmelmnts?.lbl?.enterDialCode}}" 
                 title="{{resourceService.frmelmnts?.lbl?.enterDialCode}}"
-                type="text">
+                type="text" autofocus>
             </div>
             <button class="sb-btn sb-btn-normal">Search</button>
         </div>

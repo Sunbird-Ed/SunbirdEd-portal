@@ -1,7 +1,7 @@
 <sui-accordion class="styled fluid sb-single-pannel-accordion sb-download-manager-panel">
-  <sui-accordion-panel [isOpen]="isOpen">
+  <sui-accordion-panel [(isOpen)]="isOpen">
     <div title class="p-0">
-      <div class="sb-single-pannel-accordion-heading" (click)="modalStatus()">
+      <div class="sb-single-pannel-accordion-heading">
         <span>{{resourceService?.frmelmnts?.btn?.downloadManager}}</span>
         <i class="chevron down icon d-flex flex-ai-center"></i>
       </div>
@@ -31,7 +31,7 @@
         </div>
       </div>
 
-      <div class="sb-single-pannel-accordion-list-item d-flex flex-ai-center flex-jc-space-between" *ngFor="let data of downloadResponse.completed | orderBy:'createdOn': true">
+      <div class="cursor-pointer sb-single-pannel-accordion-list-item d-flex flex-ai-center flex-jc-space-between" *ngFor="let data of downloadResponse.completed | orderBy:'createdOn': true" (click)="openContent(data.contentId, data.mimeType)">
         <div class="">{{data.name}}</div>
         <div class="d-flex flex-ai-center flex-jc-center  sb-label sb-label-table sb-label-success-0">
           <i class="check circle icon success-icon d-flex flex-ai-center"></i>{{resourceService?.frmelmnts?.btn?.downloadCompleted}}

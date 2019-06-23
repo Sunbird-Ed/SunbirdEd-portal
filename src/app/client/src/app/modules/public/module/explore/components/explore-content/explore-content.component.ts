@@ -71,6 +71,12 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
                 this.router.navigate(['']);
             }
         );
+
+        if (this.isOffline) {
+            this.downloadManagerService.downloadListEvent.subscribe((data) => {
+                this.updateCardData(data);
+            });
+        }
     }
     public getFilters(filters) {
         this.facets = filters.map(element => element.code);
@@ -228,27 +234,29 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.unsubscribe$.complete();
     }
     private setNoResultMessage() {
-        if (!this.isOffline) {
+        if (this.isOffline && !(this.router.url.includes('/browse'))) {
             this.noResultMessage = {
-                'message': 'messages.stmsg.m0007',
-                'messageText': 'messages.stmsg.m0006'
-              };
-        } else {
+              'message': 'messages.stmsg.m0007',
+              'messageText': 'messages.stmsg.m0133'
+            };
+          } else {
             this.noResultMessage = {
-                'message': 'messages.stmsg.m0007',
-                'messageText': 'messages.stmsg.m0133'
-              };
-        }
+              'message': 'messages.stmsg.m0007',
+              'messageText': 'messages.stmsg.m0006'
+            };
+          }
     }
 
     startDownload(contentId) {
         this.downloadManagerService.downloadContentId = contentId;
         this.downloadManagerService.startDownload({}).subscribe(data => {
             this.downloadManagerService.downloadContentId = '';
-            this.changeAddToLibrary(this.contentList, contentId, true);
         }, error => {
             this.downloadManagerService.downloadContentId = '';
-            this.changeAddToLibrary(this.contentList, contentId, false);
+            _.each(this.contentList, (contents) => {
+                contents['addedToLibrary'] = false;
+                contents['showAddingToLibraryButton'] = false;
+            });
             this.toasterService.error(this.resourceService.messages.fmsg.m0090);
         });
     }
@@ -267,11 +275,25 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
             this.toasterService.error(this.resourceService.messages.fmsg.m0091);
         });
     }
-    changeAddToLibrary(contentList, contentId, boolean) {
-        _.find(contentList, (ele) => {
-            if (ele.metaData.identifier === contentId) {
-                ele['addedToLibrary'] = boolean;
-            }
+
+    updateCardData(downloadListdata) {
+        _.each(this.contentList, (contents) => {
+
+            // If download is completed card should show added to library
+            _.find(downloadListdata.result.response.downloads.completed, (completed) => {
+                if (contents.metaData.identifier === completed.contentId) {
+                    contents['addedToLibrary'] = true;
+                    contents['showAddingToLibraryButton'] = false;
+                }
+            });
+
+            // If download failed, card should show again add to library
+            _.find(downloadListdata.result.response.downloads.failed, (failed) => {
+                if (contents.metaData.identifier === failed.contentId) {
+                    contents['addedToLibrary'] = false;
+                    contents['showAddingToLibraryButton'] = false;
+                }
+            });
         });
     }
 }

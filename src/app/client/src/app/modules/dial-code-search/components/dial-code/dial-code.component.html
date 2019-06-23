@@ -29,21 +29,19 @@
           <div in-view-item [id]="i" [data]="content" class="masonry-item"
             *ngFor="let content of itemsToDisplay;let i = index;">
 
-            <app-dial-code-card *ngIf="!isOffline" appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"></app-dial-code-card>
+            <app-card *ngIf="!isOffline && content.contentType.toLowerCase() === 'course'" appContentDirection (clickEvent)="playCourse($event)" [dialCode]="dialCode" [data]="content"></app-card>
+
+            <app-dial-code-card *ngIf="!isOffline && content.contentType.toLowerCase() !== 'course'" appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"></app-dial-code-card>
 
             <app-offline-dial-code-card *ngIf="isOffline" appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"></app-offline-dial-code-card>
 
           </div>
         </div>
       </div>
-    </div>
-    <div class="row sb-placeholder">
-      <div *ngIf="!showLoader && !searchResults.length">
-        <div class="placeholder mt-40">
-          <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl}}" />
-          <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0121}}</h5>
-          <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>
-        </div>
+      <div class="row sb-placeholder">
+          <div *ngIf="!showLoader && !searchResults.length">
+            <app-comming-soon></app-comming-soon>
+          </div>
       </div>
     </div>
   </div>
@@ -58,11 +56,11 @@
           <div class="small-box border-round border-r50 ml-20 mr-10"></div>
           <div class="small-box border-round border-r50"></div>
         </div>
-        <label class="d-block pb-10 text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile}}</label>
+        <label class="d-block pb-10 text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile | interpolate:'{instance}': instance}}</label>
         <a id='app-download-mobile' class="d-block pb-10 text-center app-download">
           <img class="playStore-img" src="assets/images/google_playstore.png"
-            alt="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile}}"
-            title="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile}}">
+            alt="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile | interpolate:'{instance}':instance}}"
+            title="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile | interpolate:'{instance}':instance}}">
         </a>
         <p class="d-block text-center pt-10">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}
         </p>

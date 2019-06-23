@@ -9,7 +9,7 @@
         </div>
         <div class="sb-import-content">
           <h4 class="sb-import-content-title">{{resourceService?.frmelmnts?.lbl?.importContent}}</h4>
-          <p class="sb-import-content-meta">{{resourceService?.frmelmnts?.lbl?.uploadEcarFromPd}} </p>
+          <p class="sb-import-content-meta">{{resourceService?.frmelmnts?.lbl?.uploadEcarFromPd | interpolate:'{instance}': instance}} </p>
         </div>
         <button appTelemetryInteract [telemetryInteractEdata]="ContentImportIntractEdata"
           class="sb-btn sb-btn-normal sb-btn-secondary ml-auto sb-btn-bs" (click)="showImportModal = true;">
@@ -26,9 +26,8 @@
           <img src="../../../../../assets/images/offline-import-book.png" alt="offline watch video">
         </div>
         <div class="sb-import-content">
-          <h4 class="sb-import-content-title">{{resourceService?.frmelmnts?.lbl?.howToVideo}}</h4>
-          <p class="mb-0 sb-import-content-meta">{{resourceService.frmelmnts?.lbl?.subtopic}} :
-            {{resourceService.frmelmnts?.lbl?.limitsOfArtificialIntell}}</p>
+          <p class="mb-0 sb-import-content-meta">
+            {{resourceService.frmelmnts?.lbl?.howToUseDiksha | interpolate:'{instance}':instance }}</p>
         </div>
         <button appTelemetryInteract 
           [telemetryInteractEdata]="WatchVideoIntractEdata"

@@ -4,6 +4,21 @@ const sunbirdApiAuthToken = envHelper.PORTAL_API_AUTH_TOKEN
 const dateFormat = require('dateformat')
 const uuidv1 = require('uuid/v1')
 const _ = require('lodash')
+const ApiInterceptor = require('sb_api_interceptor')
+
+const keyCloakConfig = {
+  'authServerUrl': envHelper.PORTAL_AUTH_SERVER_URL,
+  'realm': envHelper.KEY_CLOAK_REALM,
+  'clientId': envHelper.PORTAL_AUTH_SERVER_CLIENT,
+  'public': envHelper.KEY_CLOAK_PUBLIC
+}
+
+const cacheConfig = {
+  store: envHelper.sunbird_cache_store,
+  ttl: envHelper.sunbird_cache_ttl
+}
+
+const apiInterceptor = new ApiInterceptor(keyCloakConfig, cacheConfig)
 
 const decorateRequestHeaders = function () {
   return function (proxyReqOpts, srcReq) {
@@ -37,9 +52,13 @@ const decoratePublicRequestHeaders = function () {
 }
 
 function verifyToken () {
-  return function (req, res, next) {
-    if (!req.session) {
-      res.status(440)
+  return async (req, res, next) => {
+    try {
+      await validateUserToken(req, res)
+      next()
+    } catch (error) {
+      const responseCode = 'UNAUTHORIZED_ACCESS';
+      res.status(401)
       res.send({
         'id': 'api.error',
         'ver': '1.0',
@@ -48,20 +67,39 @@ function verifyToken () {
           'resmsgid': uuidv1(),
           'msgid': null,
           'status': 'failed',
-          'err': 'LOGIN_TIMEOUT',
-          'errmsg': 'Session Expired'
+          'err': _.get(error, 'err') || 'INVALID_TOKEN',
+          'errmsg': _.get(error, 'err') || 'Access denied'
         },
-        'responseCode': 'LOGIN_TIMEOUT',
+        'responseCode': responseCode,
         'result': {}
       })
       res.end()
-    } else {
-      next()
     }
   }
 }
+function validateUserToken (req, res, next) {
+  var token = _.get(req, 'kauth.grant.access_token.token') || req.get('x-authenticated-user-token')
+  if (!token) {
+    return Promise.reject({
+      err: 'TOKEN_MISSING',
+      errmsg: 'Required field token is missing'
+    });
+  }
+  return new Promise((resolve, reject) => {
+    apiInterceptor.validateToken(token, (err, tokenData) => {
+      if (err) {
+        reject({
+          err: 'INVALID_TOKEN',
+          errmsg: 'Access denied'
+        })
+      } else {
+        resolve()
+      }
+    })
+  });
+}
 const handleSessionExpiry = (proxyRes, proxyResData, req, res, data) => {
-  if ((proxyRes.statusCode === 401 || proxyRes.statusCode === 403) && !req.session.userId) {
+  if ((proxyRes.statusCode === 401) && !req.session.userId) {
       return {
         id: 'app.error',
         ver: '1.0',
@@ -97,5 +135,6 @@ const addCorsHeaders =  (req, res, next) => {
 module.exports.decorateRequestHeaders = decorateRequestHeaders
 module.exports.decoratePublicRequestHeaders = decoratePublicRequestHeaders
 module.exports.verifyToken = verifyToken
+module.exports.validateUserToken = validateUserToken
 module.exports.handleSessionExpiry = handleSessionExpiry
 module.exports.addCorsHeaders = addCorsHeaders

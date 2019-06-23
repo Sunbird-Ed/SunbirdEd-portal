@@ -7,9 +7,9 @@
       <!--Content Title-->
       <div class="sb-pageSection">
         <div class="sb-pageSection-header">
-          <h2 class="sb-pageSection-title m-0 mr-5">
+          <h1 class="sb-pageSection-title m-0 mr-8">
             {{contentTitle}}
-          </h2>
+          </h1>
           <button 
             class="sb-btn sb-btn-xs sb-btn-error ml-auto" 
             type="button" 
@@ -107,11 +107,7 @@
 
       <!--Content Coming soon-->
       <ng-template #dataCommingSoon>
-        <div class="mt-40 text-center">
-          <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl }}" alt="{{resourceService?.messages?.stmsg?.m0121}}"/>
-          <h5 class="mt-16">{{resourceService?.messages?.stmsg?.m0121}}</h5>
-          <p class="">{{resourceService?.messages?.stmsg?.m0122}}</p>
-        </div> 
+        <app-comming-soon [contentOrgId]="collectionTreeNodes.data.channel"></app-comming-soon>
       </ng-template>
       <!--/Content Coming soon-->
     </div>

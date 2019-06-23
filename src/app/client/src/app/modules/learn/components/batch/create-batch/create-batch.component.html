@@ -16,7 +16,7 @@
   <!--/Header-->
 
   <!--Content-->
-  <div class="sb-modal-content" [appTelemetryImpression]="telemetryImpression">
+  <div class="sb-modal-content o-y-visible" [appTelemetryImpression]="telemetryImpression">
     <form [formGroup]="createBatchForm" class="ui form batchAddUserForm">
       <div class="one field" [ngClass]="createBatchForm.controls['name'].invalid && createBatchForm.controls['name'].errors.required && !createBatchForm.controls['name'].pristine ? 'error': ''">
         <div class="required field">
@@ -115,7 +115,7 @@
       {{resourceService?.frmelmnts?.btn?.create}}
     </button>
     <button 
-      class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+      class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" 
       (click)="createBatchForm.reset()"
     >
       {{resourceService?.frmelmnts?.btn?.clear}}
