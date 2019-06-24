@@ -29,15 +29,19 @@ export class TelemetryInteractDirective {
 
     if (this.telemetryInteractEdata) {
       this.appTelemetryInteractData = {
-       context: {
+        context: {
           env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
-          _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
-          _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env') ,
+            _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
+            _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env') ,
           cdata: this.telemetryInteractCdata || [],
         },
         edata: this.telemetryInteractEdata
       };
       if (this.telemetryInteractObject) {
+        if (this.telemetryInteractObject.ver) {
+          this.telemetryInteractObject.ver = _.isNumber(this.telemetryInteractObject.ver) ?
+            _.toString(this.telemetryInteractObject.ver) : this.telemetryInteractObject.ver
+        }
         this.appTelemetryInteractData.object = this.telemetryInteractObject;
       }
       this.telemetryService.interact(this.appTelemetryInteractData);
