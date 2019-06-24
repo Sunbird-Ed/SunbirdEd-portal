@@ -333,12 +333,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     setTimeout(() => {
-      this.shepherdService.defaultStepOptions = defaultStepOptions;
-      this.shepherdService.disableScroll = true;
-      this.shepherdService.modal = true;
-      this.shepherdService.confirmCancel = false;
-      this.shepherdService.addSteps(defaultSteps);
       if (this.isOffline) {
+        this.shepherdService.defaultStepOptions = defaultStepOptions;
+        this.shepherdService.disableScroll = true;
+        this.shepherdService.modal = true;
+        this.shepherdService.confirmCancel = false;
+        this.shepherdService.addSteps(defaultSteps);
         this.shepherdService.start();
       }
     }, 0);
