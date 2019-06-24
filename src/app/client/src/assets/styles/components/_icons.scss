@@ -69,7 +69,7 @@
 .sb-lock-icon {
   cursor: pointer;
 }
-[class*="sb-icon-"] {
+/*[class*="sb-icon-"] {
   -webkit-mask-size: contain;
   -webkit-mask-position: 50% 50%;
   -webkit-mask-repeat: no-repeat;
@@ -82,7 +82,7 @@
   display: inline-block;
   cursor: pointer;
 }
-
+*/
 [class*="sb-icon-primary"] {
   background-color: $primary-color;
 }
