@@ -542,7 +542,7 @@ $sb-label-status-indicator-error-background: $tertiary-color;
 
 // Filters
 $sb-prominent-filter-background-color: $white-color;
-$sb-prominent-filter-padding: $base-block-space 0;
+$sb-prominent-filter-padding: $base-block-space*2 $base-block-space*2;
 $sb-prominent-filter-header-font-weight: bold;
 $sb-prominent-filter-header-margin: ($base-block-space) 0 ($base-block-space*2) 0;
 $sb-prominent-filter-header-color: $primary-color;
