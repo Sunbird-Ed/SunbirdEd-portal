@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { combineLatest as observableCombineLatest } from 'rxjs';
 import { ResourceService, ServerResponse, ToasterService, ConfigService, UtilService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SearchService, SearchParam, PlayerService } from '@sunbird/core';
+import { SearchService, SearchParam, PlayerService, CoursesService, UserService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
@@ -47,11 +47,14 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   public closeMobilePopupInteractData: any;
   public appMobileDownloadInteractData: any;
   public dialSearchSource: string;
+  public showBatchInfo = false;
+  public selectedCourseBatches: any;
   isOffline: boolean = environment.isOffline;
   showExportLoader = false;
   contentName: string;
   instance: string;
-  constructor(public resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
+  constructor(public resourceService: ResourceService, public userService: UserService,
+    public coursesService: CoursesService, public router: Router, public activatedRoute: ActivatedRoute,
     public searchService: SearchService, public toasterService: ToasterService, public configService: ConfigService,
     public utilService: UtilService, public navigationhelperService: NavigationHelperService,
     public playerService: PlayerService, public telemetryService: TelemetryService,
@@ -149,8 +152,27 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       map((res) => _.get(res, 'result.content')), catchError(e => of(undefined)));
   }
 
-  public playCourse (event) {
-    this.publicPlayerService.playExploreCourse(event.data.metaData.identifier);
+  public playCourse({ section, data }) {
+    const { metaData } = data;
+    if (this.userService.loggedIn) {
+      this.coursesService.getEnrolledCourses().subscribe(() => {
+        const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
+        this.coursesService.findEnrolledCourses(metaData.identifier);
+        if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
+          return this.playerService.playContent(metaData);
+        }
+        if (onGoingBatchCount === 1) { // play course if only one open batch is present
+          metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
+          return this.playerService.playContent(metaData);
+        }
+        this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
+        this.showBatchInfo = true;
+      }, error => {
+        this.publicPlayerService.playExploreCourse(metaData.identifier);
+      });
+    } else {
+      this.publicPlayerService.playExploreCourse(metaData.identifier);
+    }
   }
 
   public getEvent(event) {
