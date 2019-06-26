@@ -140,9 +140,9 @@ export class MainHeaderComponent implements OnInit {
   }
   navigateToHome() {
     if (this.userService.loggedIn) {
-      this.router.navigate([this.router.url]);
+      this.router.navigate(['resources']);
     } else {
-      window.location.href = this.slug ? this.slug : '';
+      window.location.href = this.slug ? this.slug + '/explore'  : '/explore';
     }
   }
   onEnter(key) {
