@@ -333,7 +333,8 @@ export class McqCreationComponent implements OnInit, OnChanges {
             'topic': [this.selectedAttributes.topic],
             'status': 'Review',
             'media': this.mediaArr,
-            'qumlVersion': 0.5
+            'qumlVersion': 0.5,
+            'textBookUnitIdentifier':this.selectedAttributes.textBookUnitIdentifier
           }
 
         if (this.mcqForm.learningOutcome) {
