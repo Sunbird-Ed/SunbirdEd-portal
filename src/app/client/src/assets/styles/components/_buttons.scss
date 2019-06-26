@@ -252,6 +252,11 @@ a.sb-btn {
 }
 
 // button links colored
+.sb-btn-link-primary,.sb-btn-link-info,.sb-btn-link-secondary,.sb-btn-link-success,.sb-btn-link-tertiary,
+.sb-btn-link-warning,.sb-btn-link-error,.sb-btn-link-gray{
+    background:none;
+    border: 0px;
+}
 .sb-btn-link-primary,
 .sb-btn-link-info {
   @include btn-theme-links($primary-color);
@@ -274,6 +279,7 @@ a.sb-btn {
   &:hover,
   &:active {
     background: $tertiary-0;
+    border:0px;
   }
 }
 // status outline buttons

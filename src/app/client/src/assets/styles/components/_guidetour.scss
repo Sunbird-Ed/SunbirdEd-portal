@@ -63,3 +63,19 @@
 .tippy-popper.shepherd-popper .tippy-arrow {
     border: $base-block-space solid transparent;
 }
+
+
+.shepherd-element .shepherd-content footer .shepherd-buttons li .shepherd-button {
+    @extend .sb-btn-secondary;
+    &:hover {
+    border: 0px solid transparent;
+    }
+}
+.shepherd-element .shepherd-content footer .shepherd-buttons li .shepherd-button.back-button {
+    @extend .sb-btn-outline-gray;
+}
+.shepherd-element .shepherd-content footer .shepherd-buttons li .shepherd-button.skip-button {
+    @extend .sb-btn-link-tertiary;
+}
+
+
