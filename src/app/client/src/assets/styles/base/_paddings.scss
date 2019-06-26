@@ -1,0 +1,241 @@
+/* Padding in all direction */
+.p-0 {
+  @include padding(0);
+}
+.p-4 {
+  @include padding(4px);
+}
+.p-8 {
+  @include padding(8px);
+}
+.p-16 {
+  @include padding(16px);
+}
+.p-24 {
+  @include padding(24px);
+}
+
+/* padding in top direction */
+.pt-auto {
+  @include padding(auto null null null);
+}
+.pt-0 {
+  @include padding(0 null null null);
+}
+.pt-4 {
+  @include padding(4px null null null);
+}
+.pt-8 {
+  @include padding(8px null null null);
+}
+.pt-12 {
+  @include padding(12px null null null);
+}
+.pt-16 {
+  @include padding(16px null null null);
+}
+.pt-24 {
+  @include padding(24px null null null);
+}
+.pt-32 {
+  @include padding(32px null null null);
+}
+.pt-40 {
+  @include padding(40px null null null);
+}
+.pt-48 {
+  @include padding(48px null null null);
+}
+.pt-64 {
+  @include padding(64px null null null);
+}
+.pt-72 {
+  @include padding(72px null null null);
+}
+.pt-96 {
+  @include padding(96px null null null);
+}
+.pt-192 {
+  @include padding(192px null null null);
+}
+
+/* padding in bottom direction */
+.pb-auto {
+  @include padding(null null auto null);
+}
+.pb-0 {
+  @include padding(null null 0 null);
+}
+.pb-4 {
+  @include padding(null null 4px null);
+}
+.pb-8 {
+  @include padding(null null 8px null);
+}
+.pb-16 {
+  @include padding(null null 16px null);
+}
+.pb-24 {
+  @include padding(null null 24px null);
+}
+.pb-32 {
+  @include padding(null null 32px null);
+}
+.pb-48 {
+  @include padding(null null 48px null);
+}
+
+/* padding in horizontal direction */
+.px-auto {
+  @include padding(null auto);
+}
+.px-0 {
+  @include padding(null 0);
+}
+.px-4 {
+  @include padding(null 4px);
+}
+.px-8 {
+  @include padding(null 8px);
+}
+.px-16 {
+  @include padding(null 16px);
+}
+.px-24 {
+  @include padding(null 24px);
+}
+
+/* padding in vertical direction */
+.py-auto {
+  @include padding(auto null);
+}
+.py-0 {
+  @include padding(0 null);
+}
+.py-4 {
+  @include padding(4px null);
+}
+.py-8 {
+  @include padding(8px null);
+}
+.py-16 {
+  @include padding(16px null);
+}
+.py-24 {
+  @include padding(24px null);
+}
+
+/* padding in left direction if ltr but will be right in rtl */
+*[dir="ltr"]{
+  .pl-auto {
+    @include padding(null null null auto);
+  }
+  .pl-0 {
+    @include padding(null null null 0);
+  }
+  .pl-4 {
+    @include padding(null null null 4px);
+  }
+  .pl-8 {
+    @include padding(null null null 8px);
+  }
+  .pl-16 {
+    @include padding(null null null 16px);
+  }
+  .pl-24 {
+    @include padding(null null null 24px);
+  }
+}
+*[dir="rtl"]{
+  .pl-auto {
+    @include padding(null auto null null);
+  }
+  .pl-0 {
+    @include padding(null 0 null null);
+  }
+  .pl-4 {
+    @include padding(null 4px null null);
+  }
+  .pl-8 {
+    @include padding(null 8px null null);
+  }
+  .pl-16 {
+    @include padding(null 16px null null);
+  }
+  .pl-24 {
+    @include padding(null 24px null null);
+  }
+}
+
+/* padding in right direction if ltr but will be left in rtl */
+*[dir="ltr"]{
+  .pr-auto {
+    @include padding(null auto null null);
+  }
+  .pr-0 {
+    @include padding(null 0 null null);
+  }
+  .pr-4 {
+    @include padding(null 4px null null);
+  }
+  .pr-8 {
+    @include padding(null 8px null null);
+  }
+  .pr-12 {
+    @include padding(null 12px null null);
+  }
+  .pr-16 {
+    @include padding(null 16px null null);
+  }
+  .pr-24 {
+    @include padding(null 24px null null);
+  }
+  .pr-32 {
+    @include padding(null 32px null null);
+  }
+  .pr-40 {
+    @include padding(null 40px null null);
+  }
+  .pr-96 {
+    @include padding(null 96px null null);
+  }
+}
+*[dir="rtl"]{
+  .pr-auto {
+    @include padding(null null null auto);
+  }
+  .pr-0 {
+    @include padding(null null null 0);
+  }
+  .pr-4 {
+    @include padding(null null null 4px);
+  }
+  .pr-8 {
+    @include padding(null null null 8px);
+  }
+  .pr-12 {
+    @include padding(null null null 12px);
+  }
+  .pr-16 {
+    @include padding(null null null 16px);
+  }
+  .pr-20 {
+    @include padding(null null null 20px);
+  }
+  .pr-32 {
+    @include padding(null null null 32px);
+  }
+  .pr-40 {
+    @include padding(null null null 40px);
+  }
+  .pr-96 {
+    @include padding(null null null 96px);
+  }
+}
+
+/* Negative paddings */
+@media screen and (min-width:768px){
+  .px--20{
+    padding: 0 -20px;
+  }
+}
