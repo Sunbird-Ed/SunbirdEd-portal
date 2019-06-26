@@ -5,7 +5,7 @@ import {
   UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
   NavigationHelperService, ConfigService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit } from '@angular/core';
 import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
   SessionExpiryInterceptor } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -14,6 +14,9 @@ import { Observable, of, throwError, combineLatest } from 'rxjs';
 import { first, filter, mergeMap, tap, map } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
+import { ShepherdService } from 'angular-shepherd';
+import { steps as defaultSteps, defaultStepOptions} from './shepherd-data';
+
 
 /**
  * main app component
@@ -22,7 +25,7 @@ import { DOCUMENT } from '@angular/platform-browser';
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
   /**
    * user profile details.
@@ -78,7 +81,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private telemetryService: TelemetryService, public router: Router, private configService: ConfigService,
     private orgDetailsService: OrgDetailsService, private activatedRoute: ActivatedRoute,
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
-    @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor) {
+    @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
+    private shepherdService: ShepherdService) {
       this.instance = (<HTMLInputElement>document.getElementById('instance'))
         ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
   }
@@ -326,6 +330,20 @@ export class AppComponent implements OnInit, OnDestroy {
         }
     });
   }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      if (this.isOffline) {
+        this.shepherdService.defaultStepOptions = defaultStepOptions;
+        this.shepherdService.disableScroll = true;
+        this.shepherdService.modal = true;
+        this.shepherdService.confirmCancel = false;
+        this.shepherdService.addSteps(defaultSteps);
+        this.shepherdService.start();
+      }
+    }, 0);
+  }
+
   ngOnDestroy() {
     if (this.resourceDataSubscription) {
       this.resourceDataSubscription.unsubscribe();
