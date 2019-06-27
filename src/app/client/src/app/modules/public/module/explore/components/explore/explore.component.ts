@@ -186,8 +186,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   public playContent(event) {
 
-    // For offline envirnoment content will not play if action not open. It will get downloaded
-    if (_.includes(this.router.url, 'browse') && this.isOffline) {
+    // For offline environment content will not play if action not open. It will get downloaded
+    if (event.action === 'download' && this.isOffline) {
       this.startDownload(event.data.metaData.identifier);
       return false;
     } else if (event.action === 'export' && this.isOffline) {
@@ -201,7 +201,11 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.showLoginModal = true;
       this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
     } else {
-      this.publicPlayerService.playContent(event);
+      if (_.includes(this.router.url, 'browse') && this.isOffline) {
+        this.publicPlayerService.playContentForOfflineBrowse(event);
+      } else {
+        this.publicPlayerService.playContent(event);
+      }
     }
   }
   public viewAll(event) {

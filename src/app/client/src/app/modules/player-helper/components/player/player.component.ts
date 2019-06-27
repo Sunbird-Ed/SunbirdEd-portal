@@ -74,6 +74,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
       playerElement.onload = (event) => {
         try {
           this.adjustPlayerHeight();
+          console.log('this.playerConfig-------------', JSON.stringify(this.playerConfig))
           playerElement.contentWindow.initializePreview(this.playerConfig);
           playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
         } catch (err) {
@@ -91,10 +92,14 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
    * Emits event when content starts playing and end event when content was played/read completely
    */
   loadPlayer() {
-    if (environment.isOffline) {
+    if (_.includes(this.router.url, 'browse') && environment.isOffline) {
+      this.loadDefaultPlayer(`${this.configService.appConfig.PLAYER_CONFIG.localBaseUrl}webview=true`);
+      return;
+    } else if (environment.isOffline) {
       this.loadDefaultPlayer(this.configService.appConfig.PLAYER_CONFIG.localBaseUrl);
       return;
     }
+
     if (this.previewCdnUrl !== ''  && (this.isCdnWorking).toLowerCase() === 'yes') {
       this.loadCdnPlayer();
       return;

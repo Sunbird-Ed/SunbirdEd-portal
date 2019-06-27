@@ -326,8 +326,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
 
   playContent(event) {
 
-    // For offline envirnoment content will not play if action not open. It will get downloaded
-    if (_.includes(this.router.url, 'browse') && this.isOffline) {
+    // For offline environment content will not play if action not open. It will get downloaded
+    if (event.action === 'download' && this.isOffline) {
       this.startDownload(event.data.metaData.identifier);
       return false;
     } else if (event.action === 'export' && this.isOffline) {
@@ -344,7 +344,11 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       if (url[1] === 'learn' || url[1] === 'resources') {
         this.handleCourseRedirection(event);
       } else {
-        this.publicPlayerService.playContent(event);
+        if (_.includes(this.router.url, 'browse') && this.isOffline) {
+          this.publicPlayerService.playContentForOfflineBrowse(event);
+        } else {
+          this.publicPlayerService.playContent(event);
+        }
       }
     }
   }
