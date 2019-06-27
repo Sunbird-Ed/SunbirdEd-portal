@@ -21,7 +21,7 @@ module.exports = (app) => {
             limit: reqDataLimitOfContentUpload,
             proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
             proxyReqPathResolver: (req) => {
-                return req.originalUrl.replace('/content', '/api')
+                return req.originalUrl.replace('/content/', '/api/')
             },
             userResDecorator: (proxyRes, proxyResData, req, res) => {
                 try {
