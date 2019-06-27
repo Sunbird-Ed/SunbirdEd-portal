@@ -13,26 +13,17 @@ import { Router, ActivatedRoute } from '@angular/router';
  describe('WatchVideoComponent', () => {
   let component: WatchVideoComponent;
   let fixture: ComponentFixture<WatchVideoComponent>;
-  let element: HTMLElement;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
     url = jasmine.createSpy('url');
   }
-  const resourceBundle = {
-    'frmelmnts' : {
-      'btn': {
-        'close': 'close'
-      }
-    }
-  };
   class FakeActivatedRoute {
   }
    beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [WatchVideoComponent],
       imports: [SuiModalModule, TelemetryModule.forRoot(), RouterTestingModule],
-      providers: [{ provide: ResourceService, useValue: resourceBundle },
-        ConfigService, HttpClient, HttpHandler, CacheService, BrowserCacheTtlService,
+      providers: [ ResourceService, ConfigService, HttpClient, HttpHandler, CacheService, BrowserCacheTtlService,
         { provide: Router, useClass: RouterStub }, { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
 
     })
@@ -44,12 +35,11 @@ import { Router, ActivatedRoute } from '@angular/router';
     component = fixture.componentInstance;
     fixture.detectChanges();
     spyOn(component, 'setInteractData');
-    component.setInteractData();
-    element = fixture.nativeElement;
   });
 
-   it('should be able to close modal', () => {
+   it('should setInteract method', () => {
     expect(component).toBeTruthy();
+    component.ngOnInit();
     expect(component.setInteractData).toHaveBeenCalledTimes(1);
   });
 });

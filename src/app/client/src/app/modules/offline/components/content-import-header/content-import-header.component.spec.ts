@@ -45,11 +45,4 @@ describe('ContentImportHeaderComponent', () => {
     (resourceService.instance as string) = resourceServiceStub.instance;
     expect(component.instance).toEqual('SUNBIRD');
   });
-  it('should fail to get instance', () => {
-    expect(component).toBeTruthy();
-    expect(component.setInteractData).toHaveBeenCalled();
-    (resourceService.instance as string) = resourceServiceStub.instance;
-    expect(component.instance).not.toEqual('DIKSHA');
-  });
-
   });
