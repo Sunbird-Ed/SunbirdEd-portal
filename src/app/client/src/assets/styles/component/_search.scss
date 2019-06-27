@@ -1,21 +1,21 @@
 .sb-search-box {
   display: flex;
-    align-items: center;
-    border: 1px solid $primary-300;
-    border-radius: 3px;
-  &.large {
-    max-width: 492px;
-    width:100%
-  }
+  align-items: center;
+  border: 1px solid $primary-300;
+  border-radius: 3px;
+  max-width: 100%;
+  width:100%;
 
-  &.medium {
-    max-width: 392px;
-    width:100%
-  }
-
-  &.small {
-    max-width: 282px;
-    width: 100%;
+  @include respond-above(sm) {
+    &.large {
+      max-width: 492px;
+    }
+    &.medium {
+      max-width: 392px;
+    }
+    &.small {
+      max-width: 282px;
+    }
   }
 
   &:focus-within {
@@ -64,7 +64,8 @@
   .sb-btn {
     background: $sb-search-btn-bg;
     border: 0;
-    width: $base-block-space * 9;
+    min-width: auto;
+    white-space: nowrap;
     border-radius: 0 3px 3px 0;
     color: $blue;
     font-size: $sb-search-btn-font-size;
@@ -143,6 +144,11 @@ border-right:0px;
 
 
 
-input:-internal-autofill-previewed, input:-internal-autofill-selected, textarea:-internal-autofill-previewed, textarea:-internal-autofill-selected, select:-internal-autofill-previewed, select:-internal-autofill-selected {
+input:-internal-autofill-previewed, 
+input:-internal-autofill-selected, 
+textarea:-internal-autofill-previewed, 
+textarea:-internal-autofill-selected, 
+select:-internal-autofill-previewed, 
+select:-internal-autofill-selected {
   background-color: $white !important;
 }

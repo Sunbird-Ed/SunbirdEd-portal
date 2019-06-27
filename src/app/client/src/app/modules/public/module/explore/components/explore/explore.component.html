@@ -42,3 +42,10 @@
   </div>
   <!--/Actions-->
 </sui-modal>
+
+<sui-dimmer *ngIf="isOffline" class="page offline content" [isDimmed]="showExportLoader" [isClickable]="false">
+  <div class="ui active centered inline loader"></div>
+  <h2 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentName}}
+  </h2>
+</sui-dimmer>
+<app-offline-banner [slug]="slug"></app-offline-banner>

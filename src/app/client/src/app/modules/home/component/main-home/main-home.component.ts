@@ -79,6 +79,8 @@ export class MainHomeComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
   * Slider setting to display number of cards on the slider.
   */
+  resourceDataSubscription: any;
+
   slideConfig = {
     'slidesToShow': 4,
     'slidesToScroll': 4,
@@ -260,9 +262,12 @@ export class MainHomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.courseSubscription) {
       this.courseSubscription.unsubscribe();
     }
+    if (this.resourceDataSubscription) {
+      this.resourceDataSubscription.unsubscribe();
+    }
   }
   addSlideConfig() {
-    this.resourceService.languageSelected$
+    this.resourceDataSubscription = this.resourceService.languageSelected$
         .subscribe(item => {
           if (item.value === 'ur') {
             this.slideConfig['rtl'] = true;

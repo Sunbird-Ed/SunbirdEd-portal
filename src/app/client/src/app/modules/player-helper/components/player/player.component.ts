@@ -1,4 +1,4 @@
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
@@ -26,7 +26,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
  */
   @ViewChild('modal') modal;
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
-    public resourceService: ResourceService) {
+    public resourceService: ResourceService, public navigationHelperService: NavigationHelperService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
         ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
@@ -78,6 +78,10 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
           playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
         } catch (err) {
           console.log('loading default player failed', err);
+          const prevUrls = this.navigationHelperService.history;
+          if (this.isCdnWorking.toLowerCase() === 'yes' && prevUrls[prevUrls.length - 2]) {
+            history.back();
+          }
         }
       };
     }, 0);

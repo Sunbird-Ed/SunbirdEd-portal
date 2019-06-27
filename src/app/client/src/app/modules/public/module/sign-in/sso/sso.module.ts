@@ -6,6 +6,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '@sunbird/shared';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     TelemetryModule,
     SharedFeatureModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   declarations: [SelectOrgComponent, UpdateContactComponent]
 })

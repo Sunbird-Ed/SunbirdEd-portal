@@ -1,5 +1,5 @@
 import { combineLatest, Subject, throwError } from 'rxjs';
-import { map, mergeMap, first, takeUntil } from 'rxjs/operators';
+import { map, mergeMap, first, takeUntil, delay } from 'rxjs/operators';
 import { ResourceService, ToasterService, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -47,7 +47,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
           }
         }
         return this.getDetails(paramsObj);
-      }), takeUntil(this.unsubscribe$))
+      }), delay(200), takeUntil(this.unsubscribe$))
       .subscribe(({ courseHierarchy, enrolledBatchDetails }: any) => {
         this.enrolledBatchInfo = enrolledBatchDetails;
         this.courseHierarchy = courseHierarchy;

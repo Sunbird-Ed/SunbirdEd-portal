@@ -29,7 +29,7 @@ export class GetComponent implements OnInit, AfterViewInit, OnDestroy {
   * To navigate to other pages
    */
   public router: Router;
-
+  instance: string;
 
   constructor(resourceService: ResourceService, router: Router, public activatedRoute: ActivatedRoute,
     public navigationhelperService: NavigationHelperService) {
@@ -39,7 +39,7 @@ export class GetComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     EkTelemetry.config.batchsize = 2;
-    this.instanceName = this.resourceService.instance;
+    this.instance = _.upperCase(this.resourceService.instance);
   }
 
   ngAfterViewInit () {

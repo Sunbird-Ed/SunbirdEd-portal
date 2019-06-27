@@ -9,6 +9,7 @@ import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ResourceService} from '@sunbird/shared';
 
 describe('UpdateContactComponent', () => {
   let component: UpdateContactComponent;
@@ -29,7 +30,7 @@ describe('UpdateContactComponent', () => {
         RouterTestingModule],
       declarations: [ UpdateContactComponent ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute }]
+      providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute }, ResourceService]
     })
     .compileComponents();
   }));

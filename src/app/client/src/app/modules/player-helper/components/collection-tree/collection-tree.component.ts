@@ -70,6 +70,9 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
     if (this.contentComingSoonDetails) {
       this.initialize();
     }
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
   }
 
   public onNodeClick(node: any) {

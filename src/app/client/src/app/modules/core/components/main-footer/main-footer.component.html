@@ -15,6 +15,7 @@
     <p class="d-block">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}</p>
   </div>
 </div> -->
+    <extension-point [name]="'download-manager'" *ngIf="isOffline"></extension-point>
 <footer class="footer" *ngIf="showFooter">
 
   <div class="ui container" *ngIf="!isOffline">
@@ -50,10 +51,10 @@
           </div>
           <!-- <label class="d-block pb-10">{{resourceService.frmelmnts?.lbl?.download}}
             {{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile}}</label> -->
-            <label class="d-block pb-10 text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile}}</label>
-          <a class="d-block app-download" href="https://play.google.com/store/apps/details?id=in.gov.diksha.app">
+            <label class="d-block pb-10 text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile | interpolate:'{instance}': instance}}</label>
+          <a class="d-block app-download" (click)="redirectToDikshaApp()">
             <img class="playStore-img" src="/assets/images/google_playstore.png"
-              alt="{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile}}">
+              alt="{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}">
           </a>
           <p class="d-block pt-10">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}</p>
         </div>

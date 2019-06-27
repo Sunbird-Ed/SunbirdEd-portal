@@ -46,3 +46,25 @@ a {
     text-decoration: underline;
   }
 }
+
+// .course-participants-label{
+//   display: inline-flex;
+//   align-items: center
+// }
+.course-completed:last-child{
+  flex: 2 0 25%;
+}
+
+::ng-deep {
+  *[dir="ltr"] {
+    .course-completed:last-child{
+      text-align: right;
+    }
+  }
+
+  *[dir="rtl"] {
+    .course-completed:last-child{
+      text-align: left;
+    }
+  }
+}

@@ -5,7 +5,7 @@ import {
   UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
   NavigationHelperService, ConfigService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { Component, HostListener, OnInit, ViewChild, Inject } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit } from '@angular/core';
 import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
   SessionExpiryInterceptor } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -14,6 +14,9 @@ import { Observable, of, throwError, combineLatest } from 'rxjs';
 import { first, filter, mergeMap, tap, map } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
+import { ShepherdService } from 'angular-shepherd';
+import { steps as defaultSteps, defaultStepOptions} from './shepherd-data';
+
 
 /**
  * main app component
@@ -22,7 +25,7 @@ import { DOCUMENT } from '@angular/platform-browser';
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
   /**
    * user profile details.
@@ -69,6 +72,7 @@ export class AppComponent implements OnInit {
   isOffline: boolean = environment.isOffline;
   sessionExpired = false;
   instance: string;
+  resourceDataSubscription: any;
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -77,7 +81,8 @@ export class AppComponent implements OnInit {
     private telemetryService: TelemetryService, public router: Router, private configService: ConfigService,
     private orgDetailsService: OrgDetailsService, private activatedRoute: ActivatedRoute,
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
-    @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor) {
+    @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
+    private shepherdService: ShepherdService) {
       this.instance = (<HTMLInputElement>document.getElementById('instance'))
         ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
   }
@@ -111,6 +116,7 @@ export class AppComponent implements OnInit {
         this.tenantService.getTenantInfo(this.slug);
         this.setPortalTitleLogo();
         this.telemetryService.initialize(this.getTelemetryContext());
+        this.logCdnStatus();
         this.checkTncAndFrameWorkSelected();
         this.initApp = true;
       }, error => {
@@ -118,7 +124,25 @@ export class AppComponent implements OnInit {
       });
     this.changeLanguageAttribute();
   }
-
+  logCdnStatus() {
+    const isCdnWorking  = (<HTMLInputElement>document.getElementById('cdnWorking'))
+    ? (<HTMLInputElement>document.getElementById('cdnWorking')).value : 'no';
+    if (isCdnWorking !== 'no') {
+      return;
+    }
+    const event = {
+      context: {
+        env: 'app'
+      },
+      edata: {
+        type: 'cdn_failed',
+        level: 'ERROR',
+        message: 'cdn failed, loading files from portal',
+        pageid: this.router.url.split('?')[0]
+      }
+    };
+    this.telemetryService.log(event);
+  }
   /**
    * checks if user has accepted the tnc and show tnc popup.
    */
@@ -296,7 +320,7 @@ export class AppComponent implements OnInit {
     this.cacheService.set('showFrameWorkPopUp', 'installApp');
   }
   changeLanguageAttribute() {
-    this.resourceService.languageSelected$.subscribe(item => {
+    this.resourceDataSubscription = this.resourceService.languageSelected$.subscribe(item => {
       if (item.value && item.dir) {
           this._document.documentElement.lang = item.value;
           this._document.documentElement.dir = item.dir;
@@ -305,5 +329,24 @@ export class AppComponent implements OnInit {
           this._document.documentElement.dir = 'ltr';
         }
     });
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      if (this.isOffline) {
+        this.shepherdService.defaultStepOptions = defaultStepOptions;
+        this.shepherdService.disableScroll = true;
+        this.shepherdService.modal = true;
+        this.shepherdService.confirmCancel = false;
+        this.shepherdService.addSteps(defaultSteps);
+        this.shepherdService.start();
+      }
+    }, 0);
+  }
+
+  ngOnDestroy() {
+    if (this.resourceDataSubscription) {
+      this.resourceDataSubscription.unsubscribe();
+    }
   }
 }
