@@ -12,7 +12,7 @@ import {  of as observableOf } from 'rxjs';
 describe('DownloadManagerService', () => {
   beforeEach(() => TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [ConfigService, ToasterService, ResourceService, DownloadManagerService, 
+      providers: [ConfigService, ToasterService, ResourceService, DownloadManagerService,
         PublicDataService, CacheService, BrowserCacheTtlService]
   }));
 
