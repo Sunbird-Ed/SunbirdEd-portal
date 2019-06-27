@@ -74,7 +74,6 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
       playerElement.onload = (event) => {
         try {
           this.adjustPlayerHeight();
-          console.log('this.playerConfig-------------', JSON.stringify(this.playerConfig))
           playerElement.contentWindow.initializePreview(this.playerConfig);
           playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
         } catch (err) {
