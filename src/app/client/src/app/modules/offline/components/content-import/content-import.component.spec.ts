@@ -54,6 +54,11 @@ describe('ContentImportComponent', () => {
     component.ngAfterViewInit();
     expect(component.removeFirstChild).toHaveBeenCalled();
   });
-
+  it('should call modal close', () => {
+    const returnValue = spyOn(component, 'modalClose');
+    const element = fixture.nativeElement.querySelector('#close_modal');
+    element.click();
+    expect(component.modalClose).toHaveBeenCalledTimes(1);
+  });
 
 });
