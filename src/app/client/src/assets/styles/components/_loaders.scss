@@ -33,21 +33,13 @@
 }
 
 /* diksha offline loader */
-.center {
+.loader-center {
   display: block;
   position: absolute;
   top: 50%;
   left: 50%;
   width: 18vmin;
   transform: translate(-50%, -50%);
-}
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-body {
-  background: #fff;
 }
 .diksha-opening-txt {
   text-align: center;

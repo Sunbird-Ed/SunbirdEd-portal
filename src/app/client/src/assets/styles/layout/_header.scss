@@ -127,12 +127,17 @@
     font-size: 0.86rem;
     border-radius: 3px;
     font-weight: bold;
-    padding: 8px 16px;
+    padding: $base-block-space;
+
+    &>.dropdown.icon {
+      margin: 0 0 0 $base-block-space;
+    }
 
     @media screen and (min-width: 1024px) {
       color: $white-color;
       border: 0;
       font-weight: 500;
+      padding: $base-block-space 0 $base-block-space $base-block-space;
     }
 
     .menu {
@@ -149,8 +154,14 @@
   }
 }
 *[dir="rtl"] {
-  .ui.menu .language-selector .ui.dropdown>.dropdown.icon{
-    margin: 0 1em 0 0;
+  .ui.menu .language-selector .ui.dropdown {
+    &>.dropdown.icon {
+      padding: $base-block-space 0 $base-block-space $base-block-space;
+      margin: 0 $base-block-space 0 0;
+    }
+    @media screen and (min-width: 1024px) {
+      padding: $base-block-space $base-block-space $base-block-space 0;
+    }
   }
 }
 
