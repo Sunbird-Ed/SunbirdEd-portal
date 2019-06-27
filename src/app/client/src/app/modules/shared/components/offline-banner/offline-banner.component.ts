@@ -51,7 +51,11 @@ export class OfflineBannerComponent implements OnInit {
 
   /* navigate to apk download page */
   navigateToDownloadApkPage() {
-    this.router.navigate(['download-offlineapp']);
+    if (this.slug) {
+      this.router.navigate([`/${this.slug}/download-offlineapp`]);
+    } else {
+      this.router.navigate(['download-offlineapp']);
+    }
   }
 
 }

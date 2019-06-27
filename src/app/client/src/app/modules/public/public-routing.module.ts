@@ -37,6 +37,9 @@ const routes: Routes = [
     path: 'play', loadChildren: './module/player/player.module#PlayerModule'
   },
   {
+    path: ':slug/download-offlineapp', component: OfflineApplicationDownloadComponent
+   },
+  {
    path: 'download-offlineapp', component: OfflineApplicationDownloadComponent
   }];
 @NgModule({
