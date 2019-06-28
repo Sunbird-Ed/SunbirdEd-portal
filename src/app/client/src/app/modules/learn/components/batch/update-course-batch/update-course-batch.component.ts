@@ -185,6 +185,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   */
   private initializeUpdateForm(): void {
     const endDate = this.batchDetails.endDate ? new Date(this.batchDetails.endDate) : null;
+    const enrollmentEndDate = this.batchDetails.enrollmentEndDate ? new Date(this.batchDetails.enrollmentEndDate) : null;
     this.batchUpdateForm = new FormGroup({
       name: new FormControl(this.batchDetails.name, [Validators.required]),
       description: new FormControl(this.batchDetails.description),
@@ -192,7 +193,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       startDate: new FormControl(new Date(this.batchDetails.startDate), [Validators.required]),
       endDate: new FormControl(endDate),
       mentors: new FormControl(),
-      users: new FormControl()
+      users: new FormControl(),
+      enrollmentEndDate: new FormControl(enrollmentEndDate)
     });
     this.batchUpdateForm.valueChanges.subscribe(val => {
       if (this.batchUpdateForm.status === 'VALID') {
@@ -394,6 +396,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       mentors: _.compact(mentors),
       participants: _.compact(participants)
     };
+    if (this.batchUpdateForm.value.enrollmentType === 'open' && this.batchUpdateForm.value.enrollmentEndDate) {
+      requestBody['enrollmentEndDate'] = moment(this.batchUpdateForm.value.enrollmentEndDate).format('YYYY-MM-DD');
+    }
     const selected = [];
     _.forEach(this.selectedMentors, (value) => {
       selected.push(value.id);
