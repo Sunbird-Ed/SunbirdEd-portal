@@ -226,10 +226,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     .subscribe((res) => {
       this.body = res[0];
       this.solution = res[1];
-      let creator = this.userService.userProfile.firstName;
-      if (!_.isEmpty(this.userService.userProfile.lastName)) {
-        creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
-      }
       const req = {
         url: this.configService.urlConFig.URLS.ASSESSMENT.CREATE,
         data: {
@@ -237,8 +233,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
             'assessment_item': {
               'objectType': 'AssessmentItem',
               'metadata': {
-                'createdBy': this.userService.userid,
-                'creator': creator,
+                'createdBy': 'edce4f4f-6c82-458a-8b23-e3521859992f',
+                'creator': 'Content Creator',
+                'editorVersion': 3,    
                 'organisation': this.selectedAttributes.onBoardSchool ? [this.selectedAttributes.onBoardSchool] : [],
                 'code': UUID.UUID(),
                 'type': 'reference',

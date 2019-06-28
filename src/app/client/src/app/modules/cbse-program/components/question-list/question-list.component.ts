@@ -247,17 +247,44 @@ export class QuestionListComponent implements OnInit, OnChanges {
                 'description': `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`,
                 'questions': questions,
                 'contributors': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'contributors'))), ', '),
-                'attributions': _.compact(_.get(selectedQuestionsData, 'attributions'))
+                'attributions': _.compact(_.get(selectedQuestionsData, 'attributions')),
+                // tslint:disable-next-line: max-line-length
+                'appIcon': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11279144369168384014/artifact/qa_1561455529937.png'
               }
             }
           }
         };
         this.contentService.post(option).subscribe((res) => {
           console.log('res ', res);
+          if(res.responseCode === 'OK' && res.result.content_id !== undefined){
+            this.publishResource(res.result.content_id);
+          }
+        }, error => {
+          this.toasterService.error(_.get(error, 'error.params.errmsg') || 'content creation failed');
         });
       });
     } else {
       this.toasterService.error('Please select some questions to Publish');
     }
+  }
+
+  publishResource(contentId){
+    const requestBody = {
+      request: {
+        content: {
+          publisher: 'CBSE',
+          lastPublishedBy: '99606810-7d5c-4f1f-80b0-36c4a0b4415d'
+        }
+      }
+    };
+    const optionVal = {
+      url: `${this.configService.urlConFig.URLS.CONTENT.PUBLISH}/${contentId}`,
+      data: requestBody
+    };
+    this.contentService.post(optionVal).subscribe(response => {
+      this.toasterService.success('content created & published successfully');
+    }, (err) => {
+      this.toasterService.error(_.get(err, 'error.params.errmsg') || 'content publish failed');
+    });
   }
 }
