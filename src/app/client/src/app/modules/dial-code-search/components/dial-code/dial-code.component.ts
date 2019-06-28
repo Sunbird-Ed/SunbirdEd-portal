@@ -180,7 +180,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public getEvent(event) {
 
-    // For offline environment content will not play if event.action is open
+    // For offline environment content will only play when event.action is open
     if (event.action === 'download' && this.isOffline) {
       this.startDownload(event.data.metaData.identifier);
       return false;
