@@ -25,6 +25,14 @@ describe('ShareLinkComponent', () => {
     fixture = TestBed.createComponent(ShareLinkComponent);
     component = fixture.componentInstance;
   });
+
+  it('Should initializeModal', () => {
+    spyOn(component, 'initializeModal').and.callThrough();
+    component.ngOnInit();
+    expect(component.initializeModal).toHaveBeenCalled();
+    expect(component.copyLinkButton).toBeDefined();
+    expect(component.telemetryShare).toBeDefined();
+  });
   it('should take content share link  INPUT  ', () => {
     component.shareLink = Response.contentShare;
     expect(component.sharelinkModal).toBeDefined();
@@ -36,5 +44,15 @@ describe('ShareLinkComponent', () => {
     spyOn(component, 'initializeModal').and.callThrough();
     component.initializeModal();
     expect(component.sharelinkModal).toBeFalsy();
+  });
+  it('Should call copyLink and copy the the link', () => {
+    spyOn(component, 'copyLink').and.callThrough();
+    spyOn(document, 'execCommand').and.callThrough();
+    fixture.whenStable().then(() => {
+      const button = fixture.debugElement.nativeElement.querySelector('button');
+      button.click();
+      expect(component.copyLink).toHaveBeenCalled();
+      expect(document.execCommand).toHaveBeenCalledWith('copy');
+    });
   });
 });
