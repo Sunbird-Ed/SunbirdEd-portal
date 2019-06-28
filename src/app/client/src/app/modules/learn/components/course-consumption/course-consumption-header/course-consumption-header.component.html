@@ -3,7 +3,7 @@
     <div class="ui text centered inline loader mt-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
   </div>
   <div class="ui container">
-    <div class="ui stackable padded grid m-responsive-cp-nmt-50">
+    <div class="ui padded grid">
       <div class="row">
         <div class="twelve wide column px-0">
           <div class="d-flex flex-jc-space-between flex-ai-end flex-w-wrap">
@@ -39,14 +39,14 @@
                 <h6 class="ui small negative message" *ngIf="courseHierarchy.status === 'Flagged'">{{resourceService?.messages?.imsg?.m0001}}</h6>
               </div>
             </div>
-            <div class="ml-auto text-right">
+            <div class="ml-auto text-right mt-8">
               <button 
                 appTelemetryInteract [telemetryInteractObject]="courseInteractObject" [telemetryInteractEdata]="{id:'viewCourseDashboard' , type: 'click' , pageid:'course-consumption'}" 
-                class="sb-btn sb-btn-secondary sb-btn-normal ml-auto mt-8" (click)="showDashboard()"
+                class="sb-btn sb-btn-secondary sb-btn-normal" (click)="showDashboard()"
                 *ngIf="permissionService.permissionAvailable && !enrolledCourse" appPermission [permission]="dashboardPermission">
                   {{resourceService?.frmelmnts?.btn?.viewCourseStatsDashboard}}
               </button>
-              <div class="ml-auto mt-8" *ngIf="enrolledCourse">
+              <div *ngIf="enrolledCourse">
                 <p class="mb-8">
                   {{resourceService?.messages?.stmsg?.m0108}} {{ progress }}%
                 </p>
