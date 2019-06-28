@@ -92,9 +92,8 @@ export class PublicPlayerService {
       {} : contentDetails.contentData.body;
     if (!_.includes(this.router.url, 'browse') && environment.isOffline) {
       configuration.data = '';
-    } else if (environment.isOffline) {
-      configuration.data = '';
     }
+
     if (environment.isOffline) {
       configuration.metadata = _.omit(configuration.metadata, ['streamingUrl']);
     }
