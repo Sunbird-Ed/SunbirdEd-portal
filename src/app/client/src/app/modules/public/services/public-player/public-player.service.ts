@@ -90,7 +90,7 @@ export class PublicPlayerService {
     configuration.context.contextRollup = this.getRollUpData([_.get(this.orgDetailsService.orgDetails, 'hashTagId')]);
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
       {} : contentDetails.contentData.body;
-    if (_.includes(this.router.url, 'browse') && environment.isOffline) {
+    if (!_.includes(this.router.url, 'browse') && environment.isOffline) {
       configuration.metadata = _.omit(configuration.metadata, ['streamingUrl']);
     } else if (environment.isOffline) {
       configuration.data = '';
