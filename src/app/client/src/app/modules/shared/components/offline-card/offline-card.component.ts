@@ -51,7 +51,9 @@ export class OfflineCardComponent implements OnChanges {
 
   public onAction(data, action) {
     this.contentId = data.metaData.identifier;
-    data.showAddingToLibraryButton = true;
+    if (action === 'download') {
+      data.showAddingToLibraryButton = true;
+    }
     this.clickEvent.emit({ 'action': action, 'data': data });
   }
 
