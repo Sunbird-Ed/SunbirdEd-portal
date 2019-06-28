@@ -344,7 +344,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           this.shepherdService.start();
         }
       }
-    }, 0);
+    }, 1000);
   }
 
   ngOnDestroy() {
