@@ -38,7 +38,7 @@ describe('OfflineHelpCenterComponent', () => {
     expect(component.activeTab).toEqual('browse');
   });
 
-  it('should call checkScroll on window scrolling', function() {
+  it('should call checkScroll on window scrolling', () => {
     window.scroll(0, 500);
     $(window).trigger("scroll");
     component.checkScroll();
@@ -48,6 +48,12 @@ describe('OfflineHelpCenterComponent', () => {
   it('should gotoTop', (done: any) => {
     component.gotoTop();
     done();
+  });
+
+  it('should not generate pdf from blank tab', () => {
+    component.activeTab = '';
+    component.generatepdf();
+    expect(component.activeTab).toEqual(component.activeTab);
   });
 
   it('should generate pdf from browse tab', () => {
