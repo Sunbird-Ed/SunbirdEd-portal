@@ -48,12 +48,6 @@ describe('OfflineHelpCenterComponent', () => {
     done();
   });
 
-  it('should not generate pdf from blank tab', (done) => {
-    component.activeTab = 'null';
-    component.generatepdf();
-    done();
-  });
-
   it('should generate pdf from browse tab', () => {
     component.activeTab = 'browse';
     component.tabClicked(component.activeTab);
