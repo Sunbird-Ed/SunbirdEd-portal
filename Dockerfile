@@ -6,6 +6,14 @@ RUN mkdir -p /opt/player \
 WORKDIR /opt/player
 COPY * /opt/player/
 WORKDIR /opt/player/app
+
+ARG content_editor_url
+ENV sunbird_content_editor_artifact_url ${content_editor_url}
+ARG collection_editor_url 
+ENV sunbird_collection_editor_artifact_url  ${collection_editor_url}
+ARG generic_editor_url
+ENV sunbird_generic_editor_artifact_url ${generic_editor_url}
+
 RUN npm set progress=false
 RUN npm install  --unsafe-perm 
 RUN npm run deploy
@@ -16,12 +24,6 @@ WORKDIR /opt/player/app
 # passing commit hash as build arg
 ARG commit_hash=0
 ENV commit_hash ${commit_hash}
-ARG content_editor_url
-ENV sunbird_content_editor_artifact_url ${content_editor_url}
-ARG collection_editor_url 
-ENV sunbird_collection_editor_artifact_url  ${collection_editor_url}
-ARG generic_editor_url
-ENV sunbird_generic_editor_artifact_url ${generic_editor_url}
 RUN /bin/bash -x ../vcs-config.sh
 
 FROM node:8.11-slim
