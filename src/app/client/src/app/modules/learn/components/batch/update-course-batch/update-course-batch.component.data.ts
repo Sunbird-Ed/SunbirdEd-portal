@@ -230,6 +230,7 @@ export const getUserList = {
 
 export const updateBatchDetails = {
   'identifier': '01248661735846707228',
+  'enrollmentEndDate': '2018-07-11T18:29:59.999Z',
   'createdFor': [
     '0123673542904299520',
     '0123673689120112640',
