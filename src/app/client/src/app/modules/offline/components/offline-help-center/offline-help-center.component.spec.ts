@@ -27,7 +27,7 @@ describe('OfflineHelpCenterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('activeTab must be "browse"', () => {
+  it('activeTab must be browse', () => {
     component.ngOnInit();
     expect(component.activeTab).toEqual('browse');
   });
@@ -38,7 +38,9 @@ describe('OfflineHelpCenterComponent', () => {
     expect(component.activeTab).toEqual('browse');
   });
 
-  it("should call checkScroll on window scrolling", function() {
+  it('should call checkScroll on window scrolling', function() {
+    window.scroll(0, 500);
+    $(window).trigger("scroll");
     component.checkScroll();
     expect(component.checkScroll).toHaveBeenCalled();
   });
