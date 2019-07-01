@@ -40,7 +40,6 @@ describe('OfflineHelpCenterComponent', () => {
 
   it('should call checkScroll on window scrolling', () => {
     window.scroll(0, 500);
-    $(window).trigger("scroll");
     component.checkScroll();
     expect(component.checkScroll).toHaveBeenCalled();
   });
@@ -50,10 +49,10 @@ describe('OfflineHelpCenterComponent', () => {
     done();
   });
 
-  it('should not generate pdf from blank tab', () => {
-    component.activeTab = '';
+  it('should not generate pdf from blank tab', (done: any) => {
+    component.activeTab = 'null';
     component.generatepdf();
-    expect(component.activeTab).toEqual(component.activeTab);
+    done();
   });
 
   it('should generate pdf from browse tab', () => {
