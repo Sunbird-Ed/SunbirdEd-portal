@@ -11,7 +11,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 describe('OfflineApplicationDownloadComponent', () => {
   let component: OfflineApplicationDownloadComponent;
   let fixture: ComponentFixture<OfflineApplicationDownloadComponent>;
-  let timerCallback;
   class RouterStub {
     navigate = jasmine.createSpy('url');
   }
@@ -41,27 +40,10 @@ describe('OfflineApplicationDownloadComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(OfflineApplicationDownloadComponent);
     component = fixture.componentInstance;
-    timerCallback = jasmine.createSpy('timerCallback');
-    jasmine.clock().install();
-  });
-  afterEach(() => {
-    jasmine.clock().uninstall();
+    fixture.detectChanges();
   });
 
-  it('should call downlaod app on click of download button', () => {
-    spyOn(component , 'downloadApp');
-    const buttonEl = fixture.nativeElement.querySelector('button');
-    buttonEl.click();
-    expect(component.downloadApp).toHaveBeenCalledTimes(1);
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
-
-  it('should call setTelemetry method on ngAfterViewinit', () => {
-   spyOn(component , 'setTelemetryData');
-    setTimeout(()  => {
-      component.ngAfterViewInit();
-    }, 100);
-    jasmine.clock().tick(101);
-    expect(component.setTelemetryData).toHaveBeenCalled();
-  });
-
 });

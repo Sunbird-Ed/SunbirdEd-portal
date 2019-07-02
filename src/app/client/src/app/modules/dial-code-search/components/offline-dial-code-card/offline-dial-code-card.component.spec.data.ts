@@ -95,7 +95,6 @@ export const Response = {
         'data': {
             'name': 'B1 Test',
             'description': 'Untitled Collection',
-            'showAddingToLibraryButton': true,
             'action': {
                 'right': {
                     'class': 'trash large icon',

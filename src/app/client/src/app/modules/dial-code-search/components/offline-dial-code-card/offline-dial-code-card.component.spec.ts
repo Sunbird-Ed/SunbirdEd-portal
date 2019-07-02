@@ -35,7 +35,6 @@ describe('OfflineDialCodeCardComponent', () => {
     expect(fixture.nativeElement.querySelector('.sb-card-title').innerText).toContain('B1 Test');
     expect(fixture.nativeElement.querySelector('.sb-card-label').innerText).toEqual('Worksheet');
   });
-
   it('should show badgeClassImage while passing badgesData', () => {
     const cdnprefixPipe = new CdnprefixPipe();
     component.data = Response.librarySearchData;
@@ -44,24 +43,5 @@ describe('OfflineDialCodeCardComponent', () => {
     const badgesElm = fixture.nativeElement.querySelector('.sb-card-badge');
     expect(badgesElm.src).toContain(Response.librarySearchData.ribbon.left.image);
   });
-
-  it('should emit click event  on call of onAction method ', () => {
-    const cdnprefixPipe = new CdnprefixPipe();
-    component.data = Response.cardData;
-    spyOn(component.clickEvent, 'emit');
-    component.onAction(component.data, 'export');
-    expect(component.clickEvent.emit).toHaveBeenCalledTimes(1);
-    expect(component.showAddingToLibraryButton).toBeUndefined();
-  });
-
-   it('should emit change addingto librarybutton to true if the action is download in onAction ', () => {
-    const cdnprefixPipe = new CdnprefixPipe();
-    component.data = Response.cardData;
-    spyOn(component.clickEvent, 'emit');
-    component.onAction(component.data, 'download');
-    expect(component.clickEvent.emit).toHaveBeenCalledTimes(1);
-    expect(Response.emitData.data.showAddingToLibraryButton).toBeTruthy();
-  });
-
 });
 

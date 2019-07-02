@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ResourceService } from './../../services';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 
@@ -8,7 +8,7 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
   templateUrl: './offline-application-download.component.html',
   styleUrls: ['./offline-application-download.component.scss']
 })
-export class OfflineApplicationDownloadComponent implements OnInit, AfterViewInit {
+export class OfflineApplicationDownloadComponent implements OnInit {
 
   public telemetryImpression: IImpressionEventInput;
 

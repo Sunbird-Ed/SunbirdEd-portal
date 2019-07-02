@@ -61,11 +61,4 @@ describe('ContentImportComponent', () => {
     expect(component.modalClose).toHaveBeenCalledTimes(1);
   });
 
-  it('should call closemodal and should emit an event', () => {
-    component.closeModal();
-    spyOn(component.closeImportModal, 'emit');
-    component.closeModal();
-    expect(component.closeImportModal.emit).toHaveBeenCalled();
-  });
-
 });
