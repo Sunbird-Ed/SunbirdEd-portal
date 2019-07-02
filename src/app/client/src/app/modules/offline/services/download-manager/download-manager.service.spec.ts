@@ -48,19 +48,4 @@ describe('DownloadManagerService', () => {
     const apiRes = service.exportContent('do_312522408518803456214665');
     expect(publicDataService.get).toHaveBeenCalled();
   });
-
-  it('should get same data ', () => {
-    const service: DownloadManagerService = TestBed.get(DownloadManagerService);
-    const publicDataService = TestBed.get(PublicDataService);
-    const params = {
-      downloadContentId: '/do_312522408518803456214665',
-      request : {}
-    };
-    spyOn(publicDataService, 'post').and.callFake(() => observableOf(response.downloadSuccess));
-    const apiRes = service.startDownload(params);
-    publicDataService.post(params).subscribe(responseData => {
-      expect(responseData).toBe(response.downloadSuccess);
-    });
-  });
-
 });
