@@ -55,7 +55,6 @@ export class MainHeaderComponent implements OnInit {
   public signUpInteractEdata: IInteractEventEdata;
   public enterDialCodeInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
-  exploreRoutingUrl: string;
   pageId: string;
   searchBox = {
     'center': false,
@@ -153,7 +152,8 @@ export class MainHeaderComponent implements OnInit {
     if (this.isOffline) {
       this.routeToOffline();
     } else {
-      this.router.navigate([this.exploreRoutingUrl, 1], { queryParams: this.queryParam });
+      const url = this.router.url.split('?')[0].replace(/\/\d+$/, '');
+      this.router.navigate([url, 1], { queryParams: this.queryParam });
     }
   }
 
@@ -199,22 +199,8 @@ export class MainHeaderComponent implements OnInit {
         }
       }
       this.slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
-      if (_.includes(urlAfterRedirects.url, '/explore')) {
+      if (_.includes(urlAfterRedirects.url, '/explore-course') || _.includes(urlAfterRedirects.url, '/explore')) {
         this.showExploreHeader = true;
-        const url = urlAfterRedirects.url.split('?')[0].split('/');
-        if (url.indexOf('explore') === 2) {
-          this.exploreRoutingUrl = url[1] + '/' + url[2];
-        } else {
-          this.exploreRoutingUrl = url[1];
-        }
-      } else if (_.includes(urlAfterRedirects.url, '/explore-course')) {
-        this.showExploreHeader = true;
-        const url = urlAfterRedirects.url.split('?')[0].split('/');
-        if (url.indexOf('explore-course') === 2) {
-          this.exploreRoutingUrl = url[1] + '/' + url[2];
-        } else {
-          this.exploreRoutingUrl = url[1];
-        }
       } else {
         this.showExploreHeader = false;
       }
