@@ -42,7 +42,7 @@ export class OfflineBannerComponent implements OnInit {
 
   /** determines whether to show the banner for offline desktop apk download or not */
   showOfflineBanner() {
-    if (this.orgList.includes(this.slug.toLowerCase())) {
+    if (this.orgList.includes(_.lowerCase(this.slug))) {
       this.showBanner = true;
     } else {
       this.showBanner = false;

@@ -14,6 +14,28 @@ module.exports = (app) => {
     app.all('/content/*', telemetryHelper.generateTelemetryForContentService,
         telemetryHelper.generateTelemetryForProxy)
 
+    app.all('/content/course/v1/search',
+        healthService.checkDependantServiceHealth(['CONTENT', 'CASSANDRA']),
+        permissionsHelper.checkPermission(),
+        proxy(contentURL, {
+            limit: reqDataLimitOfContentUpload,
+            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+            proxyReqPathResolver: (req) => {
+                console.log('-----proxy-----', require('url').parse(contentURL + req.originalUrl.replace('/content/', '')).path)
+                return require('url').parse(contentURL + req.originalUrl.replace('/content/', '')).path
+            },
+            userResDecorator: (proxyRes, proxyResData, req, res) => {
+                try {
+                    const data = JSON.parse(proxyResData.toString('utf8'));
+                    if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+                    else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data)
+                } catch (err) {
+                    logger.error({msg: 'content api user res decorator json parse error', proxyResData});
+                    return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res)
+                }
+            }
+        }))
+
     app.all('/content/*',
         healthService.checkDependantServiceHealth(['CONTENT', 'CASSANDRA']),
         proxyUtils.verifyToken(),
