@@ -47,7 +47,6 @@ describe('DownloadManagerService', () => {
     spyOn(publicDataService, 'get').and.callFake(() => observableOf(response.exportSuccess));
     const apiRes = service.exportContent('do_312522408518803456214665');
     expect(publicDataService.get).toHaveBeenCalled();
-
   });
 
   it('should get same data ', () => {
