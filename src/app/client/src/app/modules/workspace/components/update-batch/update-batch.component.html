@@ -1,12 +1,12 @@
 <sui-modal
-  [mustScroll]="true" 
+  [mustScroll]="true"
   [isClosable]="true"
   [transitionDuration]="0"
   [size]="'normal'"
   class="sb-modal"
   appBodyScroll
-  *ngIf='showUpdateModal' 
-  (dismissed)="redirect()" 
+  *ngIf='showUpdateModal'
+  (dismissed)="redirect()"
   #updateBatchModal
   >
   <!--Header-->
@@ -52,8 +52,8 @@
         </div>
       </div>
 
-      <div class="two fields">
-        <div class="required field" [ngClass]="batchUpdateForm.controls['startDate'].invalid && batchUpdateForm.controls['startDate'].errors.required && !batchUpdateForm.controls['startDate'].pristine ? 'error': ''">
+      <div class="fields" [ngClass]="batchUpdateForm.value.enrollmentType === 'open'? 'three':'two'">
+      <div class="required field" [ngClass]="batchUpdateForm.controls['startDate'].invalid && batchUpdateForm.controls['startDate'].errors.required && !batchUpdateForm.controls['startDate'].pristine ? 'error': ''">
           <label>{{resourceService?.frmelmnts?.lbl?.startdate}}</label>
           <div class="ui read-only calendar rangestartAdd mb-10" id="rangestartAdd">
             <div class="ui input left icon">
@@ -74,6 +74,21 @@
               <input [attr.disabled]="(batchDetails.status === 2 || showFormInViewMode ) ? true : null" [pickerMinDate]='pickerMinDateForEndDate'
                 suiDatepicker formControlName="endDate" [pickerMode]="'date'">
             </div>
+          </div>
+        </div>
+        <div class="field" *ngIf="batchUpdateForm.value.enrollmentType === 'open'"
+             [ngClass]="batchUpdateForm.controls['enrollmentEndDate'].invalid && !batchUpdateForm.controls['enrollmentEndDate'].pristine ? 'error': ''">
+          <label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</label>
+          <div class="ui read-only calendar rangeenrollMentEnd mb-10" id="rangeenrollMentEnd">
+            <div class="ui input left icon">
+              <i class="calendar icon date-calendar"></i>
+              <input [pickerMinDate]='pickerMinDateForEnrollmentEndDate' [pickerMaxDate]='batchUpdateForm.value.endDate'
+                     suiDatepicker formControlName="enrollmentEndDate" [pickerMode]="'date'">
+            </div>
+          </div>
+          <div class="mt-0 mb-10 ui pointing red basic label below"
+               *ngIf="batchUpdateForm.controls['enrollmentEndDate'].invalid && !batchUpdateForm.controls['enrollmentEndDate'].pristine">
+            {{resourceService?.messages?.stmsg?.m0135}}
           </div>
         </div>
       </div>
@@ -127,17 +142,17 @@
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button 
-      class="sb-btn sb-btn-normal sb-btn-primary" 
-      [ngClass]="{ 'disabled': batchDetails.status === 2 }" 
+    <button
+      class="sb-btn sb-btn-normal sb-btn-primary"
+      [ngClass]="{ 'disabled': batchDetails.status === 2 }"
       [disabled]="disableSubmitBtn || showFormInViewMode"
       (click)="updateBatch()"
     >
       {{resourceService?.frmelmnts?.btn?.update}}
     </button>
-    <button 
-      class="sb-btn sb-btn-normal sb-btn-outline-primary" 
-      [ngClass]="{ 'disabled': batchDetails.status === 2 }" 
+    <button
+      class="sb-btn sb-btn-normal sb-btn-outline-primary"
+      [ngClass]="{ 'disabled': batchDetails.status === 2 }"
       (click)="batchUpdateForm.reset()"
       [disabled]="showFormInViewMode"
     >
