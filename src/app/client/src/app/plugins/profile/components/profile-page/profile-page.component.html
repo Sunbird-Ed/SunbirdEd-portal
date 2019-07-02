@@ -202,7 +202,7 @@
   <app-profile-badge *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"></app-profile-badge>
   <!-- my badges section ends -->
 
-  <div class="profile-bg-c-2 pt-30">
+  <div class="pt-30">
     <div class="ui container">
       <!--contributions view starts-->
       <div class="fs-1-7 font-w-bold pl-20 mobile only" *ngIf="contributions && contributions.length > 0">
@@ -238,7 +238,7 @@
             <ul class="pl-30 pr-30">
               <li class="d-flex flex-jc-space-between mb-20"
                 *ngFor="let data of attendedTraining | slice:0:courseLimit">
-                <span class="fs-1-16 sb-text-gray-800">{{data.courseName}}</span>
+                <span class="fs-1-16 sb-text-gray">{{data.courseName}}</span>
                 <span class="fs-1 color-4" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy' }}</span>
               </li>
               <div class=" mb-15 d-flex flex-jc-center relative" *ngIf="attendedTraining.length > 3">
@@ -270,7 +270,7 @@
   <div class="profile-bg-c-1 mobile only" *ngIf="attendedTraining && attendedTraining.length > 0">
     <ul class="px-20">
       <li class="d-flex flex-dc mb-20" *ngFor="let data of attendedTraining | slice:0:courseLimit">
-        <span class="fs-1-16 sb-text-gray-800">{{data.courseName}}</span>
+        <span class="fs-1-16 sb-text-gray">{{data.courseName}}</span>
         <span class="fs-1 color-4" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy'}}</span>
       </li>
       <div class=" mb-15 d-flex flex-jc-center relative" *ngIf="attendedTraining.length > 3">

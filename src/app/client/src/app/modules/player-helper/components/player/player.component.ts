@@ -91,10 +91,14 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
    * Emits event when content starts playing and end event when content was played/read completely
    */
   loadPlayer() {
-    if (environment.isOffline) {
+    if (_.includes(this.router.url, 'browse') && environment.isOffline) {
+      this.loadDefaultPlayer(`${this.configService.appConfig.PLAYER_CONFIG.localBaseUrl}webview=true`);
+      return;
+    } else if (environment.isOffline) {
       this.loadDefaultPlayer(this.configService.appConfig.PLAYER_CONFIG.localBaseUrl);
       return;
     }
+
     if (this.previewCdnUrl !== ''  && (this.isCdnWorking).toLowerCase() === 'yes') {
       this.loadCdnPlayer();
       return;
