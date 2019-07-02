@@ -1,7 +1,8 @@
 .sb-treePicker-body {
     display: flex;
     flex-wrap: wrap;
-
+    height: 100%;
+    
     .sb-treePicker-selectionSection {
         width: $sb-treePicker-selectionTab-width;
         padding: $sb-treePicker-selectionTab-padding;

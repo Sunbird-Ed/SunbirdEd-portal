@@ -82,7 +82,7 @@ a.sb-btn {
   padding: ($base-block-space * 1) ($base-block-space * 2);
 }
 .sb-btn-xs {
-  height: ($base-block-space * 3);
+  min-height: ($base-block-space * 3);
   padding: ($base-block-space * 0) ($base-block-space * 1);
   font-size: $font-size-sm;
 }
