@@ -107,7 +107,7 @@
           <i class="dropdown icon"></i>
           <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
           <div class="menu">
-            <div   class="item" *ngFor="let user of participantList" [attr.data-value]="user.id">
+            <div class="item" *ngFor="let user of participantList" [attr.data-value]="user.id">
               <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}">
               {{user.name}}{{user.otherDetail}}
             </div>
