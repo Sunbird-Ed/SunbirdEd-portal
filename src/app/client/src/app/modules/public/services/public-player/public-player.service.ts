@@ -90,9 +90,10 @@ export class PublicPlayerService {
     configuration.context.contextRollup = this.getRollUpData([_.get(this.orgDetailsService.orgDetails, 'hashTagId')]);
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
       {} : contentDetails.contentData.body;
-    if (environment.isOffline) {
+    if (!_.includes(this.router.url, 'browse') && environment.isOffline) {
       configuration.data = '';
     }
+
     if (environment.isOffline) {
       configuration.metadata = _.omit(configuration.metadata, ['streamingUrl']);
     }
@@ -114,6 +115,28 @@ export class PublicPlayerService {
       this.collectionData = response.result.content;
       return response;
     }));
+  }
+
+  /**
+   * This method accepts content details and help to play the content player in offline desktop app browse page
+   *
+   * @param {object} event
+   */
+  public playContentForOfflineBrowse(event) {
+    this.navigationHelperService.storeResourceCloseUrl();
+    setTimeout(() => {
+      if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+        if (event.data.contentType === 'Course') {
+          this.router.navigate(['browse/play/learn/course', event.data.metaData.identifier]);
+        } else {
+          this.router.navigate(['browse/play/collection', event.data.metaData.identifier],
+            { queryParams: { contentType: event.data.metaData.contentType } });
+        }
+      } else {
+        this.router.navigate(['browse/play/content', event.data.metaData.identifier],
+          { queryParams: { contentType: event.data.metaData.contentType } });
+      }
+    }, 0);
   }
 
   public playContent(event) {
