@@ -100,7 +100,7 @@
       </div>
       <div class="one field " *ngIf="batchUpdateForm.value.enrollmentType !== 'open'">
         <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}
-          <i  *ngIf="batchDetails.participants.length >= 100" suiPopup popupText="{{resourceService.frmelmnts.lbl.contactStateAdminToAdd}}" [popupPlacement]="'right'" [popupInverted]="true" class="sb-icon-info info-icon"></i>
+          <i  *ngIf="batchDetails.participants.length >= 100" suiPopup popupText="{{resourceService?.frmelmnts?.lbl?.contactStateAdminToAdd}}" [popupPlacement]="'right'" [popupInverted]="true" class="sb-icon-info info-icon"></i>
         </label>
         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="participant" [ngClass]="{ 'disabled': batchDetails.status === 2 || showFormInViewMode || batchDetails.participants.length >= 100 }">
           <input id="userSelList">
@@ -113,7 +113,7 @@
             </div>
           </div>
         </div>
-        <small *ngIf="this.batchDetails.participants.length > 100" class="sb-color-primary d-flex pt-4">{{resourceService.frmelmnts.lbl.contactStateAdminToAdd}}</small>
+        <small *ngIf="this.batchDetails.participants.length > 100" class="sb-color-primary d-flex pt-4">{{resourceService?.frmelmnts?.lbl?.contactStateAdminToAdd}}</small>
       </div>
 
       <div class="one field" *ngIf="batchUpdateForm.value.enrollmentType !== 'open' && selectedParticipants.length > 0 && batchDetails.participants.length <= 100">
