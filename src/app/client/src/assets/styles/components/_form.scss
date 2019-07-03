@@ -43,11 +43,13 @@
     pointer-events: none;
   } 
   .ui.selection.dropdown{
-    width:100%;
-    min-height: ($base-block-space * 4);
-    font-size: 13px;
+    border-radius: 3px;
+    //line-height: 18px;
+    font-size: 12px;
+    width: 100%;
+    min-height: $sb-selection-dropdown-min-height;
     padding: ($base-block-space / 2) ($base-block-space * 1);
-    line-height: 1;
+    border-color: #999999;
     .text{
       text-overflow: ellipsis;
       overflow: hidden;
@@ -58,14 +60,14 @@
       padding: 7px 5px;
       padding: 12px 10px !important;
       line-height: 1.4;
-      font-size: 13px;
+      font-size: 12px;
       height: auto;
     }
   }
   .ui.multiple.dropdown {
     .label {
-      margin-bottom: 0;;
-      margin-top: 3px;
+      margin-bottom: 4px;
+      margin-top: 4px;
       font-size: 12px;
     }
   }

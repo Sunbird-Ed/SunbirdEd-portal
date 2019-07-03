@@ -53,6 +53,9 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   showExportLoader = false;
   contentName: string;
   instance: string;
+  redirectCollectionUrl: string;
+  redirectContentUrl: string;
+
   constructor(public resourceService: ResourceService, public userService: UserService,
     public coursesService: CoursesService, public router: Router, public activatedRoute: ActivatedRoute,
     public searchService: SearchService, public toasterService: ToasterService, public configService: ConfigService,
@@ -177,8 +180,8 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public getEvent(event) {
 
-    // For offline envirnoment content will not play if action not open. It will get downloaded
-    if (_.includes(this.router.url, 'browse') && this.isOffline) {
+    // For offline environment content will only play when event.action is open
+    if (event.action === 'download' && this.isOffline) {
       this.startDownload(event.data.metaData.identifier);
       return false;
     } else if (event.action === 'export' && this.isOffline) {
@@ -188,11 +191,19 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       return false;
     }
 
+    if (_.includes(this.router.url, 'browse') && this.isOffline) {
+      this.redirectCollectionUrl = 'browse/play/collection';
+      this.redirectContentUrl = 'browse/play/content';
+    } else {
+      this.redirectCollectionUrl = 'play/collection';
+      this.redirectContentUrl = 'play/content';
+    }
+
     if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-      this.router.navigate(['play/collection', event.data.metaData.identifier],
+      this.router.navigate([this.redirectCollectionUrl, event.data.metaData.identifier],
         { queryParams: { dialCode: this.dialCode, l1Parent: event.data.metaData.l1Parent } });
     } else {
-      this.router.navigate(['play/content', event.data.metaData.identifier],
+      this.router.navigate([this.redirectContentUrl, event.data.metaData.identifier],
         { queryParams: { dialCode: this.dialCode, l1Parent: event.data.metaData.l1Parent } });
     }
   }

@@ -116,9 +116,11 @@
         </a>
       </div>
       <div class="one field " *ngIf="batchUpdateForm.value.enrollmentType !== 'open'">
-        <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
+        <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}
+          <i  *ngIf="batchDetails.participants.length >= 100" suiPopup popupText="{{resourceService?.frmelmnts?.lbl?.contactStateAdmin}}" [popupPlacement]="'right'" [popupInverted]="true" class="sb-icon-info info-icon"></i>
+        </label>
         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="participant"
-        [ngClass]="{'disabled' : showFormInViewMode }">
+        [ngClass]="{'disabled' : showFormInViewMode || batchDetails.participants.length >= 100}">
           <input id="userSelList">
           <i class="dropdown icon"></i>
           <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
@@ -128,14 +130,14 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="one field" *ngIf="batchUpdateForm.value.enrollmentType !== 'open' && selectedParticipants.length > 0">
+        <small *ngIf="this.batchDetails.participants.length > 100" class="sb-color-primary d-flex pt-4">{{resourceService?.frmelmnts?.lbl?.contactStateAdmin}}</small>
+      </div>      
+      <div class="one field" *ngIf="batchUpdateForm.value.enrollmentType !== 'open' && selectedParticipants.length > 0 && batchDetails.participants.length <= 100">
         <label>{{resourceService?.frmelmnts?.lbl?.batchparticipants}}</label>
           <a class="ui label mt-5" *ngFor="let user of selectedParticipants">
             <img class="ui right spaced avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{user.name}}{{user.otherDetail}}
             <i class="delete icon" *ngIf="batchDetails.status === 0" (click)="removeParticipant(user)"></i>
-          </a>
+          </a> 
       </div>
     </form>
   </div>

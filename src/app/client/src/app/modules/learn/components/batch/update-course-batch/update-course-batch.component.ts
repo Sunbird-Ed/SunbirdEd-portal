@@ -226,10 +226,20 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     let userList = [];
     if (this.batchDetails.participants || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
       if (this.batchDetails.enrollmentType !== 'open') {
-        userList = _.union(this.batchDetails.participants, this.batchDetails.mentors);
+        if (this.batchDetails.participants.length > 100) {
+          userList = this.batchDetails.mentors;
+        } else {
+          userList = _.union(this.batchDetails.participants, this.batchDetails.mentors);
+        }
       } else {
         userList = this.batchDetails.mentors;
       }
+      if (!userList.length) {
+        this.showLoader = false;
+        this.disableSubmitBtn = false;
+        return ;
+      }
+
       const request = {
         filters: {
           identifier: userList
@@ -308,6 +318,10 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       $('#participant').dropdown({
         forceSelection: false,
         fullTextSearch: true,
+        maxSelections: 100 - this.batchDetails.participants.length,
+        message: {
+          maxSelections : this.resourceService.messages.imsg.m0047
+        },
         onAdd: () => {
         }
       });
