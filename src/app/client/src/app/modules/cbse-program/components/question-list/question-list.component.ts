@@ -230,7 +230,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
             'request': {
               'content': {
                 'name': `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`,
-                'contentType': 'Resource',
+                'contentType': 'PracticeQuestionSet',
                 'mimeType': 'application/vnd.ekstep.ecml-archive',
                 'programId': this.selectedAttributes.programId,
                 'program': this.selectedAttributes.program,
@@ -249,6 +249,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
                 'questions': questions,
                 'contributors': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'contributors'))), ', '),
                 'attributions': _.compact(_.get(selectedQuestionsData, 'attributions')),
+                'textBookUnitIdentifier': this.selectedAttributes.textBookUnitIdentifier,
                 // tslint:disable-next-line: max-line-length
                 'appIcon': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11279144369168384014/artifact/qa_1561455529937.png'
               }

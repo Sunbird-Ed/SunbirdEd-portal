@@ -55,7 +55,10 @@ export class CbseProgramService {
                   questionSetConfigCdata.shuffle_questions = false;
                   questionConfigCdata.responseDeclaration = _.get(res, 'result.assessment_item.responseDeclaration');
                 }
-                questionSetConfigCdata.total_items = collectionIds.length;
+                question.config.__cdata.metadata = {};
+                const blacklist = ['media', 'options', 'body', 'question', 'solutions'];
+                question.config.__cdata.max_score = _.get(res, 'result.assessment_item.maxScore') || 1;
+                question.config.__cdata.metadata = _.cloneDeep(_.omit(res.result.assessment_item, blacklist));
                 questionConfigCdata.questionCount = 0;
                 question.data.__cdata = JSON.stringify(questionConfigCdata);
                 question.config.__cdata = JSON.stringify(question.config.__cdata);

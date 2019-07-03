@@ -400,7 +400,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       return forkJoin(latexBody).pipe(
         map((res) => {
           _.forEach(res, (latex, i) => {
-            body = latex.includes('Error') ? body : body.replace(isMathML[i], '<div class="mathText">'+latex+'</div>');
+            body = latex.includes('Error') ? body : body.replace(isMathML[i], '<span class="mathText">'+latex+'</span>');
           });
           return body;
         })
