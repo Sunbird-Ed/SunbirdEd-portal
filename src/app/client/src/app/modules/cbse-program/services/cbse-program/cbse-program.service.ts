@@ -55,8 +55,9 @@ export class CbseProgramService {
                   questionSetConfigCdata.shuffle_questions = false;
                   questionConfigCdata.responseDeclaration = _.get(res, 'result.assessment_item.responseDeclaration');
                 }
+                questionSetConfigCdata.total_items = collections.length;
                 question.config.__cdata.metadata = {};
-                const blacklist = ['media', 'options', 'body', 'question', 'solutions'];
+                const blacklist = ['media', 'options', 'body', 'question', 'editorState', 'solutions'];
                 question.config.__cdata.max_score = _.get(res, 'result.assessment_item.maxScore') || 1;
                 question.config.__cdata.metadata = _.cloneDeep(_.omit(res.result.assessment_item, blacklist));
                 questionConfigCdata.questionCount = 0;
@@ -67,6 +68,8 @@ export class CbseProgramService {
               catchError(err => of(err))
             );
           }));
+        } else {
+          console.log('Telemetry error has to log - collection length is 0');
         }
       }))
       .pipe(
