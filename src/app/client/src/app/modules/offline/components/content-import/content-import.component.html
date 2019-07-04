@@ -16,26 +16,6 @@
                     <div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
                         <span class="qq-upload-drop-area-text-selector"></span>
                     </div>
-
-                    <!-- <button
-                        class="qq-upload-button-selector sb-btn sb-btn-primary sb-btn-normal mb-10">{{resourceService.frmelmnts?.btn?.selectContentFiles}}</button> -->
-
-                    <p class="grey-text" *ngIf="!processingFiles">
-                        1.{{resourceService.frmelmnts?.lbl?.click}} <b>
-                            {{resourceService.frmelmnts?.btn?.selectContentFiles}}</b>
-                        {{resourceService.frmelmnts?.lbl?.choseFromPd}}<br />
-                        2.{{resourceService.frmelmnts?.lbl?.click}} <b>
-                            {{resourceService.frmelmnts?.lbl?.open}}</b>
-                        {{resourceService.frmelmnts?.lbl?.inWindows}}<br>
-                        3.{{resourceService.frmelmnts?.lbl?.afterSuccessfulImport}} <b>
-                            {{resourceService.frmelmnts?.btn?.close}} </b>.<br>
-                        4.{{resourceService.frmelmnts?.lbl?.afterUnsuccessfulImport}} <b>
-                            {{resourceService.frmelmnts?.lbl?.retry}}</b>
-                        {{resourceService.frmelmnts?.lbl?.retryImport}} <b>
-                            {{resourceService.frmelmnts?.btn?.cancel}}</b>
-                        {{resourceService.frmelmnts?.lbl?.haltOperation}}
-                    </p>
-
                     <ul class="qq-upload-list-selector qq-upload-list sb-file-uploads" id="file-uploading-list"
                         aria-live="polite" aria-relevant="additions removals">
                         <li class="sb-file-upload-item">
@@ -65,12 +45,10 @@
                             </div>
                             <div class="sb-file-upload-actions">
                                 <button type="button"
-                                    class="qq-upload-cancel-selector sb-btn sb-btn-outline-primary sb-btn-xs mr-5">Cancel</button>
-                                <button type="button" class="qq-upload-retry-selector sb-btn sb-btn-primary sb-btn-xs">
+                                    class="qq-upload-cancel-selector sb-btn sb-btn-outline-primary sb-btn-xs">Cancel</button>
+                                <button type="button" class="qq-upload-retry-selector sb-btn sb-btn-primary sb-btn-xs mr-5">
                                     Retry
                                 </button>
-                                <!-- <button type="button" class="qq-upload-delete-selector sb-btn sb-btn-outline-error sb-btn-xs">Delete</button> -->
-                                <!-- <span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span> -->
                             </div>
                         </li>
                     </ul>
@@ -101,10 +79,11 @@
                 </div>
 
                 <div class="sb-modal-actions">
-                    <button type="button" class="sb-btn sb-btn-primary sb-btn-normal"
-                        (click)="modalClose()">Close</button>
-                    <button class="qq-upload-button-selector sb-btn sb-btn-primary sb-btn-normal"
-                        (click)="processingFiles = true">{{resourceService.frmelmnts?.btn?.selectContentFiles}}</button>
+                    <button type="button" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+                    [telemetryInteractEdata]="ImportContentModalClose" class="sb-btn sb-btn-primary sb-btn-normal" id="close_modal"
+                        (click)="modalClose()">{{resourceService.frmelmnts?.btn?.close}}</button>
+                    <button id="selectFile"  appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+                    [telemetryInteractEdata]="selectContentFilesEdata" class="qq-upload-button-selector sb-btn sb-btn-primary sb-btn-normal mr-8">{{resourceService.frmelmnts?.btn?.selectContentFiles}}</button>
                 </div>
             </div>
         </div>

@@ -1,11 +1,11 @@
-<sui-modal 
-    [mustScroll]="true" 
+<sui-modal
+    [mustScroll]="true"
     [isClosable]="true"
     [transitionDuration]="0"
     [size]="'normal'"
     class="sb-modal"
     appBodyScroll
-    (dismissed)="goToCreate();" 
+    (dismissed)="goToCreate();"
     #modal
     [appTelemetryImpression]="telemetryImpression">
 
@@ -16,10 +16,10 @@
     <!--/Header-->
 
     <!--Content-->
-    <div class="sb-modal-content o-y-visible" *ngIf="formFieldProperties && categoryMasterList">
-        <app-content-creation-default-template 
-            #formData 
-            [formFieldProperties]="formFieldProperties" 
+    <div class="sb-modal-content o-y-visible p-0 pt-16" *ngIf="formFieldProperties && categoryMasterList">
+        <app-content-creation-default-template
+            #formData
+            [formFieldProperties]="formFieldProperties"
             [categoryMasterList]="categoryMasterList">
         </app-content-creation-default-template>
     </div>
@@ -27,8 +27,8 @@
 
     <!--Actions-->
     <div class="sb-modal-actions">
-        <button 
-            class="sb-btn sb-btn-normal sb-btn-primary" 
+        <button
+            class="sb-btn sb-btn-normal sb-btn-primary"
             (click)="createContent();modal.deny()"
             appTelemetryInteract [telemetryInteractEdata]="{id:'start-creating',
             type: 'click',

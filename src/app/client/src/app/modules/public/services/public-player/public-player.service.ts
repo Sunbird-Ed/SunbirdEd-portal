@@ -93,7 +93,7 @@ export class PublicPlayerService {
     if (environment.isOffline) {
       configuration.data = '';
     }
-    if (environment.isOffline && !navigator.onLine) {
+    if (environment.isOffline) {
       configuration.metadata = _.omit(configuration.metadata, ['streamingUrl']);
     }
     if (option.dialCode) {

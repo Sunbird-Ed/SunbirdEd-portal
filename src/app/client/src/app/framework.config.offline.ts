@@ -1,12 +1,12 @@
+import { OfflinePlugins } from './modules/offline/plugin';
 import { OfflineModule } from './modules/offline';
-import { ImportContentPlugin} from './modules/offline/plugin';
 
 export const WebExtensionsConfig = {
   plugins: [{
-    'id': 'content-import',
+    'id': 'offline-plugins',
     'ver': '1.0.0',
     'module': OfflineModule,
-    'main': ImportContentPlugin
+    'main': OfflinePlugins
   }]
 };
 

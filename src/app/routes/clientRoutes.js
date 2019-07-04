@@ -7,11 +7,15 @@ _ = require('lodash'),
 path = require('path'),
 envHelper = require('../helpers/environmentVariablesHelper.js'),
 tenantHelper = require('../helpers/tenantHelper.js'),
+logger = require('sb_logger_util_v2'),
 defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState(),
 oneDayMS = 86400000,
-pathMap = {}
-const cdnIndexFileExist = fs.existsSync(path.join(__dirname, '../dist', 'index_cdn.ejs'))
-console.log('CDN index file exist: ', cdnIndexFileExist);
+pathMap = {},
+cdnIndexFileExist = fs.existsSync(path.join(__dirname, '../dist', 'index_cdn.ejs')),
+proxyUtils = require('../proxy/proxyUtils.js')
+
+logger.info({msg:`CDN index file exist: ${cdnIndexFileExist}`});
+
 const setZipConfig = (req, res, type, encoding, dist = '../') => {
     if (pathMap[req.path + type] && pathMap[req.path + type] === 'notExist') {
       return false;
@@ -29,11 +33,16 @@ const setZipConfig = (req, res, type, encoding, dist = '../') => {
         return true
     } else {
       pathMap[req.path + type] = 'notExist';
-      console.log('zip file not exist for: ', req.url, type)
+      logger.info({msg:'zip file not exist' ,
+      additionalInfo: {
+        url: req.url,
+        type: type
+      }})
       return false;
     }
 }
 module.exports = (app, keycloak) => {
+
   app.set('view engine', 'ejs')
 
   app.get(['*.js', '*.css'], (req, res, next) => {
@@ -80,9 +89,9 @@ module.exports = (app, keycloak) => {
   app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
     '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course',
     '/explore-course/*', '/:slug/explore-course', '/:slug/explore-course/*',
-    '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*'], indexPage(false))
+    '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*', '/download/*', '/:slug/download/*'],redirectTologgedInPage, indexPage(false))
 
-  app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode))
+  app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode + '?source=scan'))
 
   app.all('/app', (req, res) => res.redirect(envHelper.ANDROID_APP_URL))
 
@@ -96,7 +105,7 @@ module.exports = (app, keycloak) => {
 
 function getLocals(req) {
   var locals = {}
-  if(req.loggedInRoute){
+  if(req.includeUserDetail){
     locals.userId = _.get(req, 'session.userId') ? req.session.userId : null
     locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'session.userId') ? req.sessionID : null
   } else {
@@ -122,15 +131,23 @@ function getLocals(req) {
   locals.videoMaxSize = envHelper.sunbird_portal_video_max_size
   locals.reportsLocation = envHelper.sunbird_azure_report_container_name
   locals.previewCdnUrl = envHelper.sunbird_portal_preview_cdn_url
+  locals.offlineDesktopAppTenant = envHelper.sunbird_portal_offline_tenant
+  locals.offlineDesktopAppVersion = envHelper.sunbird_portal_offline_app_version
+  locals.offlineDesktopAppReleaseDate = envHelper.sunbird_portal_offline_app_release_date
+  locals.offlineDesktopAppSupportedLanguage = envHelper.sunbird_portal_offline_supported_languages,
+  locals.offlineDesktopAppDownloadUrl = envHelper.sunbird_portal_offline_app_download_url
   return locals
 }
 
 const indexPage = (loggedInRoute) => {
-  return function(req, res){
+  return async (req, res) => {
     if (envHelper.DEFAULT_CHANNEL && req.path === '/') {
       renderTenantPage(req, res)
     } else {
-      req.loggedInRoute = loggedInRoute
+      req.includeUserDetail = true
+      if(!loggedInRoute) { // for public route, if user token is valid then send user details
+        await proxyUtils.validateUserToken(req, res).catch(err => req.includeUserDetail = false)
+      }
       renderDefaultIndexPage(req, res)
     }
   }
@@ -143,13 +160,24 @@ const renderDefaultIndexPage = (req, res) => {
   } else {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
     res.locals = getLocals(req);
-    console.log("envHelper.PORTAL_CDN_URL", envHelper.PORTAL_CDN_URL, "cdnIndexFileExist", cdnIndexFileExist, "req.cookies.cdnFailed", req.cookies.cdnFailed);
+    logger.info({
+      msg:'cdn parameters:',
+      additionalInfo: {
+        PORTAL_CDN_URL: envHelper.PORTAL_CDN_URL,
+        cdnIndexFileExist: cdnIndexFileExist,
+        cdnFailedCookies: req.cookies.cdnFailed
+      }
+    })
     if(envHelper.PORTAL_CDN_URL && cdnIndexFileExist && req.cookies.cdnFailed !== 'yes'){ // assume cdn works and send cdn ejs file
       res.locals.cdnWorking = 'yes';
       res.render(path.join(__dirname, '../dist', 'index_cdn.ejs'))
     } else { // load local file if cdn fails or cdn is not enabled
       if(req.cookies.cdnFailed === 'yes'){
-        console.log("CDN Failed - loading local files", cdnIndexFileExist, envHelper.PORTAL_CDN_URL);
+        logger.info({msg:'CDN Failed - loading local files',
+      additionalInfo: {
+        cdnIndexFileExist: cdnIndexFileExist,
+        PORTAL_CDN_URL: envHelper.PORTAL_CDN_URL
+      }})
       }
       res.locals.cdnWorking = 'no';
       res.render(path.join(__dirname, '../dist', 'index.ejs'))
@@ -183,4 +211,28 @@ const loadTenantFromLocal = (req, res) => {
   } else {
     renderDefaultIndexPage(req, res)
   }
+}
+const redirectTologgedInPage = (req, res) => {
+	let redirectRoutes = { '/explore': '/resources', '/explore/1': '/search/Library/1', '/explore-course': '/learn', '/explore-course/1': '/search/Courses/1' };
+	if (req.params.slug) {
+		redirectRoutes = {
+			[`/${req.params.slug}/explore`]: '/resources',
+			[`/${req.params.slug}/explore-course`]: '/learn'
+		}
+	}
+	if (_.get(req, 'sessionID') && _.get(req, 'session.userId')) {
+		if (_.get(redirectRoutes, req.originalUrl)) {
+			const routes = _.get(redirectRoutes, req.originalUrl);
+			res.redirect(routes)
+		} else {
+			if (_.get(redirectRoutes, `/${req.originalUrl.split('/')[1]}`)) {
+				const routes = _.get(redirectRoutes, `/${req.originalUrl.split('/')[1]}`);
+				res.redirect(routes)
+			} else {
+				renderDefaultIndexPage(req, res)
+			}
+		}
+	} else {
+		renderDefaultIndexPage(req, res)
+	}
 }

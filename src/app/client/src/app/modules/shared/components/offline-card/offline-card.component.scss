@@ -1,0 +1,12 @@
+
+@import "variables";
+
+.disable{
+    cursor: auto !important;
+    pointer-events: none !important;
+    color:$gray-200 !important;
+ }
+
+ .disable-card{
+    cursor: auto !important;
+ }

@@ -7,6 +7,8 @@ import {
   IErrorEventData, IStartEventInput, IEndEventInput
 } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
+
 
 @Component({
   selector: 'app-content-import',
@@ -44,6 +46,9 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
   @ViewChild('modal') modal;
   @Output() closeImportModal = new EventEmitter<any>();
   isUpload: EventEmitter<any> = new EventEmitter();
+  selectContentFilesEdata: IInteractEventEdata;
+  ImportContentModalClose: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
 
   constructor(
     public config: ConfigService,
@@ -59,14 +64,37 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
       containerName: 'attachments/announcement',
     };
     this.offlineFileUploaderService.initilizeFileUploader(options);
+    this.openFileBrowser();
+    this.setInteractData();
+  }
+
+  setInteractData() {
+    this.telemetryInteractObject = {
+      id: '',
+      type: 'watch-video',
+      ver: '1.0'
+    };
+    this.selectContentFilesEdata = {
+      id: 'select-content-files-button',
+      type: 'click',
+      pageid: 'library'
+    };
+    this.ImportContentModalClose = {
+      id: 'import-modal-close',
+      type: 'click',
+      pageid: 'library'
+    };
   }
 
   ngAfterViewInit() {
     this.removeFirstChild();
   }
-
   get getWindowObject(): any {
     return window;
+  }
+
+  openFileBrowser() {
+    $('#selectFile > input[type=file]').trigger('click');
   }
 
   removeFirstChild() {

@@ -274,12 +274,14 @@ export class SearchService {
   * @param {SearchParam} requestParam api request data
  */
   batchSearch(requestParam: SearchParam): Observable<ServerResponse> {
+    const offset = (requestParam.offset === 0 ||  requestParam.offset)
+      ? requestParam.offset : (requestParam.pageNumber - 1) * requestParam.limit;
     const option = {
       url: this.config.urlConFig.URLS.BATCH.GET_BATCHS,
       data: {
         request: {
           filters: requestParam.filters,
-          offset: (requestParam.pageNumber - 1) * requestParam.limit,
+          offset,
           limit: requestParam.limit,
           sort_by: requestParam.sort_by
         }

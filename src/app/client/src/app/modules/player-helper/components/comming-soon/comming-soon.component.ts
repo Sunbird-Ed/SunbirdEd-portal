@@ -20,13 +20,13 @@ export class CommingSoonComponent implements OnInit, OnDestroy {
   * content's channel value
   */
   @Input() contentOrgId: string;
-
+  resourceDataSubscription: any;
   constructor(public orgDetailsService: OrgDetailsService, private userService: UserService,
     public resourceService: ResourceService) {
   }
 
   ngOnInit() {
-    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
+    this.resourceDataSubscription = this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
       this.selectLanguage = item.value;
       this.setCommingSoonMessage();
     });
@@ -80,5 +80,8 @@ export class CommingSoonComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    if (this.resourceDataSubscription) {
+      this.resourceDataSubscription.unsubscribe();
+    }
   }
 }
