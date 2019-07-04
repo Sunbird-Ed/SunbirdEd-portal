@@ -196,7 +196,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   private fetchParticipantDetails() {
     let userListIdentifier = [];
     if (this.batchDetails.participants || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
-      if (this.batchDetails.participants.length > 100) {
+      if (this.batchDetails.participants && this.batchDetails.participants.length > 100) {
         userListIdentifier = this.batchDetails.mentors;
       } else {
         userListIdentifier = _.union(this.batchDetails.participants, this.batchDetails.mentors);
@@ -272,11 +272,12 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
   private initDropDown() {
+    const count = this.batchDetails.participants ? this.batchDetails.participants.length : 0;
     setTimeout(() => {
       $('#participant').dropdown({
         forceSelection: false,
         fullTextSearch: true,
-        maxSelections: 100 - this.batchDetails.participants.length,
+        maxSelections: 100 - count,
         message: {
           maxSelections : this.resourceService.messages.imsg.m0046
         },
