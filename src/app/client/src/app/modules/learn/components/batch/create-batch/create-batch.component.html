@@ -71,8 +71,7 @@
             </div>
           </div>
         </div>
-        <div class="field" *ngIf="createBatchForm.value.enrollmentType === 'open'"
-             [ngClass]="(createBatchForm.controls['enrollmentEndDate'].invalid && !createBatchForm.controls['enrollmentEndDate'].pristine) ? 'error': ''">
+        <div class="field" *ngIf="createBatchForm.value.enrollmentType === 'open'" [ngClass]="(createBatchForm.controls['enrollmentEndDate'].invalid && !createBatchForm.controls['enrollmentEndDate'].pristine) ? 'error': ''">
           <label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</label>
           <div class="ui read-only calendar rangeenrollMentEnd mb-10" id="rangeenrollMentEnd">
             <div class="ui input left icon">
