@@ -25,9 +25,9 @@
         <div class="sb-field">
           <input class="sb-form-control" type="text" name="name" formControlName="name">
         </div>
-      </div>
-      <div class="mt-0 mb-10 ui pointing red basic label below" *ngIf="batchUpdateForm.controls.name.invalid && batchUpdateForm.controls['name'].errors.required && !batchUpdateForm.controls['name'].pristine">
-        {{resourceService?.messages?.stmsg?.m0114}}
+        <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="batchUpdateForm.controls.name.invalid && batchUpdateForm.controls['name'].errors.required && !batchUpdateForm.controls['name'].pristine">
+            {{resourceService?.messages?.stmsg?.m0114}}
+          </div>
       </div>
       <div class="sb-field-group">
         <label>{{resourceService?.frmelmnts?.lbl?.aboutbatch}}</label>
@@ -52,14 +52,14 @@
             <div class="sb-field-group pr-8"
               [ngClass]="batchUpdateForm.controls['startDate'].invalid && batchUpdateForm.controls['startDate'].errors.required && !batchUpdateForm.controls['startDate'].pristine ? 'error': ''">
               <label class="required">{{resourceService?.frmelmnts?.lbl?.startdate}}</label>
-              <div class="ui read-only calendar rangestartAdd mb-10" id="rangestartAdd">
+              <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
                 <div class="sb-field ui left icon input">
                   <i class="calendar icon date-calendar"></i>
                   <input class="sb-form-control" [attr.disabled]="(batchDetails.status !== 0 || showFormInViewMode ) ? true : null" [pickerMinDate]='batchDetails.status !== 0 ? batchUpdateForm.controls["startDate"].value : pickerMinDate'
                   suiDatepicker formControlName="startDate" [pickerMode]="'date'">
                 </div>
               </div>
-              <div class="mt-0 mb-10 ui pointing red basic label below" *ngIf="batchUpdateForm.controls.startDate.invalid && batchUpdateForm.controls['startDate'].errors.required && !batchUpdateForm.controls['startDate'].pristine">
+              <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="batchUpdateForm.controls.startDate.invalid && batchUpdateForm.controls['startDate'].errors.required && !batchUpdateForm.controls['startDate'].pristine">
               {{resourceService?.messages?.stmsg?.m0113}}
             </div>
             </div>
@@ -75,14 +75,14 @@
             <div class="sb-field-group pl-8" *ngIf="batchUpdateForm.value.enrollmentType === 'open'"
             [ngClass]="batchUpdateForm.controls['enrollmentEndDate'].invalid && !batchUpdateForm.controls['enrollmentEndDate'].pristine ? 'error': ''">
               <label class="required">{{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</label>
-              <div class="ui read-only calendar rangeenrollMentEnd mb-10" id="rangeenrollMentEnd">
+              <div class="ui read-only calendar rangeenrollMentEnd" id="rangeenrollMentEnd">
                 <div class="sb-field ui left icon input">
                   <i class="calendar icon date-calendar"></i>
                   <input class="sb-form-control" [pickerMinDate]='pickerMinDateForEnrollmentEndDate' [pickerMaxDate]='batchUpdateForm.value.endDate'
                 suiDatepicker formControlName="enrollmentEndDate" [pickerMode]="'date'">
                 </div>
               </div>
-              <div class="mt-0 mb-10 ui pointing red basic label below"
+              <div class="mt-0 mb-8 ui pointing red basic label below"
               *ngIf="batchUpdateForm.controls['enrollmentEndDate'].invalid && !batchUpdateForm.controls['enrollmentEndDate'].pristine">
               {{resourceService?.messages?.stmsg?.m0135}}
             </div>

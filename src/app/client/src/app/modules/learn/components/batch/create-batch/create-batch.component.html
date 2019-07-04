@@ -24,9 +24,9 @@
         <div class="sb-field">
           <input type="text" name="name" formControlName="name" class="sb-form-control" autofocus>
         </div>
-      </div>
-      <div class="mt-0 mb-10 ui pointing red basic label below" *ngIf="createBatchForm.controls.name.invalid && createBatchForm.controls['name'].errors.required && !createBatchForm.controls['name'].pristine">
-        {{resourceService?.messages?.stmsg?.m0114}}
+        <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="createBatchForm.controls.name.invalid && createBatchForm.controls['name'].errors.required && !createBatchForm.controls['name'].pristine">
+          {{resourceService?.messages?.stmsg?.m0114}}
+        </div>
       </div>
       <div class="sb-field-group">
         <div class="sb-field">
@@ -58,7 +58,7 @@
                 [pickerMode]="'date'">
             </div>
           </div>
-          <div class="mt-0 mb-10 ui pointing red basic label below"
+          <div class="mt-0 mb-8 ui pointing red basic label below"
             *ngIf="createBatchForm.controls.startDate.invalid && createBatchForm.controls['startDate'].errors.required && !createBatchForm.controls['startDate'].pristine">
             {{resourceService?.messages?.stmsg?.m0113}}
           </div>
@@ -75,7 +75,7 @@
         </div>
         <div class="sb-field-group pl-8" *ngIf="createBatchForm.value.enrollmentType === 'open'" [ngClass]="(createBatchForm.controls['enrollmentEndDate'].invalid && !createBatchForm.controls['enrollmentEndDate'].pristine) ? 'error': ''">
           <label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</label>
-          <div class="ui read-only calendar rangeenrollMentEnd mb-10" id="rangeenrollMentEnd">
+          <div class="ui read-only calendar rangeenrollMentEnd" id="rangeenrollMentEnd">
             <div class="sb-field ui left icon input">
               <i class="calendar icon date-calendar"></i>
               <input class="sb-form-control" [pickerMinDate]='createBatchForm.value.startDate'
@@ -83,7 +83,7 @@
                 [pickerMode]="'date'">
             </div>
           </div>
-          <div class="mt-0 mb-10 ui pointing red basic label below"
+          <div class="mt-0 mb-8 ui pointing red basic label below"
             *ngIf="createBatchForm.controls['enrollmentEndDate'].invalid && !createBatchForm.controls['enrollmentEndDate'].pristine? 'error': ''">
             {{resourceService?.messages?.stmsg?.m0135}}
           </div>
