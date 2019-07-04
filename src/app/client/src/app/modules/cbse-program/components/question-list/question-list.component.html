@@ -1,7 +1,7 @@
 <div class="ui twelve column grid p-0 m-0">
   <div class="three wide column p-0 pr-16">
     <div class="ui questionsMenu">
-      <button *ngIf="role.currentRole != 'REVIEWER'" [disabled]="questionMetaData && questionMetaData.mode === 'create'"
+      <button *ngIf="role.currentRole === 'CONTRIBUTOR'" [disabled]="questionMetaData && questionMetaData.mode === 'create'"
         (click)="createNewQuestion()" appTelemetryInteract
         [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'questionlist',extra:{type:'reference',category:selectedAttributes.questionType.toUpperCase(),topic:selectedAttributes.topic}}"
         class="sb-btn sb-btn-primary sb-btn-normal width-100">Create</button>
@@ -39,7 +39,7 @@
           (change)="selectAll();">
           <label for="check1">Select All</label>
         </div>
-        <button class="sb-btn sb-btn-primary sb-btn-normal ml-auto"
+        <button class="sb-btn sb-btn-primary sb-btn-normal ml-auto" [disabled]="publishInProgress"
         appTelemetryInteract [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:'questionlist'}"
         (click)="publishQuestions()">Publish Questions</button>
       </div>
@@ -67,3 +67,31 @@
     <app-loader *ngIf='showLoader'></app-loader>
   </div>
 </div>
+
+<sui-modal
+  *ngIf="showSuccessModal"
+  [mustScroll]="true"
+  [isClosable]="true"
+  [transitionDuration]="0"
+  [size]="'small'"
+  class="sb-modal"
+  appBodyScroll
+  (dismissed)="showSuccessModal = !showSuccessModal"
+  #modal>
+  <div class="sb-modal-header">
+    Practice Set Successfully Published
+  </div>
+  <div class="sb-modal-content">
+    <p>Name : {{questionTypeName[selectedAttributes.questionType]}} - {{selectedAttributes.topic}} </p>
+    <p>Board : {{selectedAttributes.board}} </p>
+    <p>Medium : {{this.selectedAttributes.medium}} </p>
+    <p>Class : {{this.selectedAttributes.gradeLevel}} </p>
+    <p>Subject : {{this.selectedAttributes.subject}} </p>
+    Preview Link : <a href="/play/content/{{publishedResourceId}}">Click here</a>
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="showSuccessModal = !showSuccessModal">
+      Close
+    </button>
+  </div>
+  </sui-modal>

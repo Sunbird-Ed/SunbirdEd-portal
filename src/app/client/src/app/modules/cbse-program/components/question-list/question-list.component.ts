@@ -23,6 +23,9 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public refresh = true;
   public showLoader = true;
   public enableRoleChange = false;
+  public showSuccessModal =  false;
+  public publishInProgress = false;
+  public publishedResourceId: any;
   selectedAll: any;
   private questionTypeName = {
     vsa: 'Very Short Answer',
@@ -201,12 +204,13 @@ export class QuestionListComponent implements OnInit, OnChanges {
 
   checkIfAllSelected() {
     this.selectedAll = this.questionList.every(function (question: any) {
-      return question.selected == true;
-    })
+      return question.selected === true;
+    });
   }
 
   publishQuestions() {
     let selectedQuestions = _.filter(this.questionList, (question) => _.get(question, 'isSelected'));
+    this.publishInProgress = true;
     let selectedQuestionsData = _.reduce(selectedQuestions, (final, question) => {
       final.ids.push(_.get(question, 'identifier'));
       final.contributors.push(_.get(question, 'creator'));
@@ -258,19 +262,21 @@ export class QuestionListComponent implements OnInit, OnChanges {
         };
         this.contentService.post(option).subscribe((res) => {
           console.log('res ', res);
-          if(res.responseCode === 'OK' && res.result.content_id !== undefined){
+          if (res.responseCode === 'OK' && res.result.content_id !== undefined) {
             this.publishResource(res.result.content_id);
           }
         }, error => {
+          this.publishInProgress = false;
           this.toasterService.error(_.get(error, 'error.params.errmsg') || 'content creation failed');
         });
       });
     } else {
+      this.publishInProgress = false;
       this.toasterService.error('Please select some questions to Publish');
     }
   }
 
-  publishResource(contentId){
+  publishResource(contentId) {
     const requestBody = {
       request: {
         content: {
@@ -285,7 +291,11 @@ export class QuestionListComponent implements OnInit, OnChanges {
     };
     this.contentService.post(optionVal).subscribe(response => {
       this.toasterService.success('content created & published successfully');
+      this.showSuccessModal = true;
+      this.publishInProgress = false;
+      this.publishedResourceId = response.result.content_id || '';
     }, (err) => {
+      this.publishInProgress = false;
       this.toasterService.error(_.get(err, 'error.params.errmsg') || 'content publish failed');
     });
   }
