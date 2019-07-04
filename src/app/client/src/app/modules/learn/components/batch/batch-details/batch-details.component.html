@@ -29,7 +29,7 @@
                     <div class="description" *ngIf="userNames[batch.createdBy]">Created
                       by {{userNames[batch.createdBy].firstName}} {{userNames[batch.createdBy].lastName}}</div>
                     <span *ngIf="isValidEnrollmentEndDate(batch.enrollmentEndDate)">
-                      <span class="sb-label-12size" *ngIf="!isEnrollmentAllowed(batch.enrollmentEndDate)">{{resourceService.messages.stmsg.m0135}} {{batch.enrollmentEndDate | dateFormat}}</span>
+                      <span class="sb-label-12size" *ngIf="!isEnrollmentAllowed(batch.enrollmentEndDate)">{{resourceService.messages.stmsg.m0136}} {{batch.enrollmentEndDate | dateFormat}}</span>
                       <span class="sb-label-status-error" *ngIf="isEnrollmentAllowed(batch.enrollmentEndDate)">{{resourceService.messages.stmsg.m0134}}</span>
                     </span>
                   </div>
