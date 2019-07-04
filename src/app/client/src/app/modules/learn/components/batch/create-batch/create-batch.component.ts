@@ -161,6 +161,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       endDate: new FormControl(),
       mentors: new FormControl(),
       users: new FormControl(),
+      enrollmentEndDate: new FormControl()
     });
     this.createBatchForm.valueChanges.subscribe(val => {
       if (this.createBatchForm.status === 'VALID') {
@@ -222,6 +223,9 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       createdFor: this.userService.userProfile.organisationIds,
       mentors: _.compact(mentors)
     };
+    if (this.createBatchForm.value.enrollmentType === 'open' && this.createBatchForm.value.enrollmentEndDate) {
+      requestBody['enrollmentEndDate'] = moment(this.createBatchForm.value.enrollmentEndDate).format('YYYY-MM-DD');
+    }
     this.courseBatchService.createBatch(requestBody).pipe(takeUntil(this.unsubscribe))
       .subscribe((response) => {
         if (participants && participants.length > 0) {
