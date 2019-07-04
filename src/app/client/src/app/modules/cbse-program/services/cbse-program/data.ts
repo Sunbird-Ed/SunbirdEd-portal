@@ -315,7 +315,7 @@ export let questionObject = {
     '__cdata': {}
   },
   'config': {
-    '__cdata': { 'max_score': 1, 'partial_scoring': true, 'isShuffleOption': false, responseDeclaration: {}}
+    '__cdata': { 'max_score': 1, 'partial_scoring': false, 'isShuffleOption': false, responseDeclaration: {}}
   },
   'w': 80,
   'h': 85,
