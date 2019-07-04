@@ -9,7 +9,7 @@ import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
   templateUrl: './watch-video.component.html',
   styleUrls: ['./watch-video.component.scss']
 })
-export class WatchVideoComponent {
+export class WatchVideoComponent implements OnInit {
 
   @ViewChild('modal') modal;
   @Output() closeVideoModal = new EventEmitter<any>();
@@ -19,6 +19,9 @@ export class WatchVideoComponent {
   public telemetryInteractObject: IInteractEventObject;
   constructor(public resourceService: ResourceService, public router: Router, ) { }
 
+  ngOnInit() {
+    this.setInteractData();
+  }
   closeModal() {
     this.closeVideoModal.emit('success');
   }

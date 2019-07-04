@@ -60,9 +60,10 @@
             }
         }
         &.large {
+            width: 90%;
             max-width: $sb-modal-large-width;
             .sb-modal-content {
-                height: calc(100vh - 100px);
+                height: calc(100vh - 200px);
             }
         }
         &.sb-modal-fullscreen {
