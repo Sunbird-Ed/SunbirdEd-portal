@@ -6,6 +6,14 @@ RUN mkdir -p /opt/player \
 WORKDIR /opt/player
 COPY * /opt/player/
 WORKDIR /opt/player/app
+
+ARG content_editor_url
+ENV sunbird_content_editor_artifact_url ${content_editor_url}
+ARG collection_editor_url 
+ENV sunbird_collection_editor_artifact_url  ${collection_editor_url}
+ARG generic_editor_url
+ENV sunbird_generic_editor_artifact_url ${generic_editor_url}
+
 RUN npm set progress=false
 RUN npm install  --unsafe-perm 
 RUN npm run deploy
