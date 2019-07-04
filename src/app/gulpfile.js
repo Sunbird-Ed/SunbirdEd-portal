@@ -10,9 +10,9 @@ const brotli = require('gulp-brotli');
 const inject = require('gulp-inject-string');
 
 // To download editors
-const contentEditor = 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/artefacts/editor/content-editor-iframe-2.1.0.zip' // env.contentEditor;
-const collectionEditor = 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/artefacts/editor/collection-editor-iframe-2.1.0.zip' // env.contentEditor;
-const genericEditor = 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/artefacts/editor/generic-editor-iframe-2.1.0.zip' // env.contentEditor;
+const contentEditor = process.env.sunbird_content_editor_artifact_url;
+const collectionEditor = process.env.sunbird_collection_editor_artifact_url;
+const genericEditor = process.env.sunbird_generic_editor_artifact_url;
 const editorsDestPath = 'client/src/thirdparty/editors/'
 
 
