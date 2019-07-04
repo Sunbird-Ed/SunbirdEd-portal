@@ -21,6 +21,8 @@ cd src/app
 npm set progress=false
 npm install  --unsafe-perm
 npm run deploy
+mkdir app_dist
+cd app_dist
 npm i -g npm@3.10.10
 npm install --production  --unsafe-perm
 sed -i "/version/a\  \"buildHash\": \"8d1b8cf\","  app_dist/package.json
