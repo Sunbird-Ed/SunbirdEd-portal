@@ -32,27 +32,22 @@
               </ng-container>
 
               <ng-container *ngIf="filter.controlType === 'date'">
-                <div class="column field">
-                  <div class="ui left icon input">
-                    <i class="calendar icon"></i>
-                    <input [placeholder]="'Select Start Date'" suiDatepicker [pickerMinDate]="pickerMinDate"
-                      [pickerMaxDate]="pickerMaxDate" [pickerMode]="filter.pickerMode" [pickerUseNativeOnMobile]="false"
-                      (pickerSelectedDateChange)="selectStartDate($event)">
-                  </div>
-                </div>
-
-                <div class="column field">
-                  <div class="ui left icon input">
-                    <i class="calendar icon"></i>
-                    <input [placeholder]="'Select End Date'" suiDatepicker [pickerMinDate]="pickerMinDate"
-                      [pickerMaxDate]="pickerMaxDate" [pickerMode]="filter.pickerMode" [pickerUseNativeOnMobile]="false"
-                      (pickerSelectedDateChange)="selectEndDate($event)">
-                  </div>
-                </div>
+                <input type="text" ngxDaterangepickerMd [showCustomRangeLabel]="true" [locale]="datePickerConfig"
+                  [alwaysShowCalendars]="true" [ranges]="ranges" [linkedCalendars]="true"
+                  [placeholder]="filter.displayName" [minDate]="pickerMinDate" [maxDate]="pickerMaxDate"
+                  (change)="getDateRange($event,filter.reference)" />
               </ng-container>
             </ng-container>
 
-            <div class="column">
+            <div class="column" *ngIf="chartType === 'bar' || chartType === 'line'">
+              <sui-select class="selection" [placeholder]="'Select ChartType'"
+                (selectedOptionChange)="changeChartType($event)">
+                <sui-select-option *ngFor="let option of availableChartTypeOptions" [value]="option">
+                </sui-select-option>
+              </sui-select>
+            </div>
+
+            <div class=" column">
               <ng-container>
                 <div class="field">
                   <button class="ui small primary button" (click)="resetFilter()">
@@ -63,6 +58,8 @@
             </div>
           </div>
         </form>
+        <hr>
+        {{resultStatistics | json}}
       </div>
     </sui-accordion-panel>
   </sui-accordion>

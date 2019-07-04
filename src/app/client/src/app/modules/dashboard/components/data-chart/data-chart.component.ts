@@ -1,19 +1,20 @@
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { BaseChartDirective } from 'ng2-charts';
-import { Component, OnInit, Input, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { distinctUntilChanged, map, debounceTime } from 'rxjs/operators';
+import { Subscription, Subject } from 'rxjs';
+import { distinctUntilChanged, map, debounceTime, takeUntil } from 'rxjs/operators';
 import * as moment from 'moment';
 @Component({
   selector: 'app-data-chart',
   templateUrl: './data-chart.component.html',
   styleUrls: ['./data-chart.component.scss']
 })
-export class DataChartComponent implements OnInit {
+export class DataChartComponent implements OnInit, OnDestroy {
 
   @Input() chartInfo: any;
+  public unsubscribe = new Subject<void>();
   // contains the chart configuration
   chartConfig;
   chartData;
@@ -31,13 +32,32 @@ export class DataChartComponent implements OnInit {
   filtersSubscription: Subscription;
   noResultsFound: Boolean;
 
-  pickerMinDate: Date;
-  pickerMaxDate: Date;
+  availableChartTypeOptions = ['Bar', 'Line'];
+
+  pickerMinDate; // min date that can be selected in the datepicker
+  pickerMaxDate; // max date that can be selected in datepicker
+
   selectedStartDate;
   selectedEndDate;
 
+  datePickerConfig = { applyLabel: 'Set Date', format: 'DD-MM-YYYY' };
+  alwaysShowCalendars: boolean;
+
+  resultStatistics = {};
+
+  ranges: any = {
+    'Today': [moment(), moment()],
+    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+    'This Month': [moment().startOf('month'), moment().endOf('month')],
+    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+  }
+
   @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
-  constructor(public resourceService: ResourceService, private cdr: ChangeDetectorRef, private fb: FormBuilder, private toasterService: ToasterService) { }
+  constructor(public resourceService: ResourceService, private cdr: ChangeDetectorRef, private fb: FormBuilder, private toasterService: ToasterService) {
+    this.alwaysShowCalendars = true;
+  }
 
   ngOnInit() {
     this.chartConfig = _.get(this.chartInfo, 'chartConfig');
@@ -48,31 +68,14 @@ export class DataChartComponent implements OnInit {
     }
   }
 
-  selectStartDate(time) {
-    // let res = _.filter(this.chartData, data => {
-    //   if (moment(moment(data['Date'], 'DD-MM-YYYY').toDate()).isBefore(time)) {
-    //     return true; ``
-    //   }
-    //   return false;
-    // })
-    // this.getDataSetValue(res);
-  }
-
-  selectEndDate(time) {
-    // this.selectedEndDate = moment(time, 'YYYY-MM-DD').format('DD-MM-YYYY');
-
-    // if (!this.selectedStartDate) {
-
-    // } else {
-    // }
-  }
 
   buildFiltersForm() {
     this.filtersFormGroup = this.fb.group({});
     _.forEach(this.filters, filter => {
       if (/date/i.test(_.get(filter, 'reference'))) {
-        this.pickerMinDate = moment(this.chartLabels[0], 'DD-MM-YYYY').toDate();
-        this.pickerMaxDate = moment(this.chartLabels[this.chartLabels.length - 1], 'DD-MM-YYYY').toDate();
+        let dateRange = _.uniq(_.map(this.chartData, _.get(filter, 'reference')));
+        this.pickerMinDate = moment(dateRange[0], 'DD-MM-YYYY');
+        this.pickerMaxDate = moment(dateRange[dateRange.length - 1], 'DD-MM-YYYY');
       }
       this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
       filter.options = _.uniq(_.map(this.chartData, filter.reference));
@@ -80,6 +83,7 @@ export class DataChartComponent implements OnInit {
     this.showFilters = true;
     this.filtersSubscription = this.filtersFormGroup.valueChanges
       .pipe(
+        takeUntil(this.unsubscribe),
         map(filters => {
           return _.omitBy(filters, _.isEmpty);
         }),
@@ -123,6 +127,15 @@ export class DataChartComponent implements OnInit {
         hidden: _.get(dataset, 'hidden') || false
       });
     });
+
+    _.forEach(this.datasets, dataset => {
+      this.resultStatistics[dataset.label] = {
+        sum: _.sum(dataset.data),
+        min: _.min(dataset.data),
+        max: _.max(dataset.data),
+        avg: (_.sum(dataset.data) / dataset.data.length).toFixed(2)
+      };
+    });
   }
 
   getData(groupedDataBasedOnLabels, dataExpr) {
@@ -132,7 +145,30 @@ export class DataChartComponent implements OnInit {
     return _.values(data);
   }
 
+
+  getDateRange({ startDate, endDate }, columnRef) {
+    this.selectedStartDate = moment(startDate).subtract(1, 'day');
+    this.selectedEndDate = moment(endDate).add(1, 'day')
+    var dateRange = [];
+    var currDate = moment(this.selectedStartDate).startOf('day');
+    var lastDate = moment(this.selectedEndDate).startOf('day');
+    while (currDate.add(1, 'days').diff(lastDate) < 0) {
+      dateRange.push(currDate.clone().format('DD-MM-YYYY'));
+    }
+    this.filtersFormGroup.get(columnRef).setValue(dateRange);
+  }
+
+  changeChartType(chartType) {
+    this.chartType = _.lowerCase(chartType);
+  }
+
   resetFilter() {
     this.filtersFormGroup.reset();
   }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+  }
+
 }

@@ -8,6 +8,8 @@ import { UserService } from '@sunbird/core';
 import { ToasterService, ResourceService, INoResultMessage, NavigationHelperService } from '@sunbird/shared';
 import { UUID } from 'angular2-uuid';
 import { ActivatedRoute, Router } from '@angular/router';
+import {config} from './config'
+import { of } from 'rxjs';
 @Component({
   selector: 'app-usage-reports',
   templateUrl: './usage-reports.component.html',
@@ -40,7 +42,8 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     const reportsLocation = (<HTMLInputElement>document.getElementById('reportsLocation')).value;
     this.slug = _.get(this.userService, 'userProfile.rootOrg.slug');
-    this.usageService.getData(`/${reportsLocation}/${this.slug}/config.json`)
+    // this.usageService.getData(`/${reportsLocation}/${this.slug}/config.json`)
+      of(config)
       .subscribe(data => {
         if (_.get(data, 'responseCode') === 'OK') {
           this.noResult = false;
@@ -79,38 +82,29 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
     const url = report.dataSource;
     this.showLoader = true;
     this.downloadUrl = report.downloadUrl;
-    this.usageService.getData(url).subscribe((response) => {
-      if (_.get(response, 'responseCode') === 'OK') {
-        const data = _.get(response, 'result');
-        this.showLoader = false;
-        if (_.get(report, 'charts')) { this.createChartData(_.get(report, 'charts'), data); }
-        if (_.get(report, 'table')) { this.renderTable(_.get(report, 'table'), data); } else {
-          this.renderTable({}, data);
+    this.usageService.getData(url)
+      .subscribe((response) => {
+        if (_.get(response, 'responseCode') === 'OK') {
+          const data = _.get(response, 'result');
+          this.showLoader = false;
+          if (_.get(report, 'charts')) {
+            this.createChartData(_.get(report, 'charts'), data);
+          }
+          if (_.get(report, 'table')) { this.renderTable(_.get(report, 'table'), data); } else {
+            this.renderTable({}, data);
+          }
+        } else {
+          console.log(response);
         }
-      } else {
-        console.log(response);
-      }
-    }, err => { console.log(err); });
+      }, err => { console.log(err); });
   }
 
   createChartData(charts, data) {
     this.chartData = [];
     _.forEach(charts, chart => {
       const chartObj: any = {};
-      chartObj.options = _.get(chart, 'options') || { responsive: true };
-      chartObj.colors = _.get(chart, 'colors') || ['#024F9D'];
-      chartObj.chartType = _.get(chart, 'chartType') || 'line';
-      chartObj.labels = _.get(chart, 'labels') || _.get(data, _.get(chart, 'labelsExpr'));
-      chartObj.legend = (_.get(chart, 'legend') === false) ? false : true;
-      chartObj.filters = _.get(chart, 'filters');
-      chartObj.datasets = [];
-      _.forEach(chart.datasets, dataset => {
-        chartObj.datasets.push({
-          label: dataset.label,
-          data: _.get(dataset, 'data') || _.get(data, _.get(dataset, 'dataExpr')),
-          hidden: _.get(dataset, 'hidden') || false
-        });
-      });
+      chartObj.chartConfig = chart;
+      chartObj.chartData = data;
       this.chartData.push(chartObj);
     });
   }
