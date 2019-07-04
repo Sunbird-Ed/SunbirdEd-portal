@@ -93,7 +93,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.question = this.questionMetaData.data.question;
         this.editorState.solutions = this.questionMetaData.data.editorState.solutions
                && this.questionMetaData.data.editorState.solutions[0];
-        if (this.questionMetaData.data.learningOutcome) {
+        if (this.questionMetaData.data.learningOutcome && this.questionMetaForm.controls.learningOutcome) {
           this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
         }
         this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
@@ -124,7 +124,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       if (this.questionMetaData && this.questionMetaData.data) {
        this.question = this.questionMetaData.data.question;
         this.editorState.solutions = this.questionMetaData.data.solutions && this.questionMetaData.data.editorState.solutions[0];
-        if (this.questionMetaData.data.learningOutcome) {
+        if (this.questionMetaData.data.learningOutcome && this.questionMetaForm.controls.learningOutcome) {
           this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
         }
         this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
