@@ -56,4 +56,12 @@ describe('CardCreationComponent', () => {
     const badgesElm = fixture.nativeElement.querySelector('div .avatar');
     expect(badgesElm.src).toContain(Response.librarySearchData.ribbon.left.image);
   });
+  it('should call onAction ', () => {
+    component.data = Response.cardData;
+    spyOn(component, 'onAction').and.callThrough();
+    spyOn(component.clickEvent, 'emit');
+    component.onAction(component.data, component.data.action.right);
+    expect(component.onAction).toHaveBeenCalledWith(Response.cardData, Response.cardData.action.right);
+    expect(component.clickEvent.emit).toHaveBeenCalledWith(Response.emitData);
+  });
 });

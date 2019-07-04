@@ -339,9 +339,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.shepherdService.modal = true;
         this.shepherdService.confirmCancel = false;
         this.shepherdService.addSteps(defaultSteps);
-        this.shepherdService.start();
+        if ((localStorage.getItem('TakeOfflineTour') !== 'show')) {
+          localStorage.setItem('TakeOfflineTour', 'show');
+          this.shepherdService.start();
+        }
       }
-    }, 0);
+    }, 1000);
   }
 
   ngOnDestroy() {

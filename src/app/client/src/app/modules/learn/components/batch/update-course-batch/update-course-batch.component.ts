@@ -98,6 +98,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
 
   public pickerMinDateForEndDate = new Date(this.pickerMinDate.getTime() + (24 * 60 * 60 * 1000));
 
+  public pickerMinDateForEnrollmentEndDate;
+
   public courseConsumptionService: CourseConsumptionService;
 
   public unsubscribe = new Subject<void>();
@@ -186,6 +188,14 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   private initializeUpdateForm(): void {
     const endDate = this.batchDetails.endDate ? new Date(this.batchDetails.endDate) : null;
     const enrollmentEndDate = this.batchDetails.enrollmentEndDate ? new Date(this.batchDetails.enrollmentEndDate) : null;
+    if (enrollmentEndDate) {
+      this.pickerMinDateForEnrollmentEndDate = enrollmentEndDate;
+    } else if (!moment(this.batchDetails.startDate).isBefore(moment(this.pickerMinDate).format('YYYY-MM-DD'))) {
+      this.pickerMinDateForEnrollmentEndDate = new Date(this.batchDetails.startDate);
+    } else {
+      this.pickerMinDateForEnrollmentEndDate = this.pickerMinDate;
+    }
+
     this.batchUpdateForm = new FormGroup({
       name: new FormControl(this.batchDetails.name, [Validators.required]),
       description: new FormControl(this.batchDetails.description),
@@ -216,10 +226,20 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     let userList = [];
     if (this.batchDetails.participants || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
       if (this.batchDetails.enrollmentType !== 'open') {
-        userList = _.union(this.batchDetails.participants, this.batchDetails.mentors);
+        if (this.batchDetails.participants.length > 100) {
+          userList = this.batchDetails.mentors;
+        } else {
+          userList = _.union(this.batchDetails.participants, this.batchDetails.mentors);
+        }
       } else {
         userList = this.batchDetails.mentors;
       }
+      if (!userList.length) {
+        this.showLoader = false;
+        this.disableSubmitBtn = false;
+        return ;
+      }
+
       const request = {
         filters: {
           identifier: userList
@@ -298,6 +318,10 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       $('#participant').dropdown({
         forceSelection: false,
         fullTextSearch: true,
+        maxSelections: 100 - this.batchDetails.participants.length,
+        message: {
+          maxSelections : this.resourceService.messages.imsg.m0047
+        },
         onAdd: () => {
         }
       });
