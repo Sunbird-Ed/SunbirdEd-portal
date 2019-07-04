@@ -56,6 +56,7 @@ export class CbseProgramService {
                   questionConfigCdata.responseDeclaration = _.get(res, 'result.assessment_item.responseDeclaration');
                 }
                 questionSetConfigCdata.total_items = collections.length;
+                questionConfigCdata.options = res.result.assessment_item.options || [];
                 question.config.__cdata.metadata = {};
                 const blacklist = ['media', 'options', 'body', 'question', 'editorState', 'solutions'];
                 question.config.__cdata.max_score = _.get(res, 'result.assessment_item.maxScore') || 1;
