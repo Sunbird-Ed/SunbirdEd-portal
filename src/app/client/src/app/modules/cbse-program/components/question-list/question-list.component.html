@@ -84,10 +84,11 @@
   <div class="sb-modal-content">
     <p>Name : {{questionTypeName[selectedAttributes.questionType]}} - {{selectedAttributes.topic}} </p>
     <p>Board : {{selectedAttributes.board}} </p>
-    <p>Medium : {{this.selectedAttributes.medium}} </p>
-    <p>Class : {{this.selectedAttributes.gradeLevel}} </p>
-    <p>Subject : {{this.selectedAttributes.subject}} </p>
-    Preview Link : <a href="/play/content/{{publishedResourceId}}">Click here</a>
+    <p>Medium : {{selectedAttributes.medium}} </p>
+    <p>Class : {{selectedAttributes.gradeLevel}} </p>
+    <p>Subject : {{selectedAttributes.subject}} </p>
+    <p>ResourceID : {{publishedResourceId}} </p>
+    Preview Link : <a href="https://diksha.gov.in/play/content/{{publishedResourceId}}">Click here</a>
   </div>
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="showSuccessModal = !showSuccessModal">
