@@ -9,7 +9,7 @@ const request = require('request-promise'); //  'request' npm package with Promi
 const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
 
-let keycloak = getKeyCloakClient({
+let keycloakGoogle = getKeyCloakClient({
   resource: envHelper.KEYCLOAK_GOOGLE_CLIENT.clientId,
   bearerOnly: true,
   serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
@@ -18,6 +18,14 @@ let keycloak = getKeyCloakClient({
     secret: envHelper.KEYCLOAK_GOOGLE_CLIENT.secret
   }
 })
+
+let keycloakAndroid = getKeyCloakClient({
+  resource: 'android',
+  bearerOnly: true,
+  serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
+  realm: envHelper.PORTAL_REALM
+})
+
 class GoogleOauth {
   createConnection(req) {
     const  { clientId, clientSecret } = GOOGLE_OAUTH_CONFIG;
@@ -60,13 +68,13 @@ const googleOauth = new GoogleOauth()
 const createSession = async (emailId, reqQuery, req, res) => {
   let grant;
   if (reqQuery.client_id === 'android') {
-    grant = await keycloak.grantManager.obtainDirectly(emailId, undefined, undefined, 'offline_access')
+    grant = await keycloakAndroid.grantManager.obtainDirectly(emailId, undefined, undefined, 'offline_access')
   } else {
-    grant = await keycloak.grantManager.obtainDirectly(emailId, undefined, undefined, 'openid')
+    grant = await keycloakGoogle.grantManager.obtainDirectly(emailId, undefined, undefined, 'openid')
   }
-  keycloak.storeGrant(grant, req, res)
+  keycloakGoogle.storeGrant(grant, req, res)
   req.kauth.grant = grant
-  keycloak.authenticated(req)
+  keycloakGoogle.authenticated(req)
   return {
     access_token: grant.access_token.token,
     refresh_token: grant.refresh_token.token
@@ -127,4 +135,4 @@ const getHeaders = (req) => {
     'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
   }
 }
-module.exports = { googleOauth,  keycloak, createSession, fetchUserByEmailId, createUserWithMailId };
+module.exports = { googleOauth, createSession, fetchUserByEmailId, createUserWithMailId };
