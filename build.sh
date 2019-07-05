@@ -25,11 +25,12 @@ mkdir app_dist
 cd app_dist
 npm i -g npm@3.10.10
 npm install --production  --unsafe-perm
-sed -i "/version/a\  \"buildHash\": \"8d1b8cf\","  app_dist/package.json
+sed -i "/version/a\  \"buildHash\": \"8d1b8cf\","  package.json
 echo 'Compressing assets directory'
+cd ..
 tar -cvf player-dist.tar.gz app_dist
-cd ../..
 
 docker build --build-arg commit_hash=$(git rev-parse --short HEAD) --build-arg content_editor_url=$content_editor_url --build-arg collection_editor_url=$collection_editor_url --build-arg generic_editor_url=$generic_editor_url --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
 
 echo {\"image_name\" : \"${name}\", \"image_tag\" : \"${build_tag}\",\"commit_hash\" : \"${commit_hash}\", \"node_name\" : \"$node\"} > metadata.json
+
