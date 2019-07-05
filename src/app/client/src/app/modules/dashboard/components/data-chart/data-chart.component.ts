@@ -72,14 +72,14 @@ export class DataChartComponent implements OnInit, OnDestroy {
   buildFiltersForm() {
     this.filtersFormGroup = this.fb.group({});
     _.forEach(this.filters, filter => {
-      if (/date/i.test(_.get(filter, 'reference'))) {
+      if (filter.controlType === 'date' || /date/i.test(_.get(filter, 'reference'))) {
         let dateRange = _.uniq(_.map(this.chartData, _.get(filter, 'reference')));
         this.pickerMinDate = moment(dateRange[0], 'DD-MM-YYYY');
         this.pickerMaxDate = moment(dateRange[dateRange.length - 1], 'DD-MM-YYYY');
       }
       this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
-      filter.options = _.uniq(_.map(this.chartData, filter.reference));
-    })
+      filter.options = _.uniq(_.map(this.chartData, data => data[filter.reference].toLowerCase()));
+    });
     this.showFilters = true;
     this.filtersSubscription = this.filtersFormGroup.valueChanges
       .pipe(
@@ -93,7 +93,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
       .subscribe((filters) => {
         let res: Array<{}> = _.filter(this.chartData, data => {
           return _.every(filters, (value, key) => {
-            return _.includes(value, data[key]);
+            return _.includes(value, data[key].toLowerCase());
           })
         });
         this.noResultsFound = (res.length > 0) ? false : true;
@@ -117,8 +117,8 @@ export class DataChartComponent implements OnInit, OnDestroy {
   }
 
   getDataSetValue(chartData = this.chartData) {
-    let groupedDataBasedOnLabels = _.groupBy(chartData, _.get(this.chartConfig, 'labelsExpr'));
-    this.chartLabels = _.uniq(_.map(chartData, _.get(this.chartConfig, 'labelsExpr')));
+    let groupedDataBasedOnLabels = _.groupBy(chartData, (data) => _.trim(data[_.get(this.chartConfig, 'labelsExpr')].toLowerCase()));
+    this.chartLabels = _.keys(groupedDataBasedOnLabels);
     this.datasets = [];
     _.forEach(this.chartConfig.datasets, dataset => {
       this.datasets.push({
@@ -133,7 +133,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
         sum: _.sum(dataset.data),
         min: _.min(dataset.data),
         max: _.max(dataset.data),
-        avg: (_.sum(dataset.data) / dataset.data.length).toFixed(2)
+        avg: dataset.data.length > 0 ? (_.sum(dataset.data) / dataset.data.length).toFixed(2) : 0
       };
     });
   }

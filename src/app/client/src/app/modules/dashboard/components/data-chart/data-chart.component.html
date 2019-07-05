@@ -1,7 +1,7 @@
 <div>
   <canvas baseChart [datasets]="datasets" [labels]="chartLabels" [options]="chartOptions" [chartType]="chartType"
-    [colors]="chartColors" [legend]="legend"></canvas>
-
+    [legend]="legend"></canvas>
+  <!-- [colors]="chartColors" -->
   <sui-accordion class="styled fluid" [closeOthers]="false" *ngIf="showFilters">
     <sui-accordion-panel [isOpen]="true">
       <div title>

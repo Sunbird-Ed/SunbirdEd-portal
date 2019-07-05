@@ -497,7 +497,7 @@ export let config = {
       ]
     },
     {
-      "id": "textbook_level_etb_report_report",
+      "id": "textbook_level_etb_report_report2",
       "label": "usage report by district",
       "title": "usage report by district test data",
       "description": "It helps the State administrators and ETB coordinators to understand the details of all textbooks such as QR codes linkage status, number of textbooks created class wise, medium wise etc. These reports help administrators compare their actual with projected targets.",
