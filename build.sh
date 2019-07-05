@@ -30,7 +30,7 @@ cd ..
 tar -cvf player-dist.tar.gz app_dist
 cd ../..
 
-docker build --build-arg commit_hash=$(git rev-parse --short HEAD) --build-arg sunbird_content_editor_artifact_url=$sunbird_content_editor_artifact_url --build-arg sunbird_collection_editor_artifact_url=$sunbird_collection_editor_artifact_url --build-arg sunbird_generic_editor_artifact_url=$sunbird_generic_editor_artifact_url --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
+docker build --build-arg commit_hash=$(git rev-parse --short HEAD) --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
 
 echo {\"image_name\" : \"${name}\", \"image_tag\" : \"${build_tag}\",\"commit_hash\" : \"${commit_hash}\", \"node_name\" : \"$node\"} > metadata.json
 
