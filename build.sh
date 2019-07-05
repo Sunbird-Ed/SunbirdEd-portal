@@ -18,7 +18,6 @@ rm -rf src/app/app_dist/
 rm -rf src/app/player-dist.tar.gz
 nvm use 8
 cd src/app
-mkdir app_dist
 npm set progress=false
 npm install  --unsafe-perm
 npm run deploy
