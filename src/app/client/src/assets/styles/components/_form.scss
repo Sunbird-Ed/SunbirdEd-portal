@@ -171,3 +171,40 @@ select:-internal-autofill-previewed,
 select:-internal-autofill-selected {
   background-color: $white !important;
 }
+
+.batchAddUserForm, .batchUpdateForm{
+  .sb-field-group{
+    .required::after{
+      margin: -.2em 0 0 .2em;
+      content: '*';
+      color: #db2828;
+    }
+  }
+  .sb-field.ui.left.icon.input{
+    width: 100%;
+    .icon{
+      z-index: 9999;
+    }
+  }
+  .d-flex.flex-w-wrap{
+    .sb-field-group {
+      flex: 1;
+    }
+  }
+}
+
+
+.sb-form .sb-field-group.error input, .sb-form .sb-field-group.error label {
+  color: #9f3a38;
+}
+.sb-form .sb-field-group.error .ui {
+  margin-bottom: 4px !important;
+}
+.sb-form .sb-field-group.error input {
+  background: #fff6f6;
+  border-color: #e0b4b4;
+  color: #9f3a38;
+  border-radius: '';
+  box-shadow: none;
+}
+ 
