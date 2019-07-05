@@ -41,6 +41,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   @Input() selectedAttributes: any;
   @Input() role: any;
   @Output() statusEmitter = new EventEmitter < string > ();
+  @Output() discard = new EventEmitter();
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -202,7 +203,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     } else if (event === 'edit') {
       this.refreshEditor();
       this.showPreview = false;
-    }  else {
+    } else if (event === 'discard') {
+           this.discard.emit('discard');
+    } else if (event === 'delete') {
+      this.deleteQuestion([{key: 'status', value: 'Retired'}]);
+    } else {
       this.handleSubmit(this.questionMetaForm);
     }
   }
@@ -358,6 +363,70 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 err: error.status.toString(),
                 errtype: 'PROGRAMPORTAL',
                 stacktrace: _.get(error, 'error.params.errmsg') || 'Question update failed'
+              }
+            };
+            this.telemetryService.error(telemetryErrorData);
+        });
+      });
+  }
+
+  deleteQuestion(optionalParams?: Array<Object>) {
+    forkJoin([this.getConvertedLatex(this.question), this.getConvertedLatex(this.editorState.solutions)])
+      .subscribe((res) => {
+        this.body = res[0];
+        this.solution = res[1];
+        const option = {
+          url: this.configService.urlConFig.URLS.ASSESSMENT.UPDATE + '/' + this.questionMetaData.data.identifier,
+          data: {
+            'request': {
+              'assessment_item': {
+                'objectType': 'AssessmentItem',
+                'metadata': {
+                  'body': this.body,
+                  'category': this.selectedAttributes.questionType.toUpperCase(),
+                  'solutions': [this.solution],
+                  'editorState': {
+                    solutions: [this.editorState.solutions]
+                  },
+                  'question': this.question,
+                  'learningOutcome': this.questionMetaForm.value.learningOutcome ? [this.questionMetaForm.value.learningOutcome] : [],
+                  'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
+                  // 'qlevel': this.questionMetaForm.value.qlevel,
+                  // 'maxScore': Number(this.questionMetaForm.value.maxScore),
+                  'status': 'Retired',
+                  'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
+                  'type': 'reference',
+                  'code': UUID.UUID(),
+                  'template_id': 'NA',
+                  'media': this.mediaArr
+                }
+              }
+            }
+          }
+        };
+        if (optionalParams) {
+          _.forEach(optionalParams, (param) => {
+            option.data.request.assessment_item.metadata[param.key] = param.value;
+            if (param.key === 'status') {
+              this.updateStatus = param.value;
+            }
+          });
+        }
+        this.actionService.patch(option).subscribe((res) => {
+           if (this.updateStatus === 'Retired') {
+            this.toasterService.success('Question Deleted Successfully');
+          }
+          this.questionStatus.emit({'status': 'success', 'type': this.updateStatus, 'identifier': this.questionMetaData.data.identifier});
+        }, error => {
+            this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question delete/retire failed');
+            const telemetryErrorData = {
+              context: {
+                env: 'cbse_program'
+              },
+              edata: {
+                err: error.status.toString(),
+                errtype: 'PROGRAMPORTAL',
+                stacktrace: _.get(error, 'error.params.errmsg') || 'Question delete/retire failed'
               }
             };
             this.telemetryService.error(telemetryErrorData);

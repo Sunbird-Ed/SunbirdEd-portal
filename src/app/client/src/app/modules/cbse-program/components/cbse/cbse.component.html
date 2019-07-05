@@ -73,5 +73,5 @@
               class="sb-btn sb-btn-xs sb-btn-error">Back <i class="chevron circle left icon"></i></button>
             </div>
         </div>
-      <app-question-list (statusEmitter)="handleRefresEvent($event)" [selectedAttributes]="selectedAttributes" [role]="role"></app-question-list>
+      <app-question-list (statusEmitter)="handleRefresEvent($event)" [selectedAttributes]="selectedAttributes" [role]="role" (changeStage)="changeStageOnDiscard($event)"></app-question-list>
     </div>

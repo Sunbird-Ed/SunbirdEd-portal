@@ -5,7 +5,7 @@
         (click)="createNewQuestion()" appTelemetryInteract
         [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'questionlist',extra:{type:'reference',category:selectedAttributes.questionType.toUpperCase(),topic:selectedAttributes.topic}}"
         class="sb-btn sb-btn-primary sb-btn-normal width-100">Create</button>
-      <div class="ui vertical segments" style="max-height:50vh;overflow-y:auto;">
+      <div class="ui vertical segments" style="max-height:50vh;overflow-y:auto;" [hidden]="showDelete">
         <div class="questionTab ui center tertiary header aligned segment p-8"
           [class.tertiary]="selectedQuestionId === question.identifier"
           (click)="handleQuestionTabChange(question.identifier)" *ngFor="let question of questionList; let i = index"
@@ -33,6 +33,15 @@
           </div>
         </div>
       </div>
+      <div class="" style="position:relative;width:100%;min-height:25vh;margin-top: 30%;" *ngIf="showDelete">
+        <div class="sb-loader" style="position: absolute;
+        left: 0px;
+        right: 0px;
+        width: 40px;
+        margin: 0 auto;
+        height: 40px;"></div>
+        <div style="color: black;font-size: 1em;margin-left: 25%;margin-top: 50%">Refreshing question list</div>
+    </div>
       <div class="d-flex flex-ai-center" *ngIf="role.currentRole === 'PUBLISHER'">
         <div class="sb-checkbox sb-checkbox-primary">
           <input type="checkbox" [(ngModel)]="selectedAll" appTelemetryInteract [telemetryInteractEdata]="{id:'select_all_questions',type:'click',pageid:'questionlist'}"
@@ -60,7 +69,7 @@
       </div>
       <div *ngIf="selectedAttributes.questionType !== 'mcq'" class="ui segment">
         <app-question-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData"
-          [role]="role" (questionStatus)="questionStatusHandler($event)">
+          [role]="role" (questionStatus)="questionStatusHandler($event)" (discard)="discardEvent($event)" >
         </app-question-creation>
       </div>
     </div>

@@ -1,87 +1,123 @@
 <div class="d-flex flex-ai-center flex-jc-space-between">
-  <div class="d-flex flex-ai-center" *ngIf="!showPreview">
-    <span class="ml-auto" *ngIf="questionMetaData.data && (questionMetaData.data.status === 'Review' || questionMetaData.data.status === 'Draft')"><i class="sb-status-label sb-bg-warning sb-shape-circle"></i> In Review</span>
-    <span class="ml-auto" *ngIf="questionMetaData.data && questionMetaData.data.status === 'Live'"><i class="sb-status-label sb-bg-success sb-shape-circle"></i> Published</span>
-    <span class="ml-auto" *ngIf="questionMetaData.data && questionMetaData.data.status === 'Reject'"><i class="sb-status-label sb-bg-error sb-shape-circle"></i> Rejected
-      <div class="ui icon button"  (click)="openReviewerCommentModal()">
-        <i class="comment icon"></i>
-      </div>
-    </span>
-  </div>
-  <div class="d-flex ui blue message py-8 my-0" *ngIf="!showPreview && role.currentRole != 'REVIEWER' && role.currentRole != 'PUBLISHER'">
-  Please only use&nbsp;&nbsp;<b>Add Image</b>(<i class="image outline icon mr-0 py-2"></i>)&nbsp;&nbsp;button to upload images</div>
-  <div class="d-flex" [ngClass]="{'ml-auto':showPreview === true }" *ngIf="role.currentRole != 'REVIEWER'">
-      <button class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8" 
-      appTelemetryInteract [telemetryInteractEdata]="{id:'update_btn',type:'click',pageid:'questioncreate'}"
-      *ngIf="!showPreview && questionMetaData.data && ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)" (click)="btnClick($event, 'update');" type="submit">Update</button>
-      <button class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8" 
-      appTelemetryInteract [telemetryInteractEdata]="{id:'submit_btn',type:'click',pageid:'questioncreate'}"
-      *ngIf="!showPreview && !questionMetaData.data" (click)="btnClick($event, 'create');" type="submit">Submit</button>
-      <div class="btn-group" *ngIf="role.currentRole != 'PUBLISHER'">
-          <button type="button" [ngClass]="{'active':enableBtn === 'edit' }" 
-          appTelemetryInteract [telemetryInteractEdata]="{id:'edit_btn',type:'click',pageid:'questioncreate'}"
-          (click)="showPreview= false; btnClick($event, 'edit'); " class="sb-btn sb-btn-xs sb-btn-outline-primary">Edit</button>
-          <button type="button" [ngClass]="{'active': enableBtn === 'preview' }" 
-          appTelemetryInteract [telemetryInteractEdata]="{id:'preview_btn',type:'click',pageid:'questioncreate'}"
-          (click)="showPreview= true; btnClick($event, 'preview'); " class="sb-btn sb-btn-xs sb-btn-outline-primary">Preview</button>
-      </div>
-  </div>
-
-  <div class="d-flex ml-auto"  *ngIf="role.currentRole === 'REVIEWER' && questionMetaData.data.status != 'Live' && questionMetaData.data.status != 'Reject' ">    
-        <button type="button" class="sb-btn sb-btn-xs sb-btn-secondary sb-btn-error mr-8 " 
-        appTelemetryInteract [telemetryInteractEdata]="{id:'reject_btn',type:'click',pageid:'questioncreate'}"
-        (click)="reviewerBtnclick($event, 'Reject'); " >Reject</button>
-        <button type="button" class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8"  
-        appTelemetryInteract [telemetryInteractEdata]="{id:'live_btn',type:'click',pageid:'questioncreate'}"
-        (click)="reviewerBtnclick($event, 'Live'); " >Accept</button>
-</div>
-</div>
-<sui-modal [isClosable]="false" class="sb-modal" [isInverted]="true" (dismissed)="dismissCommentPopup()" *ngIf="showrejectCommentPopup" [size]="'normal'"
-  [isFullScreen]="false" [mustScroll]="true" #modal>
-  <div class="sb-modal-header">
-      <div class="ui two column grid">
-          <div class="row">
-              <div class="column">
-                  <span>Request changes</span>
-              </div>
-              <div class="column right aligned">
-                  <i class="cursor-pointer close link icon" (click)="dismissCommentPopup();" 
-                  appTelemetryInteract [telemetryInteractEdata]="{id:'cancel',type:'click',pageid:'questioncreate'}"></i>
-              </div>
-          </div>
-      </div>
-  </div>
-  <div class="sb-modal-content">
-      <form #FormControl="ngForm" class="ui form">
-          <textarea class="wmd-input width-100" id="wmd-input" [(ngModel)]="rejectComment" placeholder="Add comment" name="rejectComment" required></textarea>
-          <label class="ui basic red error label pt-1 mt-5 width-100"
-              *ngIf="showFormError">Fill comments </label>
-      </form>
-  </div>
-  <div class="sb-modal-actions">
-    <div class="ui buttons">
-      <button (click)="addComment();" 
-        appTelemetryInteract [telemetryInteractEdata]="{id:'add_comment',type:'click',pageid:'questioncreate'}"
-        class="ui primary button">Add Comment</button>
+    <div class="d-flex flex-ai-center" *ngIf="!showPreview">
+        <span class="ml-auto"
+            *ngIf="questionMetaData.data && (questionMetaData.data.status === 'Review' || questionMetaData.data.status === 'Draft')"><i
+                class="sb-status-label sb-bg-warning sb-shape-circle"></i> In Review</span>
+        <span class="ml-auto" *ngIf="questionMetaData.data && questionMetaData.data.status === 'Live'"><i
+                class="sb-status-label sb-bg-success sb-shape-circle"></i> Published</span>
+        <span class="ml-auto" *ngIf="questionMetaData.data && questionMetaData.data.status === 'Reject'"><i
+                class="sb-status-label sb-bg-error sb-shape-circle"></i> Rejected
+            <div class="ui icon button" (click)="openReviewerCommentModal()">
+                <i class="comment icon"></i>
+            </div>
+        </span>
     </div>
-  </div>
-  </sui-modal>
-  <sui-modal [isClosable]="false" class="sb-modal" [isInverted]="true" (dismissed)="closeReviewerCommentModal()" *ngIf="reviewerCommentModal" [size]="'normal'"
-  [isFullScreen]="false" [mustScroll]="true" #modal>
-      <div class="sb-modal-header">
-          <div class="ui two column grid">
-              <div class="row">
-                  <div class="column">
-                      <span>Request changes</span>
-                  </div>
-                  <div class="column right aligned">
-                      <i class="cursor-pointer close link icon" (click)="closeReviewerCommentModal();" 
-                      appTelemetryInteract [telemetryInteractEdata]="{id:'cancel',type:'click',pageid:'reviewercommentmodal'}"></i>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="sb-modal-content">
-          <p>{{rejectComment}}</p>
-      </div>
-  </sui-modal>
+    <div class="d-flex ui blue message py-8 my-0"
+        *ngIf="!showPreview && role.currentRole != 'REVIEWER' && role.currentRole != 'PUBLISHER'">
+        Please only use&nbsp;&nbsp;<b>Add Image</b>(<i class="image outline icon mr-0 py-2"></i>)&nbsp;&nbsp;button to
+        upload images</div>
+    <div class="d-flex" [ngClass]="{'ml-auto':showPreview === true }" *ngIf="role.currentRole != 'REVIEWER'">
+        <button class="sb-btn sb-btn-xs sb-btn-error submit-btn mr-8" appTelemetryInteract
+            [telemetryInteractEdata]="{id:'update_btn',type:'click',pageid:'questioncreate'}"
+            *ngIf="!showPreview && questionMetaData.data && ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)"
+            (click)="showDeleteModal = true;" type="submit">Delete</button>
+        <button class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8" appTelemetryInteract
+            [telemetryInteractEdata]="{id:'update_btn',type:'click',pageid:'questioncreate'}"
+            *ngIf="!showPreview && questionMetaData.data && ['Draft', 'Review', 'Reject'].includes(questionMetaData.data.status)"
+            (click)="btnClick($event, 'update');" type="submit">Update</button>
+        <button class="sb-btn sb-btn-xs sb-btn-error submit-btn mr-8" *ngIf="!showPreview && !questionMetaData.data"
+            (click)="btnClick($event, 'discard');">Discard</button>
+        <button class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8" appTelemetryInteract
+            [telemetryInteractEdata]="{id:'submit_btn',type:'click',pageid:'questioncreate'}"
+            *ngIf="!showPreview && !questionMetaData.data" (click)="btnClick($event, 'create');"
+            type="submit">Submit</button>
+        <div class="btn-group" *ngIf="role.currentRole != 'PUBLISHER'">
+            <button type="button" [ngClass]="{'active':enableBtn === 'edit' }" appTelemetryInteract
+                [telemetryInteractEdata]="{id:'edit_btn',type:'click',pageid:'questioncreate'}"
+                (click)="showPreview= false; btnClick($event, 'edit'); "
+                class="sb-btn sb-btn-xs sb-btn-outline-primary">Edit</button>
+            <button type="button" [ngClass]="{'active': enableBtn === 'preview' }" appTelemetryInteract
+                [telemetryInteractEdata]="{id:'preview_btn',type:'click',pageid:'questioncreate'}"
+                (click)="showPreview= true; btnClick($event, 'preview'); "
+                class="sb-btn sb-btn-xs sb-btn-outline-primary">Preview</button>
+        </div>
+    </div>
+
+    <div class="d-flex ml-auto"
+        *ngIf="role.currentRole === 'REVIEWER' && questionMetaData.data.status != 'Live' && questionMetaData.data.status != 'Reject' ">
+        <button type="button" class="sb-btn sb-btn-xs sb-btn-secondary sb-btn-error mr-8 " appTelemetryInteract
+            [telemetryInteractEdata]="{id:'reject_btn',type:'click',pageid:'questioncreate'}"
+            (click)="reviewerBtnclick($event, 'Reject'); ">Reject</button>
+        <button type="button" class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8" appTelemetryInteract
+            [telemetryInteractEdata]="{id:'live_btn',type:'click',pageid:'questioncreate'}"
+            (click)="reviewerBtnclick($event, 'Live'); ">Accept</button>
+    </div>
+</div>
+<sui-modal [isClosable]="false" class="sb-modal" [isInverted]="true" (dismissed)="dismissCommentPopup()"
+    *ngIf="showrejectCommentPopup" [size]="'normal'" [isFullScreen]="false" [mustScroll]="true" #modal>
+    <div class="sb-modal-header">
+        <div class="ui two column grid">
+            <div class="row">
+                <div class="column">
+                    <span>Request changes</span>
+                </div>
+                <div class="column right aligned">
+                    <i class="cursor-pointer close link icon" (click)="dismissCommentPopup();" appTelemetryInteract
+                        [telemetryInteractEdata]="{id:'cancel',type:'click',pageid:'questioncreate'}"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sb-modal-content">
+        <form #FormControl="ngForm" class="ui form">
+            <textarea class="wmd-input width-100" id="wmd-input" [(ngModel)]="rejectComment" placeholder="Add comment"
+                name="rejectComment" required></textarea>
+            <label class="ui basic red error label pt-1 mt-5 width-100" *ngIf="showFormError">Fill comments </label>
+        </form>
+    </div>
+    <div class="sb-modal-actions">
+        <div class="ui buttons">
+            <button (click)="addComment();" appTelemetryInteract
+                [telemetryInteractEdata]="{id:'add_comment',type:'click',pageid:'questioncreate'}"
+                class="ui primary button">Add Comment</button>
+        </div>
+    </div>
+</sui-modal>
+<sui-modal [isClosable]="false" class="sb-modal" [isInverted]="true" (dismissed)="closeReviewerCommentModal()"
+    *ngIf="reviewerCommentModal" [size]="'normal'" [isFullScreen]="false" [mustScroll]="true" #modal>
+    <div class="sb-modal-header">
+        <div class="ui two column grid">
+            <div class="row">
+                <div class="column">
+                    <span>Request changes</span>
+                </div>
+                <div class="column right aligned">
+                    <i class="cursor-pointer close link icon" (click)="closeReviewerCommentModal();"
+                        appTelemetryInteract
+                        [telemetryInteractEdata]="{id:'cancel',type:'click',pageid:'reviewercommentmodal'}"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sb-modal-content">
+        <p>{{rejectComment}}</p>
+    </div>
+</sui-modal>
+
+<sui-modal *ngIf="showDeleteModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
+    class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal" #modal>
+    <div class="sb-modal-header">
+        Delete Confirmation
+    </div>
+    <div class="sb-modal-content">
+        Are you sure want to delete the question ?
+    </div>
+    <div class="sb-modal-actions">
+        <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="btnClick($event, 'delete');showDeleteModal = !showDeleteModal">
+            Yes
+        </button>
+        <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="showDeleteModal = !showDeleteModal">
+            No
+        </button>
+    </div>
+</sui-modal>

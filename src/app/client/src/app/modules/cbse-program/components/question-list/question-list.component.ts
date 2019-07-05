@@ -15,6 +15,7 @@ import { CbseProgramService } from '../../services';
 export class QuestionListComponent implements OnInit, OnChanges {
   @Input() selectedAttributes: any;
   @Input() role: any;
+  @Output() changeStage = new EventEmitter();
 
   public questionList = [];
   public selectedQuestionId: any;
@@ -22,6 +23,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public questionMetaData: any;
   public refresh = true;
   public showLoader = true;
+  public showDelete = false;
   public enableRoleChange = false;
   selectedAll: any;
   private questionTypeName = {
@@ -85,6 +87,9 @@ export class QuestionListComponent implements OnInit, OnChanges {
       delete req.data.request.filters.createdBy;
       req.data.request.filters.status = ['Live'];
     }
+    if (this.role.currentRole === "CONTRIBUTOR") {
+      req.data.request.filters.status = ['Live','Review','Reject','Draft'];
+    }
     this.publicDataService.post(req).pipe(tap(data => this.showLoader = false))
       .subscribe((res) => {
         this.questionList = res.result.items || [];
@@ -94,7 +99,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
         if (this.questionList.length) {
           this.selectedQuestionId = this.questionList[0].identifier;
           this.handleQuestionTabChange(this.selectedQuestionId);
-        }
+        }else if(this.questionList.length == 0){ this.showDelete = false}
       }, err => {
         this.toasterService.error(_.get(err, 'error.params.errmsg') || 'Fetching question list failed');
         const telemetryErrorData = {
@@ -113,7 +118,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
   handleQuestionTabChange(questionId) {
     this.selectedQuestionId = questionId;
     this.showLoader = true;
-    this.getQuestionDetails(questionId).pipe(tap(data => this.showLoader = false))
+    this.getQuestionDetails(questionId).pipe(tap(data =>{ this.showLoader = false; if(this.showDelete){this.showDelete = false}}))
       .subscribe((assessment_item) => {
         let editorMode;
         if (['Draft', 'Review', 'Reject'].includes(assessment_item.status)) {
@@ -159,6 +164,13 @@ export class QuestionListComponent implements OnInit, OnChanges {
     };
     this.refreshEditor();
   }
+  discardEvent(event){
+    if(this.selectedQuestionId){ 
+    this.handleQuestionTabChange(this.selectedQuestionId);
+    }else{
+    this.changeStage.emit('topicList');
+    }
+  }
   public questionStatusHandler(event) {
     console.log('editor event', event);
     if (event.type === 'close') {
@@ -167,21 +179,24 @@ export class QuestionListComponent implements OnInit, OnChanges {
         this.handleQuestionTabChange(this.selectedQuestionId);
       }
       return;
-    }
-    if (event.status === 'failed') {
+    } else if (event.status === 'failed') {
       console.log('failed');
-    } else {
-      if (event.type === 'update') {
+    } else if (event.type === 'update') {
         delete this.questionReadApiDetails[event.identifier];
         this.handleQuestionTabChange(this.selectedQuestionId);
-      } if (event.type === 'Reject' || event.type === 'Live') {
+      }else if (event.type === 'Retired') {
+        console.log('Retired ques:',this.selectedQuestionId);
+        this.showLoader = true;
+        this.showDelete = true;
+        setTimeout(() => this.fetchQuestionList(), 2000);
+      }else if (event.type === 'Reject' || event.type === 'Live') {
         this.showLoader = true;
         setTimeout(() => this.fetchQuestionList(true), 2000);
       } else {
         this.showLoader = true;
         setTimeout(() => this.fetchQuestionList(), 2000);
       }
-    }
+    
   }
 
   handleRefresEvent() {

@@ -49,7 +49,7 @@ export class CbseComponent implements OnInit, OnDestroy {
       board: _.get(this.programDetails, 'config.scope.board[0]'),
       medium: _.get(this.programDetails, 'config.scope.medium[0]'),
       bloomsLevel: _.get(this.programDetails, 'config.scope.bloomsLevel'),
-      programId: _.get(this.programDetails, 'programId'),
+      programId: '31ab2990-7892-11e9-8a02-93c5c62c03f1' || _.get(this.programDetails, 'programId'),
       program: _.get(this.programDetails, 'name'),
       onBoardSchool: _.get(this.programDetails, 'userDetails.onBoardingData.school')
     };
@@ -93,6 +93,9 @@ export class CbseComponent implements OnInit, OnDestroy {
     } else if (step === 'prev') {
       this.currentStage = this.currentStage - 1;
     }
+  }
+  changeStageOnDiscard(event){
+       this.currentStage = this.stages.indexOf(event);
   }
   ngOnDestroy() {
     if (this.modal && this.modal.deny) {
