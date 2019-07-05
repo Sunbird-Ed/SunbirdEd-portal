@@ -9,19 +9,19 @@ build_tag=$1
 name=player
 node=$2
 org=$3
-content_editor_url=$4
-collection_editor_url=$5
-generic_editor_url=$6
+export content_editor_url=$4
+export collection_editor_url=$5
+export generic_editor_url=$6
 commit_hash=$(git rev-parse --short HEAD)
 
 rm -rf src/app/app_dist/
 rm -rf src/app/player-dist.tar.gz
 nvm use 8
 cd src/app
+mkdir app_dist
 npm set progress=false
 npm install  --unsafe-perm
 npm run deploy
-mkdir app_dist
 cd app_dist
 npm i -g npm@3.10.10
 npm install --production  --unsafe-perm
