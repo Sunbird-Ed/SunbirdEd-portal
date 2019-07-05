@@ -9,9 +9,9 @@ build_tag=$1
 name=player
 node=$2
 org=$3
-sunbird_content_editor_artifact_url=$4
-sunbird_collection_editor_artifact_url=$5
-sunbird_generic_editor_artifact_url=$6
+export sunbird_content_editor_artifact_url=$4
+export sunbird_collection_editor_artifact_url=$5
+export sunbird_generic_editor_artifact_url=$6
 commit_hash=$(git rev-parse --short HEAD)
 
 rm -rf src/app/app_dist/
@@ -21,7 +21,7 @@ cd src/app
 npm set progress=false
 npm install  --unsafe-perm
 npm run deploy
-#cd app_dist
+cd app_dist
 npm i -g npm@3.10.10
 npm install --production  --unsafe-perm
 sed -i "/version/a\  \"buildHash\": \"8d1b8cf\","  package.json
