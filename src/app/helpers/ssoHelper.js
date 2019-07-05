@@ -114,10 +114,12 @@ const createUser = async (req, jwtPayload) => {
 const createSession = async (loginId, client_id, req, res) => {
   let grant;
   let keycloakClient = keycloakTrampoline;
+  let scope = 'openid';
   if (reqQuery.client_id === 'android') {
     keycloakClient = keycloakAndroid;
+    scope = 'offline_access';
   }
-  grant = await keycloakClient.grantManager.obtainDirectly(emailId, undefined, undefined, 'offline_access')
+  grant = await keycloakClient.grantManager.obtainDirectly(emailId, undefined, undefined, scope);
   keycloakClient.storeGrant(grant, req, res)
   req.kauth.grant = grant
   keycloakClient.authenticated(req)
