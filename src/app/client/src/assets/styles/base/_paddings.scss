@@ -14,6 +14,12 @@
 .p-24 {
   @include padding(24px);
 }
+.p-32 {
+  @include padding(32px);
+}
+.p-48 {
+  @include padding(48px);
+}
 
 /* padding in top direction */
 .pt-auto {
@@ -145,6 +151,15 @@
   .pl-24 {
     @include padding(null null null 24px);
   }
+  .pl-32 {
+    @include padding(null null null 32px);
+  }
+  .pl-40 {
+    @include padding(null null null 40px);
+  }
+  .pl-48 {
+    @include padding(null null null 48px);
+  }
 }
 *[dir="rtl"]{
   .pl-auto {
@@ -164,6 +179,15 @@
   }
   .pl-24 {
     @include padding(null 24px null null);
+  }
+  .pl-32 {
+    @include padding(null 32px null null);
+  }
+  .pl-40 {
+    @include padding(null 40px null null);
+  }
+  .pl-48 {
+    @include padding(null 48px null null);
   }
 }
 

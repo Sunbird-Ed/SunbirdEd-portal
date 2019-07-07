@@ -23,7 +23,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   chartColors;
   legend;
   chartOptions;
-
+  loadash = _;
   datasets;
   chartLabels = [];
   filters: Array<{}>;
@@ -44,6 +44,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   alwaysShowCalendars: boolean;
 
   resultStatistics = {};
+  selectedFilters: {};
 
   ranges: any = {
     'Today': [moment(), moment()],
@@ -68,7 +69,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
     }
   }
 
-
   buildFiltersForm() {
     this.filtersFormGroup = this.fb.group({});
     _.forEach(this.filters, filter => {
@@ -91,6 +91,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
         distinctUntilChanged()
       )
       .subscribe((filters) => {
+        this.selectedFilters = filters;
         let res: Array<{}> = _.filter(this.chartData, data => {
           return _.every(filters, (value, key) => {
             return _.includes(value, data[key].toLowerCase());

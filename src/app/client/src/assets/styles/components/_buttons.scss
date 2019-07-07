@@ -469,9 +469,9 @@ a.sb-btn {
       opacity: 1;
       z-index: 2;
       border: none;
-      width: (($base-block-space * 3) - 2);
-      height: (($base-block-space * 3) - 2);
-      top: 2px;
+      width: (($base-block-space * 3) - 4);
+      height: (($base-block-space * 3) - 4);
+      top: 3px;
       left: 0;
       border-radius: 500rem;
       -webkit-transition: background 0.3s ease, left 0.3s ease;
