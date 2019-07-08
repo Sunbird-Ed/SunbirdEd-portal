@@ -1,6 +1,6 @@
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { BaseChartDirective } from 'ng2-charts';
-import { Component, OnInit, Input, ViewChild, ChangeDetectorRef, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy, ElementRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription, Subject } from 'rxjs';
@@ -18,7 +18,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   // contains the chart configuration
   chartConfig;
   chartData;
-
+  showStats: Boolean = false;
   chartType;
   chartColors;
   legend;
@@ -59,7 +59,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   };
 
   @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
-  constructor(public resourceService: ResourceService, private cdr: ChangeDetectorRef, private fb: FormBuilder,
+  constructor(public resourceService: ResourceService, private fb: FormBuilder,
     private toasterService: ToasterService) {
     this.alwaysShowCalendars = true;
   }
