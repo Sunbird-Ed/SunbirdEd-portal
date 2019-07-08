@@ -8,7 +8,7 @@ import { UserService } from '@sunbird/core';
 import { ToasterService, ResourceService, INoResultMessage, NavigationHelperService } from '@sunbird/shared';
 import { UUID } from 'angular2-uuid';
 import { ActivatedRoute, Router } from '@angular/router';
-import {config} from './config'
+import {config} from './config';
 import { of } from 'rxjs';
 @Component({
   selector: 'app-usage-reports',
