@@ -61,9 +61,9 @@ gulp.task('client:install', (cb) => {
 })
 
 // To build angular code and rename index file
-
+const buildScript = process.env.devBuild === 'true' ? 'build-dev' : 'build'
 gulp.task('client:dist', (cb) => {
-    exec('npm run build --prefix ./client ', { maxBuffer: Infinity }, function (err, stdout, stderr) {
+    exec(`npm run ${buildScript} --prefix ./client `, { maxBuffer: Infinity }, function (err, stdout, stderr) {
         console.log(stdout)
         console.log(stderr)
         cb(err)
@@ -121,7 +121,7 @@ gulp.task('build-resource-bundles', (cb) => {
         cb(err)
     })
 })
-const compress = process.env.disableCompression === 'true' ? [] : ['client:gzip', 'client:brotli']
+const compress = process.env.devBuild === 'true' ? [] : ['client:gzip']
 gulp.task('deploy',
     gulpSequence('clean:app:dist',
         'clean:editors',
