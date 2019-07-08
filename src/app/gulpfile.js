@@ -121,7 +121,8 @@ gulp.task('build-resource-bundles', (cb) => {
         cb(err)
     })
 })
-const compress = process.env.devBuild === 'true' ? [] : ['client:gzip']
+const compress = process.env.devBuild === 'true' ? '' : ['client:gzip'] // removed brotli due to gulp issue
+const cleanClient = process.env.devBuild === 'true' ? '' : 'clean:client:install'
 gulp.task('deploy',
     gulpSequence('clean:app:dist',
         'clean:editors',
@@ -130,6 +131,7 @@ gulp.task('deploy',
             'download:generic:editor'],
         'gzip:editors',
         'build-resource-bundles',
+        cleanClient,
         'client:install',
         'client:dist',
         compress,
