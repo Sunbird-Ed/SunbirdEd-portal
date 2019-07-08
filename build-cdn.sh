@@ -3,8 +3,8 @@
 # set -o errexit
 set -x
 
-chown -R jenkins /var/lib/jenkins
-su jenkins
+#chown -R jenkins /var/lib/jenkins
+#su jenkins
 cd src/app/client
 version=$(jq '.version' package.json | sed 's/\"//g')
 cdnUrl=$1
@@ -14,6 +14,4 @@ npm install
 npm run build-cdn -- --deployUrl $cdnUrl
 export sunbird_portal_cdn_url=$cdnUrl
 npm run inject-cdn-fallback
-cd ..
-mv dist/index.html dist/index.${version}.${build_hash}.ejs
-chown -R jenkins ./
+#chown -R jenkins ./
