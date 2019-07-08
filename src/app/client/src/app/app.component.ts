@@ -15,7 +15,9 @@ import { first, filter, mergeMap, tap, map } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { ShepherdService } from 'angular-shepherd';
-import { steps as defaultSteps, defaultStepOptions} from './shepherd-data';
+import {builtInButtons, defaultStepOptions} from './shepherd-data';
+
+
 
 
 /**
@@ -73,7 +75,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   sessionExpired = false;
   instance: string;
   resourceDataSubscription: any;
-
+  shepherdData: Array<any>;
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -122,8 +124,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       }, error => {
         this.initApp = true;
       });
+
     this.changeLanguageAttribute();
-  }
+}
   logCdnStatus() {
     const isCdnWorking  = (<HTMLInputElement>document.getElementById('cdnWorking'))
     ? (<HTMLInputElement>document.getElementById('cdnWorking')).value : 'no';
@@ -333,12 +336,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     setTimeout(() => {
+      this.initializeShepherdData();
       if (this.isOffline) {
         this.shepherdService.defaultStepOptions = defaultStepOptions;
         this.shepherdService.disableScroll = true;
         this.shepherdService.modal = true;
         this.shepherdService.confirmCancel = false;
-        this.shepherdService.addSteps(defaultSteps);
+        this.shepherdService.addSteps(this.shepherdData);
         if ((localStorage.getItem('TakeOfflineTour') !== 'show')) {
           localStorage.setItem('TakeOfflineTour', 'show');
           this.shepherdService.start();
@@ -347,6 +351,66 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }, 1000);
   }
 
+  initializeShepherdData() {
+    this.shepherdData = [
+      {
+      id: this.resourceService.frmelmnts.instn.t0086,
+      useModalOverlay: true,
+      options: {
+          attachTo: '.tour-1 bottom',
+          buttons: [
+              builtInButtons.skip,
+              builtInButtons.next],
+          classes: 'sb-guide-text-area',
+          title: this.resourceService.frmelmnts.instn.t0086,
+          text: [this.resourceService.frmelmnts.instn.t0090.replace('{instance}', _.upperCase(this.instance))]
+      }
+    },
+    {
+      id: this.resourceService.frmelmnts.instn.t0087,
+      useModalOverlay: true,
+      options: {
+          attachTo: '.tour-2 bottom',
+          buttons: [
+              builtInButtons.skip,
+              builtInButtons.back,
+              builtInButtons.next
+          ],
+          classes: 'sb-guide-text-area',
+          title: this.resourceService.frmelmnts.instn.t0087,
+          text: [this.resourceService.frmelmnts.instn.t0091]
+      }
+    },
+    {
+      id: this.resourceService.frmelmnts.instn.t0088.replace('{instance}',  _.upperCase(this.instance)),
+      useModalOverlay: true,
+      options: {
+          attachTo: '.tour-3 bottom',
+          buttons: [
+              builtInButtons.skip,
+              builtInButtons.back,
+              builtInButtons.next,
+          ],
+          classes: 'sb-guide-text-area',
+          title: this.resourceService.frmelmnts.instn.t0088.replace('{instance}',  _.upperCase(this.instance)),
+          text: [this.resourceService.frmelmnts.instn.t0092.replace('{instance}',  _.upperCase(this.instance))]
+      }
+    },
+    {
+      id: this.resourceService.frmelmnts.instn.t0089.replace('{instance}', _.upperCase(this.instance)),
+      useModalOverlay: true,
+      options: {
+          attachTo: '.tour-4 bottom',
+          buttons: [
+              builtInButtons.back,
+              builtInButtons.cancel,
+          ],
+          classes: 'sb-guide-text-area',
+          title: this.resourceService.frmelmnts.instn.t0089.replace('{instance}',  _.upperCase(this.instance)),
+          text: [this.resourceService.frmelmnts.instn.t0093.replace('{instance}',  _.upperCase(this.instance))]
+      }
+    }];
+  }
   ngOnDestroy() {
     if (this.resourceDataSubscription) {
       this.resourceDataSubscription.unsubscribe();
