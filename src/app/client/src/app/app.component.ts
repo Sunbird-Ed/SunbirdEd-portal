@@ -363,7 +363,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
               builtInButtons.next],
           classes: 'sb-guide-text-area',
           title: this.resourceService.frmelmnts.instn.t0086,
-          text: [this.resourceService.frmelmnts.instn.t0090.replace('{instance}', _.upperCase(this.instance))]
+          text: [ this.interpolateInstance(this.resourceService.frmelmnts.instn.t0090)]
       }
     },
     {
@@ -382,7 +382,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     },
     {
-      id: this.resourceService.frmelmnts.instn.t0088.replace('{instance}',  _.upperCase(this.instance)),
+      id:  this.interpolateInstance(this.resourceService.frmelmnts.instn.t0088),
       useModalOverlay: true,
       options: {
           attachTo: '.tour-3 bottom',
@@ -392,12 +392,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
               builtInButtons.next,
           ],
           classes: 'sb-guide-text-area',
-          title: this.resourceService.frmelmnts.instn.t0088.replace('{instance}',  _.upperCase(this.instance)),
-          text: [this.resourceService.frmelmnts.instn.t0092.replace('{instance}',  _.upperCase(this.instance))]
+          title:  this.interpolateInstance(this.resourceService.frmelmnts.instn.t0088),
+          text: [this.interpolateInstance(this.resourceService.frmelmnts.instn.t0092)]
       }
     },
     {
-      id: this.resourceService.frmelmnts.instn.t0089.replace('{instance}', _.upperCase(this.instance)),
+      id:  this.interpolateInstance(this.resourceService.frmelmnts.instn.t0089),
       useModalOverlay: true,
       options: {
           attachTo: '.tour-4 bottom',
@@ -406,8 +406,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
               builtInButtons.cancel,
           ],
           classes: 'sb-guide-text-area',
-          title: this.resourceService.frmelmnts.instn.t0089.replace('{instance}',  _.upperCase(this.instance)),
-          text: [this.resourceService.frmelmnts.instn.t0093.replace('{instance}',  _.upperCase(this.instance))]
+          title: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0089),
+          text: [ this.interpolateInstance(this.resourceService.frmelmnts.instn.t0093)]
       }
     }];
   }
@@ -415,5 +415,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.resourceDataSubscription) {
       this.resourceDataSubscription.unsubscribe();
     }
+  }
+  interpolateInstance(message) {
+    return message.replace('{instance}', _.upperCase(this.instance));
   }
 }
