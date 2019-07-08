@@ -7,7 +7,6 @@ const gulpSequence = require('gulp-sequence')
 const gzip = require('gulp-gzip')
 const exec = require('child_process').exec
 const brotli = require('gulp-brotli');
-const inject = require('gulp-inject-string');
 
 // To download editors
 const contentEditor = process.env.sunbird_content_editor_artifact_url;
@@ -139,29 +138,6 @@ gulp.task('deploy',
         'clean:index:file',
         'prepare:app:dist')
 )
-
-const cdnFallBackScript = `\n<script type="text/javascript" src="${process.env.sunbird_portal_cdn_url}assets/cdnHelper.js"></script>
-<script>
-    try {
-        if(!cdnFileLoaded){
-            var now = new Date();
-            now.setMinutes(now.getMinutes() + 5);
-            document.cookie = "cdnFailed=yes;expires=" + now.toUTCString() + ";"
-            window.location.href = window.location.href
-        }
-    } catch (err) {
-        var now = new Date();
-        now.setMinutes(now.getMinutes() + 5);
-        document.cookie = "cdnFailed=yes;expires=" + now.toUTCString() + ";"
-        window.location.href = window.location.href
-    }
-</script>`
-gulp.task('inject:cdnFallBack:script', () => {
-    gulp.src('./dist/index.html')
-        .pipe(inject.after('</app-root>', cdnFallBackScript))
-        .pipe(rename('index_cdn.ejs'))
-        .pipe(gulp.dest('./dist'));
-});
 
 // offline app preparation tasks
 
