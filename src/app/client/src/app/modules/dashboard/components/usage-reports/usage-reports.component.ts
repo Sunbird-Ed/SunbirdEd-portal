@@ -8,8 +8,6 @@ import { UserService } from '@sunbird/core';
 import { ToasterService, ResourceService, INoResultMessage, NavigationHelperService } from '@sunbird/shared';
 import { UUID } from 'angular2-uuid';
 import { ActivatedRoute, Router } from '@angular/router';
-import {config} from './config';
-import { of } from 'rxjs';
 @Component({
   selector: 'app-usage-reports',
   templateUrl: './usage-reports.component.html',
@@ -42,8 +40,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     const reportsLocation = (<HTMLInputElement>document.getElementById('reportsLocation')).value;
     this.slug = _.get(this.userService, 'userProfile.rootOrg.slug');
-    // this.usageService.getData(`/${reportsLocation}/${this.slug}/config.json`)
-      of(config)
+    this.usageService.getData(`/${reportsLocation}/${this.slug}/config.json`)
       .subscribe(data => {
         if (_.get(data, 'responseCode') === 'OK') {
           this.noResult = false;
