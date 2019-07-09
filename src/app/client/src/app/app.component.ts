@@ -419,5 +419,4 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   interpolateInstance(message) {
     return message.replace('{instance}', _.upperCase(this.instance));
   }
-
 }
