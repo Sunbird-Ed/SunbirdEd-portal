@@ -174,5 +174,5 @@ telemetry.init({
   authtoken: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
 })
 
-process.on('unhandledRejection', (reason, p) => logger.info({msg:'Unhandled Rejection at:', additionalInfo: { promise: p, reason: reason }}));
+process.on('unhandledRejection', (reason, p) => console.log('unhandled rejection', reason, p));
 exports.close = () => portal.server.close()

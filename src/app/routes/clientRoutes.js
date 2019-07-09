@@ -15,6 +15,7 @@ cdnIndexFileExist = fs.existsSync(path.join(__dirname, '../dist', 'index_cdn.ejs
 proxyUtils = require('../proxy/proxyUtils.js'),
 experimentHelper = require('../helpers/experimentHelper.js'),
 ejs = require('ejs');
+const bodyParser = require('body-parser')
 
 logger.info({msg:`CDN index file exist: ${cdnIndexFileExist}`});
 
@@ -103,6 +104,26 @@ module.exports = (app, keycloak) => {
     '/resources/*', '/myActivity', '/myActivity/*'], keycloak.protect(), loadExperimentApp, indexPage(true))
 
   app.all('/:tenantName', renderTenantPage)
+
+  app.post('/mock/device/register/:deviceId', bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }),
+  async (req,res,next) => {
+    console.log('mock register called with ', req.body);
+    const experimentDetails = await experimentHelper.mockDeviceRegister(req);
+    res.json(experimentDetails);
+  })
+}
+const loadExperimentApp = async (req, res, next) => {
+  const indexFile = await experimentHelper.getExperimentIndexFile(req, res)
+  if(indexFile && indexFile.data){
+    req.includeUserDetail = true
+    res.locals = getLocals(req);
+    res.locals.cdnWorking = 'no';
+    let renderedFile = ejs.render(indexFile.data, res.locals)
+    res.send(renderedFile);
+  } else {
+    console.log('experiment not found loading default app');
+    next()
+  }
 }
 
 function getLocals(req) {
@@ -141,43 +162,6 @@ function getLocals(req) {
   return locals
 }
 
-const loadExperimentApp = async (req, res, next) => {
-  // if(req.query.experimentId){
-  //   let experimentFile;
-  //   try {
-  //     experimentFile = fs.readFileSync(path.join(__dirname, './../dist_experiment', req.query.experimentId, 'index.html'));
-  //   } catch(err) {
-  //     console.log(err)
-  //   }
-  //   console.log('experiment found loading experiment index file', req.query.experimentId,  experimentFile.toString());
-  //   if(!experimentFile){
-  //     next()
-  //     return;
-  //   }
-  //   res.locals = getLocals(req);
-  //   let renderedFile = ejs.render(experimentFile.toString(), res.locals)
-  //   res.send(renderedFile);
-  //   return;
-  // }
-  const indexFile = await experimentHelper.getExperimentIndexFile(req, res)
-  if(indexFile && indexFile.data){
-    // res.header('Access-Control-Allow-Origin', "*");
-    // res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    // res.header('Access-Control-Allow-Headers', 'Content-Type');
-    console.log('experiment found loading experiment index file', req.path);
-    res.locals = getLocals(req);
-    res.locals.cdnWorking = 'no';
-    let renderedFile = ejs.render(indexFile.data, res.locals)
-    res.send(renderedFile);
-  } 
-  // else if(indexFile && !_.isEmpty(indexFile.redirectionParam)) {
-
-  // } 
-  else {
-    console.log('experiment not found loading default app');
-    next()
-  }
-};
 const indexPage = (loggedInRoute) => {
   return async (req, res) => {
     if (envHelper.DEFAULT_CHANNEL && req.path === '/') {
