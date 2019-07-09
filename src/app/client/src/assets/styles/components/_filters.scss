@@ -55,10 +55,11 @@
         width: $sb-prominent-filter-field-width;
         height: $sb-prominent-filter-field-height;
         font-size: $sb-prominent-filter-field-font-size;
-        border: $sb-prominent-filter-field-border;
         border-radius: $sb-prominent-filter-field-border-radius;
         padding: 0;
-        
+        .divider{
+          margin: 0;
+        }
         .item {
           display: flex;
           flex-direction: row;
@@ -77,7 +78,30 @@
             color: $sb-prominent-filter-dropdown-item-active-color;
             font-weight: $sb-prominent-filter-dropdown-item-active-font-weight;
           }
-
+          &:hover{
+            background: $primary-250;
+            color: $blue;
+          }
+          i.icon.square.outline{
+            height: ($base-block-space * 2);
+            width:  ($base-block-space * 2);
+            border: 1px solid $primary-300;
+            border-radius: 5px;
+            &::before{
+              content: "\f14a";
+              visibility: hidden;
+            }
+            &.check{
+              background: $blue;
+              border: none;
+              color: $sb-prominent-filter-background-color;
+              &::before{
+                content: "\2713";
+                line-height: ($base-block-space * 2);
+                visibility: visible;
+              }
+            }
+          }
         }
 
         .text {
@@ -92,7 +116,6 @@
             text-transform: uppercase;
           }
         }
-
       }
 
     }
