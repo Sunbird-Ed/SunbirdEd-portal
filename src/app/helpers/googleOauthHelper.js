@@ -9,7 +9,7 @@ const request = require('request-promise'); //  'request' npm package with Promi
 const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
 
-let keycloakGoogle = getKeyCloakClient({
+const keycloakGoogle = getKeyCloakClient({
   resource: envHelper.KEYCLOAK_GOOGLE_CLIENT.clientId,
   bearerOnly: true,
   serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
@@ -19,11 +19,14 @@ let keycloakGoogle = getKeyCloakClient({
   }
 })
 
-let keycloakAndroid = getKeyCloakClient({
-  resource: 'android',
+const keycloakAndroid = getKeyCloakClient({
+  resource: 'google-auth-android',
   bearerOnly: true,
   serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
-  realm: envHelper.PORTAL_REALM
+  realm: envHelper.PORTAL_REALM,
+  credentials: {
+    secret: envHelper.KEYCLOAK_GOOGLE_CLIENT.secret
+  }
 })
 
 class GoogleOauth {

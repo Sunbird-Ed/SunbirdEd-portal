@@ -8,7 +8,8 @@ const kafkaService = require('../helpers/kafkaHelperService');
 const logger = require('sb_logger_util_v2');
 let ssoWhiteListChannels;
 const privateBaseUrl = '/private/user/'
-let keycloakTrampoline = getKeyCloakClient({
+
+const keycloakTrampoline = getKeyCloakClient({
   clientId: envHelper.PORTAL_TRAMPOLINE_CLIENT_ID,
   bearerOnly: true,
   serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
@@ -17,11 +18,14 @@ let keycloakTrampoline = getKeyCloakClient({
     secret: envHelper.PORTAL_TRAMPOLINE_SECRET
   }
 })
-let keycloakAndroid = getKeyCloakClient({
-  resource: 'android',
+const keycloakAndroid = getKeyCloakClient({
+  resource: 'trampoline-android',
   bearerOnly: true,
   serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
-  realm: envHelper.PORTAL_REALM
+  realm: envHelper.PORTAL_REALM,
+  credentials: {
+    secret: envHelper.PORTAL_TRAMPOLINE_SECRET
+  }
 })
 const verifySignature = async (token) => {
   let options = {
