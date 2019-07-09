@@ -79,7 +79,7 @@
     <div class="sb-card-hover-content">
       <div>
         <div (click)="onAction(data,data.action.onImage)" class="d-flex flex-jc-center">
-          <button class="sb-btn sb-btn-outline-white sb-btn-normal">{{resourceService.frmelmnts?.lbl?.play}}</button>
+          <button class="sb-btn sb-btn-outline-white sb-btn-normal">{{resourceService.frmelmnts?.lbl?.play}} <i class="play icon"></i></button>
           </div>
           <button (click)="onAction(data,'export')" *ngIf="checkOfflineRoutes === 'library'" class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">{{resourceService.frmelmnts?.btn?.export}}<i
               class="sign in alternate icon"></i></button>
