@@ -138,7 +138,9 @@ export class MainHeaderComponent implements OnInit {
     }
   }
   navigateToHome() {
-    if (this.userService.loggedIn) {
+    if (this.isOffline) {
+      this.router.navigate(['']);
+    } else if (this.userService.loggedIn) {
       this.router.navigate(['resources']);
     } else {
       window.location.href = this.slug ? this.slug + '/explore'  : '/explore';

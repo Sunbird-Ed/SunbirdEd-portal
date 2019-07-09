@@ -85,6 +85,8 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public pickerMinDate = new Date(new Date().setHours(0, 0, 0, 0));
 
+  public pickerMinDateForEnrollmentEndDate;
+
   public pickerMinDateForEndDate = new Date(this.pickerMinDate.getTime() + (24 * 60 * 60 * 1000));
 
   public unsubscribe = new Subject<void>();
@@ -162,6 +164,14 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   */
   private initializeUpdateForm(): void {
     const endDate = this.batchDetails.endDate ? new Date(this.batchDetails.endDate) : null;
+    const enrollmentEndDate = this.batchDetails.enrollmentEndDate ? new Date(this.batchDetails.enrollmentEndDate) : null;
+    if (enrollmentEndDate) {
+      this.pickerMinDateForEnrollmentEndDate = enrollmentEndDate;
+    } else if (!moment(this.batchDetails.startDate).isBefore(moment(this.pickerMinDate).format('YYYY-MM-DD'))) {
+      this.pickerMinDateForEnrollmentEndDate = new Date(this.batchDetails.startDate);
+    } else {
+      this.pickerMinDateForEnrollmentEndDate = this.pickerMinDate;
+    }
     this.batchUpdateForm = new FormGroup({
       name: new FormControl(this.batchDetails.name, [Validators.required]),
       description: new FormControl(this.batchDetails.description),
@@ -169,7 +179,8 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       startDate: new FormControl(new Date(this.batchDetails.startDate), [Validators.required]),
       endDate: new FormControl(endDate),
       mentors: new FormControl(),
-      users: new FormControl()
+      users: new FormControl(),
+      enrollmentEndDate: new FormControl(enrollmentEndDate)
     });
     this.batchUpdateForm.valueChanges.subscribe(val => {
       if (this.batchUpdateForm.status === 'VALID') {
@@ -183,10 +194,16 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   * fetch mentors and participant details
   */
   private fetchParticipantDetails() {
+    let userListIdentifier = [];
     if (this.batchDetails.participants || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
+      if (this.batchDetails.participants && this.batchDetails.participants.length > 100) {
+        userListIdentifier = this.batchDetails.mentors;
+      } else {
+        userListIdentifier = _.union(this.batchDetails.participants, this.batchDetails.mentors);
+      }
       const request = {
         filters: {
-          identifier: _.union(this.batchDetails.participants, this.batchDetails.mentors)
+          identifier: userListIdentifier
         }
       };
       this.batchService.getUserList(request).pipe(takeUntil(this.unsubscribe))
@@ -255,10 +272,15 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
   private initDropDown() {
+    const count = this.batchDetails.participants ? this.batchDetails.participants.length : 0;
     setTimeout(() => {
       $('#participant').dropdown({
         forceSelection: false,
         fullTextSearch: true,
+        maxSelections: 100 - count,
+        message: {
+          maxSelections : this.resourceService.messages.imsg.m0046
+        },
         onAdd: () => {
         }
       });
@@ -330,6 +352,9 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       createdFor: this.userService.userProfile.organisationIds,
       mentors: _.compact(mentors)
     };
+    if (this.batchUpdateForm.value.enrollmentType === 'open' && this.batchUpdateForm.value.enrollmentEndDate) {
+      requestBody['enrollmentEndDate'] = moment(this.batchUpdateForm.value.enrollmentEndDate).format('YYYY-MM-DD');
+    }
     const selected = [];
     _.forEach(this.selectedMentors, (value) => {
       selected.push(value.id);

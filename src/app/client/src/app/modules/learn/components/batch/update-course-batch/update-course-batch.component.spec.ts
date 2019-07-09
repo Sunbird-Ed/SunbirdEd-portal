@@ -88,12 +88,12 @@ describe('UpdateCourseBatchComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.
     returnValue(observableOf({createdBy: 'b2479136-8608-41c0-b3b1-283f38c338ed'}));
     fixture.detectChanges();
-    expect(component.participantList.length).toBe(9);
+    expect(component.participantList.length).toBe(7);
     expect(component.mentorList.length).toBe(1);
     expect(component.courseCreator).toBeDefined();
     expect(component.batchUpdateForm).toBeDefined();
     expect(component.showUpdateModal).toBeTruthy();
-    expect(component.selectedParticipants.length).toBe(0);
+    expect(component.selectedParticipants.length).toBe(2);
     expect(component.selectedMentors.length).toBe(6);
   });
   it('should navigate to parent page if fetching batch details fails', () => {
@@ -226,5 +226,64 @@ describe('UpdateCourseBatchComponent', () => {
     expect(component.batchUpdateForm.controls['name'].value).toBeNull();
     expect(component.batchUpdateForm.controls['description'].value).toBeNull();
     expect(component.batchUpdateForm.controls['endDate'].value).toBeNull();
+  });
+
+  it('should update batch if batch has enrollmentend date and show success message', () => {
+    const courseBatchService = TestBed.get(CourseBatchService);
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const toasterService = TestBed.get(ToasterService);
+    const resourceService = TestBed.get(ResourceService);
+    const userService = TestBed.get(UserService);
+    userService._userProfile = { organisationIds: [] };
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    spyOn(courseBatchService, 'getUserList').and.callFake((request) => {
+      if (request) {
+        return observableOf(getUserDetails);
+      } else {
+        return observableOf(getUserList);
+      }
+    });
+    spyOn(courseBatchService, 'getUpdateBatchDetails').and.returnValue(observableOf(updateBatchDetails));
+    spyOn(courseBatchService, 'updateBatch').and.returnValue(observableOf(updateBatchDetails));
+    spyOn(toasterService, 'success');
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.
+    returnValue(observableOf({createdBy: 'b2479136-8608-41c0-b3b1-283f38c338ed'}));
+    fixture.detectChanges();
+    component.batchUpdateForm.value.enrollmentType = 'open';
+    component.batchUpdateForm.value.enrollmentEndDate = new Date();
+    component.updateBatch();
+    expect(toasterService.success).toHaveBeenCalledWith('success');
+  });
+
+ it('should update batch min enrollmentend date should be todays date and show success message', () => {
+    const courseBatchService = TestBed.get(CourseBatchService);
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const toasterService = TestBed.get(ToasterService);
+    const resourceService = TestBed.get(ResourceService);
+    const userService = TestBed.get(UserService);
+    userService._userProfile = { organisationIds: [] };
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    spyOn(courseBatchService, 'getUserList').and.callFake((request) => {
+      if (request) {
+        return observableOf(getUserDetails);
+      } else {
+        return observableOf(getUserList);
+      }
+    });
+   const batchDetails = updateBatchDetails;
+   batchDetails.enrollmentEndDate = null;
+    spyOn(courseBatchService, 'getUpdateBatchDetails').and.returnValue(observableOf(batchDetails));
+    spyOn(courseBatchService, 'updateBatch').and.returnValue(observableOf(updateBatchDetails));
+    spyOn(toasterService, 'success');
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.
+    returnValue(observableOf({createdBy: 'b2479136-8608-41c0-b3b1-283f38c338ed'}));
+    fixture.detectChanges();
+    component.batchUpdateForm.value.enrollmentType = 'open';
+    component.batchUpdateForm.value.enrollmentEndDate = new Date();
+    component.updateBatch();
+   expect(component.pickerMinDateForEnrollmentEndDate).toBe(component.pickerMinDate);
+   expect(toasterService.success).toHaveBeenCalledWith('success');
   });
 });
