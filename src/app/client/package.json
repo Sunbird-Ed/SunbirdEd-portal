@@ -7,6 +7,7 @@
     "start": "ng build --deployUrl dist/ && mv ../dist/index.html ../dist/index.ejs",
     "proxy": "ng serve --proxy-config proxy.config.js",
     "build": "ng build --prod --deployUrl dist/",
+    "build-dev": "ng build --prod --build-optimizer=false --deployUrl dist/",
     "test": "ng test --tags $tags",
     "lint": "ng lint",
     "e2e": "ng e2e",
@@ -15,7 +16,8 @@
     "build-cdn": "ng build --prod",
     "build-offline": "ng build --project offline --deployUrl dist/ --c=offline && mv ../dist/index.html ../dist/index.ejs",
     "start-offline": "nodemon  --exec 'npm run build-offline'",
-    "build-offline-prod": "ng build --project offline  --c=offlineProduction && mv ../dist/index.html ../dist/index.ejs"
+    "build-offline-prod": "ng build --project offline  --c=offlineProduction && mv ../dist/index.html ../dist/index.ejs",
+    "inject-cdn-fallback": "gulp inject:cdnFallBack:script"
   },
   "nodemonConfig": {
     "ext": "png,jpeg,js,ts,html,json,css,scss"
@@ -47,7 +49,10 @@
     "datatables.net-dt": "1.10.19",
     "fine-uploader": "^5.15.7",
     "font-awesome": "^4.7.0",
+    "gulp": "^4.0.2",
     "gulp-download": "0.0.1",
+    "gulp-inject-string": "^1.1.2",
+    "gulp-rename": "^1.4.0",
     "html2canvas": "^1.0.0-rc.3",
     "html2pdf.js": "^0.9.1",
     "izimodal": "^1.5.1",

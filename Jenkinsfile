@@ -15,7 +15,7 @@ node('build-slave') {
                     } else
                         println(ANSI_BOLD + ANSI_GREEN + "Found environment variable named hub_org with value as: " + hub_org + ANSI_NORMAL)
                 }
-                cleanWs()
+//                cleanWs()
                 if (params.github_release_tag == "") {
                     checkout scm
                     commit_hash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()

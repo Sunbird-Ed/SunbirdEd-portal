@@ -146,3 +146,18 @@
         }
     }
 }
+
+// workspace modal spacing issue
+.sb-workspace-modal{
+    .twelve.wide.column{
+        padding: 0;
+    }
+    .six.wide.column:nth-child(even){
+        padding: 0;
+        padding-right: 8px;
+    }
+    .six.wide.column:nth-child(odd){
+        padding: 0;
+        padding-left: 8px;
+    }
+}

@@ -74,9 +74,9 @@
             </div>
             <div class="sb-field-group pl-8" *ngIf="batchUpdateForm.value.enrollmentType === 'open'"
             [ngClass]="batchUpdateForm.controls['enrollmentEndDate'].invalid && !batchUpdateForm.controls['enrollmentEndDate'].pristine ? 'error': ''">
-              <label class="required">{{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</label>
+              <label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</label>
               <div class="ui read-only calendar rangeenrollMentEnd" id="rangeenrollMentEnd">
-                <div class="sb-field ui left icon input">
+                <div class="sb-field ui left icon input" [ngClass]="{'disabled': !batchUpdateForm.value.startDate}">
                   <i class="calendar icon date-calendar"></i>
                   <input class="sb-form-control" [pickerMinDate]='pickerMinDateForEnrollmentEndDate' [pickerMaxDate]='batchUpdateForm.value.endDate'
                 suiDatepicker formControlName="enrollmentEndDate" [pickerMode]="'date'">
