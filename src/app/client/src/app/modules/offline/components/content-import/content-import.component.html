@@ -80,7 +80,7 @@
 
                 <div class="sb-modal-actions">
                     <button type="button" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-                    [telemetryInteractEdata]="ImportContentModalClose" class="sb-btn sb-btn-primary sb-btn-normal"
+                    [telemetryInteractEdata]="ImportContentModalClose" class="sb-btn sb-btn-primary sb-btn-normal" id="close_modal"
                         (click)="modalClose()">{{resourceService.frmelmnts?.btn?.close}}</button>
                     <button id="selectFile"  appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
                     [telemetryInteractEdata]="selectContentFilesEdata" class="qq-upload-button-selector sb-btn sb-btn-primary sb-btn-normal mr-8">{{resourceService.frmelmnts?.btn?.selectContentFiles}}</button>

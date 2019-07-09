@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SsoRoutingModule } from './sso-routing.module';
-import { SelectOrgComponent, UpdatePhoneComponent } from './components';
+import { SelectOrgComponent, UpdateContactComponent } from './components';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { SuiModule } from 'ng2-semantic-ui/dist';
@@ -19,6 +19,6 @@ import { SharedModule } from '@sunbird/shared';
     ReactiveFormsModule,
     SharedModule
   ],
-  declarations: [SelectOrgComponent, UpdatePhoneComponent]
+  declarations: [SelectOrgComponent, UpdateContactComponent]
 })
 export class SsoModule { }

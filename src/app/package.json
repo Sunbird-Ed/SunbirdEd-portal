@@ -1,7 +1,7 @@
 {
   "name": "player",
   "author": "sunbird",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "buildNumber": "1",
   "private": true,
   "devDependencies": {
@@ -66,7 +66,7 @@
   "scripts": {
     "server": "gulp update:index:file && node server",
     "test-announcements": "mocha 'test/announcements/server/**/*.js' --reporter mochawesome",
-    "preinstall": "npm install ./libs/sb_api_interceptor && npm install ./libs/sb_cache_manager  && npm install ./libs/sb_telemetry_util",
+    "preinstall": "npm install ./libs/sb_api_interceptor && npm install ./libs/sb_cache_manager  && npm install ./libs/sb_telemetry_util && npm install ./libs/sb_logger_util_v2",
     "validate": "npm ls",
     "precommit": "lint-staged",
     "resource-bundles": "node helpers/resourceBundles/build.js",
@@ -117,6 +117,7 @@
     "request-promise-native": "^1.0.5",
     "sb_api_interceptor": "file:libs/sb_api_interceptor",
     "sb_cache_manager": "file:libs/sb_cache_manager",
+    "sb_logger_util_v2": "file:libs/sb_logger_util_v2",
     "sb_telemetry_util": "file:libs/sb_telemetry_util",
     "ua-parser-js": "^0.7.13",
     "uuid": "^3.1.0",

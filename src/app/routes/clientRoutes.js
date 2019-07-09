@@ -7,6 +7,7 @@ _ = require('lodash'),
 path = require('path'),
 envHelper = require('../helpers/environmentVariablesHelper.js'),
 tenantHelper = require('../helpers/tenantHelper.js'),
+logger = require('sb_logger_util_v2'),
 defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState(),
 oneDayMS = 86400000,
 pathMap = {},
@@ -15,7 +16,7 @@ proxyUtils = require('../proxy/proxyUtils.js'),
 experimentHelper = require('../helpers/experimentHelper.js'),
 ejs = require('ejs');
 
-console.log('CDN index file exist: ', cdnIndexFileExist);
+logger.info({msg:`CDN index file exist: ${cdnIndexFileExist}`});
 
 const setZipConfig = (req, res, type, encoding, dist = '../') => {
     if (pathMap[req.path + type] && pathMap[req.path + type] === 'notExist') {
@@ -34,7 +35,11 @@ const setZipConfig = (req, res, type, encoding, dist = '../') => {
         return true
     } else {
       pathMap[req.path + type] = 'notExist';
-      console.log('zip file not exist for: ', req.url, type)
+      logger.info({msg:'zip file not exist' ,
+      additionalInfo: {
+        url: req.url,
+        type: type
+      }})
       return false;
     }
 }
@@ -86,9 +91,13 @@ module.exports = (app, keycloak) => {
   app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
     '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course',
     '/explore-course/*', '/:slug/explore-course', '/:slug/explore-course/*',
+<<<<<<< HEAD
     '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*'], loadExperimentApp, redirectTologgedInPage, indexPage(false))
+=======
+    '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*', '/download/*', '/:slug/download/*'],redirectTologgedInPage, indexPage(false))
+>>>>>>> 6260ed3b81a672574747fa38e2d673736175dcec
 
-  app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode))
+  app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode + '?source=scan'))
 
   app.all('/app', (req, res) => res.redirect(envHelper.ANDROID_APP_URL))
 
@@ -128,6 +137,11 @@ function getLocals(req) {
   locals.videoMaxSize = envHelper.sunbird_portal_video_max_size
   locals.reportsLocation = envHelper.sunbird_azure_report_container_name
   locals.previewCdnUrl = envHelper.sunbird_portal_preview_cdn_url
+  locals.offlineDesktopAppTenant = envHelper.sunbird_portal_offline_tenant
+  locals.offlineDesktopAppVersion = envHelper.sunbird_portal_offline_app_version
+  locals.offlineDesktopAppReleaseDate = envHelper.sunbird_portal_offline_app_release_date
+  locals.offlineDesktopAppSupportedLanguage = envHelper.sunbird_portal_offline_supported_languages,
+  locals.offlineDesktopAppDownloadUrl = envHelper.sunbird_portal_offline_app_download_url
   return locals
 }
 
@@ -189,12 +203,25 @@ const renderDefaultIndexPage = (req, res) => {
   } else {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
     res.locals = getLocals(req);
-    console.log("envHelper.PORTAL_CDN_URL", envHelper.PORTAL_CDN_URL, "cdnIndexFileExist", cdnIndexFileExist, "req.cookies.cdnFailed", req.cookies.cdnFailed);
+    logger.info({
+      msg:'cdn parameters:',
+      additionalInfo: {
+        PORTAL_CDN_URL: envHelper.PORTAL_CDN_URL,
+        cdnIndexFileExist: cdnIndexFileExist,
+        cdnFailedCookies: req.cookies.cdnFailed
+      }
+    })
     if(envHelper.PORTAL_CDN_URL && cdnIndexFileExist && req.cookies.cdnFailed !== 'yes'){ // assume cdn works and send cdn ejs file
       res.locals.cdnWorking = 'yes';
       res.render(path.join(__dirname, '../dist', 'index_cdn.ejs'))
     } else { // load local file if cdn fails or cdn is not enabled
-      console.log("CDN Failed - loading local files", "envHelper.PORTAL_CDN_URL");
+      if(req.cookies.cdnFailed === 'yes'){
+        logger.info({msg:'CDN Failed - loading local files',
+      additionalInfo: {
+        cdnIndexFileExist: cdnIndexFileExist,
+        PORTAL_CDN_URL: envHelper.PORTAL_CDN_URL
+      }})
+      }
       res.locals.cdnWorking = 'no';
       res.render(path.join(__dirname, '../dist', 'index.ejs'))
     }

@@ -1,10 +1,4 @@
-<div class="ui segment br-0 p-0 prominent-filter" *ngIf="!showLoader">
-    <div class="ui container">
-            <div class="twelve wide column mb-15">
-                    <app-data-driven-filter [enrichFilters]="facetsList" [pageId]="'course-search'" *ngIf="initFilters" [ignoreQuery]="['key']" [filterEnv]="filterType" [accordionDefaultOpen]=false [isShowFilterLabel]=true [formAction]="'filter'" [frameworkName]="frameWorkName" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
-                </div>
-    </div>
-</div>
+<app-data-driven-filter [enrichFilters]="facetsList" [pageId]="'course-search'" *ngIf="initFilters" [ignoreQuery]="['key']" [filterEnv]="filterType" [accordionDefaultOpen]=false [isShowFilterLabel]=true [formAction]="'filter'" [frameworkName]="frameWorkName" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
 <div class="ui container">
     <div class="content-grid mt-24">
         <div class="sb-pageSection">

@@ -15,8 +15,7 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
  */
 @Component({
   selector: 'app-content-player',
-  templateUrl: './content-player.component.html',
-  styleUrls: ['./content-player.component.scss']
+  templateUrl: './content-player.component.html'
 })
 export class ContentPlayerComponent implements OnInit, AfterViewInit {
   /**

@@ -1,14 +1,12 @@
 <app-user-filter></app-user-filter>
-<div class="ui container">
+<div class="ui container mt-16">
   <div [appTelemetryImpression]="telemetryImpression" class="ui grid mt-0">
     <div class="twelve wide column">
       <div>
         <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && !noResult">
           <div class="ui left floated header  ">
             <p class="serch-allresult">{{resourceService.frmelmnts?.lbl?.showingResults}} 
-              <span class="text-lowercase" *ngIf="this.queryParams.key">
-                "{{resourceService.frmelmnts?.lbl?.forSearch  | interpolate:'{searchString}':this.queryParams?.key}}"
-              </span>
+              <span class="text-lowercase" *ngIf="this.queryParams.key" appHighlightText [config]="{'resourcePath': 'frmelmnts.lbl.forSearch', 'key': '{searchString}', 'value': queryParams?.key}"></span>
               {{resourceService.frmelmnts?.lbl?.inUsers}}
             </p>
           </div>
@@ -42,8 +40,8 @@
                     <a *ngIf="user.status===1 && user.isEditableProfile" class="right-float">
                       <!-- update user roles -->
                       <span appTelemetryInteract [telemetryInteractEdata]="userEditIntractEdata" [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}"
-                        class="remove-outline mx-10" [queryParams]="queryParams" [routerLink]="['edit/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">
-                        <span class="sunbird-portal-icon edit-user-icon mx-10"></span>
+                        class="remove-outline" [queryParams]="queryParams" [routerLink]="['edit/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">
+                        <i class="edit large icon"></i>
                       </span>
                       <!-- delete user -->
                       <!-- <span appTelemetryInteract [telemetryInteractEdata]="userDeleteIntractEdata" [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}"

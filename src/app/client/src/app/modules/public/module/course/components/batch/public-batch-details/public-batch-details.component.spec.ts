@@ -8,9 +8,9 @@ import { CoreModule, PermissionService } from '@sunbird/core';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CourseBatchService } from '@sunbird/learn';
 import { allBatchDetails } from './public-batch-details.component.data';
 import { UserService } from '@sunbird/core';
+import { CourseBatchService } from '@sunbird/learn';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');

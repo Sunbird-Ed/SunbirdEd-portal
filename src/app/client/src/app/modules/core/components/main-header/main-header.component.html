@@ -66,7 +66,7 @@
     <!--Header White Section-->
     <!--Header Blue Section-->
     <!--Computer-->
-    <div class="bg-primary p-8" *ngIf="showExploreHeader || userService.loggedIn || isOffline">
+    <div class="sb-bg-color-primary p-8" *ngIf="showExploreHeader || userService.loggedIn || isOffline && !showOfflineHelpCentre">
         <div class="ui container d-flex flex-ai-center mx-0">
             <!--QR Button-->
             <button class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0" appTelemetryInteract
@@ -81,12 +81,12 @@
             <!--/Divider-->
             <!--Search Box-->
             <!--Logged in Pages-->
-            <app-search class="sb-search-box mr-auto" *ngIf="!showExploreHeader && !isOffline"
+            <app-search class="sb-search-box b-0 mr-auto" *ngIf="!showExploreHeader && !isOffline"
                 [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
             </app-search>
             <!--/Logged in Pages-->
             <!--Explore Pages-->
-            <div class="sb-search-box mr-auto" *ngIf="showExploreHeader || isOffline"
+            <div class="sb-search-box b-0 mr-auto" *ngIf="showExploreHeader || isOffline"
                 [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
                 <div class="input-div relative">
                     <i class="search icon"></i>
@@ -99,7 +99,7 @@
                 </div>
                 <button appTelemetryInteract [telemetryInteractEdata]="getSearchButtonInteractEdata(queryParam.key)"
                     class="sb-btn sb-btn-normal" (click)="onEnter(queryParam.key)"
-                    title="{{resourceService?.frmelmnts?.prmpt?.search}}" tabindex="0">Search</button>
+                    title="{{resourceService?.frmelmnts?.prmpt?.search}}" tabindex="0">{{resourceService.frmelmnts?.lbl?.search}}</button>
             </div>
             <!--/Explore Pages-->
             <!--/Search Box-->
@@ -112,7 +112,7 @@
     </div>
     <!--/Computer-->
     <!--Mobile-->
-    <div class="p-8 mobile only" *ngIf="showExploreHeader || userService.loggedIn || isOffline">
+    <div class="p-8 mobile only" *ngIf="showExploreHeader || userService.loggedIn || isOffline && !showOfflineHelpCentre">
         <div class="ui mobile-view container d-flex flex-jc-space-between mx-0">
             <!--QR Button-->
             <button class="ui button qr-code-btn d-flex flex-ai-center" appTelemetryInteract
@@ -133,4 +133,4 @@
     <!--/Mobile-->
     <!--/Header Blue Section-->
 </div>
-<extension-point [name]="'content-import'" *ngIf="isOffline"></extension-point>
+<extension-point [name]="'content-import'" *ngIf="isOffline && !showOfflineHelpCentre"></extension-point>

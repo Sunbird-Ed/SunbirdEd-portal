@@ -1,6 +1,6 @@
 <sui-modal 
     [mustScroll]="true" 
-    [isClosable]="true"
+    [isClosable]="false"
     [transitionDuration]="0"
     [size]="'normal'"
     class="sb-modal"
@@ -9,6 +9,8 @@
     #modal 
     *ngIf="showModal"
     >
+
+    <i class="icon close" (click)="modal.deny('denied')" tabindex="0"></i>
     <!--Header-->
     <div class="sb-modal-header">
         {{resourceService.frmelmnts.btn.checkListRequestChanges}}
@@ -71,7 +73,7 @@
             {{resourceService.frmelmnts.btn.checkListRequestChanges}}
         </button>
         <button 
-            class="sb-btn sb-btn-normal sb-btn-outline-primary" 
+            class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" 
             type="button" 
             (click)="redirect();modal.deny();"
         >

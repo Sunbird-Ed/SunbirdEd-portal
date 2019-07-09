@@ -2,6 +2,7 @@ const _ = require('lodash');
 const { googleOauth, createSession, fetchUserByEmailId, createUserWithMailId } = require('./../helpers/googleOauthHelper');
 const telemetryHelper = require('../helpers/telemetryHelper')
 const googleDid = '2c010e13a76145d864e459f75a176171';
+const logger = require('sb_logger_util_v2')
 module.exports = (app) => {
 
   app.get('/google/auth', (req, res) => {
@@ -49,14 +50,14 @@ module.exports = (app) => {
       if (reqQuery.client_id === 'android') {
         redirectUrl = redirectUrl + getQueryParams(keyCloakToken);
       }
-      console.log('google sign in success', googleProfile, sunbirdProfile, newUserDetails, redirectUrl);
+      logger.info({msg:'google sign in success',additionalInfo: {googleProfile, sunbirdProfile, newUserDetails, redirectUrl}});
     } catch (error) {
       if (reqQuery.error_callback) {
         const queryObj = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type', 'version']);
         queryObj.error_message = getErrorMessage(error);
         redirectUrl = reqQuery.error_callback + getQueryParams(queryObj);
       }
-      console.log('google sign in failed', errType, error, googleProfile, sunbirdProfile, newUserDetails, redirectUrl);
+      logger.error({msg:'google sign in failed', error, additionalInfo: {errType, googleProfile, sunbirdProfile, newUserDetails, redirectUrl}})
       logErrorEvent(req, errType, error);
     } finally {
       res.redirect(redirectUrl || '/resources');

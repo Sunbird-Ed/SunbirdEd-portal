@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ContentImportComponent, BrowseComponent } from './components';
+import { ContentImportComponent, BrowseComponent, OfflineHelpCenterComponent } from './components';
 import {ViewAllComponent} from '@sunbird/shared-feature';
 import { ExploreContentComponent } from './../public/module/explore/components/explore-content/explore-content.component';
 
@@ -11,6 +11,13 @@ const routes: Routes = [
         env: 'offline', pageid: 'browse', type: 'view'
       },
       softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 }
+    }
+  },
+  {
+    path: 'help-center', component: OfflineHelpCenterComponent, data: {
+      telemetry: {
+        env: 'offline', pageid: 'help-center', type: 'view'
+      }
     }
   },
   {
@@ -54,6 +61,9 @@ const routes: Routes = [
   },
   {
     path: 'play', loadChildren: './../public/module/player/player.module#PlayerModule'
+  },
+  {
+    path: 'browse/play', loadChildren: './../public/module/player/player.module#PlayerModule'
   },
   {
     path: 'import/content', component: ContentImportComponent, data: {

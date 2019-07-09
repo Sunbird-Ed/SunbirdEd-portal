@@ -6,6 +6,14 @@ RUN mkdir -p /opt/player \
 WORKDIR /opt/player
 COPY * /opt/player/
 WORKDIR /opt/player/app
+
+ARG content_editor_url
+ENV sunbird_content_editor_artifact_url ${content_editor_url}
+ARG collection_editor_url 
+ENV sunbird_collection_editor_artifact_url  ${collection_editor_url}
+ARG generic_editor_url
+ENV sunbird_generic_editor_artifact_url ${generic_editor_url}
+
 RUN npm set progress=false
 RUN npm install  --unsafe-perm 
 RUN npm run deploy
@@ -22,8 +30,7 @@ FROM node:8.11-slim
 MAINTAINER "Rajesh R <rajesh.r@optit.co>"
 RUN useradd -u 1001 -md /home/sunbird sunbird
 WORKDIR /home/sunbird
-COPY --from=0 /opt/player/app/app_dist/ /home/sunbird/app_dist/
-RUN chown -R sunbird:sunbird /home/sunbird
+COPY --from=0 --chown=sunbird /opt/player/app/app_dist/ /home/sunbird/app_dist/
 USER sunbird
 WORKDIR /home/sunbird/app_dist
 # This is the short commit hash from which this image is built from

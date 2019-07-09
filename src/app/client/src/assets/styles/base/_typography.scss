@@ -59,22 +59,20 @@ p {
 
 }
 .sb-para {
-    
+
 }
 .sb-section-title,
 .sb-pageSection-title {
     font-size: $h5-font-size;
     display: inline;
-    text-transform: lowercase;
     font-weight: 600;
-    &::first-letter{
-      text-transform: uppercase;
+    &.sb-pageSection-sentenceCase {
+        text-transform: lowercase;
+        &::first-letter {
+            text-transform: uppercase;
+        }
     }
     &.sb-pageSection-title-light {
         color: $gray-400;
     }
 }
-.text-transform-inherit {
-    text-transform: inherit !important;
-}
-  

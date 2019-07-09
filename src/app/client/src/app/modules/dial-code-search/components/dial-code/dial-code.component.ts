@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { combineLatest as observableCombineLatest } from 'rxjs';
 import { ResourceService, ServerResponse, ToasterService, ConfigService, UtilService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SearchService, SearchParam, PlayerService } from '@sunbird/core';
+import { SearchService, SearchParam, PlayerService, CoursesService, UserService } from '@sunbird/core';
+import { PublicPlayerService } from '@sunbird/public';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { takeUntil, map, catchError, mergeMap } from 'rxjs/operators';
@@ -44,21 +46,31 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   public isRedirectToDikshaApp = false;
   public closeMobilePopupInteractData: any;
   public appMobileDownloadInteractData: any;
+  public dialSearchSource: string;
+  public showBatchInfo = false;
+  public selectedCourseBatches: any;
   isOffline: boolean = environment.isOffline;
   showExportLoader = false;
   contentName: string;
   instance: string;
-  constructor(public resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
+  redirectCollectionUrl: string;
+  redirectContentUrl: string;
+
+  constructor(public resourceService: ResourceService, public userService: UserService,
+    public coursesService: CoursesService, public router: Router, public activatedRoute: ActivatedRoute,
     public searchService: SearchService, public toasterService: ToasterService, public configService: ConfigService,
     public utilService: UtilService, public navigationhelperService: NavigationHelperService,
     public playerService: PlayerService, public telemetryService: TelemetryService,
-    public downloadManagerService: DownloadManagerService) {
-
+    public downloadManagerService: DownloadManagerService, public publicPlayerService: PublicPlayerService) {
   }
 
   ngOnInit() {
     EkTelemetry.config.batchsize = 2;
-    this.activatedRoute.params.subscribe(params => {
+    observableCombineLatest(this.activatedRoute.params, this.activatedRoute.queryParams,
+    (params, queryParams) => {
+      return { ...params, ...queryParams };
+    }).subscribe((params) => {
+      this.dialSearchSource = params.source || 'search';
       this.itemsToDisplay = [];
       this.searchResults = [];
       this.dialCode = params.dialCode;
@@ -81,13 +93,14 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     const requestParams = {
       filters: {
         dialcodes: this.dialCode
-      }
+      },
+      params: this.configService.appConfig.dialPage.contentApiQueryParams
     };
     this.searchService.contentSearch(requestParams, false).pipe(mergeMap(apiResponse => {
       const linkedCollectionsIds = [];
       this.linkedContents = [];
       _.forEach(_.get(apiResponse, 'result.content'), (data) => {
-        if (data.mimeType === 'application/vnd.ekstep.content-collection') {
+        if (data.mimeType === 'application/vnd.ekstep.content-collection' && data.contentType.toLowerCase() !== 'course') {
           linkedCollectionsIds.push(data.identifier);
         } else {
           this.linkedContents.push(data);
@@ -142,10 +155,33 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       map((res) => _.get(res, 'result.content')), catchError(e => of(undefined)));
   }
 
+  public playCourse({ section, data }) {
+    const { metaData } = data;
+    if (this.userService.loggedIn) {
+      this.coursesService.getEnrolledCourses().subscribe(() => {
+        const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
+        this.coursesService.findEnrolledCourses(metaData.identifier);
+        if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
+          return this.playerService.playContent(metaData);
+        }
+        if (onGoingBatchCount === 1) { // play course if only one open batch is present
+          metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
+          return this.playerService.playContent(metaData);
+        }
+        this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
+        this.showBatchInfo = true;
+      }, error => {
+        this.publicPlayerService.playExploreCourse(metaData.identifier);
+      });
+    } else {
+      this.publicPlayerService.playExploreCourse(metaData.identifier);
+    }
+  }
+
   public getEvent(event) {
 
-    // For offline envirnoment content will not play if action not open. It will get downloaded
-    if (_.includes(this.router.url, 'browse') && this.isOffline) {
+    // For offline environment content will only play when event.action is open
+    if (event.action === 'download' && this.isOffline) {
       this.startDownload(event.data.metaData.identifier);
       return false;
     } else if (event.action === 'export' && this.isOffline) {
@@ -155,11 +191,19 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       return false;
     }
 
+    if (_.includes(this.router.url, 'browse') && this.isOffline) {
+      this.redirectCollectionUrl = 'browse/play/collection';
+      this.redirectContentUrl = 'browse/play/content';
+    } else {
+      this.redirectCollectionUrl = 'play/collection';
+      this.redirectContentUrl = 'play/content';
+    }
+
     if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-      this.router.navigate(['play/collection', event.data.metaData.identifier],
+      this.router.navigate([this.redirectCollectionUrl, event.data.metaData.identifier],
         { queryParams: { dialCode: this.dialCode, l1Parent: event.data.metaData.l1Parent } });
     } else {
-      this.router.navigate(['play/content', event.data.metaData.identifier],
+      this.router.navigate([this.redirectContentUrl, event.data.metaData.identifier],
         { queryParams: { dialCode: this.dialCode, l1Parent: event.data.metaData.l1Parent } });
     }
   }
@@ -218,7 +262,11 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   redirectToDikshaApp () {
     this.isRedirectToDikshaApp = true;
     this.telemetryService.interact(this.appMobileDownloadInteractData);
-    window.location.href = 'https://play.google.com/store/apps/details?id=in.gov.diksha.app';
+    let applink = this.configService.appConfig.UrlLinks.downloadDikshaApp;
+    const slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
+    const utm_source = slug ? `diksha-${slug}` : 'diksha';
+    applink = `${applink}&utm_source=${utm_source}&utm_medium=${this.dialSearchSource}&utm_campaign=dial&utm_term=${this.dialCode}`;
+    window.location.href = applink.replace(/\s+/g, '');
   }
   setTelemetryData () {
     if (this.dialCode) {

@@ -6,6 +6,7 @@ import { DialCodeComponent } from './components/dial-code/dial-code.component';
 const routes: Routes = [
   {
     path: '', component: GetComponent, data: {
+      sendUtmParams: true,
       telemetry: {
         env: 'public', pageid: 'get', type: 'view', subtype: 'paginate'
       }
@@ -13,6 +14,7 @@ const routes: Routes = [
   },
   {
     path: 'dial/:dialCode', component: DialCodeComponent, data: {
+      sendUtmParams: true,
       telemetry: {
         env: 'public', pageid: 'get-dial', type: 'view', subtype: 'paginate'
       }

@@ -60,7 +60,6 @@ export class TelemetryService {
     this.context = _.cloneDeep(context);
     this.telemetryProvider.initialize(this.context.config);
     this.isInitialized = true;
-    console.log('Telemetry Service is Initialized!', this.context);
   }
   getDeviceId(callback) {
     EkTelemetry.getFingerPrint(callback);

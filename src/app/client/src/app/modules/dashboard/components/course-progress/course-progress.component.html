@@ -35,40 +35,41 @@
 
             </div>
             <div class="d-flex">
-              <a class="ui item basic icon circular float-ContentRight" data-tooltip="Close  Dashboard"
+              <a class="ui item basic icon circular float-ContentRight mouse-pointer" data-tooltip="Close  Dashboard"
                 appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'closeDashboard',type:'click',pageid:'course-progress-dashboard'}">
                 <i (click)='redirect()' class="ui remove icon CloseButtonFont"></i>
               </a>
             </div>
           </div>
           <div class="d-flex my-20" *ngIf="dashboarData">
-            <span class="course-start-dt black-divider pr-15">
+            <span class="course-start-dt course-participants-label black-divider pr-15">
               <b *ngIf="dashboarData.startDate">
                 {{resourceService?.frmelmnts?.lbl?.batchstartdate}}&nbsp;:
               </b>
-              &nbsp;&nbsp;{{dashboarData.startDate | dateFormat :'DD/MM/YYYY' }}
+              &nbsp;{{dashboarData.startDate | dateFormat :'DD/MM/YYYY' }}
             </span>
 
-            <span  class="course-end-dt black-divider px-15">
+            <span  class="course-end-dt course-participants-label black-divider px-15">
               <b>{{resourceService?.frmelmnts?.lbl?.batchenddate}}&nbsp;:
               </b>
-            &nbsp;&nbsp;<span  *ngIf="dashboarData.endDate" >{{dashboarData.endDate | dateFormat :'DD/MM/YYYY'}}</span>
+            <span  *ngIf="dashboarData.endDate" >{{dashboarData.endDate | dateFormat :'DD/MM/YYYY'}}</span>
               <span  *ngIf="!dashboarData.endDate" >-</span>
             </span>
 
-            <span *ngIf="dashboarData.count" class="course-participants black-divider px-15">
+            <span *ngIf="dashboarData.count" class="course-participants course-participants-label black-divider px-15">
               <b>{{resourceService?.frmelmnts?.lbl?.participants}}&nbsp;:
-              </b>  &nbsp;&nbsp; {{dashboarData.count}}
+              </b>   &nbsp;{{dashboarData.count}}
             </span>
-            <span *ngIf="dashboarData.completedCount!==null" class="course-completed pl-15">
+            <span *ngIf="dashboarData.completedCount!==null" class="course-participants course-participants-label black-divider px-15">
               <b>{{resourceService?.frmelmnts?.lbl?.completedCourse}}&nbsp;:
               </b>
-              &nbsp;&nbsp;{{dashboarData.completedCount}}
+              &nbsp;{{dashboarData.completedCount}}
             </span>
 
-            <span class="course-completed ml-auto" *ngIf="dashboarData.reportUpdatedOn && dashboarData.reportUpdatedOn!==null">
-              <span class="font-italic">{{resourceService?.frmelmnts?.lbl?.reportUpdatedOn}}
-              </span>&nbsp;:&nbsp;{{dashboarData.reportUpdatedOn.slice(0, 10) | dateFormat :'DD/MM/YYYY'}}
+            <span class="course-completed course-participants-labelml-auto" *ngIf="dashboarData.reportUpdatedOn && dashboarData.reportUpdatedOn!==null">
+              <span class="font-italic">{{resourceService?.frmelmnts?.lbl?.reportUpdatedOn}}&nbsp;:
+              </span>
+              &nbsp;{{dashboarData.reportUpdatedOn.slice(0, 10) | dateFormat :'DD/MM/YYYY'}}
             </span>
           </div>
         </div>
