@@ -59,6 +59,15 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       this.isUnenrollbtnDisabled = false;
     }
   }
+
+  isValidEnrollmentEndDate(enrollmentEndDate) {
+    return !!enrollmentEndDate;
+  }
+
+  isEnrollmentAllowed(enrollmentEndDate) {
+    return moment(enrollmentEndDate).isBefore(this.todayDate);
+  }
+
   ngOnInit() {
     this.courseInteractObject = {
       id: this.courseHierarchy.identifier,

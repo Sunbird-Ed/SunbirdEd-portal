@@ -60,9 +60,10 @@
             }
         }
         &.large {
+            width: 90%;
             max-width: $sb-modal-large-width;
             .sb-modal-content {
-                height: calc(100vh - 100px);
+                height: calc(100vh - 200px);
             }
         }
         &.sb-modal-fullscreen {
@@ -143,5 +144,20 @@
             align-items: center;
             justify-content: center;
         }
+    }
+}
+
+// workspace modal spacing issue
+.sb-workspace-modal{
+    .twelve.wide.column{
+        padding: 0;
+    }
+    .six.wide.column:nth-child(even){
+        padding: 0;
+        padding-right: 8px;
+    }
+    .six.wide.column:nth-child(odd){
+        padding: 0;
+        padding-left: 8px;
     }
 }
