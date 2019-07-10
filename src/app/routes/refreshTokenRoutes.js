@@ -20,35 +20,55 @@ const keyClockMobileClients = {
 
 module.exports = (app) => {
 
-  app.post('/v1/refresh/token', bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }),
+  app.post('/auth/v1/refresh/token', bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }),
     async (req, res) => {
-      const jwtPayload = jwt.decode(req.body.refresh_token);
-      const clientDetails = keyClockMobileClients[jwtPayload.aud]
-      if(!clientDetails){
-        req.status(401).json({
-          errorCode: "INVALID_CLIENT"
-        })
-        return;
-      }
-      let options = {
-        method: 'POST',
-        url: `${envHelper.PORTAL_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/token`,
-        form: {
-          client_id: clientDetails.client_id,
-          grant_type: 'refresh_token',
-          refresh_token: req.body.refresh_token
-        }
-      }
-      if(clientDetails.client_secret){
-        options.form.client_secret = clientDetails.client_secret
-      }
       try {
-        const tokenResponse = await request(options)
-        console.log('tokenResponse', tokenResponse)
+        if(!req.body.refresh_token){
+          throw { error: 'REFRESH_TOKEN_REQUIRED', message: "refresh_token is required", statusCode: 400 }
+        }
+        const jwtPayload = jwt.decode(req.body.refresh_token);
+        const clientDetails = keyClockMobileClients[jwtPayload.aud]
+        if(!clientDetails){
+          throw { error: 'INVALID_CLIENT', message: "client sent is not supported", statusCode: 400 }
+        }
+        let options = {
+          method: 'POST',
+          url: `${envHelper.PORTAL_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/token`,
+          form: {
+            client_id: clientDetails.client_id,
+            grant_type: 'refresh_token',
+            refresh_token: req.body.refresh_token
+          }
+        }
+        clientDetails.client_secret && (options.form.client_secret = clientDetails.client_secret)
+        await verifyAuthToken(req).catch(handleError);
+        const tokenResponse = await request(options).catch(handleError)
         res.send(tokenResponse)
       } catch(error) {
-        console.log(error.message, '\n', error.error, '\n', Object.keys(error))
-        res.status(402).json({errorMsg: 'fetching refresh token failed'})
+        res.status(error.statusCode || 500).json({
+          errorMessage: error.message,
+          errorCode: error.error || 'unhandled exception'
+        })
       }
   })
+}
+const handleError = (error) => {
+  const errorRes = JSON.parse('error.error')
+  throw {
+    statusCode: error.statusCode,
+    error: errorRes.error || 'INVALID_REQUEST',
+    message: errorRes.message || errorRes.error_description,
+  }
+}
+const verifyAuthToken = async (req) => {
+  let options = {
+    method: 'GET',
+    url: envHelper.PORTAL_ECHO_API_URL + 'test',
+    'rejectUnauthorized': false,
+    headers: {
+      'cache-control': 'no-cache',
+      authorization: req.get('authorization')
+    }
+  }
+  const echoRes = await request(options);
 }
