@@ -20,7 +20,7 @@
 
 // bg colors
 .sb-workspace-bg {
-    background-image: linear-gradient(-90deg, $primary-0, $white);
+    background-image: linear-gradient(to left, $primary-0, $primary-0 50%, $primary-0 65%, $white 75%);
 }
 .sb-bg-color-primary,
 .sb-bg-color-info {
