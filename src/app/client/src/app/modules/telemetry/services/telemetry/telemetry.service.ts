@@ -5,7 +5,6 @@ import {
   IStartEventInput, IImpressionEventInput,
   IInteractEventInput, IShareEventInput, IErrorEventInput, IEndEventInput, ILogEventInput, ITelemetryContext, IFeedBackEventInput
 } from './../../interfaces/telemetry';
-import { environment } from '@sunbird/environment';
 
  export const TELEMETRY_PROVIDER = new InjectionToken('telemetryProvider');
 /**
@@ -48,7 +47,6 @@ export class TelemetryService {
    * @memberof TelemetryService
    */
 
-  isOffline: boolean = environment.isOffline;
   constructor() {
     // , { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }
     this.telemetryProvider = EkTelemetry;
@@ -61,10 +59,6 @@ export class TelemetryService {
    * @memberof TelemetryService
    */
   public initialize(context: ITelemetryContext) {
-    if (this.isOffline) {
-      const sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
-      context.config.sid = sessionId;
-    }
     this.context = _.cloneDeep(context);
     this.telemetryProvider.initialize(this.context.config);
     this.isInitialized = true;
