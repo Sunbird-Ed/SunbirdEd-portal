@@ -20,12 +20,12 @@ const keycloakGoogle = getKeyCloakClient({
 })
 
 const keycloakAndroid = getKeyCloakClient({
-  resource: 'google-auth-android',
+  resource: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.clientId,
   bearerOnly: true,
   serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
   realm: envHelper.PORTAL_REALM,
   credentials: {
-    secret: envHelper.KEYCLOAK_GOOGLE_CLIENT.secret
+    secret: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.secret
   }
 })
 

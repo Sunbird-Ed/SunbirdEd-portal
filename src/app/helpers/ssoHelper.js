@@ -19,12 +19,12 @@ const keycloakTrampoline = getKeyCloakClient({
   }
 })
 const keycloakAndroid = getKeyCloakClient({
-  resource: 'trampoline-android',
+  resource: envHelper.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT.clientId,
   bearerOnly: true,
   serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
   realm: envHelper.PORTAL_REALM,
   credentials: {
-    secret: envHelper.PORTAL_TRAMPOLINE_SECRET
+    secret: envHelper.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT.secret
   }
 })
 const verifySignature = async (token) => {
