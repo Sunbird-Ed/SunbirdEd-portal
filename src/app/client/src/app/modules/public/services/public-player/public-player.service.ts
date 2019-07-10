@@ -107,7 +107,6 @@ export class PublicPlayerService {
       }];
     }
     configuration.config.previewCdnUrl = this.previewCdnUrl;
-    console.log('sid', configuration.context.sid, configuration);
     return configuration;
   }
   public getCollectionHierarchy(identifier: string, option: any = { params: {} }): Observable<CollectionHierarchyAPI.Get> {
