@@ -33,11 +33,11 @@ const fetchExperimentDetails = async (req) => {
     }
   }
   if(req.session.userId === '874ed8a5-782e-4f6c-8f36-e0288455901e') {
-    return Promise.resolve({ experimentId: 'experiment3'})
+    return Promise.resolve({ experimentId: 'experiment5'})
   } else if (req.session.userId === '874ed8a5-782e-4f6c-8f36-e0288455901e') {
-    return Promise.resolve({ experimentId: 'experiment2'})
+    return Promise.resolve({ experimentId: 'experiment5'})
   } else {
-    return Promise.resolve({})
+    return Promise.resolve({ experimentId: 'experiment5'})
   }
 }
 const mockDeviceRegister = async (req) => {

@@ -68,6 +68,8 @@ require('./routes/googleSignInRoutes.js')(app, keycloak) // google sign in route
 
 require('./routes/ssoRoutes.js')(app, keycloak) // sso routes
 
+require('./routes/refreshTokenRoutes.js')(app, keycloak) // refresh token routes
+
 require('./routes/clientRoutes.js')(app, keycloak) // client app routes
 
 require('./routes/reportRoutes.js')(app, keycloak) // report routes
@@ -174,5 +176,5 @@ telemetry.init({
   authtoken: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
 })
 
-process.on('unhandledRejection', (reason, p) => console.log('unhandled rejection', reason, p));
+process.on('unhandledRejection', (reason, p) => console.log('Unhandled Rejection at:', p, reason));
 exports.close = () => portal.server.close()

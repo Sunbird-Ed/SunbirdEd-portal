@@ -80,8 +80,18 @@ let envVariables = {
   sunbird_portal_offline_app_version: env.sunbird_portal_offline_app_version,
   sunbird_portal_offline_app_download_url: env.sunbird_portal_offline_app_download_url,
   sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
-  sunbird_portal_log_level: env.sunbird_portal_log_level || 'debug'
-
+  sunbird_portal_log_level: env.sunbird_portal_log_level || 'debug',
+  KEYCLOAK_GOOGLE_ANDROID_CLIENT: {
+    clientId: env.sunbird_google_android_keycloak_client_id,
+    secret: env.sunbird_google_android_keycloak_secret
+  },
+  KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT: {
+    clientId: env.sunbird_trampoline_android_keycloak_client_id,
+    secret: env.sunbird_trampoline_android_keycloak_secret
+  },
+  KEYCLOAK_ANDROID_CLIENT: {
+    clientId: env.sunbird_android_keycloak_client_id || 'android',
+  }
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
