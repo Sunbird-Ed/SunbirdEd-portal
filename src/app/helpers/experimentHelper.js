@@ -8,15 +8,15 @@ const experimentBlobUrl = 'http://localhost:3001/dist_experiment/';
 
 const getExperimentIndexFile = async (req, res) => {
   let indexFilePath, indexFileData, experimentId, experimentDetails;
-  console.log('req.query.experimentId', req.query, req.path);
+  console.log('----------query and path---------------', req.query, req.path);
   if(req.query.experimentId){
     experimentDetails = {experimentId: req.query.experimentId};
   } else {
     experimentDetails = await fetchExperimentDetails(req);
   }
-  console.log('experimentDetails', experimentDetails);
+  console.log('----experimentDetails----', experimentDetails);
   indexFileData = await request.get(`${experimentBlobUrl}${experimentDetails.experimentId}/index.html`)
-    .catch((error) => console.log('--------------fetching index file failed----------------------'))
+    .catch(error => console.log('--------------fetching index file failed----------------------'))
   return { path: indexFilePath, data: indexFileData, redirectionParam: { experimentId } };
 }
 const fetchExperimentDetails = async (req) => {
