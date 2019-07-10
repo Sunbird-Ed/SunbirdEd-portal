@@ -19,7 +19,7 @@ const keycloakGoogle = getKeyCloakClient({
   }
 })
 
-const keycloakAndroid = getKeyCloakClient({
+const keycloakGoogleAndroid = getKeyCloakClient({
   resource: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.clientId,
   bearerOnly: true,
   serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
@@ -73,7 +73,7 @@ const createSession = async (emailId, reqQuery, req, res) => {
   let keycloakClient = keycloakGoogle;
   let scope = 'openid';
   if (reqQuery.client_id === 'android') {
-    keycloakClient = keycloakAndroid;
+    keycloakClient = keycloakGoogleAndroid;
     scope = 'offline_access';
   }
   grant = await keycloakClient.grantManager.obtainDirectly(emailId, undefined, undefined, scope);

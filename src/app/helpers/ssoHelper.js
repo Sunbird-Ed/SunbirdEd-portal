@@ -18,7 +18,7 @@ const keycloakTrampoline = getKeyCloakClient({
     secret: envHelper.PORTAL_TRAMPOLINE_SECRET
   }
 })
-const keycloakAndroid = getKeyCloakClient({
+const keycloakTrampolineAndroid = getKeyCloakClient({
   resource: envHelper.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT.clientId,
   bearerOnly: true,
   serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
@@ -120,7 +120,7 @@ const createSession = async (loginId, client_id, req, res) => {
   let keycloakClient = keycloakTrampoline;
   let scope = 'openid';
   if (reqQuery.client_id === 'android') {
-    keycloakClient = keycloakAndroid;
+    keycloakClient = keycloakTrampolineAndroid;
     scope = 'offline_access';
   }
   grant = await keycloakClient.grantManager.obtainDirectly(emailId, undefined, undefined, scope);
