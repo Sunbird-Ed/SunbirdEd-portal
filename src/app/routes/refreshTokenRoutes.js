@@ -3,18 +3,26 @@ const jwt = require('jsonwebtoken')
 const bodyParser = require('body-parser')
 const request = require('request-promise');
 const envHelper = require('./../helpers/environmentVariablesHelper.js')
+const dateFormat = require('dateformat')
+const uuidv1 = require('uuid/v1')
 
 const keyClockMobileClients = {
-  'trampoline': {
-    client_id: envHelper.PORTAL_TRAMPOLINE_CLIENT_ID,
-    client_secret: envHelper.PORTAL_TRAMPOLINE_SECRET
-  },
-  'android': {
-    client_id: 'android'
-  },
-  'google-auth': {
-    client_id: envHelper.KEYCLOAK_GOOGLE_CLIENT.clientId,
-    client_secret: envHelper.KEYCLOAK_GOOGLE_CLIENT.secret
+}
+if(envHelper.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT.clientId){
+  keyClockMobileClients[envHelper.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT.clientId] = {
+    client_id: envHelper.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT.clientId,
+    client_secret: envHelper.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT.secret
+  }
+}
+if(envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.clientId){
+  keyClockMobileClients[envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.clientId] = {
+    client_id: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.clientId,
+    client_secret: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.secret
+  }
+}
+if(envHelper.KEYCLOAK_ANDROID_CLIENT.clientId){
+  keyClockMobileClients[envHelper.KEYCLOAK_ANDROID_CLIENT.clientId] = {
+    client_id: envHelper.KEYCLOAK_ANDROID_CLIENT.clientId
   }
 }
 
@@ -29,7 +37,7 @@ module.exports = (app) => {
         const jwtPayload = jwt.decode(req.body.refresh_token);
         const clientDetails = keyClockMobileClients[jwtPayload.aud]
         if(!clientDetails){
-          throw { error: 'INVALID_CLIENT', message: "client sent is not supported", statusCode: 400 }
+          throw { error: 'INVALID_CLIENT', message: "client not supported", statusCode: 400 }
         }
         let options = {
           method: 'POST',
@@ -43,17 +51,38 @@ module.exports = (app) => {
         clientDetails.client_secret && (options.form.client_secret = clientDetails.client_secret)
         await verifyAuthToken(req).catch(handleError);
         const tokenResponse = await request(options).catch(handleError)
-        res.send(tokenResponse)
+        res.send({
+          'id': 'api.refresh.token',
+          'ver': '1.0',
+          'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
+          'params': {
+            'resmsgid': uuidv1(),
+            'status': 'SUCCUSS',
+          },
+          'responseCode': 'OK',
+          'result': typeof tokenResponse === 'string' ? JSON.parse(tokenResponse) : tokenResponse
+        })
       } catch(error) {
+        console.log('refresh token error', error.error);
         res.status(error.statusCode || 500).json({
-          errorMessage: error.message,
-          errorCode: error.error || 'unhandled exception'
+          'id': 'api.refresh.token',
+          'ver': '1.0',
+          'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
+          'params': {
+            'resmsgid': uuidv1(),
+            'status': 'FAILED',
+            'err': error.message || 'Something went wrong while processing request',
+            'errmsg': error.error || 'UNHANDLED_EXCEPTION'
+          },
+          'responseCode': error.error || 'UNHANDLED_EXCEPTION',
+          'result': {}
         })
       }
   })
 }
 const handleError = (error) => {
-  const errorRes = JSON.parse('error.error')
+  console.log('refresh token api error', error.error);
+  const errorRes = JSON.parse(error.error)
   throw {
     statusCode: error.statusCode,
     error: errorRes.error || 'INVALID_REQUEST',
@@ -66,9 +95,8 @@ const verifyAuthToken = async (req) => {
     url: envHelper.PORTAL_ECHO_API_URL + 'test',
     'rejectUnauthorized': false,
     headers: {
-      'cache-control': 'no-cache',
       authorization: req.get('authorization')
     }
   }
-  const echoRes = await request(options);
+  return request(options);
 }
