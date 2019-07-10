@@ -162,8 +162,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
         this.router.navigate([url], { queryParams: this.queryParams });
         window.scroll({
-            top: 100,
-            left: 100,
+            top: 0,
+            left: 0,
             behavior: 'smooth'
         });
     }
@@ -188,8 +188,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         };
     }
     public playContent(event) {
-        // For offline envirnoment content will not play if action not open. It will get downloaded
-        if (_.includes(this.router.url, 'browse') && this.isOffline) {
+        // For offline environment content will only play when event.action is open
+        if (event.action === 'download' && this.isOffline) {
             this.startDownload(event.data.metaData.identifier);
             return false;
         } else if (event.action === 'export' && this.isOffline) {
@@ -203,7 +203,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
             this.showLoginModal = true;
             this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
         } else {
-            this.publicPlayerService.playContent(event);
+            if (_.includes(this.router.url, 'browse') && this.isOffline) {
+                this.publicPlayerService.playContentForOfflineBrowse(event);
+            } else {
+                this.publicPlayerService.playContent(event);
+            }
         }
     }
     public inView(event) {

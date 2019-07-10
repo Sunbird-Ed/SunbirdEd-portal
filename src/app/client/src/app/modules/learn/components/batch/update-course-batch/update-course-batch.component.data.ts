@@ -230,6 +230,7 @@ export const getUserList = {
 
 export const updateBatchDetails = {
   'identifier': '01248661735846707228',
+  'enrollmentEndDate': '2018-07-11T18:29:59.999Z',
   'createdFor': [
     '0123673542904299520',
     '0123673689120112640',
@@ -248,10 +249,10 @@ export const updateBatchDetails = {
   'countIncrementDate': '2018-04-20 20:00:01:531+0000',
   'countDecrementDate': null,
   'updatedDate': '2018-04-20 20:00:01:531+0000',
-  'participant': {
-    'ac918519-f8b8-4150-bd90-56ead42454d0': true,
-    '27d5a117-e1a1-4202-8476-6be21fd76a5c': true
-  },
+  'participants': [
+    'ac918519-f8b8-4150-bd90-56ead42454d0',
+    '27d5a117-e1a1-4202-8476-6be21fd76a5c'
+  ],
   'countIncrementStatus': true,
   'createdDate': '2018-04-20 17:16:42:032+0000',
   'createdBy': '159e93d1-da0c-4231-be94-e75b0c226d7c',
