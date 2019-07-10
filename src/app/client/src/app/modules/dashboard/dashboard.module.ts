@@ -17,6 +17,7 @@ import {
   OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent,
   DataTableComponent, DataChartComponent
 } from './components';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 // SB core and shared services
 import { SearchService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
@@ -32,7 +33,8 @@ import { OrderModule } from 'ngx-order-pipe';
     SuiModule,
     SharedModule,
     OrderModule,
-    TelemetryModule
+    TelemetryModule,
+    NgxDaterangepickerMd.forRoot()
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
     DataTableComponent, DataChartComponent],
