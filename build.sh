@@ -16,7 +16,8 @@ commit_hash=$(git rev-parse --short HEAD)
 
 rm -rf src/app/app_dist/
 rm -rf src/app/player-dist.tar.gz
-nvm use 8
+nvm install 8.11
+nvm use 8.11
 cd src/app
 npm set progress=false
 npm install  --unsafe-perm
