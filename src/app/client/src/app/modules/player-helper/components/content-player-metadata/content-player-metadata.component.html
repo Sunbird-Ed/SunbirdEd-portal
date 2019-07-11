@@ -31,22 +31,22 @@
         <dd *ngIf="metadata.creator">{{metadata.creator}}</dd>
     </dl>
     <dl class="sb-meta-data">
-        <dt>{{resourceService.frmelmnts.lbl.originalAuthor}}</dt>
+        <dt>{{resourceService.frmelmnts.lbl?.originalAuthor}}</dt>
         <dd *ngIf="metadata.creator">{{metadata.author}}</dd>
     </dl>
     <dl class="sb-meta-data">
-        <dt>{{resourceService.frmelmnts.lbl.licenseTerms}}</dt>
+        <dt>{{resourceService.frmelmnts.lbl?.licenseTerms}}</dt>
         <dd *ngIf="metadata.license">{{metadata.license}}</dd>
     </dl>
     <dl class="sb-meta-data" *ngIf="metadata.orgDetails && metadata.orgDetails.orgName">
-        <dt>{{resourceService.frmelmnts.lbl.publishedOnInstanceName | interpolate:'{instance}': instance}}</dt>
+        <dt>{{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</dt>
         <dd>
             <span class="d-inline-block mr-20">{{metadata.orgDetails?.orgName}}</span> &nbsp;
             <a ng-if="metadata.orgDetails?.email" href="mailto:{{metadata.orgDetails?.email}}?subject={{metadata.name}}">{{metadata.orgDetails?.email}}</a>
         </dd>
     </dl>
     <dl class="sb-meta-data">
-        <dt>{{resourceService.frmelmnts.lbl.copyRight}}</dt>
+        <dt>{{resourceService.frmelmnts.lbl?.copyRight}}</dt>
         <dd *ngIf="metadata.orgDetails && metadata.orgDetails.orgName">
             <span class="d-inline-block mr-20">{{metadata.orgDetails?.orgName}}</span> &nbsp;
             <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}" class="cursor-pointer">
