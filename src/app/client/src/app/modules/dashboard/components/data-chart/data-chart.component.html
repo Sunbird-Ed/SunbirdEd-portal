@@ -1,81 +1,78 @@
-<div *ngIf="chart">
-  <canvas baseChart [datasets]="chart.datasets" [labels]="chart.labels" [options]="chart.options"
-    [chartType]="chart.chartType" [colors]="chart.colors" [legend]="chart.legend"></canvas>
-
-
-  <sui-accordion class="styled fluid" [closeOthers]="false" *ngIf="showFilters">
-    <sui-accordion-panel [isOpen]="true">
-      <div title>
-        <i class="dropdown icon"></i>
-        {{resourceService?.frmelmnts?.lbl?.filters }}
+<div class="graph-filters">
+  <form [formGroup]="filtersFormGroup" class="ui form">
+    <div class="d-flex flex-w-wrap reset-filter-section">
+      <div class="d-flex flex-ai-center">{{resourceService?.frmelmnts?.lbl?.graphStat }}: <sui-checkbox
+          class="toggle ml-8" (checkChange)="showStats = $event; "></sui-checkbox>
       </div>
-      <div content>
-        <form [formGroup]="chartFilters" class="ui form">
-          <div class="ui segment">
-            <div class="inline fields">
-              <ng-container *ngIf="showTimeLine">
-                <div class="field">
-                  <sui-select formControlName="timeLineRange"
-                    [placeholder]="resourceService?.frmelmnts?.lbl?.Select + ' Range'" class="selection"
-                    [options]="timeLineRangeoptions" labelField="label" valueField="value" #select>
-                    <sui-select-option *ngFor="let option of select.filteredOptions" [value]="option">
-                    </sui-select-option>
-                  </sui-select>
-                </div>
-                <div class="field">
-                  <div class="ui left icon input">
-                    <i class="calendar icon"></i>
-                    <input [placeholder]="resourceService?.frmelmnts?.lbl?.Select + ' Timeline'" suiDatepicker
-                      [pickerMode]="'date'" [pickerMinDate]="startDate" [pickerMaxDate]="endDate"
-                      [pickerUseNativeOnMobile]="false" formControlName="timeLine">
-                  </div>
-                </div>
-              </ng-container>
+      <div class="mr-8" *ngIf="chartType === 'bar' || chartType === 'line'">
+        <sui-select class="selection" [placeholder]="'Select ChartType'"
+          (selectedOptionChange)="changeChartType($event)">
+          <sui-select-option *ngFor="let option of availableChartTypeOptions" [value]="option">
+          </sui-select-option>
+        </sui-select>
+      </div>
+      <div class="field">
+        <button class="sb-btn sb-btn-outline-primary sb-btn-normal" (click)="resetFilter()">
+          {{resourceService?.frmelmnts?.btn?.reset}} {{resourceService?.frmelmnts?.lbl?.filters  }}
+        </button>
+      </div>
+    </div>
+    <sui-accordion class="styled fluid" [closeOthers]="false" *ngIf="showFilters">
+      <sui-accordion-panel [isOpen]="true">
+        <div title>
+          <i class="dropdown icon"></i>
+          {{resourceService?.frmelmnts?.lbl?.filters }}
+        </div>
+        <div content>
 
-              <ng-container *ngIf="showLabelsFilter">
-                <div class="field">
-                  <sui-multi-select class="selection"
-                    [placeholder]="resourceService?.frmelmnts?.lbl?.Select + ' ' + labelString"
-                    formControlName="labels">
-                    <sui-select-option *ngFor="let label of chartData.labels" [value]="label">
+          <div class="sb-prominent-filter p-0">
+            <div class="sb-prominent-filter-container pt-8 pb-0">
+              <div class="sb-prominent-filter-field" *ngFor="let filter of filters">
+                <label>{{filter.displayName}}</label>
+                <div *ngIf="filter.controlType === 'multi-select'">
+                  <sui-multi-select [hasLabels]="false" class="selection sb-select-searchfilter"
+                    [placeholder]="filter.displayName" [formControlName]="filter.reference">
+                    <sui-select-option *ngFor="let option of filter.options" [value]="option">
                     </sui-select-option>
                   </sui-multi-select>
                 </div>
-              </ng-container>
-
-              <div class="field" *ngIf="chart.datasets.length>1">
-                <sui-multi-select class="selection" [placeholder]="resourceService?.frmelmnts?.lbl?.Select +  ' Chart'"
-                  [options]="chart.datasets" labelField="label" formControlName="dataSet" #multiSelect>
-                  <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option">
-                  </sui-select-option>
-                </sui-multi-select>
+                <div *ngIf="filter.controlType === 'select'">
+                  <sui-select class="selection sb-select-searchfilter" [placeholder]="filter.displayName"
+                    [formControlName]="filter.reference">
+                    <sui-select-option *ngFor="let option of filter.options" [value]="option">
+                    </sui-select-option>
+                  </sui-select>
+                </div>
+                <div *ngIf="filter.controlType === 'date'">
+                  <input #datePickerForFilters class="form-control" type="text" [placeholder]="filter.displayName"
+                    ngxDaterangepickerMd [showCustomRangeLabel]="true" [locale]="datePickerConfig"
+                    [alwaysShowCalendars]="true" [ranges]="ranges" [linkedCalendars]="true" [minDate]="pickerMinDate"
+                    [maxDate]="pickerMaxDate" (change)="getDateRange($event,filter.reference)" />
+                </div>
               </div>
-
-              <div class="field">
-                <button class="ui large primary button" (click)="resetFilter()">
-                  {{resourceService?.frmelmnts?.btn?.reset}} {{resourceService?.frmelmnts?.lbl?.filters  }}
-                </button>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-    </sui-accordion-panel>
-
-    <sui-accordion-panel *ngIf="showGraphStatistics && avgStatistics">
-      <div title>
-        <i class="dropdown icon"></i>
-        {{resourceService?.frmelmnts?.lbl?.graphStat}}
-      </div>
-      <div content>
-        <div class="ui middle aligned divided list">
-          <div class="item" *ngFor="let stat of avgStatistics">
-            <div class="content">
-              <a class="header">{{stat?.label}} : {{stat?.sum}}</a>
             </div>
           </div>
         </div>
+      </sui-accordion-panel>
+    </sui-accordion>
+  </form>
+  <div class="graph-statistics py-16" *ngIf="showStats">
+    <div _ngcontent-c14="" class="graph-statistics py-16" *ngFor="let stat of loadash.keys(resultStatistics)">
+      {{stat}} <div class="sb-label sb-label-table sb-label-primary-100 mr-4"
+        *ngFor="let op of loadash.keys(resultStatistics[stat]) ; let l = last"> {{op}} : {{resultStatistics[stat][op]}}
+        <span *ngIf="!l">,</span>
       </div>
-    </sui-accordion-panel>
-  </sui-accordion>
+    </div>
+  </div>
+
+  <div class="sb-filter-label pt-16 pb-8" *ngIf="selectedFilters">
+    <div *ngFor="let key of loadash.keys(selectedFilters)" class="d-inline-flex flex-w-wrap"><span
+        class="sb-label-name mb-4">{{key}}:</span><span class="sb-label-value"
+        *ngFor="let val of selectedFilters[key]">{{val}}
+        <!-- <i class="close icon mr-0 pl-4"></i> -->
+      </span>
+    </div>
+  </div>
+  <canvas baseChart [datasets]="datasets" [labels]="chartLabels" [options]="chartOptions" [chartType]="chartType"
+    [legend]="legend"></canvas>
 </div>

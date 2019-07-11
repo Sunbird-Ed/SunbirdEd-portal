@@ -5,6 +5,7 @@ import {
   IStartEventInput, IImpressionEventInput,
   IInteractEventInput, IShareEventInput, IErrorEventInput, IEndEventInput, ILogEventInput, ITelemetryContext, IFeedBackEventInput
 } from './../../interfaces/telemetry';
+
  export const TELEMETRY_PROVIDER = new InjectionToken('telemetryProvider');
 /**
 * Service for telemetry v3 event methods
@@ -45,6 +46,7 @@ export class TelemetryService {
    * @param {*} telemetryProvider
    * @memberof TelemetryService
    */
+
   constructor() {
     // , { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }
     this.telemetryProvider = EkTelemetry;

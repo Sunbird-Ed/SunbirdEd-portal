@@ -7,12 +7,11 @@ const gulpSequence = require('gulp-sequence')
 const gzip = require('gulp-gzip')
 const exec = require('child_process').exec
 const brotli = require('gulp-brotli');
-const inject = require('gulp-inject-string');
 
 // To download editors
-const contentEditor = 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/artefacts/editor/content-editor-iframe-2.1.0.zip' // env.contentEditor;
-const collectionEditor = 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/artefacts/editor/collection-editor-iframe-2.1.0.zip' // env.contentEditor;
-const genericEditor = 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/artefacts/editor/generic-editor-iframe-2.1.0.zip' // env.contentEditor;
+const contentEditor = process.env.sunbird_content_editor_artifact_url;
+const collectionEditor = process.env.sunbird_collection_editor_artifact_url;
+const genericEditor = process.env.sunbird_generic_editor_artifact_url;
 const editorsDestPath = 'client/src/thirdparty/editors/'
 
 
@@ -61,9 +60,9 @@ gulp.task('client:install', (cb) => {
 })
 
 // To build angular code and rename index file
-
+const buildScript = process.env.devBuild === 'true' ? 'build-dev' : 'build'
 gulp.task('client:dist', (cb) => {
-    exec('npm run build --prefix ./client ', { maxBuffer: Infinity }, function (err, stdout, stderr) {
+    exec(`npm run ${buildScript} --prefix ./client `, { maxBuffer: Infinity }, function (err, stdout, stderr) {
         console.log(stdout)
         console.log(stderr)
         cb(err)
@@ -121,7 +120,8 @@ gulp.task('build-resource-bundles', (cb) => {
         cb(err)
     })
 })
-const compress = process.env.disableCompression === 'true' ? [] : ['client:gzip', 'client:brotli']
+const compress = process.env.devBuild === 'true' ? '' : ['client:gzip'] // removed brotli due to gulp issue
+const cleanClient = process.env.devBuild === 'true' ? '' : 'clean:client:install'
 gulp.task('deploy',
     gulpSequence('clean:app:dist',
         'clean:editors',
@@ -130,37 +130,14 @@ gulp.task('deploy',
             'download:generic:editor'],
         'gzip:editors',
         'build-resource-bundles',
-        'clean:client:install',
+        // cleanClient,
         'client:install',
         'client:dist',
-        compress,
+        // compress,
         'update:index:file',
         'clean:index:file',
         'prepare:app:dist')
 )
-
-const cdnFallBackScript = `\n<script type="text/javascript" src="${process.env.sunbird_portal_cdn_url}assets/cdnHelper.js"></script>
-<script>
-    try {
-        if(!cdnFileLoaded){
-            var now = new Date();
-            now.setMinutes(now.getMinutes() + 5);
-            document.cookie = "cdnFailed=yes;expires=" + now.toUTCString() + ";"
-            window.location.href = window.location.href
-        }
-    } catch (err) {
-        var now = new Date();
-        now.setMinutes(now.getMinutes() + 5);
-        document.cookie = "cdnFailed=yes;expires=" + now.toUTCString() + ";"
-        window.location.href = window.location.href
-    }
-</script>`
-gulp.task('inject:cdnFallBack:script', () => {
-    gulp.src('./dist/index.html')
-        .pipe(inject.after('</app-root>', cdnFallBackScript))
-        .pipe(rename('index_cdn.ejs'))
-        .pipe(gulp.dest('./dist'));
-});
 
 // offline app preparation tasks
 

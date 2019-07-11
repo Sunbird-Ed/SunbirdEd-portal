@@ -15,7 +15,7 @@ node('build-slave') {
                     } else
                         println(ANSI_BOLD + ANSI_GREEN + "Found environment variable named hub_org with value as: " + hub_org + ANSI_NORMAL)
                 }
-                cleanWs()
+//                cleanWs()
                 if (params.github_release_tag == "") {
                     checkout scm
                     commit_hash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
@@ -37,7 +37,7 @@ node('build-slave') {
                 echo "build_tag: " + build_tag
 
                 stage('Build') {
-                    sh("./build.sh ${build_tag} ${env.NODE_NAME} ${hub_org}")
+                    sh("./build.sh ${build_tag} ${env.NODE_NAME} ${hub_org} ${params.sunbird_content_editor_artifact_url} ${params.sunbird_collection_editor_artifact_url} ${params.sunbird_generic_editor_artifact_url}")
                 }
 
                 stage('ArchiveArtifacts') {
