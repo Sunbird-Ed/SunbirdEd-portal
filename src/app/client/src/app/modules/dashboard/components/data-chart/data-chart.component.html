@@ -28,7 +28,7 @@
           <div class="sb-prominent-filter p-0">
             <div class="sb-prominent-filter-container pt-8 pb-0">
               <div class="sb-prominent-filter-field" *ngFor="let filter of filters">
-                <label style="flex-direction:row">{{filter.displayName}}</label>
+                <label>{{filter.displayName}}</label>
                 <div *ngIf="filter.controlType === 'multi-select'">
                   <sui-multi-select [hasLabels]="false" class="selection sb-select-searchfilter"
                     [placeholder]="filter.displayName" [formControlName]="filter.reference">
@@ -58,7 +58,7 @@
   </form>
   <div class="graph-statistics py-16" *ngIf="showStats">
     <div _ngcontent-c14="" class="graph-statistics py-16" *ngFor="let stat of loadash.keys(resultStatistics)">
-      {{stat}} <div class="sb-label sb-label-table sb-label-primary-100"
+      {{stat}} <div class="sb-label sb-label-table sb-label-primary-100 mr-4"
         *ngFor="let op of loadash.keys(resultStatistics[stat]) ; let l = last"> {{op}} : {{resultStatistics[stat][op]}}
         <span *ngIf="!l">,</span>
       </div>
@@ -66,8 +66,8 @@
   </div>
 
   <div class="sb-filter-label pt-16 pb-8" *ngIf="selectedFilters">
-    <div *ngFor="let key of loadash.keys(selectedFilters)" class="d-inline-flex"><span
-        class="sb-label-name">{{key}}:</span><span class="sb-label-value"
+    <div *ngFor="let key of loadash.keys(selectedFilters)" class="d-inline-flex flex-w-wrap"><span
+        class="sb-label-name mb-4">{{key}}:</span><span class="sb-label-value"
         *ngFor="let val of selectedFilters[key]">{{val}}
         <!-- <i class="close icon mr-0 pl-4"></i> -->
       </span>
