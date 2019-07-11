@@ -226,7 +226,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     let userList = [];
     if (this.batchDetails.participants || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
       if (this.batchDetails.enrollmentType !== 'open') {
-        if (this.batchDetails.participants.length > 100) {
+        if (this.batchDetails.participants && this.batchDetails.participants.length > 100) {
           userList = this.batchDetails.mentors;
         } else {
           userList = _.union(this.batchDetails.participants, this.batchDetails.mentors);
@@ -314,11 +314,12 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     };
   }
   private initDropDown() {
+    const count = this.batchDetails.participants ? this.batchDetails.participants.length : 0;
     setTimeout(() => {
       $('#participant').dropdown({
         forceSelection: false,
         fullTextSearch: true,
-        maxSelections: 100 - this.batchDetails.participants.length,
+        maxSelections: 100 - count,
         message: {
           maxSelections : this.resourceService.messages.imsg.m0047
         },

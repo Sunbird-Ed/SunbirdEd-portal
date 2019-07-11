@@ -9,7 +9,7 @@ const request = require('request-promise'); //  'request' npm package with Promi
 const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
 
-let keycloak = getKeyCloakClient({
+const keycloakGoogle = getKeyCloakClient({
   resource: envHelper.KEYCLOAK_GOOGLE_CLIENT.clientId,
   bearerOnly: true,
   serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
@@ -18,6 +18,17 @@ let keycloak = getKeyCloakClient({
     secret: envHelper.KEYCLOAK_GOOGLE_CLIENT.secret
   }
 })
+
+const keycloakGoogleAndroid = getKeyCloakClient({
+  resource: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.clientId,
+  bearerOnly: true,
+  serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
+  realm: envHelper.PORTAL_REALM,
+  credentials: {
+    secret: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.secret
+  }
+})
+
 class GoogleOauth {
   createConnection(req) {
     const  { clientId, clientSecret } = GOOGLE_OAUTH_CONFIG;
@@ -59,14 +70,16 @@ class GoogleOauth {
 const googleOauth = new GoogleOauth()
 const createSession = async (emailId, reqQuery, req, res) => {
   let grant;
+  let keycloakClient = keycloakGoogle;
+  let scope = 'openid';
   if (reqQuery.client_id === 'android') {
-    grant = await keycloak.grantManager.obtainDirectly(emailId, undefined, undefined, 'offline_access')
-  } else {
-    grant = await keycloak.grantManager.obtainDirectly(emailId, undefined, undefined, 'openid')
+    keycloakClient = keycloakGoogleAndroid;
+    scope = 'offline_access';
   }
-  keycloak.storeGrant(grant, req, res)
+  grant = await keycloakClient.grantManager.obtainDirectly(emailId, undefined, undefined, scope);
+  keycloakClient.storeGrant(grant, req, res)
   req.kauth.grant = grant
-  keycloak.authenticated(req)
+  keycloakClient.authenticated(req)
   return {
     access_token: grant.access_token.token,
     refresh_token: grant.refresh_token.token
@@ -127,4 +140,4 @@ const getHeaders = (req) => {
     'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
   }
 }
-module.exports = { googleOauth,  keycloak, createSession, fetchUserByEmailId, createUserWithMailId };
+module.exports = { googleOauth, createSession, fetchUserByEmailId, createUserWithMailId };

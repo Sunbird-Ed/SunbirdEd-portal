@@ -26,6 +26,7 @@ export class UtilService {
     const content: any = {
       name: data.name || data.courseName,
       image: data.appIcon || data.courseLogoUrl,
+      addedToLibrary: data.addedToLibrary || false,
       description: data.description,
       rating: data.me_averageRating || '0',
       subject: data.subject,
