@@ -27,24 +27,32 @@
         <dd *ngIf="metadata.name">{{metadata.name}}</dd>
     </dl>
     <dl class="sb-meta-data">
-        <dt>{{resourceService.frmelmnts.lbl.ownership}}</dt>
-        <dd *ngIf="metadata.owner">
-            <span class="d-inline-block mr-20">{{metadata.owner}}</span> &nbsp;
-            <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}" class="cursor-pointer">
-                {{resourceService.frmelmnts.lbl.contentCredits}}
-            </a>
-        </dd>
+        <dt>{{resourceService.frmelmnts?.lbl?.createdInstanceName  | interpolate:'{instance}': instance}}</dt>
+        <dd *ngIf="metadata.creator">{{metadata.creator}}</dd>
+    </dl>
+    <dl class="sb-meta-data">
+        <dt>{{resourceService.frmelmnts.lbl.originalAuthor}}</dt>
+        <dd *ngIf="metadata.creator">{{metadata.author}}</dd>
+    </dl>
+    <dl class="sb-meta-data">
+        <dt>{{resourceService.frmelmnts.lbl.licenseTerms}}</dt>
+        <dd *ngIf="metadata.license">{{metadata.license}}</dd>
     </dl>
     <dl class="sb-meta-data" *ngIf="metadata.orgDetails && metadata.orgDetails.orgName">
-        <dt>{{resourceService.frmelmnts.lbl.organization}}</dt>
+        <dt>{{resourceService.frmelmnts.lbl.publishedOnInstanceName | interpolate:'{instance}': instance}}</dt>
         <dd>
             <span class="d-inline-block mr-20">{{metadata.orgDetails?.orgName}}</span> &nbsp;
             <a ng-if="metadata.orgDetails?.email" href="mailto:{{metadata.orgDetails?.email}}?subject={{metadata.name}}">{{metadata.orgDetails?.email}}</a>
         </dd>
     </dl>
     <dl class="sb-meta-data">
-        <dt>{{resourceService.frmelmnts.lbl.author}}</dt>
-        <dd *ngIf="metadata.creator">{{metadata.creator}}</dd>
+        <dt>{{resourceService.frmelmnts.lbl.copyRight}}</dt>
+        <dd *ngIf="metadata.orgDetails && metadata.orgDetails.orgName">
+            <span class="d-inline-block mr-20">{{metadata.orgDetails?.orgName}}</span> &nbsp;
+            <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}" class="cursor-pointer">
+                {{resourceService.frmelmnts.lbl.contentCredits}}
+            </a>
+        </dd>
     </dl>
     <dl class="sb-meta-data">
         <dt>{{resourceService.frmelmnts.lbl.medium}}</dt>

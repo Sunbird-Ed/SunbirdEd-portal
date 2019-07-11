@@ -37,23 +37,30 @@
   </dl>
 
   <dl class="sb-meta-data">
-    <dt>{{resourceService?.frmelmnts?.lbl?.ownership}}</dt>
-    <dd *ngIf="metaData.owner">
-      {{metaData.owner}} <br/>
-      <a (click)="showContentCreditsPopup()" title="{{resourceService?.frmelmnts?.lbl?.contentCredits}}" class="cursor-pointer d-inline-block mt-5">
-        {{resourceService?.frmelmnts?.lbl?.contentCredits}}
-      </a>
-    </dd>
+      <dt>{{resourceService.frmelmnts?.lbl?.createdInstanceName  | interpolate:'{instance}': instance}}</dt>
+      <dd *ngIf="metaData.creator">{{metaData.creator}}</dd>
   </dl>
-
+  <dl class="sb-meta-data">
+      <dt>{{resourceService.frmelmnts.lbl.originalAuthor}}</dt>
+      <dd *ngIf="metaData.author">{{metaData.author}}</dd>
+  </dl>
+  <dl class="sb-meta-data">
+      <dt>{{resourceService.frmelmnts.lbl.licenseTerms}}</dt>
+      <dd *ngIf="metaData.license">{{metaData.license}}</dd>
+  </dl>
   <dl class="sb-meta-data" *ngIf="metaData.orgDetails && metaData.orgDetails.orgName">
-    <dt>{{resourceService?.frmelmnts?.lbl?.organization}}</dt>
-    <dd>
-      {{metaData?.orgDetails?.orgName}} <br/>
-      <a *ngIf="metaData.orgDetails.email" href="mailto:{{metaData.orgDetails?.email}}?subject={{metaData.name}}" class="cursor-pointer d-inline-block mt-5">
-        {{metaData.orgDetails?.email}}
-      </a>
-    </dd>
+      <dt>{{resourceService.frmelmnts.lbl.publishedOnInstanceName | interpolate:'{instance}': instance}}</dt>
+      <dd>
+          <span class="d-inline-block mr-20">{{metaData.orgDetails?.orgName}}</span> &nbsp;
+          <a ng-if="metaData.orgDetails?.email" href="mailto:{{metaData.orgDetails?.email}}?subject={{metaData.name}}">{{metaData.orgDetails?.email}}</a>
+      </dd>
+  </dl>
+  <dl class="sb-meta-data">
+      <dd>
+          <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}" class="cursor-pointer">
+              {{resourceService.frmelmnts.lbl.contentCredits}}
+          </a>
+      </dd>
   </dl>
 </div>
 
