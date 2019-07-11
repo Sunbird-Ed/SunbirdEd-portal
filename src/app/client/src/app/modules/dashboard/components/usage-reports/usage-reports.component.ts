@@ -111,7 +111,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
     tables = _.isArray(tables) ? tables : [tables];
     _.forEach(tables, table => {
       const tableData: any = {};
-      tableData.id = _.get(table, 'id') || 'table';
+      tableData.id = _.get(table, 'id') || `table-${_.random(1000)}`;
       tableData.name = _.get(table, 'name') || 'Table';
       tableData.header = _.get(table, 'columns') || _.get(data, _.get(table, 'columnsExpr'));
       tableData.data = _.get(table, 'values') || _.get(data, _.get(table, 'valuesExpr'));
