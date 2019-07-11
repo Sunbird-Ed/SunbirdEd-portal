@@ -98,6 +98,29 @@
         <dt>{{resourceService.frmelmnts.lbl.flaggeddescription}}</dt>
         <dd>{{metadata.flags}}</dd>
     </dl>
+
+    <div *ngIf="metadata.originData">
+        <p>This content is derived from</p>
+        <dl class="sb-meta-data" *ngIf="metadata.originData.name">
+            <dt>Content</dt>
+            <dd>{{metadata.originData.name}}</dd>
+        </dl>
+        <dl class="sb-meta-data" *ngIf="metadata.originData.author">
+            <dt>{{resourceService.frmelmnts.lbl?.originalAuthor}}</dt>
+            <dd *ngIf="metadata.creator">{{metadata.originData.author}}</dd>
+        </dl>
+        <dl class="sb-meta-data" *ngIf="metadata.originData.license">
+            <dt>{{resourceService.frmelmnts.lbl?.licenseTerms}}</dt>
+            <dd *ngIf="metadata.creator">{{metadata.originData.license}}</dd>
+        </dl>
+        <dl class="sb-meta-data" *ngIf="metadata.originData.orgDetails && metadata.originData.orgDetails.orgName">
+            <dt>{{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</dt>
+            <dd>
+                <span class="d-inline-block mr-20">{{metadata.originData.orgDetails?.orgName}}</span> &nbsp;
+                <a ng-if="metadata.orgDetails?.email" href="mailto:{{metadata.orgDetails?.email}}?subject={{metadata.name}}">{{metadata.originData.orgDetails?.email}}</a>
+            </dd>
+        </dl>
+    </div>
     <app-content-credits [contentData]="metadata" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false">
   </app-content-credits>
 </div>
