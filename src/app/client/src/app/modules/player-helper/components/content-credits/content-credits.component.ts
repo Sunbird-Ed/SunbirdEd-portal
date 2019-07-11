@@ -61,7 +61,7 @@ export class ContentCreditsComponent implements OnInit, OnChanges {
       }
       // attributors
       const attributions = _.get(this.contentData, 'attributions');
-      this.contentCreditsData['attributions'] = 
+      this.contentCreditsData['attributions'] =
       (_.compact(_.uniq(_.union(contentCreditNames, contirbutors, attributions, creators).sort())).join(', '));
     }
   }
