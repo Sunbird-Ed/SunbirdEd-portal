@@ -9,6 +9,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { mockChartData } from './data-chart.component.spec.data';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { By } from '@angular/platform-browser';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { ActivatedRoute } from '@angular/router';
 
 describe('DataChartComponent', () => {
     let component: DataChartComponent;
@@ -18,7 +20,16 @@ describe('DataChartComponent', () => {
         TestBed.configureTestingModule({
             declarations: [DataChartComponent],
             imports: [ChartsModule, SuiModule, ReactiveFormsModule, SharedModule.forRoot(), HttpClientTestingModule,
-                NgxDaterangepickerMd.forRoot(), RouterTestingModule]
+                NgxDaterangepickerMd.forRoot(), TelemetryModule.forRoot(), RouterTestingModule],
+            providers: [{
+                provide: ActivatedRoute, useValue: {
+                    snapshot: {
+                        data: {
+                            telemetry: { env: 'dashboard', pageid: 'org-admin-dashboard', type: 'view' }
+                        }
+                    }
+                }
+            }]
         })
             .compileComponents();
     }));
