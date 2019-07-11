@@ -29,7 +29,11 @@ export class PublicPlayerService {
     public publicDataService: PublicDataService, public navigationHelperService: NavigationHelperService) {
       this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
-      this.sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
+      try {
+        this.sessionId = !(_.isEmpty(<HTMLInputElement> document.getElementById('sessionId') &&
+                                    <HTMLInputElement>document.getElementById('sessionId')).value) ?
+        (<HTMLInputElement>document.getElementById('sessionId')).value : this.userService.anonymousSid;
+      } catch (e) { console.log(e); }
 
   }
 

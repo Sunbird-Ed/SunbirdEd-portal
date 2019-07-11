@@ -53,7 +53,6 @@ export class TelemetryService {
   constructor() {
     // , { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }
     this.telemetryProvider = EkTelemetry;
-    this.sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
   }
 
   /**
@@ -63,6 +62,11 @@ export class TelemetryService {
    * @memberof TelemetryService
    */
   public initialize(context: ITelemetryContext) {
+    try {
+      this.sessionId = !(_.isEmpty(<HTMLInputElement> document.getElementById('sessionId') &&
+                                  <HTMLInputElement>document.getElementById('sessionId')).value) ?
+      (<HTMLInputElement>document.getElementById('sessionId')).value : context.config.sid;
+    } catch (e) { console.log(e); }
 
     if (this.isOffline && !(_.isEmpty(this.sessionId))) {
       context.config.sid = this.sessionId;
