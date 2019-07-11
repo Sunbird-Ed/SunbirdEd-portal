@@ -8,7 +8,6 @@ import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 declare var jQuery: any;
-import * as $ from 'jquery';
 
 @Component({
   selector: 'app-header',
@@ -123,9 +122,9 @@ export class MainHeaderComponent implements OnInit {
     let didScroll;
     let lastScrollTop = 0;
     const delta = 5;
-    const navbarHeight = $('#header-menu').outerHeight();
+    const navbarHeight = jQuery('#header-menu').outerHeight();
 
-    $(window).scroll(function(event) {
+    jQuery(window).scroll((event) => {
       didScroll = true;
     });
 
@@ -136,7 +135,7 @@ export class MainHeaderComponent implements OnInit {
       }
     }, 250);
 
-    function hasScrolled () {
+     const  hasScrolled = () => {
       const st = document.documentElement.scrollTop || document.body.scrollTop;
 
       // Make sure they scroll more than delta
@@ -149,7 +148,7 @@ export class MainHeaderComponent implements OnInit {
         document.querySelector('#header-menu').classList.add('scroll-up');
       } else {
         // Scroll Up
-        if (st + $(window).height() < $(document).height()) {
+        if (st + jQuery(window).height() < jQuery(document).height()) {
           document.querySelector('#header-menu').classList.remove('scroll-up');
         document.querySelector('#header-menu').classList.add('scroll-down');
         }
