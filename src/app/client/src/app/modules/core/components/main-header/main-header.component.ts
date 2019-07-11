@@ -128,18 +128,12 @@ export class MainHeaderComponent implements OnInit {
       didScroll = true;
     });
 
-    setInterval(() => {
-      if (didScroll) {
-        hasScrolled();
-        didScroll = false;
-      }
-    }, 250);
 
      const  hasScrolled = () => {
       const st = document.documentElement.scrollTop || document.body.scrollTop;
 
       // Make sure they scroll more than delta
-      if (Math.abs(lastScrollTop - st) <= delta) return;
+      if (Math.abs(lastScrollTop - st) <= delta) { return; }
       // If they scrolled down and are past the header, add class .scroll-up.
       // This is necessary so you never see what is "behind" the header.
       if (st > lastScrollTop && st > navbarHeight) {
@@ -154,7 +148,13 @@ export class MainHeaderComponent implements OnInit {
         }
       }
       lastScrollTop = st;
-    }
+    };
+    setInterval(() => {
+      if (didScroll) {
+        hasScrolled();
+        didScroll = false;
+      }
+    }, 250);
     // header hide and show when scroll-down and scroll-up //
   }
   getLanguage(channelId) {
