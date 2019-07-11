@@ -46,7 +46,7 @@ export class ContentCreditsComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.contentCreditsData = { contributors: '', creators: '', attributions: '', copyright: '' };
     if (this.contentData) {
-      if(this.contentData.copyright){
+      if (this.contentData.copyright) {
         this.contentCreditsData['copyright'] = this.contentData.copyright;
       }
       // contributors , it is a combination of content credits names, creators, and owner
