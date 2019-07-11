@@ -1,5 +1,4 @@
-import { IInteractEventEdata, IInteractEventObject, TelemetryInteractDirective } from '@sunbird/telemetry';
-import { IImpressionEventInput } from './../../../telemetry/interfaces/telemetry';
+import { IInteractEventEdata, IInteractEventObject, TelemetryInteractDirective , IImpressionEventInput} from '@sunbird/telemetry';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { UsageService } from './../../services';
 import * as _ from 'lodash-es';
