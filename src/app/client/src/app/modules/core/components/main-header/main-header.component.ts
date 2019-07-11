@@ -8,6 +8,7 @@ import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 declare var jQuery: any;
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-header',
@@ -117,6 +118,45 @@ export class MainHeaderComponent implements OnInit {
         }
       });
     }
+
+    // header hide and show when scroll-down and scroll-up
+    let didScroll;
+    let lastScrollTop = 0;
+    const delta = 5;
+    const navbarHeight = $('#header-menu').outerHeight();
+
+    $(window).scroll(function(event) {
+      didScroll = true;
+    });
+
+    setInterval(() => {
+      if (didScroll) {
+        hasScrolled();
+        didScroll = false;
+      }
+    }, 250);
+
+    function hasScrolled () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop;
+
+      // Make sure they scroll more than delta
+      if (Math.abs(lastScrollTop - st) <= delta) return;
+      // If they scrolled down and are past the header, add class .scroll-up.
+      // This is necessary so you never see what is "behind" the header.
+      if (st > lastScrollTop && st > navbarHeight) {
+        // Scroll Down
+        document.querySelector('#header-menu').classList.remove('scroll-down');
+        document.querySelector('#header-menu').classList.add('scroll-up');
+      } else {
+        // Scroll Up
+        if (st + $(window).height() < $(document).height()) {
+          document.querySelector('#header-menu').classList.remove('scroll-up');
+        document.querySelector('#header-menu').classList.add('scroll-down');
+        }
+      }
+      lastScrollTop = st;
+    }
+    // header hide and show when scroll-down and scroll-up //
   }
   getLanguage(channelId) {
     const isCachedDataExists = this._cacheService.get(this.languageFormQuery.filterEnv + this.languageFormQuery.formAction);
