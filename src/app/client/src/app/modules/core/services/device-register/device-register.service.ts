@@ -19,7 +19,7 @@ export class DeviceRegisterService  {
   private timerSubscription: Subscription;
 
   constructor(public deviceDetectorService: DeviceDetectorService, public publicDataService: PublicDataService,
-    private configService: ConfigService, private http: HttpClient, ) {
+    private configService: ConfigService, private http: HttpClient) {
 
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
 
@@ -53,7 +53,6 @@ export class DeviceRegisterService  {
       },
       request: {
         did: this.deviceId,
-        url: window.location.pathname,
         uaspec: {
           agent: deviceInfo.browser,
           ver: deviceInfo.browser_version,
@@ -68,13 +67,8 @@ export class DeviceRegisterService  {
         'Content-Type': 'application/json'
       }
     };
-    this.http.post('mock/device/register/' + this.deviceId, data, httpOptions)
+    this.http.post(this.deviceRegisterApi + this.deviceId, data, httpOptions)
     .subscribe((response: any) => {
-      console.log(response);
-      const experimentId = (new URLSearchParams(window.location.search)).get('experimentId');
-      if (response.experimentId && !experimentId) {
-        window.location.href = window.location.href + '?experimentId=' + response.experimentId;
-      }
     });
   }
 }

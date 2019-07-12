@@ -4,54 +4,57 @@ const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const moment = require('moment');
 const uuidv1 = require('uuid/v1');
 const envHelper = require('./environmentVariablesHelper.js');
-const experimentBlobUrl = 'http://localhost:3001/dist_experiment/';
+const experimentBaseUrl = envHelper.EXPERIMENT_BASE_URL;
+const portalDeviceId = '2c010e13a76145d864e459f75a176171';
+const _ = require('lodash');
 
-const getExperimentIndexFile = async (req, res) => {
-  let indexFilePath, indexFileData, experimentId, experimentDetails;
-  console.log('----------query and path---------------', req.query, req.path);
-  if(req.query.experimentId){
-    experimentDetails = {experimentId: req.query.experimentId};
-  } else {
-    experimentDetails = await fetchExperimentDetails(req);
+const getExperimentIndexFile = async (req) => {
+  let indexFilePath, indexFile, experimentDetails;
+  if(!experimentBaseUrl){
+    return;
   }
-  console.log('----experimentDetails----', experimentDetails);
-  indexFileData = await request.get(`${experimentBlobUrl}${experimentDetails.experimentId}/index.html`)
-    .catch(error => console.log('--------------fetching index file failed----------------------'))
-  return { path: indexFilePath, data: indexFileData, redirectionParam: { experimentId } };
+  experimentDetails = req.query.experimentDetails ? req.query.experimentDetails
+    : await fetchExperimentDetails(req);
+  if(!experimentDetails) {
+    return;
+  }
+  indexFilePath = `${experimentBaseUrl}${experimentDetails.id}/`;
+  indexFile = await request.get(indexFilePath + 'index.html')
+    .catch(error => console.log('fetching experiment app failed'))
+  return { path: indexFilePath, data: indexFile };
 }
 const fetchExperimentDetails = async (req) => {
-  const requestBody = {
-    id: envHelper.APPID,
-    ver: packageObj.version,
-    ts: moment().format(),
-    params: {
-      msgid: uuidv1()
+  const options = {
+    method: 'POST',
+    url: envHelper.DEVICE_REGISTER_API + portalDeviceId,
+    headers: {},
+    body: {
+      id: envHelper.APPID,
+      ver: packageObj.version,
+      ts: moment().format(),
+      params: {
+        msgid: uuidv1()
+      },
+      request: {
+        did: portalDeviceId,
+        ext: {
+          userid: req.session.userId,
+        }
+      }
     },
-    request: {
-      // did: req.session.deviceId,
-      uid: req.session.userId,
+    json: true
+  }
+  return request(options).then(data => {
+    if(!_.get(data, 'result.actions.length')){
+      return
     }
-  }
-  if(req.session.userId === '874ed8a5-782e-4f6c-8f36-e0288455901e') {
-    return Promise.resolve({ experimentId: 'experiment5'})
-  } else if (req.session.userId === '874ed8a5-782e-4f6c-8f36-e0288455901e') {
-    return Promise.resolve({ experimentId: 'experiment5'})
-  } else {
-    return Promise.resolve({ experimentId: 'experiment5'})
-  }
+    const experimentDetails = data.result.actions.find(action => action.type === 'experiment')
+    return experimentDetails.data
+  }).catch(error => {
+    console.log('fetching device register api failed', error.message);
+  })
 }
-const mockDeviceRegister = async (req) => {
-  console.log('device register', req.body.request.url);
-  if(req.body.request.url === '/ap/explore') {
-    return Promise.resolve({ experimentId: 'experiment1'})
-  } else if (req.body.request.url === '/rj/explore') {
-    return Promise.resolve({ experimentId: 'experiment2'})
-  } else {
-    return Promise.resolve({})
-  }
-}
+
 module.exports = {
-  getExperimentIndexFile,
-  fetchExperimentDetails,
-  mockDeviceRegister
+  getExperimentIndexFile
 }

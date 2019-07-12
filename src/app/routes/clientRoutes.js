@@ -15,7 +15,6 @@ cdnIndexFileExist = fs.existsSync(path.join(__dirname, '../dist', 'index_cdn.ejs
 proxyUtils = require('../proxy/proxyUtils.js'),
 experimentHelper = require('../helpers/experimentHelper.js'),
 ejs = require('ejs');
-const bodyParser = require('body-parser')
 
 logger.info({msg:`CDN index file exist: ${cdnIndexFileExist}`});
 
@@ -92,7 +91,7 @@ module.exports = (app, keycloak) => {
   app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
     '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course',
     '/explore-course/*', '/:slug/explore-course', '/:slug/explore-course/*',
-    '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*', '/download/*', '/:slug/download/*'], loadExperimentApp, redirectTologgedInPage, indexPage(false))
+    '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*', '/download/*', '/:slug/download/*'], redirectTologgedInPage, indexPage(false))
 
   app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode + '?source=scan'))
 
@@ -105,12 +104,6 @@ module.exports = (app, keycloak) => {
 
   app.all('/:tenantName', renderTenantPage)
 
-  app.post('/mock/device/register/:deviceId', bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }),
-  async (req,res,next) => {
-    console.log('mock register called with ', req.body);
-    const experimentDetails = await experimentHelper.mockDeviceRegister(req);
-    res.json(experimentDetails);
-  })
 }
 const loadExperimentApp = async (req, res, next) => {
   const indexFile = await experimentHelper.getExperimentIndexFile(req, res)
@@ -118,6 +111,7 @@ const loadExperimentApp = async (req, res, next) => {
     req.includeUserDetail = true
     res.locals = getLocals(req);
     res.locals.cdnWorking = 'no';
+    res.locals.cdnUrl = indexFile.path
     let renderedFile = ejs.render(indexFile.data, res.locals)
     res.send(renderedFile);
   } else {
