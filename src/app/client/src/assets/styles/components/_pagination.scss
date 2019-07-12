@@ -1,5 +1,6 @@
 .sb-pagination-container {
     display: flex;
+    padding-bottom: $base-block-space * 4;
     .sb-pagination {
         display: flex;
         align-items: center;

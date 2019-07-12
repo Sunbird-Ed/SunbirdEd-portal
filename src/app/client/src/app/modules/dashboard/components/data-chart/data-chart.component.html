@@ -70,7 +70,7 @@
       </sui-accordion-panel>
     </sui-accordion>
   </form>
-  <div class="graph-statistics py-16" *ngIf="showStats">
+  <div *ngIf="showStats">
     <div _ngcontent-c14="" class="graph-statistics py-16" *ngFor="let stat of loadash.keys(resultStatistics)">
       {{stat}} <div class="sb-label sb-label-table sb-label-primary-100 mr-4"
         *ngFor="let op of loadash.keys(resultStatistics[stat]) ; let l = last"> {{op}} : {{resultStatistics[stat][op]}}

@@ -1,6 +1,6 @@
 <div class="ui" [appTelemetryImpression]="telemetryImpression">
   <div class="twelve wide column px-0 sb-workspace-bg">
-    <div class="ui container stackable grid m-0" *ngIf="!noResult">
+    <div class="ui container stackable grid m-0 sb-mid-container-min-height" *ngIf="!noResult">
       <div class="two wide column sb-sidebar-menu p-0">
         <h5 class="p-16">{{resourceService.frmelmnts?.lnk?.dashboard}}</h5>
         <ul class="m-0">
@@ -33,7 +33,7 @@
                   class="icon"></i> {{resourceService?.frmelmnts?.lbl?.downloadCsv}}</button>
             </div>
 
-            <div class="ui bottom attached segment p-0 b-0 no-bg" suiTabContent="graph">
+            <div class="ui bottom attached segment p-0 b-0 no-bg my-24" suiTabContent="graph">
               <div class="sb-graph-section p-24 my-24" *ngFor="let chart of chartData; let i = index; let l = last;">
                 <app-data-chart [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)" [chartInfo]="chart"></app-data-chart>
                 <!-- <hr *ngIf="!l" /> -->
