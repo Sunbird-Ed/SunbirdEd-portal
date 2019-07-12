@@ -5,7 +5,7 @@ import { RouterNavigationService, ResourceService, ToasterService, ServerRespons
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import * as moment from 'moment';
 import { Subject, combineLatest } from 'rxjs';
@@ -86,6 +86,11 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   pickerMinDateForEndDate = new Date(this.pickerMinDate.getTime() + (24 * 60 * 60 * 1000));
 
+  createBatchInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
+  clearButtonInteractEdata: IInteractEventEdata;
+  telemetryCdata: Array<{}>;
+
   /**
 	 * Constructor to create injected service(s) object
 	 * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
@@ -117,6 +122,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.activatedRoute.parent.params.pipe(mergeMap((params) => {
       this.courseId = params.courseId;
       this.initializeFormFields();
+      this.setTelemetryInteractData();
       this.showCreateModal = true;
       return this.fetchBatchDetails();
     }),
@@ -177,7 +183,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     if (res.result.response.content && res.result.response.content.length > 0) {
       _.forEach(res.result.response.content, (userData) => {
         if ( _.includes(this.selectedMentors , userData.identifier) ||
-        _.includes(this.selectedParticipants , userData.identifier)) {
+          _.includes(this.selectedParticipants , userData.identifier)) {
           return;
         }
         if (userData.identifier !== this.userService.userid) {
@@ -358,6 +364,35 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       };
     });
   }
+
+  setTelemetryInteractData() {
+    this.createBatchInteractEdata = {
+      id: 'create-batch',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+    this.clearButtonInteractEdata = {
+      id: 'clear-button',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+    this.telemetryInteractObject = {
+      id: this.courseId,
+      type: this.activatedRoute.snapshot.data.telemetry.object.type,
+      ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+    };
+
+    this.telemetryCdata = [
+      {
+        id: 'SB-13073',
+        type: 'Task'
+      }, {
+        id: 'course:enrollment:endDate',
+        type: 'Feature'
+      }
+    ];
+  }
+
   ngOnDestroy() {
     if (this.createBatchModel && this.createBatchModel.deny) {
       this.createBatchModel.deny();

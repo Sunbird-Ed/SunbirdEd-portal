@@ -146,6 +146,8 @@
     <button 
       class="sb-btn sb-btn-normal sb-btn-primary" 
       [disabled]="disableSubmitBtn || showFormInViewMode"
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="updateBatchInteractEdata" [telemetryInteractCdata]="telemetryCdata"
       (click)="updateBatch()"
       >
       {{resourceService?.frmelmnts?.btn?.update}}
@@ -154,6 +156,8 @@
       class="sb-btn sb-btn-normal sb-btn-outline-primary" 
       (click)="resetForm()" 
       [disabled]="showFormInViewMode"
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="clearButtonInteractEdata" [telemetryInteractCdata]="telemetryCdata"
       >
       {{resourceService?.frmelmnts?.btn?.clear}}
     </button>

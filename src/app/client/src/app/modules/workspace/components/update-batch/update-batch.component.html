@@ -152,6 +152,8 @@
     <button 
       class="sb-btn sb-btn-normal sb-btn-primary" 
       [ngClass]="{ 'disabled': batchDetails.status === 2 }"
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="updateBatchInteractEdata" [telemetryInteractCdata]="telemetryCdata"
       [disabled]="disableSubmitBtn || showFormInViewMode" 
       (click)="updateBatch()"
       >
@@ -160,6 +162,8 @@
     <button 
       class="sb-btn sb-btn-normal sb-btn-outline-primary" 
       [ngClass]="{ 'disabled': batchDetails.status === 2 }"
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="clearButtonInteractEdata" [telemetryInteractCdata]="telemetryCdata"
       (click)="batchUpdateForm.reset()" 
       [disabled]="showFormInViewMode"
       >

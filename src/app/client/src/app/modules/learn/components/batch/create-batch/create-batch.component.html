@@ -127,10 +127,13 @@
       id="submitbutton" 
       [disabled]="disableSubmitBtn"
       (click)="createBatch()"
-      >
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="createBatchInteractEdata" [telemetryInteractCdata]="telemetryCdata">
       {{resourceService?.frmelmnts?.btn?.create}}
     </button>
     <button 
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="clearButtonInteractEdata" [telemetryInteractCdata]="telemetryCdata"
       class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" 
       (click)="createBatchForm.reset()"
       >
