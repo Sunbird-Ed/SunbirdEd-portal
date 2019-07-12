@@ -98,9 +98,12 @@
         <dt>{{resourceService.frmelmnts.lbl.flaggeddescription}}</dt>
         <dd>{{metadata.flags}}</dd>
     </dl>
+</div>
 
-    <div *ngIf="metadata && metadata.originData">
-        <p>{{resourceService.frmelmnts?.lbl?.contentcopiedtitle}}</p>
+<div *ngIf="metadata && metadata.originData">
+    <div class="ui divider my-24"></div>
+    <h4 class="sb-section-title mb-16 d-block">{{resourceService.frmelmnts?.lbl?.contentcopiedtitle}}</h4>
+    <div class="sb-meta-data-container sb-meta-data-row-facing mt-24">
         <dl class="sb-meta-data" *ngIf="metadata.originData.name">
             <dt>{{resourceService.frmelmnts?.lbl?.contenttype}}</dt>
             <dd>{{metadata.originData.name}}</dd>
@@ -120,8 +123,8 @@
                 <a ng-if="metadata.orgDetails?.email" href="mailto:{{metadata.orgDetails?.email}}?subject={{metadata.name}}">{{metadata.originData.orgDetails?.email}}</a>
             </dd>
         </dl>
+        <app-content-credits [contentData]="metadata" *ngIf="showContentCreditsModal"
+            (close)="showContentCreditsModal = false">
+        </app-content-credits>
     </div>
-
-    <app-content-credits [contentData]="metadata" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false">
-  </app-content-credits>
 </div>
