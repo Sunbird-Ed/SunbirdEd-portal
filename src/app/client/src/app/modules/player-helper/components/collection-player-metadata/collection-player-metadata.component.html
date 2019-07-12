@@ -64,5 +64,30 @@
   </dl>
 </div>
 
+<div *ngIf="metaData && metaData.originData" class="ui divider mt-24"> </div>
+
+<div *ngIf="metaData && metaData.originData">
+  <p>{{resourceService.frmelmnts?.lbl?.contentcopiedtitle}}</p>
+  <dl class="sb-meta-data" *ngIf="metaData.originData.name">
+      <dt>{{resourceService.frmelmnts?.lbl?.contenttype}}</dt>
+      <dd>{{metaData.originData.name}}</dd>
+  </dl>
+  <dl class="sb-meta-data" *ngIf="metaData.originData.author">
+      <dt>{{resourceService.frmelmnts.lbl?.originalAuthor}}</dt>
+      <dd *ngIf="metaData.creator">{{metaData.originData.author}}</dd>
+  </dl>
+  <dl class="sb-meta-data" *ngIf="metaData.originData.license">
+      <dt>{{resourceService.frmelmnts.lbl?.licenseTerms}}</dt>
+      <dd *ngIf="metaData.creator">{{metaData.originData.license}}</dd>
+  </dl>
+  <dl class="sb-meta-data" *ngIf="metaData.originData.orgDetails && metaData.originData.orgDetails.orgName">
+      <dt>{{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</dt>
+      <dd>
+          <span class="d-inline-block mr-20">{{metaData.originData.orgDetails?.orgName}}</span> &nbsp;
+          <a ng-if="metaData.orgDetails?.email" href="mailto:{{metaData.orgDetails?.email}}?subject={{metaData.name}}">{{metaData.originData.orgDetails?.email}}</a>
+      </dd>
+  </dl>
+</div>
+
 <app-content-credits [contentData]="metaData" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false">
 </app-content-credits>
