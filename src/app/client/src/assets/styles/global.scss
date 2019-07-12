@@ -34,6 +34,12 @@ body {
     }
   }
 }
+.sb-offline {
+  padding-bottom: 145px;
+  .footer-fix {
+    min-height: calc(100vh - 180px);
+  }
+}
 
 *[lang="en"] body {
   font-family: $font-stack-en;

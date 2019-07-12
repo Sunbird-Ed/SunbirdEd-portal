@@ -126,6 +126,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       });
 
     this.changeLanguageAttribute();
+    if (this.isOffline) {
+      document.body.classList.add('sb-offline');
+     }
 }
   logCdnStatus() {
     const isCdnWorking  = (<HTMLInputElement>document.getElementById('cdnWorking'))
