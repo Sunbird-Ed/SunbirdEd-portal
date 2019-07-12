@@ -4,6 +4,7 @@
   [transitionDuration]="0"
   [size]="'small'"
   class="sb-modal"
+  (dismissed)="closeModal(contentCreditsModal)"
   appBodyScroll
   #contentCreditsModal
 >
@@ -17,15 +18,11 @@
   <!--Content-->
   <div class="sb-modal-content">
     <div class="ui list">
-      <div class="item">
-        <div class="header text-gray">{{resourceService?.frmelmnts?.lbl?.creators}}</div>
-        <div class="mt-5">{{contentCreditsData.creators}}</div>
+      <div class="item mt-10" *ngIf="contentData.copyright">
+        <div class="header text-gray">{{resourceService.frmelmnts.lbl.copyRight}}</div>
+        <div class="mt-5">{{contentData.copyright}}</div>
       </div>
-      <div class="item mt-10" *ngIf="contentCreditsData.contributors">
-        <div class="header text-gray">{{resourceService?.frmelmnts?.lbl?.contributors}}</div>
-        <div class="mt-5">{{contentCreditsData.contributors}}</div>
-      </div>
-      <div class="item mt-10" *ngIf="contentCreditsData.attributions">
+      <div class="item mt-10">
         <div class="header text-gray">{{resourceService?.frmelmnts?.lbl?.attributions}}</div>
         <div class="mt-5">{{contentCreditsData.attributions}}</div>
       </div>
