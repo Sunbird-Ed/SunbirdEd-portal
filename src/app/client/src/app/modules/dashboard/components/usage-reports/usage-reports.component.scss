@@ -14,3 +14,8 @@
 .no-bg {
     background:none;
 }
+.body-fix{
+    .ui.container.stackable{
+        min-height: calc(100vh - 288px);
+    }
+}
