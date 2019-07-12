@@ -35,7 +35,7 @@
 
             <div class="ui bottom attached segment p-0 b-0 no-bg" suiTabContent="graph">
               <div class="sb-graph-section p-24 my-24" *ngFor="let chart of chartData; let i = index; let l = last;">
-                <app-data-chart [chartInfo]="chart"></app-data-chart>
+                <app-data-chart [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)" [chartInfo]="chart"></app-data-chart>
                 <!-- <hr *ngIf="!l" /> -->
               </div>
               <div class="ui warning message" *ngIf="!chartData.length">
