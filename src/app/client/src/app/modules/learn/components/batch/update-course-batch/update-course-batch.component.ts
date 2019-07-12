@@ -1,13 +1,14 @@
+import { IInteractEventEdata } from './../../../../telemetry/interfaces/telemetry';
 
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {combineLatest, Subject } from 'rxjs';
-import {takeUntil,  mergeMap } from 'rxjs/operators';
+import { combineLatest, Subject } from 'rxjs';
+import { takeUntil, mergeMap } from 'rxjs/operators';
 import { RouterNavigationService, ResourceService, ToasterService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import * as moment from 'moment';
 @Component({
@@ -103,6 +104,12 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   public courseConsumptionService: CourseConsumptionService;
 
   public unsubscribe = new Subject<void>();
+
+  updateBatchInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
+  clearButtonInteractEdata: IInteractEventEdata;
+  telemetryCdata: Array<{}>;
+
   /**
    * Constructor to create injected service(s) object
    * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
@@ -136,6 +143,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
         mergeMap((params) => {
           this.batchId = params.batchId;
           this.courseId = params.courseId;
+          this.setTelemetryInteractData();
           return this.fetchBatchDetails();
         }),
         takeUntil(this.unsubscribe)
@@ -288,8 +296,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     const mentorList = [];
     if (res.result.response.content && res.result.response.content.length > 0) {
       _.forEach(res.result.response.content, (userData) => {
-        if ( _.find(this.selectedMentors , {'id': userData.identifier }) ||
-        _.find(this.selectedParticipants , {'id': userData.identifier })) {
+        if (_.find(this.selectedMentors, { 'id': userData.identifier }) ||
+          _.find(this.selectedParticipants, { 'id': userData.identifier })) {
           return;
         }
         if (userData.identifier !== this.userService.userid) {
@@ -365,17 +373,17 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
           this.mentorList = userList.mentorList;
         }
       },
-      (err) => {
-        if (err.error && err.error.params.errmsg) {
-          this.toasterService.error(err.error.params.errmsg);
-        } else {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0056);
-        }
-      });
+        (err) => {
+          if (err.error && err.error.params.errmsg) {
+            this.toasterService.error(err.error.params.errmsg);
+          } else {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+          }
+        });
   }
 
   public removeMentor(mentor: any) {
-   _.remove(this.selectedMentors, (data) => {
+    _.remove(this.selectedMentors, (data) => {
       return data === mentor;
     });
   }
@@ -435,14 +443,14 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
         this.toasterService.success(this.resourceService.messages.smsg.m0034);
         this.reload();
       },
-      (err) => {
-        this.disableSubmitBtn = false;
-        if (err.error && err.error.params.errmsg) {
-          this.toasterService.error(err.error.params.errmsg);
-        } else {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0052);
-        }
-      });
+        (err) => {
+          this.disableSubmitBtn = false;
+          if (err.error && err.error.params.errmsg) {
+            this.toasterService.error(err.error.params.errmsg);
+          } else {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0052);
+          }
+        });
   }
   public redirect() {
     this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
@@ -490,6 +498,32 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       };
     });
   }
+  setTelemetryInteractData() {
+    this.updateBatchInteractEdata = {
+      id: 'update-batch',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+    this.clearButtonInteractEdata = {
+      id: 'clear-button',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+    this.telemetryInteractObject = {
+      id: this.batchId,
+      type: this.activatedRoute.snapshot.data.telemetry.object.type,
+      ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+    };
+    this.telemetryCdata = [
+      {
+        id: 'SB-13073',
+        type: 'Task'
+      }, {
+        id: 'course:enrollment:endDate',
+        type: 'Feature'
+      }
+    ];
+  }
   ngOnDestroy() {
     if (this.updateBatchModal && this.updateBatchModal.deny) {
       this.updateBatchModal.deny();
@@ -503,7 +537,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       this.batchUpdateForm.controls['description'].reset();
       this.batchUpdateForm.controls['endDate'].reset();
     } else {
-     this.batchUpdateForm.reset();
+      this.batchUpdateForm.reset();
     }
   }
 }
