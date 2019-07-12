@@ -62,13 +62,25 @@
                             <br>
                             <div class="courseupdate">
                                 <p class="mb-5" *ngIf="courseHierarchy.creator">{{resourceService.frmelmnts.lbl.courseCreatedBy}}: {{courseHierarchy.creator}}</p>
-                                <p class="mb-5" *ngIf="courseHierarchy.orgDetails?.orgName">{{courseHierarchy.orgDetails.orgName}}</p>
+                                <p class="mb-5" *ngIf="courseHierarchy.author">
+                                    {{resourceService.frmelmnts.lbl.author}}: {{courseHierarchy.author}}
+                                </p>
+                                <p class="mb-5" *ngIf="courseHierarchy.orgDetails?.orgName">{{resourceService.frmelmnts.lbl.publishedBy}}: {{courseHierarchy.orgDetails.orgName}}</p>
                                 <p class="mb-5"*ngIf="courseHierarchy.orgDetails?.email">
                                     <a href="mailto:{{courseHierarchy.orgDetails?.email}}?subject={{courseHierarchy.name}}">{{courseHierarchy.orgDetails?.email}}</a>
                                 </p>
                                 <div class="ui divider"></div>
+                                <p class="mb-5" *ngIf="courseHierarchy.license">
+                                    {{resourceService.frmelmnts.lbl.licenseTerms}}: {{courseHierarchy.license}}
+                                </p>
                                 <p class="mb-5"><span>{{resourceService.frmelmnts.lbl.coursecreatedon}}</span>: {{courseHierarchy.createdOn | dateFormat}}</p>
                                 <p class="mb-5"><span>{{resourceService.frmelmnts.lbl.updatedon}}</span>: {{courseHierarchy.lastUpdatedOn | dateFormat}}</p>
+                                <p class="mb-5">
+                                    <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}" class="cursor-pointer">
+                                      {{resourceService.frmelmnts.lbl.contentCredits}}
+                                    </a>
+                                </p>
+                                <div class="ui divider"></div>
                                 <!-- <a *ngIf="contributionsLength>0" popupTrigger="outsideClick" [popupPlacement]="'bottom left'" suiPopup popupText={{contributions}}>{{resourceService.frmelmnts.lbl.viewCredits}}</a> -->
                             </div>
                         </div>
@@ -156,4 +168,6 @@
     </div>
 </div>
 </div>
+<app-content-credits [contentData]="courseHierarchy" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false">
+</app-content-credits>
 <router-outlet></router-outlet>
