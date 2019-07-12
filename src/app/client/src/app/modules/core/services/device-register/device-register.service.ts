@@ -68,7 +68,7 @@ export class DeviceRegisterService  {
       }
     };
     this.http.post(this.deviceRegisterApi + this.deviceId, data, httpOptions)
-    .subscribe((response: any) => {
+    .subscribe(() => {
     });
   }
 }
