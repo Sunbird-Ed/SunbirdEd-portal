@@ -6,7 +6,7 @@ import { ResourceService, ToasterService, ServerResponse, NavigationHelperServic
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { BatchService } from '../../services';
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import * as moment from 'moment';
 @Component({
@@ -92,6 +92,12 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   public unsubscribe = new Subject<void>();
 
   public courseCreator = false;
+
+  updateBatchInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
+  clearButtonInteractEdata: IInteractEventEdata;
+  telemetryCdata: Array<{}>;
+
   /**
 	 * Constructor to create injected service(s) object
    * @param {Router} router Reference of Router
@@ -122,6 +128,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         mergeMap((params) => {
           this.batchId = params.batchId;
           this.setTelemetryImpressionData();
+          this.setTelemetryInteractData();
           return this.fetchBatchDetails();
         }),
         takeUntil(this.unsubscribe))
@@ -247,7 +254,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     if (res.result.response.content && res.result.response.content.length > 0) {
       _.forEach(res.result.response.content, (userData) => {
         if ( _.find(this.selectedMentors , {'id': userData.identifier }) ||
-        _.find(this.selectedParticipants , {'id': userData.identifier })) {
+          _.find(this.selectedParticipants , {'id': userData.identifier })) {
           return;
         }
         if (userData.identifier !== this.userService.userid) {
@@ -446,6 +453,34 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       this.setTelemetryImpressionData();
     });
   }
+
+  setTelemetryInteractData() {
+    this.updateBatchInteractEdata = {
+      id: 'update-batch',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+    this.clearButtonInteractEdata = {
+      id: 'clear-button',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+    this.telemetryInteractObject = {
+      id: this.batchId,
+      type: this.activatedRoute.snapshot.data.telemetry.object.type,
+      ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+    };
+    this.telemetryCdata = [
+      {
+        id: 'SB-13073',
+        type: 'Task'
+      }, {
+        id: 'course:enrollment:endDate',
+        type: 'Feature'
+      }
+    ];
+  }
+
   ngOnDestroy() {
     if (this.updateBatchModal && this.updateBatchModal.deny) {
       this.updateBatchModal.deny();
