@@ -44,6 +44,7 @@ export interface ContentData {
     pkgVersion?: string;
     visibility?: string;
     copyright?: string;
+    originData?: any;
 }
 
 export interface ContentCreditsData {
