@@ -10,6 +10,7 @@ import { ContentData } from '@sunbird/shared';
 })
 export class CollectionPlayerMetadataComponent implements OnInit {
   @Input() metaData: ContentData;
+  instance: string;
   public collectionMeta: any = {};
   public collectionId: string;
   contributions: string;
@@ -19,6 +20,7 @@ export class CollectionPlayerMetadataComponent implements OnInit {
   constructor(public resourceService: ResourceService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.instance = _.upperCase(this.resourceService.instance);
     this.activatedRoute.params.subscribe((params) => {
       this.collectionId = params.collectionId;
     });
