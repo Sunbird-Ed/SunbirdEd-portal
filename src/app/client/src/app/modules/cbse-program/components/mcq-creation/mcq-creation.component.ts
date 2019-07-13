@@ -19,6 +19,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
   @Input() selectedAttributes: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter<any>();
+  @Output() discard = new EventEmitter();
   @Input() role: any;
   @ViewChild('mcqFormControl') private mcqFormControl;
   public userProfile: IUserProfile;
@@ -137,6 +138,10 @@ export class McqCreationComponent implements OnInit, OnChanges {
     } else if (event === 'edit') {
       this.refreshEditor();
       this.showPreview = false;
+    } else if (event === 'discard') {
+      this.discard.emit('discard');
+    } else if(event === 'delete') {
+      this.deleteQuestion([{key:'status', value:'Retired'}])
     } else {
       this.handleSubmit(this.mcqFormControl);
     }
@@ -283,6 +288,91 @@ export class McqCreationComponent implements OnInit, OnChanges {
         });
       });
   }
+
+  deleteQuestion(optionalParams?: Array<Object>) {
+    forkJoin([this.getConvertedLatex(this.mcqForm.question), ...this.mcqForm.options.map(option => this.getConvertedLatex(option.body))])
+      .subscribe((res) => {
+        this.body = res[0]; // question with latex
+        this.optionBody = res.slice(1).map((option, i) => { // options with latex
+          return { body: res[i + 1] };
+        });
+
+        const questionData = this.getHtml(this.body, this.optionBody);
+        const correct_answer = this.mcqForm.answer;
+        const options = _.map(this.mcqForm.options, (opt, key) => {
+          if (Number(correct_answer) === key) {
+            return { 'answer': true, value: { 'type': 'text', 'body': opt.body } };
+          } else {
+            return { 'answer': false, value: { 'type': 'text', 'body': opt.body } };
+          }
+        });
+
+        let metadata = {
+            'code': UUID.UUID(),
+            'category': this.selectedAttributes.questionType.toUpperCase(),
+            'templateId': this.questionMetaData.data.templateId,
+            'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
+            'body': questionData.body,
+            'responseDeclaration': questionData.responseDeclaration,
+            'question': this.mcqForm.question,
+            'options': options,
+            // 'qlevel': this.mcqForm.difficultyLevel,
+            'maxScore': 1, // Number(this.mcqForm.maxScore),
+            'status': 'Retired',
+            'media': this.mediaArr,
+            'type': 'mcq'
+          }
+
+        if (this.mcqForm.learningOutcome) {
+          metadata["learningOutcome"] = [this.mcqForm.learningOutcome]
+        }
+
+        if (this.mcqForm.bloomsLevel) {
+          metadata["bloomsLevel"] = [this.mcqForm.bloomsLevel]
+        }
+
+
+        const req = {
+          url: this.configService.urlConFig.URLS.ASSESSMENT.UPDATE + '/' + this.questionMetaData.data.identifier,
+          data: {
+            'request': {
+              'assessment_item': {
+                'objectType': 'AssessmentItem',
+                'metadata': metadata
+              }
+            }
+          }
+        };
+        if (optionalParams) {
+          _.forEach(optionalParams, (param) => {
+            req.data.request.assessment_item.metadata[param.key] = param.value;
+            if (param.key === 'status') {
+              this.updateStatus = param.value;
+            }
+          });
+        }
+        this.actionService.patch(req).subscribe((res) => {
+          if (this.updateStatus === 'Retired') {
+            this.toasterService.success('Question Deleted Successfully');
+          } 
+          this.questionStatus.emit({ 'status': 'success', 'type': this.updateStatus, 'identifier': res.result.node_id });
+        }, error => {
+          this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question deletion failed');
+          const telemetryErrorData = {
+            context: {
+              env: 'cbse_program'
+            },
+            edata: {
+              err: error.status.toString(),
+              errtype: 'PROGRAMPORTAL',
+              stacktrace: _.get(error, 'error.params.errmsg') || 'Question deletion failed'
+            }
+          };
+          this.telemetryService.error(telemetryErrorData);
+        });
+      });
+  }
+
   createQuestion() {
     forkJoin([this.getConvertedLatex(this.mcqForm.question), ...this.mcqForm.options.map(option => this.getConvertedLatex(option.body))])
       .subscribe((res) => {

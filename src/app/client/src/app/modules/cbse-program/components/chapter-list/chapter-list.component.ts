@@ -96,7 +96,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
     let apiRequest;
     if (this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
       apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields)),
-      ...this.questionType.map(fields => this.searchQuestionsByType(fields, this.userService.userid))];
+      ...this.questionType.map(fields => this.searchQuestionsByType(fields, this.userService.userid, ['Live','Review','Reject','Draft']))];
     } else if (this.selectedAttributes.currentRole === 'REVIEWER') {
       apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields, '', 'Review')),
       ...this.questionType.map(fields => this.searchQuestionsByType(fields, '', 'Live'))];
