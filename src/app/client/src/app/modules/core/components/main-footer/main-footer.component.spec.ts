@@ -58,8 +58,8 @@ describe('MainFooterComponent', () => {
         fixture.detectChanges();
         const spy = spyOn(component, 'redirect');
         component.redirectToDikshaApp();
-        expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&utm_source=\
-        diksha-sunbird&utm_medium=paytm&utm_campaign=dial&utm_term=EJ23P');
+        expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&utm_source='+
+        'diksha-sunbird&utm_medium=paytm&utm_campaign=dial&utm_term=EJ23P');
     });
 
     it('should redirect to diksha app with UTM params if dialcode is not avaiable', () => {
@@ -68,8 +68,8 @@ describe('MainFooterComponent', () => {
         fixture.detectChanges();
         const spy = spyOn(component, 'redirect');
         component.redirectToDikshaApp();
-        expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&utm_source=\
-        diksha-sunbird&utm_medium=get&utm_campaign=redirection');
+        expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&utm_source='+
+        'diksha-sunbird&utm_medium=get&utm_campaign=redirection');
     });
 
     it('should redirect to diksha app without UTM params if not avaiable', () => {
