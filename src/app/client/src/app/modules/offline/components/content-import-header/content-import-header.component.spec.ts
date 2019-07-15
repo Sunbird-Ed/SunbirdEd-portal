@@ -19,8 +19,7 @@ describe('ContentImportHeaderComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, SuiModalModule, SharedModule.forRoot(), HttpClientTestingModule,
-        TelemetryModule],
+      imports: [RouterTestingModule, SuiModalModule, SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule],
       declarations: [ContentImportHeaderComponent, ContentImportComponent, WatchVideoComponent],
       providers: [{provide: ResourceService, useValue: resourceServiceStub},
         TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }]
