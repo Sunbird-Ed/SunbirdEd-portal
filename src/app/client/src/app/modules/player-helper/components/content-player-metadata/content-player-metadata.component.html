@@ -123,8 +123,6 @@
                 <a ng-if="metadata.orgDetails?.email" href="mailto:{{metadata.orgDetails?.email}}?subject={{metadata.name}}">{{metadata.originData.orgDetails?.email}}</a>
             </dd>
         </dl>
-        <app-content-credits [contentData]="metadata" *ngIf="showContentCreditsModal"
-            (close)="showContentCreditsModal = false">
-        </app-content-credits>
     </div>
 </div>
+<app-content-credits [contentData]="metadata" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false"></app-content-credits>
