@@ -109,7 +109,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
         });
         this.noResultsFound = (res.length > 0) ? false : true;
         if (this.noResultsFound) {
-          this.toasterService.error('No results found with applied filters');
+          this.toasterService.error(this.resourceService.messages.stmsg.m0008);
         }
         this.getDataSetValue(res);
 
