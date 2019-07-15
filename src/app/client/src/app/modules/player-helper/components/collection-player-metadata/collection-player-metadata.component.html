@@ -65,7 +65,7 @@
 
 <div *ngIf="metaData && metaData.originData" class="ui divider my-24"></div>
 
-<h4 class="sb-section-title mb-16 d-block">{{resourceService.frmelmnts?.lbl?.contentcopiedtitle}}</h4>
+<h4 *ngIf="metaData && metaData.originData" class="sb-section-title mb-16 d-block">{{resourceService.frmelmnts?.lbl?.contentcopiedtitle}}</h4>
 <div *ngIf="metaData && metaData.originData" class="sb-meta-data-container sb-meta-data-column d-flex flex-w-wrap">
   <dl class="sb-meta-data" *ngIf="metaData.originData.name">
       <dt>{{resourceService.frmelmnts?.lbl?.contenttype}}</dt>
