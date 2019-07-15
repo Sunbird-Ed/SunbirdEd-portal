@@ -6,7 +6,7 @@ import { switchMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { DownloadManagerService } from './../../services';
 import { ConnectionService } from './../../services';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-download-manager',
@@ -27,8 +27,7 @@ export class DownloadManagerComponent implements OnInit {
     public resourceService: ResourceService, public toasterService: ToasterService,
     public connectionService: ConnectionService,
     public configService: ConfigService,
-    public router: Router,
-    public activatedRoute: ActivatedRoute) { }
+    public router: Router) { }
 
   ngOnInit() {
     // Call download list initailly
