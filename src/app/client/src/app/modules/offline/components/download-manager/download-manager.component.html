@@ -1,4 +1,4 @@
-<sui-accordion class="styled fluid sb-single-pannel-accordion sb-download-manager-panel" [ngClass]="{'sb-single-pannel-accordion-fixed': panelOpened === true}">
+<sui-accordion class="styled fluid sb-single-pannel-accordion sb-download-manager-panel" [ngClass]="{'sb-single-pannel-accordion-fixed': panelOpened === true}" >
   <sui-accordion-panel [(isOpen)]="isOpen">
     <div title class="p-0">
       <div class="sb-single-pannel-accordion-heading" (click)="panelOpened = !panelOpened">
@@ -18,16 +18,9 @@
           </button> -->
         </div>
         <div class="info-text">{{data.downloadedSize | filesize}}/{{data.totalSize | filesize}}</div>
-        <sui-progress [value]="60" [maximum]="100" class="mb-0 mr-8"></sui-progress>
+        <sui-progress [value]="showProgressValue(data.downloadedSize, data.totalSize)" [maximum]="100" class="mb-0 mr-8"></sui-progress>
       </div>
-      <div class="sb-single-pannel-accordion-list-item" *ngFor="let data of downloadResponse.submitted | orderBy:'createdOn': true">
-        <div class="d-flex flex-ai-center flex-jc-center flex-basis-100">
-          <!-- <i class="history icon waiting-icon d-flex flex-ai-center"></i> -->
-          <div class="download-text">{{data.name}}</div>
-          <div class="sb-label sb-label-table sb-label-warning-0 ml-auto">{{resourceService?.frmelmnts?.btn?.downloadPending}}</div>
-          <!-- <div class="waiting-text">Waiting...</div> -->
-        </div>
-      </div>
+
       <div class="sb-single-pannel-accordion-list-item" *ngFor="let data of downloadResponse.failed | orderBy:'createdOn': true">
         <div class="d-flex flex-ai-center flex-jc-center flex-basis-100">
           <div class="download-text">{{data.name}}</div>
@@ -38,8 +31,19 @@
         </div>
         <!-- <div class="error-text">Download failed</div> -->
       </div>
-      
-      <div class="sb-single-pannel-accordion-list-item" *ngFor="let data of downloadResponse.completed | orderBy:'createdOn': true" (click)="openContent(data.contentId, data.mimeType)">
+
+      <div class="sb-single-pannel-accordion-list-item" *ngFor="let data of downloadResponse.submitted | orderBy:'createdOn': true">
+        <div class="d-flex flex-ai-center flex-jc-center flex-basis-100">
+          <!-- <i class="history icon waiting-icon d-flex flex-ai-center"></i> -->
+          <div class="download-text">{{data.name}}</div>
+          <div class="sb-label sb-label-table sb-label-warning-0 ml-auto">{{resourceService?.frmelmnts?.btn?.downloadPending}}</div>
+          <!-- <div class="waiting-text">Waiting...</div> -->
+        </div>
+        <!-- <div class="error-text">Download failed</div> -->
+      </div>
+
+
+      <div class="cursor-pointer sb-single-pannel-accordion-list-item" *ngFor="let data of downloadResponse.completed | orderBy:'createdOn': true" (click)="openContent(data.contentId, data.mimeType)">
         <div class="d-flex flex-ai-center flex-jc-center flex-basis-100">
           <div class="download-text">{{data.name}}</div>
           <div class="sb-label sb-label-table sb-label-success-0 ml-auto">
