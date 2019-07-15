@@ -66,6 +66,10 @@
                 color: $primary-800;
                 font-weight: $font-weight-bold;
             }
+            &:hover{
+                background: $primary-0;
+                color: $primary-800;
+            }
         }
     }
 }
