@@ -23,18 +23,11 @@ export class PublicPlayerService {
   */
   collectionData: ContentData;
   previewCdnUrl: string;
-  sessionId;
   constructor(public userService: UserService, private orgDetailsService: OrgDetailsService,
     public configService: ConfigService, public router: Router,
     public publicDataService: PublicDataService, public navigationHelperService: NavigationHelperService) {
       this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
-      try {
-        this.sessionId = !(_.isEmpty(<HTMLInputElement> document.getElementById('sessionId') &&
-                                    <HTMLInputElement>document.getElementById('sessionId')).value) ?
-        (<HTMLInputElement>document.getElementById('sessionId')).value : this.userService.anonymousSid;
-      } catch (e) { console.log(e); }
-
   }
 
   /**
@@ -83,7 +76,7 @@ export class PublicPlayerService {
   getConfig(contentDetails: ContentDetails, option: any = {}): PlayerConfig {
     const configuration: any = _.cloneDeep(this.configService.appConfig.PLAYER_CONFIG.playerConfig);
     configuration.context.contentId = contentDetails.contentId;
-    configuration.context.sid = environment.isOffline && !(_.isEmpty(this.sessionId)) ? this.sessionId : this.userService.anonymousSid;
+    configuration.context.sid = this.userService.anonymousSid;
     configuration.context.uid = 'anonymous';
     configuration.context.timeDiff = this.orgDetailsService.getServerTimeDiff;
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
