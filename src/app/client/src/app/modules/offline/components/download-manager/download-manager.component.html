@@ -43,13 +43,15 @@
       </div>
 
 
-      <div class="cursor-pointer sb-single-pannel-accordion-list-item" *ngFor="let data of downloadResponse.completed | orderBy:'createdOn': true" (click)="openContent(data.contentId, data.mimeType)">
+      <div class="cursor-pointer sb-single-pannel-accordion-list-item" *ngFor="let data of downloadResponse.completed | orderBy:'createdOn': true" (click)="openContent(data.contentId, data.mimeType)"
+      appTelemetryInteract [telemetryInteractObject]="{id:data.contentId,type:data.contentType,ver:data.pkgVersion ? data.pkgVersion.toString():'1.0'}"
+      [telemetryInteractEdata]="telemetryCdata" [telemetryInteractCdata]="{id:data.contentId,type:data.contentType}">
         <div class="d-flex flex-ai-center flex-jc-center flex-basis-100">
           <div class="download-text">{{data.name}}</div>
           <div class="sb-label sb-label-table sb-label-success-0 ml-auto">
             <i class="check circle icon success-icon ml-auto"></i>{{resourceService?.frmelmnts?.btn?.downloadCompleted}}
           </div>
-          
+
         </div>
       </div>
     </div>

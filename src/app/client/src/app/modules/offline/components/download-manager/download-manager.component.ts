@@ -6,8 +6,8 @@ import { switchMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { DownloadManagerService } from './../../services';
 import { ConnectionService } from './../../services';
-import { Router } from '@angular/router';
-
+import { Router, ActivatedRoute } from '@angular/router';
+import { IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-download-manager',
   templateUrl: './download-manager.component.html',
@@ -21,12 +21,14 @@ export class DownloadManagerComponent implements OnInit {
   count = 0;
   localCount: 0;
   panelOpened = false;
+  telemetryCdata: IInteractEventEdata;
 
   constructor(public downloadManagerService: DownloadManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public connectionService: ConnectionService,
     public configService: ConfigService,
-    public router: Router) { }
+    public router: Router,
+    public activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     // Call download list initailly
@@ -43,6 +45,7 @@ export class DownloadManagerComponent implements OnInit {
       this.isOpen = true;
       this.getDownloadList();
     });
+    this.setTelemetryInteractData();
   }
 
   getDownloadList() {
@@ -82,5 +85,13 @@ export class DownloadManagerComponent implements OnInit {
     } else {
       this.router.navigate(['play/content', contentId]);
     }
+  }
+
+  setTelemetryInteractData() {
+    this.telemetryCdata =  {
+      id: 'download-manager',
+      type: 'click',
+      pageid: 'library'
+    };
   }
 }
