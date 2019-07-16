@@ -12,7 +12,7 @@ org=$3
 export sunbird_content_editor_artifact_url=$4
 export sunbird_collection_editor_artifact_url=$5
 export sunbird_generic_editor_artifact_url=$6
-commit_hash=$(git rev-parse --short HEAD)
+commit_hash=$7
 
 rm -rf src/app/app_dist/
 rm -rf src/app/player-dist.tar.gz
