@@ -10,7 +10,7 @@
             {{report.label || report.title}}</li>
         </ul>
       </div>
-      <div class="ten wide column sb-sideview-tab-container pl-40 pr-0 pt-72" *ngIf="currentReport">
+      <div class="ten wide column sb-sideview-tab-container pl-40 pr-0 pt-72 pb-24" *ngIf="currentReport">
         <h2 class="ui small header">
           {{currentReport?.title || currentReport?.label}}
         </h2>
@@ -43,7 +43,7 @@
               </div>
             </div>
             <ng-container *ngFor="let table of tables">
-              <div class="ui bottom attached small segment  p-0 b-0 no-bg pt-24" [suiTabContent]="table.id">
+              <div class="ui bottom attached small segment  p-0 b-0 no-bg py-24" [suiTabContent]="table.id">
                 <div *ngIf="table.data">
                   <app-data-table [tableId]="table.id" [headerData]="table.header" [rowsData]="table.data">
                   </app-data-table>
