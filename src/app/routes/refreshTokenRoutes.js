@@ -28,7 +28,7 @@ if(envHelper.KEYCLOAK_ANDROID_CLIENT.clientId){
 
 module.exports = (app) => {
 
-  app.post('/v1/auth/refresh/token', bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }),
+  app.post('/auth/v1/refresh/token', bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }),
     async (req, res) => {
       try {
         if(!req.body.refresh_token){
