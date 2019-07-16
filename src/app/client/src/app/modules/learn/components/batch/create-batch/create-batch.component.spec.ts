@@ -53,6 +53,7 @@ const fakeActivatedRoute = {
       ],
       data: {
         telemetry: {
+          object: {}
         }
       }
     }

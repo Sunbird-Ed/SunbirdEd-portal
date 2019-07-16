@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { BaseChartDirective } from 'ng2-charts';
 import { Component, OnInit, Input, ViewChild, OnDestroy, ElementRef } from '@angular/core';
@@ -6,6 +7,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription, Subject } from 'rxjs';
 import { distinctUntilChanged, map, debounceTime, takeUntil } from 'rxjs/operators';
 import * as moment from 'moment';
+import { IInteractEventObject } from '@sunbird/telemetry';
 @Component({
   selector: 'app-data-chart',
   templateUrl: './data-chart.component.html',
@@ -14,6 +16,7 @@ import * as moment from 'moment';
 export class DataChartComponent implements OnInit, OnDestroy {
 
   @Input() chartInfo: any;
+  @Input() telemetryInteractObject: IInteractEventObject;
   public unsubscribe = new Subject<void>();
   // contains the chart configuration
   chartConfig;
@@ -46,6 +49,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   resultStatistics = {};
   selectedFilters: {};
   dateFilterReferenceName;
+  telemetryCdata: Array<{}>;
 
   @ViewChild('datePickerForFilters') datepicker: ElementRef;
 
@@ -60,7 +64,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
   constructor(public resourceService: ResourceService, private fb: FormBuilder,
-    private toasterService: ToasterService) {
+    private toasterService: ToasterService, private activatedRoute: ActivatedRoute) {
     this.alwaysShowCalendars = true;
   }
 
@@ -68,6 +72,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     this.chartConfig = _.get(this.chartInfo, 'chartConfig');
     this.chartData = _.get(this.chartInfo, 'chartData');
     this.prepareChart();
+    this.setTelemetryCdata();
     if (this.filters) {
       this.buildFiltersForm();
     }
@@ -92,7 +97,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
         map(filters => {
           return _.omitBy(filters, _.isEmpty);
         }),
-        debounceTime(500),
+        debounceTime(100),
         distinctUntilChanged()
       )
       .subscribe((filters) => {
@@ -104,7 +109,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
         });
         this.noResultsFound = (res.length > 0) ? false : true;
         if (this.noResultsFound) {
-          this.toasterService.error('No results found with applied filters');
+          this.toasterService.error(this.resourceService.messages.stmsg.m0008);
         }
         this.getDataSetValue(res);
 
@@ -180,4 +185,23 @@ export class DataChartComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
+  setTelemetryCdata() {
+    this.telemetryCdata = [
+      {
+        id: 'dashboard:filter',
+        type: 'Feature'
+      }
+      , {
+        id: 'SB-13051',
+        type: 'Task'
+      }];
+  }
+
+  setTelemetryInteractEdata(val) {
+    return {
+      id: _.join(_.split(val, ' '), '-').toLowerCase(),
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+  }
 }

@@ -94,6 +94,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   private objectRollUp: any;
 
+  showContentCreditsModal: boolean;
+
   telemetryCdata: Array<{}>;
 
   public loaderMessage: ILoaderMessage = {
@@ -173,7 +175,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
     });
-    this.courseProgressService.courseProgressData.pipe(
+     this.courseProgressService.courseProgressData.pipe(
       takeUntil(this.unsubscribe))
       .subscribe(courseProgressData => this.courseProgressData = courseProgressData);
   }
@@ -355,6 +357,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
   public createEventEmitter(data) {
     this.createNoteData = data;
+  }
+  showContentCreditsPopup () {
+    this.showContentCreditsModal = true;
   }
   ngOnDestroy() {
     this.unsubscribe.next();

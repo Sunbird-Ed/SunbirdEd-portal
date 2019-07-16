@@ -89,7 +89,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       takeUntil(this.unsubscribe))
       .subscribe((courseProgressData) => {
         this.enrolledCourse = true;
-        this.progress = courseProgressData.progress ? Math.round(courseProgressData.progress) : 0;
+        this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
         this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
         if (!this.flaggedCourse && this.onPageLoadResume &&
           !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {

@@ -16,7 +16,8 @@
     color: $black;
     border-radius: $base-block-space $base-block-space 0 0;
     text-align: center;
-
+    height: 148px;
+    
     .playStore-img {
       width: 120px;
     }
@@ -155,7 +156,7 @@
 @media screen and (max-width: 767px) {
 
   .download-diksha {
-    bottom: 204px;
+    bottom: 206px;
     margin: 0 auto;
     right: 0;
     left: 0;
@@ -164,6 +165,10 @@
 
     a {
       padding-bottom: 0 !important;
+    }
+
+    p {
+      display: none !important;
     }
   }
 

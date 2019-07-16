@@ -242,7 +242,7 @@
   white-space: nowrap;
 }
 
-.sb-table .sb-table-header, .sb-table .sb-table-body {
+.sb-table .sb-table-header, .sb-table .sb-table-body, .sb-table thead, .sb-table tbody{
   tr th {
     font-size: $font-size-sm;
     color: $gray;
@@ -265,7 +265,7 @@
   }
 }
 
-.sb-table .sb-table-body {
+.sb-table .sb-table-body, .sb-table tbody {
 
   td {
     font-size: $font-size-normal;
