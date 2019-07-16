@@ -13,7 +13,7 @@ body {
   letter-spacing: 0.2px;
   height: auto;
   color: $default-text-color;
-  padding-bottom: 400px;
+  padding-bottom: 336px;
   min-height: 100vh;
   &.pushable {
     background: $body-background-color !important;
@@ -28,12 +28,29 @@ body {
 }
 @include respond-above(sm) {
   body {
-    padding-bottom: 240px;
+    padding-bottom: 168px;
     .pusher {
       padding-bottom: 240px !important;
     }
+    .footer-fix {
+      min-height: calc(100vh - 168px);
+    }
+    .sb-mid-container-min-height{
+      min-height: calc(100vh - 288px);
+    }
   }
 }
+@include respond-below(sm) {
+  .footer-fix {
+    min-height: calc(100vh - 336px);
+  }
+}
+.sb-offline {
+  padding-bottom: 145px;
+  .footer-fix {
+    min-height: calc(100vh - 180px);
+   }
+  }
 
 *[lang="en"] body {
   font-family: $font-stack-en;
@@ -92,3 +109,12 @@ body {
     overflow: hidden;
   }
 }
+
+.sb-prominent-filter{
+  .accordion {
+    .content {
+      padding: .5em 0 0 0;
+    }
+  }
+}
+
