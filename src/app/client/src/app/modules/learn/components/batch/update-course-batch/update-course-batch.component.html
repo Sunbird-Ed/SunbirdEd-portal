@@ -78,7 +78,7 @@
               <div class="ui read-only calendar rangeenrollMentEnd" id="rangeenrollMentEnd">
                 <div class="sb-field ui left icon input" [ngClass]="{'disabled': !batchUpdateForm.value.startDate}">
                   <i class="calendar icon date-calendar"></i>
-                  <input class="sb-form-control" [pickerMinDate]='pickerMinDateForEnrollmentEndDate' [pickerMaxDate]='batchUpdateForm.value.endDate'
+                  <input class="sb-form-control" (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])" [pickerMinDate]='pickerMinDateForEnrollmentEndDate' [pickerMaxDate]='batchUpdateForm.value.endDate'
                 suiDatepicker formControlName="enrollmentEndDate" [pickerMode]="'date'">
                 </div>
               </div>

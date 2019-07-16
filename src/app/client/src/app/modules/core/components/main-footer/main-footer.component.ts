@@ -52,12 +52,16 @@ export class MainFooterComponent implements OnInit {
         } else {
           applink = `${applink}&utm_source=${utm_source}&utm_medium=get&utm_campaign=redirection`;
         }
-        window.location.href = applink.replace(/\s+/g, '');
+        this.redirect(applink.replace(/\s+/g, ''));
       });
     } else {
-      window.location.href = applink;
+      this.redirect(applink);
     }
   }
+
+  redirect(url) {
+    window.location.href = url;
+    }
 
   setTelemetryInteractEdata(type): IInteractEventEdata {
     return {
