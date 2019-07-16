@@ -276,10 +276,10 @@ $sb-multi-select-dropdown-icon-font-size: 1.3em;
 $sb-dropdown-label-font-size: 0.8em;
 $sb-selection-dropdown-min-height: ($base-block-space * 4);
 $sb-selection-dropdown-padding: ($base-block-space/2) ($base-block-space/1);
-$sb-multiple-dropdown-label-font-size:  0.72rem;
+$sb-multiple-dropdown-label-font-size:  $font-size-sm;
 $sb-multiple-dropdown-label-margin-right: 4px;
 $sb-multiple-dropdown-text-margin: .23238095em 0 .23238095em .64285714em;
-$sb-multiple-dropdown-text-font-size: 11px;
+$sb-multiple-dropdown-text-font-size: $font-size-sm;
 $sb-selection-line-height: 18px;
 
 // Tabs
@@ -298,6 +298,10 @@ $sb-radio-btn-border-disabled-color: $gray-100;
 $sb-radio-btn-label-color: $gray-200;
 $sb-radio-btn-backgroud-before-checked: $white-color;
 $sb-radio-btn-backgroud-after-checked: $primary-300;
+
+//accordions
+$sb-download-manager-border: 1px solid $gray-100;
+$sb-download-text-max-width: 18em;
 
 // Checkbox
 $sb-checkbox-primary-background: $primary-color;

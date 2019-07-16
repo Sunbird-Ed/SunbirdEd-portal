@@ -1,5 +1,5 @@
-.offline-page-content {
-    height: 100%;
+ .offline-page-content {
+  min-height: calc(100vh - 50vh);
  }
  .offline-page-heading {
     font-size: 24px;

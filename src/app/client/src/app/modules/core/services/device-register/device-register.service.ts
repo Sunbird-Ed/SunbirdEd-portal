@@ -53,6 +53,7 @@ export class DeviceRegisterService  {
       },
       request: {
         did: this.deviceId,
+        producer: this.appId,
         uaspec: {
           agent: deviceInfo.browser,
           ver: deviceInfo.browser_version,
