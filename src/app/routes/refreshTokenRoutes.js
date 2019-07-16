@@ -28,14 +28,17 @@ if(envHelper.KEYCLOAK_ANDROID_CLIENT.clientId){
 
 module.exports = (app) => {
 
-  app.post('/v1/auth/refresh/token', bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }),
+  app.post('/auth/v1/refresh/token', bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }),
     async (req, res) => {
       try {
         if(!req.body.refresh_token){
           throw { error: 'REFRESH_TOKEN_REQUIRED', message: "refresh_token is required", statusCode: 400 }
         }
-        const jwtPayload = jwt.decode(req.body.refresh_token);
-        const clientDetails = keyClockMobileClients[jwtPayload.aud]
+        const jwtPayload = jwt.decode(req.body.refresh_token, {complete: true});
+        if(!jwtPayload || !jwtPayload.payload){
+          throw { error: 'INVALID_REFRESH_TOKEN', message: "refresh_token is invalid", statusCode: 400 }
+        }
+        const clientDetails = keyClockMobileClients[jwtPayload.payload.aud]
         if(!clientDetails){
           throw { error: 'INVALID_CLIENT', message: "client not supported", statusCode: 400 }
         }

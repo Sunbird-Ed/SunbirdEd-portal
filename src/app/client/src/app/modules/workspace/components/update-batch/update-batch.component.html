@@ -87,7 +87,7 @@
           <div class="ui read-only calendar rangeenrollMentEnd" id="rangeenrollMentEnd">
             <div class="sb-field ui input left icon" [ngClass]="{'disabled': !batchUpdateForm.value.startDate}">
               <i class="calendar icon date-calendar"></i>
-              <input class="sb-form-control" [pickerMinDate]='pickerMinDateForEnrollmentEndDate' [pickerMaxDate]='batchUpdateForm.value.endDate'
+              <input (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])" class="sb-form-control" [pickerMinDate]='pickerMinDateForEnrollmentEndDate' [pickerMaxDate]='batchUpdateForm.value.endDate'
                 suiDatepicker formControlName="enrollmentEndDate" [pickerMode]="'date'">
             </div>
           </div>
@@ -102,7 +102,7 @@
         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors" [ngClass]="{ 'disabled': batchDetails.status === 2 || showFormInViewMode }">
           <input id="mentorSelList">
           <i class="dropdown icon"></i>
-          <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
+          <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0005}}</div>
           <div class="menu">
             <div class="item" [attr.data-value]="mentor.id" *ngFor="let mentor of mentorList">
               <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}">
