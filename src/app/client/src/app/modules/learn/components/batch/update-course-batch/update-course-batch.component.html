@@ -1,12 +1,12 @@
-<sui-modal 
-  [mustScroll]="true" 
-  [isClosable]="true" 
-  [transitionDuration]="0" 
-  [size]="'normal'" 
+<sui-modal
+  [mustScroll]="true"
+  [isClosable]="true"
+  [transitionDuration]="0"
+  [size]="'normal'"
   class="sb-modal"
-  appBodyScroll 
-  *ngIf='showUpdateModal' 
-  (dismissed)="redirect()" 
+  appBodyScroll
+  *ngIf='showUpdateModal'
+  (dismissed)="redirect()"
   #updateBatchModal>
 
   <!--Header-->
@@ -88,7 +88,7 @@
             </div>
             </div>
           </div>
-    
+
       <div class="ui tweleve wide column mb-20" *ngIf="showLoader">
         <app-loader></app-loader>
       </div>
@@ -129,12 +129,13 @@
           </div>
         </div>
         <small *ngIf="batchDetails.participants && batchDetails.participants.length > 100" class="sb-color-primary d-flex pt-4">{{resourceService?.frmelmnts?.lbl?.contactStateAdmin}}</small>
-      </div>      
+      </div>
       <div class="sb-field-group mb-8" *ngIf="batchUpdateForm.value.enrollmentType !== 'open' && selectedParticipants.length > 0 && (batchDetails.participants && batchDetails.participants.length <= 100)">
         <label>{{resourceService?.frmelmnts?.lbl?.batchparticipants}}</label>
         <a class="ui label mt-5" *ngFor="let user of selectedParticipants">
           <img class="ui right spaced avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{user.name}}{{user.otherDetail}}
-          <i class="delete icon" *ngIf="batchDetails.status === 0" (click)="removeParticipant(user)"></i>
+          <!-- TODO: Will be enabled after 2.2 release
+          <i class="delete icon" *ngIf="batchDetails.status === 0" (click)="removeParticipant(user)"></i>-->
         </a>
       </div>
     </form>
@@ -143,8 +144,8 @@
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button 
-      class="sb-btn sb-btn-normal sb-btn-primary" 
+    <button
+      class="sb-btn sb-btn-normal sb-btn-primary"
       [disabled]="disableSubmitBtn || showFormInViewMode"
       appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
       [telemetryInteractEdata]="updateBatchInteractEdata" [telemetryInteractCdata]="telemetryCdata"
@@ -152,9 +153,9 @@
       >
       {{resourceService?.frmelmnts?.btn?.update}}
     </button>
-    <button 
-      class="sb-btn sb-btn-normal sb-btn-outline-primary" 
-      (click)="resetForm()" 
+    <button
+      class="sb-btn sb-btn-normal sb-btn-outline-primary"
+      (click)="resetForm()"
       [disabled]="showFormInViewMode"
       appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
       [telemetryInteractEdata]="clearButtonInteractEdata" [telemetryInteractCdata]="telemetryCdata"
