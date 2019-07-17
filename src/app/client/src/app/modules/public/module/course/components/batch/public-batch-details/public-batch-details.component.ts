@@ -77,6 +77,14 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
+  isValidEnrollmentEndDate(enrollmentEndDate) {
+    return !!enrollmentEndDate;
+  }
+
+  isEnrollmentAllowed(enrollmentEndDate) {
+    return moment(enrollmentEndDate).isBefore(this.todayDate);
+  }
+
   enrollBatch() {
     this.baseUrl = '/learn/course/' + this.courseId;
     if (!this.userService.loggedIn) {
