@@ -47,7 +47,7 @@
     "chart.js": "^2.7.3",
     "core-js": "^2.4.1",
     "datatables.net-dt": "1.10.19",
-    "docs": "github:Sunbird-Ed/sunbird-style-guide#master",
+    "docs": "github:lakhanmandloi/sunbird-style-guide#master",
     "fine-uploader": "^5.15.7",
     "font-awesome": "^4.7.0",
     "gulp": "^4.0.2",
