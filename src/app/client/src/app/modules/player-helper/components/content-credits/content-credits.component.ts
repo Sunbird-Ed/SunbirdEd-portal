@@ -17,10 +17,6 @@ export class ContentCreditsComponent implements OnInit, OnChanges {
   */
   @Input() contentData: ContentData;
   /**
-  * To show copyright field if coming from course-player;
-  */
-  @Input() showCopyright: boolean;
-  /**
   *Output for close popup;
   */
   @Output() close = new EventEmitter<any>();
