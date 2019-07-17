@@ -119,7 +119,7 @@ const createSession = async (loginId, client_id, req, res) => {
   let grant;
   let keycloakClient = keycloakTrampoline;
   let scope = 'openid';
-  if (reqQuery.client_id === 'android') {
+  if (client_id === 'android') {
     keycloakClient = keycloakTrampolineAndroid;
     scope = 'offline_access';
   }
