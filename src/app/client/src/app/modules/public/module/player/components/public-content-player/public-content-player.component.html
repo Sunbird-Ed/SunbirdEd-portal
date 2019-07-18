@@ -45,9 +45,15 @@
         <!--/Player-->
 
         <!--Meta Data of content-->
-        <app-content-player-metadata [contentData]="contentData"></app-content-player-metadata>
+        <div class="ui stackable grid">
+            <div class="eight wide column">
+                <app-content-player-metadata [contentData]="contentData"></app-content-player-metadata>
+            </div>
+            <div class="four wide column">
+            </div>
+        </div>
         <!--/Meta Data of content-->
-
+        
       </div>
   </div>
 </div>

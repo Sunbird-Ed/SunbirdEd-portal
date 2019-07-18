@@ -47,8 +47,8 @@
     </dl>
     <dl class="sb-meta-data">
         <dt>{{resourceService.frmelmnts.lbl?.copyRight}}</dt>
-        <dd *ngIf="metadata.orgDetails && metadata.orgDetails.orgName">
-            <span class="d-inline-block mr-20">{{metadata.orgDetails?.orgName}}</span> &nbsp;
+        <dd>
+            <span *ngIf="metadata.copyright" class="d-inline-block mr-20">{{metadata.copyright}}</span> &nbsp;
             <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}" class="cursor-pointer">
                 {{resourceService.frmelmnts.lbl.contentCredits}}
             </a>
@@ -116,10 +116,10 @@
             <dt>{{resourceService.frmelmnts.lbl?.licenseTerms}}</dt>
             <dd *ngIf="metadata.creator">{{metadata.originData.license}}</dd>
         </dl>
-        <dl class="sb-meta-data" *ngIf="metadata.originData.orgDetails && metadata.originData.orgDetails.orgName">
+        <dl class="sb-meta-data" *ngIf="metadata.originData.organisation">
             <dt>{{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</dt>
             <dd>
-                <span class="d-inline-block mr-20">{{metadata.originData.orgDetails?.orgName}}</span> &nbsp;
+                <span class="d-inline-block mr-20">{{metadata.originData.organisation.join(', ')}}</span> &nbsp;
                 <a ng-if="metadata.orgDetails?.email" href="mailto:{{metadata.orgDetails?.email}}?subject={{metadata.name}}">{{metadata.originData.orgDetails?.email}}</a>
             </dd>
         </dl>
