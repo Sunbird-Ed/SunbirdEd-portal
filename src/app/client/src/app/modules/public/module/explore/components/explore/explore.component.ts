@@ -130,7 +130,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     const manipulatedData = this.utilService.manipulateSoftConstraint(_.get(this.queryParams, 'appliedFilters'),
       softConstraintData);
     const option = {
-      organizationId: this.organizationId,
+      organizationId: this.organisationId,
       source: 'web',
       name: 'Explore',
       filters: _.get(this.queryParams, 'appliedFilters') ? filters : _.get(manipulatedData, 'filters'),
