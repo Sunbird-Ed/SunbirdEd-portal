@@ -141,7 +141,6 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     if (_.get(manipulatedData, 'filters')) {
       option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
     }
-    console.log(option);
     this.pageApiService.getPageData(option)
       .subscribe(data => {
         this.showLoader = false;
