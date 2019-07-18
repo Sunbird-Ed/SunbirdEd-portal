@@ -88,8 +88,8 @@ export class UserEditComponent implements OnInit, OnDestroy, AfterViewInit {
       this.allRoles = _.filter(this.allRoles, (role) => {
         return role.role !== 'ORG_ADMIN' && role.role !== 'SYSTEM_ADMINISTRATION' && role.role !== 'ADMIN';
       });
+      _.remove(this.allRoles, { role: 'PUBLIC' });
     });
-    _.remove(this.allRoles, { role: 'PUBLIC' });
   }
 
   populateUserDetails() {
