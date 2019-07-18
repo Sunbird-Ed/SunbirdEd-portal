@@ -126,6 +126,11 @@
               "src/assets",
               "src/thirdparty",
               "src/favicon.png"
+            ],
+            "codeCoverageExclude": [
+              "src/assets/**",
+              "src/thidparty/**",
+              "src/app/modules/offline/**"
             ]
           }
         },
