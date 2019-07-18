@@ -1,6 +1,6 @@
 <sui-modal 
   [mustScroll]="true" 
-  [isClosable]="true" 
+  [isClosable]="false" 
   [transitionDuration]="0" 
   [size]="'normal'" 
   class="sb-modal"
@@ -10,6 +10,7 @@
   #updateBatchModal
   >
   <!--Header-->
+  <i class="close icon" (click)="redirect()"></i>
   <div class="sb-modal-header">
     <span *ngIf="!showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0007}}</span>
     <span *ngIf="showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0015}}</span>

@@ -19,7 +19,7 @@
     <!--/Header-->
 
     <!--Content-->
-    <div *ngIf="refresh" class="sb-pageSection-content">
+    <div *ngIf="refresh" class="sb-pageSection-content pt-8">
         <ngx-slick (afterChange)="handleAfterChange($event)" class="carousel" #slickModal="slick-modal" [config]="slideConfig">
             <div ngxSlickItem *ngFor="let content of contentList" class="mr-16">
                 <!--Batch Card-->
