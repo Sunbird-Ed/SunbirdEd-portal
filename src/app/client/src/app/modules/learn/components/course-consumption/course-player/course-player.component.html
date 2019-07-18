@@ -71,8 +71,8 @@
                                 <p class="mb-5"><span>{{resourceService.frmelmnts.lbl.coursecreatedon}}</span>: {{courseHierarchy.createdOn | dateFormat}}</p>
                                 <p class="mb-5"><span>{{resourceService.frmelmnts.lbl.updatedon}}</span>: {{courseHierarchy.lastUpdatedOn | dateFormat}}</p>
                                 <p class="mb-5">
-                                    <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}" class="cursor-pointer">
-                                      {{resourceService.frmelmnts.lbl.contentCredits}}
+                                    <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.courseCredits}}" class="cursor-pointer">
+                                      {{resourceService.frmelmnts.lbl.courseCredits}}
                                     </a>
                                 </p>
                                 <div class="ui divider"></div>
@@ -164,6 +164,6 @@
     </div>
 </div>
 </div>
-<app-content-credits [contentData]="courseHierarchy" [showCopyright]="true" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false">
+<app-content-credits [contentData]="courseHierarchy" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false">
 </app-content-credits>
 <router-outlet></router-outlet>
