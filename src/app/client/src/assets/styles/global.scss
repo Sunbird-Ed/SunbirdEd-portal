@@ -121,3 +121,8 @@ body {
   }
 }
 
+@include respond-below(sm) {
+  .sb-pageSection-title-fix {
+    flex-basis: 64%;
+  }
+}
