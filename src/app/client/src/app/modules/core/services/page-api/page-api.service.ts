@@ -74,7 +74,7 @@ export class PageApiService {
           sort_by: requestParam.sort_by,
           softConstraints: requestParam.softConstraints,
           mode: requestParam.mode,
-          organisationId: requestParam.organisationId
+          organizationId: requestParam.organizationId
         }
       }
     };
