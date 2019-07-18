@@ -91,7 +91,6 @@ describe('UpdateCourseBatchComponent', () => {
         return observableOf(getUserList);
       }
     });
-    // devesh
     spyOn(courseBatchService, 'getParticipantList').and.callFake((request) => {
         return observableOf(participantList);
     });
