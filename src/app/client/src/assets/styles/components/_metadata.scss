@@ -54,9 +54,10 @@
 
     &.sb-meta-data-column {
         .sb-meta-data {
-            flex-direction: row;
+            flex-direction: column;
             margin: 8px 0px;
             flex-basis: 20%;
+            padding-right: ($base-block-space * 2);
         }
 
         .sb-meta-data dt,
