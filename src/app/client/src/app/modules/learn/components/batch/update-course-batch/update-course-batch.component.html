@@ -1,6 +1,6 @@
 <sui-modal 
   [mustScroll]="true" 
-  [isClosable]="true" 
+  [isClosable]="false" 
   [transitionDuration]="0" 
   [size]="'normal'" 
   class="sb-modal"
@@ -10,6 +10,7 @@
   #updateBatchModal>
 
   <!--Header-->
+  <i class="close icon" (click)="redirect()"></i>
   <div class="sb-modal-header">
     <span *ngIf="!showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0007}}</span>
     <span *ngIf="showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0015}}</span>
@@ -78,7 +79,7 @@
               <div class="ui read-only calendar rangeenrollMentEnd" id="rangeenrollMentEnd">
                 <div class="sb-field ui left icon input" [ngClass]="{'disabled': !batchUpdateForm.value.startDate}">
                   <i class="calendar icon date-calendar"></i>
-                  <input class="sb-form-control" [pickerMinDate]='pickerMinDateForEnrollmentEndDate' [pickerMaxDate]='batchUpdateForm.value.endDate'
+                  <input class="sb-form-control" (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])" [pickerMinDate]='pickerMinDateForEnrollmentEndDate' [pickerMaxDate]='batchUpdateForm.value.endDate'
                 suiDatepicker formControlName="enrollmentEndDate" [pickerMode]="'date'">
                 </div>
               </div>
@@ -98,7 +99,7 @@
           [ngClass]="{ 'disabled' : showFormInViewMode }">
           <input id="mentorSelList">
           <i class="dropdown icon"></i>
-          <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
+          <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0005}}</div>
           <div class="menu">
             <div class="item" [attr.data-value]="mentor.id" *ngFor="let mentor of mentorList">
               <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{mentor.name}}{{mentor.otherDetail}}

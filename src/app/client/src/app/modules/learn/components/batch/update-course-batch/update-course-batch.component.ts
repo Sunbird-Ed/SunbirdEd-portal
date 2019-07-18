@@ -108,7 +108,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   updateBatchInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   clearButtonInteractEdata: IInteractEventEdata;
-  telemetryCdata: Array<{}>;
+  telemetryCdata: Array<{}> = [];
 
   /**
    * Constructor to create injected service(s) object
@@ -196,10 +196,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   private initializeUpdateForm(): void {
     const endDate = this.batchDetails.endDate ? new Date(this.batchDetails.endDate) : null;
     const enrollmentEndDate = this.batchDetails.enrollmentEndDate ? new Date(this.batchDetails.enrollmentEndDate) : null;
-    if (enrollmentEndDate) {
-      this.pickerMinDateForEnrollmentEndDate = enrollmentEndDate;
-    } else if (!moment(this.batchDetails.startDate).isBefore(moment(this.pickerMinDate).format('YYYY-MM-DD'))) {
-      this.pickerMinDateForEnrollmentEndDate = new Date(this.batchDetails.startDate);
+    if (!moment(this.batchDetails.startDate).isBefore(moment(this.pickerMinDate).format('YYYY-MM-DD'))) {
+      this.pickerMinDateForEnrollmentEndDate = new Date(this.batchDetails.startDate).setHours(0, 0, 0, 0);
     } else {
       this.pickerMinDateForEnrollmentEndDate = this.pickerMinDate;
     }
@@ -514,15 +512,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       type: this.activatedRoute.snapshot.data.telemetry.object.type,
       ver: this.activatedRoute.snapshot.data.telemetry.object.ver
     };
-    this.telemetryCdata = [
-      {
-        id: 'SB-13073',
-        type: 'Task'
-      }, {
-        id: 'course:enrollment:endDate',
-        type: 'Feature'
-      }
-    ];
+  }
+  setTelemetryCData(cdata: []) {
+    this.telemetryCdata = _.unionBy(this.telemetryCdata, cdata, 'id');
   }
   ngOnDestroy() {
     if (this.updateBatchModal && this.updateBatchModal.deny) {
