@@ -130,7 +130,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     const manipulatedData = this.utilService.manipulateSoftConstraint(_.get(this.queryParams, 'appliedFilters'),
       softConstraintData);
     const option = {
-      organizationId: this.organisationId,
+      organisationId: this.organisationId,
       source: 'web',
       name: 'Explore',
       filters: _.get(this.queryParams, 'appliedFilters') ? filters : _.get(manipulatedData, 'filters'),
@@ -141,6 +141,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     if (_.get(manipulatedData, 'filters')) {
       option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
     }
+    console.log(option);
     this.pageApiService.getPageData(option)
       .subscribe(data => {
         this.showLoader = false;
