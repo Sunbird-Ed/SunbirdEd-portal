@@ -43,7 +43,7 @@ describe('PageSectionComponent', () => {
   it('should show TEST INPUT for success data', () => {
     component.section = Response.successData;
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.sb-pageSection-title').innerText).toEqual('Multiple data');
+    expect(fixture.nativeElement.querySelector('.sb-pageSection-title').innerText).toEqual('Multiple data  1');
     expect(fixture.nativeElement.querySelector('.sb-pageSection-count').innerText).toEqual('1');
   });
   it('should show TEST INPUT for no contents data', () => {
