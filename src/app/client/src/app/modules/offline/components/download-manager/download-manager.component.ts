@@ -6,8 +6,9 @@ import { switchMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { DownloadManagerService } from './../../services';
 import { ConnectionService } from './../../services';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+import * as TreeModel from 'tree-model';
 @Component({
   selector: 'app-download-manager',
   templateUrl: './download-manager.component.html',
@@ -22,11 +23,13 @@ export class DownloadManagerComponent implements OnInit {
   localCount: 0;
   panelOpened = false;
   telemetryCdata: IInteractEventEdata;
+  pageId;
 
   constructor(public downloadManagerService: DownloadManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public connectionService: ConnectionService,
     public configService: ConfigService,
+    public activatedRoute: ActivatedRoute,
     public router: Router) { }
 
   ngOnInit() {
@@ -79,18 +82,35 @@ export class DownloadManagerComponent implements OnInit {
   }
 
   openContent(contentId, mimeType) {
-    if (mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-      this.router.navigate(['play/collection', contentId]);
-    } else {
-      this.router.navigate(['play/content', contentId]);
-    }
+    this.getPageId();
+      if (mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+        this.router.navigate(['play/collection', contentId]);
+      } else {
+        this.router.navigate(['play/content', contentId]);
+      }
   }
 
   setTelemetryInteractData() {
     this.telemetryCdata =  {
       id: 'download-manager',
       type: 'click',
-      pageid: 'library'
+      pageid: this.pageId || 'library'
     };
   }
+
+  getPageId() {
+    const model = new TreeModel();
+    let treeModel;
+    treeModel = model.parse(this.activatedRoute.snapshot.firstChild);
+    treeModel.walk((node) => {
+      if (_.isEmpty(node.model.firstChild)) {
+        const page = node.model.data.telemetry.pageid;
+        node.model.data.telemetry.env = 'offline';
+        this.pageId = _.includes(this.router.url, 'browse/play') || _.includes(this.router.url, 'browse/view-all') ?
+                        'browse-' + page : _.isEqual(page, 'explore') ? 'library' : page;
+        this.setTelemetryInteractData();
+      }
+    });
+  }
+
 }

@@ -139,6 +139,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   isOffline: boolean = environment.isOffline;
   showExportLoader = false;
   contentName: string;
+  requestParams;
 
   constructor(searchService: SearchService, router: Router, private playerService: PlayerService, private formService: FormService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService, private _cacheService: CacheService,
@@ -277,25 +278,27 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       manipulatedData = this.utilService.manipulateSoftConstraint(_.get(this.queryParams, 'appliedFilters'),
         softConstraintData, this.frameworkData);
     }
-    const requestParams = {
+    this.requestParams = {
       filters: _.get(this.queryParams, 'appliedFilters') ? this.filters : { ..._.get(manipulatedData, 'filters'), ...this.filters },
       limit: this.pageLimit,
       pageNumber: Number(request.params.pageNumber),
-      exists: request.queryParams.exists,
-      sort_by: request.queryParams.sortType ?
-        { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy),
       mode: _.get(manipulatedData, 'mode'),
       params: this.configService.appConfig.ViewAll.contentApiQueryParams
     };
+    if (!this.isOffline || _.includes(this.router.url, 'browse')) {
+      this.requestParams.exists = request.queryParams.exists,
+      this.requestParams.sort_by = request.queryParams.sortType ?
+      { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy);
+    }
     if (_.get(manipulatedData, 'filters')) {
-      requestParams['softConstraints'] = _.get(manipulatedData, 'softConstraints');
+      this.requestParams['softConstraints'] = _.get(manipulatedData, 'softConstraints');
     }
     if (_.get(this.activatedRoute.snapshot, 'data.baseUrl') === 'learn') {
       return combineLatest(
-        this.searchService.contentSearch(requestParams),
+        this.searchService.contentSearch(this.requestParams),
         this.coursesService.enrolledCourseData$).pipe(map(data => ({ contentData: data[0], enrolledCourseData: data[1] })));
     } else {
-      return this.searchService.contentSearch(requestParams).pipe(map(data => ({ contentData: data })));
+      return this.searchService.contentSearch(this.requestParams).pipe(map(data => ({ contentData: data })));
     }
   }
 
