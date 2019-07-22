@@ -26,16 +26,18 @@
       color: #212121;
     }
   }
+
   .md-drppicker .ranges ul li {
     margin-bottom: 8px;
-    }
-//   ngx-daterangepicker-material{
-//     .md-drppicker.drops-down-right{
-//         .ranges{
-           
-//         }
-//     }
-//   }
+  }
+
+  //   ngx-daterangepicker-material{
+  //     .md-drppicker.drops-down-right{
+  //         .ranges{
+
+  //         }
+  //     }
+  //   }
 }
 
 .graph-statistics {
@@ -43,9 +45,9 @@
 }
 
 .sb-prominent-filter .sb-prominent-filter-container .sb-prominent-filter-field:last-child {
-    margin-left: 0;
-    margin-top: 0;
-    text-align: left;
+  margin-left: 0;
+  margin-top: 0;
+  text-align: left;
 }
 
 .reset-filter-section {
@@ -62,7 +64,8 @@
 .sb-filter-label {
   border-bottom: 1px solid #ddd;
   width: 100%;
-  .sb-label-value{
+
+  .sb-label-value {
     margin-bottom: 4px;
     margin-right: 4px;
   }
@@ -104,6 +107,9 @@
   }
 
   .graph-filters {
+    .ui.form {
+      min-height: 36px;
+    }
 
     .ui.styled.accordion .accordion .title,
     .ui.styled.accordion .title {
@@ -125,24 +131,39 @@
 
   }
 }
-.sb-prominent-filter-field{
-    ::ng-deep{
-        .md-drppicker{
-            padding: 16px 8px;
-            .ranges ul li{
-                margin-bottom: 8px;
-              }
-              .btn {
-                background-color: #024f9d;
-                margin-right: 16px; 
-                line-height: 32px;
-                margin-right: 16px;
-            }
-            .buttons{
-                margin: 0;
-            }
-        }
+
+.sb-prominent-filter-field {
+  ::ng-deep {
+    .md-drppicker {
+      padding: 16px 8px;
+
+      .ranges ul li {
+        margin-bottom: 8px;
+      }
+
+      .btn {
+        background-color: #024f9d;
+        margin-right: 16px;
+        line-height: 32px;
+        margin-right: 16px;
+      }
+
+      .buttons {
+        margin: 0;
+      }
     }
+  }
 }
 
+.ui.form{
+  ::ng-deep {
+    sui-accordion {
+      sui-accordion-panel {
+        .title {
+          padding-top: 8px !important;
+        }
+      }
+    }
+  }
+} 
 

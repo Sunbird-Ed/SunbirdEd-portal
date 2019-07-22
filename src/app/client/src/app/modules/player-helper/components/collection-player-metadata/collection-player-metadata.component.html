@@ -41,10 +41,6 @@
       <dd *ngIf="metaData.creator">{{metaData.creator}}</dd>
   </dl>
   <dl class="sb-meta-data">
-      <dt>{{resourceService.frmelmnts.lbl?.originalAuthor}}</dt>
-      <dd *ngIf="metaData.author">{{metaData.author}}</dd>
-  </dl>
-  <dl class="sb-meta-data">
       <dt>{{resourceService.frmelmnts.lbl?.licenseTerms}}</dt>
       <dd *ngIf="metaData.license">{{metaData.license}}</dd>
   </dl>
@@ -79,10 +75,10 @@
       <dt>{{resourceService.frmelmnts.lbl?.licenseTerms}}</dt>
       <dd *ngIf="metaData.creator">{{metaData.originData.license}}</dd>
   </dl>
-  <dl class="sb-meta-data" *ngIf="metaData.originData.orgDetails && metaData.originData.orgDetails.orgName">
+  <dl class="sb-meta-data" *ngIf="metaData.originData.organisation">
       <dt>{{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</dt>
       <dd>
-          <span class="d-inline-block mr-20">{{metaData.originData.orgDetails?.orgName}}</span> &nbsp;
+          <span class="d-inline-block mr-20">{{metaData.originData.organisation.join(', ')}}</span> &nbsp;
           <a ng-if="metaData.orgDetails?.email" href="mailto:{{metaData.orgDetails?.email}}?subject={{metaData.name}}">{{metaData.originData.orgDetails?.email}}</a>
       </dd>
   </dl>
