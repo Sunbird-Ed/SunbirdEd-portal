@@ -183,7 +183,7 @@ select:-internal-autofill-selected {
   .sb-field.ui.left.icon.input{
     width: 100%;
     .icon{
-      z-index: 9999;
+      z-index: 9;
     }
   }
   .d-flex.flex-w-wrap{
@@ -192,6 +192,7 @@ select:-internal-autofill-selected {
     }
   }
 }
+
 
 
 .sb-form .sb-field-group.error input, .sb-form .sb-field-group.error label {

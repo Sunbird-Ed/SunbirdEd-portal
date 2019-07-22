@@ -42,6 +42,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   showExportLoader = false;
   contentName: string;
   public slug: string;
+  organisationId: string;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -66,6 +67,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.slug = orgDetails.slug;
         this.hashTagId = orgDetails.hashTagId;
         this.initFilters = true;
+        this.organisationId = orgDetails.id;
         return this.dataDrivenFilterEvent;
       }), first()
     ).subscribe((filters: any) => {
@@ -128,6 +130,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     const manipulatedData = this.utilService.manipulateSoftConstraint(_.get(this.queryParams, 'appliedFilters'),
       softConstraintData);
     const option = {
+      organisationId: this.organisationId,
       source: 'web',
       name: 'Explore',
       filters: _.get(this.queryParams, 'appliedFilters') ? filters : _.get(manipulatedData, 'filters'),

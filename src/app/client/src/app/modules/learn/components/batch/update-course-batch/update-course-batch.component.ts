@@ -197,7 +197,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     const endDate = this.batchDetails.endDate ? new Date(this.batchDetails.endDate) : null;
     const enrollmentEndDate = this.batchDetails.enrollmentEndDate ? new Date(this.batchDetails.enrollmentEndDate) : null;
     if (!moment(this.batchDetails.startDate).isBefore(moment(this.pickerMinDate).format('YYYY-MM-DD'))) {
-      this.pickerMinDateForEnrollmentEndDate = new Date(this.batchDetails.startDate).setHours(0, 0, 0, 0);
+      this.pickerMinDateForEnrollmentEndDate = new Date(new Date(this.batchDetails.startDate).setHours(0, 0, 0, 0));
     } else {
       this.pickerMinDateForEnrollmentEndDate = this.pickerMinDate;
     }

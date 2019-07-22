@@ -123,7 +123,7 @@ const createSession = async (loginId, client_id, req, res) => {
     keycloakClient = keycloakTrampolineAndroid;
     scope = 'offline_access';
   }
-  grant = await keycloakClient.grantManager.obtainDirectly(emailId, undefined, undefined, scope);
+  grant = await keycloakClient.grantManager.obtainDirectly(loginId, undefined, undefined, scope);
   keycloakClient.storeGrant(grant, req, res)
   req.kauth.grant = grant
   keycloakClient.authenticated(req)
