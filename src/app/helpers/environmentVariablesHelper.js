@@ -34,7 +34,7 @@ let envVariables = {
   CACHE_STORE: env.sunbird_cache_store || 'memory',
   CACHE_TTL: env.sunbird_cache_ttl || 1800,
   ANDROID_APP_URL: env.sunbird_android_app_url || 'http://www.sunbird.org',
-  BUILD_NUMBER: env.sunbird_build_number || packageObj.version + '.' + packageObj.buildHash,
+  BUILD_NUMBER: packageObj.version + '.' + packageObj.buildHash,
   TELEMETRY_SERVICE_LOCAL_URL: env.sunbird_telemetry_service_local_url || 'http://telemetry-service:9001/',
   PORTAL_API_CACHE_TTL: env.sunbird_api_response_cache_ttl || '600',
   RESPONSE_CACHE_TTL: env.sunbird_response_cache_ttl || '180', // used in tenant helper to cache the tenant response info
