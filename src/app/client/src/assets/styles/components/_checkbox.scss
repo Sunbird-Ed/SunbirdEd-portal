@@ -48,7 +48,9 @@
   [disabled="disabled"]+label,
   input[disabled="disabled"],
   [disabled="true"]+label,
-  input[disabled="true"] {
+  input[disabled="true"],
+  [disabled]+label,
+  input[disabled]{
     opacity: $sb-radio-btn-disabled-opacity;
     cursor: default;
   }
