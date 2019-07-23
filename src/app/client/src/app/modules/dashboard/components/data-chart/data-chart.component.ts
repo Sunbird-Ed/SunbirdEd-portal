@@ -128,8 +128,16 @@ export class DataChartComponent implements OnInit, OnDestroy {
   }
 
   getDataSetValue(chartData = this.chartData) {
-    const groupedDataBasedOnLabels = _.groupBy(chartData, (data) => _.trim(data[_.get(this.chartConfig, 'labelsExpr')].toLowerCase()));
-    this.chartLabels = _.keys(groupedDataBasedOnLabels);
+    let labels = [];
+    let groupedDataBasedOnLabels;
+    if (_.get(this.chartConfig, 'labelsExpr')) {
+      groupedDataBasedOnLabels = _.groupBy(chartData, (data) => _.trim(data[_.get(this.chartConfig, 'labelsExpr')].toLowerCase()));
+      labels = _.keys(groupedDataBasedOnLabels);
+    }
+    if (_.get(this.chartConfig, 'labels')) {
+      labels = _.get(this.chartConfig, 'labels');
+    }
+    this.chartLabels = labels;
     this.datasets = [];
     _.forEach(this.chartConfig.datasets, dataset => {
       this.datasets.push({
