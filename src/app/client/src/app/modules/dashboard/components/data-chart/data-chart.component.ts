@@ -80,42 +80,44 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   buildFiltersForm() {
     this.filtersFormGroup = this.fb.group({});
-    _.forEach(this.filters, filter => {
-      if (filter.controlType === 'date' || /date/i.test(_.get(filter, 'reference'))) {
-        const dateRange = _.uniq(_.map(this.chartData, _.get(filter, 'reference')));
-        this.pickerMinDate = moment(dateRange[0], 'DD-MM-YYYY');
-        this.pickerMaxDate = moment(dateRange[dateRange.length - 1], 'DD-MM-YYYY');
-        this.dateFilterReferenceName = filter.reference;
-      }
-      this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
-      filter.options = _.uniq(_.map(this.chartData, data => data[filter.reference].toLowerCase()));
-    });
-    this.showFilters = true;
-    this.filtersSubscription = this.filtersFormGroup.valueChanges
-      .pipe(
-        takeUntil(this.unsubscribe),
-        map(filters => {
-          return _.omitBy(filters, _.isEmpty);
-        }),
-        debounceTime(100),
-        distinctUntilChanged()
-      )
-      .subscribe((filters) => {
-        this.selectedFilters = _.omit(filters, this.dateFilterReferenceName); // to omit date inside labels
-        const res: Array<{}> = _.filter(this.chartData, data => {
-          return _.every(filters, (value, key) => {
-            return _.includes(value, data[key].toLowerCase());
-          });
-        });
-        this.noResultsFound = (res.length > 0) ? false : true;
-        if (this.noResultsFound) {
-          this.toasterService.error(this.resourceService.messages.stmsg.m0008);
+    if (_.get(this.chartConfig, 'labelsExpr')) {
+      _.forEach(this.filters, filter => {
+        if (filter.controlType === 'date' || /date/i.test(_.get(filter, 'reference'))) {
+          const dateRange = _.uniq(_.map(this.chartData, _.get(filter, 'reference')));
+          this.pickerMinDate = moment(dateRange[0], 'DD-MM-YYYY');
+          this.pickerMaxDate = moment(dateRange[dateRange.length - 1], 'DD-MM-YYYY');
+          this.dateFilterReferenceName = filter.reference;
         }
-        this.getDataSetValue(res);
-
-      }, (err) => {
-        console.log(err);
+        this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
+        filter.options = _.uniq(_.map(this.chartData, data => data[filter.reference].toLowerCase()));
       });
+      this.showFilters = true;
+      this.filtersSubscription = this.filtersFormGroup.valueChanges
+        .pipe(
+          takeUntil(this.unsubscribe),
+          map(filters => {
+            return _.omitBy(filters, _.isEmpty);
+          }),
+          debounceTime(100),
+          distinctUntilChanged()
+        )
+        .subscribe((filters) => {
+          this.selectedFilters = _.omit(filters, this.dateFilterReferenceName); // to omit date inside labels
+          const res: Array<{}> = _.filter(this.chartData, data => {
+            return _.every(filters, (value, key) => {
+              return _.includes(value, data[key].toLowerCase());
+            });
+          });
+          this.noResultsFound = (res.length > 0) ? false : true;
+          if (this.noResultsFound) {
+            this.toasterService.error(this.resourceService.messages.stmsg.m0008);
+          }
+          this.getDataSetValue(res);
+
+        }, (err) => {
+          console.log(err);
+        });
+    }
   }
 
   prepareChart() {
