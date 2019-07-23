@@ -95,7 +95,7 @@ describe('DataChartComponent', () => {
 
         expect(component.resultStatistics).toEqual({
             'Total number of QR codes': {
-                'sum': 10000,
+                'sum': '10000.00',
                 'min': 115,
                 'max': 3532,
                 'avg': '1000.00'
