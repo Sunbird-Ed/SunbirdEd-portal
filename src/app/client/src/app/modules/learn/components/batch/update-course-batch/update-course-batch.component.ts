@@ -527,6 +527,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     if (this.batchDetails.status === 1) {
       this.batchUpdateForm.controls['name'].reset();
       this.batchUpdateForm.controls['description'].reset();
+      this.batchUpdateForm.controls['enrollmentEndDate'].reset();
       this.batchUpdateForm.controls['endDate'].reset();
     } else {
       this.batchUpdateForm.reset();
