@@ -46,9 +46,13 @@
   }
 
   [disabled="disabled"]+label,
-  input[disabled="disabled"] {
+  input[disabled="disabled"],
+  [disabled="true"]+label,
+  input[disabled="true"],
+  [disabled]+label,
+  input[disabled]{
     opacity: $sb-radio-btn-disabled-opacity;
-    cursor: not-allowed;
+    cursor: default;
   }
 
   [disabled="disabled"]:checked+label:before,
