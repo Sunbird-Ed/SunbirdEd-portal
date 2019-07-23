@@ -133,7 +133,7 @@ gulp.task('deploy',
         // cleanClient,
         'client:install',
         'client:dist',
-        // compress,
+        compress,
         'update:index:file',
         'clean:index:file',
         'prepare:app:dist')

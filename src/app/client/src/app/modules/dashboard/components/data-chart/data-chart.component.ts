@@ -80,42 +80,44 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   buildFiltersForm() {
     this.filtersFormGroup = this.fb.group({});
-    _.forEach(this.filters, filter => {
-      if (filter.controlType === 'date' || /date/i.test(_.get(filter, 'reference'))) {
-        const dateRange = _.uniq(_.map(this.chartData, _.get(filter, 'reference')));
-        this.pickerMinDate = moment(dateRange[0], 'DD-MM-YYYY');
-        this.pickerMaxDate = moment(dateRange[dateRange.length - 1], 'DD-MM-YYYY');
-        this.dateFilterReferenceName = filter.reference;
-      }
-      this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
-      filter.options = _.uniq(_.map(this.chartData, data => data[filter.reference].toLowerCase()));
-    });
-    this.showFilters = true;
-    this.filtersSubscription = this.filtersFormGroup.valueChanges
-      .pipe(
-        takeUntil(this.unsubscribe),
-        map(filters => {
-          return _.omitBy(filters, _.isEmpty);
-        }),
-        debounceTime(100),
-        distinctUntilChanged()
-      )
-      .subscribe((filters) => {
-        this.selectedFilters = _.omit(filters, this.dateFilterReferenceName); // to omit date inside labels
-        const res: Array<{}> = _.filter(this.chartData, data => {
-          return _.every(filters, (value, key) => {
-            return _.includes(value, data[key].toLowerCase());
-          });
-        });
-        this.noResultsFound = (res.length > 0) ? false : true;
-        if (this.noResultsFound) {
-          this.toasterService.error(this.resourceService.messages.stmsg.m0008);
+    if (_.get(this.chartConfig, 'labelsExpr')) {
+      _.forEach(this.filters, filter => {
+        if (filter.controlType === 'date' || /date/i.test(_.get(filter, 'reference'))) {
+          const dateRange = _.uniq(_.map(this.chartData, _.get(filter, 'reference')));
+          this.pickerMinDate = moment(dateRange[0], 'DD-MM-YYYY');
+          this.pickerMaxDate = moment(dateRange[dateRange.length - 1], 'DD-MM-YYYY');
+          this.dateFilterReferenceName = filter.reference;
         }
-        this.getDataSetValue(res);
-
-      }, (err) => {
-        console.log(err);
+        this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
+        filter.options = _.uniq(_.map(this.chartData, data => data[filter.reference].toLowerCase()));
       });
+      this.showFilters = true;
+      this.filtersSubscription = this.filtersFormGroup.valueChanges
+        .pipe(
+          takeUntil(this.unsubscribe),
+          map(filters => {
+            return _.omitBy(filters, _.isEmpty);
+          }),
+          debounceTime(100),
+          distinctUntilChanged()
+        )
+        .subscribe((filters) => {
+          this.selectedFilters = _.omit(filters, this.dateFilterReferenceName); // to omit date inside labels
+          const res: Array<{}> = _.filter(this.chartData, data => {
+            return _.every(filters, (value, key) => {
+              return _.includes(value, data[key].toLowerCase());
+            });
+          });
+          this.noResultsFound = (res.length > 0) ? false : true;
+          if (this.noResultsFound) {
+            this.toasterService.error(this.resourceService.messages.stmsg.m0008);
+          }
+          this.getDataSetValue(res);
+
+        }, (err) => {
+          console.log(err);
+        });
+    }
   }
 
   prepareChart() {
@@ -123,13 +125,21 @@ export class DataChartComponent implements OnInit, OnDestroy {
     this.chartColors = _.get(this.chartConfig, 'colors') || ['#024F9D'];
     this.chartType = _.get(this.chartConfig, 'chartType') || 'line';
     this.legend = (_.get(this.chartConfig, 'legend') === false) ? false : true;
-    this.filters = _.get(this.chartConfig, 'filters');
+    this.filters = _.get(this.chartConfig, 'filters') || [];
     this.getDataSetValue();
   }
 
   getDataSetValue(chartData = this.chartData) {
-    const groupedDataBasedOnLabels = _.groupBy(chartData, (data) => _.trim(data[_.get(this.chartConfig, 'labelsExpr')].toLowerCase()));
-    this.chartLabels = _.keys(groupedDataBasedOnLabels);
+    let labels = [];
+    let groupedDataBasedOnLabels;
+    if (_.get(this.chartConfig, 'labelsExpr')) {
+      groupedDataBasedOnLabels = _.groupBy(chartData, (data) => _.trim(data[_.get(this.chartConfig, 'labelsExpr')].toLowerCase()));
+      labels = _.keys(groupedDataBasedOnLabels);
+    }
+    if (_.get(this.chartConfig, 'labels')) {
+      labels = _.get(this.chartConfig, 'labels');
+    }
+    this.chartLabels = labels;
     this.datasets = [];
     _.forEach(this.chartConfig.datasets, dataset => {
       this.datasets.push({
@@ -141,10 +151,10 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
     _.forEach(this.datasets, dataset => {
       this.resultStatistics[dataset.label] = {
-        sum: _.sum(dataset.data),
-        min: _.min(dataset.data),
-        max: _.max(dataset.data),
-        avg: dataset.data.length > 0 ? (_.sum(dataset.data) / dataset.data.length).toFixed(2) : 0
+        sum: _.sumBy(dataset.data, (val) => _.toNumber(val)).toFixed(2),
+        min: _.minBy(dataset.data, (val) => _.toNumber(val)),
+        max: _.maxBy(dataset.data, (val) => _.toNumber(val)),
+        avg: dataset.data.length > 0 ? (_.sumBy(dataset.data, (val) => _.toNumber(val)) / dataset.data.length).toFixed(2) : 0
       };
     });
   }
