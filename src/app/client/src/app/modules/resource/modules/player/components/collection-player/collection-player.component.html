@@ -60,12 +60,12 @@
           {{resourceService?.frmelmnts?.lbl?.share}}
         </a>
         <span *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook'" appPermission
-          [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(collectionTreeNodes.data)" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
+          [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(collectionTreeNodes.data)" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16 sb-color-primary">
           <i class="blue clone outline icon"></i>
           {{resourceService?.frmelmnts?.lbl?.copy}}
         </span>
         <span *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook'" appPermission
-          [permission]="['BOOK_CREATOR']" (click)="copyContent(collectionTreeNodes.data)" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
+          [permission]="['BOOK_CREATOR']" (click)="copyContent(collectionTreeNodes.data)" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16 sb-color-primary">
           <i class="blue clone outline icon"></i>
           {{resourceService?.frmelmnts?.lbl?.copy}}
         </span>
