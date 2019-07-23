@@ -123,7 +123,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     this.chartColors = _.get(this.chartConfig, 'colors') || ['#024F9D'];
     this.chartType = _.get(this.chartConfig, 'chartType') || 'line';
     this.legend = (_.get(this.chartConfig, 'legend') === false) ? false : true;
-    this.filters = _.get(this.chartConfig, 'filters');
+    this.filters = _.get(this.chartConfig, 'filters') || [];
     this.getDataSetValue();
   }
 
@@ -141,10 +141,10 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
     _.forEach(this.datasets, dataset => {
       this.resultStatistics[dataset.label] = {
-        sum: _.sum(dataset.data),
-        min: _.min(dataset.data),
-        max: _.max(dataset.data),
-        avg: dataset.data.length > 0 ? (_.sum(dataset.data) / dataset.data.length).toFixed(2) : 0
+        sum: _.sumBy(dataset.data, (val) => _.toNumber(val)).toFixed(2),
+        min: _.minBy(dataset.data, (val) => _.toNumber(val)),
+        max: _.maxBy(dataset.data, (val) => _.toNumber(val)),
+        avg: dataset.data.length > 0 ? (_.sumBy(dataset.data, (val) => _.toNumber(val)) / dataset.data.length).toFixed(2) : 0
       };
     });
   }
