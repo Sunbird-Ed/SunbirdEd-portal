@@ -190,6 +190,19 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       (userDetails, courseDetails, batchDetails) => ({ userDetails, courseDetails, batchDetails })
     );
   }
+
+  private isSubmitBtnDisable(batchForm): boolean {
+    const batchFormControls = ['name', 'description', 'enrollmentType', 'mentors', 'startDate', 'endDate', 'users'];
+    for (let i = 0; i < batchFormControls.length; i++) {
+      if (batchForm.controls[batchFormControls[i]].status !== 'VALID') {
+        return true;
+      }
+    }
+    if (batchForm.controls['enrollmentEndDate'].status !== 'VALID' && batchForm.controls['enrollmentEndDate'].pristine) {
+      return false;
+    }
+    return true;
+  }
   /**
   * initializes form fields and apply field level validation
   */
@@ -216,7 +229,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       if (this.batchUpdateForm.status === 'VALID') {
         this.disableSubmitBtn = false;
       } else {
-        this.disableSubmitBtn = true;
+        this.disableSubmitBtn = this.isSubmitBtnDisable(this.batchUpdateForm);
       }
     });
     this.disableSubmitBtn = true;
