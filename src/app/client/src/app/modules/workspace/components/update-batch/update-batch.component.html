@@ -43,14 +43,14 @@
           <label for="Enrollment Type">{{resourceService?.frmelmnts?.lbl?.natureofbatch}}</label>
         </div>
         <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-          <input [attr.disabled]="(batchDetails.status !== 0 || showFormInViewMode) ? true : null" type="radio"
+          <input id="update-invite-only" [attr.disabled]="(batchDetails.status !== 0 || showFormInViewMode) ? true : null" type="radio"
             name="enrollmentType" value='invite-only' formControlName="enrollmentType">
-          <label>Invite-only</label>
+          <label for="update-invite-only">Invite-only</label>
         </div>
         <div class="sb-radio-btn-checkbox sb-radio-btn-primary" *ngIf="courseCreator">
-          <input [attr.disabled]="( batchDetails.status !== 0 || showFormInViewMode ) ? true : null" type="radio"
+          <input id="update-open" [attr.disabled]="( batchDetails.status !== 0 || showFormInViewMode ) ? true : null" type="radio"
             value='open' name="enrollmentType" formControlName="enrollmentType">
-          <label>Open</label>
+          <label for="update-open">Open</label>
         </div>
       </div>
 
