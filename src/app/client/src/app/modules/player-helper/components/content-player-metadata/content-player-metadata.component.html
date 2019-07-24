@@ -116,10 +116,10 @@
             <dt>{{resourceService.frmelmnts.lbl?.licenseTerms}}</dt>
             <dd *ngIf="metadata.creator">{{metadata.originData.license}}</dd>
         </dl>
-        <dl class="sb-meta-data" *ngIf="metadata.originData.orgDetails && metadata.originData.orgDetails.orgName">
+        <dl class="sb-meta-data" *ngIf="metadata.originData.organisation">
             <dt>{{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</dt>
             <dd>
-                <span class="d-inline-block mr-20">{{metadata.originData.orgDetails?.orgName}}</span> &nbsp;
+                <span class="d-inline-block mr-20">{{metadata.originData.organisation.join(', ')}}</span> &nbsp;
                 <a ng-if="metadata.orgDetails?.email" href="mailto:{{metadata.orgDetails?.email}}?subject={{metadata.name}}">{{metadata.originData.orgDetails?.email}}</a>
             </dd>
         </dl>

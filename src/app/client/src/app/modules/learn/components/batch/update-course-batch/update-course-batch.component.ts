@@ -190,6 +190,19 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       (userDetails, courseDetails, batchDetails) => ({ userDetails, courseDetails, batchDetails })
     );
   }
+
+  private isSubmitBtnDisable(batchForm): boolean {
+    const batchFormControls = ['name', 'description', 'enrollmentType', 'mentors', 'startDate', 'endDate', 'users'];
+    for (let i = 0; i < batchFormControls.length; i++) {
+      if (batchForm.controls[batchFormControls[i]].status !== 'VALID') {
+        return true;
+      }
+    }
+    if (batchForm.controls['enrollmentEndDate'].status !== 'VALID' && batchForm.controls['enrollmentEndDate'].pristine) {
+      return false;
+    }
+    return true;
+  }
   /**
   * initializes form fields and apply field level validation
   */
@@ -197,7 +210,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     const endDate = this.batchDetails.endDate ? new Date(this.batchDetails.endDate) : null;
     const enrollmentEndDate = this.batchDetails.enrollmentEndDate ? new Date(this.batchDetails.enrollmentEndDate) : null;
     if (!moment(this.batchDetails.startDate).isBefore(moment(this.pickerMinDate).format('YYYY-MM-DD'))) {
-      this.pickerMinDateForEnrollmentEndDate = new Date(this.batchDetails.startDate).setHours(0, 0, 0, 0);
+      this.pickerMinDateForEnrollmentEndDate = new Date(new Date(this.batchDetails.startDate).setHours(0, 0, 0, 0));
     } else {
       this.pickerMinDateForEnrollmentEndDate = this.pickerMinDate;
     }
@@ -216,7 +229,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       if (this.batchUpdateForm.status === 'VALID') {
         this.disableSubmitBtn = false;
       } else {
-        this.disableSubmitBtn = true;
+        this.disableSubmitBtn = this.isSubmitBtnDisable(this.batchUpdateForm);
       }
     });
     this.disableSubmitBtn = true;
@@ -527,6 +540,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     if (this.batchDetails.status === 1) {
       this.batchUpdateForm.controls['name'].reset();
       this.batchUpdateForm.controls['description'].reset();
+      this.batchUpdateForm.controls['enrollmentEndDate'].reset();
       this.batchUpdateForm.controls['endDate'].reset();
     } else {
       this.batchUpdateForm.reset();

@@ -17,7 +17,7 @@
     border-radius: $base-block-space $base-block-space 0 0;
     text-align: center;
     height: 148px;
-    
+    overflow-y: auto;
     .playStore-img {
       width: 120px;
     }
@@ -182,7 +182,7 @@
     }
 
   .footer {
-
+    max-height: 206px;
     .footerMenu {
       ul {
         margin-top: 0 !important;

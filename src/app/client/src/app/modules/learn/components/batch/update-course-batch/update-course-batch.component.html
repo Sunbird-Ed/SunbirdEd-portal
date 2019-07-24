@@ -41,12 +41,12 @@
             <label for="Enrollment Type">{{resourceService?.frmelmnts?.lbl?.natureofbatch}}</label>
           </div>
           <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-              <input class="sb-form-control" [attr.disabled]="batchDetails.status !== 0 ? true : null" type="radio" name="enrollmentType" value='invite-only' formControlName="enrollmentType">
-              <label>{{resourceService?.frmelmnts?.lbl?.inviteonly}}</label>
+              <input id="update-course-invite-only" [attr.disabled]="batchDetails.status !== 0 ? true : null" type="radio" name="enrollmentType" value='invite-only' formControlName="enrollmentType">
+              <label for="update-course-invite-only">{{resourceService?.frmelmnts?.lbl?.inviteonly}}</label>
           </div>
           <div class="sb-radio-btn-checkbox sb-radio-btn-primary" *ngIf="courseCreator">
-              <input class="sb-form-control" [attr.disabled]="batchDetails.status !== 0 ? true : null" type="radio" value='open' name="enrollmentType" formControlName="enrollmentType">
-            <label>{{resourceService?.frmelmnts?.lbl?.open}}</label>
+              <input id="update-course-open" [attr.disabled]="batchDetails.status !== 0 ? true : null" type="radio" value='open' name="enrollmentType" formControlName="enrollmentType">
+            <label for="update-course-open">{{resourceService?.frmelmnts?.lbl?.open}}</label>
           </div>
         </div>
         <div class="d-flex flex-w-wrap">
