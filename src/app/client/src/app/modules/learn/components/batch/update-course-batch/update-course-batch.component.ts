@@ -225,6 +225,18 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       users: new FormControl(),
       enrollmentEndDate: new FormControl(enrollmentEndDate)
     });
+
+    this.batchUpdateForm.get('startDate').valueChanges.subscribe(value => {
+      const startDate = moment(value);
+      if (startDate.isValid()) {
+        if (!moment(startDate).isBefore(moment(this.pickerMinDate).format('YYYY-MM-DD'))) {
+          this.pickerMinDateForEnrollmentEndDate = new Date(new Date(startDate).setHours(0, 0, 0, 0));
+        } else {
+          this.pickerMinDateForEnrollmentEndDate = this.pickerMinDate;
+        }
+      }
+    });
+
     this.batchUpdateForm.valueChanges.subscribe(val => {
       if (this.batchUpdateForm.status === 'VALID') {
         this.disableSubmitBtn = false;
