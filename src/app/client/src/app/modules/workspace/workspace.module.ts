@@ -6,7 +6,7 @@ import { SharedModule } from '@sunbird/shared';
 import { SlickModule } from 'ngx-slick';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
-import { WorkSpaceService, EditorService , BatchService, ReviewCommentsService} from './services';
+import { WorkSpaceService, EditorService, BatchService, ReviewCommentsService } from './services';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, UploadedComponent,
@@ -17,7 +17,7 @@ import {
   UpforreviewContentplayerComponent, FlagConentplayerComponent, ReviewsubmissionsContentplayerComponent,
   PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
   AllContentComponent, FlagReviewerComponent, AllMyContentFilterComponent, CollaboratingOnComponent,
-  CollaborationContentFilterComponent
+  CollaborationContentFilterComponent, BulkUploadContentComponent
 } from './components';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -59,6 +59,7 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
     CollaborationContentFilterComponent,
     ReviewCommentsComponent,
     CollaborationContentFilterComponent,
+    BulkUploadContentComponent,
   ],
   providers: [WorkSpaceService, EditorService, BatchService, ReviewCommentsService]
 })
