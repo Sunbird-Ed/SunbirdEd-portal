@@ -48,6 +48,7 @@ export class TextbookListComponent implements OnInit {
       this.showLoader = false;
       const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
       // --> The textbook of either of status ['Live', 'Draft'] && In case of both 'Draft' is shown to avoid duplicate.
+      if(res.result.content){
       res.result.content.forEach((element) => {
         this.Duplicate_present = false;
         this.filteredTextbook.forEach((elem) => {
@@ -58,6 +59,7 @@ export class TextbookListComponent implements OnInit {
         });
         if (!this.Duplicate_present) { this.filteredTextbook.push(element) }
       });
+    } else { console.log('Empty response content')}
 
 
       this.textbookList = this.utilService.getDataForCard(this.filteredTextbook, constantData, dynamicFields, metaData);
