@@ -14,6 +14,7 @@
                 <th></th>
                 <th>{{labels[0]}}</th>
                 <th>{{labels[1]}}</th>
+                <th *ngIf="selectedAttributes.currentRole === 'CONTRIBUTOR'">{{labels[2]}}</th>
                 <th></th>
               </tr>
             </thead>
@@ -23,6 +24,7 @@
                 <td>{{questionTypeName[textbook.vsa.name]}}</td>
                 <td>{{textbook.vsa.total}}</td>
                 <td>{{textbook.vsa.me}}</td>
+                <td *ngIf="selectedAttributes.currentRole === 'CONTRIBUTOR'">{{textbook.vsa.Attention}}</td>
                 <td><button class="sb-btn sb-btn-primary sb-btn-normal" 
                   (click)="emitQuestionTypeTopic('vsa', textbook.topic, textbook.identifier)" 
                   appTelemetryInteract [telemetryInteractEdata]="{id:'open_vsa_questions',type:'click',pageid:'chapterlist',extra:{type:'reference',category:'VSA',topic:textbook.topic}}" >open</button></td>
@@ -32,6 +34,7 @@
                 <td>{{questionTypeName[textbook.sa.name]}}</td>
                 <td>{{textbook.sa.total}}</td>
                 <td>{{textbook.sa.me}}</td>
+                <td *ngIf="selectedAttributes.currentRole === 'CONTRIBUTOR'">{{textbook.sa.Attention}}</td>
                 <td><button class="sb-btn sb-btn-primary sb-btn-normal" (click)="emitQuestionTypeTopic('sa', textbook.topic, textbook.identifier)" 
                   appTelemetryInteract [telemetryInteractEdata]="{id:'open_sa_questions',type:'click',pageid:'chapterlist',extra:{type:'reference',category:'SA',topic:textbook.topic}}">open</button></td>
               </tr>
@@ -40,6 +43,7 @@
                 <td>{{questionTypeName[textbook.la.name]}}</td>
                 <td>{{textbook.la.total}}</td>
                 <td>{{textbook.la.me}}</td>
+                <td *ngIf="selectedAttributes.currentRole === 'CONTRIBUTOR'">{{textbook.la.Attention}}</td>
                 <td><button class="sb-btn sb-btn-primary sb-btn-normal" (click)="emitQuestionTypeTopic('la', textbook.topic, textbook.identifier)" 
                   appTelemetryInteract [telemetryInteractEdata]="{id:'open_la_questions',type:'click',pageid:'chapterlist',extra:{type:'reference',category:'LA',topic:textbook.topic}}">open</button></td>
               </tr>
@@ -48,6 +52,7 @@
                 <td>{{questionTypeName[textbook.mcq.name]}}</td>
                 <td>{{textbook.mcq.total}}</td>
                 <td>{{textbook.mcq.me}}</td>
+                <td *ngIf="selectedAttributes.currentRole === 'CONTRIBUTOR'">{{textbook.mcq.Attention}}</td>
                 <td><button class="sb-btn sb-btn-primary sb-btn-normal" (click)="emitQuestionTypeTopic('mcq', textbook.topic,textbook.identifier)" 
                   appTelemetryInteract [telemetryInteractEdata]="{id:'open_mcq_questions',type:'click',pageid:'chapterlist',extra:{type:'mcq',category:'MCQ',topic:textbook.topic}}">open</button></td>
               </tr>
