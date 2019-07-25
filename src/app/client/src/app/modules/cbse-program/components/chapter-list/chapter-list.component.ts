@@ -38,7 +38,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
     public toasterService: ToasterService, public router: Router) {
   }
   private labelsHandler() {
-    this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] : (this.role.currentRole === "PUBLISHER") ? ['Total', 'Accepted'] : ['Total', 'Created by me', 'Needs Attention'];
+    this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] : (this.role.currentRole === 'PUBLISHER') ? ['Total', 'Accepted'] : ['Total', 'Created by me', 'Needs Attention'];
   }
   ngOnInit() {
     this.labelsHandler();
@@ -76,15 +76,28 @@ export class ChapterListComponent implements OnInit, OnChanges {
       this.collectionData = response.result.content;
       const textBookMetaData = [];
       _.forEach(this.collectionData.children, data => {
+
         if (data.topic && data.topic[0]) {
-          textBookMetaData.push({
-            name : data.name,
-            topic: data.topic[0],
-            identifier: data.identifier
-          });
+          if (data.children) {
+            const questionBankUnit = _.find(data.children, (val) => {
+              return val.name === 'Question Bank' || val.name === 'Practice Questions';
+            });
+            textBookMetaData.push({
+              name : data.name,
+              topic: data.topic[0],
+              identifier: questionBankUnit.identifier
+            });
+          } else {
+            textBookMetaData.push({
+              name : data.name,
+              topic: data.topic[0],
+              identifier: data.identifier
+            });
+          }
         }
       });
       this.textBookMeta = textBookMetaData;
+
       this.showChapterList(textBookMetaData);
     }, error => {
       this.showLoader = false;
@@ -96,7 +109,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
     let apiRequest;
     if (this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
       apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields)),
-      ...this.questionType.map(fields => this.searchQuestionsByType(fields, this.userService.userid, ['Live','Review','Reject','Draft'])), ...this.questionType.map(fields => this.searchQuestionsByType(fields, this.userService.userid,'Reject'))];
+      ...this.questionType.map(fields => this.searchQuestionsByType(fields, this.userService.userid)),
+      ...this.questionType.map(fields => this.searchQuestionsByType(fields, this.userService.userid,'Reject'))];
     } else if (this.selectedAttributes.currentRole === 'REVIEWER') {
       apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields, '', 'Review')),
       ...this.questionType.map(fields => this.searchQuestionsByType(fields, '', 'Live'))];
@@ -104,7 +118,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
       apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields)),
       ...this.questionType.map(fields => this.searchQuestionsByType(fields, '', 'Live'))];
     }
-  
+
     if (!apiRequest) {
       this.showLoader = false;
       this.showError = true;
@@ -123,7 +137,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
           };
         });
         this.showLoader = false;
-        //text book-unit-id added
+        // text book-unit-id added
         results.identifier =  topicData.identifier;
         return results;
       });
@@ -176,7 +190,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
     this.selectedQuestionTypeTopic.emit({
       'questionType': type,
       'topic': topic,
-      'textBookUnitIdentifier':topicIdentifier,
+      'textBookUnitIdentifier': topicIdentifier,
     });
   }
 
