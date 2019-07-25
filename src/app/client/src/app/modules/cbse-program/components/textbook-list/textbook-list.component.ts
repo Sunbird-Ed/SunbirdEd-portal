@@ -16,12 +16,14 @@ export class TextbookListComponent implements OnInit {
   @Input() selectedAttributes: any;
   @Output() selectedTextbookEvent = new EventEmitter<any>();
   public textbookList = [];
+  public filteredTextbook = [];
+  Duplicate_present;
   showLoader = true;
   telemetryImpression = {};
   telemetryInteract = {};
   constructor(private configService: ConfigService, public publicDataService: PublicDataService,
-  public utilService: UtilService, public toasterService: ToasterService, public router: Router,
-  public telemetryService: TelemetryService) { }
+    public utilService: UtilService, public toasterService: ToasterService, public router: Router,
+    public telemetryService: TelemetryService) { }
 
   ngOnInit() {
     const req = {
@@ -45,7 +47,20 @@ export class TextbookListComponent implements OnInit {
     this.publicDataService.post(req).subscribe((res) => {
       this.showLoader = false;
       const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
-      this.textbookList = this.utilService.getDataForCard(res.result.content, constantData, dynamicFields, metaData);
+      // --> The textbook of either of status ['Live', 'Draft'] && In case of both 'Draft' is shown to avoid duplicate.
+      res.result.content.forEach((element) => {
+        this.Duplicate_present = false;
+        this.filteredTextbook.forEach((elem) => {
+          if (element.identifier === elem.identifier) {
+            elem.status === 'Live' ? Object.assign(elem, element) : null
+            this.Duplicate_present = true;
+          }
+        });
+        if (!this.Duplicate_present) { this.filteredTextbook.push(element) }
+      });
+
+
+      this.textbookList = this.utilService.getDataForCard(this.filteredTextbook, constantData, dynamicFields, metaData);
       this.telemetryInteract = {
         id: 'content_card',
         type: 'click',
