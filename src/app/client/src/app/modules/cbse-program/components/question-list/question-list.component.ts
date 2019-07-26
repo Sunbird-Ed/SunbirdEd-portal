@@ -213,10 +213,10 @@ export class QuestionListComponent implements OnInit, OnChanges {
     this.publishInProgress = true;
     let selectedQuestionsData = _.reduce(selectedQuestions, (final, question) => {
       final.ids.push(_.get(question, 'identifier'));
-      final.contributors.push(_.get(question, 'creator'));
-      _.union(final.attributions, _.get(question, 'organisation'));
+      final.author.push(_.get(question, 'creator'));
+      final.attributions = _.union(final.attributions, _.get(question, 'organisation'));
       return final;
-    }, { ids: [], contributors: [], attributions: [] });
+    }, { ids: [], author: [], attributions: [] });
 
     if (selectedQuestionsData.ids.length > 0) {
       const questions = [];
@@ -251,8 +251,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
                 'resourceType': 'Practice',
                 'description': `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`,
                 'questions': questions,
-                'contributors': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'contributors'))), ', '),
-                'attributions': _.compact(_.get(selectedQuestionsData, 'attributions')),
+                'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ", "),
+                'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'attributions'))),
                 'textBookUnitIdentifier': this.selectedAttributes.textBookUnitIdentifier,
                 // tslint:disable-next-line: max-line-length
                 'appIcon': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11279144369168384014/artifact/qa_1561455529937.png'
