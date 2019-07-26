@@ -100,8 +100,7 @@ function getECMLJSON(headers, collections) {
                     question.config.__cdata
                   );
                   return question;
-                }),
-                catchError(err => of(err))
+                })
               );
             })
           );
