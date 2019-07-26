@@ -114,6 +114,8 @@
     "properties": "^1.2.1",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.5",
+    "rxjs": "^6.5.2",
+    "rxjs-compat": "^6.5.2",
     "sb_api_interceptor": "file:libs/sb_api_interceptor",
     "sb_cache_manager": "file:libs/sb_cache_manager",
     "sb_telemetry_util": "file:libs/sb_telemetry_util",
