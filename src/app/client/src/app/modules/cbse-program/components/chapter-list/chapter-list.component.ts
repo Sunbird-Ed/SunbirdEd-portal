@@ -38,7 +38,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
     public toasterService: ToasterService, public router: Router) {
   }
   private labelsHandler() {
-    this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] : (this.role.currentRole === 'PUBLISHER') ? ['Total', 'Accepted'] : ['Total', 'Created by me', 'Needs Attention'];
+    this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] : (this.role.currentRole === 'PUBLISHER') ? ['Total', 'Accepted'] : ['Total', 'Created by me', 'Needs attention'];
   }
   ngOnInit() {
     this.labelsHandler();
@@ -133,7 +133,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
             name: type,
             total: this.getResultCount(data[index], topicData.topic),
             me: this.getResultCount(data[index + this.questionType.length], topicData.topic),
-            Attention: this.getResultCount(data[index + (2 * this.questionType.length)], topicData.topic)
+            attention: this.getResultCount(data[index + (2 * this.questionType.length)], topicData.topic)
           };
         });
         this.showLoader = false;
