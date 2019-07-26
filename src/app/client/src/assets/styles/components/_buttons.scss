@@ -28,6 +28,7 @@ a.sb-btn {
   min-width: ($base-block-space * 8);
   @include border-radius(3px);
   position: relative;
+  line-height: 1.5;
   text: {
     transform: capitalize;
     decoration: none;
@@ -660,4 +661,8 @@ a.sb-btn {
   to {
     transform: scale3d(1, 1, 1);
   }
+}
+
+*[lang="hi"] .sb-btn-xs {
+  line-height: 2.2;
 }
