@@ -38,7 +38,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
     public toasterService: ToasterService, public router: Router) {
   }
   private labelsHandler() {
-    this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] : (this.role.currentRole === 'PUBLISHER') ? ['Total', 'Accepted'] : ['Total', 'Created by me'];
+    this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] : (this.role.currentRole === 'PUBLISHER') ? ['Total', 'Accepted'] : ['Total', 'Created by me', 'Needs attention'];
   }
   ngOnInit() {
     this.labelsHandler();
@@ -109,7 +109,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
     let apiRequest;
     if (this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
       apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields)),
-      ...this.questionType.map(fields => this.searchQuestionsByType(fields, this.userService.userid))];
+      ...this.questionType.map(fields => this.searchQuestionsByType(fields, this.userService.userid)),
+      ...this.questionType.map(fields => this.searchQuestionsByType(fields, this.userService.userid,'Reject'))];
     } else if (this.selectedAttributes.currentRole === 'REVIEWER') {
       apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields, '', 'Review')),
       ...this.questionType.map(fields => this.searchQuestionsByType(fields, '', 'Live'))];
@@ -131,7 +132,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
           results[type] = {
             name: type,
             total: this.getResultCount(data[index], topicData.topic),
-            me: this.getResultCount(data[index + this.questionType.length], topicData.topic)
+            me: this.getResultCount(data[index + this.questionType.length], topicData.topic),
+            attention: this.getResultCount(data[index + (2 * this.questionType.length)], topicData.topic)
           };
         });
         this.showLoader = false;
