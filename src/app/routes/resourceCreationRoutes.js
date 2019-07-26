@@ -9,6 +9,14 @@ const envHelper = require("./../helpers/environmentVariablesHelper.js");
 const contentProxyUrl = envHelper.CONTENT_PROXY_URL;
 const resourceCreationHelper = require("../helpers/resourceCreationHelper.js");
 
+const questionTypeName = {
+    VSA: 'Very Short Answer',
+    SA: 'Short Answer',
+    LA: 'Long Answer',
+    MCQ: 'Multiple Choice Question',
+    CuriosityQuestion: 'Curiosity Question'
+  }
+
 module.exports = function(app) {
   const getHeaders = req => {
     return {
@@ -40,7 +48,7 @@ module.exports = function(app) {
       };
 
       let requestBody = req.body.request;
-      if(!requestBody.content && !requestBody.content.questions && requestBody.content.questions.length < 1){
+      if(!requestBody.content && !requestBody.content.questions && requestBody.content.questions.length < 1) {
         res.status(400);
         res.json({
             "id": "api.worksheet.create",
@@ -55,6 +63,24 @@ module.exports = function(app) {
             "responseCode": "FAILED" ,
             "result": {}
         });
+        return;
+    }
+    if(!requestBody.content.contentType && _.isEmpty(requestBody.content.contentType) ) {
+        res.status(400)
+        res.json({
+            "id": "api.worksheet.create",
+            "ver": "1.0",
+            'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo', true),
+            "params": {
+                "resmsgid": uuid(),
+                "status": "failed",
+                "err": "error",
+                "errmsg": "contentType is missing or invalid"
+            },
+            "responseCode": "FAILED" ,
+            "result": {}
+        });
+        return;
     }
       const questions = [];
       _.forEach(_.get(requestBody.content, "questions"), value => {
@@ -71,9 +97,9 @@ module.exports = function(app) {
             body: {
               request: {
                 content: {
-                  name: requestBody.content.name,
+                  name: requestBody.content.name || `${questionTypeName[theme.questionSetMeta.questionSetCategory]} - ${requestBody.content.topic}`,
                   code: uuid(),
-                  description: requestBody.content.description,
+                  description: requestBody.content.description || `These are ${questionTypeName[theme.questionSetMeta.questionSetCategory]}s about ${requestBody.content.topic}`,
                   createdBy: "edce4f4f-6c82-458a-8b23-e3521859992f",
                   contentType: "PracticeQuestionSet",
                   mimeType: "application/vnd.ekstep.ecml-archive",
@@ -163,8 +189,6 @@ module.exports = function(app) {
                   }' Started Successfully!`
                 }
               });
-
-
           },
           err => {
             console.log(
@@ -210,12 +234,16 @@ module.exports = function(app) {
         .subscribe(response => {
           updateResource(response[0], response[1].result.content)
         })
-
+        const questions = [];
+      _.forEach(_.get(req.body.request.content, "questions"), value => {
+        questions.push({ identifier: value });
+      });
       function updateResource(body, contentMeta) {
         options.headers["x-authenticated-userid"] = contentMeta.createdBy;
         options.body = {
             request : {
                 content: {
+                    questions: questions,
                     body: JSON.stringify(body.theme),
                     versionKey: contentMeta.versionKey,
                     ...remainingUpdateBody
