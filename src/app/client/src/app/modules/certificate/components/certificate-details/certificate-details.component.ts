@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class CertificateDetailsComponent implements OnInit {
 
   constructor() { }
+  loader: boolean;
 
   ngOnInit() {
   }
