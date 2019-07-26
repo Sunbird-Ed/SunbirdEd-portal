@@ -1,7 +1,7 @@
-import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter, OnChanges, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter, OnChanges, ViewChild, ElementRef} from '@angular/core';
 import * as ClassicEditor from '@project-sunbird/ckeditor-build-font';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfigService, ResourceService, IUserData, IUserProfile, ToasterService } from '@sunbird/shared';
+import {  ConfigService, ResourceService,  IUserData, IUserProfile, ToasterService  } from '@sunbird/shared';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 
@@ -17,8 +17,8 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() editorId: any;
   @Input() setCharacterLimit: any;
   @Input() setImageLimit: any;
-  @Output() editorDataOutput = new EventEmitter<any>();
-  @Output() hasError = new EventEmitter<any>();
+  @Output() editorDataOutput = new EventEmitter < any > ();
+  @Output() hasError = new EventEmitter < any > ();
   public editorInstance: any;
   public isEditorFocused: boolean;
   public limitExceeded: boolean;
@@ -64,31 +64,31 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
         }
       });
 
-    this.editorConfig = _.assign({
-      toolbar: ['bold', '|', 'italic', '|', 'underline',
-        '|', 'numberedList', '|', 'fontSize', '|', 'ChemType', '|',
-        'mathtype', '|', 'subscript', '|', 'superscript', '|',
-      ],
-      fontSize: {
-        options: [
-          9,
-          11,
-          13,
-          15,
-          17,
-          19,
-          21,
-          23,
-          25
-        ]
-      },
-      image: {
-        toolbar: ['imageStyle:alignLeft', 'imageStyle:full', 'imageStyle:alignRight'],
-        styles: ['full', 'alignLeft', 'alignRight', 'alignCenter']
-      },
-      isReadOnly: false,
-      removePlugins: ['ImageCaption']
-    }, this.editorConfig);
+      this.editorConfig = _.assign({
+        toolbar: ['bold', '|', 'italic', '|', 'underline',
+          '|', 'numberedList', '|' , 'fontSize', '|', 'ChemType', '|',
+          'mathtype', '|', 'subscript', '|', 'superscript', '|',
+        ],
+          fontSize: {
+            options: [
+                9,
+                11,
+                13,
+                15,
+                17,
+                19,
+                21,
+                23,
+                25
+            ]
+        },
+        image: {
+          toolbar: ['imageStyle:alignLeft', 'imageStyle:full', 'imageStyle:alignRight'],
+          styles: ['full', 'alignLeft', 'alignRight', 'alignCenter']
+        },
+        isReadOnly: false,
+        removePlugins: ['ImageCaption']
+      }, this.editorConfig);
   }
   ngOnChanges() {
   }
@@ -122,14 +122,14 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
 
   initializeEditors() {
     ClassicEditor.create(this.editorRef.nativeElement, {
-      // plugins: this.editorConfig.plugins,
-      extraPlugins: ['Font'],
-      toolbar: this.editorConfig.toolbar,
-      fontSize: this.editorConfig.fontSize,
-      image: this.editorConfig.image,
-      isReadOnly: this.editorConfig.isReadOnly,
-      removePlugins: this.editorConfig.removePlugins
-    })
+        // plugins: this.editorConfig.plugins,
+        extraPlugins: ['Font'],
+        toolbar: this.editorConfig.toolbar,
+        fontSize: this.editorConfig.fontSize,
+        image: this.editorConfig.image,
+        isReadOnly: this.editorConfig.isReadOnly,
+        removePlugins: this.editorConfig.removePlugins
+      })
       .then(editor => {
         this.editorInstance = editor;
         this.isAssetBrowserReadOnly = this.editorConfig.isReadOnly;
@@ -183,11 +183,11 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     });
   }
   checkImageLimit() {
-    const childNodes = this.editorInstance.model.document.getRoot()._children._nodes;
-    this.isAssetBrowserReadOnly = _.keys(_.pickBy(childNodes, { name: 'image' })).length === this.setImageLimit ? true : false;
+    const childNodes =  this.editorInstance.model.document.getRoot()._children._nodes;
+    this.isAssetBrowserReadOnly = _.keys(_.pickBy(childNodes, {name: 'image'})).length === this.setImageLimit ? true : false ;
   }
   checkCharacterLimit() {
-    this.characterCount = this.countCharacters(this.editorInstance.model.document);
+    this.characterCount = this.countCharacters( this.editorInstance.model.document );
     this.limitExceeded = (this.characterCount <= this.setCharacterLimit) ? false : true;
     this.hasError.emit(this.limitExceeded);
   }
@@ -246,10 +246,10 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     this.showImagePicker = false;
   }
 
-  /**
- * functio to get all images
- * @param offset page no
- */
+    /**
+   * functio to get all images
+   * @param offset page no
+   */
   getAllImages(offset) {
     if (offset === 0) {
       this.allImages.length = 0;
@@ -353,7 +353,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
           this.showImageUploadModal = false;
         });
       });
-      reader.onerror = (error: any) => { };
+      reader.onerror = (error: any) => {};
     }
   }
 
@@ -379,9 +379,9 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
 
   getMediaOriginURL(src) {
     const replaceText = this.assetProxyUrl;
-    const aws_s3_urls = this.userService.cloudStorageUrls || ['https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/',
-      'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/',
-      'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/'];
+    const aws_s3_urls =  this.userService.cloudStorageUrls || ['https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/',
+    'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/',
+    'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/'];
     _.forEach(aws_s3_urls, url => {
       if (src.indexOf(url) !== -1) {
         src = src.replace(url, replaceText);
