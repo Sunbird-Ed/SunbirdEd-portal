@@ -30,6 +30,9 @@ const appRoutes: Routes = [
     path: 'profile', loadChildren: 'app/plugins/profile/profile.module#ProfileModule'
   },
   {
+    path: 'certs', loadChildren: 'app/modules/certificate/certificate.module#CertificateModule'
+  },
+  {
     path: ':slug/get', loadChildren: 'app/modules/dial-code-search/dial-code-search.module#DialCodeSearchModule'
   },
   {
