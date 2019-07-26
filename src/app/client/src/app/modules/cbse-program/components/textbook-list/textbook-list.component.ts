@@ -16,7 +16,6 @@ export class TextbookListComponent implements OnInit {
   @Input() selectedAttributes: any;
   @Output() selectedTextbookEvent = new EventEmitter<any>();
   public textbookList = [];
-  public filteredTextbook = [];
   showLoader = true;
   telemetryImpression = {};
   telemetryInteract = {};
@@ -44,6 +43,7 @@ export class TextbookListComponent implements OnInit {
       }
     };
     this.publicDataService.post(req).subscribe((res) => {
+      var filteredTextbook = [];
       this.showLoader = false;
       const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
 
@@ -54,13 +54,13 @@ export class TextbookListComponent implements OnInit {
           let ab = _.find(val, function (v) {
             return v.status === "Draft"
           });
-          this.filteredTextbook.push(ab);
+          filteredTextbook.push(ab);
         } else {
-          this.filteredTextbook.push(val[0]);
+          filteredTextbook.push(val[0]);
         }
       });
 
-      this.textbookList = this.utilService.getDataForCard(this.filteredTextbook, constantData, dynamicFields, metaData);
+      this.textbookList = this.utilService.getDataForCard(filteredTextbook, constantData, dynamicFields, metaData);
       this.telemetryInteract = {
         id: 'content_card',
         type: 'click',
