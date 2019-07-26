@@ -17,7 +17,6 @@ export class TextbookListComponent implements OnInit {
   @Output() selectedTextbookEvent = new EventEmitter<any>();
   public textbookList = [];
   public filteredTextbook = [];
-  Duplicate_present;
   showLoader = true;
   telemetryImpression = {};
   telemetryInteract = {};
@@ -47,20 +46,19 @@ export class TextbookListComponent implements OnInit {
     this.publicDataService.post(req).subscribe((res) => {
       this.showLoader = false;
       const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
-      // --> The textbook of either of status ['Live', 'Draft'] && In case of both 'Draft' is shown to avoid duplicate.
-      if(res.result.content){
-      res.result.content.forEach((element) => {
-        this.Duplicate_present = false;
-        this.filteredTextbook.forEach((elem) => {
-          if (element.identifier === elem.identifier) {
-            elem.status === 'Live' ? Object.assign(elem, element) : null
-            this.Duplicate_present = true;
-          }
-        });
-        if (!this.Duplicate_present) { this.filteredTextbook.push(element) }
-      });
-    } else { console.log('Empty response content')}
 
+      // --> The textbook of either of status ['Live', 'Draft'] && In case of both 'Draft' is shown to avoid duplicate.
+      let group_arr = _.groupBy(res.result.content, "identifier");
+      _.forEach(group_arr, function (val) {
+        if (val.length > 1) {
+          let ab = _.find(val, function (v) {
+            return v.status === "Draft"
+          });
+          this.filteredTextbook.push(ab);
+        } else {
+          this.filteredTextbook.push(val[0]);
+        }
+      });
 
       this.textbookList = this.utilService.getDataForCard(this.filteredTextbook, constantData, dynamicFields, metaData);
       this.telemetryInteract = {
