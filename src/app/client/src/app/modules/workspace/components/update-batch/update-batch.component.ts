@@ -225,9 +225,6 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       this.batchService.getUserList(request).pipe(takeUntil(this.unsubscribe))
         .subscribe((res) => {
           this.processParticipantDetails(res);
-          const userList = this.sortUsers(res);
-          this.participantList = userList.participantList;
-          this.mentorList = userList.mentorList;
         }, (err) => {
           if (err.error && err.error.params.errmsg) {
             this.toasterService.error(err.error.params.errmsg);
