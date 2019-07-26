@@ -20,8 +20,8 @@ export class TextbookListComponent implements OnInit {
   telemetryImpression = {};
   telemetryInteract = {};
   constructor(private configService: ConfigService, public publicDataService: PublicDataService,
-  public utilService: UtilService, public toasterService: ToasterService, public router: Router,
-  public telemetryService: TelemetryService) { }
+    public utilService: UtilService, public toasterService: ToasterService, public router: Router,
+    public telemetryService: TelemetryService) { }
 
   ngOnInit() {
     const req = {
@@ -43,9 +43,24 @@ export class TextbookListComponent implements OnInit {
       }
     };
     this.publicDataService.post(req).subscribe((res) => {
+      var filteredTextbook = [];
       this.showLoader = false;
       const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
-      this.textbookList = this.utilService.getDataForCard(res.result.content, constantData, dynamicFields, metaData);
+
+      // --> The textbook of either of status ['Live', 'Draft'] && In case of both 'Draft' is shown to avoid duplicate.
+      let group_arr = _.groupBy(res.result.content, "identifier");
+      _.forEach(group_arr, function (val) {
+        if (val.length > 1) {
+          let ab = _.find(val, function (v) {
+            return v.status === "Draft"
+          });
+          filteredTextbook.push(ab);
+        } else {
+          filteredTextbook.push(val[0]);
+        }
+      });
+
+      this.textbookList = this.utilService.getDataForCard(filteredTextbook, constantData, dynamicFields, metaData);
       this.telemetryInteract = {
         id: 'content_card',
         type: 'click',
