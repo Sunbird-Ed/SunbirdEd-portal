@@ -97,9 +97,9 @@ module.exports = function(app) {
             body: {
               request: {
                 content: {
-                  name: requestBody.content.name || `${questionTypeName[theme.questionSetMeta.questionSetCategory]} - ${requestBody.content.topic}`,
+                  name: requestBody.content.name || `${questionTypeName[theme.questionSetMeta.questionSetCategory]} - ${requestBody.content.topic.join(', ')}`,
                   code: uuid(),
-                  description: requestBody.content.description || `These are ${questionTypeName[theme.questionSetMeta.questionSetCategory]}s about ${requestBody.content.topic}`,
+                  description: requestBody.content.description || `These are ${questionTypeName[theme.questionSetMeta.questionSetCategory]}s about ${requestBody.content.topic.join(', ')}`,
                   createdBy: "edce4f4f-6c82-458a-8b23-e3521859992f",
                   contentType: "PracticeQuestionSet",
                   mimeType: "application/vnd.ekstep.ecml-archive",
@@ -153,6 +153,9 @@ module.exports = function(app) {
             });
             }
           );
+        }, err => {
+            res.status(err.statusCode);
+            res.json(err.error);
         });
 
       function publishResource(contentId) {
@@ -233,6 +236,9 @@ module.exports = function(app) {
       forkJoin([updatedBody, versionKey])
         .subscribe(response => {
           updateResource(response[0], response[1].result.content)
+        }, err => {
+            res.status(err.statusCode);
+            res.json(err.error);
         })
         const questions = [];
       _.forEach(_.get(req.body.request.content, "questions"), value => {
