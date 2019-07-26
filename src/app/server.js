@@ -47,7 +47,7 @@ app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
 app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '10mb' }), require('./helpers/announcement')(keycloak)) // announcement api routes
 
-app.all('/logoff', endSession, (req, res) => { 
+app.all('/logoff', endSession, (req, res) => {
   res.cookie('connect.sid', '', { expires: new Date() }); res.redirect('/logout')
 })
 
@@ -62,6 +62,8 @@ require('./routes/ssoRoutes.js')(app, keycloak) // sso routes
 require('./routes/clientRoutes.js')(app, keycloak) // client app routes
 
 require('./routes/reportRoutes.js')(app, keycloak) // report routes
+
+require('./routes/resourceCreationRoutes.js')(app, keycloak) // resource creation routes
 
 app.all(['/content-editor/telemetry', '/collection-editor/telemetry'], bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '50mb' }), keycloak.protect(), telemetryHelper.logSessionEvents)
