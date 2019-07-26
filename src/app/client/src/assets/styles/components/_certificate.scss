@@ -6,135 +6,136 @@
   min-height: 100vh;
   top: 0;
   left: 0;
-}
-.sb-certificatePage{
-  width: 100%;
-  margin: 0 auto;
-  padding: $sb-certificatePage-padding;
-  text-align: center;
-  position: relative;
-
-  @include respond-above(xs) {
-    max-width: $sb-certificatePage-max-width;
-  }
-
-  .sb-certificatePage-logo {
-    height: $sb-certificatePage-logo-height;
-  }
-
-  .sb-certificatePage-desc {
-    background-color: $sb-certificatePage-desc-background;
-    padding: $sb-certificatePage-desc-padding;
-    margin: $sb-certificatePage-desc-margin;
-    z-index: 2;
-
-    .sb-certificatePage-desc-img {
-      max-width: $sb-certificatePage-desc-img-width;
-      margin: 0 auto;
-    }
-  }
-
-  .sb-certificatePage-label {
-    font-weight: normal;
-    font-size: $sb-certificatePage-label-font-size;
-    line-height: $sb-certificatePage-label-line-height;
-    color: $sb-certificatePage-label-color;
-  }
-
-  .sb-certificatePage-field {
-    display: flex;
-    justify-content: space-between;
-    width: $sb-certificatePage-field-width;
-    margin: $sb-certificatePage-field-margin;
-
-    .sb-certificatePage-input {
-      height: $sb-certificatePage-input-height;
-      width: $sb-certificatePage-input-width;
-      border: 0;
-      border-bottom: $sb-certificatePage-input-border-bottom;
-      background: transparent;
-      text-align: center;
-      font-weight: bold;
-      font-size: $sb-certificatePage-input-font-size;
-      color: $sb-certificatePage-input-color;
-      &:focus {
-        outline: none;
-      }
-    }
-  }
-
-  .sb-certificatePage-holder-details {
-    .sb-certificatePage-holder-desc {
-      font-size: $sb-certificatePage-holder-desc-font-size;
-      line-height: $sb-certificatePage-holder-desc-line-height;
-      color: $sb-certificatePage-holder-desc-color;
-      &.sb-certificatePage-holder-desc-primary {
-        color: $sb-certificatePage-holder-desc-primary-color;
-        margin: 0;
-      }
-    }
-    .sb-certificatePage-holder-name {
-      font-size: $sb-certificatePage-holder-name-font-size;
-      line-height: $sb-certificatePage-holder-name-line-height;
-      color: $sb-certificatePage-holder-name-color;
-      text-align: center;
-      margin: $sb-certificatePage-holder-name-margin;
-    }
-  }
-  .sb-certificatePage-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
+  
+  .sb-certificatePage{
     width: 100%;
-    height: 100%;
-    background: $sb-certificatePage-overlay-background;
-    z-index: 2;
-    display :none;
-  }
-  .sb-certificatePage-loader {
-    display: none;
-    .sb-certificatePage-loader-img {
-      height: $sb-certificatePage-loader-img-height;
-      width: 3$sb-certificatePage-loader-img-width;
+    margin: 0 auto;
+    padding: $sb-certificatePage-padding;
+    text-align: center;
+    position: relative;
+
+    @include respond-above(xs) {
+      max-width: $sb-certificatePage-max-width;
     }
-  }
-  &.loading {
+
+    .sb-certificatePage-logo {
+      height: $sb-certificatePage-logo-height;
+    }
+
+    .sb-certificatePage-desc {
+      background-color: $sb-certificatePage-desc-background;
+      padding: $sb-certificatePage-desc-padding;
+      margin: $sb-certificatePage-desc-margin;
+      z-index: 2;
+
+      .sb-certificatePage-desc-img {
+        max-width: $sb-certificatePage-desc-img-width;
+        margin: 0 auto;
+      }
+    }
+
+    .sb-certificatePage-label {
+      font-weight: normal;
+      font-size: $sb-certificatePage-label-font-size;
+      line-height: $sb-certificatePage-label-line-height;
+      color: $sb-certificatePage-label-color;
+    }
+
+    .sb-certificatePage-field {
+      display: flex;
+      justify-content: space-between;
+      width: $sb-certificatePage-field-width;
+      margin: $sb-certificatePage-field-margin;
+
+      .sb-certificatePage-input {
+        height: $sb-certificatePage-input-height;
+        width: $sb-certificatePage-input-width;
+        border: 0;
+        border-bottom: $sb-certificatePage-input-border-bottom;
+        background: transparent;
+        text-align: center;
+        font-weight: bold;
+        font-size: $sb-certificatePage-input-font-size;
+        color: $sb-certificatePage-input-color;
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+
+    .sb-certificatePage-holder-details {
+      .sb-certificatePage-holder-desc {
+        font-size: $sb-certificatePage-holder-desc-font-size;
+        line-height: $sb-certificatePage-holder-desc-line-height;
+        color: $sb-certificatePage-holder-desc-color;
+        &.sb-certificatePage-holder-desc-primary {
+          color: $sb-certificatePage-holder-desc-primary-color;
+          margin: 0;
+        }
+      }
+      .sb-certificatePage-holder-name {
+        font-size: $sb-certificatePage-holder-name-font-size;
+        line-height: $sb-certificatePage-holder-name-line-height;
+        color: $sb-certificatePage-holder-name-color;
+        text-align: center;
+        margin: $sb-certificatePage-holder-name-margin;
+      }
+    }
     .sb-certificatePage-overlay {
-      display: block;
-    }
-    .sb-certificatePage-desc-img {
-      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: $sb-certificatePage-overlay-background;
+      z-index: 2;
+      display :none;
     }
     .sb-certificatePage-loader {
-      display: block;
-      z-index: 4;
-      position: relative;
-      color: $sb-certificatePage-holder-desc-primary-color;
-      font-weight: bold;
+      display: none;
+      .sb-certificatePage-loader-img {
+        height: $sb-certificatePage-loader-img-height;
+        width: 3$sb-certificatePage-loader-img-width;
+      }
+    }
+    &.loading {
+      .sb-certificatePage-overlay {
+        display: block;
+      }
+      .sb-certificatePage-desc-img {
+        display: none;
+      }
+      .sb-certificatePage-loader {
+        display: block;
+        z-index: 4;
+        position: relative;
+        color: $sb-certificatePage-holder-desc-primary-color;
+        font-weight: bold;
+      }
     }
   }
-}
 
 
-.sb-certificate {
-  padding: 12px;
-  width: 843px;
-  background: #fff;
-  margin: 0 auto;
+  .sb-certificate {
+    padding: 12px;
+    width: 843px;
+    background: #fff;
+    margin: 0 auto;
 
-  .sb-certificate-box {
-    border: 2px solid #EBE8E5;
-    width: 819px;
-    height: 571px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+    .sb-certificate-box {
+      border: 2px solid #EBE8E5;
+      width: 819px;
+      height: 571px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-  .sb-certificate-border {
-    background-image: url("/assets/images/certificate-border.svg");
-    background-size: 100% 100%;
-    width: 791px;
-    height: 545px;
+    .sb-certificate-border {
+      background-image: url("/assets/images/certificate-border.svg");
+      background-size: 100% 100%;
+      width: 791px;
+      height: 545px;
+    }
   }
 }
