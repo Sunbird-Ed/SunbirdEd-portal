@@ -76,6 +76,7 @@ function getECMLJSON(headers, collections) {
                   questionSetAuthor.push(
                     _.get(res, "result.assessment_item.creator")
                   );
+                  questionSetCategory = _.get(res, "result.assessment_item.category");
                   questionSetConfigCdata.total_items = collections.length;
                   questionConfigCdata.options =
                     res.result.assessment_item.options || [];
@@ -133,7 +134,8 @@ function getECMLJSON(headers, collections) {
           theme: {theme},
           questionSetMeta: {
             questionSetAttribution: questionSetAttribution,
-            questionSetAuthor: questionSetAuthor
+            questionSetAuthor: questionSetAuthor,
+            questionSetCategory: questionSetCategory
           }
         };
       })
