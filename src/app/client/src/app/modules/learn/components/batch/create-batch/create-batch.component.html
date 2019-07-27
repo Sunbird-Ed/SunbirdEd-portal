@@ -40,12 +40,12 @@
           <label for="Enrollment Type">{{resourceService?.frmelmnts?.lbl?.natureofbatch}}</label>
         </div>
         <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-          <input type="radio" name="enrollmentType" value='invite-only' formControlName="enrollmentType">
-          <label>{{resourceService?.frmelmnts?.lbl?.inviteonly}}</label>
+          <input id="create-invite-only" type="radio" name="enrollmentType" value='invite-only' formControlName="enrollmentType">
+          <label for="create-invite-only">{{resourceService?.frmelmnts?.lbl?.inviteonly}}</label>
         </div>
         <div class="sb-radio-btn-checkbox sb-radio-btn-primary" *ngIf="courseCreator">
-          <input type="radio" value='open' name="enrollmentType" formControlName="enrollmentType">
-          <label>{{resourceService?.frmelmnts?.lbl?.open}}</label>
+          <input id="create-open" type="radio" value='open' name="enrollmentType" formControlName="enrollmentType">
+          <label for="create-open">{{resourceService?.frmelmnts?.lbl?.open}}</label>
         </div>
       </div>
       <div class="d-flex flex-w-wrap">
