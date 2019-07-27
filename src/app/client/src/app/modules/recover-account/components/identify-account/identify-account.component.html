@@ -1,3 +1,28 @@
 <app-full-page-modal>
-    identify-account works!
+    <div class="d-flex flex-jc-center mb-30">
+        <img *ngIf="recoverAccountService.tenantInfo" class="image centered"
+            alt={{recoverAccountService.tenantInfo.tenantName}} height="45"
+            src="{{recoverAccountService.tenantInfo.logo}}">
+    </div>
+    <h5 class="text-center mb-24"><b>Recover Account</b></h5>
+    <div class="width-300 mx-auto">
+        <form class="ui form borderd" autocomplete="off">
+            <div class="required field mb-20">
+                <label class="mb-10">{{'Enter Email ID/ Phone Number'}}</label>
+                <input [ngClass]="{'orange-border': false }" name="primaryContact" 
+                placeholder="{{'Enter Email/Phone registered with {instance}' |  interpolate:'{instance}': resourceService.instance}}">
+            </div>
+            <label
+                class="ui basic blue error label pt-0">{{'Email ID / Phone is not registered with {instance}' |  interpolate:'{instance}': resourceService.instance}}</label>
+            <div class="required field mb-20">
+                <label class="mb-10">{{'Enter Name'}}</label>
+                <input [ngClass]="{'orange-border': false }" name="name"
+                placeholder="{{'Enter Name registered {instance}' |  interpolate:'{instance}': resourceService.instance}}">
+            </div>
+            <label
+                class="ui basic blue error label pt-0">{{'Entered Name dose not match the name registered in {instance}' |  interpolate:'{instance}': resourceService.instance}}</label>
+            <button class="ui button width-300 mt-10" tabindex="0" [ngClass]="{'grey':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}"
+                (click)="handleNext()">{{'Next'}}</button>
+        </form>
+    </div>
 </app-full-page-modal>

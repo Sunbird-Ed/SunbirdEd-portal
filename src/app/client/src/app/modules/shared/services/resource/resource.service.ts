@@ -125,7 +125,7 @@ export class ResourceService {
  * get method to fetch instance.
  */
   get instance(): string {
-    return this._instance;
+    return _.upperCase(this._instance);
   }
 
   getLanguageChange(language) {
