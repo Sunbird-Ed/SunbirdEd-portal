@@ -15,3 +15,4 @@ export * from './batch-card/batch-card.component';
 export * from './offline-card/offline-card.component';
 export * from './offline-banner/offline-banner.component';
 export * from './offline-application-download/offline-application-download.component';
+export * from './full-page-modal/full-page-modal.component';
