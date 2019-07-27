@@ -30,7 +30,7 @@ const appRoutes: Routes = [
     path: 'certs', loadChildren: 'app/modules/certificate/certificate.module#CertificateModule'
   },
   {
-    path: 'recover/account', loadChildren: 'app/modules/recover-account/recover-account.module#RecoverAccountModule'
+    path: 'recover', loadChildren: 'app/modules/recover-account/recover-account.module#RecoverAccountModule'
   },
   {
     path: ':slug/get', loadChildren: 'app/modules/dial-code-search/dial-code-search.module#DialCodeSearchModule'

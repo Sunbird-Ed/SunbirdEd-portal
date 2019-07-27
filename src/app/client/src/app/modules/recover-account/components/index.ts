@@ -1,4 +1,4 @@
 export *  from './identify-account/identify-account.component';
-export *  from './select-contact-type/select-contact-type.component';
-export *  from './verify-contact-type/verify-contact-type.component';
+export *  from './select-account-identifier/select-account-identifier.component';
+export *  from './verify-account-identifier/verify-account-identifier.component';
 export *  from './reset-password/reset-password.component';
