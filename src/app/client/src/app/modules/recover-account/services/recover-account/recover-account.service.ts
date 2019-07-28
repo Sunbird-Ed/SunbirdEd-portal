@@ -1,6 +1,7 @@
+import { ConfigService } from '@sunbird/shared';
 import { Injectable } from '@angular/core';
-import { TenantService } from '@sunbird/core';
-import { first, delay } from 'rxjs/operators';
+import { TenantService, LearnerService } from '@sunbird/core';
+import { first } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,8 @@ import { first, delay } from 'rxjs/operators';
 export class RecoverAccountService {
 
   tenantInfo: any;
-  constructor(private tenantService: TenantService) {
+  fuzzySearchResults: Array<any>;
+  constructor(private tenantService: TenantService, public learnerService: LearnerService, public configService: ConfigService) {
     this.setTenantInfo();
   }
   private setTenantInfo() {
@@ -20,5 +22,27 @@ export class RecoverAccountService {
         };
       }
     });
+  }
+  fuzzyUserSearch(data: any) {
+    const options = {
+      url: this.configService.urlConFig.URLS.ACCOUNT_RECOVERY.FUZZY_SEARCH,
+      data: data
+    };
+    return this.learnerService.post(options);
+  }
+  generateOTP(data) {
+    const options = {
+      url: this.configService.urlConFig.URLS.OTP.GENERATE,
+      data: data
+    };
+    return this.learnerService.post(options);
+  }
+
+  verifyOTP(data) {
+    const options = {
+      url: this.configService.urlConFig.URLS.OTP.VERIFY,
+      data: data
+    };
+    return this.learnerService.post(options);
   }
 }
