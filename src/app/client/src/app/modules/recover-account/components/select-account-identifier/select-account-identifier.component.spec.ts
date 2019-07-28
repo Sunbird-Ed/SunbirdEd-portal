@@ -60,6 +60,7 @@ describe('SelectAccountIdentifierComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectAccountIdentifierComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
