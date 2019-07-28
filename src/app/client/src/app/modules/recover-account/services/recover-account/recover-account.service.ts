@@ -9,8 +9,8 @@ import { first } from 'rxjs/operators';
 export class RecoverAccountService {
 
   tenantInfo: any;
-  fuzzySearchResults: Array<any> = fuzzySearchResults;
-  selectedAccountDetails: any = selectedAccountDetails;
+  fuzzySearchResults: Array<any> = [];
+  selectedAccountDetails: any = {};
   otpVerified = true;
   constructor(private tenantService: TenantService, public learnerService: LearnerService, public configService: ConfigService) {
     this.setTenantInfo();
@@ -54,6 +54,4 @@ export class RecoverAccountService {
     return this.learnerService.post(options);
   }
 }
-const fuzzySearchResults = [{ id: '123', phone: '96******12', email: 'an*****@gmail.com' },
-{ id: '124', phone: '96******14', email: 'am*****@gmail.com' }];
-const selectedAccountDetails = {id: '123', type: 'phone', value: '96******14'};
+
