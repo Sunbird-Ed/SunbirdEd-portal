@@ -13,6 +13,7 @@ export class SelectAccountIdentifierComponent implements OnInit {
   selectedAccountId: any;
   validIdentifiers = [];
   errorCount = 0;
+  disableFormSubmit = true;
   constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService,
     public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService) { }
 
