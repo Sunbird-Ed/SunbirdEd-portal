@@ -39,11 +39,14 @@ export class IdentifyAccountComponent implements OnInit {
     });
   }
   handleNext() {
-    this.recoverAccountService.fuzzyUserSearch(this.form.value)
+    this.disableFormSubmit = true;
+    const request = {
+      request: this.form.value
+    };
+    this.recoverAccountService.fuzzyUserSearch(request)
     .subscribe(response => {
       this.navigateToNextStep(response);
     }, error => {
-      this.disableFormSubmit = true;
       this.handleError(error);
     });
   }

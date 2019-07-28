@@ -1,3 +1,28 @@
 <app-full-page-modal>
-    verify-account-identifier works!
+    <div class="d-flex flex-jc-center mb-30">
+        <img *ngIf="recoverAccountService.tenantInfo" class="image centered"
+            alt={{recoverAccountService.tenantInfo.tenantName}} height="45"
+            src="{{recoverAccountService.tenantInfo.logo}}">
+    </div>
+    <h5 class="text-center mb-24"><b>Recover Account</b></h5>
+    <div class="width-300 mx-auto">
+        <h6 class="text-center">OTP has been sent to {{recoverAccountService.selectedAccountDetails.value}} .</h6>
+        <h6 class="text-center mb-24">{{'Its valid for 30 min'}}</h6>
+        <form [formGroup]="form" class="ui form borderd">
+            <div class="required field mb-10">
+                <label class="mb-10">{{'Enter OTP'}}</label>
+                <input [ngClass]="{'orange-border': false }" formControlName="otp" name="otp"
+                    placeholder="{{'Enter OTP'}}">
+            </div>
+            <label *ngIf="form.controls.otp.touched && form.controls.otp.errors && form.controls.otp.errors.required"
+                class="ui basic blue error label pt-0">{{'OTP is mandatory'}}</label>
+                <br>
+            <button class="ui button m-10" tabindex="0"
+                [ngClass]="{ 'grey': disableResendOtp, 'light-sea-green': !disableResendOtp }"
+                (click)="handleResendOtp()">{{'Resend OTP'}}</button>
+            <button class="ui button m-10" tabindex="0"
+                [ngClass]="{ 'grey': disableFormSubmit, 'light-sea-green': !disableFormSubmit }"
+                (click)="handleVerifyOtp()">{{'Submit OTP'}}</button>
+        </form>
+    </div>
 </app-full-page-modal>

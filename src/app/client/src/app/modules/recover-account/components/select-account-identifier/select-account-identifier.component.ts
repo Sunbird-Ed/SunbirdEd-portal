@@ -24,7 +24,14 @@ export class SelectAccountIdentifierComponent implements OnInit {
     this.selectedAccountId = selectedAccountId;
   }
   handleGenerateOtp() {
-    this.recoverAccountService.generateOTP(this.selectedAccountId).subscribe(response => {
+    const request = {
+      request: {
+        type: this.selectedAccountId.type,
+        key: this.selectedAccountId.value,
+        id: this.selectedAccountId.id
+      }
+    };
+    this.recoverAccountService.generateOTP(request).subscribe(response => {
       this.navigateToNextStep();
     }, error => {
       this.handleError(error);

@@ -11,6 +11,7 @@ export class RecoverAccountService {
   tenantInfo: any;
   fuzzySearchResults: Array<any>;
   selectedAccountDetails: any;
+  otpVerified = false;
   constructor(private tenantService: TenantService, public learnerService: LearnerService, public configService: ConfigService) {
     this.setTenantInfo();
   }
@@ -47,3 +48,4 @@ export class RecoverAccountService {
     return this.learnerService.post(options);
   }
 }
+
