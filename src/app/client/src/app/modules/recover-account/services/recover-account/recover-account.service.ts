@@ -10,6 +10,7 @@ export class RecoverAccountService {
 
   tenantInfo: any;
   fuzzySearchResults: Array<any>;
+  selectedAccountDetails: any;
   constructor(private tenantService: TenantService, public learnerService: LearnerService, public configService: ConfigService) {
     this.setTenantInfo();
   }

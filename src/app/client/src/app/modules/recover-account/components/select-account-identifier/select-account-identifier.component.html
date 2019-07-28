@@ -8,9 +8,14 @@
     <div class="width-300 mx-auto">
         <h6 class="text-center">{{'We will send you an OTP'}}</h6>
         <h6 class="text-center mb-24">{{'Where would you like to receive the OTP?'}}</h6>
-        <sui-radio-button class="mb-10" name="'accountIdentifier'" value="first" [(ngModel)]="accountIdentifier">{{'First Account'}}</sui-radio-button><br>
-        <sui-radio-button class="mb-10" name="'accountIdentifier'" value="second" [(ngModel)]="accountIdentifier">{{'Second Account'}}</sui-radio-button>
-        <button class="ui button width-300 mt-10" tabindex="0" [ngClass]="{'grey':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}"
+        <div *ngFor="let identifier of validIdentifiers">
+            <sui-radio-button class="mb-10" name="id" value="{{identifier.value}}"
+                (ngModelChange)="setSelectIdentifier(identifier)"
+                [(ngModel)]="selectedAccountId.value">{{identifier.value}}</sui-radio-button>
+            <br>
+        </div>
+        <button class="ui button width-300 mt-10" tabindex="0"
+            [ngClass]="{'grey':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}"
             (click)="handleGenerateOtp()">{{'Next'}}</button>
     </div>
 </app-full-page-modal>
