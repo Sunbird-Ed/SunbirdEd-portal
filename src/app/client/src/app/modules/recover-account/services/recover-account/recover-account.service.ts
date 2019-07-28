@@ -9,9 +9,9 @@ import { first } from 'rxjs/operators';
 export class RecoverAccountService {
 
   tenantInfo: any;
-  fuzzySearchResults: Array<any>;
-  selectedAccountDetails: any;
-  otpVerified = false;
+  fuzzySearchResults: Array<any> = fuzzySearchResults;
+  selectedAccountDetails: any = selectedAccountDetails;
+  otpVerified = true;
   constructor(private tenantService: TenantService, public learnerService: LearnerService, public configService: ConfigService) {
     this.setTenantInfo();
   }
@@ -32,6 +32,13 @@ export class RecoverAccountService {
     };
     return this.learnerService.post(options);
   }
+  resetPassword(data: any) {
+    const options = {
+      url: this.configService.urlConFig.URLS.ACCOUNT_RECOVERY.RESET_PASSWORD,
+      data: data
+    };
+    return this.learnerService.post(options);
+  }
   generateOTP(data) {
     const options = {
       url: this.configService.urlConFig.URLS.OTP.GENERATE,
@@ -39,7 +46,6 @@ export class RecoverAccountService {
     };
     return this.learnerService.post(options);
   }
-
   verifyOTP(data) {
     const options = {
       url: this.configService.urlConFig.URLS.OTP.VERIFY,
@@ -48,4 +54,6 @@ export class RecoverAccountService {
     return this.learnerService.post(options);
   }
 }
-
+const fuzzySearchResults = [{ id: '123', phone: '96******12', email: 'an*****@gmail.com' },
+{ id: '124', phone: '96******14', email: 'am*****@gmail.com' }];
+const selectedAccountDetails = {id: '123', type: 'phone', value: '96******14'};

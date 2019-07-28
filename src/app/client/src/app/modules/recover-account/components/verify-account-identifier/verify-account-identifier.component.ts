@@ -87,7 +87,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     });
   }
   verifyState() {
-    if (!this.recoverAccountService.fuzzySearchResults || !this.recoverAccountService.fuzzySearchResults.length
+    if (!_.get(this.recoverAccountService, 'fuzzySearchResults.length')
       || _.isEmpty(this.recoverAccountService.selectedAccountDetails)) {
       this.navigateToIdentifyAccount();
     }

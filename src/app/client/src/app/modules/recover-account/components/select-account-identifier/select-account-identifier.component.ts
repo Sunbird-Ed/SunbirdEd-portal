@@ -38,7 +38,7 @@ export class SelectAccountIdentifierComponent implements OnInit {
     });
   }
   verifyState() {
-    if (!this.recoverAccountService.fuzzySearchResults || !this.recoverAccountService.fuzzySearchResults.length) {
+    if (!_.get(this.recoverAccountService, 'fuzzySearchResults.length')) {
       this.navigateToIdentifyAccount();
     }
   }
