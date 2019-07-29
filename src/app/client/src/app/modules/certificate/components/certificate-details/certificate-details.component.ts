@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
 
 @Component({
   selector: 'app-certificate-details',
@@ -12,7 +11,7 @@ export class CertificateDetailsComponent implements OnInit {
   viewCertificate: boolean;
   viewCertificateHtml: boolean;
 
-  constructor(public resourceService: ResourceService) { }
+  constructor() { }
   ngOnInit() {
   }
 
