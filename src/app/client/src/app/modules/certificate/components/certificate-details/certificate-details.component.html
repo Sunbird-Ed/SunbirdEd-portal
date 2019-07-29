@@ -1,8 +1,9 @@
-<div style="width:auto;position: absolute;z-index: 9999999;padding:8px;">
-  <button type="button" (click)="viewCertificate = !viewCertificate"  class="sb-btn sb-btn-xs sb-btn-primary">Show Certificate PDF</button> | <button type="button"  (click)="viewCertificateHtml = !viewCertificateHtml" class="sb-btn sb-btn-xs sb-btn-primary">Show Certificate</button>
+<div style="width:auto;position: fixed;z-index: 9999999;padding: 16px; top: 0; background: #fff;">
+  <button type="button" (click)="viewCertificate = !viewCertificate; viewCertificateHtml = false;"  class="sb-btn sb-btn-xs sb-btn-primary">Show Certificate PDF</button> | <button type="button"  (click)="viewCertificateHtml = !viewCertificateHtml; viewCertificate = false;" class="sb-btn sb-btn-xs sb-btn-primary">Show Certificate</button>
 </div>
 <!-- viewCertificate = !viewCertificate  viewCertificateHtml = !viewCertificateHtml-->
-<div class="sb-certificate" *ngIf="viewCertificate">
+<div class="sb-certificateBg" *ngIf="viewCertificate">
+<div class="sb-certificate" >
   <div class="sb-certificate-box">
       <div class="sb-state-logo-bg"></div>
       <div class="sb-certificate-container">
@@ -29,6 +30,7 @@
             </div>
       </div>
   </div>
+</div>
 </div>
 
 <div class="sb-certificateBg" *ngIf="viewCertificateHtml">

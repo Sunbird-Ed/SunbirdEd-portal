@@ -4,7 +4,10 @@
   right: 0;
   top: 0;
   background: #e5edf5;
-  z-index: 9999999;
+  z-index: 999;
+  height: 100%;
+  overflow: auto;
+  padding: 16px;
 }
 .sb-certificatePage {
   width: 100%;
