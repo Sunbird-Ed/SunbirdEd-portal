@@ -10,6 +10,8 @@ const logger = require('sb_logger_util_v2')
 
 module.exports = function (app) {
 
+  require('./accountRecoveryRoute.js')(app) // account recovery route
+
   // helper route to enable enable admin to update user fields
   app.patch('/learner/portal/user/v1/update',
     proxyUtils.verifyToken(),permissionsHelper.checkPermission(),

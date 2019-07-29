@@ -6,7 +6,7 @@ import {
   AnnouncementInboxCardComponent, PageSectionComponent, NoResultComponent, AppLoaderComponent, CardComponent,
   CardCreationComponent, ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, RedirectComponent,
   CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, BatchCardComponent,
-  OfflineCardComponent, OfflineBannerComponent, OfflineApplicationDownloadComponent
+  OfflineCardComponent, OfflineBannerComponent, OfflineApplicationDownloadComponent, FullPageModalComponent
 } from './components';
 import {
   ConfigService, ResourceService, ToasterService, WindowScrollService, BrowserCacheTtlService,
@@ -37,12 +37,12 @@ import { HighlightTextDirective } from './directives/highlight-text/highlight-te
     BatchCardComponent, NoResultComponent, DateFilterXtimeAgoPipe, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, RedirectComponent, CustomMultiSelectComponent,
     InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineCardComponent, OfflineBannerComponent,
-    OfflineApplicationDownloadComponent, HighlightTextDirective],
+    OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent],
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
     PageSectionComponent, BatchCardComponent, NoResultComponent, CardComponent, OfflineCardComponent, CardCreationComponent, FilterPipe,
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
     CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
-    OfflineApplicationDownloadComponent, HighlightTextDirective]
+    OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

@@ -87,9 +87,9 @@ module.exports = (app, keycloak) => {
   })
 
   app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
-    '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course',
-    '/explore-course/*', '/:slug/explore-course', '/:slug/explore-course/*',
-    '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*', '/download/*', '/:slug/download/*', '/certs/*'],redirectTologgedInPage, indexPage(false))
+    '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course', '/explore-course/*',
+    '/:slug/explore-course', '/:slug/explore-course/*', '/:slug/signup', '/signup', '/:slug/sign-in/*',
+    '/sign-in/*', '/download/*', '/:slug/download/*', '/certs/*', '/recover/*'], redirectTologgedInPage, indexPage(false))
 
   app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode + '?source=scan'))
 
