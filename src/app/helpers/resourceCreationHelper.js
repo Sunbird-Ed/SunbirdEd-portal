@@ -73,9 +73,11 @@ function getECMLJSON(headers, collections) {
                   questionSetAttribution = questionSetAttribution.concat(
                     _.get(res, "result.assessment_item.organisation")
                   );
-                  questionSetAuthor.push(
-                    _.get(res, "result.assessment_item.creator")
-                  );
+                  if(res.result.assessment_item.author){
+                    questionSetAuthor.push(
+                      _.get(res, "result.assessment_item.author")
+                    );
+                  }
                   questionSetCategory = _.get(res, "result.assessment_item.category");
                   questionSetConfigCdata.total_items = collections.length;
                   questionConfigCdata.options =
@@ -123,7 +125,7 @@ function getECMLJSON(headers, collections) {
           "id"
         );
         questionSetAttribution = _.compact(_.uniqBy(questionSetAttribution));
-        questionSetAuthor = _.uniqBy(questionSetAuthor).join(", ");
+        questionSetAuthor = _.uniqBy(_.compact(questionSetAuthor)).join(", ");
         questionSet.config.__cdata = JSON.stringify(questionSetConfigCdata);
         questionSet.data.__cdata = JSON.stringify(questionSet.data.__cdata);
         questionSet["org.ekstep.question"] = questions;

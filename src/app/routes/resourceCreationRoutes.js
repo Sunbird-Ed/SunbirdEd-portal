@@ -101,7 +101,7 @@ module.exports = function(app) {
                   code: uuid(),
                   description: requestBody.content.description || `These are ${questionTypeName[theme.questionSetMeta.questionSetCategory]}s about ${requestBody.content.topic.join(', ')}`,
                   createdBy: "edce4f4f-6c82-458a-8b23-e3521859992f",
-                  contentType: "PracticeQuestionSet",
+                  contentType: requestBody.content.contentType || "PracticeQuestionSet",
                   mimeType: "application/vnd.ekstep.ecml-archive",
                   programId: requestBody.content.programId,
                   program: requestBody.content.program,
@@ -114,10 +114,11 @@ module.exports = function(app) {
                   creator: "Content Creator",
                   editorVersion: 3,
                   body: JSON.stringify(theme.theme),
-                  resourceType: "Practice",
+                  resourceType: requestBody.content.resourceType || "Practice",
                   questions: questions,
                   author: theme.questionSetMeta.questionSetAuthor,
                   attributions: theme.questionSetMeta.questionSetAttribution,
+                  languageCode: requestBody.content.languageCode || 'en',
                   // tslint:disable-next-line: max-line-length
                   appIcon:
                     "https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11279144369168384014/artifact/qa_1561455529937.png"
