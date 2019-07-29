@@ -9,6 +9,11 @@ export class CertificateDetailsComponent implements OnInit {
 
   constructor() { }
   loader: boolean;
+  showSuccessModal;
+
+  loader: boolean;
+  viewCertificate: boolean;
+  viewCertificateHtml: boolean;
 
   ngOnInit() {
   }

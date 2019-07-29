@@ -1,42 +1,79 @@
-<div class="sb-certificatePage-container">
+<div style="width:auto;position: absolute;z-index: 9999999;padding:8px;">
+  <button type="button" (click)="viewCertificate = !viewCertificate"  class="sb-btn sb-btn-xs sb-btn-primary">Show Certificate PDF</button> | <button type="button"  (click)="viewCertificateHtml = !viewCertificateHtml" class="sb-btn sb-btn-xs sb-btn-primary">Show Certificate</button>
+</div>
+<!-- viewCertificate = !viewCertificate  viewCertificateHtml = !viewCertificateHtml-->
+<div class="sb-certificate" *ngIf="viewCertificate">
+  <div class="sb-certificate-box">
+      <div class="sb-state-logo-bg"></div>
+      <div class="sb-certificate-container">
+          <div class="sb-certificate-header">
+              <div class="state-symbol">
+              <img src="assets/images/Andhra-Pradesh-AP-Govt-Logo.svg" class="sb-certificatePage-logo" alt="Government of Andhra Pradesh"></div>
+              <p class="state-name">Government of Andhra Pradesh</p>
+              <h1>Certificate of Completion</h1>
+              <p>This is to certify that Mr/Ms <strong>K. Subramanian Chandrasekhar Rao</strong> has successfully completed the training "<strong>Teacher's Professional Development Programme</strong>" on <strong>25th July 2019</strong>.</p>
+            </div>
+            <div class="sb-certificate-footer">
+              <div class="country-symbol">
+                  <img src="assets/images/DIKSHA.svg" class="sb-certificatePage-logo" alt="DIKSHA"  title="DIKSHA"/>
+                  <p>This document is digitally signed</p>
+              </div>
+              <div class="state-sign">
+                <hr class="sign-line">
+                  <p class="italic">Director of SCERT Andhra Pradesh</p>
+              </div>
+              <div class="certificate-qr-code">
+                  <img src="assets/images/sb-qr-code.svg" class="sb-certificate-qrcode" alt="Certificate QR Code is ABC123"  title="Certificate QR Code is ABC123" />
+                  <p>Scan to verify certificate</p>
+              </div>
+            </div>
+      </div>
+  </div>
+</div>
+
+<div class="sb-certificateBg" *ngIf="viewCertificateHtml">
 <div class="sb-certificatePage" [class.loading]="loader">
   <div class="sb-certificatePage-overlay"></div>
   <div class="sb-certificatePage-header">
     <img src="assets/images/DIKSHA.svg" class="sb-certificatePage-logo" alt="DIKSHA Logo"/>
   </div>
-  <div class="sb-certificatePage-desc">
+  <div class="sb-certificatePage-desc mb-auto">
       <div class="sb-certificatePage-loader">
         <p>Verifying your certificates</p>
         <img src="assets/images/loader.gif" class="sb-certificatePage-loader-img" alt="Loader"/>
       </div>
     <img src="assets/images/certificate.png" class="sb-certificatePage-desc-img" alt="Certificate Desc"/>
   </div>
-  <form class="sb-certificatePage-form" autocomplete="off">
+  <div class="sb-certificatePage-form mb-auto">
+    <form autocomplete="off">
+    <div class="sb-form-field-group">
     <label class="sb-certificatePage-label" for="certificate">
       Enter the Certificate Code here
     </label>
-    <div class="sb-certificatePage-field" id="certificate">
-      <input type="text" maxlength="1" name="certificate1" class="sb-certificatePage-input"/>
-      <input type="text" maxlength="1" name="certificate2" class="sb-certificatePage-input"/>
-      <input type="text" maxlength="1" name="certificate3" class="sb-certificatePage-input"/>
-      <input type="text" maxlength="1" name="certificate4" class="sb-certificatePage-input"/>
-      <input type="text" maxlength="1" name="certificate5" class="sb-certificatePage-input"/>
-      <input type="text" maxlength="1" name="certificate6" class="sb-certificatePage-input"/>
+    <label class="sb-certificatePage-label red label-error" for="certificate">
+      Please enter valid Certification code
+    </label>
+    <div class="sb-certificatePage-field sb-form-field" id="certificate">
+      <input type="text" maxlength="1" pattern="[a-zA-Z0-9-]+" required placeholder="A" autofocus name="certificate1" class="sb-certificatePage-input"/>
+      <input type="text" maxlength="1" pattern="[a-zA-Z0-9-]+" required placeholder="B" name="certificate2" class="sb-certificatePage-input"/>
+      <input type="text" maxlength="1" pattern="[a-zA-Z0-9-]+" required placeholder="C" name="certificate3" class="sb-certificatePage-input"/>
+      <input type="text" maxlength="1" pattern="[a-zA-Z0-9-]+" required placeholder="1" name="certificate4" class="sb-certificatePage-input"/>
+      <input type="text" maxlength="1" pattern="[a-zA-Z0-9-]+" required placeholder="2" name="certificate5" class="sb-certificatePage-input"/>
+      <input type="text" maxlength="1" pattern="[a-zA-Z0-9-]+" required placeholder="3" name="certificate6" class="sb-certificatePage-input"/>
     </div>
+  </div>
     <button type="button" class="sb-btn sb-btn-primary sb-btn-normal ripple width-100" (click)="loader = !loader">
       Verify
     </button>
   </form>
 </div>
+</div>
 
-<br><br>
-
-<div class="sb-certificatePage">
-    <div class="sb-certificatePage-overlay"></div>
-  <div class="sb-certificatePage-header">
+<div class="sb-certificatePage sb-certificate-view">
+  <div class="sb-certificatePage-header mb-auto">
     <img src="assets/images/DIKSHA.svg" class="sb-certificatePage-logo" alt="DIKSHA Logo"/>
   </div>
-  <div class="sb-certificatePage-holder-details">
+  <div class="sb-certificatePage-holder-details mb-auto">
     <img src="assets/images/badge.svg" class="sb-icon-badge mt-24 mb-8" alt="Badge"/>
     <p class="sb-certificatePage-holder-desc sb-certificatePage-holder-desc-primary">
       Certificate issued to
@@ -47,9 +84,23 @@
     <p class="sb-certificatePage-holder-desc">
       For successfully completing the course, <strong>“Active Listening for Master Coaches”</strong> on DIKSHA on 09 Aug 2019
     </p>
-    <button type="button" class="sb-btn sb-btn-normal sb-btn-secondary">
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-secondary" (click)="showSuccessModal = !showSuccessModal">
       <i class="play circle icon"></i> Watch Video
     </button>
+
+    <sui-modal *ngIf="showSuccessModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+    [size]="'large'" class="sb-modal" appBodyScroll (dismissed)="showSuccessModal = !showSuccessModal"
+    #modal>
+    <div class="sb-modal-header">
+        Watch Video
+      </div>
+    <div class="sb-modal-content p-0">
+      <div class="responsive-ct">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/2Xgff-gsf0A?rel=0&autoplay=1" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+  </sui-modal>
+
   </div>
 </div>
 

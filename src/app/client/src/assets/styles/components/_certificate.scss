@@ -1,141 +1,274 @@
-.sb-certificatePage-container {
-  position: fixed;
-  background: #fff;
-  z-index: 9999;
+.sb-certificateBg {
+  //position: fixed;
+  left: 0px;
+  right: 0px;
+  background: #e5edf5;
+  z-index: 9999999;
+}
+.sb-certificatePage {
   width: 100%;
-  min-height: 100vh;
-  top: 0;
-  left: 0;
-  
-  .sb-certificatePage{
-    width: 100%;
-    margin: 0 auto;
-    padding: $sb-certificatePage-padding;
-    text-align: center;
-    position: relative;
+  margin: 0 auto;
+  padding: $sb-certificatePage-padding;
+  text-align: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
 
-    @include respond-above(xs) {
-      max-width: $sb-certificatePage-max-width;
-    }
+  @include respond-above(xs) {
+    max-width: $sb-certificatePage-max-width;
+    min-height: 560px;
+  }
 
-    .sb-certificatePage-logo {
-      height: $sb-certificatePage-logo-height;
-    }
+  .sb-certificatePage-logo {
+    height: $sb-certificatePage-logo-height;
+  }
 
-    .sb-certificatePage-desc {
-      background-color: $sb-certificatePage-desc-background;
-      padding: $sb-certificatePage-desc-padding;
-      margin: $sb-certificatePage-desc-margin;
-      z-index: 2;
+  .sb-certificatePage-desc {
+    background-color: $sb-certificatePage-desc-background;
+    padding: $sb-certificatePage-desc-padding;
+    margin: $sb-certificatePage-desc-margin;
+    z-index: 2;
 
-      .sb-certificatePage-desc-img {
-        max-width: $sb-certificatePage-desc-img-width;
-        margin: 0 auto;
-      }
+    .sb-certificatePage-desc-img {
+      max-width: $sb-certificatePage-desc-img-width;
+      margin: 0 auto;
     }
+  }
 
-    .sb-certificatePage-label {
-      font-weight: normal;
-      font-size: $sb-certificatePage-label-font-size;
-      line-height: $sb-certificatePage-label-line-height;
-      color: $sb-certificatePage-label-color;
-    }
+  .sb-certificatePage-label {
+    font-weight: normal;
+    font-size: $sb-certificatePage-label-font-size;
+    line-height: $sb-certificatePage-label-line-height;
+    color: $sb-certificatePage-label-color;
+  }
 
-    .sb-certificatePage-field {
-      display: flex;
-      justify-content: space-between;
-      width: $sb-certificatePage-field-width;
-      margin: $sb-certificatePage-field-margin;
+  .sb-certificatePage-field {
+    display: flex;
+    justify-content: space-between;
+    width: $sb-certificatePage-field-width;
+    margin: $sb-certificatePage-field-margin;
 
-      .sb-certificatePage-input {
-        height: $sb-certificatePage-input-height;
-        width: $sb-certificatePage-input-width;
-        border: 0;
-        border-bottom: $sb-certificatePage-input-border-bottom;
-        background: transparent;
-        text-align: center;
-        font-weight: bold;
-        font-size: $sb-certificatePage-input-font-size;
-        color: $sb-certificatePage-input-color;
-        &:focus {
-          outline: none;
-        }
-      }
-    }
-
-    .sb-certificatePage-holder-details {
-      .sb-certificatePage-holder-desc {
-        font-size: $sb-certificatePage-holder-desc-font-size;
-        line-height: $sb-certificatePage-holder-desc-line-height;
-        color: $sb-certificatePage-holder-desc-color;
-        &.sb-certificatePage-holder-desc-primary {
-          color: $sb-certificatePage-holder-desc-primary-color;
-          margin: 0;
-        }
-      }
-      .sb-certificatePage-holder-name {
-        font-size: $sb-certificatePage-holder-name-font-size;
-        line-height: $sb-certificatePage-holder-name-line-height;
-        color: $sb-certificatePage-holder-name-color;
-        text-align: center;
-        margin: $sb-certificatePage-holder-name-margin;
-      }
-    }
-    .sb-certificatePage-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: $sb-certificatePage-overlay-background;
-      z-index: 2;
-      display :none;
-    }
-    .sb-certificatePage-loader {
-      display: none;
-      .sb-certificatePage-loader-img {
-        height: $sb-certificatePage-loader-img-height;
-        width: 3$sb-certificatePage-loader-img-width;
-      }
-    }
-    &.loading {
-      .sb-certificatePage-overlay {
-        display: block;
-      }
-      .sb-certificatePage-desc-img {
-        display: none;
-      }
-      .sb-certificatePage-loader {
-        display: block;
-        z-index: 4;
-        position: relative;
-        color: $sb-certificatePage-holder-desc-primary-color;
-        font-weight: bold;
+    .sb-certificatePage-input {
+      height: $sb-certificatePage-input-height;
+      width: $sb-certificatePage-input-width;
+      border: 0;
+      border-bottom: $sb-certificatePage-input-border-bottom;
+      background: transparent;
+      text-align: center;
+      font-weight: bold;
+      font-size: $sb-certificatePage-input-font-size;
+      color: $sb-certificatePage-input-color;
+      &:focus {
+        outline: none;
       }
     }
   }
 
+  .sb-certificatePage-holder-details {
+    .sb-certificatePage-holder-desc {
+      font-size: $sb-certificatePage-holder-desc-font-size;
+      line-height: $sb-certificatePage-holder-desc-line-height;
+      color: $sb-certificatePage-holder-desc-color;
+      &.sb-certificatePage-holder-desc-primary {
+        color: $sb-certificatePage-holder-desc-primary-color;
+        margin: 0;
+      }
+    }
+    .sb-certificatePage-holder-name {
+      font-size: $sb-certificatePage-holder-name-font-size;
+      line-height: $sb-certificatePage-holder-name-line-height;
+      color: $sb-certificatePage-holder-name-color;
+      text-align: center;
+      margin: $sb-certificatePage-holder-name-margin;
+    }
+  }
+  .sb-certificatePage-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: $sb-certificatePage-overlay-background;
+    z-index: 2;
+    display: none;
+  }
+  .sb-certificatePage-loader {
+    display: none;
+    .sb-certificatePage-loader-img {
+      height: $sb-certificatePage-loader-img-height;
+      width: 3$sb-certificatePage-loader-img-width;
+    }
+  }
+  &.loading {
+    .sb-certificatePage-overlay {
+      display: block;
+    }
+    .sb-certificatePage-desc-img {
+      display: none;
+    }
+    .sb-certificatePage-loader {
+      display: block;
+      z-index: 4;
+      position: relative;
+      color: $sb-certificatePage-holder-desc-primary-color;
+      font-weight: bold;
+    }
+  }
+}
 
-  .sb-certificate {
-    padding: 12px;
-    width: 843px;
-    background: #fff;
-    margin: 0 auto;
-
-    .sb-certificate-box {
-      border: 2px solid #EBE8E5;
-      width: 819px;
-      height: 571px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+.sb-form-field-group {
+  .sb-form-field {
+    ::placeholder {
+      /* Chrome, Firefox, Opera, Safari 10.1+ */
+      color: var(--gray-100);
+      opacity: 1; /* Firefox */
     }
 
-    .sb-certificate-border {
-      background-image: url("/assets/images/certificate-border.svg");
+    :-ms-input-placeholder {
+      /* Internet Explorer 10-11 */
+      color: var(--gray-100);
+    }
+
+    ::-ms-input-placeholder {
+      /* Microsoft Edge */
+      color: var(--gray-100);
+    }
+    input[type="text"] {
+      text-transform: uppercase;border-bottom: 1px solid #979797;
+    }
+    input:focus:required {
+      border-bottom: 1px solid var(--red-400);
+      box-shadow: 0px 0px 5px var(--primary-color);
+    }
+    input:focus:invalid {
+      border-bottom: 2px solid var(--red-400);
+    }
+    input:focus:invalid + div.sb-validation-placeholder {
+      color: var(--red-400);
+    }
+    input:focus:valid,
+    input:valid,input:required:valid, input:required:focus:valid {
+      border-bottom: 2px solid var(--secondary-200);
+    }
+  }
+}
+
+// sb certificate
+@import url("https://fonts.googleapis.com/css?family=Pacifico&display=swap");
+
+.sb-certificate {
+  // padding: 2%;
+  // width: 100%;
+  // background: #fff;
+  // margin: 0 auto;
+  // height: calc(100% - 2%);
+  // font-size:calc(14px + 1vw);
+
+  .sb-certificate-box {
+    width: 839.571px;
+    height: 588.618px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // padding: 2%;
+    margin: 0 auto;
+    position: relative;
+    background: #fff;
+    .sb-state-logo-bg {
+      background-image: url(/assets/images/ap-state-outline.svg);
       background-size: 100% 100%;
-      width: 791px;
-      height: 545px;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+      width: 56.25%;
+      z-index: 1;
+      margin: 0 auto;
+      height: auto;
+    }
+  }
+
+  .sb-certificate-container {
+    background-image: url("/assets/images/certificate-frame-1.svg");
+    background-size: 100% 100%;
+    width: 839.571px;
+    height: 588.618px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+    padding: 4% 10%;
+    .sb-certificate-header {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .state-symbol {
+        img {
+          width: 80px;
+        }
+      }
+      .state-name {
+        color: #333333;
+        font-size: 16px;
+        line-height: 22px;
+        margin: 0px;
+      }
+
+      h1 {
+        font-family: "Pacifico", cursive;
+        font-size: 36px;
+        margin: 16px 0px;
+        color: #024f9d;
+      }
+      p {
+        color: #333333;
+        font-size: 16px;
+        line-height: 24px;
+        text-align: center;
+        width: 75%;
+      }
+    }
+    .sb-certificate-footer {
+      display: inline-flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+      width: 100%;
+      .country-symbol {
+        flex: 1;
+        color: #999999;
+        img {
+          width: 100px;
+        }
+        p {
+          font-size: 10px;
+        }
+      }
+      .state-sign {
+        hr.sign-line {
+          width: 75%;
+          border: 0px;
+          border-bottom: 1px solid #ebe7e5;
+        }
+        p {
+          font-style: italic;
+          font-size: 12px;
+        }
+      }
+      .certificate-qr-code {
+        flex: 1;
+        text-align: right;
+        p {
+          color: #333333;
+          font-size: 12px;
+          line-height: 18px;
+        }
+      }
     }
   }
 }
