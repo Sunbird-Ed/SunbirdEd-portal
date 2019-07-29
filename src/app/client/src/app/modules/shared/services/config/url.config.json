@@ -167,8 +167,8 @@
       "EXPORT": "content/v1/export"
     },
     "ACCOUNT_RECOVERY": {
-      "FUZZY_SEARCH": "fuzzy/search",
-      "RESET_PASSWORD": "reset/password"
+      "FUZZY_SEARCH": "user/v1/fuzzy/search",
+      "RESET_PASSWORD": "user/v1/reset/password"
     }
   }
 }

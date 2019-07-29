@@ -8,7 +8,7 @@ const uuidv1 = require('uuid/v1')
 
 module.exports = (app) => {
 
-  app.post('/learner/fuzzy/search', bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }), 
+  app.post('/learner/user/v1/fuzzy/search', bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }), 
     async (req, res, next) => {
       console.log('------------req.body-------', req.body);
       if(req.body.request.identifier !== '9663119919'){
@@ -50,7 +50,7 @@ module.exports = (app) => {
       })
   })
 
-  app.all('/learner/reset/password', bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }), 
+  app.all('/learner/user/v1/reset/password', bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }), 
     async (req, res, next) => {
     console.log('req.body req.body', req.body);
     if(req.body.request.id == '124') {
