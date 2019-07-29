@@ -165,6 +165,10 @@
       "DOWNLOAD": "content/v1/download",
       "DOWNLOAD_LIST": "content/v1/download/list",
       "EXPORT": "content/v1/export"
+    },
+    "ACCOUNT_RECOVERY": {
+      "FUZZY_SEARCH": "user/v1/fuzzy/search",
+      "RESET_PASSWORD": "user/v1/reset/password"
     }
   }
 }
