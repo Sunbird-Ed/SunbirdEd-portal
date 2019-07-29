@@ -22,6 +22,7 @@ export class SelectAccountIdentifierComponent implements OnInit {
     this.initializeForm();
   }
   setSelectIdentifier(selectedAccountId) {
+    this.disableFormSubmit = false;
     this.selectedAccountId = selectedAccountId;
   }
   handleGenerateOtp() {
