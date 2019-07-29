@@ -213,7 +213,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     this.publishInProgress = true;
     let selectedQuestionsData = _.reduce(selectedQuestions, (final, question) => {
       final.ids.push(_.get(question, 'identifier'));
-      final.author.push(_.get(question, 'creator'));
+      final.author.push(_.get(question, 'author'));
       final.attributions = _.union(final.attributions, _.get(question, 'organisation'));
       return final;
     }, { ids: [], author: [], attributions: [] });
