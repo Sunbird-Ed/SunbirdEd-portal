@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class CertificateDetailsComponent implements OnInit {
   showSuccessModal: boolean;
   loader: boolean;
+  error: boolean;
   viewCertificate: boolean;
   viewCertificateHtml: boolean;
 
