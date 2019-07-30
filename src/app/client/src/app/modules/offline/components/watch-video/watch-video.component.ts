@@ -108,25 +108,25 @@ export class WatchVideoComponent implements OnInit {
         id: 1,
         name: this.resourceService.frmelmnts.instn.t0094,
         thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/1.mp4'
+        url: 'assets/videos/download-content.mp4'
       },
       {
         id: 2,
         name: this.resourceService.frmelmnts.instn.t0095,
         thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/2.mp4'
+        url: 'assets/videos/copy-content.mp4'
       },
       {
         id: 3,
         name: this.resourceService.frmelmnts.instn.t0096,
         thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/3.mp4'
+        url: 'assets/videos/browse-content.mp4'
       },
       {
         id: 4,
         name: this.resourceService.frmelmnts.instn.t0097,
         thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/4.mp4'
+        url: 'assets/videos/play-content.mp4'
       }
     ];
 
@@ -134,7 +134,7 @@ export class WatchVideoComponent implements OnInit {
       id: 1,
       name: this.resourceService.frmelmnts.instn.t0094,
       thumbnail: 'assets/images/play-icon.svg',
-      url: 'assets/videos/1.mp4'
+      url: 'assets/videos/download-content.mp4'
     };
   }
 
