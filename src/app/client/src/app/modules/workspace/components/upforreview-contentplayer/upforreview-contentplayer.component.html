@@ -84,7 +84,7 @@
 <sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
   appBodyScroll *ngIf="showPublishWarningModal" #publishWarningModal>
   <!--Header-->
-  <i class="icon close" (click)="publishWarningModal.deny()" tabindex="0"></i>
+  <i class="icon close" (click)="showPublishWarningModal = false" tabindex="0"></i>
   <div class="sb-modal-header">
     &nbsp;
   </div>

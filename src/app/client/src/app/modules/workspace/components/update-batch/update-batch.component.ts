@@ -194,6 +194,17 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.disableSubmitBtn = true;
       }
     });
+
+    this.batchUpdateForm.get('startDate').valueChanges.subscribe(value => {
+      const startDate = moment(value);
+      if (startDate.isValid()) {
+        if (!moment(startDate).isBefore(moment(this.pickerMinDate).format('YYYY-MM-DD'))) {
+          this.pickerMinDateForEnrollmentEndDate = new Date(new Date(startDate).setHours(0, 0, 0, 0));
+        } else {
+          this.pickerMinDateForEnrollmentEndDate = this.pickerMinDate;
+        }
+      }
+    });
   }
   /**
   * fetch mentors and participant details

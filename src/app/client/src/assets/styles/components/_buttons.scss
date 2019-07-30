@@ -661,3 +661,11 @@ a.sb-btn {
     transform: scale3d(1, 1, 1);
   }
 }
+
+*[lang="hi"] .sb-btn-xs {
+  line-height: 2.2;
+}
+
+*[lang="hi"] .sb-btn-normal {
+  line-height: 1.5;
+}
