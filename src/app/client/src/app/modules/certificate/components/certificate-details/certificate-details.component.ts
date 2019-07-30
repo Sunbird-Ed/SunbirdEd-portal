@@ -6,9 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./certificate-details.component.scss']
 })
 export class CertificateDetailsComponent implements OnInit {
+  showSuccessModal: boolean;
+  loader: boolean;
+  viewCertificate: boolean;
+  viewCertificateHtml: boolean;
 
   constructor() { }
-
   ngOnInit() {
   }
 
