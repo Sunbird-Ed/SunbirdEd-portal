@@ -1,4 +1,4 @@
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, ConfigService } from '@sunbird/shared';
 import { Component, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import * as $ from 'jquery';
@@ -19,90 +19,10 @@ export class WatchVideoComponent implements OnInit {
   downloadPdfInteractEdata: IInteractEventEdata;
   videoModalClose: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
-  constructor(public resourceService: ResourceService) { }
+  constructor(public resourceService: ResourceService, public configService: ConfigService) { }
 
   ngOnInit() {
-    this.slideConfig = {
-      dots: false,
-      infinite: false,
-      speed: 300,
-      rtl: false,
-      slidesToShow: 4,
-      slidesToScroll: 1,
-      responsive: [
-        {
-          breakpoint: 2800,
-          settings: {
-            slidesToShow: 4,
-            slidesToScroll: 1
-          }
-        },
-        {
-          breakpoint: 2200,
-          settings: {
-            slidesToShow: 4,
-            slidesToScroll: 1
-          }
-        },
-        {
-          breakpoint: 2000,
-          settings: {
-            slidesToShow: 4,
-            slidesToScroll: 1
-          }
-        },
-        {
-          breakpoint: 1600,
-          settings: {
-            slidesToShow: 4,
-            slidesToScroll: 1
-          }
-        },
-        {
-          breakpoint: 1200,
-          settings: {
-            slidesToShow: 4,
-            slidesToScroll: 1
-          }
-        },
-        {
-          breakpoint: 900,
-          settings: {
-            slidesToShow: 4,
-            slidesToScroll: 1
-          }
-        },
-        {
-          breakpoint: 750,
-          settings: {
-            slidesToShow: 2,
-            slidesToScroll: 2
-          }
-        },
-        {
-          breakpoint: 660,
-          settings: {
-            slidesToShow: 1.75,
-            slidesToScroll: 1
-          }
-        },
-        {
-          breakpoint: 530,
-          settings: {
-            slidesToShow: 1.25,
-            slidesToScroll: 1
-          }
-        },
-        {
-          breakpoint: 450,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1
-          }
-        }
-      ]
-    };
-
+    this.slideConfig = this.configService.offlineConfig.watchVideo;
     this.slideData = [
       {
         id: 1,
