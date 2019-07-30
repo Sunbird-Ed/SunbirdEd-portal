@@ -92,7 +92,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
         this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
         filter.options = _.uniq(_.map(this.chartData, data => data[filter.reference].toLowerCase()));
       });
-      if(this.filters.length > 0) {
+      if (this.filters.length > 0) {
        this.showFilters = true;
       }
       this.filtersSubscription = this.filtersFormGroup.valueChanges
