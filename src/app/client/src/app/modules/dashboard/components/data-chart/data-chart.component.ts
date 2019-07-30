@@ -73,7 +73,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     this.chartData = _.get(this.chartInfo, 'chartData');
     this.prepareChart();
     this.setTelemetryCdata();
-    if (this.filters) {
+    if (this.filters &&  this.filters.length > 0) {
       this.buildFiltersForm();
     }
   }
