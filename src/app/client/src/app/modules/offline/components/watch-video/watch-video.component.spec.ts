@@ -34,12 +34,12 @@ import { Router, ActivatedRoute } from '@angular/router';
     fixture = TestBed.createComponent(WatchVideoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    spyOn(component, 'setInteractData');
   });
 
    it('should setInteract method', () => {
     expect(component).toBeTruthy();
     component.ngOnInit();
-    expect(component.setInteractData).toHaveBeenCalledTimes(1);
+    expect(component.slideConfig).toBeDefined();
+    expect(component.slideData).toBeDefined();
   });
 });
