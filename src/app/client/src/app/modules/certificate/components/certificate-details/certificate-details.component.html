@@ -1,3 +1,41 @@
+<div class="sb-certificateBg">
+  <div class="sb-certificatePage" [class.loading]="loader">
+    <div class="sb-certificatePage-overlay"></div>
+    <div class="sb-certificatePage-header">
+      <img src="assets/images/DIKSHA.svg" class="sb-certificatePage-logo" alt="DIKSHA Logo"/>
+    </div>
+    <div class="sb-certificatePage-desc mb-auto">
+        <div class="sb-certificatePage-loader">
+          <p>Verifying your certificates</p>
+          <img src="assets/images/loader.gif" class="sb-certificatePage-loader-img" alt="Loader"/>
+        </div>
+      <img src="assets/images/certificate.png" class="sb-certificatePage-desc-img" alt="Certificate Desc"/>
+    </div>
+    <div class="sb-certificatePage-form mb-auto">
+      <form autocomplete="off">
+      <div class="sb-form-field-group">
+      <label class="sb-certificatePage-label" for="certificate">
+        Enter the Certificate Code here
+      </label>
+      <label class="sb-certificatePage-label red label-error" for="certificate">
+        Please enter valid Certification code
+      </label>
+      <div class="sb-certificatePage-field sb-form-field" id="certificate">
+        <input type="text" maxlength="1" pattern="[a-zA-Z0-9-]+" required placeholder="A" autofocus name="certificate1" class="sb-certificatePage-input"/>
+        <input type="text" maxlength="1" pattern="[a-zA-Z0-9-]+" required placeholder="B" name="certificate2" class="sb-certificatePage-input"/>
+        <input type="text" maxlength="1" pattern="[a-zA-Z0-9-]+" required placeholder="C" name="certificate3" class="sb-certificatePage-input"/>
+        <input type="text" maxlength="1" pattern="[a-zA-Z0-9-]+" required placeholder="1" name="certificate4" class="sb-certificatePage-input"/>
+        <input type="text" maxlength="1" pattern="[a-zA-Z0-9-]+" required placeholder="2" name="certificate5" class="sb-certificatePage-input"/>
+        <input type="text" maxlength="1" pattern="[a-zA-Z0-9-]+" required placeholder="3" name="certificate6" class="sb-certificatePage-input"/>
+      </div>
+    </div>
+      <button type="button" class="sb-btn sb-btn-primary sb-btn-normal ripple width-100" (click)="loader = !loader">
+        Verify
+      </button>
+    </form>
+  </div>
+</div>
+
 <div class="sb-certificatePage sb-certificate-view">
   <div class="sb-certificatePage-header mb-auto">
     <img src="assets/images/DIKSHA.svg" class="sb-certificatePage-logo" alt="DIKSHA Logo"/>
