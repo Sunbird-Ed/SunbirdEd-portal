@@ -73,7 +73,8 @@ export class DataChartComponent implements OnInit, OnDestroy {
     this.chartData = _.get(this.chartInfo, 'chartData');
     this.prepareChart();
     this.setTelemetryCdata();
-    if (this.filters &&  this.filters.length > 0) {
+    if (this.filters) {
+      this.showFilters = false;
       this.buildFiltersForm();
     }
   }
@@ -91,7 +92,9 @@ export class DataChartComponent implements OnInit, OnDestroy {
         this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
         filter.options = _.uniq(_.map(this.chartData, data => data[filter.reference].toLowerCase()));
       });
-      this.showFilters = true;
+      if(this.filters.length > 0) {
+       this.showFilters = true;
+      }
       this.filtersSubscription = this.filtersFormGroup.valueChanges
         .pipe(
           takeUntil(this.unsubscribe),
