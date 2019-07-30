@@ -1,0 +1,21 @@
+<app-full-page-modal>
+    <div class="d-flex flex-jc-center mb-30">
+        <img *ngIf="recoverAccountService.tenantInfo" class="image centered"
+            alt={{recoverAccountService.tenantInfo.tenantName}} height="45"
+            src="{{recoverAccountService.tenantInfo.logo}}">
+    </div>
+    <h5 class="text-center mb-24"><b>Recover Account</b></h5>
+    <div class="width-300 mx-auto">
+        <h6 class="text-center">{{'We will send you an OTP'}}</h6>
+        <h6 class="text-center mb-24">{{'Where would you like to receive the OTP?'}}</h6>
+        <div *ngFor="let identifier of validIdentifiers">
+            <sui-radio-button class="mb-10" name="id" value="{{identifier.value}}"
+                (ngModelChange)="setSelectIdentifier(identifier)"
+                [(ngModel)]="selectedAccountId.value">{{identifier.value}}</sui-radio-button>
+            <br>
+        </div>
+        <button class="ui button width-300 mt-10" tabindex="0"
+            [ngClass]="{'grey':disableFormSubmit, 'light-sea-green':!disableFormSubmit}"
+            (click)="handleGenerateOtp()">{{'Next'}}</button>
+    </div>
+</app-full-page-modal>
