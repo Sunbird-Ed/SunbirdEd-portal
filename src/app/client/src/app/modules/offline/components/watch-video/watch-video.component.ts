@@ -1,6 +1,6 @@
 import { ResourceService, ConfigService } from '@sunbird/shared';
-import { Component, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
-import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { IInteractEventEdata } from '@sunbird/telemetry';
 import * as $ from 'jquery';
 
 @Component({
@@ -13,36 +13,33 @@ export class WatchVideoComponent implements OnInit {
   @Output() closeVideoModal = new EventEmitter<any>();
   slideConfig: object;
   slideData: object;
-  activeVideoObject: object;
-  watchModalCloseIntractEdata: IInteractEventEdata;
-  downloadPdfInteractEdata: IInteractEventEdata;
-  videoModalClose: IInteractEventEdata;
-  telemetryInteractObject: IInteractEventObject;
+  activeVideoObject;
+  selectVideoInteractEdata: IInteractEventEdata;
   constructor(public resourceService: ResourceService, public configService: ConfigService) { }
 
   ngOnInit() {
     this.slideConfig = this.configService.offlineConfig.watchVideo;
     this.slideData = [
       {
-        id: 1,
+        id: 'download-content-video',
         name: this.resourceService.frmelmnts.instn.t0094,
         thumbnail: 'assets/images/play-icon.svg',
         url: 'assets/videos/download-content.mp4'
       },
       {
-        id: 2,
+        id: 'copy-content-video',
         name: this.resourceService.frmelmnts.instn.t0095,
         thumbnail: 'assets/images/play-icon.svg',
         url: 'assets/videos/copy-content.mp4'
       },
       {
-        id: 3,
+        id: 'browse-content-video',
         name: this.resourceService.frmelmnts.instn.t0096,
         thumbnail: 'assets/images/play-icon.svg',
         url: 'assets/videos/browse-content.mp4'
       },
       {
-        id: 4,
+        id: 'play-content-video',
         name: this.resourceService.frmelmnts.instn.t0097,
         thumbnail: 'assets/images/play-icon.svg',
         url: 'assets/videos/play-content.mp4'
@@ -50,11 +47,13 @@ export class WatchVideoComponent implements OnInit {
     ];
 
     this.activeVideoObject = {
-      id: 1,
+      id: 'download-content-video',
       name: this.resourceService.frmelmnts.instn.t0094,
       thumbnail: 'assets/images/play-icon.svg',
       url: 'assets/videos/download-content.mp4'
     };
+
+    this.setInteractData();
   }
 
   changeVideoAttributes(data: any) {
@@ -64,5 +63,13 @@ export class WatchVideoComponent implements OnInit {
 
   closeModal() {
     this.closeVideoModal.emit('success');
+  }
+
+  setInteractData() {
+    this.selectVideoInteractEdata = {
+      id: this.activeVideoObject.id,
+      type: 'click',
+      pageid: 'library'
+    };
   }
 }

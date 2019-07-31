@@ -15,7 +15,7 @@
           <ngx-slick class="carousel" [config]="slideConfig">
             <div ngxSlickItem class="mr-8" *ngFor="let video of slideData">
               <div class="sb-card sb-offline-video-list" [ngClass]="{active:activeVideoObject.id === video.id }"
-                (click)="changeVideoAttributes(video)">
+                (click)="changeVideoAttributes(video)" appTelemetryInteract [telemetryInteractEdata]="selectVideoInteractEdata">
                 <div class="sb-card-body">
                   <div class="sb-card-metas">
                     <div class="sb-card-image relative position mr-8">
