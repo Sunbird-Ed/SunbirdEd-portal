@@ -1,9 +1,6 @@
  <app-full-page-modal>
    <div class="sb-account-recover-page p-16 relative flex-dc d-flex">
      <div class="sb-account-recoverpage-header">
-            <img *ngIf="recoverAccountService.tenantInfo" class="image centered"
-            alt={{recoverAccountService.tenantInfo.tenantName}} height="45"
-            src="{{recoverAccountService.tenantInfo.logo}}">
         <img *ngIf="recoverAccountService.tenantInfo" class="sb-account-recoverpage-logo"
          alt={{recoverAccountService.tenantInfo.tenantName}} src="{{recoverAccountService.tenantInfo.logo}}"> 
        <div class="sb-account-recoverpage-header-text mt-48">{{resourceService?.frmelmnts?.lbl?.recoverAccount}}</div>
