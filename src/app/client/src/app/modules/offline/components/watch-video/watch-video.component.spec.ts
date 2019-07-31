@@ -48,10 +48,16 @@ const resourceServiceMockData = {
     fixture.detectChanges();
   });
 
-   it('should call ngoninit', () => {
+  it('should call ngoninit', () => {
     expect(component).toBeTruthy();
     component.ngOnInit();
     expect(component.slideConfig).toBeDefined();
     expect(component.slideData).toBeDefined();
   });
+
+  it('should emit on close modal', () => {
+    spyOn(component.closeVideoModal, 'emit');
+    component.closeModal();
+    expect(component.closeVideoModal.emit).toHaveBeenCalledWith('success');
+ });
 });

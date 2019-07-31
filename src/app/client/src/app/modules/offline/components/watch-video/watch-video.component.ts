@@ -10,7 +10,6 @@ import * as $ from 'jquery';
 })
 export class WatchVideoComponent implements OnInit {
 
-  @ViewChild('modal') modal;
   @Output() closeVideoModal = new EventEmitter<any>();
   slideConfig: object;
   slideData: object;
@@ -65,9 +64,5 @@ export class WatchVideoComponent implements OnInit {
 
   closeModal() {
     this.closeVideoModal.emit('success');
-  }
-
-  modalClose() {
-    this.modal.deny();
   }
 }
