@@ -135,7 +135,7 @@
       display: none;
       .sb-certificatePage-loader-img {
         height: $sb-certificatePage-loader-img-height;
-        width: 3$sb-certificatePage-loader-img-width;
+        width: $sb-certificatePage-loader-img-width;
       }
     }
     &.loading {
