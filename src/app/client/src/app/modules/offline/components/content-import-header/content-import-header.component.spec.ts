@@ -7,6 +7,7 @@ import { SharedModule, ResourceService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TelemetryModule, TelemetryService, TELEMETRY_PROVIDER  } from '@sunbird/telemetry';
 import { WatchVideoComponent } from '../watch-video/watch-video.component';
+import { SlickModule } from 'ngx-slick';
 
 describe('ContentImportHeaderComponent', () => {
   let component: ContentImportHeaderComponent;
@@ -20,7 +21,7 @@ describe('ContentImportHeaderComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, TelemetryModule, SuiModalModule, SharedModule.forRoot(), HttpClientTestingModule,
-        TelemetryModule],
+        TelemetryModule, SlickModule],
       declarations: [ContentImportHeaderComponent, ContentImportComponent, WatchVideoComponent],
       providers: [{provide: ResourceService, useValue: resourceServiceStub},
         TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }]
