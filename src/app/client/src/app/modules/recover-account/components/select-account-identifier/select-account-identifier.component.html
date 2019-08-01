@@ -1,4 +1,29 @@
 <app-full-page-modal>
+  <div class="sb-account-recover-page p-16 relative flex-dc d-flex">
+    <div class="sb-account-recoverpage-header">
+      <img *ngIf="recoverAccountService.tenantInfo" class="sb-account-recoverpage-logo"
+        alt={{recoverAccountService.tenantInfo.tenantName}} src="{{recoverAccountService.tenantInfo.logo}}">
+      <div class="sb-account-recoverpage-header-text mt-48">{{resourceService?.frmelmnts?.lbl?.recoverAccount}}</div>
+    </div>
+    <div class="mt-48 sb-account-recover-page-radio">
+      <div class="text-center sb-account-recover-page-radio-label">{{resourceService?.frmelmnts?.lbl?.willsendOTP}}</div>
+      <div class="text-center mb-24 sb-account-recover-page-radio-label">{{resourceService?.frmelmnts?.lbl?.receiveOTP}}
+      </div>
+      <div class="mb-16 text-left" *ngFor="let identifier of validIdentifiers">
+        <sui-radio-button class="sb-radio-btn-checkbox sb-radio-btn-primary" name="id" value="{{identifier.value}}"
+          (ngModelChange)="setSelectIdentifier(identifier)" [(ngModel)]="selectedAccountId.value">{{identifier.value}}
+        </sui-radio-button>
+        <br>
+      </div>
+      <button class="sb-btn sb-btn-normal width-100 mt-16" tabindex="0"
+        [ngClass]="{'sb-btn-gray':disableFormSubmit, 'sb-btn-secondary':!disableFormSubmit}"
+        (click)="handleGenerateOtp()">{{resourceService?.frmelmnts?.btn?.next}}</button>
+    </div>
+  </div>
+</app-full-page-modal>
+
+<!-- 
+<app-full-page-modal>
     <div class="d-flex flex-jc-center mb-30">
         <img *ngIf="recoverAccountService.tenantInfo" class="image centered"
             alt={{recoverAccountService.tenantInfo.tenantName}} height="45"
@@ -18,4 +43,4 @@
             [ngClass]="{'grey':disableFormSubmit, 'light-sea-green':!disableFormSubmit}"
             (click)="handleGenerateOtp()">{{'Next'}}</button>
     </div>
-</app-full-page-modal>
+</app-full-page-modal> -->
