@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-certificate-details',
-  templateUrl: './certificate-details.component.html',
-  styleUrls: ['./certificate-details.component.scss']
+  templateUrl: './certificate-details.component.html'
 })
 export class CertificateDetailsComponent implements OnInit {
   showSuccessModal: boolean;
