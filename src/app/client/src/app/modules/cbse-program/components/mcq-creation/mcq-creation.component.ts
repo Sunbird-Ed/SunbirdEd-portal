@@ -123,17 +123,8 @@ export class McqCreationComponent implements OnInit, OnChanges {
     let optionSvgBody;
     if (event === 'preview') {
       this.showPreview = true;
-      forkJoin([this.getConvertedSVG(this.mcqForm.question), ...this.mcqForm.options.map(option => this.getConvertedSVG(option.body))])
-        .subscribe((res) => {
-          // this.body = res[0]; // question with latex
-          optionSvgBody = res.slice(1).map((option, i) => { // options with latex
-            return { body: res[i + 1] };
-          });
-          this.previewData = {
-            data: this.getHtml(res[0], optionSvgBody),
-            type: this.selectedAttributes.questionType
-          };
-        });
+      //call createQuestion with param true to get the local question data
+      this.createQuestion(true);
     } else if (event === 'edit') {
       this.refreshEditor();
       this.showPreview = false;
@@ -283,7 +274,11 @@ export class McqCreationComponent implements OnInit, OnChanges {
         });
       });
   }
-  createQuestion() {
+  /**
+   * - If it is a local preview don't create question.
+   * - for local preview only question body required with all other parameter to create Ecml.
+   */
+  createQuestion(forPreview?: boolean) {
     forkJoin([this.getConvertedLatex(this.mcqForm.question), ...this.mcqForm.options.map(option => this.getConvertedLatex(option.body))])
       .subscribe((res) => {
         this.body = res[0]; // question with latex
@@ -354,22 +349,31 @@ export class McqCreationComponent implements OnInit, OnChanges {
             }
           }
         };
-        this.actionService.post(req).subscribe((res) => {
-          this.questionStatus.emit({ 'status': 'success', 'type': 'create', 'identifier': res.result.node_id });
-        }, error => {
-          this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
-          const telemetryErrorData = {
-            context: {
-              env: 'cbse_program'
-            },
-            edata: {
-              err: error.status.toString(),
-              errtype: 'PROGRAMPORTAL',
-              stacktrace: _.get(error, 'error.params.errmsg') || 'Question update failed'
-            }
-          };
-          this.telemetryService.error(telemetryErrorData);
-        });
+        //Don't make any api call for a local preview.
+        if(!forPreview){
+          this.actionService.post(req).subscribe((res) => {
+            this.questionStatus.emit({ 'status': 'success', 'type': 'create', 'identifier': res.result.node_id });
+          }, error => {
+            this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
+            const telemetryErrorData = {
+              context: {
+                env: 'cbse_program'
+              },
+              edata: {
+                err: error.status.toString(),
+                errtype: 'PROGRAMPORTAL',
+                stacktrace: _.get(error, 'error.params.errmsg') || 'Question update failed'
+              }
+            };
+            this.telemetryService.error(telemetryErrorData);
+          });
+        }else{
+          this.selectedAttributes.previewQuestionData = {
+            result: {
+              assessment_item : req.data.request.assessment_item.metadata
+            } 
+          }  
+        }
       });
   }
 

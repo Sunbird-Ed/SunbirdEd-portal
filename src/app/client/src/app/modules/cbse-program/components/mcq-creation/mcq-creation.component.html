@@ -70,7 +70,7 @@
       </div>
     </div>
   </form>
-  <app-question-preview *ngIf="showPreview" [questionMetaData]="previewData"></app-question-preview>
+  <app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [selectedAttributes]="selectedAttributes"></app-question-preview>
 </div>
 
 <app-mcq-template-selection *ngIf='showTemplatePopup' (templateSelection)="handleTemplateSelection($event)">

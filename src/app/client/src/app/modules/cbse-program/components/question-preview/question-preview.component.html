@@ -1,37 +1,4 @@
-<div class="sb-question-dsp-container quml-responsive-div">
-    <div class="sb-editor-image">
-            <div class="phone-sensors">
-                    <div class="sensor"></div>
-                    <div class="speaker"></div>
-                    <div class="sensor"></div>
-                </div>
-        <div class="sb-question-dsp-body" *ngIf="questionMetaData && questionMetaData.type !== 'mcq'">
-            <div class="sb-question-header question-bg">
-                <span class="sb-question"></span>
-                <button type="button" class="sb-btn sb-btn-primary sb-btn-normal" id="questionBtn" (click)="onScroll('question')" style="display: none;" appTelemetryInteract
-                [telemetryInteractEdata]="{id:'question_btn',type:'click',pageid:'questionpreview'}">Question</button>
-                <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal mr-0" id="answerBtn" (click)="onScroll('answer')" appTelemetryInteract
-                [telemetryInteractEdata]="{id:'answer_btn',type:'click',pageid:'questionpreview'}">Solution</button>
-            </div>
-            <div class="sb-question-content" (scroll)="onScroll($event)">
-                <div class="page-section question-bg" id="question">
-                    <div class="sb-question">Question<span class=" sb-star-icon"><i class="star outline icon"></i></span></div>
-                    <div class="sb-question-content-card" [innerHTML]="questionMetaData.body | sanitizeHtml"></div>
-                </div>
-                <div class="page-section answer-bg" id="answer">
-                    <div class="sb-answer">Solution</div>
-                    <div class="sb-question-content-card" [innerHTML]="questionMetaData.solutions[0] | sanitizeHtml"></div>
-                </div>
-            </div>
-        </div>
-        <div class="sb-question-dsp-body" *ngIf="questionMetaData && questionMetaData.type === 'mcq'" [innerHTML]="questionMetaData.data.body | sanitizeHtml">
-        </div>
-    </div>
-    <div *ngIf="questionMetaData && questionMetaData.type === 'mcq'">
-        <div class="ui one column grid mt-24">
-                <div class="column"><label class="mb-0 font-weight-bold fs-1-143">Correct Option :</label><span class="ml-8 font-weight-normal" style="overflow-wrap: break-word"> {{questionMetaData?.data?.correct_response}}</span></div>
-                <div class="column"><label class="mb-0 font-weight-bold fs-1-143">Learning Outcome :</label><span class="ml-8 font-weight-normal" style="overflow-wrap: break-word">{{questionMetaData?.data?.learningOutcome}}</span></div>
-                <div class="column"><label class="mb-0 font-weight-bold fs-1-143">Learning Level :</label><span class="ml-8 font-weight-normal" style="overflow-wrap: break-word">{{questionMetaData?.data?.learningLevel}}</span></div>
-            </div>
-     </div>
+<div class="twelve wide column">
+        <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
 </div>
+    

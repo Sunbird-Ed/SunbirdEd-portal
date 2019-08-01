@@ -189,16 +189,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   buttonTypeHandler(event) {
     if (event === 'preview') {
       this.showPreview = true;
-      forkJoin([this.getConvertedSVG(this.question), this.getConvertedSVG(this.editorState.solutions)])
-        .subscribe((res) => {
-          // this.body = res[0];
-          // this.solution = res[1];
-          this.previewData = {
-            body: res[0],
-            solutions: [res[1]],
-            type: this.selectedAttributes.questionType
-          };
-        });
+      //call createQuestion with param true to get the local question data
+      this.createQuestion(true);
     } else if (event === 'edit') {
       this.refreshEditor();
       this.showPreview = false;
@@ -221,7 +213,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.validateAllFormFields(this.questionMetaForm);
     }
   }
-  createQuestion() {
+  /**
+   * @param forPreview  {boolean} 
+   * - set param forPreview to true for local question preview
+   */
+  createQuestion(forPreview?:boolean) {
     forkJoin([this.getConvertedLatex(this.question), this.getConvertedLatex(this.editorState.solutions)])
     .subscribe((res) => {
       this.body = res[0];
@@ -277,22 +273,34 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
           }
         }
       };
-      this.actionService.post(req).subscribe((res) => {
-        this.questionStatus.emit({'status': 'success', 'type': 'create', 'identifier': res.result.node_id});
-      }, error => {
-        this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
-        const telemetryErrorData = {
-          context: {
-            env: 'cbse_program'
-          },
-          edata: {
-            err: error.status.toString(),
-            errtype: 'PROGRAMPORTAL',
-            stacktrace: _.get(error, 'error.params.errmsg') || 'Question creation failed'
-          }
-        };
-        this.telemetryService.error(telemetryErrorData);
-      });
+      /**
+       * - If it is a local preview don't create question.
+       * - for local preview only question body required with all other parameter to create Ecml.
+       */
+      if(!forPreview){
+        this.actionService.post(req).subscribe((res) => {
+          this.questionStatus.emit({'status': 'success', 'type': 'create', 'identifier': res.result.node_id});
+        }, error => {
+          this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
+          const telemetryErrorData = {
+            context: {
+              env: 'cbse_program'
+            },
+            edata: {
+              err: error.status.toString(),
+              errtype: 'PROGRAMPORTAL',
+              stacktrace: _.get(error, 'error.params.errmsg') || 'Question creation failed'
+            }
+          };
+          this.telemetryService.error(telemetryErrorData);
+        });
+      }else{
+        this.selectedAttributes.previewQuestionData = {
+          result: {
+            assessment_item : req.data.request.assessment_item.metadata
+          } 
+        }        
+      }
     });
   }
   /**

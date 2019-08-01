@@ -11,6 +11,7 @@ import { SharedModule } from '@sunbird/shared';
 import { QuestionCreationHeaderComponent } from './components/question-creation-header/question-creation-header.component';
 import { TextbookListComponent } from './components/textbook-list/textbook-list.component';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { PlayerHelperModule } from '@sunbird/player-helper';
 @NgModule({
   declarations: [QuestionListComponent, SelectTextbookComponent, CbseComponent, QuestionCreationComponent, ChapterListComponent,
     McqCreationComponent, CkeditorToolComponent ,
@@ -22,6 +23,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
     SuiModule,
     ReactiveFormsModule, FormsModule, SharedModule,
     InfiniteScrollModule,
+    PlayerHelperModule,
     TelemetryModule
   ],
   exports: [ CbseComponent, SanitizeHtmlPipe ]

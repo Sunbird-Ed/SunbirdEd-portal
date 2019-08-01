@@ -1,51 +1,100 @@
-import { Component, OnInit, Input, Pipe, HostListener, AfterViewInit, OnDestroy, OnChanges } from '@angular/core';
-import { config } from 'rxjs';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { CbseProgramService } from '../../services';
+import * as _ from 'lodash-es';
+import {UserService} from '@sunbird/core';
+import {PlayerConfig} from './player.config'
+
 
 @Component({
   selector: 'app-question-preview',
   templateUrl: './question-preview.component.html',
   styleUrls: ['./question-preview.component.scss']
 })
-export class QuestionPreviewComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
+export class QuestionPreviewComponent implements OnInit, OnChanges {
+
 
   @Input() questionMetaData: any;
-  constructor() { }
+  @Input() selectedAttributes: any;
+  public playerConfig: any;
+  public theme: any;
+
+  constructor(private toEcml:CbseProgramService,private userService:UserService ) {
+    
+  }
 
   ngOnInit() {
-
+    console.log(this.questionMetaData,"this is the q");
+    if(this.selectedAttributes.currentRole !== 'CONTRIBUTOR'){
+    this.toEcml
+    .getECMLJSON(this.selectedAttributes.questionList)
+    .subscribe( (theme) => {      
+      /**
+       * @param theme this contains the theme[Ecml] 
+       * @type {Object}
+       */
+      this.theme = theme;
+      const context = this.getContext();
+      this.playerConfig =  this.setPlayerConfig(context, theme);
+    })
+    }else{
+    this.toEcml
+    .getECMLJSON(this.selectedAttributes.questionList, this.selectedAttributes.currentRole, this.selectedAttributes.previewQuestionData)
+    .subscribe( (theme) => {      
+      /**
+       * @param theme this contains the theme[Ecml] 
+       * @type {Object}
+       */
+      this.theme = theme;
+      const context = this.getContext();
+      this.playerConfig =  this.setPlayerConfig(context, theme);
+    })
+    }
   }
   
   ngOnChanges(){
 
   }
+  
+  setPlayerConfig(context, theme){
+    const finalPlayerConfiguration  = {
+      data: theme,
+      metadata: PlayerConfig.metadata,
+      context: context,      
+      config: PlayerConfig.config,  
+    }  
+    return finalPlayerConfiguration;
+  }
 
-  ngAfterViewInit() {
-    $(document).on('click', '.cheveron-helper .chevron', (e) => {
-      $('.mcq-title').toggleClass('expand');
-      $(e.target).toggleClass('icon-active');
-      console.log('icon', e.target);
-      $(this).off('click');
+  getContext(){
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    const version = buildNumber && buildNumber.value ?
+    buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+    const tags = [];
+    _.forEach(this.userService.userProfile.organisations, (org) => {
+      if (org.hashTagId) {
+      tags.push(org.hashTagId);
+      }
     });
-  }
+    const context = {
+      "mode": "play",
+      "partner": [],
+      "pdata": {
+        "id": this.userService.appId,
+        "ver": version,
+        "pid": "cbse-program-portal"
+      },
+      "contentId": "",
+      "sid": this.userService.sessionId,
+      "uid": this.userService.userid,
+      "timeDiff": this.userService.getServerTimeDiff,
+      "contextRollup": {},
+      "channel": this.userService.channel,
+      "did": "",
+      "dims": this.userService.dims,
+      "tags": tags,
+      "app": [this.userService.channel]
+    };
+    return context;
 
-  @HostListener('scroll', ['$event.target'])
-  onScroll(event: any) {
-    if (event === 'question') {
-      $('.sb-question-content').animate( {
-        scrollTop: $('#' + event).offset().top
-      });
-    } else if (event === 'answer') {
-      const el = document.getElementById(event);
-      el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-    } else if (event.target.scrollTop > (event.target.lastChild.offsetHeight / 2)) {
-      document.getElementById('questionBtn').style.display = 'inline-block';
-      document.getElementById('answerBtn').style.display = 'none';
-    } else if (event.target.scrollTop < (event.target.firstChild.offsetHeight / 2) ) {
-      document.getElementById('answerBtn').style.display = 'inline-block';
-      document.getElementById('questionBtn').style.display = 'none';
-    }
-  }
-  ngOnDestroy() {
-    $(document).off('click', '.cheveron-helper .chevron');
-  }
+  }  
 }
