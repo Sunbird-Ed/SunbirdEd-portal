@@ -13,7 +13,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import {getUserList, updateBatchDetails, getUserDetails, selectedMentors, selectedParticipants} from './update-course-batch.component.data';
+import {
+  getUserList,
+  updateBatchDetails,
+  getUserDetails,
+  selectedMentors,
+  selectedParticipants,
+  participantList
+} from './update-course-batch.component.data';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
@@ -83,6 +90,9 @@ describe('UpdateCourseBatchComponent', () => {
       } else {
         return observableOf(getUserList);
       }
+    });
+    spyOn(courseBatchService, 'getParticipantList').and.callFake((request) => {
+        return observableOf(participantList);
     });
     spyOn(courseBatchService, 'getUpdateBatchDetails').and.returnValue(observableOf(updateBatchDetails));
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.
@@ -159,6 +169,10 @@ describe('UpdateCourseBatchComponent', () => {
         return observableOf(getUserList);
       }
     });
+    spyOn(courseBatchService, 'getParticipantList').and.callFake((request) => {
+      return observableOf(participantList);
+    });
+
     spyOn(courseBatchService, 'getUpdateBatchDetails').and.returnValue(observableOf(updateBatchDetails));
     spyOn(courseBatchService, 'updateBatch').and.returnValue(observableOf(updateBatchDetails));
     spyOn(toasterService, 'success');
@@ -184,6 +198,10 @@ describe('UpdateCourseBatchComponent', () => {
         return observableOf(getUserList);
       }
     });
+    spyOn(courseBatchService, 'getParticipantList').and.callFake((request) => {
+      return observableOf(participantList);
+    });
+
     spyOn(courseBatchService, 'getUpdateBatchDetails').and.returnValue(observableOf(updateBatchDetails));
     spyOn(courseBatchService, 'updateBatch').and.returnValue(observableThrowError(updateBatchDetails));
     spyOn(toasterService, 'error');
@@ -217,6 +235,10 @@ describe('UpdateCourseBatchComponent', () => {
         return observableOf(getUserList);
       }
     });
+    spyOn(courseBatchService, 'getParticipantList').and.callFake((request) => {
+      return observableOf(participantList);
+    });
+
     spyOn(courseBatchService, 'getUpdateBatchDetails').and.returnValue(observableOf(updateBatchDetails));
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.
     returnValue(observableOf({createdBy: 'b2479136-8608-41c0-b3b1-283f38c338ed'}));
@@ -244,6 +266,10 @@ describe('UpdateCourseBatchComponent', () => {
         return observableOf(getUserList);
       }
     });
+    spyOn(courseBatchService, 'getParticipantList').and.callFake((request) => {
+      return observableOf(participantList);
+    });
+
     spyOn(courseBatchService, 'getUpdateBatchDetails').and.returnValue(observableOf(updateBatchDetails));
     spyOn(courseBatchService, 'updateBatch').and.returnValue(observableOf(updateBatchDetails));
     spyOn(toasterService, 'success');
@@ -272,6 +298,10 @@ describe('UpdateCourseBatchComponent', () => {
         return observableOf(getUserList);
       }
     });
+   spyOn(courseBatchService, 'getParticipantList').and.callFake((request) => {
+     return observableOf(participantList);
+   });
+
    const batchDetails = updateBatchDetails;
    batchDetails.enrollmentEndDate = null;
     spyOn(courseBatchService, 'getUpdateBatchDetails').and.returnValue(observableOf(batchDetails));
