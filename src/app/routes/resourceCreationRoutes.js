@@ -188,7 +188,7 @@ module.exports = function(app) {
                 "responseCode": "OK" ,
                 "result": {
                     content_id: response.result.content_id,
-                  publishStatus: `Publish Operation for Content Id '${
+                    publishStatus: `Publish Operation for Content Id '${
                     response.result.content_id
                   }' Started Successfully!`
                 }
@@ -207,7 +207,7 @@ module.exports = function(app) {
                     "resmsgid": uuid(),
                     "status": "failed",
                     "err": "error",
-                    "errmsg": _.get(error, "error.params.errmsg") || "content creation failed"
+                    "errmsg": _.get(err, "error.params.errmsg") || "content creation failed"
                 },
                 "responseCode": "FAILED" ,
                 "result": {}
