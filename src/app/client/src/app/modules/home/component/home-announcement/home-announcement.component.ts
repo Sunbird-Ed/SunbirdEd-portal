@@ -27,7 +27,7 @@ export class HomeAnnouncementComponent implements OnInit, OnDestroy {
 
 
   /**
-   * To call resource service which helps to use language constant.
+   * To call resource helper which helps to use language content.
    */
   public resourceService: ResourceService;
   /**
