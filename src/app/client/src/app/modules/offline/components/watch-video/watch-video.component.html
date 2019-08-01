@@ -1,23 +1,36 @@
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal sb-file-upload-modal" appBodyScroll (dismissed)="closeModal();" #modal>
-  <div class="ui stackable grid">
-    <div class="column">
-      <div class="offline-watch-video mx-auto">
-        <div class="p-20">
-          <span class="offline-video-heading">{{resourceService.frmelmnts?.lbl?.howToVideo}}</span>
-          <a appTelemetryInteract href="/howTo.pdf"
-            [telemetryInteractEdata]="DownloadPdfInteractEdata" class="offline-video-title right-floated"><i class="download icon"></i>
-            {{resourceService.frmelmnts?.btn?.downloadPdf}}</a>
-        </div>
-        <video controls="" class="offline-video">
-          <source src="how-to-video.mp4">
+<sui-modal [mustScroll]="false" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
+  class="sb-modal sb-modal-video-gallery" appBodyScroll (dismissed)="closeModal();" #modal>
+  <div *ngIf="slideData">
+    <div class="sb-modal-header">
+      {{activeVideoObject.name}}
+    </div>
+    <div class="sb-modal-content p-0 d-flex flex-dc">
+      <div class="responsive">
+        <video id="video" autoplay width="560" height="349" controls class="sb-offline-video-player"
+          src="{{activeVideoObject.url}}">
         </video>
       </div>
+      <div class="sb-pageSection sb-offline-video-player-container">
+        <div class="sb-pageSection-content px-8">
+          <ngx-slick class="carousel" [config]="slideConfig">
+            <div ngxSlickItem class="mr-8" *ngFor="let video of slideData">
+              <div class="sb-card sb-offline-video-list" [ngClass]="{active:activeVideoObject.id === video.id }"
+                (click)="changeVideoAttributes(video)" appTelemetryInteract [telemetryInteractEdata]="selectVideoInteractEdata">
+                <div class="sb-card-body">
+                  <div class="sb-card-metas">
+                    <div class="sb-card-image relative position mr-8">
+                      <img class="thumbnail" src="{{video.thumbnail}}">
+                    </div>
+                    <div class="sb-card-meta course" title="{{video.name}}">
+                      {{video.name}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ngx-slick>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="sb-modal-actions">
-    <button type="button" appTelemetryInteract 
-       class="sb-btn sb-btn-primary sb-btn-normal"
-       [telemetryInteractEdata]="WatchModalCloseIntractEdata" (click)="modalClose()">{{resourceService.frmelmnts?.btn?.close}}</button>
   </div>
 </sui-modal>

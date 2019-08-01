@@ -1,8 +1,7 @@
-import { Router } from '@angular/router';
-import { ResourceService } from '@sunbird/shared';
-import { Component, OnInit, AfterViewInit, Output, ViewChild, EventEmitter } from '@angular/core';
-import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
-
+import { ResourceService, ConfigService } from '@sunbird/shared';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { IInteractEventEdata } from '@sunbird/telemetry';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-watch-video',
@@ -11,35 +10,66 @@ import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 })
 export class WatchVideoComponent implements OnInit {
 
-  @ViewChild('modal') modal;
   @Output() closeVideoModal = new EventEmitter<any>();
-  WatchModalCloseIntractEdata: IInteractEventEdata;
-  DownloadPdfInteractEdata: IInteractEventEdata;
-  CloaseVideoModal: IInteractEventEdata;
-  public telemetryInteractObject: IInteractEventObject;
-  constructor(public resourceService: ResourceService, public router: Router, ) { }
+  slideConfig: object;
+  slideData: object;
+  activeVideoObject;
+  selectVideoInteractEdata: IInteractEventEdata;
+  constructor(public resourceService: ResourceService, public configService: ConfigService) { }
 
   ngOnInit() {
+    this.slideConfig = this.configService.offlineConfig.watchVideo;
+    this.slideData = [
+      {
+        id: 'download-content-video',
+        name: this.resourceService.frmelmnts.instn.t0094,
+        thumbnail: 'assets/images/play-icon.svg',
+        url: 'assets/videos/download-content.mp4'
+      },
+      {
+        id: 'copy-content-video',
+        name: this.resourceService.frmelmnts.instn.t0095,
+        thumbnail: 'assets/images/play-icon.svg',
+        url: 'assets/videos/copy-content.mp4'
+      },
+      {
+        id: 'browse-content-video',
+        name: this.resourceService.frmelmnts.instn.t0096,
+        thumbnail: 'assets/images/play-icon.svg',
+        url: 'assets/videos/browse-content.mp4'
+      },
+      {
+        id: 'play-content-video',
+        name: this.resourceService.frmelmnts.instn.t0097,
+        thumbnail: 'assets/images/play-icon.svg',
+        url: 'assets/videos/play-content.mp4'
+      }
+    ];
+
+    this.activeVideoObject = {
+      id: 'download-content-video',
+      name: this.resourceService.frmelmnts.instn.t0094,
+      thumbnail: 'assets/images/play-icon.svg',
+      url: 'assets/videos/download-content.mp4'
+    };
+
     this.setInteractData();
   }
+
+  changeVideoAttributes(data: any) {
+    this.activeVideoObject = data;
+    $('#video').attr('src', data.url);
+  }
+
   closeModal() {
     this.closeVideoModal.emit('success');
   }
-  modalClose() {
-    this.modal.deny();
-  }
-
 
   setInteractData() {
-    this.WatchModalCloseIntractEdata = {
-      id: 'watch-video-close-button',
+    this.selectVideoInteractEdata = {
+      id: this.activeVideoObject.id,
       type: 'click',
       pageid: 'library'
-    };
-    this.DownloadPdfInteractEdata = {
-      id: 'download-pdf-button',
-      type: 'click',
-      pageid : 'library'
     };
   }
 }
