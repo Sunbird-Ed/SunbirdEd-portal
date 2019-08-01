@@ -1,33 +1,45 @@
 @import "variables";
 
 .ui.raised.shadow.container.segment {
-    margin: 20px auto !important;
-    padding: 0;
-    padding: 10px;
-    width: calc(100% - 4%) !important;
-    min-height: 90vh;
+  margin: 20px auto !important;
+  padding: 0;
+  padding: 10px;
+  width: calc(100% - 4%) !important;
+  min-height: 90vh;
 }
 
 @media only screen and (min-width: 1024px) {
-    .ui.raised.shadow.container.segment {
-        margin: 35px auto !important;
-        width: 944px !important;
-        padding: 20px;
-        box-shadow: 0 2px 16px 0 rgba(0,0,0,0.2);
-    }
+  .ui.raised.shadow.container.segment {
+    margin: 35px auto !important;
+    width: 944px !important;
+    padding: 20px;
+        box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2);
+  }
 }
 @media only screen and (max-width: 767px) {
-    .ui.form .fields {
-        flex-wrap: nowrap;
-    }
+  .ui.form .fields {
+    flex-wrap: nowrap;
+  }
+
+  .ui.raised.shadow.container.segment {
+    max-width: 320px !important;
+    margin: 0 auto !important;
+    box-shadow: none !important;
+    height: 100vh;
+    width: 100% !important;
+    background: #fff;
+  }
+  .signup-background {
+    background: #f9f9f9 !important;
+  }
 }
 
 .fullpage {
   ::ng-deep {
-      .ui.fullscreen.modal>.close {
-          opacity: 0;
-          pointer-events: none;
-      }        
+    .ui.fullscreen.modal>.close {
+      opacity: 0;
+      pointer-events: none;
+    }
   }
 }
 .signup-background {

@@ -15,15 +15,15 @@
              placeholder="{{resourceService?.frmelmnts?.lbl?.emailPhonenotRegistered | interpolate:'{instance}': resourceService.instance}}"
              >
            <span class="sb-field-verified"><i class="check circle icon"></i></span>
-           <span class="sb-field-warning-msg sb-color-warning fxsmall mt-8"
+           <span class="sb-color-warning fxsmall mt-8"
              *ngIf="form.controls.identifier.touched && form.controls.identifier.errors && form.controls.identifier.errors.required">
              {{resourceService?.frmelmnts?.lbl?.email}}/{{resourceService?.frmelmnts?.lbl?.phoneRequired}}
            </span>
-           <span class="sb-field-error-msg sb-color-error fxsmall mt-8"
+           <span class="sb-color-error fxsmall mt-8"
              *ngIf="form.controls.identifier.touched && form.controls.identifier.errors && form.controls.identifier.errors.pattern">
              {{resourceService?.frmelmnts?.lbl?.validEmail}}/{{resourceService?.frmelmnts?.lbl?.phone}}
            </span>
-           <span class="sb-field-error-msg sb-color-error fxsmall mt-8" *ngIf="identiferNotExist">
+           <span class="sb-color-error fxsmall mt-8" *ngIf="identiferNotExist">
              {{resourceService?.frmelmnts?.lbl?.emailPhonenotRegistered | interpolate:'{instance}': resourceService.instance}}
            </span>
          </div>
@@ -35,11 +35,11 @@
              placeholder="{{resourceService?.frmelmnts?.lbl?.nameRegisteredwith | interpolate:'{instance}': resourceService.instance}}"
              [ngClass]="{'is-invalid': false}">
            <span class="sb-field-verified"><i class="check circle icon"></i></span>
-           <span class="sb-field-warning-msg sb-color-warning fxsmall mt-8"
+           <span class=" sb-color-warning fxsmall mt-8"
              *ngIf="form.controls.name.touched && form.controls.name.errors && form.controls.name.errors.required">
              {{resourceService?.frmelmnts?.lbl?.nameRequired}}
            </span>
-           <span class="sb-field-error-msg sb-color-error fxsmall mt-8" *ngIf="nameNotExist">
+           <span class="sb-color-error fxsmall mt-8" *ngIf="nameNotExist">
              {{resourceService?.frmelmnts?.lbl?.enterNameNotMatch | interpolate:'{instance}': resourceService.instance}}
            </span>
          </div>

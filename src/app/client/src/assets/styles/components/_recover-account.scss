@@ -17,7 +17,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    padding-right: 30px;
+    padding-right: ($base-block-space * 4) - 2;
   }
   .sb-account-recoverpage-header-text {
     font-size: 18px;
@@ -38,4 +38,23 @@
     display: block;
     font-size: $font-size-normal;
   }
+  .sb-account-recover-page-radio{
+    .sb-account-recover-page-radio-label{
+      font-size: $font-size-normal;
+      line-height: ($base-block-space * 3);
+    }
+  }
+  .sb-account-recover-page-otp-text{
+    font-size: $font-size-normal;
+    line-height: ($base-block-space * 3);
+    color: $gray-200;
+    span{
+      color: $black;
+    }
+  }
+  .sb-account-recover-page-otp-success-msg{
+    color: $secondary-200;
+    font-size: $font-size-normal;
+  }
+  
 }
