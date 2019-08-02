@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RecoverAccountRoutingModule } from './recover-account-routing.module';
 import { IdentifyAccountComponent, SelectAccountIdentifierComponent, VerifyAccountIdentifierComponent,
-  ResetPasswordComponent } from './components';
+  ResetPasswordComponent, RecoverAccountComponent } from './components';
 import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -12,7 +12,8 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [IdentifyAccountComponent, ResetPasswordComponent, SelectAccountIdentifierComponent, VerifyAccountIdentifierComponent],
+  declarations: [IdentifyAccountComponent, ResetPasswordComponent, SelectAccountIdentifierComponent, VerifyAccountIdentifierComponent,
+    RecoverAccountComponent],
   imports: [
     CommonModule,
     RecoverAccountRoutingModule,
