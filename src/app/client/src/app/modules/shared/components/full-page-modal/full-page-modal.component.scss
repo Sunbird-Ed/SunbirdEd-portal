@@ -5,7 +5,7 @@
   padding: 0;
   padding: 10px;
   width: calc(100% - 4%) !important;
-  min-height: 90vh;
+  min-height: calc(100vh - 48px);
 }
 
 @media only screen and (min-width: 1024px) {

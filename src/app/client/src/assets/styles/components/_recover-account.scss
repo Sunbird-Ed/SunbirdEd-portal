@@ -1,4 +1,3 @@
-
 .sb-account-recover-page {
   width: 100%;
   margin: 0 auto;
@@ -7,23 +6,23 @@
 
   @include respond-above(xs) {
     max-width: 320px;
-    min-height: 560px;
+    min-height: 540px;
   }
-
   .sb-account-recoverpage-logo {
     height: 56px;
   }
+  .sb-account-recoverpage-header-text {
+    font-size: 18px;
+    font-weight: bold;
+  }
+}
+.sb-account-recover-page-section {
   .sb-form-control{
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
     padding-right: ($base-block-space * 4) - 2;
   }
-  .sb-account-recoverpage-header-text {
-    font-size: 18px;
-    font-weight: bold;
-  }
-
   .sb-field-group {
     .sb-account-recoverpage-label {
       font-size: $font-size-normal;
