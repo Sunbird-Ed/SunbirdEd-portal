@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter ,
-  OnChanges, AfterViewChecked, ChangeDetectorRef} from '@angular/core';
+  OnChanges, AfterViewChecked, ChangeDetectorRef, ElementRef, ViewChild} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {  ConfigService, ResourceService, IUserData, IUserProfile, ToasterService  } from '@sunbird/shared';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
@@ -35,11 +35,13 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   public previewData: any;
   public mediaArr = [];
   showFormError = false;
+  public userName: any;
   @Input() tabIndex: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter < any > ();
   @Input() selectedAttributes: any;
   @Input() role: any;
+  @ViewChild('author_names') authorName; 
   @Output() statusEmitter = new EventEmitter < string > ();
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -105,11 +107,25 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.showPreview = true;
       this.buttonTypeHandler('preview');
     }
+    this.userName = this.setUserName();
+  }
+
+  setUserName(){
+    var userName ="";
+    if(this.userService.userProfile.firstName){
+      userName = this.userService.userProfile.firstName;
+    }
+    if(this.userService.userProfile.lastName){
+      userName += (" " + this.userService.userProfile.lastName)
+    }
+    return userName;
   }
 
   ngAfterViewInit() {
     // this.initializeEditors();
-    this.initializeDropdown();
+    this.initializeDropdown();     
+   if(this.questionMetaData.mode === 'create') this.authorName.nativeElement.value =  this.userName;
+   if(this.questionMetaData.mode === 'edit') this.authorName.nativeElement.value = this.questionMetaData.data.authorNames;
   }
   ngOnChanges() {
     if (this.initialized) {
@@ -226,6 +242,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       if (!_.isEmpty(this.userService.userProfile.lastName)) {
         creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
       }
+      const authorName = (this.authorName.nativeElement.value == "" ) ? this.userName :  this.authorName.nativeElement.value;
       const req = {
         url: this.configService.urlConFig.URLS.ASSESSMENT.CREATE,
         data: {
@@ -267,7 +284,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 'status': 'Review',
                 'media': this.mediaArr,
                 'qumlVersion': 0.5,
-                'textBookUnitIdentifier':this.selectedAttributes.textBookUnitIdentifier
+                'textBookUnitIdentifier':this.selectedAttributes.textBookUnitIdentifier,
+                'authorNames': authorName
               }
             }
           }
@@ -312,6 +330,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       .subscribe((res) => {
         this.body = res[0];
         this.solution = res[1];
+        const authorName = (this.authorName.nativeElement.value == "" ) ? this.userName :  this.authorName.nativeElement.value;
         const option = {
           url: this.configService.urlConFig.URLS.ASSESSMENT.UPDATE + '/' + this.questionMetaData.data.identifier,
           data: {
@@ -335,7 +354,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                   'type': 'reference',
                   'code': UUID.UUID(),
                   'template_id': 'NA',
-                  'media': this.mediaArr
+                  'media': this.mediaArr,
+                  'authorNames': authorName        
                 }
               }
             }

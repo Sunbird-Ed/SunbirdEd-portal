@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter, OnChanges, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, OnChanges, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { McqForm } from './../../class/McqForm';
 import { ConfigService, IUserData, IUserProfile, ToasterService } from '@sunbird/shared';
 import { UserService, ActionService } from '@sunbird/core';
@@ -15,12 +15,13 @@ import { map } from 'rxjs/operators';
   templateUrl: './mcq-creation.component.html',
   styleUrls: ['./mcq-creation.component.css']
 })
-export class McqCreationComponent implements OnInit, OnChanges {
+export class McqCreationComponent implements OnInit, OnChanges{
   @Input() selectedAttributes: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter<any>();
   @Input() role: any;
   @ViewChild('mcqFormControl') private mcqFormControl;
+  @ViewChild('author_names') authorName; 
   public userProfile: IUserProfile;
   showTemplatePopup = false;
   showForm = false;
@@ -38,6 +39,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
   public refresh = true;
   public mediaArr = [];
   public rejectComment: any;
+  public userName: any;
   learningOutcomeOptions = [];
   updateStatus = 'update';
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
@@ -80,6 +82,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
       this.showPreview = true;
       this.buttonTypeHandler('preview');
     }
+    this.userName = this.setUserName();
   }
   ngOnChanges() {
     if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
@@ -91,7 +94,9 @@ export class McqCreationComponent implements OnInit, OnChanges {
       this.rejectComment = this.questionMetaData.data.rejectComment;
     }
   }
+  
   handleTemplateSelection(event) {
+    
     this.showTemplatePopup = false;
     if (event.type === 'submit') {
       this.templateDetails = event.template;
@@ -100,6 +105,17 @@ export class McqCreationComponent implements OnInit, OnChanges {
       this.questionStatus.emit({ type: 'close' });
     }
   }
+  setUserName(){
+    var userName ="";
+    if(this.userService.userProfile.firstName){
+      userName = this.userService.userProfile.firstName;
+    }
+    if(this.userService.userProfile.lastName){
+      userName += (" " + this.userService.userProfile.lastName)
+    }
+    return userName;
+  }
+
   handleReviewrStatus(event) {
     this.updateQuestion([{ key: 'status', value: event.status }, { key: 'rejectComment', value: event.rejectComment }]);
   }
@@ -197,6 +213,8 @@ export class McqCreationComponent implements OnInit, OnChanges {
           return { body: res[i + 1] };
         });
 
+        const authorName = (this.authorName.nativeElement.value == "" ) ? this.userName :  this.authorName.nativeElement.value;
+
         const questionData = this.getHtml(this.body, this.optionBody);
         const correct_answer = this.mcqForm.answer;
         const options = _.map(this.mcqForm.options, (opt, key) => {
@@ -220,7 +238,8 @@ export class McqCreationComponent implements OnInit, OnChanges {
             'maxScore': 1, // Number(this.mcqForm.maxScore),
             'status': 'Review',
             'media': this.mediaArr,
-            'type': 'mcq'
+            'type': 'mcq',
+            'authorNames': authorName
           }
 
         if (this.mcqForm.learningOutcome) {
@@ -299,6 +318,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
         if (!_.isEmpty(this.userService.userProfile.lastName)) {
           creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
         }
+        const authorName = (this.authorName.nativeElement.value == "" ) ? this.userName :  this.authorName.nativeElement.value;
         let metadata = {
             'createdBy': this.userService.userid,
             'creator': creator,
@@ -328,7 +348,8 @@ export class McqCreationComponent implements OnInit, OnChanges {
             'status': 'Review',
             'media': this.mediaArr,
             'qumlVersion': 0.5,
-            'textBookUnitIdentifier':this.selectedAttributes.textBookUnitIdentifier
+            'textBookUnitIdentifier':this.selectedAttributes.textBookUnitIdentifier,
+            'authorNames': authorName
           }
 
         if (this.mcqForm.learningOutcome) {
