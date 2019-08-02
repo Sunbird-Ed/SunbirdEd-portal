@@ -14,12 +14,13 @@ export class CertificateDetailsComponent implements OnInit {
   showSuccessModal: boolean;
   loader: boolean;
   viewCertificate: boolean;
-  error: boolean;
+  error = false;
   enableVerifyButton = false;
-  certificateCode: any;
+  certificateCode: string;
   wrongCertificateCode = false;
   instance: string;
   watchVideoLink: SafeResourceUrl;
+  certificateDetails: any;
 
   @ViewChild('codeInputField') codeInputField: ElementRef;
 
@@ -36,7 +37,7 @@ export class CertificateDetailsComponent implements OnInit {
     this.watchVideoLink = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/2Xgff-gsf0A?rel=0&autoplay=1');
   }
 
-  verify(event: any) {
+  certificateVerify() {
     this.loader = true;
     const request = {
       request: {
@@ -48,6 +49,7 @@ export class CertificateDetailsComponent implements OnInit {
     this.certificateService.validateCertificate(request).subscribe(
       (data: ServerResponse) => {
         this.loader = false;
+        this.certificateDetails = data;
        /**  manipulate response data here
             watch video link needs to be secured by bypassSecurityTrustResourceUrl()
         */
