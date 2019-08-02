@@ -10,7 +10,7 @@
   </div>
   <div class="d-flex ui blue message py-8 my-0" *ngIf="!showPreview && role.currentRole != 'REVIEWER' && role.currentRole != 'PUBLISHER'">
   Please only use&nbsp;&nbsp;<b>Add Image</b>(<i class="image outline icon mr-0 py-2"></i>)&nbsp;&nbsp;button to upload images</div>
-  <div class="d-flex" [ngClass]="{'ml-auto':showPreview === true }" *ngIf="role.currentRole != 'REVIEWER' && role.currentRole != 'PUBLISHER'">
+  <div class="d-flex my-16" [ngClass]="{'ml-auto':showPreview === true }" *ngIf="role.currentRole != 'REVIEWER' && role.currentRole != 'PUBLISHER'">
       <button class="sb-btn sb-btn-xs sb-btn-secondary submit-btn mr-8"
       appTelemetryInteract [telemetryInteractEdata]="{id:'update_btn',type:'click',pageid:'questioncreate'}"
       *ngIf="!showPreview && questionMetaData.data && ['Draft', 'Review', 'Reject', 'Live'].includes(questionMetaData.data.status)" (click)="btnClick($event, 'update');" type="submit">Update</button>

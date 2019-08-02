@@ -114,6 +114,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
       });
   }
   handleQuestionTabChange(questionId) {
+    this.selectedAttributes.questionList = [];
+    this.selectedAttributes.questionList.push(questionId);
     this.selectedQuestionId = questionId;
     this.showLoader = true;
     this.getQuestionDetails(questionId).pipe(tap(data => this.showLoader = false))
