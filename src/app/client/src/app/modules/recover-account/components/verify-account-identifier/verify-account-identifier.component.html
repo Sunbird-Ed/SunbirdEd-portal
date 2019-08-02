@@ -26,8 +26,7 @@
           <button class="sb-btn sb-btn-normal width-100 mr-4" tabindex="0"
             [ngClass]="{ 'sb-btn-outline-gray': disableResendOtp, 'sb-btn-outline-secondary': !disableResendOtp }"
             (click)="handleResendOtp()"> {{resourceService?.frmelmnts?.lbl?.resendOTP}}</button>
-          <button class="sb-btn sb-btn-normal width-100 ml-4" tabindex="0"
-            [ngClass]="{ 'sb-btn-gray': disableFormSubmit, 'sb-btn-secondary': !disableFormSubmit }"
+          <button class="sb-btn sb-btn-normal width-100 ml-4 sb-btn-secondary" tabindex="0"
             (click)="handleVerifyOtp()">{{resourceService?.frmelmnts?.lbl?.submitOTP}}</button>
         </div>
       </form>
