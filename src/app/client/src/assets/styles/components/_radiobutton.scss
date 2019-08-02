@@ -67,7 +67,7 @@
  }
  .sb-account-recover-page{
   .sb-radio-btn-checkbox.sb-radio-btn-primary label:before {
-    border: $blue !important;
+    border: 1px solid $blue !important;
   }
   .sb-radio-btn-checkbox.sb-radio-btn-primary input:checked ~ label:after {
     background-color: $blue !important;
