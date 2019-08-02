@@ -33,7 +33,7 @@
       </div>
 
       <div class="row d-flex" *ngIf="!showLoader">
-        <div class="mt-20 videosegment ui clearing segment ml-auto">
+        <div class="my-24 videosegment ui clearing segment ml-auto">
           <div
             *ngIf="permissionService.permissionAvailable && contentData && 
                  (contentData.status === 'Review' || contentData.status === 'FlagReview') && userId !== contentData.createdBy"
@@ -81,9 +81,10 @@
 </div>
 <!-- publish warning modal -->
 
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
   appBodyScroll *ngIf="showPublishWarningModal" #publishWarningModal>
   <!--Header-->
+  <i class="icon close" (click)="showPublishWarningModal = false" tabindex="0"></i>
   <div class="sb-modal-header">
     &nbsp;
   </div>

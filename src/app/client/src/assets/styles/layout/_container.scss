@@ -11,7 +11,7 @@
   }
 }
 
-@include respond-above(xxxl) {
+@include respond-above(xxl) {
   .ui.container,.ui.grid.container {
     width: 1524px !important;
   }

@@ -1,7 +1,7 @@
 <div *ngIf="showQrmodal">
     <app-qr-code-modal (closeQrModal)="showQrmodal = false"></app-qr-code-modal>
 </div>
-<div class="ui fixed main menu bs-0 d-block" appStickyHeader>
+<div class="ui fixed relative main menu bs-0 d-block">
     <extension-point [name]="'network-status-notify'" *ngIf="isOffline"></extension-point>
     <!--Header White Section-->
     <div class="ui container">
@@ -40,10 +40,10 @@
                                 [permission]='adminDashboard' routerLink="dashBoard/organization">
                                 {{resourceService.frmelmnts?.lnk?.dashboard}}
                             </a>
-                            <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
+                            <!-- <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
                                 [permission]='announcementRole' routerLink="announcement/outbox/1">
                                 {{resourceService.frmelmnts?.lnk?.announcement}}
-                            </a>
+                            </a> -->
                             <!-- <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='myActivityRole'
                   routerLink="dashBoard/myActivity">
                   {{resourceService.frmelmnts?.lnk?.myactivity}}
@@ -66,7 +66,7 @@
     <!--Header White Section-->
     <!--Header Blue Section-->
     <!--Computer-->
-    <div class="bg-primary p-8" *ngIf="showExploreHeader || userService.loggedIn || isOffline && !showOfflineHelpCentre">
+    <div class="sb-bg-color-primary p-8" *ngIf="showExploreHeader || userService.loggedIn || isOffline && !showOfflineHelpCentre">
         <div class="ui container d-flex flex-ai-center mx-0">
             <!--QR Button-->
             <button class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0" appTelemetryInteract

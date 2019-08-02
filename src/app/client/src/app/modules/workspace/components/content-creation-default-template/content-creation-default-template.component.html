@@ -1,13 +1,13 @@
 
-<div class="ui grid sb-form m-0">
-  <div *ngFor="let field of formFieldProperties;let i = index" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column pt-0 pb-16">
+<div class="ui grid sb-form m-0 sb-workspace-modal">
+  <div *ngFor="let field of formFieldProperties;let i = index" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column">
     
     <div *ngIf="field.inputType==='text' || field.inputType==='number'" class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
       <label>
         {{field.label}}
       </label>
       <div class="sb-field">
-        <input class="sb-form-control" name={{field.code}} type={{field.inputType}} [(ngModel)]="formInputData[field.code]" placeholder={{field.placeholder}}>
+        <input class="sb-form-control" name={{field.code}} type={{field.inputType}} [(ngModel)]="formInputData[field.code]" placeholder={{field.placeholder}} autofocus>
       </div>
     </div>
 

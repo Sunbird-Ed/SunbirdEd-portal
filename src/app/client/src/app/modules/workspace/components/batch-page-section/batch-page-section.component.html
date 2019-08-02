@@ -1,6 +1,6 @@
 <div class="ui container">
   <div [appTelemetryImpression]="telemetryImpression" *ngIf="!showLoader" class="ui grid stackable my-0">
-    <div class="twelve wide column" *ngFor="let section of carouselData;let last = last" [ngClass]="{'last mb-30':last}">
+    <div class="twelve wide column py-0" *ngFor="let section of carouselData;let last = last" [ngClass]="{'last mb-0':last}">
       <app-page-section cardType="batch" (visits)="prepareVisits($event)" [section]="section" (playEvent)="onCardClick($event)" (viewAll)="viewAll($event)"></app-page-section>
     </div>
     <div class="twelve wide column" *ngIf="batchList.length === 0 && !showLoader" >

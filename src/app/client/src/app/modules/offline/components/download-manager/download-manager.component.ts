@@ -20,6 +20,7 @@ export class DownloadManagerComponent implements OnInit {
   isOpen = false;
   count = 0;
   localCount: 0;
+  panelOpened = false;
 
   constructor(public downloadManagerService: DownloadManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,

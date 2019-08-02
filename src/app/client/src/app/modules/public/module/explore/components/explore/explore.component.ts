@@ -42,6 +42,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   showExportLoader = false;
   contentName: string;
   public slug: string;
+  organisationId: string;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -66,6 +67,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.slug = orgDetails.slug;
         this.hashTagId = orgDetails.hashTagId;
         this.initFilters = true;
+        this.organisationId = orgDetails.id;
         return this.dataDrivenFilterEvent;
       }), first()
     ).subscribe((filters: any) => {
@@ -128,6 +130,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     const manipulatedData = this.utilService.manipulateSoftConstraint(_.get(this.queryParams, 'appliedFilters'),
       softConstraintData);
     const option = {
+      organisationId: this.organisationId,
       source: 'web',
       name: 'Explore',
       filters: _.get(this.queryParams, 'appliedFilters') ? filters : _.get(manipulatedData, 'filters'),
@@ -186,8 +189,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   public playContent(event) {
 
-    // For offline envirnoment content will not play if action not open. It will get downloaded
-    if (_.includes(this.router.url, 'browse') && this.isOffline) {
+    // For offline environment content will only play when event.action is open
+    if (event.action === 'download' && this.isOffline) {
       this.startDownload(event.data.metaData.identifier);
       return false;
     } else if (event.action === 'export' && this.isOffline) {
@@ -201,7 +204,11 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.showLoginModal = true;
       this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
     } else {
-      this.publicPlayerService.playContent(event);
+      if (_.includes(this.router.url, 'browse') && this.isOffline) {
+        this.publicPlayerService.playContentForOfflineBrowse(event);
+      } else {
+        this.publicPlayerService.playContent(event);
+      }
     }
   }
   public viewAll(event) {

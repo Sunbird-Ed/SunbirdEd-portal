@@ -78,12 +78,12 @@
   <div class="sb-card-hover" *ngIf="hover">
     <div class="sb-card-hover-content">
       <div>
-        <div (click)="onAction(data,data.action.onImage)" *ngIf="checkOfflineRoutes === 'library'" class="d-flex flex-jc-center">
-          <button class="sb-btn sb-btn-outline-white sb-btn-normal">{{resourceService.frmelmnts?.lbl?.open}}</button>
+        <div (click)="onAction(data,data.action.onImage)" class="d-flex flex-jc-center">
+          <button class="sb-btn sb-btn-outline-white sb-btn-normal">{{resourceService.frmelmnts?.lbl?.play}} <i class="play icon"></i> </button>
           </div>
           <button (click)="onAction(data,'export')" *ngIf="checkOfflineRoutes === 'library'" class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">{{resourceService.frmelmnts?.btn?.export}}<i
               class="sign in alternate icon"></i></button>
-          <button id="download_{{data.metaData.identifier}}" (click)="onAction(data,'browse')" *ngIf="checkOfflineRoutes === 'browse' && data?.addedToLibrary !== true && data?.showAddingToLibraryButton !== true"
+          <button id="download_{{data.metaData.identifier}}" (click)="onAction(data,'download')" *ngIf="checkOfflineRoutes === 'browse' && data?.addedToLibrary !== true && data?.showAddingToLibraryButton !== true"
             class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">
             {{resourceService.frmelmnts?.btn?.addToLibrary}}<i class="sign in alternate icon"></i></button>
           <button *ngIf="checkOfflineRoutes === 'browse' && contentId === data.metaData.identifier && data?.showAddingToLibraryButton === true"

@@ -8,12 +8,14 @@ import {
   ContentRatingComponent, CommingSoonComponent
 } from './components';
 import { SharedModule } from '@sunbird/shared';
+import { CoreModule } from '@sunbird/core';
 @NgModule({
   imports: [
     CommonModule,
     SuiModule,
     TelemetryModule,
-    SharedModule
+    SharedModule,
+    CoreModule
   ],
   declarations: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
     CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,

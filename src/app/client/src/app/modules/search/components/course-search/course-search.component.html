@@ -1,6 +1,4 @@
-<div *ngIf="!showLoader">
-    <app-data-driven-filter [enrichFilters]="facetsList" [pageId]="'course-search'" *ngIf="initFilters" [ignoreQuery]="['key']" [filterEnv]="filterType" [accordionDefaultOpen]=false [isShowFilterLabel]=true [formAction]="'filter'" [frameworkName]="frameWorkName" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
-</div>
+<app-data-driven-filter [enrichFilters]="facetsList" [pageId]="'course-search'" *ngIf="initFilters" [ignoreQuery]="['key']" [filterEnv]="filterType" [accordionDefaultOpen]=false [isShowFilterLabel]=true [formAction]="'filter'" [frameworkName]="frameWorkName" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
 <div class="ui container">
     <div class="content-grid mt-24">
         <div class="sb-pageSection">

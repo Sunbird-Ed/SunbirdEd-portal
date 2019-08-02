@@ -8,13 +8,23 @@ const kafkaService = require('../helpers/kafkaHelperService');
 const logger = require('sb_logger_util_v2');
 let ssoWhiteListChannels;
 const privateBaseUrl = '/private/user/'
-let keycloak = getKeyCloakClient({
+
+const keycloakTrampoline = getKeyCloakClient({
   clientId: envHelper.PORTAL_TRAMPOLINE_CLIENT_ID,
   bearerOnly: true,
   serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
   realm: envHelper.PORTAL_REALM,
   credentials: {
     secret: envHelper.PORTAL_TRAMPOLINE_SECRET
+  }
+})
+const keycloakTrampolineAndroid = getKeyCloakClient({
+  resource: envHelper.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT.clientId,
+  bearerOnly: true,
+  serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
+  realm: envHelper.PORTAL_REALM,
+  credentials: {
+    secret: envHelper.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT.secret
   }
 })
 const verifySignature = async (token) => {
@@ -107,14 +117,16 @@ const createUser = async (req, jwtPayload) => {
 }
 const createSession = async (loginId, client_id, req, res) => {
   let grant;
+  let keycloakClient = keycloakTrampoline;
+  let scope = 'openid';
   if (client_id === 'android') {
-    grant = await keycloak.grantManager.obtainDirectly(loginId, undefined, undefined, 'offline_access')
-  } else {
-    grant = await keycloak.grantManager.obtainDirectly(loginId, undefined, undefined, 'openid')
+    keycloakClient = keycloakTrampolineAndroid;
+    scope = 'offline_access';
   }
-  keycloak.storeGrant(grant, req, res)
+  grant = await keycloakClient.grantManager.obtainDirectly(loginId, undefined, undefined, scope);
+  keycloakClient.storeGrant(grant, req, res)
   req.kauth.grant = grant
-  keycloak.authenticated(req)
+  keycloakClient.authenticated(req)
   return {
     access_token: grant.access_token.token,
     refresh_token: grant.refresh_token.token
@@ -293,7 +305,6 @@ const sendSsoKafkaMessage = async (req) => {
 };
 
 module.exports = {
-  keycloak,
   verifySignature,
   verifyToken,
   fetchUserWithExternalId,
