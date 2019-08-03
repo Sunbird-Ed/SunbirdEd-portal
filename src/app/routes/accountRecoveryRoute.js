@@ -10,7 +10,7 @@ module.exports = (app) => {
 
   app.post('/learner/user/v1/fuzzy/search', proxy(envHelper.learner_Service_Local_BaseUrl, {
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
-    proxyReqPathResolver: function (req) {
+    proxyReqPathResolver: (req) => {
       return '/private/user/v1/search';
     }
   }))
@@ -18,14 +18,14 @@ module.exports = (app) => {
   app.post('/learner/user/v1/password/reset', bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }), 
     (req, res, next) => {
       if(_.get(req.body, 'request.userId') !== _.get(req.session, 'otpVerifiedFor.request.userId')){
-        res.status(401).send({"id":"api.reset.password","ver":"v1","ts":dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),"params":{"resmsgid":null,"msgid": uuidv1(),"err":null,"status":"unauthorized","errmsg":null},"responseCode":"UNAUTHORIZED","result":{"response":"unauthorized"}})
+        res.status(401).send({"id":"api.reset.password","ver":"v1" ,"ts":dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),"params":{"resmsgid":null,"msgid": uuidv1(),"err":null,"status":"unauthorized","errmsg":null},"responseCode":"UNAUTHORIZED","result":{"response":"unauthorized"}})
       } else {
         next()
       }
     },
     proxy(envHelper.learner_Service_Local_BaseUrl, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
-      proxyReqPathResolver: function (req) {
+      proxyReqPathResolver: (req) => {
         return '/private/user/v1/reset/password';
       }
   }))
