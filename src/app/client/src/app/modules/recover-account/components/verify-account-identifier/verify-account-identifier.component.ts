@@ -107,6 +107,11 @@ export class VerifyAccountIdentifierComponent implements OnInit {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
+      object: {
+        id: this.recoverAccountService.selectedAccountIdentifier.id,
+        type: 'user',
+        ver: 'v1',
+      },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,

@@ -102,7 +102,8 @@ export class SelectAccountIdentifierComponent implements OnInit {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.router.url,
+        uri: this.router.url
+       // ,extra: { linkerAccount: this.validIdentifiers }
       }
     };
   }

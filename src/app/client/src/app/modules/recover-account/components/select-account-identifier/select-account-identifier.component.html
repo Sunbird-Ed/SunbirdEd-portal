@@ -11,8 +11,9 @@
             </sui-radio-button>
             <br>
         </div>
-        <button class="sb-btn sb-btn-normal width-100 mt-16 sb-btn-secondary" tabindex="0"
-            [disabled]="disableFormSubmit"
+        <button class="sb-btn sb-btn-normal width-100 mt-16 sb-btn-secondary" tabindex="0" [disabled]="disableFormSubmit" 
+            appTelemetryInteract
+            [telemetryInteractEdata]="{id: 'submit', type: 'click', pageid: 'select-identifier', extra: { form: selectedAccountIdentifier} }"
             (click)="handleGenerateOtp()">{{resourceService?.frmelmnts?.btn?.next}}</button>
     </div>
 </div>
