@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
+import { IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+
 @Component({
   templateUrl: './identify-account.component.html',
   styleUrls: ['./identify-account.component.scss']
@@ -15,12 +17,14 @@ export class IdentifyAccountComponent implements OnInit {
   identiferNotExist = false;
   form: FormGroup;
   errorCount = 0;
+  telemetryImpression: IImpressionEventInput;
   constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public formBuilder: FormBuilder,
     public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService) {
   }
 
   ngOnInit() {
     this.initializeForm();
+    this.setTelemetryImpression();
   }
   initializeForm() {
     this.form = this.formBuilder.group({
@@ -72,5 +76,17 @@ export class IdentifyAccountComponent implements OnInit {
     } else {
 
     }
+  }
+  private setTelemetryImpression() {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+      }
+    };
   }
 }

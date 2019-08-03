@@ -1,4 +1,4 @@
-<div class="sb-account-recover-page-section">
+<div class="sb-account-recover-page-section" [appTelemetryImpression]="telemetryImpression">
   <div class="sb-account-recover-page-info-msg mt-32">
     {{resourceService?.frmelmnts?.lbl?.enterEmailPhoneAsRegisteredInAccount | interpolate:'{instance}': resourceService.instance}},
     {{resourceService?.frmelmnts?.lbl?.enternameAsRegisteredInAccount | interpolate:'{instance}': resourceService.instance}}
@@ -43,7 +43,9 @@
       </div>
     </div>
     <button class="sb-btn sb-btn-normal width-100 sb-btn-secondary" [disabled]="disableFormSubmit" tabindex="0"
-      (click)="handleNext()">
+      (click)="handleNext()" appTelemetryInteract [telemetryInteractObject]="submitInteractObject"
+      [telemetryInteractEdata]="{id: 'submit', type: 'click', pageid: 'identify-account'}">
       {{resourceService?.frmelmnts?.lbl?.next}}</button>
   </form>
 </div>
+<!-- [telemetryInteractCdata]="[{id: form.value.name, type: 'name'}, { id: form.value.identifier, type: 'identifier'}]" -->

@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { FormBuilder, Validators, FormGroup, FormControl, ValidatorFn } from '@angular/forms';
+import { IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+
 @Component({
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss']
@@ -13,12 +15,14 @@ export class ResetPasswordComponent implements OnInit {
   disableFormSubmit = true;
   form: FormGroup;
   errorCount = 0;
+  telemetryImpression: IImpressionEventInput;
   constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public formBuilder: FormBuilder,
     public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService) { }
 
   ngOnInit() {
     this.verifyState();
     this.initializeForm();
+    this.setTelemetryImpression();
   }
   initializeForm() {
     this.form = this.formBuilder.group({
@@ -87,5 +91,17 @@ export class ResetPasswordComponent implements OnInit {
     this.router.navigate(['/recover/identify/account'], {
       queryParams: this.activatedRoute.snapshot.queryParams
     });
+  }
+  private setTelemetryImpression() {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+      }
+    };
   }
 }
