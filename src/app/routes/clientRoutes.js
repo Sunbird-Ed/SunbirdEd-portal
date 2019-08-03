@@ -106,7 +106,6 @@ module.exports = (app, keycloak) => {
 function getLocals(req) {
   var locals = {}
   if(req.includeUserDetail){
-    console.log(req.kauth.grant.access_token.token);
     locals.userId = _.get(req, 'session.userId') ? req.session.userId : null
     locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'session.userId') ? req.sessionID : null
   } else {
