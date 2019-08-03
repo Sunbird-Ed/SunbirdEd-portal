@@ -3,7 +3,6 @@ import { RecoverAccountService } from './../../services';
 import { ResourceService } from '@sunbird/shared';
 
 @Component({
-  selector: 'app-recover-account',
   templateUrl: './recover-account.component.html',
   styleUrls: ['./recover-account.component.scss']
 })

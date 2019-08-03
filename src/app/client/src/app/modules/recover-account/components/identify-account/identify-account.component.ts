@@ -5,7 +5,6 @@ import { ResourceService, ToasterService } from '@sunbird/shared';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
 @Component({
-  selector: 'app-identify-account',
   templateUrl: './identify-account.component.html',
   styleUrls: ['./identify-account.component.scss']
 })
@@ -40,18 +39,20 @@ export class IdentifyAccountComponent implements OnInit {
   }
   handleNext() {
     this.disableFormSubmit = true;
-    const request = {
-      request: this.form.value
-    };
-    this.recoverAccountService.fuzzyUserSearch(request)
-    .subscribe(response => {
-      this.navigateToNextStep(response);
-    }, error => {
-      this.handleError(error);
-    });
+    this.recoverAccountService.fuzzyUserSearch(this.form.value)
+      .subscribe(response => {
+        if (_.get(response, 'result.response.count') > 0) { // both match
+          this.navigateToNextStep(response);
+        } else { // both dint match
+          this.nameNotExist = true;
+          this.identiferNotExist = true;
+        }
+      }, error => {
+        this.handleError(error);
+      });
   }
   navigateToNextStep(response) {
-    this.recoverAccountService.fuzzySearchResults = _.get(response, 'result.account');
+    this.recoverAccountService.fuzzySearchResults = _.get(response, 'result.response.content');
     this.router.navigate(['/recover/select/account/identifier'], {
       queryParams: this.activatedRoute.snapshot.queryParams
     });
@@ -68,6 +69,8 @@ export class IdentifyAccountComponent implements OnInit {
         encodeURIComponent(key) + '=' + encodeURIComponent(resQuery[key])).join('&');
       const redirect_uri = reqQuery.error_callback + '?' + resQuery;
       window.location.href = redirect_uri;
+    } else {
+
     }
   }
 }

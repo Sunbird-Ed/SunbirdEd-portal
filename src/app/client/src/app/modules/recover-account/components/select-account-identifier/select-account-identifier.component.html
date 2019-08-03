@@ -1,39 +1,18 @@
 <div class="sb-account-recover-page-section">
     <div class="mt-32 sb-account-recover-page-radio">
-        <div class="text-center sb-account-recover-page-radio-label">{{resourceService?.frmelmnts?.lbl?.willsendOTP}}</div>
-        <div class="text-center sb-account-recover-page-radio-label pb-16">{{resourceService?.frmelmnts?.lbl?.receiveOTP}}</div>
-        <div class="mb-16 mt-24 text-left" *ngFor="let identifier of validIdentifiers">
-          <sui-radio-button class="sb-radio-btn-checkbox sb-radio-btn-primary" name="id" value="{{identifier.value}}"
-            (ngModelChange)="setSelectIdentifier(identifier)" [(ngModel)]="selectedAccountId.value">{{identifier.value}}
-          </sui-radio-button>
-          <br>
+        <div class="text-center sb-account-recover-page-radio-label">{{resourceService?.frmelmnts?.lbl?.willsendOTP}}
         </div>
-        <button class="sb-btn sb-btn-normal width-100 mt-16 sb-btn-secondary" tabindex="0"
-          (click)="handleGenerateOtp()">{{resourceService?.frmelmnts?.btn?.next}}</button>
-      </div>
-</div>
-
-
-
-<!-- 
-<app-full-page-modal>
-    <div class="d-flex flex-jc-center mb-30">
-        <img *ngIf="recoverAccountService.tenantInfo" class="image centered"
-            alt={{recoverAccountService.tenantInfo.tenantName}} height="45"
-            src="{{recoverAccountService.tenantInfo.logo}}">
-    </div>
-    <h5 class="text-center mb-24"><b>Recover Account</b></h5>
-    <div class="width-300 mx-auto">
-        <h6 class="text-center">{{'We will send you an OTP'}}</h6>
-        <h6 class="text-center mb-24">{{'Where would you like to receive the OTP?'}}</h6>
-        <div *ngFor="let identifier of validIdentifiers">
-            <sui-radio-button class="mb-10" name="id" value="{{identifier.value}}"
-                (ngModelChange)="setSelectIdentifier(identifier)"
-                [(ngModel)]="selectedAccountId.value">{{identifier.value}}</sui-radio-button>
+        <div class="text-center sb-account-recover-page-radio-label pb-16">
+            {{resourceService?.frmelmnts?.lbl?.receiveOTP}}</div>
+        <div class="mb-16 mt-24 text-left" *ngFor="let identifier of validIdentifiers">
+            <sui-radio-button class="sb-radio-btn-checkbox sb-radio-btn-primary" name="id" value="{{identifier.value}}"
+                (ngModelChange)="setSelectIdentifier(identifier)" [(ngModel)]="selectedAccountIdentifier.value">
+                {{identifier.value}}
+            </sui-radio-button>
             <br>
         </div>
-        <button class="ui button width-300 mt-10" tabindex="0"
-            [ngClass]="{'grey':disableFormSubmit, 'light-sea-green':!disableFormSubmit}"
-            (click)="handleGenerateOtp()">{{'Next'}}</button>
+        <button class="sb-btn sb-btn-normal width-100 mt-16 sb-btn-secondary" tabindex="0"
+            [disabled]="disableFormSubmit"
+            (click)="handleGenerateOtp()">{{resourceService?.frmelmnts?.btn?.next}}</button>
     </div>
-</app-full-page-modal> -->
+</div>

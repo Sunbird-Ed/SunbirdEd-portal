@@ -6,7 +6,6 @@ import * as _ from 'lodash-es';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-verify-account-identifier',
   templateUrl: './verify-account-identifier.component.html',
   styleUrls: ['./verify-account-identifier.component.scss']
 })
@@ -19,8 +18,9 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService) { }
 
   ngOnInit() {
-    this.verifyState();
-    this.initializeForm();
+    if (this.verifyState()) {
+      this.initializeForm();
+    }
   }
   initializeForm() {
     this.form = this.formBuilder.group({
@@ -38,10 +38,10 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     this.disableFormSubmit = true;
     const request = {
       request: {
-        type: this.recoverAccountService.selectedAccountDetails.type,
-        key: this.recoverAccountService.selectedAccountDetails.value,
+        type: this.recoverAccountService.selectedAccountIdentifier.type,
+        key: this.recoverAccountService.selectedAccountIdentifier.value,
         otp: this.form.controls.otp.value,
-        id: this.recoverAccountService.selectedAccountDetails.id
+        userId: this.recoverAccountService.selectedAccountIdentifier.id
       }
     };
     this.recoverAccountService.verifyOTP(request)
@@ -75,9 +75,9 @@ export class VerifyAccountIdentifierComponent implements OnInit {
   handleResendOtp() {
     const request = {
       request: {
-        type: this.recoverAccountService.selectedAccountDetails.type,
-        key: this.recoverAccountService.selectedAccountDetails.value,
-        id: this.recoverAccountService.selectedAccountDetails.id
+        type: this.recoverAccountService.selectedAccountIdentifier.type,
+        key: this.recoverAccountService.selectedAccountIdentifier.value,
+        userId: this.recoverAccountService.selectedAccountIdentifier.id
       }
     };
     this.recoverAccountService.generateOTP(request).subscribe(response => {
@@ -88,9 +88,11 @@ export class VerifyAccountIdentifierComponent implements OnInit {
   }
   verifyState() {
     if (!_.get(this.recoverAccountService, 'fuzzySearchResults.length')
-      || _.isEmpty(this.recoverAccountService.selectedAccountDetails)) {
+      || _.isEmpty(this.recoverAccountService.selectedAccountIdentifier)) {
       this.navigateToIdentifyAccount();
+      return false;
     }
+    return true;
   }
   navigateToIdentifyAccount() {
     this.router.navigate(['/recover/identify/account'], {

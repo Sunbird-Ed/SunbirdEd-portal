@@ -1,65 +1,31 @@
 <div class="sb-account-recover-page-section">
-    <div class="sb-account-recover-page-otp mt-32">
-        <div class="sb-account-recover-page-otp-text text-center">
-          {{resourceService?.frmelmnts?.lbl?.otpSentTo}}
-          <span>{{recoverAccountService.selectedAccountDetails.value}}.</span>
-        </div>
-        <div class="sb-account-recover-page-otp-text text-center">
-          {{resourceService?.frmelmnts?.lbl?.itis}}
-          <span>{{resourceService?.frmelmnts?.lbl?.validFor}}.</span>
-        </div>
+  <div class="sb-account-recover-page-otp mt-32">
+    <div class="sb-account-recover-page-otp-text text-center">
+      {{resourceService?.frmelmnts?.lbl?.otpSentTo}}
+      <span>{{recoverAccountService.selectedAccountIdentifier.value}}.</span>
+    </div>
+    <div class="sb-account-recover-page-otp-text text-center">
+      {{resourceService?.frmelmnts?.lbl?.itis}}
+      <span>{{resourceService?.frmelmnts?.lbl?.validFor}}.</span>
+    </div>
+  </div>
+  <form [formGroup]="form" class="sb-form mt-48" autocomplete="off">
+    <div class="sb-field-group mb-16 text-left">
+      <div class="sb-field">
+        <label class="sb-account-recoverpage-label required">{{resourceService?.frmelmnts?.lbl?.enterOTP}} </label>
+        <input class="sb-form-control" [ngClass]="{'is-invalid': false }" formControlName="otp" name="otp"
+          placeholder="{{resourceService?.frmelmnts?.lbl?.enterOTP}}">
+        <span class="sb-color-warning fxsmall mt-8"
+          *ngIf="form.controls.otp.touched && form.controls.otp.errors && form.controls.otp.errors.required">
+          {{resourceService?.frmelmnts?.lbl?.otpMandatory}}
+        </span>
       </div>
-      <form [formGroup]="form" class="sb-form mt-48" autocomplete="off">
-        <div class="sb-field-group mb-16 text-left">
-          <div class="sb-field">
-            <label class="sb-account-recoverpage-label required">{{resourceService?.frmelmnts?.lbl?.enterOTP}} </label>
-            <input class="sb-form-control" [ngClass]="{'is-invalid': false }" formControlName="otp" name="otp"
-              placeholder="{{resourceService?.frmelmnts?.lbl?.enterOTP}}">
-            <span class="sb-field-verified"><i class="check circle icon"></i></span>
-            <span class="sb-color-warning fxsmall mt-8"
-              *ngIf="form.controls.otp.touched && form.controls.otp.errors && form.controls.otp.errors.required">
-              {{resourceService?.frmelmnts?.lbl?.otpMandatory}}
-            </span>
-          </div>
-        </div>
-        <div class="d-flex flex-jc-space-between mt-32">
-          <button class="sb-btn sb-btn-normal width-100 mr-4" tabindex="0"
-            [ngClass]="{ 'sb-btn-outline-gray': disableResendOtp, 'sb-btn-outline-secondary': !disableResendOtp }"
-            (click)="handleResendOtp()"> {{resourceService?.frmelmnts?.lbl?.resendOTP}}</button>
-          <button class="sb-btn sb-btn-normal width-100 ml-4 sb-btn-secondary" tabindex="0"
-            (click)="handleVerifyOtp()">{{resourceService?.frmelmnts?.lbl?.submitOTP}}</button>
-        </div>
-      </form>
+    </div>
+    <div class="d-flex flex-jc-space-between mt-32">
+      <button class="sb-btn sb-btn-normal width-100 mr-4 sb-btn-secondary" tabindex="0" [disabled]="disableResendOtp"
+        (click)="handleResendOtp()"> {{resourceService?.frmelmnts?.lbl?.resendOTP}}</button>
+      <button class="sb-btn sb-btn-normal width-100 ml-4 sb-btn-secondary" tabindex="0" [disabled]="disableFormSubmit"
+        (click)="handleVerifyOtp()">{{resourceService?.frmelmnts?.lbl?.submitOTP}}</button>
+    </div>
+  </form>
 </div>
-
-
-
-
-<!-- <app-full-page-modal>
-    <div class="d-flex flex-jc-center mb-30">
-        <img *ngIf="recoverAccountService.tenantInfo" class="image centered"
-            alt={{recoverAccountService.tenantInfo.tenantName}} height="45"
-            src="{{recoverAccountService.tenantInfo.logo}}">
-    </div>
-    <h5 class="text-center mb-24"><b>Recover Account</b></h5>
-    <div class="width-300 mx-auto">
-        <h6 class="text-center">OTP has been sent to {{recoverAccountService.selectedAccountDetails.value}} .</h6>
-        <h6 class="text-center mb-24">{{'Its valid for 30 min'}}</h6>
-        <form [formGroup]="form" class="ui form borderd">
-            <div class="required field mb-10">
-                <label class="mb-10">{{'Enter OTP'}}</label>
-                <input [ngClass]="{'orange-border': false }" formControlName="otp" name="otp"
-                    placeholder="{{'Enter OTP'}}">
-            </div>
-            <label *ngIf="form.controls.otp.touched && form.controls.otp.errors && form.controls.otp.errors.required"
-                class="ui basic blue error label pt-0">{{'OTP is mandatory'}}</label>
-                <br>
-            <button class="ui button m-10" tabindex="0"
-                [ngClass]="{ 'grey': disableResendOtp, 'light-sea-green': !disableResendOtp }"
-                (click)="handleResendOtp()">{{'Resend OTP'}}</button>
-            <button class="ui button m-10" tabindex="0"
-                [ngClass]="{ 'grey': disableFormSubmit, 'light-sea-green': !disableFormSubmit }"
-                (click)="handleVerifyOtp()">{{'Submit OTP'}}</button>
-        </form>
-    </div>
-</app-full-page-modal> -->
