@@ -143,6 +143,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
         }
         console.log('Editor was initialized');
         this.changeTracker(this.editorInstance);
+        this.attacthEvent(this.editorInstance);
         // this.pasteTracker(this.editorInstance);
         this.characterCount = this.countCharacters(this.editorInstance.model.document);
       })
@@ -388,5 +389,15 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     });
     return src;
   }
-
+// Here Event listener is attacthed to document to listen the click event from Wiris plugin ('OK'-> button)
+  attacthEvent(editor) {
+    document.addEventListener('click', function (e) {
+      if (e.target && (<Element>e.target).className == 'wrs_modal_button_accept') {
+        editor.model.change(writer => {
+          const insertPosition = editor.model.document.selection.getFirstPosition();
+          writer.insertText(' ', insertPosition);
+        });
+      }
+    });
+  }
 }
