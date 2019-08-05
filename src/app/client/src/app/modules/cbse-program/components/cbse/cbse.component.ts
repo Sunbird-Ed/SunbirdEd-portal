@@ -6,6 +6,7 @@ import {Subject} from 'rxjs';
 
 interface ISelectedAttributes {
     textBookUnitIdentifier?: any;
+    lastOpenedUnit?: any;
     framework?: string;
     channel?: string;
     board?: string;
@@ -57,6 +58,7 @@ export class CbseComponent implements OnInit, OnDestroy {
     this.role.currentRole = this.selectedAttributes.currentRole;
     this.formFieldOptions = _.get(this.programDetails, 'config.onBoardForm.fields');
     this.fetchFrameWorkDetails();
+    this.selectedAttributes.lastOpenedUnit = 0;
   }
 
   public selectedClassSubjectHandler(event) {
@@ -74,6 +76,7 @@ export class CbseComponent implements OnInit, OnDestroy {
     this.selectedAttributes.topic =  event.topic;
     this.selectedAttributes.questionType =  event.questionType;
     this.selectedAttributes.textBookUnitIdentifier =  event.textBookUnitIdentifier;
+    this.selectedAttributes.lastOpenedUnit = event.textBookUnitIdentifier;
     this.navigate('next');
   }
 
@@ -94,10 +97,24 @@ export class CbseComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  /**
+   * @description - sets textBookUnitIdentifier to 0 while coming backwards from any stage >2 
+   * @input  step {String} : if it is a backward stage
+   * @input  currentStage {Integer} : any
+   */
+  
+  setLastOpenedTopic(step, currentStage){
+    if(currentStage === 2 && step === 'prev'){
+      this.selectedAttributes.lastOpenedUnit = 0;
+    }
+  }
+
   navigate(step) {
     if (step === 'next') {
       this.currentStage = this.currentStage + 1;
     } else if (step === 'prev') {
+      this.setLastOpenedTopic(step,this.currentStage);
       this.currentStage = this.currentStage - 1;
     }
   }

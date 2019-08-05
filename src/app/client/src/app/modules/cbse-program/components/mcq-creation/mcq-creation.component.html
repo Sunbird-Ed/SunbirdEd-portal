@@ -1,4 +1,4 @@
-<div *ngIf='!showTemplatePopup && showForm' class="p-24">
+<div *ngIf='showForm' class="p-24">
   <app-question-creation-header (buttonType)="buttonTypeHandler($event)" [rejectComment]="rejectComment"
     [questionMetaData]="questionMetaData" [disableSubmission]="isEditorThrowingError"
     (questionStatus)="handleReviewrStatus($event)" [role]="role"></app-question-creation-header>
@@ -67,11 +67,21 @@
         </div>
         <label class="ui basic red error label pt-1 mt-5 width-100"
           *ngIf="(bloomsLevel.touched || showFormError) && bloomsLevel.invalid">Fill Learning Level </label>
+      </div> 
+      
+      <div class="one column row" >
+          <div class="column">
+              <label>Authors</label> <br/>
+              <div class="ui small icon input">
+                  <input #author_names type="text" [value]="(questionMetaData.mode === 'edit') ? questionMetaData.data.authorNames : userName" >          
+              </div>
+          </div>
       </div>
+
     </div>
   </form>
   <app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [selectedAttributes]="selectedAttributes"></app-question-preview>
 </div>
 
-<app-mcq-template-selection *ngIf='showTemplatePopup' (templateSelection)="handleTemplateSelection($event)">
+<app-mcq-template-selection *ngIf='showTemplatePopup' style="z-index: 1000" (templateSelection)="handleTemplateSelection($event)">
 </app-mcq-template-selection>
