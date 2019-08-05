@@ -25,7 +25,7 @@ npm run deploy
 cd app_dist
 npm i -g npm@3.10.10
 npm install --production  --unsafe-perm
-sed -i "/version/a\  \"buildHash\": \"8d1b8cf\","  package.json
+sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
 echo 'Compressing assets directory'
 cd ..
 tar -cvf player-dist.tar.gz app_dist
