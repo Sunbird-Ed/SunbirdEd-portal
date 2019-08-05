@@ -26,7 +26,7 @@ module.exports = (app) => {
     proxy(envHelper.learner_Service_Local_BaseUrl, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
       proxyReqPathResolver: (req) => {
-        return '/private/user/v1/reset/password';
+        return '/private/user/v1/password/reset'; // /private/user/v1/reset/password
       }
   }))
 
@@ -35,7 +35,7 @@ module.exports = (app) => {
     proxy(envHelper.LEARNER_URL, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
       proxyReqPathResolver: (req) => {
-        return '/learner/otp/v1/verify';
+        return require('url').parse(envHelper.LEARNER_URL + req.originalUrl.replace('/learner/', '')).path
       },
       userResDecorator: (proxyRes, proxyResData, req, res) => {
         try {
